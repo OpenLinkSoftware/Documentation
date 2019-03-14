@@ -108,8 +108,8 @@ assign
 `SPARQL_SPONGE` privileges to user `SPARQL`. (Note: more sophisticated security 
 is provided via [WebID based ACL protection](http://vos.openlinksw.com/owiki/wiki/VOS/ValQuickStartGuide) of your SPARQL endpoint).
 
-3) Numerous cartridges require an API key or an OAuth key and secret. [Sponger Cartridge Configuration and Implementation Notes]  
-(http://vos.openlinksw.com/owiki/wiki/VOS/VirtConfigureCartridges) details the pre-configuration steps for these cartridges.
+3) Numerous cartridges require an API key or an OAuth key and secret.
+[Sponger Cartridge Configuration and Implementation Notes](http://vos.openlinksw.com/owiki/wiki/VOS/VirtConfigureCartridges) details the pre-configuration steps for these cartridges.
 
 <a id="bundled-sponger-cartridges"></a>
 ## Bundled Sponger Cartridges
