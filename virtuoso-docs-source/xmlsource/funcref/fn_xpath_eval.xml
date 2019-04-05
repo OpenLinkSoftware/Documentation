@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xpath_eval">
+      <refmeta>
+        <refentrytitle>xpath_eval
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>xpath_eval
+</refname>
+        <refpurpose>Applies an XPATH expression to a context node and returns result(s).
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xpath_eval">
+          <funcprototype xml:id="fproto_xpath_eval">
+            <funcdef>
+              <function>xpath_eval
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>xpath_expression 
+</parameter>
+
+  varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>xml_tree 
+</parameter>
+
+  XML Entity
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>index 
+</parameter>
+
+  integer
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>named_params
+</parameter>
+
+   vector
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xpath_eval">
+        <title>Description
+</title>
+        <para>
+This function returns the result of applying the XPath
+expression to the context node. By default only the first result is
+returned, but supplying a third argument allows you to specify an
+index for the value; the default assumes a value of 1 here. A value
+of 0 returns an array of 0 or more elements, one for each value
+selected by the XPath expression.
+	</para>
+        <para>
+When this function returns an entity in a result set, the client will
+see an nvarchar value containing the serialization of the entity,
+complete with markup. When the entity is passed as an SQL value it
+remains an entity referencing the node of a parsed XML tree,
+permitting navigation inside the tree.
+	</para>
+        <para>
+The expression can be passed parameters by specifying a fourth argument
+to <function>xpath_eval()</function>
+
+  . This will be a vector of name/value
+pairs. The values can be referenced from inside XPath expression by using
+their names with '$' prefix. You may use any Virtuoso data type.
+The names in the parameter vector should appear without the '$' sign.
+If any of the parameter values is NULL the parameter will be ignored because NULL
+has no XPath counterpart.
+If the same name appears more than once in the vector, the last name/value pair is
+used and all preceding pairs with this name are silently ignored.
+Obviously, names should be strings that are valid XPath variable names.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xpath_eval">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>xpath_expression
+</title>
+          <para>A valid XPATH expression. In almost all application this is a string.
+There is a tricky extension that is used by BPEL-like applications: <parameter>xpath_expression</parameter>
+
+   can be an XML entity
+whost string-value is a valid XPATH expression. An example of such an entity is "select" or "test"
+attribute in XSLT stylesheet. This trick lets XPATH processor to resolve namespace prefixes by looking at namespace declarations
+at the header of the stylesheet.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>xml_tree
+</title>
+          <para>An XML entity such as that returned from the 
+<function>xtree_doc()
+</function>
+
+   function.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>index
+</title>
+          <para>Result index. This parameter is optional. If omitted a
+value of 1 is assumed, meaning only the first result is returned. If
+a value of 0 is supplied then an array of 0 or more elements is
+returned containing one element per result.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>named_params
+</title>
+          <para>A vector of keyword/value parameters to be passed to the
+    XPath processor.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xpath_eval">
+        <title>Return Types
+</title>
+        <para>This function will return the first or
+<parameter>index</parameter>
+
+   selected result of applying the XPath
+expression to the <parameter>xml_tree</parameter>
+
+   input. If an <parameter>index</parameter>
+
+value of 0 is supplied then the output is an array.
+</para>
+      </refsect1>
+      <refsect1 xml:id="errors_xpath_eval">
+        <title>Errors
+</title>
+        <table>
+          <title>Errors signalled by xpath_eval
+</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>SQL State
+</entry>
+                <entry>Error Code
+</entry>
+                <entry>Error Text
+</entry>
+                <entry>Description
+</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <errorcode>XP370
+</errorcode>
+                </entry>
+                <entry>
+                  <errorcode>XI009
+</errorcode>
+                </entry>
+                <entry>
+                  <errortext>Argument 2 of xpath_eval must be an entity, not a value of type [type name] ([type code])
+</errortext>
+                </entry>
+                <entry>The 
+<parameter>xml_tree
+</parameter>
+
+   parameter should always be an entity.
+In some cases the XPath expression does not use context entity, but it should be provided anyway
+(e.g. some fake document).
+</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </refsect1>
+      <refsect1 xml:id="examples_xpath_eval">
+        <title>Examples
+</title>
+        <example xml:id="ex_xpath_eval">
+          <title>Finding the Authors of Document Titles
+</title>
+          <programlisting>
+select xt_file, xpath_eval ('//author', t) from xml_text
+	where xpath_contains (xt_text, '//chapter/title[. = 'Introduction']', t);
+</programlisting>
+          <para>
+This will select all titles that are descendants of chapter and have a
+string value of 'Introduction'. This will next evaluate
+<parameter>//author</parameter>
+
+   in the context of each, retrieving the
+author entities in the document of the title.
+
+</para>
+        </example>
+        <example xml:id="ex_xpath_eval2">
+          <title>xpath_eval and Repeating Nodes.
+</title>
+          <para>This example shows how the xpath_eval can be used to retrieve
+	multiple node answers to queries. First to set the scene consider the following
+	statements that create a table with XML inside.</para>
+          <programlisting>
+CREATE TABLE t_articles (
+	article_id int NOT NULL,
+	article_title varchar(255) NOT NULL,
+	article_xml long varchar
+	);
+
+insert into t_articles (article_id, article_title) values (1, 'a');
+insert into t_articles (article_id, article_title) values (2, 'b');
+
+UPDATE t_articles SET article_xml = '
+&lt;beatles id = "b1"&gt;
+&lt;beatle instrument = "guitar" alive = "no"&gt;john lennon&lt;/beatle&gt;
+&lt;beatle instrument = "guitar" alive = "no"&gt;george harrison&lt;/beatle&gt;
+&lt;/beatles&gt;'
+WHERE article_id = 1;
+
+UPDATE t_articles SET article_xml = '
+&lt;beatles id = "b2"&gt;
+&lt;beatle instrument = "bass" alive = "yes"&gt;paul mccartney&lt;/beatle&gt;
+&lt;beatle instrument = "drums" alive = "yes"&gt;ringo starr&lt;/beatle&gt;
+&lt;/beatles&gt;'
+WHERE article_id = 2;
+</programlisting>
+          <para>Now we make a query that will return a vector of results, each
+vector element corresponding to a node-set of the result.</para>
+          <programlisting>
+SELECT xpath_eval('//beatle/@instrument', xml_tree_doc (article_xml), 0)
+	AS beatle_instrument FROM t_articles WHERE article_id = 2;
+</programlisting>
+          <para>The repeating nodes are returned as part of a vector, the third argument
+to xpath_eval is set to 0, which means that it is to return all nodes.</para>
+          <para>Otherwise, we can select the first node-set by supplying 1 as the third
+parameter to xpath_eval: </para>
+          <programlisting>
+SELECT xpath_eval('//beatle/@instrument', xml_tree_doc (article_xml), 1)
+	AS beatle_instrument FROM t_articles WHERE article_id = 2;
+</programlisting>
+        </example>
+        <example xml:id="ex_xpath_eval3">
+          <title>Passing a named parameter to the XPath
+</title>
+          <programlisting>
+SQL&gt; select xpath_eval(
+  '//phone[../name like $$n]',
+  xtree_doc ('&lt;phonebook&gt;
+      &lt;dept&gt;&lt;name&gt;Installation Service&lt;/name&gt;&lt;phone&gt;555-1111&lt;/phone&gt;&lt;/dept&gt;
+      &lt;dept&gt;&lt;name&gt;Tech Support&lt;/name&gt;&lt;phone&gt;555-1112&lt;/phone&gt;&lt;/dept&gt;
+    &lt;/phonebook&gt;'),
+  1,
+  vector('n', 'Tech%') );
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;phone&gt;555-1112&lt;/phone&gt;
+</programlisting>
+          <para>
+Like in SQL queries, XPath parameters are used to avoid printing literal values into
+the text of the query. The listing above demonstrates how to find the phone of
+the first department whose name is like the specified pattern.
+	</para>
+          <para>
+Note that if the text of the XPath expression is entered as a string in ISQL,
+dollar signs in front of parameter names should be doubled, as in this sample.
+ISQL uses the same syntax ($name) for macro expansion, and double dollar sign
+is replaced by ISQL with single dollar sign character.
+
+</para>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xpath_eval">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xquery_eval">
+            <function>xquery_eval()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="xpathcontainssqlpred">xpath_contains SQL predicate
+</link>
+        </para>
+        <para>
+          <link linkend="xcontainspredicate">xcontains SQL Predicate
+</link>
+        </para>
+        <!--    
+<para>
+<link linkend="fn_xpath_explain">
+<function>xpath_explain()
+</function>
+</link>
+</para> -->
+
+      </refsect1>
+    </refentry>

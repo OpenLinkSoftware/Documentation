@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfsqlfromsparqldescribe">
+        <title>SPARQL DESCRIBE</title>
+        <para>The SPARQL specification does not define the precise output of DESCRIBE, so different
+applications may need different results for the same subject. Some applications need quick generation of short
+and incomplete results whereas others may need detailed reports composed from multiple sources.
+  </para>
+        <para>The supported option values for <emphasis>sql:describe-mode</emphasis>
+
+   are:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <emphasis>(default)</emphasis>
+            </para>
+            <para> -- for subject-predicate-object triples of given IRI as subject plus
+    subject-predicate-object triples of given IRI as object. No "sql:describe-mode" or define sql:describe-mode ""
+    will set default.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>SPO</emphasis>
+            </para>
+            <para> -- for subject-predicate-object triples of given IRI as subject;</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>CBD</emphasis>
+            </para>
+            <para> -- for concise bound description of given subject (i.e., SPO + CBD of each
+    blank node object found by SPO, recursively);</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>OBJCBD</emphasis>
+            </para>
+            <para> -- like CBD but traverses from objects to subjects, not from subjects to objects;</para>
+          </listitem>
+          <listitem>
+            <para>In addition, user may write his/her own "postporocessing" function that will get the result of
+    describe, lists of "good" and "bad" graphs, name of storage, options and alter it in any way he/she wishes.
+    The notation is e.g. define sql:describe-mode "SPO+XYZ", meaning SPO describe and call
+    DB.DBA.SPARQL_DESC_POSTPROC_XYZ on top of it. See below example usage.</para>
+          </listitem>
+        </itemizedlist>
+        <para>If define <emphasis>sql:describe-mode "xxx"</emphasis>
+
+   is specified then the generated SQL code will use
+  the procedures named:
+  </para>
+        <programlisting>
+DB.DBA.SPARQL_DESC_DICT_xxx (in subj_dict any, in consts any, in graphs
+any, in storage_name any, in options any)
+</programlisting>
+        <para>and
+  </para>
+        <programlisting>
+DB.DBA.SPARQL_DESC_DICT_xxx_PHYSICAL (in subj_dict any, in consts any,
+in graphs any, in storage_name any, in options any)
+</programlisting>
+        <para>In a new blank database, only two such pairs of procedures are created.
+Procedures <emphasis>DB.DBA.SPARQL_DESC_DICT_SPO</emphasis>
+
+   and <emphasis>DB.DBA.SPARQL_DESC_DICT_SPO_PHYSICAL</emphasis>
+
+are for <emphasis>sql:describe-mode "SPO"</emphasis>
+
+  . This pair of procedures
+searches for all triples where the input IRIs are used as subjects; they are faster than the default
+routine which searches for all triples where the input IRIs are used as subjects or objects.
+Similarly, <emphasis>DB.DBA.SPARQL_DESC_DICT_CBD</emphasis>
+
+   and <emphasis>DB.DBA.SPARQL_DESC_DICT_CBD_PHYSICAL</emphasis>
+
+are for <emphasis>sql:describe-mode "CBD"</emphasis>
+
+  . CBD stands for Concise Bounded Description of given subject
+(i.e., SPO + CBD of each blank node object found by SPO, recursively).
+  </para>
+        <para>In each pair, both procedures have the same semantics but the second one is used if and
+only if the SPARQL compiler can prove that all subjects to process are
+from physical storage <emphasis>(DB.DBA.RDF_QUAD)</emphasis>
+
+  . Thus the second procedure
+will not search for subjects in Linked Data Views.
+  </para>
+        <para>Each procedure should return a dictionary with triples as keys and
+integer 1 as values. So the dictionary is filled by calls like:
+  </para>
+        <programlisting>
+dict_put (resulting_dict,
+          vector (subj_iri_id, pred_iri_id, obj_iri_id_or_rdf_box),
+          1);
+</programlisting>
+        <para>Procedure arguments are as follows:
+  </para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <emphasis>subj_dict</emphasis>
+            </para>
+            <para> - a dictionary whose keys are IRI IDs and maybe values of
+other types, esp. RDF boxes. Keys are subjects to be described, so
+values other than IRI IDs should usually be ignored. Values should be
+ignored.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>consts</emphasis>
+            </para>
+            <para> - a vector of IRI IDs and values of other types. The items contained in the vector
+are subjects to be described, as with the keys of subj_dict.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>graphs</emphasis>
+            </para>
+            <para> - a vector of IRI IDs of graphs that can be used for DESCRIBE. The
+vector may contain garbage, like in the two previous cases. A NULL can be
+passed instead of a vector indicating that the source graphs are not specified
+in the source query.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>storage_name</emphasis>
+            </para>
+            <para> -  the value of "define input:storage" from the original
+SPARQL query, NULL if missing.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>options</emphasis>
+            </para>
+            <para> - reserved for future use and can be ignored.</para>
+          </listitem>
+        </itemizedlist>
+        <para>One should grant execute permission on both procedures to SPARQL_SELECT before referring to them in SPARQL.</para>
+        <section xml:id="rdfsqlfromsparqldescribeex">
+          <title>SPARQL DESCRIBE Examples</title>
+          <para>Assume the following statements are executed:</para>
+          <programlisting>
+__rdf_set_bnode_t_treshold();
+SET blobs ON;
+SET echo ON;
+
+SPARQL PREFIX xmp: &lt;http://example.com/xmp/&gt;
+CLEAR GRAPH xmp:good1;
+
+SPARQL PREFIX xmp: &lt;http://example.com/xmp/&gt;
+CLEAR GRAPH xmp:good2;
+
+SPARQL PREFIX xmp: &lt;http://example.com/xmp/&gt;
+CLEAR GRAPH xmp:bad1;
+
+SPARQL PREFIX xmp: &lt;http://example.com/xmp/&gt;
+CLEAR GRAPH xmp:bad2;
+
+SPARQL PREFIX xmp: &lt;http://example.com/xmp/&gt;
+INSERT IN xmp:good1
+  {
+    xmp:Top1 xmp:item xmp:TheSubject .
+    xmp:TheSubject xmp:details
+            xmp:ChildObject ,
+            ( xmp:car xmp:cadr xmp:caddr ) .
+  };
+
+SPARQL PREFIX xmp: &lt;http://example.com/xmp/&gt;
+INSERT IN xmp:good2
+  {
+    xmp:Top2 xmp:items [ rdf:_1 xmp:TheSubject ; rdf:_2 xmp:OtherSubject ] .
+  };
+</programlisting>
+          <section xml:id="rdfsqlfromsparqldescribeexcbd">
+            <title>Examples SPARQL DESCRIBE -- No Option</title>
+            <programlisting>
+SPARQL
+DEFINE output:format "NICE_TTL"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2;
+
+fmtaggret-NICE_TTL
+LONG VARCHAR
+ @prefix ns0: &lt;http://example.com/xmp/&gt; .
+ @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+ ns0:Top1 ns0:item ns0:TheSubject .
+ ns0:TheSubject ns0:details ns0:ChildObject , [ ] .
+ _:vb78520012 rdf:_1 ns0:TheSubject .
+
+</programlisting>
+          </section>
+          <section xml:id="rdfsqlfromsparqldescribeexspo">
+            <title>Examples SPARQL DESCRIBE Option "SPO"</title>
+            <para>
+              <emphasis>Example 1</emphasis>
+            </para>
+            <programlisting>
+SPARQL
+DEFINE output:format "NICE_TTL"
+DEFINE sql:describe-mode "SPO"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2;
+
+fmtaggret-NICE_TTL
+LONG VARCHAR
+ @prefix ns0: &lt;http://example.com/xmp/&gt; .
+ ns0:TheSubject ns0:details ns0:ChildObject , [ ] .
+</programlisting>
+            <para>
+              <emphasis>Example 2</emphasis>
+            </para>
+            <programlisting>
+SQL&gt;set blobs on;
+SQL&gt;SPARQL
+define sql:describe-mode "SPO"
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+
+DESCRIBE ?forum
+FROM &lt;http://demo.openlinksw.com/dataspace&gt;
+WHERE {
+  ?forum rdf:type sioct:Weblog .
+}
+LIMIT 1;
+
+callret-0
+LONG VARCHAR
+_______________________________________________________________________________
+
+&lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://rdfs.org/sioc/types#Weblog&gt; ,
+                &lt;http://atomowl.org/ontologies/atomrdf#Feed&gt; ;
+        &lt;http://rdfs.org/sioc/ns#description&gt; "XML templates demo's Weblog" ;
+        &lt;http://rdfs.org/sioc/ns#has_space&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/space#this&gt; ;
+        &lt;http://rdfs.org/sioc/ns#container_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/20&gt; ,
+                &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/21&gt; ;
+        &lt;http://rdfs.org/sioc/ns#id&gt; "bloguser_blog" ;
+        &lt;http://xmlns.com/foaf/0.1/maker&gt; &lt;http://demo.openlinksw.com/dataspace/person/bloguser#this&gt; ;
+        &lt;http://rdfs.org/sioc/ns#link&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; ;
+        &lt;http://atomowl.org/ontologies/atomrdf#entry&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/20&gt; ,
+                &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/21&gt; ;
+        &lt;http://atomowl.org/ontologies/atomrdf#contains&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/21&gt; ,
+                &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/20&gt; ;
+        &lt;http://atomowl.org/ontologies/atomrdf#title&gt; "bloguser_blog" ;
+        &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; "XML templates demo's Weblog" ;
+        &lt;http://rdfs.org/sioc/ns#scope_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog#owner&gt; ;
+        &lt;http://rdfs.org/sioc/ns#has_owner&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser#this&gt; ;
+        &lt;http://www.w3.org/2000/01/rdf-schema#isDefinedBy&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/sioc.rdf&gt; ;
+        &lt;http://purl.org/dc/elements/1.1/identifier&gt; "62"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; ;
+        &lt;http://rdfs.org/sioc/services#has_service&gt; &lt;http://demo.openlinksw.com/RPC2&gt; ,
+                &lt;http://demo.openlinksw.com/mt-tb&gt; ,
+                &lt;http://demo.openlinksw.com/Atom/bloguser-blog-0&gt; ,
+                &lt;http://demo.openlinksw.com/GData/bloguser-blog-0&gt; .
+&lt;http://demo.openlinksw.com/RPC2&gt; &lt;http://rdfs.org/sioc/services#service_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/mt-tb&gt; &lt;http://rdfs.org/sioc/services#service_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog#owner&gt; &lt;http://rdfs.org/sioc/ns#has_scope&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/20&gt; &lt;http://rdfs.org/sioc/ns#has_container&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; ;
+        &lt;http://atomowl.org/ontologies/atomrdf#source&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog/21&gt; &lt;http://rdfs.org/sioc/ns#has_container&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; ;
+        &lt;http://atomowl.org/ontologies/atomrdf#source&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/dataspace/bloguser#this&gt; &lt;http://rdfs.org/sioc/ns#owner_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/dataspace/bloguser/space#this&gt; &lt;http://rdfs.org/sioc/ns#space_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/dataspace/person/bloguser#this&gt; &lt;http://xmlns.com/foaf/0.1/made&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/Atom/bloguser-blog-0&gt; &lt;http://rdfs.org/sioc/services#service_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+&lt;http://demo.openlinksw.com/GData/bloguser-blog-0&gt; &lt;http://rdfs.org/sioc/services#service_of&gt; &lt;http://demo.openlinksw.com/dataspace/bloguser/weblog/bloguser_blog&gt; .
+
+1 Rows. -- 240 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsqlfromsparqldescribeexcbd_01">
+            <title>Examples SPARQL DESCRIBE -- Option "CBD"</title>
+            <para>
+              <emphasis>Example 1</emphasis>
+            </para>
+            <programlisting>
+SPARQL
+DEFINE output:format "NICE_TTL"
+DEFINE sql:describe-mode "CBD"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2;
+
+Query result:
+fmtaggret-NICE_TTL
+LONG VARCHAR
+ @prefix ns0: &lt;http://example.com/xmp/&gt; .
+ @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+ ns0:TheSubject ns0:details ns0:ChildObject , ( ns0:car ns0:cadr ns0:caddr ) .
+</programlisting>
+            <para>
+              <emphasis>Example 2</emphasis>
+            </para>
+            <programlisting>
+SPARQL
+DEFINE output:format "NICE_TTL"
+DEFINE sql:describe-mode "CBD"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject  xmp:good1 from xmp:good2;
+</programlisting>
+            <para>
+              <emphasis>Example 2</emphasis>
+            </para>
+            <programlisting>
+SQL&gt;SPARQL
+DEFINE sql:describe-mode "CBD"
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+DESCRIBE ?friend
+WHERE
+  {
+    ?s foaf:knows ?friend  .
+    ?friend foaf:nick ?nick.
+    filter (?s=&lt;http://www.advogato.org/person/rmorgan/foaf.rdf#me&gt;)
+}
+;
+
+@prefix rdf:	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix ns1:	&lt;http://www.advogato.org/person/chrisd/foaf.rdf#&gt; .
+@prefix foaf:	&lt;http://xmlns.com/foaf/0.1/&gt; .
+ns1:me	rdf:type	foaf:Person .
+@prefix rdfs:	&lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+ns1:me	rdfs:seeAlso	&lt;http://www.advogato.org/person/chrisd/foaf.rdf&gt; ;
+	foaf:name	"Chris DiBona" ;
+	foaf:nick	"chrisd" ;
+	foaf:homepage	&lt;http://www.dibona.com&gt; ;
+	foaf:mbox_sha1sum	"e8231d19ac0d11ccbdc565485054461e5d71f0d3" .
+@prefix ns4:	&lt;http://www.advogato.org/person/schoen/foaf.rdf#&gt; .
+ns1:me	foaf:knows	ns4:me .
+@prefix ns5:	&lt;http://www.advogato.org/person/jpick/foaf.rdf#&gt; .
+ns1:me	foaf:knows	ns5:me .
+@prefix ns6:	&lt;http://www.advogato.org/person/benson/foaf.rdf#&gt; .
+ns1:me	foaf:knows	ns6:me .
+@prefix ns7:	&lt;http://www.advogato.org/person/conrad/foaf.rdf#&gt; .
+ns1:me	foaf:knows	ns7:me .
+@prefix ns8:	&lt;http://www.advogato.org/person/starshine/foaf.rdf#&gt; .
+ns1:me	foaf:knows	ns8:me .
+@prefix ns9:	&lt;http://www.advogato.org/person/chip/foaf.rdf#&gt; .
+ns1:me	foaf:knows	ns9:me .
+@prefix ns10:	&lt;http://www.advogato.org/person/crackmonkey/foaf.rdf#&gt; .
+.....
+</programlisting>
+          </section>
+          <section xml:id="rdfsqlfromsparqldescribeexobjcbd">
+            <title>Example SPARQL DESCRIBE -- Option "OBJCBD"</title>
+            <para>
+              <emphasis>Example 1</emphasis>
+            </para>
+            <programlisting>
+SPARQL
+DEFINE output:format "NICE_TTL"
+DEFINE sql:describe-mode "OBJCBD"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2;
+
+Query result:
+fmtaggret-NICE_TTL
+LONG VARCHAR
+ @prefix ns0: &lt;http://example.com/xmp/&gt; .
+ @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+ ns0:Top1 ns0:item ns0:TheSubject .
+ ns0:Top2 ns0:items [ rdf:_1 ns0:TheSubject ] .
+</programlisting>
+          </section>
+          <section xml:id="rdfsqlfromsparqldescribeexcf">
+            <title>Example SPARQL DESCRIBE -- Custom "Post Porocessing" function</title>
+            <programlisting>
+create function DB.DBA.SPARQL_DESC_POSTPROC_SOURCES (inout triples any array, in good_graphs any array, in bad_graphs any array, in storage varchar, in opts any array)
+{
+  declare triple, val, so_dict, so_lst, addon_dict, dlst any;
+  dbg_obj_princ ('DB.DBA.SPARQL_DESC_POSTPROC_SOURCES (', triples, good_graphs, bad_graphs, storage, opts, ')');
+  so_dict := dict_new (dict_size (triples));
+  dict_iter_rewind (triples);
+  while (dict_iter_next (triples, triple, val))
+    {
+      declare v any;
+      v := triple[0];
+      dict_put (so_dict, iri_to_id_nosignal (v), 1);
+      v := triple[2];
+      if (isiri_id (v) or (isstring (v) and box_tag (v) = 1))
+        dict_put (so_dict, iri_to_id_nosignal (v), 1);
+    }
+  so_lst := dict_list_keys (so_dict, 1);
+  foreach (any s_itm in so_lst) do
+    {
+      for (sparql select distinct ?g where { graph ?g {{ `iri(?:s_itm)` ?p ?o } union { ?s ?p  `iri(?:s_itm)` }} filter (&lt;LONG::bif:position&gt;(?g, ?:good_graphs))}) do
+        dict_put (triples, vector (s_itm, iri_to_id('Source'), "g"), 1);
+    }
+  return triples;
+}
+;
+
+SPARQL
+DEFINE output:format "NICE_TTL"
+DEFINE sql:describe-mode "CBD+SOURCES"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2;
+
+SELECT sparql_to_sql_text ('
+DEFINE output:format "NICE_TTL"
+DEFINE sql:describe-mode "CBD+SOURCES"
+PREFIX xmp: &lt;http://example.com/xmp/&gt;
+DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2') as x long varchar;
+</programlisting>
+          </section>
+        </section>
+      </section>

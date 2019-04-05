@@ -1,0 +1,1474 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="vdbenginesyb">
+      <info>
+        <title>Using Microsoft Entity Frameworks to Access Sybase Schema Objects with Virtuoso</title>
+        <abstract>
+          <para>This section details the steps required to provide Microsoft Entity Framework access to Sybase
+Schema Objects using the OpenLink Virtuoso Universal Server. This is achieved by linking the required Sybase
+Schema objects into Virtuoso using its built in Virtual Database engine, and then using the Virtuoso ADO.NET
+Entity Framework provider to query the remote Sybase Schema objects linked into the Virtuoso Server.
+      </para>
+        </abstract>
+      </info>
+      <formalpara>
+        <title>Prerequisites</title>
+        <para>The following prerequisites must be in place for this solution to be possible.</para>
+      </formalpara>
+      <formalpara>
+        <title>Sybase DBMS</title>
+        <para>An Sybase DBMS hosting the required Schema Objects needs to be available. In this section
+the <emphasis>Sybase pubs2 sample</emphasis>
+
+   database will be used to demonstrate the process.</para>
+      </formalpara>
+      <para>An Sybase DBMS hosting the required Schema Objects needs to be available. In this section
+the <emphasis>Sybase pubs2 sample</emphasis>
+
+   database will be used to demonstrate the process.</para>
+      <formalpara>
+        <title>ODBC Driver for Sybase</title>
+        <para>An Sybase ODBC Driver is required for Linking the Sybase Schema Objects into the Virtuoso Server.
+The OpenLink <emphasis>ODBC Driver for Sybase</emphasis>
+
+   will be used in this section, for which a
+functional ODBC Data source name of "syb15ma" will be assumed to exist on the machine hosting the
+Virtuoso Server.</para>
+      </formalpara>
+      <para>An Sybase ODBC Driver is required for Linking the Sybase Schema Objects into the Virtuoso Server.
+The OpenLink <emphasis>ODBC Driver for Sybase</emphasis>
+
+   will be used in this section, for which a
+functional ODBC Data source name of "syb15ma" will be assumed to exist on the machine hosting the
+Virtuoso Server.</para>
+      <formalpara>
+        <title>Virtuoso Universal Server</title>
+        <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      </formalpara>
+      <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      <formalpara>
+        <title>Microsoft Visual Studio 2008 SP1</title>
+        <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      </formalpara>
+      <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      <bridgehead>Tasks</bridgehead>
+      <formalpara>
+        <title>Ensure Sybase Primary Keys (PKs) are not nullable</title>
+        <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables
+to be used are defined as not nullable in the Sybase database schema before attempting to generate an EDM.
+In the case of the Sybase pubs2 database all tables are not nullable, thus this should not be
+an issue in this case.
+    </para>
+      </formalpara>
+      <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables
+to be used are defined as not nullable in the Sybase database schema before attempting to generate an EDM.
+In the case of the Sybase pubs2 database all tables are not nullable, thus this should not be
+an issue in this case.
+    </para>
+      <section xml:id="vdbenginesybinst">
+        <title>Install and configure OpenLink ODBC Driver for Sybase</title>
+        <para>The Virtuoso Virtual Database engine uses ODBC as the connectivity mechanism for linking
+remote database objects into its local schema. Thus an Sybase ODBC Driver must be available with a
+suitably configured DSN for connecting to the target database. The OpenLink ODBC Drivers for Sybase
+have been used in this section, although in theory any Sybase ODBC Driver can be used.</para>
+        <para>Installation instructions for the OpenLink ODBC Driver for Sybase are available from:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC">Product
+Installation &amp; Basic Configuration (ODBC)</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="vdbenginesybconfvsr">
+        <title>Install and configure OpenLink Virtuoso Universal Server</title>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link linkend="virtclientrefinstallandconfigvirt">Install and configure OpenLink Virtuoso Universal Server</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="vdbenginesyblink">
+        <title>Linking Sybase tables into OpenLink Virtuoso</title>
+        <orderedlist>
+          <listitem>
+            <para>Start the Virtuoso Web User Interface
+    </para>
+            <figure xml:id="sora1" floatstyle="1">
+              <title>Start</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Conductor" link in the Left Frame and Login as the "dba" user.
+    </para>
+            <figure xml:id="sora2" floatstyle="1">
+              <title>Conductor</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Databases" -&gt; "External Data Source" -&gt; "Data Sources" tab menu items
+    </para>
+            <figure xml:id="sora3" floatstyle="1">
+              <title>Databases</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Connect" button for the "syb15ma" Sybase DSN.
+    </para>
+            <figure xml:id="sora4" floatstyle="1">
+              <title>Connect</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On successful connection Select the "Link Objects" button to obtain a list of available tables
+    </para>
+            <figure xml:id="sora5" floatstyle="1">
+              <title>Link Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select all the tables that are part of the "pubs2" catalog.
+    </para>
+            <figure xml:id="sora6" floatstyle="1">
+              <title>Select tables</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Change the Catalog for each table to be "P2" using the "Set All" button.
+    </para>
+            <figure xml:id="sora7" floatstyle="1">
+              <title>Catalog</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>All the catalog names are changed to be "P2".
+    </para>
+            <figure xml:id="sora8" floatstyle="1">
+              <title>catalog names</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Link" button to link the selected tables into Virtuoso
+    </para>
+            <figure xml:id="sora9" floatstyle="1">
+              <title>"Link" button</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On completion of the Link process the tables will be displayed in the "External Linked Objects" tab.
+    </para>
+            <figure xml:id="sora10" floatstyle="1">
+              <title>Completion</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The tables can also be viewed as part of the Virtuoso "SQL Schema Objects" under the "P2" catalog name.
+    </para>
+            <figure xml:id="sora11" floatstyle="1">
+              <title>view tables</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sora11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>The Link process is now complete enabling the tables to be queried as if part of the Virtuoso Schema.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="vdbenginesybcrvs">
+        <title>Creating EDM in Visual Studio 2008</title>
+        <para>The following steps can be used to create an Entity Data Model (EDM) for the Sybase pubs2 database:</para>
+        <orderedlist>
+          <listitem>
+            <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+            <figure xml:id="esora1" floatstyle="1">
+              <title>Visual Studio 2008 SP1 IDE</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create a </para>
+            <para>
+              <emphasis>Web Application</emphasis>
+            </para>
+            <para> project by going to the </para>
+            <para>
+              <emphasis>File</emphasis>
+            </para>
+            <para>
+menu in Visual Studio and choosing </para>
+            <para>
+              <emphasis>New Project</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="epro2_10" floatstyle="1">
+              <title>Web Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/epro2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>When the New Project window appears, choose either </para>
+            <para>
+              <emphasis>Visual Basic</emphasis>
+            </para>
+            <para> or
+</para>
+            <para>
+              <emphasis>Visual C#</emphasis>
+            </para>
+            <para> as your programming language.</para>
+          </listitem>
+          <listitem>
+            <para>Within the language category, click on </para>
+            <para>
+              <emphasis>Web</emphasis>
+            </para>
+            <para> and select
+</para>
+            <para>
+              <emphasis>ASP.NET Web Application</emphasis>
+            </para>
+            <para> from the right-hand panel. </para>
+          </listitem>
+          <listitem>
+            <para>Choose a name for the project, for example </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>, and
+click </para>
+            <para>
+              <emphasis>OK</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="esora2" floatstyle="1">
+              <title>name for the project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>This will create a new project called </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="esora3" floatstyle="1">
+              <title>create a new project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the Project -&gt; Add New Item menu option.
+    </para>
+            <figure xml:id="esora4" floatstyle="1">
+              <title>VirtuosoDataService</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Add New Item</emphasis>
+            </para>
+            <para> dialog will appear. Choose the
+</para>
+            <para>
+              <emphasis>ADO.NET Entity Data Model</emphasis>
+            </para>
+            <para> template. Give it the name </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para>
+and click </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> to start the creation of the ADO.Net Entity Data Model.
+    </para>
+            <figure xml:id="esora5" floatstyle="1">
+              <title>Add New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose Model Contents</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>Generate from Database</emphasis>
+            </para>
+            <para>
+model type and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="esora6" floatstyle="1">
+              <title>Choose Model Contents</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose your Data Connection</emphasis>
+            </para>
+            <para> page, select the </para>
+            <para>
+              <emphasis>New Connection button</emphasis>
+            </para>
+            <figure xml:id="esora7" floatstyle="1">
+              <title>Entity Data Model Wizard</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose Data Source</emphasis>
+            </para>
+            <para> dialog, select the OpenLink
+</para>
+            <para>
+              <emphasis>Virtuoso Data Source</emphasis>
+            </para>
+            <para> from the list and click </para>
+            <para>
+              <emphasis>Continue</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="esora8" floatstyle="1">
+              <title>Choose Data Source</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Add Connection</emphasis>
+            </para>
+            <para> dialog, specify the
+</para>
+            <para>
+              <emphasis>hostname, portno, username and password</emphasis>
+            </para>
+            <para> for the target Virtuoso Server
+and check the Save Password check box.
+    </para>
+            <figure xml:id="esora9" floatstyle="1">
+              <title>Connection Properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the </para>
+            <para>
+              <emphasis>Select Database From List</emphasis>
+            </para>
+            <para> radio button and choose the
+</para>
+            <para>
+              <emphasis>SAMPLE</emphasis>
+            </para>
+            <para> database from the drop down list.
+    </para>
+            <figure xml:id="esora10" floatstyle="1">
+              <title>Add connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/esora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Press the </para>
+            <para>
+              <emphasis>Test Connection</emphasis>
+            </para>
+            <para> dialog to verify that the database is accessible.
+    </para>
+            <figure xml:id="esora11" floatstyle="1">
+              <title>Test Connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Set the </para>
+            <para>
+              <emphasis>entity connect string</emphasis>
+            </para>
+            <para> name to
+</para>
+            <para>
+              <emphasis>VirtuosoEntities</emphasis>
+            </para>
+            <para> (note this name as it is required in the section on creating and
+ADO.Net Data Service) and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="esora12" floatstyle="1">
+              <title>entity connect string</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/esora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose your Database Objects</emphasis>
+            </para>
+            <para> page select the
+</para>
+            <para>
+              <emphasis>Tables</emphasis>
+            </para>
+            <para> check box to select all tables in the P2 catalog for addition to the
+Entity Data Model. Set the </para>
+            <para>
+              <emphasis>Model Namespace</emphasis>
+            </para>
+            <para> to </para>
+            <para>
+              <emphasis>VirtuosoModel</emphasis>
+            </para>
+            <para> and
+click </para>
+            <para>
+              <emphasis>Finish</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="esora13" floatstyle="1">
+              <title>Database Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/esora13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para> EDM will be created with the tables and relationships
+displayed in the Visual Studio IDE
+    </para>
+            <figure xml:id="esora14" floatstyle="1">
+              <title>Virtuoso.edmx</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/esora14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>Creation for the Entity Data Model for the Sybase pubs2 database is now complete.</para>
+      </section>
+      <section xml:id="vdbenginesybinstmedm">
+        <title>Manually creating EDM Associations (FKs) for the Sybase pubs2 database</title>
+        <para>The following steps will detail what is required to manually create "Associations" in your Entity Data Model.</para>
+        <para>You will need to determine where these associations exist and their multiplicity (one-to-one,
+one-to-many, etc.) before commencing with the following steps.</para>
+        <para><emphasis>Note:</emphasis>
+
+  These steps will need to be repeated for each association.</para>
+        <orderedlist>
+          <listitem>
+            <para>The first Association will deal with is the relationship between publishers and titles,
+identified by the presence of the scalar property pub_id in both entities. This is a one-to-many
+relationship, as a Customer may have any number of Invoices.
+    </para>
+            <figure xml:id="spro1" floatstyle="1">
+              <title>Association</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>This is a one to many relationship insomuch that publishers may have zero or many titles.</para>
+          </listitem>
+          <listitem>
+            <para>To add the Association, right click on the publishers entity then Add -&gt; Association.
+    </para>
+            <figure xml:id="spro2" floatstyle="1">
+              <title>add the Association</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You will now see the Add Association dialog.
+    </para>
+            <figure xml:id="spro3" floatstyle="1">
+              <title>Add Association dialog</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>For this association the only thing that needs changing is the name of the Navigation Property from publishers to publisher on the publishers end of the association.
+    </para>
+            <para>This more correctly reflects the multiplicity of the association such that a publisher is associated with zero or many titles (plural).</para>
+            <figure xml:id="spro4" floatstyle="1">
+              <title>Navigation Property name</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Once you then hit OK the diagram is refreshed to include the newly created association.
+    </para>
+            <figure xml:id="spro5" floatstyle="1">
+              <title>diagram</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You now need to edit the mappings associated with the newly created association,
+so right-click the association on the diagram, and select Table Mapping to display the Mapping Details pane.
+    </para>
+            <figure xml:id="spro6" floatstyle="1">
+              <title>Table Mapping</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click that line reading &lt;Add a Table or View&gt; to reveal a drop down list of all entities.
+    </para>
+            <figure xml:id="spro7" floatstyle="1">
+              <title>Add a Table or View</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Here you need to select the entity on the right/far side of the association (the entity where
+the foreign key exists). In this example, it is the titles  entity.
+    </para>
+            <figure xml:id="spro8" floatstyle="1">
+              <title>Entity</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The Mapping Details pane now refreshes to display both ends of the association, requiring that
+you provide relevant target store data types in the Column column for the key fields, as depicted here.
+    </para>
+            <figure xml:id="spro9" floatstyle="1">
+              <title>Mapping Details</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Once the mapping is complete, you can build the project using Build -&gt; Build Solution. NOTE:
+It is worthwhile building as each association is made, since the error messages can be a little confusing.
+    </para>
+            <figure xml:id="spro10" floatstyle="1">
+              <title>Build the project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>This should result in the following error:
+    </para>
+            <figure xml:id="spro11" floatstyle="1">
+              <title>Error</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>It seems that this error is attempting to say that there are two mappings which map to the same target source column.</para>
+            <para>In this case it is the target column titles.pub_id.</para>
+            <para>
+That is, the scalar property pub_id and the Navigation Property publishers in the Invoice entity, both map to the Sybase table column titles.pub_id - which is not supported</para>
+            <figure xml:id="spro12" floatstyle="1">
+              <title>Error</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The solution is simple! Simply delete the scalar property titles.pub_id since its purpose is only
+to hold data representing a relationship/association (it is a Foreign Key) which has already been represented
+by the newly created association and resulting Navigation Property publishers.
+    </para>
+            <para>Right click on titles.pub_id then Delete.</para>
+            <figure xml:id="spro13" floatstyle="1">
+              <title>delete the mapping</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The model diagram will refresh to reflect this change.
+    </para>
+            <figure xml:id="spro14" floatstyle="1">
+              <title>Model Diagram</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Build the project, again, using Build -&gt; Build Solution.
+    </para>
+            <figure xml:id="spro15" floatstyle="1">
+              <title>Build project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro15.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The project should now be fine.
+    </para>
+            <figure xml:id="spro16" floatstyle="1">
+              <title>Build Project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/spro16.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>You will need to repeat these steps for each association until you have a completed
+Entity Data Model.</para>
+        <figure xml:id="spro17" floatstyle="1">
+          <title>Entity Data Model</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/spro17.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+      <section xml:id="vdbenginesybuedm">
+        <title>Using EDM to create Entity Framework based applications</title>
+        <para>Now that a Microsoft Entity Data Model has been created for the Sybase pubs2 database,
+Entity Framework applications can be created to make use of it.</para>
+        <section xml:id="vdbenginesybuedmentf">
+          <title>Entity Frameworks based ADO.NET Data Service</title>
+          <para>An ADO.Net Data Service for the Sybase tables can be created using the Entity Data Model
+created in the <link linkend="vdbenginesybcrvs">Creating EDM in Visual Studio 2008 section</link>
+
+  .</para>
+          <orderedlist>
+            <listitem>
+              <para>Open the </para>
+              <para>
+                <emphasis>VirtuosoDataService</emphasis>
+              </para>
+              <para> project created in the 
+              <link linkend="vdbenginesybcrvs">Creating EDM in Visual Studio 2008 section</link>
+              .
+  </para>
+            </listitem>
+            <listitem>
+              <para>Select the Project -&gt; Add New Item menu option.
+    </para>
+              <figure xml:id="fsora1" floatstyle="1">
+                <title>VirtuosoDataService</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/einf4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The </para>
+              <para>
+                <emphasis>Add New Item</emphasis>
+              </para>
+              <para> dialog will appear. Choose the
+</para>
+              <para>
+                <emphasis>ADO.NET Data Service template</emphasis>
+              </para>
+              <para>. Give it the name </para>
+              <para>
+                <emphasis>Virtuoso.svc</emphasis>
+              </para>
+              <para>, and
+click </para>
+              <para>
+                <emphasis>Add</emphasis>
+              </para>
+              <para> to create the ADO.Net Data Service.
+    </para>
+              <figure xml:id="fsora2" floatstyle="1">
+                <title>Add New Item</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/fora2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the newly created </para>
+              <para>
+                <emphasis>Virtuoso.svc.cs</emphasis>
+              </para>
+              <para> Data Service file, add the data source
+class name of </para>
+              <para>
+                <emphasis>VirtuosoEntities</emphasis>
+              </para>
+              <para> (note this is the name set in the
+Creating EDM in Visual Studio 2008 section) as the </para>
+              <para>
+                <emphasis>DataService</emphasis>
+              </para>
+              <para> name. Enable the access to the Data Service by adding the entry
+</para>
+              <para>
+                <emphasis>config.SetEntitySetAccessRule("*", EntitySetRights.All);</emphasis>
+              </para>
+              <para> in the </para>
+              <para>
+                <emphasis>InitializeService</emphasis>
+              </para>
+              <para> method.
+</para>
+              <programlisting>
+// C#
+
+using System;
+using System.Web;
+using System.Collections.Generic;
+using System.ServiceModel.Web;
+using System.Linq;
+using System.Data.Services;
+
+namespace SimpleDataService
+{
+    public class Northwind : DataService&lt;VirtuosoDemoEntities&gt;
+    {
+        public static void InitializeService(IDataServiceConfiguration  config)
+        {
+            config.SetEntitySetAccessRule("*", EntitySetRights.All);
+        }
+    }
+}
+</programlisting>
+              <figure xml:id="fsora3" floatstyle="1">
+                <title>Virtuoso.svc.cs</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/fora3.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To test the Data Service, simply hit </para>
+              <para>
+                <emphasis>Ctrl+F5</emphasis>
+              </para>
+              <para> within Visual Studio.
+This will start the development web server, run the Data Services server inside and load a Web browser
+page displaying the list of available tables/entities for the P2 database catalog.
+    </para>
+              <figure xml:id="fsora4" floatstyle="1">
+                <title>Data Service test</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/fsora4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To access a specific entity instance like the </para>
+              <para>
+                <emphasis>publisher</emphasis>
+              </para>
+              <para> table publisher
+number </para>
+              <para>
+                <emphasis>0736</emphasis>
+              </para>
+              <para> record, use this convention http://host/vdir/Virtuoso.svc/publishers("0736") .
+    </para>
+              <figure xml:id="fsora5" floatstyle="1">
+                <title>publisher</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/fsora5.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>
+            <emphasis>Notes:</emphasis>
+          </para>
+          <orderedlist>
+            <listitem>
+              <para>
+                <emphasis>Important</emphasis>
+              </para>
+              <para> - To view </para>
+              <para>
+                <emphasis>Atom</emphasis>
+              </para>
+              <para> (the default format
+returned by an ADO.NET Data Service) in Internet Explorer, you must first ensure that
+</para>
+              <para>
+                <emphasis>Feed Reading View</emphasis>
+              </para>
+              <para> is turned </para>
+              <para>
+                <emphasis>off</emphasis>
+              </para>
+              <para>. This can be done on the
+</para>
+              <para>
+                <emphasis>Content tab</emphasis>
+              </para>
+              <para> of </para>
+              <para>
+                <emphasis>Tools in Internet Options</emphasis>
+              </para>
+              <para>.</para>
+            </listitem>
+            <listitem>
+              <para>If a Data Services entity instance URI page fails to load you can turn </para>
+              <para>
+                <emphasis>Verbose</emphasis>
+              </para>
+              <para>
+errors on by adding </para>
+              <para>
+                <emphasis>config.UseVerboseErrors = true;</emphasis>
+              </para>
+              <para> in the
+</para>
+              <para>
+                <emphasis>virtuoso.svc.cs InitializeService</emphasis>
+              </para>
+              <para> method to obtain more detailed information from the server as to why the page failed to load:
+</para>
+              <programlisting>
+public static void InitializeService(IDataServiceConfiguration config)
+
+{
+
+config.UseVerboseErrors = true;
+
+config.SetEntitySetAccessRule("*", EntitySetRights.All);
+
+}
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+        <section xml:id="vdbenginesybuedmvs">
+          <title>Visual Studio Windows DataGrid Form Application</title>
+          <para>This section details the steps required to create a simple Visual Studio 2008 Windows Form
+application, with associated DataGridView control for displaying data in selected tables from the target
+database.</para>
+          <orderedlist>
+            <listitem>
+              <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+              <figure xml:id="vsdora1" floatstyle="1">
+                <title>Visual Studio 2008 SP1 IDE</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora1.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Create a </para>
+              <para>
+                <emphasis>Web Application</emphasis>
+              </para>
+              <para> project by going to the </para>
+              <para>
+                <emphasis>File</emphasis>
+              </para>
+              <para>
+menu in Visual Studio and choosing </para>
+              <para>
+                <emphasis>New Project</emphasis>
+              </para>
+              <para>.
+
+</para>
+              <figure xml:id="epro2_11" floatstyle="1">
+                <title>Web Application
+</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/epro2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>When the New Project window appears, choose either </para>
+              <para>
+                <emphasis>Visual Basic</emphasis>
+              </para>
+              <para> or
+</para>
+              <para>
+                <emphasis>Visual C#</emphasis>
+              </para>
+              <para> as your programming language.</para>
+            </listitem>
+            <listitem>
+              <para>Within the language category, click on </para>
+              <para>
+                <emphasis>Windows</emphasis>
+              </para>
+              <para> and select
+</para>
+              <para>
+                <emphasis>Windows Form Application</emphasis>
+              </para>
+              <para> from the right-hand panel.</para>
+            </listitem>
+            <listitem>
+              <para>Choose a name for the project, for example </para>
+              <para>
+                <emphasis>VirtWindowsFormApplication</emphasis>
+              </para>
+              <para>,
+and click </para>
+              <para>
+                <emphasis>OK</emphasis>
+              </para>
+              <para>.
+  </para>
+              <figure xml:id="vsdora2" floatstyle="1">
+                <title>Web Application</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Toolbox</emphasis>
+              </para>
+              <para>, expand </para>
+              <para>
+                <emphasis>Data Controls</emphasis>
+              </para>
+              <para>, and drag the
+</para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control onto the form.
+    </para>
+              <figure xml:id="vsdora3" floatstyle="1">
+                <title>Toolbox</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora3.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the little </para>
+              <para>
+                <emphasis>arrow</emphasis>
+              </para>
+              <para> in the top right of the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+This loads the </para>
+              <para>
+                <emphasis>DataGridView Task</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="vsdora4" floatstyle="1">
+                <title>DataGridView Task</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> list box.
+    </para>
+              <figure xml:id="vsdora5" floatstyle="1">
+                <title>Choose Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora5.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Add Project Data Source</emphasis>
+              </para>
+              <para> link to connect to a data source.
+    </para>
+              <figure xml:id="vsdora6" floatstyle="1">
+                <title>Add Project Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora6.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose Data Source Type</emphasis>
+              </para>
+              <para> page select the </para>
+              <para>
+                <emphasis>Database</emphasis>
+              </para>
+              <para> data source type and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="vsdora7" floatstyle="1">
+                <title>Data Source Type</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora7.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose your Data Connection</emphasis>
+              </para>
+              <para> page, select the </para>
+              <para>
+                <emphasis>New Connection</emphasis>
+              </para>
+              <para> button
+    </para>
+              <figure xml:id="vsdora8" floatstyle="1">
+                <title>Data Source Configuration Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora8.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> dialog, select the OpenLink
+</para>
+              <para>
+                <emphasis>Virtuoso Data Source</emphasis>
+              </para>
+              <para> from the list and click </para>
+              <para>
+                <emphasis>Continue</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="vsdora9" floatstyle="1">
+                <title>Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora9.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Add Connection</emphasis>
+              </para>
+              <para> dialog, specify the
+</para>
+              <para>
+                <emphasis>hostname, portno, username and password</emphasis>
+              </para>
+              <para> for the target Virtuoso
+Server and check the Save Password check box.
+    </para>
+              <figure xml:id="vsdora10" floatstyle="1">
+                <title>Connection Properties</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora10.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the </para>
+              <para>
+                <emphasis>Select Database From List</emphasis>
+              </para>
+              <para> radio button and choose the
+</para>
+              <para>
+                <emphasis>P2</emphasis>
+              </para>
+              <para> database from the drop down list.
+    </para>
+              <figure xml:id="vsdora11" floatstyle="1">
+                <title>Add connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/vsdora11.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Press the </para>
+              <para>
+                <emphasis>Test Connection</emphasis>
+              </para>
+              <para> dialog to verify that the database is accessible.
+    </para>
+              <figure xml:id="vsdora12" floatstyle="1">
+                <title>Test Connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora12.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Leave the default connect string </para>
+              <para>
+                <emphasis>P2ConnectionString</emphasis>
+              </para>
+              <para> and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <figure xml:id="vsdora13" floatstyle="1">
+                <title>P2ConnectionString</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/vsdora13.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>From the list of available tables returned for the P2 database, select the </para>
+              <para>
+                <emphasis>authors</emphasis>
+              </para>
+              <para>
+table to be associated with the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+    </para>
+              <figure xml:id="vsdora14" floatstyle="1">
+                <title>P2 database</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/vsdora14.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The columns names of the select table will be displayed in the DataGridView.
+    </para>
+              <figure xml:id="vsdora15" floatstyle="1">
+                <title>DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/vsdora15.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Resize the Form and DataGridView to allow all columns to be visible, if possible.
+    </para>
+              <figure xml:id="vsdora16" floatstyle="1">
+                <title>Resize the Form and DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/vsdora16.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To test the application, simply hit </para>
+              <para>
+                <emphasis>Ctrl+F5</emphasis>
+              </para>
+              <para> within Visual Studio or
+select </para>
+              <para>
+                <emphasis>Start Debugging</emphasis>
+              </para>
+              <para> from the </para>
+              <para>
+                <emphasis>Debug</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="vsdora17" floatstyle="1">
+                <title>Start Debugging</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/mqdora17.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The data from the </para>
+              <para>
+                <emphasis>authors</emphasis>
+              </para>
+              <para> table will be displayed in the </para>
+              <para>
+                <emphasis>DataGrid</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="vsdora18" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/vsdora18.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>The task is now complete.</para>
+        </section>
+      </section>
+    </section>

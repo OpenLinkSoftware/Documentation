@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="clusteroperation">
+      <info>
+        <title>Virtuoso Cluster Operation</title>
+        <abstract>
+          <para>This chapter describes setting up and operating Virtuoso on a cluster of computers. The section on Virtuoso cluster
+  	programming documents the SQL extensions specific to cluster application development.</para>
+          <para>These sections apply to Virtuoso as of version 6.0.</para>
+          <para>Clustering primarily offers greatly increased scalability for large databases without requiring application changes.
+  	The database is divided over a number of servers, of which all provide transparent access to the same data.</para>
+        </abstract>
+      </info>
+      <!-- ======================================== -->
+
+      <section xml:id="clusteroperationgeneral">
+        <title>General</title>
+        <para>Virtuoso can be run in cluster mode where one logical database is served by a collection of server processes spread
+    	over a cluster of machines.</para>
+        <para>The cluster's composition is declared in a cluster.ini file which is to be in the starting directory of each of
+    	the servers composing the cluster. This file declares the hosts and listening ports of all processes composing the
+    	cluster and which of these processes is the local process and which the master.</para>
+        <para>A cluster has a single master process which is the only one allowed to run DDL operations and which is responsible
+    	for distributed deadlock resolution. In all other respects, all server processes of the cluster are interchangeable.</para>
+        <para>The set of processes declared in the cluster.ini files is called the physical cluster.</para>
+        <para>Each cluster server process has its own database and log files and is solely responsible for these. All configuration
+    	fields in virtuoso.ini and related files apply to the process whose ini file this is and their meaning is not modified
+    	by clustering.</para>
+        <para>Specifically, the SQL client and HTTP and other listening ports of each process are declared as usual and are used
+    	as usual. A cluster server process has additionally a cluster listening port that is used for cluster communications.
+    	This may not be connected to by anything except other processes of the same physical cluster. The cluster listener ports
+    	of all processes are declared in cluster.ini and all processes must specify the same information.</para>
+        <section xml:id="clusteroperationgeneralclusterinifields">
+          <title>cluster.ini fields</title>
+          <para>The below is a sample cluster.ini file declaring a physical cluster of 4 processes.</para>
+          <programlisting>
+[Cluster]
+Threads = 100
+ThisHost = Host1
+Master = Host1
+ReqBatchSize = 100
+BatchesPerRPC = 4
+BatchBufferBytes = 20000
+LocalOnly = 2
+
+Host1 = box1:2222
+Host2 = box2:2223
+Host3 = box3:2224
+Host4 = box4:2225
+
+Host1-1 = box1-1:12222
+Host2-1 = box2-1:12223
+Host3-1 = box3-1:12224
+Host4-1 = box4-1:12225
+
+</programlisting>
+          <para>The lines Host1 ... Host4 declare the listening ports of each process. The line ThisHost = 1 declares that this
+      	process is Host1, hence cluster listener at box1:2222 box1 - box4 and box1-1 - box4-1 are machine names that must
+      	be resolvable in the local context. IP numbers can also be used. Mentioning a host several times declares additional
+      	interfaces for the host. Any of these interfaces may be used for cluster connection to the Virtuoso server at the
+      	host. Thus Host1 = gives the first interface, Host1-1 the second and so on. This is useful since servers most often
+      	have multiple network interfaces and Virtuoso balances the traffic among these interfaces if multiple interfaces
+      	are provided. Each host will listen at all the host:port numbers mentioned and other hosts will decide which
+      	interface to use based on load.
+      </para>
+          <para>The Threads line gives the maximum number of threads that will be made for serving requests from other hosts of
+      	the cluster. This is in addition to any other threads reserved in any other ini files.
+      </para>
+          <para>The Threads line gives the maximum number of threads that will be made for serving requests from other hosts of
+      	the cluster. This is in addition to any other threads reserved in any other ini files.
+      </para>
+          <para>The other fields should be left at the values shown.</para>
+        </section>
+        <!-- ======================================== -->
+
+      </section>
+      <section xml:id="clusteroperationsetcl">
+        <title>Setting up a Cluster</title>
+        <para>To make a new empty clustered Virtuoso database, set up the individual instances. The processes must be of exactly
+    	the same version, the operating systems, byte orders or word lengths of the participating machines do not have to match.
+    </para>
+        <para>Each individual database is assigned its database files and other configuration by editing its virtuoso.ini file.
+    	No installation besides having the Virtuoso executable and the virtuoso.ini file is needed.
+    </para>
+        <para>If there is a Virtuoso installation on the machine, use the executable from that and set up an empty directory with
+    	the virtuoso.ini file.
+    </para>
+        <para>Once the individual database directories are set up, write the cluster.ini file as shown above. Copy this into each
+    	running directory beside the virtuoso.ini file. Edit each to specify which host the file belongs to. Set ThisHost to
+    	point to the host which the this file belongs. Set Master to point to one of the hosts and make sure each file has the
+    	same master and a distinct ThisHost.
+    </para>
+        <para>Start the server processes. This will initialize the empty databases.</para>
+        <para>Connect to the master host's SQL port with a SQL client to continue. The initial default user and password is dba.
+    	To verify that the cluster nodes can connect to each other, do status (''); twice. The second status should have a line
+    	beginning with Cluster xx nodes.
+    </para>
+      </section>
+      <section xml:id="clusteroperationexdb">
+        <title>Using Clustering with an Existing Database</title>
+        <para>The procedure for converting a single server database into a clustered one will be specified later. For 6.0, there
+    	is no automatic way of doing this.
+    </para>
+        <para>One can take an existing database and convert it to clustered operation by copying the initial database to each node
+    	of the cluster. Set up the database so that each node would run an identical copy. Then make the cluster.ini files.
+    </para>
+        <para>Start the servers. Connect to the master and run the partitioning statements for all keys of all tables that are to
+    	be managed by the cluster.
+    </para>
+        <para>At this point, each database will also hold rows that are not its responsibility, unless of course all tables are
+    	declared as replicated. The rows that are present and do not fall in the partition managed by the host should be deleted.
+    </para>
+        <para>This can be done with a stored procedure to be supplied later</para>
+      </section>
+      <section xml:id="clusteroperationpart">
+        <title>Partitioning</title>
+        <para>All databases in a cluster share precisely the same schema. Any DDL operations take effect on all nodes simultaneously.</para>
+        <para>The tables can be of one of three types:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Partitioned: A row of a partitioned table resides in exactly one partition, according to the values of its
+  	partitioning columns. Each partition is stored at least once in the cluster but may be kept in multiple replicas if so
+  	configured. All indices of a partitioned table must specify partitioning but need not be partitioned in the same way.
+  	The data tables of an application will typically be partitioned.</para>
+          </listitem>
+          <listitem>
+            <para>Replicated: The table and its contents exist in identical form on all nodes. Queries are answered from local data
+  	and updates go to all nodes. This is the case with schema tables, for example but can be used for application tables also.</para>
+          </listitem>
+          <listitem>
+            <para>Local: The table exists on all nodes but each node has purely local content and all queries and updates to the
+  	table refer only to local content. This is the case for some configuration tables with only local scope, such as
+  	specifying web service end points.</para>
+          </listitem>
+        </itemizedlist>
+        <para>Partitioning an index means that different hosts store different parts of the index. For each partitioned index one
+    	or more partitioning columns must be declared. Also each partitioned index is always held in its totality in a
+    	logical cluster. A logical cluster is a subset of the machines composing the physical cluster declared in cluster.ini.
+    	Usually the logical and physical cluster are the same.
+    </para>
+        <para>The logical cluster additionally declares how partitions are to be replicated. It is namely possible to declare that
+    	a specific partition be stored in multiple identical copies.
+    </para>
+        <para>There are two predefined logical clusters: REPLICATED and __ALL. If a table's indices specify the REPLICATED cluster
+    	in their partitioning declaration, the data will be maintained in identical copies on all nodes.
+    </para>
+        <para>The __ALL cluster is the default logical cluster for any partitioned table. Using this, each row will go to exactly
+    	one place, balanced over the set of nodes declared in the cluster.ini file.
+    </para>
+        <para>Basic applications do not need to declare their own cluster since the default one is most often applicable.
+    </para>
+        <section xml:id="clusteroperationcrclst">
+          <title>CREATE CLUSTER Statement</title>
+          <programlisting>
+CREATE CLUSTER &lt;name&gt; DEFAULT &lt;group&gt;[ [,...]
+
+group: GROUP (&lt;host&gt;[,...])
+</programlisting>
+          <para>A logical cluster has a single global name and it consists of one or more host groups.
+Each host group is given a partition of whatever object that is stored in the logical cluster. Each
+host of a host group replicates the partition assigned to this host group.
+      </para>
+          <para>One logical cluster is predefined. It is called replicated and it consists of one
+group which has all the hosts of the physical cluster. The replicated logical cluster is used
+for storing any schema tables. This causes all schema information to be identically stored on
+all nodes of the physical cluster.
+      </para>
+          <para>If a table is created on a clustered Virtuoso and no partitioning is declared, the
+table exists on all nodes with independent content on each. This is generally not desirable since
+the same query will return different data depending on which host runs it.
+      </para>
+          <para>For performance, it is best to replicate any short, seldom changing lookup tables on all hosts.</para>
+          <para>
+            <emphasis>Example</emphasis>
+          </para>
+          <programlisting>
+create cluster C2 default group ("Host1"), group ("Host2"), group ("Host3"), group ("Host4") ;
+</programlisting>
+          <para>This would declare a logical cluster identical to the default __ALL cluster if the
+cluster.ini specified hosts 1 - 4.
+      </para>
+          <para>The REPLICATED cluster could be declared as follows:</para>
+          <programlisting>
+create cluster C3 default group ("Host1", "Host2", "Host3", Host4");
+</programlisting>
+        </section>
+        <section xml:id="clusteroperationaltind">
+          <title>ALTER INDEX and CREATE INDEX Statements and Partitioning</title>
+          <para>The ALTER INDEX statement is used for declaring the partitioning of an index.
+For a non-primary key index, the corresponding CREATE INDEX can also declare the partitioning.
+If one index of a table is partitioned, all indices of the table must be partitioned. If no
+partitioning is declared, the table will exist on all nodes but will have independent content
+on each. Partitioning of a key must be set when the key is empty. Thus, to create a partitioned
+table, first create the table and declare partitioning for its primary key.
+      </para>
+          <para>The name of the primary key index is the same as that of the table.
+If the table has no explicit primary key, it has an implicit one, named after the
+table and having the invisible _IDN column as single key part. This may be used as a partitioning key.
+      </para>
+          <para>If clustering is not enabled, partitioning can still be declared but it will have
+no effect. Thus a single application DDL file can be used for clustered and single process
+versions of the application schema.
+      </para>
+          <programlisting>
+ALTER INDEX &lt;index-name&gt; ON &lt;table-name&gt; PARTITION [CLUSTER &lt;cluster-name&gt;] (&lt;col-spec&gt;[,...])
+
+col-spec : &lt;column-name&gt; &lt;type&gt; [&lt;options&gt;]
+
+type: INT | VARCHAR
+
+options: (&lt;mask&gt;) | (&lt;length&gt;, &lt;mask&gt;)
+</programlisting>
+          <para>The PARTITION declaration may occur at the end of a create index statement. This
+causes the index to be created, partitioned and then filled. Otherwise it would not be possible
+to add indices to non-empty tables.
+      </para>
+          <para>All or part of a partitioning column's value can be used for calculating a index entry
+hash which then determines which host group of the logical cluster gets to store the index entry.
+There are two types of hashing, integer and varchar. Integer applies to integer like types such as
+integer and bigint and iri id and varchar applies to anything else. Floating point columns or decimals
+should not be used for partitioning. Large objects or UDT's cannot be used for partitioning.
+      </para>
+          <para>For an integer partitioning, the mask is a bitmask applied to the number before
+extracting the part that is used for the hash. A mask of 0hexffff00 will use the second and
+third least significant bytes for hashing, thus values 0-255 will hash to the same, values
+256-512 to the same and so on. The value 0hex1000000 will again hash to the same as 0.
+      </para>
+          <para>Having consecutive integers hash to the same will cause them to go to the same host
+group and become physically adjacently which is good for key compression. If no mask is specified
+0hexffff is used, meaning that each consecutive number gets a different hash, based on the low 16
+bits of the number.
+      </para>
+          <para>For a varchar partitioned column, the default is to calculate a hash based on all
+bytes of the string. For purposes of key compression, it may be good to put strings with a common
+prefix in the same partition.
+      </para>
+          <para>The option consists of two integers, the length and the mask. If the length is positive,
+the length first characters are used for the hash. If the string is shorter than length, all characters
+are used. If the length is negative, we take the absolute value of the length and use all bytes of the
+string except the length last ones. If the string is shorter than -length, all the bytes are used.
+A length of -1 means to use all bytes except the last one, a length of 2 means to use the 2
+first characters only.
+      </para>
+          <para>The string's hash value is a large integer. The mask controls how many bits of this hash
+are used for the hash of the index entry.
+      </para>
+          <para>
+            <emphasis>Example</emphasis>
+          </para>
+          <programlisting>
+create table part (id int, code int, str varchar);
+alter index part on part partition (id int (0hexffff00));
+
+create index str on part (str) partition (str varchar (-1));
+-- for the primary key, hash all values differing in the low byte together.
+-- for str, hash all values differing only in the last character together.
+
+create table part_code (code int primary key, description varchar);
+alter index part_code on part_code cluster replicated;
+</programlisting>
+          <para>This declares a lookup table for describing the values of the code column of the part
+table. This is replicated on all nodes of the cluster. Note that no partitioning columns need be
+specified since no matter the partition key the row would end up on all nodes regardless.
+      </para>
+        </section>
+      </section>
+      <section xml:id="clusteroperationtransc">
+        <title>Transactions</title>
+        <para>A Virtuoso cluster is fully transactional and supports the 4 isolation levels identically
+with a single server Virtuoso. Transactions are committed using single to two phase commit as may be
+appropriate and this is transparent to the application program.
+    </para>
+        <para>Distributed deadlocks are detected and one of the deadlocking transactions is killed, just as with a
+    	single process.</para>
+        <para>Transactions are logged on the cluster nodes which perform updates pertaining to the transaction.</para>
+        <para>A transaction has a single owner connection. Each client connection has a distinct transaction. From the application
+    	program's viewpoint there is a single thread per transaction. Any parallelization of queries is transparent.
+    </para>
+        <para>For roll forward recovery, each node is independent. If a transaction is found in the log for which a prepare
+    	was received but no final commit or rollback, the recovering node will ask the owner of the transaction whether the
+    	transaction did commit. Virtuoso server processes can provide this information during roll forward, hence a simultaneous
+    	restart of cluster nodes will not deadlock.
+    </para>
+        <section xml:id="clusteroperationtranscperfm">
+          <title>Performance Considerations</title>
+          <para>A lock wait in a clustered database requires an asynchronous notification to a monitor node. This is done so
+      	that a distributed deadlock can be detected. Thus the overhead of waiting is slightly larger than with a single
+      	process.</para>
+          <para>We recommend that read committed be set as the default isolation since this avoids most waiting. A read
+      	committed transaction will show the last committed state of rows that have exclusive locks and uncommitted
+      	state. This is set as DefaultIsolation = 2.</para>
+          <para>In the parameters section of each virtuoso.ini file.</para>
+        </section>
+        <section xml:id="clusteroperationrowautomode">
+          <title>Row Autocommit Mode</title>
+          <para>Virtuoso has a mode where insert/update/delete statements commit after each row. This is called row autocommit
+      	mode and is useful for bulk operations that need no transactional semantic.</para>
+          <para>The row autocommit mode is set by executing log_enable (2) or log_enable (3), for no logging and logging
+      	respectively. The setting stays in effect until set again or for the duration of the connection. Do not confuse
+      	this with the autocommit mode of SQL client connection.</para>
+          <para>In a clustered database the row autocommit mode is supported but it will commit at longer intervals in order
+      	to save on message latency. Statements are guaranteed to commit at least once, at the end of the statement.</para>
+          <para>A searched update or delete statement in row autocommit mode processes a few thousand keys between commits,
+      	all in a distributed transaction with 2PC. These are liable to deadlock. Since the transaction boundary is not
+      	precisely defined for the application, a row autocommit batch update must be such that one can distinguish between
+      	updated and non-updated if one must restart after a deadlock. This is of course not an issue if updating several
+      	times makes no difference to the application.</para>
+          <para>Naturally, since a row can be deleted only once, the problem does not occur with deletes. Both updates and
+      	deletes in row autocommit mode are guaranteed to keep row integrity, i.e. all index entries of one row will be
+      	in the same transaction.</para>
+          <para>Naturally, since a row can be deleted only once, the problem does not occur with deletes. Both updates and
+      	deletes in row autocommit mode are guaranteed to keep row integrity, i.e. all index entries of one row will be
+      	in the same transaction.</para>
+          <para>A row autocommit insert sends all keys of the row at once and each commit independently. Hence, a checkpoint
+      	may for example cause a situation where one index of a row is in the checkpoint state and the other is not.</para>
+          <para>Thus, a row autocommit insert on a non-empty application table with transactional semantic is not recommended.
+      	This will be useful for bulk loads into empty tables and the like, though.</para>
+        </section>
+      </section>
+      <section xml:id="clusteroperationadmin">
+        <title>Administration</title>
+        <section xml:id="clusteroperationadmclexec">
+          <title>The cl_exec function</title>
+          <para>All administrative operations other than data definition take effect on the node to which they are issued.</para>
+          <programlisting>
+cl_exec (in cmd varchar, in params any := NULL, in is_txn := 0)
+</programlisting>
+          <para>The <link linkend="fn_cl_exec">cl_exec()</link>
+
+   SQL function can be used for executing things on all nodes of a cluster.</para>
+          <para>The cmd is a SQL string. If it contains parameter markers (?), the params array is used for assigning values,
+    	left to right. If is_txn is 1, the cl_exec makes a distributed transaction and does not automatically commit on
+    	locally on each node. Thus <link linkend="fn_cl_exec">cl_exec()</link>
+
+   can be used as part of a containing distributed transaction.</para>
+          <para>
+            <emphasis>Example</emphasis>
+          </para>
+          <programlisting>
+cl_exec ('shutdown')
+--will shut all nodes.
+
+cl_exec ('dbg_obj_print (?)', vector ('hello'));
+--will print hello to the standard output of all the processes of the cluster.
+</programlisting>
+          <para>Any recovery, integrity checking, crash dump or similar can be done node by node as with single processes.</para>
+          <tip>
+            <title>See Also:</title>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>
+                  <link linkend="clusterstcnf">Cluster Installation and Config</link>
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  <link linkend="clusterstcnfbackuprestore">Backup and Restore Example</link>
+                </para>
+              </listitem>
+            </itemizedlist>
+          </tip>
+        </section>
+        <section xml:id="clusteroperationadminstdispl">
+          <title>Status Display</title>
+          <para>The status () function has a cluster line right below the database version information. This line shows cluster
+      	event counts and statistics between the present and previous calls to status. Calling status ('cluster') will show
+      	this line only. Calling status ('cluster_d') shows this line and below it the same line with data on each individual
+      	host in the cluster.
+      </para>
+          <para>If cluster nodes are off-line, the nodes concerned are mentioned above the cluster status line.
+      </para>
+          <para>The line consists of the following fields.</para>
+          <programlisting>
+Cluster 4 nodes, 4 s. 9360 m/s 536 KB/s 117% cpu 0% read 44% clw threads 2r 0w 1i buffers 1939 766 d 0 w 0 pfs
+Cluster 4 nodes, 4 s. 9360 m/s 536 KB/s
+</programlisting>
+          <para>This first group gives the network status. The count of nodes online (4), the measurement interval, number of
+      	seconds since the last status command (4 seconds). The m/s is the messages per second, i.e. 9360 single messages
+      	sent for intra-cluster purposes per second over the last 4s. The KB/s is the aggregate throughput, i.e. the count
+      	of bytes sent divided by the length of the measure,measurement interval. This allows calculating an average message
+      	length. Only intra-cluster traffic is counted, SQL client server and HTTP connections are not included.
+      </para>
+          <programlisting>
+117% cpu 0% read 44% clw threads 2r 0w 1i
+</programlisting>
+          <para>This group gives the process status. The CPU% is at 100% if one thread is running at one full CPU. The maximum
+      	CPU% is 100 times the number of CPU's in the cluster. Differences between CPU's are not considered. The read % is
+      	the sum of real time spent waiting for disk divided by the time elapsed. The maximum number is 100 times the peak
+      	number of threads running during the interval. 500% would mean an average of five threads waiting for disk times
+      	during the interval. The clw% is the sum of real time a thread has waited for cluster request responses during the
+      	period. The maximum is 100% times the peak number of threads running.
+      </para>
+          <para>The threads section (2r 0w 1i) is a snapshot of thread state and means that 2 threads are involved with processing,
+      	0 of these is waiting for a lock and 1 is waiting for network I/O.
+      </para>
+          <programlisting>
+buffers 1939 766 d 0 w 0 pfs
+</programlisting>
+          <para>This is a snapshot of the database buffers summed over all nodes. 1939 used for disk caching, 766 dirty 0 wired down.
+      </para>
+          <para>The pfs number is the total number of page faults during the interval summed over the cluster. This provides a
+      	warning about swapping and should be 0 or close at ll times.
+      </para>
+        </section>
+      </section>
+      <section xml:id="clusteroperationdiagnostics">
+        <title>Cluster Network Diagnostics and Metrics</title>
+        <para>Proper cluster operation requires that each process in the cluster be capable of initiating a connection to any
+    	other process. This may be prevented by firewall settings or the like. If a connection can be initiated from host 1
+    	to host 2, it does not follow that host 2 can initiate a connection to host 1. These situations can lead to intermittent
+    	errors. These errors can be difficult to pinpoint since operations from host 2 to host 1 can work for most of the time
+    	if there is a connection available that was already established by the other host.
+    </para>
+        <para>To check point to point connectivity, do the following on each host in turn, with no other activity on the cluster:</para>
+        <para>Log in to the SQL port of the host.</para>
+        <programlisting>
+SQL&gt; cl_reset ();
+SQL status ('cluster');
+SQL status ('cluster');
+</programlisting>
+        <para>The first status ('cluster') may show no samples if this is the first time it is called. At the second call you
+    	should see a status line that does not contain mentions of any host being down.
+    </para>
+        <para>The cl_reset function disconnects any connections to other cluster hosts from this host. This makes sure that a
+    	fresh connection will be started for the status command.
+    </para>
+        <section xml:id="clusteroperationdiagnosticsnm">
+          <title>net_meter utility</title>
+          <para>The net_meter utility is a SQL stored procedure that measures the aggregate throughput of a cluster network
+      	with different types of workload.
+      </para>
+          <para>First load the netmeter.sql file on the master node of the cluster.</para>
+          <programlisting>
+SQL&gt; load netmeter.sql;
+</programlisting>
+          <para>Then run</para>
+          <programlisting>
+SQL&gt; net_meter (1, 1000, 1000, 1);
+</programlisting>
+          <para>This returns a single result row with two numbers: The count of round trips per second and the throughput in
+      	megabytes per second.
+      </para>
+          <programlisting>
+net_meter ( in n_threads int,
+            in n_batches int,
+            in bytes int,
+            in ops_per_batch int)
+</programlisting>
+          <para>This SQL procedure runs a network test procedure on every host of the cluster. The network test procedure sends
+      	a message to every other host of the cluster and waits for the replies from each host. After the last reply is received
+      	the action is repeated. This results in a symmetrical load of the network, all points acting as both clients and servers
+      	to all other points.
+      </para>
+          <para>The parameters have the following meaning:</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>
+                <emphasis>n_threads</emphasis>
+              </para>
+              <para> - The number of network test instances started on each host. A value of 4
+        on a cluster of 4 hosts would result in a total of 16 network test procedures spread over 4 processes.</para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis>n_batches</emphasis>
+              </para>
+              <para> - The number of message exchanges done by each network test procedure. A
+        message exchange consists of sending one request to every other host of the cluster and of waiting for all to have
+        replied.</para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis>bytes</emphasis>
+              </para>
+              <para> - The number of bytes sent to each host in each message exchange. The reply
+        from each host has the same number of bytes.</para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis>ops_per_batch</emphasis>
+              </para>
+              <para> - This causes each message batch to contain several operations.
+        In practice this is a multiplier on the number of bytes.</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section xml:id="clusteroperationdiagnosticscp">
+          <title>cl_ping</title>
+          <programlisting>
+cl_ping ( in target_host int,
+          in n_pings int,
+          in bytes_per_ping int)
+</programlisting>
+          <para>This built-in function measures raw point to point network throughput. Whereas net_meter includes a more complex
+      	n to n point traffic pattern and scheduling of functions on multiple threads, cl_ping does not involve anything except
+      	a process to process connection and no thread switching, transaction contexts or other overhead.
+      </para>
+        </section>
+        <section xml:id="clusteroperationdiagnosticsci">
+          <title>cl_io_report</title>
+          <para>This built in function prints out a summary of the cluster connections of the host on which it is run. The output
+     	goes to the server process' standard output. This lists the bytes in and out as well as the file descriptor numbers of
+     	any connections this host has with any other host.
+    </para>
+        </section>
+      </section>
+      <section xml:id="elasticclusteroperation">
+        <title>Elastic Cluster Operations</title>
+        <section xml:id="elasticclusteroperationinit">
+          <title>Initializing</title>
+          <para>When a set of Virtuoso servers configured as a cluster is first started, the elastic cluster setup is automatically
+      	performed if the cluster.ini of each host contains the [ELASTIC] section as described below. This is the normal way in
+      	which an elastic cluster is initialized.
+      </para>
+          <para>The <emphasis>__elastic</emphasis>
+
+   option of the create cluster statement is used for creating an elastic logical
+      cluster.</para>
+          <programlisting>
+create cluster ELASTIC __elastic 2048 4 group (Host1), group (Host2), group (Host3), group (Host4);
+</programlisting>
+          <para>or:</para>
+          <programlisting>
+create cluster ELASTIC __elastic 2048 4 ALL;
+</programlisting>
+          <para>This creates an elastic cluster called ELASTIC which initially consists of 4 host groups. Each   host group has  a
+      single copy of the data allocated to the host group. The data is partitioned among the host groups so that each host group
+      has a separate fraction of the data. The second variant defaults the host groups from the cluster.ini, so that each host
+      mentioned is in a host group of its own. The first number after the <emphasis>__elastic</emphasis>
+
+   clause is
+      the maximum number of physical slices in the cluster. The second number is the number of physical slices
+      initially created per host group. In general each host group should have as many slices as there are hardware threads on the
+      CPU (s) running the host(s) in the host group.
+      </para>
+          <para>The name ELASTIC is specially known. If a logical cluster of this name exists, it is the default
+      logical cluster instead of the non-elastic <emphasis>__ALL</emphasis>
+
+   cluster in create or alter statements
+      that specify partitioning.
+      </para>
+          <para>Database files for an elastic cluster are created in a directory and striping set that is specified in
+      the cluster.ini file of each host. The cluster.ini file of each participating host must have this section at
+      the time of executing the create cluster statement. The section of the ini file has the name as in the create
+      cluster statement, e.g.:
+      </para>
+          <programlisting>
+[ELASTIC]
+Slices = 16
+Segment1 = 1024, /data6/dbs/btc1-el.db = q1
+Segment2 = 1024, /data2/dbs/btc1-el.db = q2
+Segment3 = 1024, /data8/btc1-1/btc1-el.db = q3
+
+[ELASTIC_1]
+Segment1 = 1024, /data2/dbs/btc1-d-el.db = q2
+</programlisting>
+          <para>Note that an elastic cluster may specify multiple segments. Each segment has an independent striping,
+      as in other segments. When initialized, one segment is created for each of the slices hostted by the host in
+      question. The segment may consist of multiple files if striping is specified. The database files for the
+      segments are named as per the path and file name in the segment clause, with the slice number appended at the
+      end, prefixed with a '.'. The files are initially created in the first segment of the logical cluster. If one
+      wishes to move the files, one can do so between the segments declared for the cluster when the server is not
+      running. At the next startup, it will look in all the segments for slices matching the path name plus .[0-9]*.
+      </para>
+          <para>Specifying distinct IO queues for distinct devices is useful, as with other file system layouts.</para>
+          <para>To move slices between servers, more steps are necessary, see following sections.</para>
+          <para>In the example at hand, we specify two sets of files, one labeled ELASTIC_1. This is useful if one
+      wishes to divide objects among different types of storage, e.g. disk and ssd. If two cluster names differ only
+      by having _[0-9]* tagged at the end or having _[0-9]* with different numbers at the end while the rest of the
+      name is the same, the system will manage these as twins so as to keep the slices belonging to either collocated.
+      So slice movement and splitting will be mirrored between the two. If an If two objects share a partitioning
+      key between such twin clusters operations are assumed to be colocatable.
+      </para>
+          <para>The Slices setting specifies how many physical slices are initially created per host group. For example if a server
+      	has 2 CPU sockets with a 8 core 16 thread CPU on each, and two Virtuoso processes are run on each server, one per NUMA
+      	node (CPU socket), it is practical to specify 16 slices per host group. In this way there will be up to 32 threads per
+      	query on the machine, leading to full platform utilization.
+      </para>
+          <para>After creation, the cluster can be used in the cluster clause of create index and alter index for
+      	specifying that the object in question is to be created in the elastic cluster.
+      </para>
+          <programlisting>
+create table TE ( row_no int,
+                  string1 varchar,
+                  string2 varchar,
+                  primary key (row_no));
+alter index TE on TE partition cluster ELASTIC (row_no int (0hexffff00));
+</programlisting>
+          <para>The table TE is now allocated in the cluster ELASTIC. Due to default behavior, the cluster ELASTIC is
+      redundant since objects preferentially get created in it if it exists. The table is now ready for use. Note
+      that the bit mask in the partitioning clause of the partitioning key row_no must specify enough bits to cover
+      the number of logical slices in the cluster, 2048 in the present case. If this is not the case, some logical
+      slices will never be used, as there will be less distinct partitioning hash values than logical slices.
+      </para>
+        </section>
+        <section xml:id="elasticclusteroperationaddremovehost">
+          <title>Adding and Removing Hosts</title>
+          <para>The number of server processes (hosts) used for managing an elastic cluster may vary during the
+      cluster's lifetime. If the elastic cluster keeps partitions in multiple copies, i.e. host groups in the initial
+      create cluster statement have more than one host, any new host groups that are added must have the same number
+      of hosts. Each new host of a new host group must be identically initialized to contain a copy of the REPLICATED
+      logical cluster of the cluster into which the hosts are added. This is done by simply copying the non-elastic
+      database file(s) of any host of the existing cluster. The copy can be made while the cluster is running.</para>
+          <programlisting>
+cl_add_host_group (in cl_name varchar, in hosts any array) returns int
+</programlisting>
+          <para>This function adds a host group to an elastic cluster. The host group must contain the same number of
+      hosts as all the other host groups and the hosts must not be part of any other host group in this cluster.
+      </para>
+          <para>The new hosts must be assigned IP addresses in the cluster.ini file of all presently running hosts. At
+      the time of being added, the hosts in the new host group must be running and must be initialized to share a
+      copy of the REPLICATED cluster shared by all hosts of the physical cluster.
+      </para>
+          <para>After successful addition:</para>
+          <programlisting>
+cl_remove_host_group (in cl_name varchar, in host varchar)
+</programlisting>
+        </section>
+      </section>
+      <section>
+        <title>Setting CPU Affinity</title>
+        <para>If one runs multiple Virtuoso processes on a physical machine it may be advantageous to bind the processes to a
+  	physical CPU. In this way one may be certain that memory allocated for the processes is local to the CPU on which
+  	the process runs. This is specially important for servers with more than 2 CPU sockets, as there can be high
+  	variability in memory access latency  Even with dual-socket Intel servers there caan be performance gains of
+  	up to 20% from setting CPU affinity if the workload is well balanced. On the other hand if the workload is
+  	not balanced, binding a process to a CPU may lead to less platform utilization than not specifying affinity.</para>
+        <para>There are two settings in the virtuoso.ini for affinity:</para>
+        <orderedlist>
+          <listitem>
+            <para>
+              <emphasis>Affinity</emphasis>
+            </para>
+            <para> is the overall affinity for threads of the server process and is specified by
+      comma-separated CPU numbers or ranges of numbers.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>ListenerAffinity</emphasis>
+            </para>
+            <para> is the affinity of the thread handling incoming cluster traffic.
+      In the interest of low latency, it may be advantageous to bind the listener thread to a core of its own, so
+      that it will never be preempted. This can decrease the incidence of blocking on write for other processes since
+      incoming messages will be read at full interface speed all the time.</para>
+          </listitem>
+        </orderedlist>
+        <para>For example:</para>
+        <programlisting>
+...
+Affinity = 1-7, 16-23
+ListenerAffinity = 0
+...
+</programlisting>
+        <para>specifies that the process is bound to CPU 0 of a dual socket 16 core 32 thread system.</para>
+        <para>See numactl -- hardware for the actual numbers of the cores on each CPU. CPU 0, i.e. first thread of first
+    	core is here exclusively allocated to network traffic and canbnot be preempted by any other thread running for
+    	the server process.</para>
+      </section>
+    </section>

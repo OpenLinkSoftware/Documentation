@@ -1,0 +1,707 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="syncml">
+      <title>SyncML</title>
+      <para>SyncML is a protocol for synchronization of data collections
+between two devices - a SyncML Client and SyncML Server using an
+XML data representation.  The client is typically some mobile device or
+mobile PC.  The Virtuoso server implements the SyncML server protocol over
+HTTP.</para>
+      <para>The SyncML server maintains the data collections within the WebDAV
+repository.  The items (resources) in the collections (folders) represents
+items found on the client, e.g. VCARD, vcalendar records.  As the WebDAV
+repository does not restrict the type of data that can be stored, likewise
+there are no restrictions on the type of data that can be synchronized.
+Also every WebDAV virtual directory can act as a SyncML server endpoint, the
+SyncML processing is triggered via the <computeroutput>Content-Type</computeroutput>
+
+  ,
+detected on the POST request (see below).
+</para>
+      <tip>
+        <title>See Also:
+</title>
+        <para>
+          <link linkend="syncmlschema">SyncML Schema Tables
+</link>
+        </para>
+      </tip>
+      <para>The SyncML server detects the following formats from the
+
+<computeroutput>Content-Type
+</computeroutput>
+
+   header string:
+</para>
+      <simplelist type="vert">
+        <member><emphasis><computeroutput>application/vnd.syncml+wbxml
+</computeroutput></emphasis>
+
+   - WBXML coded XML documents
+</member>
+        <member><emphasis><computeroutput>application/vnd.syncml+xml
+</computeroutput></emphasis>
+
+   - plain text XML document
+</member>
+      </simplelist>
+      <para>These are detected during the POST request to a WebDAV virtual directory
+thus triggering SyncML processing.  When a device makes creates
+'<computeroutput>application/vnd.syncml+wbxml</computeroutput>
+
+  ' session,
+the SyncML server will respond with the WBXML format.  Otherwise
+plain XML will be used to encode SyncML messages.</para>
+      <para>Basic and MD5 digest SyncML authorization schemes are supported.
+The WebDAV enabled user accounts are used to perform authentication.</para>
+      <para>It is possible to query the HTTP authentication type supported by the
+target device by assigning an authentication hook to a given virtual directory.
+By default SyncML authentication is digest-md5, so HTTP authentication is
+off (note that HTTP authentication is different from SyncML authentication).
+</para>
+      <para>The following synchronization methods are supported:
+</para>
+      <simplelist type="vert">
+        <member>Two-way sync
+</member>
+        <member>Slow two-way sync
+</member>
+      </simplelist>
+      <para>Every item sent from the client device is mapped to a WebDAV resource
+under a given WebDAV collection.  Every device database, such as contacts, calendar,
+usually requires that a different WebDAV collection be specified because the devices
+usually can not maintain items of different kinds with a single database.  For
+example, when synchronizing the Contacts of a Nokia 9210 with the server,
+we can specify <computeroutput>./contacts/</computeroutput>
+
+  , and likewise
+for the Calendar database, <computeroutput>./calendar/</computeroutput>
+
+  .
+This keeps VCARDS (contacts) and vCalendars in separate collections (folders) on
+a given virtual directory.  It is not possible to keep calendar and contacts
+(for example) in the same WebDAV collection, unless the device supports such
+items in a single database.</para>
+      <note>
+        <title>Important Note:</title>
+        <para>The target folders (Virtuoso server-side collections) must exists and
+  must be accessible by the WebDAV account used to authenticate against the
+  SyncML server.  If credentials or permissions are insufficient then an
+  Error 403 (Forbidden) will be returned to the client.
+</para>
+      </note>
+      <example xml:id="ex_syncmlsession">
+        <title>Example of a SyncML session
+</title>
+        <para>The client begins initial request
+</para>
+        <programlisting>
+  &lt;SyncML&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;1&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Source&gt;
+      &lt;Meta&gt;
+        &lt;MaxMsgSize&gt;10000&lt;/MaxMsgSize&gt;
+      &lt;/Meta&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Alert&gt;
+        &lt;CmdID&gt;1&lt;/CmdID&gt;
+        &lt;Data&gt;201&lt;/Data&gt;
+        &lt;Item&gt;
+          &lt;Target&gt;
+            &lt;LocURI&gt;./calendar&lt;/LocURI&gt;
+          &lt;/Target&gt;
+          &lt;Source&gt;
+            &lt;LocURI&gt;./C\System\Data\Calendar&lt;/LocURI&gt;
+          &lt;/Source&gt;
+          &lt;Meta&gt;
+            &lt;Anchor&gt;
+              &lt;Next&gt;20031202T165103Z&lt;/Next&gt;
+            &lt;/Anchor&gt;
+          &lt;/Meta&gt;
+        &lt;/Item&gt;
+      &lt;/Alert&gt;
+      &lt;Put&gt;
+        &lt;CmdID&gt;2&lt;/CmdID&gt;
+        &lt;Meta&gt;
+          &lt;Type&gt;application/vnd.syncml-devinf+wbxml&lt;/Type&gt;
+        &lt;/Meta&gt;
+        &lt;Item&gt;
+          &lt;Source&gt;
+            &lt;LocURI&gt;./devinf10&lt;/LocURI&gt;
+          &lt;/Source&gt;
+          &lt;Data&gt;
+            &lt;DevInf&gt;
+              &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+              &lt;Man&gt;NOKIA&lt;/Man&gt;
+              &lt;Mod&gt;9210&lt;/Mod&gt;
+              &lt;SwV&gt;256&lt;/SwV&gt;
+              &lt;HwV&gt;1.0&lt;/HwV&gt;
+              &lt;DevID&gt;IMEI:57471724140229&lt;/DevID&gt;
+              &lt;DevTyp&gt;phone&lt;/DevTyp&gt;
+	      ....
+            &lt;/DevInf&gt;
+          &lt;/Data&gt;
+        &lt;/Item&gt;
+      &lt;/Put&gt;
+      &lt;Get&gt;
+        &lt;CmdID&gt;3&lt;/CmdID&gt;
+        &lt;Meta&gt;
+          &lt;Type&gt;application/vnd.syncml-devinf+wbxml&lt;/Type&gt;
+        &lt;/Meta&gt;
+        &lt;Item&gt;
+          &lt;Target&gt;
+            &lt;LocURI&gt;./devinf10&lt;/LocURI&gt;
+          &lt;/Target&gt;
+        &lt;/Item&gt;
+      &lt;/Get&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Server rejects credential, because no credentials.</para>
+        <programlisting>
+  &lt;SyncML xmlns:n0="syncml:SYNCML1.0"&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;1&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Source&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;1&lt;/CmdID&gt;
+        &lt;MsgRef&gt;1&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;TargetRef&gt;http://192.168.1.1:6666/&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;IMEI:57471724140229&lt;/SourceRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;Chal&gt;
+          &lt;Meta&gt;
+            &lt;Type xmlns:n2="syncml:metinf"&gt;syncml:auth-md5&lt;/Type&gt;
+            &lt;Format xmlns:n2="syncml:metinf"&gt;b64&lt;/Format&gt;
+            &lt;NextNonce xmlns:n2="syncml:metinf"&gt;NzcyYTgyMDRjMGM2NzRlYTZjYWVmNGY4ZjNjMGYzMDk=&lt;/NextNonce&gt;
+          &lt;/Meta&gt;
+        &lt;/Chal&gt;
+        &lt;Data&gt;401&lt;/Data&gt;
+      &lt;/Status&gt;
+      ....
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Client sends back credentials.</para>
+        <programlisting>
+  &lt;SyncML&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;2&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+        &lt;LocName&gt;imitko&lt;/LocName&gt;
+      &lt;/Source&gt;
+      &lt;Cred&gt;
+        &lt;Meta&gt;
+          &lt;Format&gt;b64&lt;/Format&gt;
+          &lt;Type&gt;syncml:auth-md5&lt;/Type&gt;
+        &lt;/Meta&gt;
+        &lt;Data&gt;X8uGR8CX4ogw8Ux+ZWIzkg==&lt;/Data&gt;
+      &lt;/Cred&gt;
+      &lt;Meta&gt;
+        &lt;MaxMsgSize&gt;10000&lt;/MaxMsgSize&gt;
+      &lt;/Meta&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;1&lt;/CmdID&gt;
+        &lt;MsgRef&gt;1&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;TargetRef&gt;IMEI:57471724140229&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;http://192.168.1.1:6666/&lt;/SourceRef&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Alert&gt;
+        &lt;CmdID&gt;2&lt;/CmdID&gt;
+        &lt;Data&gt;201&lt;/Data&gt;
+        &lt;Item&gt;
+          &lt;Target&gt;
+            &lt;LocURI&gt;./calendar&lt;/LocURI&gt;
+          &lt;/Target&gt;
+          &lt;Source&gt;
+            &lt;LocURI&gt;./C\System\Data\Calendar&lt;/LocURI&gt;
+          &lt;/Source&gt;
+          &lt;Meta&gt;
+            &lt;Anchor&gt;
+              &lt;Next&gt;20031202T165103Z&lt;/Next&gt;
+            &lt;/Anchor&gt;
+          &lt;/Meta&gt;
+        &lt;/Item&gt;
+      &lt;/Alert&gt;
+      &lt;Put&gt;
+        &lt;CmdID&gt;3&lt;/CmdID&gt;
+        &lt;Meta&gt;
+          &lt;Type&gt;application/vnd.syncml-devinf+wbxml&lt;/Type&gt;
+        &lt;/Meta&gt;
+        &lt;Item&gt;
+          &lt;Source&gt;
+            &lt;LocURI&gt;./devinf10&lt;/LocURI&gt;
+          &lt;/Source&gt;
+          &lt;Data&gt;
+            &lt;DevInf&gt;
+              &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+              &lt;Man&gt;NOKIA&lt;/Man&gt;
+              &lt;Mod&gt;9210&lt;/Mod&gt;
+              &lt;SwV&gt;256&lt;/SwV&gt;
+              &lt;HwV&gt;1.0&lt;/HwV&gt;
+              &lt;DevID&gt;IMEI:57471724140229&lt;/DevID&gt;
+              &lt;DevTyp&gt;phone&lt;/DevTyp&gt;
+	      ...
+            &lt;/DevInf&gt;
+          &lt;/Data&gt;
+        &lt;/Item&gt;
+      &lt;/Put&gt;
+      &lt;Get&gt;
+        &lt;CmdID&gt;4&lt;/CmdID&gt;
+        &lt;Meta&gt;
+          &lt;Type&gt;application/vnd.syncml-devinf+wbxml&lt;/Type&gt;
+        &lt;/Meta&gt;
+        &lt;Item&gt;
+          &lt;Target&gt;
+            &lt;LocURI&gt;./devinf10&lt;/LocURI&gt;
+          &lt;/Target&gt;
+        &lt;/Item&gt;
+      &lt;/Get&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Server accepts the request.</para>
+        <programlisting>
+  &lt;SyncML xmlns="syncml:SYNCML1.0"&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;2&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Source&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;5&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;TargetRef&gt;http://192.168.1.1:6666/&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;IMEI:57471724140229&lt;/SourceRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;Data&gt;212&lt;/Data&gt; &lt;!-- Authenticated for session --&gt;
+
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;7&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;2&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Alert&lt;/Cmd&gt;
+        &lt;Data&gt;200&lt;/Data&gt; &lt;!- two-way alert accepted, 'next' anchor echoed --&gt;
+
+        &lt;Item&gt;
+          &lt;Data&gt;
+            &lt;Anchor xmlns:n2="syncml:metinf"&gt;
+              &lt;Next&gt;20031202T165103Z&lt;/Next&gt;
+            &lt;/Anchor&gt;
+          &lt;/Data&gt;
+        &lt;/Item&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;8&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;3&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Put&lt;/Cmd&gt;
+        &lt;Data&gt;200&lt;/Data&gt; &lt;!-- the 'put' command succeeded;
+		                      device info is written -&gt;
+      &lt;/Status&gt;
+      &lt;Results&gt; &lt;!-- the following are server's device info  --&gt;
+
+        &lt;CmdID&gt;9&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;4&lt;/CmdRef&gt;
+        &lt;Meta&gt;
+          &lt;Type xmlns:n2="syncml:metinf"&gt;application/vnd.syncml-devinf+wbxml&lt;/Type&gt;
+        &lt;/Meta&gt;
+        &lt;Item&gt;
+          &lt;Source&gt;
+            &lt;LocURI&gt;./devinf10&lt;/LocURI&gt;
+          &lt;/Source&gt;
+          &lt;Data&gt;
+            &lt;DevInf xmlns:n2="syncml:devinf"&gt;
+              &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+              &lt;Man&gt;OpenLink Software Ltd&lt;/Man&gt;
+              &lt;Mod&gt;Virtuoso&lt;/Mod&gt;
+              &lt;OEM&gt;OpenLink&lt;/OEM&gt;
+              &lt;FwV&gt;3.5&lt;/FwV&gt;
+              &lt;SwV&gt;2602&lt;/SwV&gt;
+              &lt;HwV&gt;0&lt;/HwV&gt;
+              &lt;DevID&gt;http://example.com/&lt;/DevID&gt;
+              &lt;DevTyp&gt;server&lt;/DevTyp&gt;
+              &lt;SyncCap&gt;
+                &lt;SyncType&gt;1&lt;/SyncType&gt;
+                &lt;SyncType&gt;2&lt;/SyncType&gt;
+              &lt;/SyncCap&gt;
+	      ...
+              &lt;UTC/&gt;
+              &lt;SupportLargeObjs/&gt;
+              &lt;SupportNumberOfChanges/&gt;
+            &lt;/DevInf&gt;
+          &lt;/Data&gt;
+        &lt;/Item&gt;
+      &lt;/Results&gt;
+      &lt;Alert&gt;
+        &lt;CmdID&gt;6&lt;/CmdID&gt;
+        &lt;Data&gt;201&lt;/Data&gt; &lt;!-- the ./calendar/ is new empty collection;
+		                      server asks client for slow two-way sync.  --&gt;
+
+        &lt;Item&gt;
+          &lt;Target&gt;
+            &lt;LocURI&gt;./C\System\Data\Calendar&lt;/LocURI&gt;
+          &lt;/Target&gt;
+          &lt;Source&gt;
+            &lt;LocURI&gt;./calendar/&lt;/LocURI&gt;
+          &lt;/Source&gt;
+          &lt;Meta&gt;
+            &lt;Anchor xmlns:n2="syncml:metinf"&gt;
+              &lt;Last&gt;1970-01-01T00:00:00.000+02:00&lt;/Last&gt;
+              &lt;Next&gt;2003-12-02T18:51:05.000+02:00&lt;/Next&gt;
+            &lt;/Anchor&gt;
+          &lt;/Meta&gt;
+        &lt;/Item&gt;
+      &lt;/Alert&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Client sends to server all calendar items. See 'Sync' element below.
+</para>
+        <programlisting>
+  &lt;SyncML&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;3&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Source&gt;
+      &lt;Meta&gt;
+        &lt;MaxMsgSize&gt;10000&lt;/MaxMsgSize&gt;
+      &lt;/Meta&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;1&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;TargetRef&gt;IMEI:57471724140229&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;http://192.168.1.1:6666/&lt;/SourceRef&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;2&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;9&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Results&lt;/Cmd&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;3&lt;/CmdID&gt;
+        &lt;MsgRef&gt;2&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;6&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Alert&lt;/Cmd&gt;
+        &lt;TargetRef&gt;./C\System\Data\Calendar&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;./calendar/&lt;/SourceRef&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+        &lt;Item&gt;
+          &lt;Data&gt;
+            &lt;Anchor&gt;
+              &lt;Next&gt;2003-12-02T18:51:05.000+02:00&lt;/Next&gt;
+            &lt;/Anchor&gt;
+          &lt;/Data&gt;
+        &lt;/Item&gt;
+      &lt;/Status&gt;
+      &lt;Sync&gt;
+        &lt;CmdID&gt;4&lt;/CmdID&gt;
+        &lt;Target&gt;
+          &lt;LocURI&gt;./calendar&lt;/LocURI&gt;
+        &lt;/Target&gt;
+        &lt;Source&gt;
+          &lt;LocURI&gt;./C\System\Data\Calendar&lt;/LocURI&gt;
+        &lt;/Source&gt;
+        &lt;Meta&gt;
+          &lt;Mem&gt;
+            &lt;FreeMem&gt;7627614408&lt;/FreeMem&gt;
+            &lt;FreeID&gt;59590737&lt;/FreeID&gt;
+          &lt;/Mem&gt;
+        &lt;/Meta&gt;
+        &lt;Replace&gt; &lt;!-- the client uses 'Replace' command --&gt;
+
+          &lt;CmdID&gt;5&lt;/CmdID&gt;
+          &lt;Meta&gt;
+            &lt;Type&gt;text/x-vcalendar&lt;/Type&gt;
+          &lt;/Meta&gt;
+          &lt;Item&gt;
+            &lt;Source&gt;
+              &lt;LocURI&gt;2&lt;/LocURI&gt;
+            &lt;/Source&gt;
+            &lt;Data&gt;
+		BEGIN:VCALENDAR
+		VERSION:1.0
+		BEGIN:VEVENT
+		UID:2
+		DESCRIPTION:tests
+		DTSTART:20031127T090000
+		DTEND:20031127T090000
+		X-EPOCAGENDAENTRYTYPE:APPOINTMENT
+		CLASS:PUBLIC
+		DCREATED:20031128T000000
+		LAST-MODIFIED:20031201T123500
+		END:VEVENT
+		END:VCALENDAR
+            &lt;/Data&gt;
+          &lt;/Item&gt;
+        &lt;/Replace&gt;
+        &lt;Replace&gt;
+          &lt;CmdID&gt;6&lt;/CmdID&gt;
+          &lt;Meta&gt;
+            &lt;Type&gt;text/x-vcalendar&lt;/Type&gt;
+          &lt;/Meta&gt;
+          &lt;Item&gt;
+            &lt;Source&gt;
+              &lt;LocURI&gt;3&lt;/LocURI&gt;
+            &lt;/Source&gt;
+            &lt;Data&gt;
+		BEGIN:VCALENDAR
+		VERSION:1.0
+		BEGIN:VEVENT
+		UID:3
+		DESCRIPTION:tests more
+		DTSTART:20031128T090000
+		DTEND:20031128T190000
+		X-EPOCAGENDAENTRYTYPE:APPOINTMENT
+		CLASS:PUBLIC
+		DCREATED:20031128T000000
+		LAST-MODIFIED:20031201T123500
+		END:VEVENT
+		END:VCALENDAR
+            &lt;/Data&gt;
+          &lt;/Item&gt;
+        &lt;/Replace&gt;
+        &lt;Replace&gt;
+          &lt;CmdID&gt;7&lt;/CmdID&gt;
+          &lt;Meta&gt;
+            &lt;Type&gt;text/x-vcalendar&lt;/Type&gt;
+          &lt;/Meta&gt;
+          &lt;Item&gt;
+            &lt;Source&gt;
+              &lt;LocURI&gt;5&lt;/LocURI&gt;
+            &lt;/Source&gt;
+            &lt;Data&gt;
+		BEGIN:VCALENDAR
+		VERSION:1.0
+		BEGIN:VEVENT
+		UID:5
+		DESCRIPTION:today integration
+		DTSTART:20031201T090000
+		DTEND:20031201T090000
+		X-EPOCAGENDAENTRYTYPE:APPOINTMENT
+		CLASS:PUBLIC
+		DCREATED:20031201T000000
+		LAST-MODIFIED:20031201T125400
+		END:VEVENT
+		END:VCALENDAR
+            &lt;/Data&gt;
+          &lt;/Item&gt;
+        &lt;/Replace&gt;
+      &lt;/Sync&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Server stores new items.</para>
+        <programlisting>
+  &lt;SyncML xmlns:n0="syncml:SYNCML1.0"&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;3&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Source&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;10&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;TargetRef&gt;http://192.168.1.1:6666/&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;IMEI:57471724140229&lt;/SourceRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;Data&gt;212&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;11&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;5&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Replace&lt;/Cmd&gt;
+        &lt;Data&gt;201&lt;/Data&gt; &lt;!-- 201 (Added) is used to indicate
+		                      that item is added as new. --&gt;
+
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;12&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;6&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Replace&lt;/Cmd&gt;
+        &lt;Data&gt;201&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;13&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;7&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Replace&lt;/Cmd&gt;
+        &lt;Data&gt;201&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;15&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;4&lt;/CmdRef&gt;
+        &lt;TargetRef&gt;./calendar/&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;./C\System\Data\Calendar&lt;/SourceRef&gt;
+        &lt;Cmd&gt;Sync&lt;/Cmd&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Sync&gt; &lt;!-- an empty Sync is sent from server. --&gt;
+
+        &lt;CmdID&gt;14&lt;/CmdID&gt;
+        &lt;Source&gt;
+          &lt;LocURI&gt;./calendar/&lt;/LocURI&gt;
+        &lt;/Source&gt;
+        &lt;Target&gt;
+          &lt;LocURI&gt;./C\System\Data\Calendar&lt;/LocURI&gt;
+        &lt;/Target&gt;
+      &lt;/Sync&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Final SyncML message from client with status to server's Sync command.
+</para>
+        <programlisting>
+  &lt;SyncML&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;4&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Source&gt;
+      &lt;Meta&gt;
+        &lt;MaxMsgSize&gt;10000&lt;/MaxMsgSize&gt;
+      &lt;/Meta&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;1&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;TargetRef&gt;IMEI:57471724140229&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;http://192.168.1.1:6666/&lt;/SourceRef&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;2&lt;/CmdID&gt;
+        &lt;MsgRef&gt;3&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;14&lt;/CmdRef&gt;
+        &lt;Cmd&gt;Sync&lt;/Cmd&gt;
+        &lt;TargetRef&gt;./C\System\Data\Calendar&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;./calendar/&lt;/SourceRef&gt;
+        &lt;Data&gt;200&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+        <para>Final message from SyncML server; no more commands issued.</para>
+        <programlisting>
+  &lt;SyncML xmlns:n0="syncml:SYNCML1.0"&gt;
+    &lt;SyncHdr&gt;
+      &lt;VerDTD&gt;1.0&lt;/VerDTD&gt;
+      &lt;VerProto&gt;SyncML/1.0&lt;/VerProto&gt;
+      &lt;SessionID&gt;88&lt;/SessionID&gt;
+      &lt;MsgID&gt;4&lt;/MsgID&gt;
+      &lt;Target&gt;
+        &lt;LocURI&gt;IMEI:57471724140229&lt;/LocURI&gt;
+      &lt;/Target&gt;
+      &lt;Source&gt;
+        &lt;LocURI&gt;http://192.168.1.1:6666/&lt;/LocURI&gt;
+      &lt;/Source&gt;
+    &lt;/SyncHdr&gt;
+    &lt;SyncBody&gt;
+      &lt;Status&gt;
+        &lt;CmdID&gt;16&lt;/CmdID&gt;
+        &lt;MsgRef&gt;4&lt;/MsgRef&gt;
+        &lt;CmdRef&gt;0&lt;/CmdRef&gt;
+        &lt;TargetRef&gt;http://192.168.1.1:6666/&lt;/TargetRef&gt;
+        &lt;SourceRef&gt;IMEI:57471724140229&lt;/SourceRef&gt;
+        &lt;Cmd&gt;SyncHdr&lt;/Cmd&gt;
+        &lt;Data&gt;212&lt;/Data&gt;
+      &lt;/Status&gt;
+      &lt;Final/&gt;
+    &lt;/SyncBody&gt;
+  &lt;/SyncML&gt;
+</programlisting>
+      </example>
+      <tip>
+        <title>See Also:
+</title>
+        <para>
+          <link xlink:href="http://www.syncml.org/">References : www.syncml.org
+</link>
+        </para>
+      </tip>
+    </section>

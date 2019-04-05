@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="vc_code_file">
+          <refmeta>
+            <refentrytitle>code-file</refentrytitle>
+            <refmiscinfo>vspx_control</refmiscinfo>
+          </refmeta>
+          <refnamediv>
+            <refname>code-file</refname>
+            <refpurpose>Code-behind file containing SQL script.</refpurpose>
+          </refnamediv>
+          <refsynopsisdiv>
+            <funcsynopsis xml:id="vc_syn_code_file">
+              <funcprototype xml:id="vc_proto_code_file">
+                <funcdef>
+            &lt;<function>code-file</function>
+
+ /&gt;</funcdef>
+                <paramdef choice="req"><parameter>url</parameter>
+
+   (required) </paramdef>
+                <paramdef choice="opt"><parameter>debug-srcfile</parameter>
+
+   (optional) </paramdef>
+                <paramdef choice="opt"><parameter>debug-srcline</parameter>
+
+   (optional) </paramdef>
+                <paramdef choice="opt"><parameter>debug-log</parameter>
+
+   (optional) </paramdef>
+              </funcprototype>
+            </funcsynopsis>
+          </refsynopsisdiv>
+          <refsect1 xml:id="vc_desc_code_file">
+            <title>Description</title>
+            <para>This element is used to load an external SQL
+	  script after page class compilation and before page execution.
+	  This script may contain page subclass or custom control definitions.
+	  In this way SQL code can be separated from VSPX markup, or in other words
+	  to separate page design from application logic.
+      </para>
+          </refsect1>
+          <refsect1 xml:id="vc_attrs_code_file">
+            <title>Attributes</title>
+            <formalpara>
+              <title>url</title>
+              <para>URL of file to be loaded after VSPX page compilation.
+		If relative then the base is the page where the control resides
+		(i.e. same URL resolution rules applied as for includes).
+          </para>
+            </formalpara>
+            <formalpara>
+              <title>debug-srcfile</title>
+              <para>URI of the source document where the tag comes from.</para>
+            </formalpara>
+            <formalpara>
+              <title>debug-srcline</title>
+              <para>Line number in the source document where the tag comes from.</para>
+            </formalpara>
+            <formalpara>
+              <title>debug-log</title>
+              <para>This defines what sort of data are saved to the debugging log.
+</para>
+            </formalpara>
+          </refsect1>
+          <refsect1 xml:id="vc_ex_code_file">
+            <title>Examples</title>
+            <example xml:id="vc_ex_code_file__0">
+              <title>
+  Code-behind SQL script
+</title>
+              <para> The script of a button's post event is in separate SQL file.</para>
+              <para>The code_file__0.sql contents is:</para>
+              <screen>
+drop type my_page_subclass
+;
+
+create type my_page_subclass under DB.dba.page__vspx_code__file____0_vspx
+temporary self as ref
+overriding method vc_post_b1 (control vspx_button, e vspx_event) returns any,
+method button_change (control vspx_button) returns any
+;
+
+create method vc_post_b1 (inout control vspx_button, inout e vspx_event) for my_page_subclass
+ {
+   if (not control.vc_focus) return;
+   self.button_change (control);
+   return;
+ }
+;
+
+create method button_change (inout control vspx_button) for my_page_subclass
+ {
+   self.var1 := self.var1 + 1;
+   control.ufl_value := 'Activated';
+ }
+;
+</screen>
+              <screen>
+&lt;v:page name="page1" xmlns:v="http://http://example.com/vspx/" page-subclass="my_page_subclass"&gt;
+  &lt;html&gt;
+    &lt;body&gt;
+      &lt;v:code-file  url="code_file__0.sql"/&gt;
+      &lt;v:variable name="var1" type="int" default="0" param-name="id" persist="pagestate" /&gt;
+      &lt;v:form type="simple" name="f1"&gt;
+	&lt;v:label name="l1" value="--self.var1" format="%d" /&gt;
+	&lt;v:button action="simple" name="b1" value="Submit" /&gt;
+      &lt;/v:form&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+&lt;/v:page&gt;
+</screen>
+            </example>
+          </refsect1>
+        </refentry>

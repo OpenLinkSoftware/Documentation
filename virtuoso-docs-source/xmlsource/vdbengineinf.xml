@@ -1,0 +1,1389 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="vdbengineinf">
+      <info>
+        <title>Using Microsoft Entity Frameworks to Access Informix Schema Objects with Virtuoso</title>
+        <abstract>
+          <para>This section details the steps required to provide Microsoft Entity Framework access to
+Informix Schema Objects using the OpenLink Virtuoso Universal Server. This is achieved by linking
+the required Informix Schema objects into Virtuoso using its built in Virtual Database engine, and
+then using the Virtuoso ADO.NET Entity Framework provider to query the remote Informix Schema
+objects linked into the Virtuoso Server.
+      </para>
+        </abstract>
+      </info>
+      <formalpara>
+        <title>Prerequisites</title>
+        <para>The following prerequisites must be in place for this solution to be possible.</para>
+      </formalpara>
+      <formalpara>
+        <title>Informix DBMS</title>
+        <para>An Informix DBMS hosting the required Schema Objects needs to be available. In this section
+the <emphasis>Informix stores_demo</emphasis>
+
+   sample database will be used to demonstrate the process.</para>
+      </formalpara>
+      <para>An Informix DBMS hosting the required Schema Objects needs to be available. In this section
+the <emphasis>Informix stores_demo</emphasis>
+
+   sample database will be used to demonstrate the process.</para>
+      <formalpara>
+        <title>ODBC Driver for Informix</title>
+        <para>An Informix ODBC Driver is required for Linking the Informix Schema Objects into the Virtuoso Server.
+The OpenLink <emphasis>ODBC Driver for Informix</emphasis>
+
+   will be used in this section, for which a functional ODBC Data
+source name of "inf10ma" will be assumed to exist on the machine hosting the Virtuoso Server.</para>
+      </formalpara>
+      <para>An Informix ODBC Driver is required for Linking the Informix Schema Objects into the Virtuoso Server.
+The OpenLink <emphasis>ODBC Driver for Informix</emphasis>
+
+   will be used in this section, for which a functional ODBC Data
+source name of "inf10ma" will be assumed to exist on the machine hosting the Virtuoso Server.</para>
+      <formalpara>
+        <title>Virtuoso Universal Server</title>
+        <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      </formalpara>
+      <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      <formalpara>
+        <title>Microsoft Visual Studio 2008 SP1</title>
+        <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      </formalpara>
+      <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      <bridgehead>Tasks</bridgehead>
+      <formalpara>
+        <title>Ensure Informix Primary Keys (PKs) are not nullable</title>
+        <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables
+to be used are defined as not nullable in the Informix database schema before attempting to generate an EDM.
+In the case of the Informix stores_demo database many tables have primary keys that are nullable so these will need to be redeclared.
+    </para>
+      </formalpara>
+      <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables
+to be used are defined as not nullable in the Informix database schema before attempting to generate an EDM.
+In the case of the Informix stores_demo database many tables have primary keys that are nullable so these will need to be redeclared.
+    </para>
+      <para>This is possible using dbaccess however care needs to be taken, particularly with the following</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Amending a PK field to be not nullable can results in the primary key constraint being removed.</para>
+        </listitem>
+        <listitem>
+          <para>Amending a PK field to be not nullable when the primary key is referenced by a foreign key constraint results in the
+foreign key constraint being removed.</para>
+        </listitem>
+      </itemizedlist>
+      <para>In both of the cases above the primary key and foreign key constraints that are removed will have
+to be manually recreated.
+    </para>
+      <section xml:id="vdbengineinfinst">
+        <title>Install and configure OpenLink ODBC Driver for Informix</title>
+        <para>The Virtuoso Virtual Database engine uses ODBC as the connectivity mechanism for linking
+remote database objects into its local schema. Thus an Informix ODBC Driver must be available with a
+suitably configured DSN for connecting to the target database. The OpenLink ODBC Drivers for Informix
+have been used in this section, although in theory any Informix ODBC Driver can be used.</para>
+        <para>Installation instructions for the OpenLink ODBC Driver for Informix are available from:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC">Product
+Installation &amp; Basic Configuration (ODBC)</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="vdbengineinfconfvsr">
+        <title>Install and configure OpenLink Virtuoso Universal Server</title>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link linkend="virtclientrefinstallandconfigvirt">Install and configure OpenLink Virtuoso Universal Server</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="vdbengineinflink">
+        <title>Linking Informix tables into OpenLink Virtuoso</title>
+        <orderedlist>
+          <listitem>
+            <para>Start the Virtuoso Web User Interface
+    </para>
+            <figure xml:id="infinf1" floatstyle="1">
+              <title>Start</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Conductor" link in the Left Frame and Login as the "dba" user.
+    </para>
+            <figure xml:id="infinf2" floatstyle="1">
+              <title>Conductor</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Databases" -&gt; "External Data Source" -&gt; "Data Sources" tab menu items
+    </para>
+            <figure xml:id="infinf3" floatstyle="1">
+              <title>Databases</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Connect" button for the "inf10ma" Informix DSN.
+    </para>
+            <figure xml:id="infinf4" floatstyle="1">
+              <title>Connect</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On successful connection Select the "Link Objects" button to obtain a list of available tables
+    </para>
+            <figure xml:id="infinf5" floatstyle="1">
+              <title>Link Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select all the tables that are part of the "stores_demo" catalog.
+    </para>
+            <figure xml:id="infinf6" floatstyle="1">
+              <title>Select all tables</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Change the Catalog for each table to be "stores_demo" using the "Set All" button.
+    </para>
+            <figure xml:id="infinf7" floatstyle="1">
+              <title>Catalog</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>All the catalog names are changed to be "stores_demo".
+    </para>
+            <figure xml:id="infinf8" floatstyle="1">
+              <title>catalog names</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Link" button to link the selected tables into Virtuoso
+    </para>
+            <figure xml:id="infinf9" floatstyle="1">
+              <title>"Link" button</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On completion of the Link process the tables will be displayed in the "External Linked Objects" tab.
+    </para>
+            <figure xml:id="infinf10" floatstyle="1">
+              <title>Completion</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>At this point you can test the remotely linked tables by clicking on the link that accompanies
+each table. e.g. stores_demo.inf10ma.customer.
+    </para>
+            <para>This will display the Interactive ISQL interface which will have been already populated with a
+suitable SQL statement.</para>
+            <figure xml:id="infinf11" floatstyle="1">
+              <title>Querying</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select Execute to see data from the remotely linked table.
+    </para>
+            <figure xml:id="infinf12" floatstyle="1">
+              <title>Execute</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The tables can also be viewed as part of the Virtuoso "SQL Schema Objects" under the
+"stores_demo" catalog name.
+    </para>
+            <figure xml:id="infinf13" floatstyle="1">
+              <title>SQL Schema Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/infinf13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>The Link process is now complete enabling the tables to be queried as if part of the Virtuoso Schema.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="vdbengineinfcre">
+        <title>Creating EDM in Visual Studio 2008</title>
+        <para>The following steps can be used to create an Entity Data Model (EDM) for the Informix
+stores_demo database:</para>
+        <orderedlist>
+          <listitem>
+            <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+            <figure xml:id="einf1" floatstyle="1">
+              <title>Visual Studio 2008 SP1 IDE</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create a </para>
+            <para>
+              <emphasis>Web Application</emphasis>
+            </para>
+            <para> project by going to the </para>
+            <para>
+              <emphasis>File</emphasis>
+            </para>
+            <para>
+menu in Visual Studio and choosing </para>
+            <para>
+              <emphasis>New Project</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="epro2_06" floatstyle="1">
+              <title>Web Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/epro2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>When the New Project window appears, choose either </para>
+            <para>
+              <emphasis>Visual Basic</emphasis>
+            </para>
+            <para> or
+</para>
+            <para>
+              <emphasis>Visual C#</emphasis>
+            </para>
+            <para> as your programming language.</para>
+          </listitem>
+          <listitem>
+            <para>Within the language category, click on </para>
+            <para>
+              <emphasis>Web</emphasis>
+            </para>
+            <para> and select
+</para>
+            <para>
+              <emphasis>ASP.NET Web Application</emphasis>
+            </para>
+            <para> from the right-hand panel. </para>
+          </listitem>
+          <listitem>
+            <para>Choose a name for the project, for example </para>
+            <para>
+              <emphasis>stores_demo</emphasis>
+            </para>
+            <para>, and
+click </para>
+            <para>
+              <emphasis>OK</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="einf2" floatstyle="1">
+              <title>name for the project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>This will create a new project called </para>
+            <para>
+              <emphasis>stores_demo</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="einf3" floatstyle="1">
+              <title>create a new project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the Project -&gt; Add New Item menu option.
+    </para>
+            <figure xml:id="einf4" floatstyle="1">
+              <title>New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Add New Item</emphasis>
+            </para>
+            <para> dialog will appear. Choose the
+</para>
+            <para>
+              <emphasis>ADO.NET Entity Data Model</emphasis>
+            </para>
+            <para> template. Give it the name </para>
+            <para>
+              <emphasis>Model1.edmx</emphasis>
+            </para>
+            <para> e
+and click </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> to start the creation of the ADO.Net Entity Data Model.
+    </para>
+            <figure xml:id="einf5" floatstyle="1">
+              <title>Add New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose Model Contents</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>Generate from Database</emphasis>
+            </para>
+            <para>
+model type and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="eora6_03" floatstyle="1">
+              <title>Choose Model Contents</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose your Data Connection</emphasis>
+            </para>
+            <para> page, select the </para>
+            <para>
+              <emphasis>New Connection button</emphasis>
+            </para>
+            <figure xml:id="einf7" floatstyle="1">
+              <title>Entity Data Model Wizard</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose Data Source</emphasis>
+            </para>
+            <para> dialog, select the OpenLink
+</para>
+            <para>
+              <emphasis>Virtuoso Data Source</emphasis>
+            </para>
+            <para> from the list and click </para>
+            <para>
+              <emphasis>Continue</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="einf8" floatstyle="1">
+              <title>Choose Data Source</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Add Connection</emphasis>
+            </para>
+            <para> dialog, specify the
+</para>
+            <para>
+              <emphasis>hostname, portno, username and password</emphasis>
+            </para>
+            <para> for the target Virtuoso Server and check the Save Password check box.
+    </para>
+            <figure xml:id="einf9" floatstyle="1">
+              <title>Connection Properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the </para>
+            <para>
+              <emphasis>Select Database From List</emphasis>
+            </para>
+            <para> radio button and choose the
+</para>
+            <para>
+              <emphasis>stores_demo</emphasis>
+            </para>
+            <para> database from the drop down list.
+    </para>
+            <figure xml:id="einf10" floatstyle="1">
+              <title>Add connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Press the </para>
+            <para>
+              <emphasis>Test Connection</emphasis>
+            </para>
+            <para> dialog to verify that the database is accessible.
+    </para>
+            <figure xml:id="einf11" floatstyle="1">
+              <title>Test Connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Set the </para>
+            <para>
+              <emphasis>entity connect string</emphasis>
+            </para>
+            <para> name to
+</para>
+            <para>
+              <emphasis>stores_demoEntities </emphasis>
+            </para>
+            <para> (note this name as it is required in the section on creating and
+ADO.Net Data Service) and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="einf12" floatstyle="1">
+              <title>entity connect string</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose your Database Objects</emphasis>
+            </para>
+            <para> page tick the
+</para>
+            <para>
+              <emphasis>Tables</emphasis>
+            </para>
+            <para> check box to select all tables in the stores_demo catalog for addition to the
+Entity Data Model. Set the </para>
+            <para>
+              <emphasis>Model Namespace</emphasis>
+            </para>
+            <para> to </para>
+            <para>
+              <emphasis>stores_demoModel</emphasis>
+            </para>
+            <para> and
+click </para>
+            <para>
+              <emphasis>Finish</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="einf13" floatstyle="1">
+              <title>Database Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Model1.edmx</emphasis>
+            </para>
+            <para> EDM will be created with the tables and relationships
+displayed in the Visual Studio IDE
+    </para>
+            <figure xml:id="einf14" floatstyle="1">
+              <title>Virtuoso.edmx</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>Creation for the Entity Data Model for the Informix stores_demo database is now complete.</para>
+      </section>
+      <section xml:id="vdbengineinfdm">
+        <title>Using EDM to create Entity Framework based applications</title>
+        <para>Now that a Microsoft Entity Data Model has been created for the Informix stores_demo database,
+Entity Framework applications can be created to make use of it.</para>
+        <section xml:id="vdbengineinfdmf">
+          <title>Entity Frameworks based finf</title>
+          <para>An ADO.Net Data Service for the Informix tables can be created using the Entity Data Model
+created in the <link linkend="vdbengineinfcre">Creating EDM in Visual Studio 2008 section</link>
+
+  .</para>
+          <orderedlist>
+            <listitem>
+              <para>Open the </para>
+              <para>
+                <emphasis>stores_demo</emphasis>
+              </para>
+              <para> project created in the 
+              <link linkend="vdbengineinfcre">Creating EDM in Visual Studio 2008 section</link>
+              .
+  </para>
+            </listitem>
+            <listitem>
+              <para>Select the Project -&gt; Add New Item menu option.
+    </para>
+              <figure xml:id="finf1" floatstyle="1">
+                <title>VirtuosoDataService</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/einf4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The </para>
+              <para>
+                <emphasis>Add New Item</emphasis>
+              </para>
+              <para> dialog will appear. Choose the
+</para>
+              <para>
+                <emphasis>ADO.NET Data Service template</emphasis>
+              </para>
+              <para>. Give it the name </para>
+              <para>
+                <emphasis>WebDataService.svc</emphasis>
+              </para>
+              <para> and
+click </para>
+              <para>
+                <emphasis>Add</emphasis>
+              </para>
+              <para> to create the ADO.Net Data Service.
+    </para>
+              <figure xml:id="finf2" floatstyle="1">
+                <title>Add New Item</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/finf2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the newly created </para>
+              <para>
+                <emphasis>WebDataService1.svc.cs</emphasis>
+              </para>
+              <para> Data Service file,
+add the data source class name of </para>
+              <para>
+                <emphasis>stores_demoEntities</emphasis>
+              </para>
+              <para> (note this is the name set
+in the Creating EDM in Visual Studio 2008 section) as the </para>
+              <para>
+                <emphasis>DataService</emphasis>
+              </para>
+              <para> name. Enable
+the access to the Data Service by adding the entry </para>
+              <para>
+                <emphasis>config.SetEntitySetAccessRule("*", EntitySetRights.All);</emphasis>
+              </para>
+              <para> in the </para>
+              <para>
+                <emphasis>InitializeService</emphasis>
+              </para>
+              <para> method.
+</para>
+              <programlisting>
+// C#
+
+using System;
+using System.Web;
+using System.Collections.Generic;
+using System.ServiceModel.Web;
+using System.Linq;
+using System.Data.Services;
+
+namespace SimpleDataService
+{
+    public class Northwind : DataService&lt;stores_demoDemoEntities&gt;
+    {
+        public static void InitializeService(IDataServiceConfiguration  config)
+        {
+            config.SetEntitySetAccessRule("*", EntitySetRights.All);
+        }
+    }
+}
+
+</programlisting>
+              <figure xml:id="finf3" floatstyle="1">
+                <title>WebDataService1.svc.cs</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/finf3.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To test the Data Service, simply hit </para>
+              <para>
+                <emphasis>Ctrl+F5</emphasis>
+              </para>
+              <para> within Visual Studio. This
+will start the development web server, run the Data Services server inside, and load a Web
+browser page displaying the list of available tables/entities for the stores_demo database catalog.
+    </para>
+              <figure xml:id="finf4" floatstyle="1">
+                <title>Data Service test</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/finf4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To access a specific entity instance like the </para>
+              <para>
+                <emphasis>CUSTOMERS</emphasis>
+              </para>
+              <para> table customer
+number </para>
+              <para>
+                <emphasis>101</emphasis>
+              </para>
+              <para> record, use this convention http://host/vdir/WebDataService1.svc/customer(101).
+    </para>
+              <figure xml:id="finf5" floatstyle="1">
+                <title>custmers</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/finf5.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>
+            <emphasis>Notes:</emphasis>
+          </para>
+          <orderedlist>
+            <listitem>
+              <para>
+                <emphasis>Important</emphasis>
+              </para>
+              <para> - To view </para>
+              <para>
+                <emphasis>Atom</emphasis>
+              </para>
+              <para> (the default format
+returned by an ADO.NET Data Service) in Internet Explorer, you must first ensure that
+</para>
+              <para>
+                <emphasis>Feed Reading View</emphasis>
+              </para>
+              <para> is turned </para>
+              <para>
+                <emphasis>off</emphasis>
+              </para>
+              <para>. This can be done on the
+</para>
+              <para>
+                <emphasis>Content tab</emphasis>
+              </para>
+              <para> of </para>
+              <para>
+                <emphasis>Tools in Internet Options</emphasis>
+              </para>
+              <para>.</para>
+            </listitem>
+            <listitem>
+              <para>If a Data Services entity instance URI page fails to load you can turn </para>
+              <para>
+                <emphasis>Verbose</emphasis>
+              </para>
+              <para>
+errors on by adding </para>
+              <para>
+                <emphasis>config.UseVerboseErrors = true;</emphasis>
+              </para>
+              <para> in the
+</para>
+              <para>
+                <emphasis>virtuoso.svc.cs InitializeService</emphasis>
+              </para>
+              <para> method to obtain more detailed information from the server as to why the page failed to load:
+</para>
+              <programlisting>
+public static void InitializeService(IDataServiceConfiguration config)
+
+{
+
+config.UseVerboseErrors = true;
+
+config.SetEntitySetAccessRule("*", EntitySetRights.All);
+
+}
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+        <section xml:id="vdbengineinfdmvs">
+          <title>Visual Studio Windows DataGrid Form Application</title>
+          <para>This sectiond details the steps required to create a simple Visual Studio 2008 Windows Form
+application, with associated DataGridView control for displaying data in selected tables from the target
+database.</para>
+          <orderedlist>
+            <listitem>
+              <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+              <figure xml:id="dora1_02" floatstyle="1">
+                <title>Visual Studio 2008 SP1 IDE</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora1.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Create a </para>
+              <para>
+                <emphasis>Web Application</emphasis>
+              </para>
+              <para> project by going to the </para>
+              <para>
+                <emphasis>File</emphasis>
+              </para>
+              <para>
+menu in Visual Studio and choosing </para>
+              <para>
+                <emphasis>New Project</emphasis>
+              </para>
+              <para>.
+
+</para>
+              <figure xml:id="epro2_07" floatstyle="1">
+                <title>Web Application
+</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/epro2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>When the New Project window appears, choose either </para>
+              <para>
+                <emphasis>Visual Basic</emphasis>
+              </para>
+              <para> or
+</para>
+              <para>
+                <emphasis>Visual C#</emphasis>
+              </para>
+              <para> as your programming language.</para>
+            </listitem>
+            <listitem>
+              <para>Within the language category, click on </para>
+              <para>
+                <emphasis>Windows</emphasis>
+              </para>
+              <para> and select
+</para>
+              <para>
+                <emphasis>Windows Form Application</emphasis>
+              </para>
+              <para> from the right-hand panel.</para>
+            </listitem>
+            <listitem>
+              <para>Choose a name for the project, for example </para>
+              <para>
+                <emphasis>VirtWindowsFormApplication</emphasis>
+              </para>
+              <para>,
+and click </para>
+              <para>
+                <emphasis>OK</emphasis>
+              </para>
+              <para>.
+  </para>
+              <figure xml:id="dora2_02" floatstyle="1">
+                <title>Web Application</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Toolbox</emphasis>
+              </para>
+              <para>, expand </para>
+              <para>
+                <emphasis>Data Controls</emphasis>
+              </para>
+              <para>, and drag the
+</para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control onto the form.
+    </para>
+              <figure xml:id="dora3_02" floatstyle="1">
+                <title>Toolbox</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora3.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the little </para>
+              <para>
+                <emphasis>arrow</emphasis>
+              </para>
+              <para> in the top right of the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+This loads the </para>
+              <para>
+                <emphasis>DataGridView Task</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="dora4_02" floatstyle="1">
+                <title>DataGridView Task</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> list box.
+    </para>
+              <figure xml:id="dora5_02" floatstyle="1">
+                <title>Choose Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora5.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Add Project Data Source</emphasis>
+              </para>
+              <para> link to connect to a data source.
+    </para>
+              <figure xml:id="dora6_02" floatstyle="1">
+                <title>Add Project Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora6.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose Data Source Type</emphasis>
+              </para>
+              <para> page select the </para>
+              <para>
+                <emphasis>Database</emphasis>
+              </para>
+              <para> data source
+type and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="dora7_02" floatstyle="1">
+                <title>Data Source Type</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora7.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose your Data Connection</emphasis>
+              </para>
+              <para> page, select the </para>
+              <para>
+                <emphasis>New Connection</emphasis>
+              </para>
+              <para> button
+    </para>
+              <figure xml:id="dora8_02" floatstyle="1">
+                <title>Data Source Configuration Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora8.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> dialog, select the OpenLink
+</para>
+              <para>
+                <emphasis>Virtuoso Data Source</emphasis>
+              </para>
+              <para> from the list and click </para>
+              <para>
+                <emphasis>Continue</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="dora9_02" floatstyle="1">
+                <title>Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora9.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Add Connection</emphasis>
+              </para>
+              <para> dialog, specify the
+</para>
+              <para>
+                <emphasis>hostname, portno, username and password</emphasis>
+              </para>
+              <para> for the target Virtuoso Server and
+check the </para>
+              <para>
+                <emphasis>Save Password</emphasis>
+              </para>
+              <para> check box.
+    </para>
+              <figure xml:id="dora10_05" floatstyle="1">
+                <title>Connection Properties</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora10.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the Select Database From List radio button and choose the
+</para>
+              <para>
+                <emphasis>stores_demo</emphasis>
+              </para>
+              <para> from the drop down list.
+    </para>
+              <figure xml:id="dora11in" floatstyle="1">
+                <title>Add connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora11in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Press the </para>
+              <para>
+                <emphasis>Test Connection</emphasis>
+              </para>
+              <para> dialog to verify that the database is accessible.
+    </para>
+              <figure xml:id="dora12_02" floatstyle="1">
+                <title>Test Connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora12.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Leave the default connect string </para>
+              <para>
+                <emphasis>stores_demoConnectionString</emphasis>
+              </para>
+              <para> and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <figure xml:id="dora13in" floatstyle="1">
+                <title>stores_demoConnectionString</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora13in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>From the list of available tables returned for the stores_demo database, select
+the </para>
+              <para>
+                <emphasis>msgs</emphasis>
+              </para>
+              <para> table to be associated with the
+</para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+    </para>
+              <figure xml:id="dora14in" floatstyle="1">
+                <title>stores_demo database</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora14in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The columns names of the select table will be displayed in the DataGridView.
+    </para>
+              <figure xml:id="dora15in" floatstyle="1">
+                <title>DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora15in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Resize the Form and DataGridView to allow all columns to be visible, if possible.
+    </para>
+              <figure xml:id="dora16in" floatstyle="1">
+                <title>Resize the Form and DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora16in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To test the application, simply hit </para>
+              <para>
+                <emphasis>Ctrl+F5</emphasis>
+              </para>
+              <para> within Visual Studio or
+select </para>
+              <para>
+                <emphasis>Start Debugging</emphasis>
+              </para>
+              <para> from the </para>
+              <para>
+                <emphasis>Debug</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="dora17_02" floatstyle="1">
+                <title>Start Debugging</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora17.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <!--listitem>The data from the <emphasis>msgs</emphasis> table will be displayed in the <emphasis>DataGrid</emphasis>.
+    <figure
+xml:id="dora18in" float="1">
+      <title>DataGrid</title>
+      <graphic fileref="ui/dora18in.png"/>
+    </figure>
+  </listitem-->
+
+            <listitem>
+              <para>To make the DataGridView updateable, you will need to manually add some code to the
+project along with a suitable control to invoke the code. Drag a Button control onto the form.
+    </para>
+              <figure xml:id="dora19in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora19in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Right click on the Button and select Properties.
+    </para>
+              <figure xml:id="dora20in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora20in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the Properties view, edit the buttons Text property to read Save Changes and its (Name) property to read saveChanges.
+    </para>
+              <figure xml:id="dora21in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora21in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The button will now update to reflect these changes.
+    </para>
+              <para>NOTE: You will need to resize the button to make the new text visible.</para>
+              <figure xml:id="dora22in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora22in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Double click the new button to generate the required event handler. It should take you
+directly to the area of code that will execute when the button is clicked.
+    </para>
+              <figure xml:id="dora23in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora23in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Edit the saveChanges_Click event handler code to include the following line.
+</para>
+              <programlisting>
+private void saveChanges_Click(object sender, EventArgs e)
+{
+  this.msgsTableAdapter.Update(this.stores_demoDataSet.msgs);
+}
+</programlisting>
+              <figure xml:id="dora24in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora24in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Now test the application again by hitting Ctrl+F5.
+    </para>
+              <para>Scroll to the empty row, at the bottom, and enter data for a new row. Then, select Save Changes
+which will write the new row back to the database.</para>
+              <para>Updates and deletes can be performed similarly. </para>
+              <figure xml:id="dora25in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora25in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>You can use Interactive ISQL to test that the changes that have been written. Interactive ISQL Interface is detailed in the 
+              <link linkend="vdbengineinflink">Linking Informix tables</link>
+               section.
+    </para>
+              <figure xml:id="dora26in" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora26in.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>The task is now complete.</para>
+        </section>
+      </section>
+    </section>

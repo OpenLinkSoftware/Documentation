@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_wsdl_import_udt">
+      <refmeta>
+        <refentrytitle>wsdl_import_udt
+</refentrytitle>
+        <refmiscinfo>ws
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>WSDL_IMPORT_UDT
+</refname>
+        <refpurpose>Returns a string containing a UDT definition
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_wsdl_import_udt">
+          <funcprototype xml:id="fproto_wsdl_import_udt">
+            <funcdef>varchar 
+<function>WSDL_IMPORT_UDT
+</function>
+
+</funcdef>
+            <paramdef choice="opt">in 
+<parameter>url
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>f
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>exec
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_wsdl_import_udt">
+        <title>Description
+</title>
+        <para>This function is used to create a user defined type (UDT) definition
+    automatically based on a WSDL file. The source WSDL is supplied via a URL.</para>
+        <para>The returned definition can be saved to a file and/or executed automatically
+    to provide instant access to the new UDT.
+</para>
+        <note>
+          <title>Note:
+</title>
+          <para>To save the file you must have an appropriate ACL defined.
+</para>
+        </note>
+      </refsect1>
+      <refsect1 xml:id="params_wsdl_import_udt">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>url
+</title>
+          <para>The URI of the target WSDL file to build a UDT definition of.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>f
+</title>
+          <para>The name of the file if the definition is to be saved. This will produce a
+      file on the file system under the server root directory.
+</para>
+          <para>The default value is NULL, which will not create a file.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>exec
+</title>
+          <para>This flag indicates whether the definition should be immediately
+      executed upon import. This takes the form of 0 or 1. The default value
+      of 0 will not execute the definition.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_wsdl_import_udt">
+        <title>Return Types
+</title>
+        <para>This function returns the text of the UDT definition as a varchar.
+</para>
+      </refsect1>
+      <!--
+  <refsect1
+xml:id="errors_wsdl_import_udt">
+    <title>Errors</title>
+    <para>This function can generate the following errors:</para>
+    <errorcode></errorcode>
+  </refsect1>
+-->
+
+      <refsect1 xml:id="examples_wsdl_import_udt">
+        <title>Examples
+</title>
+        <example xml:id="ex_wsdl_import_udt">
+          <title>Simple example of a WSDL driven UDT
+</title>
+          <para>Web Service proxy wrapper for Redcoal SMS SOAP interface:
+</para>
+          <programlisting>
+SQL&gt; WSDL_IMPORT_UDT ('http://xml.redcoal.com/soapserver.dll/wsdl/ISoapServer', 'redcoal.sql');
+</programlisting>
+          <para>This will create the following file on file system called <computeroutput>redcoal.sql</computeroutput>
+
+  :</para>
+          <screen>
+-- Automatically generated code
+-- imported from WSDL URI: "http://xml.redcoal.com/soapserver.dll/wsdl/ISoapServer"
+-- UDT class
+drop type "ISOAPServerservice"
+;
+
+create type "ISOAPServerservice"
+  as
+    (
+      debug int default 0,
+      url varchar default 'http://xml.redcoal.com/soapserver.dll/soap/ISoapServer',
+      request varchar,
+      response varchar
+    )
+-- Binding: "http://tempuri.org/:ISOAPServerbinding"
+
+method "SendTextSMS"
+       (
+        "strInSerialNo" any,
+        "strInSMSKey" any,
+        "strInRecipients" any,
+        "strInMessageText" any,
+        "strInReplyEmail" any,
+        "strInOriginator" any,
+        "iInType" any,
+        "strOutMessageIDs" any,
+        "return" any
+       ) returns any,
+
+.... more methods follows ; do not supplied for brevity
+
+method "RedWebServiceVersion"
+       (
+        "return" any
+       ) returns any,
+
+method style () returns any
+;
+
+-- Methods
+
+create method "SendTextSMS"
+       (
+        in "strInSerialNo" any,
+        in "strInSMSKey" any,
+        in "strInRecipients" any,
+        in "strInMessageText" any,
+        in "strInReplyEmail" any,
+        in "strInOriginator" any,
+        in "iInType" any,
+        inout "strOutMessageIDs" any,
+        out "return" any
+       ) for "ISOAPServerservice"
+{
+  declare action, namespace, enc varchar;
+  declare style int;
+  declare _result, _body, xe any;
+  action := 'urn:SOAPServerImpl-ISOAPServer#SendTextSMS';
+
+  namespace := 'urn:SOAPServerImpl-ISOAPServer';
+
+  style := 0;
+
+  if (self.debug)
+    style := style + 2;
+  _result := SOAP_CLIENT (
+	        url=&gt;self.url,
+		operation=&gt;'SendTextSMS',
+ 		soap_action=&gt;action,
+	        target_namespace=&gt;namespace,
+ 		parameters=&gt;vector
+    (
+     vector('strInSerialNo', 'http://www.w3.org/2001/XMLSchema:string'), "strInSerialNo" ,
+     vector('strInSMSKey', 'http://www.w3.org/2001/XMLSchema:string'), "strInSMSKey" ,
+     vector('strInRecipients', 'http://www.w3.org/2001/XMLSchema:string'), "strInRecipients" ,
+     vector('strInMessageText', 'http://www.w3.org/2001/XMLSchema:string'), "strInMessageText" ,
+     vector('strInReplyEmail', 'http://www.w3.org/2001/XMLSchema:string'), "strInReplyEmail" ,
+     vector('strInOriginator', 'http://www.w3.org/2001/XMLSchema:string'), "strInOriginator" ,
+     vector('iInType', 'http://www.w3.org/2001/XMLSchema:int'), "iInType" ,
+     vector('strOutMessageIDs', 'http://www.w3.org/2001/XMLSchema:string'), "strOutMessageIDs"
+    ),
+		style=&gt;style
+               );
+  if (self.debug)
+    {
+      _body := _result[0];
+      self.request := _result[1];
+      self.response := _result[2];
+    }
+  else
+    _body := _result;
+  xe := xml_cut (xml_tree_doc (_body));
+  "strOutMessageIDs" := xml_cut (xpath_eval ('//strOutMessageIDs', xe, 1));
+  "strOutMessageIDs" := soap_box_xml_entity_validating ("strOutMessageIDs",
+    'http://www.w3.org/2001/XMLSchema:string', 0);
+  "return" := xml_cut (xpath_eval ('//return', xe, 1));
+  "return" := soap_box_xml_entity_validating ("return", 'http://www.w3.org/2001/XMLSchema:int', 0);
+
+  return _result;
+}
+;
+
+.... more method definitions follows ; not supplied for brevity
+
+create method "RedWebServiceVersion"
+       (
+        out "return" any
+       ) for "ISOAPServerservice"
+{
+  declare action, namespace, enc varchar;
+  declare style int;
+  declare _result, _body, xe any;
+  action := 'urn:SOAPServerImpl-ISOAPServer#RedWebServiceVersion';
+
+  namespace := 'urn:SOAPServerImpl-ISOAPServer';
+
+  style := 0;
+
+  if (self.debug)
+    style := style + 2;
+  _result := SOAP_CLIENT (
+	        url=&gt;self.url,
+		operation=&gt;'RedWebServiceVersion',
+ 		soap_action=&gt;action,
+	        target_namespace=&gt;namespace,
+ 		parameters=&gt;vector
+                        (
+
+			),
+		style=&gt;style
+               );
+  if (self.debug)
+    {
+      _body := _result[0];
+      self.request := _result[1];
+      self.response := _result[2];
+    }
+  else
+    _body := _result;
+  xe := xml_cut (xml_tree_doc (_body));
+  "return" := xml_cut (xpath_eval ('//return', xe, 1));
+  "return" := soap_box_xml_entity_validating ("return",
+    'http://www.w3.org/2001/XMLSchema:string', 0);
+
+  return _result;
+}
+;
+
+</screen>
+          <para>This script, executed via the ISQL tool, or automatically if the 'exec' flag is set to 'true',
+will define the desired UDT in database. Developing a simple application for checking the Redcoal SMS SOAP interface
+could be done as follows using a stored procedure:
+</para>
+          <screen>
+create procedure
+redcoaltest ()
+{
+  declare svc "ISOAPServerservice";
+  declare res nvarchar;
+  svc := new "ISOAPServerservice" ();
+  svc."RedWebServiceVersion" (res);
+  result_names (res);
+  result (res);
+}
+;
+
+</screen>
+          <para>Which could have the following output:</para>
+          <screen>
+SQL&gt; redcoaltest();
+res
+NVARCHAR
+____________________________________________
+
+5.0
+
+1 Rows. -- 1974 msec.
+
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_wsdl_import_udt">
+        <title>See Also
+</title>
+        <para>The 
+<link linkend="udtcnsmsoap"/>
+
+   section.
+</para>
+      </refsect1>
+    </refentry>

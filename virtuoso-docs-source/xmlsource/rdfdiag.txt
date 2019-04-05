@@ -1,0 +1,177 @@
+
+H1 
+
+
+
+
+For RDF query performance, we have the following possible questions:
+
+1. Is the graph always specified?
+2. Are There patterns where only a predicate is given?
+3. Is there a bad query plan because of cost model error?
+
+H2 Index Scheme Selection 
+
+If the graph is always given, as one or more FROM or FROM NAMED, and there are no patterns where only graph and predicate are given, then the default indices should be appropriate.
+If the predicate and graph are given, then it is sometimes useful to add
+
+create bitmap index RDF_QUAD_PGOS on RDF_QUAD (G, P, O, S) partition (O varchar (-1, 0hexffff));
+
+If the server is pre 5.0.7, leave out the partitioning clause.
+
+Making the PGOS index can help in some cases even if it is not readily apparent from the queries that one is needed.  This is so for example if the predicate by itself is selective, i.e. there is a predicate that occurs in only a few triples.
+
+
+If the graph itself is not given in the queries, then the default index scheme will be unworkable.  For this, the scheme:
+
+create table RDF_QUAD (G iri_id_8, S iri_id_8, P iri_id_8, O any, primary key (S, P, O, G))
+alter index RDF_QUAD on RDF_QUAD partition (S int (0hexffff00));
+create bitmap index RDF_QUAD_OPGS on rdf_quad (o, p, g, s) partition (o varchar (-1, 0hexffff));
+create bitmap index RDF_QUAD_POGS on RDF_QUAD (P, O, G, S) partition (o varchar (-1, 0hexffff));
+create bitmap index RDF_QUAD_GPOS on RDF_QUAD (G, P, O, S) partition (o varchar (-1, 0hexffff));
+For a pre 5.0.7 server, leave the partition clauses and the alter index statement out.
+
+If there are existing triples and one does not wish to reload them, then the following sequence will convert the data:
+
+
+log_enable (2);
+drop index RDF_QUAD_OGPS;
+checkpoint;
+create table R2 (G iri_id_8, S iri_id_8, P iri_id_8, O any, primary key (S, P, O, G))
+alter index R2 on R2 partition (S int (0hexffff00));
+
+insert into r2 (g, s, p, o) select g, s, p, o from rdf_quad;
+
+drop table RDF_QUAD;
+checkpoint;
+alter table r2 rename RDF_QUAD;
+create bitmap index RDF_QUAD_OPGS on rdf_quad (o, p, g, s) partition (o varchar (-1, 0hexffff));
+create bitmap index RDF_QUAD_POGS on RDF_QUAD (P, O, G, S) partition (o varchar (-1, 0hexffff));
+create bitmap index RDF_QUAD_GPOS on RDF_QUAD (G, P, O, S) partition (o varchar (-1, 0hexffff));
+checkpoint;
+log_enable (1);
+
+
+First drop the OGPS index to make space.  Then, in row autocommit mode
+and without logging, copy the quads into a new primary key layout.
+Drop the old and rename the new over the old.  Make the additional
+indices.  Do a checkpoint after the drops so as to actually free the
+space also in the checkpointed state.  Finish with a checkpoint so as
+to finalize the changes, since logging was turned off.  Even if
+logging had been on, one would not wish to have to replay the
+reindexing if the server terminated abnormally.  Finally turn logging back on for the session.
+
+Note that this is all meant to be done with a SQL client like isql and not through a web interface.  The web interface has no real session and the log_enables do nothing there.
+
+
+Other indexing schemes may be tried.  We note however that in all
+cases, one or other of the indices should begin with G.  This is
+because for schema operations it is necessary to read through a
+graph. If no index begins with G, this becomes a full table scan and
+is unworkable, leading to an extremely slow server start and making
+operations like drop graph as good as unusable.
+
+
+H2 Erroneous Cost Estimates and Explicit Join Order 
+
+The selectivity of triple patterns is determined at query compile time from sampling the data.
+It is possible that misleading data is produced.
+To see if the cardinality guesses are generally valid, look at the query plan with explain ().
+
+Below is a sample from the LUBM qualification data set in the Virtuoso distribution.  After running make test in binsrc/test/lubm, there is a loaded database with the data.  Start a server in the same directory to see the data.
+
+SQL> explain ('sparql prefix ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+select * from <lubm>
+where { ?x rdf:type ub:GraduateStudent }');
+
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+{ 
+ 
+Precode:
+      0: $25 "callret" := Call __BOX_FLAGS_TWEAK (<constant (lubm)>, <constant (1)>)
+      5: $26 "" := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($25 "callret")
+      12: $27 "callret" := Call __BOX_FLAGS_TWEAK (<constant (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)>, <constant (1)>)
+      17: $28 "-ns#type" := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($27 "callret")
+      24: $29 "callret" := Call __BOX_FLAGS_TWEAK (<constant (http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent)>, <constant (1)>)
+      29: $30 "owl#GraduateStudent" := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($29 "callret")
+      36: BReturn 0
+from DB.DBA.RDF_QUAD by RDF_QUAD_OGPS    1.9e+03 rows
+Key RDF_QUAD_OGPS  ASC ($32 "s-3-1-t0.S")
+<col=415 O = $30 "owl#GraduateStudent"> , <col=412 G = $26 ""> , <col=414 P = $28 "-ns#type">
+row specs: <col=415 O LIKE <constant (Tó)>>
+ 
+Current of: <$34 "<DB.DBA.RDF_QUAD s-3-1-t0>" spec 5>
+ 
+After code:
+      0: $35 "x" := Call ID_TO_IRI ($32 "s-3-1-t0.S")
+      5: BReturn 0
+Select ($35 "x", <$34 "<DB.DBA.RDF_QUAD s-3-1-t0>" spec 5>)
+}
+
+22 Rows. -- 1 msec.
+
+This finds the graduate student instances in the lubm graph.  First
+the query converts the IRI literals to id's.  Then, using a match of
+OG on OGPS it finds the IRI's of the graduate students.  Then it
+converts the IRI id to return to the string form.
+
+The cardinality estimate of 1.9e+03 rows is on the FROM line.
+
+Doing an explain on the queries will show the cardinality estimates.  To drill down further, one can split the query into smaller chunks and see the estimates for these, up to doing it at the triple pattern level.  
+To indicate a variable that is bound but whose value is not a literal known at compile time, one can use the parameter marker ??.
+
+explain ('sparql define sql:table-option "order"  prefix ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+select * from <lubm>
+where { ?x rdf:type ?? }');
+
+This will not know the type but will know that a type will be
+provided.  So instead of guessing 1900 matches, this will guess a
+smaller number, which is obviously less precise.  Thus literals are generally better.  
+
+In some cases, generally to work around an optimization error, one can specify an explicit join order. 
+This is done with the sql:select-option "order"  clause in the SPARQL query prefix.
+
+select sparql_to_sql_text (' define sql:select-option "order" prefix ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+select * from <lubm>
+where { ?x rdf:type ub:GraduateStudent . ?x ub:takesCourse <http://www.Department0.University0.edu/GraduateCourse0> }');
+
+shows the SQL text with the order option at the end.
+
+
+
+If an estimate is radically wrong then this should be reported as a bug.
+
+If there is a FROM with a KEY on the next line and no column specs (as in <col=415 O = $30 "owl#GraduateStudent"> , <col=412 G = $26 ""> , <col=414 P = $28 "-ns#type">
+) in the above example, then this is a full table scan.  Note that a KEY with only a row spec is a full table scan with the row spec applied as a filter.
+This is usually not good unless this is specifically intended.
+
+If queries are compiled to make full table scans when this is not specifically intended, this should be reported as a bug.  The explain output and the query text should be included in the report. 
+
+An explicit join order is specified by the define sql:select-option "order" clause in the SPARQL query prefix:
+Consider:
+
+explain ('sparql define sql:select-option "order, loop" prefix ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#>
+select * from <lubm>
+where { ?x ub:takesCourse ?c . ?x rdf:type ub:GraduateStudent   }');
+
+One will see in the output that the first table access is to retrieve
+all in the lubm graph which take some course and then later to check
+if this is a graduate student.  This is obviously not the preferred
+order but the sql:select-option "order" forces the optimizer to join
+from left to right.
+
+It is very easy to end up with completely unworkable query plans in
+this manner but if the optimizer really is in error, then this is the
+only way of overriding its preferences.  The effect of sql:select-option is pervasive, extending inside unions, optionals, subqueries etc within the statement.
+
+
+We note that if, in the above query, both the course taken by the
+student and the type of the student are given, the query compilation
+will be, at least for all non-cluster cases, an index intersection.
+This is not overridden by the sql:select-option clause since an index
+intersection is always a safe guess, regardless of the correctness of
+the cardinality guesses of the patterns involved.
+

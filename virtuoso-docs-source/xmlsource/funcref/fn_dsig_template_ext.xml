@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_dsig_template_ext">
+      <refmeta>
+        <refentrytitle>dsig_template_ext
+</refentrytitle>
+        <refmiscinfo>hash
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>dsig_template_ext
+</refname>
+        <refpurpose>Generates a Digital signature template based on a XML document.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_dsig_template_ext">
+          <funcprototype xml:id="fproto_dsig_template_ext">
+            <funcdef>varchar 
+<function>dsig_template_ext
+</function>
+
+</funcdef>
+            <paramdef choice="opt">in 
+<parameter>xdoc
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>tmpl
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>wss_ver
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>ns-n
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>elm-n
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>...
+</parameter>
+
+   varchar
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_dsig_template_ext">
+        <title>Description
+</title>
+        <para>
+	The function is used to generate dynamically a digital
+	signature template containing references to be signed.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_dsig_template_ext">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>xdoc
+</title>
+          <para>input XML document
+</para>
+        </refsect2>
+        <refsect2>
+          <title>tmpl
+</title>
+          <para>a string containing base XML template
+</para>
+        </refsect2>
+        <refsect2>
+          <title>wss_ver
+</title>
+          <para>vector containing WS-Security and WS-Utility version URIs
+</para>
+        </refsect2>
+        <refsect2>
+          <title>ns-n
+</title>
+          <para>namespace to match
+</para>
+        </refsect2>
+        <refsect2>
+          <title>elm-n
+</title>
+          <para>element name to match
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_dsig_template_ext">
+        <title>Return Types
+</title>
+        <para>
+	  On success the function will return a string containing
+	  a XML template suitable to pass to the <function>xenc_encrypt</function>
+
+  .
+	  The elements matching listed in <parameter>elm-n</parameter>
+
+   from namespace URIs in <parameter>ns-n</parameter>
+
+   and having Id attribute will be included in the XML signature reference list.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_dsig_template_ext">
+        <title>Examples
+</title>
+        <example xml:id="ex_dsig_template_ext">
+          <title>Making a XML signature template
+</title>
+          <screen>
+create procedure XENC_TEMPLATE (in body varchar, in key_name varchar)
+{
+  declare tmpl, algo varchar;
+  declare ns any;
+
+  -- OASIS WS-Security extensions
+  ns := vector (
+  	'wsse', 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd',
+	'wsu', 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'
+	);
+
+  algo := xenc_get_key_algo (key_name);
+  if (algo is null)
+    return NULL;
+
+  -- base XML template
+  tmpl := sprintf ('&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Signature xmlns="http://www.w3.org/2000/09/xmldsig#" &gt;
+  &lt;SignedInfo&gt;
+    &lt;CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /&gt;
+    &lt;SignatureMethod Algorithm="%s" /&gt;
+  &lt;/SignedInfo&gt;
+  &lt;SignatureValue&gt;&lt;/SignatureValue&gt;
+  &lt;KeyInfo&gt;
+    &lt;KeyName&gt;%s&lt;/KeyName&gt;
+  &lt;/KeyInfo&gt;
+&lt;/Signature&gt;', algo, key_name);
+
+  return dsig_template_ext (xtree_doc (body), tmpl, ns,
+      'http://schemas.xmlsoap.org/soap/envelope/', 'Body',
+       -- WS-Addressing
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'Action',
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'From',
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'To',
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'MessageID',
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'ReplyTo',
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'FaultTo',
+      'http://schemas.xmlsoap.org/ws/2004/03/addressing', 'RelatesTo'
+      );
+
+}
+;
+
+</screen>
+        </example>
+      </refsect1>
+    </refentry>

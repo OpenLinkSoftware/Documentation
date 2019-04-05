@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rubyhosting">
+      <title>Ruby Hosting</title>
+      <para>Virtuoso functionality can be enhanced through external libraries by
+loading shared objects or DLLs.  The new functions are written in a language of
+choice and compiled to produce a shared library appropriate to the operating
+system.  The path to the shared library must be declared in the Virtuoso INI
+file and the server restarted before it can be used.</para>
+      <para>The Ruby language is hosted within Virtuoso in this way.
+<computeroutput>hosting_ruby.so</computeroutput>
+
+   (or
+<computeroutput>hosting_ruby.dll</computeroutput>
+
+  ) is the library used.</para>
+      <para>The Ruby hosting module requires the Ruby library, version 1.8.3 or above,
+to build and use the module, which then must be installed in the Plugins-Load-path
+defined in the Virtuoso ini file.  The source code for building the
+<computeroutput>hosting_ruby.so</computeroutput>
+
+   module are included in the Unix
+distribution in the  <computeroutput>custom/hosting/ruby</computeroutput>
+
+directory.  The Unix installer will offer to build it near the end of the
+installation process.</para>
+      <para>The Virtuoso INI file uses a [Plugins] configuration section for listing
+shared libraries for the server to load upon startup.  An example of this is:</para>
+      <programlisting>
+[Plugins]
+LoadPath = /home/virtuoso/hosting
+Load1 = Hosting, hosting_ruby.so
+..
+</programlisting>
+      <para>The "Hosting" type defines the entry points for initialization of the runtime
+hosting environment, destruction of the user environment and execution of a
+file or string containing commands in the hosted language.  It also returns a
+list of file extensions that it is capable of processing.  Virtuoso
+dynamically defines memory-resident (no disk image) HTTP server handlers for
+each specified type. </para>
+      <para>The Ruby hosting plugin supports the 'rb' extension.  Hence, upon
+initialization of the hosting plugin, Virtuoso defines the
+<function>__http_handler_rb(..)</function>
+
+    function according to the API for
+file type handlers in the Virtuoso HTTP server.  With this handler in place,
+each hit on a .rb file (file system or WebDAV) with appropriate execute
+permissions will cause the HTTP server to execute the code within it and return
+the result instead of simple the file contents.</para>
+      <para>The ruby interpreter has a global lock unrelated to the Virtuoso hosting
+module, thus no more than one thread can run ruby code at a time.</para>
+      <para>The handler will call the __hosting_http_handler VSE with a special set
+of parameters to represent the HTTP environment correctly.  Virtuoso will, by
+default call the plugin to memory as required, and expel it when finished.
+This behavior can be controlled by the INI file parameter:</para>
+      <programlisting>
+[HTTPServer]
+PersistentHostingModules = 1/0 default 0
+</programlisting>
+      <para>Setting <computeroutput>PersistentHostingModules</computeroutput>
+
+   to "1"
+prevents Virtuoso from removing the interpreters from the HTTP threads after
+each request.</para>
+      <tip>
+        <title>See Also:</title>
+        <para>
+          <link linkend="vseplugins">VSEI Plugins</link>
+        </para>
+      </tip>
+      <example xml:id="ex_hostingsharedobjectspy_01">
+        <title>Using the Ruby Plugin</title>
+        <para>Executing Ruby code directly:</para>
+        <programlisting>
+select __hosting_http_handler ('rb', 'print "hello world"; ', '', vector (), 'helloworld.rb');
+</programlisting>
+        <programlisting>
+returns : hello world
+</programlisting>
+        <para>Executing a ruby script file (ruby/test_print.rb in the Virtuoso
+working directory):</para>
+        <programlisting>
+ruby/test_print.rb
+-------------------
+#!/usr/bin/ruby
+print "hello world file";
+</programlisting>
+        <programlisting>
+select __hosting_http_handler ('rb', 'ruby/test_print.rb');
+</programlisting>
+        <programlisting>
+returns : hello world file
+</programlisting>
+      </example>
+    </section>

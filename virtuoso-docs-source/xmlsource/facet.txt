@@ -1,0 +1,352 @@
+
+The Virtuoso Facets web service is a general purpose RDF query
+facility for facet based browsing.  It takes an XML description of the
+view desired and generates the reply as an XML tree containing the
+requested data.  The user agent or a local web page can use XSLT for
+rendering this for the end user.  The selection of facets and values
+is represented as an XML tree.  The rationale for this is the fact
+that such a representation is easier to process in an application than
+the SPARQL source text or a parse tree of SPARQL and more compactly
+captures the specific subset of SPARQL needed for faceted browsing.
+The web service returns the SPARQL source text also, thus this can
+serve as a basis for hand-crafted queries.
+
+
+
+
+The top element of the tree is <query>, it must be in namespace "http://openlinksw.com/services/facets/1.0/". 
+
+This has the following attributes:
+
+graph="graph_iri" - default is search in all graphs but system defaults may override this 
+timeout="no_of_msec"  - default is no timeout, but system defaults may override this
+inference="name" where name is a name of an inference context declared with rdfs_rule_set.
+same-as="xx" - If "xx" is "yes", then owl:sameAs linkes will be considered in the query evaluation.
+
+The result is a tree of the form:
+
+<facets xmlns="http://openlinksw.com/services/facets/1.0/">
+<result><row><column datatype="..." shortform="..." xml:lang="..">...</column></row></result> 
+<time>msecs</time>
+<complete>yes or no</complete>
+<db-activity>resource use string</db-activity>
+<sparql>sparql statement text</sparql>
+</facets>
+
+
+By convention, the first column is the subject selected by the view element, typically a URI, the second a label of the URI and the third, if present, is either a count or a search summary.
+
+The first column's text child is the text form of the value.  The column element has the following attributes qualifying this further:
+
+datatype - The xsd type of the value.  If this is a URI, the datatype is "uri"
+shortform - If the value is a URI, this is an abbreviated form where known namespaces are replaced with their prefixes and very long URI's are truncated preserving start and end.
+xml:lang - if the value is a language tagged string, this is the language 
+
+
+The query has the top level element <query>.  The child elements of
+
+this represent conditions pertaining to a single subject.  A join is
+expressed with the property or property-of element.  This has in turn
+children which state conditions on a property of the first subject.
+property and property-of elements can be nested to an arbitrary depth
+and many can occur inside one containing element.  In this way,
+tree-shaped structures of joins can be expressed.
+
+
+Expressing more complex relationships, such as intermediate grouping,
+subqueries, arithmetic or such requires writing the query in SPARQL.
+The XML format is a shorthand for easy automatic composition of
+queries needed for showing facets, not a replacement for SPARQL.
+
+
+A facet query contains a single view element.  This specifies which subject of the joined subjects is shown.  Its attributes specify the manner of viewing, e.g. list of distinct values, distinct values with occurrence counts, properties or classes of the selected subjects etc.
+
+The top query element or any property or property-of element can have the following types of children:
+
+<text property="iri">text pattern</text>  -  The subject has an O that matches the text pattern.  If property is given, the text pattern must occur in a value of this property.  If not specified, any property will do.  The value "none" for property is the same as not specifying a property.  This is restricted to occurring directly undr the top level query element.
+
+<class iri="iri" inference="ctx_name" />  - The S must be an instance of this class.  If infertence is specified then option (input:inference "ctx_name" is added and applies to this pattern alone.
+
+<property iri="iri" same_as="yes" inference="ctx_name"> - The child elements of this are conditions that apply to the value of this property of the S that is in scope in the enclosing <query> or <property> element.  If same_as is present, then option (input:same-as "yes") is added to the triple pattern which specifies this property.  If inference is present, then option (input:inference "ctx_name") is added to the triple pattern for the property.
+
+<property-of iri="iri" same_as="yes" inference="ctx_name" > -  The child elements of this are conditions that apply to an S which has property "iri" whose object is the S in scope in the enclosing <query> or <property> elemenmt.  The options are otherwise the same as with property.
+
+<value datatype="type" xml:lang="lng" op="= | < | > | >= | <=">value
+</value> When this occurs inside <property> or <property-of> this
+means that the property in scope has the specified relation to the
+value.  type and language can be used for XML typed or language tagged
+literals.  The "uri" type means that the value is a qualified name of
+a URI.  If this occurs directly under the <query>element, this means that the query starts with a fixed subject.  If this is so, then there must be property or propertyof elements or the view element must specify properties or classes, list is not allowed as a view type.  This is so because the query must have at least one triple pattern.
+
+<view type="view" limit="n" offset="n" >  This may occur once inside a <query> element but may occur either at top level or inside property or property-of elements.  This specifies what which subject is presented in the result set.
+
+The type can be 
+
+"properties"  -  select ?p count  (*) { ?this_s ?p ?any_o ...}  group by ?p order by desc 2 limit l offset o
+
+"properties-in  -  select ?p count  (*) { ?any_s ?p ?this_s ... } group by ?p order by desc 2 limit l offset o
+
+"classes" - select ?c count (*) where ?xx a ?c ... } group by ?c order by desc 2 limit l offset o
+
+"text" select distinct ?s (bif:search_excerpt (sql:search_terms (""pattern"), ?o)) ... limit l offset o
+
+"list" - select distinct ?s long::sql:fct_label (?s) ... limit  l offset o
+
+"list-count" - select ?s count (*) .... group by ?s order by desc 2
+
+"alphabet"  select (sql:subseq (?s, 0, 1)) count (*) ... group by (sql:subseq (?s, 0, 1)) order by 1 
+
+"geo"  select distinct ?lat ?long ?s  where ?s geo:lat ?lat . ?s geo:long ?long . ... }
+
+"years" -  select sql::year (?s) count (*) ... group by (bif:year (?s)) order by 1 offset o limit l
+
+"months" -  select sql::round_month (?s) count (*) ... group by (sql:round_month (?s)) order by 1 offset o limit l
+
+"weeks" -  select sql::round_week (?s) count (*) ... group by (sql:round_week (?s)) order by 1 offset o limit l
+
+"describe"  - describe ?s ... offset o limit l
+  
+
+
+
+
+
+
+
+
+H1 Customizing 
+
+
+The following types of customization will be generally useful:
+
+- Resource accounting and limitations, managing access and login  
+ - Localization, choice of labels shown with class/property/instance URI's 
+- Adding types of views, for example timelines, map or business graphics 
+- Controlling navigation, for example choosing what type of view is initially presented when opening a given property.
+- Page layout, captions, help texts, etc.
+
+
+
+The source code is deivided in two SQL files and a number of XSLT sheets.
+The file facet.sql has the code for the web service.  The facet_view.sql file contains the procedures for the sample HTML interface.
+
+
+
+
+
+
+H1 Example 
+
+Note: in all examples the default namespace xmlns="http://openlinksw.com/services/facets/1.0/" is omitted for brevity.
+
+For people called Mike
+
+<query><text>Mike</text><view type="text"/></query>
+
+To openthe list of people who Mike knows:
+
+<query><text>Mike</text> <view type="properties"/> </query>
+
+To show the list of subjects  Mike knows:
+<query><text>Mike</text> <property iri="foaf:knows> <view type="list" /></property> </query>
+
+To show the properties of people Mike knows 
+
+<query><text>Mike</text> <property iri="foaf:knows> <view type="properties" /></property> </query>
+
+To show the names:
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name>
+<view type="list" /></property></property> </query>
+
+
+To specify one named Joe:
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+<view type="properties" /></property> </query>
+
+This lists the properties of the friends of Mike that are called Joe.
+
+To show the Mikes that know a Joe, one would change the shown variable in the navigation and get
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+</property> <view type="text" /> </query>
+
+This would be the search summaries of subjects with Mike in some field that know a subject with name Joe.
+
+
+Now to specify that Mike must be a member of a discussion board:
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+</property> <view type="property-of" /> </query>
+
+This lists the properties of triples whome object is Mike.
+Pick sioc:member_of
+
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+</property> 
+<property-of iri="sioc:member_of> <view type="list" /> </property-of> </query>
+
+This would show things where Mike is a member.  To specify that the thing must be a forum:
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+</property> 
+<property-of iri="sioc:member_of> <view type="classes" /> </property-of> </query>
+
+This shows classes of things where Mike is a member 
+Clicking on sioc:Forum gives:
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+</property> 
+<property-of iri="sioc:member_of> <class iri="sioc:Forum" /> 
+<view type="classes"/>  </property-of>  </query>
+
+The view stays with classes, but now scoped to the classes of things where Mike is a member that are instances of sioc:Forum.
+
+To go look at the list of Mikes with the added restriction, click the shown variable in the navigation and set it to s1.
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+</property> 
+<property-of iri="sioc:member_of> <class iri="sioc:Forum" /> 
+ </property-of> <view type="list"/> </query>
+
+To say that Joe must also have a geekCode, One clicks the shown variable and sets it to s2 and the view to properties.
+
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+<view type="properties"/>
+</property> 
+<property-of iri="sioc:member_of> <class iri="sioc:Forum" /> 
+ </property-of>  </query>
+
+Pick geekCode
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+<property iri="geekCode"><view type="list"/></property>
+</property> 
+<property-of iri="sioc:member_of> <class iri="sioc:Forum" /> 
+ </property-of>  </query>
+
+
+We specify no restriction on the geekCode.
+  Click the shown variable to take the focus back to Mike.
+
+<query><text>Mike</text> <property iri="foaf:knows> <property iri="foaf:name><value>Joe</value></property>
+<property iri="geekCode"></property>
+</property> 
+<property-of iri="sioc:member_of> <class iri="sioc:Forum" /> 
+ </property-of>   <view type="text"/> </query>
+
+
+
+H2 Choice of Labels 
+
+
+H2 WebService Interface 
+
+H3 REST interface
+
+The Virtuoso Facets web service provide following REST interface:
+
+Service description: 
+
+- Endpoint : http://b3s.openlinksw.com/fct/service
+- HTTP method : POST
+- Content-Type: MUST be 'text/xml'
+- The entity body must be XML document with top element 'query' as described above. 
+- The request response namespace MUST be "http://openlinksw.com/services/facets/1.0"
+
+Error conditions:
+
+The all error conditions are reported via '<error>Error explaiantion</error>'
+
+Files: 
+
+The facet_svc.sql contains web service code and virtual directory mapping, and it uses fct_req.xsl & fct_resp.xsl as request & response filters. 
+
+Example: 
+
+Using CURL program 
+
+curl -H "Content-Type: text/xml" -d @post.xml  http://b3s.openlinksw.com/fct/service
+
+Where 'post.xml' document contains query document: 
+
+<?xml version="1.0"?>
+<query xmlns="http://openlinksw.com/services/facets/1.0" inference="" same-as="">
+  <text> Seattle Mariners traveled all the way to Japan to watch</text>
+  <view type="text" limit="20" offset=""/>
+</query>
+
+Produces following response:
+
+<fct:facets xmlns:fct="http://openlinksw.com/services/facets/1.0/">
+<fct:sparql>   select distinct ?s1 as ?c1, (bif:search_excerpt (bif:vector (&#39;THE&#39;, &#39;MARINERS&#39;, &#39;WAY&#39;, &#39;SEATTLE&#39;, &#39;WATCH&#39;, &#39;ALL&#39;, &#39;TO&#39;, &#39;JAPAN&#39;, &#39;TRAVELED&#39;), ?o1)) as ?c2  where { ?s1 ?s1textp ?o1 . filter (bif:contains (?o1, &#39;(THE AND MARINERS AND WAY AND SEATTLE AND WATCH AND ALL AND TO AND JAPAN AND TRAVELED)&#39;)) . } limit 20  offset 0 </fct:sparql>
+<fct:time>116</fct:time>
+<fct:complete>yes</fct:complete>
+<fct:db-activity>   134R rnd  9.488KR seq      0P disk  8.966MB /    602 messages</fct:db-activity>
+ <fct:result>
+  <fct:row>
+    <fct:column datatype="url" shortform="http://bobdupuy.mlbl...ld_baseball__6.html"><![CDATA[http://bobdupuy.mlblogs.com/bobdupuy/2006/03/world_baseball__6.html]]></fct:column>
+    <fct:column />
+    <fct:column><![CDATA[<span class="srch_xerpt">... While Chuck Armstrong president of <b>the</b> <b>Seattle</b> <b>Mariners</b> <b>traveled</b> <b>all</b> <b>the</b> <b>way</b> <b>to</b> <b>Japan</b> <b>to</b> <b>watch</b> Ichiro... for <b>the</b> advancing <b>Japan</b> team last week <b>the</b> star from <b>the</b> <b>Seattle</b> roster so far in Round 1 has without a doubt... leading <b>the</b> Dominican <b>to</b> its...</span>]]></fct:column>
+  </fct:row>
+  <fct:row>
+    <fct:column datatype="url" shortform="http://bobdupuy.mlbl...ld_baseball__6.html"><![CDATA[http://bobdupuy.mlblogs.com/bobdupuy/2006/03/world_baseball__6.html]]></fct:column>
+    <fct:column />
+    <fct:column><![CDATA[<span class="srch_xerpt">Orlando While Chuck Armstrong president of <b>the</b> <b>Seattle</b> <b>Mariners</b> <b>traveled</b> <b>all</b> <b>the</b> <b>way</b> <b>to</b> <b>Japan</b> <b>to</b> <b>watch</b>... perform for <b>the</b> advancing <b>Japan</b> team last week <b>the</b> star from <b>the</b> <b>Seattle</b> roster so far in Round 1 has without...</span>]]></fct:column>
+  </fct:row>
+ </fct:result>
+</fct:facets>
+
+
+H3 SOAP Interface
+
+The facet web service is also available via SOAP protocol. 
+
+The request message contains single element 'query' with syntax explained earlier.
+Also the SOAPAction HTTP header should be '#query' .
+After successfull evaluation of the query, the service will return a SOAP envelope containing in the Body element single 'facets' element described above.
+
+Example :
+
+This example shows execution of same command as in example for REST interface here it using SOAP : 
+
+Request message:
+
+<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP:Body>
+    <query xmlns="http://openlinksw.com/services/facets/1.0/" inference="" same-as="">
+      <text>Seattle Mariners traveled all the way to Japan to watch</text>
+      <view type="text" limit="20" offset="0"/>
+    </query>
+  </SOAP:Body>
+</SOAP:Envelope>
+
+Response message:
+
+<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP:Body>
+    <fct:facets xmlns:fct="http://openlinksw.com/services/facets/1.0/">
+      <fct:sparql>select distinct ?s1 as ?c1, (bif:search_excerpt (bif:vector ('THE', 'MARINERS', 'WAY', 'SEATTLE', 'WATCH', 'ALL', 'TO', 'JAPAN', 'TRAVELED'), ?o1)) as ?c2  where { ?s1 ?s1textp ?o1 . filter (bif:contains (?o1, '(THE AND MARINERS AND WAY AND SEATTLE AND WATCH AND ALL AND TO AND JAPAN AND TRAVELED)')) . } limit 20  offset 0</fct:sparql>
+      <fct:time>114</fct:time>
+      <fct:complete>yes</fct:complete>
+      <fct:db-activity>   134R rnd  9.488KR seq      0P disk  8.966MB /    602 messages</fct:db-activity>
+      <fct:result>
+        <fct:row>
+          <fct:column datatype="url" shortform="http://bobdupuy.mlbl...ld_baseball__6.html"><![CDATA[http://bobdupuy.mlblogs.com/bobdupuy/2006/03/world_baseball__6.html]]></fct:column>
+          <fct:column/>
+          <fct:column><![CDATA[<span class="srch_xerpt">... While Chuck Armstrong president of <b>the</b> <b>Seattle</b> <b>Mariners</b> <b>traveled</b> <b>all</b> <b>the</b> <b>way</b> <b>to</b> <b>Japan</b> <b>to</b> <b>watch</b> Ichiro... for <b>the</b> advancing <b>Japan</b> team last week <b>the</b> star from <b>the</b> <b>Seattle</b> roster so far in Round 1 has without a doubt... leading <b>the</b> Dominican <b>to</b> its...</span>]]></fct:column>
+        </fct:row>
+        <fct:row>
+          <fct:column datatype="url" shortform="http://bobdupuy.mlbl...ld_baseball__6.html"><![CDATA[http://bobdupuy.mlblogs.com/bobdupuy/2006/03/world_baseball__6.html]]></fct:column>
+          <fct:column/>
+          <fct:column><![CDATA[<span class="srch_xerpt">Orlando While Chuck Armstrong president of <b>the</b> <b>Seattle</b> <b>Mariners</b> <b>traveled</b> <b>all</b> <b>the</b> <b>way</b> <b>to</b> <b>Japan</b> <b>to</b> <b>watch</b>... perform for <b>the</b> advancing <b>Japan</b> team last week <b>the</b> star from <b>the</b> <b>Seattle</b> roster so far in Round 1 has without...</span>]]></fct:column>
+        </fct:row>
+      </fct:result>
+    </fct:facets>
+  </SOAP:Body>
+</SOAP:Envelope>
+
+<<eof>>

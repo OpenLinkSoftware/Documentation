@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xmlagg">
+      <refmeta>
+        <refentrytitle>XMLAGG
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>XMLAGG
+</refname>
+        <refpurpose>Produces a forest of elements from a collection of XML values
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xmlagg">
+          <funcprototype xml:id="fproto_xmlagg">
+            <funcdef>vector 
+<function>XMLAGG
+</function>
+
+</funcdef>
+            <paramdef choice="opt"><parameter>value_expression
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xmlagg">
+        <title>Description
+</title>
+        <para><function>XMLAGG
+</function>
+
+   is aggregate function that produces a forest of XML elements from the given list of xml elements.
+    It concatenates the values returned from one column of multiple rows, unlike <function>XMLCONCAT</function>
+
+  ,
+    which concatenates the values returned from multiple columns in the same row.</para>
+        <para>The order of element in the result of <function>XMLAGG</function>
+
+   is defined by the order of retrieval of the
+    source data rows. It is important to remember that the order of rows in an SQL resultset defined only if there's an explicit
+    ORDER BY clause. Hence if the order of elements in the resulting forest is important then XMLAGG should be applied to data
+    that comes from inner SELECT statement that has an ORDER BY clause, not e.g. from a table reference.</para>
+        <para>Note that <function>XMLAGG</function>
+
+   is actually declared as <function>DB.DBA.XMLAGG</function>
+
+   but it is not
+    important for plain use: for compatibility with other systems, any call of <function>XMLAGG</function>
+
+   in any SQl statement
+    is always replaced with the call of 
+<function>DB.DBA.XMLAGG
+</function>
+
+  , no matter which qualifier and user name are in use.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xmlagg">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>value_expression
+</title>
+          <para>the result of one of the following functions 
+<function>XMLAGG
+</function>
+
+  , 
+<function>XMLCONCAT
+</function>
+
+  ,
+
+<function>XMLELEMENT
+</function>
+
+  , or 
+<function>XMLFOREST
+</function>
+
+  .
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xmlagg">
+        <title>Return Types
+</title>
+        <para>The aggregate returns a vector that is a suitable input for functions 
+<function>XMLELEMENT
+</function>
+
+  ,
+
+<function>XMLCONCAT
+</function>
+
+   and 
+<function>xml_tree_doc
+</function>
+
+  .
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_xmlagg">
+        <title>Examples
+</title>
+        <example xml:id="ex_xmlagg_1">
+          <title>XMLAGG() enclosed in XMLELEMENT()
+</title>
+          <para>The following example produces an 'Emp' element with attribute 'Title' and a list of all employees having
+      	the title 'Sales Representative' as element content.</para>
+          <programlisting>
+select XMLELEMENT ('Emp', XMLATTRIBUTES ('Sales Representative' as "Title"),
+       XMLAGG (XMLELEMENT ('Name', "FirstName", ' ', "LastName")))
+  from "Demo"."demo"."Employees"
+ where "Title" = 'Sales Representative';
+
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;Emp Title="Sales Representative"&gt;
+  &lt;Name&gt;Nancy Davolio&lt;/Name&gt;
+  &lt;Name&gt;Janet Leverling&lt;/Name&gt;
+  &lt;Name&gt;Margaret Peacock&lt;/Name&gt;
+  &lt;Name&gt;Michael Suyama&lt;/Name&gt;
+  &lt;Name&gt;Robert King&lt;/Name&gt;
+  &lt;Name&gt;Anne Dodsworth&lt;/Name&gt;
+&lt;/Emp&gt;
+
+1 Rows.
+</programlisting>
+        </example>
+        <example xml:id="ex_xmlagg_2">
+          <title>XMLAGG() that produces a sorted document
+</title>
+          <para>The result of the previous example contains an unsorted list of names. This is because data rows were retrieved
+      	from "Demo"."demo"."Employees" in primary key order, and this order has nothing common with fields "FirstName"
+      	and "LastName". To produce the sorted result, the query should contain ORDER BY in a subquery. These two variants
+      	will work identically if "FirstName" never contains whitespaces or nonprintable control characters, but the last
+      	one is formally more correct.</para>
+          <programlisting>
+select XMLELEMENT ('Emp', XMLATTRIBUTES ('Sales Representative' as "Title"),
+       XMLAGG (XMLELEMENT ('Name', "FirstName", ' ', "LastName")))
+ from
+    (select "FirstName", "LastName"
+     from "Demo"."demo"."Employees"
+     where "Title"= 'Sales Representative'
+     order by 1, 2) as subq;
+
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;Emp Title="Sales Representative"&gt;
+  &lt;Name&gt;Anne Dodsworth&lt;/Name&gt;
+  &lt;Name&gt;Janet Leverling&lt;/Name&gt;
+  &lt;Name&gt;Margaret Peacock&lt;/Name&gt;
+  &lt;Name&gt;Michael Suyama&lt;/Name&gt;
+  &lt;Name&gt;Nancy Davolio&lt;/Name&gt;
+  &lt;Name&gt;Robert King&lt;/Name&gt;
+&lt;/Emp&gt;
+
+1 Rows.
+
+select XMLELEMENT ('Emp', XMLATTRIBUTES ('Sales Representative' as "Title"),
+       XMLAGG (XMLELEMENT ('Name', full_name)))
+  from
+    (select concat ("FirstName", ' ', "LastName") as full_name
+     from "Demo"."demo"."Employees"
+     where "Title"= 'Sales Representative'
+     order by 1) as subq;
+
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;Emp Title="Sales Representative"&gt;
+  &lt;Name&gt;Anne Dodsworth&lt;/Name&gt;
+  &lt;Name&gt;Janet Leverling&lt;/Name&gt;
+  &lt;Name&gt;Margaret Peacock&lt;/Name&gt;
+  &lt;Name&gt;Michael Suyama&lt;/Name&gt;
+  &lt;Name&gt;Nancy Davolio&lt;/Name&gt;
+  &lt;Name&gt;Robert King&lt;/Name&gt;
+&lt;/Emp&gt;
+
+1 Rows.
+</programlisting>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xmlagg">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xmlelement">XMLELEMENT()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlattributes">XMLATTRIBUTES()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlforest">XMLFOREST()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlconcat">XMLCONCAT()
+</link>
+        </para>
+      </refsect1>
+    </refentry>

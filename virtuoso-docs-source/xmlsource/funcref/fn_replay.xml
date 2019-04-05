@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_replay">
+      <refmeta>
+        <refentrytitle>replay
+</refentrytitle>
+        <refmiscinfo>backup
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>replay
+</refname>
+        <refpurpose>starts the roll forward of the given log
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_replay">
+          <funcprototype xml:id="fproto_replay">
+            <funcdef>
+              <function>replay
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>log_file
+</parameter>
+
+   varchar
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_14">
+        <title>Description
+</title>
+        <para>This starts a roll forward of the given log. The log may have been
+    produced by normal transaction logging, backup or crash dump. Logs
+    may not be transferred between databases and thus cannot be rolled forward
+    anywhere except on the database that generated them.</para>
+        <para>This function is for example useful after restoring a backup.
+    It should be called for each archived transaction log produced since the
+    backup, including and starting with the one that was current when the
+    backup was made.</para>
+        <para>The operation blocks until the roll forward is complete.
+    Other clients are not affected.
+</para>
+      </refsect1>
+      <refsect1 xml:id="errors_replay">
+        <title>Errors
+</title>
+        <para>
+          <link linkend="datatypeerror">Parameter data type checking errors
+</link>
+        </para>
+        <table>
+          <title>Errors signalled by
+</title>
+          <tgroup cols="3">
+            <tbody>
+              <row>
+                <entry>sqlstate
+</entry>
+                <entry>error code
+</entry>
+                <entry>error text
+</entry>
+              </row>
+              <row>
+                <entry>
+                  <errorcode>25000
+</errorcode>
+                </entry>
+                <entry>
+                  <errorcode>SR074
+</errorcode>
+                </entry>
+                <entry>
+                  <errortext>replay must be run in a fresh transaction.
+</errortext>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <errorcode>42000
+</errorcode>
+                </entry>
+                <entry>
+                  <errorcode>FA002
+</errorcode>
+                </entry>
+                <entry>
+                  <errortext>Can't open file &lt;fname&gt;, error &lt;OS errno&gt; (&lt;OS description&gt;)
+</errortext>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </refsect1>
+      <refsect1 xml:id="params_01_01">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>log_file
+</title>
+          <para>Full pathname of file containing the transactions to be replayed.
+      The file must be produced by 
+<link linkend="fn_backup">backup
+</link>
+
+  .
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_08">
+        <title>Return Values
+</title>
+        <para>Zero, if no error is signalled.
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_06">
+        <title>Examples
+</title>
+        <example xml:id="backupreplay">
+          <title>Replaying A Log File
+</title>
+          <programlisting>
+checkpoint 'new.log';
+backup 'bak.log';
+shutdown 'new2.log';
+</programlisting>
+          <para>
+The above sequence of commands makes a checkpoint and starts logging subsequent
+transactions into new.log. The backup statement makes bak.log, which represents the state
+prior to starting new.log. The shutdown statement makes a new checkpoint and marks new2.log as the log
+file to be used for logging transactions after the database restarts. The database server exits at the completion of the
+SHUTDOWN statement.
+</para>
+          <programlisting>
+replay ('bak.log');
+replay ('new.log');
+</programlisting>
+          <para>
+These statements executed on an empty database will recreate the state in effect after the last transaction
+to commit before the SHUTDOWN statement of the previous example.
+
+</para>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_11">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_backup">backup
+</link>
+        </para>
+      </refsect1>
+    </refentry>

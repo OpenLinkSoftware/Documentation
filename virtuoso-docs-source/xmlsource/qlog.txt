@@ -1,0 +1,152 @@
+
+H1 Query Logging 
+
+
+As of version 7.00 Virtuoso offers optional server side query logging.  This recordds a large number of execution statistics as well as the full query text and execution plan with per-operator timing and cardinality information. 
+This feature is enabled by the line QueryLog = filename in the Parameters section of virtuoso.ini.  At run time, this may be enabled or disabled with prof_enable (), overriding the specification of the ini file.  The default file name for the query log is virtuoso.qrl in the server's working directory, if not otherwise specified in the ini file.
+
+The file is in banary format and is not conveniently readable as such.  It is most easily accessed via  the DB.DBA.SYS_QUERY_LOG system view.  This view has parameters for specifying a non-default file path for the query log file as well as a datetime range for selecting the entries of interest.
+
+For example:
+
+select * from sys_query_log where qrl_file = 'other.qrl' and qrl_start_dt = cast ('2011-10-1' as datetime) and qrl_end_dt  = cast ('2011-10-2' as datetime)
+
+will select entries from the file other.qrl that are between the given dates.  Note that the qrl* columns are not actual result column of the view but are considered as parameters, hence the use of = instead of a range condition.
+
+
+All statements executed over a SQL client connection (ODBC/JDBC etc) are logged, as well as any statements executed on an SPARQL end point.  DAV and web services requests are not logged unless they perform an exec function call.  CPUU usage for committing transactions or for background data organization such as autocompact or automatic checkpoints are not logged.
+
+A select statement is logged at the time it produces its last row of output, not at the time this row of output is fetched by a client.
+
+Some of the columns are in units of clocks, whose meaning  varies from system to system.  On Intel this corresponds to the vallue returned by the RDTSC  instruction.  All values are intervals.  The relation of this to real time may vary in function of automatic variation of clock frequency.
+
+
+
+
+
+The columns of SYS_QUERY_LOG  are as follows:
+
+
+
+ql_id - Serial number of the log entry.  If the server was started many times with the same file these will not be unique.  Combbine with ql_start_dt for unique identification. 
+
+
+ql_start_dt - datetime of the start of the query 
+
+ql_rt_msec - real time elapsed in milliseconds between the start and the logging of the query 
+
+
+ql_rt_clocks - Clock cycles of real time spent running the query, not
+including time between consecutive fetches from a client if the query
+was a cursor fetched in multiple chunks by a client.  This is the
+number of clocks during which there was at least one thread running on
+behalf of the query.  The average CPU% of the query is given by 100 *
+ql_thread_clocks / ql_rt_clocks
+
+
+ ql_client_ip, requesting client IP as dotted decimal.
+
+
+ ql_user - User account on behalf of which the query was executed.
+
+
+, ql_sqlstate  - SQL state if query terminated with error, NULL otherwise 
+ ql_error - Error message if query terminated with error, NULL otherwise  
+
+
+
+		ql_swap - Cumulative count of major page faults since startup of this Virtuoso process.  
+, ql_user_cpu - Cumulative user CPU in milliseconds for this server process
+, ql_sys_cpu - Cumulative system CPU in milliseconds for this server process.
+
+
+
+
+ql_text - Source text of the query 
+
+
+, ql_params - NULL
+
+ ql_plan_hash - Hash number calculated from the  execution plan, ignoring literals.  Can be used for grouping executions of the same query with differing literals together.  If difference of literals causes a different plan, this number will be different  
+
+
+		ql_c_clocks   - CPU clocks of real time used for query compilation.  This will be 0 if the query is separately prepared of if the query compilation comes from a cache of recently compiled queries.  This is likely if the query is parametrized and executed multiple times.
+
+, ql_c_msec  - Real time used for query compilation in milliseconds.
+
+ ql_c_disk - Count of disk reads done on behalf of the query compilation, this stands for index sampling initiatted by the compilation and does not include any speculative read possibly triggered  by the  sampling.
+
+, ql_c_disk_wait - Count of clocks the compilation was blocked waiting for disk.
+
+, ql_c_cl_wait - Count of clocks the compilation was waiting for information from cluster peers.  Such waiting indicates sampling done on remote partitions.  If the run time of the query is smnall, this may be a significant factor in query execution real time. 
+
+, ql_cl_messages - Count of distinct cluster  messages sent on behalf of the compilation.  These are all related to sampling.  Many samples can be combined into one message in some situations.   Samples are also cached on the requesting server so repeatedly compiling the same statement will send the messages only the first time in unless the cache has timed out in the meantime.
+
+
+ ql_c_rnd_rows - Count of rows retrived as part of compile time sampling.
+
+
+The below columns correspond directly to the fields returned by db_activity ().  These are summed over all the threads in all the hosts that have done something on behalf of the logged query.
+
+
+
+		ql_rnd_rows  - Count of random row lookups.  Each sequential lookup begins with one random one for each partition concerned.
+
+
+ ql_seq_rows - Sequential rows fetched, each non-first row which is selected counts as one.  A row that is looked at but does not satisfy applicable query criteria does not count.
+
+, ql_same_seg - Count of times the next random lookup in a vectored lookup falls on the same columjn-wise segment as the previous.
+
+
+, ql_same_page - Ibid, for the next lookup falling on the same row-wise leaf page.
+
+
+ ql_same_parent - Ibid, for the case of the next lookup falling on a sibling page of the row-wise leaf page of the previous lookup.
+
+
+For column-wise indices, all the three above counters can be non-zero since these consist of multi-row segments each under a row on a row-wise leaf page.  For a row-wise index the same seg counter is always 0.
+
+ ql_thread_clocks - Sum of clocks spent on any thread for the logged query.   Time spent waiting for other threads, for disk or for replies from cluster peers is not counted, thus only running cycles count.   These are added up across all hosts in a cluster.
+
+ ql_disk_wait_clocks - Total clocks any thread spends waiting for disk on behalf of the query.  If two threads wait for the same page which is fetched once the wait is counted double.  This is not the same as the total read time of the pages since read ahead can fetch pages before they are needed, thus involving no wait.
+
+
+ ql_cl_wait_clocks - Total clocks a thread running on behalf of the query spends waiting for a cluster reply.  This may be zero if the coordinating thread has work until any cluster replies arrive, in which case there will be no wait.   If this is high then the workload is bound by interconnect or is unevenly distributed across a cluster.. 
+
+
+
+ql_pg_wait_clocks,
+ ql_disk_reads
+ ql_spec_disk_reads - Count of speculative disk reads triggered on behalf of the query.  Any read ahead or any upgrading of a single page read into a read of a whole extent counts towards this, only allocated pages that are read are counted but merging near-adjacent reads may cause actually more disk IO to take place. 
+
+
+
+ ql_messages - Count of distinct cluster messages sent on behalf of the query.  Any message is counted once.  Client-server messages are not counted.
+
+
+ ql_message_bytes - Total bytes sent in all cluster messages  sent on behalf of the query.
+
+ ql_qp_threads - COunt of times an extra thread is created for parallelizing work on the query in question.  The count may be high since consecutively launched threads are counted, this is not a maximum degree of concurrency.
+
+
+ ql_vec_bytes - reserved 
+ ql_vec_bytes_max - reserved 
+
+ql_lock_waits - Count of times a thread has waited for a lock on behalf of the query.
+
+ql_lock_wait_msec - Total milliseconds any thread has spent waiting for a lock on behalf of the query.  This may be longer than real time since many threads may wait at the same time.
+
+
+		ql_plan - Text representation of the execution plan, annotated with CPU time percentages and fanouts for the different operators. Fanout is the count of outpput rows divided by the count of input rows.
+
+
+
+ ql_node_stat  - reserved ;
+
+ql_c_memory - count of bytes allocated for compiling the query.  This is the peak  size of the memory pool for query compilation.
+
+ql_rows_affected -  Count of inserted/updated/deleted rows.  If the query was a select with a top and an order by, this is is the count of produced rows before the top restriction was applied.
+
+
+
+

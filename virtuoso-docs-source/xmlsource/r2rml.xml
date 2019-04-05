@@ -1,0 +1,902 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="r2rml">
+      <title>Virtuoso R2RML Support</title>
+      <section xml:id="r2rmlwhat">
+        <title>What is R2RML?</title>
+        <para><link xlink:href="http://www.w3.org/TR/r2rml/">R2RML</link>
+
+   is a language for expressing customized
+    mappings from relational databases to RDF data sets. Such mappings provide the ability to view existing
+    relational data in the RDF data model, expressed in a structure and target vocabulary of the mapping
+    author's choice.</para>
+        <para>R2RML mappings are themselves RDF graphs written in Turtle syntax.</para>
+      </section>
+      <section xml:id="r2rmlwhy">
+        <title>Why use it?</title>
+        <para>As a W3C working draft, R2RML is becoming the generic standard adopted by most vendors of tools
+    	mapping relational data to RDF, enabling the interoperability of R2RML scripts, whether created with
+    	such tools or by hand.</para>
+      </section>
+      <section xml:id="r2rmlhow">
+        <title>How do I use it with Virtuoso?</title>
+        <para>Virtuoso has its own previously-developed proprietary equivalent of R2RML called
+    	<link linkend="rdfviewsrdbms">Linked Data Views</link>
+
+  , which uses Virtuoso's
+    	<link xlink:href="http://virtuoso.openlinksw.com/whitepapers/relational%20rdf%20views%20mapping.html">Meta Schema Mapping Language</link>
+
+   to map relational data to RDF.</para>
+        <para>R2RML support is achieved by the inclusion of a simple translator which basically translates R2RML syntax to Virtuoso's own Linked Data Views syntax, which can then be executed to create the Linked Data Views themselves.</para>
+        <section xml:id="r2rmlhowinst">
+          <title>Install R2RML VAD package</title>
+          <para>First you will need to ensure you have the R2RML VAD package
+      	(<link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/rdb2rdf_dav.vad">rdb2rdf_dav.vad</link>
+
+  )
+      	installed.
+      </para>
+        </section>
+        <section xml:id="r2rmlhowtest">
+          <title>Test with simple test script (basic.sql)</title>
+          <para>Having installed the R2RML VAD package, to test R2RML functionality, the easiest way is by executing a basic.sql script via the command line isql tool:</para>
+          <programlisting>
+
+CREATE TABLE "R2RML"."TEST"."PRODUCT"(
+  id integer primary key,
+  name VARCHAR(100)
+);
+
+INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES (1, 'Virtuoso');
+
+SPARQL CLEAR GRAPH &lt;http://temp/product&gt;;
+SPARQL CLEAR GRAPH &lt;http://example.com/&gt;;
+
+DB.DBA.TTLP ('
+@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
+@prefix exa: &lt;http://example.com/ns#&gt; .
+@prefix product: &lt;http://example.com/product#&gt; .
+
+&lt;http://example.com/ns#TriplesMap1&gt;
+    a rr:TriplesMap;
+
+    rr:logicalTable
+    [
+      rr:tableSchema "R2RML";
+      rr:tableOwner "TEST";
+      rr:tableName  "PRODUCT"
+    ];
+
+    rr:subjectMap
+    [
+      rr:template "http://example.com/product/{id}";
+      rr:class exa:product;
+      rr:graph &lt;http://example.com/&gt;;
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:id;
+      rr:objectMap [ rr:column "id" ];
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:name;
+      rr:objectMap [ rr:column "name" ];
+    ];
+.
+', 'http://temp/product', 'http://temp/product' )
+;
+
+--select DB.DBA.R2RML_TEST ('http://temp/product');
+
+--DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL');
+
+-- Running the validation in order to find error in name of R2RML description graph
+--DB.DBA.OVL_VALIDATE ('http://temp/product-nosuch', 'http://www.w3.org/ns/r2rml#OVL');
+
+-- Running the validation in order to find error in name of R2RML metadata graph
+--DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL-nosuch');
+
+--select DB.DBA.R2RML_EXECUTE ('http://temp/product');
+
+exec ('sparql ' || DB.DBA.R2RML_MAKE_QM_FROM_G ('http://temp/product'));
+
+--sparql select distinct ?g where { graph ?g { ?s a ?t }};
+
+SPARQL
+SELECT * FROM &lt;http://example.com/&gt;
+WHERE {?s ?p ?o .};
+</programlisting>
+          <orderedlist>
+            <listitem>
+              <para>First, copy basic.sql into:
+</para>
+              <programlisting>
+&lt;VIRTUOSO_INSTALL&gt;/bin/
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Next, open Unix session or Windows Command Prompt and execute:
+</para>
+              <programlisting>
+
+cd &lt;OPENLINK_INSTALL&gt;/bin
+
+./isql     (Unix)
+isql.exe   (Windows)
+
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Then, within isql execute:
+</para>
+              <programlisting>
+SQL&gt; load basic.sql;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Execution should finish with a simple SPARQL query that will return Linked Data for
+        	the test table created at the start of the script:
+</para>
+              <programlisting>
+s                               p                                                  o
+VARCHAR                         VARCHAR                                            VARCHAR
+________________________________________________________________________________________________________________
+
+http://example.com/product/1    http://example.com/product#id                      1
+http://example.com/product/1    http://example.com/product#name                    Virtuoso
+http://example.com/product/1    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://example.com/ns#product
+3 Rows. -- 0 msec.
+</programlisting>
+            </listitem>
+          </orderedlist>
+          <para><emphasis>Note</emphasis>
+
+  : Subsequent executions of basic.sql will return an error since the test table will already exist. However, the remainder of the script will execute fine.</para>
+        </section>
+        <section xml:id="r2rmlhowexam">
+          <title>Examining basic.sql</title>
+          <orderedlist>
+            <listitem>
+              <para>We start by creating and populating the test table:
+</para>
+              <programlisting>
+CREATE TABLE "R2RML"."TEST"."PRODUCT"
+  (
+    id   INTEGER PRIMARY KEY ,
+    name VARCHAR(100)
+  );
+
+INSERT SOFT "R2RML"."TEST"."PRODUCT"
+  VALUES
+    (
+      1, 'Virtuoso'
+    );
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Next we clear any graphs (temporary or permanent) that are to be used during this process:
+</para>
+              <programlisting>
+SPARQL CLEAR GRAPH &lt;http://temp/product&gt; ;
+SPARQL CLEAR GRAPH &lt;http://example.com/&gt; ;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Next we use the 
+              <link linkend="fn_ttlp"><function>DB.DBA.TTLP()</function></link>
+
+        procedure to insert the R2RML into a temporary graph, &lt;http://temp/product&gt;:
+</para>
+              <programlisting>
+DB.DBA.TTLP
+  (
+    ' @prefix       rr:  &lt;http://www.w3.org/ns/r2rml#&gt;    .
+      @prefix      exa:  &lt;http://example.com/ns#&gt;         .
+      @prefix  product:  &lt;http://example.com/product#&gt;    .
+
+      &lt;http://example.com/ns#TriplesMap1&gt;
+          a                              rr:TriplesMap  ;
+
+          rr:logicalTable
+            [
+              rr:tableSchema  "R2RML"    ;
+              rr:tableOwner   "TEST"     ;
+              rr:tableName    "PRODUCT"
+            ];
+
+          rr:subjectMap
+            [
+              rr:template  "http://example.com/product/{id}" ;
+              rr:class     exa:product                       ;
+              rr:graph     &lt;http://example.com/&gt;
+            ];
+
+          rr:predicateObjectMap
+            [
+              rr:predicate  product:id  ;
+              rr:objectMap
+                [
+                  rr:column  "id"
+                ];
+            ];
+
+          rr:predicateObjectMap
+            [
+              rr:predicate  product:name  ;
+              rr:objectMap
+                [
+                  rr:column "name"
+                ];
+            ];
+         .
+    ',
+    'http://temp/product',
+    'http://temp/product'
+  );
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Next, there is a series of commented out lines that can be used for sanity checking:
+</para>
+              <programlisting>
+--SELECT DB.DBA.R2RML_TEST ('http://temp/product');
+
+--DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL');
+
+-- Running the validation in order to find error in name of R2RML description graph
+--DB.DBA.OVL_VALIDATE ('http://temp/product-nosuch', 'http://www.w3.org/ns/r2rml#OVL');
+
+-- Running the validation in order to find error in name of R2RML metadata graph
+--DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL-nosuch');
+
+--SELECT DB.DBA.R2RML_EXECUTE ('http://temp/product');
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Next, DB.DBA.R2RML_MAKE_QM_FROM_G() is used to perform the conversion from R2RML into
+        	Virtuoso's own Linked Data Views script. The output is then prepended with the keyword 'SPARQL'
+        	and a space, and executed using 
+              <link linkend="fn_exec"><function>exec()</function></link>
+               :
+</para>
+              <programlisting>
+EXEC ('SPARQL ' || DB.DBA.R2RML_MAKE_QM_FROM_G ('http://temp/product'));
+</programlisting>
+              <para><emphasis>Note</emphasis>
+
+  : The final triples are placed in the graph defined in the R2RML script itself (&lt;http://example.com/&gt;)</para>
+              <para>Alternatively, the destination graph can be specified as an optional second parameter of DB.DBA.R2RML_MAKE_QM_FROM_G():</para>
+              <programlisting>
+DB.DBA.R2RML_MAKE_QM_FROM_G
+  (
+    (
+      IN g VARCHAR
+   [, IN target_graph VARCHAR := NULL]
+    )
+  )
+
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Finally, a simple SPARQL statement is executed to prove data is returned:
+</para>
+              <programlisting>
+SPARQL
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE {?s ?p ?o .};
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+      <section xml:id="r2rmlknlim">
+        <title>Known Limitations</title>
+        <para><emphasis>rr:sqlQuery</emphasis>
+
+   is not currently supported, due to limitations in
+    the optimizer used for Virtuoso's native implementation of Linked Data Views.</para>
+      </section>
+      <section xml:id="r2rmlgenlviewisql">
+        <title>Generating an R2RML based Linked Data View from iSQL command-line</title>
+        <para>Using Virtuoso you can programmatically generate Linked Data Views atop Relational Data Sources,
+    	using R2RML via the built-in function: <emphasis>R2RML_GENERATE_LINKED_VIEW</emphasis>
+
+   function.
+    	In order to use this function, you need to have the
+    	<link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/rdb2rdf_dav.vad">rdb2rdf_dav.vad</link>
+
+    	package installed.
+    </para>
+        <programlisting>
+R2RML_GENERATE_LINKED_VIEW
+  (
+    in source varchar,
+    in destination_graph varchar,
+    in graph_type int default 0,
+    in clear_source_graph int default 1
+  )
+</programlisting>
+        <para>Here is detailed description of the funcion's parameter:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <emphasis>source</emphasis>
+            </para>
+            <para>: The source R2RMLdocument URI. Acceptable schemes include: file:, dav:, http: and https:. These are also acceptable as source graph URI;</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>destination graph</emphasis>
+            </para>
+            <para>: This is a default graph name (an IRI) applicable to either virtual or physical graph.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>graph_type</emphasis>
+            </para>
+            <para>: 0 - virtual; 1 - physical graph which sets the actual graph type;</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>clear_source_graph</emphasis>
+            </para>
+            <para>: Determines if existing R2RML source graphs (those holding view declarations) are replaced as part of processing pipeline.</para>
+          </listitem>
+        </itemizedlist>
+        <para><emphasis>Note</emphasis>
+
+  : The R2RML mapping script may have a triples like:</para>
+        <programlisting>
+[] rr:graph &lt;graph_name&gt;
+</programlisting>
+        <para>and in this case they take precedence and virtual graph would be defined as in the R2RML.
+    	If so, then if destination graph is specified as physical, all virtual graphs found in the
+    	R2RML would go in the destination_graph.</para>
+        <section xml:id="r2rmlgenlviewisqlex">
+          <title>Usage Example</title>
+          <orderedlist>
+            <listitem>
+              <para>Ensure the R2RML VAD package 
+              <link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/rdb2rdf_dav.vad">rdb2rdf_dav.vad</link>
+               is installed.</para>
+            </listitem>
+            <listitem>
+              <para>To clear out existing mappings execute:
+</para>
+              <programlisting>
+SQL&gt; SELECT RDF_VIEW_DROP_STMT_BY_GRAPH ('http://example.com');
+VARCHAR
+_______________________________________________________________________________
+
+SPARQL drop silent quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; .;
+
+1 Rows. -- 16 msec.
+
+SQL&gt; SPARQL DROP SILENT QUAD MAP &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; ;
+
+STATE    MESSAGE
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000    Quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; is no longer used in storage &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage
+&gt;
+00000    Quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; is deleted
+00000    Transaction committed, SPARQL compiler re-configured
+00000    2 RDF metadata manipulation operations done
+
+4 Rows. -- 406 msec.
+
+SQL&gt; SPARQL CLEAR &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt;;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Clear &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; -- done
+
+1 Rows. -- 15 msec.
+
+SQL&gt; DROP TABLE "R2RML"."TEST"."PRODUCT" ;
+
+Done. -- 0 msec.
+
+SQL&gt; CREATE TABLE "R2RML"."TEST"."PRODUCT"
+(
+  "id" INTEGER,
+  "name" VARCHAR(100),
+  PRIMARY KEY ("id")
+);
+Done. -- 16 msec.
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Insert sample data into a Table by executing:
+</para>
+              <programlisting>
+SQL&gt; INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES(1, 'Virtuoso');
+Done. -- 0 msec.
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Locate or create your R2RML mapping document, for example: .n3 file with the following content:
+</para>
+              <programlisting>
+@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
+@prefix exa: &lt;http://example.com/ns#&gt; .
+@prefix product: &lt;http://example.com/product#&gt; .
+
+&lt;http://example.com/ns#TriplesMap1&gt;
+    a rr:TriplesMap;
+
+    rr:logicalTable
+    [
+      rr:tableSchema "R2RML";
+      rr:tableOwner "TEST";
+      rr:tableName  "PRODUCT"
+    ];
+
+    rr:subjectMap
+    [
+      rr:template "http://example.com/product/{id}";
+      rr:class exa:product;
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:id;
+      rr:objectMap [ rr:column "id" ];
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:name;
+      rr:objectMap [ rr:column "name" ];
+    ];
+.
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Generate a Linked Data View from the R2RML document that applies to the sample data (created earlier) by executing the statement:
+</para>
+              <programlisting>
+SQL&gt; DB.DBA.R2RML_GENERATE_LINKED_VIEW('http://demo.openlinksw.com/r2rmldemo.n3', 'http://example.com', 0);
+STATE    MESSAGE
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000    IRI class &lt;r2rml:virt02-8513ca7e0ce41d2e38f0c750fd552139&gt; has been defined (inherited from rdfdf:sql-integer-uri-nullable)
+00000    Literal class &lt;r2rml:virt02-daca9ceddea29d53dbbdb6bd0f3dee68&gt; has been defined (inherited from rdfdf:sql-integer-literal-nullable)
+00000    Quad storage &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage&gt; is flagged as being edited
+00000    Quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad map &lt;sys:qm-1be5dbd931459cf9e2df2338428f418d&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad map &lt;sys:qm-c5f81d7126efa3e7a93f7e903fd5fa93&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad map &lt;sys:qm-25c4599111b9f07fbd8fc60ce0b42eaf&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad storage &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage&gt; is unflagged and can be edited by other transactions
+00000    Transaction committed, SPARQL compiler re-configured
+00000    9 RDF metadata manipulation operations done
+
+10 Rows. -- 1109 msec.
+SQL&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Verify successful creation of the Linked Data View by executing the following SPARQL query via iSQL or Conductor interface:
+</para>
+              <programlisting>
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com&gt;
+WHERE {?s ?p ?o} ;
+
+s                                p                                                   o
+VARCHAR                          VARCHAR                                             VARCHAR
+_______________________________________________________________________________
+
+http://example.com/product/1     http://example.com/product#id                       1
+http://example.com/product/1     http://example.com/product#name                     Virtuoso
+http://example.com/product/1     http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://example.com/ns#product
+
+3 Rows. -- 15 msec.
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+      <section xml:id="r2rmlcondwiz">
+        <title>Virtuoso Conductor R2RML Import Wizard</title>
+        <para>The Virtuoso Conductor can be used for importing existing R2RML scripts into Virtuoso and generate the necessary RDF Linked Data Views for Virtuoso hosting and deployment.</para>
+        <section xml:id="r2rmlcondwizex">
+          <title>Usage Example</title>
+          <orderedlist>
+            <listitem>
+              <para>Ensure the R2RML 
+              <link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/rdb2rdf_dav.vad">rdb2rdf_dav.vad</link>
+
+        and latest Conductor 
+              <link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/conductor_dav.vad">conductor_dav.vad</link>
+               VAD packages are installed.
+        </para>
+            </listitem>
+            <listitem>
+              <para>Create a test table with sample data:
+</para>
+              <programlisting>
+SQL&gt; CREATE TABLE "R2RML"."TEST"."PRODUCT"
+(
+  "id" INTEGER,
+  "name" VARCHAR(100),
+  PRIMARY KEY ("id")
+);
+Done. -- 16 msec.
+SQL&gt; INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES(1, 'Virtuoso');
+Done. -- 0 msec.
+SQL&gt; INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES(2, 'UDA');
+Done. -- 0 msec.
+SQL&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Grant select privileges on the "R2RML"."TEST"."PRODUCT" table to the SPARQL user to enable execution via SPARQL endpoint:
+</para>
+              <programlisting>
+SQL&gt; GRANT SELECT ON R2RML.TEST.PRODUCT  TO "SPARQL", "SPARQL_UPDATE"
+Done. -- 1 msec.
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Create the following R2RML mapping script for the "R2RML"."TEST"."PRODUCT" table:
+</para>
+              <programlisting>
+$ cat demo.n3
+@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
+@prefix exa: &lt;http://example.com/ns#&gt; .
+@prefix product: &lt;http://example.com/product#&gt; .
+
+&lt;http://example.com/ns#TriplesMap1&gt;
+    a rr:TriplesMap;
+
+    rr:logicalTable
+    [
+      rr:tableSchema "R2RML";
+      rr:tableOwner "TEST";
+      rr:tableName  "PRODUCT"
+    ];
+
+    rr:subjectMap
+    [
+      rr:template "http://example.com/product/{id}";
+      rr:class exa:product;
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:id;
+      rr:objectMap [ rr:column "id" ];
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:name;
+      rr:objectMap [ rr:column "name" ];
+    ];
+.
+$
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Got to the Linked Data -&gt; R2RML tab of the Virtuoso Conductor:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport01" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport01.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the Choose File button and select the R2RML file to load:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport02" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport02.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the Validate button to verify the R2RML mapping script:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport03" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport03.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the Generate button to generate the RDF Linked Data Views mappings for the R2RML mapping script:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport04" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport04.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the Execute button to create the RDF Linked Data Views mapping the the Quad Store:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport05" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport05.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The RDF Linked Data View creation is complete and status is displayed:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport06" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport06.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The Default Graph Name (transient) specified http://demo.openlinksw.com/r2rml# can
+        	now be used to run a SPARQL query against the created Linked Data View. If the Generate
+
+              <link linkend="rdb2rdftriggers">RDB2RDF triggers</link>
+               and Enable Data Syncs with Physical
+        	Quad Store check boxes are selected the Physical Graph Name (persistent) specified
+        	urn:demo.openlinksw.com/r2rml# can be used to run a SPARQL query against the materialized
+        	triples in the Quad Store.
+          </para>
+              <figure xml:id="virtconductorr2rmlimport07" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport07.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The results set for the Linked Data View graph are displayed:
+          </para>
+              <figure xml:id="virtconductorr2rmlimport08" floatstyle="1">
+                <title>Conductor R2RML Import Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/VirtConductorR2RMLImport08.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+      <section xml:id="r2rmlgentransperslviewrs">
+        <title>Generate Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources Using Conductor</title>
+        <para>This section describes how you can generate R2RML Scripts from Linked Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.</para>
+        <orderedlist>
+          <listitem>
+            <para>Ensure you have installed Conductor 
+            <link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/conductor_dav.vad">conductor_dav.vad</link>
+             VAD package with version 1.32.38 or higher.
+        </para>
+          </listitem>
+          <listitem>
+            <para>Go to http://&lt;cname&gt;[:&lt;port&gt;]/conductor.
+        </para>
+          </listitem>
+          <listitem>
+            <para>Enter dba credentials.
+        </para>
+          </listitem>
+          <listitem>
+            <para>Go to Linked Data -&gt; Views:
+          </para>
+            <figure xml:id="r0" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r0.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select Qualifier Demo:
+          </para>
+            <figure xml:id="r00" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r00.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select table(s) by hatching the check-box to the left of the table name; for example, select the following tables from the Northwind DB: Categories, Customers, Employees, Order_Details, Orders, Products .
+          </para>
+            <figure xml:id="r1g" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r1g.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click Generate via Wizard:
+          </para>
+            <figure xml:id="r2g" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r2g.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click Prepare to Execute.</para>
+          </listitem>
+          <listitem>
+            <para>The R2RML script for the selected table(s) will be generated and displayed in the R2RML Graph text-area:
+          </para>
+            <figure xml:id="r3g" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r3g.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="r4g" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r4g.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="r5g" floatstyle="1">
+              <title>Generating Transient and/or Persistent Linked Data Views</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/r5g.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>As result the following R2RML script should be generated for the Northwind DB collection:
+</para>
+            <programlisting>
+@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
+@prefix Demo: &lt;http://demo.openlinksw.com/schemas/Demo/&gt; .
+@prefix demo-stat: &lt;http://demo.openlinksw.com/Demo/stat#&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix void: &lt;http://rdfs.org/ns/void#&gt; .
+@prefix scovo: &lt;http://purl.org/NET/scovo#&gt; .
+@prefix aowl: &lt;http://bblfish.net/work/atom-owl/2006-06-06/&gt; .
+
+&lt;#TriplesMapCategories&gt; a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Categories" ];
+rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/categories/{CategoryID}"; rr:class Demo:Categories; ];
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:categoryid ] ; rr:objectMap [ rr:column "CategoryID" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:categoryname ] ; rr:objectMap [ rr:column "CategoryName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:description ] ; rr:objectMap [ rr:column "Description" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:picture ] ; rr:objectMap [ rr:column "Picture" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:categories_of_products ] ; rr:objectMap [ rr:parentTriplesMap &lt;#TriplesMapProducts&gt;;  rr:joinCondition [ rr:child "CategoryID" ; rr:parent "CategoryID" ] ; ]; ] .
+
+&lt;#TriplesMapCustomers&gt; a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Customers" ];
+rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/customers/{CustomerID}"; rr:class Demo:Customers; ];
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:customerid ] ; rr:objectMap [ rr:column "CustomerID" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:companyname ] ; rr:objectMap [ rr:column "CompanyName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:contactname ] ; rr:objectMap [ rr:column "ContactName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:contacttitle ] ; rr:objectMap [ rr:column "ContactTitle" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:address ] ; rr:objectMap [ rr:column "Address" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:city ] ; rr:objectMap [ rr:column "City" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:region ] ; rr:objectMap [ rr:column "Region" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:postalcode ] ; rr:objectMap [ rr:column "PostalCode" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:country ] ; rr:objectMap [ rr:column "Country" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:countrycode ] ; rr:objectMap [ rr:column "CountryCode" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:phone ] ; rr:objectMap [ rr:column "Phone" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:fax ] ; rr:objectMap [ rr:column "Fax" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:customers_of_orders ] ; rr:objectMap [ rr:parentTriplesMap &lt;#TriplesMapOrders&gt;;  rr:joinCondition [ rr:child "CustomerID" ; rr:parent "CustomerID" ] ; ]; ] .
+
+&lt;#TriplesMapEmployees&gt; a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Employees" ];
+rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/employees/{EmployeeID}"; rr:class Demo:Employees; ];
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:employeeid ] ; rr:objectMap [ rr:column "EmployeeID" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:lastname ] ; rr:objectMap [ rr:column "LastName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:firstname ] ; rr:objectMap [ rr:column "FirstName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:title ] ; rr:objectMap [ rr:column "Title" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:titleofcourtesy ] ; rr:objectMap [ rr:column "TitleOfCourtesy" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:birthdate ] ; rr:objectMap [ rr:column "BirthDate" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:hiredate ] ; rr:objectMap [ rr:column "HireDate" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:address ] ; rr:objectMap [ rr:column "Address" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:city ] ; rr:objectMap [ rr:column "City" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:region ] ; rr:objectMap [ rr:column "Region" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:postalcode ] ; rr:objectMap [ rr:column "PostalCode" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:country ] ; rr:objectMap [ rr:column "Country" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:countrycode ] ; rr:objectMap [ rr:column "CountryCode" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:homephone ] ; rr:objectMap [ rr:column "HomePhone" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:extension ] ; rr:objectMap [ rr:column "Extension" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:photo ] ; rr:objectMap [ rr:column "Photo" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:notes ] ; rr:objectMap [ rr:column "Notes" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:reportsto ] ; rr:objectMap [ rr:column "ReportsTo" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:employees_of_orders ] ; rr:objectMap [ rr:parentTriplesMap &lt;#TriplesMapOrders&gt;;  rr:joinCondition [ rr:child "EmployeeID" ; rr:parent "EmployeeID" ] ; ]; ] .
+
+&lt;#TriplesMapOrder_Details&gt; a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Order_Details" ];
+rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/order_details/{OrderID}/{ProductID}"; rr:class Demo:Order_Details; ];
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitprice ] ; rr:objectMap [ rr:column "UnitPrice" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:quantity ] ; rr:objectMap [ rr:column "Quantity" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:discount ] ; rr:objectMap [ rr:column "Discount" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:order_details_has_orders ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/orders/{OrderID}" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:order_details_has_products ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/products/{ProductID}" ]; ] .
+
+&lt;#TriplesMapOrders&gt; a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Orders" ];
+rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/orders/{OrderID}"; rr:class Demo:Orders; ];
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orderid ] ; rr:objectMap [ rr:column "OrderID" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orderdate ] ; rr:objectMap [ rr:column "OrderDate" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:requireddate ] ; rr:objectMap [ rr:column "RequiredDate" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shippeddate ] ; rr:objectMap [ rr:column "ShippedDate" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:freight ] ; rr:objectMap [ rr:column "Freight" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipname ] ; rr:objectMap [ rr:column "ShipName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipaddress ] ; rr:objectMap [ rr:column "ShipAddress" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipcity ] ; rr:objectMap [ rr:column "ShipCity" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipregion ] ; rr:objectMap [ rr:column "ShipRegion" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shippostalcode ] ; rr:objectMap [ rr:column "ShipPostalCode" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipcountry ] ; rr:objectMap [ rr:column "ShipCountry" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipcountrycode ] ; rr:objectMap [ rr:column "ShipCountryCode" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:rowguid ] ; rr:objectMap [ rr:column "ROWGUID" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_has_customers ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/customers/{CustomerID}" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_has_employees ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/employees/{EmployeeID}" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_has_shippers ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/shippers/{ShipVia}" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_of_order_details ] ; rr:objectMap [ rr:parentTriplesMap &lt;#TriplesMapOrder_Details&gt;;  rr:joinCondition [ rr:child "OrderID" ; rr:parent "OrderID" ] ; ]; ] .
+
+&lt;#TriplesMapProducts&gt; a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Products" ];
+rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/products/{ProductID}"; rr:class Demo:Products; ];
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:productid ] ; rr:objectMap [ rr:column "ProductID" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:productname ] ; rr:objectMap [ rr:column "ProductName" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:quantityperunit ] ; rr:objectMap [ rr:column "QuantityPerUnit" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitprice ] ; rr:objectMap [ rr:column "UnitPrice" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitsinstock ] ; rr:objectMap [ rr:column "UnitsInStock" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitsonorder ] ; rr:objectMap [ rr:column "UnitsOnOrder" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:reorderlevel ] ; rr:objectMap [ rr:column "ReorderLevel" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:discontinued ] ; rr:objectMap [ rr:column "Discontinued" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:products_has_categories ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/categories/{CategoryID}" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:products_has_suppliers ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/suppliers/{SupplierID}" ]; ] ;
+rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:products_of_order_details ] ; rr:objectMap [ rr:parentTriplesMap &lt;#TriplesMapOrder_Details&gt;;  rr:joinCondition [ rr:child "ProductID" ; rr:parent "ProductID" ] ; ]; ] .
+</programlisting>
+          </listitem>
+        </orderedlist>
+      </section>
+    </section>

@@ -1,0 +1,1553 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfgraphsecurity">
+      <title>RDF Graphs Security</title>
+      <section xml:id="rdfgraphsecuritygroups">
+        <title>RDF Graph Groups</title>
+        <para>In some cases, the data-set of a SPARQL query is not known at compile time. It is possible to pass
+IRIs of source graphs via parameters, but the method is not perfect as:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>not all protocols are suitable for parameter passing, and no one is an interoperable standard</para>
+          </listitem>
+          <listitem>
+            <para>passing list of IRIs as a parameter will usually require the use of Virtuoso-specific functions
+in the text of SPARQL query, that's bad for some query builders.</para>
+          </listitem>
+          <listitem>
+            <para>lack of knowledge about actual graphs may damage query optimization</para>
+          </listitem>
+        </itemizedlist>
+        <para>It would be nice to create named lists of graphs and a clause like "SELECT from all graph names of the specified list".
+<emphasis>"Graph groups"</emphasis>
+
+   serve for this purpose. That is Virtuoso-specific SPARQL extension that let create a named list of IRIs such that
+if name of the list is used in <emphasis>FROM</emphasis>
+
+   clause like <emphasis>IRI</emphasis>
+
+   of default
+graph then it is equivalent to list of <emphasis>FROM</emphasis>
+
+   clauses, one clause for each item of the
+list.</para>
+        <para>Internally, descriptions of graph groups are kept in two tables:
+        <emphasis>Table of graph groups:</emphasis></para>
+        <programlisting>
+create table DB.DBA.RDF_GRAPH_GROUP (
+  RGG_IID IRI_ID not null primary key,	-- IRI ID of RGG_IRI field
+  RGG_IRI varchar not null,		-- Name of the group
+  RGG_MEMBER_PATTERN varchar,		-- Member IRI pattern
+  RGG_COMMENT varchar			-- Comment
+  )
+create index RDF_GRAPH_GROUP_IRI on DB.DBA.RDF_GRAPH_GROUP (RGG_IRI)
+;
+</programlisting>
+        <para>
+          <emphasis>Table of contents of groups:</emphasis>
+        </para>
+        <programlisting>
+create table DB.DBA.RDF_GRAPH_GROUP_MEMBER (
+  RGGM_GROUP_IID IRI_ID not null,	-- IRI_ID of the group
+  RGGM_MEMBER_IID IRI_ID not null,	-- IRI_ID of the group member
+  primary key (RGGM_GROUP_IID, RGGM_MEMBER_IID)
+  )
+;
+</programlisting>
+        <para>Fields <emphasis>RGG_MEMBER_PATTERN</emphasis>
+
+   and <emphasis>RGG_COMMENT</emphasis>
+
+   are not used by system internals but applications may wish to write their data there for future reference.
+<emphasis>RGG_COMMENT</emphasis>
+
+   is supposed to be human-readable description of the group and <emphasis>RGG_MEMBER_PATTERN</emphasis>
+
+   may be useful for functions that automatically add
+IRIs of a given graph to all graph groups such that the graph IRI string match <emphasis>RGG_MEMBER_PATTERN</emphasis>
+
+   regexp pattern.
+</para>
+        <para>A dictionary of all groups and their members is cached in memory for fast access.
+Due to this reason, applications may read these tables and modify <emphasis>RGG_MEMBER_PATTERN</emphasis>
+
+   and <emphasis>RGG_COMMENT</emphasis>
+
+   if needed but not change other fields directly.
+The following API procedures makes changes in a safe way:
+</para>
+        <programlisting>
+DB.DBA.RDF_GRAPH_GROUP_CREATE (
+  in group_iri varchar,
+  in quiet integer,
+  in member_pattern varchar := null,
+  in comment varchar := null)
+</programlisting>
+        <para>That creates a new empty graph group. An error is signaled if the group exists already and quiet
+parameter is zero.</para>
+        <programlisting>
+DB.DBA.RDF_GRAPH_GROUP_INS (in group_iri varchar, in memb_iri varchar)
+DB.DBA.RDF_GRAPH_GROUP_DEL (in group_iri varchar, in memb_iri varchar)
+</programlisting>
+        <para>These two are to add or remove member to an existing group. Double insert or removal of not a member
+will not signal errors, but missing group will.be signaled.</para>
+        <programlisting>
+DB.DBA.RDF_GRAPH_GROUP_DROP (
+  in group_iri varchar,
+  in quiet integer)
+</programlisting>
+        <para>That removes graph group. An error is signaled if the group did not exist before the call and quiet
+parameter is zero.</para>
+        <para>Graph groups are <emphasis>"macro-expanded"</emphasis>
+
+   only in FROM clauses and have no effect on
+FROM NAMED or on GRAPH &lt;IRI&gt; {...} . Technically, it is not prohibited to use an IRI as both plain
+graph IRI and graph group IRI in one storage but this is confusing and is not recommended.</para>
+        <para>Graph groups can not be members of other graph groups, i.e. the IRI of a graph group can appear in the
+list of members of some group but it will be treated as plain graph IRI and will not cause recursive
+expansion of groups.</para>
+      </section>
+      <section xml:id="rdfgraphsecuritynotfrom">
+        <title>NOT FROM and NOT FROM NAMED Clauses</title>
+        <para>In addition to standard FROM and FROM NAMED clauses, Virtuoso extends SPARQL with NOT FROM and NOT
+FROM NAMED clauses of "opposite" meaning.</para>
+        <programlisting>
+SELECT ... NOT FROM &lt;x&gt; ... WHERE {...}
+</programlisting>
+        <para>means "SELECT FROM other graphs, but not from the given one".
+This is especially useful because NOT FROM supports graph groups (NOT FROM NAMED supports only plain graphs).
+So if</para>
+        <programlisting>
+&lt;http://example.com/users/private&gt;
+</programlisting>
+        <para>is a graph group of all graphs with confidential data about users then</para>
+        <programlisting>
+SELECT * NOT FROM &lt;http://example.com/users/private&gt; WHERE {...}
+</programlisting>
+        <para>will be restricted only to insecure data.</para>
+        <para>NOT FROM overrides any FROM and NOT FROM NAMED overrides any FROM NAMED, the order of clauses in the
+query text is not important.</para>
+        <para>The SPARQL web service endpoint configuration string may contain pragmas
+<emphasis>input:default-graph-exclude</emphasis>
+
+   and <emphasis>input:named-graph-exclude</emphasis>
+
+   that
+become equivalent to NOT FROM and NOT FROM NAMED clauses like <emphasis>input:default-graph-uri</emphasis>
+
+and <emphasis>input:named-graph-uri</emphasis>
+
+   mimics FROM and FROM NAMED.</para>
+      </section>
+      <section xml:id="rdfgraphsecuritylevel">
+        <title>Graph-Level Security</title>
+        <para>Virtuoso supports graph-level security for "physical" RDF storage. That is somewhat similar to table access
+    	permissions in SQL. However, the difference between SPARQL and SQL data models results in totally different style
+    	of security administration. In SQL, when new application is installed it comes with its own set of tables and every
+    	query in its code explicitly specifies tables in use. Security restrictions of two applications interfere only if
+    	applications knows each other and are supposedly designed to cooperate. It is possible to write an application that
+    	will get list of available tables and retrieve data from any given table but that is a special case and it usually
+    	requires DBA privileges.</para>
+        <para>In SPARQL, data of different applications shares one table and the query language allows to select data of all
+    	applications at once. This feature makes SPARQL convenient for cross-application data integration. At the same time,
+    	that become a giant security hole if any sensitive data are stored.</para>
+        <para>A blind copying SQL security model to SPARQL domain would result in significant loss of performance or weak
+    	security or even both problems at the same time. That is why SPARQL model is made much more restrictive, even if
+    	it becomes inconvenient for some administration tasks.</para>
+        <para>Graph-level security does not replace traditional SQL security. A user should become member of appropriate
+    	group (<code>SPARQL_SELECT</code>
+
+  , <code>SPARQL_SPONGE</code>
+
+   or <code>SPARQL_UPDATE</code>
+
+  ) in order to start
+    	using its graph-level privileges.</para>
+      </section>
+      <section xml:id="rdfgraphsecuritylevelrow">
+        <title>Graph-Level Security and SQL</title>
+        <para>SPARQL-level graph security is sufficient for SPARQL client operating over HTTP. It is not sufficient for SQL
+    	clients due to the fact that graph level security is baked into the SPARQL compiler, not by an SQL compiler.</para>
+        <para>The Virtuoso SPARQL compiler analyzes the graph-level permissions of a user (an identity principal named using
+    	an identifier e.g., WebID or NetID). For each triple pattern or graph group pattern the compiler adds an implicit
+    	FILTER () that ensures that appropriate privileges are granted on target named graphs to a given user. Ultimately,
+    	these FILTERs becomes part of the generated SQL code processed against the RDF_QUAD and related RDF data management
+    	system tables.</para>
+        <para>SQL users accessing Virtuoso via ODBC, JDBC, ADO.NET, and OLE-DB connections have the ability to execute arbitrary
+    	SQL code via stored procedures, subject to SQL level privileges on target Tables and Views which provides a point of
+    	vulnerability to the RDF system tables (RDF_QUAD and others). To close this vulnerability, the SQL compiler restricts
+    	SQL connection access, in regards to RDF system tables, to members of <code>the SPARQL_SELECT_RAW</code>
+
+   group.</para>
+        <para><emphasis>Note:</emphasis><code>SPARQL_SELECT_RAW</code>
+
+   group is a feature applicable to Virtuoso 7.5 or higher.</para>
+        <section xml:id="rdfgraphsecuritylevelrowex">
+          <title>Graph-Level Security and SQL Usage Example</title>
+          <para>The following example demonstrates how to grant <code>SPARQL_SELECT_RAW</code>
+
+   to a Virtuoso SQL user:</para>
+          <programlisting>
+SQL&gt; DB.DBA.USER_CREATE ('John', 'John');
+Done. -- 0 msec.
+SQL&gt; GRANT SPARQL_SELECT to "John";
+Done. -- 0 msec.
+SQL&gt; GRANT SPARQL_SELECT_RAW to "John";
+Done. -- 0 msec.
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfgraphsecurityunddefperm">
+        <title>Understanding Default Permissions</title>
+        <para>In relational database, default permissions are trivial. DBA is usually the only account that can
+access any table for both read and write. Making some table public or private does not affect applications
+that do not refer that table in the code. Tables are always created before making security restrictions on
+them.</para>
+        <para>Chances are very low that an application will unintentionally create some table and fill in with
+confidential data. There are no unauthenticated users, any client has some user ID and no one user is
+"default user" so permissions of any two users are always independent.</para>
+        <para>SPARQL access can be anonymous and graphs can be created during routine data manipulation.
+For anonymous user, only public resources are available. Thus "default permissions" on some or all graphs are
+actually permissions of "nobody" user, (the numeric ID of this user can be obtained by http_nobody_uid()
+function call). As a consequence, there's a strong need in "default permission" for a user, this is the only
+way to specify what to do with all graphs that does not exist now it might exist in some future.
+</para>
+        <para>An attempt to make default permissions wider than specific is always potential security hole in SPARQL,
+so this is strictly prohibited.</para>
+        <para>Four sorts of access are specified by four bits of an integer "permission bit-mask", plain old UNIX
+style:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>Bit 1 permits read access.</para>
+          </listitem>
+          <listitem>
+            <para>Bit 2 permits write access via SPARUL and it's basically useless without bit 1 set.</para>
+          </listitem>
+          <listitem>
+            <para>Bit 4 permits write access via "RDF sponge" methods and it's basically useless
+without bits 1 and 2 set.</para>
+          </listitem>
+          <listitem>
+            <para>Bit 8 allows to obtain list of members of graph group; an IRI can be used as graph IRI and as
+graph group IRI at the same time so bit 8 can be freely combined with any of bits 1, 2 or 4.</para>
+          </listitem>
+        </itemizedlist>
+        <para>Note that obtaining the list of members of a graph group does not grant any access permissions to
+triples from member graphs. It is quite safe to mix secure and public graphs in one graph group.</para>
+        <para>When a SPARQL query should check whether a given user have permission to access a given graph then
+the order of checks is as follows:</para>
+        <orderedlist>
+          <listitem>
+            <para>permissions of the user on the specific graph;</para>
+          </listitem>
+          <listitem>
+            <para>default permissions of the user on all graphs;</para>
+          </listitem>
+          <listitem>
+            <para>public permissions on the specific graph;</para>
+          </listitem>
+          <listitem>
+            <para>public permissions on all graphs</para>
+          </listitem>
+        </orderedlist>
+        <para>If no one above mentioned permission is set then the access is "read/write/sponge/list".</para>
+        <para>For "nobody" user, steps 3 and 4 become exact copies of steps 1 and 2 so they are skipped.</para>
+      </section>
+      <section xml:id="rdfgraphsecurityintconfsec">
+        <title>Initial Configuration of SPARQL Security</title>
+        <para>It is convenient to configure the RDF storage security by adding restrictions in the order inverse
+to the order of checks:</para>
+        <orderedlist>
+          <listitem>
+            <para>Step 1: Set public permissions on all graphs to the most restricted level of any application
+that will be installed. So if any single graph will be unreadable for public, then public permissions on
+all graphs should be set to 0 or 8.</para>
+          </listitem>
+          <listitem>
+            <para>Step 2: Public permissions on "insecure" graphs should be set. So if the database contains
+DBpedia or WordNet or some other data of Linking Open Data project then public permissions for that graphs
+may be set to 1.</para>
+          </listitem>
+          <listitem>
+            <para>Step3: Configure trusted users, such as administrative DBA-like accounts, and to specify their
+permissions on all graphs.</para>
+          </listitem>
+          <listitem>
+            <para>Step 4: Some additional right can be granted to some specific users on some specific graphs.</para>
+          </listitem>
+        </orderedlist>
+        <para>Note that there's no need to permit something to DBA itself, because DBA's default permissions are
+set automatically.</para>
+        <section xml:id="rdfgraphsecurityintconfsecuser">
+          <title>Configuring New User</title>
+          <orderedlist>
+            <listitem>
+              <para>Step 1: Grant SPARQL_SELECT, SPARQL_SPONGE or SPARQL_UPDATE to the user.</para>
+            </listitem>
+            <listitem>
+              <para>Step 2: Set user's permissions on all graphs.</para>
+            </listitem>
+            <listitem>
+              <para>Step 3: Grant rights on some specific graphs.</para>
+            </listitem>
+          </orderedlist>
+        </section>
+        <section xml:id="rdfgraphsecurityintex">
+          <title>Example: Blogs and Resource Sharing</title>
+          <para>The following example demonstrates usage of the following functions:</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para><link linkend="fn_rdf_default_user_perms_set"><function>DB.DBA.RDF_DEFAULT_USER_PERMS_SET (uname, permissions, set_private)</function></link>
+               ;</para>
+            </listitem>
+            <listitem>
+              <para><link linkend="fn_rdf_default_user_perms_del"><function>DB.DBA.RDF_DEFAULT_USER_PERMS_DEL (uname, set_private)</function></link>
+               ;</para>
+            </listitem>
+            <listitem>
+              <para><link linkend="fn_rdf_graph_user_perms_set"><function>DB.DBA.RDF_GRAPH_USER_PERMS_SET (graph_iri, uname, permissions)</function></link>
+               ;</para>
+            </listitem>
+            <listitem>
+              <para><link linkend="fn_rdf_graph_user_perms_del"><function>DB.DBA.RDF_GRAPH_USER_PERMS_DEL (graph_iri, uname)</function></link>
+               ;</para>
+            </listitem>
+            <listitem>
+              <para><link linkend="fn_rdf_all_user_perms_del"><function>DB.DBA.RDF_ALL_USER_PERMS_DEL (uname, uid)</function></link>
+               ;</para>
+            </listitem>
+          </itemizedlist>
+          <para>Consider a "groupware" application that let users create personal resources with access policies.</para>
+          <programlisting>
+-- First, create few users, in alphabetical order.
+SQL&gt; DB.DBA.USER_CREATE ('Anna', 'Anna');
+Done. -- 0 msec.
+SQL&gt; DB.DBA.USER_CREATE ('Brad', 'Brad');
+Done. -- 0 msec.
+SQL&gt; DB.DBA.USER_CREATE ('Carl', 'Carl');
+Done. -- 16 msec.
+SQL&gt; GRANT SPARQL_UPDATE to "Anna";
+Done. -- 0 msec.
+SQL&gt; GRANT SPARQL_UPDATE to "Brad";
+Done. -- 0 msec.
+SQL&gt; GRANT SPARQL_UPDATE to "Carl";
+Done. -- 0 msec.
+
+-- At least some data are supposed to be confidential, thus the whole storage becomes confidential.
+SQL&gt; DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('nobody', 0);
+Done. -- 16 msec.
+
+-- Moreover, no one of created users have access to all graphs (even for reading).
+SQL&gt; DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Anna', 0);
+Done. -- 0 msec.
+SQL&gt; DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Brad', 0);
+Done. -- 0 msec.
+SQL&gt; DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Carl', 0);
+Done. -- 0 msec.
+
+-- Add Anna's and Brad's private graph to the group http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs:
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_INS ('http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'http://example.com/Anna/private');
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_INS ('http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'http://example.com/Brad/private');
+
+-- Anna's graphs:
+--insert simple data in Anna's personal system graph:
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Anna/system&gt; { &lt;Anna-system&gt; a &lt;secret&gt; };
+Done. -- 31 msec.
+
+--insert simple data in Anna's private graph:
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Anna/private&gt; { &lt;Anna-private&gt; a &lt;secret&gt; };
+Done. -- 0 msec.
+
+-- Anna can only read her personal system data graph.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/system', 'Anna', 1);
+Done. -- 0 msec
+
+-- Anna can read and write her private data graph.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/private', 'Anna', 3);
+Done. -- 0 msec
+
+-- Brad's graphs:
+-- insert simple data in Brad's personal system graph:
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Brad/system&gt; { &lt;Brad-system&gt; a &lt;secret&gt; };
+Done. -- 0 msec
+
+-- insert simple data in Brad's private graph:
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Brad/private&gt; { &lt;Brad-private&gt; a &lt;secret&gt; };
+Done. -- 0 msec
+
+-- Brad can only read his personal system data graph.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Brad/system', 'Brad', 1);
+Done. -- 0 msec
+
+-- Brad can read and write his private data graph.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Brad/private', 'Brad', 3);
+Done. -- 0 msec
+
+-- Friends graphs:
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Anna/friends&gt; { &lt;Anna-friends&gt; foaf:knows 'Brad' };
+Done. -- 14 msec
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Brad/friends&gt; { &lt;Brad-friends&gt; foaf:knows 'Anna' };
+Done. -- 15 msec
+
+-- Anna and Brad are friends and can read each others notes for friends.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/friends', 'Anna', 3);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/friends', 'Brad', 1);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Brad/friends', 'Brad', 3);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Brad/friends', 'Anna', 1);
+
+-- BubbleSortingServicesInc graph
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/BubbleSortingServicesInc&gt; { &lt;BubbleSortingServicesInc-info&gt; a &lt;info&gt; };
+Done. -- 31 msec
+
+-- Brad and Carl share write access to graph of his company.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/BubbleSortingServicesInc', 'Brad', 3);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/BubbleSortingServicesInc', 'Carl', 3);
+
+-- Anna's blog
+SQL&gt; SPARQL INSERT IN &lt;http://example.com/Anna/blog&gt; { &lt;Anna-blog&gt; a &lt;my-blog&gt; };
+
+-- Anna writes a blog for public.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/blog', 'Anna', 3);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/blog', 'nobody', 1);
+
+-- DBpedia is public read and local discussion wiki is readable and writable.
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://dbpedia.org/', 'nobody', 1);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/wiki', 'nobody', 3);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/public', 'nobody', 3);
+
+-- Graph groups have its own security.
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_CREATE ('http://example.com/Personal', 1);
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Anna/system');
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Anna/private');
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Brad/system');
+SQL&gt; DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Brad/private');
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Personal', 'Anna', 8);
+SQL&gt; DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Personal', 'Brad', 8);
+
+-- See as dba user what is in the &lt;http://example.com/Personal&gt; graph:
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Personal&gt;
+WHERE { ?s ?p ?o } ;
+s               p                                                  o
+VARCHAR         VARCHAR                                            VARCHAR
+_______________________________________________________________________________
+
+Anna-system     http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+Anna-private    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+Brad-system     http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+Brad-private    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+
+4 Rows. -- 32 msec.
+
+-- See as Anna user what is in the &lt;http://example.com/Personal&gt; graph:
+SQL&gt; reconnect Anna;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Personal&gt;
+WHERE { ?s ?p ?o };
+s               p                                                  o
+VARCHAR         VARCHAR                                            VARCHAR
+_______________________________________________________________________________
+
+Anna-system     http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+Anna-private    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+
+-- See as Brad user what is in the &lt;http://example.com/Personal&gt; graph:
+SQL&gt; reconnect Brad;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; SPARQL SELECT *
+FROM &lt;http://example.com/Personal&gt;
+WHERE { ?s ?p ?o };
+s               p                                                  o
+VARCHAR         VARCHAR                                            VARCHAR
+_______________________________________________________________________________
+
+Brad-system     http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+Brad-private    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+
+-- See as Anna user what is in Brad's friends graph &lt;http://example.com/Brad/friends&gt;:
+SQL&gt; reconnect Anna;
+Connected to OpenLink Virtuoso
+
+SQL&gt; SPARQL SELECT *
+FROM &lt;http://example.com/Brad/friends&gt;
+WHERE { ?s ?p ?o };
+s              p                                 o
+VARCHAR        VARCHAR                           VARCHAR
+_________________________________________________________
+
+Brad-friends   http://xmlns.com/foaf/0.1/knows   Anna
+1 Rows. -- 0 msec.
+
+-- Remove Anna's read permissions on Brad's notes:
+SQL&gt; reconnect dba;
+SQL&gt; RDF_GRAPH_USER_PERMS_DEL('http://example.com/Brad/friends','Anna');
+
+-- See again as Anna user what is in Brad's friends graph &lt;http://example.com/Brad/friends&gt;:
+SQL&gt; reconnect Anna;
+Connected to OpenLink Virtuoso
+
+SQL&gt; SPARQL SELECT *
+FROM &lt;http://example.com/Brad/friends&gt;
+WHERE { ?s ?p ?o };
+s              p                                 o
+VARCHAR        VARCHAR                           VARCHAR
+_________________________________________________________
+
+0 Rows. -- 0 msec.
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Anna/blog&gt;
+WHERE { ?s ?p ?o } ;
+
+s             p                                                o
+VARCHAR       VARCHAR                                          VARCHAR
+_______________________________________________________________________________
+
+Anna-blog     http://www.w3.org/1999/02/22-rdf-syntax-ns#type  my-blog
+
+1 Rows. -- 16 msec.
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Anna/friends&gt;
+WHERE { ?s ?p ?o } ;
+
+s             p                                o
+VARCHAR       VARCHAR                          VARCHAR
+_______________________________________________________________________________
+
+Anna-friends  http://xmlns.com/foaf/0.1/knows  Brad
+1 Rows. -- 16 msec.
+
+-- Remove all the setting of Brad's permissions, both default permissions and
+-- permissions on specific graphs.
+-- Note: 142 is example id of Brads U_ID in DB.DBA.SYS_USERS table
+
+SQL&gt; reconnect dba;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; DB.DBA.RDF_ALL_USER_PERMS_DEL('Brad',142);
+Done. -- 0 msec.
+
+SQL&gt; reconnect Brad;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Anna/friends&gt;
+WHERE { ?s ?p ?o } ;
+s          p          o
+VARCHAR    VARCHAR    VARCHAR
+_______________________________________________________________________________
+
+0 Rows. -- 16 msec.
+
+-- Check what Carl can see --
+SQL&gt; reconnect Carl;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/BubbleSortingServicesInc&gt;
+WHERE { ?s ?p ?o } ;
+
+s                              p                                                o
+VARCHAR                        VARCHAR                                          VARCHAR
+_______________________________________________________________________________
+
+BubbleSortingServicesInc-info  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  info
+
+1 Rows. -- 0 msec.
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Anna/private&gt;
+WHERE { ?s ?p ?o } ;
+s               p                                                  o
+VARCHAR         VARCHAR                                            VARCHAR
+_______________________________________________________________________________
+
+0 Rows. -- 16 msec.
+
+-- let Carl read everything:
+SQL&gt; reconnect dba;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Carl', 1, 1);
+Done. -- 0 msec
+
+SQL&gt; reconnect Carl;
+Enter password for Carl :
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Anna/private&gt;
+WHERE { ?s ?p ?o } ;
+s               p                                                  o
+VARCHAR         VARCHAR                                            VARCHAR
+_______________________________________________________________________________
+
+Anna-private    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    secret
+
+1 Rows. -- 16 msec.
+
+-- Remove Carl's default permissions:
+SQL&gt; reconnect dba;
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; DB.DBA.RDF_DEFAULT_USER_PERMS_DEL('Carl', 1);
+Done. -- 0 msec.
+
+SQL&gt; reconnect Carl;
+Enter password for Carl :
+Connected to OpenLink Virtuoso
+Driver: 06.04.3132 OpenLink Virtuoso ODBC Driver
+
+SQL&gt; SPARQL
+SELECT *
+FROM &lt;http://example.com/Anna/private&gt;
+WHERE { ?s ?p ?o } ;
+s               p                                                  o
+VARCHAR         VARCHAR                                            VARCHAR
+_______________________________________________________________________________
+
+0 Rows. -- 16 msec.
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfgraphsecurityappcallb">
+        <title>Application Callbacks for Graph Level Security</title>
+        <para>In some cases, different applications should provide different security for different users. Two
+SPARQL pragmas are provided for this purpose:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>Pragma sql:gs-app-callback is to specify Virtuoso/PL callback function that return permission bits for given graph.</para>
+          </listitem>
+          <listitem>
+            <para>Pragma sql:gs-app-uid is to specify application-specific user ID that is some string that is passed to the callback "as is".</para>
+          </listitem>
+        </itemizedlist>
+        <para>The name of callback is always DB.DBA.SPARQL_GS_APP_CALLBACK_nnn, where nnn is value of
+sql:gs-app-callback.</para>
+        <para>The callback is called only if the application has access to the graph in question so it may restrict
+the caller's account but not grant more permissions.</para>
+        <section xml:id="rdfgraphsecurityappcallbex">
+          <title>Example</title>
+          <para>Let user of application get full access to graphs whose IRIs contain user's name in path.
+In addition, let all of them permission to use all graph groups and let the "moderator" user read everything.</para>
+          <programlisting>
+reconnect "dba";
+
+create function DB.DBA.SPARQL_GS_APP_CALLBACK_TEST (in g_iid IRI_ID, in app_uid varchar) returns integer
+{
+  declare g_uri varchar;
+-- A fake IRI ID #i0 is used to mention account's default permissions for all graphs.
+  if (#i0 = g_iid)
+    {
+      if ('moderator' = app_uid)
+        return 9; -- Moderator can read and list everything.
+      return 8; -- Other users can list everything.
+    }
+  g_uri := id_to_iri (g_iid);
+  if (strstr (g_uri, '/' || app_uid || '/'))
+    return 15; -- User has full access to "his" graph.
+  return 8; -- User can list any given graph group.
+}
+;
+
+SPARQL
+define sql:gs-app-callback "TEST"
+define sql:gs-app-uid "Anna"
+SELECT ?g ?s WHERE { ?s &lt;p&gt; ?o }
+;
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfgraphsecurityspongeprivate">
+        <title>Graph-level security and sponging</title>
+        <para>In some cases the sponged data contains private information for instances cartridges like Facebook, etc. To
+perform private sponging, Virtuoso offers <emphasis>get:private</emphasis>
+
+   pragma:</para>
+        <programlisting>
+define get:private ""
+or
+define get:private &lt;graph_group_IRI&gt;
+</programlisting>
+        <para>When used for sponging graph X, it adjusts graph-level security of graph X (and of graph_group_IRI, if
+  specified) so that X becomes a privately accessible graph of the user who sponges the X and if graph_group_IRI
+  is specified then X becomes accessible to users that can access graph_group_IRI with permissions like permissions
+  they have on graph_group_IRI.</para>
+        <para>The exact rules are as following:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>If graph is virtrdf: then an error is signaled.</para>
+          </listitem>
+          <listitem>
+            <para>If graph name is an IRI of handshaked web service endpoint or "public IRI" of a handshaked web
+    service endpoint then an error is signaled.</para>
+          </listitem>
+          <listitem>
+            <para>If access is public by default even for private graphs then an error is signaled and sponging is
+    not tried.</para>
+          </listitem>
+          <listitem>
+            <para>If default is "no access" but someone (other than current user) has specifically granted read access
+    to the graph in question AND current user is not dba AND current user has no bit 32 permission on this graph
+    then an error is signaled.</para>
+          </listitem>
+          <listitem>
+            <para>If read access is public by default for world and disabled for private graphs then the graph to be
+    sponged is added to the group of private graphs.</para>
+          </listitem>
+          <listitem>
+            <para>If current user is not DBA, current user gets granted read+write+sponge+admin access to the graph to
+    be sponged. In addition, current user gets special permission bit 32, indicating that the graph is made by
+    private sponge of this specific user.</para>
+          </listitem>
+          <listitem>
+            <para>If the value of get:private is an IRI then:</para>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>The IRI is supposed to be an IRI of "plain" graph group, error is signaled in case of nonexising
+        graph group, group of private graphs or group of graphs to be replicated.</para>
+              </listitem>
+              <listitem>
+                <para>The graph is added to that group</para>
+              </listitem>
+              <listitem>
+                <para>Each non-dba user that can get list of files of the group will get permissions for the loaded
+        graph equal to permissions they have on graph group minus "list" permission.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </itemizedlist>
+        <section xml:id="rdfgraphsecurityspongeprivateconfdb">
+          <title>Example Performing Sponging on a entirely confidential database using get:private pragma</title>
+          <para>The following example demonstrates how private sponging using get:private pragma works for entirely
+    confidential database.</para>
+          <para><emphasis>Note</emphasis>
+
+  : Please take in mind that the steps from below will change the security of any existing database, thus the example scenario should be performed on a empty db.</para>
+          <orderedlist>
+            <listitem>
+              <para>Create few users in alphabetical order:
+</para>
+              <programlisting>
+DB.DBA.USER_CREATE ('Anna', 'Anna');
+DB.DBA.USER_CREATE ('Brad', 'Brad');
+DB.DBA.USER_CREATE ('Carl', 'Carl');
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Set to Anna, Brad and Carl SPARQL SELECT, UPDATE and SPONGE permissions:
+</para>
+              <programlisting>
+grant SPARQL_SELECT to "Anna";
+grant SPARQL_SELECT to "Brad";
+grant SPARQL_SELECT to "Carl";
+
+grant SPARQL_UPDATE to "Anna";
+grant SPARQL_UPDATE to "Brad";
+grant SPARQL_UPDATE to "Carl";
+
+grant SPARQL_SPONGE to "Anna";
+grant SPARQL_SPONGE to "Brad";
+grant SPARQL_SPONGE to "Carl";
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Set specific privileges to given graphs for specifics users: Catering for the fact that some
+     datasets are supposed to be confidential, thus the whole quad storage is set to confidential.
+     Then specific privileges can be assigned to specific graphs for specific users:
+</para>
+              <programlisting>
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('nobody', 0);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Set specific privileges: assuming for users Anna, Brad and Carl none of these individual has any
+     kind of global access to graphs:
+</para>
+              <programlisting>
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Anna', 0);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Brad', 0);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Carl', 0);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Assuming the following four sorts of access that are specified by four bits of an integer
+     "permission bit-mask", following plain old UNIX style:
+     </para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>Bit 1 permits read access. </para>
+                </listitem>
+                <listitem>
+                  <para>Bit 2 permits write access via SPARUL and is basically useless without bit 1 set. </para>
+                </listitem>
+                <listitem>
+                  <para>Bit 4 permits write access via "RDF Network Resource Fetch" methods and is basically useless
+        without bits 1 and 2 set. </para>
+                </listitem>
+                <listitem>
+                  <para>Bit 8 allows retrieval of the list of members of a graph group. An IRI can be used as a graph
+        IRI and as a graph group IRI at the same time, so bit 8 can be freely combined with any of bits 1, 2 or
+        4. </para>
+                </listitem>
+                <listitem>
+                  <para>In the statements from below should be considered:
+          </para>
+                  <itemizedlist mark="bullet">
+                    <listitem>
+                      <para>"15 = 8+4+2+1" -- i.e. combining all the four sorts of access FROM above </para>
+                    </listitem>
+                    <listitem>
+                      <para>"9 = 8 + 1" -- i.e. read access + access to retrieve the list of members for a given
+            graph group</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </itemizedlist>
+              <programlisting>
+-- Create Graph Group for Anna and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('urn:Anna:Sponged:Data', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Anna:Sponged:Data', 'Anna', 15);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Anna:Sponged:Data', 'Brad', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Anna:Sponged:Data', 'Carl', 9);
+
+-- Create Graph Group for Brad and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('urn:Brad:Sponged:Data', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Brad:Sponged:Data', 'Anna', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Brad:Sponged:Data', 'Brad', 15);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Brad:Sponged:Data', 'Carl', 9);
+
+-- Create Graph Group for Carl and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('urn:Carl:Sponged:Data', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Carl:Sponged:Data', 'Anna', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Carl:Sponged:Data', 'Brad', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Carl:Sponged:Data', 'Carl', 15);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Examples with invalid graph group names:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example with Non-existing Graph Group:
+       </para>
+                  <programlisting>
+-- An error for non-existing Graph group &lt;http://nosuch/&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;http://nosuch/&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+       </programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example with "virtrdf:PrivateGraphs" graph group which is reserved for system usage:
+       </para>
+                  <programlisting>
+-- An error for attempt to add a graph to special
+-- graph group &lt;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private virtrdf:PrivateGraphs
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+       </programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example with "virtrdf:rdf_repl_graph_group" graph group which is reserved for system usage:
+</para>
+                  <programlisting>
+
+-- An error for attempt to add a graph to special
+-- graph group &lt;http://www.openlinksw.com/schemas/virtrdf#rdf_repl_graph_group&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private virtrdf:rdf_repl_graph_group
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Examples to check Anna's sponging permissions on different graph groups:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example for adding graph to Anna's graph group &lt;urn:Anna:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+
+-- No error will be raised as Anna has the efficient rights for graph group &lt;urn:Anna:Sponged:Data&gt;
+
+reconnect "Anna";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/anna/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Brad's graph group &lt;urn:Brad:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+
+-- An error will be raised because "Anna" has not enough rights on that group
+
+reconnect "Anna";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Carl's graph group &lt;urn:Carl:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Anna" has not enough rights on that group
+
+reconnect "Anna";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Examples check Brad's sponging permissions on different graph groups:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example for adding graph to Anna's graph group &lt;urn:Anna:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Brad" has not enough rights on that group
+
+reconnect "Brad";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Brad's graph group &lt;urn:Brad:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- No error will be raised as Brad has the efficient rights for graph group &lt;urn:Brad:Sponged:Data&gt;
+
+reconnect "Brad";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/brad/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Carl's graph group &lt;urn:Carl:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Brad" has not enough rights on that group
+
+reconnect "Brad";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Examples check Carl's sponging permissions on different graph groups:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example for adding graph to Anna's graph group &lt;urn:Anna:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Carl" has not enough rights on that group
+
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Brad's graph group &lt;urn:Brad:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be rased because "Carl" has not enough rights on that group
+
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Carl's graph group &lt;urn:Carl:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- No error will be raised as Carl has the efficient rights for graph group &lt;urn:Brad:Sponged:Data&gt;
+
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/carl/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>User Carl performs private sponging:
+</para>
+              <programlisting>
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+-- Should return for ex. 365 rows.
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT COUNT(*)
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/software.ttl&gt;
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/licenses.ttl&gt;
+  WHERE
+    {
+      graph ?g
+        { ?s ?p ?o
+      }
+    };
+
+-- Should return for ex. 1317 rows.
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT COUNT(*)
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/software.ttl&gt;
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/licenses.ttl&gt;
+  WHERE
+    {
+      graph ?g
+        { ?s ?p ?o
+      }
+    };
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Viewing Graph Groups shows Carl's graph group &lt;urn:Carl:Sponged:Data&gt; contains total 4 graphs:
+</para>
+              <programlisting>
+SQL&gt; SELECT id_to_iri (RGGM_GROUP_IID), id_to_iri(RGGM_MEMBER_IID)
+     FROM DB.DBA.RDF_GRAPH_GROUP_MEMBER
+     ORDER BY 1,2;
+
+id_to_iri                id_to_iri__1
+VARCHAR                  VARCHAR
+__________________________________________________________
+
+....
+urn:Anna:Sponged:Data    http://example.com/anna/
+urn:Brad:Sponged:Data    http://example.com/brad/
+urn:Carl:Sponged:Data    http://example.com/carl/
+urn:Carl:Sponged:Data    http://www.openlinksw.com/data/turtle/licenses.ttl
+urn:Carl:Sponged:Data    http://www.openlinksw.com/data/turtle/products.ttl
+urn:Carl:Sponged:Data    http://www.openlinksw.com/data/turtle/software.ttl
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+        <section xml:id="rdfgraphsecurityspongeprivategraphs">
+          <title>Example Performing Sponging with Private Graphs Using get:private pragma</title>
+          <para>The following example demonstrates how private sponging using get:private pragma works for database
+    with private graphs.</para>
+          <orderedlist>
+            <listitem>
+              <para>Create few users in alphabetical order:
+</para>
+              <programlisting>
+DB.DBA.USER_CREATE ('Anna', 'Anna');
+DB.DBA.USER_CREATE ('Brad', 'Brad');
+DB.DBA.USER_CREATE ('Carl', 'Carl');
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Set to Anna, Brad and Carl SPARQL SELECT, UPDATE and SPONGE permissions:
+</para>
+              <programlisting>
+grant SPARQL_SELECT to "Anna";
+grant SPARQL_SELECT to "Brad";
+grant SPARQL_SELECT to "Carl";
+
+grant SPARQL_UPDATE to "Anna";
+grant SPARQL_UPDATE to "Brad";
+grant SPARQL_UPDATE to "Carl";
+
+grant SPARQL_SPONGE to "Anna";
+grant SPARQL_SPONGE to "Brad";
+grant SPARQL_SPONGE to "Carl";
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Set specific privileges: Setup assuming 3 users: Anna, Brad and Carl where each of these
+     individual users has read access to graphs:
+</para>
+              <programlisting>
+-- Close any public access to "private" graphs
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('nobody', 0, 1);
+
+-- Set Read Only for public on graphs not listed as "private".
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('nobody', 1);
+
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Anna', 0, 1);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Brad', 0, 1);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Carl', 0, 1);
+
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Anna', 1);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Brad', 1);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Carl', 1);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Assuming the following four sorts of access that are specified by four bits of an integer
+     "permission bit-mask", following plain old UNIX style:
+     </para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>Bit 1 permits read access. </para>
+                </listitem>
+                <listitem>
+                  <para>Bit 2 permits write access via SPARUL and is basically useless without bit 1 set. </para>
+                </listitem>
+                <listitem>
+                  <para>Bit 4 permits write access via "RDF Network Resource Fetch" methods and is basically useless
+        without bits 1 and 2 set. </para>
+                </listitem>
+                <listitem>
+                  <para>Bit 8 allows retrieval of the list of members of a graph group. An IRI can be used as a graph
+        IRI and as a graph group IRI at the same time, so bit 8 can be freely combined with any of bits 1, 2 or
+        4. </para>
+                </listitem>
+                <listitem>
+                  <para>In the statements from below should be considered:
+          </para>
+                  <itemizedlist mark="bullet">
+                    <listitem>
+                      <para>"15 = 8+4+2+1" -- i.e. combining all the four sorts of access FROM above </para>
+                    </listitem>
+                    <listitem>
+                      <para>"9 = 8 + 1" -- i.e. read access + access to retrieve the list of members for a given
+            graph group</para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </itemizedlist>
+              <programlisting>
+-- Create Graph Group for Anna and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('urn:Anna:Sponged:Data', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Anna:Sponged:Data', 'Anna', 15);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Anna:Sponged:Data', 'Brad', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Anna:Sponged:Data', 'Carl', 9);
+
+-- Create Graph Group for Brad and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('urn:Brad:Sponged:Data', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Brad:Sponged:Data', 'Anna', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Brad:Sponged:Data', 'Brad', 15);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Brad:Sponged:Data', 'Carl', 9);
+
+-- Create Graph Group for Carl and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('urn:Carl:Sponged:Data', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Carl:Sponged:Data', 'Anna', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Carl:Sponged:Data', 'Brad', 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('urn:Carl:Sponged:Data', 'Carl', 15);
+
+-- Set Anna's, Brad's and Carl's graphs by inserting them into the &lt;b&gt;virtrdf:PrivateGraphs&lt;/b&gt; graph group:
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'http://example.com/anna/');
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'http://example.com/brad/');
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'http://example.com/carl/');
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Examples with invalid graph group names:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example with Non-existing Graph Group:
+       </para>
+                  <programlisting>
+-- An error for non-existing Graph group &lt;http://nosuch/&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;http://nosuch/&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+       </programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example with "virtrdf:PrivateGraphs" graph group which is reserved for system usage:
+       </para>
+                  <programlisting>
+-- An error for attempt to add a graph to special
+-- graph group &lt;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private virtrdf:PrivateGraphs
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+       </programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example with "virtrdf:rdf_repl_graph_group" graph group which is reserved for system usage:
+</para>
+                  <programlisting>
+
+-- An error for attempt to add a graph to special
+-- graph group &lt;http://www.openlinksw.com/schemas/virtrdf#rdf_repl_graph_group&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private virtrdf:rdf_repl_graph_group
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Examples to check Anna's sponging permissions on different graph groups:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example for adding graph to Anna's graph group &lt;urn:Anna:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+
+-- No error will be raised as Anna has the efficient rights for graph group &lt;urn:Anna:Sponged:Data&gt;
+
+reconnect "Anna";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/anna/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Brad's graph group &lt;urn:Brad:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+
+-- An error will be raised because "Anna" has not enough rights on that group
+
+reconnect "Anna";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Carl's graph group &lt;urn:Carl:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Anna" has not enough rights on that group
+
+reconnect "Anna";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Examples check Brad's sponging permissions on different graph groups:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example for adding graph to Anna's graph group &lt;urn:Anna:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Brad" has not enough rights on that group
+
+reconnect "Brad";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Brad's graph group &lt;urn:Brad:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- No error will be raised as Brad has the efficient rights for graph group &lt;urn:Brad:Sponged:Data&gt;
+
+reconnect "Brad";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/brad/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Carl's graph group &lt;urn:Carl:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Brad" has not enough rights on that group
+
+reconnect "Brad";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>Examples check Carl's sponging permissions on different graph groups:
+       </para>
+              <orderedlist>
+                <listitem>
+                  <para>Example for adding graph to Anna's graph group &lt;urn:Anna:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be raised because "Carl" has not enough rights on that group
+
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Brad's graph group &lt;urn:Brad:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- An error will be rased because "Carl" has not enough rights on that group
+
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Example for adding graph to Carl's graph group &lt;urn:Carl:Sponged:Data&gt;:
+</para>
+                  <programlisting>
+-- No error will be raised as Carl has the efficient rights for graph group &lt;urn:Brad:Sponged:Data&gt;
+
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/carl/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>User Carl performs private sponging:
+</para>
+              <programlisting>
+reconnect "Carl";
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+-- Should return for ex. 365 rows.
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT COUNT(*)
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/software.ttl&gt;
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/licenses.ttl&gt;
+  WHERE
+    {
+      graph ?g
+        { ?s ?p ?o
+      }
+    };
+
+-- Should return for ex. 1317 rows.
+SPARQL
+  DEFINE get:soft "replacing"
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT COUNT(*)
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/software.ttl&gt;
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/licenses.ttl&gt;
+  WHERE
+    {
+      graph ?g
+        { ?s ?p ?o
+      }
+    };
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>User Anna reads Carl's data:
+</para>
+              <programlisting>
+SQL&gt; reconnect "Anna";
+SQL&gt; SPARQL
+  SELECT COUNT(*)
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+365
+
+1 Rows. -- 15 msec.
+
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+    </section>

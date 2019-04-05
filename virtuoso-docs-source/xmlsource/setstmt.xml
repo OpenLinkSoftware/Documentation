@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="setstmt">
+      <title>SET Statement</title>
+      <section xml:id="isolation">
+        <title>ISOLATION</title>
+        <para>
+This allows setting a transaction isolation in a stored procedure or trigger body.
+The values are:</para>
+        <simplelist type="vert">
+          <member>uncommitted</member>
+          <member>committed</member>
+          <member>repeatable</member>
+          <member>serializable</member>
+        </simplelist>
+        <para>These are case insensitive strings.</para>
+        <para>
+This takes effect dynamically until replaced by another SET ISOLATION setting.
+The effect never persists over the return of the containing procedure or trigger. The effect
+does extend into procedures or triggers called from after executing the SET ISOLATION
+statement.
+</para>
+        <example xml:id="ex_settingisolations">
+          <title>Setting the isolation level</title>
+          <programlisting>
+set isolation='serializable';
+</programlisting>
+        </example>
+        <para>
+The initial isolation comes from the SQL_TXN_ISOLATION statement option in
+the ODBC API (SQLSetConnectOption). The default isolation is repeatable read.
+</para>
+      </section>
+      <section xml:id="lockescalation">
+        <title>LOCK_ESCALATION_PCT</title>
+        <para>
+This controls the escalation from row locking to page locking.  A set of
+row locks can be converted into one page lock if: (a) All the row locks on the
+page belong to the same transaction, or, (b) No other transaction waits for any of these locks.
+The value of this parameter is the percentage of rows on a page that must be held by
+the transaction before the locking goes to page level. The default is 50, meaning that
+for a page of 120 rows the 61st row lock will escalate the lock if all the previous
+locks belong to the same transaction and there is no wait pending on any.
+A value of -1 means that locking is always at page level if there is more
+than one lock on the page.  A value in excess of 100 causes
+lock escalation to be turned off. The effect of this setting is global and
+persists until the server is restarted. This setting does not affect the semantic of
+locking.
+</para>
+      </section>
+      <section xml:id="transactiontimeout">
+        <title>transaction_timeout</title>
+        <para>
+
+This allows setting a timeout for the current transaction.  The value
+must be an integer count of milliseconds from the beginning of the
+transaction.  The transaction is deemed to begin when the first
+client statement executes inside it or, if the transaction starts from
+a commit work or rollback work statement in PL, from the time of this statement.  If the transaction does not commit or rollback within so many milliseconds of its beginning, it is liable to get terminated, which is signalled to any code running inside the transaction as a SQL state S1T00.  When this is signalled the transaction is set into an uncommittable state and must be rolled back.  When the timeoutg elapses, all locks and uncommitted state belonging to the transaction are freed.
+</para>
+        <para>
+This setting remains in  effect until the transaction terminates.  Any timeout for a next transaction must be set separately.  This feature can be used for enforcing maximum running times on operations.  The timeout will take effect also if the transaction holds no locks.  This setting corresponds to the Virtuoso ODBC extension SQL_TXN_TIMEOUT statement option.o
+
+</para>
+      </section>
+      <section xml:id="parambatch">
+        <title>PARAM_BATCH</title>
+        <para>
+This sets the batch size used by the virtual database
+array parameter optimization batch size.  This causes several
+consecutive executes of the same statement to be grouped as a single ODBC operation
+with array parameters. This optimizes joins of tables on different servers and searched
+updates, inserts and deletes on attached tables.  Most ODBC drivers
+do not support array parameters.  A value of 1 or 0 disables
+the optimization. This should be done if there is a driver which falsely
+claims to support array parameters.  If a given driver returns an error when setting
+array parameters the VDB will detect this and will not try to use them.
+</para>
+        <para>
+The effect of this setting is global and persists until the server is restarted.
+The default value comes from the ArrayParameters configuration parameter.
+</para>
+      </section>
+    </section>

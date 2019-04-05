@@ -1,0 +1,951 @@
+
+
+
+H1 Virtuoso Cluster Operation  
+
+
+This section describes setting up and operating Virtuoso on a cluster of computers.  The section on Virtuoso cluster programming documents the SQL extensions specific to cluster application development.
+
+These sections apply to Virtuoso as of version 6.0.
+
+Clustering primarily offers greatly increased scalability for large databases without requiring application changes.  The database is divided over a number of servers, of which all provide transparent access to the same data.
+
+
+
+
+
+H2 General 
+
+Virtuoso can be run in cluster mode where one logical database is served by a collection of server processes spread over a cluster of machines.
+
+The cluster's composition is declared in a cluster.ini file which is to be in the starting directory of each of the servers composing the cluster.
+This file declares the hosts and listening ports of all processes composing the cluster and which of these processes is the local process and which the master.
+
+A cluster has a single master process which is the only one allowed to run DDL operations and which is responsible for distributed deadlock resolution.
+In all other respects, all server processes of the cluster are interchangeable.
+
+The set of processes declared in the cluster.ini files is called the physical cluster.
+
+
+Each cluster server process has its own database and log files and is
+solely responsible for these.  All configuration fields in
+virtuoso.ini and related files apply to the process whose ini file
+this is and their meaning is not modified by clustering.
+
+Specifically, the SQL client and HTTP and other listening ports of each process are declared as usual and are used as usual.
+A cluster server process has additionally a cluster listening port that is used for cluster communications.  This may not be connected to by anything except other processes of the same physical cluster.
+The cluster listener ports of all processes are declared in cluster.ini and all processes must specify the same information.
+
+H3 cluster.ini fields
+
+The below is a sample cluster.ini file declaring a physical cluster of 4 processes.
+
+
+[Cluster]
+Threads = 100
+ThisHost = Host1
+Master = Host1
+ReqBatchSize = 100 
+BatchesPerRPC = 4
+BatchBufferBytes = 20000
+LocalOnly = 2
+
+Host1 = box1:2222
+Host2 = box2:2223 
+Host3 = box3:2224 
+Host4 = box4:2225
+
+
+
+
+The lines Host1 ... Host4 declare the listening ports of each process.  The line ThisHost = 1 declares that this process is Host1, hence cluster listener at box1:2222
+box1 - box4 are machine names that must be resolvable in the local context.  IP numbers can also be used.
+
+The Threads line gives the maximum number of threads that will be made for serving requests from other hhosts of the cluster.  This is in addition to any other threads reserved in any other ini files. 
+
+The other fields should be left at the values shown.
+
+
+
+H2 Setting up a Cluster 
+
+To make a new empty clustered Virtuoso database, set up the individual
+instances.  The processes must be of exactly the same version, the
+operating systems, byte orders or word lengths of the participating
+machines do not have to match.
+
+Each individual database is assigned its database files and other
+configuration by editing its virtuoso.ini file.  No installation
+besides having the Virtuoso executable and the virtuoso.ini file is
+needed.
+
+If there is a Virtuoso installation on the machine, use the executable from that and set up an empty directory with the virtuoso.ini file.  
+
+Once the individual database directories are set up, write the
+cluster.ini file as shown above.  Copy this into each running
+directory beside the virtuoso.ini file.  Edit each to specify which
+host the file belongs to.  Set ThisHost to point to the host which the
+this file belongs.  Set Master to point to one of the hosts and make
+sure each file has the same master and a distinct ThisHost.
+
+Start the server processes.  This will initialize the empty databases.
+
+Connect to the master host's SQL port with a SQL client to continue.  The initial default user and password is dba.  
+To verify that the 
+cluster nodes can connect to each other, do status (''); twice.  The second status should have a line beginning with Cluster xx nodes, ...  
+
+
+H2 Using Clustering with an Existing Database 
+
+
+The procedure for converting a single server database into a clustered one will be specified later.  
+For 6.0, there is no automatic way of doing this.
+
+One can take an existing database and convert it to clustered
+operation by copying the initial database to each node of the cluster.
+Set up the database so that each node would run an identical copy.
+Then make the cluster.ini files.
+
+Start the servers.  Connect tpo the master and run the partitioning statements for all keys of all tables that are to be managed by the cluster.
+
+At this point, each database will also hold rows that are not its responsibility, unless of course all tables are declared as replicated.
+The rows that are present and do not fall in the partition managed by the host should be deleted.
+
+This can be done with a stored procedure to be supplied later.
+
+
+H2 Partitioning 
+
+All databases in a cluster share precisely the same schema.  Any DDL operations take effect on all nodes simultaneously.
+
+The tables can be of one of three types:
+
+- Partitioned - A row of a partitioned table resides in exactly one partition, according to the values of its partitioning columns.  Each partition is stored at least once in the cluster but may be kept in multiple replicas if so configured.  All indices of a partitioned table must specify partitioning but need not be partitioned in the same way.  The data tables of an application will typically be partitioned.
+
+- Replicated - The table and its contents exist in identical form on all nodes.  Queries are answered from local data and updates go to all nodes.  This is the case with schema tables, for example but can be used for application tables also.
+
+- Local -  The table exists on all nodes but each node has purely local content and all queries and updates to the table refer only to local content.  This is the case for some configuration tables with only local scope, such as specifying web service end points. 
+
+
+
+
+Partitioning an index means that different hosts store different parts of the index, 
+For each partitioned index one or more partitioning columns must be declared.
+Also each partitioned index is always held in its totality in a logical cluster.
+A logical cluster is a subset of the machines composing the physical cluster declared in cluster.ini.  Usually the logical and physical cluster are the same.
+
+The logical cluster additionally declares how partitions are to be replicated.  It is namely possible to declare that a specific partition be stored in multiple identical copies.
+
+There are two predefined logical clusters: REPLICATED and __ALL.  If a table's indices specify the rEPLICATED cluster in their partitioning declaration, the data will be maintained in identical copies on all nodes.
+
+The __ALL cluster is the default logical cluster for any partitioned table.  Using this, each row will go to exactly one place, balanced over the set of nodes declared in the cluster.ini file.
+
+
+Basic applications do not need to declare their own cluster since the default one is most often applicable.
+
+H3 CREATE CLUSTER Statement 
+
+
+CREATE CLUSTER <name> DEFAULT <group>[ [,...]
+
+group:  GROUP (<host>[,...])
+
+
+A logical cluster has a single global name and it consists of one or more host groups.   Each host group is given a partition of whatever object that is stored in the logical cluster.  Each host of a host group replicates the partition assigned to this host group. 
+
+One logical cluster is predefined.  It is called replicated and it consists of one group which has all the hosts of the physical cluster.  The replicated logical cluster is used for storing any schema tables.
+This causes all schema information to be identically stored on all nodes of the physical cluster. 
+
+If a table is created on a clustered Virtuoso and no partitioning is declared, the table exists on all nodes with independent content on each.   
+This is generally not desirable since the same query will return different data depending on which host runs it.
+
+For performance, it is best to replicate any short, seldom changing lookup tables on all hosts.  
+
+Example 
+
+create cluster C2 default group ("Host1"), group ("Host2"), group ("Host3"), group ("Host4") ;
+
+
+This would declare a logical cluster identical to the default __ALL cluster if the cluster.ini  specified hosts 1 - 4.
+
+The REPLICATED cluster could be declared as follows:
+
+create cluster C3 default group ("Host1", "Host2", "Host3", Host4");
+
+
+
+
+H3 ALTER INDEX and CREATE INDEX Statements and Partitioning
+
+The ALTER INDEX statement is used for declaring the partitioning of an index. For a non-primary key index, the corresponding CREATE INDEX can also declare the partitioning.
+If one index of a table is partitioned, all indices of the table must be partitioned.
+If no partitioning is declared, the table will exist on all nodes but will have independent content on each.
+artitioning of a key must be set when the key is empty.  Thus, to create a partitioned table, first create the table and declare partitioning for its primary key.
+
+
+The name of the primary key index is the same as that of the table.
+If the table has no explicit primary key, it has an implicit one, named after the table and having the invisible _IDN column as single key part.  This may be used as a partitioning key.
+
+If clustering is notg enabled, partitioning can still be declared but
+it will have no effect.  Thus a single application DDL file can be
+used for clustered and single process versions of teh application
+schema.
+
+
+ALTER INDEX <index-name> ON <table-name> PARTITION [CLUSTER <cluster-name>] (<col-spec>[,...])
+
+col-spec : <column-name>  <type> [<options>]
+
+type: INT | VARCHAR
+
+options:  (<mask>) | (<length>, <mask>) 
+
+
+The PARTITION declaration may occur at the end of a create index statement.  This causes the index to be created, partitioned and then filled.  Otherwise it would not be possible to add indices to non-empty tables.
+
+All or part of a partitioning column's value can be used for calculating a index entry hash which then determines which host group of the logical cluster gets to store the index entry.
+There are two types of hashing, integer and varchar.  Integer applies to integer like types such as integer and bigint and iri id and varchar applies to anything else.
+Floating point columns or decimals should not be used for partitioning.  Large objects or UDT's cannot be used for partitioning.
+
+For an integer partitioning, the mask is a bitmask applied to the number before extracting the part that is used for the hash.  A mask of 0hexffff00 will use the second and third least significant bytes for hashing, thus values 0-255 will hash to the same, values 256-512 to the same and so on.  The value 0hex1000000 will again hash to the same as 0.
+
+Having consecutive integers hash to the same will cause them to go to the same host group and become physically adjacent which is good for key compression.
+If no mask is specified 0hexffff is used, meaning that each consecutive number gets a different hash, based on the low 16 bits of the number.
+
+For a varchar partitioned column, the default is to calculate a hash based on all bytes of the string.
+For purposes of key compression, it may be good to put strings with a common prefix in the same partition.
+
+The option consists of two integers, the length and the mask.  If the
+length is positive, the length first characters are used for the hash.
+If the string is shorter than length, all characters are used.  If the
+length is negative, we take the absolute value of the length and use
+all bytes of the string except the length last ones.  If the string is
+shorter than -length, all the bytes are used.  A length of -1 means to
+use all bytes except the last one, a length of 2 means to use the 2
+first characters only.
+
+The string's hash value is a large integer.  The mask controls how many bits of this hash are used for the hash of the index entry.
+
+
+Example
+
+create table part (id int, code int, str varchar);
+alter index part on part partition (id int (0hexffff00));
+
+create index str on part (str) partition (str varchar (-1));
+-- for the primary key, hash  all values differing in the low byte together.
+-- for str, hash all values differing only in the last character together.
+
+create table part_code (code int primary key, description varchar);
+alter index part_code on part_code cluster replicated;
+
+This declares a lookup table for describing the values of the code
+column of the part table.  This is replicated on all nodes of the
+cluster.  Note that no partitioning columns need be specified since no
+matter the partition key the row would end up on all nodes regardless.
+
+
+
+
+
+H2 Transactions 
+
+A Virtuoso cluster is fully transactional and supports the 4 isolation levels identically with a single server Virtuoso.
+Transactions are committed using single to two phase commit as may be appropriate and this is transparent to the application program.
+
+Distributed deadlocks are detected and one of the deadlocking transactions is killed, just as with a single process.
+
+Transactions are logged on the cluster nodes which perform updates pertaining to the transaction.
+
+A transaction has a single owner connection.  Each client connection has a distinct transaction.  From the application program's viewpoint there is a single thread per transaction.  Any parallelization of queries is transparent.
+
+For roll forward recovery, each node is independent.  If a transaction
+is found in the log for which a prepare was received but no final
+commit or rollback, the recovering node will ask the owner of the
+transaction whether the transaction did commit.  Virtuoso server
+processes can provide this information during roll forward, hence a
+simultaneous restart of cluster nodes will not deadlock.
+
+
+H3 Performance Considerations 
+
+A lock wait in a clustered database requires an asynchronous  notification to a monitor node.  This is done so that a distributed deadlock can be detected.
+Thus the overhead of waiting is slightly larger than with a single process.
+
+We recommend that read committed be set as the default isolation since this avoids most waiting.  A rad committed transaction will show the last committed state of rows that have exclusive locks and uncommitted state.  This is set as 
+
+DefaultIsolation = 2 
+
+In the parameters section of each virtuoso.ini file.
+
+
+
+
+H3 Row Autocommit Mode
+
+
+
+Virtuoso has a mode where insert/update/delete statements commit after
+each row.  This is called row autocommit mode and is useful for bulk
+operations that need no transactional semantic.
+
+The row autocommit mode is set by executing log_enable (2) or
+log_enable (3), for no logging and logging respectively.  The setting
+stays in effect until set again or for the duration of the
+connection.  Do not confuse this with the autocommit mode of SQL client connection.
+
+In a clustered database the row autocommit mode is supported but it will commit at longer intervals in order to save on message latency.  Statements are guaranteed to commit at least onece, at the end of the statement.
+
+A searched update or delete statement in row autocommit mode processes
+a few thousand keys between commits, all in a distributed transaction
+with 2PC.  These are liable to deadlock.  Since the transaction
+boundary is not precisely defined for the application, a row
+autocommit batch update must be such that one can distinguish between
+updated and non-updated if one must restart after a deadlock.  This si of course not an issue if updating several times makes no difference to the application.
+
+Naturally, since a row can be deleted only once, the problem does not occur with deletes. Both updates and deletes in row autocommit mode are guaranteed to keep row integrity, i.e. all index entries of one row will be in the same transaction.
+
+A row autocommit insert sends all keys of the row at once and each
+commit independently.  Hence, a checkpoint may for example cause a
+situation where one index of a row is in the checkpoint state and the
+other is not.
+
+Thus, a row autocommit insert on a non-empty application table with transactional semantic is not recommended.  This will be useful for bulk loads  into empty tables and the like, though.  
+
+
+
+
+
+H2 Administration 
+
+All administrative operations other than data definition take effect on the node to which they are issued.
+
+cl_exec (in cmd varchar, in params any := NULL, in is_txn := 0)
+
+The cl_exec SQL function can be used for executing things on all nodes of a cluster.
+
+
+The cmd is a SQL string.  If it contains parameter markers (?), the
+params array is used for assigning values, left to right.  If is_txn
+is 1, the cl_exec makes a distributed transaction and does not
+automatically commit on locally on each node. Thus cl_exec can be used
+as part of a containing distributed transaction.
+
+
+
+Example
+
+ cl_exec ('shutdown') will shut all nodes.
+
+cl_exec ('dbg_obj_print (?)', vector ('hello')); will print hello to the standard output of all the processes of the cluster.
+
+
+
+Any recovery, integrity checking, crash dump or similar can be done node by node as with single processes.
+
+
+
+H3 Status   Display 
+
+The status () function has a cluster line right below the database version information.  This line shows cluster event counts and statistics between the present and previous calls to status.  
+
+If cluster nodes are off-line, the nodes concerned are mentioned above the cluster status line.
+
+The line consists of the following fields.
+
+Cluster 4 nodes, 4 s. 9360 m/s 536 KB/s  117% cpu 0%  read 44% clw threads 2r 0w 1i  buffers 1939 766 d 0 w 0 pfs
+
+Cluster 4 nodes, 4 s. 9360 m/s 536 KB/s
+
+This first group gives the network status.  The count of nodes online (4), the measurement interval, number of seconds since the last status command (4 seconds).
+The m/s is the messages per second, i.e. 9360 single messages sent for intra-cluster purposes per second over the last 4s.  The KB/s is the aggregated throughput, i.e. the count of bytes sent divided by  the length of the measure,measurement interval.  This allows calculating an average message length.  
+Only intra-cluster traffic is counted, SQL client server and HTTP connections are not included.
+
+
+117% cpu 0%  read 44% clw threads 2r 0w 1i 
+
+This group gives the process status.  The CPU% is at 100% if one
+thread is running at one full CPU.  The maximum CPU% is 100 times the
+number of CPU's in the cluster.  Differences between CPU's are not
+considered.  The read % is the sum of real time spent waiting for disk
+divided by the time elapsed.  The maximum number is 100 times the peak
+number of threads running during the interval.  500% would mean an
+average of five threads waiting for disk times during the interval.
+The clw% is the sum of real time a thread has waited for cluster
+request responses during the period.  The maximum is 100% times the peak number of threads running.
+
+The  threads section (2r 0w 1i) is a snapshot of thread state and means that 2 threads are involved with processing, 0 of these is waiting for a lock and 1 is waiting for network I/O.
+
+
+buffers 1939 766 d 0 w 0 pfs
+
+This is a snapshot of the database buffers summed over all nodes. 1939 used for disk caching, 766 dirty 0 wired down.
+
+The pfs number is the   total number of page faults during the interval summed over the cluster.  This provides a warning about swapping and should be 0 or close at ll times. 
+
+
+
+
+H1 Virtuoso Cluster Programming 
+
+
+
+H2 Cluster SQL Execution Model 
+
+
+This section explains the basics of how SQL queries work on clustered Virtuoso.
+
+Query optimization for cluster is similar to query optimization for a single process.
+The main issues of optimization have too do with join order, index choice and join type.
+
+Still, the performance characteristics of a distributed memory cluster are radically different from a single process database.
+Namely, the cost of a network round trip between nodes, even if these were only different processes on a shared memory multiprocessor, is between 5 and 50 single row lookups from a big table, supposing the row being sought for is in memory.  The 5x factor applies when within the same machine, the 50 times factor applies over 1Gbit ethernet.
+
+From this follows that a single network message  must process several hundred rows and several messages must be 
+concurrently dispatched to multiple nodes for clustering to yield any benefit in terms of a single query's processing time.
+
+Of course, a cluster can have essentially unlimited RAM, which is not
+the case of a single machine and a network round trip remains faster
+than a disk random access.  For serial throughput, the disk controller
+is several times faster than the network, though.  Of course, with
+large numbers of concurrent users, the latencies get absorbed and a
+highaggregate throughput can be attained.
+
+Still, the first question of any distributed memory system is the
+aggregation of messages.  This can be done in two complementary ways:
+By Sending a large number of simple operations in a single message,
+preferably asynchronously to multiple recipients and on the other
+hand by putting more complex operations into a message.
+
+Also, a random access pattern can be transformed to a serial access pattern by using hash join, i.e. making a temporary copy of an index or part thereof.  In this way, the query does not hav to go to the data more than once even if it is used inside a tight loop in the query plan.
+
+We will use the TPC H tables to illustrate some points below:
+
+When performing a loop join, Virtuoso will run as many iterations as possible in parallel.  Consider a join like:
+
+select o_date from nation, customer, order where o_custkey = c.custkey and c_nationkey = n_nationkey and n_name = FRANCE';
+
+We presume the indices:
+
+create index c_nk on customer (c_nationkey) partition (c_nationkey int)
+create index o_ck on orders (o_custkey) partition (c_custkey int);
+
+This gets the order dates for  order by customers in France.  This is typically a loop join since this is expected to access a fraction of orders at randon.
+First we get the n_nationkey for France.  Then we get the c_custkey for French customers.  This is a sequential read of an index and produces a set of c_custkey values.
+Given these, we join to orders using the o_ck index. This index produces a set of o_orderkey values for each o_custkey.  These are then used for getting the o_date's from the actual order row.  
+
+If the batches are large enough, the query will execute in 3 network round trips:  One to get the set of c_curstkey's for France, one to get the o_orderkey's from the o_custkey's and one for getting the o_date for the o_orderkey's. The nation table for getting the n_nationkey for the country name is small and can be replicated on all nodes so this does not count as a round trip.
+
+The first round trip goes to one partition.  The resulting c_custkey's
+will be likely spread over all partitions, so each applicable node
+gets a message with multiple lookups of the o_ck inde, each with a different o_custkey value.  The replies are collated and
+this time partitioned by o_orderkey and sent as parallel batches to the nodes that hold the actual order rows.
+
+The batch size is settable but is anyway over 1000 operations.  The
+total CPU time for running the query is slightly longer than running
+the query serially in a single process but the real time is likely
+shorter because the load is concurrently carried by multiple
+processes.
+
+Now, if we just wanted the date of the most recent order from France, we could write:
+
+select max (o_date) from nation, customer, order where o_custkey = c.custkey and c_nationkey = n_nationkey and n_name = FRANCE';
+
+This would evaluate as explained above but would not return the dates
+but rather just remember the latest one on each node.  At the end,
+just the latest dates from each cluster node accessed in the query
+would be returned to the node running the query.  Further, SQL
+specifies that running the same query on the same data is expected to
+return the same order of results on consecutive runs, even if no order
+by is present.  This means that indices must be traversed in order,
+i.e. the data received from multiple partitions in indefinite
+order must be deterministically assembled to provide a predictable
+order.  This is important if slicing the result set for example.  When
+returning an aggregate this condition is relaxed and data can be
+processed in whatever  order received, thus increasing parallelism.
+
+
+Another optimization is taking advantage of co-located indices.
+
+select sum (l_extendedprice) from lineitem, orders, customer where l_orderkey = o_orderkey and o_custkey = c_custkey and c_comment like '%fluffily%';
+
+ This time we scan customers linearly, lookinf for 'fluffily' in the
+ comment field.  Finding one, we ;;look for the orders.  But we are
+ already in the partition of the c_custkey and the o_ck index of
+ orders is partitioned on this same value, thus we know that the
+ o_orderkey is in fact in the same partition, so no round trip is
+ needed.  Then we just send the o_orderkey to the appropriate
+ partition for l_orderkey to get the sum of the extended prices of
+ lines for this customer.  At the end of the query, all nodes hosting
+ lineitems wil have their local sum and these are just added up and
+ returned.
+
+As long as queries are written as joins, they will run with good parallelism.  If they are written as procedure loops and single row lookups from  partitioned tables, performance will be an order of magnitude worse.
+
+The join type and join order switches work identically with cluster and single process databases.
+
+
+
+H2 Sequences, Identity and Registry 
+
+Sequences and identity columns have a cluster-wide scope.  Thus, an
+identity column can be used as a primary key and partitioning column
+and the system guarantees that there will be no duplicates.
+
+
+Sequence numbers are signed 64 bit integers. 
+
+The sequence numbers are locally ascending on each  node.  When a
+cluster node first requests a sequence number, it is assigned a block
+of numbers from which it will assign subsequent numbers.  Thus, two
+nodes will allocate from different ranges.  The global order is not
+necessarily ascending but numbers stay unique.
+
+the master node of the cluster keeps a master sequence for each
+sequence.  This is used for allocating blocks of values.  The is
+called __NEXT__<seq>.  The sequence itself holds the local next value.
+The __MAX__<seq> sequence holds the end of the value range allocated
+for <seq> at the local node.
+
+Allocating a batch of sequence numbers is synchronously logged on both
+the master node and the requesting node.  Thus, upon roll forward
+recovery, this information survives even if the transaction requesting
+the numbers was never committed.
+
+
+The sequence_next function has an additional optional argument for specifying how many values should be requested from the master node at a time.
+
+sequence_next (sequence_name[, increment[, batch]])
+
+The increment defaults to 1 and the batch to 1000.
+
+Specifying the batch and increment to be equal will get  a globally ascending sequence order but will need a round trip to the master for each number.
+
+
+The registry_get and related functions operate on purely local
+content.  As with single process databases, the registry is used for
+storing some schema information, sequence values and global
+application flags.
+
+
+
+H2 SQL Options
+
+For purposes of debugging or writing stored procedures that are specifically meant to work with local data only, it is useful to disable cluster functionality. 
+
+This is done with the NO CLUSTER table option.  This can be used in the table option clause of a table in a FROM or in an update or delete.
+
+Specially when writing procedures to be called with DAQ, see below, it us necessary to ensure that the procedures will not access data outside of the host running them.   
+
+Examples:
+
+select count (*) from x table option (no cluster);
+update x table option (no cluster) set y = y + 1;
+update x set y = 1 where current of cr option (no cluster)
+insert  into xx key xx option (no cluster) (c1, c2) values (1, 2);
+
+
+Note that for positioned (where current of) deletes and updates the
+option is at the end.  For searched ones it is after the table.  Use
+the explain () function to see the compilation of statements to make
+sure about the locus of execution.  If a table is to be accessed
+across the cluster, this is indicated in the output.
+
+All other SQL options work as with single server databases.
+
+H3 Parallel INSERT Options 
+
+
+Searched updates and deletes can be parallelized as they are written.  However, inserts in loops are not as obviously parallelizable.
+Therefore insert has an option for queueing multiple inserts into a queue for partitioned parallel execution.
+
+The format of the statement is 
+
+INSERT INTO table [KEY <key>] [OPTION (INTO <daq>) <column list> <values or select>
+
+The DAQ is a distributed async queue object, see section on calling
+procedures in cluster.  Specifying the INTO daq option partitions the
+insert, determining where each key should go and buffers the operation
+into the DAQ. When the result of the DAQ is fetched, all the buffered
+operations are sent in parallel, as a single message per node
+concerned.  This is easily tens or hundreds of times more efficient
+than inserting row by row.  The transactional behavior is controlled
+by the DAQ, see the section on calling procedures in cluster.  Inserts
+can mix with other types of operations in the DAQ.  If the DAQ is
+transactional, any failed insert, as in the case of uniqueness
+violation, will make the transaction uncommittable, preserving
+integrity.
+
+
+
+
+Example 
+
+
+create procedure ct_fill_daq (in n1 int, in n2 int, in st int := 1)
+{
+	declare daq any;
+  declare ct int;
+  daq := daq (1);
+  for (ct := n1; ct < n2; ct:=ct+st)
+    {	
+      insert into CT option (into daq) (ROW_NO, DT) values (ct, cast (ct as varchar) || ' xxxxxxxxxxxxxxx');
+    }
+  while (daq_next (daq));    
+}
+H3 INSERT KEY Option
+
+When indices are partitioned on different columns, indices pertaining
+to a single row can be located on different nodes.  In special
+situations, for example when exploiting co-location of keys from
+different tables, one may wish to insert a things index by index.
+This happens with the use of partitioned functions with DAQ's.
+Inserting some indices and not inserting others will make an
+inconsistent database, thus even if keys are inserted separately, all
+keys should be inserted withing the same transaction or have some
+other guarantee of getting all inserted.  Also, application code will
+have to change if the indices change.  This is not considered good
+practice.
+
+Consider a partition account table and a history table both partitioned on the same key.
+
+We could make a procedure updating the balance of the account and recording the event.
+
+create table acct (id int, balance numeric);
+alter index acct on acct partition (a_id int);
+create table hist (h_id int, ts timestamp, note varchar, primary key (h_id,  ts);
+alter index hist on hist partition (h_id int);
+
+create procedure evt (in a_id int, in delta numeric, in note varchar)
+{
+  update acct table option (no cluster) set balance = balance + delta where id = a_id;
+  insert into hist key hist option (no cluster) (h_id, note) values (a_id, note);
+)
+
+
+Such a procedure would be called on a particular partition using a DAQ
+In practice, the RDF store uses single key operations for atomically reserving ID's for IRI's, for example..  
+
+
+
+
+
+
+
+H2 Calling Procedures in Cluster 
+
+Normally, all interprocess communication in the cluster is transparent.
+In special cases, the developer may wish to execute a given procedure on a given host of the cluster.
+This is typically the case when there is affinity between data and logic.
+
+A regular stored procedure or trigger is executed on the host where it
+is invoked.  With the distributed async queue (DAQ) system one can
+execute procedures on specified remote hosts.
+
+Procedures invoked over DAQ are restricted to dealing with data that is held on the host where they execute.  Generic procedures or triggers may use any data from anywhere.
+
+The DAQ offers a mechanism corresponding to the map operation of the
+map-reduce paradigm.  The DAQ may or may not be transactional.  In the
+transactional mode, all the invocations are enlisted into a
+distributed transaction.  The transaction is to be committed
+separately.  The non-transactional DAQ will not enlist operations into
+a distributed transaction and will automatically commit after each
+procedure that executes without error and rollback after each
+procedure that terminates in an error.
+
+A DAQ is created with the SQL function daq ().  
+
+daq (in is_txn int) returns any 
+
+This returns a DAQ object.  The object may be passed by value or
+reference but cannot be returned to a SQL client or passed to another
+thread or persisted in a table.  The DAQ object is a handle for making
+remote procedure calls and getting their results.
+
+
+daq_call (in daq any, in part_table varchar, in part_key varchar, in proc varchar, in args any, in is_update int) returns any
+
+This function applies proc to the vectors of args on the host
+determined by using the partitioning of part_key of part_table designated by args.
+
+Let us suppose that the index part_key of part_table has its 1st and
+2nd key part as partitioning keys.  Then the 1st element (index 0) of args would
+be used as the value of the 1st key part and the 2nd element as value
+of the 2nd key part for determining the relevant partition.
+
+Thus the argument list must be congruent with the layout of the partitioning key.  The table or partition key is not referenced otherwise, it is just used for deciding which host gets the call.
+
+If the partition is stored in multiple places, the is_update flag decides whether all will get the call or if only one is picked.
+
+After the host(s) that will  get the call are known, the call is queued for execution.
+The daq_call function returns a vector of two elements.  The first is the sequence number of the call.  This can be used for associating results to calls.
+The second element is the list of hosts that got the call.
+
+Each call on each host will produce one or more results.
+These results are accessed with the daq_next function.
+
+
+daq_next (in daq any) returns any
+
+This function returns a result from one of the calls queued on the daq.
+
+The return value canm be one of the following:
+
+- 0 - This means that all results have been returned and no more data is available.
+- vector with request number, host number and response.  
+
+The response is one of:
+
+- Vector with 1 as 0th element -  The function returned a result set row.  The row is a nested vector as next element. 
+-  Vector with 2 as 0th element.  The next element is the return value of the function, the function executed with no error.
+- Vector with 3 as 0th element.  The next element is a vector describing the SQL error that terminated the function.  The error is a nested vector with the constant 3, the SQL state and the text of the message.
+
+If the DAQ is transactional, the first error on the remote host
+terminates processing.   This makes the distributed transaction uncommittable, thus rolling it back at the next transact.
+
+If the DAQ is not transactional, all requests
+are processed and the state is committed after each function call as a local single phase
+commit on the processing host.  if the function signals an error, the
+transaction is locally rolled back.
+
+There is no guaranteed order of execution.  The calls are buffered
+until the first call to daq_next.  daq_next will return whatever data
+is first available.  If no data from cluster peers is available, it
+will execute requests that were assigned to the local host.  These are
+executed on the calling thread.
+
+
+
+
+Example 
+
+create procedure daq_results (in daq any)
+{
+  declare row any;
+  for (;;)
+    {
+      row := daq_next (daq);
+      if (0 = row)
+	return;
+      dbg_obj_print (row);
+    }
+}
+
+
+
+create procedure clexec_srv (in str varchar)
+{
+  exec (str);
+}
+
+create procedure clexec (in str varchar)
+{
+  declare d any;
+ d := daq (0);
+  daq_call (d, 'DB.DBA.SYS_COLS', 'SYS_COLS_BY_NAME', 'DB.DBA.CLEXEC_SRV', vector (str), 1);
+  daq_results (d);
+}
+
+
+The clexec procedure will execute the given SQL string on all hosts of the cluster.
+It returns after all have completed.
+
+
+
+H2 Partition Functions 
+
+Given a key and a set of values, the partition function can determine which cluster nodes hold the value.
+
+
+partition_list (in table_name varchar, in key_name varchar, in list any, in is_update int)
+
+The table name is a case sensitive full name of a table as it appears in SYS_KEYS.  The key_name is the case sensitive name of the index.  The values are key part values in the index order.  The is_update, if non-zero, specifies that if the value is stored in multiple places, all are to be returned, otherwise just one is picked at random, preferring the local if there is a local copy of the partition.
+
+The value is a list of node numbers, corresponding to the Host<n> entries in the cluster.ini file.
+
+Example:
+
+select partition_list ('DB.DBA.CT', 'CT', vector (2), 1);
+
+
+
+H2 Distributed Pipe 
+
+A distributed pipe is a single construct that can be used for map-reduce  and stream transformation.
+It is a further development of the DAQ.
+
+A dpipe is an object which accepts a series of input rows and generates an equal amount of output rows.  It may or may not preserve order and it may or may not be transactional.
+The input row of a dpipe is a tuple of values.  To each element of the tuple corresponds a transformation.  The transformation is expressed as a partitioned SQL function, basically a function callable by daq_call, with arguments specifying the partition where it is to be run.
+The output row is formed by gathering together the transformation results of each element of the input tuple.
+
+conceptually, this is like a map operation, like running several DAQ's, one for each column of the dpipe.
+A transformation function does not always need to produce a value.  It may also produce a second partitioned function call with new arguments which will be partitioned and scheduled by the dpipe.  Since the second function is independently partitioned, this may be used for implementing a reduce phase.  This phase may then return a value and/or further functions to be called.
+
+Ultimately, the dpipe functions are all expected to return a value.
+When each function of the input row has returned a value, the output
+row is ready and can be retrieved. Returning a value is a way for the
+application to synchronize with the operation of the dpipe.  The dpipe
+can be used for mapping values or side effects or both.
+
+The dpipe object is created with the dpipe SQL function.  This takes a set of flags and a list of previously declared dpipe transformation names.  A dpipe transformation is declared by specifying a SQL procedure, a partitioning key and a set of flags.
+
+The dpipe is fed data with the dpipe_input function.  This takes the
+dpipe object and one value per transformation specified when the dpipe
+was made.  The values can be arrays, so that a transformation function
+can logically have multiple arguments.  The results of the dpipe are
+retrieved with the dpipe_next function,.  This returns a new result
+row at each subsequent call until one row has been returned for each
+input row.  Depending on flags, these may be returned as they become
+available or in the original order.  Each input is substituted with
+the transformation result in the output row.  Some transformation can
+be identity so as to preserve a row id for correlating inputs and
+outputs if they are not processed in order.
+
+After this, the dpipe can be reused.  The dpipe is freed when there are no longer references to it.
+
+
+Finally, since transformations may, in addition to producing values, also produce other functions to be called for their effects, dpipe_reuse is called to make sure that all these functions are run until no more operations are left.
+
+
+
+
+H3 SQL optimization and Dpipe 
+
+Calls to SQL functions in queries can be translated to dpipe
+operations if a dpipe equivalent is declared.  Consider a select
+statement returning the values of a user defined function of some
+column selected in the query.  If this function itself accesses the
+database, possibly specially if the data accessed is partitioned,
+calling the function for each row and waiting for the result before
+processing the next row would have a catastrophic performance impact.
+The dpipe mechanism allows the functions to be partitioned by the SQL
+run time and sent to the appropriate cluster nodes as large batches.
+This applies to any operation that can be expressed as a sequence of
+steps which will each run within a single partition.
+
+
+We take a trivial example:
+
+create table ct (row_no int primary key, dt varchar);
+alter index CT on CT partition (ROW_NO int (255));
+
+
+create procedure CT_DT_PIPE (in n int)
+{
+    return vector ((select dt from ct table option (no cluster) where row_no = n), 1);
+}
+
+dpipe_define ('CT_DT', 'DB.DBA.CT', 'CT', 'DB.DBA.CT_DT_PIPE', 0);
+We can now use statements like 
+
+select sum (length (ct_dt (row_no))) from ct;
+
+This is equivalent to:
+
+select sum (length (b.dt)) from ct a, ct b where a.row_no = b.row_no;
+
+The point is that the function call will be mapped into the dpipe
+operation of the same name defined in the dpipe_define.  This means
+that a large batch of row_no's is retrieved and for each, the partition
+where to invoke the dpipe function is calculated.  Then the function
+calls are sent in concurrent batches to each of these places, running
+the function in parallel, each on the node that has the data of
+interest.  Getting the value of a column of a partitioned table is a
+trivial example but any complex computation might be substituted for
+this, including ones that updated the state on the node, with the
+proviso that they should not access data from outside the host on
+which they run.
+
+Further, because the results are summed into an aggregate, the results can be processed in the order they come, thus improving parallelism.
+
+
+
+H2 Cluster and RDF
+
+The RDF tables are partitioned by default on any fresh clustered database.  Thus RDF operations are not affected by clustering.
+
+For RDF loading, use the single-threaded load functions DB.DBA.RDF_LOAD_RDFXML and DB.DBA.TTLP.   
+These should essentially always be run in row autocommit mode and without logging.  Thus do log_enable (2) on the connection before invoking these functions.
+
+Running these functions in the default transactional mode will load
+within the current transaction.  This will cause widespread locking
+and will run out of rollback space after some millions of triples.
+This has a strict transactional semantic but is not generally relevant
+in RDF applications.
+
+
+Integrity between all tables and indices is guaranteed after loading the file completes, also in non-transactional mode. After all loading is complete, do a single explicit checkpoint with 
+
+cl_exec ('checkpoint');
+
+This will guarantee that the disk based image is complete.  Automatic
+checkpoints during non-transactional file loads may have half-files
+and possibly partial triples in the checkpointed state.
+
+For all SPARUL operations, row autocommit mode is likewise recommended.  
+
+Logging is not needed if one makes a manual global checkpoint
+after any bulk import or update operations.  Logging will be useful if
+one has a continuous feed of smaller files, even if
+transactional semantics were not needed.
+
+
+For best import speed, run one or two parallel streams of load
+commands on each cluster node.  Split the data to be loaded into
+approximately equal chunks and load each with a call to
+Db.DBA.RDF_LOAD_RDFXML or DB.DBA.TTLP.  There is no point in using the _MT variants of these functions on a cluster.
+
+A single load will process about 10000 triples with only about 5
+cluster round trips. Still, more of the work is done by the node doing
+the parsing than by other nodes.  To get best use of total throughput,
+divide the load commands over the cluster nodes.  Lock contention will
+be minimal if the loads are in row autocommit mode.  If they are
+transactional, deadlocks are quite probable due to indeterminate
+locking order and large transaction size.  As a general rule, do not
+mix transactions and RDF.
+
+
+
+H2 Cluster, Virtual Database  and Replication 
+
+Clustering has no relation to any virtual database, transactional or snapshot replication mechanism on Virtuoso.
+
+Transactional replication is not supported with clustering.  Snapshot replication will work.
+
+Virtual database operations work identically with single process Virtuoso databases.  All operations on remote tables are done by the cluster node running the SQL statement.
+For purposes of symmetry, it is desirable to have all the remote data sources defined for all server processes so that they can be used interchangeably.
+
+An external transaction monitor  is not supported with cluster.
+A Virtuoso cluster could be seen as an XA resource manager but the XA logic is not connected to the cluster transaction logic. 
+
+
+
+H2 Limitations of Alpha 6.0
+
+DDL
+
+- Once a logical cluster is created, it cannot be modified.
+- Once a table or index has data, its partitioning cannot be changed.
+
+SQL
+
+- Value subqueries, derived tables and subquery predicates are executed one at a time.  In some cases this can have a performance penalty.
+
+
+
+H2 Troubleshooting  
+
+If an operation seems to hang, see the output of status ().
+
+Check for the presence of the following conditions:
+
+- The cluster line shows 0% CPU, no message traffic and an unchanging number of buffers wired, this is probably a bug.  To reset, restart the cluster or the offending process if found.  Restart is done by executing raw_exit (); over an SQL connection to  the process in question.
+
+- The cluster line shows many threads waiting compared to total threads. If CPU is 0 and this does not change there could be a transaction that holds locks indefinitely.  To clear, execute txn_killall (1); .  Do this at a node that has local threads waiting.  This is seen in the Lock Status paragraph of status ('') when connected to the node in question.
+
+- The cluster line shows a changing number in the pfs field.  The system is swapping and slowed down.
+
+- If the status () itself hangs, try another process of the cluster.  See that there is no temporary atomic activity like a long checkpoint.  If the situation persists there is a bug.  The checkpoint can be seen by the presence of the checkpinmt_in_progress file in each server's working directory.
+
+- To check the integrity  of database files, do cl_exec ('backup ''/dev/null''');  If this returns, the databases are OK.  If one is found to be corrupt the corresponding server exits.
+

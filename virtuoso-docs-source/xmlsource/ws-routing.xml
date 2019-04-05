@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="ws-routing">
+      <title>Web Services Routing Protocol (WS-Routing)</title>
+      <para>The SOAP Routing Protocol (WS-Routing) is a SOAP-based, stateless protocol
+ for exchanging SOAP messages from an initial sender to an ultimate receiver,
+ potentially via a set of intermediaries.  The WS-Routing protocol is
+ implemented as a SOAP extension, embedded in a SOAP Header entry.</para>
+      <para>The WS-Routing implementation consists of SOAP Header processing.  The
+ header processing handler for the WS-Routing header determines if the Virtuoso
+ SOAP server can act as an intermediary or a endpoint depending on the rules
+ in message path.
+</para>
+      <para>This implementation supports HTTP only.  Message Id's generated are UUIDs.
+</para>
+      <section xml:id="wsrconfig">
+        <title>Configuration
+</title>
+        <para>Setting-up the WS-Routing for a SOAP service requires you to:
+</para>
+        <orderedlist>
+          <listitem>
+            <para>make a virtual directory bound to the SOAP endpoint processor (/SOAP)
+</para>
+          </listitem>
+          <listitem>
+            <para>add the following SOAP options:
+</para>
+            <simplelist type="vert">
+              <member>WS-RP=yes;
+</member>
+              <member>wsrp-from=[identification for endpoint];
+</member>
+            </simplelist>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="wsrtraversingmsgpaths">
+        <title>Traversing Message Paths
+</title>
+        <para>The initial WS-Routing sender generates a WS-Routing "path" header that
+  indicates the route.  The path can indicate a route via one or more
+  intermediaries using the "via" elements as sub-elements of the
+  "fwd" element.  The initial sender indicates the ultimate destination by
+  using a "to" element.  In the absence of a "to" element the ultimate
+  destination is deduced by the last "via" in the "fwd" element.  The second
+  option occurs most commonly when an ultimate destination reverses roles,
+  becomes an initial sender, and uses the reverse path in a received message
+  as a forward path to send a response to the original sender.</para>
+        <para>In addition, the initial WS-Routing sender inserts a reverse path
+  for indicating where the initial sender can receive reverse path messages.
+  The initial sender sets the ultimate destination in the reverse path using
+  a "via" element as a sub-element of the "rev" element.</para>
+        <para>A WS-Routing receiver receiving a WS-Routing message inspects the SOAP
+  header and performs the following operations:</para>
+        <itemizedlist>
+          <listitem>
+            <para>If no "fwd" element is present or if the "fwd" element does not
+   contain any "via" elements then inspect the "to" element and verify that the
+   value identifies itself.  If this is the case then THIS receiver is the
+   ultimate destination.  If there is no "to" element or if the value of the
+   "to" element does not identify THIS WS-Routing receiver then generate a
+   fault.</para>
+          </listitem>
+          <listitem>
+            <para>If the "fwd" element is present and contains one or more "via"
+   element(s) then remove the top "via" element listed in the "fwd" element
+   and verify that the value of that "via" element is either empty or
+   identifies THIS WS-Routing receiver.  Failing that generate an appropriate
+   WS-Routing fault </para>
+            <!--(see section 5.2). -->
+
+            <para>
+
+ If, after removing the top "via"
+   element there are no remaining "via" element(s) listed in the "fwd" element,
+   and there is no "to" element, then THIS WS-Routing receiver is
+   the ultimate destination.
+</para>
+          </listitem>
+        </itemizedlist>
+        <para>A WS-Routing intermediary MUST follow these additional rules:
+</para>
+        <itemizedlist>
+          <listitem>
+            <para>If a "rev" element is present then add a "via" element as the
+   first "via" element listed in the "rev" element with a value indicating the
+   reverse path endpoint.  If a reverse path endpoint cannot be provided then
+   generate a 751 "Reverse Path Unavailable" WS-Routing fault.</para>
+          </listitem>
+          <listitem>
+            <para>If one or more "via" element(s) remain in the "fwd" element then
+   forward the WS-Routing message to the endpoint identified by the new top
+   "via" element listed in the "fwd" element.</para>
+          </listitem>
+          <listitem>
+            <para>If there are no remaining "via" element(s) listed in the "fwd"
+   element but there is a "to" element then forward the WS-Routing message to
+   the endpoint identified by the "to" element.</para>
+          </listitem>
+          <listitem>
+            <para>In the last two cases if the forwarding does not succeed then
+   generate the appropriate WS-Routing fault.
+</para>
+          </listitem>
+        </itemizedlist>
+        <example xml:id="wsrexample">
+          <title>WS Routing Example
+</title>
+          <para>Here is an example SOAP call from a client to an endpoint D.com
+via intermediaries B.com and C.com:</para>
+          <programlisting>
++------------+   +------------+   +------------+   +-------------+
+|  Initial   |   | WS-Routing |   | WS-Routing |   |  Ultimate   |
+| WS-Routing |--&gt;
+
+|Intermediary|--&gt;
+
+|Intermediary|--&gt;
+
+|  WS-Routing |
+|  Sender A  |&lt;--|      B     |&lt;--|      C     |&lt;--|  Receiver D |
++------------+   +------------+   +------------+   +-------------+
+             HTTP             HTTP              HTTP
+
+</programlisting>
+          <para>Request from client to intermediary B</para>
+          <programlisting>
+&lt;S:Envelope&gt;
+&lt;S:Header&gt;
+  &lt;m:path
+     xmlns:m="http://schemas.xmlsoap.org/rp/"
+     S:actor="http://schemas.xmlsoap.org/soap/actor/next"
+     S:mustUnderstand="1"&gt;
+   &lt;m:action&gt;http://soapinterop.org/&lt;/m:action&gt;
+   &lt;m:to&gt;http://D.com/router&lt;/m:to&gt;
+   &lt;m:id&gt;uuid:09233523-345b-4351-b623-5dsf35sgs5d6&lt;/m:id&gt;
+   &lt;m:fwd&gt;
+    &lt;m:via&gt;http://B.com/router&lt;/m:via&gt;
+    &lt;m:via&gt;http://C.com/router&lt;/m:via&gt;
+   &lt;/m:fwd&gt;
+   &lt;m:rev /&gt;
+  &lt;/m:path&gt;
+&lt;/S:Header&gt;
+&lt;S:Body&gt;
+...
+&lt;/S:Body&gt;
+&lt;/S:Envelope&gt;
+</programlisting>
+          <para>Request from intermediary B to intermediary C</para>
+          <programlisting>
+&lt;n0:Envelope&gt;
+&lt;n0:Header&gt;
+  &lt;n2:path
+     xmlns:n2="http://schemas.xmlsoap.org/rp/"
+     n0:actor="http://schemas.xmlsoap.org/soap/actor/next"
+     n0:mustUnderstand="1"&gt;
+   &lt;n2:action&gt;http://soapinterop.org/&lt;/n2:action&gt;
+   &lt;n2:to&gt;http://D.com/router&lt;/n2:to&gt;
+   &lt;n2:id&gt;uuid:09233523-345b-4351-b623-5dsf35sgs5d6&lt;/n2:id&gt;
+   &lt;n2:fwd&gt;
+     &lt;n2:via&gt;http://C.com/router&lt;/n2:via&gt;
+   &lt;/n2:fwd&gt;
+   &lt;n2:rev&gt;
+     &lt;n2:via /&gt;
+   &lt;/n2:rev&gt;
+  &lt;/n2:path&gt;
+&lt;/n0:Header&gt;
+&lt;n0:Body&gt;
+...
+&lt;/n0:Body&gt;
+&lt;/n0:Envelope&gt;
+</programlisting>
+          <para>Request from intermediary C to endpoint D</para>
+          <programlisting>
+&lt;n0:Envelope&gt;
+  &lt;n0:Header&gt;
+    &lt;n2:path
+      xmlns:n2="http://schemas.xmlsoap.org/rp/"
+      n0:actor="http://schemas.xmlsoap.org/soap/actor/next"
+      n0:mustUnderstand="1"&gt;
+     &lt;n2:action&gt;http://soapinterop.org/&lt;/n2:action&gt;
+     &lt;n2:to&gt;http://D.com/router&lt;/n2:to&gt;
+     &lt;n2:id&gt;uuid:09233523-345b-4351-b623-5dsf35sgs5d6&lt;/n2:id&gt;
+     &lt;n2:fwd /&gt;
+     &lt;n2:rev&gt;
+      &lt;n2:via /&gt;
+      &lt;n2:via /&gt;
+     &lt;/n2:rev&gt;
+   &lt;/n2:path&gt;
+&lt;/n0:Header&gt;
+&lt;n0:Body&gt;
+...
+&lt;/n0:Body&gt;
+&lt;/n0:Envelope&gt;
+</programlisting>
+          <para>Response from endpoint to C</para>
+          <programlisting>
+&lt;n0:Envelope&gt;
+&lt;n0:Header&gt;
+  &lt;n2:path xmlns:n2="http://schemas.xmlsoap.org/rp/"
+          n0:actor="http://schemas.xmlsoap.org/soap/actor/next"
+  	  n0:mustUnderstand="1"&gt;
+        &lt;n2:action&gt;http://soapinterop.org/&lt;/n2:action&gt;
+        &lt;n2:id&gt;uuid:2b2d09ec-a93a-11d6-be21-c9f55c969fe7&lt;/n2:id&gt;
+        &lt;n2:relatesTo&gt;uuid:09233523-345b-4351-b623-5dsf35sgs5d6&lt;/n2:relatesTo&gt;
+        &lt;n2:fwd&gt;
+          &lt;n2:via /&gt;
+          &lt;n2:via /&gt;
+        &lt;/n2:fwd&gt;
+        &lt;n2:rev&gt;
+           &lt;n2:via&gt;http://D.com/router&lt;/n2:via&gt;
+        &lt;/n2:rev&gt;
+        &lt;n2:from /&gt;
+  &lt;/n2:path&gt;
+&lt;/n0:Header&gt;
+&lt;n0:Body&gt;
+...
+&lt;/n0:Body&gt;
+&lt;/n0:Envelope&gt;
+</programlisting>
+          <para>Response from intermediary C to B</para>
+          <programlisting>
+&lt;n0:Envelope&gt;
+ &lt;n0:Header&gt;
+    &lt;n2:path xmlns:n2="http://schemas.xmlsoap.org/rp/"
+             n0:actor="http://schemas.xmlsoap.org/soap/actor/next"
+	     n0:mustUnderstand="1"&gt;
+        &lt;n2:action&gt;http://soapinterop.org/&lt;/n2:action&gt;
+        &lt;n2:id&gt;uuid:2b2d09ec-a93a-11d6-be21-c9f55c969fe7&lt;/n2:id&gt;
+        &lt;n2:relatesTo&gt;uuid:09233523-345b-4351-b623-5dsf35sgs5d6&lt;/n2:relatesTo&gt;
+        &lt;n2:fwd&gt;
+          &lt;n2:via /&gt;
+        &lt;/n2:fwd&gt;
+        &lt;n2:rev&gt;
+          &lt;n2:via&gt;http://C.com/router&lt;/n2:via&gt;
+          &lt;n2:via&gt;http://D.com/router&lt;/n2:via&gt;
+        &lt;/n2:rev&gt;
+        &lt;n2:from /&gt;
+     &lt;/n2:path&gt;
+&lt;/n0:Header&gt;
+&lt;n0:Body&gt;
+...
+&lt;/n0:Body&gt;
+&lt;/n0:Envelope&gt;
+</programlisting>
+          <para>Response from intermediary B to client</para>
+          <programlisting>
+&lt;n0:Envelope&gt;
+&lt;n0:Header&gt;
+    &lt;n2:path xmlns:n2="http://schemas.xmlsoap.org/rp/"
+             n0:actor="http://schemas.xmlsoap.org/soap/actor/next"
+	     n0:mustUnderstand="1"&gt;
+           &lt;n2:action&gt;http://soapinterop.org/&lt;/n2:action&gt;
+           &lt;n2:id&gt;uuid:2b2d09ec-a93a-11d6-be21-c9f55c969fe7&lt;/n2:id&gt;
+           &lt;n2:relatesTo&gt;uuid:09233523-345b-4351-b623-5dsf35sgs5d6&lt;/n2:relatesTo&gt;
+              &lt;n2:fwd /&gt;
+           &lt;n2:rev&gt;
+              &lt;n2:via&gt;http://B.com/router&lt;/n2:via&gt;
+              &lt;n2:via&gt;http://C.com/router&lt;/n2:via&gt;
+              &lt;n2:via&gt;http://D.com/router&lt;/n2:via&gt;
+           &lt;/n2:rev&gt;
+           &lt;n2:from /&gt;
+      &lt;/n2:path&gt;
+&lt;/n0:Header&gt;
+&lt;n0:Body&gt;
+...
+&lt;/n0:Body&gt;
+&lt;/n0:Envelope&gt;
+</programlisting>
+        </example>
+      </section>
+    </section>

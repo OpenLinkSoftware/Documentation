@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rthjsp">
+      <title>Deploying JSP Applications</title>
+      <para>The Virtuoso server with Java hosting support can be used to execute
+JSP pages, however, Virtuoso requires a JSP container engine first.  Jakarta
+provide such an engine that can be hosted inside Virtuoso with Java support.
+This section describes how JSP's can be executed using Jakarta Tomcat JSP
+implementation.</para>
+      <figure xml:id="http_handler_jsp" floatstyle="1">
+        <title>The HTTP JSP handler using Jakarta Tomcat</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="http_handler_jsp.jpg"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <section xml:id="rthjspprelim">
+        <title>Environment Setup &amp; Verification</title>
+        <para>The following components are required:</para>
+        <simplelist type="vert">
+          <member>Java SDK (or runtime only) needs to be installed.  Version 1.2 or later.</member>
+          <member>Jakarta Tomcat package must be installed and configured.  This can
+ be obtained from the <link xlink:href="http://jakarta.apache.org/tomcat/">Jakarta project site</link>
+
+ (http://jakarta.apache.org/tomcat/)</member>
+        </simplelist>
+        <para>The virtuoso.ini file must edited to including the following settings in the
+<computeroutput>[Parameters]</computeroutput>
+
+   section:</para>
+        <programlisting>.....
+JavaClasspath = &lt;jdk install dir&gt;/lib/tools.jar:&lt;tomcat install dir&gt;/bin/bootstrap.jar
+JavaVMOption1 = -Djava.endorsed.dirs=&lt;tomcat install dir&gt;/bin:&lt;tomcat install dir&gt;/common/endorsed
+JavaVMOption2 = -Dcatalina.base=&lt;tomcat install dir&gt;
+JavaVMOption3 = -Dcatalina.home=&lt;tomcat install dir&gt;
+JavaVMOption4 = -Djava.io.tmpdir=&lt;tomcat install dir&gt;/temp
+.....</programlisting>
+        <note>
+          <title>Note:</title>
+          <para>The above has been tested for the jakarta-tomcat-4.1.18 distribution
+only.  Setting may vary for any other versions of Jakarta Tomcat, in which case we
+advise you consult the Tomcat documentation.</para>
+        </note>
+        <para>Run the <computeroutput>virtuoso-*-javavm*-t</computeroutput>
+
+   binary,
+The Virtuoso server that includes Java hosting.</para>
+        <para>Start the Jakarta Tomcat server inside virtuoso server process using the
+following command from ISQL:</para>
+        <programlisting>
+SQL&gt; java_call_method ('org.apache.catalina.startup.BootstrapService', null, 'main', 'V',
+     vector ('[Ljava/lang/String;', vector ('start')));
+</programlisting>
+        <para>
+In order to invoke the above command automatically at server startup you might
+put it in the autoexec.isql init script.
+</para>
+        <para>Make a virtual directory for accessing JSP server, here is an example:</para>
+        <programlisting>vhost_define (lpath=&gt;'/tomcat',ppath=&gt;'http://example.com:8080/');</programlisting>
+        <para>Verify that your installations are correct by pointing your web browser
+of choice to <computeroutput>http://example.com:8890/tomcat/</computeroutput>
+
+(assuming you are working on your local machine).  Run some of JSP examples
+provided with Tomcat distribution to verify that they are executed without errors.</para>
+        <note>
+          <title>Note:</title>
+          <para>For debugging purposes you may run the virtuoso-*-javavm*-t server with
+foreground option to receive Java error messages, if any occur.</para>
+        </note>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="inprocess">In-Process Data Access Client</link>
+          </para>
+        </tip>
+      </section>
+    </section>

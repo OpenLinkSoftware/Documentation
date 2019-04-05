@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xper_cut">
+      <refmeta>
+        <refentrytitle>xper_cut
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>xper_cut
+</refname>
+        <refpurpose>creates a new "persistent XML"document which contains a copy of data pointed by given XPER entity
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xper_cut">
+          <funcprototype xml:id="fproto_xper_cut">
+            <funcdef>
+              <function>xper_cut
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>source_xper
+</parameter>
+
+  XML_Entity
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_75">
+        <title>Description
+</title>
+        <para>
+As noted in the <link linkend="storageindb">Storage in Database</link>
+
+   section,
+a subtree may be extracted from a document during writing of "persistent XML"
+entity into field of type LONG VARCHAR. The procedure of converting a subtree into
+complete document is known as "cutting". Cutting is performed only for
+"persistent XML" documents, it has nothing common with serialization of
+XML entities in form of plain XML text.</para>
+        <para>
+Usually it is the job of the Server itself who
+decides whether a cutting operation should be performed or not, without any specific
+activity at application level.
+The CPU time occupied due to cutting is up to 10 times greater than the CPU time of plain copying of LONG VARCHAR,
+but the amount of disk I/O is about the same, so the optimization rules discussed below are
+important only for time-critical, memory-located database applications.</para>
+        <para>
+The Virtuoso Server tries to reduce the number of cuttings to an absolute minimum.
+First of all, cutting is not performed when a given XML entity
+refers to the root of the document, or to the only child of the root,
+because the result of such cutting will be identical to original document.
+In addition, every document remembers the result of last cutting performed on data from
+this document, so if data of some XML entity are saved in many places without saving of
+other XML entities between them, cutting will be done only once and plain copying will
+be done for every subsequent saving.</para>
+        <para>
+The only situation when cutting may be seriously optimized by the application developer is in code
+like the following:</para>
+        <programlisting>
+declare _blank_forms, _plain, _isdn any;
+_blank_forms := xml_persistent ('file://blank_forms.xml');
+_plain = xpath_eval ('/forms/form[@name = ''Phone Installation'']', _blank_forms);
+_isdn = xpath_eval ('/forms/form[@name = ''ISDN Installation'']', _blank_forms);
+for select ID as _id, SERVICE as _service, ADDRESS as _address from CLIENTS do
+{
+  if (is_isdn(_service))
+    {
+      insert into JOB_DETAILS (ID, QUERY_XML) values (_id, _isdn);
+    }
+  else
+    {
+      insert into JOB_DETAILS (ID, QUERY_XML) values (_id, _plain);
+    }
+}
+</programlisting>
+        <para>
+Calls of xpath_eval are outside the loop, so it is faster than retrieval of suitable form for
+every selected record. But values of both _plain and _isdn shares the same underlying XML document
+and they will be assigned many times by the 'insert' operation. The XML document has no place to cache
+two results of cuttings, so new cutting will be done every time
+when _isdn entity is saved after _plain or _plain saved after _isdn. To optimize, it is better to
+cut them once outside the loop:</para>
+        <programlisting>
+declare _blank_forms, _plain, _isdn any;
+_blank_forms := xml_persistent ('file://blank_forms.xml');
+_plain = xper_cut (xpath_eval ('/forms/form[@name = ''Phone Installation'']', _blank_forms));
+_isdn = xper_cut (xpath_eval ('/forms/form[@name = ''ISDN Installation'']', _blank_forms));
+for select ID as _id, SERVICE as _service from CLIENTS do
+{
+  if (is_isdn(_service))
+    {
+-- _isdn entity points to the root of its own document, cutting is not needed for root.
+      insert into JOB_DETAILS (ID, QUERY_XML) values (_id, _isdn);
+    }
+  else
+    {
+-- similarly, _plain entity points to the root of its own document.
+      insert into JOB_DETAILS (ID, QUERY_XML) values (_id, _plain);
+    }
+}
+-- If no records found by the 'select' and no inserts done,
+-- then we've made two cuts for nothing...
+</programlisting>
+        <para>
+The current node of the resulting entity is the node that is a copy
+of the current node of the source entity. In common,
+the top-level node of the copied subtree becomes the current node of the result.
+There are two special cases, however. If the source entity is an attribute entity,
+then the result is also an attribute entity and the attribute name remains the same.
+If the source entity points to the root of the document, the resulting entity
+also points to the root, not to its top-level node.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_39">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>source_xper
+</title>
+          <para>XML Entity
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="seealso_02_01">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xml_cut">xml_doc()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xper_doc">xper_doc()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xper_right_sibling">xper_right_sibling(), xper_left_sibling(), xper_parent(), xper_root_entity(), xper_tell(), xper_length()
+</link>
+        </para>
+      </refsect1>
+    </refentry>

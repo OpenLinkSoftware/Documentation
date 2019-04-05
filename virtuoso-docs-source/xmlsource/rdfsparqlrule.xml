@@ -1,0 +1,1636 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfsparqlrule">
+      <title>Inference Rules &amp; Reasoning</title>
+      <section xml:id="rdfsparqlruleintro">
+        <title>Introduction</title>
+        <para>Virtuoso SPARQL can use an inference context for inferring triples that are not physically stored.
+This functionality applies to physically stored quads and not to virtual triples generated from relational data with Linked Data Views.
+Such an inference context can be built from one or more graphs containing RDF Schema triples. The supported
+RDF Schema or OWL constraints are imported from these graphs and are grouped together into rule bases.
+A rule base is a persistent entity that can be referenced by a SPARQL query or end point. Queries running
+with a given rule base work as if the triples asserted by this rule base were included in the graph or graphs accessed by the query.
+</para>
+        <para>As of version 5.0, Virtuoso recognizes <emphasis>rdfs:subClassOf</emphasis>
+
+   and <emphasis>rdfs:subPropertyOf</emphasis>
+
+  .
+owl:sameAs is considered for arbitrary subjects and objects if specially enabled by a pragma in the query.
+As of 5.00.3031, owl:sameAs, owl:equivalentClass and owl:equivalentProperty are also considered when determining subclass or subproperty relations. If two  classes are equivalent, they share all instances, subclasses and superclasses directly or indirectly stated in the data for either class.
+Other RDF Schema or OWL information is not taken into account.
+</para>
+      </section>
+      <section xml:id="rdfsparqlrulemake">
+        <title>Making Rule Sets</title>
+        <para>Since RDF Schema and OWL schemas are RDF graphs, these can be loaded into the triple store.
+  	Thus, in order to use such a schema as query context, one first loads the corresponding document
+  	into the triple store using ttlp()
+
+   or
+  	rdf_load_rdfxml()
+
+   or related functions. After the schema
+  	document is loaded, one can add the assertions there into an inference context with the
+  	rdfs_rule_set()
+
+   function. This function specifies a logical
+  	name for the rule set plus a graph URI. It is possible to combine multiple schema graphs into a
+  	single rule set. A single schema graph may also independently participate in multiple rule sets.
+  </para>
+        <para>The <emphasis>DB.DBA.SYS_RDF_SCHEMA</emphasis>
+
+   table contains information for all
+  RDF rule sets in a Virtuoso instance. This table may be queried to, for instance, verify
+  rdfs_rule_set()
+
+   activity:
+  </para>
+        <programlisting>
+CREATE TABLE DB.DBA.SYS_RDF_SCHEMA (
+  RS_NAME VARCHAR,  -- The name of the rdf rule set
+  RS_URI  VARCHAR,  -- The name of the graph
+  RS_G    VARCHAR,  -- Column for system usage only
+  PRIMARY KEY (RS_NAME, RS_URI))
+)
+</programlisting>
+      </section>
+      <section xml:id="rdfsparqlrulechange">
+        <title>Changing Rule Sets</title>
+        <para>Changing a rule set affects queries made after the change. Some queries may have been previously
+compiled and will not be changed as a result of modifying the rule set. When a rule set is changed, i.e.
+when <emphasis>rdfs_rule_set</emphasis>
+
+   is called with the first argument set to a pre-existing rule set's name, all the graphs
+associated with this name are read and the relevant facts are added to a new empty rule set. Thus, if
+triples are deleted from or added to the graphs comprising the rule set, calling <emphasis>rdfs_rule_set</emphasis>
+
+   will refresh
+the rule set to correspond to the state of the stored graphs.
+</para>
+      </section>
+      <section xml:id="rdfsparqlrulesubclassandsubprop">
+        <title>Subclasses and Subproperties</title>
+        <para>Virtuoso SPARQL supports RDF Schema subclasses and subproperties.</para>
+        <para>The predicates <emphasis>rdfs:subClassOf</emphasis>
+
+   and <emphasis>rdfs:subPropertyOf</emphasis>
+
+   are
+recognized when they appear in graphs included in a rule set. When such a rule set is specified as a context
+for a SPARQL query, the following extra triples are generated as needed.
+  </para>
+        <para>For every <emphasis>?s rdf:type ?class</emphasis>
+
+  , a triple <emphasis>?s rdf:type ?superclass</emphasis>
+
+   is considered to exist,
+such that <emphasis>?superclass</emphasis>
+
+   is a direct or indirect superclass of <emphasis>?class</emphasis>
+
+  . Direct superclasses are
+declared with the <emphasis>rdfs:subClassOf</emphasis>
+
+   predicate in the rule set graph. Transitivity of superclasses
+is automatically taken into account, meaning that if a is a superclass of b and b a superclass of c,
+then a is a superclass of c also. Cyclic superclass relations are not allowed. If such occur in the rule set data,
+the behavior is undefined but will not involve unterminating recursion.
+  </para>
+        <para>For every <emphasis>?s ?subpredicate ?o</emphasis>
+
+  , a triple <emphasis>?s ?superpredicate ?o</emphasis>
+
+is considered to exist if the rule context declares <emphasis>?superpredicate</emphasis>
+
+   to be a superpredicate
+of <emphasis>?predicate</emphasis>
+
+  . This is done by having the triple <emphasis>?subpredicate rdfs:subPropertyOf ?superpredicate</emphasis>
+
+as part of the graphs making up the rule context. Transitivity is observed, thus if a is a subpredicate of b and b
+a subpredicate of c, then a is also a subpredicate of c.
+</para>
+        <para>Two methods can be used for typical recursions, transitivity on inference and plain transitive patterns
+(or subqueries).</para>
+        <para>The advantage of inference is that queries are short and one inference rule set may be maintained for
+numerous queries.</para>
+        <para>If queries are about trees of classes or properties, or about equivalences of nodes, consider using
+inference rule sets.</para>
+        <para>Transitive patterns are inconvenient and may easily result in queries that runs too long or hard
+to debug, but they're unavoidable in traversing social networks or plain querying of RDF lists.</para>
+        <para>So consider a rule set, a handful of nodes with classes from the rule set and a couple of RDF
+Lisp-style lists defined on demo.openlinksw.com:</para>
+        <programlisting>
+SQL&gt; SPARQL CLEAR GRAPH &lt;http://example.com/2/owl&gt;;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Clear &lt;http://example.com/2/owl&gt;  -- done
+
+1 Rows. -- 0 msec.
+
+SQL&gt; TTLP (' @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;  .
+  @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;  .
+  @prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;  .
+  @prefix e: &lt;http://example.com/e/&gt;  .
+  e:c1 rdfs:subClassOf e:c1or2 .
+  e:c2 rdfs:subClassOf e:c1or2 .
+  e:c1-10 rdfs:subClassOf e:c1 .
+  e:c1-20 rdfs:subClassOf e:c1 .
+  e:c2-30 rdfs:subClassOf e:c2 .
+  e:c2-40 rdfs:subClassOf e:c2 .
+  ', 'http://example.com/2/owl', 'http://example.com/2/owl' );
+
+Done. -- 0 msec.
+</programlisting>
+        <para>You can also use the SPARUL equivalent variant:</para>
+        <programlisting>
+SPARQL
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+PREFIX e: &lt;http://example.com/e/&gt;
+
+INSERT IN GRAPH &lt;http://example.com/2/owl&gt;
+  {
+    e:c1 rdfs:subClassOf e:c1or2 .
+    e:c2 rdfs:subClassOf e:c1or2 .
+    e:c1-10 rdfs:subClassOf e:c1 .
+    e:c1-20 rdfs:subClassOf e:c1 .
+    e:c2-30 rdfs:subClassOf e:c2 .
+    e:c2-40 rdfs:subClassOf e:c2 .
+  } ;
+</programlisting>
+        <para>Define the inference rule:</para>
+        <programlisting>
+SQL&gt; rdfs_rule_set ('http://example.com/2/owl', 'http://example.com/2/owl');
+
+Done. -- 0 msec.
+
+SQL&gt; SPARQL CLEAR GRAPH &lt;http://example.com/2/data&gt; ;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Clear &lt;http://example.com/2/data&gt;  -- done
+
+1 Rows. -- 0 msec.
+
+SQL&gt;  TTLP ('
+  @prefix e: &lt;http://example.com/e/&gt;  .
+  @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;  .
+  @prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;  .
+  e:s1 a e:c1 ; e:p1 "Value of p1 for s1" .
+  e:s2 a e:c2 ; e:p1 "Value of p1 for s2" .
+  e:s1-10 a e:c1-10 ; e:p1 "Value of p1 for s1-10" .
+  e:s1-20 a e:c1-20 ; e:p1 "Value of p1 for s1-20" .
+  e:s2-30 a e:c2-30 ; e:p1 "Value of p1 for s2-30" .
+  e:s2-40 a e:c2-40 ; e:p1 "Value of p1 for s2-40" .
+  e:lists
+       rdf:_1 ( e:list1-item1 e:list1-item2 e:list1-item3 ) ;
+       rdf:_2 (
+           [ e:p2 "Value of p2 of item1 of list2" ; e:p3 "Value of p3 of item1 of list2" ]
+           [ e:p2 "Value of p2 of item2 of list2" ; e:p3 "Value of p3 of item2 of list2" ]
+           [ e:p2 "Value of p2 of item3 of list2" ; e:p3 "Value of p3 of item3 of list2" ] ) .
+  ', 'http://example.com/2/data', 'http://example.com/2/data' );
+
+Done. -- 0 msec.
+</programlisting>
+        <para>You can also use the SPARUL equivalent variant:</para>
+        <programlisting>
+SPARQL
+PREFIX e: &lt;http://example.com/e/&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+
+INSERT IN GRAPH &lt;http://example.com/2/data&gt;
+  {
+    e:s1 a e:c1 ; e:p1 "Value of p1 for s1" .
+    e:s2 a e:c2 ; e:p1 "Value of p1 for s2" .
+    e:s1-10 a e:c1-10 ; e:p1 "Value of p1 for s1-10" .
+    e:s1-20 a e:c1-20 ; e:p1 "Value of p1 for s1-20" .
+    e:s2-30 a e:c2-30 ; e:p1 "Value of p1 for s2-30" .
+    e:s2-40 a e:c2-40 ; e:p1 "Value of p1 for s2-40" .
+    e:lists
+      rdf:_1 ( e:list1-item1 e:list1-item2 e:list1-item3 ) ;
+      rdf:_2 (
+           [ e:p2 "Value of p2 of item1 of list2" ; e:p3 "Value of p3 of item1 of list2" ]
+           [ e:p2 "Value of p2 of item2 of list2" ; e:p3 "Value of p3 of item2 of list2" ]
+           [ e:p2 "Value of p2 of item3 of list2" ; e:p3 "Value of p3 of item3 of list2" ] )
+  };
+</programlisting>
+        <para>SPARQL DESCRIBE works fine with inference, deriving additional type information:</para>
+        <programlisting>
+DEFINE input:inference &lt;http://example.com/2/owl&gt;
+DESCRIBE &lt;http://example.com/e/s1&gt;
+FROM &lt;http://example.com/2/data&gt;
+
+fmtaggret-
+LONG VARCHAR
+_______________________________________________________________________________
+
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;  .
+@prefix ns1: &lt;http://example.com/e/&gt;  .
+ns1:s1 rdf:type ns1:c1or2 ,
+ns1:c1 ;
+ns1:p1 "Value of p1 for s1" .
+
+1 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E%0D%0ADESCRIBE+%3Chttp%3A%2F%2Fexample.com%2Fe%2Fs1%3E%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E&amp;should-sponge=&amp;format=application%2Frdf%2Bxml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E%0D%0ADESCRIBE+%3Chttp%3A%2F%2Fexample.com%2Fe%2Fs1%3E%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E&amp;should-sponge=&amp;format=application%2Frdf%2Bxml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <programlisting>
+DEFINE input:inference &lt;http://example.com/2/owl&gt;
+DESCRIBE &lt;http://example.com/e/s2&gt;
+FROM &lt;http://example.com/2/data&gt;
+fmtaggret-
+LONG VARCHAR
+_______________________________________________________________________________
+
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;  .
+@prefix ns1: &lt;http://example.com/e/&gt;  .
+ns1:s2 rdf:type ns1:c1or2 ,
+ns1:c2 ;
+ns1:p1 "Value of p1 for s2" .
+
+1 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E%0D%0ADESCRIBE+%3Chttp%3A%2F%2Fexample.com%2Fe%2Fs2%3E+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E&amp;should-sponge=&amp;format=application%2Frdf%2Bxml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E%0D%0ADESCRIBE+%3Chttp%3A%2F%2Fexample.com%2Fe%2Fs2%3E+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E&amp;should-sponge=&amp;format=application%2Frdf%2Bxml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>Querying is simple as well:</para>
+        <programlisting>
+SQL&gt;SPARQL DEFINE input:inference &lt;http://example.com/2/owl&gt;
+PREFIX e:&lt;http://example.com/e/&gt;
+SELECT *
+FROM &lt;http://example.com/2/data&gt;
+WHERE
+  {
+    ?s a e:c1or2 ;
+          e:p1 ?o
+  }
+
+s                            o
+VARCHAR                      VARCHAR
+___________________________
+
+http://example.com/e/s1      Value of p1 for s1
+http://example.com/e/s1-10   Value of p1 for s1-10
+http://example.com/e/s1-20   Value of p1 for s1-20
+http://example.com/e/s2-30   Value of p1 for s2-30
+http://example.com/e/s2-40   Value of p1 for s2-40
+http://example.com/e/s2      Value of p1 for s2
+
+6 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E+%0D%0AWHERE+%0D%0A++{+%0D%0A++++%3Fs+a+e%3Ac1or2+%3B+%0D%0A++++++++++e%3Ap1+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E+%0D%0AWHERE+%0D%0A++{+%0D%0A++++%3Fs+a+e%3Ac1or2+%3B+%0D%0A++++++++++e%3Ap1+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <programlisting>
+SQL&gt;SPARQL DEFINE input:inference &lt;http://example.com/2/owl&gt;
+PREFIX e:&lt;http://example.com/e/&gt;
+SELECT * FROM &lt;http://example.com/2/data&gt;
+WHERE
+  {
+    ?s a e:c1 ;
+       e:p1 ?o
+  }
+
+s                            o
+VARCHAR                      VARCHAR
+___________________________
+
+http://example.com/e/s1      Value of p1 for s1
+http://example.com/e/s1-10   Value of p1 for s1-10
+http://example.com/e/s1-20   Value of p1 for s1-20
+
+3 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+FROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{+%0D%0A++++%3Fs+a+e%3Ac1+%3B+%0D%0A+++++++e%3Ap1+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+FROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{+%0D%0A++++%3Fs+a+e%3Ac1+%3B+%0D%0A+++++++e%3Ap1+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>However you should care about duplicates if both types and properties are queried: the join will
+  result in all combinations of types and property values.</para>
+        <programlisting>
+SQL&gt;SPARQL DEFINE input:inference &lt;http://example.com/2/owl&gt;
+PREFIX e:&lt;http://example.com/e/&gt;
+SELECT * FROM &lt;http://example.com/2/data&gt;
+WHERE
+  {
+    ?s a ?t ;
+     e:p1 ?o
+  }
+
+s                            t                            o
+VARCHAR                      VARCHAR                      VARCHAR
+___________________________
+
+http://example.com/e/s1      http://example.com/e/c1      Value of p1 for s1
+http://example.com/e/s1      http://example.com/e/c1or2   Value of p1 for s1
+http://example.com/e/s1-10   http://example.com/e/c1-10   Value of p1 for s1-10
+http://example.com/e/s1-10   http://example.com/e/c1      Value of p1 for s1-10
+http://example.com/e/s1-10   http://example.com/e/c1or2   Value of p1 for s1-10
+http://example.com/e/s1-20   http://example.com/e/c1-20   Value of p1 for s1-20
+http://example.com/e/s1-20   http://example.com/e/c1      Value of p1 for s1-20
+http://example.com/e/s1-20   http://example.com/e/c1or2   Value of p1 for s1-20
+http://example.com/e/s2-30   http://example.com/e/c2-30   Value of p1 for s2-30
+http://example.com/e/s2-30   http://example.com/e/c2      Value of p1 for s2-30
+http://example.com/e/s2-30   http://example.com/e/c1or2   Value of p1 for s2-30
+http://example.com/e/s2-40   http://example.com/e/c2-40   Value of p1 for s2-40
+http://example.com/e/s2-40   http://example.com/e/c2      Value of p1 for s2-40
+http://example.com/e/s2-40   http://example.com/e/c1or2   Value of p1 for s2-40
+http://example.com/e/s2      http://example.com/e/c2      Value of p1 for s2
+http://example.com/e/s2      http://example.com/e/c1or2   Value of p1 for s2
+
+16 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+FROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{+%0D%0A++++%3Fs+a+%3Ft+%3B+%0D%0A+++++e%3Ap1+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=DEFINE+input%3Ainference+%3Chttp%3A%2F%2Fexample.com%2F2%2Fowl%3E++%0D%0APREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+*+FROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{+%0D%0A++++%3Fs+a+%3Ft+%3B+%0D%0A+++++e%3Ap1+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>Transitive queries are convenient as SPARQL 1.1 "predicate+" equivalent. The equivalent of
+  "predicate*" requires the use of a union:</para>
+        <programlisting>
+SQL&gt;SPARQL PREFIX e:&lt;http://example.com/e/&gt;
+SELECT ?item
+FROM &lt;http://example.com/2/data&gt;
+WHERE
+  {
+    {
+      ?lists rdf:_1 ?node
+    }
+    UNION
+    {
+      ?lists rdf:_1 ?l .
+      ?l rdf:rest ?node option (transitive) .
+    }
+    ?node rdf:first ?item
+  }
+
+item
+VARCHAR
+_______________________________________________________________________________
+
+http://example.com/e/list1-item1
+http://example.com/e/list1-item2
+http://example.com/e/list1-item3
+
+3 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fitem+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_1+%3Fnode+%0D%0A++++}%0D%0A++++UNION%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_1+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+option+%28transitive%29+.+%0D%0A++++}%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fitem+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_1+%3Fnode+%0D%0A++++}%0D%0A++++UNION%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_1+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+option+%28transitive%29+.+%0D%0A++++}%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <programlisting>
+SQL&gt; SPARQL PREFIX e:&lt;http://example.com/e/&gt;
+SELECT ?p ?o
+FROM &lt;http://example.com/2/data&gt;
+WHERE
+  {
+    {
+      ?lists rdf:_2 ?node
+    }
+    UNION
+    {
+      ?lists rdf:_2 ?l .
+      ?l rdf:rest ?node option (transitive) .
+    }
+    ?node rdf:first ?item .
+    ?item ?p ?o
+  }
+
+p                         o
+VARCHAR                   VARCHAR
+________________________
+
+http://example.com/e/p2   Value of p2 of item1 of list2
+http://example.com/e/p3   Value of p3 of item1 of list2
+http://example.com/e/p2   Value of p2 of item2 of list2
+http://example.com/e/p3   Value of p3 of item2 of list2
+http://example.com/e/p2   Value of p2 of item3 of list2
+http://example.com/e/p3   Value of p3 of item3 of list2
+
+6 Rows. -- 0 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fp+%3Fo+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fnode+%0D%0A++++}%0D%0A++++UNION%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+option+%28transitive%29+.+%0D%0A++++}%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+.%0D%0A++++%3Fitem+%3Fp+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fp+%3Fo+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fnode+%0D%0A++++}%0D%0A++++UNION%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+option+%28transitive%29+.+%0D%0A++++}%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+.%0D%0A++++%3Fitem+%3Fp+%3Fo+%0D%0A++}&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>Note that the result set can be in order of items in the list, but it don't have to.
+  If the order should be preserved, then fix the direction of transitive scan, get step number as a
+  variable, order by that variable.</para>
+        <programlisting>
+-- Line 82:
+SQL&gt; SPARQL PREFIX e:&lt;http://example.com/e/&gt;
+SELECT ?p ?o bif:coalesce(?step_no, 0)
+FROM &lt;http://example.com/2/data&gt;
+WHERE
+  {
+    {
+      ?lists rdf:_2 ?node
+    }
+    UNION
+    {
+      ?lists rdf:_2 ?l .
+      ?l rdf:rest ?node OPTION (transitive, t_direction 1, t_step("step_no") as ?step_no) .
+    }
+    ?node rdf:first ?item .
+    ?item ?p ?o
+  }
+ORDER BY ASC (?step_no)
+
+p                         o                               callret-2
+VARCHAR                   VARCHAR                         VARCHAR
+________________________
+
+http://example.com/e/p2   Value of p2 of item1 of list2   0
+http://example.com/e/p3   Value of p3 of item1 of list2   0
+http://example.com/e/p2   Value of p2 of item2 of list2   1
+http://example.com/e/p3   Value of p3 of item2 of list2   1
+http://example.com/e/p2   Value of p2 of item3 of list2   2
+http://example.com/e/p3   Value of p3 of item3 of list2   2
+
+6 Rows. -- 7 msec.
+</programlisting>
+        <para>Example links against <link xlink:href="http://demo.openlinksw.com/sparql">Virtuoso Demo Server SPARQL Endpoint</link>
+
+   with SPARQL Protocol URLs:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fp+%3Fo+bif%3Acoalesce%28%3Fstep_no%2C+0%29+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fnode+%0D%0A++++}%0D%0A++++UNION%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+OPTION+%28transitive%2C+t_direction+1%2C+t_step%28%22step_no%22%29+as+%3Fstep_no%29+.+%0D%0A++++}%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+.%0D%0A++++%3Fitem+%3Fp+%3Fo+%0D%0A++}+%0D%0AORDER+BY+ASC+%28%3Fstep_no%29%0D%0A&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View results page</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://demo.openlinksw.com/sparql?default-graph-uri=&amp;qtxt=PREFIX+e%3A%3Chttp%3A%2F%2Fexample.com%2Fe%2F%3E%0D%0ASELECT+%3Fp+%3Fo+bif%3Acoalesce%28%3Fstep_no%2C+0%29+%0D%0AFROM+%3Chttp%3A%2F%2Fexample.com%2F2%2Fdata%3E++%0D%0AWHERE+%0D%0A++{%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fnode+%0D%0A++++}%0D%0A++++UNION%0D%0A++++{+%0D%0A++++++%3Flists+rdf%3A_2+%3Fl+.%0D%0A++++++%3Fl+rdf%3Arest+%3Fnode+OPTION+%28transitive%2C+t_direction+1%2C+t_step%28%22step_no%22%29+as+%3Fstep_no%29+.+%0D%0A++++}%0D%0A++++%3Fnode+rdf%3Afirst+%3Fitem+.%0D%0A++++%3Fitem+%3Fp+%3Fo+%0D%0A++}+%0D%0AORDER+BY+ASC+%28%3Fstep_no%29%0D%0A&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=0&amp;debug=on">View editor page</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="rdfsameas">
+        <title>OWL sameAs Support</title>
+        <para>
+Virtuoso has limited support for the OWL sameAs predicate.
+</para>
+        <para>
+If sameAs traversal is enabled and a triple pattern with a given
+subject or object is being matched, all the synonyms of the S and O
+will be tried and results generated for all the tried bindings of S
+and O. The set of synonyms is generated at run time by following all
+owl:sameAs triples where the IRI in question is either the subject or
+the object. These are followed recursively from object to subject and
+subject to object until the complete transitive closure is generated.
+All sameAs triples from all the graphs applicable to instantiating
+the triple pattern at hand are considered.
+</para>
+        <para>
+Thus for example:
+</para>
+        <para>The inital SPARQL query:</para>
+        <programlisting>
+SQL&gt;SPARQL
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+SELECT *
+from &lt;http://example.com/dataspace&gt;
+where
+ {
+    ?person a foaf:Person FILTER REGEX(?person ,"http://example.com/dataspace/person/kidehen#this").
+    ?person foaf:name ?name .
+    ?person owl:sameAs ?sameas .
+  }
+limit 8;
+person                                               name             sameas
+VARCHAR                                              VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://my.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://kidehen.idehen.net/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://qdos.com/user/e922b748a2eb667bf37b188018002dec
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://knowee.net/kidehen/ids/id3684976382
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://dbpedia.org/resource/Kingsley_Idehen
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://identi.ca/user/14092
+http://example.com/dataspace/person/kidehen#this  Kingsley Idehen  http://myopenlink.net/proxy?url=http%3A%2F%2Fwww.facebook.com%2Fpeople%2FKingsley_Idehen%2F605980750&amp;force=rdf&amp;login=kidehen
+
+8 Rows. -- 181 msec.
+</programlisting>
+        <para>So if we have:</para>
+        <programlisting>
+&lt;http://example.com/dataspace/person/kidehen#this&gt;  	&lt;http://www.w3.org/2002/07/owl#sameAs&gt; &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt; .
+&lt;http://example.com/dataspace/person/kidehen#this&gt;  	&lt;http://xmlns.com/foaf/0.1/name&gt;  	   Kingsley Idehen
+</programlisting>
+        <para>
+and we instantiate <emphasis>?s &lt;http://xmlns.com/foaf/0.1/name&gt; "Kingsley Idehen"</emphasis>
+
+we get <emphasis>?s</emphasis>
+
+   bound to <emphasis>&lt;http://example.com/dataspace/person/kidehen#this&gt;</emphasis>
+
+  .
+</para>
+        <para>
+If we instantiate <emphasis>&lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+&lt;http://xmlns.com/foaf/0.1/name&gt; ?l</emphasis>
+
+we get <emphasis>?l</emphasis>
+
+   bound to <emphasis>"Kingsley Idehen"</emphasis>
+
+   because the subject was given and it was expanded to its synonyms.
+</para>
+        <para>
+If binding a variable in a pattern where the variable was free, we do not expand the value to the complete set of its synonyms.
+</para>
+        <para>
+Same-as expansion is enabled in a query by <emphasis>define input:same-as "yes"</emphasis>
+
+   in the beginning of the SPARQL query.
+This has a significant run time cost but is in some cases useful when joining data between sets which are mapped to each other with same-as.
+</para>
+        <para>
+We note that the number of same-as expansions will depend on the join order used for the SPARQL query.
+The compiler does not know the number of synonyms and cannot set the join order accordingly.
+Regardless of the join order we will however get at least one IRI of the each synonym set as answer.
+Also when interactively navigating a graph with a browser, the same-as expansion will take all synonyms into account.
+</para>
+        <para>
+For getting the complete entailment of same-as, a forward
+chaining approach should be used, effectively asserting all the
+implied triples.
+</para>
+        <section xml:id="rdfsameasexmp">
+          <title>OWL sameAs Example</title>
+          <programlisting>
+SQL&gt;SPARQL
+DEFINE input:same-as "yes"
+SELECT *
+WHERE
+ {
+   ?s &lt;http://xmlns.com/foaf/0.1/name&gt; "Kingsley Idehen" .
+ }
+LIMIT 10;
+
+s
+VARCHAR
+___________________________________________________
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+http://demo.openlinksw.com/dataspace/kingsley#person
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+http://example.com/dataspace/person/kidehen#this
+No. of rows in result: 10
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfsparqlruleimpl">
+        <title>Implementation</title>
+        <para>Triples entailed by subclass or subproperty statements in an inference context are not physically stored.
+Such triples are added to the result set by the query run time as needed. Also queries involving subclass or subproperty
+rules are not rewritten into unions of all the possible triple patterns that might imply the pattern that is requested.
+Instead, the SQL compiler adds special nodes that iterate over subclasses or subproperties at run time. The cost model
+also takes subclasses and subproperties into account when determining the approximate cardinality of triple patterns.
+</para>
+        <para>In essence, Virtuoso's support for subclasses and subproperties is backward chaining, i.e. it does not materialize
+all implied triples but rather looks for the basic facts implying these triples at query evaluation time.
+</para>
+      </section>
+      <section xml:id="rdfsparqlruleenableinfr">
+        <title>Enabling Inferencing</title>
+        <para>In a SPARQL query, the define input:inference clause is used to instruct the compiler to use the rules in the named rule set. For example:
+</para>
+        <programlisting>
+SQL&gt; rdfs_rule_set ('sample', 'rule_graph');
+
+SQL&gt; SPARQL
+define input:inference "sample"
+SELECT *
+FROM &lt;g&gt;
+WHERE {?s ?p ?o};
+</programlisting>
+        <para>will include all the implied triples in the result set, using the rules in the sample rule set.
+</para>
+        <para>Inference can be enabled triple pattern by triple pattern. This is done with the option
+(inference 'rule_set') clause after the triple pattern concerned. Specifying option (inference none)
+will disable inference for the pattern concerned while the default inference context applies to the
+rest of the patterns. Note that the keyword is input:inference in the query header and simply inference
+in the option clause. See the examples section below for examples.
+</para>
+        <para>In SQL, if RDF_QUAD occurs in a select from clause, inference can be added with the table option <emphasis>WITH</emphasis>
+
+  , as follows:
+</para>
+        <programlisting>
+SPARQL
+SELECT *
+FROM rdf_quad table OPTION (with 'sample')
+WHERE g = iri_to_id ('xx', 0);
+</programlisting>
+        <para>This is about the same as:
+</para>
+        <programlisting>
+SPARQL
+define input:inference "sample"
+SELECT *
+FROM &lt;xx&gt;
+WHERE {?s ?p ?o}
+</programlisting>
+      </section>
+      <section xml:id="rdfsparqlruleexamples">
+        <title>Examples</title>
+        <section xml:id="rdfsparqlruleexamples1">
+          <title>Example for loading data space instance data Triples
+into a Named Graph for schema/ontology data</title>
+          <para>The following example shows how to load data space instance data Triples
+into a Named Graph: &lt;http://example.com/test&gt;, for schema/ontology data called:
+&lt;http://example.com/schema/test&gt; that expresses assertions about subclasses and
+subproperties.</para>
+          <programlisting>
+ttlp ('
+   &lt;http://example.com/dataspace&gt;  	                        &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;  &lt;http://rdfs.org/sioc/ns#Space&gt;.
+   &lt;http://example.com/dataspace/test2/weblog/test2tWeblog&gt;  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;  &lt;http://rdfs.org/sioc/types#Weblog&gt; .
+   &lt;http://example.com/dataspace/discussion/oWiki-test1Wiki&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;  &lt;http://rdfs.org/sioc/types#MessageBoard&gt;.
+   &lt;http://example.com/dataspace&gt;                            &lt;http://rdfs.org/sioc/ns#link&gt;                     &lt;http://example.com/ods&gt; .
+   &lt;http://example.com/dataspace/test2/weblog/test2tWeblog&gt;  &lt;http://rdfs.org/sioc/ns#link&gt;                     &lt;http://example.com/dataspace/test2/weblog/test2tWeblog&gt;.
+   &lt;http://example.com/dataspace/discussion/oWiki-test1Wiki&gt; &lt;http://rdfs.org/sioc/ns#link&gt;                     &lt;http://example.com/dataspace/discussion/oWiki-test1Wiki&gt; .
+   ', '', 'http://example.com/test');
+</programlisting>
+          <programlisting>
+ttlp (' @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+  &lt;http://rdfs.org/sioc/ns#Space&gt; rdfs:subClassOf &lt;http://www.w3.org/2000/01/rdf-schema#Resource&gt; .
+  &lt;http://rdfs.org/sioc/ns#Container&gt; rdfs:subClassOf &lt;http://rdfs.org/sioc/ns#Space&gt; .
+  &lt;http://rdfs.org/sioc/ns#Forum&gt; rdfs:subClassOf &lt;http://rdfs.org/sioc/ns#Container&gt; .
+  &lt;http://rdfs.org/sioc/types#Weblog&gt; rdfs:subClassOf &lt;http://rdfs.org/sioc/ns#Forum&gt; .
+  &lt;http://rdfs.org/sioc/types#MessageBoard&gt; rdfs:subClassOf &lt;http://rdfs.org/sioc/ns#Forum&gt; .
+  &lt;http://rdfs.org/sioc/ns#link&gt; rdfs:subPropertyOf &lt;http://rdfs.org/sioc/ns&gt; .
+  ', '', 'http://example.com/schema/test');
+</programlisting>
+          <programlisting>
+rdfs_rule_set ('http://example.com/schema/property_rules1', 'http://example.com/schema/test');
+</programlisting>
+          <para>This defines the rule context http://example.com/schema/property_rules1 that is initialized
+from the contents of graph http://example.com/schema/test.
+</para>
+          <programlisting>
+SQL&gt;SPARQL
+define input:inference "http://example.com/schema/property_rules1"
+SELECT ?s
+FROM &lt;http://example.com/test&gt;
+WHERE {?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;  &lt;http://rdfs.org/sioc/ns#Space&gt; };
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/test2/weblog/test2tWeblog
+http://example.com/dataspace/discussion/oWiki-test1Wiki
+http://example.com/dataspace
+
+3 Rows. -- 0 msec.
+</programlisting>
+          <para>This returns the instances of http://rdfs.org/sioc/ns#Space. Since http://rdfs.org/sioc/types#Weblog
+and http://rdfs.org/sioc/types#MessageBoard are subclasses of http://rdfs.org/sioc/ns#Space,
+instances of http://rdfs.org/sioc/ns#Space, http://rdfs.org/sioc/types#Weblog and
+http://rdfs.org/sioc/types#MessageBoard are all returned. This results in the subjects
+http://example.com/dataspace, http://example.com/dataspace/test2/weblog/test2tWeblog and
+http://example.com/dataspace/discussion/oWiki-test1Wiki.
+</para>
+          <programlisting>
+SQL&gt;SELECT id_to_iri (s)
+FROM rdf_quad table option (with 'http://example.com/schema/property_rules1')
+WHERE g = iri_to_id ('http://example.com/test',0)
+  AND p = iri_to_id ('http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 0)
+  AND o = iri_to_id ('http://rdfs.org/sioc/ns#Space', 0);
+callret
+VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/test2/weblog/test2tWeblog
+http://example.com/dataspace/discussion/oWiki-test1Wiki
+http://example.com/dataspace
+
+3 Rows. -- 10 msec.
+</programlisting>
+          <para>This is the corresponding SQL query, internally generated by the SPARQL query.</para>
+          <para>Below we first look for all instances of http://rdfs.org/sioc/ns#Space with some
+property set to http://example.com/dataspace/test2/weblog/test2tWeblog.
+We get the subject http://example.com/dataspace/test2/weblog/test2tWeblog and the
+properties http://rdfs.org/sioc/ns#link and http://rdfs.org/sioc/ns.
+The join involves both subclass and subproperty inference. Then we turn off the inference
+for the second pattern and only get the property http://rdfs.org/sioc/ns#link. Then we do
+the same but now specify that inference should apply only to the first triple pattern.
+</para>
+          <programlisting>
+SQL&gt;SPARQL
+define input:inference  "http://example.com/schema/property_rules1"
+SELECT *
+FROM &lt;http://example.com/test&gt;
+WHERE
+  {
+    ?s ?p &lt;http://rdfs.org/sioc/ns#Space&gt; .
+    ?s ?p1 &lt;http://example.com/dataspace/test2/weblog/test2tWeblog&gt; .
+  };
+
+s             p              p1
+VARCHAR       VARCHAR       VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/test2/weblog/test2tWeblog  http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://rdfs.org/sioc/ns#link
+http://example.com/dataspace/test2/weblog/test2tWeblog  http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://rdfs.org/sioc/ns
+
+2 Rows. -- 0 msec.
+
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://example.com/test&gt;
+WHERE
+  {
+    ?s ?p &lt;http://rdfs.org/sioc/ns#Space&gt; OPTION (inference 'http://example.com/schema/property_rules1') .
+    ?s ?p1 &lt;http://example.com/dataspace/test2/weblog/test2tWeblog&gt; .
+  };
+
+s             p              p1
+VARCHAR       VARCHAR        VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/test2/weblog/test2tWeblog  http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://rdfs.org/sioc/ns#link
+
+1 Rows. -- 10 msec.
+
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleexamples2">
+          <title>DBpedia example</title>
+          <programlisting>
+ttlp ('
+ prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+ &lt;http://dbpedia.org/property/birthcity&gt; rdfs:subPropertyOf &lt;http://dbpedia.org/property/birthPlace&gt; .
+ &lt;http://dbpedia.org/property/birthcountry&gt; rdfs:subPropertyOf  &lt;http://dbpedia.org/property/birthPlace&gt; .
+ &lt;http://dbpedia.org/property/cityofbirth&gt; rdfs:subPropertyOf &lt;http://dbpedia.org/property/birthPlace&gt; .
+ &lt;http://dbpedia.org/property/countryofbirth&gt; rdfs:subPropertyOf &lt;http://dbpedia.org/property/birthPlace&gt; .
+ &lt;http://dbpedia.org/property/countyofbirth&gt; rdfs:subPropertyOf &lt;http://dbpedia.org/property/birthPlace&gt; .
+ &lt;http://dbpedia.org/property/cityofdeath&gt; rdfs:subPropertyOf &lt;http://dbpedia.org/property/deathPlace&gt; .
+ &lt;http://dbpedia.org/property/countryofdeath&gt; rdfs:subPropertyOf &lt;http://dbpedia.org/property/deathPlace&gt; . ', '',
+ 'http://dbpedia.org/inference/rules#') ;
+
+rdfs_rule_set ('http://dbpedia.org/schema/property_rules1', 'http://dbpedia.org/inference/rules#');
+</programlisting>
+          <programlisting>
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/schema/property_rules1"
+prefix p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE {?s p:birthcity ?o }
+LIMIT 50
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/Britt_Janyk
+http://dbpedia.org/resource/Chiara_Costazza
+http://dbpedia.org/resource/Christoph_Gruber
+http://dbpedia.org/resource/Daron_Rahlves
+http://dbpedia.org/resource/Finlay_Mickel
+http://dbpedia.org/resource/Genevi%C3%A8ve_Simard
+http://dbpedia.org/resource/Johann_Grugger
+http://dbpedia.org/resource/Kalle_Palander
+http://dbpedia.org/resource/Marc_Gini
+http://dbpedia.org/resource/Mario_Scheiber
+http://dbpedia.org/resource/Prince_Hubertus_of_Hohenlohe-Langenburg
+http://dbpedia.org/resource/Resi_Stiegler
+http://dbpedia.org/resource/Steven_Nyman
+http://dbpedia.org/resource/Hannes_Reichelt
+http://dbpedia.org/resource/Jeremy_Transue
+
+15 Rows. -- 167 msec.
+
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/schema/property_rules1"
+prefix p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE {?s p:countryofbirth ?o }
+LIMIT 50
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/A._J._Wood
+http://dbpedia.org/resource/A._J._Godbolt
+http://dbpedia.org/resource/Ac%C3%A1cio_Casimiro
+http://dbpedia.org/resource/Adam_Fry
+http://dbpedia.org/resource/Adam_Gilchrist
+http://dbpedia.org/resource/Adam_Griffin
+http://dbpedia.org/resource/Adam_Gross
+...
+
+50 Rows. -- 324 msec.
+
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/schema/property_rules1"
+prefix p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE {?s p:countyofbirth ?o }
+LIMIT 50
+
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/Eddie_Colman
+
+1 Rows. -- 163 msec.
+
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/schema/property_rules1"
+prefix p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE {?s p:birthPlace ?o }
+
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/Eddie_Colman
+http://dbpedia.org/resource/Jeremy_Transue
+http://dbpedia.org/resource/Finlay_Mickel
+http://dbpedia.org/resource/Prince_Hubertus_of_Hohenlohe-Langenburg
+http://dbpedia.org/resource/Hannes_Reichelt
+http://dbpedia.org/resource/Johann_Grugger
+http://dbpedia.org/resource/Chiara_Costazza
+...
+155287 Rows. -- 342179 msec.
+
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleexamples3">
+          <title>Example for loading script of the Yago Class hierarchy as inference rules</title>
+          <programlisting>
+--- Load Class Hierarchy into a Named Graph
+SELECT ttlp_mt (file_to_string_output ('yago-class-hierarchy_en.nt'),
+'', 'http://dbpedia.org/resource/classes/yago#');
+
+-- Create an  Inference Rule that references the Yago Class Hierarchy
+Named Graph
+
+SQL&gt;rdfs_rule_set ('http://dbpedia.org/resource/inference/rules/yago#',
+'http://dbpedia.org/resource/classes/yago#');
+
+-- Query for the "The Lord of the Rings" which is a "Fantasy Novel" as explicitly
+-- claimed in the DBpedia data set (instance data)
+
+SQL&gt;SPARQL
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+PREFIX yago: &lt;http://dbpedia.org/class/yago/&gt;
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+{
+  ?s a &lt;http://dbpedia.org/class/yago/FantasyNovels&gt; .
+  ?s dbpedia:name "The Lord of the Rings"@en .
+};
+
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+
+1 Rows. -- 241 msec.
+
+-- Query aimed at Novel via query scoped to the "Fiction" class of
+-- which it is a subclass in the Yago Hierarchy
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/resource/inference/rules/yago#"
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+PREFIX yago: &lt;http://dbpedia.org/class/yago/&gt;
+
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE {
+?s a &lt;http://dbpedia.org/class/yago/Fiction106367107&gt; .
+?s dbpedia:name "The Lord of the Rings"@en .
+};
+
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+
+4 Rows. -- 4767 msec.
+
+-- # Variant of query with Virtuoso's Full Text Index extension: bif:contains
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/resource/inference/rules/yago#"
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+PREFIX yago: &lt;http://dbpedia.org/class/yago/&gt;
+
+SELECT ?s ?n
+FROM &lt;http://dbpedia.org&gt;
+WHERE {
+?s a &lt;http://dbpedia.org/class/yago/Fiction106367107&gt; .
+?s dbpedia:name ?n .
+?n bif:contains 'Lord and Rings'
+};
+
+s                                                    n
+VARCHAR                                              VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/The_Lord_of_the_Rings    The Lord of the Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings    The Lord of the Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings    The Lord of the Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings    The Lord of the Rings
+
+4 Rows. -- 5538 msec.
+
+-- Retrieve all individuals instances of the FantasyNovels Class
+SQL&gt;SPARQL
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+PREFIX yago: &lt;http://dbpedia.org/class/yago/&gt;
+
+SELECT ?s ?n
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+{
+  ?s a &lt;http://dbpedia.org/class/yago/FantasyNovels&gt; .
+  ?s dbpedia:name ?n .
+}
+limit 10;
+s                                                                                 n
+VARCHAR                                                                           VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/ATLA_-_A_Story_of_the_Lost_Island                     Atla
+http://dbpedia.org/resource/A_Crown_of_Swords                                     A Crown of Swords
+http://dbpedia.org/resource/A_Game_of_Thrones                                     A Game of Thrones
+http://dbpedia.org/resource/A_Secret_Atlas                                        A Secret Atlas
+http://dbpedia.org/resource/A_Storm_of_Swords                                     A Storm of Swords
+http://dbpedia.org/resource/A_Voyage_to_Arcturus                                  A Voyage to Arcturus
+http://dbpedia.org/resource/A_Wizard_Alone                                        A Wizard Alone
+http://dbpedia.org/resource/Above_the_Veil                                        Above the Veil
+http://dbpedia.org/resource/Black_Easter                                          Black Easter
+http://dbpedia.org/resource/Lord_of_Chaos                                         Lord of Chaos
+
+10 Rows. -- 781 msec.
+
+-- Retrieve all individuals instances of Fiction Class which should
+-- include all Novels.
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/resource/inference/rules/yago#"
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+PREFIX yago: &lt;http://dbpedia.org/class/yago/&gt;
+
+SELECT ?s ?n
+FROM &lt;http://dbpedia.org&gt;
+WHERE {
+?s a &lt;http://dbpedia.org/class/yago/Fiction106367107&gt; .
+?s dbpedia:name ?n .
+};
+s                                                                                 n
+VARCHAR                                                                           VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/Last_Son_of_Krypton                                   Last Son of Krypton
+http://dbpedia.org/resource/Tuvaluan_language                                     Tuvaluan
+http://dbpedia.org/resource/Card_Walker                                           E. Cardon Walker
+http://dbpedia.org/resource/Les_Clark                                             Les Clark
+http://dbpedia.org/resource/Marc_Davis                                            Marc Davis
+http://dbpedia.org/resource/Eric_Larson                                           Eric Larson
+http://dbpedia.org/resource/Marty_Sklar                                           Marty Sklar
+http://dbpedia.org/resource/Peter_Ellenshaw                                       Peter Ellenshaw
+http://dbpedia.org/resource/Adriana_Caselotti                                     Adriana Caselotti
+http://dbpedia.org/resource/Jimmie_Dodd                                           Jimmie Dodd
+...
+15296 Rows.
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleexamples4">
+          <title>Pure SPARQL Example</title>
+          <programlisting>
+-- Query aimed at Fantasy Novel via query scoped to the "Fiction" class of
+-- which it is a subclass in the Yago Hierarchy
+
+SQL&gt;SPARQL
+define input:inference "http://dbpedia.org/resource/inference/rules/yago#"
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+PREFIX yago: &lt;http://dbpedia.org/class/yago/&gt;
+SELECT ?s
+FROM &lt;http://dbpedia.org&gt;
+WHERE {
+?s a &lt;http://dbpedia.org/class/yago/Fiction106367107&gt; .
+?s dbpedia:name "The Lord of the Rings"@en .
+};
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+http://dbpedia.org/resource/The_Lord_of_the_Rings
+
+4 Rows. -- 150 msec.
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleexamples5">
+          <title>Example for equivalence between classes</title>
+          <para>This example is based on <link xlink:href="http://umbel.org/documentation.html">UMBEL</link>
+
+   and
+DBpedia integration:</para>
+          <programlisting>
+-- Load UMBEL &amp; DBpedia Instance Level Cross-Links (owl:sameAs) Triples
+SELECT ttlp_mt (file_to_string_output ('umbel_dbpedia_linkage_v071.n3'), '', 'http://dbpedia.org');
+
+-- Load UMBEL and DBpedia Type (rdf:type) association Triples
+SELECT ttlp_mt (file_to_string_output ('umbel_dbpedia_types_v071.n3'), '', 'http://dbpedia.org');
+
+--- Load UMBEL Subject Concept Class Hierarchy into a Named Graph
+SELECT ttlp_mt (file_to_string_output ('umbel_class_hierarchy_v071.n3'), '', 'http://dbpedia.org/resource/classes/umbel#');
+
+--- load UMBEL Subject Concepts Instance Data
+SELECT ttlp_mt (file_to_string_output ('umbel_subject_concepts.n3'), '', 'http://dbpedia.org/resource/classes/umbel#');
+
+--- Load UMBEL Abstract Concepts Instance Data
+SELECT ttlp_mt (file_to_string_output ('umbel_abstract_concepts.n3'), '', 'http://dbpedia.org/resource/classes/umbel#');
+
+-- Load UMBEL External Ontology Mapping into a Named Graph
+SELECT ttlp_mt (file_to_string_output ('umbel_external_ontologies_linkage.n3'), '', 'http://dbpedia.org/resource/classes/umbel#');
+
+-- Create UMBEL Inference Rules
+
+rdfs_rule_set ('http://dbpedia.org/resource/inference/rules/umbel#', 'http://dbpedia.org/resource/classes/umbel#');
+</programlisting>
+          <para>Now let's execute the following queries:</para>
+          <programlisting>
+SQL&gt;SPARQL define input:inference "http://dbpedia.org/resource/inference/rules/umbel#"
+prefix umbel: &lt;http://umbel.org/umbel/sc/&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+prefix opencyc: &lt;http://sw.opencyc.org/2008/06/10/concept/en/&gt;
+SELECT ?s
+where
+{
+ ?s a opencyc:Motorcycle.
+ ?s dbpedia:name ?n.
+ ?n bif:contains "BMW".
+};
+
+s
+____________________________________________
+http://dbpedia.org/resource/BMW_K1200GT
+http://dbpedia.org/resource/BMW_F650CS
+http://dbpedia.org/resource/BMW_C1
+http://dbpedia.org/resource/BMW_R75
+4 Rows. -- 26 msec.
+</programlisting>
+          <programlisting>
+SQL&gt;SPARQL define input:inference "http://dbpedia.org/resource/inference/rules/umbel#"
+prefix umbel: &lt;http://umbel.org/umbel/sc/&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/property/&gt;
+prefix opencyc: &lt;http://sw.opencyc.org/2008/06/10/concept/en/&gt;
+SELECT ?s
+where
+{
+ ?s a umbel:Motorcycle.
+ ?s dbpedia:name ?n.
+ ?n bif:contains "BMW".
+};
+
+s
+____________________________________________
+http://dbpedia.org/resource/BMW_K1200GT
+http://dbpedia.org/resource/BMW_F650CS
+http://dbpedia.org/resource/BMW_C1
+http://dbpedia.org/resource/BMW_R75
+4 Rows. -- 26 msec.
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleexamples6">
+          <title>Example for finding celebrities which are not fans of their own fans</title>
+          <programlisting>
+SQL&gt;SPARQL
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+INSERT INTO GRAPH &lt;urn:rules.skos&gt; { foaf:knows rdfs:subPropertyOf sioc:follows . };
+
+callret-0
+VARCHAR
+Insert into &lt;urn:rules.skos&gt;, 1 triples -- done
+No. of rows in result: 1
+
+SQL&gt;rdfs_rule_set ('foaf-trans', 'urn:rules.skos');
+
+Done.
+
+SPARQL&gt;SPARQL
+DEFINE input:inference "foaf-trans"
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+SELECT ?celeb COUNT (*)
+WHERE
+  {
+    ?claimant sioc:follows ?celeb .
+    FILTER
+      (
+        !bif:exists
+         (
+           ( SELECT (1)
+             WHERE
+               {
+                 ?celeb sioc:follows ?claimant
+               }
+           )
+         )
+      )
+  }
+GROUP BY ?celeb
+ORDER BY DESC 2
+LIMIT 10
+
+celeb                                                                            callret-1
+ANY 	                                                                         ANY
+__________________________________________________________________________________________
+http://localhost.localdomain/about/id/entity/http/twitter.com/kidehen	         100
+http://localhost.localdomain/about/id/entity/http/twitter.com/shawnafennell	 77
+http://localhost.localdomain/about/id/entity/http/twitter.com/thines01	         71
+http://localhost.localdomain/about/id/entity/http/twitter.com/mhausenblas	 50
+http://localhost.localdomain/about/id/entity/http/twitter.com/DirDigEng	         2
+http://localhost.localdomain/about/id/entity/http/twitter.com/SarahPalinUSA	 1
+http://localhost.localdomain/about/id/entity/http/twitter.com/zbrox	         1
+http://localhost.localdomain/about/id/entity/http/twitter.com/LamarLee	         1
+http://localhost.localdomain/about/id/entity/http/twitter.com/HackerChick	 1
+http://localhost.localdomain/about/id/entity/http/twitter.com/programmingfeed	 1
+No. of rows in result: 10
+</programlisting>
+        </section>
+      </section>
+      <!-- Uncommented for Virtuoso 6 Release-->
+
+      <section xml:id="rdfsparqlruleinversefunc">
+        <title>Identity With Inverse Functional Properties</title>
+        <para>A graph used used with rdfs_rule_set may declare certain properties to
+  be inversely functional. If one or more inverse functional properties (IFP's)
+  are declared in the inference context used with the query, enabled
+  with define input:inference = "context_name", then the following
+  semantics apply:</para>
+        <orderedlist>
+          <listitem>
+            <para>If a literal is compared with an IRI, then the literal is substituted by all the subject IRI's where this literal occurs as a value of an IFP.</para>
+          </listitem>
+          <listitem>
+            <para>If two IRI's are compared for equality, they will be considered the same if there is an IFP P such that the same P has the same value on both subjects.</para>
+          </listitem>
+          <listitem>
+            <para>If an IRI is processed for distinctness in either distinct or group by, the IRI is first translated to be the IRI with the lowest ID among all IRI's that share an IFP value with this IRI.</para>
+          </listitem>
+        </orderedlist>
+        <para>Thus, if two IRI's are compared for distinctness, they will count as one if there is an IFP P with the same value with both IRI's. Literal data types are not translated into IRI's even if these literals occurred as IFP values of some subject.</para>
+        <para>It is possible to declare that specific values, even if they occur as values of an IFP in more than onme subject do not constitute identity between the subjects.
+  For example, if two subjects were inferred to be the same because they had the same foaf:mbox_sha1sum, the SHA1 hash of mailto:// would be excluded. Two individuals have an email address that has a common default value are not the same.
+  </para>
+        <para>In an ontology graph, a property IRI is declared to be inversely
+  functional by making it an instance of the
+  owl:InverseFunctionalProperty class. A value of an IFP can be
+  declared null, i.e. sharing the value does not imply identity by by
+  giving the IFP IRI a
+  &lt;http://www.openlinksw.com/schemas/virtrdf#nullIFPValue&gt; property with
+  the value to be ignored as the object.
+  </para>
+        <bridgehead>Example</bridgehead>
+        <programlisting>
+  SQL&gt;ttlp ('
+  &lt;john1&gt; a &lt;person&gt; .
+  &lt;john2&gt; a &lt;person&gt; .
+  &lt;mary&gt; a &lt;person&gt; .
+  &lt;mike&gt; a &lt;person&gt; .
+  &lt;john1&gt; &lt;name&gt; "John" .
+  &lt;john2&gt; &lt;name&gt; "John" .
+  &lt;john1&gt; &lt;address&gt; "101 A street" .
+  &lt;john2&gt; &lt;address&gt; "102 B street" .
+  &lt;john2&gt; &lt;knows&gt; &lt;mike&gt; .
+  &lt;john1&gt; &lt;http://www.w3.org/2002/07/owl#sameAs&gt; &lt;john2&gt; .
+  &lt;mary&gt; &lt;knows&gt; "John" .
+  &lt;mike&gt; &lt;knows&gt; &lt;john1&gt; .
+  &lt;mike&gt; &lt;knows&gt; &lt;john2&gt; .
+  &lt;john1&gt; &lt;name&gt; "Tarzan" .
+  &lt;mike&gt; &lt;nam&gt; "Tarzan" .
+  ', '', 'ifps');
+
+  SQL&gt;ttlp ('
+  &lt;name&gt; a &lt;http://www.w3.org/2002/07/owl#InverseFunctionalProperty&gt; .
+  &lt;name&gt; &lt;http://www.openlinksw.com/schemas/virtrdf#nullIFPValue&gt; "Tarzan" .
+  ', '', 'ifp_list');
+
+  SQL&gt;rdfs_rule_set ('ifps', 'ifp_list');
+
+  SQL&gt;SPARQL define input:inference "ifps"  SELECT * FROM &lt;ifps&gt; WHERE {&lt;john1&gt; ?p ?o};
+
+  p                                                                                 o
+  VARCHAR                                                                           VARCHAR
+  _______________________________________________________________________________
+
+  address                                                                           101 A street
+  name                                                                              John
+  http://www.w3.org/2002/07/owl#sameAs                                              john2
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   person
+  name                                                                              Tarzan
+  name                                                                              John
+  knows                                                                             mike
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   person
+  address                                                                           102 B street
+  </programlisting>
+        <para>We see that we get the properties of &lt;john2&gt; also.</para>
+        <programlisting>
+  SQL&gt;SPARQL define input:inference "ifps" SELECT distinct ?p FROM &lt;ifps&gt; WHERE { ?p a &lt;person&gt;};
+
+  john2
+  mike
+  mary
+  </programlisting>
+        <para>We see that we get only one John. But John is not the same as Mike
+  because they share the name Tarzan which is not considered as implying
+  identity. Which John we get is a matter of which gets the lowest
+  internal ID. This is variable and arbitrary at load time but once
+  loaded this is permanent as long as the set of subjects with the name
+  John does not change.</para>
+      </section>
+      <section xml:id="rdfsparqlruletransoption">
+        <title>Inference Rules and SPARQL with Transitivity Option</title>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>See 
+            <link linkend="rdfsparqlimplementatiotransexamples7">example</link>
+             with an
+inference rule to cater data being skos:broader based, which is no longer transitive.</para>
+          </listitem>
+          <listitem>
+            <para>See 
+            <link linkend="rdfsparqlimplementatiotransexamples8">example</link>
+             with an
+inference rule to find entities that are subcategories of Protestant Churches, no deeper
+than 3 levels within the concept scheme hierarchy, filtered by a specific subcategory.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="rdfsparqlruleowlrelation">
+        <title>Inference Rules, OWL Support and Relationship Ontology</title>
+        <para>This section provides queries usage for inference rules, owl support and Relationship Vocabulary.</para>
+        <section xml:id="rdfsparqlruleowlrelationexample1">
+          <title>Example 1</title>
+          <para>Example based on Relationship Vocab:</para>
+          <programlisting>
+## Verify Ontology Data is in Quad Store
+## Ontology: &lt;http://vocab.org/relationship/&gt; (Relationship Ontology)
+## Use pragma to put latest in Quad store.
+
+DEFINE get:soft "replace"
+SELECT *
+FROM &lt;http://vocab.org/relationship/&gt;
+WHERE {?s ?p ?o}
+
+## Clean up
+
+CLEAR GRAPH &lt;urn:owl.tests&gt;
+
+## Create Instance Data for Relationship Ontology
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+
+INSERT into GRAPH &lt;urn:owl.tests&gt;
+  {
+    &lt;http://dbpedia.org/resource/Prince_William_of_Wales&gt; rel:siblingOf &lt;http://dbpedia.org/resource/Prince_Harry_of_Wales&gt;.
+    &lt;http://dbpedia.org/resource/Elizabeth_Bowes-Lyon&gt; rel:ancestorOf &lt;http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom&gt;.
+    &lt;http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom&gt; rel:ancestorOf
+    &lt;http://dbpedia.org/resource/Charles%2C_Prince_of_Wales&gt;.
+    &lt;http://dbpedia.org/resource/Charles%2C_Prince_of_Wales&gt; rel:ancestorOf &lt;http://dbpedia.org/resource/Prince_William_of_Wales&gt;.
+  };
+
+## Verify
+
+SELECT *
+FROM  &lt;urn:owl.tests&gt;
+WHERE
+  {
+    ?s ?p ?o
+  }
+
+## Create an  Inference Rule that references the Relationship Ontology Named Graph
+
+rdfs_rule_set ('urn:owl.tests', 'http://vocab.org/relationship') ;
+
+## Verify Rule's existence
+
+SELECT * FROM SYS_RDF_SCHEMA ;
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleowlrelationexample2">
+          <title>Example 2</title>
+          <programlisting>
+## Test owl:TransitiveProperty Reasoning
+## Start with a specific URI
+## Goal: See inferred Triples
+## In this case, relationship between: &lt;http://dbpedia.org/resource/Elizabeth_Bowes-Lyon&gt;
+## and her descendants: Queen Elizabeth, Prince Charles, Prince William, and Prince Harry)
+
+DEFINE input:inference 'urn:owl.tests'
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+SELECT *
+FROM &lt;urn:owl.tests&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/Elizabeth_Bowes-Lyon&gt; rel:ancestorOf ?o
+  }
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleowlrelationexample3">
+          <title>Example 3</title>
+          <programlisting>
+## Test owl:SymmetricalProperty Reasoning
+## Should show same result irrespective of rel:siblingOf URI in Subject or Object slots of Triple
+
+DEFINE input:inference 'urn:owl.tests'
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+SELECT *
+FROM &lt;urn:owl.tests&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/Prince_William_of_Wales&gt; rel:siblingOf ?o
+  }
+
+## OR
+
+DEFINE input:inference 'urn:owl.tests'
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+SELECT *
+FROM &lt;urn:owl.tests&gt;
+WHERE
+  {
+    ?s rel:siblingOf &lt;http://dbpedia.org/resource/Prince_William_of_Wales&gt;
+  }
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleowlrelationexample4">
+          <title>Example 4</title>
+          <programlisting>
+## Test owl:inverseOf Reasoning
+## Should show triples exposing the inverseOf relation.
+## In this case rel:ancestorOf instance data triples exist,so the system must infer rel:descendant Of triples
+
+DEFINE input:inference 'urn:owl.tests'
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+
+SELECT *
+FROM &lt;urn:owl.tests&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom&gt; rel:descendantOf ?o
+  }
+
+## OR with Transitivity Option applied
+
+DEFINE input:inference 'urn:owl.tests'
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+
+SELECT *
+FROM &lt;urn:owl.tests&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/Prince_William_of_Wales&gt; rel:descendantOf ?o
+    OPTION (T_DISTINCT)
+  }
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleowlrelationexample5">
+          <title>Example 5</title>
+          <programlisting>
+## Test owl:inverseOf Reasoning
+## Should show triples exposing the inverseOf relation.
+## In this case rel:employedBy instance data triples exist,
+## the system must infer rel:employerOf triples.
+
+DEFINE input:inference 'urn:owl.tests'
+PREFIX rel: &lt;http://purl.org/vocab/relationship/&gt;
+
+SELECT *
+FROM &lt;urn:owl.tests&gt;
+WHERE
+  {
+    ?s rel:employerOf ?o
+  }
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlruleowlrelationexample6">
+          <title>Example 6</title>
+          <para>Example based on Relationship Vocab and SKOS</para>
+          <para>Assume the following test10.rdf file:</para>
+          <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;rdf:RDF
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:daml="http://www.daml.org/2001/03/daml+oil#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:turnguard="http://www.turnguard.com#"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:sea="http://www.2sea.org/"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:dct="http://purl.org/dc/terms/"&gt;
+
+&lt;rdf:Description rdf:about="http://www.turnguard.com/Music"&gt;
+	&lt;rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/&gt;
+	&lt;skos:prefLabel xml:lang="en"&gt;Music&lt;/skos:prefLabel&gt;
+	&lt;skos:narrower rdf:resource="http://www.turnguard.com/Pop" /&gt;
+&lt;/rdf:Description&gt;
+&lt;rdf:Description rdf:about="http://www.turnguard.com/Pop"&gt;
+      &lt;rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/&gt;
+		&lt;skos:prefLabel xml:lang="en"&gt;POP&lt;/skos:prefLabel&gt;
+      &lt;skos:narrower rdf:resource="http://www.turnguard.com/TechnoPop" /&gt;
+&lt;/rdf:Description&gt;
+&lt;rdf:Description rdf:about="http://www.turnguard.com/TechnoPop"&gt;
+        &lt;rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/&gt;
+        &lt;skos:prefLabel xml:lang="en"&gt;TECHNOPOP&lt;/skos:prefLabel&gt;
+        &lt;skos:narrower rdf:resource="http://www.turnguard.com/ElectroPop" /&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description rdf:about="http://www.turnguard.com/ElectroPop"&gt;
+        &lt;rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/&gt;
+        &lt;skos:prefLabel xml:lang="en"&gt;ELECTROPOP&lt;/skos:prefLabel&gt;
+&lt;/rdf:Description&gt;
+&lt;rdf:Description rdf:about="http://www.turnguard.com/KrautRock"&gt;
+        &lt;rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/&gt;
+        &lt;skos:prefLabel xml:lang="en"&gt;KrautRock&lt;/skos:prefLabel&gt;
+	&lt;skos:related rdf:resource="http://www.turnguard.com/ElectroPop" /&gt;
+&lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+
+</programlisting>
+          <para>Execute the following steps:</para>
+          <programlisting>
+## Graph Cleanup
+CLEAR GRAPH &lt;urn:owl.test2.tbox&gt;
+CLEAR GRAPH &lt;http://turnguard.com/virtuoso/test10.rdf&gt;
+
+## Load Instance Data into Quad Store
+## PL Procedure
+
+## SQL realm
+DB.DBA.RDF_LOAD_RDFXML
+  (
+    http_get('http://www.w3.org/2009/08/skos-reference/skos-owl1-dl.rdf'),
+    'no',
+    'urn:owl.test2.tbox'
+  );
+DB.DBA.RDF_LOAD_RDFXML
+  (
+    http_get ('http://www.w3.org/2002/07/owl.rdf'),
+    'no',
+    'urn:owl.test2.tbox'
+  );
+DB.DBA.RDF_LOAD_RDFXML
+  (
+    file_to_string ('test10.rdf'),
+    'no',
+    'http://turnguard.com/virtuoso/test10.rdf'
+  );
+
+SELECT *
+FROM &lt;http://www.w3.org/2004/02/skos/core&gt;
+WHERE
+  {
+    {
+      &lt;http://www.w3.org/2004/02/skos/core#related&gt; ?p ?o
+    }
+    UNION
+    {
+      ?s ?p &lt;http://www.w3.org/2004/02/skos/core#related&gt;
+    }
+  }
+
+## Create Rules
+## SQL Realm
+
+rdfs_rule_set ('urn:owl.test2.rules', 'urn:owl.test2.tbox');
+
+## Transitivity Query re. SKOS concept hierarchy
+
+DEFINE input:inference "urn:owl.test2.rules"
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+
+SELECT *
+FROM &lt;http://turnguard.com/virtuoso/test10.rdf&gt;
+WHERE
+  {
+    &lt;http://www.turnguard.com/ElectroPop&gt; skos:broaderTransitive ?o
+    OPTION  (T_DISTINCT).
+  }
+</programlisting>
+        </section>
+      </section>
+    </section>

@@ -1,0 +1,3172 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="sparqlextensions">
+      <title>Extensions</title>
+      <section xml:id="rdfsparqlrulefulltext">
+        <title>Using Full Text Search in SPARQL</title>
+        <para>Virtuoso's triple store supports optional full text indexing of RDF object values since version 5.0.
+It is possible to declare that objects of triples with a given predicate or graph get indexed.
+The graphs and triples may be enumerated or a wildcard may be used.
+</para>
+        <para>The triples for which a full text index entry exists can be found using the <emphasis>bif:contains</emphasis>
+
+or related filters and predicates.
+</para>
+        <para>For example, the query:
+</para>
+        <programlisting>
+SQL&gt;SELECT *
+FROM &lt;people&gt;
+WHERE
+  {
+    ?s foaf:Name ?name . ?name bif:contains "'rich*'".
+  }
+</programlisting>
+        <para>would match all subjects whose <emphasis>foaf:Name</emphasis>
+
+   contain a word Rich.
+This would match Richard, Richie etc.
+</para>
+        <para>Note that words and phrases should be enclosed in quotes if they contain spaces or
+other non-alphanumeric chars.
+</para>
+        <para>If the <emphasis>bif:contains</emphasis>
+
+   or related predicate is applied to an object that is not
+a string or is not the object of an indexed triple, no match will be found.
+</para>
+        <para>The syntax for text patterns is identical to the syntax for the SQL contains predicate.
+</para>
+        <para>The SPARQL/SQL optimizer determines whether the text pattern will be used to drive the query or whether it
+will filter results after other conditions are applied first. In contrast to <emphasis>bif:contains</emphasis>
+
+  ,
+regexp matching never drives the query or makes use of an index, thus in practice regexps are checked after other conditions.
+</para>
+        <section xml:id="rdfsparqlrulespecifywhatindex">
+          <title>Specifying What to Index</title>
+          <para>Whether the object of a given triple is indexed in the text index depends on indexing rules. If at least one
+indexing rule matches the triple, the object gets indexed if the object is a string. An indexing rule specifies
+a graph and a predicate. Either may be an IRI or NULL, in which case it matches all IRI's.
+</para>
+          <para>Rules also have a 'reason', which can be used to group rules into application-specific sets. A triple will stop
+being indexed only after all rules mandating its indexing are removed. When an application requires indexing a
+certain set of triples, rules are added for that purpose. These rules are tagged with the name of the application
+as their reason. When an application no longer requires indexing, the rules belonging to this application can be
+removed. This will not turn off indexing if another application still needs certain triples to stay indexed.
+</para>
+          <para>Indexing is enabled/disabled for specific graph/predicate combinations with:
+</para>
+          <programlisting>
+create function DB.DBA.RDF_OBJ_FT_RULE_ADD
+  (in rule_g varchar, in rule_p varchar, in reason varchar) returns integer
+</programlisting>
+          <programlisting>
+create function DB.DBA.RDF_OBJ_FT_RULE_DEL
+  (in rule_g varchar, in rule_p varchar, in reason varchar) returns integer
+</programlisting>
+          <para><emphasis>Example:</emphasis>
+          The first function adds a rule. The first two arguments are the text representation of the IRI's for the graph
+and predicate. If NULL is given then all graph's or predicates match. Specifying both as NULL means that all
+string valued objects will be added to a text index.
+</para>
+          <para>
+            <emphasis>Example:</emphasis>
+          </para>
+          <programlisting>
+DB.DBA.RDF_OBJ_FT_RULE_ADD (null, null, 'All');
+</programlisting>
+          <para>The second function reverses the effect of the first. Only a rule that has actually been added can be deleted.
+Thus one cannot say that all except a certain enumerated set should be indexed.
+</para>
+          <programlisting>
+DB.DBA.RDF_OBJ_FT_RULE_DEL (null, null, 'All');
+</programlisting>
+          <para>The reason argument is an arbitrary string identifying the application that needs this rule.
+Two applications can add the same rule.
+Removing one of them will still keep the rule in effect.
+If an object is indexed by more than one rule, the index data remain free from duplicates, neither index size nor speed is affected.
+</para>
+          <para>
+If <emphasis>DB.DBA.RDF_OBJ_FT_RULE_ADD</emphasis>
+
+   detects that <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+   contains quads whose graphs and/or predicates match to the new rule but which have not been indexed before then these quads are indexed automatically.
+However the function <emphasis>DB.DBA.RDF_OBJ_FT_RULE_DEL</emphasis>
+
+   does not remove indexing data about related objects.
+Thus the presence of indexing data about an object does not imply that it is necessarily used in some quad that matches to some rule.
+</para>
+          <para>The above functions return one if the rule is added or deleted and zero if the call was redundant (the rule has been added before or there's no rule to delete).
+</para>
+          <section xml:id="rdfsparqlrulespecifywhatindexexample">
+            <title>Example</title>
+            <programlisting>
+
+-- We load Tim Berners-Lee's FOAF file into a graph called 'people'.
+
+SQL&gt;DB.DBA.RDF_LOAD_RDFXML (http_get ('http://www.w3.org/People/Berners-Lee/card#i'), 'no', 'http://www.w3.org/people#');
+Done. -- 172 msec.
+
+-- We check how many triples we got.
+
+SQL&gt;SPARQL SELECT COUNT (*) FROM &lt;http://www.w3.org/people#&gt; WHERE {?s ?p ?o};
+callret-0
+INTEGER
+ 266
+No. of rows in result: 1
+
+-- We check the GRAPH: &lt;http://www.w3.org/people#&gt; for objects like "Tim":
+
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://www.w3.org/people#&gt;
+WHERE
+  {
+    ?s ?p ?o . FILTER (?o LIKE '%Tim%')
+  };
+s                                               p                                           o
+VARCHAR                                         VARCHAR                                     VARCHAR
+_______________________________________________________________________________
+
+http://www.w3.org/People/Berners-Lee/card#i     http://xmlns.com/foaf/0.1/name              Timothy Berners-Lee
+http://www.w3.org/People/Berners-Lee/card#i     http://xmlns.com/foaf/0.1/nick              TimBL
+http://www.w3.org/People/Berners-Lee/card#i     http://www.w3.org/2002/07/owl#sameAs        http://www4.wiwiss.fu-berlin.de/bookmashup/persons/Tim+Berners-Lee
+http://www.w3.org/People/Berners-Lee/card#i     http://xmlns.com/foaf/0.1/knows             http://dbpedia.org/resource/Tim_Bray
+http://www.w3.org/People/Berners-Lee/card#i     http://www.w3.org/2000/01/rdf-schema#label  Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee/card#i     http://xmlns.com/foaf/0.1/givenname         Timothy
+http://dbpedia.org/resource/Tim_Bray            http://xmlns.com/foaf/0.1/name              Tim Bray
+no                                              http://purl.org/dc/elements/1.1/title       Tim Berners-Lee's FOAF file
+
+8 Rows. -- 230 msec.
+
+-- We specify that all string objects in the graph 'people' should be text indexed.
+
+SQL&gt;DB.DBA.RDF_OBJ_FT_RULE_ADD('http://www.w3.org/people#', null, 'people');
+Done. -- 130 msec.
+
+-- We update the text index.
+
+SQL&gt;DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+Done. -- 140 msec.
+
+-- See impact of the index  by querying the subjects and predicates
+-- of all triples in the GRAPH: &lt;http://www.w3.org/people#&gt;,
+-- where the object is a string which contains a word beginning with "TIM".
+
+SQL&gt;SPARQL SELECT * FROM &lt;http://www.w3.org/people#&gt; WHERE { ?s ?p ?o . ?o bif:contains '"Timo*"'};
+s                                               p                                     o
+VARCHAR                                         VARCHAR                               VARCHAR
+_______________________________________________________________________________
+
+ http://www.w3.org/People/Berners-Lee/card#i	http://xmlns.com/foaf/0.1/name	      Timothy Berners-Lee
+ http://www.w3.org/People/Berners-Lee/card#i	http://xmlns.com/foaf/0.1/givenname   Timothy
+
+2 Rows. -- 2 msec.
+</programlisting>
+            <para>
+The query below is identical with that above but uses a different syntax.
+The filter syntax is more flexible in that it allows passing extra options to the <emphasis>contains</emphasis>
+
+   predicate. These may be useful in the future.
+</para>
+            <programlisting>
+SQL&gt;SPARQL SELECT * FROM &lt;people&gt; WHERE { ?s ?p ?o . FILTER (bif:contains(?o,  '"Timo*"')) };
+</programlisting>
+            <note>
+              <title>Note:</title>
+              <para>It is advisable to upgrade to the latest version of Virtuoso before adding free-text rules for the first time.
+This is especially the case if large amounts of text are to be indexed. The reason is that the free-text index on RDF may be changed in future versions
+and automatic upgrading of an existing index data into the new format may take much more time than indexing from scratch.</para>
+            </note>
+            <para>The table <emphasis>DB.DBA.RDF_OBJ_FT_RULES</emphasis>
+
+   stores list of free-text index configuration rules.
+</para>
+            <programlisting>
+create table DB.DBA.RDF_OBJ_FT_RULES (
+  ROFR_G varchar not null,       -- specific graph IRI or NULL for "all graphs"
+  ROFR_P varchar not null,       -- specific predicate IRI or NULL for "all predicates"
+  ROFR_REASON varchar not null,  -- identification string of a creator, preferably human-readable
+  primary key (ROFR_G, ROFR_P, ROFR_REASON) );
+</programlisting>
+            <para>
+Applications may read from this table but they should not write to it directly.
+Duplications in the rules do not affect the speed of free-text index operations because the content of the table is cached in memory in a special form.
+Unlike the use of configuration functions, directly writing to the table will not update the in-memory cache.
+</para>
+            <para>
+The table is convenient to search for rules added by a given application.
+If a unique identification string is used during installation of an application when rules are added then it's easy to remove those rules
+as part of any uninstall routine.
+</para>
+          </section>
+        </section>
+        <section xml:id="rdfsparqlruletimeindexing">
+          <title>Time of Indexing</title>
+          <para>The triple store's text index is in manual batch mode by default. This means that changes in triples are periodically
+reflected in the text index but are not maintained in strict synchrony. This is much more efficient than keeping the
+indices in constant synchrony. This setting may be altered with the <emphasis>db.dba.vt_batch_update</emphasis>
+
+   stored procedure.
+</para>
+          <para>To force synchronization of the RDF text index, use:
+</para>
+          <programlisting>
+DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+</programlisting>
+          <para>To set the text index to follow the triples in real time, use:
+</para>
+          <programlisting>
+DB.DBA.VT_BATCH_UPDATE ('DB.DBA.RDF_OBJ', 'OFF', null);
+</programlisting>
+          <para>To set the text index to be updated every 10 minutes, use:
+</para>
+          <programlisting>
+DB.DBA.VT_BATCH_UPDATE ('DB.DBA.RDF_OBJ', 'ON', 10);
+</programlisting>
+          <para>To make the update always manual, specify NULL as the last argument above.
+</para>
+          <para>
+One problem related to free-text indexing of <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+   is that some applications (e.g. those that import billions of triples) may set off triggers.
+This will make free-text index data incomplete.
+Calling procedure <emphasis>DB.DBA.RDF_OBJ_FT_RECOVER ()</emphasis>
+
+   will insert all missing free-text index items by dropping and re-inserting every existing free-text index rule.
+</para>
+        </section>
+        <section xml:id="rdfviewsandfreetext">
+          <title>Free-Text Indexes on Linked Data Views</title>
+          <para>
+If an <emphasis>O</emphasis>
+
+   field of a quad map pattern gets its value from a database column that has a free text index then this index can be used in SPARQL for efficient text searching. As a variation of this facility, the free-text index of another table may be used.
+</para>
+          <para>
+If a statement of a quad map pattern declaration starts with a declaration of table aliases, the table alias declaration may include the name of a table column that should have a text index.
+For example, consider the possibility of using a free-text index on the content of DAV resources stored in the DAV system tables of Virtuoso:
+</para>
+          <programlisting>
+prefix mydav: &lt;...&gt;
+create quad storage mydav:metadata
+FROM WS.WS.SYS_DAV_RES as dav_resource text literal RES_CONTENT
+...
+  {
+    ...
+    mydav:resource-iri (dav_resource.RES_FULL_PATH)
+        a mydav:resource ;
+        mydav:resource-content dav_resource.RES_CONTENT ;
+        mydav:resource-mime-type dav_resource.RESTYPE ;
+    ...
+  }
+</programlisting>
+          <para>
+The clause <emphasis>text literal RES_CONTENT</emphasis>
+
+   grants the SPARQL compiler permission to use a free-text index for objects that are literals composed from column <emphasis>dav_resource.RES_CONTENT</emphasis>
+
+  . This clause also allows choosing between <emphasis>text literal</emphasis>
+
+   (supports only the <emphasis>contains()</emphasis>
+
+   predicate) and <emphasis>text xml literal</emphasis>
+
+   (supports both <emphasis>contains()</emphasis>
+
+   and <emphasis>xcontains()</emphasis>
+
+  ) text indexes.
+It is important to understand that the free-text index will produce results using raw relational data.
+If a literal class transformation changes the text stored in the column then these changes are ignored by free-text search.
+e.g. if a transformation concatenates a word to the value of the column, but the free-text search will not find this word.
+</para>
+          <para>
+The free-text index may be used in a more sophisticated way. Consider a built-in table <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+   that does not have a free-text index.
+Moreover, the table does not contain the full values of all objects; the <emphasis>O</emphasis>
+
+   column contains "short enough" values inlined, but long and special values are represented by links to the <emphasis>DB.DBA.RDF_OBJ</emphasis>
+
+   table.
+The RDF_OBJ table, however, has free-text index that can be used.
+The full declaration of the built-in default mapping for default storage could be written this way:
+</para>
+          <programlisting>
+-- Important! Do not try to execute on live system
+-- without first changing the quad storage and quad map pattern names!
+
+SPARQL
+create virtrdf:DefaultQuadMap as
+graph rdfdf:default-iid-nonblank (DB.DBA.RDF_QUAD.G)
+subject rdfdf:default-iid (DB.DBA.RDF_QUAD.S)
+predicate rdfdf:default-iid-nonblank (DB.DBA.RDF_QUAD.P)
+object rdfdf:default (DB.DBA.RDF_QUAD.O)
+
+create quad storage virtrdf:DefaultQuadStorage
+FROM DB.DBA.RDF_QUAD as physical_quad
+FROM DB.DBA.RDF_OBJ as physical_obj text xml literal RO_DIGEST of (physical_quad.O)
+WHERE (^{physical_quad.}^.O = ^{physical_obj.}^.RO_DIGEST)
+  {
+    create virtrdf:DefaultQuadMap as
+      graph rdfdf:default-iid-nonblank (physical_quad.G)
+      subject rdfdf:default-iid (physical_quad.S)
+      predicate rdfdf:default-iid-nonblank (physical_quad.P)
+      object rdfdf:default (physical_quad.O) .
+  }
+;
+</programlisting>
+          <para>
+The reference to the free-text index is extended by clause <emphasis> of (physical_quad.O)</emphasis>
+
+  .
+This means that the free-text on <emphasis>DB.DBA.RDF_OBJ.RO_DIGEST</emphasis>
+
+   will be used when the object value comes from <emphasis>physical_quad.O</emphasis>
+
+   as if <emphasis>physical_quad.O</emphasis>
+
+   were indexed itself.
+If a SPARQL query invokes <emphasis>virtrdf:DefaultQuadMap</emphasis>
+
+   but contains no free-text criteria then only <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+   appears in the final SQL statement and no join with <emphasis>DB.DBA.RDF_OBJ</emphasis>
+
+   is made.
+Adding a free-text predicate will add <emphasis>DB.DBA.RDF_OBJ</emphasis>
+
+   to the list of source tables and a join condition for <emphasis>DB.DBA.RDF_QUAD.O</emphasis>
+
+   and <emphasis>DB.DBA.RDF_OBJ.RO_DIGEST</emphasis>
+
+  ; and it will add <emphasis>contains (RO_DIGEST, ...)</emphasis>
+
+   predicate, rather than <emphasis>contains (O, ...)</emphasis>
+
+  .
+As a result, "you pay only for what you use": adding free-text index to the declaration does not add tables to the query unless the index is actually used.
+</para>
+          <para>
+Boolean functions <function>bif:contains</function>
+
+   and <function>bif:xcontains</function>
+
+   are used
+for objects that come from Linked Data Views as well as for regular "physical" triples.
+Every function takes two arguments and returns a boolean value. The first argument is an local variable.
+The argument variable should be used as an object field in the group pattern where the filter condition is placed.
+Moreover, the occurrence of the variable in an object field should be placed <emphasis>before</emphasis>
+
+   the filter.
+If there are many occurrences of the variable in object fields then the free-text search is associated with the rightmost occurrence that is still to the left of the filter.
+The triple pattern that contains the rightmost occurrence is called the "intake" of the free-text search.
+When the SPARQL compiler chooses the appropriate quad map patterns that may generate data matching the intake triple pattern, it skips quad map patterns that have no declared free-text indexes, because nothing can be found by free-text search in data that have no free-text index.
+Every quad map pattern that has a free-text pattern will ultimately produce an invocation of the SQL <link linkend="containspredicate">contains</link>
+
+   or <link linkend="xcontainspredicate">xcontains</link>
+
+   predicate, so the final result of a free-text search may be a union of free-text searches from different quad map patterns.
+</para>
+          <para>
+The described logic is important only in very complicated cases, whereas simple queries are self-evident:
+</para>
+          <programlisting>
+SELECT * FROM &lt;my-dav-graph&gt;
+WHERE {
+    ?resource a mydav:resource ;
+        mydav:resource-content ?text .
+    FILTER (bif:contains (?text, "hello and world")) }
+</programlisting>
+          <para>
+or, more succinctly,
+</para>
+          <programlisting>
+SELECT * FROM &lt;my-dav-graph&gt;
+WHERE {
+    ?resource a mydav:resource ;
+        mydav:resource-content ?text .
+    ?text bif:contains "hello and world" . }
+</programlisting>
+        </section>
+        <section xml:id="rdfsparqlrulescoreexmp">
+          <title>Example Using Score</title>
+          <programlisting>
+SQL&gt;
+SPARQL
+SELECT *
+WHERE
+  {
+    ?s ?p ?o .
+    ?o bif:contains 'NEW AND YORK'
+    OPTION (score ?sc) .
+  }
+ORDER BY DESC (?sc)
+LIMIT 10
+
+s                                                                        p                                               o                                                sc
+ANY                                                                      ANY                                             ANY 	                                          ANY
+______________________________________________________________________________________________________________________________________________________________________________
+
+http://dbpedia.org/resource/New_York%2C_New_York_%28disambiguation%29	 http://www.w3.org/2000/01/rdf-schema#comment	 New York, New York, New York kentini........     88
+http://dbpedia.org/resource/New_York%2C_New_York_%28disambiguation%29	 http://dbpedia.org/property/abstract	         New York, New York, New York kentinin re....     88
+http://newyorkjobs.wordpress.com/2006/07/10/new-york-jobs-71006	         http://purl.org/dc/elements/1.1/description	 York Marketing Jobs New York Retail Jobs....     84
+http://dbpedia.org/resource/Global_Communication	                 http://dbpedia.org/property/contenu	         A - New York, New York (Headfuq Mix) B1 ....     84
+http://dbpedia.org/resource/New_York_%28disambiguation%29	         http://www.w3.org/2000/01/rdf-schema#comment	 New York a^?? New York amerikai vA~?ros ....     76
+http://dbpedia.org/resource/New_York_%28disambiguation%29	         http://dbpedia.org/property/abstract	         New York a^?? New York amerikai vA~?ros ....     76
+http://dbpedia.org/resource/New_York_%28disambiguation%29	         http://www.w3.org/2000/01/rdf-schema#comment	 New York ima lahko naslednje pomene: New ...     74
+http://dbpedia.org/resource/New_York_%28disambiguation%29	         http://dbpedia.org/property/abstract	         New York ima lahko naslednje pomene: New ...     74
+http://dbpedia.org/resource/New_York_College	                         http://www.w3.org/2000/01/rdf-schema#comment	 There are several colleges of New York t ...     72
+http://dbpedia.org/resource/New_York_College	                         http://dbpedia.org/property/abstract	         There are several colleges of New York t ...     72
+No. of rows in result: 10
+
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfsparul">
+        <title>SPARUL -- an Update Language For RDF Graphs</title>
+        <section xml:id="rdfsparulintro">
+          <title>Introduction</title>
+          <para>Starting with version 5.0, Virtuoso supports the
+<link xlink:href="http://jena.hpl.hp.com/~afs/SPARQL-Update.html">SPARQL/Update</link>
+
+   extension to SPARQL.
+This is sufficient for most of routine data manipulation operations. If the <emphasis>SPARQL_UPDATE</emphasis>
+
+role is granted to user <emphasis>SPARQL</emphasis>
+
+   user then data manipulation statements may be
+executed via the SPARQL web service endpoint as well as by data querying.
+       </para>
+        </section>
+        <section xml:id="rdfsparulfunc">
+          <title>Manage RDF Storage</title>
+          <para>Two functions allow the user to alter RDF storage by inserting or deleting all
+triples listed in some vector. Both functions receive the IRI of the graph that should be altered and
+a vector of triples that should be added or removed. The graph IRI can be either an IRI ID or a string.
+The third optional argument controls the transactional behavior - the parameter value is
+passed to the <link linkend="fn_log_enable"><function>log_enable</function></link>
+
+   function.
+The return values of these functions are not defined and should not be used by applications.
+       </para>
+          <programlisting>
+create function DB.DBA.RDF_INSERT_TRIPLES (in graph_iri any, in triples any, in log_mode integer := null)
+create function DB.DBA.RDF_DELETE_TRIPLES (in graph_iri any, in triples any, in log_mode integer := null)
+       </programlisting>
+          <para>Simple operations may be faster if written as low-level SQL code instead of using SPARUL.
+The use of SPARQL DELETE is unnecessary in cases where the better alternative is for the application to delete from RDF_QUAD
+using simple SQL filters like:
+       </para>
+          <programlisting>
+DELETE FROM DB.DBA.RDF_QUAD
+WHERE G = DB.DBA.RDF_MAKE_IID_OF_QNAME (
+    'http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf' );
+       </programlisting>
+          <para>On the other hand, simple filters does not work when the search criteria refer to triples
+that are affected by the modification. Consider a function that deletes all triples whose subjects
+are nodes of type 'http://xmlns.com/foaf/0.1/Person'. Type information is stored in triples that
+will be deleted, so the simplest function is something like this:
+       </para>
+          <programlisting>
+create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  declare pdata_dict, pdata_array any;
+-- Step 1: select everything that should be deleted
+  pdata_dict := ((
+      sparql construct { ?s ?p ?o }
+      WHERE { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+            } }
+      ));
+-- Step 2: delete all found triples
+  pdata_array := dict_list_keys (pdata_dict, 1);
+  RDF_DELETE_TRIPLES (foaf_graph, pdata_array);
+};
+
+DELETE_PERSONAL_DATA (
+  'http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf' );
+</programlisting>
+          <para>From Virtuoso 5.0 onwards, applications can use SPARUL to do the same in a more convenient way:
+       </para>
+          <programlisting>
+create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  sparql delete { ?s ?p ?o }
+      WHERE { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+            } }
+};
+</programlisting>
+        </section>
+        <section xml:id="rdfsparulexamples">
+          <title>Examples</title>
+          <section xml:id="rdfsparulexamples1">
+            <title>Example for changing the graph</title>
+            <para>The graph to be changed may be specified by an option preceding of query, instead
+of being specified in the 'insert into graph' clause.
+       </para>
+            <programlisting>
+SQL&gt;SPARQL DEFINE input:default-graph-uri &lt;http://mygraph.com&gt;
+INSERT INTO &lt;http://mygraph.com&gt; { &lt;http://example.com/dataspace/Kingsley#this&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://rdfs.org/sioc/ns#User&gt; };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 20 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples2">
+            <title>Example for delete graph equivalence</title>
+            <para>The following two statements are equivalent but the latter may work faster, especially
+if there are many Linked Data Views in the system or if the graph in question contains triples from Linked Data Views.
+Note that neither of these two statements affects data coming from Linked Data Views.
+       </para>
+            <programlisting>
+SQL&gt; SPARQL DELETE FROM GRAPH &lt;http://mygraph.com&gt; { ?s ?p ?o } FROM &lt;http://mygraph&gt; WHERE { ?s ?p ?o };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Delete from &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 10 msec.
+
+SQL&gt; SPARQL CLEAR GRAPH &lt;http://mygraph.com&gt;;
+callret-0
+VARCHAR
+__________________________________________________________
+
+Clear &lt;http://mygraph.com&gt; -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+            <para>DROP GRAPH is equivalent of CLEAR GRAPH. It requires initially the graph to be
+   	created explicitly.</para>
+            <para>Note: All SPARQL commands should work via SPARUL ( i.e. executed from the /sparql endpoint)
+   	as soon as "SPARQL" user has "SPARQL_UPDATE" privilege.</para>
+            <para>Assume the following sequence of commands to be executed from the /sparql endpoint:</para>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>Create explicitly a graph:
+</para>
+                <programlisting>
+CREATE GRAPH &lt;qq&gt;
+
+callret-0
+Create graph &lt;qq&gt; -- done
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>If you don't know whether the graph is created explicitly or not, use </para>
+                <para>
+                  <emphasis>DROP SILENT GRAPH</emphasis>
+                </para>
+                <para>:
+</para>
+                <programlisting>
+DROP SILENT	GRAPH &lt;qq&gt;
+
+callret-0
+Drop silent graph &lt;qq&gt; -- done
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>If you know the graph is created explicitly, use </para>
+                <para>
+                  <emphasis>DROP GRAPH</emphasis>
+                </para>
+                <para>:
+</para>
+                <programlisting>
+DROP GRAPH &lt;qq&gt;
+
+callret-0
+Drop graph &lt;qq&gt; -- done
+</programlisting>
+              </listitem>
+            </itemizedlist>
+          </section>
+          <section xml:id="rdfsparulexamples3">
+            <title>Example for deleting all triples for given subject</title>
+            <para>The following statement deletes all records with &lt;http://example.com/dataspace/Kingsley#this&gt; as the subject:</para>
+            <programlisting>
+SQL&gt;SPARQL
+DELETE FROM GRAPH &lt;http://mygraph.com&gt; { ?s ?p ?o }
+FROM &lt;http://mygraph.com&gt;
+WHERE { ?s ?p ?o . filter ( ?s = &lt;http://example.com/dataspace/Kingsley#this&gt;) };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Delete from &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+            <para>Alternatively, the statement can be written in this way:</para>
+            <programlisting>
+SQL&gt;SPARQL
+DELETE FROM GRAPH &lt;http://mygraph.com&gt; { &lt;http://example.com/dataspace/Kingsley#this&gt; ?p ?o }
+FROM &lt;http://mygraph.com&gt;
+WHERE { &lt;http://example.com/dataspace/Kingsley#this&gt; ?p ?o };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Delete from &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples4">
+            <title>Example for INSERT statements equivalent</title>
+            <para>Keywords 'insert in' and 'insert into' are interchangeable in Virtuoso for backward
+compatibility, but the SPARUL specification lists only 'insert into'. For example,
+the statements below are equivalent:
+       </para>
+            <programlisting>
+SQL&gt;SPARQL INSERT INTO GRAPH &lt;http://mygraph.com&gt; {  &lt;http://example.com/dataspace/Kingsley#this&gt;
+                                                     &lt;http://rdfs.org/sioc/ns#id&gt;
+                                                     &lt;Kingsley&gt; };
+callret-0
+VARCHAR
+______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 0 msec.
+SQL&gt;SPARQL INSERT INTO GRAPH &lt;http://mygraph.com&gt; {  &lt;http://example.com/dataspace/Caroline#this&gt;
+                                                     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+                                                     &lt;http://rdfs.org/sioc/ns#User&gt; };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 0 msec.
+
+-- and
+
+SQL&gt;SPARQL INSERT IN GRAPH &lt;http://mygraph.com&gt; {  &lt;http://example.com/dataspace/Kingsley#this&gt;
+                                                   &lt;http://rdfs.org/sioc/ns#id&gt;
+                                                   &lt;Kingsley&gt; };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 10 msec.
+SQL&gt;SPARQL INSERT IN GRAPH &lt;http://mygraph.com&gt; {  &lt;http://example.com/dataspace/Caroline#this&gt;
+                                                   &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+                                                   &lt;http://rdfs.org/sioc/ns#User&gt; };
+callret-0
+VARCHAR
+________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+
+1 Rows. -- 0 msec.
+
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples5">
+            <title>Example for various expressions usage</title>
+            <para>It is possible to use various expressions to calculate fields of new triples. This is
+very convenient, even if not a part of the original specification.
+       </para>
+            <programlisting>
+SQL&gt;SPARQL INSERT INTO GRAPH &lt;http://mygraph.com&gt; { ?s &lt;http://rdfs.org/sioc/ns#id&gt; `iri (bif:concat (str (?o), "Idehen"))` }
+WHERE { ?s &lt;http://rdfs.org/sioc/ns#id&gt; ?o };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 4 triples -- done
+
+1 Rows. -- 0 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples6">
+            <title>Example for operator IN usage</title>
+            <para>The example shows how to find which predicate/object pairs the following
+subjects have in common and count the occurances:</para>
+            <programlisting>
+http://dbpedia.org/resource/Climate_change
+http://dbpedia.org/resource/Disaster_risk_reduction
+http://dbpedia.org/resource/Tanzania
+http://dbpedia.org/resource/Capacity_building
+http://dbpedia.org/resource/Poverty
+http://dbpedia.org/resource/Construction
+http://dbpedia.org/resource/Vulnerability
+http://dbpedia.org/resource/Mount_Kilimanjaro
+http://dbpedia.org/resource/Social_vulnerability
+</programlisting>
+            <para>The following query returns the desired results:</para>
+            <programlisting>
+SPARQL
+SELECT ?s1 ?s2 COUNT (1)
+WHERE
+  {
+    ?s1 ?p ?o .
+    FILTER (?s1 IN (&lt;http://dbpedia.org/resource/Climate_change&gt;,
+    &lt;http://dbpedia.org/resource/Disaster_risk_reduction&gt;,
+    &lt;http://dbpedia.org/resource/Tanzania&gt;,
+    &lt;http://dbpedia.org/resource/Capacity_building&gt;,
+    &lt;http://dbpedia.org/resource/Poverty&gt;,
+    &lt;http://dbpedia.org/resource/Construction&gt;,
+    &lt;http://dbpedia.org/resource/Vulnerability&gt;,
+    &lt;http://dbpedia.org/resource/Mount_Kilimanjaro&gt;,
+    &lt;http://dbpedia.org/resource/Social_vulnerability&gt; ))
+    ?s2 ?p ?o .
+    FILTER (?s2 IN (&lt;http://dbpedia.org/resource/Climate_change&gt;,
+    &lt;http://dbpedia.org/resource/Disaster_risk_reduction&gt;,
+    &lt;http://dbpedia.org/resource/Tanzania&gt;,
+    &lt;http://dbpedia.org/resource/Capacity_building&gt;,
+    &lt;http://dbpedia.org/resource/Poverty&gt;,
+    &lt;http://dbpedia.org/resource/Construction&gt;,
+    &lt;http://dbpedia.org/resource/Vulnerability&gt;,
+    &lt;http://dbpedia.org/resource/Mount_Kilimanjaro&gt;,
+    &lt;http://dbpedia.org/resource/Social_vulnerability&gt; ))
+    FILTER (?s1 != ?s2)
+    FILTER (str(?s1) &lt; str (?s2))
+  }
+LIMIT 20
+</programlisting>
+            <para>The result of executing the query:</para>
+            <programlisting>
+s1  	                                         s2  	                                              callret-2
+http://dbpedia.org/resource/Climate_change 	 http://dbpedia.org/resource/Tanzania 	              2
+http://dbpedia.org/resource/Social_vulnerability http://dbpedia.org/resource/Vulnerability 	      1
+http://dbpedia.org/resource/Mount_Kilimanjaro 	 http://dbpedia.org/resource/Poverty 	              1
+http://dbpedia.org/resource/Mount_Kilimanjaro 	 http://dbpedia.org/resource/Tanzania 	              3
+http://dbpedia.org/resource/Capacity_building 	 http://dbpedia.org/resource/Disaster_risk_reduction  1
+http://dbpedia.org/resource/Poverty 	         http://dbpedia.org/resource/Tanzania 	              1
+</programlisting>
+            <para>You can also find live demo query results <link xlink:href="http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;should-sponge=&amp;query=SELECT+%0D%0A%3Fs1+%3Fs2+count+%281%29+where+{%0D%0A%3Fs1+%3Fp+%3Fo+.%0D%0Afilter+%28%3Fs1+in+%28%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FClimate_change%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FDisaster_risk_reduction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTanzania%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FCapacity_building%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FPoverty%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FConstruction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FVulnerability%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FMount_Kilimanjaro%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FSocial_vulnerability%3E+%29%29%0D%0A%3Fs2+%3Fp+%3Fo+.%0D%0Afilter+%28%3Fs2+in+%28%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FClimate_change%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FDisaster_risk_reduction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTanzania%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FCapacity_building%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FPoverty%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FConstruction%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FVulnerability%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FMount_Kilimanjaro%3E%2C%0D%0A%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FSocial_vulnerability%3E+%29%29%0D%0Afilter+%28%3Fs1+!%3D+%3Fs2%29%0D%0Afilter+%28str%28%3Fs1%29+%3C+str+%28%3Fs2%29%29%0D%0A}+limit+20&amp;format=html&amp;debug=on&amp;timeout=">here</link>
+
+  </para>
+            <tip>
+              <title>See Also:</title>
+              <para>
+                <link linkend="rdfsparulexamples18">Example usage of IN operator for retrieving all triples for each entity.</link>
+              </para>
+            </tip>
+          </section>
+          <section xml:id="rdfsparulexamples7">
+            <title>Example for Modify used as Update</title>
+            <para>'Modify graph' may be used as a form of 'update' operation.
+       </para>
+            <programlisting>
+-- update a graph with insert scoped on the same graph
+SQL&gt;SPARQL
+MODIFY GRAPH &lt;http://mygraph.com&gt;
+DELETE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o }
+INSERT { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type1&gt; ?o }
+FROM &lt;http://mygraph.com&gt;
+WHERE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o };
+
+-- update a graph with insert scoped on another graph
+SQL&gt;SPARQL
+MODIFY GRAPH &lt;http://mygraph.com&gt;
+DELETE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o }
+INSERT { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type1&gt; ?o }
+FROM &lt;http://example.com&gt;
+WHERE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o };
+
+-- update a graph with insert scoped over the whole RDF Quad Store
+SQL&gt;SPARQL
+MODIFY GRAPH &lt;http://mygraph.com&gt;
+DELETE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o }
+INSERT { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type1&gt; ?o }
+WHERE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o };
+
+-- update a graph with delete of particular tripple
+SQL&gt;SPARQL
+DELETE FROM GRAPH &lt;http://mygraph.com&gt; { &lt;http://example.com/dataspace/Caroline#this&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type1&gt; &lt;http://rdfs.org/sioc/ns#User&gt; };
+
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples8">
+            <title>Example for generating RDF information resource URI</title>
+            <para>The RDF information resource URI can be generated via a string expression.</para>
+            <orderedlist>
+              <listitem>
+                <para>Suppose there is a sample file kidehen.n3:
+</para>
+                <programlisting>
+&lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://rdfs.org/sioc/ns#User&gt; .
+&lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; 	"Kingsley" .
+&lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt; &lt;http://rdfs.org/sioc/ns#creator_of&gt; &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300&gt; .
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Using Conductor UI go to Web Application Server and create folder, for ex. with name "n3_collection"</para>
+              </listitem>
+              <listitem>
+                <para>Upload the "n3_collection" folder the file kidehen.n3</para>
+              </listitem>
+              <listitem>
+                <para>Click properties for the folder "n3_collection" and set to be public readable in the Permissions section</para>
+              </listitem>
+              <listitem>
+                <para>Check "Apply changes to all subfolders and resources".</para>
+              </listitem>
+              <listitem>
+                <para>Finally Click "Update"</para>
+              </listitem>
+              <listitem>
+                <figure xml:id="gnr1" floatstyle="1">
+                  <title>Generating RDF information resource URI</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/exmp1.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>To clear the graph execute:
+</para>
+                <programlisting>
+SQL&gt;SPARQL CLEAR GRAPH &lt;http://mygraph.com&gt;;
+callret-0
+VARCHAR
+_____________________________________________________________________
+
+Clear &lt;http://mygraph.com&gt; -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>To load the kidehen.n3 file execute:
+</para>
+                <programlisting>
+SQL&gt;SPARQL
+load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/n3_collection/kidehen.n3")
+INTO GRAPH &lt;http://mygraph.com&gt;;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load &lt;http://example.com/DAV/n3_collection/kidehen.n3&gt; into graph &lt;http://mygraph.com&gt; -- done
+
+1 Rows. -- 30 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>In order to check the new inserted triples execute:
+</para>
+                <programlisting>
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://mygraph.com&gt;
+WHERE
+  {
+    ?s ?p ?o
+  }
+;
+s                                                                  p                                                   o
+VARCHAR                                                            VARCHAR                                             VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this    http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://rdfs.org/sioc/ns#User
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this    http://rdfs.org/sioc/ns#creator_of                  http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this    http://www.w3.org/2000/01/rdf-schema#label          Kingsley
+
+3 Rows. -- 10 msec.
+</programlisting>
+              </listitem>
+            </orderedlist>
+          </section>
+          <section xml:id="rdfsparulexamples9">
+            <title>Example for operations over a web service endpoint</title>
+            <para>Several operations can be sent to a web service endpoint as a single statement and
+executed in sequence.
+       </para>
+            <programlisting>
+SQL&gt;SPARQL
+INSERT IN GRAPH &lt;http://mygraph.com&gt; { &lt;http://example.com/dataspace/Kingsley#this&gt;
+                                       &lt;http://rdfs.org/sioc/ns#id&gt;
+                                       &lt;Kingsley&gt; }
+INSERT INTO GRAPH &lt;http://mygraph.com&gt; { &lt;http://example.com/dataspace/Caroline#this&gt;
+                                         &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+                                         &lt;http://rdfs.org/sioc/ns#User&gt; }
+INSERT INTO GRAPH &lt;http://mygraph.com&gt; { ?s &lt;http://rdfs.org/sioc/ns#id&gt; `iri (bif:concat (str (?o), "Idehen"))` }
+WHERE { ?s &lt;http://rdfs.org/sioc/ns#id&gt; ?o };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+Insert into &lt;http://mygraph.com&gt;, 1 triples -- done
+Insert into &lt;http://mygraph.com&gt;, 8 triples -- done
+Commit -- done
+
+1 Rows. -- 10 msec.
+
+SQL&gt;SPARQL
+MODIFY GRAPH &lt;http://mygraph.com&gt;
+DELETE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o }
+INSERT { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type1&gt; ?o }
+FROM &lt;http://mygraph.com&gt;
+WHERE { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; ?o };
+
+SQL&gt;DELETE FROM GRAPH &lt;http://mygraph.com&gt; { &lt;http://example.com/dataspace/Caroline#this&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type1&gt; &lt;http://rdfs.org/sioc/ns#User&gt; };
+
+SQL&gt;SPARQL
+load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/n3_collection/kidehen.n3") INTO GRAPH &lt;http://mygraph.com&gt;;
+</programlisting>
+            <tip>
+              <title>See Also:</title>
+              <para>
+                <link linkend="rdfsparulexamples7">Examples for Modify used as Update</link>
+              </para>
+            </tip>
+          </section>
+          <section xml:id="rdfsparulexamples10">
+            <title>Example for Dropping graph</title>
+            <para>When handling very large RDF data collections (e.g. 600 million triples ) loaded into Virtuoso
+server as a single graph, the fastest operation to drop the graph is:</para>
+            <programlisting>
+SQL&gt;SPARQL CLEAR GRAPH &lt;http://mygraph.com&gt;;
+callret-0
+VARCHAR
+______________________________________________________________________________
+
+Clear &lt;http://mygraph.com&gt; -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+            <para>The operation can be speeded up by executing log_enable (0) or even log_enable (2) beforehand,
+and log_enable(1) after it completes.
+</para>
+          </section>
+          <section xml:id="rdfsparulexamples11">
+            <title>Example for testing Graph Equality</title>
+            <para>The procedure below keeps simple cases of graphs with bnodes:</para>
+            <orderedlist>
+              <listitem>
+                <para>First it compares all triples without bnodes</para>
+              </listitem>
+              <listitem>
+                <para>Then it iteratively establishes equivalences between bnodes that
+are directly and unambiguously connected to equivalent vertexes by identical predicates.</para>
+              </listitem>
+            </orderedlist>
+            <programlisting>
+-- Fast Approximate RDF Graph Equivalence Test
+-- (C) 2009-2018 OpenLink Software
+-- License: GNU General Public License (only version 2 of the license).
+-- No warranty, even implied warranty
+
+-- This compares the content of triple dictionaries \c dict1 and \c dict2,
+-- returns NULL if no difference found (with bnode equivalence in mind),
+-- returns description of a difference otherwise.
+-- The function is experimental (note suffix _EXP), so no accurate QA is made.
+-- Some version of the function may be inserted later in OpenLink Virtuoso Server under some different name.
+create function DB.DBA.RDF_TRIPLE_DICTS_DIFFER_EXP (
+  in dict1 any, --- Triple dictionary, traditional, (vectors of S, P, O are keys, any non-nulls are values)
+  in dict2 any, --- Second triple dictionary, like to \c dict1
+  in accuracy integer,	--- Accuracy, 0 if no bnodes expected, 1 if "convenient" trees with intermediate bnodes expected, 2 and more are not yet implemented
+  in equiv_map any := null, --- If specified then it contain mapping from IRI_IDs of bnodes of \c dict1 to equivalent IRI_IDs of bnodes of \c dict1.
+-- It can be extended during the run so use dict_duplicate() before call if needed.
+  in equiv_rev any := null --- If specified then it is an inverted dictionary of \c equiv_map (this time \c dict2 bnodes are keys and \c dict1 bnodes are values)
+  )
+{
+  declare dict_size1, dict_size2 integer;
+  declare old_dirt_level, dirt_level integer;
+  declare ctr, tailctr, sp_made_new_equiv integer;
+  declare array1, array2, dict2_sp, dict1_op, dict2_op, array1_op any;
+  dict_size1 := dict_size (dict1);
+  dict_size2 := dict_size (dict2);
+  dict2 := dict_duplicate (dict2);
+  if (dict_size1 &lt;&gt; dict_size2)
+    return 'Sizes differ';
+  if (equiv_map is null)
+    {
+      equiv_map := dict_new (dict_size1);
+      equiv_rev := dict_new (dict_size1);
+    }
+  old_dirt_level := dict_size1 - dict_size (equiv_map);
+  array1 := dict_list_keys (dict1, 0);
+next_loop:
+-- Step 1: removing triples with all three items matched
+  ctr := dict_size1-1;
+  while (ctr &gt;= 0)
+    {
+      declare s_in_1, o_in_1, s_in_2, o_in_2, triple_in_2 any;
+      s_in_1 := array1[ctr][0];
+      o_in_1 := array1[ctr][2];
+      if (is_bnode_iri_id (s_in_1))
+        {
+          s_in_2 := dict_get (equiv_map, s_in_1, null);
+          if (s_in_2 is null)
+            goto next_full_eq_check;
+        }
+      else
+        s_in_2 := s_in_1;
+      if (is_bnode_iri_id (o_in_1))
+        {
+          o_in_2 := dict_get (equiv_map, o_in_1, null);
+          if (o_in_2 is null)
+            goto next_full_eq_check;
+        }
+      else
+        o_in_2 := o_in_1;
+      triple_in_2 := vector (s_in_2, array1[ctr][1], o_in_2);
+      if (dict_get (dict2, triple_in_2, null) is null)
+        return vector (array1[ctr], ' is in first, ', triple_in_2, ' is missing in second');
+      dict_remove (dict2, triple_in_2);
+      if (ctr &lt; dict_size1-1)
+        array1[ctr] := array1[dict_size1-1];
+      dict_size1 := dict_size1-1;
+next_full_eq_check:
+      ctr := ctr-1;
+    }
+-- Step 1 end, garbage truncated:
+  if ((0 = dict_size1) or (0 = accuracy))
+    return null;
+  if (dict_size1 &lt; length (array1))
+    array1 := subseq (array1, 0, dict_size1);
+  if (dict_size (dict2) &lt;&gt; dict_size1)
+    signal ('OBLOM', 'Internal error: sizes of graphs suddenly differ');
+-- Step 2: establishing equivs between not-yet-coupled bnodes that are values of functional predicates of coupled subjects
+  sp_made_new_equiv := 0;
+  dict2_sp := dict_new (dict_size1);
+  array2 := dict_list_keys (dict2, 0);
+  for (ctr := dict_size1-1; ctr &gt;= 0; ctr := ctr-1)
+    {
+      declare sp2, o2, prev_uniq_o2 any;
+      sp2 := vector (array2[ctr][0], array2[ctr][1]);
+      prev_uniq_o2 := dict_get (dict2_sp, sp2, null);
+      if (prev_uniq_o2 is null)
+        {
+          o2 := array2[ctr][2];
+          if (is_bnode_iri_id (o2))
+            dict_put (dict2_sp, sp2, o2);
+          else
+            dict_put (dict2_sp, sp2, #i0);
+        }
+      else if (prev_uniq_o2 &lt;&gt; #i0)
+        dict_put (dict2_sp, sp2, #i0);
+    }
+  rowvector_subj_sort (array1, 0, 1);
+  rowvector_subj_sort (array1, 1, 1);
+  rowvector_subj_sort (array2, 1, 1);
+  ctr := 0;
+  while (ctr &lt; dict_size1)
+    {
+      declare s_in_1, o_in_1, s_in_2, o_in_2, o_in_dict2_sp, o_in_dict2_sp_in_1 any;
+      tailctr := ctr+1;
+      if (array1[ctr][1] &lt;&gt; array2[ctr][1])
+        {
+          if (array1[ctr][1] &gt; array2[ctr][1])
+            return vector ('Cardinality of predicate ', array2[ctr][1], ' is greater in second than in first');
+          else
+            return vector ('Cardinality of predicate ', array1[ctr][1], ' is greater in first than in second');
+        }
+      while ((tailctr &lt; dict_size1) and
+        (array1[tailctr][0] = array1[ctr][0]) and
+        (array1[tailctr][1] = array1[ctr][1]) )
+        tailctr := tailctr+1;
+      if ((tailctr - ctr) &gt; 1)
+        goto next_sp_check;
+      o_in_1 := array1[ctr][2];
+      if (not is_bnode_iri_id (o_in_1))
+        goto next_sp_check;
+      o_in_2 := dict_get (equiv_map, o_in_1, null);
+      if (o_in_2 is not null)
+        goto next_sp_check;
+      s_in_1 := array1[ctr][0];
+      if (is_bnode_iri_id (s_in_1))
+        {
+          s_in_2 := dict_get (equiv_map, s_in_1, null);
+          if (s_in_2 is null)
+            goto next_sp_check;
+        }
+      else
+        s_in_2 := s_in_1;
+      o_in_dict2_sp := dict_get (dict2_sp, vector (s_in_2, array1[ctr][1]), null);
+      if (o_in_dict2_sp is null)
+        return vector (vector (s_in_1, array1[ctr][1], o_in_1), ' is unique SP in first, ', vector (s_in_2, array1[ctr][1]), ' is missing SP in second');
+      if (o_in_dict2_sp = #i0)
+        return vector (vector (s_in_1, array1[ctr][1], o_in_1), ' is unique SP in first, ', vector (s_in_2, array1[ctr][1]), ' is not unique SP-to-bnode in second');
+      o_in_dict2_sp_in_1 := dict_get (equiv_rev, o_in_dict2_sp, null);
+      if (o_in_dict2_sp_in_1 is not null)
+        {
+          if (o_in_dict2_sp_in_1 = o_in_1)
+            goto next_sp_check;
+          return vector (vector (s_in_1, array1[ctr][1], o_in_1), ' is unique SP in first, ', vector (s_in_2, array1[ctr][1], o_in_dict2_sp), ' is unique SP in second but ', o_in_dict2_sp, ' rev-equiv to ', o_in_dict2_sp_in_1);
+        }
+      dict_put (equiv_map, o_in_1, o_in_dict2_sp);
+      dict_put (equiv_rev, o_in_dict2_sp, o_in_1);
+      sp_made_new_equiv := sp_made_new_equiv + 1;
+next_sp_check:
+      ctr := tailctr;
+    }
+  dict_list_keys (dict2_sp, 2);
+-- Step 2 end
+  if (sp_made_new_equiv * 10 &gt; dict_size1)
+    goto next_loop; -- If dictionary is noticeably extended then it's worth to remove more triples before continue.
+-- Step 3: establishing equivs between not-yet-coupled bnodes that are subjects of inverse functional properties with coupled objects.
+  dict1_op := dict_new (dict_size1);
+  for (ctr := dict_size1-1; ctr &gt;= 0; ctr := ctr-1)
+    {
+      declare op1, s1, prev_uniq_s1 any;
+      op1 := vector (array1[ctr][2], array1[ctr][1]);
+      prev_uniq_s1 := dict_get (dict1_op, op1, null);
+      if (prev_uniq_s1 is null)
+        {
+          s1 := array1[ctr][0];
+          if (is_bnode_iri_id (s1))
+            dict_put (dict1_op, op1, s1);
+          else
+            dict_put (dict1_op, op1, #i0);
+        }
+      else if (prev_uniq_s1 &lt;&gt; #i0)
+        dict_put (dict1_op, op1, #i0);
+    }
+  array1_op := dict_to_vector (dict1_op, 2);
+  dict2_op := dict_new (dict_size1);
+  for (ctr := dict_size1-1; ctr &gt;= 0; ctr := ctr-1)
+    {
+      declare op2, s2, prev_uniq_s2 any;
+      op2 := vector (array2[ctr][2], array2[ctr][1]);
+      prev_uniq_s2 := dict_get (dict2_op, op2, null);
+      if (prev_uniq_s2 is null)
+        {
+          s2 := array2[ctr][0];
+          if (is_bnode_iri_id (s2))
+            dict_put (dict2_op, op2, s2);
+          else
+            dict_put (dict2_op, op2, #i0);
+        }
+      else if (prev_uniq_s2 &lt;&gt; #i0)
+        dict_put (dict2_op, op2, #i0);
+    }
+  ctr := length (array1_op) - 2;
+  while (ctr &gt;= 0)
+    {
+      declare o_in_1, s_in_1, o_in_2, s_in_2, s_in_dict2_op, s_in_dict2_op_in_1 any;
+      s_in_1 := array1_op[ctr+1];
+      if (not is_bnode_iri_id (s_in_1))
+        goto next_op_check;
+      s_in_2 := dict_get (equiv_map, s_in_1, null);
+      if (s_in_2 is not null)
+        goto next_op_check;
+      o_in_1 := array1_op[ctr][0];
+      if (is_bnode_iri_id (o_in_1))
+        {
+          o_in_2 := dict_get (equiv_map, o_in_1, null);
+          if (o_in_2 is null)
+            goto next_op_check;
+        }
+      else
+        o_in_2 := o_in_1;
+      s_in_dict2_op := dict_get (dict2_op, vector (o_in_2, array1_op[ctr][1]), null);
+      if (s_in_dict2_op is null)
+        return vector (vector (s_in_1, array1_op[ctr][1], o_in_1), ' is unique OP in first, ', vector (o_in_2, array1_op[ctr][1]), ' is missing OP in second');
+      if (s_in_dict2_op = #i0)
+        return vector (vector (s_in_1, array1_op[ctr][1], o_in_1), ' is unique OP in first, ', vector (o_in_2, array1_op[ctr][1]), ' is not unique OP-to-bnode in second');
+      s_in_dict2_op_in_1 := dict_get (equiv_rev, s_in_dict2_op, null);
+      if (s_in_dict2_op_in_1 is not null)
+        {
+          if (s_in_dict2_op_in_1 = s_in_1)
+            goto next_op_check;
+          return vector (vector (s_in_1, array1_op[ctr][1], o_in_1), ' is unique OP in first, ', vector (s_in_dict2_op, array1[ctr][1], o_in_2), ' is unique OP in second but ', s_in_dict2_op, ' rev-equiv to ', s_in_dict2_op_in_1);
+        }
+      dict_put (equiv_map, s_in_1, s_in_dict2_op);
+      dict_put (equiv_rev, s_in_dict2_op, s_in_1);
+next_op_check:
+      ctr := ctr - 2;
+    }
+  dict_list_keys (dict2_op, 2);
+-- Step 3 end
+  dirt_level := dict_size1 - dict_size (equiv_map);
+  if (dirt_level &gt;= old_dirt_level)
+    return vector (vector (array1[0][0], array1[0][1], array1[0][2]), ' has no matches in second with the requested accuracy');
+  old_dirt_level := dirt_level;
+  goto next_loop;
+}
+;
+
+create function DB.DBA.RDF_GRAPHS_DIFFER_EXP (in g1_uri varchar, in g2_uri varchar, in accuracy integer)
+{
+  return DB.DBA.RDF_TRIPLE_DICTS_DIFFER_EXP (
+    (sparql define output:valmode "LONG" construct { ?s ?p ?o } where { graph `iri(?:g1_uri)` { ?s ?p ?o }}),
+    (sparql define output:valmode "LONG" construct { ?s ?p ?o } where { graph `iri(?:g2_uri)` { ?s ?p ?o }}),
+    accuracy );
+}
+;
+
+-- The rest of file contains some minimal tests.
+
+set verbose off;
+set banner off;
+set types off;
+
+create function DB.DBA.DICT_EXTEND_WITH_KEYS (in dict any, in keys any)
+{
+  if (dict is null)
+    dict := dict_new (length (keys));
+  foreach (any k in keys) do
+    dict_put (dict, k, 1);
+  return dict;
+}
+;
+
+create function DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP (in title varchar, in should_differ integer, in v1 any, in v2 any, in accuracy integer)
+{
+  declare d1, d2, eqm, eqr, differ_status any;
+  d1 := DB.DBA.DICT_EXTEND_WITH_KEYS (null, v1);
+  d2 := DB.DBA.DICT_EXTEND_WITH_KEYS (null, v2);
+  eqm := dict_new (10);
+  eqr := dict_new (10);
+  dbg_obj_princ ('===== ' || title);
+  differ_status := DB.DBA.RDF_TRIPLE_DICTS_DIFFER_EXP (d1, d2, accuracy, eqm, eqr);
+  dbg_obj_princ ('Result: ', differ_status);
+  if (0 &lt; dict_size (eqm))
+  dbg_obj_princ ('Equivalence map: ', dict_to_vector (eqm, 0));
+  dbg_obj_princ ('Equivalence rev: ', dict_to_vector (eqr, 0));
+  return sprintf ('%s: %s',
+    case when (case when should_differ then equ (0, isnull (differ_status)) else isnull (differ_status) end) then 'PASSED' else '***FAILED' end,
+    title );
+}
+;
+
+create function DB.DBA.TEST_RDF_GRAPHS_DIFFER_EXP (in title varchar, in should_differ integer, in g1_uri varchar, in g2_uri varchar, in accuracy integer)
+{
+  declare differ_status any;
+  differ_status := DB.DBA.RDF_GRAPHS_DIFFER_EXP (g1_uri, g2_uri, accuracy);
+  dbg_obj_princ ('Result: ', differ_status);
+  return sprintf ('%s: %s',
+    case when (case when should_differ then equ (0, isnull (differ_status)) else isnull (differ_status) end) then 'PASSED' else '***FAILED' end,
+    title );
+}
+;
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'Identical graphs', 0,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i200, 1) ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i200, 1) ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'Sizes differ', 1,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i200, 1) ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i200, 1),
+    vector (#i101, #i201, #i301) ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'Cardinality of a pred differ', 1,
+  vector (
+    vector (#i100, #i200, #ib300),
+    vector (#i101, #i200, #ib302),
+    vector (#i103, #i201, #ib304),
+    vector (#ib109, #i200, #ib109) ),
+  vector (
+    vector (#i100, #i200, #ib301),
+    vector (#i101, #i200, #ib303),
+    vector (#i103, #i201, #ib305),
+    vector (#ib109, #i201, #ib109) ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'Bnodes in O with unique SP (equiv)', 0,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib301),
+    vector (#i101, #i201, #ib301),
+    vector (#i102, #i202, #ib303),
+    vector (#ib303, #i204, #i306),
+    vector (#ib303, #i205, #ib305),
+    vector (#i100, #i200, 1) ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib302),
+    vector (#i101, #i201, #ib302),
+    vector (#i102, #i202, #ib304),
+    vector (#ib304, #i204, #i306),
+    vector (#ib304, #i205, #ib306),
+    vector (#i100, #i200, 1) ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'Bnodes in O with unique SP (diff 1)', 1,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib301),
+    vector (#i102, #i202, #ib303),
+    vector (#ib303, #i204, #i306),
+    vector (#ib303, #i205, #ib305),
+    vector (#i100, #i200, 1) ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib302),
+    vector (#i102, #i202, #ib304),
+    vector (#ib304, #i204, #i306),
+    vector (#ib304, #i205, #i306),
+    vector (#i100, #i200, 1) ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'Bnodes in O with unique SP (diff 2)', 1,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib301),
+    vector (#i102, #i202, #ib303),
+    vector (#ib303, #i204, #i306),
+    vector (#ib303, #i205, #ib305),
+    vector (#i100, #i200, 1) ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib302),
+    vector (#i102, #i202, #ib304),
+    vector (#ib304, #i204, #i306),
+    vector (#ib304, #i205, #ib304),
+    vector (#i100, #i200, 1) ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'foaf-like-mix (equiv)', 0,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib301),
+    vector (#i100, #i201, #ib303),
+    vector (#i100, #i201, #ib305),
+    vector (#i100, #i201, #ib307),
+    vector (#ib301, #i202, 'Anna'),
+    vector (#ib303, #i202, 'Anna'),
+    vector (#ib305, #i202, 'Brigit'),
+    vector (#ib307, #i202, 'Clara'),
+    vector (#ib301, #i203, 'ann@ex.com'),
+    vector (#ib303, #i203, 'ann@am.com'),
+    vector (#ib305, #i203, 'root@ple.com'),
+    vector (#ib307, #i203, 'root@ple.com') ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib302),
+    vector (#i100, #i201, #ib304),
+    vector (#i100, #i201, #ib306),
+    vector (#i100, #i201, #ib308),
+    vector (#ib302, #i202, 'Anna'),
+    vector (#ib304, #i202, 'Anna'),
+    vector (#ib306, #i202, 'Brigit'),
+    vector (#ib308, #i202, 'Clara'),
+    vector (#ib302, #i203, 'ann@ex.com'),
+    vector (#ib304, #i203, 'ann@am.com'),
+    vector (#ib306, #i203, 'root@ple.com'),
+    vector (#ib308, #i203, 'root@ple.com') ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'foaf-like-mix (swapped names)', 1,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib301),
+    vector (#i100, #i201, #ib303),
+    vector (#i100, #i201, #ib305),
+    vector (#i100, #i201, #ib307),
+    vector (#ib301, #i202, 'Anna'),
+    vector (#ib303, #i202, 'Anna'),
+    vector (#ib305, #i202, 'Brigit'),
+    vector (#ib307, #i202, 'Clara'),
+    vector (#ib301, #i203, 'ann@ex.com'),
+    vector (#ib303, #i203, 'ann@am.com'),
+    vector (#ib305, #i203, 'root@ple.com'),
+    vector (#ib307, #i203, 'root@ple.com') ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib302),
+    vector (#i100, #i201, #ib304),
+    vector (#i100, #i201, #ib306),
+    vector (#i100, #i201, #ib308),
+    vector (#ib302, #i202, 'Anna'),
+    vector (#ib304, #i202, 'Brigit'),
+    vector (#ib306, #i202, 'Anna'),
+    vector (#ib308, #i202, 'Clara'),
+    vector (#ib302, #i203, 'ann@ex.com'),
+    vector (#ib304, #i203, 'ann@am.com'),
+    vector (#ib306, #i203, 'root@ple.com'),
+    vector (#ib308, #i203, 'root@ple.com') ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'foaf-like-mix (swapped names)', 1,
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib301),
+    vector (#i100, #i201, #ib303),
+    vector (#i100, #i201, #ib305),
+    vector (#i100, #i201, #ib307),
+    vector (#ib301, #i202, 'Anna'),
+    vector (#ib303, #i202, 'Anna'),
+    vector (#ib305, #i202, 'Brigit'),
+    vector (#ib307, #i202, 'Clara'),
+    vector (#ib301, #i203, 'ann@ex.com'),
+    vector (#ib303, #i203, 'ann@am.com'),
+    vector (#ib305, #i203, 'root@ple.com'),
+    vector (#ib307, #i203, 'root@ple.com') ),
+  vector (
+    vector (#i100, #i200, #i300),
+    vector (#i100, #i201, #ib302),
+    vector (#i100, #i201, #ib304),
+    vector (#i100, #i201, #ib306),
+    vector (#i100, #i201, #ib308),
+    vector (#ib302, #i202, 'Anna'),
+    vector (#ib304, #i202, 'Brigit'),
+    vector (#ib306, #i202, 'Anna'),
+    vector (#ib308, #i202, 'Clara'),
+    vector (#ib302, #i203, 'ann@ex.com'),
+    vector (#ib304, #i203, 'ann@am.com'),
+    vector (#ib306, #i203, 'root@ple.com'),
+    vector (#ib308, #i203, 'root@ple.com') ),
+  100
+);
+
+select DB.DBA.TEST_RDF_TRIPLE_DICTS_DIFFER_EXP ( 'bnodes only (equiv that can not be proven)', 1,
+  vector (
+    vector (#ib101, #i200, #ib103),
+    vector (#ib103, #i201, #ib101) ),
+  vector (
+    vector (#ib102, #i200, #ib104),
+    vector (#ib104, #i201, #ib102) ),
+  100
+);
+
+sparql clear graph &lt;http://GraphCmp/One&gt;;
+
+TTLP ('@prefix foaf: &lt;http://i-dont-remember-it&gt; .
+_:me
+	a foaf:Person ;
+	foaf:knows	[ foaf:nick "oerling" ; foaf:title "Mr." ; foaf:sha1 "abra" ] ;
+	foaf:knows	[ foaf:nick "kidehen" ; foaf:title "Mr." ; foaf:sha1 "bra" ] ;
+	foaf:knows	[ foaf:nick "aldo" ; foaf:title "Mr." ; foaf:sha1 "cada" ] .',
+'', 'http://GraphCmp/One' );
+
+sparql clear graph &lt;http://GraphCmp/Two&gt;;
+TTLP ('@prefix foaf: &lt;http://i-dont-remember-it&gt; .
+_:iv
+	foaf:knows	[ foaf:title "Mr." ; foaf:sha1 "cada" ; foaf:nick "aldo" ] ;
+	foaf:knows	[ foaf:sha1 "bra" ; foaf:title "Mr." ; foaf:nick "kidehen" ] ;
+	foaf:knows	[ foaf:nick "oerling" ; foaf:sha1 "abra" ; foaf:title "Mr." ] ;
+	a foaf:Person .',
+'', 'http://GraphCmp/Two' );
+
+select DB.DBA.TEST_RDF_GRAPHS_DIFFER_EXP ( 'nonexisting graphs (equiv, of course)', 0,
+  'http://GraphCmp/NoSuch', 'http://GraphCmp/NoSuch',
+  100 );
+
+select DB.DBA.TEST_RDF_GRAPHS_DIFFER_EXP ( 'throughout test on foafs (equiv)', 0,
+  'http://GraphCmp/One', 'http://GraphCmp/Two',
+  100 );
+
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples12">
+            <title>Example for Adding triples to graph</title>
+            <programlisting>
+SQL&gt;SPARQL
+INSERT INTO GRAPH &lt;http://BookStore.com&gt;
+{ &lt;http://www.dajobe.org/foaf.rdf#i&gt; &lt;http://purl.org/dc/elements/1.1/title&gt;  "SPARQL and RDF" .
+  &lt;http://www.dajobe.org/foaf.rdf#i&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;1999-01-01T00:00:00&gt;.
+  &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "Design notes" .
+  &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2001-01-01T00:00:00&gt;.
+  &lt;http://www.w3.org/People/Connolly/#me&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "Fundamentals of Compiler Design" .
+  &lt;http://www.w3.org/People/Connolly/#me&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2002-01-01T00:00:00&gt;. };
+callret-0
+VARCHAR
+_________________________________________________________________
+
+Insert into &lt;http://BookStore.com&gt;, 6 triples -- done
+
+1 Rows. -- 0 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples13">
+            <title>Example for Updating triples from graph</title>
+            <para>A SPARQL/Update request that contains a triple to be deleted and a triple to be added (used here to correct a book title).
+</para>
+            <programlisting>
+SQL&gt;SPARQL
+MODIFY GRAPH &lt;http://BookStore.com&gt;
+DELETE
+ { &lt;http://www.w3.org/People/Connolly/#me&gt;  &lt;http://purl.org/dc/elements/1.1/title&gt;  "Fundamentals of Compiler Design" }
+INSERT
+ { &lt;http://www.w3.org/People/Connolly/#me&gt;  &lt;http://purl.org/dc/elements/1.1/title&gt;  "Fundamentals" };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Modify &lt;http://BookStore.com&gt;, delete 1 and insert 1 triples -- done
+
+1 Rows. -- 20 msec.
+</programlisting>
+            <tip>
+              <title>See Also:</title>
+              <para>
+                <link linkend="rdfsparulexamples7">Examples for Modify used as Update</link>
+              </para>
+            </tip>
+          </section>
+          <section xml:id="rdfsparulexamples14">
+            <title>Example for Deleting triples from graph</title>
+            <para>The example below has a request to delete all records of old books (dated before year 2000)
+</para>
+            <programlisting>
+SQL&gt;SPARQL
+PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+DELETE FROM GRAPH &lt;http://BookStore.com&gt; { ?book ?p ?v }
+WHERE
+  { GRAPH  &lt;http://BookStore.com&gt;
+   { ?book dc:date ?date
+     FILTER ( xsd:dateTime(?date) &lt; xsd:dateTime("2000-01-01T00:00:00")).
+    ?book ?p ?v.
+   }
+  };
+_______________________________________________________________________________
+
+Delete from &lt;http://BookStore.com&gt;, 6 triples -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples15">
+            <title>Example for Copying triples from one graph to another</title>
+            <para>The next snippet copies records from one named graph to another based on a pattern:
+</para>
+            <programlisting>
+SQL&gt;SPARQL clear graph &lt;http://BookStore.com&gt;;
+SQL&gt;SPARQL clear graph &lt;http://NewBookStore.com&gt;;
+SQL&gt;SPARQL
+insert in graph &lt;http://BookStore.com&gt;
+  {
+    &lt;http://www.dajobe.org/foaf.rdf#i&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;1999-04-01T00:00:00&gt; .
+    &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;1998-05-03T00:00:00&gt; .
+    &lt;http://www.w3.org/People/Connolly/#me&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2001-02-08T00:00:00&gt;
+  };
+SQL&gt;SPARQL
+PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+INSERT INTO GRAPH &lt;http://NewBookStore.com&gt; { ?book ?p ?v }
+WHERE
+  { GRAPH  &lt;http://BookStore.com&gt;
+   { ?book dc:date ?date
+     FILTER ( xsd:dateTime(?date) &gt; xsd:dateTime("2000-01-01T00:00:00")).
+     ?book ?p ?v.
+   }
+  };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://NewBookStore.com&gt;, 6 triples -- done
+
+1 Rows. -- 30 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples16">
+            <title>Example for Moving triples from one graph to another</title>
+            <para>This example moves records from one named graph to another named graph based on a pattern:
+</para>
+            <programlisting>
+SQL&gt;SPARQL
+PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+INSERT INTO GRAPH &lt;http://NewBookStore.com&gt;
+ { ?book ?p ?v }
+WHERE
+  { GRAPH  &lt;http://BookStore.com&gt;
+     { ?book dc:date ?date .
+       FILTER ( xsd:dateTime(?date) &gt; xsd:dateTime("2000-01-01T00:00:00")).
+       ?book ?p ?v.
+     }
+  };
+_______________________________________________________________________________
+
+Insert into &lt;http://NewBookStore.com&gt;, 6 triples -- done
+
+1 Rows. -- 10 msec.
+
+SQL&gt;SPARQL
+PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+DELETE FROM GRAPH &lt;http://BookStore.com&gt;
+ { ?book ?p ?v }
+WHERE
+  { GRAPH  &lt;http://BookStore.com&gt;
+      { ?book dc:date ?date .
+        FILTER ( xsd:dateTime(?date) &gt; xsd:dateTime("2000-01-01T00:00:00")).
+        ?book ?p ?v.
+      }
+  };
+_______________________________________________________________________________
+
+Delete from &lt;http://BookStore.com&gt;, 3 triples -- done
+
+1 Rows. -- 10 msec.
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples17">
+            <title>Example for BBC SPARQL Collection</title>
+            <programlisting>
+## All programmes related to James Bond:
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?uri ?label
+WHERE
+  {
+    ?uri po:category
+      &lt;http://www.bbc.co.uk/programmes/people/bmFtZS9ib25kLCBqYW1lcyAobm8gcXVhbGlmaWVyKQ#person&gt; ;
+    rdfs:label ?label.
+   }
+</programlisting>
+            <programlisting>
+## Find all Eastenders broadcasta after 2009-01-01,
+## along with the broadcast version &amp; type
+PREFIX event: &lt;http://purl.org/NET/c4dm/event.owl#&gt;
+PREFIX tl: &lt;http://purl.org/NET/c4dm/timeline.owl#&gt;
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?version_type ?broadcast_start
+WHERE
+  {
+    &lt;http://www.bbc.co.uk/programmes/b006m86d#programme&gt; po:episode ?episode .
+    ?episode po:version ?version .
+    ?version a ?version_type .
+    ?broadcast po:broadcast_of ?version .
+    ?broadcast event:time ?time .
+    ?time tl:start ?broadcast_start .
+    FILTER ( (?version_type != &lt;http://purl.org/ontology/po/Version&gt;)
+    &amp;&amp; (?broadcast_start &gt; "2009-01-01T00:00:00Z"^^xsd:dateTime) )
+  }
+</programlisting>
+            <programlisting>
+## Find all programmes that featured both the Foo Fighters and Al Green
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX mo: &lt;http://purl.org/ontology/mo/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX event: &lt;http://purl.org/NET/c4dm/event.owl#&gt;
+PREFIX tl: &lt;http://purl.org/NET/c4dm/timeline.owl#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+SELECT DISTINCT ?programme ?label
+WHERE
+  {
+    ?event1 po:track ?track1 .
+    ?track1 foaf:maker ?maker1 .
+    ?maker1 owl:sameAs
+       &lt;http://www.bbc.co.uk/music/artists/67f66c07-6e61-4026-ade5-7e782fad3a5d#artist&gt; .
+    ?event2 po:track ?track2 .
+    ?track2 foaf:maker ?maker2 .
+    ?maker2 owl:sameAs
+       &lt;http://www.bbc.co.uk/music/artists/fb7272ba-f130-4f0a-934d-6eeea4c18c9a#artist&gt; .
+    ?event1 event:time ?t1 .
+    ?event2 event:time ?t2 .
+    ?t1 tl:timeline ?tl .
+    ?t2 tl:timeline ?tl .
+    ?version po:time ?t .
+    ?t tl:timeline ?tl .
+    ?programme po:version ?version .
+    ?programme rdfs:label ?label .
+  }
+</programlisting>
+            <programlisting>
+## Get short synopsis' of EastEnders episodes
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT ?t ?o
+WHERE
+  {
+    &lt;http://www.bbc.co.uk/programmes/b006m86d#programme&gt; po:episode ?e .
+    ?e a po:Episode .
+    ?e po:short_synopsis ?o .
+    ?e dc:title ?t
+  }
+</programlisting>
+            <programlisting>
+## Get short synopsis' of EastEnders episodes (with graph)
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT ?g ?t ?o
+WHERE
+  {
+    graph ?g
+      {
+         &lt;http://www.bbc.co.uk/programmes/b006m86d#programme&gt; po:episode ?e .
+         ?e a po:Episode .
+         ?e po:short_synopsis ?o .
+         ?e dc:title ?t
+      }
+  }
+</programlisting>
+            <programlisting>
+## Get reviews where John Paul Jones' has been involved
+
+PREFIX mo: &lt;http://purl.org/ontology/mo/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX rev: &lt;http://purl.org/stuff/rev#&gt;
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+SELECT DISTINCT ?r_name, ?rev
+WHERE
+  {
+    {
+      &lt;http://www.bbc.co.uk/music/artists/4490113a-3880-4f5b-a39b-105bfceaed04#artist&gt; foaf:made ?r1 .
+      ?r1 a mo:Record .
+      ?r1 dc:title ?r_name .
+      ?r1 rev:hasReview ?rev
+    }
+    UNION
+    {
+      &lt;http://www.bbc.co.uk/music/artists/4490113a-3880-4f5b-a39b-105bfceaed04#artist&gt; mo:member_of ?b1 .
+      ?b1 foaf:made ?r1 .
+      ?r1 a mo:Record .
+      ?r1 dc:title ?r_name .
+      ?r1 rev:hasReview ?rev
+    }
+  }
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples18">
+            <title>Example usage of IN operator for retrieving all triples for each entity</title>
+            <para>To retrieve all triples for each entity for a given list of entities uris, one might use the following syntax:</para>
+            <programlisting>
+SELECT ?p ?o
+WHERE
+  {
+    ?s ?p ?o .
+    FILTER ( ?s IN (&lt;someGraph#entity1&gt;, &lt;someGraph#entity2&gt;, ...&lt;someGraph#entityN&gt; ) )
+  }
+</programlisting>
+            <para>So to demonstrate this feature, execute the following query:
+</para>
+            <programlisting>
+SQL&gt;SPARQL
+SELECT DISTINCT ?p ?o
+WHERE
+  {
+    ?s ?p ?o .
+    FILTER ( ?s IN (&lt;http://dbpedia.org/resource/Climate_change&gt;, &lt;http://dbpedia.org/resource/Social_vulnerability&gt; ) )
+  }
+LIMIT 100
+
+p    	                                                o
+ANY                                                     ANY
+_______________________________________________________________________________
+
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type 	http://s.zemanta.com/ns#Target
+http://s.zemanta.com/ns#title 	                        Climate change
+http://s.zemanta.com/ns#targetType 	                http://s.zemanta.com/targets#rdf
+
+3 Rows. -- 10 msec.
+</programlisting>
+            <tip>
+              <title>See Also:</title>
+              <para>
+                <link linkend="rdfsparulexamples6">Example usage of IN operator.</link>
+              </para>
+            </tip>
+          </section>
+          <section xml:id="rdfsparulexamples19">
+            <title>Example for extending SPARQL via SQL for Full Text search: Variant I</title>
+            <para>To find all albums looked up by album name, one might use the following syntax:</para>
+            <programlisting>
+SQL&gt;SPARQL
+SELECT ?s ?o ?an ( bif:search_excerpt ( bif:vector ( 'In', 'Your' ) , ?o ) )
+WHERE
+  {
+    ?s rdf:type mo:Record .
+    ?s foaf:maker ?a .
+    ?a foaf:name ?an .
+    ?s dc:title ?o .
+    FILTER ( bif:contains ( ?o, '"in your"' ) )
+  }
+LIMIT 10;
+
+http://musicbrainz.org/music/record/30f13688-b9ca-4fa5-9430-f918e2df6fc4  China in Your Hand  	          Fusion  China             &lt;b&gt;in&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Hand.
+http://musicbrainz.org/music/record/421ad738-2582-4512-b41e-0bc541433fbc 	China in Your Hand 	            T'Pau 	China             &lt;b&gt;in&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Hand.
+http://musicbrainz.org/music/record/01acff2a-8316-4d4b-af93-97289e164379 	China in Your Hand 	            T'Pau 	China             &lt;b&gt;in&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Hand.
+http://musicbrainz.org/music/record/4fe99b06-ac73-40dd-8be7-bdaefb014981 	China in Your Hand 	            T'Pau 	China             &lt;b&gt;in&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Hand.
+http://musicbrainz.org/music/record/ac1cb011-6040-4515-baf2-59551a9884ac 	In Your Hands 	                Stella One Eleven 	      &lt;b&gt;In&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Hands.
+http://dbtune.org/magnatune/album/mercy-inbedinst 	                      In Your Bed - instrumental mix 	Mercy Machine 	          &lt;b&gt;In&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Bed mix.
+http://musicbrainz.org/music/record/a09ae12e-3694-4f68-bf25-f6ff4f790962 	A Word in Your Ear 	Alfie 	    A Word &lt;b&gt;in&lt;/b&gt;          &lt;b&gt;Your&lt;/b&gt; Ear.
+http://dbtune.org/magnatune/album/mercy-inbedremix 	                      In Your Bed - the remixes 	    Mercy Machine 	          &lt;b&gt;In&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Bed the remixes.
+http://musicbrainz.org/music/record/176b6626-2a25-42a7-8f1d-df98bec092b4 	Smoke Gets in Your Eyes 	      The Platters 	Smoke Gets  &lt;b&gt;in&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Eyes.
+http://musicbrainz.org/music/record/e617d90e-4f86-425c-ab97-efdf4a8a452b 	Smoke Gets in Your Eyes 	      The Platters 	Smoke Gets  &lt;b&gt;in&lt;/b&gt; &lt;b&gt;Your&lt;/b&gt; Eyes.
+	</programlisting>
+            <para>Note that the query will not show anything when there are triples like:</para>
+            <programlisting>
+&lt;x&gt; &lt;y&gt; "In"
+&lt;z&gt; &lt;q&gt; "Your"
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples20">
+            <title>Example for extending SPARQL via SQL for Full Text search: Variant II</title>
+            <para>To get movies from DBpedia, where the query can contain terms from the title,
+one might use the following syntax:</para>
+            <programlisting>
+SQL&gt;SPARQL
+ SELECT ?s ?an ?dn ?o( bif:search_excerpt ( bif:vector ( 'Broken', 'Flowers' ) , ?o ) )
+ WHERE
+  {
+    ?s rdf:type dbpedia-owl:Film .
+    ?s dbpprop:name ?o .
+    FILTER ( bif:contains ( ?o, '"broken flowers"' ) )
+    OPTIONAL { ?s dbpprop:starring ?starring .}
+    OPTIONAL { ?s dbpprop:director ?director . }
+    OPTIONAL { ?starring dbpprop:name ?an . }
+    OPTIONAL { ?director dbpprop:name ?dn . }
+  };
+
+http://dbpedia.org/resource/Broken_Flowers  Tilda Swinton  	Jim Jarmusch  	Broken Flowers  	          &lt;b&gt;Broken&lt;/b&gt; &lt;b&gt;Flowers&lt;/b&gt;.
+http://dbpedia.org/resource/Broken_Flowers 	Swinton, Tilda 	Jim Jarmusch 	  Broken Flowers 	            &lt;b&gt;Broken&lt;/b&gt; &lt;b&gt;Flowers&lt;/b&gt;.
+....
+http://dbpedia.org/resource/Broken_Flowers  Bill Murray  	  Jim Jarmusch  	Music from Broken Flowers  	Music from &lt;b&gt;Broken&lt;/b&gt; &lt;b&gt;Flowers&lt;/b&gt;.
+....
+		</programlisting>
+            <para>Note that the query will not show anything when there are triples like:</para>
+            <programlisting>
+&lt;x&gt; &lt;y&gt; "Broken"
+&lt;z&gt; &lt;q&gt; "Flowers"
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples21">
+            <title>Example for date manipulation of xsd types within SPARQL</title>
+            <para>This example shows usage of dateTime column truncation to date only
+and performs a group by on this column:
+</para>
+            <programlisting>
+-- prepare the data by inserting triples in a graph:
+SQL&gt;SPARQL
+INSERT INTO GRAPH &lt;http://BookStore.com&gt;
+  {
+    &lt;http://www.dajobe.org/foaf.rdf#i&gt; &lt;http://purl.org/dc/elements/1.1/title&gt;  "SPARQL and RDF" .
+    &lt;http://www.dajobe.org/foaf.rdf#i&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;1999-01-01T00:00:00&gt;.
+    &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "Design notes" .
+    &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2001-01-01T00:00:00&gt;.
+    &lt;http://www.w3.org/People/Connolly/#me&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "Fundamentals of Compiler Design" .
+    &lt;http://www.w3.org/People/Connolly/#me&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2002-01-01T00:00:00&gt;.
+    &lt;http://www.ivan-herman.net/foaf.rdf#me&gt; &lt;http://purl.org/dc/elements/1.1/title&gt;  "RDF Store" .
+    &lt;http://www.ivan-herman.net/foaf.rdf#me&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2001-03-05T00:00:00&gt;.
+    &lt;http://bblfish.net/people/henry/card#me&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "Design RDF notes" .
+    &lt;http://bblfish.net/people/henry/card#me&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2001-01-01T00:00:00&gt;.
+    &lt;http://hometown.aol.com/chbussler/foaf/chbussler.foaf#me&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "RDF Fundamentals" .
+    &lt;http://hometown.aol.com/chbussler/foaf/chbussler.foaf#me&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2002-01-01T00:00:00&gt;.
+  };
+
+_______________________________________________________
+
+Insert into &lt;http://BookStore.com&gt;, 12 triples -- done
+
+-- Find Count of Group by Dates
+SQL&gt;SPARQL
+SELECT (xsd:date(bif:subseq(str(?a_dt), 0, 10))), count(*)
+FROM &lt;http://BookStore.com&gt;
+WHERE
+  {
+    ?s &lt;http://purl.org/dc/elements/1.1/date&gt; ?a_dt
+  }
+GROUP BY (xsd:date(bif:subseq(str(?a_dt), 0, 10)));
+
+callret-0                                         callret-1
+VARCHAR                                           VARCHAR
+__________________________________________________
+1999-01-01                                        1
+2001-01-01                                        2
+2002-01-01                                        2
+2001-03-05                                        1
+
+4 Rows. -- 15 msec.
+SQL&gt;
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples22">
+            <title>Example for executing INSERT/DELETE (SPARUL) statements
+     against a WebID protected SPARQL endpoint</title>
+            <para>The following sample scenario demonstrates how to perform INSERT/DELETE (SPARUL) statements
+       	against a protected SPARQL Endpoint by setting WebID Protocol ACLs using the Virtuoso
+       	Authentication Server UI:</para>
+            <orderedlist>
+              <listitem>
+                <para>Obtain a WebID:
+            </para>
+                <orderedlist>
+                  <listitem>
+                    <para>Download and install the 
+                    <link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/ods_framework_dav.vad">ods_framework_dav.vad</link>
+                    .
+                </para>
+                    <itemizedlist mark="bullet">
+                      <listitem>
+                        <para>Note: an existing ODS DataSpace user instance can also be used, for example at
+
+                        <link xlink:href="http://id.myopenlink.net/ods/">http://id.myopenlink.net/ods/</link>
+                  	</para>
+                      </listitem>
+                    </itemizedlist>
+                  </listitem>
+                  <listitem>
+                    <para>Register an ODS Data Space user, for example with name "demo".</para>
+                  </listitem>
+                  <listitem>
+                    <para>The generated WebID will be for example:
+</para>
+                    <programlisting>
+http://id.myopenlink.net/dataspace/person/demo#this
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para><link xlink:href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate">Generate a Personal HTTP based Identifier</link>
+
+              for the "demo" user and then bind the personal Identifier to an X.509 Certificate, thereby
+              giving assigning the user a WebID.
+              </para>
+                  </listitem>
+                </orderedlist>
+              </listitem>
+              <listitem>
+                <para>Download and install the
+
+                <link xlink:href="http://opldownload.s3.amazonaws.com/uda/vad-packages/6.3/virtuoso/conductor_dav.vad">conductor_dav.vad</link>
+
+          	package, if not already installed.
+          </para>
+              </listitem>
+              <listitem>
+                <para>Go to http://&lt;cname&gt;:&lt;port&gt;/conductor, where &lt;cname&gt;:&lt;port&gt;
+          	are replaced by your local server values.</para>
+              </listitem>
+              <listitem>
+                <para>Go to System Admin -&gt; Linked Data -&gt; Access Control -&gt; SPARQL-WebID
+            </para>
+                <figure xml:id="si1" floatstyle="1">
+                  <title>Conductor SPARQL-WebID</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/si1.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>In the displayed form:
+            </para>
+                <orderedlist>
+                  <listitem>
+                    <para>Enter the Web ID for the user registered above, for example:
+</para>
+                    <programlisting>
+http://id.myopenlink.net/dataspace/person/demo#this
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para>Select "SPARQL Role": "</para>
+                    <para>
+                      <emphasis>UPDATE</emphasis>
+                    </para>
+                    <para>".
+                </para>
+                    <figure xml:id="si2" floatstyle="1">
+                      <title>Conductor SPARQL-WebID</title>
+                      <mediaobject>
+                        <imageobject>
+                          <imagedata fileref="ui/si2.png"/>
+                        </imageobject>
+                      </mediaobject>
+                    </figure>
+                  </listitem>
+                </orderedlist>
+              </listitem>
+              <listitem>
+                <para>Click the "Register" button.</para>
+              </listitem>
+              <listitem>
+                <para>The WebID Protocol ACL will be created:
+            </para>
+                <figure xml:id="si3" floatstyle="1">
+                  <title>Conductor SPARQL-WebID</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/si3.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>Go to the SPARQL-WebID endpoint, https://&lt;cname&gt;:&lt;port&gt;/sparql-webid,
+          	where &lt;cname&gt;:&lt;port&gt; are replaced by your local server values.
+          </para>
+              </listitem>
+              <listitem>
+                <para>Select the user's certificate:
+            </para>
+                <figure xml:id="si4" floatstyle="1">
+                  <title>Conductor SPARQL-WebID</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/si4.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>The SPARQL Query UI will be displayed:
+            </para>
+                <figure xml:id="si5" floatstyle="1">
+                  <title>Conductor SPARQL-WebID</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/si5.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>Execute the query:
+</para>
+                <programlisting>
+INSERT INTO GRAPH &lt;http://example.com&gt; {
+  &lt;s1&gt; &lt;p1&gt; &lt;o1&gt; .
+  &lt;s2&gt; &lt;p2&gt; &lt;o2&gt; .
+  &lt;s3&gt; &lt;p3&gt; &lt;o3&gt;
+}
+</programlisting>
+                <figure xml:id="si6" floatstyle="1">
+                  <title>Conductor SPARQL-WebID</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/si6.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+                <figure xml:id="si7" floatstyle="1">
+                  <title>Conductor SPARQL-WebID</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/si7.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+            </orderedlist>
+            <para>Note: If the SPARQL Role "Sponge" is set instead, in order to be able to execute
+       	DELETE/INSERT statements over the protected SPARQL Endpoint, the following grants need to be
+       	performed for the user, associated with the WebID ACL Role:</para>
+            <programlisting>
+grant execute on DB.DBA.SPARQL_INSERT_DICT_CONTENT to "demo";
+grant execute on DB.DBA.SPARQL_DELETE_DICT_CONTENT to "demo";
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples23">
+            <title>Example usage of deleting Triple Patterns that are Not Scoped to a Named Graph</title>
+            <para>Presuming this triple exists in one or more graphs in the store:</para>
+            <programlisting>
+{
+  &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/knows&gt;
+      &lt;http://id.myopenlink.net/dataspace/person/KingsleyUyiIdehen#this&gt;
+}
+</programlisting>
+            <para>The SQL query below will delete that triple from all graphs in the store:</para>
+            <programlisting>
+DELETE
+  FROM DB.DBA.RDF_QUAD
+ WHERE p = iri_to_id
+             ('http://xmlns.com/foaf/0.1/knows')
+   AND s = iri_to_id
+             ('http://kingsley.idehen.net/dataspace/person/kidehen#this')
+   AND o = iri_to_id
+             ('http://id.myopenlink.net/dataspace/person/KingsleyUyiIdehen#this')
+;
+</programlisting>
+            <para>According to
+    	<link xlink:href="http://www.w3.org/TR/2010/WD-sparql11-update-20100126/#t414">SPARQL 1.1 Update</link>
+
+  ,
+    	the FROM clause which scopes the query to a single graph is optional. Thus, the SQL query above can
+    	be rewritten to the SPARQL query below, again deleting the matching triple from all graphs in the
+    	store:
+    </para>
+            <programlisting>
+DELETE
+  {
+    GRAPH ?g
+      {
+        &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt;
+          &lt;http://xmlns.com/foaf/0.1/knows&gt;
+            &lt;http://id.myopenlink.net/dataspace/person/KingsleyUyiIdehen#this&gt;
+      }
+  }
+WHERE
+  {
+    GRAPH ?g
+      {
+        &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt;
+          &lt;http://xmlns.com/foaf/0.1/knows&gt;
+            &lt;http://id.myopenlink.net/dataspace/person/KingsleyUyiIdehen#this&gt;
+      }
+  }
+</programlisting>
+          </section>
+          <section xml:id="rdfsparulexamples24">
+            <title>Example usage of deleting triples containing blank nodes</title>
+            <para>There are two ways to delete a particular blank node:</para>
+            <orderedlist>
+              <listitem>
+                <para>To refer to it via some properties or:</para>
+              </listitem>
+              <listitem>
+                <para>To convert it to it's internal "serial number", a long integer, and back.</para>
+              </listitem>
+            </orderedlist>
+            <para>Assume the following sample scenario:</para>
+            <orderedlist>
+              <listitem>
+                <para>Clear the graph:
+</para>
+                <programlisting>
+SPARQL CLEAR GRAPH &lt;http://sample/&gt;;
+
+Done. -- 4 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Insert three blank nodes with two related triples each:
+</para>
+                <programlisting>
+SPARQL
+  INSERT IN GRAPH &lt;http://sample/&gt;
+    {
+      [] &lt;p&gt; &lt;o1a&gt; , &lt;o1b&gt; .
+      [] &lt;p&gt; &lt;o2a&gt; , &lt;o2b&gt; .
+      [] &lt;p&gt; &lt;o3a&gt; , &lt;o3b&gt;
+    }
+
+Done. -- 15 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Delete one pair of triples:
+</para>
+                <programlisting>
+SPARQL WITH &lt;http://sample/&gt;
+  DELETE { ?s ?p ?o }
+  WHERE
+    {
+      ?s ?p ?o ;
+      &lt;p&gt; &lt;o1a&gt; .
+    }
+
+Done. -- 7 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Ensure that we still have two bnodes, two triple per bnode:
+</para>
+                <programlisting>
+SPARQL
+  SELECT *
+  FROM &lt;http://sample/&gt;
+  WHERE
+    {
+      ?s ?p ?o
+    }
+s               p       o
+VARCHAR         VARCHAR VARCHAR
+________________
+
+nodeID://b10006 p       o3a
+nodeID://b10006 p       o3b
+nodeID://b10007 p       o2a
+nodeID://b10007 p       o2b
+
+4 Rows. -- 4 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <programlisting>
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Each bnode, as well as any "named" node, is identified internally as an integer:
+</para>
+                <programlisting>
+SPARQL
+  SELECT (&lt;LONG::bif:iri_id_num&gt;(?s)) AS ?s_num, ?p, ?o
+  FROM &lt;http://sample/&gt;
+  WHERE
+    {
+      ?s ?p ?o
+    };
+s_num                p       o
+INTEGER              VARCHAR VARCHAR
+_____________________________
+
+4611686018427397910  p       o3a
+4611686018427397910  p       o3b
+4611686018427397911  p       o2a
+4611686018427397911  p       o2b
+
+4 Rows. -- 5 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>The integer can be converted back to internal identifier. Say, here we try to
+           	delete a triple that does not exist (even if the ID integer is valid):
+</para>
+                <programlisting>
+SPARQL
+  DELETE FROM &lt;http://sample/&gt;
+    {
+      `bif:iri_id_from_num(4611686018427397911)` &lt;p&gt; &lt;o3a&gt;
+    };
+
+Done. -- 5 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Should have no effect, because the "46..11" IRI has &lt;o2a&gt; and &lt;o2b&gt;,
+           	and was not requested &lt;o3a&gt;:
+</para>
+                <programlisting>
+SPARQL
+  SELECT *
+  FROM &lt;http://sample/&gt;
+  WHERE
+    {
+      ?s ?p ?o
+    };
+s               p        o
+VARCHAR         VARCHAR  VARCHAR
+________________
+
+nodeID://b10006 p        o3a
+nodeID://b10006 p        o3b
+nodeID://b10007 p        o2a
+nodeID://b10007 p        o2b
+
+4 Rows. -- 5 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Now let's try to delete a triple that does actually exist. Note the use of
+           	backquotes to insert an expression into template:
+</para>
+                <programlisting>
+SPARQL
+  DELETE FROM &lt;http://sample/&gt;
+    {
+      `bif:iri_id_from_num(4611686018427397911)` &lt;p&gt; &lt;o2a&gt;
+    };
+
+Done. -- 4 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>So there's an effect:
+</para>
+                <programlisting>
+SPARQL
+  SELECT *
+  FROM &lt;http://sample/&gt;
+  WHERE
+    {
+      ?s ?p ?o
+    };
+s                p        o
+VARCHAR          VARCHAR  VARCHAR
+_________________
+
+nodeID://b10006  p        o3a
+nodeID://b10006  p        o3b
+nodeID://b10007  p        o2b
+
+3 Rows. -- 2 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Now delete everything related to 
+                <code>nodeID://b10006</code>
+                 subject:
+</para>
+                <programlisting>
+SPARQL
+  WITH &lt;http://sample/&gt;
+  DELETE
+    {
+      ?s ?p ?o
+    }
+  WHERE
+    {
+      ?s ?p ?o .
+      FILTER (?s = bif:iri_id_from_num(4611686018427397910))
+    };
+
+Done. -- 18 msec.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Three minus two gives one triple remaining:
+</para>
+                <programlisting>
+SQL&gt; SPARQL
+  SELECT *
+  FROM &lt;http://sample/&gt;
+  WHERE
+    {
+      ?s ?p ?o
+    };
+s                p        o
+VARCHAR          VARCHAR  VARCHAR
+_________________
+
+nodeID://b10007  p        o2b
+
+1 Rows. -- 4 msec.
+</programlisting>
+              </listitem>
+            </orderedlist>
+            <para><emphasis>Note</emphasis>
+
+  : IDs of bnodes will vary from server to server and even from
+         run to run on the same server, so the application should identify bnodes by properties
+         before doing <code>bif:iri_id_XXX</code>
+
+   tricks.
+         </para>
+          </section>
+          <section xml:id="rdfsparulexamples25">
+            <title>Example usage of expressions inside CONSTRUCT, INSERT and DELETE {...} Templates</title>
+            <para>When one wants to use expressions inside CONSTRUCT {...}, INSERT {...} or DELETE {...}
+         	construction templates, the expressions should be in back-quotes i.e:
+         </para>
+            <programlisting>
+`expression`
+</programlisting>
+            <section xml:id="rdfsparulexamples25what">
+              <title>What?</title>
+              <para>How to construct RDF triples via SPARQL CONSTRUCT queries that include expressions.</para>
+            </section>
+            <section xml:id="rdfsparulexamples25why">
+              <title>Why?</title>
+              <para>The are times when you need to post-process existing RDF triples en route to creating enhanced data views. For instance, enhancing the literal values associated with annotation properties such as rdfs:label and rdfs:comment .</para>
+            </section>
+            <section xml:id="rdfsparulexamples25how">
+              <title>Why?</title>
+              <para>Here some SPARQL 1.1 Update Language examples showcasing how this is achieved using Virtuoso.</para>
+              <section xml:id="rdfsparulexamples25howex1">
+                <title>Example usage of expression inside CONSTRUCT</title>
+                <programlisting>
+CONSTRUCT
+  {
+    ?inst  rdfs:label `bif:concat ( ?inst_label,
+                                    " Instance with up to ",
+                                    str(?core_val),
+                                    " logical processor cores and " ,
+                                    str(?sess_val) , " concurrent ODBC sessions from licensed host" )`
+  }
+FROM &lt;http://uda.openlinksw.com/pricing/&gt;
+WHERE
+  {
+    ?inst a gr:Individual, oplweb:ProductLicense ;
+                          rdfs:label ?inst_label ;
+           oplweb:hasMaximumProcessorCores ?core ;
+                        oplweb:hasSessions ?sess .
+
+    ?core a gr:QuantitativeValueInteger ;
+        gr:hasMaxValueInteger ?core_val .
+
+    ?sess a gr:QuantitativeValueInteger ;
+                  gr:hasValue ?sess_val .
+}
+</programlisting>
+                <para>See <link xlink:href="http://uriburner.com/c/MBGD7Y">live results</link>
+
+   of the query.</para>
+              </section>
+              <section xml:id="rdfsparulexamples25howex2">
+                <title>Example usage of expression inside INSERT</title>
+                <programlisting>
+SPARQL
+INSERT INTO GRAPH &lt;urn:mygraph&gt;
+  {
+    ?inst  rdfs:label `bif:concat ( ?inst_label,
+                                    " Instance with up to ",
+                                    str(?core_val),
+                                    " logical processor cores and " ,
+                                    str(?sess_val) ,
+                                    " concurrent ODBC sessions from licensed host" )`
+  }
+FROM &lt;http://uda.openlinksw.com/pricing/&gt;
+WHERE
+  {
+    ?inst a gr:Individual, oplweb:ProductLicense ;
+                          rdfs:label ?inst_label ;
+           oplweb:hasMaximumProcessorCores ?core ;
+                        oplweb:hasSessions ?sess .
+
+    ?core a gr:QuantitativeValueInteger ;
+        gr:hasMaxValueInteger ?core_val .
+
+    ?sess a gr:QuantitativeValueInteger ;
+                  gr:hasValue ?sess_val .
+};
+
+Done. -- 406 msec.
+
+SQL&gt; SPARQL
+SELECT ?label
+FROM &lt;urn:mygraph&gt;
+WHERE
+  {
+    ?inst  rdfs:label ?label
+  };
+
+label
+VARCHAR
+_______________________________________________________________________________
+
+ODBC Driver (Single-Tier Lite Express Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Express Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+JDBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+OLEDB Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ADO.NET Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+
+9 Rows. -- 31 msec.
+</programlisting>
+              </section>
+              <section xml:id="rdfsparulexamples25howex3">
+                <title>Example usage of expression inside DELETE</title>
+                <programlisting>
+SPARQL
+DELETE FROM GRAPH &lt;urn:mygraph&gt;
+{ ?inst rdfs:label `bif:concat ( "JDBC Driver (Single-Tier Lite Edition) Instance with up to ", str(?core_val), " logical processor cores and " , str(?sess_val) , " concurrent ODBC sessions from licensed host" )` }
+FROM &lt;http://uda.openlinksw.com/pricing/&gt;
+WHERE
+{
+    ?inst a gr:Individual, oplweb:ProductLicense ;
+                          rdfs:label ?inst_label ;
+           oplweb:hasMaximumProcessorCores ?core ;
+                        oplweb:hasSessions ?sess .
+    filter (regex(?inst_label,"JDBC Driver")) .
+
+    ?core a gr:QuantitativeValueInteger ;
+        gr:hasMaxValueInteger ?core_val .
+
+    ?sess a gr:QuantitativeValueInteger ;
+                  gr:hasValue ?sess_val .
+}
+;
+
+Done. -- 32 msec.
+
+SQL&gt; SPARQL
+SELECT ?label
+FROM &lt;urn:mygraph&gt;
+WHERE
+  {
+    ?inst  rdfs:label ?label
+  };
+
+label
+VARCHAR
+_______________________________________________________________________________
+
+ODBC Driver (Single-Tier Lite Express Edition) Instance with up to 16 logical ...
+ODBC Driver (Single-Tier Lite Express Edition) Instance with up to 16 logical ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+OLEDB Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ADO.NET Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+
+8 Rows. -- 16 msec.
+</programlisting>
+              </section>
+            </section>
+          </section>
+        </section>
+      </section>
+      <section xml:id="sparqlbi">
+        <title>Business Intelligence Extensions for SPARQL</title>
+        <para>
+Virtuoso extends SPARQL with expressions in results, subqueries, aggregates and grouping.
+These extensions allow a straightforward translation of arbitrary SQL queries to SPARQL.
+This extension is called  "SPARQL BI", because the primary objective is to match needs of Business Intelligence.
+The extended features apply equally to querying physical quads or relational tables mapped through Linked Data Views.
+</para>
+        <note>
+          <para>In this section, many examples use the TPC-H namespace. You may test them on your local demo database.
+They use data from the TPC-H dataset that is mapped into a graph with an IRI of the form
+http://example.com/tpch. When testing, you should replace the fake host name "example.com" with the host name of your own installation
+verbatim, that is as specified in the "DefaultHost" parameter in the [URIQA] section of the Virtuoso configuration file.</para>
+        </note>
+        <section xml:id="rdfsparqlaggregate">
+          <title>Aggregates in SPARQL</title>
+          <para>Virtuoso extends SPARQL with SQL like aggregate and "group by" functionality. This functionality is
+also available by embedding SPARQL text inside SQL, but the SPARQL extension syntax has the benefit
+of also working over the SPARQL protocol and of looking more SPARQL-like.
+</para>
+          <para>The supported aggregates are <emphasis>COUNT</emphasis>
+
+  , <emphasis>MIN</emphasis>
+
+  ,
+<emphasis>MAX</emphasis>
+
+  , <emphasis>AVG</emphasis>
+
+   and <emphasis>SUM</emphasis>
+
+  . These can take an
+optional <emphasis>DISTINCT</emphasis>
+
+   keyword. These are permitted only in the selection part of a
+select query. If a selection list consists of a mix of variables and aggregates, the non-aggregate
+selected items are considered to be grouping columns and a <emphasis>GROUP BY</emphasis>
+
+   over them is implicitly added
+at the end of the generated SQL query. Virtuoso also supports explicit syntax for
+<emphasis>GROUP BY</emphasis>
+
+  , <emphasis>ORDER BY</emphasis>
+
+  , <emphasis>LIMIT</emphasis>
+
+   and <emphasis>OFFSET</emphasis>
+
+  .
+There is no explicit syntax for <emphasis>HAVING</emphasis>
+
+   in Virtuoso SPARQL.
+</para>
+          <para>If a selection consists of aggregates exclusively, the result set has one row with the values
+of the aggregates. If there are aggregates and variables in the selection, the result set has as many
+rows as there are distinct combinations of the variables; the aggregates are then calculated over each
+such distinct combination, as if there were a SQL GROUP BY over all non-aggregates.
+The implicit grouping pays attention to all subexpressions in the return list; say, if a result column expression is <code>(?x * max (?y))</code>
+
+   then
+<code>?y</code>
+
+   is aggregated and <code>?x</code>
+
+   is not so it is grouped by ?x.
+This also means that if a result column expression is <code>(bif:year (?shipdate))</code>
+
+   then a group is made for each distinct <code>?shipdate</code>
+
+  ,
+i.e. up to 366 groups for each distinct year.
+If you need one group per year, write explicit <code>GROUP BY (bif:year (?shipdate))</code>
+
+  .
+
+</para>
+          <para>With the count aggregate the argument may be either <emphasis>*</emphasis>
+
+  , meaning counting all rows, or a variable
+name, meaning counting all the rows where this variable is bound. If there is no implicit <emphasis>GROUP BY</emphasis>
+
+  ,
+there can be an optional <emphasis>DISTINCT</emphasis>
+
+   keyword before the variable that is the argument of an aggregate.
+</para>
+          <para>There is a special syntax for counting distinct combinations of selected variables. This is:</para>
+          <programlisting>
+SELECT COUNT DISTINCT ?v1 ... ?vn
+  FROM ....
+</programlisting>
+          <para>User-defined aggregate functions are not supported in current version of the SPARQL compiler.</para>
+          <section xml:id="rdfsparqlaggregatepathexpressions">
+            <title>Path Expressions</title>
+            <para>Virtuoso has support for paths consisting of dereferencing properties in SPARQL. Virtuoso allows
+simple paths in expressions and has a separate feature for transitivity:</para>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>S+&gt;P: for "one or many values of P of S"</para>
+              </listitem>
+              <listitem>
+                <para>S*&gt;P: for "zero or many values of P of S", so *&gt; may form a LEFT OUTER JOIN whereas +&gt; forms an INNER JOIN.</para>
+              </listitem>
+              <listitem>
+                <para>S|&gt;P: is reserved for potential "single value of P of S or an error if there are many values"</para>
+              </listitem>
+            </itemizedlist>
+            <para>If this property is set (for example by an Linked Data View) then +&gt; should be used.</para>
+            <para>
+              <emphasis>Simple Example</emphasis>
+            </para>
+            <programlisting>
+SELECT ?f+&gt;foaf:name ?f|&gt;foaf:mbox WHERE { ?x foaf:name "Alice" . ?x foaf:knows ?f . FILTER (?f+&gt;foaf:name = "John") }
+</programlisting>
+            <para>means:</para>
+            <programlisting>
+SELECT ?fname ?mbox
+WHERE
+  {
+    ?x foaf:knows ?f .
+    ?x foaf:knows ?f .
+    OPTIONAL {?f foaf:mbox ?mbox} .
+    ?f foaf:name ?fname .
+    ?x foaf:name "Alice" .
+    ?x foaf:knows ?f2 .
+    ?f2 foaf:name "John" .
+  }
+</programlisting>
+            <para>
+              <emphasis>Other Examples</emphasis>
+            </para>
+            <programlisting>
+SPARQL
+DEFINE sql:signal-void-variables 1
+PREFIX tpcd: &lt;http://www.openlinksw.com/schemas/tpcd#&gt;
+PREFIX oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT
+  ?l+&gt;tpcd:returnflag,
+  ?l+&gt;tpcd:linestatus,
+  sum(?l+&gt;tpcd:linequantity) as ?sum_qty,
+  sum(?l+&gt;tpcd:lineextendedprice) as ?sum_base_price,
+  sum(?l+&gt;tpcd:lineextendedprice*(1 - ?l+&gt;tpcd:linediscount)) as ?sum_disc_price,
+  sum(?l+&gt;tpcd:lineextendedprice*(1 - ?l+&gt;tpcd:linediscount)*(1+?l+&gt;tpcd:linetax)) as ?sum_charge,
+  avg(?l+&gt;tpcd:linequantity) as ?avg_qty,
+  avg(?l+&gt;tpcd:lineextendedprice) as ?avg_price,
+  avg(?l+&gt;tpcd:linediscount) as ?avg_disc,
+  count(1) as ?count_order
+FROM &lt;http://example.com/tpcd&gt;
+WHERE {
+    ?l a tpcd:lineitem .
+    FILTER (?l+&gt;tpcd:shipdate &lt;= bif:dateadd ("day", -90, '1998-12-01'^^xsd:date)) }
+ORDER BY ?l+&gt;tpcd:returnflag ?l+&gt;tpcd:linestatus
+
+</programlisting>
+            <programlisting>
+SPARQL
+DEFINE sql:signal-void-variables 1
+PREFIX tpcd: &lt;http://www.openlinksw.com/schemas/tpcd#&gt;
+SELECT
+  ?supp+&gt;tpcd:acctbal,
+  ?supp+&gt;tpcd:name,
+  ?supp+&gt;tpcd:has_nation+&gt;tpcd:name as ?nation_name,
+  ?part+&gt;tpcd:partkey,
+  ?part+&gt;tpcd:mfgr,
+  ?supp+&gt;tpcd:address,
+  ?supp+&gt;tpcd:phone,
+  ?supp+&gt;tpcd:comment
+FROM &lt;http://example.com/tpcd&gt;
+WHERE {
+  ?ps a tpcd:partsupp; tpcd:has_supplier ?supp; tpcd:has_part ?part .
+  ?supp+&gt;tpcd:has_nation+&gt;tpcd:has_region tpcd:name 'EUROPE' .
+  ?part tpcd:size 15 .
+  ?ps tpcd:supplycost ?minsc .
+  { SELECT ?part min(?ps+&gt;tpcd:supplycost) as ?minsc
+    WHERE {
+        ?ps a tpcd:partsupp; tpcd:has_part ?part; tpcd:has_supplier ?ms .
+        ?ms+&gt;tpcd:has_nation+&gt;tpcd:has_region tpcd:name 'EUROPE' .
+      } }
+    FILTER (?part+&gt;tpcd:type like '%BRASS') }
+ORDER BY
+  desc (?supp+&gt;tpcd:acctbal)
+  ?supp+&gt;tpcd:has_nation+&gt;tpcd:name
+  ?supp+&gt;tpcd:name
+  ?part+&gt;tpcd:partkey
+
+</programlisting>
+          </section>
+          <section xml:id="rdfsparqlaggregateexamples">
+            <title>Examples</title>
+            <section xml:id="rdfsparqlaggregateexamples1">
+              <title>Example for count of physical triples in http://mygraph.com</title>
+              <programlisting>
+SPARQL
+SELECT COUNT (*)
+  FROM &lt;http://mygraph.com&gt;
+ WHERE {?s ?p ?o}
+</programlisting>
+              <para>
+                <emphasis>Example for count of O's for each distinct P</emphasis>
+              </para>
+              <programlisting>
+SPARQL define input:inference "http://mygraph.com"
+SELECT ?p COUNT (?o)
+  FROM &lt;http://mygraph.com&gt;
+ WHERE {?s ?p ?o}
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples2">
+              <title>Example for count of triples, including inferred triples and the count of
+distinct O values</title>
+              <programlisting>
+SPARQL define input:inference "http://mygraph.com"
+SELECT COUNT (?p) COUNT (?o) COUNT (DISTINCT ?o)
+ FROM &lt;http://mygraph.com&gt;
+WHERE {?s ?p ?o}
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples3">
+              <title>Example for get number of distinct bindings of ?s ?p ?o</title>
+              <programlisting>
+SPARQL define input:inference "http://mygraph.com"
+SELECT count distinct ?s ?p ?o
+  FROM &lt;http://mygraph.com&gt;
+ WHERE {?s ?p ?o}
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples4">
+              <title>Example for get counts and total prices of ordered items, grouped by item status</title>
+              <programlisting>
+SPARQL
+prefix tpch: &lt;http://www.openlinksw.com/schemas/tpch#&gt;
+SELECT ?status count(*) sum(?extendedprice)
+FROM &lt;http://localhost.localdomain:8310/tpch&gt;
+WHERE {
+    ?l a tpch:lineitem ;
+      tpch:lineextendedprice ?extendedprice ;
+      tpch:linestatus ?status .
+  }
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples5">
+              <title>Example for get counts and total prices of ordered items, grouped by item status</title>
+              <para>
+                <emphasis>Example: A dataset of people, some duplicated</emphasis>
+              </para>
+              <para>Suppose there is a dataset with many people, some of them sharing the same name. To list them we would, ideally, execute the query:
+   </para>
+              <programlisting>
+SPARQL
+SELECT DISTINCT
+ (?name) ?person ?mail
+ WHERE {
+   ?person rdf:type foaf:Person .
+   ?person foaf:name ?name .
+   ?person foaf:mbox_sha1sum ?mail
+ }
+</programlisting>
+              <para>Unfortunately, the facility to apply DISTINCT to a part of the result set row (i.e. to ?name) does not currently exist.
+   (Although the above form is permitted, it's interpreted as being identical to 'SELECT DISTINCT ?name, ?person, ?mail WHERE ...')
+   If there's demand for such a feature then we may introduce an aggregate called, say, SPECIMEN, that will return the very first of the aggregated values. e.g.:
+   </para>
+              <programlisting>
+SPARQL
+SELECT ?name (specimen(?person)) (specimen(?mail))
+WHERE
+  {
+    ?person rdf:type foaf:Person .
+    ?person foaf:name ?name .
+    ?person foaf:mbox_sha1sum ?mail
+  }
+</programlisting>
+              <para>As a workaround to this limitation, the MIN aggregate can be used, provided duplicates are few and there's no requirement
+   that ?person should correspond to ?mail
+(i.e. the result should contain some person node and some mail node but they don't have to be connected by foaf:mbox_sha1sum):
+   </para>
+              <programlisting>
+SPARQL
+SELECT ?name (min(?person)) (min(?mail))
+WHERE
+  {
+    ?person rdf:type foaf:Person .
+    ?person foaf:name ?name .
+    ?person foaf:mbox_sha1sum ?mail
+  }
+</programlisting>
+              <para>Otherwise, a complicated query is needed:</para>
+              <programlisting>
+SPARQL
+SELECT
+ ?name
+ ((SELECT (min (?person3))
+     WHERE {
+         ?person3 rdf:type foaf:Person .
+         ?person3 foaf:name ?name .
+         ?person3 foaf:mbox_sha1sum ?mail } )) as ?person
+ ?mail
+ WHERE {
+     { SELECT distinct ?name
+       WHERE {
+           ?person1 rdf:type foaf:Person .
+           ?person1 foaf:name ?name .
+           ?person1 foaf:mbox_sha1sum ?mail1 } }
+     { SELECT ?name (min(?mail2)) as ?mail
+       WHERE {
+           ?person2 rdf:type foaf:Person .
+           ?person2 foaf:name ?name .
+           ?person2 foaf:mbox_sha1sum ?mail2 } }
+ }
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples6">
+              <title>Example quering dbpedia</title>
+              <para>The following example demonstrate how to query dbpedia. Suppose there is local onotlogy,
+which has a datatype property hasLocation with a string containing city names. The query below finds
+which of those cities are in dbpedia:</para>
+              <programlisting>
+SPARQL
+PREFIX dbpprop: &lt;http://dbpedia.org/property/&gt;
+PREFIX dbo: &lt;http://dbpedia.org/ontology/&gt;
+PREFIX vocab:&lt;http://myexample.com/localOntology.rdf&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/&gt;
+PREFIX dbpres: &lt;http://dbpedia.org/resource/&gt;
+SELECT ?city
+WHERE
+  {
+    ?sub :location ?city .
+    FILTER(bif:exists(( ASK { ?subdb a dbo:City . ?subdb dbpprop:officialName ?city })))
+  }
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples7">
+              <title>Example for MAX with HAVING and GROUP BY</title>
+              <programlisting>
+## Example "Find which town or city in
+## the UK has the largest proportion of students.
+
+PREFIX dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt;
+PREFIX dbpedia-owl-uni: &lt;http://dbpedia.org/ontology/University/&gt;
+PREFIX dbpedia-owl-inst: &lt;http://dbpedia.org/ontology/EducationalInstitution/&gt;
+
+SELECT ?town COUNT(?uni)
+       ?pgrad ?ugrad
+       MAX(?population)
+       ( ((?pgrad+?ugrad)/ MAX(?population))*100 ) AS ?percentage
+WHERE
+  {
+    ?uni dbpedia-owl-inst:country dbpedia:United_Kingdom ;
+                         dbpedia-owl-uni:postgrad ?pgrad ;
+                        dbpedia-owl-uni:undergrad ?ugrad ;
+                             dbpedia-owl-inst:city ?town .
+    OPTIONAL
+        {
+          ?town dbpedia-owl:populationTotal ?population .
+          FILTER (?population &gt; 0 )
+        }
+  }
+GROUP BY ?town ?pgrad ?ugrad
+HAVING ( ( ( (?pgrad+?ugrad)/ MAX(?population) )*100 ) &gt; 0 )
+ORDER BY DESC 6
+</programlisting>
+            </section>
+            <section xml:id="rdfsparqlaggregateexamples8">
+              <title>Example Aggregating Distance Values Over Years</title>
+              <para>The following example demonstrate how to aggregate Distance Values Over Years:</para>
+              <para>First we insert some data in a graph with name for ex. &lt;urn:dates:distances&gt;:</para>
+              <programlisting>
+SQL&gt; SPARQL INSERT INTO GRAPH &lt;urn:dates:distances&gt;
+  {
+    &lt;:a1&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-23T00:00:00&gt; .
+    &lt;:a1&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.955218675&gt; .
+    &lt;:a2&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-24T00:00:00&gt; .
+    &lt;:a2&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.798155989&gt; .
+    &lt;:a3&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-25T00:00:00&gt; .
+    &lt;:a3&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.064686628&gt; .
+    &lt;:a4&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-26T00:00:00&gt; .
+    &lt;:a4&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.279800332&gt; .
+    &lt;:a5&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-27T00:00:00&gt; .
+    &lt;:a5&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.651255995&gt; .
+    &lt;:a6&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-28T00:00:00&gt; .
+    &lt;:a6&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.094410557&gt; .
+    &lt;:a7&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-29T00:00:00&gt; .
+    &lt;:a7&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.43461913&gt; .
+    &lt;:a8&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-30T00:00:00&gt; .
+    &lt;:a8&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.264862918&gt; .
+    &lt;:a9&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2010-12-31T00:00:00&gt; .
+    &lt;:a9&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.770588658&gt; .
+    &lt;:a10&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-01T00:00:00&gt; .
+    &lt;:a10&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.900997627&gt; .
+    &lt;:a11&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-02T00:00:00&gt; .
+    &lt;:a11&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.324972375&gt; .
+    &lt;:a12&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-03T00:00:00&gt; .
+    &lt;:a12&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.937221226&gt; .
+    &lt;:a13&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-04T00:00:00&gt; .
+    &lt;:a13&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.269511925&gt; .
+    &lt;:a14&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-05T00:00:00&gt; .
+    &lt;:a14&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.726014538&gt; .
+    &lt;:a15&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-06T00:00:00&gt; .
+    &lt;:a15&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.843581439&gt; .
+    &lt;:a16&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-07T00:00:00&gt; .
+    &lt;:a16&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.835685559&gt; .
+    &lt;:a17&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-08T00:00:00&gt; .
+    &lt;:a17&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.673213742&gt; .
+    &lt;:a18&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-09T00:00:00&gt; .
+    &lt;:a18&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.055026879&gt; .
+    &lt;:a19&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-10T00:00:00&gt; .
+    &lt;:a19&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.987475424&gt; .
+    &lt;:a20&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-11T00:00:00&gt; .
+    &lt;:a20&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.167315598&gt; .
+    &lt;:a21&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-12T00:00:00&gt; .
+    &lt;:a21&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.545317103&gt; .
+    &lt;:a22&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-13T00:00:00&gt; .
+    &lt;:a22&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.75137005&gt; .
+    &lt;:a23&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-14T00:00:00&gt; .
+    &lt;:a23&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.123649985&gt; .
+    &lt;:a24&gt; &lt;http://purl.org/dc/elements/1.1/date&gt; &lt;2011-01-15T00:00:00&gt; .
+    &lt;:a24&gt; &lt;http://linkedgeodata.org/vocabulary#distance&gt; &lt;0.750214251&gt; .
+  };
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;urn:dates:distances&gt;, 48 (or less) triples -- done
+
+1 Rows. -- 94 msec.
+</programlisting>
+              <para>Then we execute the following query:</para>
+              <programlisting>
+SQL&gt; SPARQL
+PREFIX dst: &lt;http://linkedgeodata.org/vocabulary#&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT (bif:year( bif:stringdate(?sdate)) AS ?syear) (bif:sum( bif:number(?dist)) AS ?distance)
+FROM &lt;urn:dates:distances&gt;
+WHERE
+  {
+    ?row dc:date ?sdate .
+    ?row dst:distance ?dist
+  }
+GROUP BY (bif:year(bif:stringdate(?sdate)))
+ORDER BY ASC(bif:year(bif:stringdate(?sdate)));
+
+syear                                distance
+VARCHAR                              VARCHAR
+________________________________________________
+
+2010                                 4.313598882
+2011                                 8.891567721
+
+2 Rows. -- 31 msec.
+</programlisting>
+            </section>
+          </section>
+          <section xml:id="rdfsparqlaggregatenote">
+            <title>Note on Aggregates and Inference</title>
+            <para>Inferencing is added to a SPARQL query only for those variables whose value is actually used. Thus,
+</para>
+            <programlisting>
+SELECT COUNT (*)
+ FROM &lt;http://mygraph.com&gt;
+WHERE {?s ?p ?o}
+</programlisting>
+            <para>will not return inferred values since s, p, and o are not actually used. In contrast,
+</para>
+            <programlisting>
+SPARQL
+SELECT COUNT (?s) COUNT (?p) COUNT (?o)
+ FROM &lt;http://mygraph.com&gt;
+WHERE {?s ?p ?o}
+</programlisting>
+            <para>will also return all the inferred triples.
+</para>
+            <para>
+Note: This difference in behaviour may lead to confusion and will, therefore, likely be altered in the future.
+</para>
+          </section>
+        </section>
+        <section xml:id="rdfsparqlarrowop">
+          <title>Pointer Operator (<emphasis>+&gt;</emphasis>
+
+   and <emphasis>*&gt;</emphasis>
+
+  )</title>
+          <para>
+When expressions occur in result sets, many variables are often introduced only for the purpose of passing a value from a triple pattern to the result expression.
+This is inconvenient because many triple patterns are trivial. The presence of large numbers of variable names masks "interesting" variables that are used in more than once in pattern and which establish logical relationships between different parts of the query.
+As a solution we introduce pointer operators.</para>
+          <para>
+The <emphasis>+&gt;</emphasis>
+
+   (pointer) operator allows referring to a property value without naming it as a variable and explicitly writing a triple pattern. We can shorten the example above to:</para>
+          <programlisting>SPARQL
+prefix tpch: &lt;http://www.openlinksw.com/schemas/tpch#&gt;
+SELECT ?l+&gt;tpch:linestatus count(*) sum(?l+&gt;tpch:lineextendedprice)
+FROM &lt;http://localhost.localdomain:8310/tpch&gt;
+WHERE { ?l a tpch:lineitem }</programlisting>
+          <para>
+The <emphasis>?subject+&gt;propertyname</emphasis>
+
+   notation is equivalent to having a triple pattern <emphasis>?subject propertyname ?aux_var</emphasis>
+
+   binding an auxiliary variable to the mentioned property of the subject, within the group pattern enclosing the reference.
+For a SELECT, the enclosing group pattern is considered to be the top level pattern of the where clause or, in the event of a union, the top level of each term of the union.
+Each distinct pointer adds exactly one triple pattern to the enclosing group pattern. Multiple uses of <emphasis>+&gt;</emphasis>
+
+   with the same arguments do not each add a triple pattern.
+(Having multiple copies of an identical pattern might lead to changes in cardinality if multiple input graphs were being considered.
+If a lineitem had multiple discounts or extended prices, then we would get the cartesian product of both.)
+</para>
+          <para>
+If a property referenced via <emphasis>+&gt;</emphasis>
+
+   is absent, the variable on the left side of the operator is not bound in the enclosing group pattern because it should be bound in all triple patterns where it appears as a field, including implicitly added patterns.
+</para>
+          <para>
+The <emphasis>?subject*&gt;propertyname</emphasis>
+
+   notation is introduced in order to access optional property values. It adds an OPTIONAL group <emphasis>OPTIONAL { ?subject propertyname ?aux_var }</emphasis>
+
+  , not a plain triple pattern, so the binding of ?subject is not changed even if the object variable is not bound. If the property is set for all subjects in question then the results of <emphasis>*&gt;</emphasis>
+
+   and <emphasis>+&gt;</emphasis>
+
+   are the same. All other things being equal, the <emphasis>+&gt;</emphasis>
+
+   operator produces better SQL code than <emphasis>*&gt;</emphasis>
+
+   so use <emphasis>*&gt;</emphasis>
+
+   only when it is really needed.</para>
+        </section>
+        <section xml:id="rdfsparqlnesting">
+          <title>Subqueries in SPARQL</title>
+          <para>
+Pure SPARQL does not allow binding a value that is not retrieved through a triple pattern.
+We lift this restriction by allowing expressions in the result set and providing names for result columns.
+We also allow a SPARQL SELECT statement to appear in another SPARQL statement in any place where a group pattern may appear.
+The names of the result columns form the names of the variables bound, using values from the returned rows.
+This resembles derived tables in SQL.</para>
+          <para>
+For instance, the following statement finds the prices of the 1000 order lines with the biggest discounts:</para>
+          <programlisting>SPARQL
+define sql:signal-void-variables 1
+prefix tpch: &lt;http://www.openlinksw.com/schemas/tpch#&gt;
+SELECT ?line ?discount (?extendedprice * (1 - ?discount)) as ?finalprice
+FROM &lt;http://localhost.localdomain:8310/tpch&gt;
+WHERE
+  {
+    ?line a tpch:lineitem ;
+    tpch:lineextendedprice ?extendedprice ;
+    tpch:linediscount ?discount .
+  }
+ORDER BY DESC (?extendedprice * ?discount)
+LIMIT 1000</programlisting>
+          <para>
+After ensuring that this query works correctly, we can use it to answer more complex questions.
+Imagine that we want to find out how big the customers are who have received the biggest discounts.</para>
+          <programlisting>SPARQL
+define sql:signal-void-variables 1
+prefix tpch: &lt;http://www.openlinksw.com/schemas/tpch#&gt;
+SELECT ?cust sum(?extendedprice2 * (1 - ?discount2)) max (?bigdiscount)
+FROM &lt;http://localhost.localdomain:8310/tpch&gt;
+WHERE
+  {
+    {
+      SELECT ?line (?extendedprice * ?discount) as ?bigdiscount
+      WHERE {
+        ?line a tpch:lineitem ;
+          tpch:lineextendedprice ?extendedprice ;
+          tpch:linediscount ?discount . }
+      ORDER BY DESC (?extendedprice * ?discount)
+      LIMIT 1000
+    }
+    ?line tpch:has_order ?order .
+    ?order tpch:has_customer ?cust .
+    ?cust tpch:customer_of ?order2 .
+    ?order2 tpch:order_of ?line2 .
+    ?line2 tpch:lineextendedprice ?extendedprice2 ;
+      tpch:linediscount ?discount2 .
+  }
+ORDER BY (SUM(?extendedprice2 * (1 - ?discount2)) / MAX (?bigdiscount))</programlisting>
+          <para>
+The inner select finds the 1000 biggest (in absolute value) discounts and their order lines. For each line we find orders of it, and the customer. For each customer found, we find all the orders he made and all the lines of each of the orders (variable ?line2).</para>
+          <para>
+Note that the inner select does not contain FROM clauses. It is not required because the inner select inherits the access permissions of all the outer queries. It is also important to note that the internal variable bindings of the subquery are not visible in the outer query; only the result set variables are bound. Similarly, variables bound in the outer query are not accessible to the subquery.</para>
+          <para>
+Note also the declaration <emphasis>define sql:signal-void-variables 1</emphasis>
+
+   that forces the SPARQL compiler to signal errors if some variables cannot be bound due to misspelt names or attempts to make joins across disjoint domains. These diagnostics are especially important when the query is long.</para>
+        </section>
+        <section xml:id="rdfsparqlbackq">
+          <title>Expressions in Triple Patterns</title>
+          <para>In addition to expressions in filters and result sets, Virtuoso allows the use of expressions in triples of a
+CONSTRUCT pattern or WHERE pattern - an expression can be used instead of a constant or a variable name for a subject, predicate or object.
+When used in this context, the expression is surrounded by backquotes.</para>
+          <para>
+            <emphasis>Example: With a WHERE Clause:</emphasis>
+          </para>
+          <para>The following example returns all the distinct 'fragment' parts of all subjects in all graphs that have some predicate whose value is equal to 2+2.</para>
+          <programlisting>
+SQL&gt;SPARQL SELECT distinct (bif:subseq (?s, bif:strchr (?s, '#')))
+   WHERE {
+     graph ?g {
+       ?s ?p `2+2` .
+       FILTER (! bif:isnull (bif:strchr (?s, '#') ) )
+     } };
+
+callret
+VARCHAR
+----------
+#four
+</programlisting>
+          <para>Inside a WHERE part, every expression in a triple pattern is replaced with new variable and a filter expression is added to the enclosing group. The new filter is an equality of the new variable and the expression. Hence the sample above is identical to:</para>
+          <programlisting>
+SPARQL
+SELECT distinct (bif:subseq (?s, bif:strchr (?s, '#')))
+   WHERE {
+     graph ?g {
+       ?s ?p ?newvariable .
+       FILTER (! bif:isnull (bif:strchr (?s, '#') ) )
+       FILTER (?newvariable = (2+2)) .
+     } }
+</programlisting>
+          <para>
+            <emphasis>Example: With CONSTRUCT</emphasis>
+          </para>
+          <programlisting>
+CONSTRUCT {
+  &lt;http://bio2rdf.org/interpro:IPR000181&gt;
+&lt;http://bio2rdf.org/ns/bio2rdf#hasLinkCount&gt;
+`(SELECT (count(?s)) as ?countS
+   WHERE { ?s ?p &lt;http://bio2rdf.org/interpro:IPR000181&gt; })` }
+WHERE { ?s1 ?p1 ?o1 } limit 1
+</programlisting>
+          <para>The result should be:</para>
+          <programlisting>
+&lt;http://bio2rdf.org/interpro:IPR000181&gt; &lt;http://bio2rdf.org/ns/bio2rdf#hasLinkCount&gt; "0"^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; .
+</programlisting>
+          <para>
+            <emphasis>Example: Inserting into a graph using an expression</emphasis>
+          </para>
+          <programlisting>
+SQL&gt;SPARQL insert into graph &lt;http://MyNewGraph.com/&gt; {
+&lt;http://bio2rdf.org/interpro:IPR000181&gt;
+&lt;http://bio2rdf.org/ns/bio2rdf#hasLinkCount&gt;
+  `(SELECT (count(?s)) as ?countS
+    WHERE { ?s ?p &lt;http://bio2rdf.org/interpro:IPR000181&gt; })` }
+ WHERE { ?s1 ?p1 ?o1 } limit 1  ;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://MyNewGraph.com/&gt;, 1 triples -- done
+
+1 Rows. -- 30 msec.
+</programlisting>
+        </section>
+      </section>
+    </section>

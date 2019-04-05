@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="forxmlforsql">
+      <title>Rendering SQL Queries as XML (FOR XML Clause)</title>
+      <para>
+Virtuoso extends SQL-92 with the FOR XML clause that allows any SQL
+result set to be turned into XML according to some simple rules. The
+notation and functionality are similar to those offered by Microsoft
+SQL Server and IIS.
+</para>
+      <para>
+The FOR XML clause has 3 variants:
+</para>
+      <formalpara>
+        <title>RAW</title>
+        <para>
+Make an XML entity from each row of the result set; do not attempt to
+construct hierarchies.  Each row's data is enclosed in a &lt;ROW/&gt;
+element and each column is either an attribute or child element.
+</para>
+      </formalpara>
+      <formalpara>
+        <title>AUTO</title>
+        <para>
+A hierarchy is constructed with one level for each table of the join
+for which at least one column is selected. The table whose column is
+first mentioned in the selection will be the topmost element, the next
+table its child, etc.  Each level of the tree will consist of one type
+of element.  A parent element will have multiple children if
+consecutive rows do not differ in the column values coming from the
+parent element.  When a table's column values differ from the previous
+row, the element and all children thereof are closed and a new element
+is started, with children filled out from other columns of the result
+set.
+</para>
+      </formalpara>
+      <formalpara>
+        <title>EXPLICIT</title>
+        <para>
+This mode gives more control on the resulting tree's structure while
+requiring a more elaborate query structure.  In this mode, the query
+will be a UNION ALL of many joins and each row will specify exactly
+one element.  Which type of element this is and where in the tree it
+will be placed are determined by the values of the first two columns,
+TAG and PARENT.
+</para>
+      </formalpara>
+      <para>
+In all modes, columns may either be attributes or sub-elements.  The
+<emphasis>ELEMENT</emphasis>
+
+   keyword after the FOR XML clause forces
+all columns to be rendered as sub-elements; attribute are the
+default.
+</para>
+      <para>
+In all modes except explicit, the names of elements are the unprefixed
+table names and the names of attributes are the columns' names in the
+result set.  If tables have correlation names the correlation names
+are used in the output instead of the table names.  Expressions are
+allowed in the selections but these should be named using AS.  In AUTO
+mode Virtuoso assumes expressions belong to the topmost element.
+</para>
+      <para>
+The FOR XML clause is generally allowed in SELECT statements in place
+of the FOR UPDATE clause.  However it only has an effect when the
+statement is executed through the <link linkend="fn_xml_auto"><function>xml_auto()</function></link>
+
+   function.
+</para>
+      <tip>
+        <title>See Also:</title>
+        <para>The <link linkend="sqlxmlstmts">SQL-XML Statements</link>
+
+   page described in the
+Visual Server Administration Interface section provides a fast
+graphical way of supplying an SQL statement to Virtuoso and saving the
+view as a resource accessible from the WebDAV store.</para>
+      </tip>
+      <section xml:id="forxmlexplicmode">
+        <title>FOR XML EXPLICIT Mode</title>
+        <para>
+This mode gives the developer the most control over the generated
+result tree but requires a verbose query formulation.  Each row must
+begin with two integer columns, the first identifying the element
+represented by the row and the second the parent element type of this
+element.  Consider:
+</para>
+        <programlisting>
+select 1 as tag, null as parent,
+       "CategoryID" as [category!1!cid],
+       "CategoryName" as [category!1!name],
+       NULL as [product!2!pid],
+       NULL as [product!2!name!element]
+from "Demo".."Categories"
+union all
+select 2, 1, "category" ."CategoryID", NULL, "ProductID", "ProductName"
+    from "Demo".."Categories" "category", "Demo".."Products" as "product"
+    where "product"."CategoryID" = "category"."CategoryID"
+order by [category!1!cid], 5
+for xml explicit;
+</programlisting>
+        <para>
+This query makes a two level tree where Categories have Product
+children.  The selection in the first UNION term specifies the element
+types in the result set.  The two first columns, TAG and PARENT are
+required in all EXPLICIT queries.  Subsequent columns have an extended
+AS declaration that specifies which element they belong to, what that
+element is called in XML and what the column will be called.  A row
+where TAG has a value of 1 will pick the columns which has [xxx!1!yyy]
+as their alias; rows with a TAG of 2 will pick columns with an alias
+with [xxx!2!yyy] and so on.
+</para>
+        <para>
+If consecutive rows have a different TAG but the same PARENT, these
+will be siblings of different types.  This possibility does not exist
+with the other FOR XML modes.
+</para>
+        <para>
+If the PARENT is 0 or NULL, then any previously open elements in the
+result are closed and the element of the row becomes a top-level
+element.  When PARENT refers to the TAG of a presently open element in
+the set, all children of that element are closed and the row's element
+is inserted as the next child of the last element with the TAG equal
+to the new row's PARENT.  All open tags are closed at the end of the
+result set.
+</para>
+        <note>
+          <title>Note</title>
+          <para>Since each level of the tree is generated by a different term in
+the UNION ALL, an ORDER BY will invariably be needed to group the
+children after their parents.  If the parent rows have NULLs in
+place of the child row's key values, the parent gets sorted first
+because NULL collates first.
+</para>
+        </note>
+      </section>
+      <section xml:id="examplesofforxml">
+        <title>Examples of FOR XML</title>
+        <para>This section gives one example of each mode of FOR XML combined
+with the <function>xml_auto()</function>
+
+   function to help us display
+the results simply. First we create a procedure that enables us to
+supply SQL and return XML using the <function>xml_auto()</function>
+
+function.</para>
+        <programlisting>
+create procedure xmla (in q varchar)
+{
+  declare st any;
+  st := string_output ();
+  xml_auto (q, vector (), st);
+  result_names (q);
+  result (string_output_string (st));
+}
+</programlisting>
+        <para>Now we can apply this to a couple of examples:</para>
+        <example>
+          <title>XML RAW</title>
+          <programlisting>
+xmla ('select "category"."CategoryID", "CategoryName",
+    "ProductName", "ProductID"
+    from "Demo".."Categories" "category", "Demo".."Products" as "product"
+    where "product"."CategoryID" = "category"."CategoryID" FOR XML RAW');
+</programlisting>
+          <screen>
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Chai" ProductID="1"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Chang" ProductID="2"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Guaraná Fantástica" ProductID="24"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Sasquatch Ale" ProductID="34"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Steeleye Stout" ProductID="35"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Côte de Blaye" ProductID="38"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Chartreuse verte" ProductID="39"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Ipoh Coffee" ProductID="43"&gt;
+&lt;/ROW&gt;
+&lt;ROW CategoryID="1" CategoryName="Beverages" ProductName="Laughing Lumberjack Lager" ProductID="67"&gt;
+&lt;/ROW&gt;
+.....
+</screen>
+        </example>
+        <para>As we can see, RAW mode produces a simple row-by-row account
+of the data encased within the &lt;ROW.../&gt; tags.  This is the simplest
+mode.</para>
+        <example>
+          <title>XML AUTO</title>
+          <programlisting>
+xmla ('select "category"."CategoryID", "CategoryName",
+    "ProductName", "ProductID"
+    from "Demo".."Categories" "category", "Demo".."Products" as "product"
+    where "product"."CategoryID" = "category"."CategoryID" FOR XML AUTO ELEMENT');
+</programlisting>
+          <screen>
+&lt;category&gt;
+ &lt;CategoryID&gt;1&lt;/CategoryID&gt; &lt;CategoryName&gt;Beverages&lt;/CategoryName&gt;&lt;product&gt;
+ &lt;ProductName&gt;Chai&lt;/ProductName&gt; &lt;ProductID&gt;1&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Chang&lt;/ProductName&gt; &lt;ProductID&gt;2&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Guaraná Fantástica&lt;/ProductName&gt; &lt;ProductID&gt;24&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Sasquatch Ale&lt;/ProductName&gt; &lt;ProductID&gt;34&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Steeleye Stout&lt;/ProductName&gt; &lt;ProductID&gt;35&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Côte de Blaye&lt;/ProductName&gt; &lt;ProductID&gt;38&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Chartreuse verte&lt;/ProductName&gt; &lt;ProductID&gt;39&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Ipoh Coffee&lt;/ProductName&gt; &lt;ProductID&gt;43&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+ &lt;ProductName&gt;Laughing Lumberjack Lager&lt;/ProductName&gt; &lt;ProductID&gt;67&lt;/ProductID&gt;&lt;/product&gt;
+&lt;product&gt;
+.....
+</screen>
+        </example>
+        <para>In contrast to RAW mode, AUTO produces results that are more
+tree-like.  Only one category element is used for each category, and
+that contains all the children of the category.</para>
+        <example>
+          <title>XML EXPLICIT</title>
+          <programlisting>
+xmla ('
+select 1 as tag, null as parent,
+       "CategoryID" as [category!1!cid],
+       "CategoryName" as [category!1!name],
+       NULL as [product!2!pid],
+       NULL as [product!2!name!element]
+from "Demo".."Categories"
+union all
+select 2, 1, "category" ."CategoryID", NULL, "ProductID", "ProductName"
+    from "Demo".."Categories" "category", "Demo".."Products" as "product"
+    where "product"."CategoryID" = "category"."CategoryID"
+order by [category!1!cid], 5
+FOR XML EXPLICIT');
+</programlisting>
+          <screen>
+&lt;CATEGORY CID="1" NAME="Beverages"&gt;
+&lt;PRODUCT PID="1"&gt;
+ &lt;NAME&gt;Chai&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="2"&gt;
+ &lt;NAME&gt;Chang&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="24"&gt;
+ &lt;NAME&gt;Guaraná Fantástica&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="34"&gt;
+ &lt;NAME&gt;Sasquatch Ale&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="35"&gt;
+ &lt;NAME&gt;Steeleye Stout&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="38"&gt;
+ &lt;NAME&gt;Côte de Blaye&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="39"&gt;
+ &lt;NAME&gt;Chartreuse verte&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="43"&gt;
+ &lt;NAME&gt;Ipoh Coffee&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="67"&gt;
+ &lt;NAME&gt;Laughing Lumberjack Lager&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="70"&gt;
+ &lt;NAME&gt;Outback Lager&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="75"&gt;
+ &lt;NAME&gt;Rhönbräu Klosterbier&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;PRODUCT PID="76"&gt;
+ &lt;NAME&gt;Lakkalikööri&lt;/NAME&gt;&lt;/PRODUCT&gt;
+&lt;/CATEGORY&gt;
+&lt;CATEGORY CID="2" NAME="Condiments"&gt;
+&lt;PRODUCT PID="3"&gt;
+.....
+</screen>
+        </example>
+        <para>In this example, we specify precisely the tree structure we
+wish, and construct the EXPLICIT query to produce that tree.  Many
+times programmers know what the resulting XML should look
+like but do not know how to get exactly what they want.  FOR XML
+EXPLICIT can be very useful in these cases.</para>
+      </section>
+      <section xml:id="forxmlfunc">
+        <title>Functions</title>
+        <para>
+          <link linkend="fn_xml_auto">
+            <function>xml_auto()</function>
+          </link>
+        </para>
+      </section>
+      <section xml:id="forxmlsyntax">
+        <title>FOR XML Syntax</title>
+        <programlisting>
+for__xml ::= FOR XML &lt;mode&gt; [ ELEMENT ]
+
+&lt;mode&gt; ::= RAW | AUTO | EXPLICIT
+
+&lt;explicit column&gt; ::=  scalar_exp AS '[' &lt;element&gt; '!' &lt;tag no&gt; '!'
+                   &lt;column name&gt; [ '!' &lt;option&gt; ] ']'
+
+&lt;tag no&gt; ::= INTNUM
+
+&lt;column name&gt; ::= IDENTIFIER
+
+&lt;element&gt; ::= IDENTIFIER
+
+&lt;option&gt; ::= IDENTIFIER
+
+</programlisting>
+        <para>
+The &lt;explicit column&gt; should be used in the selection list of
+the first term of the UNION ALL construct in a FOR XML EXPLICIT query.
+Virtuoso provides this functionality separately from any Web server
+context, although these are principally expected to be used inside VSP
+pages.
+</para>
+        <para>
+The text of &lt;option&gt; part of the &lt;explicit column&gt; is
+ignored but if it is present then the value is placed into
+a sub-element of the element for the row, not into an attribute.
+</para>
+      </section>
+    </section>

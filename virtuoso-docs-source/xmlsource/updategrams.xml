@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="updategrams">
+      <title>Using UpdateGrams to Modify Data</title>
+      <para>Updategrams allow database updates to be defined as XML.  This
+is ultimately achieved by mapping the XML nodes against corresponding
+database columns.  Updategrams can be used to replace existing data
+access components in a middle tier.  A typical application will
+include a middle tier consisting of business logic and data access
+code.  The data access code will interact with the database using
+disconnected recordsets and command objects calling stored procedures.
+Most of the data access section of the middle tier can be replaced
+with updategrams.</para>
+      <para>Most data access tiers (both middle tier code and stored
+procedures) will deal individually with specific database tables or
+groups of related tables.  This can inhibit performance and often
+several round trips to the database are required to complete a
+transaction.  Updategrams solve this problem by including all the data
+in an XML document that is then mapped to database tables and columns.
+The entire database update can then be accomplished at once.  This
+update can include inserting, updating and deleting data.</para>
+      <para>The <function>xmlsql_update()</function>
+
+   function supports
+XML-based insert, update, and delete operations performed on an
+existing table in the database.
+      <link linkend="fn_xmlsql_update"><function>xmlsql_update()</function></link></para>
+      <section xml:id="updategrambasics">
+        <title>Updategrams Basics</title>
+        <para>
+The general format of an updategram is:
+</para>
+        <programlisting>
+&lt;sql:sync xmlns:sql="xml-sql"&gt;
+ &lt;sql:before&gt;
+    &lt;TABLENAME [sql:id="value"] col="value" col="value"?../&gt;
+ &lt;/sql:before&gt;
+ &lt;sql:after&gt;
+    &lt;TABLENAME [sql:id="value"] [sql:at-identity="value"]
+      col="value" col="value"?../&gt;
+ &lt;/sql:after&gt;
+&lt;/sql:sync&gt;
+</programlisting>
+        <para>
+or
+</para>
+        <programlisting>
+&lt;sql:sync xmlns:sql="xml-sql"&gt;
+        &lt;sql:before&gt;
+                &lt;TABLENAME [sql:id="value"]&gt;
+		   &lt;col&gt;"value"&lt;/col&gt;
+		   &lt;col&gt;"value"&lt;/col&gt;
+		   ...
+		&lt;/TABLENAME&gt;
+		...
+        &lt;/sql:before&gt;
+        &lt;sql:after&gt;
+                &lt;TABLENAME [sql:id="value"] [sql:at-identity="value"]&gt;
+		   &lt;col&gt;"value"&lt;/col&gt;
+		   &lt;col&gt;"value"&lt;/col&gt;
+		   ...
+		&lt;/TABLENAME&gt;
+		...
+        &lt;/sql:after&gt;
+&lt;/sql:sync&gt;
+</programlisting>
+      </section>
+      <section xml:id="elementsdesc">
+        <title>Elements Description</title>
+        <para>
+The <parameter>&lt;sync&gt;</parameter>
+
+   tag of the updategram
+signifies the beginning of an operation(s) The rows specified in the
+<parameter>&lt;before&gt;</parameter>
+
+   refer to existing records in the
+database.  The rows specified in the
+<parameter>&lt;after&gt;</parameter>
+
+   block refer to what the user
+wants in the database.  <parameter>&lt;TABLENAME.../&gt;</parameter>
+
+identifies target table.
+</para>
+        <para>
+The <parameter>sql:at-identity</parameter>
+
+   attribute stores the last
+identity value added by the system (if possible).  This identity value
+can then be used in subsequent operations.
+</para>
+        <para>
+The <parameter>sql:id</parameter>
+
+   attribute is used to mark rows. This
+forces an association between the record specified in the
+<parameter>&lt;before&gt;</parameter>
+
+   and
+<parameter>&lt;after&gt;</parameter>
+
+   block in the update gram.  When
+there are multiple instances specified, it is recommended that
+<parameter>sql:id</parameter>
+
+   attribute be used for all the instances.
+</para>
+        <para>
+Each <parameter>&lt;TABLENAME.../&gt;</parameter>
+
+   refers to a single
+table. Multiple <parameter>&lt;TABLENAME.../&gt;</parameter>
+
+   entries
+are allowed in the same <parameter>&lt;before&gt;</parameter>
+
+   or
+<parameter>&lt;after&gt;</parameter>
+
+   tags, or in both
+<parameter>&lt;before&gt;</parameter>
+
+   and
+<parameter>&lt;after&gt;</parameter>
+
+   tags; however, nesting is not
+allowed.  The <parameter>&lt;before&gt;</parameter>
+
+   and
+<parameter>&lt;after&gt;</parameter>
+
+   tags are optional. A missing tag
+is the same as having a tag with no content.
+</para>
+      </section>
+      <section xml:id="determiningactions">
+        <title>Determining Actions</title>
+        <para>
+If only the <parameter>&lt;after&gt;</parameter>
+
+   block is specified,
+the rows specified in the <parameter>&lt;after&gt;</parameter>
+
+   block
+are inserted in the table(s). If both the
+<parameter>&lt;before&gt;</parameter>
+
+   and
+<parameter>&lt;after&gt;</parameter>
+
+   blocks are specified, then rows
+specified in the <parameter>&lt;after&gt;</parameter>
+
+   block for which
+there are no corresponding rows in the
+<parameter>&lt;before&gt;</parameter>
+
+   block are inserted in the
+table(s).
+</para>
+        <para>
+In an update operation, the rows specified in the
+<parameter>&lt;before&gt;</parameter>
+
+   block refer to existing rows in
+the database. The corresponding rows in the
+<parameter>&lt;after&gt;</parameter>
+
+   block reflect what the user wants
+in the database. A row update operation is performed if there is a row
+in both the <parameter>&lt;before&gt;</parameter>
+
+   and
+<parameter>&lt;after&gt;</parameter>
+
+   sections with the same set of
+values for the attributes that uniquely identify a row in a
+table. Rows specified in the <parameter>&lt;before&gt;</parameter>
+
+block must be valid in the database for the updategram to successfully
+update the rows.
+</para>
+        <para>
+In a delete operation, if only the
+<parameter>&lt;before&gt;</parameter>
+
+   block is specified in the update
+gram, the rows specified in the <parameter>&lt;before&gt;</parameter>
+
+block are deleted from the table(s). If both the
+<parameter>&lt;before&gt;</parameter>
+
+   and
+<parameter>&lt;after&gt;</parameter>
+
+   blocks are specified, the rows
+for which there are no corresponding rows in the
+<parameter>&lt;after&gt;</parameter>
+
+   block are deleted from the
+table(s).
+</para>
+      </section>
+      <section xml:id="usinginparams">
+        <title>Using Input Parameters</title>
+        <para>
+Parameters declarations should be described in the &lt;header&gt;
+section of the updategram.  There should be one
+<parameter>&lt;param&gt;</parameter>
+
+   row for each parameter.
+</para>
+        <para>
+General syntax:
+</para>
+        <programlisting>
+&lt;sql:header xmlns:sql="xml-sql"&gt;
+  &lt;sql:param name="PARAM_NAME" [default="DEFAULT_VALUE"]/&gt;
+  ...
+&lt;/sql:header&gt;
+</programlisting>
+        <para>
+Where <parameter>PARAM_NAME</parameter>
+
+   is the name of the parameter
+and <parameter>DEFAULT_VALUE</parameter>
+
+   is optional default of
+parameter Parameters in updategram should have
+<parameter>$PARAM_NAME</parameter>
+
+   instead of a value.  On processing,
+Virtuoso replaces <parameter>$PARAM_NAME</parameter>
+
+   with the
+corresponding value from the
+<parameter>&lt;input_parameters&gt;</parameter>
+
+   given to the function
+<function>xmlsql_update()</function>
+
+  .
+</para>
+      </section>
+      <section xml:id="examples">
+        <title>Examples</title>
+        <para>
+Given the following tables:
+</para>
+        <programlisting>
+CREATE TABLE Orders (
+    OrderID int identity,
+    CustomerID varchar(10),
+    EmpID int,
+    PRIMARY KEY (OrderID));
+
+CREATE TABLE OrderDetails (
+    OrderID int,
+    ProductID int,
+    Quantity int);
+</programlisting>
+        <para>
+A. Update Gram to Insert a Record
+</para>
+        <programlisting>
+xmlsql_update (xml_tree_doc (xml_tree (
+'&lt;ROOT xmlns:sql="urn:schemas-microsoft-com:xml-sql"&gt;
+&lt;sql:sync&gt;
+  &lt;sql:after&gt;
+    &lt;Orders CustomerID="TEST" EmpID="99"/&gt;
+  &lt;/sql:after&gt;
+&lt;/sql:sync&gt;
+&lt;/ROOT&gt;')));
+</programlisting>
+        <para>
+B. Updategram with an <parameter>at-identity</parameter>
+
+   Attribute
+</para>
+        <programlisting>
+xmlsql_update (xml_tree_doc (xml_tree (
+'&lt;ROOT xmlns:sql="urn:schemas-microsoft-com:xml-sql"&gt;
+&lt;sql:sync&gt;
+  &lt;sql:after&gt;
+    &lt;Orders sql:at-identity="x" CustomerID="VINET" EmpID="10"/&gt;
+      &lt;OrderDetails OrderID="x" ProductID="1" Quantity="50"/&gt;
+      &lt;OrderDetails OrderID="x" ProductID="2" Quantity="20"/&gt;
+    &lt;Orders sql:at-identity="x" CustomerID="HANAR" EmpID="11"/&gt;
+      &lt;OrderDetails OrderID="x" ProductID="1" Quantity="30"/&gt;
+      &lt;OrderDetails OrderID="x" ProductID="4" Quantity="25"/&gt;
+  &lt;/sql:after&gt;
+&lt;/sql:sync&gt;
+&lt;/ROOT&gt;')));
+</programlisting>
+        <para>
+C. Updategram to Delete a Record
+</para>
+        <programlisting>
+xmlsql_update (xml_tree_doc (xml_tree (
+'&lt;ROOT xmlns:sql="urn:schemas-microsoft-com:xml-sql"&gt;
+&lt;sql:sync&gt;
+  &lt;sql:before&gt;
+    &lt;Orders CustomerID="HANAR" EmpID="11"/&gt;
+  &lt;/sql:before&gt;
+&lt;/sql:sync&gt;
+&lt;/ROOT&gt;')));
+</programlisting>
+        <para>
+D. Updategram to Update a Record
+</para>
+        <programlisting>
+xmlsql_update (xml_tree_doc (xml_tree (
+'&lt;ROOT xmlns:sql="urn:schemas-microsoft-com:xml-sql"&gt;
+&lt;sql:sync&gt;
+  &lt;sql:before&gt;
+    &lt;Orders sql:id="1" CustomerID="VINET" EmpID="10"/&gt;
+  &lt;/sql:before&gt;
+  &lt;sql:after&gt;
+    &lt;Orders sql:id="1" CustomerID="VINET_NEW" EmpID="11"/&gt;
+  &lt;/sql:after&gt;
+&lt;/sql:sync&gt;
+&lt;/ROOT&gt;')));
+</programlisting>
+        <para>
+E: Using a different syntax for updategrams  -  entities in place
+of attributes  -  example D can be transformed to:
+</para>
+        <programlisting>
+xmlsql_update (xml_tree_doc (xml_tree (
+'&lt;ROOT xmlns:sql="urn:schemas-microsoft-com:xml-sql"&gt;
+&lt;sql:sync&gt;
+  &lt;sql:before&gt;
+    &lt;Orders sql:id="1"&gt;
+      &lt;CustomerID&gt;VINET&lt;/CustomerID&gt;
+      &lt;EmpID&gt;10&lt;/EmpID&gt;
+    &lt;/Orders&gt;
+  &lt;/sql:before&gt;
+  &lt;sql:after&gt;
+    &lt;Orders sql:id="1"&gt;
+      &lt;CustomerID&gt;VINET_NEW&lt;/CustomerID&gt;
+      &lt;EmpID&gt;11&lt;/EmpID&gt;
+    &lt;/Orders&gt;
+  &lt;/sql:after&gt;
+&lt;/sql:sync&gt;
+&lt;/ROOT&gt;')));
+</programlisting>
+        <para>
+Note that two syntaxes cannot be mixed in one document.
+</para>
+        <para>
+F: Using input parameters
+</para>
+        <para>
+Assume the following table:
+</para>
+        <programlisting>
+CREATE TABLE Shippers(
+  ShipperID INTEGER,
+  CompanyName VARCHAR(40),
+  Phone VARCHAR(24),
+  PRIMARY KEY (ShipperID));
+
+xmlsql_update (xml_tree_doc (xml_tree (
+'&lt;DocumentElement xmlns:sql="urn:schemas-microsoft-com:xml-sql"&gt;
+    &lt;sql:header&gt;
+      &lt;sql:param name="ShipperID" default="2"/&gt;
+      &lt;sql:param name="CompanyName" default="United Package New"/&gt;
+      &lt;sql:param name="Phone" default="(503) 555-3199 (new)"/&gt;
+    &lt;/sql:header&gt;
+    &lt;sql:sync&gt;
+        &lt;sql:before&gt;
+        &lt;/sql:before&gt;
+        &lt;sql:after&gt;
+            &lt;Shippers sql:id="1" ShipperID="\$ShipperID"
+	    CompanyName="\$CompanyName" Phone="\$Phone"/&gt;
+        &lt;/sql:after&gt;
+    &lt;/sql:sync&gt;
+&lt;/DocumentElement&gt;')),
+    vector ('ShipperID','10','CompanyName','DHL','Phone','+359 32 144'));
+		-- &lt;- this is a array with input parameters
+</programlisting>
+        <para>
+This will add one record to the Shippers table with the data in the array.
+Note that the slash/dollar sign pair '\$' transforms to dollar sign '$' only
+</para>
+      </section>
+    </section>

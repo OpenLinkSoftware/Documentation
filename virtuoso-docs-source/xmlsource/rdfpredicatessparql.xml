@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfpredicatessparql">
+        <title>Query Constructs</title>
+        <para>Starting from Version 5.0, Virtuoso supports filtering RDF objects triples by a given predicate.</para>
+        <section xml:id="rdfpredicatessparqlexamples">
+          <title>Examples</title>
+          <para>The boolean functions bif:contains, bif:xcontains, bif:xpath_contains and bif:xquery_contains
+    	can be used for objects that come from Linked Data Views as well
+as for regular "physical" triples. Each of these functions takes two arguments and returns a boolean value.
+The first argument is a local variable which should also be used as an object field in
+the group pattern where the filter condition is placed.
+    </para>
+          <para>In order to execute the examples below please run these commands:</para>
+          <programlisting>
+SQL&gt;SPARQL CLEAR GRAPH &lt;http://MyTest.com&gt;;
+DB.DBA.RDF_QUAD_URI_L ('http://MyTest.com', 'sxml1', 'p_all1', xtree_doc ('&lt;Hello&gt;world&lt;/Hello&gt;'));
+DB.DBA.RDF_QUAD_URI_L ('http://MyTest.com', 'sxml2', 'p_all2', xtree_doc ('&lt;Hello2&gt;world&lt;/Hello2&gt;'));
+DB.DBA.RDF_QUAD_URI_L ('http://MyTest.com', 'nonxml1', 'p_all3', 'Hello world');
+VT_INC_INDEX_DB_DBA_RDF_OBJ();
+DB.DBA.RDF_OBJ_FT_RULE_ADD ('http://MyTest.com', null, 'My test RDF Data');
+</programlisting>
+          <para>
+            <emphasis>bif:contains</emphasis>
+          </para>
+          <programlisting>
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://MyTest.com&gt;
+WHERE { ?s ?p ?o . ?o bif:contains "world" };
+
+s             p         o
+VARCHAR       VARCHAR   VARCHAR
+_______________________________________________________________________________
+
+sxml1         p_all1    &lt;Hello&gt;world&lt;/Hello&gt;
+nonxml1       p_all3    Hello world
+sxml2         p_all2    &lt;Hello2&gt;world&lt;/Hello2&gt;
+
+3 Rows. -- 20 msec.
+</programlisting>
+          <para>
+            <emphasis>bif:xcontains</emphasis>
+          </para>
+          <programlisting>
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://MyTest.com&gt;
+WHERE { ?s ?p ?o . ?o bif:xcontains "//Hello[text-contains (., 'world')]" };
+s                  p          o
+VARCHAR            VARCHAR    VARCHAR
+_______________________________________________________________________________
+
+sxml1              p_all      &lt;Hello&gt;world&lt;/Hello&gt;
+
+1 Rows. -- 10 msec.
+</programlisting>
+          <para>
+            <emphasis>bif:xpath_contains</emphasis>
+          </para>
+          <programlisting>
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://MyTest.com&gt;
+WHERE { ?s ?p ?o . ?o bif:xpath_contains "//*" };
+
+s             p         o
+VARCHAR       VARCHAR   VARCHAR
+_______________________________________________________________________________
+
+sxml1         p_all1    &lt;Hello&gt;world&lt;/Hello&gt;
+sxml2         p_all2    &lt;Hello2&gt;world&lt;/Hello2&gt;
+
+2 Rows. -- 20 msec.
+</programlisting>
+          <para>
+            <emphasis>bif:xquery_contains</emphasis>
+          </para>
+          <programlisting>
+SQL&gt;SPARQL
+SELECT *
+FROM &lt;http://MyTest.com&gt;
+WHERE { ?s ?p ?o . ?o bif:xquery_contains "//Hello2 , world" };
+
+s             p         o
+VARCHAR       VARCHAR   VARCHAR
+_______________________________________________________________________________
+
+sxml2         p_all2    &lt;Hello2&gt;world&lt;/Hello2&gt;
+
+1 Rows. -- 20 msec.
+</programlisting>
+        </section>
+      </section>

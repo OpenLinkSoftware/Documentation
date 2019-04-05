@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xmlelement">
+      <refmeta>
+        <refentrytitle>XMLELEMENT
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>XMLELEMENT
+</refname>
+        <refpurpose>Creates XML element
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xmlelement">
+          <funcprototype xml:id="fproto_xmlelement">
+            <funcdef>
+              <function>XMLELEMENT
+</function>
+            </funcdef>
+            <paramdef choice="opt"><parameter>tag_name
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt"><parameter>list_of_attributes
+</parameter>
+
+   sequence
+</paramdef>
+            <paramdef choice="opt"><parameter>child_or_attribute1
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt"><parameter>child_or_attribute2
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">
+              <parameter>...
+</parameter>
+            </paramdef>
+            <paramdef choice="opt"><parameter>child_or_attributeN
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xmlelement">
+        <title>Description
+</title>
+        <para><function>XMLELEMENT
+</function>
+
+   takes an element name for identifier, an optional collection of attributes for the element,
+    and arguments that make up the element's content.
+    It returns a XML element. The second parameter may be omitted and at that time the
+    rest parameters may be present. If one of the arguments is a call of the <function>xpath_eval</function>
+
+   returning
+    an attribute value, then this value would be added to element's content (not to element's attributes).
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="xmlelement">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>tag_name
+</title>
+          <para>name of the element, it must be valid XML element name 
+</para>
+        </refsect2>
+        <refsect2>
+          <title>list_of_attributes
+</title>
+          <para>a vector returned by 
+<function>XMLATTRIBUTES
+</function>
+
+   function. If the vector is NULL, then no attribute is created.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>child_or_attributeI
+</title>
+          <para>a string, or name of a column, or concatenation of the names and/or strings, or a vector returned by
+      <function>XMLELEMENT</function>
+
+  , <function>XMLFOREST</function>
+
+  ,
+      <function>XMLCONCAT</function>
+
+  , or <function>XMLAGG</function>
+
+   functions,
+      or an entity object returned by
+      corresponding functions (e.g. <function>xtree_doc</function>
+
+   or <function>xquery_eval</function>
+
+  ).
+      If the entity object is an attribute entity, then it is joined
+      to the list of the element's attributes. If a parameter is NULL, then no child element or attribute is created for
+      that parameter.
+
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="errors_xmlelement">
+        <title>Errors
+</title>
+        <table>
+          <title>Errors signalled by 
+<function>XMLELEMENT
+</function>
+
+</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>SQLState
+</entry>
+                <entry>Error Code
+</entry>
+                <entry>Error Text
+</entry>
+                <entry>Description
+</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <errorcode>22003
+</errorcode>
+                </entry>
+                <entry>
+                  <errorcode>SR354
+</errorcode>
+                </entry>
+                <entry>
+                  <errortext>Too few arguments for XMLELEMENT
+</errortext>
+                </entry>
+                <entry>There must be at least one argument
+</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </refsect1>
+      <refsect1 xml:id="xmlelement_01">
+        <title>Examples
+</title>
+        <example xml:id="ex_xmlelement">
+          <title>XMLELEMENT() with a single argument
+</title>
+          <para><function>XMLELEMENT
+</function>
+
+   creates an 'Title' element without content.
+      </para>
+          <screen>
+              select XMLELEMENT ('Title') from "Demo"."demo"."Employees";
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;Title /&gt;
+&lt;Title /&gt;
+. . .
+9 Rows. -- 2 msec.
+
+</screen>
+        </example>
+        <example xml:id="ex_xmlelement_01">
+          <title>XMLELEMENT() with content
+</title>
+          <para>The following example produces an 'Emp' element with three attributes
+     (the 'region' attribute is calculated by <function>xquery_eval</function>
+
+  )
+     and five nested subelements </para>
+          <screen>
+select XMLELEMENT ('Emp',
+                    XMLATTRIBUTES ( "EmployeeID" AS "EmpID", "Title"),
+                    XMLELEMENT ('Name', "FirstName" || ' ' || "LastName" ),
+                    xquery_eval('//@region', xtree_doc ('&lt;a region="WA"&gt;&lt;/a&gt;')),
+                    XMLFOREST ("PostalCode", "City" as "city"),
+                    XMLCONCAT (XMLELEMENT ('HomePhone', "HomePhone"),
+                               XMLELEMENT ('BirthDate', "BirthDate")))
+  from "Demo"."demo"."Employees"
+  where "EmployeeID"=1;
+
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;Emp EmpID="1" Title="Sales Representative" region="WA"&gt;
+  &lt;Name&gt;Nancy Davolio&lt;/Name&gt;
+  &lt;city&gt;Seattle&lt;/city&gt;
+  &lt;PostalCode&gt;98122&lt;/PostalCode&gt;
+  &lt;HomePhone&gt;(206) 555-9857&lt;/HomePhone&gt;
+  &lt;BirthDate&gt;1948-12-08&lt;/BirthDate&gt;
+&lt;/Emp&gt;
+
+</screen>
+        </example>
+        <example xml:id="ex_xmlelement_01_01">
+          <title>XMLELEMENT() with the aggregate function XMLAGG()
+</title>
+          <para>
+          This example produces 'Emp' elements, with the list of the 'Name' of all employees.
+      </para>
+          <screen>
+select XMLELEMENT ('Emp',
+                    XMLAGG (XMLELEMENT('Name', "FirstName", ' ', "LastName")))
+  from "Demo"."demo"."Employees";
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;Emp&gt;
+   &lt;Name&gt;Nancy Davolio&lt;/Name&gt;
+   &lt;Name&gt;Andrew Fuller&lt;/Name&gt;
+   &lt;Name&gt;Janet Leverling&lt;/Name&gt;
+   &lt;Name&gt;Margaret Peacock&lt;/Name&gt;
+   &lt;Name&gt;Steven Buchanan&lt;/Name&gt;
+   &lt;Name&gt;Michael Suyama&lt;/Name&gt;
+   &lt;Name&gt;Robert King&lt;/Name&gt;
+   &lt;Name&gt;Laura Callahan&lt;/Name&gt;
+   &lt;Name&gt;Anne Dodsworth&lt;/Name&gt;
+&lt;/Emp&gt;
+
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xmlelement">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xmlagg">XMLAGG()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlattributes">XMLATTRIBUTE()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlconcat">XMLCONCAT()
+</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlforest">XMLFOREST()
+</link>
+        </para>
+      </refsect1>
+    </refentry>

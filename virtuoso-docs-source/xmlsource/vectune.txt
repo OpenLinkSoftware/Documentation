@@ -1,0 +1,102 @@
+
+
+Tuning Vectored Execution and Hash Joins 
+
+
+This section applies only to versions 7.00 and up.
+
+Query evaluation performance is significantly affected by
+parallelization, the vector size and the use of hash joins and fast
+in-memory hash tables for group by and distinct.
+
+
+This section explains the configuration parameters and event counters that allow optimizing these factors.
+
+The SQL function cl_sys_stat (in name varchar, in clr int := 0) allows reading and optionally resetting these counters.
+In the case of a cluster, the value returned is the sum of the values of the metric gathered  from all server processes, for a single server this is the local valu.  In a cluster, to get individual counter values, use sys_stat instead when connected to the process of interest.
+
+
+To do TPC H at scale 100G on a 32 thread machine, the virtuoso.ini should have the following settings. Only settings at non-default values are mentioned.
+
+
+[Parameters]
+ServerThreads              = 100
+NumberOfBuffers            = 5000000
+; 5000000 / 128 =  39G - The working set of the 100G database when stored column-wise is 38G, so configure this much for database buffers.
+DefaultIsolation           = 2
+;  Read committed 
+
+MaxMemPoolSize             = 100000000
+; SQL optimizer work space
+
+AdjustVectorSize           = 1
+; Use large vectors when appropriate 
+ThreadsPerQuery            = 32
+; Split queries in up to 32 independently evaluable fragments, so up to 32 threads per query. 
+AsyncQueueMaxThreads       = 32
+; Thread pool has 32 worker threads divided across all queries in addition to the client thread taken by each query. 
+
+MaxQueryMem                = 30G
+; All queries can collectively take up to 30G without space saving measures being applied.  Space saving measures are running on small vector size when a large size would be faster and the use of partitioned (multiple pass) hash join.
+
+HashJoinSpace              = 30G
+
+; Of the MaxQueryMem, hash join hash tables can take up to 30G,
+  i.e. all of it.  A single hash table will only take half of the
+  remaining space, though.  So if 2 queries that both need a 30G hash
+  table run at the same time, the first will do 2 passes, taking a
+  hash table of 15G at a time, This leaves 20G space.  The seond wil have 15G left, of which it will take half, 7.5G.  This will require 4 passes over the data.  
+
+
+
+
+
+To analyze the performance of a query workload:
+
+SQL> prof_enable (1);
+
+-- Turn on query logging in sys_query_log.  This view contains most metrics and the full text of the query plan with the per operator timings and cardinalities.
+
+Run the query.
+
+SQL> set blobs on;
+-- print long result columns without truncating.
+
+Use the profile function for a convenient overview of query execution.
+
+For example:
+SQL> profile ('select count (*) from orders, lineitem where l_orderkey = o_orderkey');
+
+There is a summary of execution time, CPU%, compilation time and IO. 
+
+
+
+-- Read the relevant event counters, resetting the count for the next query.  For example:
+
+SQL> select cl_sys_stat ('tc_qp_thread', clr => 1);
+
+The relevant counters are:
+
+tc_qp_thread - How many threads were started for query parallelization.  This is not the number of paralllel threads as not all of these threads needed to be running at the same time.
+
+tc_part_hash_join  - If a hash join is partitioned, i.e. needs to make nultiple passes on over the data, this is the count of passes.  This is incremented by 2 if the hash join does 2 passes and not incremented if the hash join goes in a single pass.  normally this should stay at 0 or the hash join space (HashJoinSpace in init, see above) should be inccreased.
+
+
+
+tc_no_mem_for_longer_batch - This is the count of times the execution engine did not switch to large vectors because there was not enough space.  This should normally be 0, if this is not so, increase MaxQueryMem in the ini file.
+
+tc_slow_temp_insert - If a distinct or group by temporary space grows
+over the available query memory, a another data structure will be used
+so that the hash table can be paged out to disk.  This is tens of
+times less efficient than the memory only structure.  This counter is
+the count of rows inserted into a pageable group by or distinct hash
+table.  This should be 0, if not, increase MaxQueryMem.
+
+
+- mp_max_large_in_use -  This is the maximum amount of query memory  that has been allocated to date. Reset this before the query of interest, run and read the counter.  This is the peak simultaneous memory use by the query.
+
+- mp_large_in_use - This is the current amount of query memory in use.  Do not reset this, 
+
+- c_max_large_vec -  This is the MaxQueryMem init setting in bytes.   This can be altered at run time with __dbf_set.
+
+

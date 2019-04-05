@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_rdf_triples_to_ttl">
+      <refmeta>
+        <refentrytitle>DB.DBA.RDF_TRIPLES_TO_TTL
+</refentrytitle>
+        <refmiscinfo>rdf
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>DB.DBA.RDF_TRIPLES_TO_TTL
+</refname>
+        <refpurpose>Serializes vector of triples into a session, in TURTLE syntax.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_rdf_triples_to_ttl">
+          <funcprototype xml:id="fproto_rdf_triples_to_ttl">
+            <funcdef>
+              <function>DB.DBA.RDF_TRIPLES_TO_TTL
+</function>
+            </funcdef>
+            <paramdef choice="opt">inout 
+<parameter>triples
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">inout 
+<parameter>ses
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_rdf_triples_to_ttl">
+        <title>Description
+</title>
+        <para>Serializes vector of triples into a session, in TURTLE syntax. In current version, every triple is printed in separate top-level record (say, in rdf:Description tag),
+without any pretty-print or nesting optimization.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_rdf_triples_to_ttl">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>triples
+</title>
+          <para>vector of triples in 'long valmode'.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>ses
+</title>
+          <para>an output stream in server default encoding
+</para>
+        </refsect2>
+      </refsect1>
+      <!--  
+<refsect1
+xml:id="ret_rdf_triples_to_ttl">
+<title>Return Types
+</title>
+    <para>any</para>
+  </refsect1>
+  <refsect1
+xml:id="errors_rdf_triples_to_ttl">
+    <title>Errors</title>
+    <para>This function can generate the following errors:</para>
+    <errorcode></errorcode>
+  </refsect1>
+-->
+
+      <refsect1 xml:id="examples_rdf_triples_to_ttl">
+        <title>Examples
+</title>
+        <example xml:id="ex_rdf_triples_to_ttl">
+          <title>Simple example
+</title>
+          <screen>
+SQL&gt;create procedure RDFXML2N3 (in _rdfxml varchar)
+{
+  declare triples, ses any;
+  declare STRG varchar;
+  result_names (STRG);
+  delete from RDF_QUAD where G=DB.DBA.RDF_MAKE_IID_OF_QNAME ('http://fake.example.org/graph/');
+  DB.DBA.RDF_LOAD_RDFXML_MT (_rdfxml, 'http://fake.example.org/base/', 'http://fake.example.org/graph/' );
+  for (sparql define output:valmode "LONG" select ?s ?p ?o where { graph &lt;http://fake.example.org/graph/&gt; { ?s ?p ?o } } order by ?s ?p ?o) do
+    {
+      ses := string_output ();
+      DB.DBA.RDF_TRIPLES_TO_TTL (vector (vector ("s", "p", "o")), ses);
+      result (sprintf ('%s\t%d %d', replace (string_output_string (ses), '\n', ' '), rdf_box_type ("o"), rdf_box_data_tag ("o")));
+    }
+}
+
+Done. -- 0 msec.
+
+SQL&gt;RDFXML2N3('
+&lt;?xml version="1.0"?&gt;
+&lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:ex="http://example.org/stuff/1.0/"&gt;
+
+&lt;rdf:Description rdf:about="http://www.w3.org/TR/rdf-syntax-grammar"&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:fullName&gt;Dave Beckett&lt;/ex:fullName&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description rdf:about="http://www.w3.org/TR/rdf-syntax-grammar"&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:homePage&gt;
+        &lt;rdf:Description rdf:about="http://purl.org/net/dajobe/"&gt;
+        &lt;/rdf:Description&gt;
+      &lt;/ex:homePage&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description rdf:about="http://www.w3.org/TR/rdf-syntax-grammar"&gt;
+  &lt;dc:title&gt;RDF/XML Syntax Specification (Revised)&lt;/dc:title&gt;
+&lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;')
+STRG
+VARCHAR
+_______________________________________________________________________________
+
+&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; &lt;http://example.org/stuff/1.0/editor&gt; _:b1000010000 . 	257 243
+&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; &lt;http://example.org/stuff/1.0/editor&gt; _:b1000010001 . 	257 243
+&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; "RDF/XML Syntax Specification (Revised)". 	257 182
+_:b1000010000 &lt;http://example.org/stuff/1.0/fullName&gt; "Dave Beckett" . 	257 182
+_:b1000010001 &lt;http://example.org/stuff/1.0/homePage&gt; &lt;http://purl.org/net/dajobe/&gt; . 	257 243
+
+5 Rows. -- 0 msec.
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_rdf_triples_to_ttl">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_rdf_audit_metadata">
+            <function>DB.DBA.RDF_AUDIT_METADATA
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_backup_metadata">
+            <function>DB.DBA.RDF_BACKUP_METADATA
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_load_rdfxml_mt">
+            <function>DB.DBA.RDF_LOAD_RDFXML_MT
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_ttlp">
+            <function>DB.DBA.TTLP
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_ttlp_mt">
+            <function>DB.DBA.TTLP_MT
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_triples_to_rdf_xml_text">
+            <function>DB.DBA.RDF_TRIPLES_TO_RDF_XML_TEXT
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

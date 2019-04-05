@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="sqlrefdatatypes">
+      <title>Datatypes</title>
+      <variablelist>
+        <varlistentry>
+          <term>CHARACTER</term>
+          <listitem>
+            <para>CHARACTER</para>
+            <para>VARCHAR</para>
+            <para>VARCHAR'('INTNUM')'</para>
+            <para>NVARCHAR</para>
+            <para>NVARCHAR'('INTNUM')'</para>
+            <para>CHAR'('INTNUM')'</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>NUMERIC</term>
+          <listitem>
+            <para>NUMERIC</para>
+            <para>NUMERIC'('INTNUM')'</para>
+            <para>NUMERIC'('INTNUM','INTNUM')'</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>DECIMAL</term>
+          <listitem>
+            <para>DECIMAL</para>
+            <para>DECIMAL'('INTNUM')'</para>
+            <para>DECIMAL'('INTNUM','INTNUM')'</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>INTEGER</term>
+          <listitem>
+            <para>INT</para>
+            <para>INTEGER</para>
+            <para>SMALLINT</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>FLOAT</term>
+          <listitem>
+            <para>FLOAT</para>
+            <para>FLOAT'('INTNUM')'</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>REAL</term>
+          <listitem>
+            <para>REAL</para>
+            <para>DOUBLE PRECISION</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>LONG VARCHAR</term>
+          <listitem>
+            <para>BLOB data</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>VARBINARY [( precision )]</term>
+          <listitem>
+            <para>Binary data</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>LONG VARBINARY</term>
+          <listitem>
+            <para>Binary BLOB data</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>TIMESTAMP</term>
+          <listitem>
+            <para>TIMESTAMP</para>
+            <para>DATETIME</para>
+            <para>TIME</para>
+            <para>DATE</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>&lt;UDT&gt;</term>
+          <listitem>
+            <para>User Defined Type with varbinary-like size properties.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>LONG &lt;UDT&gt;</term>
+          <listitem>
+            <para>User Defined Type with LONG varbinary-like size properties.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>LONG XML</term>
+          <listitem>
+            <para>LONG XML BLOB-like data type.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <note>
+        <title>Note:</title>
+        <para>User Defined Types can be created from native or external types,
+		composites or classes from any hosted language such as Java or .Net.  Any
+		User Defined Type can be used to define a column in a
+		CREATE TABLE statement.</para>
+      </note>
+      <section xml:id="dt_dateliterals">
+        <title>Date Literals</title>
+        <para>
+ 			Virtuoso does not support date literals or the
+ 			DATE reserved keyword.  Literal dates should be
+ 			enclosed in a conversion function such as
+ 			<function>stringdate()</function>
+
+  , as in this example:
+ 			</para>
+        <programlisting>
+select * from demo.demo.orders o
+  where o.orderdate between stringdate('1994-01-01') And stringdate('1997-12-31')
+</programlisting>
+        <para>Alternatively type casts can be used to explicitly instruct Virtuoso
+      to assume a string as a date, see below.</para>
+      </section>
+      <section xml:id="dtcasting">
+        <title>Casting</title>
+        <para>
+Blob types can be cast to varchars.  This will produce a string of
+up to 16 MB in length and an error for longer blobs.
+	</para>
+        <para>
+Nothing can be cast to a blob type.  Blobs only come from selecting
+blob columns and are created by assigning
+values to such columns.
+	</para>
+        <para>
+Converting non-integer values to integers rounds towards 0.
+	</para>
+        <para>
+Any data type can be converted to binary with the VARBINARY target data
+type.  The result may or may not be meaningful.  Specifically datetime can be
+converted to binary and back.
+	</para>
+        <programlisting>
+cast_expression :
+		CAST '(' scalar_exp AS data_type [COLLATE collation_name ] ')'
+
+collation_name :
+	identifier
+	| owner '.' identifier
+	| qualifier '.' owner '.' identifier
+</programlisting>
+        <para>
+The CAST expression converts the type of the scalar_exp into the data_type,
+if possible.  If the conversion is not meaningful, as from a float to a date,
+an error is signalled.
+	</para>
+        <para>
+CAST is the recommended way of converting between data types,
+including any conversion between strings, different number types and datetime types.
+	</para>
+        <example>
+          <title>Examples:</title>
+          <programlisting>
+select cast ('2000-1-3' as date);
+
+select cast (cast ('2000-1-3' as date) as varchar);
+	= 2000-01-03 00-00-00 000000
+</programlisting>
+        </example>
+      </section>
+      <section xml:id="sqldatemanus">
+        <title>Time &amp; Date Manipulation</title>
+        <para>The SQL92 standard functions for time and date queries are available.
+    These are mapped to Virtuoso internal functions as follows:</para>
+        <simplelist type="vert">
+          <member><emphasis>CURRENT_DATE
+</emphasis>
+
+   - 
+<link linkend="fn_curdate"><function>curdate()
+</function></link>
+
+</member>
+          <member><emphasis>CURRENT_TIME
+</emphasis>
+
+   - 
+<link linkend="fn_curdate"><function>curtime()
+</function></link>
+
+</member>
+          <member><emphasis>CURRENT_TIMESTAMP
+</emphasis>
+
+   - 
+<link linkend="fn_curdate"><function>curdatetime()
+</function></link>
+
+</member>
+        </simplelist>
+        <para>The results of the above functions can also be obtained using the
+    <link linkend="fn_now"><function>now()</function></link>
+
+   function and
+    casting to the appropriate target type.</para>
+        <para>Dates and times should be input or compared as literals in a standard
+    format.  The following table describes the proper methods available:</para>
+        <table>
+          <title>Time &amp; date syntax</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Datatype</entry>
+                <entry>ODBC Syntax</entry>
+                <entry>SQL92 Casting</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Date</entry>
+                <entry>{d 'yyyy-mm-dd'}</entry>
+                <entry>cast('yyyy-mm-dd' as date)</entry>
+              </row>
+              <row>
+                <entry>Time</entry>
+                <entry>{t 'hh:mm:ss'}</entry>
+                <entry>cast('hh:mm:ss' as time)</entry>
+              </row>
+              <row>
+                <entry>Datetime/timestamp</entry>
+                <entry>{ts 'yyyy-mm-dd hh:mm:ss[.f...]'}</entry>
+                <entry>cast('yyyy-mm-dd hh:mm:ss[.f...]' as datetime)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <example xml:id="ex_comparingdates">
+          <title>Example: comparing dates</title>
+          <programlisting>
+select datecol from table
+  where datecol &gt; cast('1900-01-01' as date)
+    and datecol &lt; cast(now() as date);
+</programlisting>
+          <para>now() is cast for explicit compatibility although not required.</para>
+        </example>
+      </section>
+      <section xml:id="deccolexp">
+        <title>Declaring Collations of Expressions</title>
+        <para>
+A collation can be declared with CAST for string expressions.  Suppose
+insensitive_ascii were a collation name specifying case insensitive comparison
+of ASCII strings, the predicate:
+	</para>
+        <programlisting>
+CAST 'foo' as varchar collate insensitive_ascii) = CAST 'FOO as varchar collate insensitive_ascii)
+</programlisting>
+        <para>
+would be true.
+	</para>
+        <para>
+This will alter the semantic of string comparison and can be used
+to define a collation where the collation would otherwise be default,
+for instance when comparing results of expressions or constants.  This can
+also alter the default collation implied by the collation declaration in
+column options in CREATE TABLE.
+	</para>
+      </section>
+    </section>

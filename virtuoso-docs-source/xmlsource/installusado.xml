@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="installusado">
+      <title>Using Visual Studio 2008 to Build an ADO.NET Data Services based Application</title>
+      <bridgehead>Using Microsoft ADO.Net Data Services with Virtuoso</bridgehead>
+      <section xml:id="installusadointro">
+        <title>Introduction</title>
+        <para>The goal of Microsoft ADO.NET Data Services is to enable applications to expose data as a
+data service that can be consumed by web clients within corporate networks and across the internet. A data
+service is reachable via regular HTTP requests, using standard HTTP verbs such as GET, POST, PUT and DELETE
+to perform CRUD operations against the service. The payload format used by the service is controllable by the
+application, but all options are simple, open formats such as JSON and Atom/APP.
+      </para>
+        <para>The use of web-friendly technologies make ADO.NET Data Services ideal as a data back-end
+for AJAX-style applications, Rich Interactive Applications and other applications that need to operate
+against data that is stored across the web.
+      </para>
+      </section>
+      <section xml:id="installusadogetstart">
+        <title>Getting Started: Creating Data Services</title>
+        <para>
+          <emphasis>Pre-requisites</emphasis>
+        </para>
+        <para>In order to create a data service using ADO.NET Data Services in your own environment you
+will need Microsoft Visual Studio 2008 SP1. The ADO.NET Entity Framework runtime and associated tools are
+included in Visual Studio 2008 SP1.
+      </para>
+        <para>
+          <emphasis>Selecting a Data Source</emphasis>
+        </para>
+        <para>The ADO.NET Data Service server framework is comprised of two halves. The top-half is the
+runtime itself; this part is "fixed", and it implements URI translation, the Atom/JSON wire formats, the
+interaction protocol, etc. This is what makes an ADO.NET Data Service look like an ADO.NET Data Service.
+The bottom half is the data-access layer and is pluggable. Communication between layers happens in terms
+of the IQueryable interface plus a set of conventions to map CLR graphs into the URI/payload patterns
+of ADO.NET Data Services.
+      </para>
+        <para>The first step in creating an ADO.NET Data Service is to determine the data source that
+is to be exposed as a set of REST-based endpoints (ie. select or create a data access layer). For relational
+data stored in Microsoft SQL Server or other 3rd Party databases, ADO.NET Data Services currently enables
+easily exposing a conceptual model created using the ADO.NET Entity Framework (EF). For all other data
+sources (XML section, web service, application logic layer, etc) or to use additional database access
+technologies (ex. LINQ to SQL), a mechanism is provided which enables any data source, as per the plug-in
+model described above, to be exposed as an ADO.NET Data Service.
+      </para>
+        <para>To create a data service which exposes a relational database through an Entity Framework
+conceptual model see "Creating a Data Service using the ADO.NET Entity Framework". To create a data service
+which exposes another data source see "Creating a Data Service from any Data Source".
+      </para>
+      </section>
+      <section xml:id="installusadocreateservice">
+        <title>Creating a Data Service using the ADO.NET Entity Framework</title>
+        <para>ADO.NET Data Services are a specialized form of Windows Communication Foundation services,
+and thus can be hosted in various environments. The below example will create an ADO.NET Data Service which
+is hosted inside an ASP.NET site. In order to create a data service, you must first create a web project;
+you will then need to establish a connection with the database that will be exposed by the service, and
+then create the data service itself within the web application. Below is a step-by-step description of
+this process.
+      </para>
+        <para>The following steps can be used for creating a Data Service using the Virtuoso ADO.Net
+Provider for accessing the sample Northwind Demo database:
+      </para>
+        <orderedlist>
+          <listitem>
+            <para>Launch the Visual Studio 2008 SP1 IDE.
+          </para>
+            <figure xml:id="ados1" floatstyle="1">
+              <title>Visual Studio 2008 SP1 IDE.</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create a </para>
+            <para>
+              <emphasis>Web Application</emphasis>
+            </para>
+            <para> project by going to the
+</para>
+            <para>
+              <emphasis>File</emphasis>
+            </para>
+            <para> menu in Visual Studio and choosing </para>
+            <para>
+              <emphasis>New Project</emphasis>
+            </para>
+            <para>.
+        </para>
+          </listitem>
+          <listitem>
+            <para>When the New Project window appears, choose either </para>
+            <para>
+              <emphasis>Visual Basic</emphasis>
+            </para>
+            <para>
+or </para>
+            <para>
+              <emphasis>Visual C#</emphasis>
+            </para>
+            <para> as the programming language.
+        </para>
+          </listitem>
+          <listitem>
+            <para>Within the language category click on </para>
+            <para>
+              <emphasis>Web</emphasis>
+            </para>
+            <para>, and select
+        </para>
+            <para>
+              <emphasis>ASP.NET Web Application</emphasis>
+            </para>
+            <para> from the right-hand panel.
+        </para>
+          </listitem>
+          <listitem>
+            <para>Choose a name for the project, for example </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>,
+        and click </para>
+            <para>
+              <emphasis>OK</emphasis>
+            </para>
+            <para>.
+          </para>
+            <figure xml:id="ados2" floatstyle="1">
+              <title>Name project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>This will create a new project called </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>.
+          </para>
+            <figure xml:id="ados3" floatstyle="1">
+              <title>Create project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Right click on the </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para> project name of the
+Solution Explorer pane, then select the </para>
+            <para>
+              <emphasis>Add -&gt; New Item</emphasis>
+            </para>
+            <para> menu options.
+          </para>
+            <figure xml:id="ados4" floatstyle="1">
+              <title>New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> New Item dialog will appear, choose the
+</para>
+            <para>
+              <emphasis>ADO.NET Entity Data Model</emphasis>
+            </para>
+            <para> template, give it the name </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para>
+and click </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> to start the creation of the ADO.Net Entity Data Model.
+          </para>
+            <figure xml:id="ados5" floatstyle="1">
+              <title>Entity Model</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose Model Contents</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>Generate from Database</emphasis>
+            </para>
+            <para> model
+type and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+          </para>
+            <figure xml:id="ados6" floatstyle="1">
+              <title>Model Contents</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose your Data Connection</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>New Connection</emphasis>
+            </para>
+            <para> button
+          </para>
+            <figure xml:id="ados7" floatstyle="1">
+              <title>Data Connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose Data Source</emphasis>
+            </para>
+            <para> dialog, select the
+OpenLink </para>
+            <para>
+              <emphasis>Virtuoso Data Source</emphasis>
+            </para>
+            <para> from the list displayed and click </para>
+            <para>
+              <emphasis>Continue</emphasis>
+            </para>
+            <para>.
+          </para>
+            <figure xml:id="ados8" floatstyle="1">
+              <title>Data Source</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Add Connection</emphasis>
+            </para>
+            <para> dialog, specify the </para>
+            <para>
+              <emphasis>hostname, portno,
+        username and password</emphasis>
+            </para>
+            <para> for the target Virtuoso Server and check the </para>
+            <para>
+              <emphasis>Save Password</emphasis>
+            </para>
+            <para> check box.
+          </para>
+            <figure xml:id="ados9" floatstyle="1">
+              <title>Connection Properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the </para>
+            <para>
+              <emphasis>Select Database From List</emphasis>
+            </para>
+            <para> radio button and choose
+        </para>
+            <para>
+              <emphasis>Demo</emphasis>
+            </para>
+            <para> from the drop down list, assuming the Virtuoso Demo Database is installed.
+          </para>
+            <figure xml:id="ados10" floatstyle="1">
+              <title>Advanced Properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click the </para>
+            <para>
+              <emphasis>Test Connection</emphasis>
+            </para>
+            <para> button to verify the connection is
+        successful and then click OK to add the connection.
+          </para>
+            <figure xml:id="ados11" floatstyle="1">
+              <title>Test Connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Set the </para>
+            <para>
+              <emphasis>entity connect string</emphasis>
+            </para>
+            <para> name to </para>
+            <para>
+              <emphasis>VirtuosoDemoEntities</emphasis>
+            </para>
+            <para>
+        (note this name as it is required in step 17 below) and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+          </para>
+            <figure xml:id="ados12" floatstyle="1">
+              <title>entity connect string</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose your Database Objects</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>Tables</emphasis>
+            </para>
+            <para>
+        check box to select all tables in the Demo database for addition to the Entity Data Model, set the
+        </para>
+            <para>
+              <emphasis>Model Namespace</emphasis>
+            </para>
+            <para> to </para>
+            <para>
+              <emphasis>VirtuosoDemoModel</emphasis>
+            </para>
+            <para> and click </para>
+            <para>
+              <emphasis>Finish</emphasis>
+            </para>
+            <para>.
+          </para>
+            <figure xml:id="ados13" floatstyle="1">
+              <title>Database Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para> EDM will be created with the tables and relationships displayed
+        in the Visual Studio IDE
+          </para>
+            <figure xml:id="ados14" floatstyle="1">
+              <title>Virtuoso.edmx</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Right click on the </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para> project name of the
+        </para>
+            <para>
+              <emphasis>Solution Explorer pane</emphasis>
+            </para>
+            <para>, then select the </para>
+            <para>
+              <emphasis>Add -&gt; New Item</emphasis>
+            </para>
+            <para> menu options.
+          </para>
+            <figure xml:id="ados4_01" floatstyle="1">
+              <title>New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Add New Item</emphasis>
+            </para>
+            <para> dialog will appear, choose the
+        </para>
+            <para>
+              <emphasis>ADO.NET Data Service</emphasis>
+            </para>
+            <para> template, give it the name </para>
+            <para>
+              <emphasis>Virtuoso.svc</emphasis>
+            </para>
+            <para> and click
+        </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> to create the ADO.Net Data Service.
+          </para>
+            <figure xml:id="ados15" floatstyle="1">
+              <title>ADO.NET Data Service</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados15.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Virtuoso.svc.cs</emphasis>
+            </para>
+            <para> Data Service file created add the data source class
+        name of </para>
+            <para>
+              <emphasis>VirtuosoDemoEntities</emphasis>
+            </para>
+            <para> (note this is the name set in step 12) as the
+        </para>
+            <para>
+              <emphasis>DataService</emphasis>
+            </para>
+            <para> name and enable the access to the Data Service by adding the entry
+        </para>
+            <para>
+              <emphasis>config.SetEntitySetAccessRule("*", EntitySetRights.All);</emphasis>
+            </para>
+            <para> in the
+        </para>
+            <para>
+              <emphasis>InitializeService</emphasis>
+            </para>
+            <para> method.
+</para>
+            <programlisting>
+// C#
+
+using System;
+using System.Web;
+using System.Collections.Generic;
+using System.ServiceModel.Web;
+using System.Linq;
+using System.Data.Services;
+
+namespace SimpleDataService
+{
+    public class Northwind : DataService&lt;VirtuosoDemoEntities&gt;
+    {
+        public static void InitializeService(IDataServiceConfiguration  config)
+        {
+            config.SetEntitySetAccessRule("*", EntitySetRights.All);
+        }
+    }
+}
+</programlisting>
+            <figure xml:id="ados16" floatstyle="1">
+              <title>Data Service</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados16.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>To test the Data Service, simply hit </para>
+            <para>
+              <emphasis>Ctrl+F5</emphasis>
+            </para>
+            <para> within Visual Studio, which will
+        start the development web server, run the Data Services server inside and load a Web browser page displaying
+        the list of available tables/entities of the Demo database.
+          </para>
+            <figure xml:id="ados17" floatstyle="1">
+              <title>test the Data Service</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados17.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>To access a specific entity instance like the </para>
+            <para>
+              <emphasis>Customers</emphasis>
+            </para>
+            <para> table
+        </para>
+            <para>
+              <emphasis>ALFKI</emphasis>
+            </para>
+            <para> record, this would be specified as http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
+            </para>
+            <figure xml:id="ados18" floatstyle="1">
+              <title>Access a specific entity instance</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/ados18.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>
+          <emphasis>NOTES</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>
+              <emphasis>Important</emphasis>
+            </para>
+            <para> - To view </para>
+            <para>
+              <emphasis>Atom</emphasis>
+            </para>
+            <para> (the default format returned by
+          an ADO.NET Data Service) in Internet Explorer, you must first ensure that </para>
+            <para>
+              <emphasis>Feed Reading View</emphasis>
+            </para>
+            <para>
+          is turned </para>
+            <para>
+              <emphasis>off</emphasis>
+            </para>
+            <para>. This can be done on the </para>
+            <para>
+              <emphasis>Content tab</emphasis>
+            </para>
+            <para> of </para>
+            <para>
+              <emphasis> Tools
+          	in Internet Options</emphasis>
+            </para>
+            <para>.
+          </para>
+          </listitem>
+          <listitem>
+            <para>If a Data Services entity instance URI page fails to load you can turn
+          	</para>
+            <para>
+              <emphasis>Verbose</emphasis>
+            </para>
+            <para> errors on by adding </para>
+            <para>
+              <emphasis>config.UseVerboseErrors = true;</emphasis>
+            </para>
+            <para> in the
+          	</para>
+            <para>
+              <emphasis>virtuoso.svc.cs InitializeService</emphasis>
+            </para>
+            <para> method to obtain more detailed information from the
+          	server as to why the page failed to load:
+</para>
+            <programlisting>
+public static void InitializeService(IDataServiceConfiguration config)
+
+{
+
+config.UseVerboseErrors = true;
+
+config.SetEntitySetAccessRule("*", EntitySetRights.All);
+
+}
+</programlisting>
+          </listitem>
+        </orderedlist>
+      </section>
+    </section>

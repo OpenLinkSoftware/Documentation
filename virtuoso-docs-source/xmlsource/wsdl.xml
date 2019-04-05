@@ -1,0 +1,526 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="wsdl">
+      <title>WSDL</title>
+      <para>The Web Services Description Language (WSDL) is a standard, structured way of
+    describing SOAP messages and Web services.  It is an XML format
+    for describing the network services offered by a
+    service provider.  The provider will publish a WSDL file that contains details
+    about the services provided, and the set of operations
+    within each service that the provider supports.  For each of the
+    operations, the WSDL file also describes the format that the client must follow
+    in requesting an operation.</para>
+      <para>Since the WSDL file sets up requirements for both the provider and service
+    requester, this file is like a contract between the two.  The provider agrees to
+    provide certain services if the client sends a properly formatted SOAP
+    request.  Suppose that we have a WSDL file defining a service called
+    StockQuoteService.  This service describes operations such as
+    getTradePrice, getLowestTradePrice, and getHighestTradePrice.  You place this WSDL
+    file on the service provider server.  A client who wishes to send a SOAP request to
+    this server must first obtain a copy of the WSDL file from the provider, and then
+    use it to format a suitable SOAP request.  The client sends this request to the provider.
+    The provider executes the requested operation and sends the results back to
+    the client requester as a SOAP response.</para>
+      <tip>
+        <title>See Also:</title>
+        <para>The specification of WSDL and its file structures can be found on
+
+<link xlink:href="http://www.w3.org/TR/wsdl">the W3C site
+</link>
+
+  .
+</para>
+      </tip>
+      <section xml:id="exposplaswsdl">
+        <title>Exposing Stored Procedures as WSDL Services
+</title>
+        <para>Virtuoso can be both a provider and a client of WSDL.  In
+    this section we will explain
+    how to use Virtuoso to expose procedures as SOAP messages, and then publish
+    them as WSDL consumables.</para>
+        <para>In the descriptions below, lines preceded by <programlisting>SQL&gt;</programlisting>
+denote that the command is intended to be issued using
+the <link linkend="isql">ISQL</link>
+
+   command line interface to Virtuoso.</para>
+        <para>Virtuoso procedures can easily be published as WSDL consumables.
+We follow the same steps as we would take to create SOAP objects and
+then for every SOAP object Virtuoso automatically generates a WSDL
+file entry.  The default Virtuoso has the user SOAP and reserved HTTP
+path of <literal>/SOAP/</literal>
+
+  .  All procedures that are created in
+the default qualifier namespace of the SOAP user (WS.SOAP) and have
+had a 'grant execute to SOAP' permissions established in the database
+are available to SOAP and thus are automatically available to WSDL.
+In Virtuoso this is done by requesting the file
+<literal>services.wsdl</literal>
+
+   from the server via HTTP from the
+<literal>/SOAP/</literal>
+
+   path:
+<programlisting>http://[host:port]/SOAP/services.wsdl</programlisting>.
+WSDL files such as this are often referred to as "endpoints"
+for services.
+</para>
+        <para><link linkend="virtdir">Virtual directories</link>
+
+   increase our
+flexibility by allowing us to map logical HTTP paths to the location
+<literal>/SOAP/</literal>
+
+  .  This means that we can separate WSDL/SOAP functionality,
+making groups of services available under different locations.
+We will now demonstrate this:</para>
+        <orderedlist>
+          <listitem>
+            <para>First, create a new user in the database for
+creating the stored procedures as SOAP messages:
+</para>
+            <programlisting>SQL&gt;CREATE USER SOAPDEMO;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Now, set the default catalogue/qualifier for
+the new user to the WS catalogue where we will create procedures
+to be used as SOAP objects:
+</para>
+            <programlisting>SQL&gt;USER_SET_QUALIFIER ('SOAPDEMO', 'WS');
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Now  create a new 
+<link linkend="virtdir">virtual host
+</link>
+
+definition, using the <link linkend="fn_vhost_define"><function>vhost_define()</function></link>
+
+  ,
+so that we can find our SOAP objects later at a desired location.</para>
+            <programlisting>
+SQL&gt;VHOST_DEFINE (vhost=&gt;'*ini*',lhost=&gt;'*ini*',lpath=&gt;'/services',ppath=&gt;'/SOAP/',soap_user=&gt;'SOAPDEMO');
+</programlisting>
+            <para>If the mapping already exists, producing an error in the call above, and is not being
+used, then you can remove it using the command:</para>
+            <programlisting>
+SQL&gt;VHOST_REMOVE (vhost=&gt;'*ini*',lhost=&gt;'*ini*',lpath=&gt;'/services')
+</programlisting>
+            <note>
+              <title>Note:</title>
+              <para>*ini* is a special indicator telling
+Virtuoso to take the default values from its initialization file.
+</para>
+            </note>
+          </listitem>
+          <listitem>
+            <para>Now create a simple SOAPTEST procedure and grant the appropriate
+privileges to the SOAPDEMO user:</para>
+            <programlisting>
+SQL&gt; create procedure
+  WS.SOAPDEMO.SOAPTEST (in par varchar)
+{
+  return (upper(par));
+};
+
+SQL&gt; grant execute on WS.SOAPDEMO.SOAPTEST to SOAPDEMO;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Now test this new SOAP object's availability by using
+<link linkend="fn_soap_client"><function>soap_client()</function></link>
+
+  .
+This function would normally return a vector representation of the
+SOAP object but since we know the dimensions of the object ahead of
+time we can pin-point the entry using the <link linkend="fn_aref"><function>aref()</function></link>
+
+   function as
+follows:</para>
+            <programlisting>
+SQL&gt; select aref(aref(
+	soap_client (url=&gt;sprintf ('http://localhost:%s/services', server_http_port ()),
+	operation=&gt;'SOAPTEST', parameters=&gt;vector('par', 'demotext')), 1), 1);
+callret
+VARCHAR
+_______
+
+DEMOTEXT
+
+</programlisting>
+            <para>The actual SOAP object looks more like:</para>
+            <programlisting>
+(("SOAPTESTResponse" ) (("CallReturn" ) "DEMOTEXT" ) )
+</programlisting>
+            <para>which was generated in a Virtuoso server log for debugging purposes using
+the 
+<link linkend="fn_dbg_obj_print"><function>dbg_obj_print()
+</function></link>
+
+   function.
+</para>
+          </listitem>
+          <listitem>
+            <para>Procedures that exist under the WS.SOAPDEMO namespace
+and have been granted execution to the new SOAPDEMO user are  now available
+as SOAP services and described by WSDL in this example, Virtuoso would publish
+them from the URL:</para>
+            <programlisting>
+http://example.com/services/services.wsdl
+</programlisting>
+            <para>which will yield the following WSDL description:</para>
+            <screen>
+&lt;?xml version='1.0'?&gt;
+&lt;definitions
+ targetNamespace='services.wsdl'
+ xmlns:xsd='http://www.w3.org/1999/XMLSchema'
+ xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+ xmlns:tns ='services.wsdl'
+ xmlns ='http://schemas.xmlsoap.org/wsdl/'
+ name='VirtuosoSOAP'&gt;
+	&lt;message name='SOAPTEST'&gt;
+		&lt;part name='par' type='xsd:string'/&gt;
+	&lt;/message&gt;
+	&lt;message name='SOAPTESTResponse'&gt;
+		&lt;part name='CallReturn' type='xsd:string'/&gt;
+	&lt;/message&gt;
+	&lt;portType name='SOAPPortType'&gt;
+		&lt;operation name='SOAPTEST'&gt;
+			&lt;input message='tns:SOAPTEST' name='SOAPTEST'/&gt;
+			&lt;output message='tns:SOAPTESTResponse' name='SOAPTESTResponse'/&gt;
+		&lt;/operation&gt;
+	&lt;/portType&gt;
+	&lt;binding name='SOAPBinding' type='tns:SOAPPortType'&gt;
+		&lt;soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/&gt;
+		&lt;operation name='SOAPTEST'&gt;
+			&lt;soap:operation soapAction='urn:openlinksw.com:virtuoso_soap_schema#SOAPTEST'/&gt;
+			&lt;input&gt;
+				&lt;soap:body use='encoded' namespace='urn:openlinksw.com:virtuoso_soap_schema' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' /&gt;
+			&lt;/input&gt;
+			&lt;output&gt;
+				&lt;soap:body use='encoded' namespace='urn:openlinksw.com:virtuoso_soap_schema' encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' /&gt;
+			&lt;/output&gt;
+		&lt;/operation&gt;
+	&lt;/binding&gt;
+	&lt;service name='SOAPService'&gt;
+		&lt;port name='SOAPPort' binding='tns:SOAPBinding'&gt;
+			&lt;soap:address location='http://example.com/services'/&gt;
+		&lt;/port&gt;
+	&lt;/service&gt;
+&lt;/definitions&gt;
+</screen>
+            <tip>
+              <title>See Also:</title>
+              <para>The <link linkend="vsmx">Testing Web Services (VSMX)</link>
+
+   section
+describes Virtuoso's ability to also automatically generate a test page for
+your SOAP services, simply by replacing services.wsdl with services.vsmx in the
+URL.
+</para>
+            </tip>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="expcplx_types">
+        <title>Exposing SQL Stored Procedures containing complex datatype definitions
+</title>
+        <para>
+	  When parameters of a PL procedure or UDT (User Defined Type) methods contain
+	  parameters declared as UDT or/and as ARRAY then WSDL generation will
+	  include XML Schema for them. The schema types in this case will be generated every time
+	  WSDL URL is accessed. Also the XMLSchema datatypes will be generated following
+	  the default encoding rules forced via 'Use' SOAP option to the given virtual directory.
+      </para>
+        <example xml:id="ex_expcplx_types_1">
+          <title>Exposing a PL Stored procedures containing complex datatypes</title>
+          <para>
+	      The following example will create a virtual directory '/soap-lit' on default HTTP
+	      listener and will expose a single method accepting a array of structures which
+	      contains an array of integers, integer, varchar and float members. The SOAP message
+	      will use the document/literal encoding rules (option Use=literal).
+	  </para>
+          <programlisting>
+create user SOAP_U1;
+
+VHOST_DEFINE (	lpath=&gt;'/soap-lit',
+		ppath=&gt;'/SOAP/', soap_user=&gt;'SOAP_U1',
+    		soap_opts=&gt;
+	    	vector ('ServiceName', 'Literal',
+		    'Namespace', 'http://temp.uri',
+		    'SchemaNS', 'http://temp.uri',
+		    'MethodInSoapAction', 'yes',
+		    'elementFormDefault', 'unqualified',
+		    'Use', 'literal'));
+
+create type SOAP_StructA as (varString varchar, varInt integer, varFloat real, varArray integer array);
+
+create procedure echoStructArray (in sa DB.DBA.SOAP_StructA array) returns DB.DBA.SOAP_StructA array
+{
+  return sa;
+};
+
+grant execute on SOAP_StructA to SOAP_U1;
+grant execute on echoStructArray to SOAP_U1;
+
+</programlisting>
+          <para>
+    This would produce the following WSDL file when accessing the http://[host:port]/soap-lit/services.wsdl URL.
+</para>
+          <programlisting>
+&lt;?xml version="1.0"?&gt;
+&lt;definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:dime="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:content="http://schemas.xmlsoap.org/ws/2002/04/content-type/" xmlns:ref="http://schemas.xmlsoap.org/ws/2002/04/reference/" xmlns:ns0="http://temp.uri" xmlns:dl="http://temp.uri" xmlns:tns="services.wsdl" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="services.wsdl" name="VirtuosoLiteral"&gt;
+  &lt;types&gt;
+    &lt;schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://temp.uri"&gt;
+      &lt;complexType name="echoStructArray_Response_t"&gt;
+        &lt;sequence&gt;
+          &lt;element name="item" type="ns0:SOAP_StructA" minOccurs="0" maxOccurs="unbounded" nillable="true"/&gt;
+        &lt;/sequence&gt;
+      &lt;/complexType&gt;
+      &lt;complexType name="echoStructArray_sa_t"&gt;
+        &lt;sequence&gt;
+          &lt;element name="item" type="ns0:SOAP_StructA" minOccurs="0" maxOccurs="unbounded" nillable="true"/&gt;
+        &lt;/sequence&gt;
+      &lt;/complexType&gt;
+      &lt;complexType name="SOAP_StructA"&gt;
+        &lt;all&gt;
+          &lt;element name="varString" type="string" nillable="true"/&gt;
+          &lt;element name="varInt" type="int" nillable="true"/&gt;
+          &lt;element name="varFloat" type="float" nillable="true"/&gt;
+          &lt;element name="varArray" type="ns0:SOAP_StructA_varArray_t" nillable="true"/&gt;
+        &lt;/all&gt;
+      &lt;/complexType&gt;
+      &lt;complexType name="SOAP_StructA_varArray_t"&gt;
+        &lt;sequence&gt;
+          &lt;element name="item" type="int" minOccurs="0" maxOccurs="unbounded" nillable="true"/&gt;
+        &lt;/sequence&gt;
+      &lt;/complexType&gt;
+      &lt;element name="echoStructArray"&gt;
+        &lt;complexType&gt;
+          &lt;sequence&gt;
+            &lt;element minOccurs="1" maxOccurs="1" name="sa" type="ns0:echoStructArray_sa_t"/&gt;
+          &lt;/sequence&gt;
+        &lt;/complexType&gt;
+      &lt;/element&gt;
+      &lt;element name="echoStructArrayResponse"&gt;
+        &lt;complexType&gt;
+          &lt;all&gt;
+            &lt;element minOccurs="1" maxOccurs="1" name="CallReturn" type="ns0:echoStructArray_Response_t"/&gt;
+          &lt;/all&gt;
+        &lt;/complexType&gt;
+      &lt;/element&gt;
+    &lt;/schema&gt;
+  &lt;/types&gt;
+  &lt;message name="echoStructArrayRequest"&gt;
+    &lt;part element="dl:echoStructArray" name="parameters"/&gt;
+  &lt;/message&gt;
+  &lt;message name="echoStructArrayResponse"&gt;
+    &lt;part element="dl:echoStructArrayResponse" name="parameters"/&gt;
+  &lt;/message&gt;
+  &lt;portType name="LiteralDocLiteralPortType"&gt;
+    &lt;operation name="echoStructArray"&gt;
+      &lt;input message="tns:echoStructArrayRequest" name="echoStructArrayRequest"/&gt;
+      &lt;output message="tns:echoStructArrayResponse" name="echoStructArrayResponse"/&gt;
+    &lt;/operation&gt;
+  &lt;/portType&gt;
+  &lt;binding name="LiteralDocLiteralBinding" type="tns:LiteralDocLiteralPortType"&gt;
+    &lt;soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/&gt;
+    &lt;operation name="echoStructArray"&gt;
+      &lt;soap:operation soapAction="http://temp.uri#echoStructArray" style="document"/&gt;
+      &lt;input name="echoStructArrayRequest"&gt;
+        &lt;soap:body use="literal"/&gt;
+      &lt;/input&gt;
+      &lt;output name="echoStructArrayResponse"&gt;
+        &lt;soap:body use="literal"/&gt;
+      &lt;/output&gt;
+    &lt;/operation&gt;
+  &lt;/binding&gt;
+  &lt;service name="VirtuosoLiteral"&gt;
+    &lt;documentation&gt;Virtuoso SOAP services&lt;/documentation&gt;
+    &lt;port name="LiteralDocLiteralPort" binding="tns:LiteralDocLiteralBinding"&gt;
+      &lt;soap:address location="http://example.com/soap-lit"/&gt;
+    &lt;/port&gt;
+  &lt;/service&gt;
+&lt;/definitions&gt;
+	    </programlisting>
+        </example>
+      </section>
+      <section xml:id="exp3rdprtyprocwsdl">
+        <title>Exposing Third Party SQL Stored Procedures as WSDL-Compliant Web Services
+</title>
+        <para>Virtuoso can expose any of its available PL resource to the SOAP
+world, and subsequently to the WDSL file.  This includes data from remote
+attached tables and procedures.  All you have to do is make sure that the entry point
+exists as a stored procedure in the correct namespace with the appropriate grants, as before.</para>
+        <tip>
+          <title>See Also</title>
+          <para>The <link linkend="thevdb">Virtual Database</link>
+
+   chapter for information regarding use of
+remote data sources and their tables.</para>
+        </tip>
+        <para>Because remote procedures may not be directly compatible you are required
+	to write a Virtuoso wrapper function first to handle the remote procedure.
+	Below is a sample MS SQLServer procedure and an accompanying Virtuoso wrapper
+	function.  The MS SQLServer function returns a result set based on a simple join
+	query with a filter input.  The Virtuoso procedure calls the remote procedure,
+	iterates through the result set returned and produces XML output.</para>
+        <para>MS SQLServer procedure:</para>
+        <programlisting>
+create procedure ms_remote
+        @mask varchar(15)
+as
+  select c.CustomerID, c.CompanyName, o.OrderDate,
+      o.ShippedDate,ol.ProductID, ol.Quantity, ol.Discount
+    from Northwind..Customers c
+      inner join Northwind..Orders o on c.CustomerID = o.CustomerID
+      inner join Northwind.."Order Details" ol on o.OrderID = ol.OrderID
+    where c.CustomerID like @mask
+;
+</programlisting>
+        <para>Virtuoso wrapper function:</para>
+        <programlisting>
+create procedure WS.SOAP.ms_remote_call (
+  in dsn varchar, in uid varchar, in pwd varchar, in mask varchar)
+{
+  declare m, r, ses any;
+  vd_remote_data_source (dsn, '', uid, pwd);
+  rexecute (dsn, 'ms_remote ?', null, null, vector (mask), 1000, m, r);
+  ses := string_output ();
+  http ('&lt;?xml version="1.0" ?&gt;\n&lt;remote&gt;\n', ses);
+  if (isarray(m) and isarray (r))
+    {
+      declare i, l, j, k integer;
+      declare md, rs any;
+      md := m[0];
+      i := 0; l := length (md); k := length (r); j := 0;
+      while (j &lt; k)
+       {
+	 http ('&lt;record ', ses);
+         i:=0;
+         while (i &lt; l)
+           {
+	     dbg_obj_print (md[i][0],r[j][i]);
+	     http (sprintf (' %s="%s"', trim(md[i][0]), trim(cast (r[j][i] as varchar))), ses);
+             i := i + 1;
+	   }
+	 http (' /&gt;\n', ses);
+         j := j + 1;
+       }
+    }
+  http ('&lt;/remote&gt;', ses);
+  return string_output_string (ses);
+};
+</programlisting>
+        <para>Now, as before, we grant execute rights to the SOAP user:</para>
+        <programlisting>
+grant execute on WS.SOAP.ms_remote_call to SOAP;
+</programlisting>
+        <para>The third-party procedures can now be accessed via SOAP and are listed in the
+  WSDL file.
+</para>
+      </section>
+      <section xml:id="wsdlheadermessages">
+        <title>WSDL Descriptions of SOAP Header Messages
+</title>
+        <para>The Virtuoso web server automatically generates WSDL descriptions for
+  procedures exposed as SOAP messages, and those exposed to have parameters
+  bound to SOAP Header messages.</para>
+        <para>Consider the sample of the Interop.INTEROP.echoVoid procedure defined
+  as an example in the SOAP section as:</para>
+        <programlisting>
+create procedure
+Interop.INTEROP.echoVoid
+   (in echoMeStringRequest nvarchar := NULL __soap_header 'http://www.w3.org/2001/XMLSchema:string',
+    out echoMeStringResponse nvarchar := NULL __soap_header 'http://www.w3.org/2001/XMLSchema:string')
+   __soap_type '__VOID__'
+{
+  if (echoMeStringRequest is not null)
+    echoMeStringResponse := echoMeStringRequest;
+};</programlisting>
+        <para>The WSDL description will now contain the header messages also.  No extra
+  user intervention is required.  The WSDL file that will result will look
+  like:</para>
+        <programlisting>
+ ......... WSDL excerpt (consider http://[host:port]/Interop/services.wsdl of an demo DB) ............
+	&lt;message name="echoVoidRequest"&gt;&lt;/message&gt;
+	&lt;message name="echoVoidResponse"&gt;&lt;/message&gt;
+	&lt;message name="echoVoidechoMeStringRequest"&gt;
+		&lt;part name="echoMeStringRequest" type="xsd:string" /&gt;
+	&lt;/message&gt;
+	&lt;message name="echoVoidechoMeStringResponse"&gt;
+		&lt;part name="echoMeStringResponse" type="xsd:string" /&gt;
+	&lt;/message&gt;
+ ........ in bindings section note the soap:header sections.............
+	&lt;operation name="echoVoid"&gt;
+	&lt;soap:operation soapAction="http://soapinterop.org/" /&gt;
+	&lt;input&gt;
+	&lt;soap:body use="encoded" namespace="http://soapinterop.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" /&gt;
+	&lt;soap:header use="encoded" message="tns:echoVoidechoMeStringRequest" part="echoMeStringRequest" namespace="http://soapinterop.org/echoheader/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" /&gt;
+	&lt;/input&gt;
+	&lt;output&gt;
+	&lt;soap:body use="encoded" namespace="http://soapinterop.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" /&gt;
+	&lt;soap:header use="encoded" message="tns:echoVoidechoMeStringResponse" part="echoMeStringResponse" namespace="http://soapinterop.org/echoheader/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" /&gt;
+	&lt;/output&gt;
+	&lt;/operation&gt;
+ ........more..........
+ </programlisting>
+      </section>
+      <section xml:id="importwsdl">
+        <title>Importing A WSDL File &amp; SOAP/WSDL Proxying
+</title>
+        <para>Virtuoso can import WSDL files from other locations using the function:
+</para>
+        <para>
+          <link linkend="fn_soap_wsdl_import">
+            <function>soap_wsdl_import()
+</function>
+          </link>
+        </para>
+        <para>This function reads the descriptions of SOAP messages available in the
+ WSDL file and automatically creates Virtuoso stored procedure wrappers for
+ executing the SOAP messages directly from Virtuoso in procedures.  These
+ generated procedures can then be exposed as SOAP messages in the normal way
+ from the Virtuoso SOAP server, and of course fully described by an automatically
+ generated WSDL file for them, thus creating a proxy service for original messages.
+</para>
+      </section>
+      <section xml:id="soapwsdlinterop">
+        <title>SOAP/WSDL Interoperability
+</title>
+        <para>A key feature of the Web services promise is that Web services published
+ with one server can be called from any other client.  The ability of each
+ implementation to make use of each others' output is called interoperability.
+ Thus, Web services created with Virtuoso should interoperate smoothly with
+ services created with Microsoft's .NET, Sun's Java, and so on.  Interoperable
+ Web services mean that developers and users do not have to think about which
+ programming language or operating system the services are hosted on.</para>
+        <para>The evolving nature of the SOAP specification, as well as its complexity,
+ leads to differences in SOAP implementations.  Unfortunately, these
+ implementation differences decrease interoperability.  To counteract this
+ problem, a volunteer group of SOAP application builders has developed a series
+ of interoperability tests.</para>
+        <para>OpenLink, as a participant in this group, ensures that its SOAP
+ implementation interoperates fully.  This means that Virtuoso's SOAP server
+ properly exposes your Web services so they can be used by any client.  It also
+ means that Virtuoso can call services published by any compliant provider.</para>
+        <para>You can view the Round 1 "Interoperability Lab" at
+ <link xlink:href="http://www.xmethods.net/ilab/">www.xmethods.net</link>
+
+ and the Round 2 at <link xlink:href="http://www.whitemesa.com/interop.htm">www.whitemesa.com</link>
+
+  .
+ Please note that OpenLink has no connection with these companies; they are
+ simply places that volunteered to host the testing reference documents on
+ their servers.</para>
+        <para>The Round 2 tests include base functionality (which duplicates Round
+ 1) as well as more advanced tests labeled "Group B" and "Group C".  The WSDL
+ published by OpenLink containing the descriptions of these tests can be found
+ at <link xlink:href="http://demo.openlinksw.com:8890/Interop/">http://demo.openlinksw.com:8890/Interop/</link>
+
+  .
+ This URL will be updated as new interoperability tests are devised.
+</para>
+        <para>The SOAP implementation passes all known interoperability tests.
+</para>
+      </section>
+    </section>

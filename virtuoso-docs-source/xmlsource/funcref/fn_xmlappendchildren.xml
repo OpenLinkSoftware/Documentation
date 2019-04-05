@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xmlappendchildren">
+      <refmeta>
+        <refentrytitle>XMLAppendChildren
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>XMLAppendChildren
+</refname>
+        <refpurpose>Modify an XML document by adding new children to the given entity.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xmlappendchildren">
+          <funcprototype xml:id="fproto_xmlappendchildren">
+            <funcdef>
+              <function>XMLAppendChildren
+</function>
+            </funcdef>
+            <paramdef choice="opt">inout 
+<parameter>source
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>insertion1
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>insertion2
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">
+              <parameter>...
+</parameter>
+            </paramdef>
+            <paramdef choice="opt">in 
+<parameter>insertionN
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xmlappendchildren">
+        <title>Description
+</title>
+        <para>The function modifies the XML document of the given 
+<parameter>source
+</parameter>
+
+   XML tree entity by adding new children to
+the node specified by the entity. The <parameter>source</parameter>
+
+   entity should be XML tree entity, not "persistent XML" entity.
+The value of <parameter>source</parameter>
+
+   can be either an element entity or a root entity;
+<parameter>source</parameter>
+
+   can not be an attribute entity or a leaf entity like text or processing instruction.
+</para>
+        <para>
+The values passed in parameters <parameter>insertion1</parameter>
+
+  ... <parameter>insertionN</parameter>
+
+   will be converted into
+XML nodes according to rules described in section <link linkend="xmldomtypecasting">Composing Document Fragments From DOM Function Arguments.</link>
+
+</para>
+        <para>
+After calling the function, parameter <parameter>source</parameter>
+
+   is still a valid XML entity that points to the modified node.
+The value passed as <parameter>source</parameter>
+
+   can be used in the rest of caller procedure.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xmlappendchildren">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>source
+</title>
+          <para>The XML tree entity whose document should be modified.
+This document should not be locked (see <link linkend="xmldom">Changing XML Entities in DOM Style</link>
+
+   for details).
+
+</para>
+        </refsect2>
+        <refsect2>
+          <title>parameterI
+</title>
+          <para>The value to be added as as child node of 
+<parameter>source
+</parameter>
+
+  .
+
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xmlappendchildren">
+        <title>Return Types
+</title>
+        <para>The function returns NULL.
+</para>
+      </refsect1>
+      <!--  
+  <refsect1
+xml:id="errors_xmlappendchildren">
+    <title>Errors</title>
+
+<! - - In case of non-function-specific errors, i.e. only common
+     parameter errors are signalled, comment out the table below 
+     otherwise add the unique error values as individual errorcodes - - >
+
+    <para>This function can generate the following errors:</para>
+    <errorcode></errorcode>
+  </refsect1>
+-->
+
+      <refsect1 xml:id="examples_xmlappendchildren">
+        <title>Examples
+</title>
+        <example xml:id="ex_xmlappendchildren">
+          <title>XMLAppendChildren in a Virtuoso/PL procedure
+</title>
+          <para>The sample procedure contains two calls of 
+<function>XMLAppendChildren
+</function>
+
+  .
+First call append three children to a node; second call demonstrates how text nodes can be merged.</para>
+          <screen>
+create procedure XMLAppendChildren_demo()
+{
+  declare DESCRIPTION varchar (40);
+  declare ENTITY, ent any;
+  result_names (DESCRIPTION, ENTITY);
+  result ('EXAMPLE1', 'Plain appending of some children');
+  ent := xpath_eval ('//b', xtree_doc ('&lt;a&gt;&lt;b&gt;Hello&lt;/b&gt;&lt;/a&gt;'));
+  result ('The document to modify', xpath_eval ('/', ent));
+  result ('The node to be extended', ent);
+  XMLAppendChildren (ent, xtree_doc ('&lt;comma/&gt;'), ' world', xtree_doc ('&lt;excl/&gt;'));
+  result ('The changed document', xpath_eval ('/', ent));
+  result ('The original entity is updated', ent);
+  result ('EXAMPLE2', 'Appending that cause concatenation of text nodes');
+  result_names (DESCRIPTION, ENTITY);
+  ent := xpath_eval ('//b', xtree_doc ('&lt;a&gt;&lt;b&gt;Hello&lt;/b&gt;&lt;/a&gt;'));
+  result ('The document to modify', xpath_eval ('/', ent));
+  result ('The node to be extended', ent);
+  XMLAppendChildren (ent, ', ', ' world', '!');
+  result ('The changed document', xpath_eval ('/', ent));
+  result ('The original entity is updated', ent);
+}
+
+Done. -- 00000 msec.
+
+XMLAppendChildren_demo()
+DESCRIPTION                               ENTITY
+VARCHAR                                   VARCHAR
+_______________________________________________________________________________
+
+EXAMPLE1                                  Plain appending of some children
+The document to modify                    &lt;a&gt;&lt;b&gt;Hello&lt;/b&gt;&lt;/a&gt;
+The node to be extended                   &lt;b&gt;Hello&lt;/b&gt;
+The changed document                      &lt;a&gt;&lt;b&gt;Hello&lt;comma /&gt; world&lt;excl /&gt;&lt;/b&gt;&lt;/a&gt;
+The original entity is updated            &lt;b&gt;Hello&lt;comma /&gt; world&lt;excl /&gt;&lt;/b&gt;
+EXAMPLE2                                  Appending that cause concatenation of text nodes
+The document to modify                    &lt;a&gt;&lt;b&gt;Hello&lt;/b&gt;&lt;/a&gt;
+The node to be extended                   &lt;b&gt;Hello&lt;/b&gt;
+The changed document                      &lt;a&gt;&lt;b&gt;Hello,  world!&lt;/b&gt;&lt;/a&gt;
+The original entity is updated            &lt;b&gt;Hello,  world!&lt;/b&gt;
+
+10 Rows. -- 00000 msec.
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xmlappendchildren">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xmlreplace">
+            <function>XMLReplace
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmladdattribute">
+            <function>XMLAddAttribute
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlinsertbefore">
+            <function>XMLInsertBefore
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlinsertafter">
+            <function>XMLInsertAfter
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

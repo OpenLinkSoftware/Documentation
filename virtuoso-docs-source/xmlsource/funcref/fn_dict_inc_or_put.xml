@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_dict_inc_or_put">
+      <refmeta>
+        <refentrytitle>dict_inc_or_put
+</refentrytitle>
+        <refmiscinfo>dict
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>dict_inc_or_put
+</refname>
+        <refpurpose>Creates or increments an integer counter for a given key and a dictionary.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_dict_inc_or_put">
+          <funcprototype xml:id="fproto_dict_inc_or_put">
+            <funcdef>
+              <function>dict_inc_or_put
+</function>
+            </funcdef>
+            <paramdef choice="opt">inout 
+<parameter>dict
+</parameter>
+
+   dictionary
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>key
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>value_increment
+</parameter>
+
+   integer
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_dict_inc_or_put">
+        <title>Description
+</title>
+        <para>The function checks whether 
+<parameter>dict
+</parameter>
+
+   contains 
+<parameter>key
+</parameter>
+
+  .
+If it isn't so then the function checks the datatype of the value associated with the key.
+An error 42000 is signalled in case of non-integer value or a negative integer value.
+If the value is positive then <parameter>value_decrement</parameter>
+
+   is added to it and the result become the new value associated with <parameter>key</parameter>
+
+   in <parameter>dict</parameter>
+
+  .
+If key is not in the dictionary then a new item is added to the 
+<parameter>dict
+</parameter>
+
+   in order to associate the 
+<parameter>key
+</parameter>
+
+   with 
+<parameter>value_increment
+</parameter>
+
+  .
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_dict_inc_or_put">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>dict
+</title>
+          <para>Dictionary of counters. If the value is NULL then the function immediately returns zero.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>key
+</title>
+          <para>Key of a dictionary item to process.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>value decrement
+</title>
+          <para>A nonnegative integer (typically 1) that is added to the value associated with 
+<parameter>key
+</parameter>
+
+   or used as a starting value of a newly created counter.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_dict_inc_or_put">
+        <title>Return Types
+</title>
+        <para>The function returns zero (for NULL 
+<parameter>dict
+</parameter>
+
+  ) or the changed (or the added) value associated with the 
+<parameter>key
+</parameter>
+
+  .
+</para>
+      </refsect1>
+      <!--
+  <refsect1
+xml:id="errors_dict_inc_or_put">
+    <title>Errors</title>
+    <para>This function can generate the following errors:</para>
+    <errorcode></errorcode>
+  </refsect1> -->
+
+      <refsect1 xml:id="examples_dict_inc_or_put">
+        <title>Example
+</title>
+        <example xml:id="ex_dict_inc_or_put">
+          <title>Simple Use
+</title>
+          <para>The function is convenient to deal with multisets, i.e., sets with repeating elements.
+In this case the dictionary contains distinct items as keys and counts of duplicates as associated values.
+<function>dict_inc_or_add</function>
+
+   is to add a member,
+<link linkend="fn_dict_dec_or_remove"><function>dict_dec_or_remove</function></link>
+
+   is to remove.
+The following example gets an array of multisets and return the sum of them.
+</para>
+          <screen>
+create function DB.DBA.SUM_MULTISETS (inout msets any) returns any
+{
+  declare sum_of_msets any;
+  sum_of_msets := dict_new (17);
+  foreach (any mset in msets) do
+    {
+      declare iter any;
+      declare memb any;
+      declare dup_count integer;
+      iter := mset; --- unlike dict_duplicate() this does not make copy of mset so it's fast.
+      dict_iter_rewind (iter);
+      while (dict_iter_next (iter, memb, dup_count))
+        dict_inc_or_put (sum_of_msets, memb, dup_count);
+    }
+  return sum_of_msets;
+};
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_dict_inc_or_put">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_dict_new">
+            <function>dict_new()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_zap">
+            <function>dict_zap()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_put">
+            <function>dict_put()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_get">
+            <function>dict_get()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_remove">
+            <function>dict_remove()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_dec_or_remove">
+            <function>dict_dec_or_remove()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_size">
+            <function>dict_size()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_duplicate">
+            <function>dict_duplicate()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_to_vector">
+            <function>dict_to_vector()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_list_keys">
+            <function>dict_list_keys()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_destructive_list_rnd_keys">
+            <function>dict_destructive_list_rnd_keys()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_iter_rewind">
+            <function>dict_iter_rewind()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_dict_iter_next">
+            <function>dict_iter_next()
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

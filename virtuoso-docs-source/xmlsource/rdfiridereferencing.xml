@@ -1,0 +1,2434 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfiridereferencing">
+      <title>Linked Data</title>
+      <para>There are many cases when RDF data should be retrieved from remote sources only when really needed.
+E.g., a scheduling application may read personal calendars from personal sites of its users.
+Calendar data expire quickly, so there's no reason to frequently re-load them in hope that they are queried before expired.
+</para>
+      <para>Virtuoso extends SPARQL so it is possible to download RDF resource from a given IRI, parse them and store the resulting triples in a graph, all three operations will be performed during the SPARQL query execution.
+The IRI of graph to store triples is usually equal to the IRI where the resource is download from, so the feature is named "IRI dereferencing"
+There are two different use cases for this feature.
+In simple case, a SPARQL query contains <emphasis>from</emphasis>
+
+   clauses that enumerate graphs to process, but there are no triples in <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+   that correspond to some of these graphs.
+The query execution starts with dereferencing of these graphs and the rest runs as usual.
+In more sophisticated case, the query is executed many times in a loop.
+Every execution produces a partial result.
+SPARQL processor checks for IRIs in the result such that resources with that IRIs may contain relevant data but not yet loaded into the <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+  .
+After some iteration, the partial result is identical to the result of the previous iteration, because there's no more data to retrieve.
+As the last step, SPARQL processor builds the final result set.
+</para>
+      <section xml:id="rdfinputgrab">
+        <title>IRI Dereferencing For FROM Clauses, "define get:..." Pragmas</title>
+        <para>Virtuoso extends SPARQL syntax of <emphasis>from</emphasis>
+
+   and <emphasis>from named</emphasis>
+
+   clauses.
+It allows additional list of options at end of clause: <emphasis>option ( param1 value1, param2 value2, ... )</emphasis>
+
+where parameter names are QNames that start with <emphasis>get:</emphasis>
+
+   prefix and values are "precode" expressions, i.e. expressions that does not contain variables other than external parameters.
+Names of allowed parameters are listed below.
+</para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              <emphasis>get:soft</emphasis>
+            </para>
+            <para> is the retrieval mode, supported values are "soft" and "replacing".
+If the value is "soft" then the SPARQL processor will not even try to retrieve triples if the destination graph is non-empty.
+Other </para>
+            <para>
+              <emphasis>get:...</emphasis>
+            </para>
+            <para> parameters are useless without this one.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>get:uri</emphasis>
+            </para>
+            <para> is the IRI to retrieve if it is not equal to the IRI of the </para>
+            <para>
+              <emphasis>from</emphasis>
+            </para>
+            <para> clause.
+These can be used if data should be retrieved from a mirror, not from original resource location or in any other case when the destination graph IRI differs from the location of the resource.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+define get:uri "http://example.com/dataspace/person/kidehen"
+SELECT ?id
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+WHERE { graph ?g { ?id a ?o } }
+LIMIT 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1231
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1231
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1243
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1243
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+
+10 Rows. -- 10 msec.
+
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>get:method</emphasis>
+            </para>
+            <para> is the HTTP method that should be used to retrieve the resource, supported methods are "GET" for plain HTTP and "MGET" for URIQA web service endpoint.
+By default, "MGET" is used for IRIs that end with "/" and "GET" for everything else.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>get:refresh</emphasis>
+            </para>
+            <para> is the maximum allowed age of the cached resource, no matter what is specified by the server where the resource resides.
+The value is an positive integer (number of seconds). Virtuoso reads HTTP headers and uses "Date", "ETag", "Expires", "Last-Modified", "Cache-Control" and "Pragma: no-cache" fields to calculate when the resource should be reloaded, this value can become smaller due to </para>
+            <para>
+              <emphasis>get:refresh</emphasis>
+            </para>
+            <para> but can not be incremented.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+define get:refresh "3600"
+SELECT ?id
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+WHERE { graph ?g { ?id a ?o } }
+LIMIT 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1231
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1231
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1243
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1243
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+
+10 Rows. -- 10 msec.
+
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>get:proxy</emphasis>
+            </para>
+            <para> address of the proxy server, as "host:port" string, if direct download is impossible; the default is to not use proxy.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+define get:proxy "www.openlinksw.com:80"
+define get:method "GET"
+define get:soft "soft"
+SELECT ?id
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+WHERE { graph ?g { ?id a ?o } }
+LIMIT 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1231
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1231
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1243
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1243
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1261
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+
+10 Rows. -- 10 msec.
+SQL&gt; limit 10;
+</programlisting>
+          </listitem>
+          <!--
+  <listitem><emphasis>get:login</emphasis></listitem>
+  <listitem><emphasis>get:password</emphasis></listitem>
+  <listitem><emphasis>get:query</emphasis></listitem> -->
+
+          <listitem>
+            <para>If a value of some <emphasis>get:...</emphasis>
+
+   parameter repeats for every <emphasis>from</emphasis>
+
+   clause then it can be written as a global
+pragma like <emphasis>define get:soft "soft"</emphasis>
+
+  .
+The following two queries will work identically:
+</para>
+            <programlisting>
+SQL&gt;SPARQL
+SELECT ?id
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+  OPTION (get:soft "soft", get:method "GET")
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/sioc.ttl&gt;
+  OPTION (get:soft "soft", get:method "GET")
+WHERE { graph ?g { ?id a ?o } }
+LIMIT 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/person/oerling#this
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/958
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/958
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/949
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/949
+
+10 Rows. -- 862 msec.
+</programlisting>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+define get:method "GET"
+define get:soft "soft"
+SELECT ?id
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+FROM NAMED &lt;http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/sioc.ttl&gt;
+WHERE { graph ?g { ?id a ?o } }
+LIMIT 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/person/oerling#this
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/958
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/958
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/949
+http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/949
+
+10 Rows. -- 10 msec.
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+It can make text shorter and it is especially useful when the query text comes from client but the parameter should have a fixed value due to security reasons:
+the values set by <emphasis>define get:...</emphasis>
+
+   can not be redefined inside the query and the application may prevent the text with desired pragmas before the execution.
+</para>
+            <para>
+Note that the user should have <emphasis>SPARQL_UPDATE</emphasis>
+
+   role in order to execute such a query.
+By default SPARQL web service endpoint is owned by <emphasis>SPARQL</emphasis>
+
+   user that have <emphasis>SPARQL_SELECT</emphasis>
+
+   but not
+<emphasis>SPARQL_UPDATE</emphasis>
+
+  .
+It is possible in principle to grant <emphasis>SPARQL_UPDATE</emphasis>
+
+   to <emphasis>SPARQL</emphasis>
+
+   but this breaches the whole security of the RDF storage.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>FROM CLAUSE with options</emphasis>
+            </para>
+            <para>: options in OPTION() list should be delimited with commas.
+grab options are not allowed as they are global for the query. Only specific 'get:xxx' options are useful here.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT DISTINCT ?friend
+FROM NAMED  &lt;http://example.com/dataspace/person/kidehen&gt;
+OPTION (get:soft "soft", get:method "GET")
+WHERE
+  {
+      &lt;http://example.com/dataspace/person/kidehen#this&gt; foaf:knows
+?friend .
+  };
+friend
+VARCHAR
+_______________________________________________________________________________
+
+http://www.dajobe.org/foaf.rdf#i
+http://www.w3.org/People/Berners-Lee/card#i
+http://www.w3.org/People/Connolly/#me
+http://my.opera.com/chaals/xml/foaf#me
+http://www.w3.org/People/Berners-Lee/card#amy
+http://www.w3.org/People/EM/contact#me
+http://example.com/dataspace/person/ghard#this
+http://example.com/dataspace/person/omfaluyi#this
+http://example.com/dataspace/person/alanr#this
+http://example.com/dataspace/person/bblfish#this
+http://example.com/dataspace/person/danja#this
+http://example.com/dataspace/person/tthibodeau#this
+...
+36 Rows. -- 1693 msec.
+</programlisting>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="rdfinputgrab_01">
+        <title>IRI Dereferencing For Variables, "define input:grab-..." Pragmas</title>
+        <para>
+Consider a set of personal data such that one resource can list many persons and point to resources where that persons are described in more details.
+E.g. resource about <emphasis>user1</emphasis>
+
+   describes the user and also contain statements that <emphasis>user2</emphasis>
+
+   and <emphasis>user3</emphasis>
+
+   are persons and more data can be found in <emphasis>user2.ttl</emphasis>
+
+   and <emphasis>user3.ttl</emphasis>
+
+  ,
+<emphasis>user3.ttl</emphasis>
+
+   can contain statements that <emphasis>user4</emphasis>
+
+   is also person and more data can be found in <emphasis>user4.ttl</emphasis>
+
+   and so on.
+The query should find as many users as it is possible and return their names and e-mails.
+</para>
+        <para>
+If all data about all users were loaded into the database, the query could be quite simple:
+</para>
+        <programlisting>
+SQL&gt;SPARQL
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+SELECT ?id ?firstname ?nick
+where
+  {
+    graph ?g
+      {
+        ?id rdf:type foaf:Person.
+        ?id foaf:firstName ?firstname.
+        ?id foaf:knows ?fn .
+        ?fn foaf:nick ?nick.
+      }
+   }
+limit 10;
+
+id                                                      firstname  nick
+VARCHAR                                                 VARCHAR    VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/person/pmitchell#this   LaRenda    sdmonroe
+http://example.com/dataspace/person/pmitchell#this   LaRenda    kidehen{at}openlinksw.com
+http://example.com/dataspace/person/pmitchell#this   LaRenda    alexmidd
+http://example.com/dataspace/person/abm#this         Alan       kidehen{at}openlinksw.com
+http://example.com/dataspace/person/igods#this       Cameron    kidehen{at}openlinksw.com
+http://example.com/dataspace/person/goern#this       Christoph  captsolo
+http://example.com/dataspace/person/dangrig#this     Dan        rickbruner
+http://example.com/dataspace/person/dangrig#this     Dan        sdmonroe
+http://example.com/dataspace/person/dangrig#this     Dan        lszczepa
+http://example.com/dataspace/person/dangrig#this     Dan        kidehen
+
+10 Rows. -- 80 msec.
+</programlisting>
+        <para>
+It is possible to enable IRI dereferencing in such a way that all appropriate resources are loaded during the query execution even if names of some of them are not known a priori.
+</para>
+        <programlisting>
+SQL&gt;SPARQL
+  define input:grab-var "?more"
+  define input:grab-depth 10
+  define input:grab-limit 100
+  define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
+  prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+  prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+  prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?id ?firstname ?nick
+WHERE {
+    graph ?g {
+               ?id rdf:type foaf:Person.
+               ?id foaf:firstName ?firstname.
+               ?id foaf:knows ?fn .
+               ?fn foaf:nick ?nick.
+               OPTIONAL { ?id rdfs:SeeAlso ?more }
+            }
+}
+LIMIT 10;
+
+id                                                         firstname  nick
+VARCHAR                                                    VARCHAR    VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace/person/ghard#this          Yrj+?n+?   kidehen
+http://inamidst.com/sbp/foaf#Sean                          Sean       d8uv
+http://example.com/dataspace/person/dangrig#this        Dan        rickbruner
+http://example.com/dataspace/person/dangrig#this        Dan        sdmonroe
+http://example.com/dataspace/person/dangrig#this        Dan        lszczepa
+http://example.com/dataspace/person/dangrig#this        Dan        kidehen
+http://captsolo.net/semweb/foaf-captsolo.rdf#Uldis_Bojars  Uldis      mortenf
+http://captsolo.net/semweb/foaf-captsolo.rdf#Uldis_Bojars  Uldis      danja
+http://captsolo.net/semweb/foaf-captsolo.rdf#Uldis_Bojars  Uldis      zool
+http://example.com/dataspace/person/rickbruner#this     Rick       dangrig
+
+10 Rows. -- 530 msec.
+
+</programlisting>
+        <para>
+The IRI dereferencing is controlled by the following pragmas:
+</para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              <emphasis>input:grab-var</emphasis>
+            </para>
+            <para> specifies a name of variable whose values should be used as IRIs of resources that should be downloaded.
+It is not an error if the variable is sometimes unbound or gets values that can not be converted to IRIs (e.g., integers) -- bad values are silently ignored.
+It is also not an error if the IRI can not be retrieved, this makes IRI retrieval somewhat similar to "best effort union" in SQL.
+This pragma can be used more than once to specify many variable names.
+It is not an error if values of different variables result in same IRI or a variable gets same value many times -- no one IRI is retrieved more than once.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-iri</emphasis>
+            </para>
+            <para> specifies an IRI that should be retrieved before executing the rest of the query, if it is not in the </para>
+            <para>
+              <emphasis>DB.DBA.RDF_QUAD</emphasis>
+            </para>
+            <para> already.
+This pragma can be used more than once to specify many IRIs.
+The typical use of this pragma is querying a set of related resources when only one "root" resource IRI is known but even that resource is not loaded.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+  define input:storage ""
+  define input:grab-iri &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+  define input:grab-var "id"
+  define input:grab-depth 10
+  define input:grab-limit 100
+  define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
+SELECT ?id
+WHERE { graph ?g { ?id a ?o } }
+LIMIT 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://example.com/virtrdf-data-formats#default-iid
+http://example.com/virtrdf-data-formats#default-iid-nullable
+http://example.com/virtrdf-data-formats#default-iid-nonblank
+http://example.com/virtrdf-data-formats#default-iid-nonblank-nullable
+http://example.com/virtrdf-data-formats#default
+http://example.com/virtrdf-data-formats#default-nullable
+http://example.com/virtrdf-data-formats#sql-varchar
+http://example.com/virtrdf-data-formats#sql-varchar-nullable
+http://example.com/virtrdf-data-formats#sql-longvarchar
+http://example.com/virtrdf-data-formats#sql-longvarchar-nullable
+
+10 Rows. -- 530 msec.
+
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-all</emphasis>
+            </para>
+            <para> is the simplest possible way to enable the feature but the resulting performance can be very bad.
+It turns all variables and IRI constants in all graph, subject and object fields of all triple patterns of the query into values for
+</para>
+            <para>
+              <emphasis>input:grab-var</emphasis>
+            </para>
+            <para> and </para>
+            <para>
+              <emphasis>input:grab-iri</emphasis>
+            </para>
+            <para>,
+so the SPARQL processor will dereference everything what might be related to the text of the query.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+  define input:grab-all "yes"
+  define input:grab-depth 10
+  define input:grab-limit 100
+  define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
+  prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+  prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+SELECT ?id ?firstname ?nick
+where
+  {
+    graph ?g
+     {
+       ?id rdf:type foaf:Person.
+       ?id foaf:firstName ?firstname.
+       ?id foaf:knows ?fn .
+       ?fn foaf:nick ?nick.
+     }
+  }
+limit 10;
+
+id                                                      firstname   nick
+VARCHAR                                                 VARCHAR     VARCHAR
+____________________________________________________________________
+
+http://example.com/dataspace/person/pmitchell#this   LaRenda     sdmonroe
+http://example.com/dataspace/person/pmitchell#this   LaRenda     kidehen{at}openlinksw.com
+http://example.com/dataspace/person/pmitchell#this   LaRenda     alexmidd
+http://example.com/dataspace/person/abm#this         Alan        kidehen{at}openlinksw.com
+http://example.com/dataspace/person/igods#this       Cameron     kidehen{at}openlinksw.com
+http://example.com/dataspace/person/goern#this       Christoph   captsolo
+http://example.com/dataspace/person/dangrig#this     Dan         rickbruner
+http://example.com/dataspace/person/dangrig#this     Dan         sdmonroe
+http://example.com/dataspace/person/dangrig#this     Dan         lszczepa
+http://example.com/dataspace/person/dangrig#this     Dan         kidehen
+
+10 Rows. -- 660 msec.
+
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-seealso</emphasis>
+            </para>
+            <para> (and synonym </para>
+            <para>
+              <emphasis>input:grab-follow-predicate</emphasis>
+            </para>
+            <para>) specifies an IRI of an predicate similar to foaf:seeAlso.
+Predicates of that sort suggest location of resources that contain more data about predicate subject.
+The IRI dereferencing routine may use these predicates to find additional IRIs for loading resources.
+This is especially useful when the text of the query comes from remote client and may lack triple patterns like
+</para>
+            <para>
+              <emphasis>optional { ?id &lt;SeeAlso&gt; ?more }</emphasis>
+            </para>
+            <para> from the previous example.
+The use of </para>
+            <para>
+              <emphasis>input:grab-seealso</emphasis>
+            </para>
+            <para> makes the SPARQL query nondeterministic, because the order and the number of retrieved documents will
+depend on execution plan and they may change from run to run.
+This pragma can be used more than once to specify many IRIs, but this feature is costly.
+Every additional predicate may result in significant number of lookups in the RDF storage, affecting total execution time.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+  define input:grab-iri &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;
+  define input:grab-var "id"
+  define input:grab-depth 10
+  define input:grab-limit 100
+  define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
+  define input:grab-seealso &lt;foaf:maker&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?id
+where
+  {
+    graph ?g
+      {
+        ?id a foaf:Person .
+      }
+  }
+limit 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+mailto:somebody@example.domain
+http://example.com/dataspace/person/dav#this
+http://example.com/dataspace/person/dba#this
+mailto:2@F.D
+http://example.com/dataspace/person/test1#this
+http://www.openlinksw.com/blog/~kidehen/gems/rss.xml#Kingsley%20Uyi%20Idehen
+http://digitalmusic.weblogsinc.com/rss.xml#
+http://partners.userland.com/nytrss/books.xml#
+http://partners.userland.com/nytrss/arts.xml#
+
+9 Rows. -- 105 msec.
+
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-limit</emphasis>
+            </para>
+            <para> should be an integer that is a maximum allowed number of resource retrievals.
+The default value is pretty big (few millions of documents) so it is strongly recommended to set smaller value.
+Set it even if you're absolutely sure that the set of resources is small, because program errors are always possible.
+All resource downloads are counted, both successful and failed, both forced by </para>
+            <para>
+              <emphasis>input:grab-iri</emphasis>
+            </para>
+            <para> and forced by </para>
+            <para>
+              <emphasis>input:grab-var</emphasis>
+            </para>
+            <para>.
+Nevertheless, all constant IRIs specified by </para>
+            <para>
+              <emphasis>input:grab-iri</emphasis>
+            </para>
+            <para> (or </para>
+            <para>
+              <emphasis>input:grab-all</emphasis>
+            </para>
+            <para>) are downloaded before the first check of the </para>
+            <para>
+              <emphasis>input:grab-limit</emphasis>
+            </para>
+            <para> counter,
+so this limit will never prevent from downloading "root" resources.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-depth</emphasis>
+            </para>
+            <para> should be an integer that is a maximum allowed number of query iterations.
+Every iteration may find new IRIs to retrieve, because resources loaded on previous iteration may add these IRIs to </para>
+            <para>
+              <emphasis>DB.DBA.RDF_QUAD</emphasis>
+            </para>
+            <para> and make result set longer.
+The default value is 1, so the SPARQL processor will retrieve only resources explicitly named in "root" resources or in quad that are in the database before the query execution.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-base</emphasis>
+            </para>
+            <para> specifies a base IRI used to convert relative IRIs into absolute. The default is an empty string.</para>
+          </listitem>
+          <listitem>
+            <programlisting>
+SQL&gt;SPARQL
+  define input:grab-depth 10
+  define input:grab-limit 100
+  define input:grab-var "more"
+  define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
+  prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?id
+where
+  {
+    graph ?g
+     {
+       ?id a foaf:Person .
+       optional { ?id foaf:maker ?more }
+     }
+  }
+limit 10;
+
+id
+VARCHAR
+_______________________________________________________________________________
+
+mailto:somebody@example.domain
+http://example.com/dataspace/person/dav#this
+http://example.com/dataspace/person/dba#this
+mailto:2@F.D
+http://example.com/dataspace/person/test1#this
+http://www.openlinksw.com/blog/~kidehen/gems/rss.xml#Kingsley%20Uyi%20Idehen
+http://digitalmusic.weblogsinc.com/rss.xml#
+http://partners.userland.com/nytrss/books.xml#
+http://partners.userland.com/nytrss/arts.xml#
+
+9 Rows. -- 115 msec.
+
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-resolver</emphasis>
+            </para>
+            <para> is a name of procedure that resolve IRIs and determines the HTTP method of retrieval.
+The default is name of </para>
+            <para>
+              <emphasis>DB.DBA.RDF_GRAB_RESOLVER_DEFAULT()</emphasis>
+            </para>
+            <para> procedure that is described below.
+If other procedure is specified, the signature should match to the default one.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-destination</emphasis>
+            </para>
+            <para> is to override the default behaviour of the IRI dereferencing and store all retrieved triples in a single graph.
+This is convenient when there's no logical difference where any given triple comes from, and changes in remote resources will only add triples but not make cached triples obsolete.
+A SPARQL query is usually faster when all graph IRIs are fixed and there are no graph group patterns with an unbound graph variable, so storing everything in one single graph is worth considering.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>input:grab-loader</emphasis>
+            </para>
+            <para> is a name of procedure that retrieve the resource via HTTP, parse it and store it.
+The default is name of </para>
+            <para>
+              <emphasis>DB.DBA.RDF_SPONGE_UP()</emphasis>
+            </para>
+            <para> procedure; this procedure also used by IRI dereferencing for FROM clauses.
+You will probably never need to write your own procedure of this sort but some Virtuoso plugins will provide ready-to-use functions that will retrieve non-RDF resources and extract their metadata as triples or
+will implement protocols other than HTTP.
+</para>
+          </listitem>
+        </itemizedlist>
+        <para>Default resolver procedure is <emphasis>DB.DBA.RDF_GRAB_RESOLVER_DEFAULT()</emphasis>
+
+  . Note that the function produce two absolute URIs,
+<emphasis>abs_uri</emphasis>
+
+   and <emphasis>dest_uri</emphasis>
+
+  . Default procedure returns two equal strings, but other may return different values,
+e.g., return primary and permanent location of the resource as <emphasis>dest_uri</emphasis>
+
+   and the fastest known mirror location as
+<emphasis>abs_uri</emphasis>
+
+   thus saving HTTP retrieval time. It can even signal an error to block the downloading of some unwanted resource.</para>
+        <programlisting>
+DB.DBA.RDF_GRAB_RESOLVER_DEFAULT (
+  in base varchar,         -- base IRI as specified by input:grab-base pragma
+  in rel_uri varchar,      -- IRI of the resource as it is specified by input:grab-iri or a value of a variable
+  out abs_uri varchar,     -- the absolute IRI that should be downloaded
+  out dest_uri varchar,    -- the graph IRI where triples should be stored after download
+  out get_method varchar ) -- the HTTP method to use, should be "GET" or "MGET".
+</programlisting>
+      </section>
+      <section xml:id="urlrewriting">
+        <title>URL rewriting</title>
+        <para>URL rewriting is the act of modifying a source URL prior to the final processing of that URL by a
+Web Server.</para>
+        <para>The ability to rewrite URLs may be desirable for many reasons that include:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Changing Web information resource URLs on the a Web Server without breaking existing bookmarks
+held in User Agents (e.g., Web browsers)</para>
+          </listitem>
+          <listitem>
+            <para>URL compaction where shorter URLs may be constructed on a conditional basis for specific User
+Agents (e.g. Email clients)</para>
+          </listitem>
+          <listitem>
+            <para>Construction of search engine friendly URLs that enable richer indexing since most search
+engines cannot process parameterized URLs effectively.</para>
+          </listitem>
+        </itemizedlist>
+        <section xml:id="usingurlrewritesolelinkdpl">
+          <title>Using URL Rewriting to Solve Linked Data Deployment Challenges</title>
+          <para>URI naming schemes don't resolve the challenges associated with referencing data. To reiterate,
+this is demonstrated by the fact that the URIs http://demo.openlinksw.com/Northwind/Customer/ALFKI
+and http://demo.openlinksw.com/Northwind/Customer/ALFKI#this both appear as
+http://demo.openlinksw.com/Northwind/Customer/ALFKI to the Web Server, since data following the
+fragment identifier "#" never makes it that far.</para>
+          <para>The only way to address data referencing is by pre-processing source URIs
+(e.g. via regular expression or sprintf substitutions) as part of a URL rewriting
+processing pipeline. The pipeline process has to take the form of a set of rules
+that cater for elements such as HTTP Accept headers, HTTP response code, HTTP response
+headers, and rule processing order.</para>
+          <para>An example of such a pipeline is depicted in the table below.</para>
+          <table>
+            <title>Pre-processing source URIs</title>
+            <tgroup cols="5">
+              <thead>
+                <row>
+                  <entry>URI Source(Regular Expression Pattern)</entry>
+                  <entry>HTTP Accept Headers(Regular Expression)</entry>
+                  <entry>HTTPResponse Code</entry>
+                  <entry>HTTP Response Headers</entry>
+                  <entry>Rule Processing Order</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>/Northwind/Customer/([^#]*)</entry>
+                  <entry>None (meaning default)</entry>
+                  <entry>200 or 303 redirect to a resource with default representation.</entry>
+                  <entry>None</entry>
+                  <entry>Normal (order irrelevant)</entry>
+                </row>
+                <row>
+                  <entry>/Northwind/Customer/([^#]*)</entry>
+                  <entry>(text/rdf.n3)</entry>
+                  <entry>(application/rdf.xml)</entry>
+                  <entry>303 redirect to location of a descriptive and associated resource (e.g.
+RESTful Web Service that returns desired representation)</entry>
+                  <entry>None</entry>
+                </row>
+                <row>
+                  <entry>/Northwind/Customer/([^#]*)</entry>
+                  <entry>(text/html)</entry>
+                  <entry>(application/xhtml.xml)</entry>
+                  <entry>406 (Not Acceptable)or303 redirect to location of resource in requested representation</entry>
+                  <entry>Vary: negotiate, acceptAlternates: {"ALFKI" 0.9 {type application/rdf+xml}}</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <para>The source URI patterns refer to virtual or physical directories for ex. at http://demo.openlinksw.com/.
+Rules can be placed at the head or tail of the pipeline, or applied in the order they are declared,
+by specifying a Rule Processing Order of First, Last, or Normal, respectively. The decision as to
+which representation to return for URI http://demo.openlinksw.com/Northwind/Customer/ALFKI is based
+on the MIME type(s) specified in any Accept header accompanying the request.</para>
+          <para>In the case of the last rule, the Alternates response header applies only to response code 406.
+406 would be returned if there were no (X)HTML representation available for the requested resource.
+In the example shown, an alternative representation is available in RDF/XML.</para>
+          <para>When applied to matching HTTP requests, the last two rules might generate responses similar to those below:</para>
+          <programlisting>
+$ curl -I -H "Accept: application/rdf+xml" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Mon, 16 Jul 2007 22:40:03 GMT
+Accept-Ranges: bytes
+Location: /sparql?query=CONSTRUCT+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}+FROM+%3Chttp%3A//demo.openlinksw.com/Northwind%3E+WHERE+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}&amp;format=application/rdf%2Bxml
+Content-Length: 0
+</programlisting>
+          <para>In the cURL exchange depicted above, the target Virtuoso server redirects to a SPARQL endpoint
+that retrieves an RDF/XML representation of the requested entity.</para>
+          <programlisting>
+$ curl -I -H "Accept: text/html" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+
+HTTP/1.1 406 Not Acceptable
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Mon, 16 Jul 2007 22:40:23 GMT
+Accept-Ranges: bytes
+Vary: negotiate,accept
+Alternates: {"ALFKI" 0.9 {type application/rdf+xml}}
+Content-Length: 0
+</programlisting>
+          <para>In this second cURL exchange, the target Virtuoso server indicates that there is no resource
+to deliver in the requested representation. It provides hints in the form of an alternate resource
+representation and URI that may be appropriate, i.e., an RDF/XML representation of the requested entity.
+</para>
+        </section>
+        <section xml:id="virtuosorulebasedurlrewriter">
+          <title>The Virtuoso Rules-Based URL Rewriter</title>
+          <para>Virtuoso provides a URL rewriter that can be enabled for URLs matching specified patterns.
+Coupled with customizable HTTP response headers and response codes, Data-Web server administrators
+can configure highly flexible rules for driving content negotiation and URL rewriting. The key
+elements of the URL rewriter are:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Rewriting rule</para>
+            </listitem>
+            <listitem>
+              <para>Each rule describes how to parse a single source URL, and how to compose the URL of
+the page ultimately returned in the "Location:" response headers</para>
+            </listitem>
+            <listitem>
+              <para>Every rewriting rule is uniquely identified internally (using IRIs).</para>
+            </listitem>
+            <listitem>
+              <para>Two types of rule are supported, based on the syntax used to describe the source
+URL pattern matching: sprintf-based and regex-based.</para>
+            </listitem>
+            <listitem>
+              <para>Rewrite rules list</para>
+            </listitem>
+            <listitem>
+              <para>A named ordered list of rewrite rules or rule lists where rules of the list are
+processed from top to bottom or in line with processing pipeline precedence instructions</para>
+            </listitem>
+            <listitem>
+              <para>Configuration API</para>
+            </listitem>
+            <listitem>
+              <para>The rewriter configuration API defines functions for creating, dropping, and
+enumerating rules and rule lists.</para>
+            </listitem>
+            <listitem>
+              <para>Virtual hosts and virtual paths</para>
+            </listitem>
+            <listitem>
+              <para>URL rewriting is enabled by associating a rewrite rules list with a virtual directory</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section xml:id="urlrewritevirtdomains">
+          <title>Virtual Domains (Hosts) &amp; Directories</title>
+          <para>A Virtuoso virtual directory maps a logical path to a physical directory that is file
+system or WebDAV based. This mechanism allows physical locations to be hidden or simply reorganised.
+Virtual directory definitions are held in the system table DB.DBA.HTTP_PATH. Virtual directories
+can be administered in three basic ways:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Using the Visual Administration Interface via a Web browser;</para>
+            </listitem>
+            <listitem>
+              <para>Using the functions vhost_define() and vhost_remove(); and</para>
+            </listitem>
+            <listitem>
+              <para>Using SQL statements to directly update the HTTP_PATH system table.</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section xml:id="urlrewriteniceurlsvslongurls">
+          <title>"Nice" URLs vs. "Long" URLs</title>
+          <para>Although we are approaching the URL Rewriter from the perspective of deploying linked data,
+the Rewriter was developed with additional objectives in mind. These in turn have influenced
+the naming of some of the formal argument names in the Configuration API function prototypes.
+In the following sections, long URLs are those containing a query string with named parameters;
+nice (aka. source) URLs have data encoded in some other format. The primary goal of the Rewriter
+is to accept a nice URL from an application and convert this into a long URL, which then
+identifies the page that should actually be retrieved.
+</para>
+        </section>
+        <section xml:id="urlrewriterulesprocessmechanic">
+          <title>Rule Processing Mechanics</title>
+          <para>When an HTTP request is accepted by the Virtuoso HTTP server, the received nice URL is
+passed to an internal path translation function. This function takes the nice URL and, if
+the current virtual directory has a url_rewrite option set to an existing ruleset name, tries
+to match the corresponding rulesets and rules; that is, it performs a recursive traversal
+of any rulelist associated with it. For every rule in the rulelist, the same logic is
+applied (only the logic for regex-based rules is described; that for sprintf-based rules
+is very similar):
+</para>
+          <itemizedlist>
+            <listitem>
+              <para>The input for the rule is the resource URL as received from the HTTP header, i.e.,
+the portion of the URL from the first '/' after the host:port fields to the end of the URL.</para>
+            </listitem>
+            <listitem>
+              <para>The input is normalized.</para>
+            </listitem>
+            <listitem>
+              <para>The input is matched against the rule's regex. If the match fails, the rule is not
+applied and the next rule is tried. If the match succeeds, the result is a vector of values.</para>
+            </listitem>
+            <listitem>
+              <para>If the URL contains a query string, the names and values of the parameters are decoded by
+split_and_decode().</para>
+            </listitem>
+            <listitem>
+              <para>The names and values of any parameters in the request body are also decoded.</para>
+            </listitem>
+            <listitem>
+              <para>The destination URL is composed</para>
+            </listitem>
+            <listitem>
+              <para>The value of each parameter in the destination URL is taken from (in order of priority)</para>
+            </listitem>
+            <listitem>
+              <para>The value of a parameter in the match result;</para>
+            </listitem>
+            <listitem>
+              <para>The value of a named parameter in the query string of the input nice URL;</para>
+            </listitem>
+            <listitem>
+              <para>If the original request was submitted by the POST method, the value of a named parameter
+in the body of the POST request; or</para>
+            </listitem>
+            <listitem>
+              <para>if a parameter value cannot be derived from one of these sources, the rule is not applied
+and the next rule is tried.</para>
+            </listitem>
+          </itemizedlist>
+          <para>The path translation function described above is internal to the Web server, so its signature
+is not appropriate for Virtuoso/PL calls and thus is not published. Virtuoso/PL developers can
+harness the same functionality using the DB.DBA.URLREWRITE_APPLY API call.
+</para>
+        </section>
+        <section xml:id="urlrewriteruleconductor">
+          <title>Enabling URL Rewriting via the Virtuoso Conductor UI</title>
+          <para>Virtuoso is a full-blown HTTP server in its own right. The HTTP server functionality co-exists
+with the product core (i.e., DBMS Engine, Web Services Platform, WebDAV filesystem, and other
+components of the Universal Server). As a result, it has the ability to multi-home Web domains
+within a single instance across a variety of domain name and port combinations. In addition,
+it also enables the creation of multiple virtual directories per domain.
+</para>
+          <para>In addition to the basic functionality, Virtuoso facilitates the association of URL
+Rewriting rules with the virtual directories associated with a hosted Web domain.
+</para>
+          <para>In all cases, Virtuoso enables you to configure virtual domains, virtual directories
+and URL rewrite rules for one or more virtual directories, via the (X)HTML-based Conductor
+Admin User Interface or a collection of Virtuoso Stored Procedure Language (PL)-based APIs.
+</para>
+          <para>The steps for configuring URL Rewrite rules via the Virtuoso Conductor are as follows:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Assuming you are using the local demonstration database, load http://example.com/conductor
+into your browser, and then proceed through the Conductor as follows:</para>
+            </listitem>
+            <listitem>
+              <para>Click the "Web Application Server", and "Virtual Domains &amp; Directories" tabs</para>
+            </listitem>
+            <listitem>
+              <para>Pick the domain that contains the virtual directories to which the rules are to be applied
+(in this case the default was taken)</para>
+            </listitem>
+            <listitem>
+              <para>Click on the "URL-rewrite" link to create, delete, or edit a rule as shown below:</para>
+            </listitem>
+            <listitem>
+              <para>Create a Rule for HTML Representation Requests (via SPARQL SELECT Query)</para>
+            </listitem>
+            <listitem>
+              <para>Create a Rule for RDF Representation Requests (via SPARQL CONSTRUCT Query)</para>
+            </listitem>
+            <listitem>
+              <para>Then save and exit the Conductor, and test your rules with curl or any other User Agent.</para>
+            </listitem>
+          </itemizedlist>
+          <figure xml:id="urlrewriteimg1" floatstyle="1">
+            <title>URL-rewrite UI using Conductor</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/urlrw1.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </section>
+        <section xml:id="urlrewriterulevirtusopl">
+          <title>Enabling URL Rewriting via Virtuoso PL</title>
+          <para>The vhost_define()API is used to define virtual hosts and virtual paths hosted by the
+Virtuoso HTTP server. URL rewriting is enabled through this function's opts parameter.
+opts is of type ANY, e.g., a vector of field-value pairs. Numerous fields are recognized
+for controlling different options. The field value url_rewrite controls URL rewriting.
+The corresponding field value is the IRI of a rule list to apply.
+</para>
+          <section xml:id="urlrewriterulevirtusoplcontrolapi">
+            <title>Configuration API</title>
+            <para>Virtuoso includes the following functions for managing URL rewriting rules and rule
+lists. The names are self-explanatory.</para>
+            <programlisting>
+-- Deletes a rewriting rule
+DB.DBA.URLREWRITE_DROP_RULE
+
+-- Creates a rewriting rule which uses sprintf-based pattern matching
+DB.DBA.URLREWRITE_CREATE_SPRINTF_RULE
+
+-- Creates a rewriting rule which uses regular expression (regex) based pattern matching
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE
+
+-- Deletes a rewriting rule list
+DB.DBA.URLREWRITE_DROP_RULELIST
+
+-- Creates a rewriting rule list
+DB.DBA.URLREWRITE_CREATE_RULELIST
+
+-- Lists all the rules whose IRI match the specified 'SQL like' pattern
+DB.DBA.URLREWRITE_ENUMERATE_RULES
+
+-- Lists all the rule lists whose IRIs match the specified 'SQL like' pattern
+DB.DBA.URLREWRITE_ENUMERATE_RULELISTS
+</programlisting>
+          </section>
+          <section xml:id="urlrewriterulecreaterewriterule">
+            <title>Creating Rewriting Rules</title>
+            <para>Rewriting rules take two forms: sprintf-based or regex-based. When used for nice
+URL to long URL conversion, the only difference between them is the syntax of format
+strings. The reverse long to nice conversion works only for sprintf-based rules,
+whereas regex-based rules are unidirectional.
+</para>
+            <para>For the purposes of describing how to make dereferenceable URIs for linked data,
+we will stick with the nice to long conversion using regex-based rules.
+</para>
+            <para>Regex rules are created using the <emphasis>URLREWRITE_CREATE_REGEX_RULE()</emphasis>
+
+   function.</para>
+          </section>
+        </section>
+        <section xml:id="urlrewriteruleexamplenorthwind">
+          <title>Example - URL Rewriting For the Northwind Linked Data View</title>
+          <para>The Northwind schema is comprised of commonly understood SQL Tables that include: Customers,
+Orders, Employees, Products, Product Categories, Shippers, Countries, Provinces etc.
+</para>
+          <para>An Linked Data View of SQL data is an RDF named graph (RDF data set) comprised of RDF Linked Data
+(triples) stored in a Virtuoso Quad Store (the native RDF Data Management realm of Virtuoso).
+</para>
+          <para>In this example we are going interact with Linked Data deployed into the Data-Web from
+a live instance of Virtuoso, which uses the URL Rewrite rules from the prior section.
+</para>
+          <para>The components used in the example are as follows:</para>
+          <itemizedlist>
+            <listitem>
+              <para>Virtuoso SPARQL Endpoint: http://demo.openlinksw.com/sparql</para>
+            </listitem>
+            <listitem>
+              <para>Named RDF Graph: http://demo.openlinksw.com/Northwind</para>
+            </listitem>
+            <listitem>
+              <para>Entity ID - http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</para>
+            </listitem>
+            <listitem>
+              <para>Information Resource: http://demo.openlinksw.com/Northwind/Customer/ALFKI</para>
+            </listitem>
+            <listitem>
+              <para>Interactive SPARQL Query Builder (iSPARQL) - http://demo.openlinksw.com/DAV/JS/isparql/index.html</para>
+            </listitem>
+          </itemizedlist>
+          <section xml:id="urlrewriterulenorthwindverificationcurl">
+            <title>Northwind URL Rewriting Verification Using curl</title>
+            <para>The curl utility provides a useful tool for verifying HTTP server responses and rewriting
+rules. The curl exchanges below show the URL rewriting rules defined for the Northwind RDF
+view being applied.
+</para>
+            <para>
+              <emphasis>Example 1:</emphasis>
+            </para>
+            <programlisting>
+$ curl -I -H "Accept: text/html" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 14 Aug 2007 13:30:02 GMT
+Accept-Ranges: bytes
+Location: http://demo.openlinksw.com/about/html/http/demo.openlinksw.com/Northwind/Customer/ALFKI
+Content-Length: 0
+</programlisting>
+            <para>
+              <emphasis>Example 2:</emphasis>
+            </para>
+            <programlisting>
+$ curl -I -H "Accept: application/rdf+xml" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 14 Aug 2007 13:30:22 GMT
+Accept-Ranges: bytes
+Location: /sparql?query=CONSTRUCT+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}+FROM+%3Chttp%3A//demo.openlinksw.com/Northwind%3E+WHERE+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}&amp;format=application/rdf%2Bxml
+Content-Length: 0
+</programlisting>
+            <para>
+              <emphasis>Example 3:</emphasis>
+            </para>
+            <programlisting>
+$ curl -I -H "Accept: text/html" http://demo.openlinksw.com/Northwind/Customer/ALFKI#this
+
+HTTP/1.1 404 Not Found
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 14 Aug 2007 13:31:01 GMT
+Accept-Ranges: bytes
+Content-Length: 0
+</programlisting>
+            <para>The output above shows how RDF entities from the Data-Web, in this case customer ALFKI,
+are exposed in the Document Web. The power of SPARQL coupled with URL rewriting enables us to
+produce results in line with the desired representation. A SPARQL SELECT or CONSTRUCT query is
+used depending on whether the requested representation is text/html or application/rdf+xml,
+respectively.</para>
+            <para>The 404 response in Example 3 indicates that no HTML representation is available for entity
+ALFKI#this. In most cases, a URI of this form (containing a '#' fragment identifier) will
+not reach the server. This example supposes that it does: i.e., the RDF client and network
+routing allows the suffixed request. The presence of the #this suffix implicitly states
+that this is a request for a data resource in the Data-Web realm, not a document resource
+from the Document Web.2</para>
+            <para>Rather than return 404, we could instead choose to construct our rewriting rules to
+perform a 303 redirect, so that the response for ALFKI#this in Example 3 becomes the same
+as that for ALFKI in Example 1.</para>
+          </section>
+        </section>
+        <section xml:id="urlrewritetransperantcontent">
+          <title>Transparent Content Negotiation</title>
+          <para>So as not to overload our preceding description of Linked Data deployment with excessive
+detail, the description of content negotiation presented thus far was kept deliberately brief.
+This section discusses content negotiation in more detail.
+</para>
+          <section xml:id="urlrewritetransperantcontenthttp">
+            <title>HTTP/1.1 Content Negotiation</title>
+            <para>Recall that a resource (conceptual entity) identified by a URI may be associated
+with more than one representation (e.g. multiple languages, data formats, sizes, resolutions).
+If multiple representations are available, the resource is referred to as negotiable and
+each of its representations is termed a variant. For instance, a Web document resource, named
+'ALFKI' may have three variants: alfki.xml, alfki.html and alfki.txt all representing the same data.
+Content negotiation provides a mechanism for selecting the best variant.</para>
+            <para>As outlined in the earlier brief discussion of content negotiation, when a user agent
+requests a resource, it can include with the request Accept headers (Accept, Accept-Language,
+Accept-Charset, Accept-Encoding etc.) which express the user preferences and user agent
+capabilities. The server then chooses and returns the best variant based on the Accept headers.
+Because the selection of the best resource representation is made by the server, this
+scheme is classed as server-driven negotiation.</para>
+          </section>
+          <section xml:id="urlrewritetransperantcontenttransperant">
+            <title>Transparent Content Negotiation</title>
+            <para>An alternative content negotiation mechanism is Transparent Content Negotiation (TCN),
+a protocol defined by RFC2295 . TCN offers a number of benefits over standard HTTP/1.1 negotiation,
+for suitably enabled user agents.</para>
+            <para>RFC2295 introduces a number of new HTTP headers including the Negotiate request header,
+and the TCN and Alternates response headers. (Krishnamurthy et al. note that although the
+HTTP/1.1 specification reserved the Alternates header for use in agent driven negotiation,
+it was not fully specified. Consequently under a pure HTTP/1.1 implementation as defined by
+RFC2616, server-driven content negotiation is the only option. RFC2295 addresses this issue.)</para>
+          </section>
+          <section xml:id="urlrewritetransperantcontentdefic">
+            <title>Deficiencies of HTTP/1.1 Server-Driven Negotiation</title>
+            <para>Weaknesses of server-driven negotiation highlighted by RFCs 2295 and 2616 include:</para>
+            <itemizedlist>
+              <listitem>
+                <para>Inefficiency - Sending details of a user agent's capabilities and preferences
+with every request is very inefficient, not least because very few Web resources have
+multiple variants, and expensive in terms of the number of Accept headers required to
+fully describe all but the most simple browser's capabilities.</para>
+              </listitem>
+              <listitem>
+                <para>Server doesn't always know 'best' - Having the server decide on the 'best' variant
+may not always result in the most suitable resource representation being returned to
+the client. The user agent might often be better placed to decide what is best for its needs.</para>
+              </listitem>
+            </itemizedlist>
+          </section>
+          <section xml:id="urlrewritetransperantcontentvariantagent">
+            <title>Variant Selection By User Agent</title>
+            <para>Rather than rely on server-driven negotiation and variant selection by the server,
+a user agent can take full control over deciding the best variant by explicitly requesting
+transparent content negotiation through the Negotiate request header. The negotiation is
+'transparent' because it makes all the variants on the server visible to the agent.</para>
+            <para>Under this scheme, the server sends the user agent a list, represented in an
+Alternates header, containing the available variants and their properties. The user
+agent can then choose the best variant itself. Consequently, the agent no longer
+needs to send large Accept headers describing in detail its capabilities
+and preferences. (However, unless caching is used, user-agent driven negotiation does
+suffer from the disadvantage of needing a second request to obtain the best representation.
+By sending its best guess as the first response, server driven negotiation avoids this
+second request if the initial best guess is acceptable.)</para>
+          </section>
+          <section xml:id="urlrewritetransperantcontentvariantserver">
+            <title>Variant Selection By Server</title>
+            <para>As well as variant selection by the user agent, TCN allows the server to choose on
+behalf of the user agent if the user agent explicitly allows it through the Negotiate
+request header. This option allows the user agent to send smaller Accept headers
+containing enough information to allow the server to choose the best variant and
+return it directly. The server's choice is controlled by a 'remote variant selection
+algorithm' as defined in RFC2296.</para>
+          </section>
+          <section xml:id="urlrewritetransperantcontentvariantuser">
+            <title>Variant Selection By End-User</title>
+            <para>A further option is to allow the end-user to select a variant, in case the choice made
+by negotiation process is not optimal. For instance, the user agent could display an
+HTML-based 'pick list' of variants constructed from the variant list returned by the server.
+Alternatively the server could generate this pick list itself and include it in the response
+to a user agent's request for a variant list. (Virtuoso currently responds this way.)</para>
+          </section>
+        </section>
+        <section xml:id="urlrewritetransperantcontentserver">
+          <title>Transparent Content Negotiation in Virtuoso HTTP Server</title>
+          <para>The following section describes the Virtuoso HTTP server's TCN implementation
+which is based on RFC2295, but without "Feature" negotiation. OpenLink's RDF rich clients,
+iSparql and the OpenLink RDF Browser, both support TCN. User agents which do not support
+transparent content negotiation continue to be handled using HTTP/1.1 style content
+negotiation (whereby server-side selection is the only option - the server selects
+the best variant and returns a list of variants in an Alternates response header).</para>
+          <section xml:id="urlrewritetransperantcontentserverdesc">
+            <title>Describing Resource Variants</title>
+            <para>In order to negotiate a resource, the server needs to be given information about each
+of the variants. Variant descriptions are held in SQL table HTTP_VARIANT_MAP.
+The descriptions themselves can be created, updated or deleted using Virtuoso/PL or
+through the Conductor UI. The table definition is as follows:</para>
+            <programlisting>
+create table DB.DBA.HTTP_VARIANT_MAP (
+  VM_ID integer identity, -- unique ID
+  VM_RULELIST varchar, -- HTTP rule list name
+  VM_URI varchar, -- name of requested resource e.g. 'page'
+  VM_VARIANT_URI varchar, -- name of variant e.g. 'page.xml', 'page.de.html' etc.
+  VM_QS float, -- Source quality, a number in the range 0.001-1.000, with 3 digit precision
+  VM_TYPE varchar, -- Content type of the variant e.g. text/xml
+  VM_LANG varchar, -- Content language e.g. 'en', 'de' etc.
+  VM_ENC varchar, -- Content encoding e.g. 'utf-8', 'ISO-8892' etc.
+  VM_DESCRIPTION long varchar, -- a human readable description about the variant e.g. 'Profile in RDF format'
+  VM_ALGO int default 0, -- reserved for future use
+  primary key (VM_RULELIST, VM_URI, VM_VARIANT_URI)
+ )
+create unique index HTTP_VARIANT_MAP_ID on DB.DBA.HTTP_VARIANT_MAP (VM_ID)
+</programlisting>
+          </section>
+          <section xml:id="urlrewritetransperantcontentserveconfgpl">
+            <title>Configuration using Virtuoso/PL</title>
+            <para>Two functions are provided for adding or updating, or removing variant descriptions using Virtuoso/PL:</para>
+            <programlisting>
+-- Adding or Updating a Resource Variant:
+DB.DBA.HTTP_VARIANT_ADD (
+  in rulelist_uri varchar, -- HTTP rule list name
+  in uri varchar, -- Requested resource name e.g. 'page'
+  in variant_uri varchar, -- Variant name e.g. 'page.xml', 'page.de.html' etc.
+  in mime varchar, -- Content type of the variant e.g. text/xml
+  in qs float := 1.0, -- Source quality, a floating point number with 3 digit precision in 0.001-1.000 range
+  in description varchar := null, -- a human readable description of the variant e.g. 'Profile in RDF format'
+  in lang varchar := null, -- Content language e.g. 'en', 'bg'. 'de' etc.
+  in enc varchar := null -- Content encoding e.g. 'utf-8', 'ISO-8892' etc.
+)
+
+--Removing a Resource Variant
+DB.DBA.HTTP_VARIANT_REMOVE (
+  in rulelist_uri varchar, -- HTTP rule list name
+  in uri varchar, -- Name of requested resource e.g. 'page'
+  in variant_uri varchar := '%' -- Variant name filter
+)
+</programlisting>
+          </section>
+          <section xml:id="urlrewritetransperantcontentserveconfgconductor">
+            <title>Configuration using Conductor UI</title>
+            <para>The Conductor 'Content negotiation' panel for describing resource variants and configuring
+content negotiation is depicted below. It can be reached by selecting the 'Virtual Domains &amp; Directories'
+tab under the 'Web Application Server' menu item, then selecting the 'URL rewrite' option for a logical path
+listed amongst those for the relevant HTTP host, e.g. '{Default Web Site}'</para>
+            <para>The input fields reflect the supported 'dimensions' of negotiation which include content type,
+language and encoding. Quality values corresponding to the options for 'Source Quality' are as follows:</para>
+            <table>
+              <title>Source Quality</title>
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>Source Quality</entry>
+                    <entry>Quality Value</entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>perfect representation</entry>
+                    <entry>1.000</entry>
+                  </row>
+                  <row>
+                    <entry>threshold of noticeable loss of quality</entry>
+                    <entry>0.900</entry>
+                  </row>
+                  <row>
+                    <entry>noticeable, but acceptable quality reduction</entry>
+                    <entry>0.800</entry>
+                  </row>
+                  <row>
+                    <entry>barely acceptable quality</entry>
+                    <entry>0.500</entry>
+                  </row>
+                  <row>
+                    <entry>severely degraded quality</entry>
+                    <entry>0.300</entry>
+                  </row>
+                  <row>
+                    <entry>completely degraded quality</entry>
+                    <entry>0.000</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </section>
+          <section xml:id="urlrewritetransperantcontentserveconfgvarselalgr">
+            <title>Variant Selection Algorithm</title>
+            <para>When a user agent instructs the server to select the best variant, Virtuoso does so
+using the selection algorithm below:</para>
+            <para>If a virtual directory has URL rewriting enabled (has the 'url_rewrite' option set),
+the web server:</para>
+            <itemizedlist>
+              <listitem>
+                <para>Looks in DB.DBA.HTTP_VARIANT_MAP for a VM_RULELIST matching the one specified in
+the 'url_rewrite' option</para>
+              </listitem>
+              <listitem>
+                <para>If present, it loops over all variants for which VM_URI is equal to the resource requested</para>
+              </listitem>
+              <listitem>
+                <para>For every variant it calculates the source quality based on the value of VM_QS and the
+source quality given by the user agent</para>
+              </listitem>
+              <listitem>
+                <para>If the best variant is found, it adds TCN HTTP headers to the response and passes the
+VM_VARIANT_URI to the URL rewriter</para>
+              </listitem>
+              <listitem>
+                <para>If the user agent has asked for a variant list, it composes such a list and returns an
+'Alternates' HTTP header with response code 300</para>
+              </listitem>
+              <listitem>
+                <para>If no URL rewriter rules exist for the target URL, the web server returns the content of
+the dereferenced VM_VARIANT_URI.</para>
+              </listitem>
+            </itemizedlist>
+            <para>The server may return the best-choice resource representation or a list of available
+resource variants. When a user agent requests transparent negotiation, the web server returns
+the TCN header "choice". When a user agent asks for a variant list, the server returns the
+TCN header "list".</para>
+          </section>
+          <section xml:id="urlrewritetransperantcontentserveconfgexamples">
+            <title>Examples</title>
+            <para>In this example we assume the following files have been uploaded to the Virtuoso WebDAV
+server, with each containing the same information but in different formats:</para>
+            <itemizedlist>
+              <listitem>
+                <para>/DAV/TCN/page.xml - a XML variant</para>
+              </listitem>
+              <listitem>
+                <para>/DAV/TCN/page.html - a HTML variant</para>
+              </listitem>
+              <listitem>
+                <para>/DAV/TCN/page.txt - a text variant</para>
+              </listitem>
+            </itemizedlist>
+            <para>We add TCN rules and define a virtual directory:</para>
+            <programlisting>
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.html','text/html', 0.900000, 'HTML variant');
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.txt', 'text/plain', 0.500000, 'Text document');
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.xml', 'text/xml', 1.000000, 'XML variant');
+DB.DBA.VHOST_DEFINE (lpath=&gt;'/DAV/TCN/',
+                     ppath=&gt;'/DAV/TCN/',
+                     is_dav=&gt;1,
+                     vsp_user=&gt;'dba',
+                     opts=&gt;vector ('url_rewrite', 'http_rule_list_1'));
+</programlisting>
+            <para>Having done this we can now test the setup with a suitable HTTP client, in this
+case the curl command line utility. In the following examples, the curl client supplies
+Negotiate request headers containing content negotiation directives which include:</para>
+            <itemizedlist>
+              <listitem>
+                <para>"trans" - The user agent supports transparent content negotiation for the current request.</para>
+              </listitem>
+              <listitem>
+                <para>"vlist" - The user agent requests that any transparently negotiated response
+for the current request includes an Alternates header with the variant list bound to
+the negotiable resource. Implies "trans".</para>
+              </listitem>
+              <listitem>
+                <para>"*" - The user agent allows servers and proxies to run any remote variant selection algorithm.</para>
+              </listitem>
+            </itemizedlist>
+            <para>The server returns a TCN response header signalling that the resource is transparently negotiated and either
+a choice or a list response as appropriate.</para>
+            <para>In the first curl exchange, the user agent indicates to the server that, of the formats
+it recognizes, HTML is preferred and it instructs the server to perform transparent content
+negotiation. In the response, the Vary header field expresses the parameters the server used
+to select a representation, i.e. only the Negotiate and Accept header fields are considered.</para>
+            <programlisting>
+$ curl -i -H "Accept: text/xml;q=0.3,text/html;q=1.0,text/plain;q=0.5,*/*;
+q=0.3" -H "Negotiate: *" http://example.com/DAV/TCN/page
+HTTP/1.1 200 OK Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu
+VDB Connection: Keep-Alive Date: Wed, 31 Oct 2007 15:43:18
+GMT Accept-Ranges: bytes TCN: choice Vary: negotiate,accept
+Content-Location: page.html Content-Type: text/html
+ETag: "14056a25c066a6e0a6e65889754a0602"
+Content-Length: 49
+&lt;html&gt; &lt;body&gt; some html &lt;/body&gt; &lt;/html&gt;
+</programlisting>
+            <para>Next, the source quality values are adjusted so that the user agent indicates that XML is its preferred format.
+</para>
+            <programlisting>
+$ curl -i -H "Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3" -H "Negotiate:
+*" http://example.com/DAV/TCN/page HTTP/1.1 200 OK Server: Virtuoso/05.00.3021
+(Linux) i686-pc-linux-gnu VDB Connection: Keep-Alive Date: Wed, 31 Oct 2007
+15:44:07 GMT Accept-Ranges: bytes TCN: choice Vary: negotiate,accept
+Content-Location: page.xml Content-Type: text/xml ETag:
+"8b09f4b8e358fcb7fd1f0f8fa918973a" Content-Length: 39
+
+&lt;?xml version="1.0" ?&gt; &lt;a&gt;some xml&lt;/a&gt;
+</programlisting>
+            <para>In the final example, the user agent wants to decide itself which is the most
+suitable representation, so it asks for a list of variants. The server provides the
+list, in the form of an Alternates response header, and, in addition, sends an
+HTML representation of the list so that the end user can decide on the preferred
+variant himself if the user agent is unable to.</para>
+            <programlisting>
+$ curl -i -H "Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3" -H "Negotiate:
+vlist" http://example.com/DAV/TCN/page HTTP/1.1 300 Multiple Choices Server:
+Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB Connection: close Content-Type:
+text/html; charset=ISO-8859-1 Date: Wed, 31 Oct 2007 15:44:35 GMT Accept-Ranges:
+bytes TCN: list Vary: negotiate,accept Alternates: {"page.html" 0.900000 {type text/html}},
+{"page.txt" 0.500000 {type text/plain}}, {"page.xml" 1.000000 {type text/xml}} Content-Length: 368
+
+&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;300 Multiple Choices&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Multiple Choices&lt;/h1&gt;
+Available variants:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href="page.html"&gt;HTML variant&lt;/a&gt;, type text/html&lt;/li&gt;
+&lt;li&gt;&lt;a href="page.txt"&gt;Text document&lt;/a&gt;, type text/plain&lt;/li&gt;
+&lt;li&gt;&lt;a href="page.xml"&gt;XML variant&lt;/a&gt;, type text/xml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</programlisting>
+          </section>
+        </section>
+      </section>
+      <section xml:id="rdfiridereferencingexamples">
+        <title>Examples of other Protocol Resolvers</title>
+        <para>Example of <emphasis>LSIDs</emphasis>
+
+  : A scientific name from UBio</para>
+        <programlisting>
+SQL&gt;SPARQL
+define get:soft "soft"
+SELECT *
+FROM &lt;urn:lsid:ubio.org:namebank:11815&gt;
+WHERE { ?s ?p ?o }
+LIMIT 5;
+
+s                                 p                                           o
+VARCHAR                           VARCHAR                                     VARCHAR
+_______________________________________________________________________________
+
+urn:lsid:ubio.org:namebank:11815  http://purl.org/dc/elements/1.1/title       Pternistis leucoscepus
+urn:lsid:ubio.org:namebank:11815  http://purl.org/dc/elements/1.1/subject     Pternistis leucoscepus (Gray, GR) 1867
+urn:lsid:ubio.org:namebank:11815  http://purl.org/dc/elements/1.1/identifier  urn:lsid:ubio.org:namebank:11815
+urn:lsid:ubio.org:namebank:11815  http://purl.org/dc/elements/1.1/creator     http://www.ubio.org
+urn:lsid:ubio.org:namebank:11815  http://purl.org/dc/elements/1.1/type        Scientific Name
+
+5 Rows. -- 741 msec.
+</programlisting>
+        <para>Example of <emphasis>LSIDs</emphasis>
+
+  : A segment of the human genome from GDB</para>
+        <programlisting>
+SQL&gt;SPARQL
+define get:soft "soft"
+SELECT *
+FROM &lt;urn:lsid:gdb.org:GenomicSegment:GDB132938&gt;
+WHERE { ?s ?p ?o }
+LIMIT 5;
+
+s                                          p                                                     o
+VARCHAR                                    VARCHAR                                               VARCHAR
+_______________________________________________________________________________
+
+urn:lsid:gdb.org:GenomicSegment:GDB132938  urn:lsid:gdb.org:DBObject-predicates:accessionID      GDB:132938
+urn:lsid:gdb.org:GenomicSegment:GDB132938  http://www.ibm.com/LSID/2004/RDF/#lsidLink            urn:lsid:gdb.org:DBObject:GDB132938
+urn:lsid:gdb.org:GenomicSegment:GDB132938  urn:lsid:gdb.org:DBObject-predicates:objectClass      DBObject
+urn:lsid:gdb.org:GenomicSegment:GDB132938  urn:lsid:gdb.org:DBObject-predicates:displayName      D20S95
+urn:lsid:gdb.org:GenomicSegment:GDB132938  urn:lsid:gdb.org:GenomicSegment-predicates:variantsQ  nodeID://1000027961
+
+5 Rows. -- 822 msec.
+</programlisting>
+        <para>Example of <emphasis>OAI</emphasis>
+
+  : an institutional / departmental repository.</para>
+        <programlisting>
+SQL&gt;SPARQL
+define get:soft "soft"
+SELECT *
+FROM &lt;oai:etheses.bham.ac.uk:23&gt;
+WHERE { ?s ?p ?o }
+LIMIT 5;
+
+s                           p                                           o
+VARCHAR                     VARCHAR                                     VARCHAR
+_____________________________________________________________________________
+
+oai:etheses.bham.ac.uk:23   http://purl.org/dc/elements/1.1/title       A study of the role of ATM mutations in the pathogenesis of B-cell chronic lymphocytic leukaemia
+oai:etheses.bham.ac.uk:23   http://purl.org/dc/elements/1.1/date        2007-07
+oai:etheses.bham.ac.uk:23   http://purl.org/dc/elements/1.1/subject     RC0254 Neoplasms. Tumors. Oncology (including Cancer)
+oai:etheses.bham.ac.uk:23   http://purl.org/dc/elements/1.1/identifier  Austen, Belinda (2007) A study of the role of ATM mutations in the pathogenesis of B-cell chronic lymphocytic leukaemia. Ph.D. thesis, University of Birmingham.
+oai:etheses.bham.ac.uk:23   http://purl.org/dc/elements/1.1/identifier  http://etheses.bham.ac.uk/23/1/Austen07PhD.pdf
+
+5 Rows. -- 461 msec.
+</programlisting>
+        <para>Example of <emphasis>DOI</emphasis>
+
+  </para>
+        <para>In order to execute correctly queries with doi resolver you need to have:</para>
+        <itemizedlist>
+          <listitem>
+            <para>the handle.dll file accessible from your system. For ex. you can put it in the Virtuoso bin folder where the rest of the server components are.</para>
+          </listitem>
+          <listitem>
+            <para>in your Virtuoso database ini file in section Plugins added the hslookup.dll file, which location should be in the plugins folder under your Virtuoso server installation. For ex:
+</para>
+            <programlisting>
+[Plugins]
+LoadPath = ./plugin
+...
+Load6    = plain,hslookup
+</programlisting>
+          </listitem>
+        </itemizedlist>
+        <programlisting>
+SQL&gt;SPARQL
+define get:soft "soft"
+SELECT *
+FROM &lt;doi:10.1045/march99-bunker&gt;
+WHERE { ?s ?p ?o } ;
+
+s                                                      p                                                 o
+VARCHAR                                                VARCHAR                                           VARCHAR
+_______________________________________________________________________________
+
+http://www.dlib.org/dlib/march99/bunker/03bunker.html  http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://example.com/schemas/XHTML#
+http://www.dlib.org/dlib/march99/bunker/03bunker.html  http://example.com/schemas/XHTML#title     Collaboration as a Key to Digital Library Development: High Performance Image Management at the University of Washington
+
+2 Rows. -- 12388 msec.
+</programlisting>
+        <para>Other examples</para>
+        <programlisting>
+SQL&gt;SPARQL
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX doap: &lt;http://usefulinc.com/ns/doap#&gt;
+SELECT DISTINCT ?name ?mbox ?projectName
+WHERE {
+ &lt;http://dig.csail.mit.edu/2005/ajar/ajaw/data#Tabulator&gt;
+doap:developer ?dev .
+ ?dev foaf:name ?name .
+ OPTIONAL { ?dev foaf:mbox ?mbox }
+ OPTIONAL { ?dev doap:project ?proj .
+            ?proj foaf:name ?projectName }
+};
+
+name                 mbox    projectName
+VARCHAR              VARCHAR VARCHAR
+____________________ ___________________________________________
+
+Adam Lerer           NULL    NULL
+Dan Connolly         NULL    NULL
+David Li             NULL    NULL
+David Sheets         NULL    NULL
+James Hollenbach     NULL    NULL
+Joe Presbrey         NULL    NULL
+Kenny Lu             NULL    NULL
+Lydia Chilton        NULL    NULL
+Ruth Dhanaraj        NULL    NULL
+Sonia Nijhawan       NULL    NULL
+Tim Berners-Lee      NULL    NULL
+Timothy Berners-Lee  NULL    NULL
+Yuhsin Joyce Chen    NULL    NULL
+
+13 Rows. -- 491 msec.
+</programlisting>
+        <programlisting>
+SQL&gt;SPARQL
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT DISTINCT ?friendsname ?friendshomepage ?foafsname ?foafshomepage
+WHERE
+ {
+  &lt;http://example.com/dataspace/person/kidehen#this&gt; foaf:knows ?friend .
+  ?friend foaf:mbox_sha1sum ?mbox .
+  ?friendsURI foaf:mbox_sha1sum ?mbox .
+  ?friendsURI foaf:name ?friendsname .
+  ?friendsURI foaf:homepage ?friendshomepage .
+  OPTIONAL { ?friendsURI foaf:knows ?foaf .
+              ?foaf foaf:name ?foafsname .
+              ?foaf foaf:homepage ?foafshomepage .
+           }
+ }
+LIMIT 10;
+
+friendsname  	   friendshomepage                         foafsname  	    foafshomepage
+ANY                ANY                                     ANY              ANY
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Dan Connolly	    http://www.w3.org/People/Connolly/
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Henry J. Story   http://bblfish.net/
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Henry Story	    http://bblfish.net/
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Henry J. Story   http://bblfish.net/people/henry/card
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Henry Story	    http://bblfish.net/people/henry/card
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Ruth Dhanaraj    http://web.mit.edu/ruthdhan/www
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Dan Brickley	    http://danbri.org/
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Dan Brickley	    http://danbri.org/
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Daniel Krech	    http://eikeon.com/
+ Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Daniel Krech	    http://eikeon.com/
+
+</programlisting>
+      </section>
+      <section xml:id="rdfiridereferencingfacet">
+        <title>Faceted Views over Large-Scale Linked Data</title>
+        <para>Faceted views over structured and semi structured data have been popular in user interfaces for
+some years. Deploying such views of arbitrary linked data at arbitrary scale has been hampered by lack
+of suitable back end technology. Many ontologies are also quite large, with hundreds of thousands of
+classes.
+</para>
+        <para>Also, the linked data community has been concerned with the processing cost and potential for
+denial of service presented by public SPARQL end points.
+</para>
+        <para>This section discusses how we use Virtuoso Cluster Edition for providing interactive browsing over
+billions of triples, combining full text search, structured querying and result ranking. We discuss query
+planning, run-time inferencing and partial query evaluation. This functionality is exposed through SPARQL,
+a specialized web service and a web user interface.</para>
+        <para>The transition of the web from a distributed document repository into a universal, ubiquitous
+database requires a new dimension of scalability for supporting rich user interaction. If the web is the
+database, then it also needs a query and report writing tool to match. A faceted user interaction paradigm
+has been found useful for aiding discovery and query of variously structured data. Numerous implementations
+exist but they are chiefly client side and are limited in the data volumes they can handle.
+</para>
+        <para>At the present time, linked data is well beyond prototypes and proofs of concept. This means that
+what was done in limited specialty domains before must now be done at real world scale, in terms of both
+data volume and ontology size. On the schema, or T box side, there exist many comprehensive general purpose
+ontologies such as Yago[1], OpenCyc[2], Umbel[3] and the DBpedia[4] ontology and many domain specific
+ones, such as [5]. For these to enter into the user experience, the platform must be able to support
+the user's choice of terminology or terminologies as needed, preferably without blow up of data and
+concomitant slowdown.
+</para>
+        <para>Likewise, in the LOD world, many link sets have been created for bridging between data sets.
+Whether such linkage is relevant will depend on the use case. Therefore we provide fine grained control
+over which owl:sameAs assertions will be followed, if any.
+</para>
+        <para>Against this background, we discuss how we tackle incremental interactive query composition on
+arbitrary data with <link linkend="clusteroperation">Virtuoso Cluster</link>
+
+  .
+</para>
+        <para>Using SPARQL or a web/web service interface, the user can form combinations of text search and
+structured criteria, including joins to an arbitrary depth. If queries are precise and select a limited
+number of results, the results are complete. If queries would select tens of millions of results, partial
+results are shown.
+</para>
+        <para>The system being described is being actively developed as of this writing, early March of 2009
+and is online at http://lod.openlinksw.com/. The data set is a combination of DBpedia, MusicBrainz,
+Freebase, UniProt, NeuroCommons, Bio2RDF, and web crawls from PingTheSemanticWeb.com.
+</para>
+        <para>The hardware consists of two 8-core servers with 16G RAM and 4 disks each. The system runs on
+Virtuoso 6 Cluster Edition. All application code is written in SQL procedures with limited client side
+Ajax, the Virtuoso platform itself is in C.
+</para>
+        <para>The facets service allows the user to start with a text search or a fixed URI and to refine the
+search by specifying classes, property values etc., on the selected subjects or any subjects referenced
+therefrom.
+</para>
+        <para>This process generates queries involving combinations of text and structured criteria, often
+dealing with property and class hierarchies and often involving aggregation over millions of subjects,
+specially at the initial stages of query composition. To make this work with in interactive time, two
+things are needed:
+</para>
+        <orderedlist>
+          <listitem>
+            <para>a query optimizer that can almost infallibly produce the right join order based on cardinalities of
+the specific constants in the query</para>
+          </listitem>
+          <listitem>
+            <para>a query execution engine that can return partial results after a timeout.</para>
+          </listitem>
+        </orderedlist>
+        <para>It is often the case, specially at the beginning of query formulation, that the user only needs
+to know if there are relatively many or few results that are of a given type or involve a given property.
+Thus partially evaluating a query is often useful for producing this information. This must however be
+possible with an arbitrary query, simply citing precomputed statistics is not enough.
+</para>
+        <para>It has for a long time been a given that any search-like application ranks results by relevance.
+Whenever the facets service shows a list of results, not an aggregation of result types or properties,
+it is sorted on a composite of text match score and link density.
+</para>
+        <para>The section is divided into the following parts:
+</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>SPARQL query optimization and execution adapted for run time inference over large subclass
+structures.</para>
+          </listitem>
+          <listitem>
+            <para>Resolving identity with inverse functional properties</para>
+          </listitem>
+          <listitem>
+            <para>Ranking entities based on graph link density</para>
+          </listitem>
+          <listitem>
+            <para>SPARQL partial query evaluation for displaying partial results in fixed time</para>
+          </listitem>
+          <listitem>
+            <para>a facets web service providing an XML interface for submitting queries, so that the
+user interface is not required to parse SPARQL</para>
+          </listitem>
+          <listitem>
+            <para>a sample web interface for interacting with this</para>
+          </listitem>
+          <listitem>
+            <para>sample queries and their evaluation times against combinations of large LOD data sets</para>
+          </listitem>
+        </itemizedlist>
+        <section xml:id="rdfiridereferencingfacetprlh">
+          <title>Processing Large Hierarchies in SPARQL</title>
+          <para>Virtuoso has for a long time had built-in superclass and superproperty inference. This is enabled by
+specifying the <emphasis>DEFINE input:inference "context"</emphasis>
+
+   option, where context is previously
+declared to be all subclass, subproperty, equivalence, inverse functional property and same as relations
+defined in a given graph. The ontology file is loaded into its own graph and this is then used to construct
+the context. Multiple ontologies and their equivalences can be loaded into a single graph which then makes
+another context which holds the union of the ontology information from the merged source ontologies.
+</para>
+          <para>
+Let us consider a sample query combining a full text search and a restriction on the class of the desired
+matches:
+</para>
+          <programlisting>
+DEFINE  input:inference  "yago"
+PREFIX  cy:  &lt;http://dbpedia.org/class/yago/&gt;
+SELECT DISTINCT ?s1 AS ?c1
+                ( bif:search_excerpt
+                  ( bif:vector ( 'Shakespeare' ), ?o1 )
+                ) AS ?c2
+WHERE
+  {
+    ?s1  ?s1textp ?o1                         .
+    FILTER
+      ( bif:contains (?o1, '"Shakespeare"') ) .
+    ?s1  a        cy:Performer110415638
+  }
+LIMIT 20
+</programlisting>
+          <para>This selects all Yago performers that have a property that contains "Shakespeare" as a whole word.
+</para>
+          <para>The <emphasis>DEFINE input:inference "yago"</emphasis>
+
+   clause means that subclass, subproperty and
+inverse functions property statements contained in the inference context called yago are considered when
+evaluating the query. The built-in function <emphasis>bif:search_excerpt</emphasis>
+
+   makes a search engine style summary of
+the found text, highlighting occurrences of Shakespeare.
+</para>
+          <para>The <emphasis>bif:contains</emphasis>
+
+   function in the filter specifies the full text search
+condition on ?o1.
+</para>
+          <para>This query is a typical example of queries that are executed all the time when a user refines a
+search. We will now look at how we can make an efficient execution plan for the query. First, we must
+know the cardinalities of the search conditions.
+</para>
+          <para>To see the count of subclasses of Yago performer, we can do:
+</para>
+          <programlisting>
+SPARQL
+PREFIX  cy:  &lt;http://dbpedia.org/class/yago/&gt;
+SELECT COUNT (*)
+FROM &lt;http://dbpedia.org/yago.owl&gt;
+WHERE
+  {
+    ?s  rdfs:subClassOf  cy:Performer110415638
+    OPTION (TRANSITIVE, T_DISTINCT)
+  }
+</programlisting>
+          <para>There are 4601 distinct subclasses, including indirect ones. Next we look at how many Shakespeare
+mentions there are:
+</para>
+          <programlisting>
+SPARQL
+SELECT COUNT (*)
+WHERE
+  {
+    ?s  ?p  ?o .
+    FILTER
+      ( bif:contains (?o, 'Shakespeare') )
+  }
+</programlisting>
+          <para>There are 10267 subjects with Shakespeare mentioned in some literal.
+</para>
+          <programlisting>
+SPARQL
+DEFINE input:inference "yago"
+PREFIX cy: &lt;http://dbpedia.org/class/yago/&gt;
+SELECT COUNT (*)
+WHERE
+  {
+    ?s1  a  cy:Performer110415638
+  }
+</programlisting>
+          <para>There are 184885 individuals that belong to some subclass of performer.
+</para>
+          <para>This is the data that the SPARQL compiler must know in order to have a valid query plan. Since
+these values will wildly vary depending on the specific constants in the query, the actual database
+must be consulted as needed while preparing the execution plan. This is regular query processing
+technology but is now specially adapted for deep subclass and subproperty structures.
+</para>
+          <para>Conditions in the queries are not evaluated twice, once for the cardinality estimate and once
+for the actual run. Instead, the cardinality estimate is a rapid sampling of the index trees that reads
+at most one leaf page.
+</para>
+          <para>Consider a B tree index, which we descend from top to the leftmost leaf containing a match of
+the condition. At each level, we count how many children would match and always select the leftmost one.
+When we reach a leaf, we see how many entries are on the page. From these observations, we extrapolate
+the total count of matches.
+</para>
+          <para>With this method, the guess for the count of performers is 114213, which is acceptably close to the
+real number. Given these numbers, we see that it makes sense to first find the full text matches and
+then retrieve the actual classes of each and see if this class is a subclass of performer. This last
+check is done against a memory resident copy of the Yago hierarchy, the same copy that was used for
+enumerating the subclasses of performer.
+</para>
+          <para>However, the query
+</para>
+          <programlisting>
+SPARQL
+DEFINE input:inference "yago"
+PREFIX cy: &lt;http://dbpedia.org/class/yago/&gt;
+SELECT DISTINCT ?s1 AS ?c1,
+                ( bif:search_excerpt
+                  ( bif:vector ('Shakespeare'), ?o1 )
+                ) AS ?c2
+WHERE
+  {
+    ?s1  ?s1textp  ?o1                         .
+    FILTER
+      ( bif:contains (?o1, '"Shakespeare"') )  .
+    ?s1  a         cy:ShakespeareanActors
+  }
+</programlisting>
+          <para>will start with Shakespearean actors since this is a leaf class with only 74 instances and then
+check if the properties contain Shakespeare and return their search summaries.
+</para>
+          <para>In principle, this is common cost based optimization but is here adapted to deep hierarchies
+combined with text patterns. An unmodified SQL optimizer would have no possibility of arriving at
+these results.
+</para>
+          <para>The implementation reads the graphs designated as holding ontologies when first needed and
+subsequently keeps a memory based copy of the hierarchy on all servers. This is used for quick iteration
+over sub/superclasses or properties as well as for checking if a given class or property is a
+subclass/property of another. Triples with OWL predicates <emphasis>equivalentClass</emphasis>
+
+  ,
+<emphasis>equivalentProperty</emphasis>
+
+   and <emphasis>sameAs</emphasis>
+
+   are also cached in the same data
+structure if they occur in the ontology graphs.
+</para>
+          <para>Also cardinality estimates for members of classes near the root of the class hierarchy take
+some time since a sample of each subclass is needed. These are cached for some minutes in the
+inference context, so that repeated queries will not redo the sampling.
+</para>
+        </section>
+        <section xml:id="rdfiridereferencingfacetinvfpr">
+          <title>Inverse Functional Properties and Same As</title>
+          <para>Specially when navigating social data, as in FOAF and SIOC spaces, there are many blank nodes that
+are identified by properties only. For this, we offer an option for automatically joining to subjects
+which share an IFP value with the subject being processed. For example, the query for the friends of
+friends of Kjetil Kjernsmo returns empty:
+</para>
+          <programlisting>
+SPARQL
+SELECT COUNT (?f2)
+WHERE
+  {
+    ?s   a             foaf:Person          ;
+         ?p            ?o                   ;
+         foaf:knows    ?f1                  .
+    ?o   bif:contains  "'Kjetil Kjernsmo'"  .
+    ?f1  foaf:knows    ?f2
+  }
+</programlisting>
+          <para>But with the option
+</para>
+          <programlisting>
+SPARQL
+DEFINE input:inference "b3sifp"
+SELECT COUNT (?f2)
+WHERE
+  {
+    ?s   a             foaf:Person          ;
+         ?p            ?o                   ;
+         foaf:knows    ?f1                  .
+    ?o   bif:contains  "'Kjetil Kjernsmo'"  .
+    ?f1  foaf:knows    ?f2
+  }
+</programlisting>
+          <para>we get 4022. We note that there are many duplicates since the data is blank nodes only,
+with people easily represented 10 times. The context <emphasis>b3sifp</emphasis>
+
+   simple declares that
+<emphasis>foaf:name</emphasis>
+
+   and <emphasis>foaf:mbox</emphasis>
+
+   sha1sum should be treated as inverse
+functional properties (IFP). The name is not an IFP in the actual sense but treating it as such for
+the purposes of this one query makes sense, otherwise nothing would be found.
+</para>
+          <para>This option is controlled by the choice of the inference context, which is selectable in the
+interface discussed below.
+</para>
+          <para>The IFP inference can be thought of as a transparent addition of a subquery into the join sequence.
+The subquery joins each subject to its synonyms given by sharing IFPs. This subquery has the special
+property that it has the initial binding automatically in its result set. It could be expressed as:
+</para>
+          <programlisting>
+SPARQL
+SELECT ?f
+WHERE
+  {
+    ?k foaf:name "Kjetil Kjernsmo"  .
+    {
+      SELECT ?org ?syn
+      WHERE
+        {
+          ?org ?p ?key  .
+          ?syn ?p ?key  .
+          FILTER
+            ( bif:rdf_is_sub
+                ( "b3sifp", ?p, &lt;b3s:any_ifp&gt;, 3 )
+              &amp;&amp;
+              ?syn  !=  ?org
+            )
+        }
+    }
+    OPTION
+      (
+        TRANSITIVE ,
+        T_IN (?org),
+        T_OUT (?syn),
+        T_MIN (0),
+        T_MAX (1)
+      )
+    FILTER ( ?org = ?k ) .
+    ?syn foaf:knows ?f .
+  }
+</programlisting>
+          <para>It is true that each subject shares IFP values with itself but the transitive construct with 0
+minimum and 1 maximum depth allows passing the initial binding of <emphasis>?org</emphasis>
+
+   directly to
+<emphasis>?syn</emphasis>
+
+  , thus getting first results more rapidly. The <emphasis>rdf_is_sub</emphasis>
+
+function is an internal that simply tests whether <emphasis>?p</emphasis>
+
+   is a subproperty of
+<emphasis>b3s:any_ifp</emphasis>
+
+  .
+</para>
+          <para>Internally, the implementation has a special query operator for this and the internal form is more
+compact than would result from the above but the above could be used to the same effect.
+</para>
+          <para>Our general position is that identity criteria are highly application specific and thus we offer
+the full spectrum of choice between run time and precomputing. Further, weaker identity statements than
+sameness are difficult to use in queries, thus we prefer identity with semantics of
+<emphasis>owl:sameAs</emphasis>
+
+   but make this an option that can be turned on and off query by query.
+</para>
+        </section>
+        <section xml:id="rdfiridereferencingfaceter">
+          <title>Entity Ranking</title>
+          <para>It is a common end user expectation to see text search results sorted by their relevance. The term
+entity rank refers to a quantity describing the relevance of a URI in an RDF graph.
+</para>
+          <para>This is a sample query using entity rank:
+</para>
+          <programlisting>
+SPARQL
+PREFIX  yago:  &lt;http://dbpedia.org/class/yago/&gt;
+PREFIX  prop:  &lt;http://dbpedia.org/property/&gt;
+SELECT DISTINCT ?s2 AS ?c1
+WHERE
+  {
+    ?s1  ?s1textp      ?o1                   .
+    ?o1  bif:contains  'Shakespeare'         .
+    ?s1  a             yago:Writer110794014  .
+    ?s2  prop:writer   ?s1
+  }
+ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?s2) )
+LIMIT 20
+OFFSET 0
+</programlisting>
+          <para>This selects works where a writer with Shakespeare in some property is the writer.
+</para>
+          <para>Here the query returns subjects, thus no text search summaries, so only the entity rank of the
+returned subject is used. We order text results by a composite of text hit score and entity rank of the
+RDF subject where the text occurs. The entity rank of the subject is defined by the count of references
+to it, weighed by the rank of the referrers and the outbound link count of referrers. Such techniques
+are used in text based information retrieval.
+</para>
+          <para>
+            <emphasis>Example with Entity Ranking and Score</emphasis>
+          </para>
+          <programlisting>
+## Searching over labels, with text match
+## scores and additional ranks for each
+## iri / resource:
+
+SELECT ?s ?page ?label
+  ?textScore AS ?Text_Score_Rank
+  ( &lt;LONG::IRI_RANK&gt; (?s) ) AS ?Entity_Rank
+WHERE
+  {
+    ?s foaf:page ?page ;
+     rdfs:label ?label .
+    FILTER( lang( ?label ) = "en" ) .
+    ?label bif:contains 'adobe and flash'
+    OPTION (score ?textScore ) .
+  }
+</programlisting>
+          <para>One interesting application of entity rank and inference on IFPs and <emphasis>owl:sameAs</emphasis>
+
+   is in locating
+URIs for reuse. We can easily list synonym URIs in order of popularity as well as locate URIs based
+on associated text. This can serve in application such as the Entity Name Server
+</para>
+          <para>Entity ranking is one of the few operations where we take a precomputing approach. Since a rank is
+calculated based on a possibly long chain of references, there is little choice but to precompute. The
+precomputation itself is straightforward enough: First all outbound references are counted for all
+subjects. Next all ranks of subjects are incremented by 1 over the referrer's outbound link count.
+On successive iterations, the increment is based on the rank increment the referrer received in
+the previous round.
+</para>
+          <para>The operation is easily partitioned, since each partition increments the ranks of subjects it
+holds. The referrers are spread throughout the cluster, though. When rank is calculated, each partition
+accesses every other partition. This is done with relatively long messages, referee ranks are accessed
+in batches of several thousand at a time, thus absorbing network latency.
+</para>
+          <para>On the test system, this operation performs a single pass over the corpus of 2.2 billion triples
+and 356 million distinct subjects in about 30 minutes. The operation has 100% utilization of all 16
+cores. Adding hardware would speed it up, as would implementing it in C instead of the SQL procedures
+it is written in at present.
+</para>
+          <para>The main query in rank calculation is:
+</para>
+          <programlisting>
+SPARQL
+SELECT O            ,
+       P            ,
+       iri_rank (S)
+FROM rdf_quad TABLE
+OPTION (NO CLUSTER)
+WHERE isiri_id(O)
+ORDER BY O
+</programlisting>
+          <para>This is the SQL cursor iterated over by each partition. The no cluster option means that only rows
+in this process's partition are retrieved. The RDF_QUAD table holds the RDF quads in the store, i.e.,
+triple plus graph. The S, P, O columns are the subject, predicate, and object respectively. The graph
+column is not used here. The textttiri rank is a partitioned SQL function. This works by using the S
+argument to determine which cluster node should run the function. The specifics of the partitioning
+are declared elsewhere. The calls are then batched for each intended recipient and sent when the
+batches are full. The SQL compiler automatically generates the relevant control structures. This
+is like an implicit map operation in the map-reduce terminology.
+</para>
+          <para>An SQL procedure loops over this cursor, adds up the rank and when seeing a new O, the added
+rank is persisted into a table. Since links in RDF are typed, we can use the semantics of the link
+to determine how much rank is transferred by a reference. With extraction of named entities from
+text content, we can further place a given entity into a referential context and use this as a
+weighting factor. This is to be explored in future work. The experience thus far shows that we
+greatly benefit from Virtuoso being a general purpose DBMS, as we can create application specific
+data structures and control flows where these are efficient. For example, it would make little
+sense to store entity ranks as triples due to space consumption and locality considerations. With
+these tools, the whole ranking functionality took under a week to develop.
+</para>
+          <para><emphasis>Note:</emphasis>
+
+   In order to use the IRI_RANK feature you need to have the
+Facet (fct) vad package installed as the procedure is part of this vad.
+</para>
+        </section>
+        <section xml:id="rdfiridereferencingfacetqel">
+          <title>Query Evaluation Time Limits</title>
+          <para>When scaling the Linked Data model, we have to take it as a given that the workload will be
+unexpected and that the query writers will often be unskilled in databases. Insofar possible, we
+wish to promote the forming of a culture of creative reuse of data. To this effect, even poorly
+formulated questions deserve an answer that is better than just timeout.
+</para>
+          <para>If a query produces a steady stream of results, interrupting it after a certain quota is simple.
+However, most interesting queries do not work in this way. They contain aggregation, sorting, maybe
+transitivity.
+</para>
+          <para>When evaluating a query with a time limit in a cluster setup, all nodes monitor the time left
+for the query. When dealing with a potentially partial query to begin with, there is little point in
+transactionality. Therefore the facet service uses read committed isolation. A read committed query
+will never block since it will see the before-image of any transactionally updated row. There will
+be no waiting for locks and timeouts can be managed locally by all servers in the cluster.
+</para>
+          <para>Thus, when having a partitioned count, for example, we expect all the partitions to time out
+around the same time and send a ready message with the timeout information to the cluster node
+coordinating the query. The condition raised by hitting a partial evaluation time limit differs
+from a run time error in that it leaves the query state intact on all participating nodes. This
+allows the timeout handling to come fetch any accumulated aggregates.
+</para>
+          <para>Let us consider the query for the top 10 classes of things with "Shakespeare" in some literal.
+This is typical of the workload generated by the faceted browsing web service:
+</para>
+          <programlisting>
+SPARQL
+DEFINE  input:inference  "yago"
+SELECT ?c
+       COUNT (*)
+WHERE
+  {
+    ?s  a             ?c             ;
+        ?p            ?o             .
+    ?o  bif:contains  "Shakespeare"
+  }
+GROUP BY ?c
+ORDER BY DESC 2
+LIMIT 10
+</programlisting>
+          <para>On the first execution with an entirely cold cache, this times out after 2 seconds and returns:
+</para>
+          <programlisting>
+?c                                       COUNT (*)
+yago:class/yago/Entity100001740          566
+yago:class/yago/PhysicalEntity100001930  452
+yago:class/yago/Object100002684          452
+yago:class/yago/Whole100003553           449
+yago:class/yago/Organism100004475        375
+yago:class/yago/LivingThing100004258     375
+yago:class/yago/CausalAgent100007347     373
+yago:class/yago/Person100007846          373
+yago:class/yago/Abstraction100002137     150
+yago:class/yago/Communicator109610660    125
+</programlisting>
+          <para>
+The next repeat gets about double the counts, starting with 1291 entities.
+</para>
+          <para>With a warm cache, the query finishes in about 300 ms (4 core Xeon, Virtuoso 6 Cluster) and returns:
+</para>
+          <programlisting>
+?c                                       COUNT (*)
+yago:class/yago/Entity100001740          13329
+yago:class/yago/PhysicalEntity100001930  10423
+yago:class/yago/Object100002684          10408
+yago:class/yago/Whole100003553           10210
+yago:class/yago/LivingThing100004258      8868
+yago:class/yago/Organism100004475         8868
+yago:class/yago/CausalAgent100007347      8853
+yago:class/yago/Person100007846           8853
+yago:class/yago/Abstraction100002137      3284
+yago:class/yago/Entertainer109616922      2356
+</programlisting>
+          <para>It is a well known fact that running from memory is thousands of times faster than from disk.
+</para>
+          <para>The query plan begins with the text search. The subjects with "Shakespeare" in some property get
+dispatched to the partition that holds their class. Since all partitions know the class hierarchy,
+the superclass inference runs in parallel, as does the aggregation of the group by. When all
+partitions have finished, the process coordinating the query fetches the partial aggregates,
+adds them up and sorts them by count.
+</para>
+          <para>If a timeout occurs, it will most likely occur where the classes of the text matches are being
+retrieved. When this happens, this part of the query is reset, but the aggregate states are left
+in place. The process coordinating the query then goes on as if the aggregates had completed. If
+there are many levels of nested aggregates, each timeout terminates the innermost aggregation that
+is still accumulating results, thus a query is guaranteed to return in no more than n timeouts,
+where n is the number of nested aggregations or subqueries.
+</para>
+        </section>
+        <section xml:id="rdfiridereferencingfacetws">
+          <title>Faceted Web Service and Linked Data</title>
+          <para>The Virtuoso Faceted Web Service is a general purpose RDF query facility for Faceted based browsing.
+It takes an XML description of the view desired and generates the reply as an XML tree containing the
+requested data. The user agent or a local web page can use XSLT for rendering this for the end user.
+The selection of facets and values is represented as an XML tree. The rationale for this is the fact
+that such a representation is easier to process in an application than the SPARQL source text or a
+parse tree of SPARQL and more compactly captures the specific subset of SPARQL needed for faceted
+browsing. All such queries internally generate SPARQL and the SPARQL generated is returned with
+the results. One can therefore use this is a starting point for hand crafted queries.
+</para>
+          <para>The query has the top level element. The child elements of this represents conditions pertaining
+to a single subject. A join is expressed with the property or propertyof element. This has in turn
+children which state conditions on a property of the first subject. Property and propertyof elements
+can be nested to an arbitrary depth and many can occur inside one containing element. In this way,
+tree-shaped structures of joins can be expressed.
+</para>
+          <para>Expressing more complex relationships, such as intermediate grouping, subqueries, arithmetic or
+such requires writing the query in SPARQL. The XML format is for easy automatic composition of queries
+needed for showing facets, not a replacement for SPARQL.
+</para>
+          <para>Consider composing a map of locations involved with Napoleon. Below we list user actions and
+the resulting XML query descriptions.
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Enter in the search form "Napoleon":
+</para>
+              <programlisting>
+&lt;query inference="" same-as="" view3="" s-term="e" c-term="type"&gt;
+  &lt;text&gt;napoleon&lt;/text&gt;
+  &lt;view type="text" limit="20" offset="" /&gt;
+&lt;/query&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Select the "types" view:
+</para>
+              <programlisting>
+&lt;query inference="" same-as="" view3="" s-term="e" c-term="type"&gt;
+  &lt;text&gt;napoleon&lt;/text&gt;
+  &lt;view type="classes" limit="20" offset="0" location-prop="0" /&gt;
+&lt;/query&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Choose "MilitaryConflict" type:
+</para>
+              <programlisting>
+&lt;query inference="" same-as="" view3="" s-term="e" c-term="type"&gt;
+  &lt;text&gt;napoleon&lt;/text&gt;
+  &lt;view type="classes" limit="20" offset="0" location-prop="0" /&gt;
+  &lt;class iri="yago:ontology/MilitaryConflict" /&gt;
+&lt;/query&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Choose "NapoleonicWars":
+</para>
+              <programlisting>
+&lt;query inference="" same-as="" view3="" s-term="e" c-term="type"&gt;
+  &lt;text&gt;napoleon&lt;/text&gt;
+  &lt;view type="classes" limit="20" offset="0" location-prop="0" /&gt;
+  &lt;class iri="yago:ontology/MilitaryConflict" /&gt;
+  &lt;class iri="yago:class/yago/NapoleonicWars" /&gt;
+&lt;/query&gt;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Select "any location" in the select list beside the "map" link; then hit "map" link:
+</para>
+              <programlisting>
+&lt;query inference="" same-as="" view3="" s-term="e" c-term="type"&gt;
+  &lt;text&gt;napoleon&lt;/text&gt;
+  &lt;class iri="yago:ontology/MilitaryConflict" /&gt;
+  &lt;class iri="yago:class/yago/NapoleonicWars" /&gt;
+  &lt;view type="geo" limit="20" offset="0" location-prop="any" /&gt;
+&lt;/query&gt;
+</programlisting>
+            </listitem>
+          </itemizedlist>
+          <para>This last XML fragment corresponds to the below text of SPARQL query:
+</para>
+          <programlisting>
+SPARQL
+SELECT ?location AS ?c1
+       ?lat1     AS ?c2
+       ?lng1     AS ?c3
+WHERE
+  {
+    ?s1        ?s1textp  ?o1                              .
+    FILTER
+      ( bif:contains (?o1, '"Napoleon"') )  .
+    ?s1        a         &lt;yago:ontology/MilitaryConflict&gt;  .
+    ?s1        a         &lt;yago:class/yago/NapoleonicWars&gt;  .
+    ?s1        ?anyloc   ?location                         .
+    ?location  geo:lat   ?lat1                             ;
+               geo:long  ?lng1
+  }
+LIMIT 200
+OFFSET 0
+</programlisting>
+          <para>
+The query takes all subjects with some literal property with "Napoleon" in it, then filters for
+military conflicts and Napoleonic wars, then takes all objects related to these where the related
+object has a location. The map has the objects and their locations.
+</para>
+          <tip>
+            <title>See Also:</title>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>
+                  <link linkend="virtuosospongerfacent">Virtuoso Faceted Web Service</link>
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  <link linkend="virtuosospongerfacentuirestapi">Virtuoso APIs for Faceted REST services</link>
+                </para>
+              </listitem>
+            </itemizedlist>
+          </tip>
+        </section>
+        <section xml:id="rdfiridereferencingfacetvd">
+          <title>voiD Discoverability</title>
+          <para>A long awaited addition to the LOD cloud is the Vocabulary of Interlinked Data (voiD).
+Virtuoso automatically generates voiD descriptions of data sets it hosts. Virtuoso incorporates an
+SQL function <emphasis>rdf_void_gen</emphasis>
+
+   which returns a Turtle representation of a given
+graph's voiD statistics.
+</para>
+        </section>
+        <section xml:id="rdfiridereferencingfacet_01">
+          <title>Test System and Data</title>
+          <para>The test system consists of two 2x4 core Xeon 5345, 2.33 GHz servers with 16G RAM and 4 disks
+each. The machines are connected by two 1Gbit Ethernet connections. The software is Virtuoso 6
+Cluster. The Virtuoso server is split into 16 partitions, 8 for each machine. Each partition is
+managed by a separate server process.
+</para>
+          <para>The test database has the following data sets:
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>DBpedia 3.2</para>
+            </listitem>
+            <listitem>
+              <para>MusicBrainz</para>
+            </listitem>
+            <listitem>
+              <para>Bio2RDF</para>
+            </listitem>
+            <listitem>
+              <para>NeuroCommons</para>
+            </listitem>
+            <listitem>
+              <para>UniProt</para>
+            </listitem>
+            <listitem>
+              <para>Freebase (95M triples)</para>
+            </listitem>
+            <listitem>
+              <para>PingTheSemanticWeb (1.6M miscellaneous files from http://www.pingthesemanticweb.com/).</para>
+            </listitem>
+          </itemizedlist>
+          <para>Ontologies:
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Yago</para>
+            </listitem>
+            <listitem>
+              <para>OpenCyc</para>
+            </listitem>
+            <listitem>
+              <para>Umbel</para>
+            </listitem>
+            <listitem>
+              <para>DBpedia</para>
+            </listitem>
+          </itemizedlist>
+          <para>The database is 2.2 billion triples with 356 million distinct URIs.
+</para>
+          <para>
+            <tip>
+              <title>See Also:</title>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>
+                    <link linkend="virtuosospongerfacetinstall">Virtuoso Faceted Browser Installation and configuration</link>
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </tip>
+          </para>
+        </section>
+      </section>
+    </section>

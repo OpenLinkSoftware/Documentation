@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xmladdattribute">
+      <refmeta>
+        <refentrytitle>XMLAddAttribute
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>XMLAddAttribute
+</refname>
+        <refpurpose>Add an attribute to the given node of an XML tree document
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xmladdattribute">
+          <funcprototype xml:id="fproto_xmladdattribute">
+            <funcdef>integer 
+<function>XMLAddAttribute
+</function>
+
+</funcdef>
+            <paramdef choice="opt">inout 
+<parameter>source
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>mode
+</parameter>
+
+   integer
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>attr_name
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>attr_value
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xmladdattribute">
+        <title>Description
+</title>
+        <para>The function modifies the 
+<code>source
+</code>
+
+   document by adding an attribute to the current node of
+    <code>source</code>
+
+   entity. The <code>source</code>
+
+   should be an XML tree entity, not "persistent XML"
+    one, should be an element entity (not attribute, text etc.) and should not be a root entity. Parameters
+    <code>attr_name</code>
+
+   and <code>attr_value</code>
+
+   can be of any types that can be casted to string.
+    <code>attr_name</code>
+
+   can be an attribute entity, in this case both the name and the value of
+    <code>attr_name</code>
+
+   attribute is used and <code>attr_value</code>
+
+   code must be omitted.</para>
+        <para>The <code>mode</code>
+
+   specifies how to resolve duplicate attribute names, if an <code>source</code>
+
+    entity already has an attribute whose name is equal to <code>attr_name</code>
+
+  . Mode 0 is similar to "insert into":
+    the function signals an error if an attribute already exists. Mode 1 is similar to "insert soft": the function do
+    nothing if an attribute already exists and not signalling an error. Mode 2 is similar to "insert replacing": the
+    function either adds a new attribute or replacing the value of existing attribute.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xmladdattribute">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>source
+</title>
+          <para>The XML tree entity to change.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>mode
+</title>
+          <para>The mode of resolving duplicate attribute names.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>attr_name
+</title>
+          <para>The name of a new attribute (or an attribute XML entity that specifies both name and value of an attribute.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>attr_value
+</title>
+          <para>The value of a new attribute
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xmladdattribute">
+        <title>Return Types
+</title>
+        <para>The function returns integer that indicate the actual operation performed. The zero value means that there
+    	was no change ("insert soft" when an attribute already exists). The value one means that a new attribute was added,
+    	the value two means that an existing attribute was replaced.</para>
+      </refsect1>
+      <!--
+  <refsect1
+xml:id="errors_xmladdattribute">
+    <title>Errors</title>
+
+< ! - - In case of non-function-specific errors, i.e. only common
+     parameter errors are signalled, comment out the table below
+     otherwise add the unique error values as individual errorcodes - - >
+
+    <para>This function can generate the following errors:</para>
+    <errorcode></errorcode>
+  </refsect1>
+-->
+
+      <refsect1 xml:id="examples_xmladdattribute">
+        <title>Examples
+</title>
+        <example xml:id="ex_xmladdattribute">
+          <title>Different modes of calling XMLAddAttribute
+</title>
+          <para>The sample procedure contains three calls of 
+<code>XMLAddAttribute
+</code>
+
+   with different values of
+      <code>mode</code>
+
+  , for "insert into", "insert soft" and "insert replacing" behaviour. </para>
+          <screen>
+create procedure XMLAddAttribute_demo ()
+{
+  declare DESCRIPTION varchar (33);
+  declare XMLENTITY, ent any;
+  result_names (DESCRIPTION, XMLENTITY);
+  result ('EXAMPLE 1', 'Adding a new attribute');
+  ent := xpath_eval ('//b', xtree_doc('&lt;a&gt;&lt;b attrX="x" attrY="y"/&gt;&lt;/a&gt;'));
+  result ('The document to modify:', xpath_eval('/', ent));
+  result ('An element node to change:', ent);
+  XMLAddAttribute (ent, 0, 'attrZ', 'z');
+  result ('The document after modification:', xpath_eval('/', ent));
+  result ('EXAMPLE 2', 'Failed adding of an (existing) attribute');
+  ent := xpath_eval ('//b', xtree_doc('&lt;a&gt;&lt;b attrX="x" attrY="y"/&gt;&lt;/a&gt;'));
+  result ('The document to modify:', xpath_eval('/', ent));
+  result ('An element node to change:', ent);
+  XMLAddAttribute (ent, 1, 'attrX', 'xNEW');
+  result ('The document after modification:', xpath_eval('/', ent));
+  result ('EXAMPLE 3', 'Successful replacing of an existing attribute');
+  ent := xpath_eval ('//b', xtree_doc('&lt;a&gt;&lt;b attrX="x" attrY="y"/&gt;&lt;/a&gt;'));
+  result ('The document to modify:', xpath_eval('/', ent));
+  result ('An element node to change:', ent);
+  XMLAddAttribute (ent, 2, 'attrX', 'xNEW');
+  result ('The document after modification:', xpath_eval('/', ent));
+}
+Done. -- 00000 msec.
+
+XMLAddAttribute_demo()
+DESCRIPTION                                  XMLENTITY
+VARCHAR                                      VARCHAR
+_______________________________________________________________________________
+
+EXAMPLE 1                          Adding a new attribute
+The document to modify:            &lt;a&gt;&lt;b attrX="x" attrY="y" /&gt;&lt;/a&gt;
+An element node to change:         &lt;b attrX="x" attrY="y" /&gt;
+The document after modification:   &lt;a&gt;&lt;b attrX="x" attrY="y" attrZ="z" /&gt;&lt;/a&gt;
+EXAMPLE 2                          Failed adding of an (existing) attribute
+The document to modify:            &lt;a&gt;&lt;b attrX="x" attrY="y" /&gt;&lt;/a&gt;
+An element node to change:         &lt;b attrX="x" attrY="y" /&gt;
+The document after modification:   &lt;a&gt;&lt;b attrX="x" attrY="y" /&gt;&lt;/a&gt;
+EXAMPLE 3                          Successful replacing of an existing attribute
+The document to modify:            &lt;a&gt;&lt;b attrX="x" attrY="y" /&gt;&lt;/a&gt;
+An element node to change:         &lt;b attrX="x" attrY="y" /&gt;
+The document after modification:   &lt;a&gt;&lt;b attrX="xNEW" attrY="y" /&gt;&lt;/a&gt;
+
+12 Rows. -- 00000 msec.
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xmladdattribute">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xmlreplace">
+            <function>XMLReplace()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlappendchildren">
+            <function>XMLAppendChildren()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlinsertbefore">
+            <function>XMLInsertBefore()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlinsertafter">
+            <function>XMLInsertAfter()
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

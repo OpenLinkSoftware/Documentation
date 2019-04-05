@@ -1,0 +1,275 @@
+
+
+Geometry Data Types and Spatial Index Support
+
+
+Virtuoso includes a spatial database capability from version 6.00.3126 onwords.
+This capability is specially geared towards geographical  data in RDF but can be used with SQL also.
+The functions implemented follow the SQL MM spatial specification where applicable but the entire SQL MM function set is not supported.
+
+Spatial indexing is supported by a two dimensional R tree implementation.  The geometries supported are limited to two dimensions, with a choice of WGS 84 latitude and longitude coordinates with haversine distances or a flat 2 dimensional plane for spatial reference system.
+
+
+
+
+SQL MM Function Support
+
+st_point (in x double precision, in y double precision)
+
+Returns a point geometry.  The x coordinate corresponds to longitude.
+
+
+st_x (in g any) returns double precision 
+
+Retrieves the x  coordinate of a geometry.
+
+st_y (in g any) returns double precision 
+
+
+st_distance (in g1 any, in g2 any) returns double precision 
+
+Returns the shortest distance between two points such that the first point is part of g1 and the second of g2.  If The srid of g1 and g2  must be the same.  If the srid is 4326, the haversine function is used to compute a great circle distance in kilometers on Earth.
+Otherwise the distance is calculated as on a flat Euclidean plane.
+
+
+
+st_srid (in g any) returns int
+
+Returns the srid of a geometry.
+
+st_setsrid (in g any, in srid int) return any
+
+The geometry given as argument is modified to have the specified srid and the modified geometry is returned.
+
+
+st_astext (in g any) returns varchar 
+
+Returns the well known text (WKT) representation of the geometry.
+
+st_geomfromtext  (in string varchar) returns any
+
+Parses the string and returns the corresponding geometry.  The string is to be in well known text prepresentation (WKT).
+
+st_intersects (in g1 any, in g2 any, in prec double precision := 0) returns int
+st_contains (in g1 any, in g2 any, in prec double precision := 0) returns int
+st_within (in g1 any, in g2 any, in prec double precision := 0) returns int
+
+These test for various forms of overlap between two geometries. If prec is supplied, this is a tolerance for the matching in units of linear distance appropriate to the srid.  Both geometries shuold have the same srid.
+st_intersect is true if there is at least one point in common. st_contains is true if all points of g2 are in g1.  st_within is true if all points of g1 are in g2.
+
+
+
+
+
+H2 Spatial References
+
+The default reference system is WGS84 with coordinates in degrees of longitude and latitude on Earth.  The srid number for this is 4326 and is assigned by default to all new geometries.  st_setsrid can be used for altering this.
+Distances and precisions for WGS84 are in kilometers, for other systems they are in the same unit as the coordinates.
+If the srid is not 4326, distances are calculated as on a flat 2D surface.  WGS84 distances are calculated with the haversine formula. 
+
+H2 Geometric Objects
+
+Only the 2D point is supported.  It is created with st_point (x, y) or by st_geomfromtext ('POINT(1 2)'). 
+
+H2 Well Known Text 
+
+The WKT representations for geometries are as follows:
+
+Point  POINT (<x> <y>)  where <x> and <y> are strings of characters that can be parsed as a floating point number, as by the %g format character in the C language.
+
+
+H2 Precision of Geometries 
+
+The internal precision of geometry operations is 64 bit IEEE floating
+point.  Normally, a geometry index for geography uses can be made with
+32 bit floats for space efficiency, as these still give a precision of
+about 2 meters on the surface of the Earth.  A geometry object is
+stored with all coordinates either as float or double depending on
+which data type was supplied in creating the object.  Note that the object itself can have more precise corrdinates than the representation of its bounding box in the R tree index. 
+
+
+
+H2 Predicates
+
+isgeometry (in x any)
+
+Returns 1 if the argument is a geometry.
+
+H2 Querying Geometric Relations
+
+The SQL MM predicates st_intersects, st_contains and st_within can be used to test whether two geometries overlap in different ways.
+
+st_Intersects means that the 1st and 2nd arguments have at least one
+shared point, st_contains means that the 2nd argument is fully contained
+in the 1st argument, st_within  means that the 1st argument is fully
+contained within the 2nd argument.
+
+These functions are extended with a third argument which gives a
+precision.  The precision is a number that specifies a maximum
+distance between two points such that the points will still be
+considered to overlap.  If both the 1st and 2nd arguments are points,
+then precision can be interpreted as the maximum distance between
+them.
+
+These do not require the presence of a geometry index but will use one
+if one is present and and one of the geometry arguments is a column on
+which there is such an index.
+
+
+H2 Defining a Geometry Index
+
+
+The below sequence defines a table called geo and a geometry index on its geo column.
+
+create table GEO (ID bigint, GEO any, primary key (ID))
+  alter index geo on geo partition (id int);
+
+create table GEO_INX (X real no compress, Y real no compress, X2 real no compress, Y2 real no compress, id bigint no compress,
+  primary key (X, Y, X2, Y2, id))
+  alter index geo_inx on geo_inx partition (id int);
+
+
+insert into sys_vt_index (vi_table, vi_index, vi_col, vi_id_col, vi_index_table, vi_id_is_pk, vi_options)
+  values ('DB.DBA.GEO', 'GEO', 'GEO', 'ID', 'DB.DBA.GEO_INX', 1, 'G');
+
+-- reload the changed schema
+__ddl_changed ('DB.DBA.GEO');
+
+
+A geometry index is a table of always five columns, the first 4 are
+the lower x, y and higher x, y of the object's bounding box, id is the
+identifier of the object, a foreign key into the table holding the
+geometries.  In a cluster setting the geometry index must be
+partitioned on the id column.  The columns of a geometry index must never be compressed, hence the mandatory no compress declaration.
+
+Geometry indices are declared in the sys_vt_index table, which also declares text indices.  The G in the options column declares that this is a geometry index. 
+
+A geometry index will be used when appropriate.  The table holding the R tree with the bounding boxes should not normally be accessed directly.
+Explicit selects from a geometry index table with conditions on the columns will not generally work since the collation is not linear as in a regular index.  Inserts by means other than geo_insert are not allowed. 
+
+
+
+
+
+H2 Insert and Delete 
+
+geo_insert (in tb any, in geo any, in id int);
+geo_delete (in tb any, in geo any, in id int);
+
+These functions insert and delete a geometry from an R tree index.  The tb must be a fully qualified name of an R tree table.
+These functions will typically be used from triggers on a geometry column.
+The functions are transactional and make a transaction log record of the action.
+
+
+
+H1 Using Geometries in Client Applications and SQL Procedures 
+
+In SQL procedures, a geometry is a member of the ANY data type.  The isgeometry () function cna be used for testing if an object is a geometry.
+A geometry can only be stored in a column declared to be of type ANY.
+
+If a geometry would be returned to a client application as part of a result set, it is returned as a string containing its WKT text representation.
+For a client application to pass geometries to the server, it must pass these either as a WKT string parameter to st_geomfromtext or as numeric coordinate values for st_point or related functions.  This applies to all clients, ODBC, JDBC, .net and any RDF frameworks.
+
+
+
+
+H1 RDF and Geometry
+
+
+A geometry may occur as an object of an RDF quad.  The SQL MM functions can then be used for querying for geometries.
+For geometry functions, see the SQL Geometry support section.
+
+
+A geometry may occur as an object value in an RDF quad.  In such a
+case, the bare geometry object is not used but instead a special RDF
+typed literal is made with the type virtrdf:Geometry.  Such a literal
+is automatically indexed in an R tree index containing all distinct
+geometries occurring in any quad of any graph under any predicate.
+Normally, WGS84, SRID 4326 is the SRID of any such geometry.
+
+In this section, the geo namespace prefix is used to mean <http://www.w3.org/2003/01/geo/wgs84_pos#>. 
+
+The preferred way of adding geometries to RDF graphs is with the ttlp and related functions which parse a text string in the Turtle syntax and insert the result in a graph.
+
+For example 
+
+ttlp ('
+@prefix virtrdf: <http://www.openlinksw.com/schemas/virtrdf#>
+<point> geo:geometry "point(1.2 22.4"^^virtrdf:Geometry . 
+', 'xxx', 'graph');
+
+
+A typed literal whose text is a WKT representation of a geometry and whose type is virtrdf:geometry creates a geometry object and adds it to the R tree index of all RDF geometries.
+
+
+Geometries can be queried with geometry predicates, st_intersects, st_contains and st_within, as follows.
+As usual, the bif: namespace is used since these are SQL built-in functions.
+
+sparql select ?c count (*) where {  ?m geo:geometry ?geo . ?m a ?c . filter (bif:st_intersects (?geo, bif:st_point (0, 52), 100))} group by ?c order by desc 2;
+
+This would return the classes of things within 100 km of 0, 52, which is near London.
+
+sparql select ?m (bif:st_distance (?geo, bif:st_point (0, 52)))
+where {  ?m geo:geometry ?geo . ?m a <http://dbpedia.org/ontology/City> . filter (bif:st_intersects (?geo, bif:st_point (0, 52), 30))} order by desc 2 limit 20;
+
+
+This would be the cities within 20 km of 0, 52, ordered by increasing distance from this point.
+
+When SPARQL is called from SQL, the geometries can be bound to SQL
+variables as anything else returned from SPARQL.  The st_ functions
+can then be used for retrieving properties of these objects.
+
+
+H2 Programmatic Manipulation of Geometries in RDF
+
+
+The ttlp function is the preferred way of inserting geometries.  The
+more are inserted at one time, the more efficient the operation is.
+This loader function will also deal with cluster message
+optimization.
+
+For deleting quads with geometries, normal SPARUL operations apply.
+
+A geomnetry occurring in an RDF quad object is a member of the  RDF box  data type.  This data type stands for a typed RDF literal.  The type of all geometries is 256.  This is mapped to a URI in the RDF_DATATYPE system table.
+A geometry does not occur directly in the object position of a quad.  It is referenced by an id that is stored in the RDF typled literal box and references RO_ID of the RDF_OBJ system table.
+To translate a geometry into a RDF box that can be stored, do as in the example below: 
+
+	insert into rdf_quad (g, s, p, o) values ("g", "s", iri_to_id ('http://www.w3.org/2003/01/geo/wgs84_pos#geometry'),
+						  DB..rdf_geo_add (rdf_box (st_point (lng, lat), 256, 257, 0, 1)));
+
+The RDF_GEO_ADD function  looks if an identical geometry already exists and if so assigns the existing id to it.  If the geometry is new, it gets a new ID and is stored in the RDF literals table RDF_OBJ.  At this time it is also automaticlly inserted into the RDF geometry index. 
+
+In a cluster situation one should use the dpipe mechanism for inserting into RDF quad so as to get large numbers of inserts into a single message.  This is essential for performance.
+
+
+H2 Creating Geometries From RDF Data 
+
+Many data sets use the geo:lat and geo:long  properties for describing  a position.
+Virtuoso comes with a function for converting these properties into geometries.  This operation reads through all graphs and for each subject with at least one geo:lat and geo:long, a point geometry is made for each distinct lat/long pair where lat and long are in the same graph.  It should not happen in practice that a single subject  has multiple lats or long within one graph.  If this still happens, a geometry is made for each combination.  
+the geometry is added to the subject with the lat and long as the value of the geo:geometry  property.  This is added to the same graph where the lat and long were.
+
+The SQL procedure  db..rdf_geo_fill () performs this operation.  This is performed in parallel on multiple threads and is optimized for cluster execution.  This is done without transaction logging and and is not transactional.  To make the result persistent, the operator should do an explicit checkpoint.  This is done by executing cl_exec ('checkpoint') on any process of a cluster or single server.
+Otherwise the result may be lost if the server terminbates abnormally before an automatic checkpoint is made.
+
+The rdf_geo_fill  procedure may in principle be called several times but it will read every lat and long in the database.  This is inefficient if there are large numbers of geometries.
+
+Application logic must generally be used for constructing geometries and adding these to RDF subjects.
+It is easiest for the application to construct a text representation of the geometries  in TTL and to use the ttlp  function for loading this.
+
+
+
+
+
+
+H2 Using Geometries With Existing Databases 
+
+The geometry feature is compatible with any Virtuoso 6 databases.
+Once geometries are used, the database should not be opened with a
+server older than the one used for first inserting geometries, older
+servers will consider the storage format a physical corruption.
+
+
+
+
+
+

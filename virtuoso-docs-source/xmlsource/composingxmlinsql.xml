@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="composingxmlinsql">
+      <title>XML Composing Functions in SQL Statements (SQLX)</title>
+      <para>
+The preferred means of constructing XML data from SQL is to use the standard SQLX SQL extension.
+</para>
+      <para>SQLX is a collection of functions added for creating XML entities from standard
+relational queries. Basically, you write a SQL statement with calls to SQLX functions in
+the selection  and a piece of XML is created.
+</para>
+      <para>
+There are five XML composing functions:
+</para>
+      <simplelist type="vert">
+        <member><link linkend="fn_xmlelement"><function>XMLELEMENT()</function></link>
+
+creates a single XML element that can contain an arbitrary number of attributes and sub-elements.</member>
+        <member><link linkend="fn_xmlattributes"><function>XMLATTRIBUTES()</function></link>
+
+lists XML attributes to be placed in the XML element created by an enclosing call of <function>XMLELEMENT()</function>
+
+  .</member>
+        <member><link linkend="fn_xmlconcat"><function>XMLCONCAT()</function></link>
+
+returns a forest of XML values by concatenating a list of XML values or forests.</member>
+        <member><link linkend="fn_xmlagg"><function>XMLAGG()</function></link>
+
+is an aggregate function that creates a forest of XML values by concatenating the XML values that are returned from multiple rows.</member>
+        <member><link linkend="fn_xmlforest"><function>XMLFOREST()</function></link>
+
+is similar to <function>XMLATTRIBUTES()</function>
+
+   but returns a forest of elements instead of list of attributes.</member>
+      </simplelist>
+      <para>These functions belong
+to the SQLX standard, an emerging SQL standard for XML. All the functions take a variable number of arguments.
+</para>
+      <para><function>XMLELEMENT</function>
+
+   is used to construct XML elements from relational data.
+It takes as parameters the element name, an optional collection of attributes for the element
+(returned by <function>XMLATTRIBUTES</function>
+
+   call),
+column names, strings, <function>XMLELEMENT</function>
+
+  , <function>XMLFOREST</function>
+
+  ,
+<function>XMLCONCAT</function>
+
+  , and <function>XMLAGG</function>
+
+   calls, and an entity objects (returned by
+corresponding functions, e.g. <function>xtree_doc</function>
+
+  , <function>xpath_eval</function>
+
+  ,
+<function>xquery_eval</function>
+
+  ) which will make up the content of the element (an exception from this is
+an attribute entity returned by <function>xquery_eval</function>
+
+   - in this case it is joined to the list of the
+element's attributes).
+Column names, strings and attribute entities returned by <function>xpath_eval</function>
+
+   will make up the text content
+of the element.
+The others will make up the children of the element.
+</para>
+      <para>
+In the <function>XMLATTRIBUTES</function>
+
+   clause, the value expressions are evaluated to get the values for the
+attributes.
+</para>
+      <para><function>XMLFOREST</function>
+
+   produces a forest of XML elements from a given list of arguments. It accepts a list of
+SQL value expressions as its arguments, and produces an XML element from each value returned.
+</para>
+      <para><function>XMLCONCAT</function>
+
+   produces a forest of elements by concatenating a list of XML values. XMLCONCAT accepts
+a list of XML value expressions as its arguments, and produces a forest of elements by concatenating the XML values
+that are returned from the same row to make one value. If an argument of the <function>XMLCONCAT</function>
+
+   is an
+entity object returned by <function>xquery_eval</function>
+
+   or <function>path_eval</function>
+
+  , it must not be an
+attribute.
+</para>
+      <para>
+The following statements create the same result sets:
+</para>
+      <programlisting>
+select XMLELEMENT ('Person',
+                        XMLELEMENT ('firstname', "FirstName"),
+                        XMLELEMENT ('lastname', "LastName"),
+  		        xquery_eval('//country', xtree_doc('&lt;a&gt;&lt;country&gt;USA&lt;/country&gt;&lt;/a&gt;')))
+from "Demo"."demo"."Employees";
+
+select
+      XMLELEMENT ('Person',
+                        XMLFOREST ("FirstName"as "firstname", "LastName" as "lastname"),
+  		        xquery_eval('//country', xtree_doc('&lt;a&gt;&lt;country&gt;USA&lt;/country&gt;&lt;/a&gt;')))
+from "Demo"."demo"."Employees";
+
+select
+      XMLELEMENT ('Person',
+                             XMLCONCAT (
+                                        XMLELEMENT ('firstname', "FirstName"),
+                                        XMLELEMENT ('lastname', "LastName"),
+  		                        xquery_eval('//country', xtree_doc('&lt;a&gt;&lt;country&gt;USA&lt;/country&gt;&lt;/a&gt;'))))
+from "Demo"."demo"."Employees";
+</programlisting>
+      <note>
+        <title>Note:</title>
+        <para>
+The second statement is more effective than the others.
+</para>
+      </note>
+      <para>
+In order to return more than one row of values, you can use <function>XMLAGG</function>
+
+  . <function>XMLAGG</function>
+
+is an aggregate function that produces a forest of XML elements from a collection of XML elements. It concatenates
+the values returned from one column of multiple rows, unlike XMLCONCAT, which concatenates the values
+returned from multiple columns in the same row.
+</para>
+      <para>
+The parameters that would be used as element names (in the <function>XMLELEMENT</function>
+
+   and in the
+'AS clause ' of the <function>XMLFOREST</function>
+
+   and <function>XMLATTRIBUTES</function>
+
+  )
+must be valid XML names. If the 'AS clause ' is absent in a list of the parameters of the
+<function>XMLFOREST</function>
+
+   or <function>XMLATTRIBUTES</function>
+
+  , Virtuoso uses the partially escaped form of
+the column name as the element or attribute name. The partially escaped form means that SQL &lt;identifier&gt;
+characters that are valid characters in a XML NAME are not changed, SQL &lt;identifier&gt;
+character that is not valid XML NAME  character is replaced with "_xHHHH_", where HHHH is character's upper case
+hexadecimal code. For example, "first_name" is replaced with "first_x005F_name", "last name" is replaced with
+"last_x0020_name".
+</para>
+      <para>The following example creates an 'FullAddress' element with
+<itemizedlist mark="bullet"><listitem><para> four attributes, three of them ('PostalCode', 'Address', 'City') are
+   produced by <function>XMLATTRIBUTES</function>, and the fourth attribute - 'country' is calculated by
+
+<function>xquery_eval
+</function>
+</para></listitem><listitem><para>'Region' subelement, that is produced by 
+<function>xtree_doc
+</function></para></listitem><listitem><para>text content, that is produced by 
+<function>xpath_eval
+</function></para></listitem><listitem><para>'emp' subelement with text content from the column "LastName", that is created by nested<function>XMLELEMENT</function>
+  </para></listitem></itemizedlist>
+
+</para>
+      <programlisting>select XMLELEMENT ('FullAddress',
+                        XMLATTRIBUTES ( "PostalCode", "Address", "City"),
+                        xtree_doc ('&lt;Region&gt;WA&lt;/Region&gt;'),
+                        xquery_eval('//@country', xtree_doc('&lt;a country="USA"/&gt;')),
+                        xpath_eval('//@Phone', xtree_doc('&lt;a Phone="(206) 555-9857"/&gt;')),
+                        XMLELEMENT('emp', "LastName"))
+from "Demo"."demo"."Employees"
+
+----------------------------
+
+   &lt;FullAddress PostalCode="98122" Address="507 - 20th Ave. E. Apt. 2A" City="Seattle" country="USA"&gt;
+        &lt;Region&gt;WA&lt;/Region&gt;
+        (206) 555-9857
+        &lt;emp&gt;Davolio&lt;/emp&gt;
+    &lt;/FullAddress&gt;
+    &lt;FullAddress PostalCode="98401" Address="908 W. Capital Way" City="Tacoma" country="USA"&gt;
+        &lt;Region&gt;WA&lt;/Region&gt;
+        (206) 555-9857
+        &lt;emp&gt;Fuller&lt;/emp&gt;
+    &lt;/FullAddress&gt;
+  . . .
+
+ </programlisting>
+      <tip>
+        <title>See Also:</title>
+        <para>
+          <link linkend="fn_xmlagg">XMLAGG()</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlattributes">XMLATTRIBUTE()</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlconcat">XMLCONCAT()</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlelement">XMLELEMENT()</link>
+        </para>
+        <para>
+          <link linkend="fn_xmlforest">XMLFOREST()</link>
+        </para>
+      </tip>
+      <para>
+XML composing functions deal with arguments of arbitrary type, but the result is always an XML entity that can contain only elements and strings.
+Hence there is a set of type casting rules. These rules are quite common for any XML DOM model, so they're similar to those listed for
+<link linkend="xmldomtypecasting">DOM function arguments</link>
+
+  :
+</para>
+      <para>
+If an instance of XMLType is passed then its internal XML entity is used.
+</para>
+      <para>
+If an array representation of an XML tree entity is passed then it is used exactly like XML entity.
+</para>
+      <para>
+If an argument is NULL then it is fully ignored, as if there is no such argument at all.
+</para>
+      <para>
+If an argument is not of a type listed above and not a string then it is cast to a string first.
+</para>
+      <para>
+A root node of some document (or of some generic XML entity) can not appear in the middle of the resulting tree.
+So if a root node is passed then all child nodes of the root (i.e. every top-level node of the document) will be added.
+</para>
+      <para>
+SQL/XML standards introduce a special name "forest of XML elements" for an ordered list of XML elements,
+like one returned by <function>XMLFOREST()</function>
+
+  .
+In Virtuoso, forest can contain XML nodes of any sort, not only XML elements, so it can also contain strings, processing instructions and comments.
+Virtuoso processes any non-empty "forest" as if it were the root node of a "generic XML entity",
+and items of the forest were top-level nodes of that entity.
+Hence, a forest can be passed to any function that accepts an value of type "XML entity".
+The only potential problem is that this entity is well-formed if and only if the forest is non-empty.
+If an empty forest is serialized to an XML text then the result is an empty string that is not an acceptable input for an XML parser.
+</para>
+      <para>
+It is important to remember that the XML document can not contain two neighbour text nodes and that the text node can not be an empty string.
+If two consequent strings appear in the list of values of a forest or in the list of children of an new element then
+they are replaced with a single node that is a concatenation of these string.
+Similarly, if an empty string appears in the list of values of a forest or in the list of children of an new element then it is removed from the list.
+</para>
+    </section>

@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="installnetriavd">
+      <title>Creating a .Net RIA Services Application That Will Update Virtuoso Data</title>
+      <para>This example demonstrates how data in Virtuoso can be updated from a Microsoft .NET RIA Services
+application. The example is a continuation of the first example in <link linkend="installnetriadd">Creating a Simple .Net RIA Services
+Application to Display Data From Virtuoso</link>
+
+  .</para>
+      <section xml:id="installnetriavdpreq">
+        <title>Pre-requisites</title>
+        <orderedlist>
+          <listitem>
+            <para>A working copy of the application created in 
+            <link linkend="installnetriadd">Creating a
+Simple .Net RIA Services Application to Display Data From Virtuoso</link>
+            .</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="installnetriavdcrser">
+        <title>Creating the Application</title>
+        <para>
+          <emphasis>Step 1 - Add A New Domain Service Class</emphasis>
+        </para>
+        <para>The EmployeeService Domain Service Class was only used to display data so was created
+read only. In this example we need to be able to update the data so we need to remove the read
+only Domain Service Class and create a new on.</para>
+        <orderedlist>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Server Explorer</emphasis>
+            </para>
+            <para> right click EmployeeService and select </para>
+            <para>
+              <emphasis>Delete</emphasis>
+            </para>
+          </listitem>
+          <listitem>
+            <para>Right click the server project and </para>
+            <para>
+              <emphasis>Add New Item</emphasis>
+            </para>
+            <para>. In the dialog box choose Domain Service Class from the Templates pane and again call it EmployeeService.cs. Click Add.</para>
+          </listitem>
+          <listitem>
+            <para>Select the Employees entity and tick </para>
+            <para>
+              <emphasis>Enable editing</emphasis>
+            </para>
+            <para>. Also tick </para>
+            <para>
+              <emphasis>Generated associated classes for metadata</emphasis>
+            </para>
+            <para>.
+      </para>
+            <figure xml:id="riad1" floatstyle="1">
+              <title>.NET RIA Services Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/riad1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Update MainPage.xaml.cs to use EmployeeService2 the new domain service rather than EmployeeContext.</para>
+          </listitem>
+        </orderedlist>
+        <para>We want to create a master detail style page. To do this we will use the DomainDataSourceComponent
+from the Silverlight Components. But first we will add a pager so only 5 records are displayed at a time.</para>
+        <para>
+          <emphasis>Step 2 - Add a DataPager</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>Add two new namespaces to MainPage.xaml
+</para>
+            <programlisting>
+xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Ria.Controls"
+xmlns:ds="clr-namespace:DemoApplication.Web"
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Use a DomainDataSource to provide the data to fill the grid. Add the following to
+MainPage.xaml before the DataGrid.
+</para>
+            <programlisting>
+&lt;riaControls:DomainDataSource x:Name="EmployeeDataSource"
+                              QueryName="GetEmployeesQuery"
+                              LoadSize="10"
+                              AutoLoad="True"&gt;
+    &lt;riaControls:DomainDataSource.DomainContext&gt;
+        &lt;ds:EmployeeService2/&gt;
+    &lt;/riaControls:DomainDataSource.DomainContext&gt;
+&lt;/riaControls:DomainDataSource&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Update the MainPage.xaml.cs code behind file. Using the DomainDataSource means you no
+longer need to instantiate the context and load the grid in MainPage.xaml.cs so it becomes:
+</para>
+            <programlisting>
+public partial class MainPage : UserControl
+{
+    public MainPage()
+    {
+        InitializeComponent();
+    }
+}
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Set the binding source of the DataGrid to the DomainDataSource
+</para>
+            <programlisting>
+&lt;data:DataGrid MinHeight="100"  IsReadOnly="True" ItemsSource="{Binding Data, ElementName=EmployeeDataSource}" x:Name="DataGrid1"&gt;&lt;/data:DataGrid&gt; /&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Drag a DataPager form the tool box onto MainPage.xaml just after the DataGrid.
+  </para>
+          </listitem>
+          <listitem>
+            <para>Add a page size and binding element to the DataPager.
+</para>
+            <programlisting>
+&lt;data:DataPager PageSize="5" Source="{Binding Data, ElementName=employeeDataSource}"
+                      Margin="0,-1,0,0"&gt;&lt;/data:DataPager&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Build and run the application. The data should be displayed 5 rows at a time.
+      </para>
+            <figure xml:id="riad2" floatstyle="1">
+              <title>.NET RIA Services Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/riad2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>We now need to add a DataForm to display the details.</para>
+        <para>
+          <emphasis>Step 3 - Add a DataForm</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>Add the following namespace to MainPage.xaml
+</para>
+            <programlisting>
+xmlns:dataForm="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit"
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Add the form to MainPage.xaml
+</para>
+            <programlisting>
+&lt;dataForm:DataForm x:Name="dataForm1" Header="Employee Information"  AutoGenerateFields="False" AutoEdit="False" AutoCommit="False" CurrentItem="{Binding SelectedItem, ElementName=DataGrid1}" Margin="0,12,0,0"&gt;
+   &lt;dataForm:DataForm.EditTemplate&gt;
+       &lt;DataTemplate&gt;
+           &lt;StackPanel&gt;
+               &lt;dataForm:DataField Label="Employee ID"&gt;
+                   &lt;TextBox Text="{Binding EmployeeID, Mode=TwoWay}" /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="First Name"&gt;
+                   &lt;TextBox Text="{Binding FirstName, Mode=TwoWay}" /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Last Name"&gt;
+                   &lt;TextBox Text="{Binding LastName, Mode=TwoWay}" /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Courtesy Title"&gt;
+                   &lt;TextBox Text="{Binding TitleOfCourtesy, Mode=TwoWay}" /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Hire Date"&gt;
+                   &lt;TextBox Text="{Binding HireDate, Mode=TwoWay}" /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Title"&gt;
+                   &lt;TextBox Text="{Binding Title, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Reports To"&gt;
+                   &lt;TextBox Text="{Binding ReportsTo, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Region"&gt;
+                   &lt;TextBox Text="{Binding Region, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Address"&gt;
+                   &lt;TextBox Text="{Binding Address, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="City"&gt;
+                   &lt;TextBox Text="{Binding City, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Country Code"&gt;
+                   &lt;TextBox Text="{Binding CountryCode, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+               &lt;dataForm:DataField Label="Postal Code"&gt;
+                   &lt;TextBox Text="{Binding PostalCode, Mode=TwoWay}"  /&gt;
+               &lt;/dataForm:DataField&gt;
+                   &lt;/StackPanel&gt;
+       &lt;/DataTemplate&gt;
+   &lt;/dataForm:DataForm.EditTemplate&gt;
+ &lt;/dataForm:DataForm&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Surround the DomainDataSource, DataGrid and DataForm with
+</para>
+            <programlisting>
+        &lt;ScrollViewer BorderThickness="0"  VerticalScrollBarVisibility="Auto" Padding="12,0,12,0" Margin="-2"&gt;
+            &lt;StackPanel Margin="0,12,0,12" Orientation="Vertical" &gt;
+.
+.
+.
+            &lt;/StackPanel&gt;
+        &lt;/ScrollViewer&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Build and run the application. As each employee is selected the data form fill with their details
+      </para>
+            <figure xml:id="riad3" floatstyle="1">
+              <title>.NET RIA Services Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/riad3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>By clicking on the pencil symbol in the top right hand corner the data in the form can be edited
+but it is not propagated back to the database.</para>
+      </section>
+      <section xml:id="installnetriavdcrprup">
+        <title>Propagate Updates to Virtuoso</title>
+        <orderedlist>
+          <listitem>
+            <para>Add a 'Submit' button just after the DataForm in MainPage.xaml by adding the following code.
+</para>
+            <programlisting>
+&lt;StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0"&gt;
+  &lt;Button x:Name="submitButton" Width="75" Height="23"  Content="Submit"  Margin="4,0,0,0" Click="submitButton_Click"/&gt;
+&lt;/StackPanel&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Handle the button click event in MainPage.xaml.cs by adding the following code:
+</para>
+            <programlisting>
+private void submitButton_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeDataSource.SubmitChanges();
+        }
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Build and run the application. If you now edit data in the form and click the submit button
+the data in Virtuoso will be updated.
+      </para>
+            <figure xml:id="riad4" floatstyle="1">
+              <title>.NET RIA Services Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/riad4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+      </section>
+    </section>
