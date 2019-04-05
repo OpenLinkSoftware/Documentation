@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  $Id: dotnet.xml,v 1.1.1.1 2004/09/09 10:45:21 cvs Exp $
+  (C)Copyright 1996-2018 OpenLink Software
+-->
+<chapter  id="dotnet">
+  <title>OpenLink ADO.NET Data Providers</title>
+<chapterinfo>
+  <keywordset>
+    <keyword>ODBC</keyword>
+    <keyword>ODBC Driver</keyword>
+    <keyword>ODBC Drivers</keyword>
+    <keyword>ADO</keyword>
+    <keyword>.Net</keyword>
+    <keyword>ADO.Net</keyword>
+    <keyword>Microsoft.NET</keyword>
+    <keyword>Framework</keyword>
+    <keyword>Microsoft.NET Framework</keyword>
+    <keyword>Managed Provider</keyword>
+  </keywordset>
+</chapterinfo>
+  <para>ADO.NET is the new feature-rich, data access Model used within the Microsoft.NET framework.  It supports the data access requirements of the loosely coupled, multi-tier Web and Web services based applications of today.  ADO.NET relies on the services of .NET Data Providers. These provide access to the underlying data source through four key objects: <computeroutput>Connection</computeroutput>, <computeroutput>Command</computeroutput>, <computeroutput>DataReader</computeroutput>, and <computeroutput>DataAdapter</computeroutput>. </para>
+  <para>The OpenLink .Net Data Providers are available as a suite of Managed and Unmanaged Data Providers providing a natural extension of our Universal Data Access Driver Suite.  Thus providing .Net connectivity to the full range of Databases support in our Universal Data Access Driver suite. Two generic .Net Data Providers are available each exposing a common namespace/interface for accessing remote data sources as explained in the component architecture section below.</para>
+    <sect1 id="dnetarch"><title>Architecture</title>
+    <para>From the outset one of the main design goals of the .Net Data Provider was to implement a generic client layer enabling the re-use of our existing data access components for connecting to remote data sources. This has been achieved with both our Managed and Unmanaged .Net Data Providers, each of which have a common namespace that eliminates the need to recompile applications should the need arise to change the remote data source.</para>
+    <sect2 id="dnetmanage"><title>Managed Data Provider</title>
+    <para>The UDA managed .NET Data Provider delivers robust and secure data connectivity across all Databases support in the Universal Data Access suite, including all major databases - Microsoft SQL Server, Oracle, DB2, Sybase, Ingres II, Informix and Progress. The .NET Data Provider is built with managed code, enabling it to running completely within the .NET Framework runtime delivering better security and performance. This Generic managed .Net Data Provider connects to the remote data source via one of two forms currently:</para>
+    <itemizedlist>
+    <listitem><emphasis>Multi-Tier Database Agents</emphasis> - The OpenLink VDB(Virtual Database) layer has been ported to C# and linked into the Provider, enabling it to communicate directly with the OpenLink Multi-Tier Database agents installed on the remote machine (or via 3-Tier connection) as indicated in the diagram below:
+    <figure id="dnetjpg1" float="0">
+    <title>Managed VDB .Net Data Provider</title>
+    <graphic fileref="dnetmanage.jpg" format="jpeg"></graphic>
+    </figure>
+    <para> The diagram above lists all the databases current supported in our Multi-Tier Data Access suite, but note that ODBC is also included which if chosen would enabled connectivity to any third party ODBC driver also via our ODBC agent(bridge).</para>
+    </listitem>
+    <listitem><emphasis>TDS Protocol</emphasis> - The TDS protocol has been ported to C# and linked into the Provider, enabling two 100% Managed Providers to be created capable of direct connectivity to Microsoft and Sybase SQLServer Databases without the need for any additional components on the Server, as indicated in the diagram below:
+    <figure id="dnetjpg2" float="0">
+    <title>Managed SQLServer .Net Data Provider</title>
+    <graphic fileref="dnetmantdsms.jpg" format="jpeg"></graphic>
+    </figure>
+    <figure id="dnetjpg21" float="0">
+    <title>Managed Sybase .Net Data Provider</title>
+    <graphic fileref="dnetmantdsyb.jpg" format="jpeg"></graphic>
+    </figure>
+    </listitem>
+    </itemizedlist>
+    </sect2>
+    <sect2 id="dnetunmanage"><title>Unmanaged Data Provider</title>
+    <para>The UDA Unmanaged .NET Data Provider enables connectivity to any ODBC Data Source by acting as a Bridge between ADO.Net and ODBC. This Provider is provided as a stop-gap solution enabling connectivity to Data source for which managed .Net Providers are not already available as indicated in the diagram below, and as such does not provide the benefits of security and performance available from its Managed counterpart:</para>
+    <figure id="dnetjpg3" float="0">
+    <title>Unmanaged ODBC .Net Data Provider</title>
+    <graphic fileref="dnetunmanage.jpg" format="jpeg"></graphic>
+    </figure>
+  </sect2>
+</sect1>
+    <sect1 id="dnetdevel"><title>Developing .NET Data Provider Application</title>
+<sect1info>
+  <keywordset>
+    <keyword>Develop .Net</keyword>
+  </keywordset>
+</sect1info>
+<para>The namespaces for the OpenLink .Net Data Providers are: </para>
+<programlisting>
+	OpenLink.Data.GenericClient	; Managed VDB Generic Multi-Tier
+</programlisting>
+<programlisting>
+	OpenLink.Data.SQLServer		; Managed Microsoft SQLServer
+</programlisting>
+<programlisting>
+	OpenLink.Data.Sybase		; Managed Sybase SQLServer
+</programlisting>
+<programlisting>
+	OpenLink.Data.OdbcClient	; Unmanaged ODBC based
+</programlisting>
+<para>A .NET data provider provides functionality for connecting to a data source, executing commands, and retrieving results. Those results can be processed directly, or placed in an ADO.NET DataSet for further processing while in a disconnected state. While in the DataSet, data can be exposed to the user, combined with other data from multiple sources, or passed remotely between tiers. Any processing performed on the data while in the DataSet can then be reconciled to the data source.</para>
+<para>All .NET data providers are designed to be lightweight. They consist of a minimal layer between the data source and your code. This extends functionality without sacrificing performance.</para>
+<para>There are four core objects that make up a .NET data provider. The following table describes those objects and their function.</para>
+<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+  <title>Core Classes</title>
+  <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+  <thead>
+    <row>
+      <entry>Object</entry>
+      <entry>Description</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry>Connection</entry>
+       <entry>Establishes a connection to a specific data source and can begin a Transaction.</entry>
+     </row>
+     <row>
+       <entry>Command</entry>
+       <entry>Executes a command at a data source, and exposes Parameters.</entry>
+     </row>
+     <row>
+       <entry>DataReader</entry>
+       <entry>Exposes and reads a forward-only stream of data from a data source.</entry>
+     </row>
+     <row>
+       <entry>DataAdapter</entry>
+       <entry>Populates a DataSet and resolves updates with the data source.</entry>
+     </row>
+   </tbody></tgroup></table>
+   <para>Along with the core classes listed in the preceding table, a .NET data provider also contains the classes listed in the following table.</para>
+   <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+  <title>Additional Classes</title>
+  <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+  <thead>
+    <row>
+      <entry>Object</entry>
+      <entry>Description</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry>ClientPermission</entry>
+       <entry>Provided for .NET data provider code access security attributes.</entry>
+     </row>
+     <row>
+       <entry>CommandBuilder</entry>
+       <entry>A helper object that will automatically generate command properties of a DataAdapter or will derive parameter information from a stored procedure and populate the Parameters collection of a Command object. </entry>
+     </row>
+     <row>
+       <entry>Error</entry>
+       <entry>Exposes the information from a warning or error returned by a data source.</entry>
+     </row>
+     <row>
+       <entry>Exception</entry>
+       <entry>Returned when an error is encountered at the data source. For an error encountered at the client, .NET data providers throw a .NET Framework exception.</entry>
+     </row>
+     <row>
+       <entry>Parameter</entry>
+       <entry>Defines input, output, and return value parameters for commands and stored procedures.</entry>
+     </row>
+     <row>
+       <entry>Transaction</entry>
+       <entry>Enables you to enlist commands in transactions at the data source.</entry>
+     </row>
+   </tbody></tgroup></table>
+<para>During the installation process the OpenLink .Net Data Provider is registered in the system GAC(Global Assembly Cache) enabling it for use by .Net applications. To use the OpenLink .NET Data Providers, the application must add an imports or using statement for the .Net Data Provider namespace, as the following code illustrates:</para>
+<programlisting>
+[Visual Basic]
+Imports OpenLink.Data.GenericClient	// Managed VDB Generic Multi-Tier
+or
+Imports OpenLink.Data.SQLServer		// Managed Microsoft SQLServer
+or
+Imports OpenLink.Data.Sybase		// Managed Sybase SQLServer
+or
+Imports OpenLink.Data.OdbcClient	// Unmanaged ODBC based
+[C#]
+using OpenLink.Data.GenericClient;	// Managed VDB Generic Multi-Tier
+or
+using OpenLink.Data.SQLServer;		// Managed Microsoft SQLServer
+or
+using OpenLink.Data.Sybase;		// Managed Sybase SQLServer
+or
+using OpenLink.Data.OdbcClient;		// Unmanaged ODBC based
+</programlisting>
+<para>You must also include a reference to the .DLL when you compile your code. For example, if you are compiling a Microsoft® Visual C#™ program, your command line should include:</para>
+<programlisting>
+csc /r:OpenLink.Data.GenericClient.dll	; Managed VDB Generic Multi-Tier
+or
+csc /r:OpenLink.Data.SQLServer.dll	; Managed Microsoft SQLServer
+or
+csc /r:OpenLink.Data.Sybase.dll	; Managed Sybase SQLServer
+or
+csc /r:OpenLink.Data.OdbcClient.dll	; Unmanaged ODBC based
+</programlisting>
+</sect1>
+<sect1 id="dnetconnstr"><title>OpenLink .NET Data Providers Connect String Attributes</title>
+<sect1info>
+  <keywordset>
+    <keyword>.Net Provider Connect String</keyword>
+  </keywordset>
+</sect1info>
+<para> This section details the Connect string attributes an ADO.Net application can pass to the OpenLink .Net Data Providers when attempting a connection to a remote database.</para>
+<sect2 id="dnetmconnstr"><title>Managed Generic Multi-Tier .NET Data Provider (OpenLink.Data.GenericClient)</title>
+<para>The tables below provides a list of the Connect String Attributes for the Data Provider:</para>
+<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+  <title>Connection String Keywords for the Generic .Net Provider </title>
+  <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+  <thead>
+    <row>
+      <entry>Keyword</entry>
+      <entry>Default Value</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry>Used ID or UID</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Password or PWD</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Initial Catalog or DATABASE</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Connect Timeout or Connection Timeout</entry>
+       <entry>[15]</entry>
+     </row>
+     <row>
+       <entry>Persist Security Info</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Connection Lifetime</entry>
+       <entry>[0]</entry>
+     </row>
+     <row>
+       <entry>Min Pool Size</entry>
+       <entry>[0]</entry>
+     </row>
+     <row>
+       <entry>Max Pool Size</entry>
+       <entry>[100]</entry>
+     </row>
+     <row>
+       <entry>Persist Security Info</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Pooling</entry>
+       <entry>[True]</entry>
+     </row>
+     <row>
+       <entry>Charset</entry>
+       <entry>["]</entry>
+     </row>
+     <row>
+       <entry>Host</entry>
+       <entry>[localhost]</entry>
+     </row>
+     <row>
+       <entry>Port</entry>
+       <entry>[5000]</entry>
+     </row>
+     <row>
+       <entry>Read Only or ReadOnly</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Fetch Buffer Size or FBS or FetchBufferSize</entry>
+       <entry>[100]</entry>
+     </row>
+     <row>
+       <entry>Server Type or ServerType or SVT</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Defer Long Fetch or DLF or DeferLongFetch</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Encrypted</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Options</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Defer Long Fetch or DLF or DeferLongFetch</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>UNICODE</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>APPLICATION</entry>
+       <entry>["opldotNET"]</entry>
+     </row>
+   </tbody></tgroup></table>
+   	<para>Sample connect string :</para>
+	<programlisting>
+	For Oracle 9 :
+		"Host=localhost;Port=5000;SVT=Oracle 9.x;DATABASE=ORCL;UID=scott;PWD=tiger;
+	For SQLServer2000:
+		"Host=localhost;Port=5000;SVT=SQLServer 2000;DATABASE=Northwind;UID=sa;PWD=;
+	</programlisting>
+     </sect2>
+     <sect2 id="dnetmconnstr"><title>Managed Microsoft SQLServer .NET Data Provider (OpenLink.Data.SQLServer)</title>
+<para>The tables below provides a list of the Connect String Attributes for the Data Provider:</para>
+<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+  <title>Connection String Keywords for the Microsoft SQLServer .Net Provider </title>
+  <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+  <thead>
+    <row>
+      <entry>Keyword</entry>
+      <entry>Default Value</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry>Used ID or UID</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Password or PWD</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Initial Catalog or DATABASE</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Connect Timeout or Connection Timeout</entry>
+       <entry>[15]</entry>
+     </row>
+     <row>
+       <entry>Persist Security Info</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Connection Lifetime</entry>
+       <entry>[0]</entry>
+     </row>
+     <row>
+       <entry>Min Pool Size</entry>
+       <entry>[0]</entry>
+     </row>
+     <row>
+       <entry>Max Pool Size</entry>
+       <entry>[100]</entry>
+     </row>
+     <row>
+       <entry>Persist Security Info</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Pooling</entry>
+       <entry>[True]</entry>
+     </row>
+     <row>
+       <entry>Charset</entry>
+       <entry>["]</entry>
+     </row>
+     <row>
+       <entry>Host</entry>
+       <entry>[localhost]</entry>
+     </row>
+     <row>
+       <entry>Port</entry>
+       <entry>[1433]</entry>
+     </row>
+     <row>
+       <entry>Packet Size  or PktSize</entry>
+       <entry>[8192] for SQLServer7/2000</entry>
+     </row>
+     <row>
+       <entry>SrvName or Server or Server Na</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Server Type or ServerType or SVT</entry>
+       <entry>["SQLSERVER6"]</entry>
+     </row>
+     <row>
+       <entry>WorkstationId or Workstation Id</entry>
+       <entry>["localhost]</entry>
+     </row>
+     <row>
+       <entry>UNICODE</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>APPLICATION</entry>
+       <entry>["opldotNET"]</entry>
+     </row>
+     <row>
+       <entry>UseBrowseMode</entry>
+       <entry>["false"] </entry>
+     </row>
+   </tbody></tgroup></table>
+	<para>The following Keyword default values change for the SQLServer Provider :</para>
+	<programlisting>
+	UseBrowseMode=false - the SQLParser is used for parsing Select queries and getting the accurate information
+	for following schema table columns (returned by IDataReader.GetSchemaTable).
+	UseBrowseMode=true -  the "SET no_browsetable ON" comand is used with Select queries for getting the names
+	and for accurate information for following schema table columns (returned by IDataReader.GetSchemaTable).
+         Note that the MS SQLServer ADO.NET provider uses the "SET no_browsetable ON" mode.
+	The property SVT or ServerType supports the following values:
+	"SQLServer 7" or "SQLServer7" (TDS7 protocol is used)
+	"SQLServer 2000" or "SQLServer2000" (TDS8 protocol is used)
+	"SQLServer 6"  or "SQLServer 6.x"  or "SQLServer"  or "SQLServer6"(TDS4.2 protocol is used)
+	Any another values (TDS4.2 protocol is used)
+	Sample connection string:
+		"SVT=SQLServer 2000;DATABASE=Northwind;Host=localhost;Port=1433UID=sa;PWD=;
+	</programlisting>
+     </sect2>
+          <sect2 id="dnetmconnstr"><title>Managed Sybase .NET Data Provider (OpenLink.Data.Sybase)</title>
+<para>The tables below provides a list of the Connect String Attributes for the Data Provider:</para>
+<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+  <title>Connection String Keywords for the Sybase .Net Provider </title>
+  <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+  <thead>
+    <row>
+      <entry>Keyword</entry>
+      <entry>Default Value</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry>Used ID or UID</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Password or PWD</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Initial Catalog or DATABASE</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Connect Timeout or Connection Timeout</entry>
+       <entry>[15]</entry>
+     </row>
+     <row>
+       <entry>Persist Security Info</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Connection Lifetime</entry>
+       <entry>[0]</entry>
+     </row>
+     <row>
+       <entry>Min Pool Size</entry>
+       <entry>[0]</entry>
+     </row>
+     <row>
+       <entry>Max Pool Size</entry>
+       <entry>[100]</entry>
+     </row>
+     <row>
+       <entry>Persist Security Info</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>Pooling</entry>
+       <entry>[True]</entry>
+     </row>
+     <row>
+       <entry>Charset</entry>
+       <entry>["]</entry>
+     </row>
+     <row>
+       <entry>Host</entry>
+       <entry>[localhost]</entry>
+     </row>
+     <row>
+       <entry>Port</entry>
+       <entry>[4100]</entry>
+     </row>
+     <row>
+       <entry>Packet Size  or PktSize</entry>
+       <entry>[512]</entry>
+     </row>
+     <row>
+       <entry>SrvName or Server or Server Na</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>Server Type or ServerType or SVT</entry>
+       <entry>["SYBASE4"]</entry>
+     </row>
+     <row>
+       <entry>WorkstationId or Workstation Id</entry>
+       <entry>["localhost]</entry>
+     </row>
+     <row>
+       <entry>UNICODE</entry>
+       <entry>[False]</entry>
+     </row>
+     <row>
+       <entry>APPLICATION</entry>
+       <entry>["opldotNET"]</entry>
+     </row>
+   </tbody></tgroup></table>
+	<para>The following Keyword default values change for the SQLServer Provider :</para>
+	<programlisting>
+	The property SVT or ServerType supports the following values:
+		"Sybase 10"  or "Sybase10" (TDS5 protocol is used)
+		"Sybase 11"  or "Sybase11" (TDS5 protocol is used)
+		"Sybase 12"  or "Sybase12"  or "Sybase12.x" (TDS5 protocol is used)
+	Any another values (TDS4.2 protocol is used)
+	Sample connection string:
+		"SVT=Sybase 12;DATABASE=pubs2;Host=localhost;Port=4100;UID=sa;PWD=;
+	</programlisting>
+     </sect2>
+     <sect2 id="dnetuconnstr"><title>Unmanaged .NET Data Provider (OpenLink.Data.OdbcClient)</title>
+<para>The tables below provides a list of the Connect String Attributes for the Unmanaged (ODBC based) Data Provider:</para>
+<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+  <title>Connection String Keywords</title>
+  <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+  <thead>
+    <row>
+      <entry>Keyword</entry>
+      <entry>Default Value</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry>DSN</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>UID</entry>
+       <entry>[""]</entry>
+     </row>
+     <row>
+       <entry>PWD</entry>
+       <entry>[""]</entry>
+     </row>
+   </tbody></tgroup></table>
+   <programlisting>
+   Sample connect string:
+	- Oracle ODBC DSN
+	   "DSN=Oracle;UID=scott;PWD=tiger"
+	where 'Oracle' is the name of a valid ODBC DSN for connecting to an Oracle Database
+   </programlisting>
+   </sect2>
+   </sect1>
+   <sect1 id="dnetclasses"><title>OpenLink .NET Data Providers Class Implementation</title>
+<sect1info>
+  <keywordset>
+    <keyword>.Net Provider</keyword>
+    <keyword>Class Implementation</keyword>
+  </keywordset>
+</sect1info>
+   <para> This section details the classes exposed by the OpenLink .NET Data Providers, which users must be familiar with in order to make effective use of the providers.</para>
+   <para> Many of the OpenLink Generic Provider classes implement interfaces or inherit from the .NET Framework namespaces System.Data and System.Data.Common. A summary of the classes exposed by the provider is given below.</para>
+   <para>The table only shows classes or interfaces inherited from System.Data or System.Data.Common. Some of the OpenLink.Data.GenericClient classes implement additional interfaces or inherit from a class belonging to a namespace other than System.Data or System.Data.Common. These details are not shown. For full details refer to the detailed documentation for the appropriate class in OpenLink.Data.GenericClient Namespace.</para>
+   <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+   <title>Classes</title>
+   <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+   <thead>
+    <row>
+      <entry>Classes</entry>
+      <entry>Implements / inherits System.Data or System.Data.Common interface / class</entry>
+      <entry>Description</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry><link linkend="cloplcommand">OPLCommand</link></entry>
+       <entry>IDbCommand</entry>
+       <entry>Represents an SQL statement or stored procedure to execute against a database.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplcommandbuild">OPLCommandBuilder</link></entry>
+       <entry></entry>
+       <entry>Automatically generates single-table commands used to reconcile changes made to a DataSet with the associated data source.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplconnect">OPLConnection</link></entry>
+       <entry>IDbConnection</entry>
+       <entry>Represents an open connection to a data source.</entry>
+     </row>
+     <row>
+       <entry><link linkend="clopldataadapter">OPLDataAdapter</link></entry>
+       <entry>IDbDataAdapter, DbDataAdapter</entry>
+       <entry>Represents a set of data commands and a database connection that are used to fill a DataSet and update a data source.</entry>
+     </row>
+     <row>
+       <entry><link linkend="clopldatareader">OPLDataReader</link></entry>
+       <entry>IDataReader, IDataRecord</entry>
+       <entry>Provides a way of reading a forward-only stream of data rows from a data source.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplerror">OPLError</link></entry>
+       <entry></entry>
+       <entry>Holds information about a warning or error returned by a data source.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplerrorcol">OPLErrorCollection</link></entry>
+       <entry></entry>
+       <entry>Represents a collection of one or more OPLError objects that give detailed information about an OPLException.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplexcept">OPLErrorException</link></entry>
+       <entry></entry>
+       <entry>The exception that is generated when a warning or error is returned by a data source or the Generic Provider.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplparam">OPLParameter</link></entry>
+       <entry>IDbDataParameter, IDataParameter</entry>
+       <entry>Represents a parameter to an OPLCommand and optionally, its mapping to a DataSet column.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplparamcol">OPLParameterCollection</link></entry>
+       <entry>IDataParameterCollection</entry>
+       <entry>Represents a collection of parameters relevant to an OPLCommand as well as their respective mappings to columns in a DataSet.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplperm">OPLPermission</link></entry>
+       <entry></entry>
+       <entry>Enables the Generic Provider to ensure that a user has a security level adequate to access a data source.</entry>
+     </row>
+     <row>
+       <entry><link linkend="cloplpermattr">OPLPermissionAttribute</link></entry>
+       <entry></entry>
+       <entry>Associates a security action with a custom security attribute.</entry>
+     </row>
+     <row>
+       <entry><link linkend="clopltran">OPLTransaction</link></entry>
+       <entry>IDbTransaction</entry>
+       <entry>Represents a SQL transaction to be made at a data source.</entry>
+     </row>
+   </tbody></tgroup></table>
+   <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+   <title>Delegates</title>
+   <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+   <thead>
+    <row>
+      <entry>Delegates</entry>
+      <entry>Description</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry><link linkend="rUpdated">OPLRowUpdatedEventHandler</link></entry>>
+       <entry>Represents a method that will handle the RowUpdated event of an OPLDataAdapter.</entry>
+     </row>
+     <row>
+       <entry><link linkend="rUpdating">OPLRowUpdatingEventHandler</link></entry>
+       <entry>Represents a method that will handle the RowUpdating event of an OPLDataAdapter.</entry>
+     </row>
+   </tbody></tgroup></table>
+   <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+   <title>Enumerations</title>
+   <tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+   <thead>
+    <row>
+      <entry>Enumeration</entry>
+      <entry>Description</entry>
+    </row>
+   </thead>
+   <tbody>
+     <row>
+       <entry><link linkend="clopldbtype">OPLDbType</link></entry>>
+       <entry>Specifies the data type of a field, property or OPLParameter.</entry>
+     </row>
+   </tbody></tgroup></table>
+   </sect1>
+   <sect1 id="dnetnamespace"><title>OpenLink.Data Namespace</title>
+<sect1info>
+  <keywordset>
+    <keyword>Namespace</keyword>
+  </keywordset>
+</sect1info>
+   <para>All the public classes in the OpenLink.Data namespace are detailed in this section. Note that all of the OpenLink .Net Data Providers use the same common class names, thus the descriptions below are applicable to all enabling maximum re-use of code across Providers.</para>
+   <para><emphasis>IMPORTANT: Public class members inherited from a base class defined by the .NET Framework Class Library (FCL), or which implement an FCL defined interface method, are not described. For details of these inherited members, refer to the .NET FCL documentation for the base class or interface. Where an OpenLink class implements an ADO.NET interface and adds additional methods or properties, these extensions are documented.
+   </emphasis></para>
+   <para>In the class descriptions which follow, all code extracts showing partial class definitions, method signatures etc. are in C#. Examples for other .NET languages are not shown.
+   </para>
+   <sect2 id="cloplcommand"><title>OPLCommand</title>
+	<para>Represents an SQL statement or stored procedure to execute against a database.</para>
+	<programlisting>public class OPLCommand : Component, IDbCommand, ICloneable</programlisting>
+      <sect3 id="cloplcommandC"><title>Constructors</title>
+	<programlisting>public OPLCommand ();</programlisting>
+	<para>Initializes a new instance of the OPLCommand class.</para>
+	<programlisting>public OPLCommand (string cmdText);</programlisting>
+	<para>Initializes a new instance of the OPLCommand class with the text of the query.</para>
+	<programlisting>public OPLCommand (string cmdText, OPLConnection connection);</programlisting>
+	<para>Initializes a new instance of the OPLCommand class with the text of the query and an OPLConnection object.</para>
+	<programlisting>public OPLCommand (string cmdText, OPLConnection connection,OPLTransaction txn);</programlisting>
+        <para>Initializes a new instance of the OPLCommand class with the text of the query, an OPLConnection object and an OPLTransaction object.</para>
+      </sect3>
+      <sect3 id="cloplcommandP"><title>Properties</title>
+      <sect4><title>PassThrough</title>
+	<programlisting>public bool PassThrough {get; set;}</programlisting>
+	<para>Allows the command text to be passed to the data source without being parsed by the Generic Provider.</para>
+      </sect4>
+      <sect4><title>Remarks</title>
+	<para>The PassThrough property defaults to false. When pass-through is disabled, the Generic Provider parses command text associated with the OPLCommand and queries the data source for additional metadata on tables referenced in a select statement. The command parser in the Generic Provider is limited to the SQL grammar defined by ODBC. If you wish to pass native SQL to the data source you should enable pass-through; however this will have the following side-effects:</para>
+	<simplelist>
+	<member>Some of the metadata returned by OPLDataReader.GetSchemaTable may not be accurate, specifically the metadata resultset columns IsKeyColumn, BaseSchemaName, BaseCatalogName, BaseTableName.</member>
+	<member>The command behavior setting CommandBehavior.KeyInfo will not append missing key columns to the end of a select list.</member>
+	<member>OPLCommandBuilder may not work, depending on the select statement used.</member>
+	</simplelist>
+      </sect4>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplcommandbuild"><title>OPLCommandBuilder</title>
+	<para>Automatically generates single-table commands used to reconcile changes made to a DataSet with the associated data source.</para>
+	<programlisting>public sealed class OPLCommandBuilder : Component</programlisting>
+      <sect3 id="cloplcommandbuildC"><title>Constructors</title>
+	<programlisting>public OPLCommandBuilder ();</programlisting>
+	<para>Initializes a new instance of the OPLCommandBuilder class.</para>
+	<programlisting>public OPLCommandBuilder (OPLDataAdapter adapter);</programlisting>
+	<para>Initializes a new instance of the OPLCommandBuilder class with the associated OPLDataAdapter object.</para>
+      </sect3>
+      <sect3 id="cloplcommandbuildM"><title>Methods</title>
+	<programlisting>public static void DeriveParameters (OPLCommand command);</programlisting>
+	<para>Retrieves parameter information from the stored procedure specified in the OPLCommand and populates the Parameters collection of the specified OPLCommand object.</para>
+	<programlisting>protected override void Dispose (bool disposing);</programlisting>
+	<para>Releases the resources used by the OPLCommandBuilder.</para>
+	<programlisting>public OPLCommand GetDeleteCommand ();</programlisting>
+	<para>Gets the automatically generated OPLCommand object required to perform deletions at the data source.</para>
+	<programlisting>public OPLCommand GetInsertCommand ();</programlisting>
+	<para>Gets the automatically generated OPLCommand object required to perform insertions at the data source.</para>
+	<programlisting>public OPLCommand GetUpdateCommand ();</programlisting>
+	<para>Gets the automatically generated OPLCommand object required to perform updates at the data source.</para>
+	<programlisting>public void RefreshSchema ();</programlisting>
+	<para>Refreshes the database schema information used to generate INSERT, UPDATE, or DELETE statements.</para>
+      </sect3>
+      <sect3 id="cloplcommandbuildP"><title>Properties</title>
+	<programlisting>public OPLDataAdapter DataAdapter {get; set;}</programlisting>
+	<para>Gets or sets an OPLDataAdapter object for which this OPLCommandBuilder object will generate SQL statements.</para>
+	<programlisting>public string QuotePrefix {get; set;}</programlisting>
+	<para>Gets or sets the beginning character or characters to use when working with database objects (for example, tables or columns) whose names contain characters such as spaces or reserved tokens.</para>
+	<programlisting>public string QuoteSuffix {get; set;}</programlisting>
+	<para>Gets or sets the ending character or characters to use when working with database objects, (for example, tables or columns), whose names contain characters such as spaces or reserved tokens.</para>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplconnect"><title>OPLConnect</title>
+	<para>Represents an open connection to a data source.</para>
+	<programlisting>public sealed class OPLConnection : Component, ICloneable, IDbConnection</programlisting>
+      <sect3 id="cloplconnectC"><title>Constructors</title>
+	<programlisting>public OPLConnection();</programlisting>
+	<para>Initializes a new instance of the OPLConnect class.</para>
+	<programlisting>public OPLConnection(string connectionString);</programlisting>
+	<para>Initializes a new instance of the OPLConnection class with the specified connection string.</para>
+      </sect3>
+      <sect3 id="cloplconnectM"><title>Methods</title>
+	<programlisting>protected override void Dispose (bool disposing);</programlisting>
+	<para>Releases the resources used by the OPLConnection.</para>
+      </sect3>
+      <sect3 id="cloplconnectE"><title>Events</title>
+	<programlisting>public event StateChangeEventHandler StateChange;</programlisting>
+	<para>Occurs when the state of the connection changes.</para>
+	<sect4><title>Remarks</title>
+	<para>The StateChange event is raised immediately after the State changes from Closed to Opened, or from Opened to Closed.</para>
+	<programlisting>public event OPLInfoMessageEventHandler InfoMessage;</programlisting>
+	<para>Returns warning messages from the DBMS.</para>
+	<programlisting>public delegate void OPLInfoMessageEventHandler (object sender, OPLInfoMessageEventArgs e)</programlisting>
+	<programlisting>class OPLInfoMessageEventArgs;</programlisting>
+	</sect4>
+      </sect3>
+   </sect2>
+   <sect2 id="clopldataadapter"><title>OPLDataAdapter</title>
+	<para>Represents a set of data commands and a database connection that are used to fill a DataSet and update a data source.</para>
+      <sect3 id="clopldataadapterC"><title>Constructors</title>
+	<programlisting>public OPLDataAdapter();</programlisting>
+	<para>Initializes a new instance of the OPLDataAdapter class.</para>
+	<programlisting>public OPLDataAdapter (OPLCommand selectCommand);</programlisting>
+	<para>Initializes a new instance of the OPLDataAdapter class with the specified SQL SELECT statement.</para>
+	<programlisting>public OPLDataAdapter (string selectCommandText, OPLConnection selectConnection);</programlisting>
+	<para>Initializes a new instance of the OPLDataAdapter class with an SQL SELECT statement and an OPLConnection.</para>
+	<programlisting>public OPLDataAdapter (string selectCommandText, string selectConnectionString);</programlisting>
+	<para>Initializes a new instance of the OPLDataAdapter class with an SQL SELECT statement and a connection string.</para>
+      </sect3>
+      <sect3 id="clopldatadapterM"><title>Methods</title>
+	<programlisting>public event OPLRowUpdatedEventHandler RowUpdated;</programlisting>
+	<para>Occurs during an Update operation after a command is executed against the data source.</para>
+	<programlisting>public event OPLRowUpdatingEventHandler RowUpdating;</programlisting>
+	<para>Occurs during an Update operation before a command is executed against the data source.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="clopldatareader"><title>OPLDataReader</title>
+	<para>Provides a way of reading a forward-only stream of data rows from a data source.</para>
+	<programlisting>public sealed class OPLDataReader : MarshalByRefObject, IDataReader, IDataRecord, IDisposable, IEnumerable</programlisting>
+    </sect2>
+    <!-- HughW - Commented out as not implemented apparently <sect2 id="clopldbtype"><title>OPLDbType</title>
+	<para>Specifies the data type of a field, property, or OPLParameter.</para>
+	<programlisting>public enum OPLDbType</programlisting>
+	<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+	<title>Members</title>
+	<tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+	<thead>
+	<row>
+		<entry>member Name</entry>
+		<entry>Description</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+		<entry>BigInt</entry>>
+		<entry>Signed 64-bit integer.</entry>
+	</row>
+	<row>
+		<entry>Binary</entry>
+		<entry>Fixed length binary data.</entry>
+	</row>
+	<row>
+		<entry>Bit</entry>
+		<entry>Single bit binary data.</entry>
+	</row>
+	<row>
+		<entry>Char</entry>
+		<entry>Fixed length character string.</entry>
+	</row>
+	<row>
+		<entry>Date</entry>
+		<entry>Date data comprising year, month and day values.</entry>
+	</row>
+	<row>
+		<entry>DateTime</entry>
+		<entry>Date/time data comprising year, month, day, hour, minute, second and millisecond values.</entry>
+	</row>
+	<row>
+		<entry>Decimal</entry>
+		<entry>Signed exact numeric value with precision p and scale s.</entry>
+	</row>
+	<row>
+		<entry>Double</entry>
+		<entry>Signed approximate numeric value, ranging from 5.0E-324 to 1.7E308 with 15 - 16 digits precision.</entry>
+	</row>
+	<row>
+		<entry>Float (synonym for Double)</entry>
+		<entry>Signed approximate numeric value, ranging from 5.0E-324 to 1.7E308 with 15 - 16 digits precision.</entry>
+	</row>
+	<row>
+		<entry>Integer</entry>
+		<entry>Signed 32-bit integer.</entry>
+	</row>
+	<row>
+		<entry>LongNVarChar</entry>
+		<entry>Variable length Unicode character string.</entry>
+	</row>
+	<row>
+		<entry>LongVarBinary</entry>
+		<entry>Variable length binary data.</entry>
+	</row>
+	<row>
+		<entry>LongVarChar</entry>
+		<entry>Variable length non-Unicode character string.</entry>
+	</row>
+	<row>
+		<entry>NChar</entry>
+		<entry>Fixed length Unicode character string.</entry>
+	</row>
+	<row>
+		<entry>Numeric (synonym for Decimal)</entry>
+		<entry>Signed exact numeric value with precision p and scale s.</entry>
+	</row>
+	<row>
+		<entry>NVarChar</entry>
+		<entry>Variable length Unicode character string.</entry>
+	</row>
+	<row>
+		<entry>Real</entry>
+		<entry>Signed approximate numeric value, ranging from 1.5E-45 to 3.4E38 with 7 digits precision.</entry>
+	</row>
+	<row>
+		<entry>SmallInt</entry>
+		<entry>Signed 16-bit integer.</entry>
+	</row>
+	<row>
+		<entry>Time</entry>
+		<entry>Time data comprising hour, minute and second values.</entry>
+	</row>
+	<row>
+		<entry>TimeStamp</entry>
+		<entry>Date/time data comprising year, month, day, hour, minute, second and millisecond values.</entry>
+	</row>
+	<row>
+		<entry>TinyInt</entry>
+		<entry>Signed 8-bit integer.</entry>
+	</row>
+	<row>
+		<entry>VarBinary</entry>
+		<entry>Variable length binary data.</entry>
+	</row>
+	<row>
+		<entry>VarChar</entry>
+		<entry>Variable length non-Unicode character string.</entry>
+	</row>
+	</tbody></tgroup></table>
+	<para>An OPLParameter’s OPLDbType and DbType properties are linked. Setting the OPLDbType changes the DbType and vice-versa. When the parameter type is set using the OPLDbType property, the table below shows the corresponding value set for the DbType property.</para>
+	<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+	<title></title>
+	<tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+	<thead>
+	<row>
+		<entry>OPLDbtype</entry>
+		<entry>DbType value set</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+		<entry>BigInt</entry>>
+		<entry>Int64</entry>
+	</row>
+	<row>
+		<entry>Binary</entry>
+		<entry>Binary</entry>
+	</row>
+	<row>
+		<entry>Bit</entry>
+		<entry>Boolean</entry>
+	</row>
+	<row>
+		<entry>Char</entry>
+		<entry>AnsiStringFixedLength</entry>
+	</row>
+	<row>
+		<entry>Date</entry>
+		<entry>Date</entry>
+	</row>
+	<row>
+		<entry>DateTime</entry>
+		<entry>DateTime</entry>
+	</row>
+	<row>
+		<entry>Decimal/Numeric</entry>
+		<entry>Decimal</entry>
+	</row>
+	<row>
+		<entry>Double/Float</entry>
+		<entry>Double</entry>
+	</row>
+	<row>
+		<entry>Integer</entry>
+		<entry>Int32</entry>
+	</row>
+	<row>
+		<entry>LongNVarChar</entry>
+		<entry>String.</entry>
+	</row>
+	<row>
+		<entry>LongVarBinary</entry>
+		<entry>Binary</entry>
+	</row>
+	<row>
+		<entry>LongVarChar</entry>
+		<entry>AnsiString</entry>
+	</row>
+	<row>
+		<entry>NChar</entry>
+		<entry>StringFixedLength</entry>
+	</row>
+	<row>
+		<entry>NVarChar</entry>
+		<entry>String.</entry>
+	</row>
+	<row>
+		<entry>Real</entry>
+		<entry>Single</entry>
+	</row>
+	<row>
+		<entry>SmallInt</entry>
+		<entry>Int16</entry>
+	</row>
+	<row>
+		<entry>Time</entry>
+		<entry>Time</entry>
+	</row>
+	<row>
+		<entry>TimeStamp</entry>
+		<entry>DateTime</entry>
+	</row>
+	<row>
+		<entry>TinyInt</entry>
+		<entry>SByte</entry>
+	</row>
+	<row>
+		<entry>VarBinary</entry>
+		<entry>Binary</entry>
+	</row>
+	<row>
+		<entry>VarChar</entry>
+		<entry>AnsiString</entry>
+	</row>
+	</tbody></tgroup></table>
+	<para>When the parameter type is set using the DbType property, the next table shows the corresponding value set for the OPLDbType property.</para>
+	<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+	<title></title>
+	<tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+	<thead>
+	<row>
+		<entry>DbType</entry>
+		<entry>OPLDbType value set</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+		<entry>AnsiString</entry>>
+		<entry>VarChar</entry>
+	</row>
+	<row>
+		<entry>AnsiStringFixedLength</entry>
+		<entry>Char</entry>
+	</row>
+	<row>
+		<entry>Binary</entry>
+		<entry>VarBinary</entry>
+	</row>
+	<row>
+		<entry>Boolean</entry>
+		<entry>Bit</entry>
+	</row>
+	<row>
+		<entry>Date</entry>
+		<entry>Date</entry>
+	</row>
+	<row>
+		<entry>DateTime</entry>
+		<entry>DateTime</entry>
+	</row>
+	<row>
+		<entry>Time</entry>
+		<entry>Time</entry>
+	</row>
+	<row>
+		<entry>Decimal</entry>
+		<entry>Numeric</entry>
+	</row>
+	<row>
+		<entry>Double</entry>
+		<entry>Double</entry>
+	</row>
+	<row>
+		<entry>Int16</entry>
+		<entry>SmallInt</entry>
+	</row>
+	<row>
+		<entry>Int32</entry>
+		<entry>Integer</entry>
+	</row>
+	<row>
+		<entry>int64</entry>
+		<entry>BigInt</entry>
+	</row>
+	<row>
+		<entry>SByte</entry>
+		<entry>TinyInt</entry>
+	</row>
+	<row>
+		<entry>Single</entry>
+		<entry>Real</entry>
+	</row>
+	<row>
+		<entry>String</entry>
+		<entry>NVarChar</entry>
+	</row>
+	<row>
+		<entry>StringFixedLength</entry>
+		<entry>NChar</entry>
+	</row>
+	</tbody></tgroup></table>
+	<para>If a parameter’s type is not specified through either the DbType or OPLDbType property, the parameter’s type will be inferred from the .NET Framework type of the object referenced by the Value property. The following table lists the .NET Framework types for which this inference is performed and shows the OPLDbType inferred.</para>
+	<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+	<title></title>
+	<tgroup align="char" charoff="50" char="." cols="3">
+	<colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+	<thead>
+	<row>
+		<entry>.NET Framework Type</entry>
+		<entry>Inferred OPLDbType</entry>
+	</row>
+	</thead>
+	<tbody>
+	<row>
+		<entry>System.Char</entry>>
+		<entry>Char</entry>
+	</row>
+	<row>
+		<entry>System.Char[]</entry>
+		<entry>LongNVarChar</entry>
+	</row>
+	<row>
+		<entry>System.Byte</entry>
+		<entry>SmallInt</entry>
+	</row>
+	<row>
+		<entry>System.Byte []</entry>
+		<entry>LongVarBinary</entry>
+	</row>
+	<row>
+		<entry>System.SByte</entry>
+		<entry>TinyInt</entry>
+	</row>
+	<row>
+		<entry>System.UInt16</entry>
+		<entry>Integer</entry>
+	</row>
+	<row>
+		<entry>System.UInt32</entry>
+		<entry>BigInt</entry>
+	</row>
+	<row>
+		<entry>System.Boolean</entry>
+		<entry>Bit</entry>
+	</row>
+	<row>
+		<entry>System.Int16</entry>
+		<entry>SmallInt</entry>
+	</row>
+	<row>
+		<entry>System.Int32</entry>
+		<entry>Integer</entry>
+	</row>
+	<row>
+		<entry>System.Int64</entry>
+		<entry>BigInt</entry>
+	</row>
+	<row>
+		<entry>System.Int16</entry>
+		<entry>Real</entry>
+	</row>
+	<row>
+		<entry>System.Double</entry>
+		<entry>Double</entry>
+	</row>
+	<row>
+		<entry>System.Decimal</entry>
+		<entry>Decimal</entry>
+	</row>
+	<row>
+		<entry>System.DateTime</entry>
+		<entry>DateTime</entry>
+	</row>
+	<row>
+		<entry>System.String</entry>
+		<entry>NVarChar</entry>
+	</row>
+	<row>
+		<entry>System.TimeSpan</entry>
+		<entry>Time</entry>
+	</row>
+	</tbody></tgroup></table>
+    </sect2>  -->
+    <sect2 id="cloplerror"><title>OPLError</title>
+	<para>Holds information about a warning or error returned by a data source.</para>
+	<programlisting>public sealed class OPLError</programlisting>
+      <sect4 id="cloplerrorR"><title>Remarks</title>
+	<para>This class is created whenever an error occurs. Each instance of OPLError created is then managed by the OPLErrorCollection class, which in turn is created by the OPLException class.</para>
+      </sect4>
+      <sect3 id="cloplerrorP"><title>Properties</title>
+	<programlisting>public string Message {get;}</programlisting>
+	<para>Gets a short description of the error.</para>
+	<programlisting>public string SQLState {get;}</programlisting>
+	<para>Gets the five character ODBC SQL state associated with the error.</para>
+	<programlisting>public int NativeError {get;}</programlisting>
+	<para>Gets the data source-specific error information.</para>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplerrorcol"><title>OPLErrorCollection</title>
+	<para>Represents a collection of one or more OPLError objects that give detailed information about an OPLException.</para>
+	<programlisting>public sealed class OPLErrorCollection : ICollection</programlisting>
+      <sect4 id="cloplerrorcolR"><title>Remarks</title>
+	<para>This class is created by OPLException to collect instances of the OPLError class. OPLErrorCollection always contains at least one instance of the OPLError class.</para>
+      </sect4>
+      <sect3 id="cloplerrorcolM"><title>Methods</title>
+	<programlisting>public IEnumerator GetEnumerator();</programlisting>
+	<para>This member supports the .NET Framework infrastructure and is not intended to be used directly from your code.</para>
+      </sect3>
+      <sect3 id="cloplerrorcolP"><title>Properties</title>
+	<programlisting>public OPLError this[int i] {get;}</programlisting>
+	<para>Gets the error at the specified index. In C#, this property is the indexer for the OPLErrorCollection class.</para>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplexcept"><title>OPLException</title>
+	<para>The exception that is generated when a warning or error is returned by a data source or the Generic Provider.</para>
+	<programlisting>public sealed class OPLException : SystemException</programlisting>
+      <sect3 id="cloplexceptP"><title>Properties</title>
+	<programlisting>public OPLErrorCollection Errors {get;}</programlisting>
+	<para>Gets a collection of one or more OPLError objects that give detailed information about the exception.</para>
+	<programlisting>public override string Message {get;}</programlisting>
+	<para>Gets the text describing the error.</para>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplparam"><title>OPLParameter</title>
+	<para>Represents a parameter to an OPLCommand and optionally, its mapping to a DataSet column.</para>
+	<programlisting>public class OPLParameter : MarshalByRefObject, IDbDataParameter, IDataParameter, ICloneable</programlisting>
+      <sect3 id="cloplparamC"><title>Constructors</title>
+	<programlisting>public OPLParameter();</programlisting>
+	<para>Initializes a new instance of the OPLParameter class.</para>
+	<programlisting>public OPLParameter(string parameterName, object value);</programlisting>
+	<para>Initializes a new instance of the OPLParameter class with the parameter name and a value of the new OPLParameter object.</para>
+	<programlisting>public OPLParameter(string parameterName, OPLDbType type);</programlisting>
+	<para>Initializes a new instance of the OPLParameter class with the parameter name and the data type.</para>
+	<programlisting>public OPLParameter(string parameterName, OPLDbType type, int size);</programlisting>
+	<para>Initializes a new instance of the OPLParameter class with the parameter name, the OPLDbType and the size.</para>
+	<programlisting>public OPLParameter(string parameterName, OPLDbType type, int size, string sourceColumn);</programlisting>
+	<para>Initializes a new instance of the OPLParameter class with the parameter name, the OPLDbType, the size, and the source column name.</para>
+	<programlisting>public OPLParameter(string parameterName, OPLDbType type, int size, ParameterDirection direction, Boolean isNullable, Byte precision, Byte scale, string sourceColumn, DataRowVersion sourceVersion, object value);</programlisting>
+	<para>Initializes a new instance of the OPLParameter class with the parameter name, the type of the parameter, the size of the parameter, a ParameterDirection, whether the parameter is nullable, the precision of the parameter, the scale of the parameter, the source column, a DataRowVersion to use, and the value of the parameter.</para>
+      </sect3>
+      <sect3 id="cloplparamM"><title>Methods</title>
+	<programlisting>public override string ToString ();</programlisting>
+	<para>Gets a string containing the ParameterName.</para>
+      </sect3>
+      <sect3 id="cloplparamP"><title>Properties</title>
+	<programlisting>public OPLDbType OPLDbType {get; set;}</programlisting>
+	<para>Gets or sets the OPLDbType of the parameter.</para>
+	<sect4><title>Remarks</title>
+	<para>The OPLDbType and DbType are linked. Therefore, setting the DbType changes the OPLType to a supporting OPLDbType. For a list of the supported data types, see the appropriate OPLDbType member.</para>
+	</sect4>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplparamcol"><title>OPLParameterCollection</title>
+	<para>Represents a collection of parameters relevant to an OPLCommand as well as their respective mappings to columns in a DataSet.</para>
+	<programlisting>public class OPLParameterCollection : MarshalByRefObject, IDataParameterCollection, ICollection, IEnumerable, IList</programlisting>
+      <sect3 id="cloplparamcolM"><title>Methods</title>
+	<programlisting>public int Add (OPLParameter value);</programlisting>
+	<para>Adds the specified OPLParameter to the OPLParameterCollection</para>
+	<programlisting>public int Add (string parameterName, object value);</programlisting>
+	<para>Adds an OPLParameter to the OPLParameterCollection given the parameter name and value.</para>
+	<programlisting>public int Add (string parameterName, OPLDbType dbType);</programlisting>
+	<para>Adds an OPLParameter to the OPLParameterCollection given the parameter name and data type.</para>
+	<programlisting>public int Add (string parameterName, OPLDbType dbType, int size);</programlisting>
+	<para>Adds an OPLParameter to the OPLParameterCollection given the the parameter name, data type, and column length.</para>
+	<programlisting>public int Add (string parameterName, OPLDbType dbType, int size, string sourceColumn);</programlisting>
+	<para>Adds an OPLParameter to the OPLParameterCollection given the parameter name, data type, column length, and source column name.</para>
+      </sect3>
+      <sect3 id="cloplparamcolP"><title>Properties</title>
+	<programlisting>public OPLParameter this[int index] {get; set;}</programlisting>
+	<para>Gets or sets the OPLParameter at the specified index</para>
+	<programlisting>public OPLParameter this[string parameterName] {get; set;}</programlisting>
+	<para>Gets or sets the OPLParameter with the specified name.</para>
+      </sect3>
+   </sect2>
+   <!--
+   <sect2 id="cloplperm"><title>OPLPermission</title>
+	<para>Enables the Generic Provider to ensure that a user has a security level adequate to access a data source.</para>
+	<programlisting>public sealed class OPLPermission : CodeAccessPermission, IUnrestrictedPermission</programlisting>
+	<sect4><title>Remarks</title>
+	<para>TBD ...</para>
+	</sect4>
+      <sect3 id="cloplpermC"><title>Constructors</title>
+	<programlisting>public OPLPermission ();</programlisting>
+	<para>Initializes a new instance of the OPLPermission class.</para>
+	<programlisting>public OPLPermission (PermissionState state);</programlisting>
+	<para>Initializes a new instance of the OPLPermission class with one of the PermissionState values.</para>
+      </sect3>
+      <sect3 id="cloplpermM"><title>Methods</title>
+	<programlisting>public override IPermission Copy ();</programlisting>
+	<para>TBD ...</para>
+	<programlisting>public override void FromXml (SecurityElement securityElement);</programlisting>
+	<para>TBD ...</para>
+	<programlisting>public override IPermission Intersect (IPermission target);</programlisting>
+	<para>TBD ...</para>
+	<programlisting>public override bool IsSubsetOf (IPermission target);</programlisting>
+	<para>TBD ...</para>
+	<programlisting>public bool IsUnrestricted ();</programlisting>
+	<para>TBD ...</para>
+	<programlisting>public override SecurityElement ToXml ();</programlisting>
+	<para>TBD ...</para>
+      </sect3>
+   </sect2>
+   <sect2 id="cloplpermattr"><title>OPLPermissionAttribute</title>
+	<para>Associates a security action with a custom security attribute.</para>
+	<programlisting>public sealed class OPLPermissionAttribute : CodeAccessSecurityAttribute</programlisting>
+	<sect4><title>Remarks</title>
+	<para>TBD ...</para>
+	</sect4>
+      <sect3 id="cloplpermC"><title>Constructors</title>
+	<programlisting>public OPLPermissionAttribute (SecurityAction action);</programlisting>
+	<para>Initializes a new instance of the OPLPermissionAttribute class with one of the SecurityAction values.</para>
+      </sect3>
+      <sect3 id="cloplpermattrM"><title>Methods</title>
+	<programlisting>public override IPermission CreatePermission ();</programlisting>
+	<para>Returns an OPLPermission object that is configured according to the attribute properties.</para>
+      </sect3>
+   </sect2>
+   -->
+   <sect2 id="rUpdated"><title>OPLRowUpdatedEventArgs</title>
+	<para>Provides data for the OPLDataAdapter.RowUpdated event.</para>
+      <sect3 id="rUpdatedC"><title>Constructors</title>
+	<programlisting>public OPLRowUpdatedEventArgs(DataRow row, IDbCommand command, StatementType statementType, DataTableMapping tableMapping);</programlisting>
+	<para>Initializes a new instance of the OPLRowUpdatedEventArgs class.</para>
+      </sect3>
+      <sect3 id="rUpdatedM"><title>properties</title>
+	<programlisting>public new OPLCommand Command {get;}</programlisting>
+	<para>Gets the OPLCommand executed when Update is called.</para>
+      </sect3>
+   </sect2>
+   <sect2 id="rUpdatedHan"><title>OPLRowUpdatedEventHandler</title>
+	<para>Represents a method that will handle the RowUpdated event of an OPLDataAdapter.</para>
+	<programlisting>public delegate void OPLRowUpdatedEventHandler(object sender, OPLRowUpdatedEventArgs e);</programlisting>
+   </sect2>
+   <sect2 id="rUpdating"><title>OPLRowUpdatingEventArgs</title>
+	<para>Provides data for the OPLDataAdapter.RowUpdating event.</para>
+      <sect3 id="rUpdatingC"><title>Constructors</title>
+	<programlisting>public OPLRowUpdatingEventArgs(DataRow row, IDbCommand command, StatementType statementType, DataTableMapping tableMapping);</programlisting>
+	<para>Initializes a new instance of the OPLRowUpdatingEventArgs class.</para>
+      </sect3>
+      <sect3 id="rUpdatingM"><title>properties</title>
+	<programlisting>public new OPLCommand Command {get; set;}</programlisting>
+	<para>Gets or sets the OPLCommand to execute when Update is called.</para>
+      </sect3>
+   </sect2>
+   <sect2 id="rUpdatingHan"><title>OPLRowUpdatingEventHandler</title>
+	<para>Represents a method that will handle the RowUpdating event of an OPLDataAdapter.</para>
+	<programlisting>public delegate void OPLRowUpdatingEventHandler(object sender, OPLRowUpdatingEventArgs e);</programlisting>
+   </sect2>
+   <sect2 id="clopltran"><title>OPLTransaction</title>
+	<para>Represents an SQL transaction to be made at a data source.</para>
+	<programlisting>public sealed class OPLTransaction : MarshalByRefObject, IDbTransaction, IDisposable</programlisting>
+   </sect2>
+   </sect1>
+   <sect1 id="dnetissues"><title>Known Issues</title>
+<sect1info>
+  <keywordset>
+    <keyword>.Net Issues</keyword>
+    <keyword>Know Issues</keyword>
+  </keywordset>
+</sect1info>
+   <sect2 id="dnetunsign"><title>Unsigned Type Handling</title>
+   <sect3 id="dnetunsignunman"><title>Unmanaged ODBC Provider</title>
+   <para>The provider assumes that all integer data returned by an ODBC driver is signed. The provider only examines the ODBC SQL
+   type of the data to ascertain its type. But, the ODBC SQL type gives no indication of whether the data is signed or unsigned.
+   The ODBC to .NET type mappings used internally for fetched data assume that all data is signed. There is the potential for overflow
+   errors when fetching unsigned integer data, because the .NET types to which integer data is mapped are all signed. However, across the
+   range of databases currently supported by OpenLink, this problem only manifests itself in one instance – with the SQL Server TinyInt type.
+   This is the only native unsigned type supported across the databases covered by OpenLink. However, if the ODBC provider is to support
+   third party ODBC drivers, more databases could expose this fault.</para>
+   <para>The SQL Server TinyInt type has a range of 0 .. 255. It is returned by the provider as a .NET System.SByte type which has a range of
+   –127 .. 128. At present, TinyInt values over 128 will not be returned correctly by the provider.</para>
+   </sect3>
+   <sect3 id="dnetunsignman"><title>Managed Providers</title>
+   <para>The same general problem exists in the GenericClient managed provider. However, the provider handles SQL_TINYINT data as a special
+   case, so the problem with the SQL Server TinyInt type does not arise. If the provider detects data fetched using the OpenLink CTYPE_UNS8
+   transport type, it changes the mapping for SQL_TINYINT from System.SByte to System.Byte. Any other type of unsigned integer data will not
+   be handled correctly, but at present this does not arise as TinyInt is the only unsigned native DBMS type the provider encounters across
+   our currently supported agents. </para>
+   </sect3>
+   </sect2>
+   <sect2 id="dnettimestamp"><title>Timestamp Precision</title>
+   <para>Both the managed and unmanaged providers map the ODBC SQL_TYPE_TIMESTAMP type to the .NET DateTime type. The .NET DateTime type
+   stores times with millisecond precision, whereas an ODBC SQL_C_TIMESTAMP struct can hold seconds accurate to nanoseconds. A loss of
+   precision will result when fetching timestamp data from databases which hold fractional second data to greater than millisecond precision.
+   The corresponding DateTime values returned to an application will be rounded to the nearest millisecond.</para>
+   </sect2>
+   </sect1>
+   <sect1 id="dnettest"><title>.Net Provider Test Program</title>
+<sect1info>
+  <keywordset>
+    <keyword>.Net Test</keyword>
+    <keyword>.NET Demo</keyword>
+  </keywordset>
+</sect1info>
+   <para>A simple .Net interactive SQL program is provided for enabling a test connection to be made with the UDA Managed and/or Unmanaged .Net Data Providers, as indicated in the screen shots below:</para>
+   <figure id="dnetsamp1" float="0">
+    <title>Managed .Net Data Provider test connection</title>
+    <graphic fileref="dnetsamp1.gif" format="gif"></graphic>
+    </figure>
+    <para>The connect strings for the Managed .Net Providers (GenericClient, MS SQLServer and Sybase) are similar with the 'Port' attribute designating the location of the Service to which is connection will band made. The Unmanaged OdbcClient provider differs as indicated below:</para>
+    <figure id="dnetsampl2" float="0">
+    <title>Unmanaged .Net Data Provider test connection</title>
+    <graphic fileref="dnetsamp2.gif" format="gif"></graphic>
+    </figure>
+    <orderedlist>
+      <listitem>Select the <emphasis>radio</emphasis> button of the .Net Provider you want to test.</listitem>
+      <listitem>Enter the <emphasis>connect string attributes</emphasis> of the Database Server to which the connection is to be made.</listitem>
+      <listitem>Click the <emphasis>connect </emphasis>button to make the Database connection.</listitem>
+      <listitem>Enter the <emphasis>SQL query</emphasis> you wish to run in the text window provided and click the <emphasis>Execute Query</emphasis> button to execute.</listitem>
+      <listitem>Once executed the result set will be displayed in the result set pane as indicated in screen shot below:</listitem>
+    </orderedlist>
+    <figure id="dnetsampl3" float="0">
+    <title></title>
+    <graphic fileref="dnetsamp3.gif" format="gif"></graphic>
+    </figure>
+   </sect1>
+&features_dotnet;
+</chapter>

@@ -1,0 +1,3359 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  $Id: oledb.xml,v 1.2.4.1 2005/09/09 16:39:48 cvs Exp $
+  (C)Copyright 1996-2018 OpenLink Software
+-->
+<chapter  id="oledb">
+  <title>OpenLink OLE-DB Provider</title>
+  <chapterinfo>
+    <keywordset>
+      <keyword>ODBC</keyword>
+      <keyword>ODBC Driver</keyword>
+      <keyword>ODBC Drivers</keyword>
+      <keyword>OLE-DB</keyword>
+      <keyword>OLE-DB Client</keyword>
+      <keyword>OLEDB</keyword>
+      <keyword>OLEDB Provider</keyword>
+      <keyword>ODBC Bridge</keyword>
+      <keyword>Cursor</keyword>
+    </keywordset>
+  </chapterinfo>
+  <para>The OpenLink ODBC Provider for OLEDB is delivered as an OLEDB - ODBC
+  bridge.  It utilizes ODBC data sources to connect to databases, much like
+  the Microsoft ODBC Provider; so you will require a working ODBC installation
+  first.</para>
+  <para>The OpenLink Provider also requires that the Microsoft Data Access
+  Components have been installed.  To gain any functionality with .Net you
+  will require MDAC 2.7 RTM (2.70.7713.4) or later.  This particular version
+  of the MDAC is included with Visual Studio .Net and with the .Net Framework
+  SDK.  Alternatively it can be downloaded from
+  <ulink url="http://www.microsoft.com/data">www.microsoft.com/data</ulink>.
+  Releases prior to 2.70.7713.4, specifically MDAC 2.7 included in the .Net SDK
+  Beta 2, will not allow non-Microsoft OLE DB providers to work with the .Net
+  Data Provider for OLE DB.</para>
+  <para>Although not completely necessary if you are using a newer
+  OpenLink installer, before installing this provider, any previous
+  release of the driver should be deinstalled fully. If a full
+  deinstall using Install Shield is not performed, the old driver
+  should be unregistered using the regsvr32 utility as follows:</para>
+  <programlisting>regsvr32 /u oploleod.dll</programlisting>
+  <sect1 id="oledbtest">
+    <title>Testing an OLEDB Connection</title>
+    <sect1info>
+      <keywordset>
+        <keyword>Testing OLEDB</keyword>
+        <keyword>OLEDB</keyword>
+      </keywordset>
+    </sect1info>
+    <para>The connection can be tested using the sample application, "Rowset
+    Viewer" as follows:</para>
+    <orderedlist>
+      <listitem>Select <emphasis>Full Connect</emphasis> from the File menu</listitem>
+      <listitem>Select <emphasis>OpenLink ODBC Provider</emphasis> for the connection provider</listitem>
+      <listitem>Choose an ODBC <emphasis>Datasource</emphasis> either by typing
+      the name directly or using the <emphasis>"..."</emphasis> button and
+      selecting <emphasis>Enumerator</emphasis> from the submenu that appears in
+      place of the button.  In the new dialog that appears choose "<emphasis>OpenLink
+      ODBC Data Source Enumerator</emphasis>" as the data source enumerator and
+      click <emphasis>Connect</emphasis>.  A list of ODBC data sources will appear, from
+      which you can choose the one you want and click <emphasis>OK</emphasis>
+      to confirm.</listitem>
+      <listitem>Enter the <emphasis>UserID</emphasis> and <emphasis>Password</emphasis>
+      and click on <emphasis>OK</emphasis> to connect.</listitem>
+      <listitem>Once connected an "Command" subwindow will appears, into which you
+      can submit SQL for test querying on the data source.</listitem>
+    </orderedlist>
+  </sect1>
+  <sect1 id="oldedbdebug">
+    <title>Call Tracing</title>
+    <sect1info>
+      <keywordset>
+        <keyword>OLEDB Tracing</keyword>
+        <keyword>Tracing</keyword>
+      </keywordset>
+    </sect1info>
+    <para>To turn on call tracing and enable logging to a file, use the Registry
+    Editor (regedit or regedt32) to enter a fully qualified file name in the
+    registry entry:</para>
+    <programlisting>HKEY_LOCAL_MACHINE\SOFTWARE\OpenLink Software\OpenLink OLE DB Provider\DebugFile</programlisting>
+    <para>To turn off call tracing simply leave this entry blank.  A separate
+    log file is opened for each process which uses the provider.  Each file
+    opened is named using the file base name specified in the DebugFile entry
+    above with a three digit process ID suffix.</para>
+  </sect1>
+  <sect1 id="oledbconinfo">
+    <title>Provider Specific Connection Information</title>
+    <sect1info>
+      <keywordset>
+        <keyword>Provider Information</keyword>
+        <keyword>OLEDB Provider</keyword>
+      </keywordset>
+    </sect1info>
+    <para>OLE DB predefines a number of property sets and the properties in
+    them.  The <emphasis>Extended Properties</emphasis> property in the
+    Initialization property group provides a means of supplying provider-specific
+    extended connection information.  The OpenLink provider supports extended
+    properties to control:</para>
+    <simplelist>
+      <member>ODBC Cursor Library usage</member>
+      <member>whether bookmarks are enabled by default on rowsets</member>
+    </simplelist>
+    <para>There are three ways to enter extended properties:</para>
+    <simplelist>
+      <member>Through a prompting interface supplied by the consumer application.</member>
+      <member>Initialise a Data Source object through a connection string.</member>
+      <member>Explicitly set the DBPROP_INIT_PROVIDERSTRING property in the consumer application code.</member>
+    </simplelist>
+    <sect2 id="consumerprompting">
+      <title>Using a Consumer Supplied Prompting Interface</title>
+      <para>The OpenLink provider does not display a prompting interface of its
+      own for entering OLE DB specific connection information.  It relies instead
+      upon the application supplying it.</para>
+      <para>OLE DB provides several core components, one of which is the Data
+      Link component.  The Data Link component provides a default prompting
+      interface and is used by numerous Microsoft applications.  It typically
+      includes a page displayed by the ‘All’ tab, which allows users to set
+      values for all the Initialization properties supported by an OLE DB
+      provider.  The ‘Extended Properties’ property can be set on this page.
+      For the OpenLink provider, you should enter key-value pairs for any
+      supported extended properties you wish to set, such as:</para>
+      <programlisting>”Cursors=Driver”</programlisting>
+    </sect2>
+    <sect2 id="oledbuseconnstring">
+      <title>Using a Connection String</title>
+      <para>The connection string is used to contain connection specific
+	  details as semi-colon delimited key=value pairs so that the Broker/Agent
+	  facilitating the connection can chose the correct database and method.
+	  The details provided on various setup panels form the connect string
+	  automatically upon use.  Applications can use hand made connection
+	  strings to avoid DSN configurations or prompting during exection.  The
+	  parameters that can be used are as follows:</para>
+      <para>The connection string should contain a key-value pair for the
+      “Extended Properties” keyword, such as:</para>
+      <simplelist>
+        <member>PROVIDER=OpenLinkODBC</member>
+        <member>DRIVER={OpenLink Generic 32 Bit driver v4.0}</member>
+        <member>HOST=BrokerHostNameOrIP</member>
+        <member>PORT=BrokerListenPort</member>
+        <member>SVT=DBMSType/Provider</member>
+        <member>DATABASE=myDatabaseName</member>
+        <member>UID=myUsername</member>
+        <member>PWD=myPassword</member>
+        <member>PROTOCOL=TCP/IP</member>
+        <member>FBS=FetchBufferSize (Rows 1-99)</member>
+        <member>DLF=DeferLongFetch [y|n]</member>
+        <member>OPTIONS=opts</member>
+        <member>READONLY=[y|n]</member>
+        <member>DSN=myDSNname</member>
+      </simplelist>
+      <programlisting> …;Extended Properties=”Cursors=ODBC”;… </programlisting>
+      <para>Which is used for setting the cursor mode and/or bookmarking.</para>
+    </sect2>
+    <sect2 id="oldedbuseinitprop">
+      <title>Using The DBPROP_INIT_PROVIDERSTRING Property</title>
+      <para>Applications can set this initialization property directly.</para>
+    </sect2>
+  </sect1>
+  <sect1 id="oledbctrlodbcursor">
+    <title>Controlling ODBC Cursor Library Usage</title>
+    <sect1info>
+      <keywordset>
+        <keyword>ODBC Cursor</keyword>
+        <keyword>Cursor library</keyword>
+      </keywordset>
+    </sect1info>
+    <para>The OpenLink ODBC Provider requires that the underlying ODBC driver
+    supports some form of scrollable cursor.  In order to support OLE DB rowsets,
+    the minimum scrolling functionality requirements include:</para>
+    <simplelist>
+      <member>bookmark support </member>
+      <member>absolute cursor positioning </member>
+      <member>backwards scrolling </member>
+    </simplelist>
+    <para>Keyset driven and static cursors both support this functionality.  All
+    OpenLink ODBC drivers support these cursor models.  However, if the OpenLink
+    ODBC provider is to be used with a third party driver, either the driver
+    must support one of these cursor types natively, or the Microsoft ODBC
+    Cursor Library must be used.  The latter only supports static scrollable
+    cursors, but provides sufficient functionality to allow third party drivers
+    to be used with the OpenLink provider.  When using an OpenLink ODBC driver,
+    it is preferable not to use the Microsoft Cursor Library. </para>
+    <para>To control how the OpenLink Provider uses the ODBC Cursor Library,
+    the provider supports the provider specific keyword “Cursors” in the
+    ‘Extended Properties’ property string.  The keyword can be set to one of
+    three values:</para>
+    <simplelist>
+      <member>ODBC</member>
+      <member>Driver</member>
+      <member>IfNeeded</member>
+    </simplelist>
+    <para>The meaning of each of these values is analogous to their ODBC
+    counterpart SQL_CUR_USE_xxx.  The default setting is Cursors=IfNeeded.</para>
+    <para>The table below lists the required ‘Cursors’ setting for various
+    ODBC drivers when used with the OpenLink ODBC Provider.</para>
+    <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+      <title>Features Comparison</title>
+      <tgroup align="char" charoff="50" char="." cols="3">
+        <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+        <thead>
+          <row>
+            <entry>ODBC Driver</entry>
+            <entry>Cursor</entry>
+            <entry>Comments</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>All OpenLink ODBC drivers</entry>
+            <entry>Driver or IfNeeded (default)</entry>
+            <entry>The native scrollable cursor support in the OpenLink drivers provides the necessary functionality</entry>
+          </row>
+          <row>
+            <entry>Native Microsoft SQL Server driver</entry>
+            <entry>ODBC</entry>
+            <entry>The native scrollable cursor support is inadequate.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect1>
+  <sect1 id="oledbdefbmk">
+    <title>Controlling the Default Bookmark Setting for Rowsets</title>
+    <sect1info>
+      <keywordset>
+        <keyword>ODBC Bookmark</keyword>
+        <keyword>Bookmark</keyword>
+        <keyword>Cursor</keyword>
+      </keywordset>
+    </sect1info>
+    <para>The extended property keyword “BookmarkDefault” controls whether
+     rowsets are created with or without a bookmark column by default.
+     OLE DB does not specify what the default behaviour should be.  The OpenLink
+     provider includes a bookmark column by default.  Normally it should not be
+     necessary to change this setting.  To explicitly turn bookmarks on or off,
+     use an entry of the form: BookmarkDefault=On|Off. </para>
+  </sect1>
+  <sect1 id="oledbknownissuse">
+    <title>Known Issues</title>
+    <sect1info>
+      <keywordset>
+        <keyword>OLEDB Known Issues</keyword>
+        <keyword>Issues</keyword>
+      </keywordset>
+    </sect1info>
+    <para>These are the known issues that apply to the OpenLink OLEDB provider as of
+     September 2005:</para>
+    <sect2 id="oledbnigen">
+      <title>General Issues</title>
+      <itemizedlist>
+        <listitem>The OpenLink ODBC Provider does not allow a consumer to specify
+       the type of server-side cursors used internally.  ADO consumers, for
+       instance Visual Basic 6 and Visual Interdev 6, should use client-side cursors.</listitem>
+        <listitem>Batched commands are not supported.</listitem>
+      </itemizedlist>
+    </sect2>
+    <sect2 id="oledbdotnet">
+      <title>.Net</title>
+      <itemizedlist>
+        <listitem>Automatic generation of the DeleteCommand, InsertCommand and
+       UpdateCommand properties of a DataAdapter by a CommandBuilder is not
+       supported.</listitem>
+        <listitem>Parameters must be bound in the order they occur in a command.</listitem>
+      </itemizedlist>
+    </sect2>
+    <sect2 id="oledbvi6">
+      <title>Visual Interdev 6</title>
+      <para>Visual Interdev uses the username you specify at connect time
+    as the owner qualifier when referring to schema objects.  If the target
+    database uses case-sensitive qualifiers, the case of the username you
+    specify when connecting must match the case of the owner qualifier of schema
+    objects belonging to that user.  For instance, if using the Oracle sample user
+    “SCOTT”, connect as “SCOTT” not “scott”.  If the incorrect case is used,
+    Visual Interdev may fail to retrieve schema information.  One manifestation
+    of this problem is that the Query Builder may not list the columns
+    belonging to a table.</para>
+    </sect2>
+    <sect2 id="oledbvb6ado">
+      <title>Visual Basic 6 and ADO</title>
+      <para>When specifying the SQL for the Recordsource property in an ADO Data
+    Control (ADO DC), you must quote the table name.  If you do not, VB
+    converts the SQL to lowercase and then quotes the table name when
+    attempting an update.  e.g. If you enter ‘select * from emp’, when
+    attempting an update, this becomes ‘update “emp”…’.  Databases which
+    support case-sensitive schema object names, e.g. Oracle, will then either
+    reject this SQL, complaining that the table doesn’t exist, or reference
+    the wrong table.  To avoid this problem, enter the query as ‘select * from “EMP”’. </para>
+    </sect2>
+    <sect2 id="oledbsqlsrvdts">
+      <title>SQL Server Data Transformation Services</title>
+      <para>The provider implements interface IRowsetFastLoad.  This is an
+    interface specific to the SQL Server OLE DB Provider and is required by
+    SQL Server DTS, even on third party OLE DB providers.  Export of tables
+    from SQL Server to Oracle using DTS is possible.  </para>
+      <para>The OpenLink OLE DB provider uses a scrollable cursor to support
+    scrolling over rowsets.  OpenLink scrollable cursors require a unique
+    row identifer (primary key, rowid etc.) to act as a key column.  If
+    the table(s) used to populate the OLE DB rowset do not have a primary key
+    or similar then the OpenLink OLEDB provider can still provide a rowset
+	however it will be created as read only. With Oracle, the
+    pseudo column rowid acts as a key - the table does not have to have a
+    primary key to make the rowset writeable.  With DB2, the table(s) must
+	have a primary key otherwise the rowset will be read only.</para>
+      <para>If you choose to export all primary and foreign keys in the table,
+    the DTS appears to assume it is talking to SQL Server when creating the
+    target table.  It uses a fixed SQL syntax in the CREATE TABLE command to
+    express the primary key as a table constraint.  Oracle accepts this
+    syntax, however DB2 rejects it.</para>
+      <para>As a consequence of the above currently the only way to export
+    a table to DB2 is to manually create the target table before launching DTS.
+    If the target table already exists, DTS does not attempt to create it; it
+    just copies the data from the source table.  The manually created table
+    must have a primary key.</para>
+      <para>The DTS does not handle quoting of the target table name correctly.
+    The user must specify the target table name using the appropriate case
+    which does not require quoting. e.g. When exporting to Oracle, give
+    the table name in uppercase. </para>
+    <!-- Tim was here, bugz 9645, 20050909 -->
+      <sect3>
+        <title>Provider Options in the SQL Server Enterprise manager</title>
+        <para>When setting up a linked server using the Enterprise Manager you can
+    configure the way SQL Server uses your OLE DB provider by clicking on the
+    Provider Options button just under the box where the provider is selected.
+    The options in the Provider Options dialogue box apply to the provider
+    rather than the specific server so any changes made here will effect all
+    linked servers using that provider. A list of all the servers using the
+    provider is given in the bottom half of the box.
+</para>
+        <para>Note that once a server has been created it is not possible to change these
+options in the property page for that server. To change them after the linked
+server has been created you have to create a new server and alter the options
+there. Making changes to these options when creating a new linked server
+affects all existing linked servers. Once you have set up a linked server the
+options you have chosen effectivley become the defaults for the provider you
+are using.</para>
+        <para>A document describing the Provider Options, called 'Configuring OLE DB
+Providers for distributed Queries', can be found in the SQL Server Books
+Online documentation or on the web at
+<ulink url="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/adminsql/ad_1_server_8ib7.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/adminsql/ad_1_server_8ib7.asp</ulink>
+        </para>
+        <para>By default none of the options is enabled for our driver.
+These options are specifically for SQLServer distributed queries using linked
+servers rather than being general OLE DB options.</para>
+      </sect3>
+      <sect4>
+        <title>Provider Options</title>
+        <simplelist>
+          <member>Dynamic
+Parameters - you can set this if the provider supports the
+ICommandWithParameters interface. This in supported in the OpenLink provider.
+</member>
+          <member>NestedQueries - can be set if provider allows SELECT in a
+FROM clause. May cause concerns with the underlying Cursor libraries. This
+option should not be enabled if the underlying DSN or DBMS does not allow
+nested queries. </member>
+          <member>LevelZeroOnly - Should not be
+enabled.</member>
+          <member>
+            <para>Allow InProcess - This option should be checked. Checking this
+    option stops errors like:</para>
+            <programlisting>
+Error 7311: Could not obtain the schema rowset for OLE DB provider 'UNKNOWN'.
+The provider supports the interface, but returns a failure code when it is
+used. OLE DB error trace [OLE/DB Provider 'UNKNOWN'
+IDBSchemaRowset::GetRowset returned 0x800706c6:].
+      </programlisting>
+            <para>Error 0x800706c6 is RPC_S_INVALID_BOUND. The error message
+            identifies the OLE DB provider that the error comes from as
+            UNKNOWN and our log files show no sign of the error. SQL Server
+            uses a proxy/stub dll, msdaps.dll, to marshal oledb interfaces
+            between processes/apartments. These errors from the 'UNKNOWN'
+            provider come from msdaps.dll. If the OLE DB provider is invoked
+            out of process or is marked as apartment model then this stub gets
+            used. By default if the OLE DB provider is a Microsoft provider
+            then SQL Server invokes it in process and this proxy is not used.
+            Checking the Allow InProcess box when using our provider
+            ensures that this stub dll is not used and so avoids this error.
+            </para>
+          </member>
+          <member>NonTransactedUpdates - this is entirely up to the user to choose.</member>
+          <member>IndexAsAccessPath - should be left disabled.</member>
+          <member>DisallowAdhocAccess - Disables use of
+OPENROWSET and OPENDATASOURCE with the provider. Up to the user to choose</member>
+        </simplelist>
+      </sect4>
+      <sect3>
+        <title>Connection Errors. Error 0x80004005 </title>
+        <para>If the linked server has problems connecting then the following error is
+      generated:
+</para>
+        <programlisting>Error 7399: OLE DB provider 'OpenLinkODBC' reported and error. The provider
+did not give any information about the error. OLE DB error trace [OLE/DB
+Provider'OpenLinkODBC' IDBInitialize::Initialize returned 0x80004005: The
+provider did not give any information about the error.].
+</programlisting>
+        <para>Reasons for this error could be:</para>
+        <simplelist>
+          <member>The ODBC DSN does not exist</member>
+          <member>The linked database is not started</member>
+          <member>Username or password not set up correctly on the security property page.</member>
+        </simplelist>
+The first thing to check when getting this error is that the underlying ODBC
+DSN is connecting correctly and after that if the DSN name has been spelt
+correctly in the linked server definition.
+This error may also occur when using the OPENQUERY, OPENROWSET, and
+OPENDATASOURCE syntax. In addition to the connection errors listed above other
+causes of this error may be an incorrect table, column or owner name in the
+statement.
+      </sect3>
+      <sect3>
+        <title>      Using SQLServer Authentication
+</title>
+        <para>When using OPENROWSET or OPENDATASOURCE options on logging into SQL Server
+using SQL Server authentication, the following error might be seen:
+</para>
+        <programlisting>Could not perform Windows NT authentication because delegation is not
+available.
+</programlisting>
+        <para>This error is avoided if the connection to the SQL Server is made using
+Windows NT authentication.
+</para>
+        <para>This problem only occurred when using OPENROWSET and OPENDATASOURCE not with
+OPENQUERY, i.e. only when the connection information was given in the query
+not when a linked server had been set up in the Enterprise Manager.
+</para>
+      </sect3>
+      <sect3>
+        <title>Linking Progress Servers.</title>
+        <para>Linking to Progress using a SQL-89 datasource works if the linked server
+      is set up in the Enterprise Manager and the OPENQUERY syntax is used.
+      Connections made using the OPENDATASOURCE or OPENROWSET syntax fail. The
+      Progress SQL-89 engine does not handle the SQL generated by SQL Server
+      when executing the OPENROWSET or OPENDATASOURCE query.
+</para>
+        <para>Linking to Progress using a SQL-92 datasource works using OPENQUERY,
+OPENDATASOURCE and OPENROWSET.
+</para>
+      </sect3>
+      <sect3>
+        <title>Inconsistent Metadata</title>
+        <para>Queries that fail with errors about inconsistent metadata usually
+      indicate that there is a discrepancy between the information returned
+      from SQLColumns and from SQLDescribeCol by the underlying ODBC driver.
+</para>
+      </sect3>
+    </sect2>
+  </sect1>
+  <sect1 id="oledbobjsints">
+    <title>Objects and Interfaces Implemented by the OpenLink Provider</title>
+    <sect1info>
+      <keywordset>
+        <keyword>OLEDB Implementation</keyword>
+        <keyword>OLEDB Interfaces</keyword>
+        <keyword>Interfaces</keyword>
+      </keywordset>
+    </sect1info>
+    <para>The OpenLink provider implements four OLE DB objects.</para>
+    <itemizedlist>
+      <listitem>The data source object, which
+        enables consumers to connect and initialize the interaction
+        with the database.</listitem>
+      <listitem>The session, which enables
+        consumers to create a rowset for the data set in the
+        database.</listitem>
+      <listitem>The rowset, which exposes a data
+        set to the consumer.</listitem>
+      <listitem>The command, which enables
+        consumers to create a SQL string for the data in the
+        database.</listitem>
+    </itemizedlist>
+    <para>These objects, along with the interfaces implemented in
+      the OpenLink provider, are described below.</para>
+    <table>
+      <title>OLE-DB Interfaces Implemented</title>
+      <tgroup align="char" charoff="50" char="." cols="2">
+        <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+        <thead>
+          <row>
+            <entry>Interface name</entry>
+            <entry>Method name</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <para>IDBInitialize</para>
+            </entry>
+            <entry>
+              <para>Initialize</para>
+              <para>Uninitialize</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IDBCreateSession</para>
+            </entry>
+            <entry>
+              <para>CreateSession</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IDBProperties</para>
+            </entry>
+            <entry>
+              <para>GetProperties</para>
+              <para>GetPropertyInfo</para>
+              <para>SetProperties</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IPersist</para>
+            </entry>
+            <entry>
+              <para>GetClassID</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IGetDataSource</para>
+            </entry>
+            <entry>
+              <para>GetDataSource</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ICommand</para>
+            </entry>
+            <entry>
+              <para>Cancel</para>
+              <para>Execute</para>
+              <para>GetDBSession</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ICommandText</para>
+            </entry>
+            <entry>
+              <para>GetCommandText</para>
+              <para>SetCommandText</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ICommandProperties</para>
+            </entry>
+            <entry>
+              <para>GetProperties</para>
+              <para>SetProperties</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ICommandPrepare</para>
+            </entry>
+            <entry>
+              <para>Prepare</para>
+              <para>Unprepare</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IOpenRowset</para>
+            </entry>
+            <entry>
+              <para>OpenRowset</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IColumnsInfo</para>
+            </entry>
+            <entry>
+              <para>GetColumnInfo</para>
+              <para>MapColumnIDs</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IConvertType</para>
+            </entry>
+            <entry>
+              <para>CanConvert</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IAccessor</para>
+            </entry>
+            <entry>
+              <para>AddRefAccessor</para>
+              <para>CreateAccessor</para>
+              <para>GetBindings</para>
+              <para>ReleaseAccessor</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IRowset</para>
+            </entry>
+            <entry>
+              <para>AddRefRows</para>
+              <para>GetData</para>
+              <para>GetNextRows</para>
+              <para>ReleaseRows</para>
+              <para>RestartPosition</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IRowsetInfo</para>
+            </entry>
+            <entry>
+              <para>GetProperties</para>
+              <para>GetReferencedRowset</para>
+              <para>GetSpecification</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IRowsetChange</para>
+            </entry>
+            <entry>
+              <para>DeleteRows</para>
+              <para>InsertRow</para>
+              <para>SetData</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IRowsetLocate</para>
+            </entry>
+            <entry>
+              <para>Compare</para>
+              <para>GetRowsAt</para>
+              <para>GetRowsByBookmark</para>
+              <para>Hash</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ISessionProperties</para>
+            </entry>
+            <entry>
+              <para>GetProperties</para>
+              <para>SetProperties</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ISupportErrorInfo</para>
+            </entry>
+            <entry>
+              <para>InterfaceSupportsErrorInfo</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IErrorInfo</para>
+            </entry>
+            <entry>
+              <para>GetDescription</para>
+              <para>GetGUID</para>
+              <para>GetHelpContext</para>
+              <para>GetHelpFile</para>
+              <para>GetSource</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>IErrorLookup</para>
+            </entry>
+            <entry>
+              <para>GetErrorDescription</para>
+              <para>GetHelpInfo</para>
+              <para>ReleaseErrors</para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <para>ISQLErrorInfo</para>
+            </entry>
+            <entry>
+              <para>GetSQLInfo</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <sect2 id="oledbinvprov">
+      <title>Invoking the OpenLink Provider</title>
+      <para>The OpenLink ODBC Provider
+(oploleod.dll) can be loaded using a variety of methods,
+depending on your programming environment.</para>
+      <sect3 id="oledbcocreateinstance">
+        <title>Using CoCreateInstance</title>
+        <para>If you are writing an application which
+calls the OLE DB API directly, a consumer typically creates a
+provider's Data Source object by passing the provider's class
+identifier (CLSID) to the COM CoCreateInstance function and
+requesting the IDBInitialize interface. Every OLE DB provider
+declares a unique CLSID for itself. The CLSIDs for the
+OpenLink ODBC Provider, the OpenLink Error Lookup Service and
+the OpenLink ODBC Data Source Enumerator are given in the
+example below, which declares macros for each of the class
+identifiers.</para>
+        <programlisting><![CDATA[
+#ifdef DBINITCONSTANTS
+// Provider CLSID
+EXTERN_C const CLSID CLSID_OPLOLEDB =
+  {0X2D93A18D, 0XAC86, 0X11D1, {0X9C, 0XEA, 0XE5, 0X2A, 0X53, 0XBE, 0XA0, 0X7D}};
+// OpenLink Error Lookup Service CLSID
+EXTERN_C const CLSID CLSID_OPLOLEDB_ERROR =
+  {0X2D93A18E, 0XAC86, 0X11D1, {0X9C, 0XEA, 0XE5, 0X2A, 0X53, 0XBE, 0XA0, 0X7D}};
+// OpenLink ODBC Data Source Enumerator CLSID
+EXTERN_C const CLSID CLSID_OPLOLEDB_ENUM =
+  {0X2D93A190, 0XAC86, 0X11D1, {0X9C, 0XEA, 0XE5, 0X2A, 0X53, 0XBE, 0XA0, 0X7D}};
+#else //DBINITCONSTANTS
+EXTERN_C const CLSID CLSID_OPLOLEDB;
+EXTERN_C const CLSID CLSID_OPLOLEDB_ERROR;
+EXTERN_C const CLSID CLSID_OPLOLEDB_ENUM;
+#endif //DBINITCONSTANTS
+IDBInitialize * pIDBInitialize;
+HRESULT hr;
+hr = CoCreateInstance(CLSID_OPLOLEDB, NULL, CLSCTX_INPROC_SERVER,
+      IID_IDBInitialize, (void**) &amp;pIDBInitialize);
+if (FAILED(hr))
+{
+   // Display error
+...
+}
+]]></programlisting>
+      </sect3>
+    </sect2>
+    <sect2 id="oledbconnadodotnet">
+      <title>Connecting from ADO or .Net</title>
+      <para>The provider's name is "OpenLinkODBC".
+      The OpenLink OLE DB Provider is invoked from ADO or .Net
+      using a connection string which typically takes the following
+      form:</para>
+      <para>Provider=OpenLinkODBC; Data Source=<emphasis>w2ks2</emphasis>;User
+      ID=<emphasis>SCOTT</emphasis>;Password=<emphasis>tiger</emphasis>;Extended
+      Properties="Cursors=Driver;BookmarkDefault=On";</para>
+    </sect2>
+    <sect2 id="initializprops">
+      <title>Initialization Properties</title>
+      <para>When the consumer calls IDBInitialize::Initialize, the
+      OpenLink Provider calls the UDBC/ODBC functions
+      SQLSetConnectOption, to set various connection options, and
+      SQLDriverConnect, to connect to an ODBC data source. The
+      values passed to SQLSetConnectOption and SQLDriverConnect
+      come from the initialization properties set by the
+      consumer.</para>
+      <para>When the data source object is first created, the value of
+      each initialization property is set to a default value.</para>
+      <sect3 id="initpropsused">
+        <title>Initialization Properties Used</title>
+        <para>The following lists the initialization properties
+      currently used by the OpenLink Provider. Any properties not
+      listed are not used by the OpenLink Provider.</para>
+        <table>
+          <title>OLE-DB Initialization Properties</title>
+          <tgroup align="char" charoff="50" char="." cols="2">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>Property</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>DBPROP_AUTH_PASSWORD</entry>
+                <entry>Passed as the value of the PWD
+            keyword in SQLDriverConnect.</entry>
+              </row>
+              <row>
+                <entry>DBPROP_AUTH_USERID</entry>
+                <entry>Passed as the value of the UID
+            keyword in SQLDriverConnect.</entry>
+              </row>
+              <row>
+                <entry>DBPROP_INIT_CATALOG</entry>
+                <entry>Sets the initial catalog for data
+            sources which recognise catalogs.</entry>
+              </row>
+              <row>
+                <entry>DBPROP_INIT_DATASOURCE</entry>
+                <entry>Passed as the value of the DSN
+            keyword in SQLDriverConnect.</entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DBPROP_INIT_HWND</para>
+                </entry>
+                <entry>Passed as the value of the hwnd
+            argument in SQLDriverConnect.</entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DBPROP_INIT_MODE</para>
+                </entry>
+                <entry>Mapped to the ODBC connect option
+            SQL_ACCESS_MODE.</entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DBPROP_INIT_PROMPT</para>
+                </entry>
+                <entry>Passed as the value of the
+            fDriverCompletion parameter in SQLDriverConnect.</entry>
+              </row>
+              <row>
+                <entry>DBPROP_INIT_PROVIDERSTRING</entry>
+                <entry>Specifies extended properties for
+            controlling ODBC Cursor Library usage (through the
+            'Cursors' keyword) and the whether bookmarks are
+            exposed by default on rowsets (through the
+            'BookmarkDefault' keyword).</entry>
+              </row>
+              <row>
+                <entry>DBPROP_INIT_TIMEOUT</entry>
+                <entry>Mapped to the ODBC connect option
+            SQL_LOGIN_TIMEOUT.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+      <sect3 id="setgetprovprops">
+        <title>Setting and Getting Provider Properties</title>
+        <para>The data source object is the first object created when a
+      consumer instantiates the provider by calling <emphasis>
+      CoCreateInstance</emphasis>.</para>
+        <para>The data source object provides the starting point for
+      communications between the provider and consumer. For
+      example, a consumer can call <emphasis>CoCreateInstance</emphasis> and
+      request an <emphasis>IDBInitialize</emphasis> interface pointer to
+      instantiate a data source object. The provider has a CLSID
+      (class ID) that is stored in the Windows Registry. The
+      consumer can use this CLSID with <emphasis>CoCreateInstance</emphasis> to
+      instantiate the data source object. The OpenLink provider
+      setup program registers the OpenLink provider in the Windows
+      Registry.</para>
+        <para>The data source object is responsible for setting and
+      returning information about the properties supported by the
+      provider and exposing the list of supported keywords and
+      literals. This functionality is supported through the
+      mandatory <emphasis>IDBProperties</emphasis> interface and the optional <emphasis>
+      IDBInfo</emphasis> interface. The <emphasis>IDBProperties</emphasis> interface
+      contains three methods:</para>
+        <itemizedlist>
+          <listitem>
+            <emphasis>GetProperties</emphasis> returns the
+        list of properties currently set on the data source
+        object.</listitem>
+          <listitem>
+            <emphasis>GetPropertyInfo</emphasis> returns
+        information about supported rowset and data source
+        properties.</listitem>
+          <listitem>
+            <emphasis>SetProperties</emphasis> sets the
+        properties on the data source object.</listitem>
+        </itemizedlist>
+        <para>The <emphasis>IDBInfo</emphasis> interface contains two methods:</para>
+        <itemizedlist>
+          <listitem>
+            <emphasis>GetKeywords</emphasis> returns a list
+        of supported keywords.</listitem>
+          <listitem>
+            <emphasis>GetLiteralInfo</emphasis> returns
+        information about literals used in text commands.</listitem>
+        </itemizedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="inuninitdsnobj">
+      <title>Initializing and Uninitializing the Data Source Object</title>
+      <para>The <emphasis>IDBInitialize</emphasis> interface contains two methods:
+      <emphasis>Initialize</emphasis> and <emphasis>Uninitialize</emphasis>.</para>
+      <para>
+        <emphasis>Initialize</emphasis> enables consumers to explicitly
+      initialize a data source object. Consumers must set
+      properties on the data source object before attempting to
+      initialize it; and consumers must supply a valid datasource
+      name to the database in IDBProperties::SetProperties. If the
+      datasource is invalid, the OpenLink provider returns an
+      E_FAIL error on initialization.</para>
+      <para>
+        <emphasis>Uninitialize</emphasis> enables consumers to return the data
+      source object to an uninitialized state. It is an error to
+      call <emphasis>IDBInitialize::Uninitialize</emphasis> when there are open
+      sessions or rowsets on the data source object.</para>
+    </sect2>
+    <sect2 id="createsession">
+      <title>Creating a Session</title>
+      <para>After you initialize the data source object, you must
+      create a session object to manage the session and provide the
+      framework needed to create a rowset with <emphasis>
+      IOpenRowset::OpenRowset</emphasis>. The <emphasis>
+      IDBCreateSession::CreateSession</emphasis> interface on the data
+      source object enables you to create a new session object and
+      returns an interface pointer to the session.</para>
+      <para>Once the session has been created, the provider must
+      expose the interface pointer to the data source object that
+      created the session. This interface pointer is exposed
+      through the mandatory interface IGetDataSource.</para>
+    </sect2>
+    <sect2 id="createrowset">
+      <title>Creating a Rowset</title>
+      <para>The session contains the interface that enables consumers
+      to open a database and create a rowset object containing all
+      rows in the database. The OpenLink provider implements both
+      the <emphasis>IOpenRowset</emphasis>, and the <emphasis>ICommand</emphasis>
+      (and associated <emphasis>ICommandText,
+      ICommandProperties)</emphasis> interfaces on the session to
+      create a rowset..</para>
+      <sect3 id="instantexprowset">
+        <title>Instantiating and Exposing a Rowset</title>
+        <para>The <emphasis>IOpenRowset</emphasis> interface contains a single method:
+      <emphasis>OpenRowset</emphasis>. <emphasis>IOpenRowset</emphasis> is a required interface
+      on the session. <emphasis>IOpenRowset::OpenRowset</emphasis> can be used by
+      consumers that do not support command objects to generate a
+      rowset of all rows in a table or index.</para>
+        <para>The <emphasis>ICommand</emphasis> interface contains the method: <emphasis>
+      Execute</emphasis>. <emphasis>ICommand::Execute</emphasis> generates a rowset from
+      the SQL query set by <emphasis>
+      ICommandText::SetCommandText</emphasis>.</para>
+      </sect3>
+      <sect3 id="consprovintactionrowset">
+        <title>Consumer and Provider Interactions with the Rowset</title>
+        <para>After receiving the rowset interface pointer, the consumer
+      can request rowset metadata from the provider through <emphasis>
+      IColumnsInfo</emphasis>. The consumer then creates bindings by
+      requesting <emphasis>IAccessor</emphasis> from the provider and specifying
+      the bindings through <emphasis>IAccessor::CreateAccessor</emphasis>. The
+      provider returns a handle to the accessor to the
+      consumer.</para>
+        <para>The consumer then requests a number of rows from the
+      provider using <emphasis>IRowset::GetNextRows</emphasis>. The provider
+      retrieves the data for these rows and stores it in the data
+      cache. The provider then returns an array of row handles to
+      the consumer. Each row handle returned by the provider has an
+      initial reference count of one. The consumer is then free to
+      get the data for any rows from the provider using <emphasis>
+      GetData</emphasis>. The consumer supplies <emphasis>GetData</emphasis> with the
+      row handle, the handle of an accessor, and the buffer
+      location into which to return the data; the provider copies
+      the data to the location specified by the consumer.</para>
+        <para>To update rows, consumers call <emphasis>
+      IRowsetChange::SetData</emphasis>, which sets the data in the data
+      cache to the values specified by the consumer. To delete rows
+      from the rowset, the consumer calls <emphasis>
+      IRowsetChange::DeleteRows</emphasis>. To insert rows into the
+      rowset, the consumer calls <emphasis>IRowsetChange::InsertRow</emphasis>.
+      Note that the OpenLink Provider is not able to fetch back a
+      newly inserted row if the underlying datasource does not
+      provide this functionality.</para>
+        <para>When the consumer makes any change to data in the data
+      cache, the effects of the change are written to the data
+      source immediately. OLE DB specifies a change-buffering
+      model, which enables the consumer to make changes that are
+      not realized until the consumer calls <emphasis>
+      IRowsetUpdate::Update</emphasis>; this model is not supported by the
+      OpenLink provider.</para>
+        <para>When the consumer has finished working with a row, it can
+      release the row by calling <emphasis>IRowset::ReleaseRows</emphasis>. <emphasis>
+      ReleaseRows</emphasis> simply decrements the reference count on the
+      row in the data cache. If the reference count for that row
+      reaches zero, the row data is released from the data
+      cache.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="exposmetadata">
+      <title>Exposing Metadata</title>
+      <para>the OpenLink Provider expose information about the columns
+      of a rowset through <emphasis>IColumnsInfo</emphasis>. The information for
+      each column is returned in a DBCOLUMNINFO structure. OLE DB
+      also has an optional metadata interface, <emphasis>
+      IColumnsRowset</emphasis>; the OpenLink provider does not implement
+      this interface.</para>
+      <para>The <emphasis>GetColumnInfo</emphasis> method returns metadata that is
+      most commonly used by consumers: column ID, column name, the
+      ordinal number of the column in the rowset, the column's data
+      type, and so on.</para>
+      <para>The provider returns the information in an array of
+      DBCOLUMNINFO structures, one DBCOLUMNINFO structure per
+      column in the rowset. The order of the structures returned in
+      the array is the order in which the columns appear in the
+      rowset.</para>
+      <sect3 id="icolsinfo">
+        <title>IColumnsInfo</title>
+        <para>Columns that have an ODBC SQL type of SQL_LONGVARCHAR or
+      SQL_LONGVARBINARY are returned as type DBTYPE_BYTES or
+      DBTYPE_STR, and the DBCOLUMNFLAG_ISLONG is set in the dwFlags
+      element of the DBCOLUMNINFO structure.</para>
+      </sect3>
+      <sect3 id="retcolordinals">
+        <title>Returning Column Ordinals</title>
+        <para>Columns in a rowset are identified by a column ID, which
+      is a value of type DBID in the DBCOLUMNINFO structure.</para>
+        <para>The <emphasis>MapColumnIDs</emphasis> method returns column ordinals for
+      all column IDs provided in the <emphasis>rgColumnIDs</emphasis> array.
+      Column ordinals do not change during the life of the rowset,
+      but may change between different instances of the rowset.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="supportedoledbconversions">
+      <title>Supported Conversions</title>
+      <para>Before the consumer creates an accessor, it can call
+      <emphasis>IConvertType::CanConvert</emphasis> to determine if the
+      provider supports a particular conversion.</para>
+      <sect3 id="oledbdefdtmap">
+        <title>Default Data Type Mapping</title>
+        <para>The OpenLink Provider binds to the ODBC/UDBC data source
+      using the types in the table below. The SQL type is queried
+      using SQLDescribeCol. The sign of the data type
+      (signed/unsigned) is determined using SQLColAttributes. It is
+      used in deciding which C type to use in internal buffers and
+      which type indicator to return through <emphasis>
+      IColumnsInfo::GetColumnInfo</emphasis>.</para>
+        <table>
+          <title>OLE-DB Data Type Mappings</title>
+          <tgroup align="char" charoff="50" char="." cols="3">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>SQL Type Indicator</entry>
+                <entry>Indicator of C Type Used For Internal Buffers</entry>
+                <entry>OLE DB Type Indicator</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <para>SQL_CHAR,</para>
+                  <para>SQL_VARCHAR,</para>
+                  <para>SQL_LONGVARCHAR,</para>
+                  <para>SQL_DECIMAL,</para>
+                  <para>SQL_NUMERIC</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_CHAR</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_STR</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_BIT</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_BIT</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_BOOL</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_TINYINT,</para>
+                  <para>SQL_SMALLINT</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_USHORT,</para>
+                  <para>SQL_C_SSHORT</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_I2</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_INTEGER</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_ULONG,</para>
+                  <para>SQL_C_SLONG</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_I4</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_BIGINT</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_STR</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_STR</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_REAL</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_FLOAT</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_R4</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_FLOAT,</para>
+                  <para>SQL_DOUBLE</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_DOUBLE</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_R8</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_BINARY,</para>
+                  <para>SQL_VARBINARY,</para>
+                  <para>SQL_LONGVARBINARY</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_BINARY</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_BYTES</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_DATE</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_DATE</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_DATE</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_TIME</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_TIME</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_DATE</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>SQL_TIMESTAMP</para>
+                </entry>
+                <entry>
+                  <para>SQL_C_TIMESTAMP</para>
+                </entry>
+                <entry>
+                  <para>DBTYPE_DATE</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+      <sect3 id="oledblenbind">
+        <title>Length Binding</title>
+        <para>For types DBTYPE_UI1, DBTYPE_I2, DBTYPE_I4, DBTYPE_I8,
+      DBTYPE_R4, DBTYPE_R8, DBTYPE_CY, DBTYPE_NUMERIC, the length
+      binding is always set to the fixed size of the destination
+      binding type, rather than the internal source type.</para>
+      </sect3>
+      <sect3 id="oledbsupdataconversions">
+        <title>Supported Data Conversions</title>
+        <para>The follwoing table outlines the supported type conversion
+      implemented in the OpenLink provider. An 'X' means supported,
+      and '-' means not supported.</para>
+        <table>
+          <title>OLE-DB Data Type Conversions</title>
+          <tgroup align="char" charoff="50" char="." cols="26">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry></entry>
+                <entry>I1</entry>
+                <entry>I2</entry>
+                <entry>I4</entry>
+                <entry>I8</entry>
+                <entry>UI1</entry>
+                <entry>UI2</entry>
+                <entry>UI4</entry>
+                <entry>UI8</entry>
+                <entry>R4</entry>
+                <entry>R8</entry>
+                <entry>CY</entry>
+                <entry>DEC</entry>
+                <entry>NUM</entry>
+                <entry>BOOL</entry>
+                <entry>DATE</entry>
+                <entry>DBDATE</entry>
+                <entry>DBTIMESTAMP</entry>
+                <entry>DBTIME</entry>
+                <entry>BYTES</entry>
+                <entry>BSTR</entry>
+                <entry>STR</entry>
+                <entry>WSTR</entry>
+                <entry>DISP</entry>
+                <entry>UNK</entry>
+                <entry>GUID</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <para>I1</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>I2</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>I4</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>I8</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>UI1</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>UI2</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>UI4</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>UI8</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>R4</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>R8</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>CY</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DEC</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>NUM</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>BOOL</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DATE</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DBDATE</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DBTIME</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DBTIMESTAMP</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>BYTES</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>BSTR</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>STR</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>WSTR</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>DISP</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>UNK</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>GUID</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>-</para>
+                </entry>
+                <entry>
+                  <para>X</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+    </sect2>
+    <sect2 id="createuseaccessors">
+      <title>Creating and Using Accessors</title>
+      <para>Consumers describe the memory structure for their buffers
+      through a process called binding. An accessor is a group of
+      bindings. The OpenLink provider does not currently support
+      reference accessors, which allow the consumer direct access
+      to the rowset's data cache.</para>
+      <para>Accessors are implemented through <emphasis>IAccessor</emphasis>.
+      Accessors are created with <emphasis>IAccessor::CreateAccessor</emphasis>
+      and released with <emphasis>IAccessor::ReleaseAccessor</emphasis>. <emphasis>
+      IAccessor::GetBindings</emphasis> can be used to determine the
+      bindings in an existing accessor. IAccessor::AddRefAccessor
+      enables the consumer to add a reference count to an existing
+      accessor.</para>
+      <para>Accessors may not always be validated immediately at the
+      time of creation. Instead, they may be validated at the time
+      the first row is fetched. Errors will be returned at the
+      first attempt to use such an accessor.</para>
+      <para>Creating an Accessor</para>
+      <para>
+        <emphasis>CreateAccessor</emphasis> associates a set of bindings with an
+      accessor handle that is used to send data to or fetch data
+      from the rowset's data cache. The OpenLink provider supports
+      only the DBACCESSOR_ROWDATA accessor flag, which specifies
+      that the accessor is to be used for rowset data.</para>
+      <para>Returning Accessor
+      Bindings</para>
+      <para>
+        <emphasis>GetBindings</emphasis> returns the bindings in an existing
+      accessor.</para>
+      <para>Adding a Reference Count to
+      an Existing Accessor</para>
+      <para>AddRefAccessor adds a reference count to an existing
+      accessor.</para>
+      <para>Releasing an
+      Accessor</para>
+      <para>
+        <emphasis>ReleaseAccessor</emphasis> decrements the reference count on
+      an accessor; when the reference count reaches zero, the
+      accessor is released.</para>
+    </sect2>
+    <sect2 id="oledbrowsetmetadata">
+      <title>Rowset MetaData</title>
+      <para>
+        <emphasis>IRowsetInfo</emphasis> enables consumers to query the
+      properties of a rowset through <emphasis>
+      IRowsetInfo::GetProperties</emphasis>. Consumers can get an
+      interface pointer to the object that created the rowset by
+      calling <emphasis>IRowsetInfo::GetSpecification</emphasis>.</para>
+      <para>
+        <emphasis>IRowset</emphasis> provides methods for fetching rows
+      sequentially, exposing data from those rows to consumers, and
+      managing the rows in the rowset. <emphasis>IRowset</emphasis> contains five
+      methods: <emphasis>AddRefRows</emphasis>, <emphasis>GetData</emphasis>, <emphasis>
+      GetNextRows</emphasis>, <emphasis>ReleaseRows</emphasis>, and <emphasis>
+      RestartPosition</emphasis>.</para>
+      <sect3 id="increfcountrowhndl">
+        <title>Incrementing the Reference Count on Row Handles</title>
+        <para>
+          <emphasis>AddRefRows</emphasis> increments the reference count on the
+      row handles supplied by the caller. <emphasis>AddRefRows</emphasis> enables
+      consumers to make multiple references to a row in the data
+      cache.</para>
+      </sect3>
+      <sect3 id="popldatacache">
+        <title>Populating the Data Cache</title>
+        <para>
+          <emphasis>IRowset::GetNextRows</emphasis> gets the next sequence of rows
+      from the datasource and places them in the rowset's data
+      cache. When <emphasis>GetNextRows</emphasis> is first called, it starts at
+      the beginning of the rowset. After that, <emphasis>GetNextRows</emphasis>
+      maintains information about its current position so it can
+      proceed forward from that position. The OpenLink provider
+      also provides support for <emphasis>IRowset::RestartPosition</emphasis>,
+      which repositions the next fetch position to the beginning of
+      the rowset.</para>
+      </sect3>
+      <sect3 id="retrdatafromcache">
+        <title>Retrieving Data from the Data Cache</title>
+        <para>
+          <emphasis>IRowset::GetData</emphasis> enables consumers to retrieve data
+      from the data cache. <emphasis>GetData</emphasis> uses the bindings in the
+      accessor to determine how the data should be returned and
+      what data should be returned to the consumer's buffer. Then,
+      <emphasis>GetData</emphasis> converts the data in the cache to the type
+      specified in the binding and transfers the converted data to
+      the consumer.</para>
+      </sect3>
+      <sect3 id="decrefcountrowhndl">
+        <title>Decrementing the Reference Count on Row Handles</title>
+        <para>
+          <emphasis>IRowset::ReleaseRows</emphasis> decrements the reference count
+      on the rows specified. A consumer must call <emphasis>
+      ReleaseRows</emphasis> once for each time a row was fetched or each
+      time the row had its reference count incremented by <emphasis>
+      AddRefRow</emphasis>. When the reference count reaches zero, the row
+      is released if the rowset is in immediate update mode.</para>
+        <para>In providers that implement <emphasis>IRowsetUpdate</emphasis>, rows are
+      released unless there are pending changes on the row. The
+      OpenLink provider does not implement this interface; the
+      OpenLink provider always performs rowset updates in immediate
+      mode, which means that changes are immediately applied to the
+      underlying data source. Therefore, the OpenLink provider does
+      not recognize any changes as pending.</para>
+      </sect3>
+      <sect3 id="oledbretrowsetfirstrow">
+        <title>Returning to the First Row of the Rowset</title>
+        <para>
+          <emphasis>IRowset::RestartPosition</emphasis> moves the next fetch
+      position used by <emphasis>GetNextRows</emphasis> to the first row of the
+      rowset.</para>
+      </sect3>
+      <sect3 id="oledbupdrows">
+        <title>Updating Rows</title>
+        <para>
+          <emphasis>IRowsetChange</emphasis> enables consumers to change the
+      values of columns in a row of data. If the consumer wants to
+      change the data, it must first construct an accessor for the
+      columns to be changed. <emphasis>IRowsetChange</emphasis> contains three
+      methods: DeleteRows, InsertRow, and <emphasis>SetData</emphasis>.</para>
+      </sect3>
+      <sect3 id="oledbdelrows">
+        <title>Deleting Rows</title>
+        <para>
+          <emphasis>IRowsetChange</emphasis> also enables consumers to delete rows
+      from the rowset. <emphasis>IRowsetChange</emphasis>::<emphasis>DeleteRows</emphasis>
+      deletes rows from the rowset and are applied to the data
+      source immediately.</para>
+      </sect3>
+      <sect3 id="irowsetchange">
+        <title>IRowsetChange</title>
+        <para>IRowsetChange is implemented using the UDBC/ODBC function
+      SQLSetPos. It therefore can be exposed only when the
+      underlying datasource supports SQLSetPos. Newly inserted rows
+      cannot be updated.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+</chapter>

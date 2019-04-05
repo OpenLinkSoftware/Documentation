@@ -1,0 +1,1559 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+  $Id: SrvCompAdm.xml,v 1.1.1.1 2004/09/09 10:45:25 cvs Exp $
+  (C)Copyright 1996-2018 OpenLink Software
+-->
+<chapter id="SrvCompAdm" >
+<title>Request Broker Administration</title>
+<abstract><para>
+Guide for successfully installing and running the OpenLink server components
+from the OpenLink Multi Tier Data Access Suite.
+</para></abstract>
+<chapterinfo>
+  <keywordset>
+    <keyword>ODBC</keyword>
+    <keyword>ODBC Driver</keyword>
+    <keyword>ODBC Drivers</keyword>
+    <keyword>Server</keyword>
+    <keyword>Request Broker</keyword>
+    <keyword>Broker</keyword>
+    <keyword>Server Side</keyword>
+    <keyword>OPLSHUT</keyword>
+    <keyword>OPLRQB</keyword>
+    <keyword>Administration</keyword>
+  </keywordset>
+</chapterinfo>
+<!-- ##################################### -->
+<sect1 id="startandstop">
+<sect1info>
+  <keywordset>
+    <keyword>Request Broker</keyword>
+    <keyword>Startup</keyword>
+    <keyword>Shutdown</keyword>
+  </keywordset>
+</sect1info>
+<title>Request Broker Startup &amp; Shutdown</title>
+<sect2 id="startup">
+<title>Startup Options</title>
+<para>The Request Broker can be started in a
+number of ways using various command line options. A single instance is described here.
+For multiple instances, see a subsequent section.</para>
+<programlisting>
+Usage: 
+  oplrqb [-flLdcv] [+foreground] [+loglevel num] [+logfile arg]
+	[+debug][+configfile arg] [+version]
+  +foreground   run Broker in the foreground mode
+  +loglevel     log level where Broker session log details decrease in verbosity from 7 down to 1
+  +logfile      full path and file name into which Broker session log output is to be written
+  +debug        starts Broker in debug mode
+  +configfile   use alternate configuration file
+  +version      show version number
+</programlisting>
+<sect3 id="commandlineexamples">
+<title>Command Line Examples:</title>
+<programlisting>oplrqb </programlisting>
+<para>Starts the Broker in background mode.</para>
+<!-- ######################## -->
+<programlisting>oplrqb -v</programlisting>
+<para>Starts the Broker in background mode and
+displays version information as part of startup process.</para>
+<programlisting>oplrqb -dv</programlisting>
+<para>Starts the Broker in foreground debug mode
+using default log level 7 (most amount of session log information). This
+occupies your terminal session in the foreground, and echoes the output of
+all OpenLink Data Access Clients to the terminal window.</para>
+<!-- ######################## -->
+<programlisting>oplrqb -dvl 1</programlisting>
+<para>Starts the Broker in foreground debug mode
+using default log level 1 (lowest amount of session log information). This
+occupies your terminal session in the foreground, and echoes the output of
+all OpenLink Data Access Clients to the terminal window.</para>
+<!-- ######################## -->
+<programlisting>oplrqb -dvL /tmp/openlink.log</programlisting>
+<para>Starts the Broker in foreground debug mode
+using default log level 7 (most amount of session log information). This
+occupies your terminal session in the foreground, and echoes the output of
+all OpenLink Data Access Clients to the file &quot;/tmp/openlink.log&quot; .</para>
+</sect3>
+</sect2>
+<sect2 id="shutdownopts">
+<title>Shutdown Options</title>
+<para>
+The OpenLink Request Broker can be shut down in various ways, using the
+available command line options.</para>
+<programlisting>
+Usage:
+  oplshut [-hcskryfpP] [+hostname arg] [+configfile arg] [+show] [+kill]
+          [+reinit] [+yes] [+force] [+protocol arg] [+port num] [pid ..]
+  +hostname     contact oplrqb on given host
+  +configfile   use alternate configuration file
+  +show         show database agent connections
+  +kill         kill a database agent
+  +reinit       oplrqb must reread the rulebook
+  +yes          don't ask for confirmation
+  +force        force immediate shutdown (kill all)
+  +protocol     specify protocol to use
+  +port         specify port to use
+Examples:
+  oplshut            Shutdown broker on local machine (when idle)
+  oplshut -f         Shutdown broker without waiting for clients to terminate
+  oplshut -fy        Same as -f, but without asking for confirmation
+  oplshut -s         Show the current active connections
+  oplshut -k 81 93   Try to terminate the database agents with svpid 81 and 93
+</programlisting>
+<sect3 id="cmdlineegs">
+<title>Command Line Examples:</title>
+<programlisting>oplshut </programlisting>
+<para>Shuts down the Request Broker on the local machine.
+When a connection is still active, and the user calls oplshut without 
+additional arguments, the broker will enter a gracefull shutdown state which
+means that it will not accept any new connections, but remains active until
+all active connections are terminated.</para>
+<para>The shutdown state will be reported on the foreground screen
+or broker log:</para>
+<screen>oplrqb: shutdown mode initiated by openlink@127.0.0.1</screen>
+<para>Any client that tries to connect to the broker will get the following error 
+message:</para>
+<screen>
+odbctest DSN=ora8i
+OpenLink ODBC Demonstration program
+This program shows an interactive SQL processor
+[OpenLink][ODBC]the broker is being shut down, SQLSTATE=08004
+[OpenLink][ODBC]Connection rejected by data source, SQLSTATE=08004
+</screen>
+<!-- ######################## -->
+<programlisting>oplshut -f </programlisting>
+<para>Shuts down the Request Broker on the local machine without
+waiting for clients to terminate.</para>
+<para>
+If you use the -f (or force) flag, the broker will kill all active connections
+regardless what the client application is doing, which can lead to problems
+if the applications are not written to handle such events. Depending on the
+database, open transactions will be rolled back etc.
+</para>
+<para>Many databases like Oracle and Progress implement the same concept where
+the gracefull shutdown option is the default, but a shutdown can be forced
+in case of a big calamity, or when a connection remains lingering.
+</para>
+<!-- ######################## -->
+<programlisting>oplshut -fy </programlisting>
+<para>Same functionality as prior command, but
+without asking for confirmation.</para>
+<programlisting>oplshut +port 16000</programlisting>
+<para>Shuts down the Request Broker running on the TCP Listen port of
+"16000". Note that the default Request Broker Listen port is 5000, thus
+this option is not necessary unless you specified a different Listen port
+at install-time.</para>
+<!-- ######################## -->
+<programlisting>oplshut -s </programlisting>
+<para>Shows the current active OpenLink Data
+Access Client connections.</para>
+<!-- ######################## -->
+<programlisting>oplshut -k 81 93 </programlisting>
+<para>Try to terminate the database agent
+sessions with process IDs 81 and 93.</para>
+<programlisting>oplshut -h 12.34.56.78</programlisting>
+<para>Shuts down the Request Broker on remote machine with IP
+address "12.34.56.78".</para>
+</sect3>
+</sect2>
+<sect2 id="securityutil">
+<title>Security</title>
+<para>Due to the Unix security model certain
+kernel calls can only be used when the process is run by root or under the
+permission of root. One of these function calls is needed for the PingWatchDog
+protocol, thereby forcing you to run the request broker as root. This can be
+accomplished in two ways:</para>
+<orderedlist>
+ <listitem><para>The user logs in as root and then fires up the request broker. </para></listitem>
+ <listitem><para>The request broker is flagged to run under root privileges and
+     the user can start it up from other accounts. </para></listitem>
+</orderedlist>
+<para>The consequences of 1 are that the user(s)
+who need to startup the broker need to have knowledge of the root password,
+which is not advisable for system managers to give to ordinary users.</para>
+<para>Therefore we have built a solution whereby
+the broker can be flagged as running under root privileges without the user(s)
+needing to know the root password. The system manager executing the following
+commands accomplishes this:</para>
+<programlisting>
+cd openlink/bin
+ ./security -s 
+</programlisting>
+<para>This will place the broker into a special
+security state that has the following impact:</para>
+<orderedlist>
+ <listitem><para>The permissions of the oplrqb program are changed so it takes
+     on the identity of &quot;root&quot; when started up. </para></listitem>
+ <listitem><para>The broker now knows the position of the oplrqb.ini file and
+     will not accept certain startup flags so it cannot be tricked to read in
+     another oplrqb.ini file from the command line.</para></listitem>
+ <listitem><para>The oplrqb.ini file can now only be written to by the
+     &quot;root&quot; account, other accounts will only be able to read this
+     file. </para></listitem>
+</orderedlist>
+<para>If a user now starts the broker the StartupBy clause within the 
+[Security] section of the broker is checked to see whether the user is 
+allowed to startup the broker (same for shutdown).</para>
+<para>This accomplishes the wish of many system
+administrators that the broker process can be started up as root, without
+widespread knowledge of the root password. </para>
+<para>As stated in item 3 above the &quot;oplrqb.ini&quot; file can now only 
+be written to by the &quot;root&quot; account. This means that ordinary users 
+cannot modify this file, which often seems like an unpleasant side effect.  
+To overcome this some system administrators are temped to modify the mode of 
+the oplrqb.ini file, thereby opening up to security risks.  This should be 
+avoided, the <emphasis>IncludeRuleBook</emphasis> parameter inside the 
+<emphasis>Security</emphasis> sections should be used instead to divide the 
+rulebook in to parts for others to manage for themselves.  The system 
+administrator can split up the rulebook into different files which than can 
+be included from the master oplrqb.ini file.  This makes specific sections 
+available to normal users, but allowing the system administrator to decide 
+which sections can/cannot be overruled by normal users. The included rulebooks 
+cannot overrule any section within the oplrqb.ini file.  This is a very powerful 
+way of dealing with high security installations within large companies.</para>
+</sect2>
+<sect2 id="multibroker">
+<title>Multiple Request Brokers</title>
+<para>
+There are now three different behaviors for running the broker under Windows
+that are affected by the type of Windows operating system, and the
++foreground and +debug flags.</para>
+<sect3 id="multimeth1">
+<title>METHOD 1 - As a service</title>
+<para>When:</para>
+<itemizedlist mark="bullet">
+ <listitem><para>
+    Under NT/XP/2000, when no +foreground or +debug has been specified.
+    The oplrqb service will start, but only if it has been registered.
+    When no +instance is specified, it will use the default instance.
+    If this fails, it will run as method 2 or 3.</para></listitem>
+ <listitem><para>
+    Under NT/2000, with a +service start [+instance identifier]
+    If this fails, it will exit with an error.</para></listitem>
+</itemizedlist>
+<note><title>Note 1:</title>
+<para>When starting oplrqb without options, it will attempt
+to auto start an existing service. if that fails, it will
+attempt methods 2 and 3 (see below)</para></note>
+<note><title>Note 2:</title>
+<para>You'll need to do +service create first, the broker doesn't do this by itself.</para></note>
+</sect3>
+<sect3 id="multimeth2">
+<title>METHOD 2 - With debugging console</title>
+<para>When:</para>
+<itemizedlist mark="bullet">
+ <listitem><para>with +foreground or +debug, started from explorer/dos box</para></listitem>
+ <listitem><para>without +foreground or +debug option, started from a dos box.</para></listitem>
+</itemizedlist>
+<note><title>Note:</title>
+<para>Start up mode is different when launched from a dos box.
+If there are no command line options specified, the broker
+will now default to +debug when started in a dos box.</para>
+<para>
+  the +foreground and +debug options take precedence over
+  method 1 (starting the service)</para></note>
+</sect3>
+<sect3 id="multimeth3">
+<title>METHOD 3 - User Specific Service (characterized by a Services Tray Icon)</title>
+<para>When:</para>
+<itemizedlist mark="bullet">
+ <listitem><para>started from explorer, without +foreground/+debug</para>
+<para>(NT/XP/2000: Method 1 is tried first)</para></listitem>
+</itemizedlist>
+<note><title>Note:</title>
+<para>It will attempt to locate oplrqb.ini in the current
+directory, unless +config file has been specified.</para></note>
+</sect3>
+<sect3 id="multisummary">
+<title>Startup Mode Summary</title>
+<para>To summarize, here is some pseudo code:</para>
+<programlisting>
+if OS = NT or OS = Win2000 or OS = XP then
+  if no +foreground or +debug options then
+    if there is a service installed then
+      silently attempt to start the service
+      if this succeeds then exit
+    endif
+endif
+if +foreground or +debug options then
+  allocate a debugging console
+  run in the foreground
+else if started from a dos box then
+  set +foreground and +debug
+  allocate a debugging console
+  run in the foreground
+else
+  create the splash window and assume tray behavior
+endif
+Note: it is possible to make the oplrqb service allocate a debugging
+console. To do this, specify +debug while creating the service
+(example: oplrqb +service create +debug)
+</programlisting>
+</sect3>
+<sect3 id="multisrvi">
+<title>Multiple Service Instances</title>
+<para>Multiple instances of the broker work only for NT/XP/2000 when running
+as a service.</para>
+<para>
+There is one default instance (unnamed) which is used when no +instance
+command line flag has been specified.</para>
+<para>
+examples:</para>
+<programlisting>oplrqb +service create</programlisting>
+<para>Registers the default service instance.
+This service will use the oplrqb.ini rulebook in the current directory</para>
+<programlisting>oplrqb +service create +instance 1 +config f:\openlink</programlisting>
+<para>Registers the oplrqb_1 service instance
+This service will use the oplrqb.ini rulebook in f:\openlink</para>
+<programlisting>oplrqb +service create +config f:\openlink\test\debug.ini +debug</programlisting>
+<para>Registers the default service instance.
+    This service will use the debug.ini rulebook in f:\openlink\test
+    This service will produce debug output in a console.
+    This service will not auto start, use oplrqb +service start
+</para>
+<para>Other service commands:</para>
+<programlisting>
+  +service auto [+instance id]    Set start up type to Automatic
+  +service manual [+instance id]  Set start up type to Manual
+  +service start [+instance id]   Start up the service
+  +service stop [+instance id]    Stops up the service
+  +service delete [+instance id]  Unregisters up the service
+</programlisting>
+<para>+service list has been extended to show the rulebook that the
+  instance uses as well as other status information.</para>
+<para>To configure another Broker instance manually:</para>
+<itemizedlist mark="bullet">
+ <listitem><para>create a new directory</para></listitem>
+ <listitem><para>create a new rulebook in this directory</para></listitem>
+ <listitem><para>set BinaryDirectory in this new rulebook to the installation directory
+    of oplrqb.exe (need to share binaries &amp; licensing)</para></listitem>
+ <listitem><para>Specify a different Listen port</para></listitem>
+ <listitem><para>Either disable www_sv in the rulebook or create a new www_sv.ini with 'HttpPort' key value set to a unique value other than the default 8000.</para></listitem>
+ <listitem><para>create another entry using +instance &lt;id&gt; +config &lt;the_new_rulebook_ini&gt;</para></listitem>
+</itemizedlist>
+</sect3>
+</sect2>
+</sect1>
+<!-- ##################################### -->
+<sect1 id="rqbsessparams">
+<sect1info>
+  <keywordset>
+    <keyword>Request Broker</keyword>
+    <keyword>Session Parameters</keyword>
+    <keyword>Broker Parameters</keyword>
+  </keywordset>
+</sect1info>
+<title>Request Broker Session Parameters</title>
+<para>The Request Broker is responsible for
+setting up the profile of one of more OpenLink Data Access sessions, this
+includes a Transport Protocol selection, Keep Alive Packets notifications,
+Network Message Buffer Sizes. Initialization retry intervals, Agent
+initialization timeouts, and much more. Rather than have you manually set this
+options via the OpenLink Rule Book, it is now possible for you to configure
+this options via your Web Browser of choice using the Admin Assitant</para>
+<para>The Admin assistant allows you to configure
+Request Broker session parameters in two ways, via a series of Wizard
+Interactions or via an HTML form, the sections that follow illustrate both
+approaches.</para>
+<!-- ======================================== -->
+<sect2 id="adinfoadmasist">
+<title>General Information</title>
+<para>You obtain additional information using the Admin Assistant, expand 
+the "Server Components Administration" menu item, then "General Request 
+Broker Information", you are offered:</para>
+<itemizedlist mark="bullet">
+ <listitem><para>Register File Information - enables you to determine the
+     license(s) that you have in place.</para>
+ </listitem>
+ <listitem><para>Session Rules Book - the current set of rules for your OpenLink
+     Data Access sessions.</para></listitem>
+ <listitem><para>Request Broker Log File Information - displays the contents of
+     your Request Broker log file.</para></listitem>
+</itemizedlist>
+<para>Here is an example of the License Information page:</para>
+  <figure id="rqbadw01" float="1">
+		<title>Admin Assistant Wizard - License Information</title>
+		<graphic fileref="scimg003.png" format="png"></graphic>
+		</figure>
+</sect2>
+<sect2 id="sessconfwiz"><title>Using Admin Assistant Wizards</title>
+<orderedlist>
+	<listitem><para>Specify the location of your Request
+Broker and its dependent components. Also set restrictions on number of Agents,
+and number of connections.</para>
+<para>Click the &quot;Next&quot; button.</para>
+		<figure id="rqbadm02" float="1">
+		<title>Admin Assistant Wizard</title>
+		<graphic fileref="scimg005.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem>
+<para>Linger Timeout:  The number of seconds an OpenLink Agent without connections 
+will linger before being terminated by the OpenLink Request Broker, Specify 
+0 here to disable lingering.  Lingering is a feature for avoiding repetative load/unload 
+overhead of agents that are frequently used for short, quick concurrent open/close 
+connections.</para>
+<para>This setting is global to all agents. For specific agent settings, use the
+LingerTimeout= value in the agent environment section.</para>
+	<para>Set Resolving of IP addresses to hostnames. The logging will
+	show the hostname instead of the IP number if this option is selected.
+	Switch off hostname lookup to avoid possible delays when frequently
+	looking up unknown (new) IP numbers through a distant uncached DNS
+	table. This parameter will have a direct affect on the type of match
+	that is to be used for the StartupBy, ShutdownBy and ShutdownFrom
+	parameters under the Security section.</para>
+<para>Click the &quot;Next&quot; button.</para>
+		<figure id="rqbadm02a" float="1">
+		<title>Admin Assistant Wizard</title>
+		<graphic fileref="scimg006.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>To help with troubleshooting, turn on
+	session logging and extra information. Or run the broker in foreground
+	mode to view the trace. Then click on the &quot;Next&quot; button.</para>
+		<figure id="rqbadm03" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg007.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>Enter buffer size values for the
+inbound and outbound network messages for each OpenLink Agent (it is advisable
+to take the default values presented). Then click the &quot;Next&quot; button.</para>
+		<figure id="rqbadm04" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg009.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>Enter values for &quot;Database
+Agent&quot; session initialization, &quot;Broker Contact&quot;, and
+initialization failure retry counts by entering values into the respective
+fields as depicted below (it is advisable take the defaults). Then click on the
+next button.</para>
+		<figure id="rqbadm05" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg010.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>Check the related boxes
+presented in order to select the Network Transport Protocol to be used by your
+Request Broker and Database Agents when communicating with your OpenLink Data
+Access Clients. Then click on the next button.</para>
+		<figure id="rqbadm06" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg011.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>You can choose to enable the OpenLink Ping Watchdog.  All 
+  OpenLink components automatically use the keep-alive feature built in to most current 
+  implementations of TCP/IP stack.  If keep-alive is not available the Ping 
+  WatchDog can be enabled in attempt to compensate for this.   
+  Click the &quot;Next&quot; button to continue.</para>
+		<figure id="rqbadm07" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg013.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>If you have more than one Network
+Interface Card (NIC) installed on your OpenLink Server machine, then you can
+enter a value in the &quot;Force IP Address&quot; field that represents the IP
+address that you want the Request Broker to listen at.</para>
+		<figure id="rqbadm08" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg015.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>Enter the port number on which the OpenLink Request Broker will listen
+for client connections. Each OpenLink Request Broker running on the same host must have a unique
+port number assigned to it.</para>
+<para>You can also designate port number ranges to be used by the
+Broker to advertise other OpenLink services (e.g JDBC Agent used by OpenLink
+Drivers for JDBC). Once completed, click the &quot;Next&quot; button to
+continue.</para>
+		<figure id="rqbadm8b" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg016.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>Click on the &quot;Save&quot; button
+to save your changes permanently.</para>
+		<figure id="rqbadm09" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg017.png" format="png"></graphic>
+		</figure>
+		</listitem>
+	<listitem><para>Click the &quot;Exit&quot; button to leave the Broker Settings
+Wizard.</para>
+		<figure id="rqbadm10" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg019.png" format="png"></graphic>
+		</figure>
+</listitem>
+</orderedlist>
+</sect2>
+<sect2 id="sesconffrms">
+<title>Using Admin Assistant Forms</title>
+<para>You can also choose to configure your Request
+Broker&apos;s session settings via a Forms as opposed to Wizard based interface. You
+select this option from the Admin Assistant and you will be presented with a
+screen similar to the snapshot below. </para>
+<para>Each Broker session settings field contains
+a description of the values that need to be entered into each of the forms
+fields. In addition a brief description of the use of each of these values is
+provided below each field.</para>
+		<figure id="rqbadm11" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg021.png" format="png"></graphic>
+		</figure>
+</sect2>
+</sect1>
+<!-- ##################################### -->
+<sect1 id="oplsessadminconf">
+<sect1info>
+  <keywordset>
+    <keyword>Session Rules</keyword>
+    <keyword>Session Rules Administration; Session Rules Configuration</keyword>
+    <keyword>Administration; Configuration</keyword>
+  </keywordset>
+</sect1info>
+<title>OpenLink Session Rules Administration &amp; Configuration Guide </title>
+<para>One of the most important features and
+benefits of your OpenLink Multi Data Access Drivers, is the ability to
+configure and control your entire OpenLink infrastructure from a central point
+using &quot;OpenLink Session Rules&quot;. These session rules are stored and
+maintained in a text based repository called the &quot;Session Rules Book&quot;
+(the file &quot;oplrqb.ini&quot;). </para>
+<para>You administer these rules from your web
+browser using the OpenLink Admin Assistant. The rules that you create are
+enforced by the OpenLink Request Broker, giving you phenomenal control over
+your distributed computing infrastructure.</para>
+<sect2 id="sessrulconcept"><title>OpenLink Session Rules Concepts</title>
+<para>Session rules are declarative in nature and
+template driven. You build a template that determines how one or more OpenLink
+Client components are going to interact with a particular instance of an
+OpenLink Server component (Database Agent or Service Provider Agent). Session
+rules also determine what OpenLink Server is instantiated and how it is to be
+instantiated for a particular OpenLink Client.</para>
+<para>The basic Session Rule unit is an OpenLink
+Connection Attribute, each representing a key aspect of an OpenLink Client&apos;s
+connection to an OpenLink Agent Session. There are six OpenLink Connection
+Attributes: Domain, User, OpSys, Machine, Application and Mode.</para>
+</sect2>
+<sect2 id="oplconnattr">
+<title>OpenLink Connection Attributes</title>
+<para>There are two types of OpenLink Connection
+Attributes, these are &quot;User Configurable&quot; and &quot;Non User
+Configurable&quot; Connection Attributes.</para>
+<sect3 id="usrconfconat">
+<title>User Configurable Connection Attributes</title>
+<para>These attributes are configurable by the
+OpenLink Client user. When using ODBC this is handled via the ODBC
+Administrator or via the Admin Assistant ODBC Data Source Name Configuration
+Menu (this also applies to UDBC Clients). JDBC handles this through the use of
+JDBC URLs and in the case of JDBC 2.0 via Data Source Names. OLE-DB handles
+this via a Connection String Building Wizard.</para>
+<formalpara>
+<title>Domain Attribute</title>
+<para>Identifies the OpenLink Agent to which all
+OpenLink Connection Attributes apply. </para>
+<para>This attribute describes a logical
+reference for a database type, OpenLink agent type, or anything else you would
+like to use as a logical identifier for all the other OpenLink Connection
+Attributes.</para>
+<para>This attribute is also referred to as the
+&quot;Server Type&quot; or &quot;SVT&quot; attribute of an OpenLink Client
+connect string. It is also referred to in older product documentation as the
+OpenLink &quot;Provider Type&quot;.</para>
+</formalpara>
+<formalpara>
+<title>User Attribute</title>
+<para>Identifies the User making use of an
+OpenLink Client.</para>
+</formalpara>
+<formalpara>
+<title>Database Attribute</title>
+<para>Identifies a specific database name within
+a database environment, e.g ORCL within Oracle, &quot;stores7&quot; within
+Informix, &quot;pubs&quot; with Sybase or Microsoft SQL Server etc. The values
+associated with this Connection Attribute aren&apos;t overridden by Aliases, instead
+they are overridden by the &quot;Database&quot; attribute within an Agent
+Configuration template.</para>
+</formalpara>
+<formalpara>
+<title>ServerOpts (Database Sever Environment Options) Attribute</title>
+<para>Identifies a set of database environment
+initialization parameters, currently this attribute only applies to Progress
+environments. It is used to set self serving client initialization parameters
+such as: -TB, -TB, -q, -D mdy etc. The values associated with this Connection
+Attribute aren&apos;t overridden by Aliases, instead they are overridden by the
+&quot;SeverOptions&quot; attribute within an Agent Configuration template.</para>
+</formalpara>
+<formalpara>
+<title>ConnectOpts (Database Server Connection Options) Attribute </title>
+<para>Identifies a set of database server
+connection parameters used to initiate a connection with a backend database
+server process. This is how an OpenLink Database Agent makes a connection with
+a backend database server using a particular database vendors networking
+middleware (e.g. Net8 or SQL*Net for Oracle, I-Connect or I-Net for Informix,
+Progress Client Networking for Progress, Open Client for Sybase etc.) . The
+values associated with this Connection Attribute aren&apos;t overridden by Aliases,
+instead they are overridden by the &quot;ConnectOptions&quot; attribute within
+an Agent Configuration template.</para>
+</formalpara>
+</sect3>
+<sect3 id="nonuserconfat">
+<title>Non User Configurable Connection Attributes</title>
+<para>These attributes are environmental in
+nature and derived automatically by an OpenLink Client.</para>
+<formalpara>
+<title>OpSys (Operating System) attribute</title>
+<para>Identifies the Client operating system from
+which the OpenLink Client is being executed.</para>
+</formalpara>
+<formalpara>
+<title>Machine attribute</title>
+<para>Identifies the Network Alias or IP address
+of the machine or device from the OpenLink Client is being executed.</para>
+</formalpara>
+<formalpara>
+<title>Application attribute</title>
+<para>Identifies the ODBC, JDBC, UDBC, OLE-DB
+Client Application from which the OpenLink Client is being executed.</para>
+</formalpara>
+<note><title>Note:</title>
+  <para>The Application name can be set within the application using the 
+  ODBC API SQLSetConnectOption(hdbc, SQL_APPLICATION_NAME, "AppName").  
+  The JDBC equivelent can also be used.</para></note>
+<formalpara>
+<title>Mode attribute</title>
+<para>Identifies the session Mode required by an
+OpenLink Client, this may be Read-Only or Read-Write.</para>
+</formalpara>
+</sect3>
+</sect2>
+<sect2 id="sesstemplate">
+<title>OpenLink Session Templates</title>
+<para>Connection attributes are conditionally
+post processed during the initialization of session between an OpenLink Client
+and and OpenLink Agent, the rule book consists of a number of templates that
+play different roles during this process. The rule book is made up of the
+following templates: Session Aliases, Mapping Rules, and Agent Configuration</para>
+<formalpara>
+<title>Session Aliases Templates</title>
+<para>These are rule book templates used for post
+processing OpenLink Connection Attribute values prior to Mapping Rules
+evaluation. This is the facility used by the Request Broker for overriding
+Connection Attributes from OpenLink Clients with values on configured an
+OpenLink server.</para>
+</formalpara>
+<formalpara>
+<title>Mapping Rules Templates</title>
+<para>These are rule book templates used to
+determine which OpenLink Agents are instantiated in line with an OpenLink
+Client&apos;s session request. </para>
+</formalpara>
+<formalpara>
+<title>OpenLink Agent Configuration Templates</title>
+<para>Templates used for setting key OpenLink
+Agent Configuration parameters. See the OpenLink
+Agent Administration section for detailed information.</para>
+</formalpara>
+</sect2>
+<sect2 id="sessrulexec">
+<title>Session Rules Execution Process</title>
+<para>When an OpenLink Client makes contact with
+an OpenLink Request Broker a series of events occur culminating in the
+identification and execution of a session rule. The step as follow guide you
+through this process:</para>
+<orderedlist>
+   <listitem><para>Request Broker receives session request from one or more OpenLink
+     Clients (Drivers for ODBC, UDBC, JDBC, OLE-DB).</para></listitem>
+   <listitem><para>Request Broker parses the session request data stream received
+     from the relevant OpenLink Client isolating each OpenLink Connection
+     Attribute type and associated attribute values.</para></listitem>
+   <listitem><para>Request Broker then performs a regular expression search
+     through the rule book looking for Session Aliases that match the parsed
+     OpenLink Connection Attributes. </para></listitem>
+   <listitem><para>For each OpenLink Connection Attribute that the Request Broker
+     find a matching Session Alias it determines if the Alias has a non NULL
+     assigned value, if this is true the OpenLink Connection Attribute values
+     are reassigned to those of the matching Session Alias, otherwise they
+     retain their existing values.</para></listitem>
+   <listitem><para>Request Broker then performs a regular expression search using
+     a combination of all the OpenLink Connection Attributes across the session
+     rules books &quot;Mapping Rules&quot; template.</para></listitem>
+   <listitem><para>The Request Broker scans through each &quot;Mapping Rule&quot;
+     in ascending order, If it finds a &quot;Mapping Rule&quot; match it then
+      applies the matching rule to the appropriate Client Session
+     request, otherwise it reports an error condition back to the OpenLink
+     client.</para></listitem>
+   <listitem><para>When a &quot;Mapping Rules&quot; occurs the Request Broker
+     evaluates the &quot;Mapping Rule&quot;. This evaluation results in the
+     Acceptance or Rejection of an OpenLink Client request.</para></listitem>
+   <listitem><para>OpenLink Client request acceptance results in the OpenLink
+     Clients session request being associated with an OpenLink Agent template,
+     this template then applies all of its attribute Attributes to the OpenLink
+     Agent Configuration process. </para></listitem>
+   <listitem><para>Session Rules rejection results in a user/administrator
+     definable error message being relayed back to the OpenLink Client.</para></listitem>
+   <listitem><para>OpenLink Session is fully initialized. This means that the
+     OpenLink Client and Server (agents) components are now linked and operating
+     in a connected state.</para></listitem>
+   <listitem><para>OpenLink Agent evaluates subsequent OpenLink Client session
+     requests to see if they are in line with the ReUse attribute of its Agent
+     Configuration template.</para></listitem>
+</orderedlist>
+</sect2>
+<sect2 id="custali">
+<title>Creating Custom Aliases For Use By OpenLink Data Access Clients</title>
+<para>Understanding how to maintain Session
+Aliases is a critical part of understanding how to create session rules. You
+can create, modify, edit, and delete Session Aliases in two ways, you either
+use the Admin Assistant&apos;s GUI interface or manually edit the session rule book
+using a text editor (only recommended for advanced users).</para>
+<para>The steps that follow guide you through the
+Session Alias management process using the Admin Assistant&apos;s GUI. Before
+performing any of these steps you need to start the Admin Assistant, this is
+done by following the steps below:</para>
+<orderedlist>
+   <listitem><para>Start the Request Broker</para></listitem>
+   <listitem><para>Start a Web Browser session</para></listitem>
+   <listitem><para>Enter the following URL into your browser:</para></listitem>
+</orderedlist>
+<para>If you started the Request Broker on your local machine enter:</para>
+<programlisting>http://localhost:8000/</programlisting>
+<para>(assuming you accepted port 8000 as the
+Admin Assistant port number at installation time).</para>
+<para>If the Request Broker in on another machine enter:</para>
+<programlisting>http://&lt;hostname or IP address&gt;:8000</programlisting>
+<para>(assuming you accepted port 8000 as the
+Admin Assistant port number at installation time).</para>
+<sect3 id="domaina">
+<title>Domain Aliases</title>
+<para>The steps that follow show you how to
+manage Domain Aliases:</para>
+<orderedlist>
+  <listitem><para>Follow the &quot;Server Components
+Administration&quot;-&gt;&quot;Session Rules
+Administration&quot;-&gt;&quot;Session Rules Book Aliases&quot;-&gt;&quot;Edit
+Domain Aliases&quot; menu tree which brings you to a screen identical to the
+one depicted below.</para>
+<para>
+The Admin Assistant presents you with a list of pre-configured Domain Aliases,
+click on the &quot;Edit&quot; hyperlink to change settings, the
+&quot;Remove&quot; hyperlink to delete an Alias, and the &quot;Add&quot; button
+at the bottom of the screen to create a new Domain Alias.</para>
+		<figure id="adass01" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg086.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>The example below assumes that you are
+modifying a Domain Alias named &quot;ora8&quot; with the attribute values
+&quot;Oracle 8&quot;. This implies that you want to take note of Domain
+Connection Attributes from an OpenLink Client that start with the value
+&quot;Oracle 8&quot; evaluation against a mapping rules template. Once you have
+completed your input click the &quot;Update&quot; button.</para>
+		<figure id="adass02" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg088.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>You then commit your changes to the
+rule book by clicking on the &quot;Reinitialize the OpenLink Request Broker
+with these settings&quot; hyperlink. See screen shot below:</para>
+		<figure id="adass03" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg090.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Admin Assistant confirms commitment of
+your changes to the rule book.</para>
+		<figure id="adass04" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg092.png" format="png"></graphic>
+		</figure>
+</listitem>
+</orderedlist>
+</sect3>
+<sect3 id="useralias">
+<title>User Aliases</title>
+<para>The steps that follow show you how to
+manage User Aliases using the Admin Assistant:</para>
+<orderedlist>
+  <listitem><para>Follow the &quot;Server Components
+Administration&quot;-&gt;&quot;Session Rules
+Administration&quot;-&gt;&quot;Session Rules Book Aliases&quot;-&gt;&quot;Edit
+User Aliases&quot; menu tree which brings you to a screen similar to the one
+depicted below.</para>
+<para>The Admin Assistant presents you with a list of pre-configured User Aliases if
+any exist, if this is your first time there will be not items listed. Click on
+the &quot;Add&quot; hyperlink to create a new User Alias.</para>
+		<figure id="adass05" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg094.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>The example below assumes that you are
+creating an User Alias named &quot;Sales&quot; with attribute values of
+&quot;Test&quot; or &quot;Mary&quot;, the use of the caret symbol (character
+&quot;^&quot;) and the Dollar symbol indicate the start and end of regular
+expression evaluation values respectively. The Pipe symbol (character
+&quot;|&quot;) indicates an OR condition. Thus the entry depicted below implies
+that you want to take note of User Connection Attributes from an OpenLink
+Client that hold the values &quot;Test&quot; or &quot;Mary&quot; for evaluation
+against a mapping rules template. Once you have completed your input click the
+&quot;Add&quot; button.</para>
+		<figure id="adass06" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg096.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>3.You then commit your changes to the
+rule book by clicking on the &quot;Reinitialize the OpenLink Request Broker
+with these settings&quot; hyperlink. See screen shot below:</para>
+		<figure id="adass07" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg098.png" format="png"></graphic>
+		</figure>
+</listitem>
+<listitem><para>Admin Assistant confirms commitment of your changes to the rule book.</para>
+		<figure id="adass08" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg100.png" format="png"></graphic>
+		</figure>
+</listitem>
+</orderedlist>
+</sect3>
+<sect3 id="opsysalias">
+<title>OpSys Aliases (Operating System Aliases)</title>
+<orderedlist>
+  <listitem><para>The steps that follow show you how to
+manage OpSys Aliases using the Admin Assistant:</para>
+<para>Follow the &quot;Server Components Administration&quot;-&gt;&quot;Session Rules
+Administration&quot;-&gt;&quot;Session Rules Book Aliases&quot;-&gt;&quot;Edit
+Operating System Aliases&quot; menu tree which brings you to a screen identical
+to the one depicted below.</para>
+<para>The Admin Assistant presents you with a list of pre-configured OpSys Aliases if
+any exist, if this is your first time no items will be listed. Click on the
+&quot;Add&quot; hyperlink to create a new OpSys Alias.</para>
+		<figure id="adass09" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg102.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>The example below assumes that you are
+creating an OpSys Alias named &quot;ClientOS&quot; with attribute values of
+&quot;win32&quot; or &quot;unix&quot;. The Pipe symbol (character
+&quot;|&quot;) indicates an OR condition. Thus the entry depicted below implies
+that you want to take note of OpSys Connection Attributes from an OpenLink
+Client that start with the values &quot;win32&quot; or &quot;unix&quot; for
+evaluation against a mapping rules template. Once you have completed your input
+click the &quot;Add&quot; button.</para>
+		<figure id="adass10" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg104.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>You then commit your changes to the
+rule book by clicking on the &quot;Reinitialize the OpenLink Request Broker
+with these settings&quot; hyperlink. See screen shot below:</para>
+		<figure id="adass11" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg106.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Admin Assistant confirms commitment of
+your changes to the rule book.</para>
+		<figure id="adass12" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg100.png" format="png"></graphic>
+		</figure>
+</listitem>
+</orderedlist>
+</sect3>
+<sect3 id="machinealiases">
+<title>Machine Aliases</title>
+<para>The steps that follow show you how to
+manage User Aliases using the Admin Assistant:</para>
+<orderedlist>
+  <listitem><para>Follow the &quot;Server Components
+Administration&quot;-&gt;&quot;Session Rules
+Administration&quot;-&gt;&quot;Session Rules Book Aliases&quot;-&gt;&quot;Edit
+Operating Machine Aliases&quot; menu tree which brings you to a screen
+identical to the one depicted below.</para>
+<para>
+The Admin Assistant presents you with a list of pre-configured OpSys Aliases if
+any exist, if this is your first time no items will be listed. Click on the
+&quot;Add&quot; hyperlink to create a new Machine Alias.</para>
+		<figure id="adass13" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg109.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>The example below assumes that you are
+creating an Machine Alias named &quot;MyNetwork&quot; with an attribute value
+of &quot;123.123.123&quot;. This implies that you want to take note of Machine
+Connection Attributes from an OpenLink Client that start with the value
+&quot;123.123.123&quot; (you would do this to identify the Network portion of
+the client machines IP address). Once you have completed your input click the
+&quot;Add&quot; button.</para>
+		<figure id="adass14" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg111.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>You then commit your changes to the
+rule book by clicking on the &quot;Reinitialize the OpenLink Request Broker
+with these settings&quot; hyperlink. See screen shot below:</para>
+		<figure id="adass15" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg113.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Admin Assistant confirms commitment of
+your changes to the rule book.</para>
+		<figure id="adass16" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg115.png" format="png"></graphic>
+		</figure>
+</listitem>
+</orderedlist>
+</sect3>
+<sect3 id="appaliases">
+<title>Application Aliases</title>
+<para>The steps that follow show you how to
+manage User Aliases using the Admin Assistant:</para>
+<orderedlist>
+  <listitem><para>Follow the &quot;Server Components
+Administration&quot;-&gt;&quot;Session Rules
+Administration&quot;-&gt;&quot;Session Rules Book Aliases&quot;-&gt;&quot;Edit
+Application Aliases&quot; menu tree which brings you to a screen identical to
+the one depicted below.</para>
+<para>
+The Admin Assistant presents you with a list of pre-configured Application
+Aliases, click on the &quot;Edit&quot; hyperlink to change settings, the
+&quot;Remove&quot; hyperlink to delete an Alias, and the &quot;Add&quot; button
+at the bottom of the screen to create a new Application Alias.</para>
+		<figure id="adass17" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg117.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>The example below assumes that you are
+modifying an Application Alias named &quot;msoffice&quot; with attribute values
+of &quot;MSACCESS&quot; or &quot;EXCEL&quot; or &quot;MSQRY32&quot;. The Pipe
+symbol (character &quot;|&quot;) indicates an OR condition. Thus, the entry
+depicted below implies that you want to take note of Application Connection
+Attributes from an OpenLink Client that hold the values &quot;MSACCESS&quot; or
+&quot;EXCEL&quot; or &quot;MSQRY32&quot; for evaluation against a mapping rules
+template. Once you have completed your input click the &quot;Update&quot;
+button.</para>
+		<figure id="adass18" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg119.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>You then commit your changes to the
+rule book by clicking on the &quot;Reinitialize the OpenLink Request Broker
+with these settings&quot; hyperlink.</para>
+		<figure id="adass19" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg121.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Admin Assistant confirms commitment of
+your changes to the rule book.</para>
+		<figure id="adass20" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg123.png" format="png"></graphic>
+		</figure>
+</listitem>
+</orderedlist>
+</sect3>
+<sect3 id="detcliatt">
+<title>Determining The Values of OpenLink 
+Client Generated Connection Attributes</title>
+<para>When managing Aliases for non user
+configurable Connection Attributes you need to do the following in order to
+determine the appropriate values:</para>
+<orderedlist>
+   <listitem><para>Start the Request Broker in Debug Mode</para></listitem>
+   <listitem><para>Then make a connection from your
+     OpenLink Client</para></listitem>
+   <listitem><para>The debug output in your Request
+     Brokers debug window will contain the following:</para>
+<programlisting>
+oplrqb: client-machine.YourDomain called (123.123.123.100.1510)
+oplrqb: request: domain=Oracle 8 database= serveropts=
+oplrqb: connectopts= user= opsys=win32 readonly=0
+oplrqb: application=OPLSCAN processid=384</programlisting>
+</listitem>
+   <listitem><para>Take note of the values assigned
+     to the following Connection Attributes: opsys, readonly, and application.
+     Apply these values to the appropriate Aliases that your are attempting to
+     configure.</para></listitem>
+</orderedlist>
+</sect3>
+</sect2>
+<sect2 id="adass4cr8tingrules">
+<title>Using the Admin Assistant To Create Session Rules</title>
+<para>There are different type of session rules
+that you may want to create the examples that follow guide through the process
+of creating some very common session rules.</para>
+<sect3 id="securityrules">
+<title>Security Oriented &quot;Session Rules&quot; Examples</title>
+<para>A major concern with ODBC, JDBC, UDBC and
+OLE-DB is the fact that you could potentially lose control over the number and
+types of applications that have full read-write access to your organizations
+databases, unfortunately database engine based security is User, Group and in
+some case Role driven, database engines do not have the ability to decipher the
+type of Client application or data access mechanism being used by a client
+process. Thus ODBC, UDBC, JDBC, and OLE-DB can potentially introduce serious
+security loopholes. </para>
+<para>The security and configuration control
+attributes of the session rules book is OpenLink&apos;s single most important and
+distinguishing feature when compared with other data access technologies
+(standards or non standards based).</para>
+<para>Session rules enable you enforce rules that
+protect you from many form security related exposure in a time when
+connectivity is increasing at an alarming rate. The examples that follow use
+typical security scenarios to demonstrate how session rules can be devised to
+address security and/or resource consumption issues introduced by the use of
+ODBC, JDBC, UDBC, and OLE-DB compliant solutions.</para>
+</sect3>
+<sect3 id="ruleforcero">
+<title>Creating A Session Rule Enforcing READ-ONLY sessions unconditionally across all OpenLink Clients</title>
+<para>The steps that follow guide you through the
+process of building a session rule that enforces read-only data access across
+all OpenLink ODBC, JDBC, UDBC, and OLE-DB sessions:</para>
+<orderedlist>
+   <listitem><para>Start the Request Broker</para></listitem>
+   <listitem><para>Start a Web Browser session</para></listitem>
+   <listitem><para>Enter the following URL into your browser:</para>
+     <para>If you started the Request Broker on your local machine enter:</para>
+<programlisting>http://localhost:8000/</programlisting>
+     <para>(assuming you accepted port 8000 as the Admin Assistant port number at
+     installation time).</para>
+     <para>If the Request Broker in on another machine enter:</para>
+<programlisting>http://&lt;hostname or IP address&gt;:8000</programlisting>
+		<para>(assuming you accepted port 8000 as the Admin Assistant port number at
+     installation time).</para></listitem>
+   <listitem><para>Since you are attempting to create
+     a read-only session rule for a particular database, you need to ensure
+     that you actually have an OpenLink Agent template that has its ReadOnly
+     attribute set to &quot;Y&quot; or &quot;Yes&quot;. To do this you navigate
+     the Admin Assistant menu down the following path: &quot;Server Components
+     Administration&quot;-&gt;&quot;Database Agent
+     Administration&quot;-&gt;&quot;Database Agent Settings (Form)&quot; .
+     Locate the database agent for your database engine type from the list
+     presented and then click on the &quot;Edit&quot; hyperlink.</para>
+		<figure id="adass21" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg125.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Locate the &quot;Read Only&quot;
+     checkbox and then hatch the box which indicates the enforcement of
+     Read-Only session when this agent is connected to backend database.</para>
+		<figure id="adass22" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg127.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Proceed to the end of this page
+     and then click on the &quot;Update&quot; button.</para>
+		<figure id="adass23" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg129.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>You then commit your changes to
+     the rule book by clicking on the &quot;Reinitialize the OpenLink Request
+     Broker with these settings&quot; hyperlink.</para>
+		<figure id="adass24" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg131.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Admin Assistant confirms
+     commitment of your changes to the rule book.</para>
+ 		<figure id="adass24a" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg123.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Now that you have created a
+     OpenLink Agent Template for Read-Only sessions against your backend
+     database you can now proceed to the creation of your session rule.</para>
+     <para>Follow the &quot;Server Components Administration&quot;-&gt;&quot;Session
+     Rules Administration&quot;-&gt;&quot;Session Rules Editor&quot; menu path
+     which brings you to a screen identical to the one depicted below, this presents
+     you with a list of existing session rules (all OpenLink installations come
+     with a set of pre-configured session rules).</para>
+		<figure id="adass25" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg134.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Scroll to the bottom of the
+     session rules editor page and then click on the &quot;Add a new rule&quot;
+     hyperlink, this opens up a new session rules page.</para>
+		<figure id="adass26" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg136.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Create your new session rule. </para>
+<para>A session rule is broken down into three parts a &quot;Rule Number&quot;,
+     a &quot;When&quot; predicate and a &quot;Then&quot; processing
+     instruction.</para>
+<formalpara>
+<title>Rule Number:</title>
+     <para>This sets the order in which the session rules are evaluated. The Request
+     Broker reads scans session rules in ascending &quot;Rule Number&quot;.</para>
+</formalpara>
+<formalpara>
+<title>&quot;When&quot; Predicate:</title>
+<para>Enter a regular expression value into the field beside the &quot;+&quot;
+     button, this identifies to the Request Broker an OpenLink Service Type (a
+     Domain attribute) value that forms one of the Connection Attributes that
+     make up the session rule that you are constructing. Simply click on
+     the &quot;+&quot; button to Add other Connection Attributes that will make
+     up the session rule that you are constructing. In this example we want our
+     session rule to apply to all OpenLink clients thus entering an
+     &quot;*&quot; (which implies any Domain attribute and sub attributes)
+     serves our needs adequately. </para>
+</formalpara>
+<formalpara>
+<title>&quot;Then&quot; Processing Instruction:</title>
+     <para>Check the &quot;Accept&quot; radio button and then select an OpenLink
+     Agent template to associate with your rule by clicking on the
+     &quot;configuration&quot; Listbox. The template that you choose needs to
+     match the one that you placed in Read-Only mode at the start of this
+     exercise. Then click on the &quot;Add&quot; button.</para></formalpara></listitem>
+   <listitem><para>You then commit your changes to
+     the rule book by clicking on the &quot;Reinitialize the OpenLink Request
+     Broker with these settings&quot; hyperlink.</para>
+		<figure id="adass27" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg131.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Attempt a new OpenLink Client
+     connection to you backend database and then attempt a record update, you
+     will observe that your update attempt will be rejected and an error
+     condition communicated to you via your ODBC, JDBC, UDBC,or OLE-DB based
+     application.</para></listitem>
+</orderedlist>
+</sect3> 
+<sect3 id="ruleforceropercli">
+<title>Creating A Session Rule That Enforces READ-ONLY sessions for a specific OpenLink Client User</title>
+<para>The steps that follow guide you through the
+process of building a session rule that enforces read-only data access for a
+specific User account across all OpenLink ODBC, JDBC, UDBC, and OLE-DB
+sessions.</para>
+<orderedlist>
+   <listitem><para>Follow Steps 1 - 10 of the &quot;Read-Only&quot; session
+     rules exercise above.</para></listitem>
+   <listitem><para>Create your new session rule. </para>
+     <para>A session rule is broken down into three parts a &apos;Rule Number&apos;, a
+     &quot;When&quot; predicate and a &quot;Then&quot; processing instruction.</para>
+     <formalpara>
+		<title>Rule Number:</title>
+     <para>This sets the order in which the session rules are evaluated. The Request
+     Broker reads scans session rules in ascending &quot;Rule Number&quot;.</para></formalpara>
+     <formalpara>
+		<title>&quot;When&quot; Predicate:</title>
+     <para>Enter a regular expression value into the field beside the &quot;+&quot;
+     button, this identifies to the Request Broker an OpenLink Client User (the
+     User attribute) value that forms one of the Connection Attributes that
+     make up the session rule that you are constructing. Simply click on the
+     &quot;+&quot; button to Add other Connection Attributes that will make up
+     the session rule that you are constructing. In this example we want our
+     session rule to apply to a specific OpenLink Client User irrespective of
+     anything else. Thus, entering the value &quot;^Test$&quot; implies that
+     anyone that makes an ODBC, JDBC, UDBC, or OLE-DB connection using the user
+     name &quot;Test&quot; operates against your backend database in Read-Only
+     mode.</para></formalpara>
+     <formalpara>
+		<title>&quot;Then&quot; Processing Instruction:</title>
+     <para>Check the &quot;Accept&quot; radio button and then select an OpenLink
+     Agent template to associate with your rule by clicking on the
+     &quot;configuration&quot; Listbox. The template that you choose needs to
+     match the one that you placed in Read-Only mode at the start of the &quot;Read-Only&quot; 
+     session rules exercise. Then click on the &quot;Add&quot; button.</para></formalpara>
+		<figure id="adass28" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg139.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Click on the &quot;Update&quot;
+     button to complete the rule creation exercise and then reinitialize the
+     Request Broker when prompted.</para></listitem>
+   <listitem><para>Attempt a connection under the
+     user name &quot;Test&quot; and attempt a database record update. Note that
+     &quot;Test&quot; must be a valid user account in your database
+     environment.</para></listitem>
+</orderedlist>
+</sect3>
+<sect3 id="rulerogrp">
+<title>Creating A Session Rule That Enforces READ-ONLY sessions for a Group of Users</title>
+<para>The steps that follow guide you through the
+process of building a session rule that enforces read-only data access for a
+specific group of users across all OpenLink ODBC, JDBC, UDBC, and OLE-DB
+sessions.</para>
+<orderedlist>
+   <listitem><para>Follow Steps 1 - 10 of the &quot;Read-Only&quot; session
+     rules exercise above.</para></listitem>
+   <listitem><para>A session rule is broken down into
+     three parts a &quot;Rule Number&quot;, a &quot;When&quot; predicate and a
+     &quot;Then&quot; processing instruction.</para>
+     <formalpara>
+<title>Rule Number:</title>
+     <para>This sets the order in which the session rules are evaluated. The Request Broker
+     reads scans session rules in ascending &quot;Rule Number&quot;.</para>
+     </formalpara>
+<formalpara>
+<title>&quot;When&quot; Predicate:</title>
+     <para>Enter a regular expression value into the field beside the &quot;+&quot;
+     button, this identifies to the Request Broker an OpenLink Client User (the
+     User attribute) value that forms one of the Connection Attributes that
+     make up the session rule that you are constructing. Simply click on the
+     &quot;+&quot; button to Add other Connection Attributes that will make up
+     the session rule that you are constructing. In this example we want our
+     session rule to apply to a group of OpenLink Client Users irrespective of
+     anything else. Thus, entering the value: &quot;^Test$|^Mary$|^John$&quot;
+     implies that anyone that makes an ODBC, JDBC, UDBC, or OLE-DB connection
+     using either the user name &quot;Test&quot; or &quot;Mary&quot; or
+     &quot;John&quot; operates against your backend database in Read-Only mode.</para>
+     </formalpara>
+<formalpara>
+<title>&quot;Then&quot; Processing Instruction:</title>
+     <para>Check the &quot;Accept&quot; radio button and then select an OpenLink
+     Agent template to associate with your rule by clicking on the
+     &quot;configuration&quot; Listbox. The template that you choose needs to
+     match the one that you placed in Read-Only mode at the start of the &quot;Read-Only&quot; 
+     session rules exercise. Then click on the &quot;Add&quot; button.</para></formalpara>
+		<figure id="adass29" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg141.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Click on the &quot;Update&quot;
+     button to complete the rule creation exercise and then reinitialize the
+     Request Broker when prompted.</para></listitem>
+   <listitem><para>Attempt a connection under the
+     user name &quot;Test&quot; and attempt a database record update. Note that
+     &quot;Test&quot; must be a valid user account in your database
+     environment.</para></listitem>
+</orderedlist>
+</sect3> 
+<sect3 id="ruleroapp">
+<title>Creating A Session Rule That Enforces READ-ONLY sessions for a specific OpenLink Client Application</title>
+<para>The steps that follow guide you through the
+process of building a session rule that enforces read-only data access for a
+specific Application.</para>
+<orderedlist>
+  <listitem><para>Follow Steps 1 - 10 of the &quot;Read-Only&quot; session rules exercise
+previously.</para>
+</listitem>
+  <listitem><para>Create your new session rule. </para>
+<para>A session rule is broken down into three parts a &quot;Rule Number&quot;, a
+&quot;When&quot; predicate and a &quot;Then&quot; processing instruction.</para>
+<formalpara>
+<title>Rule Number:</title>
+<para>This sets the order in which the session rules are evaluated. The Request
+Broker reads scans session rules in ascending &quot;Rule Number&quot;.</para>
+</formalpara>
+<formalpara>
+<title>&quot;When&quot; Predicate:</title>
+<para>Enter a regular expression value into the field beside the &quot;+&quot;
+button, this identifies to the Request Broker an OpenLink Client Application
+(the Application attribute) value that forms one of the Connection Attributes
+that make up the session rule that you are constructing. Simply click on the
+&quot;+&quot; button to Add other Connection Attributes that will make up the
+session rule that you are constructing. In this example we want our session
+rule to apply to a specific OpenLink Client Application irrespective of
+anything else. Thus, entering the value &quot;^MSACCESS$&quot; implies that
+anyone that makes an ODBC, JDBC, UDBC, or OLE-DB connection using the
+Application presented by an OpenLink Client as &quot;MSACCESS&quot; operates
+against your backend database in Read-Only mode.</para>
+</formalpara>
+<formalpara>
+<title>&quot;Then&quot; Processing Instruction:</title>
+<para>Check the &quot;Accept&quot; radio button and then select an OpenLink Agent
+template to associate with your rule by clicking on the
+&quot;configuration&quot; Listbox. The template that you choose needs to match
+the one that you placed in Read-Only mode at the start of the &quot;Read-Only&quot; session rules exercise.
+Then click on the &quot;Add&quot; button.</para></formalpara>
+		<figure id="adass30" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg143.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Click on the &quot;Update&quot; button
+to complete the rule creation exercise and then reinitialize the Request Broker
+when prompted.</para></listitem>
+  <listitem><para>Attempt a connection under the user
+name &quot;Test&quot; and attempt a database record update. Note that
+&quot;Test&quot; must be a valid user account in your database environment.</para>
+</listitem>
+</orderedlist>
+</sect3>
+<sect3 id="ruleronet">
+<title>Creating A Session Rule That Enforces READ-ONLY sessions for OpenLink 
+Client connections outside of your Local Area Network (LAN)</title>
+<para>Imagine a scenario in which you staff have
+access to your corporate databases over the internet due to the fact that you
+permit employees to work remotely. It may so happen that the work that your
+require them to do of site requires only a read-only session. The steps that
+follow guide you through the process of creating a session rule that only gives
+read-write database access to employees within your network domain, once they
+connect outside of this domain the sessions are automatically read-only.</para>
+<para>This exercise assumes that your LAN is a
+class C type TCP/IP network with 123.123.123 identifying your LAN.</para>
+<orderedlist>
+  <listitem><para>Follow Steps 1 - 3 of the &quot;Read-Only&quot; session rules exercise
+previously.</para>
+</listitem>
+  <listitem><para>Since you are attempting to create a
+read-only session rule for a particular type of connection, you need to ensure
+that you actually have an OpenLink Agent template for your Read-Only database
+sessions and another Agent template for your Read-Write database
+sessions. The ReadOnly attribute of the Read-Only Agent template should
+be set to &quot;Y&quot; or &quot;Yes&quot;, while that of the Read-Write
+session left unchanged. </para>
+<para>To set things up navigate the Admin Assistant menu down the following path:
+&quot;Server Components Administration&quot;-&gt;&quot;Database Agent
+Administration&quot;-&gt;&quot;Database Agent Settings (Form)&quot; .
+Locate the database agent for your database engine type from the list presented
+and then click on the &quot;Edit&quot; hyperlink.</para>
+		<figure id="adass31" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg145.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Locate the &quot;Read Only&quot;
+checkbox and then hatch the box which indicates the enforcement of Read-Only
+session when this agent is connected to backend database.</para>
+		<figure id="adass32" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg147.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Proceed to the end of this page and
+then click on the &quot;Update&quot; button.</para>
+		<figure id="adass33" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg149.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Create a new OpenLink Agent template
+for the same database, but this time around we will not alter it Read-Only
+setting since this is disabled by default. </para>
+<para>To set things up by navigate the Admin Assistant menu down the following path:
+&quot;Server Components Administration&quot;-&gt;&quot;Database Agent
+Administration&quot;-&gt;&quot;Database Agent Settings (Form)&quot; .
+Scroll to the bottom of the page and then click on the &quot;Add&quot;
+hyperlink.</para>
+<para>Enter a name for your Agent template in the &quot;Name&quot; field, a
+descriptive comment in the &quot;Comment&quot; field, then click on the
+&quot;Make a copy of the configuration&quot; and select the template name that
+matches your Read-Only template. </para>
+		<figure id="adass34" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg151.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>You now have a new Agent template
+named &quot;basic_session&quot;, but since this is based on your Read-Only
+template (which was created earlier) you need to change its Read-Only
+attributes to that Read-Only session aren&apos;t enforced when OpenLink client
+connections are associated with this template after the &quot;Mapping
+Rules&quot; evaluation process. To do this navigate the Admin Assistant menu
+down the following path: &quot;Server Components
+Administration&quot;-&gt;&quot;Database Agent
+Administration&quot;-&gt;&quot;Database Agent Settings (Form)&quot; .
+Locate the Agent template named &quot;basic_session&quot; and then click on the
+&quot;Edit&quot; button. Uncheck the &quot;Read Only&quot; checkbox.</para>
+		<figure id="adass35" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg153.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Proceed to the end of this page and
+then click on the &quot;Update&quot; button.</para>
+		<figure id="adass36" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg155.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Proceed to the creation of your session rule.</para>
+<para>Follow the &quot;Server Components Administration&quot;-&gt;&quot;Session Rules
+Administration&quot;-&gt;&quot;Session Rules Editor&quot; menu path which
+brings you to the session rules editor, click on the &quot;Add new rule&quot;
+hyperlink so that the new session rule page is presented to you.</para>
+		<figure id="adass37" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg157.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Create your new session rule.</para>
+<para>A session rule is broken down into three parts a &quot;Rule Number&quot;, a
+&quot;When&quot; predicate and a &quot;Then&quot; processing instruction.</para>
+<formalpara>
+<title>Rule Number:</title>
+<para>This sets the order in which the session rules are evaluated. The Request
+Broker reads scans session rules in ascending &quot;Rule Number&quot;. Since
+you are going to be creating two rules (one for read-write sessions and another
+for read-only sessions), you need to order your rules appropriately, remember
+Request Broker reads these rules for evaluation in ascending order. In this
+case the rule for read-write sessions is the exception to the norm so we change
+the number of this rule to 1.</para>
+</formalpara>
+<formalpara>
+<title>&quot;When&quot; Predicate:</title>
+<para>Enter a regular expression value into the field beside the &quot;+&quot;
+button, this identifies to the Request Broker an OpenLink Client Machine (the
+Machine attribute) value that forms one of the Connection Attributes that make
+up the session rule that you are constructing. Simply click on the
+&quot;+&quot; button to Add other Connection Attributes that will make up the
+session rule that you are constructing. In this example we want our session
+rule to apply to a specific OpenLink Client Machines irrespective of anything
+else. Thus, entering the value &quot;123.123.123&quot; implies that any machine
+that makes an ODBC, JDBC, UDBC, or OLE-DB connection with an from an IP Address
+that starts with &quot;123.123.123&quot; operates against your backend
+database in Read-Write mode. </para>
+</formalpara>
+<formalpara>
+<title>&quot;Then&quot; Processing Instruction:</title>
+<para>Check the &quot;Accept&quot; radio button and then select an OpenLink Agent
+template to associate with your rule by clicking on the
+&quot;configuration&quot; Listbox. The template that you choose needs to match
+the one that you placed in Read-Only mode at the start of the Read-Only&quot; session rules exercise.
+Then click on the &quot;Add&quot; button.</para>
+<para>Logically all other connections will end up being in Read-Only mode since they
+will not be resolved to having an IP Address that starts with
+&quot;123.123.123&quot;. This also means that they will not be associated with
+the &quot;basic_agent&quot; Agent Template which is the only means of establishing
+a Read-Write session with your backend database.</para></formalpara>
+		<figure id="adass38" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg159.png" format="png"></graphic>
+		</figure>
+</listitem>
+  <listitem><para>Click on the &quot;Update&quot; button to complete the rule creation
+exercise and then reinitialize the Request Broker when prompted.</para></listitem>
+  <listitem><para>Attempt a connection from outside your LAN and attempt a database
+record update.</para>
+</listitem></orderedlist>
+</sect3>
+<sect3 id="resourcemanrul">
+<title>Resource Management Oriented &quot;Session Rules&quot; Examples</title>
+<para>The examples addressed in this section
+focus on the the management of OpenLink Agent processes with the view to
+providing systems administrators with the ability to tune OpenLink Agents in
+line with operating system resource constraints.</para>
+<formalpara>
+<title>Unconditionally Sharing One
+Database Agent Instance Across Numerous OpenLink Clients</title>
+<para>You might want to reduce the number of
+OpenLink Agents in use at any given time, a good reason for doing this stems
+from the fact that OpenLink Agent instances are processes which like
+other processes on your machine will consume a chunk of resources per
+instance. The more Agents you have running the more operating system kernel
+resources are consumed. Thus, by setting a ReUse attribute value of
+&quot;always&quot; you could ensure that under no condition is more than one
+Agent instance running. </para>
+<para>Note: An exception to this rule only occurs
+if the Request Broker attempts to associate a new OpenLink Client session with
+an existing agent that hasn&apos;t completed its processing cycle, under these
+circumstance the Request Broker will spawn a new Agent instance.</para>
+<para>The steps that follow guide you through the
+process of creating the appropriate session rule using the Admin Assistant:</para>
+<orderedlist>
+   <listitem><para>Start the Request Broker</para></listitem>
+   <listitem><para>Start a Web Browser session</para></listitem>
+   <listitem><para>Enter the following URL into your browser:</para>
+<para>If you started the Request Broker on your local machine enter:</para>
+<programlisting>http://localhost:8000/ </programlisting>
+<para>(assuming you accepted port 8000 as the Admin Assistant port number at
+     installation time).</para>
+<para>If the Request Broker in on another machine enter:</para>
+<programlisting>http://&lt;hostname or IP address&gt;:8000/</programlisting>
+<para>(assuming you accepted port 8000 as the Admin Assistant port number at
+     installation time).</para></listitem>
+   <listitem><para>Since you are attempting to
+     modify the ReUse attribute of an existing Agent Template simply navigate
+     the Admin Assistant menu down the following path: &quot;Server Components
+     Administration&quot;-&gt;&quot;Database Agent
+     Administration&quot;-&gt;&quot;Database Agent Settings (Form)&quot;.
+     Locate the database agent for your database engine type from the list
+     presented and then click on the &quot;Edit&quot; hyperlink.</para>
+		<figure id="adass39" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg161.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Scroll down to the
+     &quot;Client-Server Process Mapping &amp; Control section, and then check
+     the &quot;Always&quot; radio button as depicted in the screen shot below.</para>
+		<figure id="adass40" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg163.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Click on the
+     &quot;Update&quot; button to complete the rule creation exercise and then
+     reinitialize the Request Broker when prompted.</para></listitem>
+   <listitem><para>Restart your Broker in
+     debug mode.</para></listitem>
+   <listitem><para>Attempt multiple OpenLink
+     ODBC, JDBC, UDBC, OLE-DB connections from the same and different machines.</para></listitem>
+   <listitem><para>Then navigate the Admin
+     Assistant menu down the following path: &quot;Server Components
+     Administration&quot;-&gt;&quot;Request Broker
+     Administration&quot;-&gt;&quot;List of Current connections&quot; . This
+     will show you how many OpenLink Client connections that you have open and
+     how many OpenLink Agents are serving these sessions.</para></listitem>
+</orderedlist>
+</formalpara>
+<formalpara>
+<title>Conditionally Sharing One Database Agent Instance Across Numerous Data Access Clients</title>
+<para>There may be times where you only want to
+conditionally pool connections from your OpenLink Clients against a particular
+OpenLink Agent instance. The steps that follow show you how to pool all
+OpenLink Client connections from a specific machine to a single Agent instance.
+Thereby creating a scenario in which an one OpenLink Agent instance is spawned
+per OpenLink Client machine.</para>
+<para>The steps that follow guide you through the
+process of creating the appropriate session rule using the Admin Assistant:</para>
+<orderedlist>
+   <listitem><para>Follow steps 1 -4 in the prior section.</para></listitem>
+   <listitem><para>Scroll down to the
+     &quot;Client-Server Process Mapping &amp; Control section, then check the &quot;Conditionally&quot;
+     radio button, then check the checkbox field labeled &quot;When originating
+     from the same machine&quot; as depicted in the screen shot below.</para>
+		<figure id="adass41" float="1">
+		<title>Admin Assistant</title>
+		<graphic fileref="scimg165.png" format="png"></graphic>
+		</figure>
+</listitem>
+   <listitem><para>Click on the
+     &quot;Update&quot; button to complete the rule creation exercise and then
+     reinitialize the Request Broker when prompted.</para></listitem>
+   <listitem><para>Attempt multiple OpenLink
+     ODBC, JDBC, UDBC, OLE-DB connections from the same and different machines.</para></listitem>
+</orderedlist>
+<para>Then navigate the Admin Assistant menu down
+the following path: &quot;Server Components
+Administration&quot;-&gt;&quot;Request Broker
+Administration&quot;-&gt;&quot;List of current connections&quot;. This will
+show you how many OpenLink Client connections that you have open and how many
+OpenLink Agents are serving these sessions.</para>
+</formalpara>
+</sect3>
+</sect2>
+</sect1>
+</chapter>
