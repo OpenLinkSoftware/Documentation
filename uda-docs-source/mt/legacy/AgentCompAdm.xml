@@ -1,0 +1,4242 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+     $Id: AgentCompAdm.xml,v 1.3 2008/01/15 12:22:29 piglet Exp $
+     (C)Copyright 1996-2018 OpenLink Software
+  -->
+<chapter id="AgentCompAdm" >
+  <title>Server Agent Administration</title>
+  <abstract>
+    <para>
+      Guide for successfully installing and running the OpenLink server components
+      from the OpenLink Multi Tier Data Access Suite.  This chapter describes the 
+      roles of the OpenLink Database/Service Agents and how to configure them.  OpenLink 
+      Server Agents come in two main types, the Database agent and the Service agent.  
+      Database agents provide the only database dependant component, usually requiring 
+      a separate agent per database major version to connect to.  Service agents 
+      provide other services such as proxying of connections or special interfaces to 
+      other ODBC data sources.  
+    </para>
+  </abstract>
+  <chapterinfo>
+    <keywordset>
+      <keyword>ODBC</keyword>
+      <keyword>ODBC Driver</keyword>
+      <keyword>ODBC Drivers</keyword>
+      <keyword>Server</keyword>
+      <keyword>Agent</keyword>
+      <keyword>Database</keyword>
+      <keyword>Database Agent</keyword>
+      <keyword>Broker</keyword>
+      <keyword>Request Broker</keyword>
+    </keywordset>
+  </chapterinfo>
+  <para>OpenLink Database/Service Agents are the only database specific components 
+    within the OpenLink Multi-Tier middleware framework.  It is these components 
+    that actually initiate and maintain database sessions with your OpenLink Clients, 
+    basically playing the role of a data access server.</para>
+  <para>Database Agents are servers implementing client data access interfaces 
+    such as ODBC, JDBC, UDBC, and OLE-DB using the lower level native call level 
+    interfaces provided by each supported database engine.  These call level 
+    interfaces are themselves increasing based on the X/Open SQL Call Level Interface 
+    (CLI) specification. The older database engines that do not support or 
+    implement the X/Open SQL CLI specification simply provide traditional Embedded 
+    SQL interfaces.</para>
+  <para>The fact that Database Agents are built using natives interfaces provided 
+    by database engine vendors has some very important implications:</para>
+  <!-- ######################## -->
+  <orderedlist>
+    <listitem>
+      <para>Through the eyes of a backend database, a database agent
+        is a database client, no different to any other native client provided or
+        bundled with the backend database engine.</para>
+    </listitem>
+    <listitem>
+      <para>A database agent inherits all of the functionality of a
+        traditional database client, this includes: Distributed Database, SQL
+        syntax, Stored Procedure support, and anything else that may be specific
+        to the relevant backend database engine.</para>
+    </listitem>
+    <listitem>
+      <para>Configuring a database agent is no different to configuring an
+        native database client, they share operating system environment variable
+        dependencies etc..</para>
+    </listitem>
+    <listitem>
+      <para>Resource utilization is identical to resource consumption for
+        native clients, this means that if you have special setting for your
+        native client sessions, you will be able to apply these when configuring
+        your database agents.</para>
+    </listitem>
+    <listitem>
+      <para>Any efficiencies or deficiencies in the database engines CLI
+        client to database server inter process communications (IPC) also affects
+        a database agent. </para>
+    </listitem>
+  </orderedlist>
+  <para>All database engines operate under a client-server paradigm, that is 
+    to say there are always two distinct processes involved in a database 
+    session, the database server and the database client.  The database server 
+    must be up and running before a database client can communicate with a 
+    database. Database client and server processes may or may not reside on the 
+    same physical machine, at the same time this has no bearing on the 
+    fundamentals of database client and server process interaction as
+    just explained.</para>
+  <sect1 id="agentconfig">
+    <title>Administration Assistant</title>
+    <sect1info>
+      <keywordset>
+        <keyword>Administration Assistant</keyword>
+      </keywordset>
+    </sect1info>
+    <para>Every database engine has a one or more key
+      values that need to be set in order for database clients to be able to
+      communicate with database servers. These values take the form of host operating
+      system environment variables, database connection string formats/parameters, or
+      a combination of both. </para>
+    <para>Configuring your OpenLink database agent is
+      all about creating session initialization templates in the Sessions Rules Book
+      which map key database client values with OpenLink Agent Template Attributes.</para>
+    <para>OpenLink provides a user friendly
+      utility for configuring your database agents, namely the OpenLink Admin
+      Assistant. Another option is to edit the rule book manually, but the availability of the
+      utility makes this a less recommended option, certainly one for experienced
+      OpenLink users only.</para>
+    <!--
+        <sect2 id="oplconfutil">
+          <title>OpenLink Configuration Utility (&quot;oplcfg&quot;)</title>
+          <para>At the end of the end of your OpenLink
+            server components installation process, the installation program will
+            automatically start the &quot;oplcfg&quot; utility, thereby enabling you to
+            configure your database agent(s) as part of the installation process.</para>
+          <para>If you have already installed your server
+            components successfully but need to make changes to your initial database agent
+            setting then you can initialize the &quot;oplcfg&quot; utility from the your
+            host operating system&apos;s command line prompt, simply enter the following command
+            from within the &quot;bin&quot; sub-directory under your base OpenLink server
+            components installation directory:</para>
+          <programlisting>oplcfg</programlisting>
+          <para>You will then be presented with a character
+            based menu system as depicted below:</para>
+          <screen>
+            OpenLink Server Components Configuration Utility
+            1.  Request Broker		11. PostgresSQL
+            2.  Informix 5			12. Progress 6
+            3.  Informix 6			13. Progress 7
+            4.  Informix 7			14. Progress 8
+            5.  Progress 6			15. Solid
+            6.  Virtuoso 			16. Sybase 4
+            7.  OpenProgress 		17. Sybase 10
+            8.  Oracle 6			18. Sybase 11
+            9.  Oracle 7			19. Unify 2000
+            10. Oracle 8			20. Velocis
+            U.  Undo last change		V. View the current Rules Book
+            C.  Clear log file		L. View log file
+            B.  Backup Rules Book		R. Restore Rules Book
+            I.  Verify Rules Book		N. Reinitialize running Broker
+            S. Startup  Request Broker	D. Shutdown Request Broker
+            Choose an item or type q to quit :
+          </screen>
+          <para>You then enter a number that matches the
+            database engine that you will configuring your database agent(s) to work with.</para>
+          <para>You will be prompted for each value.</para>
+          <para>Once this is completed you will have to
+            edit the rule book (the file &quot;oplrqb.ini&quot;) manually in order to set
+            up any database session specific values. Another option is to start up the
+            Admin Assistant which provides an intuitive GUI for configuring your database
+            agents.</para>
+        </sect2>
+        -->
+    <para>The preferred and much more flexible way of
+      configuring your database agents is through the OpenLink Admin Assistant. This
+      is a powerful HTML based GUI that is usable from any Web Browser, it provides
+      you with two approaches to configuring database agents using Wizards or forms.</para>
+    <sect2 id="wizbasedconf">
+      <title>Wizard Based Administration</title>
+      <para>This approach to database agent
+        administration is going to be exemplified using OpenLink Virtuoso™ as the
+        database agent that is being administered. Please note that nothing in this
+        example is database specific beyond the actual values entered. A database
+        specific section follows which addresses these issues on database engine
+        specific basis. </para>
+      <orderedlist>
+        <listitem>
+          <para>Start the Admin Assistant by entering
+            the following URL into your browser: http://&lt;IP Address or Network Alias of
+            machine hosting the OpenLink Database Agents to be Administered&gt;:&lt;Admin
+            Assistant Port number&gt;
+          </para>
+          <para>
+            For a network machine aliased as &quot;mainserver&quot; using the default
+            OpenLink Admin Assistant port &quot;8000&quot; the URL required would be
+            entered as follows: http://mainserver:8000
+          </para>
+          <para>
+            You will be presented with a screen similar to the one below:
+          </para>
+          <figure id="dbadmn01" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg023.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Expand the &quot;Server Components
+            Administration&quot;, and &quot;Database Agent Administration&quot; menus. Once
+            this is done you need to then click on the &quot;OpenLink Database Agent
+            Settings (Wizard)&quot; hyperlink. This will bring you to the first Database
+            Agent Wizard dialog as depicted below:
+          </para>
+          <figure id="dbadmn02" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg025.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>From the list of pre-configured
+            database agents select one that matches the database engine that your database
+            agent will be communicating with, note that every database supported by OpenLink
+            will have a pre-configured default agent initialization template listed. 
+          </para>
+          <figure id="dbadmn03" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg027.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Click the &quot;Edit&quot; button to
+            commence re configuring this database agent for your specific needs. Enter a
+            name in the &quot;Agent Name&quot; field that is to be used to identify the
+            database agent that your are configuring (it is recommended that you keep the
+            default, if you do opt for a new name please don&apos;t enter names that contain
+            spaces), also enter text into the &quot;Comment&quot; field describing your
+            database agent. Once completed click on the &quot;Next&quot; button.
+          </para>
+          <figure id="dbadmn04" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg029.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>You can force your OpenLink clients to
+            connect a backend database using a pre-assigned username and password
+            combination, this is done by entering the values that you want to enforce into
+            the &quot;User Name&quot; and &quot;Password&quot; fields in the Wizard dialog
+            depicted below. This activity implies that irrespective of what username
+            password combination is entered at OpenLink client configuration or connect
+            time, the values that you provide will take precedence. If you do not want to
+            enforce username and password combinations for your OpenLink clients simply
+            leave the &quot;User Name&quot; and &quot;Password&quot; fields blank. Click on
+            the &quot;Next&quot; button to continue.
+          </para>
+          <figure id="dbadmn05" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg031.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Enter a value in the &quot;Database
+            Name&quot; field that identifies the actual database within your database engine&apos;s
+            environment that you want to connect your OpenLink clients with, the format of
+            these values vary by database engine type. You can control what type of
+            session(s) your OpenLink clients conduct with your backend database by choosing
+            the appropriate value from the &quot;Read Only Specifier&quot; listbox. If you
+            are connecting to a database that does not reside on the same machine as your
+            database agent, or circumstances require you to use the networking middleware
+            provided by your database vendor (which is already installed on the same
+            machine as the database agent), then you can enter the remote database
+            connection values required by your remote database into the
+            &quot;ConnectOptions&quot; field. Once completed click the &quot;Next&quot;
+            button to continue.</para>
+          <figure id="dbadmn06" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg033.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Some database engines allow their
+            clients to configure session resources, in situations where this holds true you
+            can use the &quot;Server Options&quot; field to set these values for your
+            database agent sessions.</para>
+          <para>
+            You can also configure your database agents such that the database agent that
+            services OpenLink clients acts as a PROXY to other database agents residing on
+            a remote OpenLink server(s) within your network infrastructure. This is
+            basically a 3-Tier or N-Tier Distributed Database Agent configuration and the
+            key configuration values go into the &quot;Domain Type&quot; and &quot;Host
+            Name&quot; fields.</para>
+          <para>
+            Domain Type - this is your OpenLink agent Server type (Virtuoso, Oracle.
+            Informix, ODBC, PROXY, etc..), in the case of a typical 3-tier configuration
+            you would enter the value PROXY, this implies that you are going to a PROXY
+            agent rather than an database agent.</para>
+          <para>
+            Host Name - this is how you identify the machine hosting the Request Broker
+            that binds your OpenLink clients with the OpenLink agent designated by the
+            value entered into the &quot;Domain Type&quot; field.</para>
+          <para>
+            In most case all of these fields can simply be left blank. Click on the
+            &quot;Next button to continue.</para>
+          <figure id="dbadmn07" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg035.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>For security purposes there are times
+            when you want to validate your OpenLink clients at the operating system level
+            before they actually initiate sessions with your backend database. In some
+            cases backend databases presume that your ability to attempt database
+            connection implies your being a valid operating system users, this can be a
+            major security hole for those database engines that do not conduct their own username
+            and password verification. By hatching the &quot;Require Operating System
+            Identity&quot; checkbox your database agent will validate OpenLink clients at
+            the operating system level before attempting a connection to your backend
+            database. Click the &quot;Next&quot; button to continue.
+          </para>
+          <figure id="dbadmn08" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg037.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>You can enforce consistent transaction
+            behavior across your OpenLink clients through the &quot;No Auto Commit On
+            Startup&quot; field, this ensures that database commands originating from
+            OpenLink clients do not contain trailing &quot;Commit&quot; instructions.
+            Without this restriction database integrity could easily be compromised by
+            incomplete transactions creating broken records. You enable this protection by
+            hatching the &quot;No Auto Commit On Startup&quot; checkbox.</para>
+          <para>You can also enforce application specific data type translation handling
+            specifically for Microsoft Jet Engine based OpenLink ODBC clients by hatching
+            the &quot;Jet Engine Catalogs&quot; checkbox. This is a very application
+            specific feature that is only required when Microsoft&apos;s Jet engine is the OpenLink
+            ODBC client.</para>
+          <para>Click the &quot;Next&quot; button to continue.</para>
+          <figure id="dbadmn09" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg039.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>There are times when you may want to restrict the number of records
+            that your database agent transmits to your OpenLink clients. In such scenarios
+            you can enter a numeric value into the &quot;Limit result set&quot; field that
+            represents the maximum number of records from a database query resultset that
+            your database agent should transmit back to your OpenLink clients. This
+            features protects your network from &quot;Innocent Queries From Hell&quot;,
+            these are queries that end-user unknowingly generate when using visual query
+            tools, especially as they familiarize themselves with the concepts of SQL
+            querying.</para>
+          <para>
+            There are also times when critical database functionality may not be
+            implemented as part of the ODBC. JDBC., UDBC,or OLE-DB specifications,
+            but you need to make use of such functionality in order to run your
+            database infrastructure smoothly. When this situation arises you are
+            able to use the &quot;Initial SQL script&quot; field to enter a value
+            that points to a script file containing a set of SQL instructions that
+            implemented the desired functionality. This field corresponds to
+            specifying &quot;CommandLine = +initsql filename&quot; in the rulebook
+            (oplrqb.ini).</para>
+          <para>
+            In some cases you may find yourself having to deal with the fact that although
+            the functionality may be implemented at the ODBC, UDBC, JDBC, OLE-DB
+            specification level, the client application connecting to your database via
+            OpenLink simply is not making use of this functionality. In this scenario the
+            &quot;Initial SQL Script&quot; field comes in handy. A typical example is
+            default Transaction Isolation Levels handling.</para>
+          <para>Click &quot;Next&quot; to continue.</para>
+          <figure id="dbadmn10" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg041.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>You identify the binary executable file that represents the specific
+            database agent for your backend database by entering the binary files name in
+            the &quot;Executable Name&quot; field. This set for you by default and unless
+            you rename this file yourself it does not need to be changed. </para>
+          <para>Many database environments are driven by operating system level environment
+            variables, the &quot;Environment Variables&quot; field allows you to set or
+            re-configure these values (see database specific settings section). 
+            Click the &quot;Next&quot; button to continue.</para>
+          <figure id="dbadmn11" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg043.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>There may be some database agent specific options that you need to
+            apply specifically to sessions with your backend database (see usage part of &quot;obtaining 
+            database agent information&quot;
+            section for list of values), you enter these values into the &quot;Other
+            Options&quot; field.</para>
+          <para>
+            You also need to indicate the directory in which your database agent executable
+            binary file resides, this is only required if you have moved these files from
+            their default location after installation. Click the &quot;Next Button&quot; to
+            continue.</para>
+          <figure id="dbadmn12" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg045.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Your database agents act as servers to your OpenLink clients, this
+            implies that as server processes they do consume server operating system
+            resources. You can control resource consumption by predefining how many
+            database agent instances are to be started as a result of OpenLink clients
+            connections, and the basis upon which these instance are reused by subsequent
+            OpenLink client connections. The &quot;Never&quot;, &quot;Always&quot;,
+            and &quot;Conditionally&quot; radio button allows you to choose the option that
+            best suits your infrastructure&apos;s needs.</para>
+          <para>
+            The &quot;Accept Up To&quot; field allows you to enter a numeric value that
+            indicates the maximum number of new database agent processes that can be
+            instantiated on a given OpenLink server operating environment.</para>
+          <para>If you choose the &quot;Conditionally&quot; radio button and then click the
+            &quot;Next&quot; button you will be presented with an additional dialog with a
+            list of checkboxes. These checkboxes allow you to customize the sets of circumstances
+            under which you want an OpenLink client connection to result in the
+            instantiation of a new database agent instances. Click the next
+            &quot;Button&quot; to continue.</para>
+          <figure id="dbadmn13" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg047.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>At the end of this Wizard interaction you can opt to make you
+            database agent settings available to the next OpenLink client without shutting
+            down and restarting the Request Broker, you do this by hatching the
+            &quot;Reinitialize&quot; checkbox and then clicking the &quot;Save&quot; button
+            to save your settings.</para>
+          <figure id="dbadmn15" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg049.png" format="png"></graphic>
+          </figure>
+        </listitem>
+      </orderedlist>
+    </sect2>
+    <sect2 id="frmagntadm">
+      <title>Forms Based Administration</title>
+      <para>You can also administer database agents
+        through the Admin Assistant using a &quot;Forms&quot; as opposed to
+        &quot;Wizards&quot; based approach, the steps that follow guide you through
+        this process using the same example (configuring the a database agent for the
+        OpenLink Virtuoso™ database).</para>
+      <orderedlist>
+        <listitem>
+          <para>Start the Admin Assistant by entering
+            the following URL into your browser: http://&lt;IP Address or Network Alias of
+            machine hosting the OpenLink Database Agents to be Administered&gt;:&lt;Admin
+            Assistant Port number&gt;</para>
+          <para>For a network machine aliased as &quot;mainserver&quot; using the default
+            OpenLink Admin Assistant port &quot;8000&quot; the URL required would be
+            entered as follows: http://mainserver:8000</para>
+          <para>Expand the menus for &quot;Server Components Administration&quot;, and
+            &quot;Database Agent Administration&quot;. Once this is done you need to then
+            click on the &quot;Database Agent Settings (Form)&quot; hyperlink. This will
+            bring you to a database agent listing as depicted below:
+          </para>
+          <figure id="dbadmn16" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg051.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>As our example for this exercise is
+            based on the OpenLink Virtuoso database agent, click on the &quot;Edit&quot;
+            hyperlink for the &quot;generic_virt&quot; default database agent (note you can
+            substitute this with the default database agent that matches your backend
+            database). Once these actions are completed you will be presented with the main
+            database agent initialization template form. Complete the values for the fields
+            that apply to needs and then click on the &quot;Update&quot; button at the
+            bottom of the form to save your changes.
+          </para>
+          <figure id="dbadmn17" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg053.png" format="png"></graphic>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Click on the &quot;Reinitialize Your
+            OpenLink Request Broker With New Settings&quot; hyperlink, this enables your
+            new setting to be applied to subsequent connections from OpenLink clients
+            without disrupting existing OpenLink client sessions.
+          </para>
+          <figure id="dbadmn18" float="1">
+            <title>Admin Assistant</title>
+            <graphic fileref="scimg055.png" format="png"></graphic>
+          </figure>
+        </listitem>
+      </orderedlist>
+    </sect2>
+  </sect1>
+  <!-- ##################################### -->
+  <sect1 id="dbspecset">
+    <sect1info>
+      <keywordset>
+        <keyword>Agent</keyword>
+        <keyword>Agent Settings</keyword>
+      </keywordset>
+    </sect1info>
+    <title>Agent-Specific Settings</title>
+    <para>OpenLink database agents are database clients built using the SQL
+      Call Level or Embedded SQL interfaces of the respective supported
+      backend database engines. Thus, the process of configuring or
+      administering a database agent is similar in essence to what you
+      would have to do if you were administering a native database
+      client. </para>
+    <para>Database engines use environment variables to creating a database
+      specific operating space within which database clients and servers
+      interact, these environment typically address the following important
+      database session related issues:</para>
+    <itemizedlist mark="bullet">
+      <listitem>
+        <para>Database server identification - your database client needs
+          to be able to connect to the appropriate database server, many
+          database implementations support multiple database servers
+          instances listening for client connections at different network
+          ports on the same machine (e.g. OpenLink Virtuoso, Microsoft SQL
+          Server, Sybase, Progress, Informix etc.).</para>
+      </listitem>
+      <listitem>
+        <para>Database engine base installation directory - many database
+          engine environments comprise shared or dynamically linked
+          libraries and other runtime components that are required by
+          database clients. Thus, there is a need for database clients to
+          have a sense of what the actual base or root point of the
+          database engine installation is, this enables the construct of a
+          component search path (similar to the &quot;PATH&quot; operating
+          system environment variable) at runtime.</para>
+      </listitem>
+      <listitem>
+        <para>Database session resource allocation - most database engines
+          allow database session resources to be configured for clients via
+          environment variables (sometimes these variables simply identify
+          resource configuration files).</para>
+      </listitem>
+      <listitem>
+        <para>Database session optimization - some database environments
+          allow query optimizers, network packet sizes, and records transmission
+          values for database clients to be configured via environment variables. </para>
+      </listitem>
+    </itemizedlist>
+    <para>The sections that follow address specific environment settings
+      that affect the configuration of your OpenLink database agents, the
+      values provided can supplanted values used in the Admin Assistant
+      configuration examples provided in the prior section.</para>
+    <sect2 id="oplconfaall">
+      <title>Common Agent Configuration Options</title>
+      <para>The following parameters exist in all Agent Environment
+        sections of the oplrqb.ini</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment xyz]</para>
+              </entry>
+              <entry></entry>
+              <entry>Any agent section</entry>
+            </row>
+            <row>
+              <entry>
+                <para>CURSOR_SENSITIVITY=</para>
+              </entry>
+              <entry>
+                <para>LOW</para>
+              </entry>
+              <entry>
+                <para>Set to HIGH after loading oplrvc.sql</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <formalpara>
+        <title>High Cursor Sensitivity</title>
+        <para>
+          Enables or disables the row version cache used with dynamic cursors.</para>
+        <para>
+          When dynamic cursor sensitivity is set high, the Cursor Library calculates
+          checksums for each row in the current rowset and compares these with the
+          checksums (if any) already stored in the row version cache for the same rows
+          when fetched previously. If the checksums differ for a row, the row has been
+          updated since it was last fetched and the row status flag is set to
+          SQL_ROW_UPDATED. The row version cache is then updated with the latest
+          checksums for the rowset.</para>
+        <para>
+          From the user's point of view, the only visible difference between the two
+          sensitivity settings is that a row status flag can never be set to
+          SQL_ROW_UPDATED when the cursor sensitivity is low. (The row status is
+          instead displayed as SQL_ROW_SUCCESS.) In all other respects, performance
+          aside, the two settings are the same - deleted rows don't appear in the
+          rowset, updates to the row since the row was last fetched are reflected in
+          the row data, and inserted rows appear in the rowset if their keys fall
+          within the span of the rowset.</para>
+        <para>
+          If your application does not need to detect the row status SQL_ROW_UPDATED,
+          you should leave the 'High Cursor Sensitivity' checkbox unchecked, as
+          performance is improved. The calculation and comparison of checksums for
+          each row fetched carries an overhead.</para>
+        <para>
+          If this option is enabled, the table oplrvc must have been created
+          beforehand using the appropriate oplrvc.sql script for the target database.</para>
+      </formalpara>
+    </sect2>
+    <sect2 id="virtspecset">
+      <title>Virtuoso</title>
+      <para>When configuring a Virtuoso database agent
+        the critical configuration items are:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Database Identification - this is the Virtuoso Database
+            Server&apos;s port number, which identifies the actual Virtuoso server process
+            that links you to an actual Virtuoso database file. This is the value that
+            you enter into the &quot;Database Name&quot; field of either your Admin
+            Assistant form or wizard dialog. </para>
+        </listitem>
+      </itemizedlist>
+      <sect3 id="appserv">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are
+          unable to install your OpenLink Request Broker and Database Agents on the same
+          machine as the one hosting your Virtuoso database server. Irrespective of the
+          reasons that lead you to this scenario, it is possible to configure your
+          OpenLink database agents hosted on your Application Server machine such that
+          they connect to a remote Virtuoso database on your Database Server machine
+          using Virtuoso&apos;s database specific networking as opposed to OpenLink&apos;s Database
+          Independent Networking. The end result being a 3-tier
+          distributed OpenLink architecture in which the communication between
+          OpenLink clients and database agents use OpenLink&apos;s Database independent
+          Networking, while the communication between the Virtuoso database agent and the
+          Virtuoso database server uses Virtuoso database specific networking.</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming you have a Virtuoso Database
+          Server called &quot;mainserver2&quot; that has a Virtuoso server process
+          listening for clients at port 1112</para>
+        <orderedlist>
+          <listitem>
+            <para>Ensure that you have a usable connection to Virtuoso using its
+              native networking.</para>
+          </listitem>
+          <listitem>
+            <para>Add the following value to the &quot;Database Name&quot; field
+              within the Admin Assistant Forms or Wizards used to configure your
+              database agent. If you choose to set this value on the client simply enter
+              the same values into the &quot;Database Name&quot; Attribute associated
+              with the configuration of your OpenLink client (see OpenLink ODBC or JDBC or 
+	      UDBC client configuration for more details):</para>
+            <programlisting>mainserver2:1112</programlisting>
+          </listitem>
+        </orderedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="infspecset">
+      <title>Informix</title>
+      <para>When configuring an Informix database agent
+        the critical configuration items are:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Database Identification - this is an actual database name e.g
+            &quot;stores7&quot;, which identifies the actual Informix database file
+            that you want to be connected with. This is the value that you enter into
+            the &quot;Database Name&quot; field of either your Admin Assistant&apos;s
+            database agent configuration form or wizard dialog. If you choose to have
+            database identification take place at the client rather than server, you
+            enter this value into the &quot;Database Name&quot; field or connection
+            attribute when configuring your OpenLink client.</para>
+        </listitem>
+      </itemizedlist>
+      <para>Informix provides a number of environment
+        variables for configuring database clients, the basic set required for
+        successfully connecting your database agent to an Informix database server are
+        tabulated below:</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment INFORMIX5]</para>
+              </entry>
+              <entry></entry>
+              <entry>
+                <para>Informix 5 Agent environment settings</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>INFORMIXDIR=</para>
+              </entry>
+              <entry>
+                <para>/dbs/informix5</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the Informix 5 installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>TBCONFIG=</para>
+              </entry>
+              <entry>
+                <para>tbconfig</para>
+              </entry>
+              <entry>
+                <para>Database server configuration file</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>FORCE_ONLINE_DATABASE=</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry>
+                <para>Force mode to (0) SE or (1) ONLINE</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>[Environment INFORMIX6]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>INFORMIXDIR=</para>
+              </entry>
+              <entry>
+                <para>/dbs/informix6</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the Informix 6 installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>[Environment INFORMIX7]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>INFORMIXDIR=</para>
+              </entry>
+              <entry>
+                <para>/dbs/informix7</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the Informix 7 installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>INFORMIXSERVER=</para>
+              </entry>
+              <entry>
+                <para>online7</para>
+              </entry>
+              <entry>
+                <para>The name of Informix 7 server that you 
+                  want the agent to attach to. As long as you have I-Connect or I-Net
+                  installed, configured and up and running this value can connect your database
+                  agent with remote Informix database servers.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ONCONFIG=</para>
+              </entry>
+              <entry>
+                <para>ONCONFIG</para>
+              </entry>
+              <entry>
+                <para>Database server configuration file</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>FORCE_ONLINE_DATABASE=</para>
+              </entry>
+              <entry>
+                <para>1</para>
+              </entry>
+              <entry>
+                <para>Force mode: 0 for Standard Engine (SE) 1 for ONLINE</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DELIMIDENT=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>This will allow quoted identifiers to be handled.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>OPL_INF_MULTISESS=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Enables Informix mutlisession mode. Y=Each ODBC connection gets its own database session. N=Each ODBC connection shares one database connection.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>OPL_SPACEPADCHAR=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Character data from a CHAR column is fetched with trailing spaces retained. The column data is padded upto the column width. N=Trailing spaces are stripped off.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <!-- ######################## -->
+      <sect3 id="secenhancement">
+        <title>Security Enhancement</title>
+        <para>Due to the fact that Informix leaves
+          username and password verification to the host operating system, it is possible
+          to close what could be an ODBC, UDBC, JDBC, or OLE-DB security loophole by
+          utilizing the OpenLink database agent &quot;OpsysLogin&quot; facility which can
+          be enabled through the Admin Assistant. By enabling this feature your Informix
+          database agent will verify user accounts at the operating system level before
+          attempting to connect to your Informix database. It is important to note that
+          &quot;super-user&quot; or Administrator (depending on operating system)
+          privileges are required to successfully use this feature. This implies that the
+          account that starts the request broker must possess one of the aforementioned
+          system level privileges, on the other hand these privileges aren&apos;t required for
+          your actual OpenLink client sessions.</para>
+      </sect3>
+      <sect3 id="rebuildinf">
+        <title>Rebuilding Informix Database agents</title>
+        <para>
+          OpenLink provides a relinkable library and script files that enable
+          you to rebuild your database agents as shared, as opposed to
+          statically linked binaries, or for the purposes of getting a closer
+          database implementation fit, should your Informix database environment
+          be a more recent release than the actual version used by OpenLink to
+          build the database agent installed on your system. Please read the
+          Relinking OpenLink Database Agents section that follows, for details
+          on how to perform this task.  </para>
+        <para>Note that to run the Informix agents you may require the latest
+          Informix Connect (a free download from the IBM/Informix site); in
+          order to relink them, you require the Client SDK as well.
+        </para>
+      </sect3>
+      <sect3 id="appser">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are
+          unable to install your OpenLink Request Broker and Database Agents on the same
+          machine as the one hosting your Informix database server. Irrespective of the
+          reasons that lead you to this scenario, it is possible to configure your
+          OpenLink database agents hosted on your Application Server machine such that
+          they connect to a remote Informix database on your Database Server machine
+          using Informix database specific networking (I-Connect or I-Net) as opposed to
+          OpenLink&apos;s Database Independent Networking. The end result being a 3-tier
+          distributed OpenLink architecture in which the communication between
+          OpenLink clients and database agents use OpenLink Database independent
+          Networking, while the communication between the Informix database agent and the
+          Informix database server uses I-Connect or I-Net (depending on Informix
+          version).</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming you have an Informix Database
+          Server machine called &quot;mainserver2&quot; that has an Informix I-Connect or
+          I-Net server process running (this is setup and configured via the SQLHOSTS
+          file on the database server machine). </para>
+        <orderedlist>
+          <listitem>
+            <para>On your Application Server (the machine hosting your database
+              agent) create an I-connect or I-Net Connection Alias called
+              &quot;mainserver2&quot; (for purpose of this example only) if a working
+              Connection Alias doesn&apos;t already exist on this machine.</para>
+          </listitem>
+          <listitem>
+            <para>Ensure that you have a usable connection to your remote
+              Informix database using Connection Alias &quot;mainserver2&quot;.</para>
+          </listitem>
+          <listitem>
+            <para>Add the following values to the &quot;Database Server
+              Options&quot; field within the Admin Assistant Forms or Wizards used to
+              configure your database agent. If you choose to set this value on the
+              client simply enter the same value into to the &quot;Database Name&quot;
+              Attribute associated with the configuration of your OpenLink client (see
+              OpenLink ODBC or JDBC or UDBC client configuration for more details):
+            </para>
+            <programlisting>mainserver2</programlisting>
+            <para>You can also set the INFORMIXSERVER environment variable to
+              &quot;mainserver2&quot;.</para>
+          </listitem>
+        </orderedlist>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="appserverarchitect">Application Server Architecture</link> 
+            for various illustrations of distributed client-server architectures supported 
+            by OpenLink database agent</para>
+        </tip>
+      </sect3>
+      <sect3 id="infsqlgetinfo">
+        <title>Agent handling of SQLGetInfo</title>
+        <para>The Informix agent is hard coded with responses to SQLGetInfo().
+          These are affected by the build version:</para>
+        <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+          <title>SQLGetInfo() differences</title>
+          <tgroup align="char" charoff="50" char="." cols="3">
+            <colspec align="centre" colnum="1" colsep="2" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>Parameter</entry>
+                <entry>Build Version &lt;= 7.x</entry>
+                <entry>Build Version &gt; 7.x (eg. 9.x)</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>SQL_MAX_CATEGORY_NAME_LEN</entry>
+                <entry>8</entry>
+                <entry>32</entry>
+              </row>
+              <row>
+                <entry>SQL_MAX_OWNER_NAME_LEN</entry>
+                <entry>8</entry>
+                <entry>32</entry>
+              </row>
+              <row>
+                <entry>SQL_MAX_SCHEMA_NAME_LEN</entry>
+                <entry>18</entry>
+                <entry>128</entry>
+              </row>
+              <row>
+                <entry>SQL_MAX_QUALIFIER_NAME_LEN</entry>
+                <entry>18</entry>
+                <entry>128</entry>
+              </row>
+              <row>
+                <entry>SQL_EXPRESSIONS_IN_ORDERBY</entry>
+                <entry>N</entry>
+                <entry>N</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+      <sect3 id="infunilink">
+        <title>Unicode Configuration</title>
+        <para>See the <link linkend="uniinf">Unicode section</link>
+          for configuration details.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="ingspec">
+      <title>Ingres</title>
+      <para>When configuring an Ingres database agent
+        the critical configuration items are:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Database Identification - this is an actual database name e.g
+            &quot;demo&quot;, which identifies the actual Ingres database that
+            you want to be connected with. This is the value that you enter into the
+            &quot;Database Name&quot; field of either your Admin Assistant&apos;s database
+            agent configuration form or wizard dialog. If you choose to have database
+            identification take at the client rather than server, you enter this value
+            into the &quot;Database Name&quot; field or connection attribute when
+            configuring your OpenLink client. </para>
+        </listitem>
+        <listitem>
+          <para>User Authentication - To log into OpenIngres | Ingres II databases you need to create an internal user entry in the database which matches the userid that starts the OpenLink Ingres Database agent (oig[1|2]_sv). Thus if your userid is openlink you need to create a user openlink that is capable of switching to another internal user. A default OpenIngres | Ingres II database will have entries for ingres and root. You can also enable the OpenLink 'opsyslogin' feature in the OpenLink Rule Book (oplrqb.ini) that will force the userid of the agent to be changed to that of the username that has been authenticated by the Operating system, and assuming this is a valid Ingres user will be allowed to connect by the database. </para>
+        </listitem>
+      </itemizedlist>
+      <para>Ingres provides a number of environment
+        variables for configuring database clients, the basic set required for
+        successfully connecting your database agent to an Ingres database server are
+        tabulated below:</para>
+      <!-- ######################## -->
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment OPENINGRES1]</para>
+                <para>[Environment INGRES_II]</para>
+              </entry>
+              <entry></entry>
+              <entry>Parameters are common in Open Ingres 1 and Ingres II</entry>
+            </row>
+            <row>
+              <entry>
+                <para>II_DATE_FORMAT=</para>
+              </entry>
+              <entry>
+                <para>US</para>
+              </entry>
+              <entry>
+                <para>Defines the output format for dates as dd-mmm-yyyy. This should not be
+                  changed inside the Rule Book since it enables the best compatibility with
+                  OpenLink. This will not affect any other Progress applications.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>II_SYSTEM=</para>
+              </entry>
+              <entry>
+                <para>/dbs</para>
+              </entry>
+              <entry>
+                <para>Full path to the directory immediately
+                  below the Progress/ directory e.g. if your Progress installation directory is
+                  /dbs/Progress then set this to /dbs</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ING_SET=</para>
+              </entry>
+              <entry>
+                <para>set lockmode session where readlock=nolock</para>
+              </entry>
+              <entry>
+                <para>This makes sure when the Ingres agent is started, the first thing it does is runs this
+                  command. The command itself makes sure that a simple select statement does not lock all the rows it
+                  selects.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>USE_OWNER=</para>
+              </entry>
+              <entry>
+                <para>Y or N</para>
+              </entry>
+              <entry>
+                <para>Only applicable for Ingres 6.4 databases. If set to Y forces the driver to return the ingres internal table owner as the schema name for the table, as this was required for early version of MSQuery.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <sect3 id="ing64security">
+        <title>Security Enhancement:</title>
+        <para>Due to the fact that Ingres 6.4
+          leaves username and password verification to the host operating system (Ingres
+          II does not have this problem), it is possible to close what could be an ODBC,
+          UDBC, JDBC, or OLE-DB security loophole by utilizing the OpenLink database
+          agent &quot;OpsysLogin&quot; facility which can be enabled through the Admin
+          Assistant. By enabling this feature your Ingres database agent will verify user
+          accounts at the operating system level before attempting to connect to your
+          Ingres database. It is important to note that &quot;super-user&quot; or
+          Administrator (depending on operating system) privileges are required to
+          successfully use this feature. This implies that the account that starts the
+          request broker must possess one of the aforementioned system level privileges,
+          on the other hand these privileges aren&apos;t required for your actual OpenLink
+          client sessions. </para>
+      </sect3>
+      <sect3 id="rebuilding">
+        <title>Rebuilding Ingres Database Agents</title>
+        <para>OpenLink provides a relinkable library and
+          script files that enable you to rebuild your database agents as shared, as opposed
+          to statically linked binaries, or for the purposes of getting a closer database
+          implementation fit, should your Ingres database environment be a more recent
+          release than the actual version used by OpenLink to build the database agent
+          installed on your system. Please read the Relinking
+          OpenLink Database Agents section that follows, for details on how to perform this
+          task.</para>
+      </sect3>
+      <sect3 id="appsrving">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are
+          unable to install your OpenLink Request Broker and Database Agents on the same
+          machine as the one hosting your Ingres database server. Irrespective of the
+          reasons that lead you to this scenario, it is possible to configure your
+          OpenLink database agents hosted on your Application Server machine such that
+          they connect to a remote Ingres database on your Database Server machine using
+          Ingres database specific networking (Ingres Net) as opposed to OpenLink&apos;s
+          Database Independent Networking. The end result being a 3-tier
+          distributed OpenLink architecture in which the communication between
+          OpenLink clients and database agents use OpenLink Database independent
+          Networking, while the communication between the Ingres database agent and the
+          Ingres database server uses Ingres Net.</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming that you have 
+          an Ingres Database server machine called &quot;mainserver2&quot; that has
+          an Ingres Net server process running. </para>
+        <orderedlist>
+          <listitem>
+            <para>On your Application Server (the machine hosting your database
+              agent) create an Ingres Net vnode called &quot;mainserver2&quot; (for
+              purpose of this example only) if you do not have a working vnode on this
+              machine.</para>
+          </listitem>
+          <listitem>
+            <para>Ensure that you have a usable connection to your remote Ingres
+              database using the vnode &quot;mainserver2&quot;.</para>
+          </listitem>
+          <listitem>
+            <para>Add the following values to the &quot;Server Options&quot;
+              field within the Admin Assistant Forms or
+              Wizards used to configure your database agent. If you choose to set this
+              value on the client simply enter the same value into to the &quot;Database
+              Name&quot; Attribute associated with the configuration of your OpenLink
+              client (see OpenLink ODBC or JDBC or UDBC client configuration for more details):</para>
+            <programlisting>mainserver2</programlisting>
+          </listitem>
+        </orderedlist>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="appserverarchitect">Application Server Architecture</link> 
+            for various illustrations of distributed client-server architectures supported 
+            by OpenLink database agent</para>
+        </tip>
+        <note>
+          <title>Note:</title>
+          <para>
+            OpenLink Drivers for Ingres II, both Single- and Multi-Tier, are
+            based on the OpenAPI Interface, and are intended only for use only
+            with Ingres II.  In some environments, these Drivers may also 
+            permit connection to OpenIngres 1.x and 2.x, which are also based
+            on the OpenAPI Interface; however, these Drivers have not been 
+            certified for such connections, and they are made at the User's
+            discretion and risk.  These Drivers will not support connections 
+            to Ingres 6.4 or previous under any conditions.  Drivers for versions
+            of Ingres prior to Ingres II may be available for some platforms;
+            please inquire at 
+            <ulink url="mailto:product.availability@openlinksw.com">product availability</ulink>, 
+            if you require such a Driver.  </para>
+        </note>
+      </sect3>
+    </sect2>
+    <sect2 id="prospec">
+      <title>Progress</title>
+      <para>When configuring a Progress database agent
+        the critical configuration items are:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Database Identification - this is an actual database name e.g
+            &quot;demo&quot; or &quot;isports&quot;, which identifies the actual
+            Progress database file that you want to be connected with. This is the
+            value that you enter into the &quot;Database Name&quot; field of either
+            your Admin Assistant form or wizard dialog. If you choose to have database
+            identification take at the client rather than server, you enter this value
+            into the &quot;Database Name&quot; field or connection attribute when configuring
+            your OpenLink client. </para>
+        </listitem>
+      </itemizedlist>
+      <para>Progress provides a number of environment
+        variables for configuring database clients, the basic set required for
+        successfully connecting your database agent to an Progress database server are
+        tabulated below:</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment PROGRESS8]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>DLC=</para>
+              </entry>
+              <entry>
+                <para>/dbs/dlc8</para>
+              </entry>
+              <entry>
+                <para>Must be full path to the Progress dlc directory.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>PROCFG=</para>
+              </entry>
+              <entry>
+                <para>/dbs/dlc8/progress.cfg</para>
+              </entry>
+              <entry>
+                <para>Must be the full path and filename to the progress.cfg file. This parameter is optional. Use it if the license file can not be found.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>TABLEVIEW=</para>
+              </entry>
+              <entry></entry>
+              <entry>
+                <para>Must be the full path and filename to the
+                  table view file (tableview.dat). See detailed 
+                  <ulink url="http://support.openlinksw.com/opie/kbase/print_opie_article.vsp?OP_ID=245">TABLEVIEW document</ulink> for more information</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>TABLEVIEW_QUALIFIER=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Add owner information to select statement</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DEADLOCK_TIMEOUT=</para>
+              </entry>
+              <entry>
+                <para>60</para>
+              </entry>
+              <entry>
+                <para>Seconds to wait for lock to release.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>INSERT_LOGICAL=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Rewrite character TRUE/FALSE to logical</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>UPDATE_LOGICAL=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Rewrite character TRUE/FALSE to logical</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>SPACE_QUOTE_IDENTIFIER=</para>
+              </entry>
+              <entry>Y</entry>
+              <entry>
+                <para>
+                  If the SPACE_QUOTE_IDENTIFIER keyword is unset, it defaults to true,
+                  i.e., a space is returned as the quote character.  To make the driver
+                  return an empty string for the quote character, this keyword must be
+                  set to N.
+                  Most applications work properly with the default behavior
+                  (SPACE_QUOTE_IDENTIFIER = Y).  Known exceptions include some versions
+                  of Microsoft Visio, the Microsoft SQL Server DTS Wizard and Business
+                  Objects.
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>MIN_FIELD_LEN=</para>
+              </entry>
+              <entry></entry>
+              <entry>
+                <para>Minimum length for char field or expression.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>MAX_FIELD_LEN=</para>
+              </entry>
+              <entry></entry>
+              <entry>
+                <para>Minimum length for char field or expression.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>To connect to multiple databases through a
+        single OpenLink client connection and/or to make use array type columns you
+        must run the OpenLink provided &quot;setup.p&quot; utility. Please refer to the 
+        setup.p document for detailed information on
+        the use of this script.</para>
+      <sect3 id="prosessresource">
+        <title>Configuring Progress Session Resources</title>
+        <para>You can control default behavior and
+          progress server session resource allocation by entering standard progress
+          session parameters in the &quot;Server Options&quot; field within the Admin
+          Assistant&apos;s database agent configuration wizard dialogs or forms. </para>
+        <para>The following values are set for you
+          by default at installation time and displayed as depicted below within the
+          &quot;Server Options&quot; fields of the Admin Assistant Forms and Wizard
+          dialogs.</para>
+        <programlisting>-T /tmp -d mdy -TB 31 -TM 31 </programlisting>
+      </sect3>
+      <sect3 id="dbagntissu">
+        <title>Database Agent Specific Issues</title>
+        <para>Progress database servers support sockets
+          and shared memory based methods of Inter Process Communication (IPC),
+          unfortunately the shared memory approach which is much faster than sockets and
+          the preferred approach by many users bears a cost of version incompatibility.
+          This implies that your OpenLink database agents need to be an exact version
+          match with your backend Progress database server in order to successfully
+          initiate shared memory based database sessions (note: these agents are built
+          using the Progress Embedded SQL package).</para>
+      </sect3>
+      <sect3 id="rebuildpro">
+        <title>Rebuilding Progress Database agents</title>
+        <para>To get around the issue explained above
+          OpenLink provides a relinkable library and script file that enables you to
+          build an OpenLink database agent that has an exact match to the version of
+          Progress that you have installed. See the section below on Relinking
+          Progress Agents for details.</para>
+        <para>If shared memory based IPC isn&apos;t an issue
+          for you then start your Progress server with the -S, -N, and -H options
+          indicating the use of a sockets based Progress database server. This mode of
+          operation is Progress version independent.</para>
+      </sect3>
+      <sect3 id="appservpro">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are unable to install your
+          OpenLink Request Broker and Database Agents on the same machine as the
+          one hosting your Progress database server. Irrespective of the reasons
+          that lead you to this scenario, it is possible to configure your
+          OpenLink database agents hosted on your Application Server machine
+          such that they connect to a remote Progress database on your Database
+          Server machine using Progress database specific networking (Progress
+          Client Networking) as opposed to OpenLink&apos;s Database Independent
+          Networking. The end result being a 3-tier distributed OpenLink
+          architecture in which the communication between OpenLink clients and
+          database agents use OpenLink Database independent Networking, while
+          the communication between the Progress database agent and the Progress
+          database server uses Progress Client Networking.</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming you have a Progress Database
+          Server machine called &quot;mainserver2&quot; that has a sockets based Progress
+          Server process running, you would enter the following (assuming a TCP/IP based
+          network):</para>
+        <orderedlist>
+          <listitem>
+            <para>Ensure that you have a usable connection to Progress using its
+              native networking (Progress Client Networking) using the following remote
+              database connection parameters:</para>
+            <programlisting>-S mainserver2 -H mainserver -N tcp .</programlisting>
+          </listitem>
+          <listitem>
+            <para>Add the following values to the &quot;Connect
+              Options&quot; field within the Admin Assistant Forms or Wizards
+              used to configure your database agent in the Rulebook. If you
+              choose to set this value on the client simply enter the same
+              value into to the &quot;Options&quot; attribute associated with
+              the configuration of your OpenLink client (see OpenLink ODBC or
+              JDBC or UDBC client configuration for more details):</para>
+            <programlisting>-S mainserver2 -H mainserver -N tcp</programlisting>
+          </listitem>
+        </orderedlist>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="conprog">Progress Connection Trouble Shooting</link>
+          </para>
+        </tip>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="appserverarchitect">Application Server Architecture</link> 
+            for various illustrations of distributed client-server architectures supported 
+            by OpenLink database agent</para>
+        </tip>
+      </sect3>
+      <sect3 id="prounilink">
+        <title>Unicode Configuration</title>
+        <para>See the <link linkend="unipro">Unicode section</link>
+          for configuration details.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="oraspec">
+      <title>Oracle</title>
+      <para>When configuring an Oracle database agent
+        the critical configuration items are:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Database Identification - this is an actual Oracle System
+            Identifier (SID) e.g &quot;ORCL&quot;, which identifies the actual Oracle
+            environment that you want to be connected with. This is the value that you
+            enter into the &quot;Database Name&quot; field of either your Admin
+            Assistant&apos;s database agent configuration form or wizard dialog. If you
+            choose to have database identification take at the client rather than
+            server, you enter this value into the &quot;Database Name&quot; field or
+            connection attribute when configuring your OpenLink client. </para>
+        </listitem>
+      </itemizedlist>
+      <para>Oracle provides a number of environment
+        variables for configuring database clients, the basic set required for
+        successfully connecting your database agent to an Oracle database server are
+        tabulated below:</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment ORACLE7]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>ORACLE_HOME=</para>
+              </entry>
+              <entry>
+                <para>/dbs/oracle7</para>
+              </entry>
+              <entry>
+                <para>The home directory for the Oracle installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ODBC_CATALOGS=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Uncomment after loading the &quot;odbccat7.sql&quot; script.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>MULTIPLEX_LDA=</para>
+              </entry>
+              <entry>
+                <para>5</para>
+              </entry>
+              <entry>
+                <para>Allow 5 OpenLink clients via a single database session</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>OPL_USER_TBLS_FIRST=</para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>set to Y to show OpenLink User Tables first</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>SHOW_REMARKS=</para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>Set to Y to retrieve SQLColumns REMARKS field</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>[Environment ORACLE8]</para>
+                <para>[Environment ORACLE9]</para>
+              </entry>
+              <entry></entry>
+              <entry>Parameters are common in Oracle 8 and 9i</entry>
+            </row>
+            <row>
+              <entry>
+                <para>ORACLE_HOME=</para>
+              </entry>
+              <entry>
+                <para>/dbs/oracle8 or /dbs/oracle9</para>
+              </entry>
+              <entry>
+                <para>The home directory for the Oracle installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ODBC_CATALOGS=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Uncomment after loading the &quot;odbccat8.sql&quot; script.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>MULTIPLEX_LDA=</para>
+              </entry>
+              <entry>
+                <para>5</para>
+              </entry>
+              <entry>
+                <para>Allow 5 OpenLink clients via a single database session</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>OPL_USER_TBLS_FIRST=</para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>set to Y to show OpenLink User Tables first</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>SHOW_REMARKS=</para>
+              </entry>
+              <entry>
+                <para>N</para>
+              </entry>
+              <entry>
+                <para>Set to Y to retrieve SQLColumns REMARKS field</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>OCI_PREFETCH_ROWS=</para>
+              </entry>
+              <entry>
+                <para>120</para>
+              </entry>
+              <entry>
+                <para>Sets the number of rows to be prefetched</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>OCI_PREFETCH_MEMORY=</para>
+              </entry>
+              <entry>
+                <para>64</para>
+              </entry>
+              <entry>
+                <para>Kb of memory allocated for rows to be prefetched</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <sect3 id="dbagntor">
+        <title>Database Agent Specific Settings</title>
+        <para>The &quot;odbccat.sql&quot; scripts explained:</para>
+        <para>These scripts exist for each version of Oracle
+          supported, the files &quot;odbccat6.sql&quot;, &quot;odbccat7.sql&quot;, and
+          &quot;odbccat8.sql&quot; representing Oracle versions 6 up to version 8
+          respectively. Oracle 9i can use the &quot;odbccat8.sql&quot; script.
+          These scripts are to be applied to your Oracle instance to enable
+          efficient and extended functionality between OpenLink and Oracle when handling
+          ODBC, JDBC, UDBC, and OLE-DB catalog calls such as SQLForeignKeys() and
+          SQLPrimaryKeys() functions. These functions have significant impact on the
+          performance of your OpenLink clients.</para>
+        <para>To run these scripts you need to 
+          start the Oracle server manager (svrmgr or sqldba if you do this from the
+          command line). Connect as internal and run the script by locating the relevant
+          script file as you would any other Oracle SQL script file.</para>
+      </sect3>
+      <sect3 id="rebuildora">
+        <title>Rebuilding Oracle Database Agents</title>
+        <para>OpenLink provides a relinkable library and
+          script files that enable you to rebuild your database agents as shared, as
+          opposed to statically linked binaries, or for the purposes of getting a closer
+          database implementation fit if your Oracle database environment is a more recent
+          release than the actual version used by OpenLink to build the database agent
+          installed on your system. Please read the Relinking
+          OpenLink Database Agents section that follows, for details on how to perform this task.</para>
+      </sect3>
+      <sect3 id="appservor">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are
+          unable to install your OpenLink Request Broker and Database Agents on the same
+          machine as the one hosting your Oracle database server. Irrespective of the
+          reasons that lead you to this scenario, it is possible to configure your
+          OpenLink database agents hosted on your Application Server machine such that
+          they connect to a remote Oracle database on your Database Server machine using
+          Oracle database specific networking (SQL*Net or Net8) as opposed to OpenLink&apos;s
+          Database Independent Networking. The end result being a 3-tier
+          distributed OpenLink architecture in which the communication between
+          OpenLink clients and database agents use OpenLink Database independent
+          Networking, while the communication between the Oracle database agent and the
+          Oracle database server uses Oracle SQL*Net or Net8.</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming you have an Oracle Database Server
+          machine called &quot;mainserver2&quot; that has an Oracle Listener process
+          running, you would enter the following (presuming that your SQL*Net or Net8
+          alias for this Listener is also named &quot;mainserver2&quot;):</para>
+        <orderedlist>
+          <listitem>
+            <para>On your Application Server (the machine hosting your database
+              agents) create a SQL*Net or Net8 Alias named &quot;mainserver2&quot; (for
+              purposes of this example only).</para>
+          </listitem>
+          <listitem>
+            <para>Ensure that you have a usable connection to the remote Oracle
+              database server using the SQL*Net or Net8 alias &quot;mainserver2&quot;</para>
+          </listitem>
+          <listitem>
+            <para>Add the following values to the &quot;Server Options&quot;
+              field within the Admin Assistant Forms or
+              Wizards used to configure your database agent. If you choose to set this
+              value on the client simply enter the same value into to the &quot;Database
+              Name&quot; Attribute associated with the configuration of your OpenLink
+              client (see OpenLink ODBC or JDBC or UDBC client configuration for more details):</para>
+            <programlisting>mainserver2</programlisting>
+          </listitem>
+        </orderedlist>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="appserverarchitect">Application Server Architecture</link> 
+            for various illustrations of distributed client-server architectures supported 
+            by OpenLink database agent</para>
+        </tip>
+      </sect3>
+      <sect3 id="oraunilink">
+        <title>Unicode Configuration</title>
+        <para>See the <link linkend="uniora">Unicode section</link>
+          for configuration details.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="sybspec">
+      <title>Sybase</title>
+      <note>
+        <title>Note:</title>
+        <para>The Sybase Agent is no longer required, all Sybase connectivity is 
+          handled by the TDS Agent.</para>
+        <para>See: <link linkend="tdsspec">TDS Agent</link>
+        </para>
+        <para>This section remains purely for reference on previous OpenLink versions</para>
+      </note>
+      <para>When configuring a Sybase database agent
+        the critical configuration items are:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>Database Identification - this is the name of the Sybase 
+            database to be connected to ie pubs2 in the case of the Sybase 
+	    provided sample database. This is the value that you
+            enter into the &quot;Database Name&quot; field of either your Admin
+            Assistant&apos;s database agent configuration form or wizard dialog. If you
+            choose to have database identification take at the client rather than
+            server, you enter this value into the &quot;Database Name&quot; field or
+            connection attribute when configuring your OpenLink client. </para>
+        </listitem>
+      </itemizedlist>
+      <para>Sybase provides a number of environment
+        variables for configuring database clients, the basic set required for
+        successfully connecting your database agent to a Sybase database server are
+        tabulated below:</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment SYBASE4]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>SYBASE=</para>
+              </entry>
+              <entry>
+                <para>/dbs/sybase4</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the Sybase installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DSQUERY=</para>
+              </entry>
+              <entry>
+                <para>SYBASE</para>
+              </entry>
+              <entry>
+                <para>Name of the Sybase Query Server that you are connecting to. </para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>[Environment SYBASE10]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>SYBASE=</para>
+              </entry>
+              <entry>
+                <para>/dbs/sybase10</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the Sybase installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DSQUERY=</para>
+              </entry>
+              <entry>
+                <para>SYBASE</para>
+              </entry>
+              <entry>
+                <para>Name of the Sybase Query Server that you are connecting to. </para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>[Environment SYBASE11]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>SYBASE=</para>
+              </entry>
+              <entry>
+                <para>/dbs/sybase11</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the Sybase installation.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DSQUERY=</para>
+              </entry>
+              <entry>
+                <para>SYBASE</para>
+              </entry>
+              <entry>
+                <para>Name of the Sybase Query Server that you are connecting to. </para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <note>
+        <title>Note:</title>
+        <para>On some systems, like RedHat Linux, if the environment variable LANG=en_US 
+          is set it may need to be unset, or the environment variable LC_ALL=default set 
+          in the RuleBook to avoid RPC:Time Out errors on connect.</para>
+      </note>
+      <sect3 id="rebuildsyb">
+        <title>Rebuilding Sybase Database Agents</title>
+        <para>OpenLink provides a relinkable library and
+          script files that enable you to rebuild your database agents as shared, as
+          opposed to statically linked binaries, or for the purposes of getting a closer
+          database implementation fit, should your Sybase database environment be a
+          more recent release than the actual version used by OpenLink to build the
+          database agent installed on your system. Please read the Relinking
+          OpenLink Database Agents section that follows, for details on how to perform this
+          task.</para>
+      </sect3>
+      <sect3 id="appsrvsyb">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are
+          unable to install your OpenLink Request Broker and Database Agents on the same
+          machine as the one hosting your Sybase database server. Irrespective of the
+          reasons that lead you to this scenario, it is possible to configure your
+          OpenLink database agents hosted on your Application Server machine such that
+          they connect to a remote Sybase database on your Database Server machine using
+          Sybase database specific networking (Open Client) as opposed to OpenLink&apos;s
+          Database Independent Networking. The end result being a 3-tier
+          distributed OpenLink architecture in which the communication between
+          OpenLink clients and database agents use OpenLink Database independent
+          Networking, while the communication between the Sybase database agent and the
+          Sybase database server uses Sybase Open Client.</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming you have an Sybase Database Server
+          machine called &quot;mainserver2&quot; that has an Sybase Server named
+          &quot;mainserver2&quot; up and running:</para>
+        <orderedlist>
+          <listitem>
+            <para>On your Application Server (the machine hosting your database
+              agents) create an Open Client Database Connection Alias named
+              &quot;mainserver2&quot; (for purposes of this example only).</para>
+          </listitem>
+          <listitem>
+            <para>Ensure that you have a usable connection to the remote Sybase
+              database server using the Open Client Database alias
+              &quot;mainserver2&quot;</para>
+          </listitem>
+          <listitem>
+            <para>Add the following values to the &quot;Server Options&quot;
+              field within the Admin Assistant Forms or
+              Wizards used to configure your database agent. If you choose to set this
+              value on the client simply enter the same value into to the &quot;Database
+              Name&quot; Attribute associated with the configuration of your OpenLink
+              client (see OpenLink ODBC or JDBC or UDBC
+              client configuration for more details):</para>
+            <programlisting>mainserver2</programlisting>
+            <para>
+              You may also enter the following values into the &quot;Database Server
+              Options&quot; field: -s mainserver2</para>
+          </listitem>
+        </orderedlist>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="appserverarchitect">Application Server Architecture</link> 
+            for various illustrations of distributed client-server architectures supported 
+            by OpenLink database agent</para>
+        </tip>
+      </sect3>
+      <sect3 id="sybunilink">
+        <title>Unicode Configuration</title>
+        <para>See the <link linkend="unisyb">Unicode section</link>
+          for configuration details.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="sqlservspec">
+      <title>Microsoft SQL Server</title>
+      <para>You can specify the following environment variables for this
+        agent:</para>
+      <itemizedlist>
+        <listitem><emphasis>FREETDSCONF</emphasis>: a path to the
+        freetds.conf file to use.</listitem>
+        <listitem><emphasis>DSQUERY</emphasis>: the section to use within
+        freetds.conf</listitem>
+        <listitem><emphasis>TDSSERVER</emphasis>: the IP address or alias
+          name for the server running SQL Server.</listitem>
+        <listitem><emphasis>TDSPORT</emphasis>: the TCP port number the
+          SQLServer instance is running on</listitem>
+        <listitem><emphasis>TDSVER</emphasis>: the TDS Protocol version for
+          the type of SQLServer instance being used.</listitem>
+        <listitem><emphasis>TDSDBASE</emphasis>: the name of the SQLServer
+          Database</listitem>
+      </itemizedlist>
+      <para>The following Connection Options can be passed to the
+        driver:</para>
+      <itemizedlist>
+        <listitem><emphasis>-H</emphasis> - Hostname of the machine SQL
+          Server is running </listitem>
+        <listitem><emphasis>-P</emphasis> - SQL Server TCP Port </listitem>
+        <listitem><emphasis>-V</emphasis> - SQL Server version . Values
+          supported are; 9.0 equal SQL Server 2005; 8.0 equal SQL Server 2000;
+          7.0 equal SQL Server 7 </listitem>
+        <listitem><emphasis>-S</emphasis> - SQL Server name on the specified
+          host. A SQL Server instance can also be specified by appending
+          "\InstanceName" to the ServerName?? ie
+          "ServerName\InstanceName" </listitem>
+        <listitem><emphasis>-F</emphasis> - Specify Fail over server name for
+          Database Mirroring </listitem>
+        <listitem><emphasis>-N</emphasis> - Network Packet size, which is a
+          value that determines the number of bytes per network packet
+          transferred from the database server to the client. The correct
+          setting of this attribute can improve performance. When set to 0, the
+          initial default, the driver uses the default packet size as specified
+          in the Sybase server configuration. When set to -1, the driver
+          computes the maximum allowable packet size on the first connect to
+          the data source and saves the value in the system
+          information. </listitem>
+        <listitem><emphasis>-O Prepared Method, which is a value that
+            determines whether stored procedures are created on the server
+            for every call to SQLPrepare. When set to Full (2), stored
+            procedures are created for every call to SQLPrepare, which can
+            decrease performance when processing static statements. When
+            set to Partial(1), the initial default, the driver creates
+            stored procedures only if the statement contains parameters.
+            Otherwise, the statement is cached and executed directly at
+            SQLExecute time. When set to None (0), the driver never creates
+            stored procedures. </emphasis></listitem>
+        <listitem><emphasis>-L</emphasis> - The name of a Microsoft SQL
+          Server supported national language. The default language is
+          English. </listitem>
+        <listitem><emphasis>-C</emphasis> - The name of an installed
+          character set on the server. By default it is the setting on the
+          Microsoft SQL Server. </listitem>
+        <listitem><emphasis>-A</emphasis> - Turn Off ANSI NULL
+          handling </listitem>
+        <listitem><emphasis>-E</emphasis> - Turn On SSL Strong Data
+          Encryption </listitem>
+        <listitem><emphasis>-R</emphasis> - Turn On SSL Server Certificate
+          Verification </listitem>
+        <listitem><emphasis>-D</emphasis> - Specify Name of Certificate
+          Authority file to be used for SSL Certificate
+          Verification </listitem>
+        <listitem><emphasis>-Z</emphasis> - Turn On Snapshot Serializable
+          Isolation </listitem>
+        <listitem><emphasis>-M</emphasis> - Turn On Multiple Active Result
+          Sets (MARS)</listitem>
+      </itemizedlist>
+      <note>
+        <para>Note on Precedence:</para>
+        <para>The web-based Administrative Assistant modifies/sets
+        environment variables, above. These environment variables are used
+        in preference to any -H, -V or -P connect-options that might be
+        specified.</para>
+      </note>
+      <sect3 id="appsrvsql">
+        <title>Application Server &amp; 3-Tier Architecture Configuration</title>
+        <para>There may be situations in which you are
+          unable to install your OpenLink Request Broker and Database Agents on the same
+          machine as the one hosting your Microsoft SQL Server database server.
+          Irrespective of the reasons that lead you to this scenario, it is
+          possible to configure your OpenLink database agents hosted on your Application
+          Server machine such that they connect to a remote Microsoft SQL Server database
+          on your Database Server machine using Microsoft SQL Server database specific
+          networking (NETLIB) as opposed to OpenLink&apos;s Database Independent Networking.
+          The end result being a 3-tier
+          distributed OpenLink architecture in which the communication between
+          OpenLink clients and database agents use OpenLink Database independent
+          Networking, while the communication between the Microsoft SQL Server database
+          agent and the Microsoft SQL Server database server uses Microsoft SQL Server&apos;s
+          NETLIB.</para>
+        <para>Configuration Steps:</para>
+        <para>Assuming you have an Microsoft SQL Server
+          Database Server machine called &quot;oplwinnt&quot; that has a Microsoft SQL
+          Server Server named &quot;oplwinnt&quot; up and running:</para>
+        <orderedlist>
+          <listitem>
+            <para>On your Application Server (the machine hosting your database
+              agents) create a NETLIB Database Connection Alias named
+              &quot;oplwinnt&quot; (for purposes of this example only).</para>
+          </listitem>
+          <listitem>
+            <para>Ensure that you have a usable connection to the remote
+              Microsoft SQL Server database server using the Open Client Database alias
+              &quot;oplwinnt&quot; (this the value you provide whenever you are prompted
+              for a Server Name by native SQL Server utilities)</para>
+          </listitem>
+          <listitem>
+            <para>Add the following values to the &quot;Server
+              Options&quot;field within the Admin
+              Assistant Forms or Wizards used to configure your database agent. If you
+              choose to set this value on the client simply enter the same value into to
+              the &quot;Database Name&quot; Attribute associated with the configuration
+              of your OpenLink client ODBC or JDBC or UDBC client configuration for more
+              details):</para>
+            <programlisting>oplwinnt</programlisting>
+            <para>
+              You may also enter the following values into the &quot;Database Server
+              Options&quot; field: -s oplwinnt</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="sqlunilink">
+        <title>Unicode Configuration</title>
+        <para>See the <link linkend="unisql">Unicode section</link>
+          for configuration details.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="tdsspec">
+      <title>TDS</title>
+      <para>The TDS Agent supercedes the Sybase and SQLServer database agents.  
+        Although they share a common connection mechanism there are some 
+        subtle value differences that must be observed.</para>
+      <para>TDS provides a number of environment variables for configuring
+        database clients, a typical set used for successfully connecting
+        your database agent to a SQL Server are tabulated below:</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment SQLServer 2000]</para>
+              </entry>
+              <entry></entry>
+              <entry>
+                <para>The section name will vary with the agent version and database version.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>FREETDSCONF=</para>
+              </entry>
+              <entry>
+                <para>/home/openlink/bin/freetds.conf</para>
+              </entry>
+              <entry>
+                <para></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DSQUERY=</para>
+              </entry>
+              <entry>
+                <para>SQLSERVER</para>
+              </entry>
+              <entry>
+                <para>Load this section from the freetds.conf file.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>TDSHOST=</para>
+              </entry>
+              <entry>
+                <para>sqlsrv</para>
+              </entry>
+              <entry>
+                <para>Point this to your SQL Server /Sybase machine</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>TDSPORT=</para>
+              </entry>
+              <entry>
+                <para>1433</para>
+              </entry>
+              <entry>
+                <para>The port on which you SQL Server/Sybase listens for
+                  incoming connections. SQL Server uses port 1433 by
+                  default, however Sybase uses 4100.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>TDSVER=</para>
+              </entry>
+              <entry>
+                <para>7.0</para>
+              </entry>
+              <entry>
+                <para>The required TDS connectivity version. Refer to the
+                table below.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>SQLSERVER_CATALOG=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>CURSOR_SENSITIVITY=</para>
+              </entry>
+              <entry>
+                <para>LOW</para>
+              </entry>
+              <entry>
+                <para>You can set this to HIGH after loading oplrvc.sql</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>The TDSVER option above must be set correctly for connection to the 
+        desired database.  Use the following table to find which.</para>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>TDSVER settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Version Number</para>
+              </entry>
+              <entry>
+                <para>Database Supported</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>4.2</para>
+              </entry>
+              <entry>
+                <simplelist>
+                  <member>SQLServer 6</member>
+                  <member>SQLServer 6.x</member>
+                </simplelist>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>4.6</para>
+              </entry>
+              <entry>
+                <simplelist>
+                  <member>Sybase 4</member>
+                  <member>Sybase 4.x</member>
+                </simplelist>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>5.0</para>
+              </entry>
+              <entry>
+                <simplelist>
+                  <member>Sybase 10</member>
+                  <member>Sybase 11</member>
+                  <member>Sybase 12</member>
+                  <member>Sybase 15</member>
+                </simplelist>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>7.0</para>
+              </entry>
+              <entry>
+                <simplelist>
+                  <member>SQLServer 7</member>
+                </simplelist>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>8.0</para>
+              </entry>
+              <entry>
+                <simplelist>
+                  <member>SQLServer 2000</member>
+                </simplelist>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>9.0</para>
+              </entry>
+              <entry>
+                <simplelist>
+                  <member>SQLServer 2005</member>
+                </simplelist>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+    <sect2 id="db2spec">
+      <title>DB2</title>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment DB2]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>DB2DIR=</para>
+              </entry>
+              <entry>
+                <para>/DB2</para>
+              </entry>
+              <entry>
+                <para>Full path to the base directory for the DB2 installation. Note,DB2 version 5 and below use the environment variable DB2PATH instead.</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>DB2INSTANCE=</para>
+              </entry>
+              <entry>
+                <para>DB2</para>
+              </entry>
+              <entry>
+                <para>Name of the instance you want to connect to. DB2 is the default DB2 instance name.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>Agent Section</para>
+      <para>OpsysLogin=No; Validation of users is left to DB2</para>
+      <para>Database Agent default name: db2_sv</para>
+      <sect3 id="db2unilink">
+        <title>Unicode Configuration</title>
+        <para>See the <link linkend="unidb2">Unicode section</link>
+          for configuration details.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="postgresspec">
+      <title>PostgresSQL</title>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment POSTGRES]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>;ODBC_CATALOGS=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Uncomment after loading odbccat defs</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>Agent Section</para>
+      <para>OpSysLogin= Yes; Users are validated against the operating system.</para>
+      <para>The following options can be used in the <emphasis>ConnectOptions</emphasis> 
+        field of the rule book (oplrqb.ini) to override client <emphasis>Options</emphasis> 
+        settings:</para>
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>-H &lt;hostname&gt;</title>
+            <para>Connect to postmaster on &lt;hostname&gt;.  This defaults to localhost 
+              if unspecified</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>-P &lt;port&gt;</title>
+            <para>Contact postmaster on port &lt;port&gt;, which defaults to PGPORT (5432) 
+              is unspecified.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>-T</title>
+            <para>Disable ODBC transaction management.  All transactions will be 
+              automatically committed.  This prevents palloc() failures with out-of-memory 
+              errors when doing really big transactions such as Exporting 10000 records 
+              from MS/Access.</para>
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+      <para>Database Agent default name: pgr7_mv (or pgr7_sv which is single threaded)</para>
+      <para>This ODBC database agent has been built using PostgreSQL release 7.2.  
+        Using this agent with a previous version of Postgres will probably fail.  If 
+        you experience any problems with older releases, please try against release 
+        7.2 first before contacting OpenLink.</para>
+      <sect3 id="pgodtmapp">
+        <title>Data type Mapping from ODBC Data types to Postgres Data types</title>
+        <para>This information can be queried by the SQLTypeInfo catalog call.</para>
+        <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+          <title>Default Rule Book settings</title>
+          <tgroup align="char" charoff="50" char="." cols="2">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>SQL type</entry>
+                <entry>Postgres type</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>SQL_CHAR</entry>
+                <entry>char</entry>
+              </row>
+              <row>
+                <entry>SQL_VARCHAR</entry>
+                <entry>varchar</entry>
+              </row>
+              <row>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>text</entry>
+              </row>
+              <row>
+                <entry>SQL_DECIMAL</entry>
+                <entry>varchar</entry>
+              </row>
+              <row>
+                <entry>SQL_NUMERIC</entry>
+                <entry>varchar</entry>
+              </row>
+              <row>
+                <entry>SQL_BIT</entry>
+                <entry>bit</entry>
+              </row>
+              <row>
+                <entry>SQL_TINYINT</entry>
+                <entry>int2</entry>
+              </row>
+              <row>
+                <entry>SQL_SMALLINT</entry>
+                <entry>int2</entry>
+              </row>
+              <row>
+                <entry>SQL_INTEGER</entry>
+                <entry>int4</entry>
+              </row>
+              <row>
+                <entry>SQL_BIGINT</entry>
+                <entry>varchar</entry>
+              </row>
+              <row>
+                <entry>SQL_REAL</entry>
+                <entry>float4</entry>
+              </row>
+              <row>
+                <entry>SQL_DOUBLE</entry>
+                <entry>float8</entry>
+              </row>
+              <row>
+                <entry>SQL_FLOAT</entry>
+                <entry>float8</entry>
+              </row>
+              <row>
+                <entry>SQL_BINARY</entry>
+                <entry>not supported</entry>
+              </row>
+              <row>
+                <entry>SQL_VARBINARY</entry>
+                <entry>not supported</entry>
+              </row>
+              <row>
+                <entry>SQL_LONGVARBINARY</entry>
+                <entry>not supported</entry>
+              </row>
+              <row>
+                <entry>SQL_DATE</entry>
+                <entry>not supported</entry>
+              </row>
+              <row>
+                <entry>SQL_TIME</entry>
+                <entry>not supported</entry>
+              </row>
+              <row>
+                <entry>SQL_TIMESTAMP</entry>
+                <entry>not supported</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+      <sect3 id="pgpdtmapo">
+        <title>Data type Mapping from Postgres Data types to ODBC Data types</title>
+        <para>This information can be queried by the SQLColumns catalog call.</para>
+        <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+          <title>Default Rule Book settings</title>
+          <tgroup align="char" charoff="50" char="." cols="3">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>Postgres type</entry>
+                <entry>SQL type</entry>
+                <entry>Precision</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>bool</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>1</entry>
+              </row>
+              <row>
+                <entry>char</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>1</entry>
+              </row>
+              <row>
+                <entry>name</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>32</entry>
+              </row>
+              <row>
+                <entry>char16</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>16</entry>
+              </row>
+              <row>
+                <entry>int2</entry>
+                <entry>SQL_SMALLINT</entry>
+                <entry />
+              </row>
+              <row>
+                <entry>int4</entry>
+                <entry>SQL_INTEGER</entry>
+                <entry />
+              </row>
+              <row>
+                <entry>regproc</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>16</entry>
+              </row>
+              <row>
+                <entry>text</entry>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>8000</entry>
+              </row>
+              <row>
+                <entry>oid</entry>
+                <entry>SQL_INTEGER</entry>
+                <entry>(*)</entry>
+              </row>
+              <row>
+                <entry>tid</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>19</entry>
+              </row>
+              <row>
+                <entry>xid</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>12</entry>
+              </row>
+              <row>
+                <entry>cid</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>3</entry>
+              </row>
+              <row>
+                <entry>oid8</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>89</entry>
+              </row>
+              <row>
+                <entry>smgr</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>12</entry>
+              </row>
+              <row>
+                <entry>char2</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>2</entry>
+              </row>
+              <row>
+                <entry>char4</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>4</entry>
+              </row>
+              <row>
+                <entry>char8</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>8</entry>
+              </row>
+              <row>
+                <entry>filename</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>float4</entry>
+                <entry>SQL_REAL</entry>
+                <entry />
+              </row>
+              <row>
+                <entry>float8</entry>
+                <entry>SQL_DOUBLE</entry>
+                <entry />
+              </row>
+              <row>
+                <entry>abstime</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>60</entry>
+              </row>
+              <row>
+                <entry>reltime</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>60</entry>
+              </row>
+              <row>
+                <entry>tinterval</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>60</entry>
+              </row>
+              <row>
+                <entry>unknown</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>bpchar</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>varchar</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>date</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>10</entry>
+              </row>
+              <row>
+                <entry>time</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>16</entry>
+              </row>
+              <row>
+                <entry>other type</entry>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>8000</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>(*) Note: 
+          An oid is returned as a SQL_INTEGER, because otherwise it would not be
+          useable for SQLSpecialColumns.</para>
+        <para>Binary data / large objects are not supported in this release.</para>
+      </sect3>
+    </sect2>
+    <sect2 id="mysqlspec">
+      <title>MySQL</title>
+      <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+        <title>Default Rule Book settings</title>
+        <tgroup align="char" charoff="50" char="." cols="3">
+          <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Rule Book Section &amp; parameters</para>
+              </entry>
+              <entry>
+                <para>Default Rule Book Settings</para>
+              </entry>
+              <entry>
+                <para>Notes</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>[Environment MySQL]</para>
+              </entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>
+                <para>;ODBC_CATALOGS=</para>
+              </entry>
+              <entry>
+                <para>Y</para>
+              </entry>
+              <entry>
+                <para>Uncomment after loading odbccat defs</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>Agent Section</para>
+      <para>OpSysLogin= Yes; Users are validated against the operating system.</para>
+      <para>The following options can be used in the <emphasis>ConnectOptions</emphasis> 
+        field of the rule book (oplrqb.ini) to override client <emphasis>Options</emphasis> 
+        settings:</para>
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>-H &lt;hostname&gt;</title>
+            <para>Connect to server running on &lt;hostname&gt;.  This defaults to localhost 
+              if unspecified</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>-P &lt;port&gt;</title>
+            <para>Contact server on port &lt;port&gt;, which defaults to (3306) 
+              is unspecified.</para>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>-T</title>
+            <para>Disable all ODBC transaction support.  The agent will never issue any 
+              extra statements for transaction management (commit, rollback, modification 
+              of transaction isolation level)</para>
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+      <para>This ODBC database agent has been built and verified using MySQL
+        release 3.23.48.</para>
+      <sect3 id="mysqlodtmapm">
+        <title>Data type Mapping from ODBC Data types to MySQL Data types</title>
+        <para>This information can be queried by the SQLTypeInfo catalog call.</para>
+        <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+          <title>Default Rule Book settings</title>
+          <tgroup align="char" charoff="50" char="." cols="2">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>SQL type</entry>
+                <entry>MySQL type</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>SQL_CHAR</entry>
+                <entry>char</entry>
+              </row>
+              <row>
+                <entry>SQL_VARCHAR</entry>
+                <entry>varchar</entry>
+              </row>
+              <row>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>text</entry>
+              </row>
+              <row>
+                <entry>SQL_DECIMAL</entry>
+                <entry>decimal</entry>
+              </row>
+              <row>
+                <entry>SQL_NUMERIC</entry>
+                <entry>decimal</entry>
+              </row>
+              <row>
+                <entry>SQL_BIT</entry>
+                <entry>not supported</entry>
+              </row>
+              <row>
+                <entry>SQL_TINYINT</entry>
+                <entry>tinyint</entry>
+              </row>
+              <row>
+                <entry>SQL_SMALLINT</entry>
+                <entry>smallint</entry>
+              </row>
+              <row>
+                <entry>SQL_INTEGER</entry>
+                <entry>integer</entry>
+              </row>
+              <row>
+                <entry>SQL_BIGINT</entry>
+                <entry>bigint</entry>
+              </row>
+              <row>
+                <entry>SQL_REAL</entry>
+                <entry>real</entry>
+              </row>
+              <row>
+                <entry>SQL_DOUBLE</entry>
+                <entry>double</entry>
+              </row>
+              <row>
+                <entry>SQL_FLOAT</entry>
+                <entry>double</entry>
+              </row>
+              <row>
+                <entry>SQL_BINARY</entry>
+                <entry>tinyblob</entry>
+              </row>
+              <row>
+                <entry>SQL_VARBINARY</entry>
+                <entry>tinyblob</entry>
+              </row>
+              <row>
+                <entry>SQL_LONGVARBINARY</entry>
+                <entry>longblob</entry>
+              </row>
+              <row>
+                <entry>SQL_DATE</entry>
+                <entry>date</entry>
+              </row>
+              <row>
+                <entry>SQL_TIME</entry>
+                <entry>time</entry>
+              </row>
+              <row>
+                <entry>SQL_TIMESTAMP</entry>
+                <entry>timestamp</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+      <sect3 id="mysqlmdtmapo">
+        <title>Data type Mapping from MySQL Data types to ODBC Data types</title>
+        <para>This information can be queried by the SQLColumns catalog call.</para>
+        <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+          <title>Default Rule Book settings</title>
+          <tgroup align="char" charoff="50" char="." cols="3">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>MySQL type</entry>
+                <entry>SQL type</entry>
+                <entry>Precision</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>bigint</entry>
+                <entry>SQL_BIGINT</entry>
+                <entry>19</entry>
+              </row>
+              <row>
+                <entry>blob</entry>
+                <entry>SQL_VARBINARY</entry>
+                <entry>2^16-1</entry>
+              </row>
+              <row>
+                <entry>char(n)</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>n</entry>
+              </row>
+              <row>
+                <entry>date</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>32</entry>
+              </row>
+              <row>
+                <entry>datetime</entry>
+                <entry>SQL_CHAR</entry>
+                <entry>32</entry>
+              </row>
+              <row>
+                <entry>decimal(p,s)</entry>
+                <entry>SQL_DECIMAL</entry>
+                <entry>p</entry>
+              </row>
+              <row>
+                <entry>double</entry>
+                <entry>SQL_DOUBLE</entry>
+                <entry>15</entry>
+              </row>
+              <row>
+                <entry>enum</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>float</entry>
+                <entry>SQL_REAL</entry>
+                <entry>7</entry>
+              </row>
+              <row>
+                <entry>int</entry>
+                <entry>SQL_INTEGER</entry>
+                <entry>10</entry>
+              </row>
+              <row>
+                <entry>longblob</entry>
+                <entry>SQL_LONGVARBINARY</entry>
+                <entry>2^32-1</entry>
+              </row>
+              <row>
+                <entry>longtext</entry>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>2^32-1</entry>
+              </row>
+              <row>
+                <entry>mediumblob</entry>
+                <entry>SQL_VARBINARY</entry>
+                <entry>2^24-1</entry>
+              </row>
+              <row>
+                <entry>mediumint</entry>
+                <entry>SQL_INTEGER</entry>
+                <entry>8</entry>
+              </row>
+              <row>
+                <entry>mediumtext</entry>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>2^24-1</entry>
+              </row>
+              <row>
+                <entry>set</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>smallint</entry>
+                <entry>SQL_SMALLINT</entry>
+                <entry>5</entry>
+              </row>
+              <row>
+                <entry>text</entry>
+                <entry>SQL_LONGVARCHAR</entry>
+                <entry>2^16-1</entry>
+              </row>
+              <row>
+                <entry>time</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>32</entry>
+              </row>
+              <row>
+                <entry>timestamp(n)</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>n</entry>
+              </row>
+              <row>
+                <entry>tinyblob</entry>
+                <entry>SQL_VARBINARY</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>tinyint</entry>
+                <entry>SQL_TINYINT</entry>
+                <entry>3</entry>
+              </row>
+              <row>
+                <entry>tinytext</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>255</entry>
+              </row>
+              <row>
+                <entry>varchar(n)</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>n</entry>
+              </row>
+              <row>
+                <entry>varchar(n) binary</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>n</entry>
+              </row>
+              <row>
+                <entry>year</entry>
+                <entry>SQL_VARCHAR</entry>
+                <entry>4</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect3>
+    </sect2>
+    <sect2 id="odbcconf">
+      <title>OpenLink ODBC Agent Installation &amp; Configuration</title>
+      <para>The OpenLink ODBC Agent is an ODBC Proxy
+        Service that facilitates the integration of non OpenLink ODBC Drivers in the
+        Sophisticated OpenLink Multi Tier ODBC Architecture, thereby extending the
+        benefit of this architecture beyond the scope of OpenLink ODBC drivers. </para>
+      <sect3 id="odbc_svtypicuse">
+        <title>Typical Utilization:</title>
+        <para>A typical and very popular use of the
+          OpenLink ODBC Agent is the exposure of tradition desktop database engines
+          within your organization to your new Intranet or Internet based
+          infrastructures, using a client-server distributed computing model. This
+          implies that you can have multiple concurrent clients within your Intranet or
+          remote Internet clients connecting to your Microsoft Access, DBASE, Fox PRO,
+          Paradox database engines without any compromises in security and with
+          astonishing performance.</para>
+      </sect3>
+      <sect3 id="odbc_svinstall">
+        <title>Installation:</title>
+        <para>After downloading the OpenLink Data Access
+          Driver Suite for your chosen desktop operating system please perform the
+          following steps:-</para>
+        <orderedlist>
+          <listitem>
+            <para>Move into your temporary installation directory</para>
+          </listitem>
+          <listitem>
+            <para>Extract the contents of the OpenLink ZIP archive into the
+              directory in step 1</para>
+          </listitem>
+          <listitem>
+            <para>Double click on the program &quot;setup.exe&quot;</para>
+          </listitem>
+          <listitem>
+            <para>Follow the on-screen instructions</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="odbc_svpostinst">
+        <title>Post Installation &amp; Pre Configuration Check List</title>
+        <orderedlist>
+          <listitem>
+            <para>Verify that the ODBC Driver Manager
+              exists on your system by opening up your desktop&apos;s control panel group.
+              This will be under Administrative Tools on a Windows XP system.</para>
+            <figure id="odbcag1" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg057.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Verify the existence of an ODBC Driver
+              for the desktop database engine that you will be connecting with (the example
+              below shows OpenLink and Microsoft drivers installed:</para>
+            <figure id="odbcag2" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg059.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Verify the existence of an ODBC System
+              Data Source Name (DSN) for the database engine that you will be exposing via
+              the OpenLink ODBC Agent, this ODBC DSN must be associated with the appropriate
+              ODBC Driver for your desktop database</para>
+          </listitem>
+          <listitem>
+            <para>Verify the existence of an OpenLink ODBC Driver installation on your PC</para>
+            <figure id="odbcag3" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="odbccl2.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="odbc_svconfodbcagent2dsn">
+        <title>Configuring An OpenLink ODBC Agent
+          Based ODBC Data Source Name (DSN)</title>
+        <orderedlist>
+          <listitem>
+            <para>Open up the ODBC Administrator within
+              your desktop control panel, and then Click on the &quot;Add&quot; button to
+              indicate that you want to add a new ODBC DSN to the current list of installed
+              ODBC DSNs</para>
+            <figure id="odbcag4b" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="odbccl3.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on the appropriate ODBC Driver
+              that you will be associating this new ODBC DSN with, in this case the
+              &quot;OpenLink Generic ODBC Driver&quot;</para>
+            <figure id="odbcag5" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="odbccl4.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Choose a Name for your OpenLink
+              ODBC DSN and then type it into the &quot;Name&quot; field, the example below
+              presumes the DSN is to be called &quot;ODBC Agent&quot;</para>
+            <para>Type a comment to describe the DSN.</para>
+            <para>Enter the name and port of the machine hosting the OpenLink ODBC agent
+              in the &quot;Server&quot; field. The example below presumes that the machine network
+              alias for your desktop computer is &quot;mypc&quot; (note: you can also use the
+              machines actual IP address or even use the &quot;localhost&quot; account if you
+              are connecting to a local as opposed to remote non OpenLink ODBC DSN).
+              The port is the default of 5000.</para>
+            <figure id="odbcag6" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg067.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Choose an OpenLink &quot;Server
+              Type&quot; of &quot;ODBC&quot; from the &quot;Domain&quot; listbox</para>
+            <para>Type the name of the non OpenLink ODBC
+              DSN that you would like to associate this OpenLink ODBC DSN with into the
+              &quot;Database&quot; field. The example below presumes the existence of a non
+              OpenLink ODBC DSN named &quot;LocalAccess&quot; that is bound to the Microsoft
+              ODBC Driver for MS Access.</para>
+            <para>When the "Connect now.." tick box is checked, a test connection
+              is made to verify the Data Source connection.</para>
+            <para>If there is no check then the Login ID and Password fields are
+              ignored, and no test is performed.</para>
+            <para>The Login ID is the default database UserID to use when
+              logging on to a remote database engine (identified by the Domain
+              above).</para>
+            <para>Password is for the login of the above UserID.</para>
+            <figure id="odbcag7" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg069.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Now define additonal connection parameters:</para>
+            <formalpara>
+              <title>Read-only connection</title>
+              <para>Specify whether the connection is to be "Read-only".
+                Make sure the checkbox is unchecked to request a "Read/Write" connection.</para>
+            </formalpara>
+            <formalpara>
+              <title>Defer fetching of long data</title>
+              <para>Check this box to defer the fetching of long data.</para>
+            </formalpara>
+            <formalpara>
+              <title>Disable interactive login</title>
+              <para>Suppress the ODBC "Username" and "Password" login
+                dialog box when interacting with your ODBC DSN from within an ODBC compliant
+                application.</para>
+            </formalpara>
+            <formalpara>
+              <title>Row Buffer Size</title>
+              <para>This attribute specifies the number of records to be
+                transported over the network in a single network hop. Values can range from 1
+                to 99.</para>
+            </formalpara>
+            <figure id="odbcag8" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg071.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The details of the DSN are now shown. To test the DSN,
+              press the Test Data Source button.</para>
+            <figure id="odbcag9" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg073.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>If a Test is requested then the status of the
+              DSN test connection is shown:</para>
+            <figure id="odbca10" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg074.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on the &quot;Finish&quot; button to
+              complete the creation of your new OpenLink ODBC DSN.</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="odbc_svtestconodbc">
+        <title>Making A Test Connection To Your
+          OpenLink ODBC Agent Based ODBC DSN</title>
+        <para>To verify that your installation and
+          configuration is ready for use, please follow the steps below in order to make
+          a test connection to the OpenLink ODBC DSN that you have just created:-</para>
+        <orderedlist>
+          <listitem>
+            <para>Start the OpenLink Request Broker in debug mode, this can be
+              done from a DOS shell by executing the command : oplrqb -dv or from your
+              Services Panel (note you must change the startup mode to manual to enable
+              the OpenLink Request Broker run in Debug Mode)</para>
+          </listitem>
+          <listitem>
+            <para>Locate the program &quot;VBDemo&quot; or &quot;C++ Demo&quot;
+              situated within the &quot;OpenLink Data Access Drivers&quot; group on your
+              desktop (Windows start menu item)</para>
+          </listitem>
+          <listitem>
+            <para>Attempt to make a connection to the OpenLink ODBC DSN </para>
+          </listitem>
+          <listitem>
+            <para>If step 3 is successful and you see data exchanged between your
+              ODBC Client and your OpenLink ODBC DSN, exit the ODBC application, and then
+              shutdown and restart the Broker without the Debug Mode options using the
+              command: oplrqb -v. If step 3 is unsuccessful repeat step 3 and then
+              capture the Request Broker output and proceed to instigating contact with
+              OpenLink Technical support via the OpenLink Support Page</para>
+          </listitem>
+          <listitem>
+            <para>Establish connection between your own ODBC Applications and the
+              OpenLink ODBC DSN created in step 3</para>
+          </listitem>
+          <listitem>
+            <para>Shutdown the Request Broker using the command: oplshut -f</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="addoa2oldsys">
+        <title>Adding An OpenLink ODBC Agent To An Early OpenLink System</title>
+        <orderedlist>
+          <listitem>
+            <para>Place the ODBC Agent executable in the openlink/bin
+              sub-directory</para>
+          </listitem>
+          <listitem>
+            <para>Edit the OpenLink &quot;Session Rules&quot; Book (the file
+              oplrqb.ini) using a text editor</para>
+          </listitem>
+          <listitem>
+            <para>Insert a new OpenLink Session Mapping rule to the top of the
+              &quot;[Mapping Rules]&quot; section of the Rule Book in the manner
+              depicted below: </para>
+            <programlisting>odbc:*:*:*:*:*:* = accept odbc_agent</programlisting>
+          </listitem>
+          <listitem>
+            <para>Then create a new OpenLink Agent section as follows:</para>
+            <programlisting>
+              [odbc_agent]
+              Program = odbc_sv</programlisting>
+            <note>
+              <title>Note:</title>
+              <para>Program key must be set to the exact file name. (For NT this
+                would be odbc_sv.exe)</para>
+            </note>
+          </listitem>
+          <listitem>
+            <para>Save the file</para>
+          </listitem>
+          <listitem>
+            <para>Shutdown and restart your OpenLink Request Broker.</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="odbcjdbcconf">
+      <title>OpenLink ODBC-JDBC Agent Bridge Installation &amp; Configuration</title>
+      <para>The OpenLink ODBC-JDBC Agent bridge is a JDBC Proxy
+        Service enabling ODBC connectivity to a JDBC data repository via an existing JDBC driver for the data repository. Thus essentially it is the reverse of the more traditional JDBC-ODBC driver bridge used for accessing databases via JDBC.</para>
+      <sect3 id="jodbc_svtypicuse">
+        <title>Typical Utilization:</title>
+        <para>A typical and very popular use of the
+          OpenLink ODBC-JDBC Agent bridge would be to access a Database written purely in Java for which a JDBC driver is the only data access mechanism available. As databases written purely in Java become more popular the use of the ODBC-JDBC bridge will become more relevant.</para>
+      </sect3>
+      <sect3 id="jodbc_svinstall">
+        <title>Installation:</title>
+        <para>After downloading the OpenLink Data Access
+          Driver Suite for your chosen desktop operating system please perform the
+          following steps:-</para>
+        <orderedlist>
+          <listitem>
+            <para>Move into your temporary installation directory</para>
+          </listitem>
+          <listitem>
+            <para>Extract the contents of the OpenLink ZIP archive into the
+              directory in step 1</para>
+          </listitem>
+          <listitem>
+            <para>Double click on the program &quot;setup.exe&quot;</para>
+          </listitem>
+          <listitem>
+            <para>Follow the on-screen instructions</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="postinst">
+        <title>Post Installation &amp; Pre Configuration Check List</title>
+        <orderedlist>
+          <listitem>
+            <para>Verify that the ODBC Driver Manager
+              exists on your system by opening up your desktop&apos;s control panel group</para>
+            <figure id="odbcag1" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg057.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Verify the Java environment for the JDBC driver to be used is
+              configured. In particular the CLASSPATH and PATH environment variables must
+              be set correctly for a successful connection. If this is not set in the user's
+              environment by default, you can configure this via the OpenLink session Rules
+              Book (oplrqb.ini) via the relevant [Environment JDBCXX] section where
+              XX = 12 or 13, indicating the version of the JDK in use. Example here is
+              wrapped across lines for presentation.</para>
+            <programlisting>
+              [Environment JDBC12]
+              CLASSPATH = .;D:\Software\oracle\ora81\jdbc\lib\classes12.zip;D:\Softwa
+              re\oracle\ora81\jdbc\lib\nls_charset12.zip;c:\program files\openlink\vi
+              rtuoso 2.0\jdk1.2\virtjdbc2.jar;c:\program files\openlink\jdk1.2\opljdb
+              c2.jar
+              PATH = D:\Software\oracle\ora81\bin;D:\Software\oracle\ora81\jdbc\lib;D
+              :\Software\jdk1.2\jre\bin;D:\Software\jdk1.2\jre\bin\classic;C:\WINNT\S
+              YSTEM32;C:\WINNT
+            </programlisting>
+          </listitem>
+          <listitem>
+            <para>Verify the existence of an OpenLink ODBC Driver installation on your PC</para>
+            <figure id="odbcag3" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="odbccl2.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="jodbc_svconfodbcagent2dsn">
+        <title>Configuring An OpenLink ODBC-JDBC Agent Bridge
+          Based ODBC Data Source Name (DSN)</title>
+        <orderedlist>
+          <listitem>
+            <para>Open up the ODBC Administrator within
+              your desktop control panel, and then Click on the &quot;Add&quot; button to
+              indicate that you want to add a new ODBC DSN to the current list of installed
+              ODBC DSNs</para>
+            <figure id="odbcag4b" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="odbccl3.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on the appropriate ODBC Driver
+              that you will be associating this new ODBC DSN with, in this case the
+              &quot;OpenLink Generic 32 Bit Driver v4.0&quot;</para>
+            <figure id="odbcag5" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="odbccl4.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Choose a Name for your OpenLink
+              ODBC DSN and then type it into the &quot;Name&quot; field, the example below
+              presumes the DSN is to be called &quot;JDBC Agent&quot;</para>
+            <para>Type a comment to describe the DSN.</para>
+            <para>Enter the name and port of the machine hosting the OpenLink ODBC agent
+              in the &quot;Server&quot; field. The example below presumes that the machine network
+              alias for your desktop computer is &quot;mypc&quot; (note: you can also use the
+              machines actual IP address or even use the &quot;localhost&quot; account if you
+              are connecting to a local as opposed to remote JDBC driver).
+              The port is the default of 5000.</para>
+            <figure id="odbcjdbc1" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg167.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Choose an OpenLink &quot;Server
+              Type&quot; of &quot;JDBCXX&quot; from the &quot;Domain&quot; listbox
+              where XX can be 12 or 13 to represent a JDK 1.2 or 1.3 installation is in use.</para>
+            <para>Type the name of the JDBC driver you would like to use for your
+              connection into the &quot;Database&quot; field. The example below assumes
+              you are connecting to Oracle 8i using the JDBC driver provided by Oracle
+              named &quot;oracle.jdbc.driver.OracleDriver&quot;.</para>
+            <para>Type the JDBC connect string for the Database you wish to connect
+              to in the &quot;Options&quot; field. The example below assumes you are
+              connecting to Oracle 8i using the JDBC connect string of
+              &quot;jdbc:oracle:oci8:@ORCL&quot;.</para>
+            <para>When the "Connect now.." tick box is checked, a test connection
+              is made to verify the Data Source connection.</para>
+            <para>If there is no check then the Login ID and Password fields are
+              ignored, and no test is performed.</para>
+            <para>The Login ID is the default database UserID to use when
+              logging on to a remote database engine (identified by the Domain
+              above).</para>
+            <para>Password is for the login of the above UserID.</para>
+            <figure id="odbcag7" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg168.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>If a test is perfomed, then errors are reported like
+              in this example:</para>
+            <figure id="odbcag8" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg169.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Now define additonal connection parameters:</para>
+            <formalpara>
+              <title>Read-only connection</title>
+              <para>Specify whether the connection is to be "Read-only".
+                Make sure the checkbox is unchecked to request a "Read/Write" connection.</para>
+            </formalpara>
+            <formalpara>
+              <title>Defer fetching of long data</title>
+              <para>Check this box to defer the fetching of long data.</para>
+            </formalpara>
+            <formalpara>
+              <title>Disable interactive login</title>
+              <para>Suppress the ODBC "Username" and "Password" login
+                dialog box when interacting with your ODBC DSN from within an ODBC compliant
+                application.</para>
+            </formalpara>
+            <formalpara>
+              <title>Row Buffer Size</title>
+              <para>This attribute specifies the number of records to be
+                transported over the network in a single network hop. Values can range from 1
+                to 99.</para>
+            </formalpara>
+            <figure id="odbcag8" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg170.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The details of the DSN are now shown. To test the DSN,
+              press the Test Data Source button.</para>
+            <figure id="odbcag9" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg171.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>If a Test is requested then the status of the
+              DSN test connection is shown. Here is an example error message:</para>
+            <figure id="odbca10" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg172.gif" format="gif"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on the &quot;Finish&quot; button to
+              complete the creation of your new OpenLink ODBC DSN.</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="jodbc_svtestconodbc">
+        <title>Making A Test Connection To Your
+          OpenLink ODBC-JDBC agent ODBC DSN</title>
+        <para>To verify that your installation and
+          configuration is ready for use, please follow the steps below in order to make
+          a test connection to the OpenLink ODBC DSN that you have just created:-</para>
+        <orderedlist>
+          <listitem>
+            <para>Start the OpenLink Request Broker in debug mode, this can be
+              done from a DOS shell by executing the command : oplrqb -dv or from your
+              Services Panel (note you must change the startup mode to manual to enable
+              the OpenLink Request Broker run in Debug Mode)</para>
+          </listitem>
+          <listitem>
+            <para>Locate the program &quot;VBDemo&quot; or &quot;C++ Demo&quot;
+              situated within the &quot;OpenLink Data Access Drivers&quot; group on your
+              desktop (Windows start menu item)</para>
+          </listitem>
+          <listitem>
+            <para>Attempt to make a connection to the OpenLink ODBC DSN </para>
+          </listitem>
+          <listitem>
+            <para>If step 3 is successful and you see data exchanged between your
+              ODBC Client and your OpenLink ODBC DSN, exit the ODBC application, and then
+              shutdown and restart the Broker without the Debug Mode options using the
+              command: oplrqb -v. If step 3 is unsuccessful repeat step 3 and then
+              capture the Request Broker output and proceed to instigating contact with
+              OpenLink Technical support via the OpenLink Support Page</para>
+          </listitem>
+          <listitem>
+            <para>Establish connection between your own ODBC Applications and the
+              OpenLink ODBC DSN created in step 3</para>
+          </listitem>
+          <listitem>
+            <para>Shutdown the Request Broker using the command: oplshut -f</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="jodbc_svaddoa2oldsys">
+        <title>Adding An OpenLink ODBC-JDBC Agent To An Early OpenLink System</title>
+        <orderedlist>
+          <listitem>
+            <para>Place the ODBC-JDBC Agent executable in the openlink/bin
+              sub-directory</para>
+          </listitem>
+          <listitem>
+            <para>Edit the OpenLink &quot;Session Rules&quot; Book (the file
+              oplrqb.ini) using a text editor</para>
+          </listitem>
+          <listitem>
+            <para>Insert a new OpenLink Domain alias at the top of the
+              &quot;[Domain Alias]&quot; section of the Rule Book in the manner
+              depicted below: </para>
+            <programlisting>JDBC12 = jdbc12</programlisting>
+          </listitem>
+          <listitem>
+            <para>Insert a new OpenLink Session Mapping rule to the top of the
+              &quot;[Mapping Rules]&quot; section of the Rule Book in the manner
+              depicted below: </para>
+            <programlisting>jdbc12:*:*:*:*:*:* = accept generic_jdbc12</programlisting>
+          </listitem>
+          <listitem>
+            <para>Then create a new OpenLink Agent section as follows:</para>
+            <programlisting>
+              [generic_jdbc12]
+              Program = jdbc12_mv.exe
+              Environment = JDBC12
+              ReUse       = always
+            </programlisting>
+            <note>
+              <title>Note:</title>
+              <para>Program key must be set to the exact file name. (For Unix this
+                would be jdbc12_mv)</para>
+            </note>
+          </listitem>
+          <listitem>
+            <para>Then create a new OpenLink Environment section as follows:
+              (lines wrapped for presentation here)</para>
+            <programlisting>
+              [Environment JDBC12]
+              CLASSPATH = .;D:\Software\oracle\ora81\jdbc\lib\classes12.zip;D:\Softwa
+              re\oracle\ora81\jdbc\lib\nls_charset12.zip;c:\program files\openlink\vi
+              rtuoso 2.0\jdk1.2\virtjdbc2.jar;c:\program files\openlink\jdk1.2\opljdb
+              c2.jar
+              PATH = D:\Software\oracle\ora81\bin;D:\Software\oracle\ora81\jdbc\lib;D
+              :\Software\jdk1.2\jre\bin;D:\Software\jdk1.2\jre\bin\classic;C:\WINNT\S
+              YSTEM32;C:\WINNT
+            </programlisting>
+          </listitem>
+          <listitem>
+            <para>Save the file</para>
+          </listitem>
+          <listitem>
+            <para>Shutdown and restart your OpenLink Request Broker.</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="odbcjdbcini">
+        <title>ODBC-JDBC agent</title>
+        <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+          <title>Default Rule Book settings</title>
+          <tgroup align="char" charoff="50" char="." cols="3">
+            <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+            <thead>
+              <row>
+                <entry>
+                  <para>Rule Book Section &amp; parameters</para>
+                </entry>
+                <entry>
+                  <para>Default Rule Book Settings</para>
+                </entry>
+                <entry>
+                  <para>Notes</para>
+                </entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <para>[Environment Jdbc12*]</para>
+                  <para>[Environment Jdbc13*]</para>
+                </entry>
+                <entry></entry>
+                <entry>Parameters are common to JDBC 1.2 and 1.3</entry>
+              </row>
+              <row>
+                <entry>
+                  <para>JET_SQLSTATISTICSOFF=</para>
+                </entry>
+                <entry>
+                  <para>FALSE</para>
+                </entry>
+                <entry>
+                  <para>If it is set to 'TRUE', the function SQLStatistics returns an empty ResultSet.</para>
+                  <para>It helps to resolve the problem with the SQLStatistics for some jdbc drivers.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>JET_DROPCATALOGFROMDBMETACALLS=</para>
+                </entry>
+                <entry>
+                  <para>FALSE</para>
+                </entry>
+                <entry>
+                  <para>If it is sets to 'TRUE', the NULL will be assigned to the field 'Catalog' in
+                    the ResultSet of : SQLTables, SQLColumns &amp; SQLStatistics calls.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>JET_DROPSCHEMAFROMDBMETACALLS=</para>
+                </entry>
+                <entry>
+                  <para>FALSE</para>
+                </entry>
+                <entry>
+                  <para>If it is sets to 'TRUE', the NULL will be assigned to the field 'Schema' in
+                    the ResultSet of : SQLTables, SQLColumns &amp; SQLStatistics calls.</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>JET_NOSUPPORTOFQUOTEDIDENTIFIER=</para>
+                </entry>
+                <entry>
+                  <para>FALSE</para>
+                </entry>
+                <entry>
+                  <para>If it is sets to 'TRUE', the call SQLGetInfo for 'SQL_IDENTIFIER_QUOTE_CHAR'
+                    will return the space (" "). It can be used if DBMS doesn't support
+                    quoted SQL like select * from "account"</para>
+                </entry>
+              </row>
+              <row>
+                <entry>
+                  <para>PATCHNULLSIZEOFSQLCHAR=</para>
+                </entry>
+                <entry></entry>
+                <entry>
+                  <para>If DBMS is returning a field of type SQLCHAR or SQLVARCHAR with zero size,
+                    the size will be replaced with the value of PATCHNULLSIZEOFSQLCHAR</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>Typical settings for PointBase, HyperSonic and InstantDb are as follows:</para>
+        <programlisting>
+          [Environment Jdbc12PointBase]
+          ;CLASSPATH =.;e:\java\pointbase\embedded\classes\pbembedded34EV.jar
+          ;PATH =
+          JET_DROPCATALOGFROMDBMETACALLS = YES
+          JET_DROPSCHEMAFROMDBMETACALLS =  YES
+          JET_NOSUPPORTOFQUOTEDIDENTIFIER = YES
+          [Environment Jdbc12HyperSonic]
+          ;CLASSPATH = .;e:\java\hypersonic\demo\hsql.jar
+          ;PATH = 
+          PATCHNULLSIZEOFSQLCHAR = 4096
+          JET_SQLSTATISTICSOFF = YES
+          [Environment Jdbc12InstantDB]
+          ;CLASSPATH = .;e:\InstantDB\Classes\idb.jar
+          ;PATH = 
+          JET_NOSUPPORTOFQUOTEDIDENTIFIER = YES
+          JET_DROPSCHEMAFROMDBMETACALLS =  YES
+        </programlisting>
+      </sect3>
+    </sect2>
+    <sect2 id="oplprxyag">
+      <title>OpenLink Proxy Agent</title>
+      <para>An OpenLink Proxy agent is a specialized
+        Agent that acts on behalf of another remotely or locally situated OpenLink
+        Database Agent. This Agent format is typically used in 3-Tier Internet based
+        environments in which you place an Agent on an external machine (typically
+        running your Web Server) and then have it masquerade for an actual database
+        agent behind your organization&apos;s firewall.</para>
+      <para>A Proxy Agent can also be used in
+        conjunction with the Session Rules Book for
+        centralized configuration and control of all of your OpenLink Clients, by
+        controlling the configuration of all of the OpenLink Session Elements on one or more
+        server machines.</para>
+      <para>Like other Proxy services, an OpenLink
+        Client connects to the Proxy Agent instead of to the actual service; the Proxy
+        Agent then connects to the actual service that presumably lies on a machine
+        that shouldn&apos;t normally be accessible from outside the network. With this
+        setup, it is possible to grant selective access to databases that are otherwise
+        not accessible from the Internet; this greatly enhances the functionality of
+        data access standards like JDBC, ODBC, OLE-DB.</para>
+      <!-- ##################################### -->
+      <sect3 id="proxyinstall">
+        <title>Installation</title>
+        <para>The OpenLink Proxy Agent is automatically
+          installed with your Request Broker on any platform.</para>
+        <para>You have to install a Request Broker
+          installation archive on the machine that is to act as a host for the OpenLink
+          Proxy agent (typically the middle tier machine in a three 3-tier architecture).
+          You then install another Request Broker archive and relevant Database Agents
+          archives on the machine(s) hosting the backend database engine(s) that you are
+          connecting to via an OpenLink Client.</para>
+      </sect3>
+      <!-- ##################################### -->
+      <sect3 id="proxyconfig">
+        <title>Configuration</title>
+        <para>You configure the Proxy Agent like all
+          other OpenLink Agents using the Admin Assistant. The process is broken into two
+          parts, the first part involves creating a Proxy Agent Template, the second part
+          involves a Session Rules that conditionally associates OpenLink Clients with
+          the Proxy Agent Template that you have created.</para>
+        <para>The configuration guide that follows
+          presumes that we are creating a Proxy on a middle-tier server for the OpenLink
+          Virtuoso Database engine such that any OpenLink Client connection (ODBC, JDBC,
+          UDBC, or OLE-DB) to this Server ends up being connected to Virtuoso. The steps
+          that follow guide you through this process.</para>
+      </sect3>
+      <sect3 id="prxyinittmpl">
+        <title>Creating Proxy Agent Initialization Template</title>
+        <orderedlist>
+          <listitem>
+            <para>Start the Request
+              Broker your middle-tier server machine</para>
+          </listitem>
+          <listitem>
+            <para>Start a Web Browser session</para>
+          </listitem>
+          <listitem>
+            <para>Enter the following URL into your
+              browser:</para>
+            <para>If you started the Request Broker on your local machine enter:</para>
+            <programlisting>http://localhost:8000/ </programlisting>
+            <para>(assuming you accepted port 8000 as the Admin Assistant port number at
+              installation time).</para>
+            <para>If the Request Broker in on another machine enter:</para>
+            <programlisting>http://&lt;hostname or IP address&gt;:8000/</programlisting>
+            <para>(assuming you accepted port 8000 as the Admin Assistant port number at
+              installation time).</para>
+          </listitem>
+          <listitem>
+            <para>Navigate the Admin Assistant menu
+              tree as follows: OpenLink Database Agent(s) Settings--&gt;Database
+              Agent(s) Settings (Form).</para>
+            <figure id="proxy01" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg076.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Scroll to the bottom of the Agent
+              Templates listing page and then click on the &quot;Add&quot; button, this opens
+              up a default agent initialization template page, enter a Name and
+              Description for your new Agent Initialization Template, then select the
+              &quot;create blank entry&quot; radio button and then click the
+              &quot;Add&quot; hyperlink. Reinitialize the Broker when prompted.</para>
+            <figure id="proxy02" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg078.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Navigate the Admin Assistant menu
+              tree as follows: OpenLink Database Agent(s) Settings--&gt;Database
+              Agent(s) Settings (Form). Then locate the new Agent Template created in
+              the previous step. Now click on the &quot;Edit&quot; hyperlink.
+            </para>
+            <para>
+              Enter values into the following fields representing key OpenLink Session
+              Elements:
+            </para>
+            <para>
+              &quot;User Name&quot; - Leave empty (this is handled on the server using
+              the Virtuoso Agent initialization Template)
+            </para>
+            <para>
+              &quot;Password&quot; - ditto
+            </para>
+            <para>
+              &quot;Database Name&quot; - ditto
+            </para>
+            <para>
+              &quot;Read Only&quot; - ditto
+            </para>
+            <para>
+              &quot;Connect Options&quot; - ditto
+            </para>
+            <para>
+              &quot;Server Options&quot; - ditto
+            </para>
+            <para>
+              &quot;Server Type&quot; - Virtuoso (you enter an valid OpenLink Domain
+              values here, e.g Oracle 8, Informix 7, Progress 83B etc.)
+            </para>
+            <para>
+              &quot;Host Name&quot; - enter IP address or network alias of database
+              server machine. this examples presumes the IP address of the database
+              server 123.123.123.100 
+            </para>
+            <para>
+              &quot;Executable Name&quot; - enter &quot;proxy_sv&quot; (Linux or UNIX)
+              or &quot;proxy_sv.exe&quot; (for Windows)
+            </para>
+            <para>
+              In the &quot;Client-Server Mapping Process &amp; Control&quot; section of
+              this page select the &quot;Conditionally&quot; radio button and then hatch
+              the &quot;When originating from same machine&quot; checkbox. This ensures
+              that each new OpenLink client machine has a distinct proxy agent process
+              servicing all the ODBC, JDBC, UDBC, OLE-DB clients on that machine thereby
+              restricting the number of new proxy agents processes initialized.
+            </para>
+            <para>
+              Click on the &quot;Update&quot; button and the reinitialize the Request
+              Broker.
+            </para>
+            <figure id="proxy03" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg080.png" format="png"></graphic>
+            </figure>
+          </listitem>
+        </orderedlist>
+      </sect3>
+      <sect3 id="sessrulmpxy">
+        <title>Creating Session Rule That Maps Connections to Proxy Agent&apos;s Template</title>
+        <orderedlist>
+          <listitem>
+            <para>Follow the &quot;Server Components
+              Administration&quot;-&gt;&quot;Session Rules
+              Administration&quot;-&gt;&quot;Session Rules Editor&quot; menu path which
+              brings you to a screen identical to the one depicted below, this presents you
+              with a list of existing session rules (all OpenLink installations come with a
+              set of pre-configured session rules). Click on the &quot;Add new rule&quot;
+              hyperlink to open up the session rule creation page.</para>
+            <figure id="proxy03" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg082.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create a new session rule by doing the following:</para>
+            <para>
+              Set the Rule Number field to 1 (this means that this rule gets evaluated before
+              others)</para>
+            <para>
+              Leave the default value of &quot;*&quot; in the Server Type field this ensure that
+              this rule applies to any Domain Type.</para>
+            <para>
+              Pick the &quot;proxy_agent&quot; initialization template from the agent
+              initialization template list box used by the &quot;Then&quot; processing
+              instruction to determine how calls associated with this rule are to be handled.</para>
+            <para>
+              Click on the &quot;Add&quot; button to save your new rule to the rule book.
+              Then reinitialize the Request Broker.</para>
+            <figure id="proxy05" float="1">
+              <title>Admin Assistant</title>
+              <graphic fileref="scimg084.png" format="png"></graphic>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create an OpenLink ODBC, JDBC, UDBC or OLE-DB client session with the
+              Domain Type attribute set to Proxy and the Host attribute set to your
+              middle-tier server.</para>
+            <para>If your database server is behind a
+              firewall you need to perform the following additional additional steps:</para>
+          </listitem>
+        </orderedlist>
+        <orderedlist>
+          <listitem>
+            <para>Enable UDP support, and then make port
+              60001 available, this is the port number used by the OpenLink Request Broker.
+              Since we are now connecting to a database server running the Request Broker
+              that resides behind your firewall we need to open up this port.</para>
+          </listitem>
+          <listitem>
+            <para>Start the Request Broker on the
+              Database Server</para>
+          </listitem>
+          <listitem>
+            <para>Start a Web Browser session and then
+              initialize the Admin Assistant running on the Database Server machine by
+              entering the following URL:</para>
+            <programlisting>http://&lt;hostname or IP address of Database Server machine&gt;:8000/</programlisting>
+            <para>(presuming you took the default number of 8000 for the Web Assistant at install
+              time on the Database Server).</para>
+          </listitem>
+          <listitem>
+            <para>Navigate the Admin Assistant menu tree
+              to: Server Components Administration--&gt; Request Broker
+              Administration--&gt;Edit Request Brokers Parameters (Form).</para>
+            <para>
+              Locate item number 4 on the form which reads &quot;Only use ports in the
+              range...&quot;, enter a range of TCP port numbers that you have enabled within
+              your firewall software. The Broker will then automatically starts the Virtuoso
+              agent (or other database agents depending on your settings) on the first
+              available port in the range.</para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+    </sect2>
+  </sect1>
+  &unicode;
+  <sect1 id="getagntinfo">
+    <sect1info>
+      <keywordset>
+        <keyword>Agent Information</keyword>
+      </keywordset>
+    </sect1info>
+    <title>Obtaining Agent Information</title>
+    <para>OpenLink Database agents have a specific naming convention, reflecting 
+      the identification of a particular database engine, and in some case specific 
+      versions of a given database engine.</para>
+    <para>The OpenLink executable binary file naming convention consists of three 
+      distinctive logical parts:</para>
+    <para><![CDATA[<db_engine>[<db_ver>]_<[sv|mv]>[.exe]]]></para>
+    <simplelist mark="bullet">
+      <member>Database Engine - first three or four characters </member>
+      <member>Database Version - next two or three characters (depending on
+        database engine version number-functionality issues)</member>
+      <member>OpenLink Service Provider Identifier - the characters 
+        &quot;_sv&quot; for single threaded or &quot;_mv&quot; for multi-threaded.</member>
+    </simplelist>
+    <para>On a Windows system, the file extension is .exe which is shown as 
+      optional in this description but omitted in the table below.</para>
+    <para>The table below shows you how the current pool of OpenLink agents are 
+      identified based on the convention described above:</para>
+    <table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1" tabstyle="decimalstyle" orient="land" pgwide="0">
+      <title>OpenLink Service providers</title>
+      <tgroup align="char" charoff="50" char="." cols="2">
+        <colspec align="left" colnum="1" colsep="0" colwidth="20pc"/>
+        <thead>
+          <row>
+            <entry>Executable Binary File</entry>
+            <entry>Database Engine &amp; Version</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>virt_mv</entry>
+            <entry>OpenLink Virtuoso</entry>
+          </row>
+          <row>
+            <entry>inf7_mv</entry>
+            <entry>Informix 7.x (Windows)</entry>
+          </row>
+          <row>
+            <entry>inf71_sv</entry>
+            <entry>Informix 7.1 (not Windows)</entry>
+          </row>
+          <row>
+            <entry>inf72_sv</entry>
+            <entry>Informix 7.2 (not Windows)</entry>
+          </row>
+          <row>
+            <entry>inf73_mv</entry>
+            <entry>Informix 7.3 (not Windows)</entry>
+          </row>
+          <row>
+            <entry>mys3_mv</entry>
+            <entry>MySQL 3.x</entry>
+          </row>
+          <row>
+            <entry>oig1_sv</entry>
+            <entry>OpenIngres 1.x</entry>
+          </row>
+          <row>
+            <entry>oig2_sv</entry>
+            <entry>Ingres II</entry>
+          </row>
+          <row>
+            <entry>pgr7_mv</entry>
+            <entry>PostgreSQL 7</entry>
+          </row>
+          <row>
+            <entry>pro73c_sv</entry>
+            <entry>Progress 7.3C</entry>
+          </row>
+          <row>
+            <entry>pro73e_sv</entry>
+            <entry>Progress 7.3E</entry>
+          </row>
+          <row>
+            <entry>pro82a_sv</entry>
+            <entry>Progress 8.2A</entry>
+          </row>
+          <row>
+            <entry>pro82c_sv</entry>
+            <entry>Progress 8.2C</entry>
+          </row>
+          <row>
+            <entry>pro83a_sv</entry>
+            <entry>Progress 8.3A</entry>
+          </row>
+          <row>
+            <entry>pro83b_sv</entry>
+            <entry>Progress 8.3B</entry>
+          </row>
+          <row>
+            <entry>pro90b_sv</entry>
+            <entry>Progress 9.0B</entry>
+          </row>
+          <row>
+            <entry>pro91a_sv</entry>
+            <entry>Progress 9.1A</entry>
+          </row>
+          <row>
+            <entry>pro91b_sv</entry>
+            <entry>Progress 9.1B</entry>
+          </row>
+          <row>
+            <entry>prs91_sv</entry>
+            <entry>Progress 91 SQL-92</entry>
+          </row>
+          <row>
+            <entry>pro81as_sv</entry>
+            <entry>Progress 8.1A small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro82as_sv</entry>
+            <entry>Progress 8.2A small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro82cs_sv</entry>
+            <entry>Progress 8.2C small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro83as_sv</entry>
+            <entry>Progress 8.3A small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro83bs_sv</entry>
+            <entry>Progress 8.3B small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro90bs_sv</entry>
+            <entry>Progress 9.0B small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro91as_sv</entry>
+            <entry>Progress 9.1A small (Windows)</entry>
+          </row>
+          <row>
+            <entry>pro91bs_sv</entry>
+            <entry>Progress 9.1B small (Windows)</entry>
+          </row>
+          <row>
+            <entry>ora7_sv</entry>
+            <entry>Oracle 7.x</entry>
+          </row>
+          <row>
+            <entry>ora803_mv</entry>
+            <entry>Oracle 8.0.3</entry>
+          </row>
+          <row>
+            <entry>ora805_mv</entry>
+            <entry>Oracle 8.0.5</entry>
+          </row>
+          <row>
+            <entry>ora81_mv</entry>
+            <entry>Oracle 8.1.x (8i windows)</entry>
+          </row>
+          <row>
+            <entry>ora8i_mv</entry>
+            <entry>Oracle 8i (not windows)</entry>
+          </row>
+          <row>
+            <entry>ora9i_mv</entry>
+            <entry>Oracle 9i (windows)</entry>
+          </row>
+          <row>
+            <entry>sybc10_mv</entry>
+            <entry>Sybase 10.x (CTLib)</entry>
+          </row>
+          <row>
+            <entry>sybc11_mv</entry>
+            <entry>Sybase 11.x (CTLib)</entry>
+          </row>
+          <row>
+            <entry>sql6_mv</entry>
+            <entry>Microsoft SQL Server 6.x &amp; 7.x</entry>
+          </row>
+          <row>
+            <entry>sql2k_mv</entry>
+            <entry>Microsoft SQL Server 2000</entry>
+          </row>
+          <row>
+            <entry>db2_mv</entry>
+            <entry>DB2</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <!-- ######################## -->
+    <sect2 id="verrelfuncinfo">
+      <title>Specific Agent Information</title>
+      <para>In a manner similar to the Request Broker, you can obtain component 
+        version, release, and functionality related information about your database 
+        agent through your operating system&apos;s command line interface. </para>
+      <para>To obtain the information about your database agent simply type in the 
+        name of the binary executable file for the relevant agent and the --help 
+        switch.  The example below shows how this is done assuming you are seeking 
+        information about the OpenLink Virtuoso database agent:</para>
+      <programlisting>virt_sv --help</programlisting>
+      <para>The output returned is depicted below:</para>
+      <programlisting>
+        OpenLink Virtuoso Database Agent
+        Version 1.2 (Release 4.0) as of Mon Jul 31 2000 (cvsid 00051).
+        Compiled for Linux 2.4.0-test1 (i686-pc-linux-gnu)
+        Copyright (C) OpenLink Software.
+        Usage:
+        virt_sv [-CmijrlLd] [+noautocommit] [+maxrows num] [+initsql arg] [+jetfix] 
+	[+norowsetlimit] [+loglevel num] [+logfile arg] [+debug]
+        +noautocommit 		turn autocommit off by default
+        +maxrows 		maximum allowed rows to fetch
+        +initsql 		execute SQL from this file for every connection made
+        +jetfix 		Jet Engine Compatibility Features
+        +norowset		disable the limit rowsetsize
+      </programlisting>
+      <para>Version - relates to the actual
+        source code archive from which a database agent has been assembled.</para>
+      <para>Binary Platform - indicates what platform
+        the database agent has been built to run on.</para>
+      <para>Usage - describes the command line options
+        that are to be used with a particular database agent, these can be database
+        agent specific. The command line options are to be used within the Database
+        Agent configuration section of &quot;Session Rules Book&quot; (the file
+        oplrqb.ini), this is the section that handles database agent specific
+        items. You can add these entries as required to the rule book, you do so
+        by manually editing the rule book file or via the Web based Admin Assistant
+        (see section on Configuring Database Agents).</para>
+    </sect2>
+  </sect1>
+  <!-- ##################################### -->
+  <sect1 id="relinkdb">
+    <sect1info>
+      <keywordset>
+        <keyword>Relink</keyword>
+        <keyword>Agent Relink</keyword>
+      </keywordset>
+    </sect1info>
+    <title>Linking OpenLink DB Agents</title>
+    <sect2 id="relinkgeneral">
+      <title>General Linking Approach</title>
+      <para>To relink Progress database Agents, see the next section.</para>
+      <para>It is sometimes necessary to link or re-link your
+        OpenLink database agents when one of the following situations arise:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>No database agent executable was supplied with the
+            OpenLink server components installed on your OpenLink server machine</para>
+        </listitem>
+        <listitem>
+          <para>A database agent executable file exists but is unable to
+            converse with your database server due to version incompatibility</para>
+        </listitem>
+      </itemizedlist>
+      <para>OpenLink provides a database agent relink script for each
+        supported database engine, this script is named using the following convention:</para>
+      <itemizedlist>
+        <listitem>
+          <para>ld - indicates a link script</para>
+        </listitem>
+        <listitem>
+          <para>XXX - first three letters (perhaps 4) of database name</para>
+        </listitem>
+        <listitem>
+          <para>NN - major and perhaps minor release number</para>
+        </listitem>
+        <listitem>
+          <para>mv - If the agent is multhreaded</para>
+        </listitem>
+      </itemizedlist>
+      <para>Examples: ldora81mv is Oracle 8i mulithreaded agent. ldoig2 is for Ingres II.</para>
+      <sect3 id="relinksteps">
+        <title>Relink Steps</title>
+        <orderedlist>
+          <listitem>
+            <para>Move to the &quot;lib&quot; sub-directory of your OpenLink
+              server components installation directory e.g: &quot;/usr/openlink/lib&quot;</para>
+          </listitem>
+          <listitem>
+            <para>Setup key OpenLink link script environment variables which
+              create a reference to key database environment variables required for making a native
+              connections to your database engine:</para>
+            <programlisting>
+              DB2
+              DB2DIR=$DB2INST
+              Informix
+              INFORMIX5DIR=$INFORMIXDIR
+              INFORMIX6DIR=$INFORMIXDIR
+              INFORMIX7DIR=$INFORMIXDIR
+              Ingres
+              INGRES6DIR=$II_SYSTEM/ingres
+              INGRES7DIR=$II_SYSTEM/ingres
+              Oracle
+              ORACLE6DIR=$ORACLE_HOME
+              ORACLE7DIR=$ORACLE_HOME
+              ORACLE8DIR=$ORACLE_HOME
+              Solid
+              SOLIDDIR=$SOLID                                             
+              Sybase
+              SYBASE10DIR=$SYBASE
+              SYBASE11DIR=$SYBASE
+              SYBASE4DIR=$SYBASE
+              Unify
+              UNIFYDIR=$UNIFY../lib
+              Velocis
+              VELOCISDIR=$VELOCIS
+              Virtuoso
+              VIRTUOSODIR=$VIRTUOSO
+            </programlisting>
+            <para>You can also opt to manually configure these values in the &quot;dbpaths&quot; file
+              situated in the same directory as your database agent link script.</para>
+          </listitem>
+          <listitem>
+            <para>Ensure that the &quot;lib&quot; subdirectory that your are
+              working within is also part of your system PATH, if this isn't the case add this directory
+              to the system PATH.</para>
+          </listitem>
+          <listitem>
+            <para>Run the appropriate link script (ldXXXNN) which will attempt to
+              build a new database agent (XXX_sv or XXX_mv). Once the relink process is completed the new database
+              agent executable is placed in the &quot;bin&quot; subdirectory directory of your
+              OpenLink server components installation using. The new database agent binary will be named
+              accordingly using the &quot;XXX_sv&quot; or &quot;XXX_mv&quot; database agent naming convention.
+            </para>
+          </listitem>
+        </orderedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="relinkpro">
+      <title>Relinking Progress Agents</title>
+      <para>The files described below should all be part of current agent installations.</para>
+      <para>We have attempted to provide a set of generic link scripts for the versions of Progress
+        we support, to enable you to relink if necessary.</para>
+      <para>Please note that to relink against Progress 6 you require a HLI/C license from Progress
+        in order to do so. For Progress 7, 8, 9 this is not required.</para>
+      <para>Remember to back up OpenLink files before you begin.</para>
+      <para>Follow the instructions below to relink an OpenLink Progress Database agent:</para>
+      <orderedlist>
+        <listitem>
+          <para>Change directory to the 'openlink/lib' directory. 
+          </para>
+        </listitem>
+        <listitem>
+          <para>Ensure the Progress environment variable DLC is set correctly.
+          </para>
+        </listitem>
+        <listitem>
+          <para>Set the Progress PROLOAD environment variable to $DLC/probuild. 
+          </para>
+        </listitem>
+        <listitem>
+          <para>Run the 'mkdlcX' script which will produce a file called 'dlcX.o', where X represent
+            Progress version  6, 7, 8, 9 depending on the major version number of your Progress installation.
+          </para>
+        </listitem>
+        <listitem>
+          <para>If you receive an error stating that any of the Progress libraries cannot be found,
+            edit the "mkdlcX" script and then remove the reference to the named file. Then rerun it "mkdlcX".
+          </para>
+        </listitem>
+        <listitem>
+          <para>Run the script 'ldproX' which will build a new OpenLink Progress X agent
+            (proX_sv or proX_mv), and place it directly in the 'openlink/bin' directory.
+          </para>
+        </listitem>
+      </orderedlist>
+      <note>
+        <title>Note:</title>
+        <para>Relinking is only necessary if you are running a different version of Progress to the one
+          used for linking the agents provided</para>
+      </note>
+      <note>
+        <title>Note:</title>
+        <para>If you cannot find the files described above with your installation then you may have an
+          older version of the software. Please contact OpenLink Support for assistance at:
+          http://www.openlinksw.com/support/suppindx.htm .</para>
+      </note>
+    </sect2>
+  </sect1>
+  &conprog;
+  <sect1 id="appserverarchitect"><title>Application Server Architecture</title>
+    <sect1info>
+      <keywordset>
+        <keyword>Application Server</keyword>
+      </keywordset>
+    </sect1info>
+    <figure id="appsrv001" float="1">
+      <title>Application Server Conceptual Architecture - Three Tier Distributed</title>
+      <graphic fileref="appsrv001.gif" format="gif"></graphic>
+    </figure>
+    <figure id="appsrv002" float="1">
+      <title>Application Server Conceptual Architecture - Avoiding DB Server Install</title>
+      <graphic fileref="appsrv002.gif" format="gif"></graphic>
+    </figure>
+    <figure id="appsrv003" float="1">
+      <title>Application Server Conceptual Architecture - Same Machine</title>
+      <graphic fileref="appsrv003.gif" format="gif"></graphic>
+    </figure>
+  </sect1>
+</chapter>

@@ -1,0 +1,314 @@
+
+
+
+
+
+
+H1 Performance diagnostics
+
+This section provides a checklist for improving performance of a Virtuoso server.
+
+If something does not work fast, this is mostly for the following reasons:
+
+-  Not enough  memory
+- Not the right indices, missing statistics
+- Too much locking or too many threads on the same data
+- Bad disk layout, for example not striped or not enough file descriptors.
+
+
+Determining which is the case is simple.  The result set returned by
+ status ('') has most of the information.  Do this twice with some 10
+ seconds between the samples and see the second result set.
+
+H2 Memory 
+
+If there is not enough memory, there will be frequent disk access.  This is seen from the buffers and disk usage lines.
+
+The very simplest test for this is looking at the CPU % of the process in top[.  If there is constant load and the percent is low then the server is IO bound.
+
+If all memory is not in use, then memory cannot be the problem.  This
+is seen from the buffers line. If the used number is under 80% of the
+total or if the replace age is several times larger than the count of
+buffers, then things are OK.  If the replace age is 0 then no buffers
+have ever been replaced and all that ever was read is still in memory.
+If the replace age is less than or close to the buffer count times 4,
+then cache replacement is frequent and adding buffers is advised.
+
+Adding more than 60-70% of system ram as buffers is not useful.  The
+setting is NumberOfBuffers in the ini file, count 9K per buffer.
+
+
+The disk access is summarized on the disk usage line.  First is the
+number of reads since start then the average latency in N ms.  If %r
+is high, then a lot of the time between the previous status and this
+is taken by disk.  This can be over 100.  One thread that is waiting
+for disk all the time counts for100.  If the percent is high then
+adding more disks and striping over them will be useful.  Even with a
+single database file, adding file descriptors (FDsPerFile setting in
+the ini) may be useful.  If the average read latency is 0 or close, then the data is cached by the OS.  If it is high, then adding disks and striping may reduce it.
+
+The read ahead line will tell if there are sequential reads.  These are faster than random ones and can efficiently use striped disks.
+
+If the workload is random access, then a high number of read aheads  means that one might not have the required indices, thereby causing full table scans.  More on this in the query plans section below.
+
+
+
+
+H2 Swapping 
+
+Swapping is always bad. If swapping occurs, then one has too many
+buffers and should decrease the number of buffers. Use an OS tool like
+top to see the size of the database process and its virtual memory
+use.  Having a resident size smaller than logical size is not always
+bad since some code or data in the process may simply be unused but
+having, after running in a steady state, i.e. all buffers used, a
+resident size less than the amount of memory allocated for buffers is
+always bad.  Before steady state, i.e. during cache warmup, the
+resident size is normally less than the buffer pool's size.
+
+To see the count of major page faults. i.e. ones that read the disk, do 
+
+select getrusage ()[]4];
+
+through interactive SQL.  The result is the count of major faults since starting the process.  The count should not vary between samples, at least not more than a few units per minute. 
+
+This function is not available under Windows.  Use the task manager instead for tracking this.
+
+
+There can be an actual memory leak, specially with plugins or hosting.
+See the growth of the virtual size throughout the run, reaching full
+buffer utilization and doing a couple of checkpoints.  Past this, the
+process should not grow.  You may also see if the
+ThreadCleanupInterval or ResourcesCleanupInterval ini parameters have
+an effect.  If in spite of all the process grows there can be a
+genuine leak.  It is normal for the size to fluctuate somewhat due to varying amounts of uncommitted data, threads, connections and the like.
+
+
+H2 Locking
+
+The lock status section indicates the count of deadlocks and waits.
+If the 2r1w number is high then it means that the application should
+read for update.  It gets shared locks and cannot change them to
+exclusive.  Adding the for update option to selects in the right place
+will fix this, also setting DefaultIsolation in the ini to 2 for read
+committed will be good.  If the lock wait count increases fast, then
+locking may downgrade performance.  The threads line below shows how
+many threads have some task to do.  The waiting is the number of these
+threads that are waiting for a lock at the time of the status.  The
+vdb number is the number of threads waiting for network io, either from virtual
+database or any web protocol.
+
+Take a few samples and if these show few threads waiting and the waits or deadlocks counts do not climb much locking will not be a problem.  If these numbers are high, see the sys_l_stat view for details.
+
+select sum (waits), sum (wait_msecs) from sys_l_stat;
+
+ for the totals.  The first number is the count of times a thread waited for a lock, the second is the sum of the real times spent waiting.
+
+select top 10 * from sys_l_stat order by waits desc;
+
+shows the keys on which most waits take place.  See also the deadlocks and the wait_msecs columns.  Numbers are cumulative.
+
+
+
+For details on disk, see
+
+select top 10 *  from sys_d_stat order by reads desc;
+
+
+These views are explained in more detail in the performance meters section.
+
+If there is a multiuser application doing random access for read or
+write, it is an idea to partition the data so that they do not hit the
+same page all the time.  For example, to allow for parallel insert of
+orders without contention, the TPC C schema prefixes the order number
+with a warehouse and district number, so that simultaneous inserts
+will most often not hit the same page.
+
+Even when there is no locking, there is still some serialization for
+database page access.  This is shown in the various wait columns of
+SYS_L_STAT.  If the sum of the waits for a key is over 1% of the
+touches for the key, as given in SYS_D_STAT, there is contention and a
+performance penalty of maybe 10%.
+
+Such things can be improved by altering the schema design and configuration parameters do not usually help.  If there is disk access, having more memory always helps because then locks will be in effect for less time.
+
+
+H2  Query Plans
+
+To know if there is  a bad query plan, see the explain output of the query.
+
+Unless a full table scan is intended, a full table scan is pretty much always bad.
+
+In the explain () result set, a table access is marked by a From table name.  Below this is mentioned  the driving index.
+Below this are the conditions on the index and  below that the conditions that are not indexable.
+
+Joins are listed one after the other, the outermost first.  The join order can be read from the explain output going from top to bottom.
+
+If a table is read on a non primary key and columns not covered by  the driving index are accessed, there is a second key mentioned with a full match of the primary key columns as condition.
+
+A full table scan looks like this:
+
+explain (select count (*) from t1');
+
+...
+from DB.DBA.T1 by STR2    8.4e+04 rows
+Key STR2  ASC ()
+ 
+ Local Code
+      0: $30 "count" := artm $30 "count" + <constant (1)>
+...
+
+There are no conditions mentioned.
+
+
+
+
+A lookup with index looks like this.
+
+explain ('select fi2 from t1 where row_no = 11');
+...
+from DB.DBA.T1 by T1  Unique
+Key T1  ASC ($26 ".FI2")
+ inlined <col=1694 ROW_NO = <constant (11)>>
+...
+
+The condition is shown on the line below the key.
+
+
+A lookup with full scan testing every row looks like this:
+
+...
+from DB.DBA.T1 by T1    2.5e+04 rows
+Key T1  ASC ($26 ".FI2")
+ 
+row specs: <col=1699 FI2 > <constant (11)>>
+...
+
+The condition is shown after the heading row specs.  The whole key mentioned in the key will be read and the entries tested.  if both indexed and row tests exist, the indexed are done first as one would think.
+
+
+
+
+If your query has full table scans, consider adding an index.  
+
+If the index choice is not the right one, consider the following possibilities:
+
+-Run statistics.  This is not always necessary because the database takes dynamic samples but it can help in cases.
+ - specify the desired index explicitly with table option.
+- Use literal constants instead of parameters, specially if the query is long running and values of the columns being compared are not evenly distributed.
+- To exclude index usage for a column, write col + 0 =xx.
+
+Hash joins can make full table scans.
+This is OK if the table scanned is small.
+
+A hash join looks like this:
+
+explain ('select count (*) from t1 a, t1 b where a.row_no = b.row_no + 1');
+...
+
+{ 
+Fork
+{  
+Fork
+{  
+from DB.DBA.T1 by STR2    8.4e+04 rows
+Key STR2  ASC ($26 "B.ROW_NO")
+ 
+ Local Code
+      0: $30 "temp" := artm $26 "B.ROW_NO" + <constant (1)>
+      4: BReturn 0
+ 
+Current of: <$28 "<DB.DBA.T1 B>" spec 5>
+Sort (HASH) ($30 "temp") -> ($26 "B.ROW_NO")
+ 
+}
+from DB.DBA.T1 by STR2    8.4e+04 rows
+Key STR2  ASC ($37 "A.ROW_NO")
+ 
+ 
+Current of: <$39 "<DB.DBA.T1 A>" spec 5>
+Hash source ($37 "A.ROW_NO") -> ($26 "B.ROW_NO")
+ 
+After code:
+      0: $44 "count" := artm $44 "count" + <constant (1)>
+      4: BReturn 0
+}
+Select ($44 "count", <$39 "<DB.DBA.T1 A>" spec 5>, <$28 "<DB.DBA.T1 B>" spec 5>)
+}
+
+First t1 is read from start to end and a hash is filled with row_no + 1.  Then t1 is read from start to end a second time.  The hash source is the hash lookup.  A hash join, if there is no index or if the whole table or a large part thereof is traversed is better than a loop join because it replaces random access with sequential.  The complexity is close to O(n + n) instead of O (n * log n).  Plus sequential read makes better use of read ahead.
+
+The corresponding loop join looks like this:
+
+explain ('select count (*) from t1 a, t1 b where a.row_no = b.row_no + 1 option (loop)');
+
+
+{ 
+Fork
+{  
+from DB.DBA.T1 by STR2    8.4e+04 rows
+Key STR2  ASC ($26 "B.ROW_NO")
+ 
+ 
+Current of: <$28 "<DB.DBA.T1 B>" spec 5>
+ 
+Precode:
+      0: $29 "temp" := artm $26 "B.ROW_NO" + <constant (1)>
+      4: BReturn 0
+from DB.DBA.T1 by T1  Unique
+Key T1  ASC ()
+ inlined <col=1694 ROW_NO = $29 "temp">
+ Local Code
+      0: $35 "count" := artm $35 "count" + <constant (1)>
+      4: BReturn 0
+ 
+Current of: <$31 "<DB.DBA.T1 A>" spec 4>
+}
+Select ($35 "count", <$31 "<DB.DBA.T1 A>" spec 4>, <$28 "<DB.DBA.T1 B>" spec 5>)
+}
+
+
+
+
+To prevent hash joins, use table option or option at the end of the select as seen above.
+A hash join is very bad if a whole table is read for filling a hash and then only a small number of entries are fetched from the hash.  However, if there is no index, then even this is is better than a loop join.
+
+
+H2 Checkpoint Duration 
+
+
+A checkpoint can take a very long time in certain special conditions.
+Normally a log checkpoint is about a minute if flushing several G
+worth of buffers to disk.  The flushing is mostly done online, after
+which there is an atomic time of a few seconds.  After this operation
+resumes.  Applications do not notice the checkpoint except as a
+temporary increase in response delays.
+
+If spikes in response time are to be avoided, then making frequent checkpoints is better than making infrequent ones.  
+
+If there are long running transactions with many locks or uncommitted
+changes, then the checkpoint interval should anyhow be longer than
+several times the expected duration of such a transaction. If this is
+not so, the checkpoint can fall in the middle of the transaction and
+will internally have to rollback and again reestablish the uncommitted
+state so as to write a clean image on the new checkpoint.  Doing this
+many times in the life of a transaction is very inefficient.  In
+generally do not make long transactions with locking.  Preferentially
+use read committed for anything long.
+
+
+A checkpoint's atomic time can be prohibitively long under the following circumstances:
+
+- There are transactions with a lot of locks and uncommitted state at
+  the time of the checkpoint.  Specially a transaction which has
+  updated pages paged out to disk is bad.  In general one should not
+  do transactions that update a large part of the disk cache, let
+  alone exceed its size.  Use the row autocommit mode (log_enable (2))
+  for doing batch updates.  Batch updates most often do not require
+  isolation anyway.  If they do, then break the job into smaller
+  transactions.
+
+- The MaxCheckpointRemap parameter in the ini is too small and the database exceeds the size of disk cache either in the Virtuoso process or the OS.
+This may increase the count of used pages by the value of this parameter but will make for faster checkpoints.  Set this to up to 25% of the database page count.
+
+

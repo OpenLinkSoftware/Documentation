@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xml_namespace_scope">
+      <refmeta>
+        <refentrytitle>xml_namespace_scope
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>xml_namespace_scope
+</refname>
+        <refpurpose>Returns a vector of all namespace declarations in all ancestors of the given XML entity.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xml_namespace_scope">
+          <funcprototype xml:id="fproto_xml_namespace_scope">
+            <funcdef>vector 
+<function>xml_namespace_scope
+</function>
+
+</funcdef>
+            <paramdef choice="opt">in 
+<parameter>ent
+</parameter>
+
+   XML Entity
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>use_default_ns
+</parameter>
+
+   integer
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xml_namespace_scope">
+        <title>Description
+</title>
+        <para>The function returns a vector of even length that consists of all declared namespace prefixes and namespace URIs
+    	from the <code>ent</code>
+
+   and all its ancestors. This information is needed for processing XML documents that
+    	contains a mix of data and XPath expressions, such as BPEL documents.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xml_namespace_scope">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>ent
+</title>
+          <para>The entity to process.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>use_default_ns
+</title>
+          <para>Flags if the resulting array should contain declarations of default namespace. If it is zero then
+      	only declarations of namespace prefixes are listed; if non-zero then all declarations are listed.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xml_namespace_scope">
+        <title>Return Types
+</title>
+        <para>The function returns a vector of even length that contains narrow strings in UTF-8 encoding.
+</para>
+      </refsect1>
+      <!--
+  <refsect1
+xml:id="errors_xml_namespace_scope">
+    <title>Errors</title>
+    <para>This function can generate the following errors:</para>
+    <errorcode></errorcode>
+  </refsect1>
+-->
+
+      <refsect1 xml:id="examples_xml_namespace_scope">
+        <title>Examples
+</title>
+        <example xml:id="ex_xml_namespace_scope">
+          <title>Adding namespace declarations to the XPath expression
+</title>
+          <para>The function gets an entity whose string-value is an XPATH expression and returns
+the text of expression with all namespace declarations that are in scope. The resulting expression is
+context-independent. This is useful for BPEL-like applications and for extracting XPATH expressions from
+XML Schema documents.</para>
+          <screen>
+create procedure xpath_add_namespace_scope (in ent any, in use_default_ns integer)
+{
+  declare _expn varchar;
+  declare _ses any;
+  declare _scope any;
+  declare _ctr any;
+  _expn := charset_recode (xpath_eval ('string(.)', ent), '_WIDE_', 'UTF-8');
+  _scope := xml_namespace_scope (ent, use_default_ns);
+  _ctr := length (_scope);
+  if (_ctr = 0)
+    return _expn;
+  _ses := string_output ();
+  http ('[', _ses);
+  while (_ctr &gt; 0)
+    {
+      if (_scope[_ctr-2] = '')
+        http (sprintf (' xmlns="%s"', _scope[_ctr-1]), _ses);
+      else
+        http (sprintf (' xmlns:%s="%s"', _scope[_ctr-2], _scope[_ctr-1]), _ses);
+      _ctr := _ctr - 2;
+    }
+  http (' ] ', _ses);
+  http (_expn, _ses);
+  return string_output_string (_ses);
+}
+
+select xpath_add_namespace_scope (
+  xquery_eval (
+'declare namespace xsd="http://www.w3.org/2001/XMLSchema";
+//xsd:keyref[@name="ISBNnumber"]/xsd:field/@xpath',
+    xtree_doc (
+'&lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.publishing.org"
+        xmlns="http://www.publishing.org"&gt;
+  &lt;xsd:element name="Book"  minOccurs="1" maxOccurs="unbounded"&gt;
+    &lt;xsd:keyref name="ISBNnumber" refer="BookDB_ISBN"&gt;
+      &lt;xsd:selector xpath="."/&gt;
+      &lt;xsd:field xpath="ISBN"/&gt;
+    &lt;/xsd:keyref&gt;
+  &lt;/xsd:element&gt;
+  &lt;!-- The rest of the XML Schema file is skipped --&gt;
+
+&lt;/xsd:schema&gt;')),
+  1 );
+
+callret
+VARCHAR
+_______________________________________________________________________________
+
+[ xmlns="http://www.publishing.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] ISBN
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xml_namespace_scope">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xpath_eval">
+            <function>xpath_eval
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

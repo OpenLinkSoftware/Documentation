@@ -1,0 +1,167 @@
+
+
+
+Reading a Query profile
+
+
+A query plan is essentially a pipeline of operations that can be read
+from top to bottom. The operator above produces the input for the
+operator below.  Mesting is indicated by braces.  Operators enclosed
+in braces must completely process their input before continuing with
+operators after the section in braces.  A case in point is aggregation
+which is demoted by for { ... } ... .  The section in braces generates
+the rows to be aggregated and one it is fully evaluated the execution
+proceeds with the operators after the fork.  These will typically read the temporary table filled by the operators inside the fork.
+
+Query variables are demoted with <$v... >.  A reference to a query variable set by an operator that is not immediately the preceding one is demoted by <r $....> via ...>.  The position of the variable in the query state follows the $ sigm.
+After this is given the symbolic name of the variable, e.g. a column name or the name of the function of which this is the return value.
+If this is a reference to a query variable assigned earlier in the plan with one or more operators between the reference and the assignment, the reference contains a via .... section which lists the operators that are between the reference and the assignment.
+
+The operators are identified by a unique number.  Internally this is the location in the query state where the operator keeps the mapping between its rows of input and output.
+
+With vectored execution, an operator may receive any number of rows of input which it may reorder at its convenience.  For this it must record for each row of output which row of input this corresponds to.  Thus when referencing a query variable set earlier in the plan one must take into account the reordering and addition/dropping of rows in affected by the operators between the reference and the initial assignment.  This is the meaning of the via section in the <r $xx > notation.
+
+The last part of the query variable reference is a two letter indication of the type.  If the first letter is followed by n this meands that the variable is non-null.  The type letters are 
+a for any, r for IRI, i for integer, d for double, f for float, t for datetime,  N for wide string, s for string.
+
+If the plan is a profile, i.e. it is annotated with actual times and
+cardinalities from running the query, each operator is preceded by a
+passiage that indicates its percentage of total CPU time of the plan,
+its fanout and the number of rows of input.  The fanout is the number
+of rows of Output divided by the number of rows of input.
+
+
+
+The principal operators in a plan are:
+
+Cluster outer seq start - Queries and subqueries begin with this operator.  It assigns numbers to the sets of parameter  bindings the query gets as input.  An optional section also begins with this.  An optional section is the table or derived table on the right hand side of a left outer join. 
+
+From - accessing an index
+
+Sort - Group by, order by, distinct or hash join build side 
+
+group by read - accessing the results of a group by filled in by a previous sort operator.
+
+Top oby - Accessing a previously filled top k order by temporary space 
+
+Select - At the end of a plan, send the rows of input to the client.  If Subq select return the rows of input as rows of output of the enclosing subquery.
+
+
+Subquery - Indicates a SQL derived table, i.e. select in a from clause.  The input is the output of the previous node.
+
+- Cluster ocation fragment - A set of operators partitioned and
+  shipped to a partition in a cluster.  There are single part
+  fragments and distributed fragments (DFG).  A DFG is a query
+  fragment which begins with a stage operator.  The stage is a
+  partitioning exchange operator which routes its rows of input to the
+  next operator in the appropriate partition based on the
+  partitioningh columns of the row of input.
+
+
+Outer seq end - This demotes the end of an optional section, i.e. the
+table/derived table on the right side of left outer join.  This has
+the effect of making aligned vectors of all the vector query variables
+assigned in the optional section.  When producing rows for which there
+was no match in the optional section, these will be set to null.   References to these variables downstream in the plan will be to the shadowing variables, listed in the shadow clause following this. 
+
+
+Some operators such as index access (From) have a section called
+vector param casts.  This is used when the vector that serves as
+parammeter is not aligned or not of the type required by the operator.
+For example, a vector of column values in an index lookup might not be
+of the type of the column but might be of a type castable to this.  In any case, the pata,key values for index lookup are made into solid aligned, materialized vectors.  After this there is a sort step that orders the input according to key order, so that matches are generated from left to right.
+
+In the event of a cluster partitioned operation, i.e. stage node or
+non-DFG location fragment (QF), the first table source (From) after the
+stage or fragment serves to both align and cast all inputs needed
+downstream in the DFG or QF.  The operator first partitions the rows of input.  Each partition then gets solid, aligned vectors of input values which are directly suitable for input to the first index lookup (From).   
+
+
+
+
+
+We consider and example:  The setup is a cluster of 4 server processes with each 8 slices of data.  There is one table, ct_c, which is joined to itself.
+
+profile ('select count (*) from ct_c a, ct_c b where a.k2 = b.k1 option (loop, order)');
+
+
+This returns a result set in which is found the below.  This is also in the ql_plan column of the sys_query_log view.
+{ 
+In the below excerpt some lines are omitted. Comments are inline.
+
+time   1.3e-06% fanout         1          1 rows in
+
+s# 98 cluster outer seq start, set no <V $40 set_ctr in>    
+save ctx:()
+
+-- the section inside the fork is executed to the end before the section after  the fork is started.
+s# 161 Fork 42 
+{  
+wait time   0.00012% of exec real time, fanout         0
+
+-- The below introduces the 2 stage DFG which does most of the work.
+s# 108   { Cluster location fragment 51 0 unordered 
+   Params: ()
+Output: ()    
+
+-- First partitioning step.  Each of the 32 slices gets the identical plan to execute, this is a flood for all is this first step does not specify a partitioning key value.
+
+time     8e-05% fanout         0          0 rows in
+s# 115 Stage 1: Params: (<V $112 set_ctr in>)
+
+-- This is the initial table scan.  The operator is executed 32 times, once for each slice of data.  
+
+time      0.33% fanout   3.1e+06         32 rows in
+s# 121 from DB.DBA.ct_c by ct_c    1.7e+08 rows   
+Key ct_c  ASC  (<V $28 a.k2 in>)
+ [copies params]
+vector param casts: <V $40 set_ctr in>-> <V $112 set_ctr in>
+ 
+-- This is the second partitioning step, each of the rows of output of the previous is sent to the slice corresponding to K2.
+
+time        31% fanout       0.9      2e+08 rows in
+s# 131 Stage 2: Params: (<v $134 q_a.k2 S136 in>, <V $138 set_ctr in>)
+
+-- This is the 2nd index lookup, by a.k2 = b.k1 There are two
+   parameters given in the vector param cast section, the first is
+   a.k2 and the second is the set number.  This is constant since the
+   query is run on a single row of input but if the query were run on
+   multiple rows of input this would specify which row of input the
+   a.k2 comes from so that this would be aggregated in the right
+   place.  Many aggregates can be produced in a single invocation with
+   multiple rows of input.
+
+time        68% fanout         0      2e+08 rows in
+s# 144 from DB.DBA.ct_c by ct_c  unq         1 rows    
+Key ct_c  ASC  ()
+ inlined  k1 = <v $134 q_a.k2 S136 in>
+vector param casts: <V $28 a.k2 in>-> <v $134 q_a.k2 S136 in>, <r $112 set_ctr via  S121>-> <V $138 set_ctr in>
+ 
+ 
+-- This is the aggregation.
+
+After code:
+      0:  sum <V $43 count i> 1 set no <r $138 set_ctr via  S144>
+      5: BReturn 0
+  
+}
+}
+
+-- The below returns the aggregate to the client.  The conbining of aggregates from different slices is implicit in the for operator whenever this ends with a cluster location fragment.
+
+time   5.4e-07% fanout         0          1 rows in
+s# 164 Select (<V $43 count i>)
+  set no: <V $40 set_ctr in>
+}
+
+
+ 
+
+
+ 
+
+
+
+
+
+

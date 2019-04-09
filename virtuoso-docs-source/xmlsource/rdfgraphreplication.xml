@@ -1,0 +1,2943 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfgraphreplication">
+      <title>RDF Graph Replication</title>
+      <para>The following section demonstrates how to replicate graphs from one Virtuoso
+	instance to (an)other Virtuoso instance(s), using the RDF Replication Feature.</para>
+      <para>Terms used in this section:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>
+            <emphasis>Host Virtuoso Instance</emphasis>
+          </para>
+          <para>, aka the publisher: the instance where we
+  will insert RDF data into a Named Graph; then create a publication of this graph.</para>
+        </listitem>
+        <listitem>
+          <para>
+            <emphasis>Destination Virtuoso Instance</emphasis>
+          </para>
+          <para>, aka the subscriber: the instance
+  which will subscribe to the publication from the Host Virtuoso Instance.</para>
+        </listitem>
+      </itemizedlist>
+      <tip>
+        <title>See Also:</title>
+        <para>
+          <link linkend="fn_rdf_repl_start">
+            <function>DB.DBA.RDF_REPL_START()</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_repl_graph_ins">
+            <function>DB.DBA.RDF_REPL_GRAPH_INS()</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_repl_graph_del">
+            <function>DB.DBA.RDF_RDF_REPL_GRAPH_DEL()</function>
+          </link>
+        </para>
+      </tip>
+      <para>The basic outline:</para>
+      <itemizedlist mark="bullet">
+        <listitem>
+          <para>First, use the Virtuoso Conductor on a Host Virtuoso Instance to publish a named
+   	graph.</para>
+        </listitem>
+        <listitem>
+          <para>Then, use the Virtuoso Conductor on a Destination Virtuoso Instance to subscribe
+   	to deltas from the published graph.</para>
+        </listitem>
+        <listitem>
+          <para>Finally, see how a change in the publisher's graph will appear in the subscriber's
+   	graph.</para>
+        </listitem>
+      </itemizedlist>
+      <section xml:id="rdfgraphreplicationscenr">
+        <title>Replication Scenarios</title>
+        <figure xml:id="topo_scenario" floatstyle="1">
+          <title> 
+  </title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/topo-scenario.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <section xml:id="rdfgraphreplicationscenrint">
+          <title>Introduction</title>
+          <para>In this section we will examine a proposed setup for a back-end server called MASTER which
+      	publishes a number of graphs to a set of front-end machines called FARM-1 .. FARM-n and discuss
+      	a couple of common scenarios like adding an extra machine to the farm, or replacing a broken
+      	instance of MASTER.</para>
+          <para>In this example we will assume each virtuoso instance running on its own machine, so they can
+      	use the same port numbers for both the main server (default 1111) as well as the http port
+      	(default 8890) as each machine has an unique IP addresses. In the example we use MASTER-IP and
+      	FARM-x-IP which should be replaced by either the real IP address or the DNS name of the machine
+      	in question.</para>
+          <para>Since there will be a reverse-proxy service in front of the farm, all virtuoso instances
+      	should have the URIQA Default host set to the outside name for this service. In this example
+      	we will use http://test.example.com as the web service we are trying to setup.</para>
+        </section>
+        <section xml:id="rdfgraphreplicationscenrsup">
+          <title>Setup</title>
+          <section xml:id="rdfgraphreplicationscenrsupinstv">
+            <title>Installing Virtuoso</title>
+            <para>All machines in this setup should be installed with similar installation paths like:</para>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>/opt/virtuoso</para>
+              </listitem>
+              <listitem>
+                <para>/dbs/virtuoso</para>
+              </listitem>
+              <listitem>
+                <para>/virtuoso</para>
+              </listitem>
+              <listitem>
+                <para>...</para>
+              </listitem>
+            </itemizedlist>
+            <para>The partition should be big enough to have room for the Virtuoso binaries and libraries,
+        	the transaction logs, backups and, if you do not want to use the striping feature of Virtuoso,
+        	it will need to have room for the main database files as well.</para>
+            <para>Here are the quick installation steps:</para>
+            <orderedlist>
+              <listitem>
+                <para>Login as root.</para>
+              </listitem>
+              <listitem>
+                <para>Create local user called virtuoso using the chosen installation path as home
+          	direcotory.</para>
+              </listitem>
+              <listitem>
+                <para>Login as virtuoso.</para>
+              </listitem>
+              <listitem>
+                <para>Extract virtuoso-universal-server-6.1.tar in home directory.</para>
+              </listitem>
+              <listitem>
+                <para>Run sh install.sh to install Virtuoso.</para>
+              </listitem>
+              <listitem>
+                <para>Remove the file install.sh virtuoso-universal-server-6.1.tar virtuoso-server.taz if
+          	not otherwise needed.</para>
+              </listitem>
+              <listitem>
+                <para>Run bin/virtuoso-stop.sh to shutdown this Virtuoso instance.</para>
+              </listitem>
+              <listitem>
+                <para>Install virtuoso.lic for this system in $HOME/bin directory.</para>
+              </listitem>
+            </orderedlist>
+            <para>As the replication process needs to make an ODBC connection to the MASTER machine, all
+        	machines should have the following information in the $HOME/bin/odbc.ini:</para>
+            <programlisting>
+[ODBC Data Sources]
+..
+MASTER_DSN = OpenLink Virtuoso
+
+..
+[MASTER_DSN]
+Driver = OpenLink Virtuoso
+Address = MASTER_IP:1111
+</programlisting>
+          </section>
+          <section xml:id="rdfgraphreplicationscenrsupinstm">
+            <title>Setting up MASTER</title>
+            <para>The MASTER machine is the back-end server machine. Various applications feed SPARQL data
+        	into this machine it publishes a set of graphs using RDF Replication.</para>
+            <para>The MASTER machine should ideally be equipped with multiple redundant disks in RAID-1
+        	or RAID-6 mode to minimize the risk that a single bad disk takes down the system. From a
+        	Virtuoso point of view we will use a combination of online backups combined with checkpoint
+        	audit trail to backup the content of the database in a safe way. The online backups, the
+        	checkpoint audit trail as well as the replication logs can also be copied to secondary
+        	storage using the rsync command and can be easily scripted as a cron job.</para>
+            <para>Changes to database/virtuoso.ini:</para>
+            <programlisting>
+...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 1     ; enable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...
+[Replication]
+ServerName   = MASTER
+ServerEnable = 1
+QueueMax     = 5000000
+...
+</programlisting>
+            <para>Once the MASTER is started using the bin/virtuoso-start.sh script we must enable RDF
+        	replication before we start add data to the graphs we wish to replicate, so every record is
+        	accounted for by the replication process. If there is existing data in the graphs to be
+        	published, then this data would need to be added to a subscriber manually since the
+        	replication process creates a delta set of changes since publishing was enabled.</para>
+            <para>To enable publishing of the graph we use the isql program to connect to the MASTER
+        	instance:</para>
+            <programlisting>
+$ isql MASTER-IP:1111
+
+-- and run the following commands:
+
+-- enable this instance as a publisher
+rdf_repl_start();
+
+-- add graphs to replication list
+rdf_repl_graph_ins('http://test.example.com');
+</programlisting>
+            <para>Next we create a backup directory inside the database directory and setup the online
+        	backup, again using the isql program:</para>
+            <programlisting>
+$ cd database
+$ mkdir backup
+$ isql MASTER_IP:1111
+
+-- and run the following commands:
+
+-- clear any previous context
+backup_context_clear();
+
+-- start the backup
+backup_online ('bkup-#', 1000000, 0, vector ('backup'));
+
+</programlisting>
+            <para>The following files can now be backed up using rsync or similar tool to another machine:</para>
+            <table>
+              <title>Files that can be backed up using rsync or similar tool to another machine</title>
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>Files</entry>
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>database/backup/*.bp</entry>
+                    <entry>	the incremental backup files</entry>
+                  </row>
+                  <row>
+                    <entry>database/virtuoso.trx</entry>
+                    <entry>	the main transaction log containing the most recent updates to the database that have not been checkpointed into the database</entry>
+                  </row>
+                  <row>
+                    <entry>database/virtuosoTIMESTAMP.trx</entry>
+                    <entry>all the previous transaction logs which can be used to reconstruct the database</entry>
+                  </row>
+                  <row>
+                    <entry>database/__rdf_repl*.log</entry>
+                    <entry>all the replication logs containing the changes to the published graph</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+            <para>NOTE: Since the database is constantly modified during operation, it is of NO use to
+        	backup the virtuoso.db using an rsync script unless the virtuoso instance was shutdown
+        	beforehand, or certain extra precautions are taken which we will explain later on.</para>
+          </section>
+          <section xml:id="rdfgraphreplicationscenrsupinstp">
+            <title>Setup SPARE master</title>
+            <para>The SPARE machine is a replica of the MASTER machine. This machine subscribes to the
+        	publication of the MASTER to keep an exact match of the RDF graphs, but also publishes
+        	this data without any initial subscribers.</para>
+            <para>The SPARE machine should ideally be equipped similar to the MASTER machine, with multiple
+        	redundant disks in RAID-1 or RAID-6 mode to minimize the risk that a single bad disk takes down
+        	the system. From a Virtuoso point of view we will use a combination of online backups combined
+        	with checkpoint audit trail to backup the content of the database in a safe way. The online
+        	backups, the checkpoint audit trail as well as the replication logs can also be copied to
+        	secondary storage using the rsync command and can be easily scripted as a cron job.</para>
+            <para>Changes to database/virtuoso.ini:</para>
+            <programlisting>
+...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 1     ; enable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...
+[Replication]
+ServerName   = SPARE
+ServerEnable = 1
+QueueMax     = 5000000
+...
+</programlisting>
+            <para>We must enable RDF replication before we start add data to the graphs we wish to
+        	replicate, so every record is accounted for by the replication process. If there is
+        	existing data in the graphs to be published, then this data would need to be added
+        	to a subscriber manually since the replication process creates a delta set of changes
+        	since publishing was enabled.</para>
+            <para>To enable publishing of the graph, as well as subscribing to the MASTER, we first start
+        	up this Virtuoso instance with bin/virtuoso-start.sh and then use the isql program to connect
+        	to the SPARE instance:</para>
+            <programlisting>
+$ bin/virtuoso-start.sh
+$ isql SPARE-IP:1111
+
+-- and run the following commands:
+
+-- enable this instance as a publisher
+rdf_repl_start();
+
+-- add graphs to replication list
+rdf_repl_graph_ins('http://test.example.com');
+
+-- connect to master
+repl_server ('MASTER', 'MASTER_DSN');
+
+-- start subscribing to __rdf_repl
+repl_subscribe ('MASTER', '__rdf_repl', 'dav', 'dav', 'dba', 'dba');
+
+-- start initial replication
+repl_sync_all ();
+
+-- add subscription to scheduler
+DB.DBA.SUB_SCHEDULE ('MASTER', '__rdf_repl', 1);
+</programlisting>
+            <para>Next we create a backup directory inside the database directory and setup the online backup,
+        	again using the isql program:</para>
+            <programlisting>
+$ cd database
+$ mkdir backup
+$ isql SPARE_IP:1111
+
+--and run the following commands:
+
+-- clear any previous context
+backup_context_clear();
+
+-- start the backup
+backup_online ('bkup-#', 1000000, 0, vector ('backup'));
+</programlisting>
+            <para>The following files can now be backed up using rsync or similar tool to another machine:</para>
+            <table>
+              <title>Files that can be backed up using rsync or similar tool to another machine</title>
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>Files</entry>
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+                <tbody>
+                  <row>
+                    <entry>database/backup/*.bp</entry>
+                    <entry>	the incremental backup files</entry>
+                  </row>
+                  <row>
+                    <entry>database/virtuoso.trx</entry>
+                    <entry>the main transaction log containing the most recent updates to the database that have not been checkpointed into the database</entry>
+                  </row>
+                  <row>
+                    <entry>database/virtuosoTIMESTAMP.trx</entry>
+                    <entry>all the previous transaction logs which can be used to reconstruct the database</entry>
+                  </row>
+                  <row>
+                    <entry>database/__rdf_repl*.log</entry>
+                    <entry>all the replication logs containing the changes to the published graph</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+            <para>Note: Since the database is constantly modified during operation, it is of NO use to
+        	backup the virtuoso.db using an rsync script unless the virtuoso instance was shutdown
+        	beforehand, or certain extra precautions are taken which we will explain later on.</para>
+          </section>
+          <section xml:id="rdfgraphreplicationscenrsupinstpf">
+            <title>Setup FARM-1</title>
+            <para>The FARM-1 machine is the first front-end server machine. It subscribes to the publication
+        	of the MASTER instance to keep up-to-date.</para>
+            <para>The FARM-1 machine can be run on simpler hardware than the MASTER instance.It does not
+        	require the same level of redundancy in terms of hard disks etc, as there are a number of
+        	these machines running in parallel each capable of returning results to the proxy. If one
+        	FARM machine dies, it can simply be taken from the reverse-proxy list, repaired or replaced
+        	with a fresh machine before it is added to the list of servers in the reverse proxy. As such
+        	it does not need to be backed up separately, although we could make a backup of this
+        	installation to quickly install the rest of the identical FARM boxes.</para>
+            <para>Change the database/virtuoso.ini file:</para>
+            <programlisting>
+...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 0     ; disable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...
+[Replication]
+ServerName   = FARM-1        ; each FARM machine needs to have a unique replication name
+ServerEnable = 1
+QueueMax     = 5000000
+...
+</programlisting>
+            <para>Next we start up the Virtuoso instance using the bin/virtuoso-start.sh command and
+        	use the isql program to subscribe to the MASTER:</para>
+            <programlisting>
+$ bin/virtuoso-start.sh
+$ isql FARM-1-IP:1111
+
+-- connect to master
+repl_server ('MASTER', 'MASTER_DSN');
+
+-- start subscribing to __rdf_repl
+repl_subscribe ('MASTER', '__rdf_repl', 'dav', 'dav', 'dba', 'dba');
+
+-- start initial replication
+repl_sync_all ();
+
+-- add subscription to scheduler
+DB.DBA.SUB_SCHEDULE ('MASTER', '__rdf_repl', 1);
+</programlisting>
+            <para>At this point we can shutdown this Virtuoso instance using the bin/virtuoso-stop.sh
+        	command and make a copy of the whole virtuoso installation as a blueprint to copy to
+        	another FARM-x machine.</para>
+          </section>
+          <section xml:id="rdfgraphreplicationscenrsupinstpfs">
+            <title>Setup FARM-2 from scratch</title>
+            <para>We can repeat the same steps we did for the FARM-1 machine, and just make sure we use
+        	FARM-2 as the replication name in the database/virtuoso.ini file and use FARM-2-IP:1111 as
+        	an argument to the isql program.</para>
+            <para>Change bin/virtuoso.ini:</para>
+            <programlisting>
+[Replication]
+ServerName = FARM-2
+</programlisting>
+          </section>
+          <section xml:id="rdfgraphreplicationscenrsupinstpfsi">
+            <title>Setup FARM-3 using blueprint from FARM-1 installation</title>
+            <para>Extract the tarred/zipped copy of the installation made at the end of the setup of FARM-1.</para>
+            <para>Before starting up the instance, we only need to give this instance a unique name for
+        	replication:</para>
+            <para>Change bin/virtuoso.ini:</para>
+            <programlisting>
+[Replication]
+ServerName = FARM-3
+</programlisting>
+            <para>Next we start up the Virtuoso instance using the bin/virtuoso-start.sh command and since
+        	the subscription records and schedule are already performed in the previous step, we just
+        	use the isql program to perform a sync against the MASTER:</para>
+            <programlisting>
+$ bin/virtuoso-start.sh
+$ isql FARM-3-IP:1111
+
+-- change replication name
+DB.DBA.REPL_SERVER_RENAME ('FARM-1', 'FARM-3')
+
+-- sync against master
+repl_sync_all();
+</programlisting>
+          </section>
+          <section xml:id="rdfgraphreplicationscenrsupinstpfsc">
+            <title>Setup FARM-4 using clone of FARM-1</title>
+            <para>If the system has been running for some time, it may not be practical to do a replication
+        	from start, so there is an alternative way to setup a new FARM-4 machine.</para>
+            <para>We can either restore the blue-print backup we make at the end of FARM-1 installation,
+        	or we do a fresh installation of virtuoso on the FARM-4 machine.</para>
+            <para>In both cases we shutdown the virtuoso instance and remove the database, as we are going
+        	to replace this.</para>
+            <programlisting>
+$ bin/virtuoso-stop.sh
+$ cd database
+$ rm virtuoso.db virtuoso.trx virtuoso.log virtuoso.pxa
+</programlisting>
+            <para>Change the database/virtuoso.ini file:</para>
+            <programlisting>
+...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 0     ; disable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...
+[Replication]
+ServerName   = FARM-4        ; each FARM machine needs to have a unique replication name
+ServerEnable = 1
+QueueMax     = 5000000
+...
+</programlisting>
+            <para>Next we are going to temporarily disable checkpointing on FARM-1 machine so
+        	we can copy its database without risking corruption: </para>
+            <programlisting>
+$ isql FARM-1-IP:1111
+
+-- disable automatic checkpointing
+checkpoint_interval (-1);
+
+-- and do an explicit checkpoint
+checkpoint;
+</programlisting>
+            <para>It is now safe to copy the database across using the rsync command:</para>
+            <programlisting>
+$ rsync -avz virtuoso@FARM-1-IP:/path/to/virtuoso/database/virtuoso.db database/virtuoso.db
+</programlisting>
+            <para>Next we re-enable checkpoint interval on FARM-1:</para>
+            <programlisting>
+$ isql FARM-1-IP:1111
+
+-- re-enable checkpointing
+checkpoint_interval(60);
+</programlisting>
+            <para>The last step is to start the database:</para>
+            <programlisting>
+$ bin/virtuoso-start.sh
+$ isql FARM-4-IP:1111
+
+-- change replication name
+DB.DBA.REPL_SERVER_RENAME ('FARM-1', 'FARM-4')
+
+-- sync against master
+repl_sync_all();
+</programlisting>
+          </section>
+        </section>
+      </section>
+      <section xml:id="rdfgraphreplicationtopl">
+        <title>Replication Topologies</title>
+        <para>Typical replication topologies are Chains, Stars and Bi-directional. They can be achieved with
+	Virtuoso, by repeating the "Publish" and/or "Subscribe" steps on each relevant node.</para>
+        <section xml:id="rdfgraphreplicationtoplstar">
+          <title>Star Replication Topology</title>
+          <para>In a Star, there is one Publisher, and many Subscribers.</para>
+          <figure xml:id="star1" floatstyle="1">
+            <title>Star Replication Topology</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/topo-star.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>To set up a Star, follow the scenario:</para>
+          <orderedlist>
+            <listitem>
+              <para>Configure Instance #1 to Publish.</para>
+            </listitem>
+            <listitem>
+              <para>Configure Instance #2 to Subscribe to #1.</para>
+            </listitem>
+            <listitem>
+              <para>Repeat as necessary.</para>
+            </listitem>
+          </orderedlist>
+          <section xml:id="rdfgraphreplicationtoplstarex">
+            <title>Star Replication Topology Example</title>
+            <para>The following How-To walks you through setting up Virtuoso RDF Graph Replication in a Star Topology.</para>
+            <section xml:id="rdfgraphreplicationtoplstarexpr">
+              <title>Prerequisites</title>
+              <section xml:id="rdfgraphreplicationtoplstarexprini">
+                <title>Database INI Parameters</title>
+                <para>Suppose there are 3 Virtuoso instances respectively with the following ini parameters values:</para>
+                <orderedlist>
+                  <listitem>
+                    <para>virtuoso1.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = example.com:8891
+...
+[Replication]
+ServerName   = db1
+...
+
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para>virtuoso2.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2
+...
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para>virtuoso3.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso3.db
+TransactionFile = virtuoso3.trx
+ErrorLogFile     = virtuoso3.log
+...
+[Parameters]
+ServerPort               = 1113
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = example.com:8893
+...
+[Replication]
+ServerName   = db3
+...
+</programlisting>
+                  </listitem>
+                </orderedlist>
+              </section>
+              <section xml:id="rdfgraphreplicationtoplstarexprdsn">
+                <title>Database DSNs</title>
+                <para>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, Start menu -&gt; Control Panel -&gt; Administrative Tools -&gt; Data Sources (ODBC); on Mac OS X, /Applications/Utilities/OpenLink ODBC Administrator.app) to create a System DSN for each of db1, db2, db3, with names db1, db2 and db3, respectively.</para>
+              </section>
+              <section xml:id="rdfgraphreplicationtoplstarexprcnd">
+                <title>Install Conductor package</title>
+                <para>On each of the 3 Virtuoso instances install the <link xlink:href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/conductor_dav.vad">conductor_dav.vad</link>
+
+   package.</para>
+              </section>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplstarexprph">
+              <title>Create a Publication on the Host Virtuoso Instance db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>Go to Conductor -&gt; Replication -&gt; Transactional -&gt; Publications
+     </para>
+                  <figure xml:id="star2" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r6.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Enable RDF Publishing</para>
+                </listitem>
+                <listitem>
+                  <para>A publication with the name RDF Publication should be created:
+     </para>
+                  <figure xml:id="star3" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r7.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click the link which is the publication name.</para>
+                </listitem>
+                <listitem>
+                  <para>You will be shown the publication items page:
+     </para>
+                  <figure xml:id="star4" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r8.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for Graph IRI:
+</para>
+                  <programlisting>
+http://example.org
+</programlisting>
+                  <figure xml:id="star5" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r9.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Add New</para>
+                </listitem>
+                <listitem>
+                  <para>The item will be created and shown in the list of items for the currently viewed publication.
+     </para>
+                  <figure xml:id="star6" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r10.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplstarexprih">
+              <title>Insert Data into a Named Graph on the Host
+         Virtuoso Instance</title>
+              <para>There are several ways to insert data into a Virtuoso Named Graph. In this example, we
+           	will use the Virtuoso Conductor's Import RDF feature:</para>
+              <orderedlist>
+                <listitem>
+                  <para>In the Virtuoso Conductor, go to Linked Data -&gt; Quad Store Upload:
+     </para>
+                  <figure xml:id="star7" floatstyle="1">
+                    <title>Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/uc1.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>In the form:
+</para>
+                  <itemizedlist mark="bullet">
+                    <listitem>
+                      <para>Tick the box for Resource URL and enter your resource URL, for e.g.:
+</para>
+                      <programlisting>
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+</programlisting>
+                    </listitem>
+                    <listitem>
+                      <para>Enter for Named Graph IRI:
+</para>
+                      <programlisting>
+http://example.org
+</programlisting>
+                    </listitem>
+                  </itemizedlist>
+                  <figure xml:id="star8" floatstyle="1">
+                    <title>Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r2.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Upload</para>
+                </listitem>
+                <listitem>
+                  <para>A successful upload will result in this message:
+     </para>
+                  <figure xml:id="star9" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r3.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Check the inserted triples by executing a query like the following against the SPARQL endpoint, http://cname:port/sparql:
+</para>
+                  <programlisting>
+SELECT *
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</programlisting>
+                  <figure xml:id="star10" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r4.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>See how many triples have been inserted in your graph:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</programlisting>
+                  <figure xml:id="star11" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r5.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplstarexprsp">
+              <title>Subscribe to the Publication on the a
+         Destination Virtuoso Instance db2, db3, etc.</title>
+              <orderedlist>
+                <listitem>
+                  <para>Go to Conductor -&gt; Replication -&gt; Transactional -&gt; Subscriptions
+     </para>
+                  <figure xml:id="star12" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r11.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click New Subscription
+     </para>
+                  <figure xml:id="star13" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r12.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Specify a new Data Source Enter or selected target data source from the available connected Data Sources:
+     </para>
+                  <figure xml:id="star14" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r13.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                  <figure xml:id="star15" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r13a.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Publications list
+     </para>
+                  <figure xml:id="star16" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r15.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Select the RDF Publication and click List Items
+     </para>
+                  <figure xml:id="star17" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r16.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Subscribe</para>
+                </listitem>
+                <listitem>
+                  <para>The subscription will be created
+     </para>
+                  <figure xml:id="star18" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r18.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Sync</para>
+                </listitem>
+                <listitem>
+                  <para>Check the retrieved triples by executing the following query
+</para>
+                  <programlisting>
+SELECT *
+  FROM &lt;http://example.org&gt;
+ WHERE {?s ?p ?o}
+</programlisting>
+                  <figure xml:id="star19" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r19.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>See how many triples have been inserted into your graph by executing the following query:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+  FROM &lt;http://example.org&gt;
+ WHERE {?s ?p ?o}
+</programlisting>
+                  <figure xml:id="star20" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r5.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+              <para>These steps may be repeated for any number of Subscriber.</para>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplstarexprch">
+              <title>Insert Triples into the Host Virtuoso
+         Instance Graph and check availability at Destination Virtuoso Instance Graph</title>
+              <orderedlist>
+                <listitem>
+                  <para>To check the starting count, on the Destination Virtuoso Instance SPARQL Endpoint, execute:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>On the Host Virtuoso Instance go to Conductor -&gt; Database -&gt; Interactive SQL and execute the following statement:
+</para>
+                  <programlisting>
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+     &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+     &lt;http://xmlns.com/foaf/0.1/interest&gt;
+     &lt;http://dbpedia.org/resource/Web_Services&gt;
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;
+    &lt;http://dbpedia.org/resource/Web_Clients&gt;
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;
+    &lt;http://dbpedia.org/resource/SPARQL&gt;
+  } ;
+</programlisting>
+                  <figure xml:id="star21" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r22.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                  <figure xml:id="star22" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r23.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>To confirm that the triple count has increased by the number of inserted triples, execute the following on the Destination Virtuoso Instance SPARQL Endpoint:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</programlisting>
+                  <figure xml:id="star23" floatstyle="1">
+                    <title>Star Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/r24.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+          </section>
+        </section>
+        <section xml:id="rdfgraphreplicationtoplchain">
+          <title>Chain Replication Topology</title>
+          <para>In a Chain, there is one original Publisher, to which there is only one Subscriber. That
+      	Subscriber may also serve as a Publisher, again with only one Subscriber. The chain ends with
+      	a Subscriber which does not Publish.</para>
+          <figure xml:id="chain1" floatstyle="1">
+            <title>Chain Replication Topology</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/topo-chain.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>To set up a Chain, follow the scenario:</para>
+          <orderedlist>
+            <listitem>
+              <para>Configure Instance #1 to Publish.</para>
+            </listitem>
+            <listitem>
+              <para>Configure Instance #2 to Subscribe to #1.</para>
+            </listitem>
+            <listitem>
+              <para>Configure Instance #2 to Publish.</para>
+            </listitem>
+            <listitem>
+              <para>Configure Instance #3 to Subscribe to #2.</para>
+            </listitem>
+            <listitem>
+              <para>Repeat as necessary.</para>
+            </listitem>
+          </orderedlist>
+          <section xml:id="rdfgraphreplicationtoplchainex">
+            <title>Chain Replication Topology Example</title>
+            <para>The following How-To walks you through setting up Virtuoso RDF Graph Replication in a
+         	Chain Topology.</para>
+            <section xml:id="rdfgraphreplicationtoplchainexpr">
+              <title>Prerequisites</title>
+              <section xml:id="rdfgraphreplicationtoplchainexprini">
+                <title>Database INI Parameters</title>
+                <para>Suppose there are 3 Virtuoso instances respectively with the following ini parameters values:</para>
+                <orderedlist>
+                  <listitem>
+                    <para>virtuoso1.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = example.com:8891
+...
+[Replication]
+ServerName   = db1
+...
+
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para>virtuoso2.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2
+...
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para>virtuoso3.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso3.db
+TransactionFile = virtuoso3.trx
+ErrorLogFile     = virtuoso3.log
+...
+[Parameters]
+ServerPort               = 1113
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = example.com:8893
+...
+[Replication]
+ServerName   = db3
+...
+</programlisting>
+                  </listitem>
+                </orderedlist>
+              </section>
+              <section xml:id="rdfgraphreplicationtoplchainexprdsn">
+                <title>Database DSNs</title>
+                <para>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, Start menu -&gt; Control Panel -&gt; Administrative Tools -&gt; Data Sources (ODBC); on Mac OS X, /Applications/Utilities/OpenLink ODBC Administrator.app) to create a System DSN for each of db1, db2, db3, with names db1, db2 and db3, respectively.</para>
+              </section>
+              <section xml:id="rdfgraphreplicationtoplchainexprcnd">
+                <title>Install Conductor package</title>
+                <para>On each of the 3 Virtuoso instances install the <link xlink:href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/conductor_dav.vad">conductor_dav.vad</link>
+
+   package.</para>
+              </section>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexpr_01">
+              <title>Create Publication on db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>Go to http://example.com:8891/conductor and log in as dba</para>
+                </listitem>
+                <listitem>
+                  <para>Go to Conductor - &gt; Replication - &gt; Transactional - &gt; Publications
+     </para>
+                  <figure xml:id="chain2" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m1.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>Enable RDF Publishing</emphasis>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>As result publication with the name </para>
+                  <para>
+                    <emphasis>RDF Publication</emphasis>
+                  </para>
+                  <para> should be created
+     </para>
+                  <figure xml:id="chain3" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m2.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click the link which is the publication name. </para>
+                </listitem>
+                <listitem>
+                  <para>You will be shown the publication items page
+     </para>
+                  <figure xml:id="chain4" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m3.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for Graph IRI:
+</para>
+                  <programlisting>
+http://example.org
+</programlisting>
+                  <figure xml:id="chain5" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m4.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Add New</para>
+                </listitem>
+                <listitem>
+                  <para>The item will be created and shown in the list of items for the currently viewed publication.
+     </para>
+                  <figure xml:id="chain6" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m5.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexpr_02">
+              <title>Create subscription from db2 to db1's Publication</title>
+              <orderedlist>
+                <listitem>
+                  <para>Log in at http://example.com:8892/conductor</para>
+                </listitem>
+                <listitem>
+                  <para>Go to Replication - &gt; Transactional - &gt; Subscriptions
+     </para>
+                  <figure xml:id="chain7" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m6.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>New Subscription</emphasis>
+                  </para>
+                  <figure xml:id="chain8" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m7.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>From the list of "Specify new data source" select Data Source db1
+     </para>
+                  <figure xml:id="chain9" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m8.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for db1 dba user credentials
+     </para>
+                  <figure xml:id="chain10" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m9.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Add Data Source"</para>
+                </listitem>
+                <listitem>
+                  <para>As result </para>
+                  <para>
+                    <emphasis>db1</emphasis>
+                  </para>
+                  <para> will be shown in the "Connected Data Sources" list.
+     </para>
+                  <figure xml:id="chain11" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m10.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Select </para>
+                  <para>
+                    <emphasis>db1</emphasis>
+                  </para>
+                  <para> the "Connected Data Sources" list and click "Publications list"
+     </para>
+                  <figure xml:id="chain12" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m11.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the list of available publications for the selected data source. Select the one with name "RDF Publication" and click "List Items".
+     </para>
+                  <figure xml:id="chain13" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m12.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the "Confirm subscription" page.
+     </para>
+                  <figure xml:id="chain14" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m13.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>The sync interval by default is 10 minutes. For the testing purposes, we will change it to 1 minute.
+     </para>
+                  <figure xml:id="chain15" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m14.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Subscribe"</para>
+                </listitem>
+                <listitem>
+                  <para>The subscription will be created.
+     </para>
+                  <figure xml:id="chain16" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m15.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexpr_03">
+              <title>Create Publication on db2</title>
+              <orderedlist>
+                <listitem>
+                  <para>Go to http://example.com:8892/conductor and log in as dba</para>
+                </listitem>
+                <listitem>
+                  <para>Go to Conductor - &gt; Replication - &gt; Transactional - &gt; Publications
+     </para>
+                  <figure xml:id="chain17" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m16.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>Enable RDF Publishing</emphasis>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>As result publication with the name </para>
+                  <para>
+                    <emphasis>RDF Publication</emphasis>
+                  </para>
+                  <para> should be created
+     </para>
+                  <figure xml:id="chain18" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m17.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click the link which is the publication name.</para>
+                </listitem>
+                <listitem>
+                  <para>You will be shown the publication items page
+     </para>
+                  <figure xml:id="chain19" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m18.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for Graph IRI:
+</para>
+                  <programlisting>
+http://example.org
+</programlisting>
+                  <figure xml:id="chain20" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m19.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Add New</para>
+                </listitem>
+                <listitem>
+                  <para>The item will be created and shown in the list of items for the currently viewed publication.
+     </para>
+                  <figure xml:id="chain21" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m20.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexpr_04">
+              <title>Create subscription from db3 to db2's Publication</title>
+              <orderedlist>
+                <listitem>
+                  <para>Log in at http://example.com:8893/conductor</para>
+                </listitem>
+                <listitem>
+                  <para>Go to Replication - &gt; Transactional - &gt; Subscriptions
+     </para>
+                  <figure xml:id="chain22" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m21.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>New Subscription</emphasis>
+                  </para>
+                  <figure xml:id="chain23" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m22.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>From the list of "Specify new data source" select Data Source db2
+     </para>
+                  <figure xml:id="chain24" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m23.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for db2 dba user credentials
+     </para>
+                  <figure xml:id="chain25" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m24.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Add Data Source"
+     </para>
+                  <figure xml:id="chain26" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m25.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result </para>
+                  <para>
+                    <emphasis>db2</emphasis>
+                  </para>
+                  <para> will be shown in the "Connected Data Sources" list. Select it and click "Publications list"
+     </para>
+                  <figure xml:id="chain27" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m26.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the list of available publications for the selected data source. Select the one with name "RDF Publication" and click "List Items".
+     </para>
+                  <figure xml:id="chain28" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m27.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the "Confirm subscription" page.
+     </para>
+                  <figure xml:id="chain29" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m28.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>The sync interval by default is 10 minutes. For the testing purposes, we will change it to 1 minute.
+     </para>
+                  <figure xml:id="chain30" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m29.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Subscribe"</para>
+                </listitem>
+                <listitem>
+                  <para>The subscription will be created.
+     </para>
+                  <figure xml:id="chain31" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m30.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainind">
+              <title>Insert Data into a Named Graph on the db1 Virtuoso Instance</title>
+              <orderedlist>
+                <listitem>
+                  <para>Log in at http://example.com:8891/conductor</para>
+                </listitem>
+                <listitem>
+                  <para>Go to Linked Data -&gt; Quad Store Upload:
+     </para>
+                  <figure xml:id="chain32" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/uc1.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>In the shown form:
+      </para>
+                  <orderedlist>
+                    <listitem>
+                      <para>Tick the box for </para>
+                      <para>
+                        <emphasis>Resource URL</emphasis>
+                      </para>
+                      <para> and enter your resource URL, e.g.:
+</para>
+                      <programlisting>
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+</programlisting>
+                    </listitem>
+                    <listitem>
+                      <para>Enter for Named Graph IRI:
+</para>
+                      <programlisting>
+http://example.org
+</programlisting>
+                      <figure xml:id="chain33" floatstyle="1">
+                        <title>Chain Replication Topology</title>
+                        <mediaobject>
+                          <imageobject>
+                            <imagedata fileref="ui/m32.png"/>
+                          </imageobject>
+                        </mediaobject>
+                      </figure>
+                    </listitem>
+                  </orderedlist>
+                </listitem>
+                <listitem>
+                  <para>Click Upload</para>
+                </listitem>
+                <listitem>
+                  <para>A successful upload will result in a shown message.
+     </para>
+                  <figure xml:id="chain34" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m33.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Check the count of the inserted triples by executing a query like the following against the SPARQL endpoint,
+http://example.com:8891/sparql:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                  <figure xml:id="chain35" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m34.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>57</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="chain36" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m35.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexcdd">
+              <title>Check data on the Destination instances db2 and db3</title>
+              <orderedlist>
+                <listitem>
+                  <para>To check the starting count, on each of the Destination Virtuoso Instances db2 and db3 from  SPARQL Endpoint execute:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>57</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="chain37" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m35.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexadd">
+              <title>Add new data on db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>Disconnect db2 and db3.</para>
+                </listitem>
+                <listitem>
+                  <para>On the Host Virtuoso Instance db1 go to Conductor - &gt; Database - &gt; Interactive SQL enter the following statement:
+</para>
+                  <programlisting>
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+     &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+     &lt;http://xmlns.com/foaf/0.1/interest&gt;
+     &lt;http://dbpedia.org/resource/Web_Services&gt;
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;
+    &lt;http://dbpedia.org/resource/Web_Clients&gt;
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;
+    &lt;http://dbpedia.org/resource/SPARQL&gt;
+  } ;
+</programlisting>
+                  <figure xml:id="chain38" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m36.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Execute"</para>
+                </listitem>
+                <listitem>
+                  <para>As result the triples will be inserted
+     </para>
+                  <figure xml:id="chain39" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m36a.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Check the count of the destination instance graph's triples by executing the following query like against the SPARQL endpoint,
+http://example.com:8891/sparql:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>60</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="chain40" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m38.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplchainexchki">
+              <title>Check data on the Destination instances db2 and db3</title>
+              <orderedlist>
+                <listitem>
+                  <para>Start instances db2 and db3</para>
+                </listitem>
+                <listitem>
+                  <para>To confirm that the triple count has increased by the number of inserted triples, execute the following on the Destination Virtuoso Instance db2 and db3 SPARQL Endpoint:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>60</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="chain41" floatstyle="1">
+                    <title>Chain Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m38.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+          </section>
+        </section>
+        <section xml:id="rdfgraphreplicationtoplbid">
+          <title>Bi-directional Replication Topology</title>
+          <section xml:id="rdfgraphreplicationtoplbidex">
+            <title>Bi-directional Replication Topology Example</title>
+            <para>The following How-To walks you through setting up Virtuoso RDF Graph Replication in a
+         Bi-directional Topology.</para>
+            <programlisting>
+db1 &lt;---- db2
+db1 ----&gt;
+
+ db2
+</programlisting>
+            <section xml:id="rdfgraphreplicationtoplbidexpr">
+              <title>Prerequisites</title>
+              <section xml:id="rdfgraphreplicationtoplbidexprini">
+                <title>Database INI Parameters</title>
+                <para>Suppose there are 2 Virtuoso instances respectively with the following ini parameters values:</para>
+                <orderedlist>
+                  <listitem>
+                    <para>virtuoso1.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = example.com:8891
+...
+[Replication]
+ServerName   = db1
+...
+
+</programlisting>
+                  </listitem>
+                  <listitem>
+                    <para>virtuoso2.ini:
+</para>
+                    <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2
+...
+</programlisting>
+                  </listitem>
+                </orderedlist>
+              </section>
+              <section xml:id="rdfgraphreplicationtoplbidexprdsn">
+                <title>Database DSNs</title>
+                <para>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, Start menu -&gt; Control Panel -&gt; Administrative Tools -&gt; Data Sources (ODBC); on Mac OS X, /Applications/Utilities/OpenLink ODBC Administrator.app) to create a System DSN for db1 and db2 with names db1 and db2 respectively.</para>
+              </section>
+              <section xml:id="rdfgraphreplicationtoplbidexprcnd">
+                <title>Install Conductor package</title>
+                <para>On each of the 2 Virtuoso instances install the <link xlink:href="http://s3.amazonaws.com/opldownload/uda/vad-packages/6.1/virtuoso/conductor_dav.vad">conductor_dav.vad</link>
+
+   package.</para>
+              </section>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcph">
+              <title>Create Publication on db2</title>
+              <orderedlist>
+                <listitem>
+                  <para>Go to http://example.com:8892/conductor and log in as dba</para>
+                </listitem>
+                <listitem>
+                  <para>Go to Conductor -&gt; Replication -&gt; Transactional -&gt; Publications
+     </para>
+                  <figure xml:id="bid1" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd1.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>Enable RDF Publishing</emphasis>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>As result publication with the name </para>
+                  <para>
+                    <emphasis>RDF Publication</emphasis>
+                  </para>
+                  <para> should be created
+     </para>
+                  <figure xml:id="bid1_01" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd2.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click the link which is the publication name.</para>
+                </listitem>
+                <listitem>
+                  <para>You will be shown the publication items page
+     </para>
+                  <figure xml:id="bid1_02" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd3.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for Graph IRI:
+</para>
+                  <programlisting>
+http://example.org
+</programlisting>
+                  <figure xml:id="bid1_03" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd4.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Add New
+  </para>
+                </listitem>
+                <listitem>
+                  <para>The item will be created and shown in the list of items for the currently viewed publication.
+     </para>
+                  <figure xml:id="bid1_04" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd5.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcs">
+              <title>Create subscription from db1 to db2's Publication</title>
+              <orderedlist>
+                <listitem>
+                  <para>Log in at http://example.com:8891/conductor
+  </para>
+                </listitem>
+                <listitem>
+                  <para>Go to Replication -&gt; Transactional -&gt; Subscriptions
+     </para>
+                  <figure xml:id="bid1_05" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd6.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>New Subscription</emphasis>
+                  </para>
+                  <figure xml:id="bid1_06" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd7.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>From the list of "Specify new data source" select Data Source db2
+     </para>
+                  <figure xml:id="bid1_07" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd8.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for db2 dba user credentials
+     </para>
+                  <figure xml:id="bid1_08" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd9.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Add Data Source"
+  </para>
+                </listitem>
+                <listitem>
+                  <para>As result </para>
+                  <para>
+                    <emphasis>db2</emphasis>
+                  </para>
+                  <para> will be shown in the "Connected Data Sources" list.
+     </para>
+                  <figure xml:id="bid1_09" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd10.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Select </para>
+                  <para>
+                    <emphasis>db2</emphasis>
+                  </para>
+                  <para> the "Connected Data Sources" list and click "Publications list"
+     </para>
+                  <figure xml:id="bid1_10" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd11.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the list of available publications for the selected data source. Select the one with name "RDF Publication" and click "List Items".
+     </para>
+                  <figure xml:id="bid1_11" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd12.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the "Confirm subscription" page.
+     </para>
+                  <figure xml:id="bid1_12" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd13.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>The sync interval by default is 10 minutes. For the testing purposes, we will change it to 1 minute.
+     </para>
+                  <figure xml:id="bid1_13" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd14.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Subscribe"
+  </para>
+                </listitem>
+                <listitem>
+                  <para>The subscription will be created.
+     </para>
+                  <figure xml:id="bid1_14" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd15.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcpd">
+              <title>Create Publication on db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>Go to http://example.com:8891/conductor and log in as dba
+  </para>
+                </listitem>
+                <listitem>
+                  <para>Go to Conductor -&gt; Replication -&gt; Transactional -&gt; Publications
+     </para>
+                  <figure xml:id="bid1_15" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd16.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>Enable RDF Publishing</emphasis>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>As result publication with the name </para>
+                  <para>
+                    <emphasis>RDF Publication</emphasis>
+                  </para>
+                  <para> should be created
+     </para>
+                  <figure xml:id="bid1_16" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd17.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click the link which is the publication name.
+  </para>
+                </listitem>
+                <listitem>
+                  <para>You will be shown the publication items page
+     </para>
+                  <figure xml:id="bid1_17" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd18.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for Graph IRI:
+</para>
+                  <programlisting>
+http://example.org
+</programlisting>
+                  <figure xml:id="bid1_18" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd19.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Add New
+  </para>
+                </listitem>
+                <listitem>
+                  <para>The item will be created and shown in the list of items for the currently viewed publication.
+     </para>
+                  <figure xml:id="bid1_19" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd20.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcsh">
+              <title>Create subscription from db2 to db1's Publication</title>
+              <orderedlist>
+                <listitem>
+                  <para>Log in at http://example.com:8892/conductor
+  </para>
+                </listitem>
+                <listitem>
+                  <para>Go to Replication -&gt; Transactional -&gt; Subscriptions
+     </para>
+                  <figure xml:id="bid1_20" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd21.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click </para>
+                  <para>
+                    <emphasis>New Subscription</emphasis>
+                  </para>
+                  <figure xml:id="bid1_21" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd22.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>From the list of "Specify new data source" select Data Source db1
+     </para>
+                  <figure xml:id="bid1_22" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd23.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Enter for db1 dba user credentials
+     </para>
+                  <figure xml:id="bid1_23" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd24.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Add Data Source"
+     </para>
+                  <figure xml:id="bid1_24" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd25.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result </para>
+                  <para>
+                    <emphasis>db1</emphasis>
+                  </para>
+                  <para> will be shown in the "Connected Data Sources" list. Select it and click "Publications list"
+     </para>
+                  <figure xml:id="bid1_25" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd26.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the list of available publications for the selected data source. Select the one with name "RDF Publication" and click "List Items".
+     </para>
+                  <figure xml:id="bid1_26" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd27.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>As result will be shown the "Confirm subscription" page.
+     </para>
+                  <figure xml:id="bid1_27" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd28.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>The sync interval by default is 10 minutes. For the testing purposes, we will change it to 1 minute.
+     </para>
+                  <figure xml:id="bid1_28" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd29.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Subscribe"
+  </para>
+                </listitem>
+                <listitem>
+                  <para>The subscription will be created.
+     </para>
+                  <figure xml:id="bid1_29" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd30.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprinsh">
+              <title>Insert Data into a Named Graph on the db2 Virtuoso Instance</title>
+              <orderedlist>
+                <listitem>
+                  <para>Log in at http://example.com:8892/conductor
+  </para>
+                </listitem>
+                <listitem>
+                  <para>Go to Linked Data -&gt; Quad Store Upload:
+     </para>
+                  <figure xml:id="bid1_30" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/uc1.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>In the shown form:
+     </para>
+                </listitem>
+                <listitem>
+                  <para>Tick the box for </para>
+                  <para>
+                    <emphasis>Resource URL</emphasis>
+                  </para>
+                  <para> and enter your resource URL, e.g.:
+</para>
+                  <programlisting>
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Enter for Named Graph IRI:
+</para>
+                  <programlisting>
+http://example.org
+</programlisting>
+                  <figure xml:id="bid1_31" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd32.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click Upload
+  </para>
+                </listitem>
+                <listitem>
+                  <para>A successful upload will result in a shown message.
+     </para>
+                  <figure xml:id="bid1_32" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/m33.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Check the count of the inserted triples by executing a query like the following against the SPARQL endpoint,
+http://example.com:8892/sparql:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                  <figure xml:id="bid1_33" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd34.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>57</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="bid1_34" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd35.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcdin">
+              <title>Check data on the Destination instance db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>To check the starting count, execute from db1's SPARQL Endpoint:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>57</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="bid1_35" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd35.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprinsd">
+              <title>Add new data on db2</title>
+              <orderedlist>
+                <listitem>
+                  <para>Disconnect db1.
+  </para>
+                </listitem>
+                <listitem>
+                  <para>On the Host Virtuoso Instance db2 go to Conductor -&gt; Database -&gt; Interactive SQL enter the following statement:
+</para>
+                  <programlisting>
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+     &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+     &lt;http://xmlns.com/foaf/0.1/interest&gt;
+     &lt;http://dbpedia.org/resource/Web_Services&gt;
+  } ;
+</programlisting>
+                  <figure xml:id="bid1_36" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd36.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Execute"
+  </para>
+                </listitem>
+                <listitem>
+                  <para>As result the triples will be inserted
+     </para>
+                  <figure xml:id="bid1_37" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd37.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Check the count of the destination instance graph's triples by executing the following query like against the SPARQL endpoint,
+http://example.com:8892/sparql:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>58</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="bid1_38" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd38.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcddi">
+              <title>Check data on the Destination instance db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>Start instance db1
+  </para>
+                </listitem>
+                <listitem>
+                  <para>To confirm that the triple count has increased by the number of inserted triples, execute the following statement on db1's SPARQL Endpoint:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>58</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="bid1_39" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd38.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprinsah">
+              <title>Add new data on db1</title>
+              <orderedlist>
+                <listitem>
+                  <para>Disconnect db2.
+  </para>
+                </listitem>
+                <listitem>
+                  <para>On the Host Virtuoso Instance db1 go to Conductor -&gt; Database -&gt; Interactive SQL enter the following statement:
+</para>
+                  <programlisting>
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;
+    &lt;http://dbpedia.org/resource/Web_Clients&gt;
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt;
+  {
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;
+    &lt;http://dbpedia.org/resource/SPARQL&gt;
+  } ;
+</programlisting>
+                  <figure xml:id="bid1_40" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd39.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Click "Execute"
+  </para>
+                </listitem>
+                <listitem>
+                  <para>As result the triples will be inserted
+     </para>
+                  <figure xml:id="bid1_41" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd40.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>Check the count of the destination instance graph's triples by executing the following query like against the SPARQL endpoint,
+http://example.com:8891/sparql:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>60</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="bid1_42" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd41.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationtoplbidexprcdadi">
+              <title>Check data on the Destination instance db2</title>
+              <orderedlist>
+                <listitem>
+                  <para>Start instance db2
+  </para>
+                </listitem>
+                <listitem>
+                  <para>To confirm that the triple count has increased by the number of inserted triples, execute the following statement on db2's SPARQL Endpoint:
+</para>
+                  <programlisting>
+SELECT COUNT(*)
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Should return </para>
+                  <para>
+                    <emphasis>60</emphasis>
+                  </para>
+                  <para> as total.
+     </para>
+                  <figure xml:id="bid1_43" floatstyle="1">
+                    <title>Bi-directional Replication Topology</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/bd41.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </orderedlist>
+            </section>
+          </section>
+        </section>
+      </section>
+      <section xml:id="rdfgraphreplicationsql">
+        <title>Set up RDF Replication via procedure calls</title>
+        <section xml:id="rdfgraphreplicationsqlex">
+          <title>Example</title>
+          <para>The following example shows how to use SQL procedures to set up Virtuoso RDF Graph Replication in a Chain Topology.</para>
+          <figure xml:id="chain1_01" floatstyle="1">
+            <title>Chain Replication Topology</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/topo-chain.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>This can also be done <link linkend="rdfgraphreplicationtoplchainex">through the HTTP-based Virtuoso Conductor</link>
+
+  .</para>
+          <section xml:id="rdfgraphreplicationsqlexprx">
+            <title>Prerequisites</title>
+            <section xml:id="rdfgraphreplicationsqlexprxini">
+              <title>Database INI Parameters</title>
+              <para>Suppose there are 3 Virtuoso instances on the same machine.</para>
+              <para>The first instance holds the master copy of the data and publishes its changes to all other instances that subscribe to this master.</para>
+              <para>The second instance subscribes to the publication of the master copy, but also publishes all of these changes to any instance that subscribes to it.</para>
+              <para>The third instance only subscribes to the publication of the second instance.</para>
+              <para>Each of these 3 servers need unique ports and ServerName, DefaultHost for this replication scheme to work properly. Although not needed, this example also sets separate names for the database and related files. This results in the following ini parameters values (only changes are shown, the rest can remain default):</para>
+              <orderedlist>
+                <listitem>
+                  <para>repl1/virtuoso.ini:
+</para>
+                  <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = example.com:8891
+...
+[Replication]
+ServerName   = db1-r
+...
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>repl2/virtuoso.ini:
+</para>
+                  <programlisting>
+...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2-r
+...
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>repl3/virtuoso.ini:
+</para>
+                  <programlisting>
+
+...
+[Database]
+DatabaseFile    = virtuoso3.db
+TransactionFile = virtuoso3.trx
+ErrorLogFile     = virtuoso3.log
+...
+[Parameters]
+ServerPort               = 1113
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = example.com:8893
+...
+[Replication]
+ServerName   = db3-r
+...
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </section>
+            <section xml:id="rdfgraphreplicationsqlexprxdsn">
+              <title>Database DSNs</title>
+              <para>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, Start menu -&gt; Control Panel -&gt; Administrative Tools -&gt; Data Sources (ODBC); on Mac OS X, /Applications/Utilities/OpenLink ODBC Administrator.app) to create a System DSN for each of db1, db2, db3, with names db1, db2 and db3, respectively.</para>
+            </section>
+          </section>
+          <section xml:id="rdfgraphreplicationsqlcrb">
+            <title>Configure Publishers and Subscribers</title>
+            <orderedlist>
+              <listitem>
+                <para>Run the databases by starting start.sh, which has the following content:
+</para>
+                <programlisting>
+cd repl1
+virtuoso -f &amp;
+cd ../repl2
+virtuoso -f &amp;
+cd ../repl3
+virtuoso -f &amp;
+cd ..
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Use the </para>
+                <para>
+                  <emphasis>isql</emphasis>
+                </para>
+                <para> command to execute the following rep.sql file:
+</para>
+                <programlisting>
+--
+--  connect to the first database which is only a publisher
+--
+set DSN=localhost:1111;
+reconnect;
+
+--
+-- start publishing the graph http://test.org
+---
+DB.DBA.RDF_REPL_START();
+DB.DBA.RDF_REPL_GRAPH_INS ('http://test.org');
+
+--
+--  connect to the second database in the chain, which is both a publisher and a subscriber
+--
+set DSN=localhost:1112;
+reconnect;
+
+--
+--  start publishing the graph http://test.org
+--
+DB.DBA.RDF_REPL_START();
+DB.DBA.RDF_REPL_GRAPH_INS ('http://test.org');
+
+--
+--  contact the first database
+--
+repl_server ('db1-r', 'db1', 'localhost:1111');
+
+--
+--  subscribe to its RDF publication(s)
+--
+repl_subscribe ('db1-r', '__rdf_repl', 'dav', 'dav', 'dba', 'dba');
+
+--
+--  bring the replication service online
+--
+repl_sync_all();
+
+--
+--  and set scheduler to check every minute
+--
+DB.DBA.SUB_SCHEDULE ('db1-r', '__rdf_repl', 1);
+
+--
+--  connect to the third database in the chain, which is only a subscriber
+--
+set DSN=localhost:1113;
+reconnect;
+
+--
+-- uncomment next 2 commands if this database should also be a publisher
+--
+--DB.DBA.RDF_REPL_START();
+--DB.DBA.RDF_REPL_GRAPH_INS ('http://test.org');
+
+--
+--  contact second database
+--
+repl_server ('db2-r', 'db2', 'localhost:1112');
+
+--
+--  subscribe to its RDF publication(s)
+--
+repl_subscribe ('db2-r', '__rdf_repl', 'dav', 'dav', 'dba', 'dba');
+
+--
+--  bring the replication service online
+--
+repl_sync_all();
+
+--
+--  and set schedule to check every minute
+--
+DB.DBA.SUB_SCHEDULE ('db2-r', '__rdf_repl', 1);
+</programlisting>
+              </listitem>
+            </orderedlist>
+          </section>
+        </section>
+      </section>
+    </section>

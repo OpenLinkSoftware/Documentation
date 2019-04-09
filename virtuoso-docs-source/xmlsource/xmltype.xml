@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="xmltype">
+      <title>XMLType</title>
+      <para>
+XMLType is a predefined type for representing XML entities as UDT objects.
+This is compatible with Oracle9i and later.
+You can get better performance and flexibility by using use plain built-in functions
+that directly operate with XML entities.
+All predefined member functions of XMLType for extracting fragments from
+an XMLType are actually wrappers for <link linkend="fn_xpath_eval"><function>xpath_eval()</function></link>
+
+   built-in function.
+You can declare a column of XMLType but the actual type of the created column will be "LONG XML".
+Thus any XML-related feature that can be used for "LONG XML" column will work with XMLType.
+E.g. <link linkend="sqlrefcreattablewithschema">WITH SCHEMA constraint</link>
+
+   allows you to force stored values
+to match a particular schema; <link linkend="usingxmlfreetext">XML free text index</link>
+
+   can accelerate search for documents by content
+etc.
+</para>
+      <para>
+XMLType behaves like any user-defined type, with the only difference in type conversion rules.
+If an XML entity is passed as an argument instead of an instance of XMLType, a new instance of
+XMLType is created by a constructor that takes the entity as an argument.
+Similarly, functions that accept XML entities as arguments can also accept an instance of
+XMLType as an actual value of argument.
+</para>
+      <para>
+The following example creates a table with an XMLType column, put two records there
+and performs a simple search:</para>
+      <screen>
+CREATE TABLE Xml_tab ( xmlval XMLType);
+
+INSERT INTO Xml_tab VALUES (
+   xmltype('&lt;?xml version="1.0"?&gt;
+               &lt;EMP&gt;
+                  &lt;EMPNO&gt;221&lt;/EMPNO&gt;
+                  &lt;ENAME&gt;John&lt;/ENAME&gt;
+               &lt;/EMP&gt;'));
+
+INSERT INTO Xml_tab VALUES (
+   xmltype('&lt;?xml version="1.0"?&gt;
+               &lt;PO&gt;
+                  &lt;PONO&gt;331&lt;/PONO&gt;
+                  &lt;PONAME&gt;PO_1&lt;/PONAME&gt;
+               &lt;/PO&gt;'));
+
+-- now extract the numerical values for the employee numbers
+
+SELECT e.xmlval.extract('//EMPNO/text()').getNumVal() as empno
+   FROM Xml_tab
+   WHERE e.xmlval.existsnode('/EMP/EMPNO')  = 1;
+</screen>
+      <para>To create a new instance of XMLType, the constructor <link linkend="fn_xmltype.xmltype"><function>XMLType()</function></link>
+
+or a function <link linkend="fn_createxml"><function>createXML()</function></link>
+
+   is used.
+</para>
+      <para>
+Virtuoso can perform XPATH search in XMLType instances:
+<link linkend="fn_xmltype.extract"><function>extract()</function></link>
+
+and
+<link linkend="fn_xmltype.existsnode"><function>existsNode()</function></link>
+
+member functions are convenient for simple searches and any
+built-in XPATH functions like
+<link linkend="fn_xpath_eval"><function>xpath_eval()</function></link>
+
+   or
+<link linkend="fn_xquery_eval"><function>xquery_eval()</function></link>
+
+   can handle
+XMLType parameters instead of XML entity parameters.
+An application can use
+<link linkend="fn_xmltype.getstringval"><function>getStringVal()</function></link>
+
+  ,
+<link linkend="fn_xmltype.getnumval"><function>getNumVal()</function></link>
+
+   and
+<link linkend="fn_xmltype.getclobval"><function>getColbVal()</function></link>
+
+member functions to convert found node to strings, numbers or an XML source text of the node.
+</para>
+      <para>Instances of the type can store the URL of the XML schema to which they  should conform.
+This URL can be specified when an instance is constructed;
+Once an instance is created, its schema URL cannot be changed but a modified copy can be created by
+<link linkend="fn_xmltype.createschemabasedxml"><function>createSchemaBasedXML()</function></link>
+
+and
+<link linkend="fn_xmltype.createnonschemabasedxml"><function>createNonSchemaBasedXML()</function></link>
+
+member functions;
+<link linkend="fn_xmltype.isschemabased"><function>isSchemaBased()</function></link>
+
+and <link linkend="fn_xmltype.getschemaurl"><function>getSchemaURL()</function></link>
+
+member functions check whether the given instance is schema based or not and
+what particular schema is used.
+</para>
+      <para>
+An schema based XMLType instance can be validated against its schema;
+If it has been validated against its schema once with no errors detected then
+a special "VALIDATED" flag is set
+in the instance indicating that there is no need to validate it again.
+<link linkend="fn_xmltype.schemavalidate"><function>schemaValidate()</function></link>
+
+member function performs the validation,
+<link linkend="fn_xmltype.isschemavalidated"><function>isSchemaValidated()</function></link>
+
+queries the "VALIDATED" flag and
+<link linkend="fn_xmltype.setschemavalidated"><function>setSchemaValidated()</function></link>
+
+changes the "VALIDATED" flag if application needs optimization tricks.
+</para>
+      <para>
+In addition, any instance can be validated against an arbitrary schema via member function
+<link linkend="fn_xmltype.isschemavalid"><function>isSchemaValid()</function></link>
+
+  .
+Built-in function <function>xml_validate_schema()</function>
+
+may accept instance of XMLType as its first argument, providing even more
+validation functionality.
+</para>
+    </section>

@@ -1,0 +1,351 @@
+---+ Virtuoso Cluster Evaluator's Guide
+
+
+---++ Introduction 
+
+The purpose of this document is to guide an evaluator or new user
+through the steps needed for configuring and testing a Virtuoso 6
+Cluster for RDF workloads
+
+
+---++ Configuration 
+
+First one must decide on how much hardware will be used.
+The current version is partitioned when first installed into n partitions, 
+each served by a distinct server process.  These processes may be spread over 
+several machines or be all on one machine.  Even when using a single machine, 
+there are query parallelism benefits to using Virtuoso 6 in a cluster rather 
+than single server configuration.
+
+As a general rule, for long running queries, we recommend one process per 
+core on each machine. If we expect high concurrency of usage, as in an OLTP 
+or lookup workload, then one process per every 2 cores may be better.  The 
+rationale is that one query will use one thread per participating partition.
+
+For disks, if the number if disks is evenly divisible by the number of cores, 
+it is best to give each process its own disks.  For 4 cores and 4 disks, 
+each will have its log and database on its own disk.  For 4 cores and 8 disks, 
+each will have its log on one of the disks and the database striped over two 
+disks.  If this is not so, as for example with 8 cores and 4 disks, then it is 
+most balanced to partition every  process' database over all the disks.  
+Thus each of 8 processes would have a database striped 4 ways, one stripe per 
+disk.  Logs should in this case be 2 on each disk.
+
+For allocating memory, the NumberOfBuffers setting should be 150000 per 2G 
+of RAM.  Thus with 16G RAM and 8 cores, and 8 processes, each process is set 
+up with 150000 buffers.
+
+If there is swapping, one can drop this setting to 120000.  For 8 cores and 
+32G this setting would be 300000 for each process.
+
+For the network, one generally has at minimum 2 Gbit ethernets per machine.  
+Both should be in use and each process should have a listening port on both 
+interfaces.  These are listed in the cluster.ini file.
+
+Each process requires a cluster listener on an interface of its machine.  
+If there are two interfaces, as usually is the case, then two listeners 
+should be specified.  The administrator must pick a free port number for each.
+These are specified in all cluster.ini files, one such file per process.  Each 
+process also requires an SQL listener for ODBC/JDBC/.net or other clients such 
+as the isql utility.  This is specified in the ServerPort in Parameters of 
+virtuoso.ini, in each server's working directory.  A process may or may not 
+specify an HTTP listener.  This is required for the SPARQL endpoint, for 
+example.  This is specified in the ServerPort of the HTTP section of 
+virtuoso.ini. Thus, in general one has to pick 4 ports per process, 2 for 
+cluster interconnect, 1 for SQL clients and optionally one for HTTP.  The 
+cluster ports are used for interconnecting the processes and no other 
+connections should be made.  For security, these ports should be firewalled 
+so that they cannot be connected to from outside the cluster.
+
+One of the processes is designated as master.  By convention, this is the one 
+with the smallest number but it can be any.  Its function is to monitor 
+distributed deadlocks, which adds a small overhead but aside this it performs 
+the same functions as any of the other processes.  Clients connected to any of 
+the processes will see the same consistent state and get the same service. 
+
+The configration files are further described in the documentation.
+
+The sample below applies to 4 processes and 8G on a single machine:
+
+*** example 
+
+With multiple machines, it is best to keep one binary directory shared over 
+the network.  Each process should then have a home directory on disk local to 
+the server where it runs.  This home directory will initially contain the 
+virtuoso.ini and cluster.ini files.  It needs no other content.  A script 
+should be written for starting the instances on each machine.  This can be of 
+the form
+
+cd s1
+virtuoso-t &
+cd ../s2
+virtuoso-t &
+... and so forth.
+
+The below script can be used for automatically restarting a virtuoso process 
+in the event of exit due to software error:
+
+*** script.
+
+---++ H2 Startup and Shutdown 
+
+When the cluster is first started, each process creates its database files.  
+The master process then waits for all to be online and makes some global 
+initialization.  If this passes without errors, the cluster is ready for use.
+
+The default account and password used here are dba and dba.  We assume that 
+the connections are taken from the machine running the master process of the 
+server and that the SQL port of this process is 1111. 
+
+After first start, this can be tested by connecting with isql to any of the 
+processes.:
+
+isql localhost:1111 dba dba 
+SQL> status ('cluster');
+SQL> status ('cluster');
+
+
+The first status asks to repeat the command.  The second status should display 
+the count of processes and other statistics, see *** link for the explanation 
+of the fields.
+
+Above, localhost:1111 is the host:port for the SQL listener of any of the 
+master process.
+
+To shutdown all the processes, do 
+
+SQL> cl_exec ('shutdown');
+
+This will finish with an error indicating the server disconnected.
+
+
+---++ RDF Storage Setup 
+
+
+Before starting filling an RDF database, One must decide whether one wants a text index to be built on all 
+RDF literal values.  If we have a pure RDF use case, this is not necessary.  
+For most interesting uses, this is justified.  The text index is on by 
+default. To disable the text index, do
+
+SQL> cl_text_index (0);
+SQL> cl_exec ('checkpoint');
+
+---++ Loading RDF 
+
+RDF load is a non-transactional bulk load.  Systems are normally online during 
+load but may respond slower since loading affects the working set in memory.
+
+When loading, one must decide on recovery.  The default is a 
+non-transactional, non recoverable load.  This means that if any of the 
+processes dies during the load, all processes will exit and the load 
+restarted from the last checkpoint.  The loading may also keep a roll forward 
+log so as to allow recovery.  This takes some extra time and the logs fill 
+disks, so this is not generally recommended for bulk loads.
+
+When applications make small changes to RDF graphs, these changes are normally 
+transactional and logged with full ACID properties.
+
+Thus, in order to prepare for bulk loading, do the following:
+
+Put the RDF files to be loaded into a directory accessible to all processes 
+that will be running a loader.  This can be any directory but it should have 
+the same logical path, seen from any of the servers that will run the load.
+Note that these can be large and nfs might not work with files larger than 2G. 
+
+In general, many files of 1-2G are better than a single file of 100G.
+parallelism is naturally better with small files.  Files of less than
+a few megabytes are inefficient for loading but in principle a file
+need not contain more than a single triple.
+
+For each file, decide into which graph this will go.
+
+Make a symbolic link from each process' working directory to the directory 
+where the files to be loaded are.  All processes must see the same files with 
+the same relative path from the server's working directory.
+
+To prepare the load, do the following commands. This presumes files are 
+contained in directory 'dbpedia' and are to be loaded into graph 
+'http://dbpedia.org'. All files ending with '.nt' in the directory will be 
+loaded. 
+
+isql 1111 dba dba 
+SQL> load rdflddir2.sql;
+SQL> ld_dir ('dbpedia', '%.nt', 'http://dbpedia.org');
+
+The directory is relative to each server's working directory.
+The 2nd argument is a SQL LIKE mask.  The last is the graph IRI where the 
+files are to be loaded.  
+
+Supported file extensions are: 
+For TTL
+.nt .n3 .ttl
+For N qiads:
+.n4 .nq
+For RDF XML
+.rdf 
+
+The effect is that the table load_list is filled with the names of the files 
+and their target graphs.
+
+Do 
+
+isql 1111 dba dba 
+SQL select * from load_list;
+
+to verify that the files are in.
+
+After this initialization step, the loaders can be run.  This is done by 
+connecting to each process that will run a loader and executing 
+
+SQL> rdf_loader_run ();
+
+To run a loader on each process of the cluster, one can do:
+
+SQL> cl_exec ('RDF_LD_SRV (2)');
+
+on a single node.  This executes the rdf_ld_srv (2) command on all nodes.  
+The effect of this is to start one loader thread on each.  This will return 
+when all the loader threads have completed.
+
+To monitor the progress of the load, take another connection to any of the 
+processes. 
+
+To get a snapshot of resource utilization do 
+
+SQL> status ('cluster');
+
+This will give average resource utilization for the time between this call and 
+the previous status ('cluster').  This will also tell if any of the processes 
+are down.  Under heavy load, this may time out and report so.  This does not 
+mean that there is a crash.  Retry a second time if a timeout is reported.
+
+The load_list table contains the state of the load.  The ll_state column is 0 
+if load has not started for the file, 1 if it is in progress and 2 if it is 
+complete.  The ll_error column is null if there is no error, otherwise this 
+is an error message pertaining to the file.  This can for example be a syntax 
+error.
+
+To see what files are completed without error:
+
+select ll_file from load_list where ll_state = 2 and ll_error is null;
+
+There are also columns for load start and end times for each file. Do select * to see them all. 
+
+Files may be added to the load list during load with the ld_dir function.
+
+Since a load can take a long time, it is possible to stop it.  To stop a load, 
+do
+
+SQL> rdf_load_stop ();
+
+This will cause the loaders to finish their current file and pick no more 
+files from the load list.  One  can notice that all loading has terminated by 
+each of the rdf_loader_run () statements returning or if they were started 
+with cl_exec, the cl_exec statement returning.  Alternately one may see this 
+by looking at load_list and seeing that no file has ll_state = 1.
+
+It may take some time before loading stops if files of tens of GB are involved.
+
+After loading is stopped, to make the result permanent, do:
+
+SQL> cl_exec ('checkpoint');
+
+This is a regular database log checkpoint on all processes.  Since this writes 
+potentially tens of G worth of buffers to disk, this may take some minutes.
+Since loading was done without logging and without automatic checkpoint, this 
+is needed for making the result permanent.  If the load is without logging and 
+one process has a checkpoint and another does not, the state will be 
+inconsistent between partitions unless there is a final checkpoint on all nodes at the end of the load.
+
+If one of the processes crashes during the bulk load, the other processes will also exit. 
+if this happens, delete all  transaction log files (*.trx) and restart.
+Killing them can be done with kill -9 but MUST NOT be done with the
+shutdown command which would checkpoint the remaining databases, thus 
+retaining the inconsistent state.
+
+After restart, the state seen will correspond to the last checkpoint.  
+The load may be restarted. from the state of the previous checkpoint.
+
+
+The RDF literals that were loaded are marked for text indexing but the text 
+index itself is not made until later.  By default this will be run on a schedule every minute.  The VT_BATCH_UPDATE stored procedure can be used to control this behavior.  See documentation.
+
+
+To see if there are RDF literals flagged for text indexing but not yet 
+indexed, do
+
+select count (*) from vtlog_db_dba_rdf_obj;
+
+When both loading and vt_inc_index_obj () are running, one will see this count 
+go up and down.  Once it hits 0, the indexer stops.
+
+
+---++ Using SPARQL Over SQL
+
+To query the database with SPARQL, one may use the isql interactive SQL 
+utility.  Simply prefix the SPARQL query with the sparql keyword, like this:
+
+SQL> sparql select * from <http://dbpedia.org> where {?s ?p ?o} limit 10;
+
+To use the SPARQL end point, one may use any client, below we show it with 
+curl:
+
+$ curl .... *** fill in .
+
+
+---++  The Facets Application and Service 
+
+To use the facets interface on the data, do the following:
+
+*** fill in .
+
+
+
+
+
+
+Fault Tolerance With RDF
+
+When first creating a database, one may specify that RDF data will be stored in a fault tolerant manner.
+
+After starting the cluster for the first time, this is done by writing the configuration of the cluster and executing the command:
+
+SQL> load clrdfdup.sql;
+
+This drops any RDF data and recreates the tables and indices with replicated storage of all partitions.
+
+The clrdfdup.sql file must be edited to reflect the actual configuration of the cluster, e.g. how many server processes the cluster consists of.
+
+The default is the minimal configuration of 4 processes where data is divided into two partitions, each of which is stored in two copies.
+
+create cluster DUP default group ("Host1", "Host2"), group ("Host3", "Host4");
+
+This means thet Host1 and Host2 will have the same data for all tables created under the DUP logical cluster.  Likewise, Host3 and Host4 will have the same data.   Each index is individually hash partitioned so that an entry will go either to Host1, Host2 or to Host3, Host4 depending on the partitioning key values.
+
+To protect against hardware failures, Host1 and Host2 must be on different physical machines, likewise with Host3 and Host4.  The IP addresses of corresponding to the Host1-4 are given in the cluster.ini files.  By convention, Host1 is the master with a fallback master of Host2.
+This is given by the lines 
+
+Master = Host1
+Master2 = Host2
+
+
+in each cluster.ini file. 
+
+After this the cluster can be operated normally.
+Note that bulk load is not fault tolerant, only transactional operations are fault tolerant.
+This means that bulk load loads all data in duplicate but if it fails in mid run, the whole process stops and all servers must be restarted from the last checkpoint.
+Bulk load means any loading that is done with the rdf_loader_run program or anything that runs with log_enable (2) executed on the same session.
+All other operations are transactional.
+
+
+
+Testing Fault Tolerance 
+
+
+
+
+
+
+
+
+

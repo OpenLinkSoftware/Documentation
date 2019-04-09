@@ -1,0 +1,1545 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfviewsrdbms">
+      <title>Linked Data Views over RDBMS Data Source</title>
+      <para>
+Linked Data Views map relational data into RDF and allow customizing RDF representation of locally stored RDF data.
+To let SPARQL clients access relational data as well as physical RDF graphs in a single query, we introduce a declarative Meta Schema Language for mapping SQL Data to RDF Ontologies.
+As a result, all types of clients can efficiently access all data stored on the server.
+The mapping functionality dynamically generates RDF Data Sets for popular ontologies such as SIOC, SKOS, FOAF, and ATOM/OWL without disruption to the existing database infrastructure of Web 1.0 or Web 2.0 solutions.
+Linked Data Views are also suitable for declaring custom representation for RDF triples, e.g. property tables, where one row holds many single-valued properties.
+</para>
+      <section xml:id="rdfviewsintro">
+        <title>Introduction</title>
+        <para>
+The Virtuoso Linked Data Views meta schema is a built-in feature of Virtuoso's SPARQL to SQL translator.
+It recognizes triple patterns that refer to graphs for which an alternate representation is declared and translates these into SQL accordingly.
+The main purpose of this is evaluating SPARQL queries against existing relational databases.
+There exists previous work from many parties for rendering relational data as RDF and opening it to SPARQL access.
+We can mention D2RQ, SPASQL, Squirrel RDF, DBLP and others.
+The Virtuoso effort differs from these mainly in the following:
+</para>
+        <itemizedlist mark="bullet" spacing="compact">
+          <listitem>
+            <para>Integration with a triple store.
+Virtuoso can process a query for which some triple patterns will go to local or remote relational data and some to local physical RDF triples.
+</para>
+          </listitem>
+          <listitem>
+            <para>SPARQL query can be used in any place where SQL can.
+Database connectivity protocols are neutral to the syntax of queries they transmit, thus any SQL client, e.g. JDBC, ODBC or XMLA application, can send SPARQL queries and fetch result sets.
+Moreover, a SQL query may contain SPARQL subqueries and SPARQL expressions may use SQL built-in functions and stored procedures.
+</para>
+          </listitem>
+          <listitem>
+            <para>Integration with SQL.
+Since SPARQL and SQL share the same run time and query optimizer, the query compilation decisions are always made with the best knowledge of the data and its location.
+This is especially important when mixing triples and relational data or when dealing with relational data distributed across many outside databases.
+</para>
+          </listitem>
+          <listitem>
+            <para>No limits on SPARQL.
+It remains possible to make queries with unspecified graph or predicate against mapped relational data, even though these may sometimes be inefficient.
+</para>
+          </listitem>
+          <listitem>
+            <para>Coverage of the whole relational model.
+Multi-part keys etc. are supported in all places.
+</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="rdfviewrationale">
+        <title>Rationale</title>
+        <para>
+Since most of the data that is of likely use for the emerging semantic web is stored in relational databases, the argument for exposing this to SPARQL access is clear.
+We note that historically, SQL access to relational data has essentially never been given to the public outside of the organization.
+If programmatic access to corporate IS has been available to partners or the public, it has been through dynamic web pages or more recently web services.
+There are reasons of performance, security, maintainability and so forth for this.
+</para>
+        <para>
+The culture of the emerging semantic web is however taking a different turn.
+Since RDF and OWL offer a mergeable and queryable model for heterogeneous data, it is more meaningful and maintainable to expose selected data for outside query than it would be with SQL.
+Advances in hardware make this also less of a performance issue than it would have been in the client-server database era.
+</para>
+        <para>
+In the context of Virtuoso, since Virtuoso is originally a virtual/federated database, incorporating SPARQL to relational mapping is an evident extension of the product's mission as a multi-protocol, multi-platform connector between information systems.
+</para>
+      </section>
+      <section xml:id="rdfviewquadmapatternsvalueandiriclasses">
+        <title>Quad Map Patterns, Values and IRI Classes</title>
+        <para>
+In the simplest sense, any relational schema can be rendered into RDF by converting all primary keys and foreign keys into IRI's, assigning a predicate IRI to each column, and an rdf:type predicate for each row linking it to a RDF class IRI corresponding to the table.
+Then a triple with the primary key IRI as subject, the column IRI as predicate and the column's value as object is considered to exist for each column that is neither part of a primary or foreign key.
+</para>
+        <para>
+Strictly equating a subject value to a row and each column to a predicate is often good but is too restrictive for the general case.
+</para>
+        <itemizedlist mark="bullet" spacing="compact">
+          <listitem>
+            <para>Multiple triples with the same subject and predicate can exist.
+</para>
+          </listitem>
+          <listitem>
+            <para>A single subject can get single-valued properties from multiple tables or in some cases stored procedures.
+</para>
+          </listitem>
+          <listitem>
+            <para>An IRI value of a subject or other field of a triple can be composed from more than one SQL value, these values may reside in different columns, maybe in different joined tables.
+</para>
+          </listitem>
+          <listitem>
+            <para>Some table rows should be excluded from mapping.
+</para>
+          </listitem>
+        </itemizedlist>
+        <para>
+Thus in the most common case the RDF meta schema should consist of independent transformations; the domain of each transformation is a result-set of some SQL <emphasis>SELECT</emphasis>
+
+   statement and range is a set of triples.
+The <emphasis>SELECT</emphasis>
+
+   that produce the domain is quite simple: it does not use aggregate functions, joins and sorting, only inner joins and <emphasis>WHERE</emphasis>
+
+   conditions.
+There is no need to support outer joins in the RDF meta schema because NULLs are usually bad inputs for functions that produce IRIs.
+In the rare cases when NULLs are OK for functions, outer joins can be encapsulated in SQL views.
+The range of mapping can be described by a SPARQL triple pattern: a pattern field is a variable if it depends on table columns, otherwise it is a constant.
+Values of variables in the pattern may have additional restrictions on datatypes, when datatypes of columns are known.
+</para>
+        <para>
+This common case of an RDF meta schema is implemented in Virtuoso, with one adjustment.
+Virtuoso stores quads, not triples, using the graph field (G) to indicate that a triple belongs to some particular application or resource.
+A SPARQL query may use quads from different graphs without large difference between G and the other three fields of a quad.
+E.g., variable <emphasis>?g</emphasis>
+
+   in expression <emphasis>GRAPH ?g {...}</emphasis>
+
+   can be unbound.
+SPARQL has special syntax for "graph group patterns" that is convenient for sets of triple patterns with a common graph, but it also has shorthands for common subject and predicate, so the difference is no more than in syntax.
+There is only one feature that is specific for graphs but not for other fields: the SPARQL compiler can create restrictions on graphs according to <emphasis>FROM</emphasis>
+
+   and <emphasis>FROM NAMED</emphasis>
+
+   clauses.
+</para>
+        <para>
+Virtuoso Linked Data Views should offer the same flexibility with the graphs as SPARQL addressing physical triples.
+A transformation cannot always be identified by the graph used for ranges because graph may be composed from SQL data. The key element of the meta schema is a "<emphasis>quad map pattern</emphasis>
+
+  ".
+A simple quad map pattern fully defines one particular transformation from one set of relational columns into triples that match one SPARQL graph pattern.
+The main part of quad map pattern is four declarations of "<emphasis>quad map values</emphasis>
+
+  ", each declaration specifies how to calculate the value of the corresponding triple field from the SQL data.
+The pattern also lists boolean SQL expressions that should be used to filter out unwanted rows of source data (and to join multiple tables if source columns belong to different tables).
+There are also quad map patterns that group together similar quad patterns but do not specify any real transformation or even prevent unwanted transformations from being used, they are described in "Grouping Map Patterns" below.
+</para>
+        <para>
+Quad map values refer to schema elements of two further types: "IRI classes" and "literal classes".
+</para>
+        <note>
+          <para>In SQL, adding a new view can not break anything. This is because SQL lacks the ability of querying "everything" so data sources are always specified. This is not true for SPARQL, so please treat <emphasis>any</emphasis>
+
+   metadata manipulation as potentially destructive operation. If an RDF storage is supposed to be used by more than one application then these applications should be tested together, not one after other, and they should be installed/upgraded on live database in the very same order as they were installed/upgraded on instrumental machine during testing. Always remember that these applications share RDF tables so they may interfere.</para>
+        </note>
+        <section xml:id="rdfviewiriclasses">
+          <title>IRI Classes</title>
+          <para>
+An IRI class declares that a column or set of columns gets converted into a IRI in a certain way.
+The conversion of this sort can be declared revertible (bijection) so an IRI can be parsed into original SQL values; this is useful when some equality of an IRI constant and a calculated IRI can be replaced with an equality of a parse result of a constant and an SQL column that is index criteria or simply faster.
+In addition, the SPARQL optimizer will eliminate redundant conversions if one IRI class is explicitly declared as a subclass of another.
+The most flexible declaration for conversion consists of specifying functions that assemble and disassemble from IRI into its constituent parts.
+This is overkill for typical conversions so it is possible to specify only one sprintf-style format string such that <emphasis>sprintf()</emphasis>
+
+   SQL function will print an IRI using this format and <emphasis>sprintf_inverse()</emphasis>
+
+   will be able to parse it back.
+</para>
+          <para>The use of <emphasis>sprintf_inverse()</emphasis>
+
+   assumes that the format does not contain fragments like <emphasis>'%s%s'</emphasis>
+
+   that make it impossible to separate parts of IRI from each other.
+</para>
+          <para>
+In the following, we shall map the Virtuoso users and user roles system tables into the SIOC ontology.
+</para>
+          <programlisting>
+create iri class oplsioc:user_iri "http://myhost/sys/user?id=%d"
+  (in uid integer not null) .
+create iri class oplsioc:group_iri "http://myhost/sys/group?id=%d"
+  (in gid integer not null) .
+create iri class oplsioc:membership_iri
+  "http://myhost/sys/membership?super=%d&amp;sub=%d"
+  (in super integer not null, in sub integer not null) .
+create iri class oplsioc:dav_iri "http://myhost%s"
+  (in path varchar) .
+</programlisting>
+          <para>
+These IRI classes are used for mapping data from the <emphasis>DB.DBA.SYS_USERS</emphasis>
+
+   and <emphasis>DB.DBA.SYS_ROLE_GRANTS</emphasis>
+
+   system tables that are defined in Virtuoso as follows:
+</para>
+          <programlisting>
+create table DB.DBA.SYS_USERS (
+  U_ID                integer not null unique,
+  U_NAME              char (128) not null primary key,
+  U_IS_ROLE           integer default 0,
+  U_FULL_NAME         char (128),
+  U_E_MAIL            char (128) default &amp;quot;,
+  U_ACCOUNT_DISABLED  integer default 1,
+  U_DAV_ENABLE        integer default 0,
+  U_SQL_ENABLE        integer default 1,
+  U_HOME              varchar (128),
+. . .
+ );
+</programlisting>
+          <para>
+Single record in <emphasis>DB.DBA.SYS_USERS</emphasis>
+
+   corresponds to a plain user or a group (role).
+Users and roles are collectively named "grantees". Thus a role may be granted to another role or to a user account.
+A role grant may be direct (explicit) or assigned by recursion.
+</para>
+          <programlisting>
+create table SYS_ROLE_GRANTS (
+  GI_SUPER   integer,
+  GI_SUB     integer,
+  GI_DIRECT  integer default 1,
+. . .
+  primary key (GI_SUPER, GI_SUB, GI_DIRECT));
+</programlisting>
+          <para>One IRI class usually corresponds to one ontology class, because similar things are usually called similarly.
+One may wish to use identifiers of ontology classes as identifiers of related IRI classes, to not remember double number of names, e.g. <emphasis>create IRI class mybank:XpressXfer</emphasis>
+
+   for subjects that will have <emphasis>rdf:type</emphasis>
+
+   property <emphasis>mybank:XpressXfer</emphasis>
+
+   made by mapping. That is technically possible but proven to become inconvenient and misleading as application evolves. While RDF types tend to persist, IRI classes may change over time or same subject may get more than one name via more than one IRI class, say, for exports to different systems. It is found to be more convenient to compose names of IRI classes by adding some common prefixes or suffixes to RDF classes (or to table names), say, write <emphasis>create IRI class mybank:XpressXfer_iri</emphasis>
+
+  .</para>
+        </section>
+        <section xml:id="rdfviewliteralclasses">
+          <title>Literal Classes</title>
+          <para>
+A "literal class" declares that a column or set of columns gets converted into a literal instead of an IRI.
+More precisely, the result of conversion can be <emphasis>IRI_ID</emphasis>
+
+   so it represents an IRI, but in current version of Virtuoso this is supported only for some internal built-in literal classes, not for classes declared by the user.
+So for user-defined literal class the result of the conversion is an RDF literal even if it is a string representation of a valid IRI.
+</para>
+          <para>
+In any case, a literal class can be used only in quad map values of O fields, because Virtuoso does not support literal values as subjects.
+</para>
+          <para>
+A special case of literal class is the identity class that converts a value from <emphasis>varchar</emphasis>
+
+   column into an untyped literal and value from column of any other SQL datatype into a typed literal with type from XMLSchema set, i.e. <emphasis>xsd:integer</emphasis>
+
+  , <emphasis>xsd:dateTime</emphasis>
+
+   and so on.
+Columns of types <emphasis>ANY</emphasis>
+
+   and <emphasis>IRI_ID</emphasis>
+
+   are not supported.
+</para>
+          <para>
+The SPARQL optimizer knows that RDF literal types are pairwise disjoint so literal classes that produce literals of different types are known to be pairwise disjoint.
+The optimizer will replace a join on two disjoint literal classes with an empty statement, to simplify the resulting query.
+</para>
+        </section>
+        <section xml:id="rdfviewsimplequadmappatterns">
+          <title>Simple Quad Map Patterns</title>
+          <para>
+The following declaration of quad map pattern is self-explanatory. The line for <emphasis>object</emphasis>
+
+   uses identity literal class so there's no need to specify its name.
+</para>
+          <programlisting>
+graph      &lt;http://myhost/sys&gt;
+subject    oplsioc:user_iri (DB.DBA.SYS_USERS.U_ID)
+predicate  foaf:email
+object     DB.DBA.SYS_USERS.U_E_MAIL
+</programlisting>
+          <para>
+The description language also supports SPARQL-style notation that contains less keywords and eliminates duplicate graphs, subjects and predicates.
+The following add two patterns with constant graph IRI <emphasis>&lt;http://myhost/sys&gt;</emphasis>
+
+   and subjects are made from column <emphasis>DB.DBA.SYS_USERS.U_ID</emphasis>
+
+   by <emphasis>oplsioc:user_iri</emphasis>
+
+  .
+</para>
+          <programlisting>
+graph &lt;http://myhost/sys&gt;
+  {
+    oplsioc:user_iri (DB.DBA.SYS_USERS.U_ID)
+      a sioc:user ;
+      oplsioc:name DB.DBA.SYS_USERS.U_FULL_NAME .
+  }
+</programlisting>
+        </section>
+        <section xml:id="rdfviewassigningnamestoquadmappatterns">
+          <title>Assigning Names To Quad Map Patterns</title>
+          <para>
+In real applications, quad map patterns should be named, for schema manipulation and keeping debug info readable.
+Thus it is much better to rewrite the previous example as
+</para>
+          <programlisting>
+create virtrdf:SysUsers as graph &lt;http://myhost/sys&gt;
+  {
+    oplsioc:user_iri (DB.DBA.SYS_USERS.U_ID)
+      a sioc:user
+          as virtrdf:SysUserType-User;
+      oplsioc:name DB.DBA.SYS_USERS.U_FULL_NAME
+          as virtrdf:SysUsersFullName .
+  }
+</programlisting>
+          <para>
+Using these names, one may later write, say, <emphasis>drop quad map virtrdf:SysUserType-User</emphasis>
+
+  .
+</para>
+          <para>
+One name, <emphasis>virtrdf:DefaultQuadMap</emphasis>
+
+   is reserved.
+It is an internal quad map pattern used to access "native-form" quads from <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+  :
+</para>
+          <programlisting>
+create virtrdf:DefaultQuadMap as
+graph rdfdf:default-iid-nonblank (DB.DBA.RDF_QUAD.G)
+subject rdfdf:default-iid (DB.DBA.RDF_QUAD.S)
+predicate rdfdf:default-iid-nonblank (DB.DBA.RDF_QUAD.P)
+object rdfdf:default (DB.DBA.RDF_QUAD.O)
+</programlisting>
+          <para>
+IRI classes from <emphasis>rdfdf:...</emphasis>
+
+   namespace are also reserved.
+</para>
+        </section>
+        <section xml:id="rdfviewgroupingmappatterns">
+          <title>Grouping Map Patterns</title>
+          <para>
+The previous example actually contains three map patterns, not two.
+The name <emphasis>virtrdf:SysUsers</emphasis>
+
+   refers to a "<emphasis>group map pattern</emphasis>
+
+  " that does not define any real transformation of relational data into RDF but helps organize quad map patterns into a tree.
+Group may contain both quad map patterns and other groups.
+A group can be manipulated as a whole, e.g. <emphasis>drop quad map virtrdf:SysUsers</emphasis>
+
+   will remove all three map patterns.
+</para>
+        </section>
+      </section>
+      <section xml:id="rdfviewconfiguringrdfstorages">
+        <title>Configuring RDF Storages</title>
+        <para>
+"<emphasis>Quad Storage</emphasis>
+
+  " is a named set of quad map patterns.
+The declaration <emphasis>define input:storage storage-name</emphasis>
+
+   states that a SPARQL query will be executed using only quad patterns of the given quad storage.
+Declarations of IRI classes, literal classes and quad patterns are shared between all quad storages of an RDF meta schema but every quad storage contains only a subset of all available quad patterns.
+Two quad storages are always defined:
+</para>
+        <itemizedlist mark="bullet" spacing="compact">
+          <listitem>
+            <para>A </para>
+            <para>
+              <emphasis>virtrdf:default</emphasis>
+            </para>
+            <para> one usually consists of everything (all user-relational mappings plus </para>
+            <para>
+              <emphasis>virtrdf:DefaultQuadMap</emphasis>
+            </para>
+            <para> for "native-form" quads from </para>
+            <para>
+              <emphasis>DB.DBA.RDF_QUAD</emphasis>
+            </para>
+            <para>)
+</para>
+          </listitem>
+          <listitem>
+            <para>A </para>
+            <para>
+              <emphasis>virtrdf:empty</emphasis>
+            </para>
+            <para> storage refers solely to </para>
+            <para>
+              <emphasis>DB.DBA.RDF_QUAD</emphasis>
+            </para>
+            <para> and can not be altered.
+</para>
+          </listitem>
+        </itemizedlist>
+        <para>
+Three statements for manipulating storages are
+</para>
+        <itemizedlist mark="number" spacing="compact">
+          <listitem>
+            <para>
+              <emphasis>create quad storage storage-name { quad-map-decls } .</emphasis>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>alter quad storage storage-name { quad-map-decls-or-drops } .</emphasis>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>drop quad storage storage-name . </emphasis>
+            </para>
+          </listitem>
+        </itemizedlist>
+        <para>
+A map pattern can be created only as a part of <emphasis>create quad storage</emphasis>
+
+   or <emphasis>alter quad storage</emphasis>
+
+   statement, so initially it is used by exactly one storage.
+It can be imported to some other storage using directive <emphasis>create map-id using storage source-storage</emphasis>
+
+  . E.g., declarations of many storages create <emphasis>virtrdf:DefaultQuadMap</emphasis>
+
+   using storage <emphasis>virtrdf:DefaultQuadStorage</emphasis>
+
+  .
+</para>
+        <para>
+Only a "top-level" quad map pattern (standalone or a whole group with descendants) can be imported, member of a group can not.
+The import directive also can not be a part of some group declaration.
+</para>
+        <para>
+The directive <emphasis>drop quad map map-name</emphasis>
+
+   removes a map from one storage when it appears inside <emphasis>alter quad storage</emphasis>
+
+   statement.
+Otherwise it removes the map from all storages.
+There exists garbage collection for quad map patterns, so any unused map is immediately deleted.
+A group is deleted with all its descendants.
+</para>
+      </section>
+      <section xml:id="rdfviewtranslationofpatterns">
+        <title>Translation Of SPARQL Triple Patterns To Quad Map Patterns</title>
+        <para>
+When a SPARQL query is compiled into SQL using a quad storage, every triple pattern should become a subquery that retrieves data from relational tables.
+This subquery is an <emphasis>UNION ALL</emphasis>
+
+   of joins generated from appropriate quad map patterns.
+The complete SQL query is composed from these basic subqueries.
+Thus the first operation of the SQL generation for a triple pattern is searching for quad map patterns that may in principle produce triples that match the triple pattern.
+</para>
+        <para>
+The more restrictions contained in the triple pattern the fewer quad map patterns will be used.
+A triple pattern <emphasis>graph ?g { ?s ?p ?o }</emphasis>
+
+   is common enough to invoke all data transformations of the storage.
+A triple pattern <emphasis>graph &lt;g&gt; { ?s &lt;p&gt; &lt;o&gt; }</emphasis>
+
+   will usually intersect with the range of only one quad map.
+Sometimes it is possible to prove that the storage can not contain any data that matches the given triple pattern, hence zero number of members of <emphasis>UNION ALL</emphasis>
+
+   will result in constantly empty result-set.
+</para>
+        <para>The search for quad maps for a given pair of triple pattern and quad map storage is quite simple.
+The storage is treated as a tree of map patterns where quad map patterns are leafs, grouping patterns are inner nodes and the whole storage is also treated as a grouping pattern that specify no fields and contains all top-level map patterns of the storage.
+</para>
+        <para>
+The tree is traversed from the root, left to right, non-leaf vertex are checked before their children.
+The check of a vertex consists of up to four field checks, for G, S, P and O.
+Every field check compares the field definition in the vertex and the corresponding field in the triple pattern, G and G, S and S and so on.
+Note that a non-leaf vertex defines less than four of its fields, e.g., the root vertex does not define any of its fields and top-level <emphasis>graph map { ... }</emphasis>
+
+   defines only graph.
+Checks are performed only for defined fields and return one of three values: "failed", "passed", "full match", according to the following rules:
+</para>
+        <table>
+          <title>Matching Triple Field and Vertex Field</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Field of vertex</entry>
+                <entry>Field in triple pattern</entry>
+                <entry>Result</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>constant</entry>
+                <entry>same constant</entry>
+                <entry>full match</entry>
+              </row>
+              <row>
+                <entry>constant</entry>
+                <entry>different constant</entry>
+                <entry>failed</entry>
+              </row>
+              <row>
+                <entry>constant</entry>
+                <entry>variable of same type</entry>
+                <entry>passed</entry>
+              </row>
+              <row>
+                <entry>constant</entry>
+                <entry>variable of different type</entry>
+                <entry>failed</entry>
+              </row>
+              <row>
+                <entry>quad map value</entry>
+                <entry>constant of same type</entry>
+                <entry>full match</entry>
+              </row>
+              <row>
+                <entry>quad map value</entry>
+                <entry>constant of different type</entry>
+                <entry>failed</entry>
+              </row>
+              <row>
+                <entry>quad map value of type X</entry>
+                <entry>variable, X or subtype of X</entry>
+                <entry>full match</entry>
+              </row>
+              <row>
+                <entry>quad map value of type X</entry>
+                <entry>variable, supertype of X</entry>
+                <entry>passed</entry>
+              </row>
+              <row>
+                <entry>quad map value of type X</entry>
+                <entry>variable, type does not intersect with X</entry>
+                <entry>failed</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>
+If any of the checks fails, the vertex and all its children are excluded from the rest of processing.
+Otherwise, if all four fields are defined for the quad map pattern, the map is added to the list of matching map patterns.
+The difference between "passed" and "full match" is significant only if the map is declared with <emphasis>option (exclusive)</emphasis>
+
+If all performed checks return "full match" and <emphasis>option (exclusive)</emphasis>
+
+   is set then the traverse of the tree is stopped as soon as all children of the vertex are traversed.
+The most typical use of this option is when the application developer is sure that all triples of a graph belong to his application and they come from his own quad map patterns, not from <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+  .
+This is to prevent the SPARQL compiler from generating redundant subqueries accessing <emphasis>DB.DBA.RDF_QUAD</emphasis>
+
+  .
+The declaration may look like
+</para>
+        <programlisting>
+create quad storage &lt;mystorage&gt;
+  {
+    graph &lt;mygraph&gt; option (exclusive) { . . . }
+    create virtrdf:DefaultQuadMap
+      using storage virtrdf:DefaultQuadStorage .
+  }
+</programlisting>
+        <para>
+Exclusive patterns make the order of declarations important, because an exclusive declaration may "throw a shadow" on declarations after it.
+Consider a database that have a special table RDF_TYPE that caches all RDF types of all subjects in all graphs.
+Consider two declarations: all triples from graph <emphasis>&lt;http://myhost/sys&gt;</emphasis>
+
+   and all triples with <emphasis>rdf:type</emphasis>
+
+   predicate, both exclusive:
+</para>
+        <programlisting>
+graph &lt;http://myhost/sys&gt; option (exclusive)
+  {
+    . . . # mapping of DB.DBA.SYS_USERS as in previous examples.
+  }
+graph rdfdf:default-iid-nonblank (DB.DBA.RDF_TYPE.G)
+subject rdfdf:default-iid (DB.DBA.RDF_TYPE.S)
+predicate rdf:type
+object rdfdf:default (DB.DBA.RDF_TYPE.O)
+option (exclusive)
+</programlisting>
+        <para>
+The order of these declarations dictates that triple pattern
+</para>
+        <programlisting>
+graph &lt;http://myhost/sys&gt; {?s rdf:type ?o}
+</programlisting>
+        <para>
+is compiled using only quad map patterns of the graph declaration, ignoring second declaration (and of course ignoring default mapping rule, if any).
+An explicit <emphasis>option (order N)</emphasis>
+
+   at the end of quad map pattern will tweak the priority.
+By default, order will grow from 1000 for the first declaration in the statement to 1999 for the last, explicit configuration is especially useful to make order persistent to <emphasis>alter storage</emphasis>
+
+   statements.
+</para>
+        <para>
+The <emphasis>option (exclusive)</emphasis>
+
+   trick is ugly, low-level and prone to cause compilation errors after altering storage declarations.
+When misused, it is as bad as "red cut" in PROLOG, but one must use this trick to build scalable storages.
+</para>
+        <para>The <emphasis>option (exclusive)</emphasis>
+
+   helps the SPARQL compiler to prepare better SQL queries, but sometimes it is "too exclusive". For instance, if a grouping quad map pattern specify only quad map value for graph and no other fields then making it exclusive prohibits the use of all declarations of the storage after that one. Sometimes it is better to notify compiler that quads made by the given quad map pattern are supposed to be different from all quads made by declarations listed after the given one.</para>
+        <para>Consider an application that exports users' personal data
+as graphs whose IRIs looks like
+<emphasis>http://www.example.com/DAV/home/</emphasis>
+
+  username<emphasis>/RDF/personal/</emphasis>
+
+  ;
+the application makes a query and a triple pattern is proven to be
+restrictive enough to filter out all quads that are not similar to
+quads generated by the given quad map pattern (say, the graph is
+constant
+<emphasis>http://www.example.com/DAV/home/JohnSmith/RDF/personal/</emphasis>
+
+  ). The
+application do not hope to find any quads that match the pattern but
+made by other applications, because graphs named like in the pattern
+are supposed to be solely for this single purpose; if, say,
+DB.DBA.RDF_QUAD occasionally contains some quads with graph equal to
+<emphasis>http://www.example.com/DAV/home/JohnSmith/RDF/personal/</emphasis>
+
+then they can be ignored.</para>
+        <para>Under this circumstances, the quad map pattern may have <emphasis>option (soft exclusive)</emphasis>
+
+  . That grants a permission to the compiler to ignore rest of storage as soon as it is proven that the triple pattern can not access quads that does not match the pattern. So if that is proven then the pattern is exclusive and it makes the query faster; when unsure, the compiler work like there is no option at all.</para>
+        <note>
+          <para>The <emphasis>option (exclusive)</emphasis>
+
+   can be used as
+a security measure, <emphasis>option (soft exclusive)</emphasis>
+
+   can
+not. Say, if an financial application exports its data as a single
+graph <emphasis>http://www.example.com/front-office/cash/</emphasis>
+
+using <emphasis>exclusive</emphasis>
+
+   then the query that explicitly
+refers to that graph will never access any quads written by the
+attacker into DB.DBA.RDF_QUAD using same graph IRI. The use of
+<emphasis>soft exclusive</emphasis>
+
+   gives no such protection. From the
+compiler's perspective, the <emphasis>option (soft
+exclusive)</emphasis>
+
+   is a hint that may be ignored, not an
+unambiguous order.</para>
+        </note>
+        <para>
+There is one exception from the rules described above.
+This exception is for <emphasis>virtrdf:DefaultQuadStorage</emphasis>
+
+   only.
+If a graph variable of a quad map pattern is not bound and no source graph specified by <emphasis>FROM</emphasis>
+
+   clauses then quad maps for specific constant graphs are ignored.
+In other words, if a default quad storage contains quad maps for specific graphs then the query in that storage should explicitly specify the graph in order to use a map for graph.
+This rule will not work if the default quad map is removed from the <emphasis>virtrdf:DefaultQuadStorage</emphasis>
+
+  .
+This rule relates to the default storage itself, not to the containing patterns; copying some or all patterns into other storage will not reproduce there this special effect.
+</para>
+        <para>So for example the query from below returns results when graph is specified i.e.
+when no graph is referenced, then run over physical store only is performed:</para>
+        <programlisting>
+SQL&gt;SPARQL
+SELECT *
+WHERE
+  {
+    &lt;http://localhost:8990/Demo/categories/CategoryID/1#this&gt;  ?p ?o
+  };
+p        o
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+0 Rows. -- 0 msec.
+
+SQL&gt;SPARQL
+SELECT *
+WHERE
+  {
+    GRAPH ?g
+      {
+        &lt;http://localhost:8990/Demo/categories/CategoryID/1#this&gt;  ?p ?o
+      }
+  };
+g                              p                                                     o
+VARCHAR                        VARCHAR                                               VARCHAR
+___________________________________________________________________________________________________________________________________
+
+http://localhost:8990/Demo#    http://www.w3.org/1999/02/22-rdf-syntax-ns#type       http://localhost:8990/schemas/Demo/Categories
+http://localhost:8990/Demo#    http://localhost:8990/schemas/Demo/categoryid         1
+http://localhost:8990/Demo#    http://localhost:8990/schemas/Demo/categoryname       ...
+...
+
+</programlisting>
+      </section>
+      <section xml:id="rdfviewdescribingsourcerelationaltables">
+        <title>Describing Source Relational Tables</title>
+        <para>Quad map patterns of an application usually share a common set of source tables and quad map values of one pattern usually share either a single table or very small number of joined tables.
+Join and filtering conditions are also usually repeated in different patterns.
+It is not necessary to type table descriptions multiple times, they are declare once in the beginning of storage declaration statement and shared between all quad map declarations inside the statement.
+Names of aliases can be used instead of table names in quad map values.
+</para>
+        <programlisting>
+FROM DB.DBA.SYS_USERS as user WHERE (^{user.}^.U_IS_ROLE = 0)
+FROM DB.DBA.SYS_USERS as group WHERE (^{group.}^.U_IS_ROLE = 1)
+FROM DB.DBA.SYS_USERS as account
+FROM user as active_user
+  WHERE (^{active_user.}^.U_ACCOUNT_DISABLED = 0)
+FROM DB.DBA.SYS_ROLE_GRANTS as grant
+  WHERE (^{grant.}^.GI_SUPER = ^{account.}^.U_ID)
+  WHERE (^{grant.}^.GI_SUB = ^{group.}^.U_ID)
+  WHERE (^{grant.}^.GI_SUPER = ^{user.}^.U_ID)
+</programlisting>
+        <para>
+This declares five distinct aliases for two distinct tables, and six filtering conditions.
+Every condition is an SQL expression with placeholders where a reference to the table should be printed.
+The SPARQL compiler will not try to parse texts of these expressions (except dummy search for placeholders), so any logical expressions are acceptable.
+When a quad map pattern declaration refers to some aliases, the <emphasis>WHERE</emphasis>
+
+   clause of the generated SQL code will contain a conjunction of all distinct texts of "relevant" conditions.
+A condition is relevant if every alias inside the condition is used in some quad map value of the map pattern, either directly or via clause like <emphasis>from user as active_user</emphasis>
+
+  .
+(<emphasis>user</emphasis>
+
+   is a "<emphasis>base alias</emphasis>
+
+  " for <emphasis>active_user</emphasis>
+
+  ).
+</para>
+        <para>
+Consider a group of four declarations.
+</para>
+        <programlisting>
+graph &lt;http://myhost/sys&gt;
+  {
+    oplsioc:user_iri (active_user.U_ID)
+        a oplsioc:active-user .
+    oplsioc:membership_iri (grant.GI_SUPER, grant.GI_SUB).
+        oplsioc:is_direct
+            grant.GI_DIRECT ;
+        oplsioc:member-e-mail
+            active_user.U_E_MAIL
+               where (^{active_user.}^.U_E_MAIL like 'mailto:%').
+    ldap:account-ref (account.U_NAME)
+        ldap:belongs-to
+            ldap:account-ref (group.U_NAME) option (using grant).
+  }
+</programlisting>
+        <para>
+The first declaration will extend <emphasis>&lt;http://myhost/sys&gt;</emphasis>
+
+   graph with one imaginary triples <emphasis>{ user a oplsioc:active-user }</emphasis>
+
+   for every account record that is not a role and not disabled.
+The second declaration deals with membership records.
+A membership is a pair of a grantee ("super") and a granted role ("sub") stored as a row in <emphasis>DB.DBA.SYS_ROLE_GRANTS</emphasis>
+
+  ).
+</para>
+        <para>
+The second declaration states that every membership has <emphasis>oplsioc:is_direct</emphasis>
+
+   property with value from <emphasis>GI_DIRECT</emphasis>
+
+   column of that table (roles may be granted to other roles and users, so permissions are "direct" or "recursive").
+</para>
+        <para>
+The third declaration declares <emphasis>oplsioc:member-e-mail</emphasis>
+
+   property of memberships.
+The value is a literal string from <emphasis>DB.DBA.SYS_USERS.U_E_MAIL</emphasis>
+
+  , if the grantee is active (not disabled) and is not a role and its e-mail address starts with <emphasis>'mailto:'</emphasis>
+
+  .
+The join between <emphasis>DB.DBA.SYS_ROLE_GRANTS</emphasis>
+
+   and <emphasis>DB.DBA.SYS_USERS</emphasis>
+
+   is made by equality <emphasis>(GI_SUPER = U_ID)</emphasis>
+
+   because the alias <emphasis>active_user</emphasis>
+
+   in the declaration "inherits" all conditions specified for <emphasis>user</emphasis>
+
+  .
+In addition, the SPARQL compiler will add one more condition to check if the <emphasis>U_E_MAIL</emphasis>
+
+   is not null because the NULL value is not a valid object and it knows that <emphasis>U_E_MAIL</emphasis>
+
+   is not declared as <emphasis>NOT NULL</emphasis>
+
+  .
+</para>
+        <para>
+The last declaration contains an <emphasis>option</emphasis>
+
+   clause.
+As usual, this indicates that the basic functionality is good for many tasks but not for all.
+In this declaration, the <emphasis>ldap:belongs-to</emphasis>
+
+   property establishes a relation between grantee (subject) and a granted role (object).
+Both subject and object IRIs are based on account name, <emphasis>DB.DBA.SYS_USERS.U_NAME</emphasis>
+
+  , so the quad map pattern contains two references to different aliases of <emphasis>DB.DBA.SYS_USERS</emphasis>
+
+   but no alias for <emphasis>DB.DBA.SYS_ROLE_GRANTS</emphasis>
+
+  .
+Hence the declaration could produce a triple for every row of the Cartesian product of the <emphasis>DB.DBA.SYS_USERS</emphasis>
+
+  .
+To fix the problem, <emphasis>option (using alias-name)</emphasis>
+
+   tells the compiler to process the alias-name as if it's used in some quad map value of the pattern.
+</para>
+        <para>
+It is an error to use an alias only in <emphasis>where</emphasis>
+
+   clause of the quad map pattern but neither in values or in <emphasis>option (using alias-name)</emphasis>
+
+  .
+To detect more typos, an alias used in quad map values can not appear in <emphasis>option (using alias-name)</emphasis>
+
+   clause.
+</para>
+      </section>
+      <section xml:id="rdfviewiriusingfunction">
+        <title>Function-Based IRI Classes</title>
+        <para>Most of IRI classes can be declared by a sprintf format string, but sophisticated cases may require calculations, not only printing the string. <emphasis>create IRI class using function</emphasis>
+
+   allows the application transform relational values to IRIs by any custom routines.</para>
+        <para>
+Let us extend the previous example about users and groups by a new class for grantees. Both users and groups are grantees and we have defined two IRI classes for them. Classes <emphasis>oplsioc:user_iri</emphasis>
+
+   and <emphasis>oplsioc:group_iri</emphasis>
+
+   work fine for quad maps of <emphasis>U_ID</emphasis>
+
+   if and only if the value of <emphasis>U_IS_ROLE</emphasis>
+
+   is accordingly restricted to FALSE or TRUE, otherwise one may occasionally generate, say, user IRI for a group.
+To create and parse IRIs that correspond to any U_IDs, two functions should be created:
+</para>
+        <programlisting>
+create function DB.DBA.GRANTEE_URI (in id integer)
+returns varchar
+{
+  declare isrole integer;
+  isrole := coalesce ((SELECT top 1 U_IS_ROLE
+      FROM DB.DBA.SYS_USERS WHERE U_ID = id ) );
+  if (isrole is null)
+    return NULL;
+  else if (isrole)
+    return sprintf ('http://%s/sys/group?id=%d', id);
+  else
+    return sprintf ('http://%s/sys/user?id=%d', id);
+};
+</programlisting>
+        <programlisting>
+create function DB.DBA.GRANTEE_URI_INVERSE (in id_iri varchar)
+returns integer
+{
+  declare parts any;
+  parts := sprintf_inverse (id_iri,
+      'http://myhost/sys/user?id=%d', 1 );
+  if (parts is not null)
+    {
+      if (exists (SELECT top 1 1 FROM DB.DBA.SYS_USERS
+          WHERE U_ID = parts[0] and not U_IS_ROLE ) )
+        return parts[0];
+    }
+  parts := sprintf_inverse (id_iri,
+      'http://myhost/sys/group?id=%d', 1 );
+  if (parts is not null)
+    {
+      if (exists (SELECT top 1 1 FROM DB.DBA.SYS_USERS
+          WHERE U_ID = parts[0] and U_IS_ROLE ) )
+        return parts[0];
+    }
+  return NULL;
+};
+</programlisting>
+        <para>These functions may be more useful if the SPARQL web service endpoint is allowed to use them:</para>
+        <programlisting>
+grant execute on DB.DBA.GRANTEE_URI to "SPARQL";
+grant execute on DB.DBA.GRANTEE_URI_INVERSE to "SPARQL";
+</programlisting>
+        <para>
+The next declaration creates an IRI class based on these two functions:
+</para>
+        <programlisting>
+create iri class oplsioc:grantee_iri using
+  function DB.DBA.GRANTEE_URI (in id integer)
+    returns varchar,
+  function DB.DBA.GRANTEE_URI_INVERSE (in id_iri varchar)
+    returns integer .
+</programlisting>
+        <para>
+In common case, IRI class declaration contains an N-array function that composes IRIs and N inverse functions that gets an IRI as an argument and extracts the Nth SQL value.
+IRI composing function should silently return NULL on incorrect arguments instead of error signal.
+Inverse functions should return NULL if the argument has an incorrect type or value.
+</para>
+        <para>
+It is possible to specify only composing function without any of inverse functions. However <emphasis>option (bijection)</emphasis>
+
+   can not be used in that case, obviously.
+</para>
+      </section>
+      <section xml:id="rdfconnvarsiniriclasses">
+        <title>Connection Variables in IRI Classes</title>
+        <para>Writing function-based IRI class is overkill when the IRI can in principle be made by a <link linkend="fn_sprintf_iri"><function>sprintf_iri</function></link>
+
+   but the format should contain some context-specific data, such as host name used for the <link linkend="rdfdynamiclocal">dynamic renaming of local IRIs</link>
+
+  .
+Format strings offer a special syntax for that cases.
+<emphasis>%{varname}U</emphasis>
+
+   acts as <emphasis>%U</emphasis>
+
+   but the function <link linkend="fn_sprintf"><function>sprintf</function></link>
+
+   will take the value from client connection variable <emphasis>varname</emphasis>
+
+  , not from list of arguments.
+Similarly, <link linkend="fn_sprintf_inverse"><function>sprintf_inverse</function></link>
+
+   will not return fragment that match to <emphasis>%{varname}U</emphasis>
+
+   in the vector of other fragments; instead it will get the value from connection environment and ensure that it matches the fragment of input; mismatch between printed and actual value of variable will means that the whole string do not match the format.</para>
+        <para>SPARQL optimizer knows about this formatting feature and sometimes it makes more deductions from occurrence of <emphasis>%{varname}U</emphasis>
+
+   than from occurrence of plain <emphasis>%U</emphasis>
+
+  , so this notation may be used in <emphasis>option ( returns ...)</emphasis>
+
+   when appropriate.
+Of course, the optimizer has no access to the actual value of connection variable because it may vary from run to run or may change between the compilation and the run, but the value is supposed to be persistent during any single query run so <emphasis>%{myvariable}U</emphasis>
+
+   in one place is equal to <emphasis>%{myvariable}U</emphasis>
+
+   in other.</para>
+        <para>Connection variables are set by <link linkend="fn_connection_set"><function>connection_set</function></link>
+
+   and some of them have default values that are used if not overridden by application:</para>
+        <itemizedlist mark="bullet" spacing="compact">
+          <listitem>
+            <para>
+              <emphasis>URIQADefaultHost</emphasis>
+            </para>
+            <para> is for default host as it is specified in Virtuoso configuration file.
+Note, however, that it will be escaped when printed so if it contains colon and port number then the colon is escaped.
+In addition, there are special variables that match dynamic renaming of local IRIs more accurately.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>WSHost</emphasis>
+            </para>
+            <para> is for host and port as it is used by current client connection for dynamic renaming.
+The colon before port will be escaped.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>WSHostName</emphasis>
+            </para>
+            <para> is for host name only, without port, as it is used by current client connection for dynamic renaming.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>WSHostPort</emphasis>
+            </para>
+            <para> is for port part of host IRI. That is string, not integer. The only real use of the variable is in formats like </para>
+            <para>
+              <emphasis>http://%{WSHostName}U:%{WSHostPort}U/...</emphasis>
+            </para>
+            <para>.</para>
+          </listitem>
+        </itemizedlist>
+        <para>It is inconvenient to write different format strings for
+different cases. Two most common policies are different host names
+for default HTTP port of a publicly available service and different
+non-default ports for one or more host names of an intranet
+installation; these two approaches are almost never used in a mix. So
+declaration of IRI classes may use shorthand
+<emphasis>^{DynamicLocalFormat}^</emphasis>
+
+   in format strings that is
+expanded either to <emphasis>http://%{WSHost}U</emphasis>
+
+   or to
+<emphasis>http://%{WSHostName}U:%{WSHostPort}U/...</emphasis>
+
+  ,
+depending on absence or presence of port number in the value of
+<emphasis>DefaultHost</emphasis>
+
+   parameter of
+<emphasis>URIQA</emphasis>
+
+   section of configuration file.</para>
+        <note>
+          <para><emphasis>^{DynamicLocalFormat}^</emphasis>
+
+   is for IRI class declarations only and is not expanded in any other place, so it is useful sometimes to create an IRI class with empty argument list in order to get "almost constant" IRIs calculated without writing special procedures.</para>
+        </note>
+      </section>
+      <section xml:id="rdfviewbijandreturns">
+        <title>Lookup Optimization -- BIJECTION and RETURNS Options</title>
+        <para>
+There is one subtle problem with IRI class declarations.
+To get benefit from a relational index, SPARQL optimizer should compose equality between table column and some known SQL value, not between return value of IRI class and a known composed IRI.
+In addition, redundant calculations of IRIs takes time.
+To enable this optimization, an IRI class declaration should end with <emphasis>option (bijection)</emphasis>
+
+   clause. For some simple format strings the compiler may recognize the bijection automatically but an explicit declaration is always a good idea.
+</para>
+        <note>
+          <title>Note:</title>
+          <para>
+See also: <link xlink:href="http://en.wikipedia.org/wiki/One-to-one_correspondence">Wikipedia - Bijection</link>
+
+  .
+In mathematics, a bijection, or a bijective function is a function f from a set X to a set Y such that,
+for every y in Y, there is exactly one x in X such that f(x) = y.
+</para>
+          <para>
+Alternatively, f is bijective if it is a one-to-one correspondence between those sets; i.e.,
+both one-to-one (injective) and onto (surjective).
+</para>
+        </note>
+        <para>
+The SPARQL compiler may produce big amounts of SQL code when the query contains equality of two calculated IRIs and these IRIs may come from many different IRI classes.
+It is possible to provide hints that will let the compiler check if two IRI classes form disjoint sets of possible IRI values. The more disjoint sets are found the less possible combinations remain so the resulting SQL query will contain fewer unions of joins.
+The SPARQL compiler can prove some properties of sprintf format strings. E.g., it can prove that set of all strings printed by "http://example.com/item%d" and the set of strings printed by "http://example.com/item%d/" are disjoint.
+It can prove some more complicated statements about unions and intersections of sets of strings.
+The IRI or literal class declaration may contain <emphasis>option (returns ...)</emphasis>
+
+   clause that will specify one or more sprintf patterns that cover the set of generated values.
+Consider a better version of IRI class declaration listed above:
+</para>
+        <programlisting>
+create iri class oplsioc:grantee_iri using
+  function DB.DBA.GRANTEE_URI (in id integer)
+    returns varchar,
+  function DB.DBA.GRANTEE_URI_INVERSE (in id_iri varchar)
+    returns integer
+  option ( bijection,
+    returns "http://myhost/sys/group?id=%d"
+    union   "http://myhost/sys/user?id=%d" ) .
+</programlisting>
+        <para>
+It is very important to keep IRI classes easily distinguishable by the text of IRI string and easy to parse.
+</para>
+        <itemizedlist mark="bullet" spacing="compact">
+          <listitem>
+            <para>Format </para>
+            <para>
+              <emphasis>%U</emphasis>
+            </para>
+            <para> is better than </para>
+            <para>
+              <emphasis>%s</emphasis>
+            </para>
+            <para>, especially in the middle of IRI, because the </para>
+            <para>
+              <emphasis>%U</emphasis>
+            </para>
+            <para> fragment can not contain characters like "/" or "="; one may prove that </para>
+            <para>
+              <emphasis>/%U/</emphasis>
+            </para>
+            <para> and </para>
+            <para>
+              <emphasis>/abra%d/cadabra/</emphasis>
+            </para>
+            <para> are disjoint but </para>
+            <para>
+              <emphasis>/%s/</emphasis>
+            </para>
+            <para> and </para>
+            <para>
+              <emphasis>/abra%d/cadabra/</emphasis>
+            </para>
+            <para> are not disjoint.
+</para>
+          </listitem>
+          <listitem>
+            <para>It is better when the variable part like </para>
+            <para>
+              <emphasis>%U</emphasis>
+            </para>
+            <para> or </para>
+            <para>
+              <emphasis>%d</emphasis>
+            </para>
+            <para> is placed between characters that may not occur in the </para>
+            <para>
+              <emphasis>%U</emphasis>
+            </para>
+            <para> or </para>
+            <para>
+              <emphasis>%d</emphasis>
+            </para>
+            <para> output, i.e. </para>
+            <para>
+              <emphasis>%U</emphasis>
+            </para>
+            <para> is placed between "/", "&amp;" or "=" and </para>
+            <para>
+              <emphasis>%d</emphasis>
+            </para>
+            <para> is placed between non-digits; </para>
+            <para>
+              <emphasis>order_line_%d</emphasis>
+            </para>
+            <para> is better than </para>
+            <para>
+              <emphasis>order-line-%d</emphasis>
+            </para>
+            <para> because minus may be part of </para>
+            <para>
+              <emphasis>%d</emphasis>
+            </para>
+            <para> output.
+</para>
+          </listitem>
+          <listitem>
+            <para>End-of-line is treated as a special character, so placing </para>
+            <para>
+              <emphasis>%U</emphasis>
+            </para>
+            <para> or </para>
+            <para>
+              <emphasis>%d</emphasis>
+            </para>
+            <para> between "/" and end of line is as good as placing it between two "/".
+</para>
+          </listitem>
+        </itemizedlist>
+        <para>
+In some cases <emphasis>option (returns ...)</emphasis>
+
+   can be used for IRI classes that are declared using sprintf format, but actual data have more specific format.
+Consider a literal class declaration that is used to output strings and the application knows that all these strings are ISBN numbers:
+</para>
+        <programlisting>
+create literal class example:isbn_ref "%s" (in isbn varchar not null)
+  option ( bijection, returns "%u-%u-%u-%u" union "%u-%u-%u-X" )
+</programlisting>
+        <para>
+Sometimes interoperability restrictions will force you to violate these rules but please try to follow them as often as possible.
+</para>
+      </section>
+      <section xml:id="rdfviewsubclasses">
+        <title>Join Optimization -- Declaring IRI Subclasses</title>
+        <para>
+Additional problem appears when the equality is between two IRIs of two different IRI classes.
+Even if both of them are bijections, the compiler does not know if these IRI classes behave identically on the intersection of their domains.
+To let the optimizer know this fact, one IRI class can be explicitly declared as a subclass of another:
+</para>
+        <programlisting>
+make oplsioc:user_iri subclass of oplsioc:grantee_iri .
+make oplsioc:group_iri subclass of oplsioc:grantee_iri .
+</programlisting>
+        <para>
+The SPARQL compiler can not check the validity of a subclass declaration.
+The developer should carefully test functions to ensure that transformations are really subclasses, as well as to ensure that functions of an IRI class declarations are really inverse to each other.
+</para>
+        <para>
+When declaring that a table's primary key is converted into a IRI according to one IRI class, one usually declares that all foreign keys referring to this class also get converted into an IRI as per this same class, or subclass of same class.
+</para>
+        <para>
+Subclasses can be declared for literal classes as well as for IRI classes, but this case is rare. The reason is that most of literals are made by identity literal classes that are disjoint to each other even if values may be equal in SQL sense, such as <emphasis>"2"</emphasis>
+
+   of type <emphasis>xsd:integer</emphasis>
+
+   and <emphasis>"2.0"</emphasis>
+
+   of type <emphasis>xsd:double</emphasis>
+
+  .
+</para>
+      </section>
+      <section xml:id="rdfmetadatarecovery">
+        <title>RDF Metadata Maintenance and Recovery</title>
+        <para>
+This section refers to checking and backing up Linked Data View and storage declarations only. The checks and backup/restore do not affect physical quads, relational schema or tables or data therein. For general backup and restore, see server administration.
+     To detect and fix automatically most popular sorts of RDF metadata corruption use <link linkend="fn_rdf_audit_metadata"><function>DB.DBA.RDF_AUDIT_METADATA</function></link>
+
+  .
+It is also possible to backup RDF data by
+    <link linkend="fn_rdf_backup_metadata"><function>DB.DBA.RDF_BACKUP_METADATA</function></link>
+
+and restore the saved state later by using
+    <link linkend="fn_rdf_restore_metadata"><function>DB.DBA.RDF_RESTORE_METADATA</function></link>
+
+  .
+It is convenient to make a backup before any modification of quad storages, quad map patterns or IRI classes, especially during debugging new Linked Data Views.
+   </para>
+        <note>
+          <para>In SQL, adding a new view can not break anything. This is because SQL lacks the ability of querying "everything" so data sources are always specified. This is not true for SPARQL, so please treat <emphasis>any</emphasis>
+
+   metadata manipulation as potentially destructive operation. If an RDF storage is supposed to be used by more than one application then these applications should be tested together, not one after other, and they should be installed/upgraded on live database in the very same order as they were installed/upgraded on instrumental machine during testing. Always remember that these applications share RDF tables so they may interfere.</para>
+        </note>
+      </section>
+      <section xml:id="splitrdfview">
+        <title>Split Linked Data View</title>
+        <para>Linked Data View can be created by two or more "sparql alter storage" statements. In each statement
+can be created one quad map that contains mappings for half or a third of all tables. Quad maps
+created should have distinct names but may mention same graph. The important fact is that if the
+Linked Data View in question is exclusive for a graph then only the last quad map should be exclusive but
+all previous should not have this option. This is because if a map is exclusive on a graph the rest
+of maps on that graph will be silently ignored.</para>
+        <para>The example below shows a sample part of the Virtuoso eCRM Views code,
+where the Linked Data View is split in two parts: with quad map virtrdf:ecrmDemo1 and with
+quad map virtrdf:ecrmDemo2:</para>
+        <programlisting>
+SPARQL
+prefix ecrm: &lt;http://demo.openlinksw.com/schemas/ecrm#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix cal: &lt;http://www.w3.org/2002/12/cal/ical#&gt;
+prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+prefix product: &lt;http://www.swop-project.eu/ontologies/pmo/product.owl#&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+drop quad map virtrdf:ecrmDemo1 .
+;
+
+SPARQL
+prefix ecrm: &lt;http://demo.openlinksw.com/schemas/ecrm#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix cal: &lt;http://www.w3.org/2002/12/cal/ical#&gt;
+prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+prefix product: &lt;http://www.swop-project.eu/ontologies/pmo/product.owl#&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+drop quad map virtrdf:ecrmDemo2 .
+;
+
+...
+
+SPARQL
+prefix ecrm: &lt;http://demo.openlinksw.com/schemas/ecrm#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix cal: &lt;http://www.w3.org/2002/12/cal/ical#&gt;
+prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+prefix product: &lt;http://www.swop-project.eu/ontologies/pmo/product.owl#&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+alter quad storage virtrdf:DefaultQuadStorage
+FROM eCRM.DBA.SFA_SALES_QUOTA_VIEW2 as sales_quotas
+FROM eCRM.DBA.SFA_COMPANIES_VIEW2 as companies
+FROM eCRM.DBA.SFA_COMPANIES as companies_table text literal companies_table.DESCRIPTION of (companies.DESCRIPTION)
+FROM eCRM.DBA.SFA_CONTACTS_VIEW2 as contacts
+FROM eCRM.DBA.SFA_CONTACTS as contacts_table text literal contacts_table.NAME_FIRST of (contacts.NAME_FIRST)
+FROM eCRM.DBA.SFA_EMPLOYMENTS_VIEW2 as employments
+FROM eCRM.DBA.SFA_LEADS_VIEW2 as leads
+FROM eCRM.DBA.SFA_LEADS as leads_table text literal leads_table.SUBJECT of (leads.SUBJECT)
+FROM eCRM.DBA.SFA_OPPORTUNITIES_VIEW2 as opportunities
+FROM eCRM.DBA.SFA_OPPORTUNITIES as opportunities_table text literal opportunities_table.OPPORTUNITY_NAME of (opportunities.OPPORTUNITY_NAME)
+FROM eCRM.DBA.SFA_ACTIVITIES as activities
+FROM eCRM.DBA.SFA_MAIL_MESSAGES as messages
+FROM eCRM.DBA.SFA_DOCUMENTS_VIEW2 as documents
+FROM eCRM.DBA.SFA_INFLUENCERS_VIEW2 as influencers
+FROM eCRM.DBA.SFA_TEAMS_VIEW2 as teams
+FROM eCRM.DBA.SFA_NOTES_VIEW2 as notes
+FROM eCRM.DBA.SFA_NOTES as notes_table text literal notes_table.DESCRIPTION of (notes.DESCRIPTION)
+FROM eCRM.DBA.SFA_COMPETITORS_VIEW2 as competitors
+FROM eCRM.DBA.SFA_ISSUES_VIEW2 as issues
+FROM eCRM.DBA.SFA_CUSTOM_FIELD_DEFS_VIEW2 as custom_field_defs
+FROM eCRM.DBA.SFA_CUSTOM_FIELDS_VIEW2 as custom_fields
+FROM eCRM.DBA.SFA_CASES_VIEW2 as cases
+FROM eCRM.DBA.SFA_CASES as cases_table text literal cases_table.SUMMARY of (cases.SUMMARY)
+FROM eCRM.DBA.SFA_ORDERS_VIEW2 as orders
+FROM eCRM.DBA.SFA_ORDERS as orders_table text literal orders_table.EMAIL of (orders.EMAIL)
+FROM eCRM.DBA.SFA_ORDER_ITEMS_VIEW2 as order_items
+FROM eCRM.DBA.PM_CATEGORIES_VIEW2 as categories
+FROM eCRM.DBA.PM_PRODUCT_ATTRIBUTE_DEFS_VIEW2 as product_attribute_defs
+FROM eCRM.DBA.PM_PRODUCTS_VIEW2 as products
+FROM eCRM.DBA.PM_PRODUCTS as products_table text literal products_table.DESCRIPTION of (products.DESCRIPTION)
+FROM eCRM.DBA.PM_PRODUCT_ATTRIBUTES_VIEW2 as product_attributes
+FROM eCRM.DBA.PM_CATALOGS_VIEW2 as catalogs
+FROM eCRM.DBA.PM_CATALOG_PRODUCTS_VIEW2 as catalog_products
+FROM eCRM.DBA.XSYS_MODULES as modules
+FROM eCRM.DBA.XSYS_REGISTRY as registries
+FROM eCRM.DBA.XSYS_ORGANIZATIONS_DATA as organizations_data
+FROM eCRM.DBA.XSYS_MESSAGES as xsysmessages
+FROM eCRM.DBA.XSYS_COUNTRIES_VIEW2 as countries
+FROM eCRM.DBA.XSYS_PROVINCES_VIEW2 as provinces
+FROM eCRM.DBA.XSYS_TIMEZONES as timezones
+FROM eCRM.DBA.XSYS_MIME_TYPES as mimetypes
+FROM eCRM.DBA.XSYS_MIME_EXTENSIONS as mimeexts
+FROM eCRM.DBA.XSYS_CNAMES as cnames
+FROM eCRM.DBA.XSYS_QUOTAS as quotas
+FROM eCRM.DBA.XSYS_ROLES as roles
+FROM eCRM.DBA.XSYS_ACCOUNTS as accounts
+FROM eCRM.DBA.XSYS_USERDATA as userdatas
+FROM eCRM.DBA.XSYS_GROUPDATA as groupdatas
+FROM eCRM.DBA.XSYS_MEMBERS as members
+FROM eCRM.DBA.XSYS_SESSIONS_DATA as sessionsdatas
+FROM eCRM.DBA.XSYS_SESSION_DATA as sessiondatas
+FROM eCRM.DBA.XSYS_LIST_MEMBERS_DEFS as list_members_defs
+FROM eCRM.DBA.XSYS_CLASSES as classes
+FROM eCRM.DBA.XSYS_ORG_CLASSES as org_classes
+FROM eCRM.DBA.XSYS_CLASS_METHODS as class_methods
+FROM eCRM.DBA.XSYS_CLASS_VIEWS as class_views
+FROM eCRM.DBA.XSYS_ROLE_PRIVILEGES as role_priveleges
+FROM eCRM.DBA.XSYS_USER_PRIVILEGES as user_priveleges
+FROM eCRM.DBA.XSYS_HISTORY as history
+FROM eCRM.DBA.XSYS_USERS as xsys_users
+FROM eCRM.DBA.AP_PROCESSES_VIEW2 as ap_processes
+FROM eCRM.DBA.AP_RULES_VIEW2 as ap_rules
+FROM eCRM.DBA.AP_QUEUE as ap_queues
+WHERE (^{companies.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{contacts.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{leads.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{products.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{orders.}^.SHIP_COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{leads_table.}^.FREETEXT_ID = ^{leads.}^.FREETEXT_ID)
+WHERE (^{contacts_table.}^.FREETEXT_ID = ^{contacts.}^.FREETEXT_ID)
+WHERE (^{companies_table.}^.FREETEXT_ID = ^{companies.}^.FREETEXT_ID)
+WHERE (^{opportunities_table.}^.FREETEXT_ID = ^{opportunities.}^.FREETEXT_ID)
+WHERE (^{cases_table.}^.FREETEXT_ID = ^{cases.}^.FREETEXT_ID)
+WHERE (^{notes_table.}^.FREETEXT_ID = ^{notes.}^.FREETEXT_ID)
+WHERE (^{orders_table.}^.FREETEXT_ID = ^{orders.}^.FREETEXT_ID)
+WHERE (^{products_table.}^.FREETEXT_ID = ^{products.}^.FREETEXT_ID)
+{
+        create virtrdf:ecrmDemo1 as graph iri ("http://^{URIQADefaultHost}^/ecrm") option (order 1501)
+        {
+            ecrm:Country (countries.COUNTRY_NAME)
+                a ecrm:Country
+                    as virtrdf:Country-Countrys2 ;
+                a geo:SpatialThing
+                    as virtrdf:Country-Countrys ;
+                owl:sameAs ecrm:dbpedia_iri (countries.COUNTRY_NAME) ;
+                ecrm:countryID countries.COUNTRY_ID
+                        as virtrdf:Country-COUNTRY_ID ;
+                ecrm:countryID3 countries.COUNTRY_ID3
+                        as virtrdf:Country-COUNTRY_ID3 ;
+                ecrm:isoCode countries.ISO_CODE
+                        as virtrdf:Country-ISO_CODE ;
+                ecrm:countryName countries.COUNTRY_NAME
+                        as virtrdf:Country-COUNTRY_NAME .
+
+            ecrm:Country (countries.COUNTRY_NAME)
+                        ecrm:has_province
+            ecrm:Province (provinces.COUNTRY_ID, provinces.PROVINCE_NAME) where
+                        (^{provinces.}^.COUNTRY_ID = ^{countries.}^.COUNTRY_ID) as virtrdf:ecrmCountry-has_province .
+
+...
+  } .
+} .
+;
+SPARQL
+prefix ecrm: &lt;http://demo.openlinksw.com/schemas/ecrm#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+prefix cal: &lt;http://www.w3.org/2002/12/cal/ical#&gt;
+prefix product: &lt;http://www.swop-project.eu/ontologies/pmo/product.owl#&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+alter quad storage virtrdf:DefaultQuadStorage
+FROM eCRM.DBA.SFA_SALES_QUOTA_VIEW2 as sales_quotas
+FROM eCRM.DBA.SFA_COMPANIES_VIEW2 as companies
+FROM eCRM.DBA.SFA_COMPANIES as companies_table text literal companies_table.DESCRIPTION of (companies.DESCRIPTION)
+FROM eCRM.DBA.SFA_CONTACTS_VIEW2 as contacts
+FROM eCRM.DBA.SFA_CONTACTS as contacts_table text literal contacts_table.NAME_FIRST of (contacts.NAME_FIRST)
+FROM eCRM.DBA.SFA_EMPLOYMENTS_VIEW2 as employments
+FROM eCRM.DBA.SFA_LEADS_VIEW2 as leads
+FROM eCRM.DBA.SFA_LEADS as leads_table text literal leads_table.SUBJECT of (leads.SUBJECT)
+FROM eCRM.DBA.SFA_OPPORTUNITIES_VIEW2 as opportunities
+FROM eCRM.DBA.SFA_OPPORTUNITIES as opportunities_table text literal opportunities_table.OPPORTUNITY_NAME of (opportunities.OPPORTUNITY_NAME)
+FROM eCRM.DBA.SFA_ACTIVITIES as activities
+FROM eCRM.DBA.SFA_MAIL_MESSAGES as messages
+FROM eCRM.DBA.SFA_DOCUMENTS_VIEW2 as documents
+FROM eCRM.DBA.SFA_INFLUENCERS_VIEW2 as influencers
+FROM eCRM.DBA.SFA_TEAMS_VIEW2 as teams
+FROM eCRM.DBA.SFA_NOTES_VIEW2 as notes
+FROM eCRM.DBA.SFA_NOTES as notes_table text literal notes_table.DESCRIPTION of (notes.DESCRIPTION)
+FROM eCRM.DBA.SFA_COMPETITORS_VIEW2 as competitors
+FROM eCRM.DBA.SFA_ISSUES_VIEW2 as issues
+FROM eCRM.DBA.SFA_CUSTOM_FIELD_DEFS_VIEW2 as custom_field_defs
+FROM eCRM.DBA.SFA_CUSTOM_FIELDS_VIEW2 as custom_fields
+FROM eCRM.DBA.SFA_CASES_VIEW2 as cases
+FROM eCRM.DBA.SFA_CASES as cases_table text literal cases_table.SUMMARY of (cases.SUMMARY)
+FROM eCRM.DBA.SFA_ORDERS_VIEW2 as orders
+FROM eCRM.DBA.SFA_ORDERS as orders_table text literal orders_table.EMAIL of (orders.EMAIL)
+FROM eCRM.DBA.SFA_ORDER_ITEMS_VIEW2 as order_items
+FROM eCRM.DBA.PM_CATEGORIES_VIEW2 as categories
+FROM eCRM.DBA.PM_PRODUCT_ATTRIBUTE_DEFS_VIEW2 as product_attribute_defs
+FROM eCRM.DBA.PM_PRODUCTS_VIEW2 as products
+FROM eCRM.DBA.PM_PRODUCTS as products_table text literal products_table.DESCRIPTION of (products.DESCRIPTION)
+FROM eCRM.DBA.PM_PRODUCT_ATTRIBUTES_VIEW2 as product_attributes
+FROM eCRM.DBA.PM_CATALOGS_VIEW2 as catalogs
+FROM eCRM.DBA.PM_CATALOG_PRODUCTS_VIEW2 as catalog_products
+FROM eCRM.DBA.XSYS_MODULES as modules
+FROM eCRM.DBA.XSYS_REGISTRY as registries
+FROM eCRM.DBA.XSYS_ORGANIZATIONS_DATA as organizations_data
+FROM eCRM.DBA.XSYS_MESSAGES as xsysmessages
+FROM eCRM.DBA.XSYS_COUNTRIES_VIEW2 as countries
+FROM eCRM.DBA.XSYS_PROVINCES_VIEW2 as provinces
+FROM eCRM.DBA.XSYS_TIMEZONES as timezones
+FROM eCRM.DBA.XSYS_MIME_TYPES as mimetypes
+FROM eCRM.DBA.XSYS_MIME_EXTENSIONS as mimeexts
+FROM eCRM.DBA.XSYS_CNAMES as cnames
+FROM eCRM.DBA.XSYS_QUOTAS as quotas
+FROM eCRM.DBA.XSYS_ROLES as roles
+FROM eCRM.DBA.XSYS_ACCOUNTS as accounts
+FROM eCRM.DBA.XSYS_USERDATA as userdatas
+FROM eCRM.DBA.XSYS_GROUPDATA as groupdatas
+FROM eCRM.DBA.XSYS_MEMBERS as members
+FROM eCRM.DBA.XSYS_SESSIONS_DATA as sessionsdatas
+FROM eCRM.DBA.XSYS_SESSION_DATA as sessiondatas
+FROM eCRM.DBA.XSYS_LIST_MEMBERS_DEFS as list_members_defs
+FROM eCRM.DBA.XSYS_CLASSES as classes
+FROM eCRM.DBA.XSYS_ORG_CLASSES as org_classes
+FROM eCRM.DBA.XSYS_CLASS_METHODS as class_methods
+FROM eCRM.DBA.XSYS_CLASS_VIEWS as class_views
+FROM eCRM.DBA.XSYS_ROLE_PRIVILEGES as role_priveleges
+FROM eCRM.DBA.XSYS_USER_PRIVILEGES as user_priveleges
+FROM eCRM.DBA.XSYS_HISTORY as history
+FROM eCRM.DBA.XSYS_USERS as xsys_users
+FROM eCRM.DBA.AP_PROCESSES_VIEW2 as ap_processes
+FROM eCRM.DBA.AP_RULES_VIEW2 as ap_rules
+FROM eCRM.DBA.AP_QUEUE as ap_queues
+WHERE (^{companies.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{contacts.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{leads.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{products.}^.COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{orders.}^.SHIP_COUNTRY_NAME = ^{countries.}^.COUNTRY_NAME)
+WHERE (^{leads_table.}^.FREETEXT_ID = ^{leads.}^.FREETEXT_ID)
+WHERE (^{contacts_table.}^.FREETEXT_ID = ^{contacts.}^.FREETEXT_ID)
+WHERE (^{companies_table.}^.FREETEXT_ID = ^{companies.}^.FREETEXT_ID)
+WHERE (^{opportunities_table.}^.FREETEXT_ID = ^{opportunities.}^.FREETEXT_ID)
+WHERE (^{cases_table.}^.FREETEXT_ID = ^{cases.}^.FREETEXT_ID)
+WHERE (^{notes_table.}^.FREETEXT_ID = ^{notes.}^.FREETEXT_ID)
+WHERE (^{orders_table.}^.FREETEXT_ID = ^{orders.}^.FREETEXT_ID)
+WHERE (^{products_table.}^.FREETEXT_ID = ^{products.}^.FREETEXT_ID)
+{
+        create virtrdf:ecrmDemo2 as graph iri ("http://^{URIQADefaultHost}^/ecrm") option (exclusive, order 1502)
+        {
+            ecrm:Order (orders.ORG_ID, orders.ORDER_ID)
+                a ecrm:Order
+                    as virtrdf:Order-Orders ;
+                ecrm:has_ecrm_organization ecrm:OrganizationsData(orders.ORG_ID, organizations_data.DNS_ZONE) where (^{orders.}^.ORG_ID = ^{organizations_data.}^.ORG_ID)
+                        as virtrdf:Order-ORG_ID ;
+                ecrm:owner ecrm:XSys_User(orders.ORG_ID, xsys_users.ACCOUNT_NAME, orders.OWNER_ID)
+                        where (^{orders.}^.OWNER_ID = ^{xsys_users.}^.ACCOUNT_ID and ^{orders.}^.ORG_ID = ^{xsys_users.}^.ORG_ID)
+                        as virtrdf:Order-OWNER_ID ;
+                ecrm:FREETEXT_ID orders.FREETEXT_ID
+                        as virtrdf:Order-FREETEXT_ID ;
+                ecrm:has_company ecrm:Company(orders.COMPANY_NAME, orders.COMPANY_ID, orders.ORG_ID)
+                        as virtrdf:Order-COMPANY_ID ;
+                ecrm:companyName orders.COMPANY_NAME
+                        as virtrdf:Order-COMPANY_NAME ;
+                ecrm:has_contact ecrm:Contact(contacts.NAME_FIRST, contacts.NAME_MIDDLE, contacts.NAME_LAST, orders.CONTACT_ID, orders.ORG_ID)
+                        where (^{orders.}^.CONTACT_ID = ^{contacts.}^.CONTACT_ID and ^{orders.}^.ORG_ID = ^{contacts.}^.ORG_ID)
+                        as virtrdf:Order-CONTACT_ID ;
+                ecrm:contactName orders.CONTACT_NAME
+                        as virtrdf:Order-CONTACT_NAME ;
+                ecrm:orderNo orders.ORDER_NO
+                        as virtrdf:Order-ORDER_NO ;
+                ecrm:shipFirstName orders.SHIP_FNAME
+                        as virtrdf:Order-SHIP_FNAME ;
+                ecrm:shipSecondName orders.SHIP_SNAME
+                        as virtrdf:Order-SHIP_SNAME ;
+                ecrm:phoneNumber orders.PHONE_NUMBER
+                        as virtrdf:Order-PHONE_NUMBER ;
+                ecrm:phoneExtension orders.PHONE_EXTENSION
+                        as virtrdf:Order-PHONE_EXTENSION ;
+                ecrm:email orders.EMAIL
+                        as virtrdf:Order-EMAIL ;
+                ecrm:shipCountry ecrm:Country(orders.SHIP_COUNTRY_NAME)
+                        as virtrdf:Order-SHIP_COUNTRY_NAME ;
+                ecrm:shipCountryCode ecrm:Country (countries.COUNTRY_NAME) where  (^{countries.}^.COUNTRY_NAME = ^{orders.}^.SHIP_COUNTRY_NAME)
+                        as virtrdf:Order-SHIP_COUNTRY_CODE ;
+                ecrm:shipProvince orders.SHIP_PROVINCE
+                        as virtrdf:Order-SHIP_PROVINCE ;
+                ecrm:shipCity orders.SHIP_CITY
+                        as virtrdf:Order-SHIP_CITY ;
+                ecrm:dbpedia_shipCity ecrm:dbpedia_iri (orders.SHIP_CITY)
+                        as virtrdf:Order-SHIP_dbpedia_CITY ;
+                ecrm:shipPostalCode orders.SHIP_POSTAL_CODE
+                        as virtrdf:Order-SHIP_POSTAL_CODE ;
+                ecrm:shipAddress1 orders.SHIP_ADDRESS1
+                        as virtrdf:Order-SHIP_ADDRESS1 ;
+                ecrm:shipAddress2 orders.SHIP_ADDRESS2
+                        as virtrdf:Order-SHIP_ADDRESS2 ;
+                ecrm:salesRep orders.SALESREP
+                        as virtrdf:Order-SALESREP ;
+                ecrm:orderDate orders.ORDER_DATE
+                        as virtrdf:Order-ORDER_DATE ;
+                ecrm:orderValue orders.ORDER_VALUE
+                        as virtrdf:Order-ORDER_VALUE ;
+                ecrm:refund orders.REFUND
+                        as virtrdf:Order-REFUND ;
+                ecrm:year orders.YEAR
+                        as virtrdf:Order-YEAR ;
+                ecrm:month orders.MONTH
+                        as virtrdf:Order-MONTH ;
+                ecrm:quarter orders.QUARTER
+                        as virtrdf:Order-QUARTER ;
+                ecrm:financialYear orders.FINANCIAL_YEAR
+                        as virtrdf:Order-FINANCIAL_YEAR ;
+                ecrm:CONTACT_REL_ID orders.CONTACT_REL_ID
+                        as virtrdf:Order-CONTACT_REL_ID ;
+                ecrm:COMPANY_REL_ID orders.COMPANY_REL_ID
+                        as virtrdf:Order-COMPANY_REL_ID .
+
+...
+        } .
+} .
+;
+
+</programlisting>
+      </section>
+      <section xml:id="rdfviewsrcur">
+        <title>Linked Data Views and recursive FK relationships</title>
+        <para>Here is sample example of a script to include an additional table alias for a table:</para>
+        <programlisting>
+alter quad storage virtrdf:DefaultQuadStorage
+  :
+  FROM isports_rdf.prs10_isports_rdf.VRef_Call      as Ref_Call_tbl
+  FROM isports_rdf.prs10_isports_rdf.VRef_Call      as Ref_Call_tbl_1
+  :
+{
+  :
+  refcall:ref-call_iri (Ref_Call_tbl.Call_Num) a refcall:Ref-Call as
+virtrdf:ref-call_pk ;
+  :
+  refcall:has_parent  refcall:ref-call_iri (Ref_Call_tbl_1.Call_Num)
+where  ( ^{Ref_Call_tbl.}^.Parent    = ^{Ref_Call_tbl_1.}^.Call_Num )   as
+virtrdf:Ref-Call_has_parent .
+</programlisting>
+        <para>This demonstrates the way to self-join the table VRef_Call with itself. Like in SQL,
+are needed two different aliases for one table if you want to join it with itself.
+  </para>
+      </section>
+    </section>

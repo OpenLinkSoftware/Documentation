@@ -1,0 +1,1141 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="vdbengineodbcod">
+      <info>
+        <title>Using Microsoft Entity Frameworks to Access ODBC to ODBC Bridge Schema Objects with Virtuoso</title>
+        <abstract>
+          <para>This section details the steps required to provide Microsoft Entity Framework access to ODBC to ODBC Bridge
+Schema Objects using the OpenLink Virtuoso Universal Server. This is achieved by linking the required ODBC to ODBC Bridge
+Schema objects into Virtuoso using its built in Virtual Database engine, and then using the Virtuoso ADO.NET
+Entity Framework provider to query the remote ODBC to ODBC Bridge Schema objects linked into the Virtuoso Server.
+      </para>
+        </abstract>
+      </info>
+      <formalpara>
+        <title>Prerequisites</title>
+        <para>The following prerequisites must be in place for this solution to be possible.</para>
+      </formalpara>
+      <formalpara>
+        <title>ODBC to ODBC Bridge DBMS</title>
+        <para>An ODBC to ODBC Bridge DBMS hosting the required Schema Objects needs to be available. In this
+section we shall make and ODBC to ODBC bridge connection to another <emphasis>Virtuoso Northwind Demo</emphasis>
+
+database to demonstrate the process.</para>
+      </formalpara>
+      <para>An ODBC to ODBC Bridge DBMS hosting the required Schema Objects needs to be available. In this
+section we shall make and ODBC to ODBC bridge connection to another <emphasis>Virtuoso Northwind Demo</emphasis>
+
+database to demonstrate the process.</para>
+      <formalpara>
+        <title>ODBC to ODBC Bridge Driver</title>
+        <para>An ODBC to ODBC Bridge Driver is required for Linking the ODBC to ODBC Bridge Schema Objects into the
+Virtuoso Server. The <emphasis>OpenLink ODBC to ODBC Bridge Driver</emphasis>
+
+   will be used in this section,
+for which a functional ODBC Data source name of "odbcma" will be assumed to exist on the machine hosting the
+Virtuoso Server.</para>
+      </formalpara>
+      <para>An ODBC to ODBC Bridge Driver is required for Linking the ODBC to ODBC Bridge Schema Objects into the
+Virtuoso Server. The <emphasis>OpenLink ODBC to ODBC Bridge Driver</emphasis>
+
+   will be used in this section,
+for which a functional ODBC Data source name of "odbcma" will be assumed to exist on the machine hosting the
+Virtuoso Server.</para>
+      <formalpara>
+        <title>Virtuoso Universal Server</title>
+        <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      </formalpara>
+      <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      <formalpara>
+        <title>Microsoft Visual Studio 2008 SP1</title>
+        <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      </formalpara>
+      <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      <bridgehead>Tasks</bridgehead>
+      <formalpara>
+        <title>Ensure ODBC to ODBC Bridge Primary Keys (PKs) are not nullable</title>
+        <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables to
+be used are defined as not nullable in the ODBC to ODBC Bridge database schema before attempting to generate
+an EDM. In the case of the ODBC to ODBC Bridge Virtuoso Northwind Demo database all tables are not
+nullable, thus this should not be an issue in this case.
+    </para>
+      </formalpara>
+      <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables to
+be used are defined as not nullable in the ODBC to ODBC Bridge database schema before attempting to generate
+an EDM. In the case of the ODBC to ODBC Bridge Virtuoso Northwind Demo database all tables are not
+nullable, thus this should not be an issue in this case.
+    </para>
+      <section xml:id="vdbengineodbcodinst">
+        <title>Install and configure OpenLink ODBC Driver for ODBC to ODBC Bridge</title>
+        <para>The Virtuoso Virtual Database engine uses ODBC as the connectivity mechanism for linking remote
+database objects into its local schema. Thus an ODBC to ODBC Bridge Driver must be available with a suitably
+configured DSN for connecting to the target database. The OpenLink ODBC to ODBC Bridge Drivers have been
+used in this document, although in theory any ODBC to ODBC Bridge Driver can be used.</para>
+        <para>Installation instructions for the OpenLink ODBC Driver for ODBC to ODBC Bridge are available from:
+<link xlink:href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC">Product
+Installation &amp; Basic Configuration (ODBC)</link>
+
+  </para>
+        <section xml:id="vdbengineodbcodinstconfvsr">
+          <title>Install and configure OpenLink Virtuoso Universal Server</title>
+          <orderedlist>
+            <listitem>
+              <para>
+                <link linkend="virtclientrefinstallandconfigvirt">Install and configure OpenLink Virtuoso Universal Server</link>
+              </para>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+      <section xml:id="vdbengineodbcodlink">
+        <title>Linking ODBC to ODBC Bridge tables into OpenLink Virtuoso</title>
+        <orderedlist>
+          <listitem>
+            <para>Start the Virtuoso Web User Interface
+    </para>
+            <figure xml:id="obora1" floatstyle="1">
+              <title>Start</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Conductor" link in the Left Frame and Login as the "dba" user.
+    </para>
+            <figure xml:id="obora2" floatstyle="1">
+              <title>Conductor</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Databases" -&gt; "External Data Source" -&gt; "Data Sources" tab menu items
+    </para>
+            <figure xml:id="obora3" floatstyle="1">
+              <title>Databases</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Connect" button for the "odbcma" ODBC to ODBC Bridge DSN.
+    </para>
+            <figure xml:id="obora4" floatstyle="1">
+              <title>Connect</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On successful connection Select the "Link Objects" button to obtain a list of available tables
+    </para>
+            <figure xml:id="obora5" floatstyle="1">
+              <title>Link Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select all the tables that are part of the "Northwind" catalog.
+    </para>
+            <figure xml:id="obora6" floatstyle="1">
+              <title>Select tables</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Change the Catalog for each table to be "NWIND" using the "Set All" button.
+    </para>
+            <figure xml:id="obora7" floatstyle="1">
+              <title>"Link" button</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>All the catalog names are changed to be "NWIND". </para>
+          </listitem>
+          <listitem>
+            <para>Select the "Link" button to link the selected tables into Virtuoso
+    </para>
+            <figure xml:id="obora8" floatstyle="1">
+              <title>"Link" button</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On completion of the Link process the tables will be displayed in the "External Linked Objects" tab.
+    </para>
+            <figure xml:id="obora9" floatstyle="1">
+              <title>Completion</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The linked tables can be queried by clicking on the hyperlink in the "Local Name" column of
+the "External Linked Objects" tab above, which loads the Virtuoso "Interactive SQL" interface with the
+required SQL "Select" for retrieving the remote table data. We shall use the "NWIND.odbcma.Customers"
+table to demonstrate this.
+    </para>
+            <figure xml:id="obora10" floatstyle="1">
+              <title>Completion</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Then click the "Execute" button to run the query and retrieve the results from the remote table.
+    </para>
+            <figure xml:id="obora11" floatstyle="1">
+              <title>Completion</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The tables can also be viewed as part of the Virtuoso "SQL Schema Objects" under the "NWIND" catalog name.
+    </para>
+            <figure xml:id="obora12" floatstyle="1">
+              <title>view tables</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>The Link process is now complete enabling the tables to be queried as if part of the Virtuoso Schema.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="vdbengineodbcodcrvs">
+        <title>Creating EDM in Visual Studio 2008</title>
+        <para>The following steps can be used to create an Entity Data Model (EDM) for the Microsoft Access Northwind database:</para>
+        <orderedlist>
+          <listitem>
+            <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+            <figure xml:id="obsora1" floatstyle="1">
+              <title>Visual Studio 2008 SP1 IDE</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create a </para>
+            <para>
+              <emphasis>Web Application</emphasis>
+            </para>
+            <para> project by going to the </para>
+            <para>
+              <emphasis>File</emphasis>
+            </para>
+            <para>
+menu in Visual Studio and choosing </para>
+            <para>
+              <emphasis>New Project</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="epro2_18" floatstyle="1">
+              <title>Web Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/epro2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>When the New Project window appears, choose either </para>
+            <para>
+              <emphasis>Visual Basic</emphasis>
+            </para>
+            <para> or
+</para>
+            <para>
+              <emphasis>Visual C#</emphasis>
+            </para>
+            <para> as your programming language.</para>
+          </listitem>
+          <listitem>
+            <para>Within the language category, click on </para>
+            <para>
+              <emphasis>Web</emphasis>
+            </para>
+            <para> and select
+</para>
+            <para>
+              <emphasis>ASP.NET Web Application</emphasis>
+            </para>
+            <para> from the right-hand panel. </para>
+          </listitem>
+          <listitem>
+            <para>Choose a name for the project, for example </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>, and
+click </para>
+            <para>
+              <emphasis>OK</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="obsora2" floatstyle="1">
+              <title>name for the project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>This will create a new project called </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="obsora3" floatstyle="1">
+              <title>create a new project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the Project -&gt; Add New Item menu option.
+    </para>
+            <figure xml:id="obsora4" floatstyle="1">
+              <title>VirtuosoDataService</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Add New Item</emphasis>
+            </para>
+            <para> dialog will appear. Choose the
+</para>
+            <para>
+              <emphasis>ADO.NET Entity Data Model</emphasis>
+            </para>
+            <para> template. Give it the name </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para>
+and click </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> to start the creation of the ADO.Net Entity Data Model.
+    </para>
+            <figure xml:id="obsora5" floatstyle="1">
+              <title>Add New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose Model Contents</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>Generate from Database</emphasis>
+            </para>
+            <para>
+model type and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="obsora6" floatstyle="1">
+              <title>Choose Model Contents</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose your Data Connection</emphasis>
+            </para>
+            <para> page, select the </para>
+            <para>
+              <emphasis>New Connection button</emphasis>
+            </para>
+            <figure xml:id="obsora7" floatstyle="1">
+              <title>Entity Data Model Wizard</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose Data Source</emphasis>
+            </para>
+            <para> dialog, select the OpenLink
+</para>
+            <para>
+              <emphasis>Virtuoso Data Source</emphasis>
+            </para>
+            <para> from the list and click </para>
+            <para>
+              <emphasis>Continue</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="obsora8" floatstyle="1">
+              <title>Choose Data Source</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Add Connection</emphasis>
+            </para>
+            <para> dialog, specify the
+</para>
+            <para>
+              <emphasis>hostname, portno, username and password</emphasis>
+            </para>
+            <para> for the target Virtuoso Server and check the Save Password check box.
+    </para>
+            <figure xml:id="obsora9" floatstyle="1">
+              <title>Connection Properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the </para>
+            <para>
+              <emphasis>Select Database From List</emphasis>
+            </para>
+            <para> radio button and choose the
+</para>
+            <para>
+              <emphasis>NWIND</emphasis>
+            </para>
+            <para> database from the drop down list.
+    </para>
+            <figure xml:id="obsora10" floatstyle="1">
+              <title>Add connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obsora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Press the </para>
+            <para>
+              <emphasis>Test Connection</emphasis>
+            </para>
+            <para> dialog to verify that the database is accessible.
+    </para>
+            <figure xml:id="obsora11" floatstyle="1">
+              <title>Test Connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Set the </para>
+            <para>
+              <emphasis>entity connect string</emphasis>
+            </para>
+            <para> name to
+</para>
+            <para>
+              <emphasis>VirtuosoEntities</emphasis>
+            </para>
+            <para> (note this name as it is required in the section on creating and
+ADO.Net Data Service) and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="obsora12" floatstyle="1">
+              <title>entity connect string</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obsora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose your Database Objects</emphasis>
+            </para>
+            <para> page select the
+</para>
+            <para>
+              <emphasis>Tables</emphasis>
+            </para>
+            <para> check box to select all tables in the NWIND catalog for addition to the
+Entity Data Model. Set the </para>
+            <para>
+              <emphasis>Model Namespace</emphasis>
+            </para>
+            <para> to </para>
+            <para>
+              <emphasis>VirtuosoModel</emphasis>
+            </para>
+            <para> and
+click </para>
+            <para>
+              <emphasis>Finish</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="obsora13" floatstyle="1">
+              <title>Database Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obsora13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para> EDM will be created with the tables and relationships
+displayed in the Visual Studio IDE
+    </para>
+            <figure xml:id="obsora14" floatstyle="1">
+              <title>Virtuoso.edmx</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/obsora14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>Creation for the Entity Data Model for the Microsoft Access Northwind database is now complete.</para>
+      </section>
+      <section xml:id="vdbengineodbcoduedm">
+        <title>Using EDM to create Entity Framework based applications</title>
+        <para>Now that a Microsoft Entity Data Model has been created for the Northwind database,
+Entity Framework applications can be created to make use of it.</para>
+        <!-- this to be added from Wiki
+
+<section
+xml:id="vdbengineodbcoduedmentf"><title>Entity Frameworks based ADO.NET Data Service</title>
+        <para>An ADO.Net Data Service for the ODBC to ODBC Bridge tables can be created using the Entity Data Model
+created in the <link linkend="vdbengineodbcodcrvs">Creating EDM in Visual Studio 2008 section</link>.</para>
+<orderedlist>
+  <listitem>Open the <emphasis>VirtuosoDataService</emphasis> project created in the <link linkend="vdbengineodbcodcrvs">Creating EDM in Visual Studio 2008 section</link>.
+  </listitem>
+  <listitem>Select the Project -> Add New Item menu option.
+    <figure
+xml:id="jmsora1_01" float="1">
+      <title>VirtuosoDataService</title>
+      <graphic fileref="ui/einf4.png"/>
+    </figure>
+  </listitem>
+  <listitem>The <emphasis>Add New Item</emphasis> dialog will appear. Choose the
+<emphasis>ADO.NET Data Service template</emphasis>. Give it the name <emphasis>Virtuoso.svc</emphasis>, and
+click <emphasis>Add</emphasis> to create the ADO.Net Data Service.
+    <figure
+xml:id="jmsora2_01" float="1">
+      <title>Add New Item</title>
+      <graphic fileref="ui/fora2.png"/>
+    </figure>
+  </listitem>
+  <listitem>In the newly created <emphasis>Virtuoso.svc.cs</emphasis> Data Service file, add the data source
+class name of <emphasis>VirtuosoEntities</emphasis> (note this is the name set in the
+Creating EDM in Visual Studio 2008 section) as the <emphasis>DataService</emphasis> name. Enable the access to the Data Service by adding the entry
+<emphasis>config.SetEntitySetAccessRule("*", EntitySetRights.All);</emphasis> in the <emphasis>InitializeService</emphasis> method.
+<programlisting><![CDATA[
+// C#
+
+using System;
+using System.Web;
+using System.Collections.Generic;
+using System.ServiceModel.Web;
+using System.Linq;
+using System.Data.Services;
+
+namespace SimpleDataService
+{
+    public class Northwind: DataService<VirtuosoDemoEntities>
+    {
+        public static void InitializeService(IDataServiceConfiguration  config)
+        {
+            config.SetEntitySetAccessRule("*", EntitySetRights.All);
+        }
+    }
+}
+]]></programlisting>
+    <figure
+xml:id="jmsora3_01" float="1">
+      <title>Virtuoso.svc.cs</title>
+      <graphic fileref="ui/fora3.png"/>
+    </figure>
+  </listitem>
+  <listitem>To test the Data Service, simply hit <emphasis>Ctrl+F5</emphasis> within Visual Studio.
+This will start the development web server, run the Data Services server inside and load a Web browser
+page displaying the list of available tables/entities for the Northwind Demo database catalog.
+    <figure
+xml:id="jmsora4_01" float="1">
+      <title>Data Service test</title>
+      <graphic fileref="ui/jmsora4.png"/>
+    </figure>
+  </listitem>
+  <listitem>To access a specific entity instance like the Customers table ALFKI record, use this convention http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
+    <figure
+xml:id="jmsora5_01" float="1">
+      <title>Customers</title>
+      <graphic fileref="ui/jmsora5.png"/>
+    </figure>
+  </listitem>
+</orderedlist>
+        <para><emphasis>Notes:</emphasis></para>
+<orderedlist>
+  <listitem><emphasis>Important</emphasis> - To view <emphasis>Atom</emphasis> (the default format
+returned by an ADO.NET Data Service) in Internet Explorer, you must first ensure that
+<emphasis>Feed Reading View</emphasis> is turned <emphasis>off</emphasis>. This can be done on the
+<emphasis>Content tab</emphasis> of <emphasis>Tools in Internet Options</emphasis>.</listitem>
+  <listitem>If a Data Services entity instance URI page fails to load you can turn <emphasis>Verbose</emphasis>
+errors on by adding <emphasis>config.UseVerboseErrors = true;</emphasis> in the
+<emphasis>virtuoso.svc.cs InitializeService</emphasis> method to obtain more detailed information from the server as to why the page failed to load:
+<programlisting><![CDATA[
+public static void InitializeService(IDataServiceConfiguration config)
+
+{
+
+config.UseVerboseErrors = true;
+
+config.SetEntitySetAccessRule("*", EntitySetRights.All);
+
+}
+]]></programlisting>
+  </listitem>
+</orderedlist>
+      </section>
+    -->
+
+        <section xml:id="vdbengineodbcoduedmw">
+          <title>Visual Studio Windows DataGrid Form Application</title>
+          <para>This section details the steps required to create a simple Visual Studio 2008 Windows Form
+application, with associated DataGridView control for displaying data in selected tables from the target
+database.</para>
+          <orderedlist>
+            <listitem>
+              <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+              <figure xml:id="odora1" floatstyle="1">
+                <title>Visual Studio 2008 SP1 IDE</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora1.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Create a </para>
+              <para>
+                <emphasis>Web Application</emphasis>
+              </para>
+              <para> project by going to the </para>
+              <para>
+                <emphasis>File</emphasis>
+              </para>
+              <para>
+menu in Visual Studio and choosing </para>
+              <para>
+                <emphasis>New Project</emphasis>
+              </para>
+              <para>.
+
+</para>
+              <figure xml:id="epro2_19" floatstyle="1">
+                <title>Web Application
+</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/epro2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>When the New Project window appears, choose either </para>
+              <para>
+                <emphasis>Visual Basic</emphasis>
+              </para>
+              <para> or
+</para>
+              <para>
+                <emphasis>Visual C#</emphasis>
+              </para>
+              <para> as your programming language.</para>
+            </listitem>
+            <listitem>
+              <para>Within the language category, click on </para>
+              <para>
+                <emphasis>Windows</emphasis>
+              </para>
+              <para> and select
+</para>
+              <para>
+                <emphasis>Windows Form Application</emphasis>
+              </para>
+              <para> from the right-hand panel.</para>
+            </listitem>
+            <listitem>
+              <para>Choose a name for the project, for example </para>
+              <para>
+                <emphasis>VirtWindowsFormApplication</emphasis>
+              </para>
+              <para>,
+and click </para>
+              <para>
+                <emphasis>OK</emphasis>
+              </para>
+              <para>.
+  </para>
+              <figure xml:id="odora2" floatstyle="1">
+                <title>Web Application</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Toolbox</emphasis>
+              </para>
+              <para>, expand </para>
+              <para>
+                <emphasis>Data Controls</emphasis>
+              </para>
+              <para>, and drag the
+</para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control onto the form.
+    </para>
+              <figure xml:id="odora3" floatstyle="1">
+                <title>Toolbox</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora3.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the little </para>
+              <para>
+                <emphasis>arrow</emphasis>
+              </para>
+              <para> in the top right of the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+This loads the </para>
+              <para>
+                <emphasis>DataGridView Task</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="odora4" floatstyle="1">
+                <title>DataGridView Task</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> list box.
+    </para>
+              <figure xml:id="odora5" floatstyle="1">
+                <title>Choose Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora5.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Add Project Data Source</emphasis>
+              </para>
+              <para> link to connect to a data source.
+    </para>
+              <figure xml:id="odora6" floatstyle="1">
+                <title>Add Project Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora6.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose Data Source Type</emphasis>
+              </para>
+              <para> page select the </para>
+              <para>
+                <emphasis>Database</emphasis>
+              </para>
+              <para> data source type and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="dora7_03" floatstyle="1">
+                <title>Data Source Type</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora7.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose your Data Connection</emphasis>
+              </para>
+              <para> page, select the </para>
+              <para>
+                <emphasis>New Connection</emphasis>
+              </para>
+              <para> button
+    </para>
+              <figure xml:id="odora8" floatstyle="1">
+                <title>Data Source Configuration Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora8.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> dialog, select the OpenLink
+</para>
+              <para>
+                <emphasis>Virtuoso Data Source</emphasis>
+              </para>
+              <para> from the list and click </para>
+              <para>
+                <emphasis>Continue</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="odora9" floatstyle="1">
+                <title>Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora9.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Add Connection</emphasis>
+              </para>
+              <para> dialog, specify the
+</para>
+              <para>
+                <emphasis>hostname, portno, username and password</emphasis>
+              </para>
+              <para> for the target Virtuoso Server and check the Save Password check box.
+    </para>
+              <figure xml:id="dora10_07" floatstyle="1">
+                <title>Connection Properties</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora10.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the </para>
+              <para>
+                <emphasis>Select Database From List</emphasis>
+              </para>
+              <para> radio button and choose the
+</para>
+              <para>
+                <emphasis>NWIND</emphasis>
+              </para>
+              <para> database from the drop down list.
+    </para>
+              <figure xml:id="odora11" floatstyle="1">
+                <title>Add connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/odora11.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Press the </para>
+              <para>
+                <emphasis>Test Connection</emphasis>
+              </para>
+              <para> dialog to verify that the database is accessible.
+    </para>
+              <figure xml:id="dora12_04" floatstyle="1">
+                <title>Test Connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora12.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Leave the default connect string </para>
+              <para>
+                <emphasis>NWINDConnectionString</emphasis>
+              </para>
+              <para> and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <figure xml:id="odora13" floatstyle="1">
+                <title>NWINDConnectionString</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/odora13.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>From the list of available tables returned for the NWIND  database, select the </para>
+              <para>
+                <emphasis>JOBS</emphasis>
+              </para>
+              <para>
+table to be associated with the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+    </para>
+              <figure xml:id="odora14" floatstyle="1">
+                <title>Northwind database</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/odora14.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The columns names of the select table will be displayed in the DataGridView.
+    </para>
+              <figure xml:id="odora15" floatstyle="1">
+                <title>DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/odora15.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Resize the Form and DataGridView to allow all columns to be visible, if possible.
+    </para>
+              <figure xml:id="odora16" floatstyle="1">
+                <title>Resize the Form and DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/odora16.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To test the application, simply hit </para>
+              <para>
+                <emphasis>Ctrl+F5</emphasis>
+              </para>
+              <para> within Visual Studio or
+select </para>
+              <para>
+                <emphasis>Start Debugging</emphasis>
+              </para>
+              <para> from the </para>
+              <para>
+                <emphasis>Debug</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="dora17_03" floatstyle="1">
+                <title>Start Debugging</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora17.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The data from the </para>
+              <para>
+                <emphasis>Products</emphasis>
+              </para>
+              <para> table will be displayed in the </para>
+              <para>
+                <emphasis>DataGrid</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="odora18" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/odora18.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>The task is now complete.</para>
+        </section>
+      </section>
+    </section>

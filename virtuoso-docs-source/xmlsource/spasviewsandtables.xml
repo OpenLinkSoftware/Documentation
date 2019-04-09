@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="spasviewsandtables">
+      <title>Stored Procedures as Views &amp; Derived Tables</title>
+      <para>
+Virtuoso allows using a stored procedure result set in place of a table. A view may also be
+defined as a stored procedure. This provides smooth integration to external
+procedural logic in queries.
+</para>
+      <para>
+When a procedure appears as a table, the procedure is called and its result set is inserted
+into a temporary space. Processing continues from that point on as if the data came from a table.
+</para>
+      <para>
+Queries involving procedure views or derived tables are subject to normal join order selection.
+For this purpose it is possible to associate a cost to a procedure used in a procedure view or derived table.
+If the option (order) clause is given at the end of the select, joins  are done left to right.  If a procedure is in the leftmost
+position in the from it will be called once for the query, if it is in the second position it will
+be called once for every row of the leftmost table that passes selection criteria applicable
+to it and so on.
+</para>
+      <para>
+Procedures used as tables can get parameters from the query. These parameters are expressed in the containing select's where clause
+as column = expression, where column is a parameter name of the procedure table.
+</para>
+      <para>
+A procedure derived table is of the form:
+</para>
+      <programlisting>
+q_table_name '(' column_commalist ')' '(' column_def_commalist ')' alias
+</programlisting>
+      <para>
+The first column commalist is the parameter list. The second column_def_list is a
+description of the result set, as in a CREATE TABLE statement.   The correlation name
+alias is required if the procedure occurs as a derived table, with no view definition.
+</para>
+      <para>
+A procedure view is declared as follows:
+</para>
+      <programlisting>
+CREATE procedure VIEW new_table_name
+	AS q_table_name '(' column_commalist ')' '(' column_def_commalist ')'
+</programlisting>
+      <para>
+The columns in the column definition list should correspond to the procedure's result
+set columns.  The columns are explicit in the view so as to be able to interpret the view
+definition and to be able to compile procedures and queries using the view before the
+procedure itself is defined.  Thus the procedure need be defined only at time of execution,
+not at time of definition.
+</para>
+      <para>
+The meta-data returned by ODBC catalog calls for a procedure view will show the columns
+as they were declared, just like a regular view. Procedure views are never updatable.
+</para>
+      <section xml:id="proctabparams">
+        <title>Procedure Table Parameters</title>
+        <para>
+If there is a condition that is in the top level set of AND'ed conditions in the table
+expression's WHERE clause and if it is an equality condition and if it references a
+parameter of a procedure table and if the other side of the equality does not
+reference the procedure table or a table to the right of it, then this condition is
+considered a parameter.  This means that the condition is not actually evaluated
+but rather that the other side of the equality is evaluated before calling the procedure
+and that the value returned is passed to the procedure as an input parameter in the
+position indicated by the name in the parameter list of the view or derived table.
+</para>
+        <para>
+If the procedure table is referenced in an explicit join, as in outer or inner join syntax,
+only equalities in the join condition (ON clause) are eligible to specify a parameter.
+Equalities in the enclosing query's WHERE phrase will be considered tests on the results,
+not parameters.
+</para>
+        <para>
+The parameter names in the procedure view's or derived table's parameter list do not
+have to be names in the output columns, although this will often be the case.  The
+number of parameters in the parameter list in the view or derived table must match
+that in the procedure definition but the names do not have to be the same.  Only input
+parameters are supported.
+</para>
+        <para>
+If a parameter is specified but no applicable predicate is found, a NULL value is passed.
+</para>
+      </section>
+      <section xml:id="proctabressets">
+        <title>Procedure Table Result Sets</title>
+        <para>
+The result set is declared in the derived table or view. This should match the result_names
+in the procedure but the former will take precedence on the latter. If an actual result row is
+shorter than the declared set, the missing columns will default to NULL.
+</para>
+      </section>
+      <section xml:id="proctabsecurity">
+        <title>Procedure Tables &amp; Security</title>
+        <para>
+Accessing a procedure as a table requires execute privileges on the procedure.
+Privileges declared on the view are not checked.
+</para>
+      </section>
+      <section xml:id="proctabcost">
+        <title>Procedure Table Cost and Join Order</title>
+        <para>
+
+The __cost declaration in a procedure definition can associate a cost
+to a procedure.  This declaration is then used for assessing different
+join orders.  Note that depending on the join order, some parameters
+of a procedure table may or may not be available.  It is of the form
+__cost (n1, n2,...), where each n is a literal number.
+The declaration can figure anywhere in the procedure's body as a regular statement.
+At least one
+number is required. The first number is the one-time cost of calling
+the procedure.  The second number is the number of result rows that
+will be produced by the call, defaulting to 1.  The numbers from third
+onwards correspond to the parameters of the procedure from left to right.  If a parameter
+is NOT given or is NOT known because of join order, then the cost of
+the single call and the result count will be multiplied by the number
+corresponding to the parameter.
+</para>
+        <para>
+Consider the declaration __cost (10,
+3, 5);.  The procedure will take 10 units of time per call and produce
+3 rows if the first parameter is known.  Otherwise it will take 50
+units and produce 15 rows.  This is a rough way to specify the
+selectivity of specifying a parameter versus not specifying it.  One
+may liken this to specifying or not specifying conditions of a table's
+columns.
+</para>
+        <para>
+The unit of cost is an internal abstract unit.  For purposes of scaling, selecting a single row from a table of 1000 on an exact match of an integer key is 3 units. The costs are shown by the explain function with a second argument of -5.
+</para>
+      </section>
+      <section xml:id="proctablimits">
+        <title>Limitations</title>
+        <para>
+There is no limitation to the number of rows in a procedure result set.  The temporary
+storage takes place in the database similarly to a sorted ORDER BY.  Number of columns is
+limited to the maximum number of columns in a real table. Total row size limit for tables and
+ORDER BY intermediate results applies.
+Blobs are allowed and do not count towards the row length limit.
+</para>
+      </section>
+      <section xml:id="procexamples">
+        <title>Procedure Table Examples</title>
+        <programlisting>
+create procedure n_range (in first integer, in  last integer)
+{
+  declare n, n2 integer;
+  n := first;
+  result_names (n, n2);
+  while (n &lt; last){
+    result (n, 2 * n);
+    n := n + 1;
+  }
+}
+
+select n, n2 from n_range (first, last) (n int, n2 int) n
+	where first = 2 and last = 12;
+</programlisting>
+        <para>
+This returns a set of numbers from 2 to 11 and from 4 to 22.
+</para>
+        <programlisting>
+select a.n, b.n from n_range (first, last) (n int, n2 int) a,
+    n_range (f2, l2) (n int, n2 int) b
+  where first = 2 and last = 12 and f2 = a.n - 2 and l2 = a.n + 2;
+</programlisting>
+        <para>
+Here we join the second call to the procedure to the first, effectively passing
+the output of the left call as parameters to the right call.
+</para>
+        <programlisting>
+create procedure view n_range as n_range (first, last) (n1 int, n2 decimal);
+</programlisting>
+        <para>
+This defines the procedure as a view, so that it can be referenced like a table.
+</para>
+        <programlisting>
+select * from n_range a, n_range b where a.first = 1 and a.last = 11
+		and b.last = a.n1 + 2 and b.first = a.n1 - 2;
+</programlisting>
+        <para>
+This is the previous join but now using the view.
+</para>
+      </section>
+    </section>

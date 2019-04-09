@@ -1,0 +1,623 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="createtable">
+      <title>CREATE TABLE Statement</title>
+      <section xml:id="syntax">
+        <title>Syntax</title>
+        <programlisting>
+    base_table_def: CREATE TABLE new_table_name '(' base_table_element_commalist ')'
+                  | CREATE TABLE new_table_name as query_exp opt_with_data
+
+base_table_element_commalist: base_table_element
+                           | base_table_element_commalist ',' base_table_element
+
+base_table_element: column_def
+                  | table_constraint_def
+
+column_def: column column_data_type column_def_opt_list
+
+opt_referential_triggered_action: /* empty */
+                                | referential_rule
+                                | referential_rule referential_rule
+
+referential_rule: ON UPDATE referential_action
+                | delete_referential_rule
+
+delete_referential_rule: ON DELETE_L referential_action
+
+opt_on_delete_referential_rule: /* empty */
+                              | delete_referential_rule
+
+referential_action: CASCADE
+                  | SET NULLX
+                  | SET DEFAULT
+
+references: REFERENCES q_table_name opt_column_commalist opt_referential_triggered_action
+
+column_def_opt_list: /* empty */
+                   | column_def_opt_list column_def_opt
+
+identity_opt: START_L WITH signed_literal
+            | INCREMENT_L BY INTNUM
+
+identity_opt_list: identity_opt
+                 | identity_opt_list ',' identity_opt
+
+column_def_opt: NOT NULLX
+              | NULLX
+              | IDENTITY
+              | IDENTITY '(' identity_opt_list ')'
+              | PRIMARY KEY
+              | DEFAULT signed_literal
+              | COLLATE q_table_name
+              | references
+              | IDENTIFIED BY column
+              | CHECK '(' search_condition ')'
+	      | WITH SCHEMA column_xml_schema_def
+              | UNIQUE
+
+table_constraint_def: UNDER q_table_name
+                    | opt_constraint_name PRIMARY KEY '(' index_column_commalist ')' opt_index_option_list
+                    | opt_constraint_name FOREIGN KEY '(' column_commalist ')' references
+                    | opt_constraint_name CHECK '(' search_condition ')'
+                    | opt_constraint_name UNIQUE '(' column_commalist ')'
+
+opt_constraint_name: /* empty */
+                   | CONSTRAINT identifier
+
+column_commalist: column
+                | column_commalist ',' column
+
+index_column_commalist: column opt_asc_desc
+                      | index_column_commalist ',' column opt_asc_desc
+
+index_option: CLUSTERED
+            | UNIQUE
+            | OBJECT_ID
+
+index_option_list: index_option
+                 | index_option_list index_option
+
+opt_index_option_list: /* empty */
+                     | index_option_list
+
+column_xml_schema_def
+	: '(' STRING ',' STRING ')'
+	| '(' STRING ',' STRING ',' STRING ')'
+
+opt_with_data
+: /* empty */
+| WITH DATA
+| WITHOUT DATA
+
+</programlisting>
+        <para>The CREATE TABLE statement creates a new table.  The table is identified by a
+new_table_name, which consists of an optional qualifier, an optional owner and
+the name.  If the qualifier is not supplied then it defaults to the current qualifier,
+and likewise if the table owner is not specified then this will default to the login
+name of the user issuing the statement.</para>
+        <para>
+Following the new_table_name is a list of table elements that are either column
+definitions or table constraints.  A column must have a unique name within the table
+and possible super tables.  The only necessary attribute of a column is a data type.
+</para>
+        <para>The UNDER q_table_name constraint specifies an optional supertable. The
+table being created will inherit all columns, indices, constraints from the
+supertable, specifically including the primary key. Hence the under and primary
+key constraints cannot be specified together.  If the table being created will be
+owned by a non-dba user, the supertable must be owned by the same user.</para>
+        <para>The AS query_exp opt_with_data causes the table to be created based on the
+    compile time types of columns of the SELECT expression query_exp. If WITH DATA
+    is specified then the resultset returned by the query_exp is fed into the new
+    table. Otherwise (if WITHOUT DATA or not specified) only the table is created.</para>
+      </section>
+      <section xml:id="consnotnull">
+        <title>NOT NULL</title>
+        <para>Optionally a column can be declared NOT NULL.  Any attempts to
+  insert NULL into column declared NOT NULL will result in an error and the
+  insert rejected.</para>
+      </section>
+      <section xml:id="identity">
+        <title>IDENTITY (Auto Increment)</title>
+        <para>The IDENTITY keyword causes the columns to be automatically incremental,
+  meaning that each successive insert into the table will automatically assign
+  a value greater than any previous row of the table.  These columns are
+  often referred to as "autoincrement columns".  The assigned values
+  are normally consecutive integers.  There may be gaps in the sequence if some
+  transactions that reserve a number fail to commit.  </para>
+        <para>An autoincrement column may or may not be part of the primary key or
+  of any index.</para>
+        <para>The <link linkend="fn_identity_value"><function>identity_value()</function></link>
+
+  function returns the identity column value most recently assigned on the current connection.  This can be used inside procedures or from clients.  See also the ODBC statement option SQL_GETLASTSERIAL.</para>
+        <para>The <link linkend="fn_set_identity_column"><function>set_identity_column()</function></link>
+
+  function allows you to change the identity column sequence value.</para>
+        <para>The IDENTITY keyword supports the SQL 3 optional clause that allows
+      you to specify a starting value and/or step value in the table creation statement.  The syntax is:</para>
+        <programlisting>
+      IDENTITY (START WITH &lt;N&gt;, INCREMENT BY &lt;Y&gt;)
+</programlisting>
+        <example xml:id="ex_identity">
+          <title>Using the IDENTITY declaration</title>
+          <programlisting>
+CREATE TABLE DB.DBA.AI (
+	AI INTEGER IDENTITY,
+	XX VARCHAR,
+	PRIMARY KEY (AI)
+  )
+;</programlisting>
+          <para>Creates a table with an autoincrement primary key column AI.</para>
+          <programlisting>
+set_identity_column("DB"."DBA"."AI", "AI", 11);</programlisting>
+          <para>will cause the next row to be inserted into AI to have the AI column
+  equal to 11.</para>
+        </example>
+        <example xml:id="ex_identity_01">
+          <title>Using the IDENTITY (START WITH) declaration</title>
+          <programlisting>
+CREATE TABLE DB.DBA.AI (
+	AI INTEGER IDENTITY (START WITH 100),
+	XX VARCHAR,
+	PRIMARY KEY (AI)
+  )
+;</programlisting>
+          <para>Creates a table with an autoincrement primary key column AI, whose
+  first value will be 100 and will auto-increment from there upwards.</para>
+        </example>
+        <tip>
+          <title>See Also</title>
+          <para>
+            <link linkend="sequenceobjects">Sequence Objects</link>
+          </para>
+        </tip>
+      </section>
+      <section xml:id="default">
+        <title>DEFAULT</title>
+        <para>
+This option specifies a constant default value given to the column by an INSERT
+that does not specify a value for the column.  The constant must be compatible
+with the column's data type.  An IDENTITY or TIMESTAMP column cannot have
+a default value.
+</para>
+      </section>
+      <section xml:id="pkeycons">
+        <title>PRIMARY KEY Constraint</title>
+        <para>This declares a column combination that will uniquely identify each
+    row in the table.  This automatically defines an index on these columns
+    and clusters the physical rows of the table together with the index entry
+    for this primary key index.  Always specify a primary key if there is a
+    uniquely identifying column combination on the table. This is the case for
+    any normalized database.  Hence virtually all tables should have the primary
+    key constraint.  This is substantially more efficient than defining the
+    primary key as a unique index with CREATE INDEX.   The primary key constraint
+    exists for the purpose of guaranteeing uniqueness of a row and hence should
+    be respected.  A unique index is not a primary key and should never
+    substitute one.</para>
+        <example xml:id="ex_pkeyfullconstraint">
+          <title>Primary Key using Constraint</title>
+          <para>This example shows how to create a table with a primary key defined in
+  full as a named primary key table constraint</para>
+          <programlisting>
+CREATE TABLE demo_table (
+  id INTEGER NOT NULL,
+  txtdata VARCHAR(20),
+  CONSTRAINT demo_table_pk PRIMARY KEY (id)
+  )
+;</programlisting>
+        </example>
+        <para>PRIMARY KEY is a shorthand for the PRIMARY KEY (column)
+    table constraint which is specified in the column definition.  SQL-89 required
+    that you specify NOT NULL PRIMARY KEY but SQL-92 does not because primary
+    keys columns do not permit NULL values.  This means that no members of a
+    combination of columns that constitute a primary key can have a NULL value.</para>
+        <example xml:id="ex_pkeyshort">
+          <title>Primary Key shorthand</title>
+          <para>This example shows how to create a table with a primary key defined
+  using shorthand:</para>
+          <programlisting>
+CREATE TABLE demo_table (
+  id INTEGER NOT NULL PRIMARY KEY,
+  txtdata VARCHAR(20),
+  )
+;</programlisting>
+          <para>Or shorter still:</para>
+          <programlisting>
+CREATE TABLE demo_table (
+  id INTEGER PRIMARY KEY,
+  txtdata VARCHAR(20),
+  )
+;</programlisting>
+        </example>
+        <para>If a table definition has no PRIMARY KEY clause, Virtuoso will generate
+    a default primary key column called "_IDN".  <important><para>Always declare a primary key using
+    the primary key table constraint.  This is always more efficient than the
+    default primary key.</para></important>
+
+    You could allow Virtuoso to generate the
+    primary key if you simply want an IDENTITY primary key column, however this
+    is considered lazy and, of course, not portable.  If you already have a
+    column or combination of columns that could be a candidate for a primary
+    key, taking the default primary key from Virtuoso will reduce the overall
+    efficiency because an extra column will be used per row that would be
+    redundant to the data itself.</para>
+        <example xml:id="ex_pkeydefault">
+          <title>Default Virtuoso Primary Key</title>
+          <para>In the absence of a PRIMARY KEY definition:</para>
+          <programlisting>
+CREATE TABLE SAMPLE (
+  THING VARCHAR
+  )
+;</programlisting>
+          <para>will be expanded into:</para>
+          <programlisting>
+CREATE TABLE SAMPLE (
+  THING VARCHAR,
+  _IDN INTEGER IDENTITY,
+	PRIMARY KEY (_IDN)
+  )
+;</programlisting>
+        </example>
+        <para>Tables with generated default primary keys will appear as if they have
+  no primary key defined.  The default primary key (_IDN) column will not appear
+  in the ODBC catalog calls <function>SQLColumns()</function>
+
+  ,
+  <function>SQLStatistics()</function>
+
+  , <function>SQLPrimaryKeys()</function>
+
+  ,
+  <function>SQLColumnPrivileges()</function>
+
+  .  The column can be explicitly
+  referenced in SQL statements just as any other.  The SQL "SELECT * ..."
+  statement will omit the _IDN column.  The "INSERT INTO TABLE VALUES (.)"
+  statement does not expect a value for the _IDN column.
+  <function>SQLSpecialColumns()</function>
+
+   with the <parameter>SQL_BEST_ROWID</parameter>
+
+  option is the only catalog call that will return the _IDN column.</para>
+        <para>The PRIMARY KEY option may not coexist with UNDER in a CREATE TABLE
+  statement because a subtable always inherits the supertable's primary key.</para>
+        <tip>
+          <title>See Also:</title>
+          <para><link linkend="createindex">CREATE INDEX</link>
+
+   for the index options.</para>
+        </tip>
+      </section>
+      <section xml:id="under">
+        <title>UNDER</title>
+        <para>This allows the user to create a table as a sub-table of an existing table.
+  A sub-table will inherit all columns and constraints of its super-table, most
+  importantly the primary key.  Primary keys shall be unique in the set of rows
+  belonging to any direct or indirect sub-table of one super-table.  A select
+  from a super-table will see all rows, including those of any sub-tables, but
+  not vice versa.  Rows inserted directly into the super-table will not be
+  visible to sub-tables.</para>
+        <para>
+The primary key option may not coexist with UNDER, since a subtable always
+inherits the supertable's primary key.
+</para>
+        <example xml:id="ex_under">
+          <title>Creating sub-tables using UNDER</title>
+          <para>Here a subtable will be created for the demo_table defined earlier.
+  Both definitions are listed for convenience.  Notice that the select over
+  the sub-table (demo_sub_table) lists all columns whereas the select from
+  super-table does not, however rows inserted into the super-table,
+  demo_table, will not be seen in a select from the sub-table, but rows
+  inserted into the sub-table will be shown in a select from the super-table.</para>
+          <programlisting>
+CREATE TABLE demo_table (
+  id INTEGER PRIMARY KEY,
+  txtdata VARCHAR(20),
+  )
+;
+
+CREATE TABLE demo_sub_table (
+  new_col VARCHAR(10),
+  UNDER demo_table
+  )
+;
+
+SQL&gt; select * from demo_table;
+id                txtdata
+INTEGER NOT NULL  VARCHAR
+____________________________________________________________________
+
+0 Rows. -- 20 msec.
+
+SQL&gt; select * from demo_sub_table;
+id                txtdata               new_col
+INTEGER NOT NULL  VARCHAR               VARCHAR
+____________________________________________________________________
+
+0 Rows. -- 10 msec.
+</programlisting>
+        </example>
+      </section>
+      <section xml:id="fkeys">
+        <title>FOREIGN KEY Constraint</title>
+        <para>A FOREIGN KEY is a column of combination of columns used to retrieve a related
+      row from a related table.  These reference constraints are automatically enforced,
+      unless explicitly disabled.  This declaration can be accessed by client
+      applications using the <function>SQLForeignKeys()</function>
+
+   ODBC
+      function.  This is used by some tools to display dependencies between
+      tables.  Foreign keys are there to maintain referential integrity within
+      the database.  This constraint will ensure that rows in one table will
+      have corresponding rows in another table, so that your orders are not
+      made for products that do not exist, for example.</para>
+        <para>Forward references are not permitted in FOREIGN KEY.  Also a table
+      referenced in a foreign key constraint of another table cannot be dropped.
+      It is usual to list the columns in the referenced table corresponding
+      to the columns in the referencing table, however, this list can be omitted,
+      in which case the set of primary key columns of the referenced table is
+      used automatically by default.  The referenced and referencing column
+      lists must be of equal length.  To declare two mutually referencing tables,
+      ALTER TABLE must be used after both tables are defined. </para>
+        <para>Foreign key constraints are enforced by default.  It is sometimes
+      practical to disable constraint checks for performance or for convenience
+      when importing data or making bulk updates.  To disable or enable checking
+      for foreign key constraints you can use the
+      <link linkend="fn_fk_check_input_values"><function>fk_check_input_values()</function></link>
+
+      function.  This function changes the foreign key checking behavior globally
+      across the database so it is very important to remember to enable foreign key
+      constraint checking again afterwards.</para>
+        <para>Columns can be defined as having foreign keys and a default value,
+      however, the default value must not violate the constraint at the time of
+      insert or update as this will be rejected in the normal way.</para>
+        <example xml:id="ex_fkeysinuse">
+          <title>Creating tables with foreign key constraints</title>
+          <para>First the Primary key table must be defined before it can be referenced:</para>
+          <programlisting>
+CREATE TABLE T1 (
+  Id INTEGER NOT NULL PRIMARY KEY,
+  Dt VARCHAR
+  )
+;</programlisting>
+          <para>Now the foreign key table can be created referencing the table above:</para>
+          <programlisting>
+CREATE TABLE T2 (
+  Act INTEGER NOT NULL,  -- will refer to Id in T1
+  Retr DATETIME,
+  Description VARCHAR,
+  CONSTRAINT FK1 FOREIGN KEY (Act) REFERENCES T1 (Id) -- the fk constraint
+  )
+;</programlisting>
+          <para>The statement above creates the foreign key constraint in separate line
+  of the create table statement.  This can be also be written in short form
+  with the column definition it applies to:</para>
+          <programlisting>
+CREATE TABLE T2 (
+  Act INTEGER NOT NULL REFERENCES T1 (Id),  -- refer to Id in T1
+  Retr DATETIME,
+  Description VARCHAR
+  )
+;</programlisting>
+        </example>
+        <example xml:id="ex_nwdemofk">
+          <title>Assumed Foreign Key Columns</title>
+          <para>This CREATE TABLE statement was used for creating part of Demo database.
+  This statement does not describe the columns to be used as foreign keys on
+  the referred tables.  Since the referred tables in each case have a single
+  Primary Key (Orders.OrderID and Products.ProductID) they need not be
+  mentioned and will be assumed when this statement is processed.</para>
+          <programlisting>
+CREATE TABLE Order_Details(
+  OrderID INTEGER,
+  ProductID INTEGER,
+  UnitPrice DOUBLE PRECISION,
+  Quantity SMALLINT,
+  Discount REAL,
+  PRIMARY KEY (OrderID, ProductID),
+  FOREIGN KEY (OrderID) REFERENCES Orders,
+  FOREIGN KEY (ProductID) REFERENCES Products
+  )
+;</programlisting>
+        </example>
+        <section xml:id="fkeyactions">
+          <title>Foreign Key Constraint Actions</title>
+          <para>Foreign key constraint actions allow the user to define what action
+    data should take when the data they are related to by way of a foreign key
+    is updated or deleted.  The two activities that can be programmed are:</para>
+          <simplelist type="vert">
+            <member>ON DELETE</member>
+            <member>ON UPDATE</member>
+          </simplelist>
+          <para>The actions available for both types of activity are:</para>
+          <simplelist type="vert">
+            <member>CASCADE - automatically perform the same action on the referenced data.</member>
+            <member>SET NULL - set the referenced data to NULL.</member>
+            <member>SET DEFAULT - sets the referenced data to whatever was defined as its default value.</member>
+            <member>NO ACTION - to not perform any action at all.</member>
+          </simplelist>
+          <example xml:id="fkeyactions_01">
+            <title>Foreign Key Constraint Actions</title>
+            <para>Now, the foreign key table defined again, but this time with referential
+  rules which control how data is managed when rows are updated or deleted in
+  the primary key table:</para>
+            <programlisting>
+CREATE TABLE T3 (
+  Act INTEGER NOT NULL DEFAULT 99,  -- will refer to Id in T1
+  Retr DATETIME,
+  Description VARCHAR,
+  CONSTRAINT Fk1 FOREIGN KEY (Act) REFERENCES T1 (Id)
+    ON UPDATE CASCADE ON DELETE SET DEFAULT
+  )
+;</programlisting>
+          </example>
+        </section>
+      </section>
+      <section xml:id="sqlrefcreattablecheck">
+        <title>The CHECK Constraint</title>
+        <para>The CHECK constraint allows you specify and wide range of rules that
+  will dictate whether an insert of update will be permitted.  The syntax is as follows:</para>
+        <programlisting>
+CHECK (search-condition)
+</programlisting>
+        <para>The search condition can be simple and comparative, or quite complicated
+  involving regular expressions.</para>
+        <example xml:id="ex_sqlrefcreatecheck">
+          <title>Creating a table with the CHECK constraint</title>
+          <para>Here a simple table will be created with two CHECK constraints.  One the
+check constraints is a simple comparison ensuring participants are over 18, the
+other complicated constraint verifies that the email address is correct using a
+regular expression.  Samples SQL statements follow that will demonstrate the
+effectiveness of the check constraints.</para>
+          <programlisting>
+CREATE TABLE test_check (
+  name VARCHAR,
+  age INTEGER
+    CHECK (age &gt; 18),
+  email VARCHAR
+    CHECK (regexp_like(email, '^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+\$'))
+  )
+  ;
+
+INSERT INTO test_check (name, age, email) VALUES ('Jack', 18, 'jack@foo.bar');
+  -- will cause: *** Error 22023: ... SR363: CHECK constraint violated
+
+INSERT INTO test_check (name, age, email) VALUES ('Jill', 19, 'up@thehill.com');
+  -- will be insert correctly.
+
+INSERT INTO test_check (name, age, email) VALUES ('Jack and Jill', 37, 'ouch/!^^!!@@');
+  -- will cause: *** Error 22023: ... SR363: CHECK constraint violated, also.
+</programlisting>
+        </example>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="fn_regexp_like">
+              <function>regexp_like()</function>
+            </link>
+          </para>
+        </tip>
+      </section>
+      <section xml:id="sqlrefcreattablewithschema">
+        <title>The WITH SCHEMA Constraint</title>
+        <para>The WITH SCHEMA constraint allows you force values of an XML column to match a
+particular schema. The syntax is as follows:</para>
+        <programlisting>
+WITH SCHEMA (namespace-uri, top-element-name [, optional-dtd-configuration])
+</programlisting>
+        <para>To use this feature, you should make load an XMLSchema to the server by a
+<link linkend="createxmlschema">CREATE XML SCHEMA</link>
+
+   statement.
+As soon as schema is loaded, its target namespace URI can be used in WITH SCHEMA
+constraint to validate every new value of the column against this schema.
+In addition, the constraint ensures that the document is a well-formed XML document
+(not a well-formed generic XML entity) and checks if the name of the top level element
+of the document is equal to one specified in the constraint.
+</para>
+        <para>Depending on document size
+and the complexity of the schema, schema validation may be a time- and memory- consuming
+operation. An application can win a lot if every stored value is validated only once
+and avoid repeating validations on every read of the stored data, but it also may loose
+if the  validation is actually redundant (e.g. if the data  always comes from sources which produce valid content).
+</para>
+        <para>
+The parameter "optional-dtd-configuration" lets an application to specify
+how strict the validation should be. In real life, documents may match the schema in general,
+but not in minor details that are not important for a particular application.
+If specified, the parameter must be a string in the format described in
+<link linkend="dtd_config">Configuration Options of the DTD Validator</link>
+
+  .
+The default value is suitable for most of applications and forces the validator to
+check well-formedness of the document, nesting of elements, presence of
+all "required" attributes, syntax of values of typed elements and attributes;
+it also will check referential integrity of ID and IDREF attributes.
+</para>
+        <example xml:id="ex_sqlrefcreattablewithschema">
+          <title>Creating a table with the WITH SCHEMA constraint</title>
+          <para>Here a simple table will be created with a WITH SCHEMA constraint.
+Sample SQL statements follow that will demonstrate the
+effectiveness of the check constraints.</para>
+          <programlisting>
+CREATE XML SCHEMA '&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;xs:schema targetNamespace="http://www.example.com/parts"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:p="http://www.example.com/parts"&gt;
+   &lt;xs:element name="Part"&gt;
+      &lt;xs:complexType&gt;
+         &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
+	   &lt;xs:element ref="p:Part"/&gt;
+	 &lt;/xs:choice&gt;
+         &lt;xs:attribute name="ID" type="xs:string" use="required" /&gt;
+         &lt;xs:attribute name="Count" type="xs:int" use="optional" /&gt;
+         &lt;xs:attribute name="Type" type="xs:string" use="optional" /&gt;
+      &lt;/xs:complexType&gt;
+   &lt;/xs:element&gt;
+&lt;/xs:schema&gt;';
+
+create table SPARE_PARTS (
+  PACK_ID integer primary key,
+  CONTENT XMLType with schema ('http://www.example.com/parts', 'Part')
+  );
+
+insert into SPARE_PARTS values (1, '
+&lt;p:Part xmlns:p="http://www.example.com/parts"
+xml:id="keyboard"&gt;
+  &lt;p:Part Count="101"/&gt;
+  &lt;p:Part
+xml:id="body"/&gt;
+&lt;/p:Part&gt;')
+
+*** Error 42000: [Virtuoso Driver][Virtuoso Server]XML parser detected an error:
+	ERROR  : Only 0 out of 1 required attributes are defined for element &lt;p:Part&gt;, e.g. the element has no attribute 'ID'
+at line 3 column 25 of '(value to be placed in column DB.DBA.SPARE_PARTS of CONTENT)'
+  &lt;p:Part Count="101"/&gt;
+-----------------------^
+
+insert into SPARE_PARTS values (2, '
+&lt;p:Part xmlns:p="http://www.example.com/parts"
+xml:id="keyboard_01"&gt;
+  &lt;p:Part
+xml:id="key" Count="101"/&gt;
+  &lt;p:Part
+xml:id="body_01"/&gt;
+&lt;/p:Part&gt;')
+
+select * from SPARE_PARTS
+PACK_ID           CONTENT
+INTEGER NOT NULL  LONG VARCHAR
+_______________________________________________________________________________
+
+2
+&lt;n0:Part xmlns:n0="http://www.example.com/parts"
+xml:id="keyboard_02"&gt;
+  &lt;n0:Part
+xml:id="key_01" Count="101" /&gt;
+  &lt;n0:Part
+xml:id="body_02" /&gt;
+&lt;/n0:Part&gt;
+
+1 Rows. -- 00000 msec.
+</programlisting>
+        </example>
+        <para>ALTER TABLE ... MODIFY COLUMN statement does not support changes of WITH SCHEMA constraint.
+Double check your XMLSchema and carefully test it on real data used by an application before
+using this constraint. If you can't test your schema this way then calling of
+<link linkend="fn_xml_validate_schema"><function>xml_validate_schema()</function></link>
+
+in triggers may be safer than using the constraint: such triggers will be slower than
+the constraint but you can drop triggers without re-creating the table.
+</para>
+        <tip>
+          <title>See Also:</title>
+          <para>
+            <link linkend="createxmlschema">CREATE XML SCHEMA Statement</link>
+          </para>
+          <para>
+            <link linkend="fn_xml_validate_schema">
+              <function>xml_validate_schema()</function>
+            </link>
+          </para>
+        </tip>
+      </section>
+    </section>

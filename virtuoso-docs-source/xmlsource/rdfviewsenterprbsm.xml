@@ -1,0 +1,370 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfviewsenterprbsm">
+        <title>BSBM to RDF</title>
+        <para>This section includes example mapping SQL Data to RDF for BSBM.</para>
+        <para>Each BSBM installation includes a demonstration database that includes a simple management system schema and instance data.
+      	This sample database provides an easy route for introducing BSBM users and developers to the virtues of RDF based Linked Data Views built atop existing BSBM relational databases.</para>
+        <programlisting>
+use DB;
+
+CREATE TABLE DB.DBA.ProductFeature (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar(1500) not null,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.ProductFeature to public
+;
+
+CREATE TABLE DB.DBA.ProductType (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar(1500) not null,
+  parent integer,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.ProductType to public
+;
+
+CREATE TABLE DB.DBA.Producer (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar(1500) not null,
+  homepage varchar(100) not null,
+  country char(2) not null,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.Producer to public
+;
+create index producer_homepage on DB.DBA.Producer (homepage)
+;
+
+CREATE TABLE DB.DBA.Product (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar not null,
+  producer integer not null,
+  propertyNum1 integer,
+  propertyNum2 integer,
+  propertyNum3 integer,
+  propertyNum4 integer,
+  propertyNum5 integer,
+  propertyNum6 integer,
+  propertyTex1 varchar(200),
+  propertyTex2 varchar(200),
+  propertyTex3 varchar(200),
+  propertyTex4 varchar(200),
+  propertyTex5 varchar(200),
+  propertyTex6 varchar(200),
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.Product to public
+;
+
+create index product_lbl on DB.DBA.Product (label)
+;
+create unique index product_producer_nr on DB.DBA.Product (producer, nr)
+;
+create index product_pn1 on DB.DBA.Product (propertyNum1)
+;
+create index product_pn2 on DB.DBA.Product (propertyNum2)
+;
+create index product_pn3 on DB.DBA.Product (propertyNum3)
+;
+
+create text index on DB.DBA.Product (label) with key nr
+;
+
+CREATE TABLE DB.DBA.ProductTypeProduct (
+  product integer not null,
+  productType integer not null,
+  PRIMARY KEY (product, productType)
+)
+;
+
+grant SELECT on DB.DBA.ProductTypeProduct to public
+;
+
+create index ptype_inv on DB.DBA.ProductTypeProduct (productType, product)
+;
+
+CREATE TABLE DB.DBA.ProductFeatureProduct (
+  product integer not null,
+  productFeature integer not null,
+  PRIMARY KEY (product, productFeature)
+)
+;
+
+grant SELECT on DB.DBA.ProductFeatureProduct to public
+;
+
+create index pfeature_inv on DB.DBA.ProductFeatureProduct (productFeature, product)
+;
+
+CREATE TABLE DB.DBA.Vendor (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar not null,
+  homepage varchar(100) not null,
+  country char(2) not null,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.Vendor to public
+;
+
+create index vendor_country on DB.DBA.Vendor (country)
+;
+create index vendor_homepage on DB.DBA.Vendor (homepage)
+;
+
+CREATE TABLE DB.DBA.Offer (
+  nr integer primary key,
+  product integer not null,
+  producer integer,
+  vendor integer not null,
+  price double precision not null,
+  validFrom date not null,
+  validTo date not null,
+  deliveryDays integer not null,
+  offerWebpage varchar(100) not null,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.Offer to public
+;
+
+create index offer_product on DB.DBA.Offer (product, deliveryDays)
+;
+create unique index offer_producer_product on DB.DBA.Offer (producer, product, nr)
+;
+create index offer_validto on DB.DBA.Offer (validTo)
+;
+create index offer_vendor_product on DB.DBA.Offer (vendor, product)
+;
+create index offer_webpage on DB.DBA.Offer (offerWebpage)
+;
+
+CREATE TABLE DB.DBA.Person (
+  nr integer primary key,
+  name varchar(30) not null,
+  mbox_sha1sum char(40) not null,
+  country char(2) not null,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.Person to public
+;
+
+CREATE TABLE DB.DBA.Review (
+  nr integer primary key,
+  product integer not null,
+  producer integer,
+  person integer not null,
+  reviewDate date not null,
+  title varchar(200) not null,
+  text long varchar not null,
+  textlang char(2) not null,
+  rating1 integer,
+  rating2 integer,
+  rating3 integer,
+  rating4 integer,
+  publisher integer not null,
+  publishDate date not null
+)
+;
+
+grant SELECT on DB.DBA.Review to public
+;
+
+create unique index review_product on DB.DBA.Review (product, producer, nr)
+;
+
+create unique index review_producer_product on DB.DBA.Review (producer, product, nr)
+;
+
+create bitmap index review_textlang on DB.DBA.Review (textlang)
+;
+
+DB.DBA.XML_SET_NS_DECL ('foaf', 'http://xmlns.com/foaf/0.1/', 2)
+;
+DB.DBA.XML_SET_NS_DECL ('dc', 'http://purl.org/dc/elements/1.1/', 2)
+;
+DB.DBA.XML_SET_NS_DECL ('xsd', 'http://www.w3.org/2001/XMLSchema-datatypes/', 2)
+;
+DB.DBA.XML_SET_NS_DECL ('rev', 'http://purl.org/stuff/rev#', 2)
+;
+DB.DBA.XML_SET_NS_DECL ('bsbm', 'http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/', 2)
+;
+DB.DBA.XML_SET_NS_DECL ('bsbm-inst', 'http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/', 2)
+;
+
+SPARQL drop quad map bsbm:SingleGraphView
+;
+
+SPARQL create iri class bsbm:ProductFeature-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature%d" (in nr integer not null)
+;
+
+SPARQL create iri class bsbm:ProductType-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType%d" (in nr integer not null)
+;
+
+SPARQL create iri class bsbm:Producer-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer%d/Producer%d" (in nr_ integer not null, in nr integer not null)
+;
+
+SPARQL create iri class bsbm:Product-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer%d/Product%d" (in producer integer not null, in nr integer not null)
+;
+
+SPARQL create iri class bsbm:Vendor-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromVendor%d/Vendor%d" (in nr_ integer not null, in nr integer not null)
+;
+
+SPARQL create iri class bsbm:Offer-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromVendor%d/Offer%d" (in vendor integer not null, in nr integer not null)
+;
+
+SPARQL create iri class bsbm:StdInst-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/StandardizationInstitution%d" (in publisher integer not null)
+;
+
+SPARQL create iri class bsbm:Person-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromRatingSite%d/Person%d" (in publisher integer not null, in nr integer not null)
+;
+
+SPARQL create iri class bsbm:Review-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromRatingSite%d/Review%d" (in site integer, in nr integer not null)
+;
+
+SPARQL create iri class bsbm:ISO3166-country-iri "http://downlode.org/rdf/iso-3166/countries#%s" (in code varchar not null)
+;
+
+SPARQL create iri class bsbm:homepage-iri "%s" (in homepage varchar not null) option (returns "http://%s")
+;
+
+SPARQL create iri class bsbm:RatingSite-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromRatingSite%d/RatingSite%d" (in nr_ integer not null, in nr integer not null)
+;
+
+SPARQL
+alter quad storage virtrdf:DefaultQuadStorage
+FROM DB.DBA.ProductFeature as pfeature
+FROM DB.DBA.ProductType as ptype
+FROM DB.DBA.Producer as producer
+FROM DB.DBA.Product as product text literal product.label
+FROM DB.DBA.ProductTypeProduct as ptypeproduct
+FROM DB.DBA.ProductFeatureProduct as pfeatureproduct
+FROM DB.DBA.Vendor as vendor
+FROM DB.DBA.Offer as offer
+FROM DB.DBA.Person as person
+FROM DB.DBA.Review as review
+where (^{product.}^.nr = ^{ptypeproduct.}^.product)
+where (^{product.}^.nr = ^{pfeatureproduct.}^.product)
+  {
+    create bsbm:SingleGraphView as graph &lt;BSBM&gt; option (exclusive)
+      {
+	bsbm:Product-iri (product.producer, product.nr)
+          a bsbm:Product ;
+	  rdfs:label product.label ;
+          rdfs:comment product.comment ;
+          bsbm:producer bsbm:Producer-iri (product.producer, product.producer) ;
+          bsbm:productPropertyTextual1 product.propertyTex1 ;
+          bsbm:productPropertyTextual2 product.propertyTex2 ;
+          bsbm:productPropertyTextual3 product.propertyTex3 ;
+          bsbm:productPropertyTextual4 product.propertyTex4 ;
+          bsbm:productPropertyTextual5 product.propertyTex5 ;
+          bsbm:productPropertyTextual6 product.propertyTex6 ;
+          bsbm:productPropertyNumeric1 product.propertyNum1 ;
+          bsbm:productPropertyNumeric2 product.propertyNum2 ;
+          bsbm:productPropertyNumeric3 product.propertyNum3 ;
+          bsbm:productPropertyNumeric4 product.propertyNum4 ;
+          bsbm:productPropertyNumeric5 product.propertyNum5 ;
+          bsbm:productPropertyNumeric6 product.propertyNum6 ;
+          rdf:type bsbm:ProductType-iri (ptypeproduct.productType) ;
+          bsbm:productFeature bsbm:ProductFeature-iri (pfeatureproduct.productFeature) ;
+          dc:publisher bsbm:Producer-iri (product.publisher, product.publisher) ;
+          dc:date product.publishDate .
+
+        bsbm:ProductType-iri (ptype.nr)
+          a bsbm:ProductType ;
+          rdfs:label ptype.label ;
+          rdfs:comment ptype.comment ;
+          rdfs:subClassOf bsbm:ProductType-iri (ptype.parent) ;
+          dc:publisher bsbm:StdInst-iri (ptype.publisher) ;
+          dc:date ptype.publishDate .
+
+        bsbm:ProductFeature-iri (pfeature.nr)
+          a bsbm:ProductFeature ;
+          rdfs:label pfeature.label ;
+          rdfs:comment pfeature.comment ;
+          dc:publisher bsbm:StdInst-iri (pfeature.publisher) ;
+          dc:date pfeature.publishDate .
+
+        bsbm:Producer-iri (producer.nr, producer.nr)
+          a bsbm:Producer ;
+          rdfs:label producer.label ;
+          rdfs:comment producer.comment ;
+          foaf:homepage bsbm:homepage-iri (producer.homepage) ;
+          bsbm:country bsbm:ISO3166-country-iri (producer.country) ;
+          dc:publisher bsbm:Producer-iri (producer.nr, producer.nr) ;
+          dc:date producer.publishDate .
+
+        bsbm:Vendor-iri (vendor.nr, vendor.nr)
+          a bsbm:Vendor ;
+          rdfs:label vendor.label ;
+          rdfs:comment vendor.comment ;
+          foaf:homepage bsbm:homepage-iri (vendor.homepage) ;
+          bsbm:country bsbm:ISO3166-country-iri (vendor.country) ;
+          dc:publisher bsbm:Vendor-iri (vendor.publisher, vendor.publisher) ;
+          dc:date vendor.publishDate .
+
+        bsbm:Offer-iri (offer.vendor, offer.nr)
+          a bsbm:Offer ;
+          bsbm:product bsbm:Product-iri (offer.producer, offer.product) ;
+          bsbm:vendor bsbm:Vendor-iri (offer.vendor, offer.vendor) ;
+          bsbm:vendor bsbm:Vendor-iri (offer.vendor, offer.vendor) ;
+          bsbm:price offer.price ;
+          bsbm:validFrom offer.validFrom ;
+          bsbm:validTo offer.validTo ;
+          bsbm:deliveryDays offer.deliveryDays ;
+          bsbm:offerWebpage bsbm:homepage-iri (offer.offerWebpage) ;
+          dc:publisher bsbm:Vendor-iri (offer.publisher, offer.publisher) ;
+          dc:date offer.publishDate .
+
+        bsbm:Person-iri (person.publisher, person.nr)
+          a foaf:Person ;
+          foaf:name person.name ;
+          foaf:mbox_sha1sum person.mbox_sha1sum ;
+          bsbm:country bsbm:ISO3166-country-iri (person.country) ;
+          dc:publisher bsbm:RatingSite-iri (person.publisher, person.publisher) ;
+          dc:date person.publishDate .
+
+        bsbm:Review-iri (review.publisher, review.nr)
+          a rev:Review ;
+          bsbm:reviewFor bsbm:Product-iri (review.producer, review.product) ;
+          bsbm:producer bsbm:Producer-iri (review.producer, review.producer) ;
+          rev:reviewer bsbm:Person-iri (review.publisher, review.person) ;
+          bsbm:reviewDate review.reviewDate ;
+          dc:title review.title ;
+          rev:text review.text lang review.textlang ;
+          bsbm:rating1 review.rating1 ;
+          bsbm:rating2 review.rating2 ;
+          bsbm:rating3 review.rating3 ;
+          bsbm:rating4 review.rating4 ;
+          dc:publisher bsbm:RatingSite-iri (review.publisher, review.publisher) ;
+          dc:date review.publishDate .
+      }
+  }
+;
+</programlisting>
+      </section>

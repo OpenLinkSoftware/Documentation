@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_rdfs_rule_set">
+      <refmeta>
+        <refentrytitle>rdfs_rule_set
+</refentrytitle>
+        <refmiscinfo>rdf
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>rdfs_rule_set
+</refname>
+        <refpurpose>Adds the applicable facts of the graph into a rule set.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_rdfs_rule_set">
+          <funcprototype xml:id="fproto_rdfs_rule_set">
+            <funcdef>
+              <function>rdfs_rule_set
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>rule_name
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>graph_iri
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>remove
+</parameter>
+
+   integer
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_rdfs_rule_set">
+        <title>Description
+</title>
+        <para>This function associates a rule-name with a source named graphs identified by a named graph IRI.
+    	This named graph is contains RDF statements that constitute the desired inference rule to be created.
+    	You can use this procedure to add RDF statements from other named graphs as part as part of a
+    	rule-enhancement effort.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_rdfs_rule_set">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>rule_name
+</title>
+          <para>Rule name (literal that identifies the rule).
+</para>
+        </refsect2>
+        <refsect2>
+          <title>graph_iri
+</title>
+          <para>A named graph IRI that identifies the source of RDF statements to be used as inference rules,
+</para>
+        </refsect2>
+        <refsect2>
+          <title>remove
+</title>
+          <para>(0|1 default 0) - where 1 indicates that the specified graph is to be removed from the rule set.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="examples_rdfs_rule_set">
+        <title>Examples
+</title>
+        <example xml:id="ex_rdfs_rule_set1">
+          <title>Simple Usage Example
+</title>
+          <para>Google and Bloomberg Stock Quote Services return HTML5+Microdata based Linked Open Data using terms from Schema.org.
+      	As will be quite common, there is a case sensitive issue in regards to the HTTP URIs that identify the "Financial Quote" class.
+      	For Bloomberg we have: &lt;http://schema.org/intangible/financialquote&gt; and for Google:
+      	&lt;http://schema.org/Intangible/FinancialQuote&gt; . What follows in an <emphasis>owl:equivalentProperty</emphasis>
+
+      	relation that enables a processor of this data (e.g., SPARQL Query Processor) apply reasoning and inference based on
+      	the semantics of the <emphasis>owl:equivalentProperty</emphasis>
+
+   relation. Using Virtuoso's SPARQL processor, you can
+      	create an inference rule declaratively via 
+<link linkend="fn_rdfs_rule_set"><function>rdfs_rule_set()
+</function></link>
+
+  :
+</para>
+          <programlisting>
+-- Suppose a ttl file inference-rule-for-stock-quotes.ttl has the following content:
+&lt;http://schema.org/intangible/financialquote&gt;
+  owl:equivalentProperty &lt;http://schema.org/Intangible/FinancialQuote&gt; .
+
+-- Load the data to a Named Graph that's implicitly (in the case of Virtuoso)
+-- identified by the RDF Document URL that contains the RDF statements that
+-- constitute the rule being created
+SQL&gt; LOAD &lt;http://example.com/inference-rule-for-stock-quotes.ttl&gt; ;
+Done. -- 15 msec.
+
+-- Via SQL run the procedure:
+SQL&gt; RDFS_RULE_SET ('schema_stock_quotes', 'http://example.com/inference-rule-for-stock-quotes.ttl');
+</programlisting>
+        </example>
+        <example xml:id="ex_rdfs_rule_set2">
+          <title>Create Rule example
+</title>
+          <para>Create rule set and  verify rule's existence:
+</para>
+          <programlisting>
+SQL&gt; rdfs_rule_set('myset', 'http://mygraph.com');
+Done. -- 15 msec.
+SQL&gt; SELECT * FROM DB.DBA.SYS_RDF_SCHEMA ;
+RS_NAME                              RS_URI                                                         RS_G
+VARCHAR NOT NULL                     VARCHAR NOT NULL                          VARCHAR
+_______________________________________________________________________________
+
+http://example.com/dataspace         http://example.com/dataspace/inf          NULL
+http://www.w3.org/2002/07/owl#       http://www.w3.org/2002/07/owl#            NULL
+myset                                http://mygraph.com                        NULL
+virtrdf-ifp                          virtrdf-ifp                                                    NULL
+virtrdf-label                        virtrdf-label                                                  NULL
+virtrdf-meta-entity-class            http://www.openlinksw.com/schemas/virtrdf-meta-entity-class    NULL
+
+7 Rows. -- 0 msec.
+</programlisting>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_rdfs_rule_set">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_rdf_audit_metadata">
+            <function>DB.DBA.RDF_AUDIT_METADATA()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_backup_metadata">
+            <function>DB.DBA.RDF_BACKUP_METADATA()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_load_rdfxml_mt">
+            <function>DB.DBA.RDF_LOAD_RDFXML_MT()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_ttlp">
+            <function>DB.DBA.TTLP()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_ttlp_mt">
+            <function>DB.DBA.TTLP_MT()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_triples_to_rdf_xml_text">
+            <function>DB.DBA.RDF_TRIPLES_TO_RDF_XML_TEXT()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_sparql_rexec">
+            <function>DB.DBA.SPARQL_REXEC()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_sparql_rexec_to_array">
+            <function>DB.DBA.SPARQL_REXEC_TO_ARRAY()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_sparql_rexec_with_meta">
+            <function>DB.DBA.SPARQL_REXEC_WITH_META()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_quad_uri_l">
+            <function>DB.DBA.RDF_QUAD_URI_L()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_quad_uri_l_typed">
+            <function>DB.DBA.RDF_QUAD_URI_L_TYPED()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_ttl2hash">
+            <function>DB.DBA.RDF_TTL2HASH()
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

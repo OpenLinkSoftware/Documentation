@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_signal">
+      <refmeta>
+        <refentrytitle>signal
+</refentrytitle>
+        <refmiscinfo>sql
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>signal
+</refname>
+        <refpurpose>Signal an exception   in the calling procedure
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_signal">
+          <funcprototype xml:id="fproto_signal">
+            <funcdef>
+              <function>signal
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>sqlstate
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>message
+</parameter>
+
+   varchar
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_19">
+        <title>Description
+</title>
+        <para>This signals the given SQLSTATE with the message. The calling procedure will transfer control to the most appropriate local handler. In the absence of a local handler the procedure terminates and signals the exception in the scope where it was called from, until there either is a handler or there are no more calling procedures. If there is no handler in the entire stack of call contexts the error is signalled to the client.
+Handlers can be declared with whenever .. goto and the declare handler for construct.
+See the Virtuoso/PL documentation.
+</para>
+        <screen>
+CREATE PROCEDURE WITHDRAW (IN C_ID VARCHAR, IN DELTA NUMERIC)
+{
+    DECLARE BAL NUMERIC;
+
+    DECLARE CR CURSOR FOR SELECT C_BALANCE FROM CUSTOMER WHERE C_ID = C_ID;
+
+    WHENEVER NOT FOUND GOTO NOCUSTOMER;
+
+    OPEN CR (EXCLUSIVE);
+    FETCH CR INTO BAL;
+    IF (BAL &gt; DELTA)
+	UPDATE CUSTOMER SET C_BALANCE = BAL - DELTA WHERE CURRENT OF CR;
+    ELSE
+	SIGNAL ('NOMONEY', 'INSUFFICIENT BALANCE.');
+
+    RETURN;
+
+NOCUSTOMER:
+    SIGNAL ('NOCUS', 'BAD CUSTOMER ID');
+}
+</screen>
+      </refsect1>
+    </refentry>

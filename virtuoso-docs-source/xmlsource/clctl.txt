@@ -1,0 +1,186 @@
+
+
+Cluster Control  Utility 
+
+
+A Virtuoso cluster does not per se require a separate administration
+utility.  It will be online and usable when all the constituent
+servers are online.  In the event of using fault tolerance, the clctl
+utility should however be used for managing servers going offline and
+rejoining the cluster.  This is needed in order to ensure that the
+operation sequences for marking a server process as failed and for
+bringing a failed server process back online are correctly carried
+out.  In the following, we use the word host to mean an individual
+database server process.  Several of these may exist on a single
+computer.
+
+clctl has a configuration file named cl.cfg which it reads from its
+working directory.  This file describes the layout of the Virtuoso
+cluster being managed.
+
+This file can be filled in manually after the cluster has been set up.  This file is only used by clctl. 
+
+Before using clctl, the cl.cfg file must be created, see section
+below.  Note that ssh is used for executing commands on remote
+machines.  This requires ssh to be set up so as not to require manual
+login.
+
+The database file names for the database files of two hosts that are each others'online replicas must be the same and there must be an equal number of stripes.
+
+*** clctl can presently be used only if the database consists of a
+    single file plus transaction log file in the same directory.
+    These must be named virtuoso.db and virtuoso.trx.  The hostname
+    and directoy is given separately for each host in cl.cfg.
+
+
+clctl has the following subcommands:
+
+clctl start  
+
+Starts all the hosts of the cluster.
+ 
+clctl start <host>
+
+Starts all a given node of the cluster.
+
+clctl stop
+
+Shuts down all the hosts of the cluster.
+
+clctl stop <host>
+
+Shuts down a given node of the cluster.
+
+clctl status 
+
+Displays a one line status summary for each host.
+
+clctl ro <host>
+
+Sets a node of the cluster in a read-only mode
+
+clctl rw <host>
+
+Sets a node of the cluster in a read-write mode
+
+clctl disable <host>
+
+This notifies the cluster that <host> identified by its number in the cl.cfg file has failed and that the cluster will continue normal operation without this host.
+The host will have to be rebuilt based on the state of its replica before it can rejoin the cluster.  This is done with the clctl rebuild command.
+If there is a transient failure like an unplugged network cable or a reboot, disabling the temporarily failed host does not always make sense because rebuilding it may involve copying hundreds of GB of data which can  take significant time.
+
+After the failure, the cluster is available for reading but is not available for writing until the failed host is either back online or disabled with this command.
+
+Example:  
+
+clctl disable 3 
+
+Means that Host3 as defined in cl.cfg is removed and will have to be rejoined to the cluster with 
+
+clctl rebuild 3
+
+
+clctl rebuild <host>
+
+Once a host has been removed from the cluster with clctl disable, it can be brought back online with this command.  The host is identified by its number in the cl.cfg file.
+This command automates the following operations:
+
+Make a log checkpoint on the online replica of the host being rebuilt. 
+This allows the database files to be copied to serve as a basis of the database of the recovering host.
+During this copy the replica will not do log checkpoints, so that the database file copy is clean.  Duirng this time the cluster is available for writing.
+
+After the database files are copied, the recovering host is started.
+At this point, there is a read only window while the recovering host replays the transactions its online replica has accumulated while its database was being copied.
+When the replay of the replica's transaction log is complete, the recovering host is marked to be a part of the cluster and writing is re-enabled.
+
+To ensure integrity of the recovered cluster, these operations have to be performed in this exact sequence, hence the clctl utility should be used for this.
+
+clctl enable <host>
+
+Enable a node of the cluster.
+
+
+H2 The cl.cfg Configuration File 
+
+The cl.cfg file contains a description of the layout of the cluster.
+It specifies a remote exec command for starting servers and gives the
+locations of database files used by these servers.  The database file
+locations are needed for copying the database for restoring a failed
+host.
+
+[Global]
+Exec     = ssh
+# command for remote execution.  ssh must be set up so that the machine from which clctl is run can connect without login prompt to the machines hosting the databases.
+
+Copy     = rsync -zvP
+# command for copying files between the hosts.  This is executed on the host receiving the copy.  
+
+BinDir   = /usr/bin
+#  Directory for the isql and other Virtuoso commands on the host running clctl 
+
+Password = dba
+# The Virtuoso password for the dba account.  All hhosts of the cluster have the same dba password since all login and user account information is replicated on all hosts.  This is a Virtuoso account and no operating system account corresponds to it.
+
+Master   = Host1
+# The cluster master information as given in each cluster.ini file 
+Master2  = Host2
+# Fallback master as given in each cluster.ini file.
+
+For each hostthe following fields are given:
+
+[Host1]
+Host      = localhost
+# DNS Name of the machine hosting  the Virtuoso host in question 
+DBDir     = /home/v6/binsrc/tests/suite/clflt/cl1
+# The avsolute path of the directory containing the database files of this host 
+BinDir    = /home/v6/bin
+# Absolute path of the Virtuoso binaries 
+SpareHost = 2
+# Online replica of this host.  The rebuild command uses this information to decide which database files to copy when rebuilding this host after failure.
+SqlPort   = 1111
+# Port for SQL listener of this host.  Corresponds to the ServrPort setting in this host's virtuoso.ini file.
+
+
+Below is a sample of a full cl.cfg file for a cluster of 4 hosts all on the same machine (localhost).
+
+
+[Global]
+Exec     = ssh
+Copy     = rsync -zvP
+BinDir   = /usr/bin
+Password = dba
+Master   = Host1
+Master2  = Host2
+
+[Host1]
+Host      = localhost
+DBDir     = /home/v6/binsrc/tests/suite/clflt/cl1
+BinDir    = /home/v6/bin
+SpareHost = 2
+SqlPort   = 1111
+
+[Host2]
+Host      = localhost
+DBDir     = /home/v6/binsrc/tests/suite/clflt/cl2
+BinDir    = /home/v6/bin
+SpareHost = 1
+SqlPort   = 1311
+
+[Host3]
+Host      = localhost
+DBDir     = /home/v6/binsrc/tests/suite/clflt/cl3
+BinDir    = /home/v6/bin
+SpareHost = 4
+SqlPort   = 1312
+
+[Host4]
+Host      = localhost
+DBDir     = /home/v6/binsrc/tests/suite/clflt/cl4
+BinDir    = /home/v6/bin
+SpareHost = 3
+SqlPort   = 1313
+
+
+
+
+

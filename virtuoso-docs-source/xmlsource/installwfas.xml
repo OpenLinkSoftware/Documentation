@@ -1,0 +1,1824 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="installwfas">
+      <title>Windows Form Application for accessing Virtuoso RDF data via SPASQL using the Virtuoso ADO.Net Provider</title>
+      <para>This section will guide you through creating a simple application that allows you to access RDF
+data in a Virtuoso database as an Entity DataSet and explore that RDF data in an intuitive way by clicking
+on dereferenceable <link linkend="rdfiriidtype">IRIs</link>
+
+  .</para>
+      <section xml:id="installwfasintro">
+        <title>Pre-requisites</title>
+        <orderedlist>
+          <listitem>
+            <para>Microsoft Visual Studio 2008</para>
+          </listitem>
+          <listitem>
+            <para>The Virtuoso ADO.Net provider for .Net 3.5 and the Entity Framework.</para>
+          </listitem>
+          <listitem>
+            <para>The example assumes that you have a local Virtuoso server with the Northwind demo database
+installed. If the demo database is not already installed then download the 
+            <link xlink:href="http://download.openlinksw.com/packages/5.0/virtuoso/demo_dav.vad">demo database VAD package</link>
+
+(demo_dav.vad) and install it. The VAD package will create a new database in Virtuoso called demo
+containing the familiar Northwind tables. It will also creates 
+            <link linkend="rdfviewsrdbms">Linked Data Views</link>
+             of the Northwind tables.
+In the example we assume the database is accessible on a hostname of "demo.openlinksw.com" on the
+default port 80, where an actually live instance of the Virtuoso Demo database is hosted. Users would
+use the appropriate hostname and port number of their Virtuoso installation to create the sample
+application, and would be would be example.com for a default installation or whatever the 
+            <link linkend="ini_uriqa">URIQA DefaultHost</link>
+Virtuoso configuration parameter is set to when the demo database VAD package is installed.
+  </para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="installwfasgetstart">
+        <title>Creating the Application</title>
+        <para>
+          <emphasis>Step 1 - Create a view of the RDF data.</emphasis>
+        </para>
+        <para>We want to be able to access the RDF data in Visual Studio and the easiest way to do this is to
+create a view of the data that we are interested in and bind that view to a DataSet. This can be considered
+as using server side <link linkend="rdfsparql">SPARQL</link>
+
+  . Virtuoso supports an
+<link linkend="rdfsparqlinline">extension to standard SQL that allows</link>
+
+   execution of SPARQL.
+If a SQL query begins with the keyword SPARQL then the rest of the query is interpreted by as SPARQL.
+If a SPARQL query is used as the definition of a view then that view can be manipulated using SQL like
+any other view. In this way the result set from a SPARQL query can be easily accessed from Visual Studio
+using ADO.Net and the Entity Framework.
+      </para>
+        <para>
+To create a view of the customers in the Northwind first open the Virtuoso Conductor and log in as dba.
+Then open iSQL from the menu on the left and execute the following statement.
+      </para>
+        <programlisting>
+
+CREATE VIEW Demo.demo.sparqlview as
+SPARQL
+PREFIX nwind: &lt;http://demo.openlinksw.com/schemas/northwind#&gt;
+SELECT DISTINCT  ?s
+FROM &lt;http://demo.openlinksw.com/Northwind&gt;
+WHERE {?s a nwind:Customer}
+</programlisting>
+        <para><emphasis>Note:</emphasis>
+
+   If the view is added to the Visual Studio project as user "demo" (or any other
+than "dba'), then it must be ensured that the "SPARQL_SELECT" and "SPARQL_SPONGE" roles are assigned to
+this user, which can be done via the Virtuoso Conductor in the "System Admin" -&gt; "User Accounts" tab.
+</para>
+        <figure xml:id="sparqlwinf1" floatstyle="1">
+          <title>SPARQL_SPONGE</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/sparqlwinf1.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>
+          <emphasis>Step 2 - Create a simple grid form in Visual Studio</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>Open </para>
+            <para>
+              <emphasis>Visual Studio</emphasis>
+            </para>
+            <para> and create a new </para>
+            <para>
+              <emphasis>Windows Forms Application</emphasis>
+            </para>
+            <para> called RDFDemo.</para>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Form Designer</emphasis>
+            </para>
+            <para> drag a </para>
+            <para>
+              <emphasis>DataGridView</emphasis>
+            </para>
+            <para> on to the form.</para>
+          </listitem>
+          <listitem>
+            <para>Click the </para>
+            <para>
+              <emphasis>Choose Data Source</emphasis>
+            </para>
+            <para> drop down and select </para>
+            <para>
+              <emphasis>Add Project Data Source</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="sparqlwinf2" floatstyle="1">
+              <title>Data Source</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sparqlwinf2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Data Source Configuration Wizard</emphasis>
+            </para>
+            <para> choose Database and then set up a connection to the demo database on your local Virtuoso server. </para>
+          </listitem>
+          <listitem>
+            <para>On the </para>
+            <para>
+              <emphasis>Choose Your Data Objects</emphasis>
+            </para>
+            <para> page expand the </para>
+            <para>
+              <emphasis>Views</emphasis>
+            </para>
+            <para> and select sparqlview.
+    </para>
+            <figure xml:id="sparqlwinf3" floatstyle="1">
+              <title>Data Source Configuration Wizard</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sparqlwinf3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click </para>
+            <para>
+              <emphasis>Finish</emphasis>
+            </para>
+            <para>.</para>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Form Designer</emphasis>
+            </para>
+            <para> select dataGridView1 and change the </para>
+            <para>
+              <emphasis>AutoSizeColumnsMode</emphasis>
+            </para>
+            <para> to AllCellsExceptHeader.</para>
+          </listitem>
+          <listitem>
+            <para>Select the </para>
+            <para>
+              <emphasis>DefaultCellStyle</emphasis>
+            </para>
+            <para> and click on the ellipsis. This will open the
+</para>
+            <para>
+              <emphasis>CellStyleBuilder</emphasis>
+            </para>
+            <para>. Change the </para>
+            <para>
+              <emphasis>ForeColor</emphasis>
+            </para>
+            <para> to Blue.
+    </para>
+            <figure xml:id="sparqlwinf4" floatstyle="1">
+              <title>CellStyleBuilder</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sparqlwinf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Expand </para>
+            <para>
+              <emphasis>Font</emphasis>
+            </para>
+            <para> and change </para>
+            <para>
+              <emphasis>Underline</emphasis>
+            </para>
+            <para> to True.
+Click </para>
+            <para>
+              <emphasis>OK</emphasis>
+            </para>
+            <para>.</para>
+          </listitem>
+        </orderedlist>
+        <para>
+          <emphasis>Step 3 - Change the mapping of the DataSet.</emphasis>
+        </para>
+        <para>In the Solution Explorer you will now have a DataSet called DemoDataSet.xsd. If you double click on
+this it opens the DataSet Designer. Select the column called s in the sparqlview table and in the Properties
+pane change the DataType from System.String to System.Object.</para>
+        <para>The data returned by a SPARQL query can either be an <link linkend="rdfiriidtype">IRI</link>
+
+   or a
+literal value. In order to distinguish between the two the Virtuoso ADO.Net provider defines an additional
+data type, SQLExtendedString. By setting the column type to System.Object we can cast the fetched data back
+to SQLExtendedString and find out if an individual value is an IRI or a literal and handle it appropriately.
+</para>
+        <para>
+          <emphasis>Step 4 - Create the on_click event handler for the cells in the DataGridView.</emphasis>
+        </para>
+        <para>Return to the <emphasis>Form Designer</emphasis>
+
+   and double click on the cell of the
+<emphasis>DataGridView</emphasis>
+
+  . This creates the <emphasis>dataGridView1_CellContentClick</emphasis>
+
+   method in Form1.cs. This is the method that handles clicking on IRI objects in the grid.
+</para>
+        <para>Paste in the following block of code into the body of the <emphasis>dataGridView1_CellContentClick</emphasis>
+
+   method.
+</para>
+        <programlisting>
+int column = e.ColumnIndex;
+ object o = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+ Type t = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ValueType;
+
+ if (o is SqlExtendedString)
+ {
+     SqlExtendedString se = (SqlExtendedString) o;
+     ExtendedStringHandler seHandler = new ExtendedStringHandler(se, this.sparqlviewTableAdapter.Connection);
+     seHandler.displayData();
+ }
+ else if (o is SqlRdfBox)
+ {
+     //doesn't do anything at the moment
+ }
+
+</programlisting>
+        <para>
+As we are using the SQLExtendedString extension from the Virtuoso ADO.Net provider you will also need to add
+</para>
+        <programlisting>
+using OpenLink.Data.Virtuoso;
+</programlisting>
+        <para>
+at the top of the file.
+</para>
+        <para>
+          <emphasis>Step 5 - Create a class to handle exploring the RDF data.</emphasis>
+        </para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>Add a new C# class to the project called ExtendedStringHandler, by Right clicking on
+RDFDemo in the </para>
+            <para>
+              <emphasis>Solution Explorer</emphasis>
+            </para>
+            <para> and </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> a
+</para>
+            <para>
+              <emphasis>Class</emphasis>
+            </para>
+            <para>.</para>
+          </listitem>
+          <listitem>
+            <para>Add the following using statements to the top of the file
+</para>
+            <programlisting>
+using OpenLink.Data.Virtuoso;
+using System.Data;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data.Mapping;
+using System.Data.Common;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Paste the following block of code into the class definition.
+</para>
+            <programlisting>
+StringBuilder DescribeCommand;
+VirtuosoConnection ParentConnection;
+List&lt;Label&gt; labelList = new List&lt;Label&gt;();
+List&lt;TextBox&gt; textBoxList = new List&lt;TextBox&gt;();
+DescribeDataSet describeDataSet = new DescribeDataSet();
+Boolean isIRI = false;
+
+public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnection)
+ {
+     ParentConnection = parentConnection;
+     if (iri.IriType == SqlExtendedStringType.IRI)
+     {
+         isIRI = true;
+         DescribeCommand = new StringBuilder("sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {&lt;" + iri.ToString() + "&gt; ?p ?o}");      // Replace demo.openlinksw.com with your  URIQA DefaultHost setting
+     }
+ }
+
+ public string describeCommandText
+ {
+     get
+     {
+         return DescribeCommand.ToString();
+     }
+ }
+
+ public void getDescribeData()
+ {
+      VirtuosoCommand myCommand = new VirtuosoCommand(this.describeCommandText, this.ParentConnection);
+     VirtuosoDataAdapter myAdapter = new VirtuosoDataAdapter();
+     myAdapter.SelectCommand = myCommand;
+     myAdapter.Fill(describeDataSet.DataTable1);
+ }
+
+ public void displayData()
+ {
+     if (isIRI)
+     {
+         getDescribeData();
+         Form describeForm = new Form();
+         describeForm.AutoScroll = true;
+         describeForm.Width = 840;
+
+         Label label1 = new Label();
+         label1.AutoSize = true;
+         label1.Font = new Font(label1.Font.FontFamily, label1.Font.Size + 3.0F, label1.Font.Style | FontStyle.Bold, label1.Font.Unit);
+         describeForm.Controls.Add(label1);
+
+         DataTable table1 = describeDataSet.Tables[0];
+         if (table1.Rows.Count == 0)
+             label1.Text = "No Details Available";
+         else
+         {
+             foreach (DataRow row in table1.Rows)
+                 if (row[0].ToString() == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+                 {
+                     StringBuilder title = new StringBuilder(row[1].ToString() + " details");
+                     label1.Text = title.ToString();
+                     break;
+                 }
+
+             foreach (DataRow row in table1.Rows)
+             {
+                 Label propertyLabel = new Label();
+                 TextBox valueBox = new TextBox();
+                 valueBox.Width = 400;
+
+                 object property = row[0];
+                 object value = row[1];
+
+                 if (value is SqlExtendedString)
+                 {
+                     valueBox.ForeColor = Color.Blue;
+                     valueBox.Font = new Font(valueBox.Font.FontFamily, valueBox.Font.Size, valueBox.Font.Style | FontStyle.Underline, valueBox.Font.Unit);
+                 }
+                 propertyLabel.Text = row[0].ToString();
+                 propertyLabel.AutoEllipsis = true;
+                 propertyLabel.AutoSize = false;
+                 propertyLabel.Width = propertyLabel.PreferredWidth &gt; 380 ? 380 : propertyLabel.PreferredWidth;
+
+                 Binding bind = new Binding("Text", row[1], "");
+                 valueBox.DataBindings.Add(bind);
+
+                 labelList.Add(propertyLabel);
+                 textBoxList.Add(valueBox);
+             }
+
+             for (int i = 0; i &lt; table1.Rows.Count; i++)
+             {
+                 textBoxList[i].Click += new EventHandler(this.iri_Click);
+                 labelList[i].Location = new Point(10, i * 20 + 50);
+                 textBoxList[i].Location = new Point(400, i * 20 + 50);
+                 describeForm.Controls.Add(labelList[i]);
+                 describeForm.Controls.Add(textBoxList[i]);
+             }
+
+             describeForm.Height = labelList.Count * 20 + 100 &gt; 500 ? 500 : labelList.Count * 20 + 100;
+         }
+         describeForm.ShowDialog();
+     }
+     else
+     {
+         Form blankForm = new Form();
+         Label label1 = new Label();
+         label1.Text = "Blank Node";
+         label1.Font = new Font(label1.Font.FontFamily, label1.Font.Size + 3.0F, label1.Font.Style | FontStyle.Bold, label1.Font.Unit);
+         blankForm.ShowDialog();
+     }
+ }
+
+ public void iri_Click(object sender, EventArgs e)
+ {
+     int boxNum = 0;
+
+     for (int i = 0; i &lt; textBoxList.Count; i++)
+     {
+         if (sender == textBoxList[i])
+         {
+             boxNum = i;
+             break;
+         }
+     }
+
+    Object o = describeDataSet.DataTable1.Rows[boxNum][1];
+     if (o is SqlExtendedString)
+     {
+         SqlExtendedString se = (SqlExtendedString)o;
+         ExtendedStringHandler seHandler = new ExtendedStringHandler(se, ParentConnection);
+         seHandler.displayData();
+     }
+     else if (o is SqlRdfBox)
+     {
+        //doesn't do anything at the moment
+    }
+ }
+</programlisting>
+          </listitem>
+        </itemizedlist>
+        <para>
+The ExtendedStringHandler class creates a new SPARQL query based on the IRI that was clicked. This
+query is executed against Virtuoso using the ADO.Net connection in the same way that any SQL statement
+would be executed across an ADO.Net connection. This can be considered as Client Side SPARQL. The result
+set from the query describes the selected object and is returned as an ADO.Net DataAdapter. The
+DataAdapter is used to fill a DataTable which is displayed on a new form. We now need to add the
+new DataSet to the project and define the DataTable that will hold the query results.
+</para>
+        <para>
+          <emphasis>Step 6 - Add a new DataSet to hold the query results.</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>Right click RDFDemo in the </para>
+            <para>
+              <emphasis>Solution Explorer</emphasis>
+            </para>
+            <para> and add a new
+</para>
+            <para>
+              <emphasis>DataSet</emphasis>
+            </para>
+            <para>. Call the new </para>
+            <para>
+              <emphasis>DataSet</emphasis>
+            </para>
+            <para> DescribeDataSet.
+    </para>
+            <figure xml:id="sparqlwinf5" floatstyle="1">
+              <title>Add a new DataSet</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sparqlwinf5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Double click on DescribeDataSet in the </para>
+            <para>
+              <emphasis>Solution Explorer</emphasis>
+            </para>
+            <para> to open the
+</para>
+            <para>
+              <emphasis>DataSet</emphasis>
+            </para>
+            <para> Designer and drag a </para>
+            <para>
+              <emphasis>DataTable</emphasis>
+            </para>
+            <para> from the
+</para>
+            <para>
+              <emphasis>Toolbox</emphasis>
+            </para>
+            <para> into it.</para>
+          </listitem>
+          <listitem>
+            <para>Add two columns, p and o, to the </para>
+            <para>
+              <emphasis>DataTable</emphasis>
+            </para>
+            <para> and set the
+</para>
+            <para>
+              <emphasis>DataType</emphasis>
+            </para>
+            <para> of each column to System.Object.
+
+</para>
+            <figure xml:id="sparqlwinf6" floatstyle="1">
+              <title>Add two columns
+</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/sparqlwinf6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>
+          <emphasis>Step 7 - Build and run the application.</emphasis>
+        </para>
+        <para>You should see a form displaying all the Northwind customers, like this.
+</para>
+        <figure xml:id="sparqlwinf7" floatstyle="1">
+          <title>Northwind customers</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/sparqlwinf7.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>When any customer is clicked it opens a new form showing customer details.
+</para>
+        <figure xml:id="sparqlwinf8" floatstyle="1">
+          <title>Customer details</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/sparqlwinf8.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>Clicking on the links in the new form allows you to drill down further to get
+order, product, location details etc.
+</para>
+        <figure xml:id="sparqlwinf9" floatstyle="1">
+          <title>Order, product, location details</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/sparqlwinf9.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>and</para>
+        <figure xml:id="sparqlwinf10" floatstyle="1">
+          <title>Order, product, location details</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="ui/sparqlwinf10.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>
+          <emphasis>Next Steps</emphasis>
+        </para>
+        <para>
+You will notice if you keep clicking on the links that this application will only display data that
+is held in the Northwind graph. Clicking on an external link, for example the link to Berlin in
+dbpedia, http://dbpedia.org/resource/Berlin, results in a empty window and an error message. The
+next step is to extend this application so that it can handle dereferencing external IRIs.
+</para>
+      </section>
+      <section xml:id="installwfasxtendcomlab">
+        <title>Extending RDFDemo to Allow Dereferencing of External IRIs</title>
+        <para>
+This section will guide you through extending the application created in
+<link linkend="installwfasgetstart">Creating a Windows Forms Application To Access RDF Data Using The
+Virtuoso ADO.Net Provider</link>
+
+   so that it will dereference external IRIs.
+</para>
+        <para>
+          <emphasis>Pre-requisites</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>A working copy of the RDFDemo application created in
+            <link linkend="installwfasgetstart">Creating a Windows Forms Application To
+Access RDF Data Using The Virtuoso ADO.Net Provider.</link></para>
+          </listitem>
+        </orderedlist>
+        <section xml:id="installwfasxtendcomlabextappl">
+          <title>Extending the Application</title>
+          <para>In RDFDemo when the sparql endpoint is queried to get the description of the selected item it executes
+a query that is restricted to the local Northwind dataset. The query is something like
+</para>
+          <programlisting>
+SPARQL
+PREFIX nwind: &lt;http://demo.openlinksw.com/schemas/northwind#&gt;
+SELECT DISTINCT  ?s
+FROM &lt;http://demo.openlinksw.com/Northwind&gt;
+WHERE {?s a nwind:Customer}
+</programlisting>
+          <para>If you examine the ExtendedStringHandler class you will see that the dataset clause, from
+&lt;http://example.com/Northwind&gt;, is hard coded. This means that when when the selected IRI is
+a link to an external data store, such as dbpedia, there is no matching data and an error is displayed.
+If the application is to be able to dereference external IRIs then the hard coded dataset clause needs
+to be removed and then we can use a Virtuoso extension to SPARQL, get:soft, that tells Virtuoso that it
+needs to go and look elsewhere for the graph. However, this will result in a loss of performance when
+exploring the local Northwind dataset. To minimize the impact on performance we will first query the
+local Northwind dataset and if there are no matching triples returned then we will use a more generic
+query that will look elsewhere for matching data.
+</para>
+          <para>
+            <emphasis>Step 1 - Add the alternative query to the ExtendedString Class.</emphasis>
+          </para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Open the RDFDemo project in Visual Studio </para>
+            </listitem>
+            <listitem>
+              <para>Open the ExtendedStringHandler class.</para>
+            </listitem>
+            <listitem>
+              <para>Remove DescribeCommand by removing the line
+</para>
+              <programlisting>
+StringBuilder DescribeCommand;
+</programlisting>
+              <para>
+and substitute the following:
+</para>
+              <programlisting>
+StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>In the ExtendedStringHandler constructor the sparql query that was DescribeCommand becomes
+DescribeCommandSimple and we define a new query for DescribeCommandGeneral.
+</para>
+              <programlisting>
+DescribeCommandSimple = new StringBuilder("sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {&lt;" + iri.ToString() + "&gt; ?p ?o}");       // Replace demo.openlinksw.com with your  URIQA DefaultHost setting
+DescribeCommandGeneral = new StringBuilder("sparql define get:soft " + '"'.ToString() + "soft" + '"'.ToString() + " select * from &lt;" + iri.ToString() + "&gt; where { &lt;" + iri.ToString() + "&gt; ?p ?o }");
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>The single describeCommand property needs to be replaced with the two new properties,
+DescribeCommandSimple and DescribeCommandGeneral
+</para>
+              <programlisting>
+public string describeCommandSimpleText
+{
+    get
+    {
+        return DescribeCommandSimple.ToString();
+    }
+}
+public string describeCommandGeneralText
+{
+    get
+    {
+        return DescribeCommandGeneral.ToString();
+    }
+}
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Finally, the getDescribeData method needs changing to:
+</para>
+              <programlisting>
+public void getDescribeData()
+{
+    VirtuosoCommand myCommand = new VirtuosoCommand(this.describeCommandSimpleText, this.ParentConnection);
+    VirtuosoDataAdapter myAdapter = new VirtuosoDataAdapter();
+    myAdapter.SelectCommand = myCommand;
+    myAdapter.Fill(describeDataSet.DataTable1);
+    // Tried the simple version if fails to get the data try
+    // to look elsewhere.
+    if (describeDataSet.DataTable1.Rows.Count == 0)
+    {
+        myCommand.CommandText = describeCommandGeneralText;
+        myAdapter.Fill(describeDataSet.DataTable1);
+    }
+}
+</programlisting>
+            </listitem>
+          </itemizedlist>
+          <para>
+            <emphasis>Step 2 - Build and Run the Application</emphasis>
+          </para>
+          <para>
+You will see the same starting form:
+</para>
+          <figure xml:id="sparqlwinf11" floatstyle="1">
+            <title>Build and Run the Application</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/sparqlwinf11.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>
+Select a Customer and then select the link to the City in dbpedia. This will now open up another window
+displaying information about the city from dbpedia. Be patient as it may take a little while to open.
+</para>
+          <figure xml:id="sparqlwinf12" floatstyle="1">
+            <title>Customer</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/sparqlwinf12.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>
+            <emphasis>Step 3 - Changing the Form Title</emphasis>
+          </para>
+          <para>
+Notice that in displayData method that we look for a
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type and create a title for the form from it.
+</para>
+          <programlisting>
+foreach (DataRow row in table1.Rows)
+  if (row[0].ToString() == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+  {
+      StringBuilder title = new StringBuilder(row[1].ToString() + " details");
+      label1.Text = title.ToString();
+      break;
+  }
+</programlisting>
+          <para>
+This worked well for the Northwind subjects but less well now we are getting data from other graphs.
+To change the title of the forms used to display the data:
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Add an new member variable to hold the IRI that we exploring to the bock of member variables
+</para>
+              <programlisting>
+StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+VirtuosoConnection ParentConnection;
+List&lt;Label&gt; labelList = new List&lt;Label&gt;();
+List&lt;TextBox&gt; textBoxList = new List&lt;TextBox&gt;();
+DescribeDataSet describeDataSet = new DescribeDataSet();
+Boolean isIRI = false;
+SqlExtendedString ParentIRI;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Assign a value to ParentIRI in the constructor:
+</para>
+              <programlisting>
+public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnection)
+  {
+      ParentConnection = parentConnection;
+      if (iri.IriType == SqlExtendedStringType.IRI)
+      {
+          ParentIRI = iri;
+          isIRI = true;
+          DescribeCommandSimple = new StringBuilder("sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {&lt;" + iri.ToString() + "&gt; ?p ?o}");      // Replace demo.openlinksw.com with your  URIQA DefaultHost setting
+          DescribeCommandGeneral = new StringBuilder("sparql define get:soft " + '"'.ToString() + "soft" + '"'.ToString() + " select * from &lt;" + iri.ToString() + "&gt; where { &lt;" + iri.ToString() + "&gt; ?p ?o }");
+      }
+  }
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Remove the existing foreach block that sets the form title and replace with the following lines:
+</para>
+              <programlisting>
+StringBuilder title = new StringBuilder(ParentIRI.ToString() + " details");
+label1.Text = title.ToString();
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Build and run the application.
+    </para>
+              <figure xml:id="sparqlwinf13" floatstyle="1">
+                <title>Build and run the application</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf13.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </itemizedlist>
+          <para>
+            <emphasis>Next Steps</emphasis>
+          </para>
+          <para>The application now allows you to explore data and follow links from your locally held data into the
+external web of data. Looking at the data displayed in the form it would be nice to make the labels for
+the properties more compact. The label http://dbpedia.org/property/population is a very precise definition
+but for our purposes it would be clearer to label the property just population. In the next step will be
+to modify the application so that it displays more readable labels.
+</para>
+        </section>
+      </section>
+      <section xml:id="installwfasxtendcomplab">
+        <title>Extending RDFDemo to Display More Compact Labels</title>
+        <para>
+This section will guide you through extending the application created in
+<link linkend="installwfasxtendcomlab">Extending RDFDemo to Allow Dereferencing of External IRIs</link>
+
+   so that the data is displayed in a more readable form.
+</para>
+        <para>
+          <emphasis>Pre-requisites</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>A working copy of the RDFDemo application created in
+            <link linkend="installwfasxtendcomlab">Extending RDFDemo to Allow Dereferencing of External IRIs</link>
+</para>
+          </listitem>
+        </orderedlist>
+        <section xml:id="installwfasxtendcomplabextapp">
+          <title>Extending the Application</title>
+          <para>The RDF demo application presents the user with a list of Customers from the Northwind database in
+the form of dereferenceable IRIs. When a customer is selected from the list the application uses a sparql
+query to describe that customer and the results are displayed in a form as rows of labels and data. The
+labels correspond to RDF predicates and the data corresponds to RDF objects while the subject is the
+customer initially selected. In many cases the objects are dereferencable IRIs which are then used as
+the subject when the 'drilling down' into the data. However, the predicates are also IRIs so it is
+possible to gain more information about these as well.
+</para>
+          <para>The RDF Schema defines a property http://www.w3.org/2000/01/rdf-schema#label that may be used to
+provide a human-readable version of a resource's name. We can obtain further details of each of the
+predicates in a resultset and check to see if one of the properties is an
+http://www.w3.org/2000/01/rdf-schema#label. If it is we can use the associated text as the label in
+our form instead of the the predicate IRI. The benefit should be a more human readable form.
+</para>
+          <para>
+            <emphasis>Step 1 - Add a New Method to Get the Label Text</emphasis>
+          </para>
+          <para>This method takes the predicate IRI and issues a sparql query to get its description. It then
+cycles through the returned dataset to find a http://www.w3.org/2000/01/rdf-schema#label. If there is
+one then the associated text is returned by the method. Otherwise the method returns the IRI string.
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Add the following method to the ExtendedStringHandlerClass
+</para>
+              <programlisting>
+private string getLabelText(Object label)
+  {
+      string labelText = label.ToString();
+      if (label is SqlExtendedString)
+      {
+          SqlExtendedString se = (SqlExtendedString)label;
+          StringBuilder getLabelCommandText = new StringBuilder("sparql define get:soft \"soft\" select * from &lt;" + se.ToString() + "&gt; where {&lt;" + se.ToString() + "&gt; ?p ?o}");
+          VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+          VirtuosoDataAdapter getLabelAdapter = new VirtuosoDataAdapter();
+          getLabelAdapter.SelectCommand = getLabelCommand;
+          DataSet getLabelDataSet = new DataSet();
+          try
+          {
+              getLabelAdapter.Fill(getLabelDataSet);
+              foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+              {
+                  if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                  {
+                      labelText = getLabelRow[1].ToString();
+                      break;
+                  }
+              }
+          }
+          catch
+          {
+          }
+      }
+      return labelText;
+  }
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Change the line in displayData from
+</para>
+              <programlisting>
+propertyLabel.Text = row[0].ToString();
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>to
+</para>
+              <programlisting>
+propertyLabel.Text = getLabelText(row[0]);
+</programlisting>
+            </listitem>
+          </itemizedlist>
+          <para>
+            <emphasis>Step 1 - Add a New Method to Get the Label Text</emphasis>
+          </para>
+          <para>When you run the application you will see that the initial form is the same. In fact, when you
+select the Customer you will also see that the customer details are also the same. It is only when you
+start exploring data outside the Northwind graph that you will see the labels in the form change.
+</para>
+          <figure xml:id="sparqlwinf14" floatstyle="1">
+            <title>Northwind graph</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/sparqlwinf14.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>
+            <emphasis>Next Steps</emphasis>
+          </para>
+          <para>It is clear from running the application that the Northwind ontology does not define an
+http://www.w3.org/2000/01/rdf-schema#label for its members. In order to benefit from this modified
+version of RDFDemo we need to update our Northwind ontology so that
+http://www.w3.org/2000/01/rdf-schema#label is defined for each resource. The next step will be to modify
+our Northwind ontology.
+</para>
+        </section>
+      </section>
+      <section xml:id="installwfasmodify">
+        <title>Modifying the Northwind Ontology to Add Labels</title>
+        <para>This section will guide you through modifying the Northwind Ontology created when you installed
+the <link xlink:href="http://download.openlinksw.com/packages/5.0/virtuoso/demo_dav.vad">demo database VAD package</link>
+
+   so that each resources is identified by an
+http://www.w3.org/2000/01/rdf-schema#label. This will improve the readability of the information displayed by
+the application created in <link linkend="installwfasxtendcomplab">Extending RDFDemo to Display More Compact Labels</link>
+
+  .
+</para>
+        <para>
+          <emphasis>Pre-requisites</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>A working copy of the RDFDemo application created in 
+            <link linkend="installwfasxtendcomplab">Extending RDFDemo to
+            Display More Compact Labels</link>
+            </para>
+          </listitem>
+        </orderedlist>
+        <section xml:id="installwfasmodifyeditont">
+          <title>Editing the Ontology</title>
+          <para>
+            <emphasis>Get a Working Copy of the Northwind Ontology</emphasis>
+          </para>
+          <para>The the file describing the Northwind Ontology, nw.owl, is installed in the DAV when the demo vad
+is loaded. To get a working copy open the Virtuoso Conductor and log in as dba. Select WebDAV Browser in
+the navigation panel on the left. This will open a window that allows you to browse the WebDAV Repository.
+The Northwind Ontology file can be found in DAV/VAD/demo/sql. Take a copy of the file.
+</para>
+          <para>
+            <emphasis>Editing nw.owl</emphasis>
+          </para>
+          <para>In the first instance is edited nw.owl so that the property name consistently begin with a lower
+case letter. This matches the results for describing resources held in the Northwind database. Also are
+added missing properties so that there should be a label in all cases.
+</para>
+          <para>
+            <emphasis>Registering the Changes in Virtuoso</emphasis>
+          </para>
+          <para>There are two methods for registering the changes in Virtuoso:
+</para>
+          <orderedlist>
+            <listitem>
+              <para>Method I:
+    </para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>Copy the edited version of nw.owl back into the DAV.</para>
+                </listitem>
+                <listitem>
+                  <para>In isql, load the script load_ontology_dav.sql and execute it. The new version of
+nw.owl will then be used</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>Ensure that your new version of nw.owl is in a folder accessible by Virtuoso. You may
+need to edit your virtuoso.ini file and restart the server.</para>
+                </listitem>
+                <listitem>
+                  <para>In isql, load the script load_ontology_file.sql and edit it so that it has the full
+path to the new version of nw.owl</para>
+                </listitem>
+                <listitem>
+                  <para>Run the script. The new version of nw.owl will then be used.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </orderedlist>
+          <para>Modify RDFDemo so that it looks for the graph used to describe the Northwind data and
+searches that graph for the predicate details:</para>
+          <orderedlist>
+            <listitem>
+              <para>Add a new member variable to the ExtendedStringHandler class to hold the graphs that
+we need to search for the predicate information.
+</para>
+              <programlisting>
+StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+VirtuosoConnection ParentConnection;
+List&lt;Label&gt; labelList = new List&lt;Label&gt;();
+List&lt;TextBox&gt; textBoxList = new List&lt;TextBox&gt;();
+List&lt;String&gt; graphList = new List&lt;String&gt;();
+DescribeDataSet describeDataSet = new DescribeDataSet();
+Boolean isIRI = false;
+SqlExtendedString ParentIRI;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>In displayData, after we have set the title of the form, add the following block of code:
+</para>
+              <programlisting>
+// Later we will want to get property labels and for that
+ // we will need the graph where the resource is defined.
+foreach (DataRow row in table1.Rows)
+     if (row[0].ToString() == "http://www.openarchives.org/ore/terms/isDescribedBy"
+    &amp;&amp; row[1].ToString() != ParentIRI.ToString())
+     {
+         String graph = row[1].ToString();
+         graphList.Add(graph);
+     }
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Replace the existing getLabelText method with an extended version
+</para>
+              <programlisting>
+ private string getLabelText(Object label)
+  {
+      string labelText = label.ToString();
+      if (label is SqlExtendedString)
+      {
+          Boolean foundLabel = false;
+          SqlExtendedString se = (SqlExtendedString)label;
+          VirtuosoDataAdapter getLabelAdapter = new VirtuosoDataAdapter();
+          DataSet getLabelDataSet = new DataSet();
+
+          //Try finding it in resources graph first
+          foreach (String graph in graphList)
+          {
+              StringBuilder getLabelCommandText = new StringBuilder("sparql select * from &lt;" + graph + "&gt; where {&lt;" + se.ToString() + "&gt; ?p ?o}");
+              VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+              getLabelAdapter.SelectCommand = getLabelCommand;
+
+              try
+              {
+                  getLabelAdapter.Fill(getLabelDataSet);
+                  foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                  {
+                      if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                      {
+                          labelText = getLabelRow[1].ToString();
+                          foundLabel = true;
+                          break;
+                      }
+                  }
+              }
+              catch
+              {
+              }
+              if (foundLabel)
+                  break;
+          }
+          // If we still have no label try the predicate itself as the graph
+          if (!foundLabel)
+          {
+              StringBuilder getLabelCommandText = new StringBuilder("sparql define get:soft \"soft\" select * from &lt;" + se.ToString() + "&gt; where {&lt;" + se.ToString() + "&gt; ?p ?o}");
+              VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+              getLabelAdapter.SelectCommand = getLabelCommand;
+              try
+              {
+                  getLabelAdapter.Fill(getLabelDataSet);
+                  foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                  {
+                      if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                      {
+                          labelText = getLabelRow[1].ToString();
+                          break;
+                      }
+                  }
+              }
+              catch
+              {
+              }
+          }
+      }
+      return labelText;
+  }
+</programlisting>
+              <para>This extended method first checks the graphs in the graph list for the predicate information then
+if no label has been found tries the predicate itself as the graph.
+</para>
+            </listitem>
+            <listitem>
+              <para>Build and run, the Northwind resources should now be correctly and concisely labeled
+    </para>
+              <figure xml:id="sparqlwinf15" floatstyle="1">
+                <title>Northwind resources</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf15.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para> 
+  </para>
+          <para>
+            <emphasis>Improving The Appearance of the Form</emphasis>
+          </para>
+          <para>The following changes are not strictly necessary but improve the appearance of the form:
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Line up the right hand edge of the labels with the text boxes by setting TextAlign to
+MiddleRight and reduce the width of the labels.
+</para>
+              <programlisting>
+propertyLabel.Text = getLabelText(row[0]);
+propertyLabel.AutoEllipsis = true;
+propertyLabel.AutoSize = false;
+propertyLabel.Width = 130;
+propertyLabel.TextAlign = ContentAlignment.MiddleRight;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Make the form narrower:
+</para>
+              <programlisting>
+describeForm.Width = 660;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Alter the positioning of the labels and TextBoxes on the form:
+</para>
+              <programlisting>
+textBoxList[i].Click += new EventHandler(this.iri_Click);
+labelList[i].Location = new Point(10, i * 22 + 50);
+textBoxList[i].Location = new Point(150, i * 22 + 50);
+describeForm.Controls.Add(labelList[i]);
+describeForm.Controls.Add(textBoxList[i]);
+</programlisting>
+              <figure xml:id="sparqlwinf16" floatstyle="1">
+                <title>Alter the positioning</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf16.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </itemizedlist>
+          <para>
+            <emphasis>Next Steps</emphasis>
+          </para>
+          <para>The image below shows some of the information about an employee in the Northwind dataset.
+</para>
+          <figure xml:id="sparqlwinf17" floatstyle="1">
+            <title>employee</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="ui/sparqlwinf17.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>In the next step we will extend the application so the images and web pages can be viewed
+and long text fields are displayed in full.
+</para>
+        </section>
+      </section>
+      <section xml:id="installwfasxtendlongtext">
+        <title>Extending RDFDemo to Display Images and Longer Text Fields.</title>
+        <para>This section will guide you through extending RDFDemo so that longer text fields can be displayed
+as a block of text and so that links to images and web pages can be viewed in a browser window.
+</para>
+        <para>
+          <emphasis>Pre-requisites</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>A working copy of the RDFDemo application created in
+            <link linkend="installwfasmodify">Modifying the Northwind
+            Ontology to Add Labels</link>
+            </para>
+          </listitem>
+        </orderedlist>
+        <section xml:id="installwfasxtendlongtextmodf">
+          <title>Modifying the Application</title>
+          <para>
+            <emphasis>Displaying Text</emphasis>
+          </para>
+          <para>We will modify the form that show the details of the selected item so that when the text in the boxes
+is too long to be seen in full a button will appear beside the box on the form and if you click the button
+the complete text will be displayed in a separate window.
+</para>
+          <orderedlist>
+            <listitem>
+              <para>Add a new class, MoreButton that extends System.Windows.Forms.Button.
+</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>In the </para>
+                  <para>
+                    <emphasis>Solution Explorer</emphasis>
+                  </para>
+                  <para> right click on the RDFDemo project and select
+</para>
+                  <para>
+                    <emphasis>Add</emphasis>
+                  </para>
+                  <para> then </para>
+                  <para>
+                    <emphasis>New Item</emphasis>
+                  </para>
+                  <para>.</para>
+                </listitem>
+                <listitem>
+                  <para>Add a new class called MoreButton.cs.
+    </para>
+                  <figure xml:id="sparqlwinf18" floatstyle="1">
+                    <title>Add a new class</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/sparqlwinf18.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+                <listitem>
+                  <para>The following using statement goes at the top of the file:
+</para>
+                  <programlisting>
+using System.Windows.Forms;
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>The MoreButton class must inherit from System.Windows.Forms.Button
+so the class definition line should look like this:
+</para>
+                  <programlisting>
+class MoreButton : Button
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Add the following code to the body of the MoreButton class:
+</para>
+                  <programlisting>
+ String longText;
+
+ public MoreButton(String text)
+ {
+     longText = text;
+     this.Text = "More";
+ }
+
+ protected override void  OnClick(EventArgs e)
+ {
+     Form moreForm = new Form();
+     TextBox moreBox = new TextBox();
+     moreBox.Text = longText;
+     moreBox.Width = 300;
+     moreBox.Height = 250;
+     moreBox.ScrollBars = ScrollBars.Vertical;
+     moreBox.Multiline = true;
+     moreBox.WordWrap = true;
+     moreBox.Select(0, 0);
+     moreBox.ReadOnly = true;
+     moreForm.Controls.Add(moreBox);
+     moreForm.Width = 320;
+     moreForm.Height = 280;
+     moreForm.ShowDialog();
+ }
+</programlisting>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>In displayData in the ExtendedStringHandler class, when the labels and TextBoxes are added to
+the form check if the text is too big for the box. If it is then add a MoreButton that will display all
+the text in a separate window.
+</para>
+              <programlisting>
+if (textBoxList[i].DataBindings[0].DataSource.ToString().Length &gt; 80
+    &amp;&amp; !(textBoxList[i].DataBindings[0].DataSource is SqlExtendedString))
+{
+    moreButtonList.Add(new MoreButton(textBoxList[i].DataBindings[0].DataSource.ToString()));
+    moreButtonList[moreButtonList.Count - 1].Location = new Point(550, i * 22 + 50);
+    describeForm.Controls.Add(moreButtonList[moreButtonList.Count -1]);
+}
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>We will also need a list to hold the buttons as they are created so the following needs to
+be added to the member variables at the top of the ExtendedStringHandler class.
+</para>
+              <programlisting>
+List&lt;MoreButton&gt; moreButtonList = new List&lt;MoreButton&gt;();
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Build and run the application. If you click through to an Employee page you will see the
+Notes field now has a button labeled More next to it. If you click on that button the text from the Notes
+field is displayed in a new window.
+    </para>
+              <figure xml:id="sparqlwinf19" floatstyle="1">
+                <title>Notes</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf19.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>
+            <emphasis>Displaying Images and Web Pages</emphasis>
+          </para>
+          <para>Next we will modify the form so that item identified as images or web pages will be opened in a
+browser window. Again we will do this by adding a button beside the box on the form that will open the
+browser window.
+</para>
+          <orderedlist>
+            <listitem>
+              <para>Add a new class, OpenButton that extends System.Windows.Forms.Button.
+</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>In the </para>
+                  <para>
+                    <emphasis>Solution Explorer</emphasis>
+                  </para>
+                  <para> right click on the RDFDemo project and select
+</para>
+                  <para>
+                    <emphasis>Add</emphasis>
+                  </para>
+                  <para> then </para>
+                  <para>
+                    <emphasis>New Item</emphasis>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>Add a new class called OpenButton.cs.
+</para>
+                </listitem>
+                <listitem>
+                  <para>The following using statement goes at the top of the file:
+</para>
+                  <programlisting>
+using System.Windows.Forms;
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>The OpenButton class must inherit from System.Windows.Forms.Button so the class
+definition line should look like this:
+</para>
+                  <programlisting>
+class OpenButton : Button
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>Add the following code to the body of the OpenButton class:
+</para>
+                  <programlisting>
+String urlText;
+
+public OpenButton(String text)
+{
+    urlText = text;
+    this.Text = "Open";
+}
+
+protected override void  OnClick(EventArgs e)
+{
+    System.Diagnostics.Process.Start(urlText);
+}
+</programlisting>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>In displayData in the ExtendedStringHandler class, where we added the code to check for long
+text fields we now need to check for IRIs that identify images and web pages. As a simple first attempt
+we will check for matching labels. So for example, if a property label is 'image' or 'webpage', we will
+assume it can be opened in a browser window and put an OpenButton beside it.
+</para>
+              <programlisting>
+if (labelList[i].Text == "website"
+    || labelList[i].Text == "image"
+    || labelList[i].Text == "depiction"
+    || labelList[i].Text == "page"
+    || labelList[i].Text == "url"
+    || labelList[i].Text == "image skyline")
+{
+    openButtonList.Add(new OpenButton(textBoxList[i].DataBindings[0].DataSource.ToString()));
+    openButtonList[openButtonList.Count - 1].Location = new Point (550, i * 22 + 50);
+    describeForm.Controls.Add(openButtonList[openButtonList.Count - 1]);
+}
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>We will also need a list to hold the buttons as they are created so the following needs to
+be added to the member variables at the top of the ExtendedStringHandler class.
+</para>
+              <programlisting>
+List&lt;OpenButton&gt; openButtonList = new List&lt;OpenButton&gt;();
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Build and run the application. If you click through to an Employee page now you will see that
+the Image field now has a button labeled Open next to it. If you click on that button the image is opened
+in your default browser.
+    </para>
+              <figure xml:id="sparqlwinf20" floatstyle="1">
+                <title>Image</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf20.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>
+            <emphasis>Next Steps</emphasis>
+          </para>
+          <para>It has already been mentioned that the property labels are also dereferenceable IRIs. We used this
+feature to find a short name to display rather that the complete IRI. The next step is to make the labels
+clickable so the ontology itself can also be explored.
+</para>
+        </section>
+      </section>
+      <section xml:id="installwfasxtendproplab">
+        <title>Extending RDFDemo To Make The Property Labels Clickable</title>
+        <para>This section will guide you through extending RDFDemo to make the property labels clickable. Clicking
+on the property label will take you to a page describing that property.
+</para>
+        <para>
+          <emphasis>Pre-requisites</emphasis>
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>A working copy of the RDFDemo application created in
+            <link linkend="installwfasxtendlongtext">Extending RDFDemo to Display Images and Longer Text Fields</link>
+</para>
+          </listitem>
+        </orderedlist>
+        <section xml:id="installwfasxtendproplabmod">
+          <title>Modifying the Application</title>
+          <para>
+            <emphasis>Making the Labels Clickable</emphasis>
+          </para>
+          <para>Making the property labels clickable is fairly straight forward. We will use basically the same code
+as is used to make the values clickable.
+</para>
+          <orderedlist>
+            <listitem>
+              <para>First we need to add a new event handler. In the ExtendedStringHandler class modify displayData
+to add an event handler for each of the property labels.
+</para>
+              <programlisting>
+for (int i = 0; i &lt; table1.Rows.Count; i++)
+{
+    textBoxList[i].Click += new EventHandler(this.iri_Click);
+    labelList[i].Location = new Point(10, i * 22 + 50);
+    textBoxList[i].Location = new Point(150, i * 22 + 50);
+    describeForm.Controls.Add(labelList[i]);
+    describeForm.Controls.Add(textBoxList[i]);
+</programlisting>
+              <para>becomes
+</para>
+              <programlisting>
+for (int i = 0; i &lt; table1.Rows.Count; i++)
+{
+    textBoxList[i].Click += new EventHandler(this.iri_Click);
+    labelList[i].Location = new Point(10, i * 22 + 50);
+    labelList[i].Click += new EventHandler(this.label_Click);
+    textBoxList[i].Location = new Point(150, i * 22 + 50);
+    describeForm.Controls.Add(labelList[i]);
+    describeForm.Controls.Add(textBoxList[i]);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Then we need to add the EventHandler method. Add the following to the ExtendedStringHandler Class:
+</para>
+              <programlisting>
+public void label_Click(object sender, EventArgs e)
+  {
+      int labelNum = 0;
+
+      for (int i = 0; i &lt; labelList.Count; i++)
+      {
+          if (sender == labelList[i])
+          {
+              labelNum = i;
+              break;
+          }
+      }
+
+      Object o = describeDataSet.DataTable1.Rows[labelNum][0];
+      if (o is SqlExtendedString)
+      {
+          SqlExtendedString se = (SqlExtendedString)o;
+          ExtendedStringHandler seHandler = new ExtendedStringHandler(se, ParentConnection);
+          seHandler.displayData();
+      }
+      else if (o is SqlRdfBox)
+      {
+          //doesn't do anything at the moment
+      }
+  }
+</programlisting>
+              <para>
+If you compare this method to the EventHandler for the values, iri_Click, you will see that it is basically
+the same. The only difference is that it uses the property element from the data table rather than value.
+</para>
+            </listitem>
+            <listitem>
+              <para>Finally, to make it clear that the labels are now active links, we will change the label colour
+to blue and underline them.
+</para>
+              <programlisting>
+ propertyLabel.Text = getLabelText(row[0]);
+ propertyLabel.AutoEllipsis = true;
+ propertyLabel.AutoSize = false;
+ propertyLabel.Width = 130;
+ propertyLabel.TextAlign = ContentAlignment.MiddleRight;
+</programlisting>
+              <para>becomes:
+</para>
+              <programlisting>
+propertyLabel.Text = getLabelText(row[0]);
+propertyLabel.ForeColor = Color.Blue;
+propertyLabel.Font = new Font(propertyLabel.Font.FontFamily, propertyLabel.Font.Size, propertyLabel.Font.Style | FontStyle.Underline, propertyLabel.Font.Unit);
+propertyLabel.AutoEllipsis = true;
+propertyLabel.AutoSize = false;
+propertyLabel.Width = 130;
+propertyLabel.TextAlign = ContentAlignment.MiddleRight;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Build and run the application. You will see the familiar starting page. If you then select one
+of the Customers you will notice the property labels now look like hyperlinks.
+    </para>
+              <figure xml:id="sparqlwinf21" floatstyle="1">
+                <title>hyperlinks</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf21.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+              <para>If you click on one of the label hyperlinks you will see a new form showing detailed information about
+the property which can itself be explored further by clicking on labels and values.
+    <figure xml:id="sparqlwinf22" floatstyle="1"><title>labels and values</title><mediaobject><imageobject><imagedata fileref="ui/sparqlwinf22.png"/></imageobject></mediaobject></figure>
+
+</para>
+            </listitem>
+          </orderedlist>
+          <para>These simple changes work up to a point but are not robust. If you explore the properties used by the
+local Northwind graph you quickly find that the property details are not found. The application needs some
+further changes to work consistently. The problem is finding the graph where the property information is
+defined. The general handler for Extended Strings first checks the local Northwind graph,
+http://example.com/Northwind, where the Northwind data is held, and then uses the IRI itself as the graph
+and tries to load that dynamically. This is not working for information about the Northwind properties.
+These properties are defined in the Northwind ontology, http://demo.openlinksw.com/schemas/northwind. We
+have already had to find this graph when getting the short label name. We need to be able to associate the
+property label with the graph where its definition is stored. Then we can search this graph for details
+about the property when the label is clicked.
+</para>
+          <para>
+            <emphasis>Using the Graph Where the Property Label was Found to Find the Property Details</emphasis>
+          </para>
+          <orderedlist>
+            <listitem>
+              <para>Create a new class, IRILabel, that inherits from System.Windows.Forms.Label.
+</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>In the </para>
+                  <para>
+                    <emphasis>Solution Explorer</emphasis>
+                  </para>
+                  <para> right click on the RDFDemo project and select
+</para>
+                  <para>
+                    <emphasis>Add</emphasis>
+                  </para>
+                  <para> then </para>
+                  <para>
+                    <emphasis>New Item</emphasis>
+                  </para>
+                  <para>.</para>
+                </listitem>
+                <listitem>
+                  <para>Add a new class called IRILabel.cs.
+    </para>
+                  <figure xml:id="sparqlwinf23" floatstyle="1">
+                    <title>Add a new class</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="ui/sparqlwinf23.png"/>
+                      </imageobject>
+                    </mediaobject>
+                  </figure>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>We need to reference System.Windows.Forms, System.Data and OpenLink.Data.Virtuoso so add
+</para>
+              <programlisting>
+using System.Windows.Forms;
+using OpenLink.Data.Virtuoso;
+using System.Data;
+</programlisting>
+              <para>to the using block at the top of the class file. The class definition should look like this:
+</para>
+              <programlisting>
+class IRILabel : Label
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Paste the following code into the body of the class:
+</para>
+              <programlisting>
+SqlExtendedString SourceIRI;
+String GraphUsed;
+VirtuosoConnection ParentConnection;
+
+public IRILabel(Object iri, List&lt;String&gt; graphList, VirtuosoConnection parentConnection)
+{
+    ParentConnection = parentConnection;
+    if (iri is SqlExtendedString)
+    {
+        SourceIRI = (SqlExtendedString)iri;
+        Text = this.getLabelText(graphList);
+    }
+    else
+        Text = iri.ToString();
+}
+
+public SqlExtendedString iri
+{
+    get
+    {
+        return SourceIRI;
+    }
+}
+
+public String graph
+{
+    get
+    {
+        return GraphUsed;
+    }
+}
+
+private string getLabelText(List&lt;String&gt; graphList)
+{
+    string labelText = SourceIRI.ToString();
+    Boolean foundLabel = false;
+    VirtuosoDataAdapter getLabelAdapter = new VirtuosoDataAdapter();
+    DataSet getLabelDataSet = new DataSet();
+
+    //Try finding it in resources graph first
+    foreach (String graph in graphList)
+    {
+        StringBuilder getLabelCommandText = new StringBuilder("sparql select * from &lt;" + graph + "&gt; where {&lt;" + SourceIRI.ToString() + "&gt; ?p ?o}");
+        VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+        getLabelAdapter.SelectCommand = getLabelCommand;
+
+        try
+        {
+            getLabelAdapter.Fill(getLabelDataSet);
+            foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+            {
+                if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                {
+                    labelText = getLabelRow[1].ToString();
+                    foundLabel = true;
+                    break;
+                }
+            }
+        }
+        catch
+        {
+        }
+        if (foundLabel)
+        {
+            GraphUsed = graph;
+            break;
+        }
+    }
+
+    // If we still have no label try the predicate itself as the graph
+    if (!foundLabel)
+    {
+        GraphUsed = SourceIRI.ToString();
+        StringBuilder getLabelCommandText = new StringBuilder("sparql define get:soft \"soft\" select * from &lt;" + GraphUsed + "&gt; where {&lt;" + SourceIRI.ToString() + "&gt; ?p ?o}");
+        VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+        getLabelAdapter.SelectCommand = getLabelCommand;
+        try
+        {
+            getLabelAdapter.Fill(getLabelDataSet);
+            foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+            {
+                if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                {
+                    labelText = getLabelRow[1].ToString();
+                    break;
+                }
+            }
+        }
+        catch
+        {
+        }
+    }
+    return labelText;
+}
+</programlisting>
+              <para>Notice that the getLabelText method has been moved into this new class and is now called from the
+constructor. When the IRILabel is constructed the label text is found using the list of graphs provided to
+the constructor. The graph containing the label is noted. We need to alter ExtendedStringHandler so that
+the labels are the new IRILabel type and so that the correct information is supplied to the constructor.
+</para>
+            </listitem>
+            <listitem>
+              <para>Change the labelList member variable declaration so it looks like this:
+</para>
+              <programlisting>
+List&lt;IRILabel&gt; labelList = new List&lt;IRILabel&gt;();
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Each propertyLabel created must be the new IRILabel type so the line:
+</para>
+              <programlisting>
+Label propertyLabel = new Label();
+</programlisting>
+              <para>becomes:
+</para>
+              <programlisting>
+IRILabel propertyLabel = new IRILabel(row[0], graphList, ParentConnection);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>As getLabelText is now called by the IRILabel constructor we can remove the line:
+</para>
+              <programlisting>
+propertyLabel.Text = getLabelText(row[0]);
+</programlisting>
+              <para>from describeData in ExtendedStringHandler.
+</para>
+            </listitem>
+            <listitem>
+              <para>Now we modify the label_Click EventHandler so that it uses the graph information. Replace the
+existing method with:
+</para>
+              <programlisting>
+public void label_Click(object sender, EventArgs e)
+  {
+      int labelNum = 0;
+
+      for (int i = 0; i &lt; labelList.Count; i++)
+      {
+          if (sender == labelList[i])
+          {
+              labelNum = i;
+              break;
+          }
+      }
+
+      SqlExtendedString se = labelList[labelNum].iri;
+      ExtendedStringHandler seHandler = new ExtendedStringHandler(se, ParentConnection, labelList[labelNum].graph);
+          seHandler.displayData();
+
+  }
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Note that this method uses a new constructor for the ExtendedStringHandler that takes the graph
+as an additional argument. We need to add this new constructor.
+</para>
+              <programlisting>
+public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnection, String graph)
+  {
+      ParentConnection = parentConnection;
+      if (iri.IriType == SqlExtendedStringType.IRI)
+      {
+          ParentIRI = iri;
+          isIRI = true;
+          DescribeCommandSimple = new StringBuilder("sparql select * from &lt;http://example.com/Northwind&gt; where {&lt;" + iri.ToString() + "&gt; ?p ?o}");
+          DescribeCommandGeneral = new StringBuilder("sparql define get:soft " + '"'.ToString() + "soft" + '"'.ToString() + " select * from &lt;" + graph + "&gt; where { &lt;" + iri.ToString() + "&gt; ?p ?o }");
+      }
+  }
+</programlisting>
+              <para>This new constructor uses the supplied graph to build the alternative sparql select statement that
+looks for the details about the supplied IRI. With these changes in place the application will find the
+description of the Northwind properties.
+</para>
+            </listitem>
+            <listitem>
+              <para>Build and run. As you explore the data you will see that you can find descriptions of the
+properties used to describe the entities in the Northwind dataset:
+    </para>
+              <figure xml:id="sparqlwinf24" floatstyle="1">
+                <title>Northwind dataset</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/sparqlwinf24.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+    </section>

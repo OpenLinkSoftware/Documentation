@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_ttlp_mt_local_file">
+      <refmeta>
+        <refentrytitle>DB.DBA.TTLP_MT_LOCAL_FILE
+</refentrytitle>
+        <refmiscinfo>rdf
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>DB.DBA.TTLP_MT_LOCAL_FILE
+</refname>
+        <refpurpose>parses TTL (TURTLE or N3 resource) and places its triples into DB.DBA.RDF_QUAD on multiple threads.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_ttlp_mt_local_file">
+          <funcprototype xml:id="fproto_ttlp_mt_local_file">
+            <funcdef>
+              <function>DB.DBA.TTLP_MT_LOCAL_FILE
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>path
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>base
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>graph
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>flags
+</parameter>
+
+   integer
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>log_mode
+</parameter>
+
+   integer
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>threads
+</parameter>
+
+   integer
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_ttlp_mt_local_file">
+        <title>Description
+</title>
+        <para>Loads the TTL (TURTLE or N3 resource) file on multiple threads, using parallel I/O and multiprocessing if available. The function commit partial transactions while it runs so the transaction log may contain part of loading. Moreover, the function may or may not leave a transaction log, depending on 
+<parameter>log_mode
+</parameter>
+
+  . Hence, after successful load, one may need to execute the checkpoint statement to make sure that a server restart does not wipe out the results.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_ttlp_mt_local_file">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>path
+</title>
+          <para>path to the file in the local filesystem
+</para>
+        </refsect2>
+        <refsect2>
+          <title>base
+</title>
+          <para>base IRI to resolve relative IRIs to absolute
+</para>
+        </refsect2>
+        <refsect2>
+          <title>graph
+</title>
+          <para>target graph IRI, parsed triples will appear in that graph.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>flags
+</title>
+          <para>bitmask of parsing flags. Permits some sorts of syntax errors in resource.
+Default is 0, meaning no permitted deviations from the spec. Other supported bits are:</para>
+          <programlisting>
+  1 - Single quoted and double quoted strings may with newlines.
+  2 - Allows bnode predicates (but SPARQL processor may ignore them!).
+  4 - Allows variables, but triples with variables are ignored.
+  8 - Allows literal subjects, but triples with them are ignored.
+ 16 - Allows '/', '#', '%' and '+' in local part of QName ("Qname with path")
+ 32 - Allows invalid symbols between '&amp;lt;' and '&amp;gt;', i.e. in relative IRIs.
+ 64 - Relax TURTLE syntax to include popular violations.
+128 - Try to recover from lexical errors as much as it is possible.
+256 - Allows Trig syntax, thus loading data in more than one graph.
+512 - Allows loading N-quad dataset files with and optional context value to indicate provenance as detailed
+&lt;ulink url="http://sw.deri.org/2008/07/n-quads/"&gt;here&lt;/ulink&gt;.
+</programlisting>
+        </refsect2>
+        <refsect2>
+          <title>log_mode
+</title>
+          <para>detail level of writing the effect of loading to the transaction log. 0 means log nothing, 1 means log only allocations of internal IDs for new IRIs and literals, 2 means log everything. If database crashes when the loading is in progress or after the loading but before checkpoint is made, 0 will means that the database become inconsistent, 1 means that the database is consistent but loaded quads may disappear so the loading should be repeated and log replay may produce wrong results if actions in it depend on the content of quad store, 2 means no danger (so the default is 2). Hence loading with mode 1 and especially mode 0 are faster than usual mode 2 but they require checkpoints after data loadings and mode 0 additionally requires a checkpoint and database backup right before the loading.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>threads
+</title>
+          <para>number of threads that insert quads into the database. It should not be less than 1, obviously; it is better to not set it greater than 
+<emphasis>((N-2)/k)-1
+</emphasis>
+
+   where 
+<emphasis>N
+</emphasis>
+
+   is the number of available CPU cores and 
+<emphasis>k
+</emphasis>
+
+   is the number of loadings that happen at the same time.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_ttlp_mt_local_file">
+        <title>Return Types
+</title>
+        <para>The return value is not specified and may be changed in future versions.
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_ttlp_mt_local_file">
+        <title>Examples
+</title>
+        <example xml:id="ex_ttlp_mt_local_file">
+          <title> 
+  </title>
+          <para>
+            <emphasis>Sample Example 1
+</emphasis>
+          </para>
+          <screen>
+SQL&gt;DB.DBA.TTLP_MT_LOCAL_FILE ('tmp/users.ttl', '', 'http://example.com');
+
+Done. -- 381 msec.
+SQL&gt;sparql
+select *
+from &lt;http://example.com&gt;
+where {?s ?p ?o}
+limit 10;
+s             p                   o
+VARCHAR       VARCHAR             VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-GranteeId-format          http://www.w3.org/1999/02/22-rdf-syntax-ns#type            http://www.openlinksw.com/schemas/virtrdf#QuadMapFormat
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-GranteeId-format          http://www.openlinksw.com/schemas/virtrdf#qmfSuperFormats  nodeID://1000272018
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-GranteeId-format          http://www.openlinksw.com/schemas/virtrdf#inheritFrom      http://www.openlinksw.com/virtrdf-data-formats#sql-integer-uri-fn
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-GranteeId-format          http://www.openlinksw.com/schemas/virtrdf#noInherit        http://www.openlinksw.com/schemas/virtrdf#qmfCustomString1
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-GranteeId-format          http://www.openlinksw.com/schemas/virtrdf#qmfCustomString1 DB.DBA.RDF_DF_GRANTEE_ID_URI
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-UserId-format             http://www.w3.org/1999/02/22-rdf-syntax-ns#type            http://www.openlinksw.com/schemas/virtrdf#QuadMapFormat
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-UserId-format             http://www.openlinksw.com/schemas/virtrdf#qmfSuperFormats  nodeID://1000272019
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-UserId-format             http://www.openlinksw.com/schemas/virtrdf#inheritFrom      http://www.openlinksw.com/virtrdf-data-formats#sql-integer-uri
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-UserId-format             http://www.openlinksw.com/schemas/virtrdf#noInherit        http://www.openlinksw.com/schemas/virtrdf#qmfCustomString1
+http://www.openlinksw.com/virtrdf-data-formats#SysUsers-UserId-format             http://www.openlinksw.com/schemas/virtrdf#qmfCustomString1 http://example.com/sys/user?id=%d
+
+10 Rows. -- 30 msec.
+
+</screen>
+          <para>
+            <emphasis>Sample Example 2</emphasis>
+          </para>
+          <screen>
+SQL&gt;create procedure SPARQL_DAWG_LOAD_REMOTE_DATFILE (in full_uri varchar, in in_resultset integer := 0)
+{
+  declare REPORT varchar;
+  declare graph_uri, dattext varchar;
+  declare app_env any;
+  app_env := null;
+  whenever sqlstate '*' goto err_rep;
+  if (not in_resultset)
+    result_names (REPORT);
+  dattext := cast (XML_URI_GET_AND_CACHE (full_uri) as varchar);
+  SPARQL_REPORT (sprintf ('Downloading %s: %d bytes',
+      full_uri, length (dattext) ) );
+  graph_uri := full_uri;
+  delete from RDF_QUAD where G = DB.DBA.RDF_MAKE_IID_OF_QNAME (graph_uri);
+  if ((full_uri like '%.ttl') or (full_uri like '%.nt') or (full_uri like '%.n3'))
+    DB.DBA.TTLP_MT_LOCAL_FILE (dattext, full_uri, graph_uri);
+  else -- if (rel_path like '%.rdf')
+    DB.DBA.RDF_LOAD_RDFXML_MT (dattext, full_uri, graph_uri);
+  return graph_uri;
+err_rep:
+  result (sprintf ('%s: %s', __SQL_STATE, __SQL_MESSAGE));
+  return graph_uri;
+}
+;
+Done. -- 891 msec
+SQL&gt; select SPARQL_DAWG_LOAD_REMOTE_DATFILE('http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl');
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+Downloading http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl: 12768 bytes
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl
+
+2 Rows. -- 1382 msec.
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_ttlp_mt_local_file">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_rdf_audit_metadata">
+            <function>DB.DBA.RDF_AUDIT_METADATA()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_backup_metadata">
+            <function>DB.DBA.RDF_BACKUP_METADATA()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_load_rdfxml">
+            <function>DB.DBA.RDF_LOAD_RDFXML()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_rdf_load_rdfxml_mt">
+            <function>DB.DBA.RDF_LOAD_RDFXML_MT()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_ttlp">
+            <function>DB.DBA.TTLP()
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_ttlp_mt">
+            <function>DB.DBA.TTLP_MT()
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

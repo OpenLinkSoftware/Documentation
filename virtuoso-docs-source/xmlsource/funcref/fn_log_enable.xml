@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_log_enable">
+  <refmeta>
+    <refentrytitle>log_enable
+    </refentrytitle>
+    <refmiscinfo>admin
+    </refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>log_enable
+    </refname>
+    <refpurpose>controls transaction logging and in-statement autocommit
+    </refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <funcsynopsis xml:id="fsyn_log_enable">
+      <funcprototype xml:id="fproto_log_enable">
+        <funcdef>
+          <function>log_enable
+          </function>
+        </funcdef>
+        <paramdef choice="opt">in 
+        <parameter>bits
+        </parameter>
+        integer
+        </paramdef>
+        <paramdef choice="opt">in 
+        <parameter>quiet
+        </parameter>
+        integer
+        </paramdef>
+      </funcprototype>
+    </funcsynopsis>
+  </refsynopsisdiv>
+  <refsect1 xml:id="desc_log_enable">
+    <title>Description
+    </title>
+    <para>The <function>log_enable</function> function allows enabling or disabling
+    regular transaction logging or autocommit after every changed row.
+    The parameter <parameter>bits</parameter> is a bitmask.
+    </para>
+    <refsect2>
+      <title>Bit1
+      </title>
+      <para>Bit1 controls whether the transactions are written to the transaction
+      log file (virtuoso.trx) or not. 
+      </para>
+      <para>
+        If this bit is 0, then the transaction within this session are not
+        logged, meaning if the database is not properly shutdown or
+        checkpointed, the database will revert to the state of the last
+        checkpoint and all updates are lost.
+      </para>
+      <para>
+        If this bit is 1 then all committed transactions within this
+        session are written to the .trx file. If the server is not shutdown
+        properly, the transaction log will be replayed on the next startup
+        thus ensuring the modifications to the database for all committed
+        transactions.
+      </para>
+    </refsect2>
+    <refsect2>
+      <title>Bit2
+      </title>
+      <para>Bit2 controls manual or autocommit mode.
+      </para>
+      <para>
+        If this bit is 0 then the session is in manual commit mode and the
+        user needs to manually send COMMIT statements to update the
+        database with the changes made since the previous COMMIT, or
+        ROLLBACK to discard any changes this session made since the last
+        COMMIT.
+      </para>
+      <para>
+        If the bit is 1 then the session is in autocommit mode and all
+        updates to the database are immediately committed and written back.
+      </para>
+      <table>
+        <title>Significance of bits in bitmask</title>
+        <tgroup cols="4">
+          <thead>
+            <row>
+              <entry>log_enable</entry>
+              <entry>bit2</entry>
+              <entry>bit1</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>1</entry>
+              <entry>0</entry>
+              <entry>1</entry>
+              <entry>Manual commit mode, write transaction to log</entry>
+            </row>
+            <row>
+              <entry>2</entry>
+              <entry>1</entry>
+              <entry>0</entry>
+              <entry>Autocommit mode, do not write transactions to log</entry>
+            </row>
+            <row>
+              <entry>3</entry>
+              <entry>1</entry>
+              <entry>1</entry>
+              <entry>Autocommit mode, write transactions to log</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <tip>
+        <title>Performance</title>
+        <para>
+          Note: the fastest way to bulk load data into virtuoso is to use
+          log_enable option 2, which is what is normally used by the
+          rdf_loader_run bulkloader. However, this bypasses the normal ACID
+          workflow of the Virtuoso engine; if the database is not properly
+          checkpointed or shutdown after the data loading has finished, all
+          modifications within that session to the database will be lost.
+        </para>
+      </tip>
+      <tip>
+        <title>Replication</title>
+        <para>
+          For replication to work, bit1 should be set to 1 to allow the
+          virtuoso engine to write the transactions to the trx file as well
+          as the replication log. This means that either log_enable mode 1
+          or 3 should be used depending on whether the application takes
+          are of the commits itself, or relies on the autocommit mechanism.
+        </para>
+        <para>
+          When using the bulkloader in combination with replication, the
+          log_enable flag in the rdf_loader_run should be called like this:
+        </para>
+        <programlisting>rdf_loader_run(log_enable =&gt; 3);</programlisting>
+      </tip>
+    </refsect2>
+  </refsect1>
+  <refsect1 xml:id="seealso_log_enable">
+    <title>See Also
+    </title>
+    <para>
+      <link linkend="fn_log_text">
+        <function>log_text
+        </function>
+      </link>
+    </para>
+  </refsect1>
+</refentry>

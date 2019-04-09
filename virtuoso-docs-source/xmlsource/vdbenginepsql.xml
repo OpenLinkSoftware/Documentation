@@ -1,0 +1,1055 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="vdbenginepsql">
+      <info>
+        <title>Using Microsoft Entity Frameworks to Access PostgreSQL Schema Objects with Virtuoso</title>
+        <abstract>
+          <para>This document details the steps required to provide Microsoft Entity Framework access to
+PostgreSQL Schema Objects using the OpenLink Virtuoso Universal Server. This is achieved by linking the
+required PostgreSQL Schema objects into Virtuoso using its built in Virtual Database engine, and then
+using the Virtuoso ADO.NET Entity Framework provider to query the remote PostgreSQL Schema objects
+linked into the Virtuoso Server.
+      </para>
+        </abstract>
+      </info>
+      <formalpara>
+        <title>Prerequisites</title>
+        <para>The following prerequisites must be in place for this solution to be possible.</para>
+      </formalpara>
+      <formalpara>
+        <title>PostgreSQL DBMS</title>
+        <para>An PostgreSQL DBMS hosting the required Schema Objects needs to be available. In this section
+the <emphasis>PostgreSQL</emphasis>
+
+   sample database will be used to demonstrate the process.</para>
+      </formalpara>
+      <para>An PostgreSQL DBMS hosting the required Schema Objects needs to be available. In this section
+the <emphasis>PostgreSQL</emphasis>
+
+   sample database will be used to demonstrate the process.</para>
+      <formalpara>
+        <title>ODBC Driver for PostgreSQL</title>
+        <para>An PostgreSQL ODBC Driver is required for Linking the PostgreSQL Schema Objects into the Virtuoso Server. The OpenLink
+<emphasis>ODBC Driver for PostgreSQL</emphasis>
+
+   will be used in this section, for which a functional ODBC Data
+source name of "ora10ma" will be assumed to exist on the machine hosting the Virtuoso Server.</para>
+      </formalpara>
+      <para>An PostgreSQL ODBC Driver is required for Linking the PostgreSQL Schema Objects into the Virtuoso Server. The OpenLink
+<emphasis>ODBC Driver for PostgreSQL</emphasis>
+
+   will be used in this section, for which a functional ODBC Data
+source name of "ora10ma" will be assumed to exist on the machine hosting the Virtuoso Server.</para>
+      <formalpara>
+        <title>Virtuoso Universal Server</title>
+        <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      </formalpara>
+      <para>An Virtuoso installation including the Virtuoso Universal Server and ADO.NET Entity
+Framework Provider is required. The Virtuoso components used must be Release 5.10.x or above, this
+being the minimum version containing support for Microsoft Entity Frameworks</para>
+      <formalpara>
+        <title>Microsoft Visual Studio 2008 SP1</title>
+        <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      </formalpara>
+      <para>Microsoft Visual Studio 2008 Service Pack 1 is required, this being the only version
+containing the necessary Entity Framework support available at the time of writing.</para>
+      <bridgehead>Tasks</bridgehead>
+      <formalpara>
+        <title>Ensure PostgreSQL Primary Keys (PKs) are not nullable</title>
+        <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables
+to be used are defined as not nullable in the PostgreSQL database schema before attempting to generate an EDM.
+In the case of the PostgreSQL database all tables are not nullable, thus this should not be
+an issue in this case.
+    </para>
+      </formalpara>
+      <para>The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are
+<emphasis>NOT</emphasis>
+
+   Nullable, and will fail to generate an EDM if any are. Thus ensure any tables
+to be used are defined as not nullable in the PostgreSQL database schema before attempting to generate an EDM.
+In the case of the PostgreSQL database all tables are not nullable, thus this should not be
+an issue in this case.
+    </para>
+      <section xml:id="vdbenginepsqlinst">
+        <title>Install and configure OpenLink ODBC Driver for PostgreSQL</title>
+        <para>The Virtuoso Virtual Database engine uses ODBC as the connectivity mechanism for linking
+remote database objects into its local schema. Thus an PostgreSQL ODBC Driver must be available with a
+suitably configured DSN for connecting to the target database. The OpenLink ODBC Drivers for PostgreSQL
+have been used in this section, although in theory any PostgreSQL ODBC Driver can be used.</para>
+        <para>Installation instructions for the OpenLink ODBC Driver for PostgreSQL are available from:</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link xlink:href="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC">Product
+Installation &amp; Basic Configuration (ODBC)</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="vdbenginepsqlconfvsr">
+        <title>Install and configure OpenLink Virtuoso Universal Server</title>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <link linkend="virtclientrefinstallandconfigvirt">Install and configure OpenLink Virtuoso Universal Server</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="vdbenginepsqllink">
+        <title>Linking PostgreSQL tables into OpenLink Virtuoso</title>
+        <orderedlist>
+          <listitem>
+            <para>Start the Virtuoso Web User Interface
+    </para>
+            <figure xml:id="pslora1" floatstyle="1">
+              <title>Start</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Conductor" link in the Left Frame and Login as the "dba" user.
+    </para>
+            <figure xml:id="pslora2" floatstyle="1">
+              <title>Conductor</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Databases" -&gt; "External Data Source" -&gt; "Data Sources" tab menu items
+    </para>
+            <figure xml:id="pslora3" floatstyle="1">
+              <title>Databases</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Connect" button for the "pg7ma" PostgreSQL DSN.
+    </para>
+            <figure xml:id="pslora4" floatstyle="1">
+              <title>Connect</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On successful connection Select the "Link Objects" button to obtain a list of available tables
+    </para>
+            <figure xml:id="pslora5" floatstyle="1">
+              <title>Link Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select all the tables that you would like to link.
+    </para>
+            <figure xml:id="pslora6" floatstyle="1">
+              <title>Select all tables</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Change the Catalog for each table to be "Northwind" using the "Set All" button.
+    </para>
+            <figure xml:id="pslora7" floatstyle="1">
+              <title>Catalog</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>All the catalog names are changed to be "Northwind".
+    </para>
+            <figure xml:id="pslora8" floatstyle="1">
+              <title>Catalog</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the "Link" button to link the selected tables into Virtuoso
+    </para>
+            <figure xml:id="pslora9" floatstyle="1">
+              <title>"Link" button</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/lora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>On completion of the Link process the tables will be displayed in the "External Linked Objects" tab.
+    </para>
+            <figure xml:id="pslora10" floatstyle="1">
+              <title>Completion</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The linked tables can be queried by clicking on the hyperlink in the "Local Name" column of the
+"External Linked Objects" tab above, which loads the Virtuoso "Interactive SQL" interface with the required
+SQL "Select" for retrieving the remote table data . We shall use the "Northwind.pg7ma.Customers" table to
+demonstrate this.
+    </para>
+            <figure xml:id="pslora11" floatstyle="1">
+              <title>Querying</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Then click the "Execute" button to run the query and retrieve the results from the remote table.
+    </para>
+            <figure xml:id="pslora12" floatstyle="1">
+              <title>Execute</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The tables can also be viewed as part of the Virtuoso "SQL Schema Objects" under the "Northwind" catalog name.
+    </para>
+            <figure xml:id="pslora13" floatstyle="1">
+              <title>SQL Schema Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pslora13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <para>The Link process is now complete enabling the tables to be queried as if part of the Virtuoso Schema.</para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="vdbenginepsqlcrvs">
+        <title>Creating EDM in Visual Studio 2008</title>
+        <para>The following steps can be used to create an Entity Data Model (EDM) for the PostgreSQL Northwind database:</para>
+        <orderedlist>
+          <listitem>
+            <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+            <figure xml:id="pseora1" floatstyle="1">
+              <title>Visual Studio 2008 SP1 IDE</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Create a </para>
+            <para>
+              <emphasis>Web Application</emphasis>
+            </para>
+            <para> project by going to the </para>
+            <para>
+              <emphasis>File</emphasis>
+            </para>
+            <para>
+menu in Visual Studio and choosing </para>
+            <para>
+              <emphasis>New Project</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="epro2_14" floatstyle="1">
+              <title>Web Application</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/epro2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>When the New Project window appears, choose either </para>
+            <para>
+              <emphasis>Visual Basic</emphasis>
+            </para>
+            <para> or
+</para>
+            <para>
+              <emphasis>Visual C#</emphasis>
+            </para>
+            <para> as your programming language.</para>
+          </listitem>
+          <listitem>
+            <para>Within the language category, click on </para>
+            <para>
+              <emphasis>Web</emphasis>
+            </para>
+            <para>, and select
+</para>
+            <para>
+              <emphasis>ASP.NET Web Application</emphasis>
+            </para>
+            <para> from the right-hand panel. </para>
+          </listitem>
+          <listitem>
+            <para>Choose a name for the project, for example </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>, and
+click </para>
+            <para>
+              <emphasis>OK</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="pseora2" floatstyle="1">
+              <title>name for the project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>This will create a new project called </para>
+            <para>
+              <emphasis>VirtuosoDataService</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="pseora3" floatstyle="1">
+              <title>create a new project</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the Project -&gt; Add New Item menu option.
+    </para>
+            <figure xml:id="pseora4" floatstyle="1">
+              <title>VirtuosoDataService</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/einf4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Add New Item</emphasis>
+            </para>
+            <para> dialog will appear. Choose the
+</para>
+            <para>
+              <emphasis>ADO.NET Entity Data Model</emphasis>
+            </para>
+            <para> template. Give it the name </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para>
+and click </para>
+            <para>
+              <emphasis>Add</emphasis>
+            </para>
+            <para> to start the creation of the ADO.Net Entity Data Model.
+    </para>
+            <figure xml:id="pseora5" floatstyle="1">
+              <title>Add New Item</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose Model Contents</emphasis>
+            </para>
+            <para> page select the </para>
+            <para>
+              <emphasis>Generate from Database</emphasis>
+            </para>
+            <para>
+model type and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="pseora6" floatstyle="1">
+              <title>Choose Model Contents</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/eora6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Entity Data Model Wizard</emphasis>
+            </para>
+            <para> dialog
+</para>
+            <para>
+              <emphasis>Choose your Data Connection</emphasis>
+            </para>
+            <para> page, select the </para>
+            <para>
+              <emphasis>New Connection button</emphasis>
+            </para>
+            <figure xml:id="pseora7" floatstyle="1">
+              <title>Entity Data Model Wizard</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose Data Source</emphasis>
+            </para>
+            <para> dialog, select the OpenLink
+</para>
+            <para>
+              <emphasis>Virtuoso Data Source</emphasis>
+            </para>
+            <para> from the list and click </para>
+            <para>
+              <emphasis>Continue</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="pseora8" floatstyle="1">
+              <title>Choose Data Source</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Add Connection</emphasis>
+            </para>
+            <para> dialog, specify the
+</para>
+            <para>
+              <emphasis>hostname, portno, username and password</emphasis>
+            </para>
+            <para> for the target Virtuoso Server and check the Save Password check box.
+    </para>
+            <figure xml:id="psdora10" floatstyle="1">
+              <title>Connection Properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select the </para>
+            <para>
+              <emphasis>Select Database From List</emphasis>
+            </para>
+            <para> radio button and choose the
+</para>
+            <para>
+              <emphasis>Northwind</emphasis>
+            </para>
+            <para> database from the drop down list.
+    </para>
+            <figure xml:id="pseora10" floatstyle="1">
+              <title>Add connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pseora10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Press the </para>
+            <para>
+              <emphasis>Test Connection</emphasis>
+            </para>
+            <para> dialog to verify that the database is accessible.
+    </para>
+            <figure xml:id="pseora11" floatstyle="1">
+              <title>Test Connection</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/dora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Set the </para>
+            <para>
+              <emphasis>entity connect string</emphasis>
+            </para>
+            <para> name to
+</para>
+            <para>
+              <emphasis>VirtuosoEntities</emphasis>
+            </para>
+            <para> (note this name as it is required in the section on creating and
+ADO.Net Data Service) and click </para>
+            <para>
+              <emphasis>Next</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="pseora12" floatstyle="1">
+              <title>entity connect string</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pseora12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the </para>
+            <para>
+              <emphasis>Choose your Database Objects</emphasis>
+            </para>
+            <para> page select the
+</para>
+            <para>
+              <emphasis>Tables</emphasis>
+            </para>
+            <para> check box to select all tables in the Northwind catalog for addition to the
+Entity Data Model. Set the </para>
+            <para>
+              <emphasis>Model Namespace</emphasis>
+            </para>
+            <para> to </para>
+            <para>
+              <emphasis>VirtuosoModel</emphasis>
+            </para>
+            <para> and
+click </para>
+            <para>
+              <emphasis>Finish</emphasis>
+            </para>
+            <para>.
+    </para>
+            <figure xml:id="pseora13" floatstyle="1">
+              <title>Database Objects</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pseora13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The </para>
+            <para>
+              <emphasis>Virtuoso.edmx</emphasis>
+            </para>
+            <para> EDM will be created with the tables and relationships
+displayed in the Visual Studio IDE
+    </para>
+            <figure xml:id="pseora14" floatstyle="1">
+              <title>Virtuoso.edmx</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/pseora14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+        <para>Creation for the Entity Data Model for the PostgreSQL Northwind database is now complete.</para>
+      </section>
+      <section xml:id="vdbenginepsqluedm">
+        <title>Using EDM to create Entity Framework based applications</title>
+        <para>Now that a Microsoft Entity Data Model has been created for the PostgreSQL database,
+Entity Framework applications can be created to make use of it.</para>
+        <section xml:id="vdbenginepsqluedmvmw">
+          <title>Visual Studio Windows DataGrid Form Application</title>
+          <para>This section details the steps required to create a simple Visual Studio 2008 Windows Form
+application, with associated DataGridView control for displaying data in selected tables from the target
+database.</para>
+          <orderedlist>
+            <listitem>
+              <para>Launch the Visual Studio 2008 SP1 IDE.
+    </para>
+              <figure xml:id="psdora1" floatstyle="1">
+                <title>Visual Studio 2008 SP1 IDE</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora1.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Create a </para>
+              <para>
+                <emphasis>Web Application</emphasis>
+              </para>
+              <para> project by going to the </para>
+              <para>
+                <emphasis>File</emphasis>
+              </para>
+              <para>
+menu in Visual Studio and choosing </para>
+              <para>
+                <emphasis>New Project</emphasis>
+              </para>
+              <para>.
+
+</para>
+              <figure xml:id="epro2_15" floatstyle="1">
+                <title>Web Application
+</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/epro2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>When the New Project window appears, choose either </para>
+              <para>
+                <emphasis>Visual Basic</emphasis>
+              </para>
+              <para> or
+</para>
+              <para>
+                <emphasis>Visual C#</emphasis>
+              </para>
+              <para> as your programming language.</para>
+            </listitem>
+            <listitem>
+              <para>Within the language category, click on </para>
+              <para>
+                <emphasis>Windows</emphasis>
+              </para>
+              <para> and select
+</para>
+              <para>
+                <emphasis>Windows Form Application</emphasis>
+              </para>
+              <para> from the right-hand panel.</para>
+            </listitem>
+            <listitem>
+              <para>Choose a name for the project, for example </para>
+              <para>
+                <emphasis>VirtWindowsFormApplication</emphasis>
+              </para>
+              <para>,
+and click </para>
+              <para>
+                <emphasis>OK</emphasis>
+              </para>
+              <para>.
+  </para>
+              <figure xml:id="psdora2" floatstyle="1">
+                <title>Web Application</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora2.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Toolbox</emphasis>
+              </para>
+              <para>, expand </para>
+              <para>
+                <emphasis>Data Controls</emphasis>
+              </para>
+              <para>, and drag the
+</para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control onto the form.
+    </para>
+              <figure xml:id="psdora3" floatstyle="1">
+                <title>Toolbox</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora3.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the little </para>
+              <para>
+                <emphasis>arrow</emphasis>
+              </para>
+              <para> in the top right of the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+This loads the </para>
+              <para>
+                <emphasis>DataGridView Task</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="psdora4" floatstyle="1">
+                <title>DataGridView Task</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora4.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> list box.
+    </para>
+              <figure xml:id="psdora5" floatstyle="1">
+                <title>Choose Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora5.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Click on the </para>
+              <para>
+                <emphasis>Add Project Data Source</emphasis>
+              </para>
+              <para> link to connect to a data source.
+    </para>
+              <figure xml:id="psdora6" floatstyle="1">
+                <title>Add Project Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora6.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose Data Source Type</emphasis>
+              </para>
+              <para> page select the </para>
+              <para>
+                <emphasis>Database</emphasis>
+              </para>
+              <para> data source type and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="psdora7" floatstyle="1">
+                <title>Data Source Type</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora7.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Data Source Configuration Wizard</emphasis>
+              </para>
+              <para> dialog
+</para>
+              <para>
+                <emphasis>Choose your Data Connection</emphasis>
+              </para>
+              <para> page, select the </para>
+              <para>
+                <emphasis>New Connection</emphasis>
+              </para>
+              <para> button
+    </para>
+              <figure xml:id="psdora8" floatstyle="1">
+                <title>Data Source Configuration Wizard</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora8.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Choose Data Source</emphasis>
+              </para>
+              <para> dialog, select the OpenLink
+</para>
+              <para>
+                <emphasis>Virtuoso Data Source</emphasis>
+              </para>
+              <para> from the list and click </para>
+              <para>
+                <emphasis>Continue</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="psdora9" floatstyle="1">
+                <title>Data Source</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora9.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>In the </para>
+              <para>
+                <emphasis>Add Connection</emphasis>
+              </para>
+              <para> dialog, specify the
+</para>
+              <para>
+                <emphasis>hostname, portno, username and password</emphasis>
+              </para>
+              <para> for the target Virtuoso Server and check the Save Password check box.
+    </para>
+              <figure xml:id="psdora10_01" floatstyle="1">
+                <title>Connection Properties</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora10.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Select the </para>
+              <para>
+                <emphasis>Select Database From List</emphasis>
+              </para>
+              <para> radio button and choose the
+</para>
+              <para>
+                <emphasis>Northwind</emphasis>
+              </para>
+              <para> database from the drop down list.
+    </para>
+              <figure xml:id="psdora11" floatstyle="1">
+                <title>Add connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/psdora11.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Press the </para>
+              <para>
+                <emphasis>Test Connection</emphasis>
+              </para>
+              <para> dialog to verify that the database is accessible.
+    </para>
+              <figure xml:id="psdora12" floatstyle="1">
+                <title>Test Connection</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora12.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Leave the default connect string </para>
+              <para>
+                <emphasis>NorthwindConnectionString</emphasis>
+              </para>
+              <para> and click </para>
+              <para>
+                <emphasis>Next</emphasis>
+              </para>
+              <figure xml:id="psdora13" floatstyle="1">
+                <title>NorthwindConnectionString</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/psdora13.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>From the list of available tables returned for the Northwind database, select the </para>
+              <para>
+                <emphasis>Shippers</emphasis>
+              </para>
+              <para>
+table to be associated with the </para>
+              <para>
+                <emphasis>DataGridView</emphasis>
+              </para>
+              <para> control.
+    </para>
+              <figure xml:id="psdora14" floatstyle="1">
+                <title>Northwind database</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/psdora14.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The columns names of the select table will be displayed in the DataGridView.
+    </para>
+              <figure xml:id="psdora15" floatstyle="1">
+                <title>DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/psdora15.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>Resize the Form and DataGridView to allow all columns to be visible, if possible.
+    </para>
+              <figure xml:id="psdora16" floatstyle="1">
+                <title>Resize the Form and DataGridView</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/psdora16.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>To test the application, simply hit </para>
+              <para>
+                <emphasis>Ctrl+F5</emphasis>
+              </para>
+              <para> within Visual Studio or
+select </para>
+              <para>
+                <emphasis>Start Debugging</emphasis>
+              </para>
+              <para> from the </para>
+              <para>
+                <emphasis>Debug</emphasis>
+              </para>
+              <para> menu.
+    </para>
+              <figure xml:id="psdora17" floatstyle="1">
+                <title>Start Debugging</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/dora17.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+            <listitem>
+              <para>The data from the </para>
+              <para>
+                <emphasis>Shippers</emphasis>
+              </para>
+              <para> table will be displayed in the </para>
+              <para>
+                <emphasis>DataGrid</emphasis>
+              </para>
+              <para>.
+    </para>
+              <figure xml:id="psdora18" floatstyle="1">
+                <title>DataGrid</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="ui/psdora18.png"/>
+                  </imageobject>
+                </mediaobject>
+              </figure>
+            </listitem>
+          </orderedlist>
+          <para>The task is now complete.</para>
+        </section>
+      </section>
+    </section>

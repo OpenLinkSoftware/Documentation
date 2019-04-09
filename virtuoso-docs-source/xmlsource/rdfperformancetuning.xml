@@ -1,0 +1,2909 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfperformancetuning">
+      <title>RDF Performance Tuning</title>
+      <para>For RDF query performance, we have the following possible questions:</para>
+      <itemizedlist mark="bullet" spacing="compact">
+        <listitem>
+          <para>Is the Virtuoso process properly configured to handle big data sets?</para>
+        </listitem>
+        <listitem>
+          <para>Is the graph always specified?</para>
+        </listitem>
+        <listitem>
+          <para>Are public web service endpoints protected against bad queries?</para>
+        </listitem>
+        <listitem>
+          <para>Are there patterns where only a predicate is given?</para>
+        </listitem>
+        <listitem>
+          <para>Is there a bad query plan because of cost model error?</para>
+        </listitem>
+      </itemizedlist>
+      <section xml:id="rdfperfgeneral">
+        <title>General</title>
+        <para>When running with large data sets, one should configure the Virtuoso process to use between 2/3
+		to 3/5 of system RAM and to stripe storage on all available disks.
+		See <link linkend="virtini">NumberOfBuffers</link>
+
+  ,
+		<link linkend="virtini">MaxDirtyBuffers</link>
+
+  , and
+		<link linkend="virtini">Striping</link>
+
+   INI file parameters.
+		  </para>
+        <programlisting>
+; default installation
+NumberOfBuffers          = 2000
+MaxDirtyBuffers          = 1200
+</programlisting>
+        <para>Typical sizes for the <link linkend="virtini">NumberOfBuffers</link>
+
+   and
+      <link linkend="virtini">MaxDirtyBuffers</link>
+
+   (3/4 of NumberOfBuffers) parameters in the Virtuoso
+      configuration file (virtuoso.ini) for various memory sizes are as follows, with each buffer
+      consisting of 8K bytes:
+      </para>
+        <table>
+          <title>recommended NumberOfBUffers and MaxDirtyBuffers</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>System RAM</entry>
+                <entry>NumberOfBuffers</entry>
+                <entry>MaxDirtyBuffers</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>2 GB</entry>
+                <entry>170000</entry>
+                <entry>130000</entry>
+              </row>
+              <row>
+                <entry>4 GB</entry>
+                <entry>340000</entry>
+                <entry>250000</entry>
+              </row>
+              <row>
+                <entry>8 GB</entry>
+                <entry>680000</entry>
+                <entry>500000</entry>
+              </row>
+              <row>
+                <entry>16 GB</entry>
+                <entry>1360000</entry>
+                <entry>1000000</entry>
+              </row>
+              <row>
+                <entry>32 GB</entry>
+                <entry>2720000</entry>
+                <entry>2000000</entry>
+              </row>
+              <row>
+                <entry>48 GB</entry>
+                <entry>4000000</entry>
+                <entry>3000000</entry>
+              </row>
+              <row>
+                <entry>64 GB</entry>
+                <entry>5450000</entry>
+                <entry>4000000</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>Also, if running with a large database, setting <link linkend="virtini">MaxCheckpointRemap</link>
+
+   to
+      1/4th of the database size is recommended. This is in pages, 8K per page.</para>
+      </section>
+      <section xml:id="rdfperfrdfscheme">
+        <title>RDF Index Scheme</title>
+        <para>
+        Starting with version 6.00.3126, the default RDF index scheme consists of 2 full indices over RDF quads
+        plus 3 partial indices. This index scheme is generally adapted to all kinds of workloads, regardless of
+        whether queries generally specify a graph. As indicated the default index scheme in Virtuoso is almost
+        always applicable as is, whether one has a RDF database with very large numbers of small graphs or just
+        one or a few large graphs. With Virtuoso 7 the indices are column-wise by default, which results in them
+        to consuming usually about 1/3 of the space the equivalent row-wise structures would consume.
+      </para>
+        <para>
+        Alternate indexing schemes are possible but will not be generally needed. For upgrading old databases with
+        a different index scheme see the corresponding documentation.
+      </para>
+        <para>
+        The index scheme consists of the following indices:
+      </para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>
+              <emphasis>PSOG</emphasis>
+            </para>
+            <para> - primary key</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>POGS</emphasis>
+            </para>
+            <para> - bitmap index for lookups on object value.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>SP</emphasis>
+            </para>
+            <para> - partial index for cases where only S is specified.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>OP</emphasis>
+            </para>
+            <para> - partial index for cases where only O is specified.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <emphasis>GS</emphasis>
+            </para>
+            <para> - partial index for cases where only G is specified.</para>
+          </listitem>
+        </itemizedlist>
+        <para>
+      This index scheme is created by the following statements:
+      </para>
+        <programlisting>
+CREATE TABLE DB.DBA.RDF_QUAD (
+  G IRI_ID_8,
+  S IRI_ID_8,
+  P IRI_ID_8,
+  O ANY,
+  PRIMARY KEY (P, S, O, G)
+  )
+ALTER INDEX RDF_QUAD ON DB.DBA.RDF_QUAD
+  PARTITION (S INT (0hexffff00));
+
+CREATE DISTINCT NO PRIMARY KEY REF BITMAP INDEX RDF_QUAD_SP
+  ON RDF_QUAD (S, P)
+  PARTITION (S INT (0hexffff00));
+
+CREATE BITMAP INDEX RDF_QUAD_POGS
+  ON RDF_QUAD (P, O, G, S)
+  PARTITION (O VARCHAR (-1, 0hexffff));
+
+CREATE DISTINCT NO PRIMARY KEY REF BITMAP INDEX RDF_QUAD_GS
+  ON RDF_QUAD (G, S)
+  PARTITION (S INT (0hexffff00));
+
+CREATE DISTINCT NO PRIMARY KEY REF INDEX RDF_QUAD_OP
+  ON RDF_QUAD (O, P)
+  PARTITION (O VARCHAR (-1, 0hexffff));
+</programlisting>
+        <para>The idea is to favor queries where the predicate is specified in triple patterns. The entire quad can
+      be efficiently accessed when <code>P</code>
+
+   and at least one of <code>S</code>
+
+   and <code>O</code>
+
+   are known.
+      This has the advantage of clustering data by the predicate which improves working set. A page read from disk
+      will only have entries pertaining to the same predicate; chances of accessing other entries of the page are
+      thus higher than if the page held values for arbitrary predicates. For less frequent cases where only
+      <code>S</code>
+
+   is known, as in <code>DESCRIBE</code>
+
+  , the distinct <code>P</code>
+
+  s of the <code>S</code>
+
+   are
+      found in the <code>SP</code>
+
+   index. These <code>SP</code>
+
+   pairs are then used for accessing the <code>PSOG</code>
+
+      index to get the <code>O</code>
+
+   and <code>G</code>
+
+  . For cases where only the <code>G</code>
+
+   is known, as when
+      dropping a graph, the distinct <code>S</code>
+
+  s of the <code>G</code>
+
+   are found in the <code>GS</code>
+
+   index.
+      The <code>P</code>
+
+  s of the <code>S</code>
+
+   are then found in the <code>SP</code>
+
+   index. After this, the whole
+      quad is found in the <code>PSOG</code>
+
+   index.
+      </para>
+        <para>The <code>SP</code>
+
+  , <code>OP</code>
+
+  , and <code>GS</code>
+
+   indices do not store duplicates. If an
+      <code>S</code>
+
+   has many values of the <code>P</code>
+
+  , there is only one entry. Entries are not deleted from
+      <code>SP</code>
+
+  , <code>OP</code>
+
+  , or <code>GS</code>
+
+  . This does not lead to erroneous results since a full
+      index (that is, either <code>POSG</code>
+
+   or <code>PSOG</code>
+
+  ) is always consulted in order to know if a quad
+      actually exists. When updating data, most often a graph is entirely dropped and a substantially similar graph
+      inserted in its place. The <code>SP</code>
+
+  , <code>OP</code>
+
+  , and <code>GS</code>
+
+   indices get to stay
+      relatively unaffected.
+      </para>
+        <para>Still, over time, especially if there are frequent updates and values do not repeat between consecutive
+      states, the <code>SP</code>
+
+  , <code>OP</code>
+
+  , and <code>GS</code>
+
+   indices will get polluted, which may affect
+      performance. Dropping and recreating the index will remedy this situation.
+      </para>
+        <para>In cases where this is not practical, the index scheme should only have full indices; i.e., each key
+      holds all columns of the primary key of the quad. This will be the case if the
+      <code>DISTINCT NO PRIMARY KEY REF</code>
+
+   options are not specified in the <code>CREATE INDEX</code>
+
+   statement.
+      In such cases, all indices remain in strict sync across deletes.
+      </para>
+        <para>Many RDF workloads have bulk-load and read-intensive access patterns with few deletes. The default index
+      scheme is optimized for these. With these situations, this scheme offers significant space savings, resulting
+      in better working set. Typically, this layout takes 60-70% of the space of a layout with 4 full indices.
+      </para>
+      </section>
+      <section xml:id="rdfindexschemesel">
+        <title>Index Scheme Selection</title>
+        <para>The indexes in place on the <code>RDF_QUAD table</code>
+
+   can greatly affect the performance of SPARQL
+      queries, as can be determined by running the <code>STATISTICS</code>
+
+   command on the table as follows:
+      </para>
+        <programlisting>
+SQL&gt; STATISTICS DB.DBA.RDF_QUAD;
+Showing SQLStatistics of table(s) 'DB.DBA.RDF_QUAD'
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       NON_UNIQUE  INDEX_QUALIFIER  INDEX_NAME       TYPE        SEQ_IN_INDEX  COLUMN_NAME      COLLATION  CARDINALITY  PAGES       FILTER_CONDITION
+VARCHAR          VARCHAR          VARCHAR          SMALLINT    VARCHAR          VARCHAR          SMALLINT    SMALLINT    VARCHAR          VARCHAR  INTEGER     INTEGER     VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              RDF_QUAD         NULL        NULL             NULL             0           NULL        NULL             NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         0           DB               RDF_QUAD         3           1           P                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         0           DB               RDF_QUAD         3           2           S                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         0           DB               RDF_QUAD         3           3           O                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         0           DB               RDF_QUAD         3           4           G                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_GS      3           1           G                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_GS      3           2           S                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_OP      3           1           O                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_OP      3           2           P                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_POGS    3           1           P                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_POGS    3           2           O                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_POGS    3           3           G                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_POGS    3           4           S                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_SP      3           1           S                NULL     NULL        NULL        NULL
+DB               DBA              RDF_QUAD         1           DB               RDF_QUAD_SP      3           2           P                NULL     NULL        NULL        NULL
+
+15 Rows. -- 24 msec.
+SQL&gt;
+</programlisting>
+        <para>With only one index (<code>OGPS</code>
+
+  ) created by default, if the graph is always given, as with one
+      or more <code>FROM</code>
+
+   or <code>FROM NAMED</code>
+
+   clauses, and there are no patterns where only graph and
+      predicate are given, then the default indices should be sufficient. If predicate and graph are given but
+      subject is not, then it is sometimes useful to add:
+      </para>
+        <programlisting>
+CREATE BITMAP INDEX RDF_QUAD_PGOS
+  ON DB.DBA.RDF_QUAD (G, P, O, S)
+  PARTITION (O VARCHAR (-1, 0hexffff));
+</programlisting>
+        <para>Note: If the server version is pre-5.0.7, leave out the partitioning clause.</para>
+        <para>Making the <code>PGOS</code>
+
+   index can help in some cases even if it is not readily apparent from the
+      queries that one is needed. This is so, for example, if the predicate by itself is selective; i.e., there is
+      a predicate that occurs in only a few triples.
+      </para>
+        <para>There is one known application scenario that requires a small alteration to the default index scheme.
+      If the application has a large number of small graphs, e.g. millions of graphs of tens or hundreds of triples
+      each, and it commonly happens that large numbers of graphs contain exactly the same triple, for example the
+      same triple is found in 100000 or one million graphs, then some operations will become inefficient with the
+      default index scheme. In specific, dropping a graph may have to scan through large amounts of data in order
+      to find the right quad to delete from the set of quads that differ only in the graph.
+      </para>
+        <para>This will affect a graph replace and a graph drop or generally any deletion that falls on a quad of the
+      described sort. If this is the situation in the application, then dropping the <code>RDF_QUAD_GS</code>
+
+      distinct projection and replacing it with a covering index that starts with <code>G</code>
+
+   is appropriate:
+      </para>
+        <programlisting>
+Drop index RDF_QUAD_GS;
+Create column index RDF_QUAD_GPSO on RDF_QUAD (G, P, S, O) partition (S int (0hexffff00);
+</programlisting>
+        <para>The partition clause only affects cluster settings and is ignored in the single server case.
+      Partitioning on <code>S</code>
+
+   is usually better than on <code>O</code>
+
+   since the distribution of <code>S</code>
+
+      is generally less skewed than that of <code>O</code>
+
+  . That is, there usually are some very common <code>O</code>
+
+      values (e.g. class "thing"). This will increase space consumption by maybe 25% compared to the default scheme.
+      </para>
+      </section>
+      <section xml:id="rdfperfindexes">
+        <title>Manage Public Web Service Endpoints</title>
+        <para>
+      Public web service endpoints have proven to be sources of especially bad queries. While local
+      application developers can obtain instructions from database administrators and use ISQL access to the
+      database to tune execution plans, "external" clients do not know details of configuration and/or lack
+      appropriate skills. The most common problem is that public endpoints usually get requests that do not mention
+      the required graph, because the queries were initially written for use with triple stores. If the web service
+      provides access to a single graph (or to a short list of graphs), then it is strongly recommended to configure
+      it by adding a row into <code>DB.DBA.SYS_SPARQL_HOST</code>
+
+  .
+      </para>
+        <programlisting>
+create table DB.DBA.SYS_SPARQL_HOST (
+  SH_HOST	varchar not null primary key, -- host mask
+  SH_GRAPH_URI varchar,                 -- default graph uri
+  SH_USER_URI	varchar,                  -- reserved for any use in applications
+  SH_BASE_URI varchar,                  -- for future use (not used currently) to set BASE in sparql queries. Should be NULL for now.
+  SH_DEFINES long varchar,              -- additional defines for requests
+  PRIMARY KEY (SH_HOST)
+)
+</programlisting>
+        <para>You can find detailed descriptions of the table columns <link linkend="rdfdefaultgraph">here</link>
+
+  .</para>
+        <para>The idea is that if the client specifies the default graph in the request, or uses named graphs and
+      group graph patterns, then he is probably smarter than average and will provide meaningful queries. If no
+      graph names are specified, then the query will benefit from preset graph because this will give the compiler
+      some more indexes to choose from -- indexes that begin with <code>G</code>
+
+  .
+      </para>
+        <para>Sometimes web service endpoints are used to access data of only one application, not all data in the
+      system. In that case, one may wish to declare a separate storage that consists of only RDF Views made by that
+      application and <code>define input:storage</code>
+
+   in the appropriate row of <code>DB.DBA.SYS_SPARQL_HOST</code>
+
+  .
+      </para>
+      </section>
+      <section xml:id="rdfperfcost">
+        <title>Erroneous Cost Estimates and Explicit Join Order</title>
+        <para>The selectivity of triple patterns is determined at query compile time from sampling the data. It is
+	    possible that misleading data is produced. To see if the cardinality guesses are generally valid, look at
+	    the query plan with the <link linkend="fn_explain"><function>explain</function>
+
+   ()</link>
+
+   function.
+	    </para>
+        <para>Below is a sample from the LUBM qualification data set in the Virtuoso distribution. After running
+      <emphasis>make test</emphasis>
+
+   in <emphasis>binsrc/test/lubm</emphasis>
+
+  , there is a loaded database with
+      the data. Start a server in the same directory to see the data.</para>
+        <programlisting>
+SQL&gt; EXPLAIN
+  ('SPARQL
+  PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+  SELECT *
+  FROM &lt;lubm&gt;
+  WHERE { ?x  rdf:type  ub:GraduateStudent }
+  ');
+
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+{
+
+Precode:
+      0: $25 "callret" := Call __BOX_FLAGS_TWEAK (&lt;constant (lubm)&gt;, &lt;constant (1)&gt;)
+      5: $26 "lubm" := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($25 "callret")
+      12: $27 "callret" := Call __BOX_FLAGS_TWEAK (&lt;constant (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)&gt;, &lt;constant (1)&gt;)
+      17: $28 "-ns#type" := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($27 "callret")
+      24: $29 "callret" := Call __BOX_FLAGS_TWEAK (&lt;constant (http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent)&gt;, &lt;constant (1)&gt;)
+      29: $30 "owl#GraduateStudent" := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($29 "callret")
+      36: BReturn 0
+from DB.DBA.RDF_QUAD by RDF_QUAD_OGPS    1.9e+03 rows
+Key RDF_QUAD_OGPS  ASC ($32 "s-3-1-t0.S")
+&lt;col=415 O = $30 "owl#GraduateStudent"&gt; , &lt;col=412 G = $26 "lubm"&gt; , &lt;col=414 P = $28 "-ns#type"&gt;
+row specs: &lt;col=415 O LIKE &lt;constant (T)&gt;&gt;
+
+Current of: &lt;$34 "&lt;DB.DBA.RDF_QUAD s-3-1-t0&gt;" spec 5&gt;
+
+After code:
+      0: $35 "x" := Call ID_TO_IRI ($32 "s-3-1-t0.S")
+      5: BReturn 0
+Select ($35 "x", &lt;$34 "&lt;DB.DBA.RDF_QUAD s-3-1-t0&gt;" spec 5&gt;)
+}
+
+22 Rows. -- 1 msec.
+</programlisting>
+        <para>This finds the graduate student instances in the LUBM graph. First the query converts the IRI literals
+      to IDs. Then, using a match of <code>OG</code>
+
+   on <code>OGPS</code>
+
+  , it finds the IRIs of the graduate
+      students. Then, it converts the IRI ID to return to the string form.</para>
+        <para>The cardinality estimate of 1.9e+03 rows is on the <code>FROM</code>
+
+   line.</para>
+        <para>Doing an <code>EXPLAIN()</code>
+
+   on the queries will show the cardinality estimates. To drill down
+      further, one can split the query into smaller chunks and see the estimates for these, up to doing it at the
+      triple pattern level. To indicate a variable that is bound but whose value is not a literal known at compile
+      time, one can use the parameter marker <emphasis>??</emphasis>
+
+  .</para>
+        <programlisting>
+SQL&gt; EXPLAIN
+  ('
+      SPARQL
+      DEFINE  sql:table-option "order"
+      PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+      SELECT *
+      FROM &lt;lubm&gt;
+      WHERE { ?x  rdf:type  ?? }
+  ');
+</programlisting>
+        <para>This will not know the type but will know that a type will be provided. So instead of guessing 1900
+      matches, this will guess a smaller number, which is obviously less precise. Thus literals are generally
+      better.</para>
+        <para>In some cases, generally to work around an optimization error, one can specify an explicit
+      <emphasis>JOIN</emphasis>
+
+   order. This is done with the <emphasis>sql:select-option "order"</emphasis>
+
+   clause
+      in the SPARQL query prefix:</para>
+        <programlisting>
+SQL&gt; SELECT SPARQL_to_sql_text
+  ('
+      DEFINE sql:select-option "order"
+      PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+      SELECT *
+      FROM &lt;lubm&gt;
+      WHERE
+        {
+          ?x  rdf:type        ub:GraduateStudent                                       .
+          ?x  ub:takesCourse  &lt;http://www.Department0.University0.edu/GraduateCourse0&gt;
+        }
+  ');
+</programlisting>
+        <para>shows the SQL text with the order option at the end.</para>
+        <para>If an estimate is radically wrong then this should be reported as a bug.</para>
+        <para>If there is a <code>FROM</code>
+
+   with a <code>KEY</code>
+
+   on the next line and no column specs then
+      this is a full table scan. The more columns are specified the less rows will be passed to the next operation
+      in the chain. In the example above, there are three columns whose values are known before reading the table
+      and these columns are leading columns of the index in use so column specs are:</para>
+        <programlisting>
+&lt;col=415 O = $30 "owl#GraduateStudent"&gt; ,
+&lt;col=412 G = $26 "lubm"&gt; ,
+&lt;col=414 P = $28 "-ns#type"&gt;
+</programlisting>
+        <note>
+          <para>Note: A <code>KEY</code>
+
+   with only a row spec is a full table scan with the row spec applied as
+      a filter. This is usually not good unless this is specifically intended.</para>
+        </note>
+        <para>If queries are compiled to make full table scans when this is not specifically intended, this should
+      be reported as a bug. The <code>explain ()</code>
+
+   output and the query text should be included in the
+      report.</para>
+        <para>Consider:</para>
+        <programlisting>
+SQL&gt; EXPLAIN
+  ('
+      SPARQL
+      DEFINE sql:select-option "order, loop"
+      PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+      SELECT *
+      FROM &lt;lubm&gt;
+      WHERE
+        {
+          ?x  ub:takesCourse  ?c                  .
+          ?x  rdf:type        ub:GraduateStudent
+        }
+  ');
+</programlisting>
+        <para>One will see in the output that the first table access is to retrieve all in the LUBM graph which take
+      some course and then later to check if this is a graduate student. This is obviously not the preferred order
+      but the <emphasis>sql:select-option "order"</emphasis>
+
+   forces the optimizer to join from left to right.
+      </para>
+        <para>It is very easy to end up with completely unworkable query plans in this manner but if the optimizer
+      really is in error, then this is the only way of overriding its preferences. The effect of
+      <emphasis>sql:select-option</emphasis>
+
+   is pervasive, extending inside unions, optionals, subqueries etc.
+      within the statement.</para>
+        <para>We note that if, in the above query, both the course taken by the student and the type of the student
+      are given, the query compilation will be, at least for all non-cluster cases, an index intersection. This is
+      not overridden by the <code>sql:select-option</code>
+
+   clause since an index intersection is always a safe
+      guess, regardless of the correctness of the cardinality guesses of the patterns involved.</para>
+        <section xml:id="rdfperfcosttransanalyze">
+          <title>Translate and Analyze modes for analyzing sparql queries</title>
+          <para>Virtuoso Release 6.4 ISQL offers 2 new modes for analyzing sparql queries:</para>
+          <orderedlist>
+            <listitem>
+              <para>Translate a sparql query into the correspondent sql:
+</para>
+              <programlisting>
+SQL&gt; SET SPARQL_TRANSLATE ON;
+SQL&gt; SELECT * FROM &lt;graph&gt; WHERE {?S a ?O};
+SQL&gt; SET SPARQL_TRANSLATE OFF;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Analyze a given SQL query:
+</para>
+              <programlisting>
+SQL&gt; SET EXPLAIN ON;
+SQL&gt; SELECT * FROM TABLE WHERE field = 'text';
+SQL&gt; SET EXPLAIN OFF;
+</programlisting>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para><link linkend="fn_explain"><function>explain</function>
+
+   ()</link>
+                   is much more
+         difficult to use since you cannot just cut and past a query as all quotes need to be
+         doubled inside the 
+                  <code>explain (' ... ')</code>
+                  :
+</para>
+                  <programlisting>
+SQL&gt; explain('select * from table where field = ''text''');
+</programlisting>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </orderedlist>
+          <para>Here is simple example of how to combine the two options to get a full explain plan for a simple SPARQL query:</para>
+          <orderedlist>
+            <listitem>
+              <para>Assume the following query:
+</para>
+              <programlisting>
+SELECT *
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    ?s a ?o
+  }
+LIMIT 10
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Connect using the ISQL command line tool to your database and execute:
+</para>
+              <programlisting>
+SQL&gt; SET BLOBS ON;			-- in case output is very large
+SQL&gt; SET SPARQL_TRANSLATE ON;
+SQL&gt; SELECT * FROM &lt;http://dbpedia.org&gt; WHERE {?s a ?o} LIMIT 10;
+
+SPARQL_TO_SQL_TEXT
+VARCHAR
+_______________________________________________________________________________
+
+SELECT TOP 10 __id2i ( "s_1_0-t0"."S" ) AS "s",
+  __ro2sq ( "s_1_0-t0"."O" ) AS "o"
+FROM DB.DBA.RDF_QUAD AS "s_1_0-t0"
+WHERE "s_1_0-t0"."G" = __i2idn ( __bft( 'http://dbpedia.org' , 1))
+  AND  "s_1_0-t0"."P" = __i2idn ( __bft( 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' , 1))
+OPTION (QUIETCAST)
+
+1 Rows. -- 1 msec.
+
+SQL&gt; SET SPARQL_TRANSLATE OFF;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Use mouse to select the above query output and paste it after the 
+              <code>SET EXPLAIN ON;</code>
+
+      	command. After pasting in the command, followed by the ENTER key:
+</para>
+              <programlisting>
+SQL&gt; SET EXPLAIN ON;
+SQL&gt; SELECT TOP 10 __id2i ( "s_1_0-t0"."S" ) AS "s", __ro2sq ( "s_1_0-t0"."O" ) AS "o"
+ FROM DB.DBA.RDF_QUAD AS "s_1_0-t0"
+ WHERE "s_1_0-t0"."G" = __i2idn ( __bft( 'http://dbpedia.org' , 1))
+   AND  "s_1_0-t0"."P" = __i2idn ( __bft( 'http://www.w3.org/1999/02/22-rdf-syn tax-ns#type' , 1))
+ OPTION (QUIETCAST)
+;
+
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+{
+from DB.DBA.RDF_QUAD by RDF_QUAD_POGS    4.5e+05 rows
+Key RDF_QUAD_POGS  ASC ($22 "s_1_0-t0.S", $21 "s_1_0-t0.O")
+ inlined &lt;col=556 P =  #type &gt;
+row specs: &lt;col=554 G =  #http://dbpedia.org &gt;
+
+After code:
+      0: $25 "s" := Call __id2i ($22 "s_1_0-t0.S")
+      5: $26 "o" := Call __ro2sq ($21 "s_1_0-t0.O")
+      10: BReturn 0
+Select (TOP  10 ) ($25 "s", $26 "o", &lt;$24 "&lt;DB.DBA.RDF_QUAD s_1_0-t0&gt;" spec 5&gt;)
+}
+
+13 Rows. -- 1 msec.
+
+SQL&gt; SET EXPLAIN OFF;
+</programlisting>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+      <section>
+        <title>Using "swappiness" parameter ( Linux only )</title>
+        <para><emphasis>For Linux users only</emphasis>
+
+  , there is a kernel tuning parameter called "<code>swappiness</code>
+
+  "
+  that controls how much the kernel favors swap over RAM.
+  </para>
+        <para>When hosting large data sets, it is recommended that this parameter be changed from its default value of 60
+  to something closer to 10, to reduce the amount of swapping that takes place on the server. Useful tidbits
+  regarding swappiness include:
+  </para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>The swappiness setting is found in the file 
+            <code>/proc/sys/vm/swappiness</code>
+            .</para>
+          </listitem>
+          <listitem>
+            <para>The command 
+            <code>/sbin/sysctl vm.swappiness</code>
+             can be used to view its setting.</para>
+          </listitem>
+          <listitem>
+            <para>The command 
+            <code>/sbin/sysctl -w vm.swappiness=10</code>
+             can be used to change its value.</para>
+          </listitem>
+          <listitem>
+            <para>Adding 
+            <code>vm.swappiness = 10</code>
+             to the file 
+            <code>/etc/sysctl.conf</code>
+             will force the
+    value to be set at machine boot time.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="rdfperfgetallgraphs">
+        <title>Get All Graphs</title>
+        <para>In order to get all graphs URIs, one might use the Virtuoso
+<link linkend="fn_sparql_select_known_graphs"><function>DB.DBA.SPARQL_SELECT_KNOWN_GRAPHS()</function></link>
+
+built-in function.</para>
+      </section>
+      <section xml:id="rdfrenamegraph">
+        <title>Rename RDF Graph and RDF Graph Groups</title>
+        <para>A RDF Graph in the Virtuoso Quad Store can be renamed without copying each assertion from the old
+  	graph to the new graph using a SQL statement, this being what the Conductor "rename" option does,
+  	which is:</para>
+        <programlisting>
+UPDATE DB.DBA.RDF_QUAD TABLE OPTION (index RDF_QUAD_GS)
+   SET g = iri_to_id ('new')
+ WHERE g = iri_to_id ('old', 0);
+</programlisting>
+        <para><emphasis>Note:</emphasis>
+
+   this operation must be run in row-autocommit mode i.e.
+  log_enable (3), and then restore back to the default logging mode of 1.</para>
+        <para>For Virtuoso Graph Groups two tables need to be updated:</para>
+        <programlisting>
+UPDATE DB.DBA.RDF_GRAPH_GROUP_MEMBER
+   SET RGGM_GROUP_IID = iri_to_id ('new')
+ WHERE RGGM_GROUP_IID = iri_to_id (old)
+</programlisting>
+        <para>and</para>
+        <programlisting>
+UPDATE DB.DBA.RDF_GRAPH_GROUP
+   SET RGG_IID = iri_to_id ('new') , RGG_IRI = 'new'
+ WHERE RGG_IRI = 'old'
+</programlisting>
+      </section>
+      <section xml:id="rdfperfdumpandreloadgraphs">
+        <title>Dump and Reload Graphs</title>
+        <section xml:id="rdfperfdumpandreloadgraphswhat">
+          <title>What?</title>
+          <para>How to export RDF model data from Virtuoso's Quad Store.</para>
+        </section>
+        <section xml:id="rdfperfdumpandreloadgraphswhy">
+          <title>Why?</title>
+          <para>Every DBMS needs to offer a mechanism for bulk export and import of data.</para>
+          <para>Virtuoso supports dumping and reloading graph model data (e.g., RDF), as well as
+    	relational data (e.g., SQL) (discussed elsewhere).</para>
+        </section>
+        <section xml:id="rdfperfdumpandreloadgraphshow">
+          <title>How?</title>
+          <para>We have created stored procedures for the task. The dump procedures leverage SPARQL to
+    	facilitate selective data dump(s) from one or more Named Graphs, each denoted by an IRI.
+    </para>
+          <section xml:id="rdfperfdumpandreloadgraphdumponegraph">
+            <title>Dump One Graph</title>
+            <section xml:id="rdfperfdumpandreloadgraphdumponegraphparams">
+              <title>Parameters</title>
+              <para>The procedure dump_one_graph has the following parameters:</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>srcgraph</emphasis>
+                  </para>
+                  <para> VARCHAR -- source graph</para>
+                </listitem>
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>out_file</emphasis>
+                  </para>
+                  <para> VARCHAR -- output file </para>
+                </listitem>
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>file_length_limit</emphasis>
+                  </para>
+                  <para> INTEGER -- maximum length of dump files</para>
+                </listitem>
+              </itemizedlist>
+            </section>
+            <section xml:id="rdfperfdumpandreloadgraphdumponegraphsource">
+              <title>Source</title>
+              <para>The procedure <emphasis>dump_one_graph</emphasis>
+
+   has the following source:</para>
+              <programlisting>
+CREATE PROCEDURE dump_one_graph
+  ( IN  srcgraph           VARCHAR  ,
+    IN  out_file           VARCHAR  ,
+    IN  file_length_limit  INTEGER  := 1000000000
+  )
+  {
+    DECLARE  file_name     VARCHAR;
+    DECLARE  env,
+             ses           ANY;
+    DECLARE  ses_len,
+             max_ses_len,
+             file_len,
+             file_idx      INTEGER;
+    SET ISOLATION = 'uncommitted';
+    max_ses_len  := 10000000;
+    file_len     := 0;
+    file_idx     := 1;
+    file_name    := sprintf ('%s%06d.ttl', out_file, file_idx);
+    string_to_file ( file_name || '.graph',
+                     srcgraph,
+                     -2
+                   );
+    string_to_file ( file_name,
+                     sprintf ( '# Dump of graph &lt;%s&gt;, as of %s\n',
+                               srcgraph,
+                               CAST (NOW() AS VARCHAR)
+                             ),
+                     -2
+                   );
+    env := vector (dict_new (16000), 0, '', '', '', 0, 0, 0, 0);
+    ses := string_output ();
+    FOR (SELECT * FROM ( SPARQL DEFINE input:storage ""
+                         SELECT ?s ?p ?o { GRAPH `iri(?:srcgraph)` { ?s ?p ?o } }
+                       ) AS sub OPTION (LOOP)) DO
+      {
+        http_ttl_triple (env, "s", "p", "o", ses);
+        ses_len := length (ses);
+        IF (ses_len &gt; max_ses_len)
+          {
+            file_len := file_len + ses_len;
+            IF (file_len &gt; file_length_limit)
+              {
+                http (' .\n', ses);
+                string_to_file (file_name, ses, -1);
+                file_len := 0;
+                file_idx := file_idx + 1;
+                file_name := sprintf ('%s%06d.ttl', out_file, file_idx);
+                string_to_file ( file_name,
+                                 sprintf ( '# Dump of graph &lt;%s&gt;, as of %s (part %d)\n',
+                                           srcgraph,
+                                           CAST (NOW() AS VARCHAR),
+                                           file_idx),
+                                 -2
+                               );
+                 env := VECTOR (dict_new (16000), 0, '', '', '', 0, 0, 0, 0);
+              }
+            ELSE
+              string_to_file (file_name, ses, -1);
+            ses := string_output ();
+          }
+      }
+    IF (LENGTH (ses))
+      {
+        http (' .\n', ses);
+        string_to_file (file_name, ses, -1);
+      }
+  }
+;
+</programlisting>
+            </section>
+            <section xml:id="rdfperfdumpandreloadgraphdumponegraphex">
+              <title>Example</title>
+              <orderedlist>
+                <listitem>
+                  <para>Call the </para>
+                  <para>
+                    <emphasis>dump_one_graph</emphasis>
+                  </para>
+                  <para> procedure with appropriate arguments:
+</para>
+                  <programlisting>
+
+$ pwd
+/Applications/OpenLink Virtuoso/Virtuoso 6.1/database
+
+$ grep DirsAllowed virtuoso.ini
+DirsAllowed              = ., ../vad, ./dumps
+
+$ /opt/virtuoso/bin/isql 1111
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; dump_one_graph ('http://daas.openlinksw.com/data#', './data_', 1000000000);
+Done. -- 1438 msec.
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>As a result, a dump of the graph will be found in the files data_XX (located in your Virtuoso db folder):
+</para>
+                  <programlisting>
+&lt;verbatim&gt;
+$ ls dumps
+data_000001.ttl
+data_000002.ttl
+....
+data_000001.ttl.graph
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </section>
+          </section>
+          <section xml:id="rdfperfdumpandreloadgraphdumpmlpgraph">
+            <title>Dump Multiple Graphs</title>
+            <para>The <emphasis>dump_graphs</emphasis>
+
+   procedure can be used to dump all the graphs in a Virtuoso server to
+      	a set of turtle (.ttl) data files in the specified dump directory.
+      </para>
+            <section xml:id="rdfperfdumpandreloadgraphdumpmlpgraphparams">
+              <title>Parameters</title>
+              <para>The procedure dump_graphs has the following parameters:</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>dir</emphasis>
+                  </para>
+                  <para> VARCHAR -- dump directory</para>
+                </listitem>
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>file_length_limit</emphasis>
+                  </para>
+                  <para> INTEGER -- maximum length of dump files</para>
+                </listitem>
+              </itemizedlist>
+              <para>Note: The dump directory must be included in the DirsAllowed parameter of the Virtuoso
+        configuration file (virtuoso.ini), or the Virtuoso server will not be able to create or access
+        the data files.
+        </para>
+            </section>
+            <section xml:id="rdfperfdumpandreloadgraphdumpmlpgraphsource">
+              <title>Source</title>
+              <para>The procedure <emphasis>dump_graphs</emphasis>
+
+   has the following source:</para>
+              <programlisting>
+CREATE PROCEDURE dump_graphs
+  ( IN  dir               VARCHAR  :=  'dumps'   ,
+    IN  file_length_limit INTEGER  :=  1000000000
+  )
+  {
+    DECLARE inx INT;
+    inx := 1;
+    SET ISOLATION = 'uncommitted';
+    FOR ( SELECT *
+            FROM ( SPARQL DEFINE input:storage ""
+                   SELECT DISTINCT ?g { GRAPH ?g { ?s ?p ?o } .
+                                        FILTER ( ?g != virtrdf: )
+                                      }
+                 ) AS sub OPTION ( LOOP )) DO
+      {
+        dump_one_graph ( "g",
+                         sprintf ('%s/graph%06d_', dir, inx),
+                         file_length_limit
+                       );
+        inx := inx + 1;
+      }
+  }
+;
+</programlisting>
+            </section>
+            <section xml:id="rdfperfdumpandreloadgraphdumpmlpgraphex">
+              <title>Example</title>
+              <orderedlist>
+                <listitem>
+                  <para>Call the </para>
+                  <para>
+                    <emphasis>dump_graphs </emphasis>
+                  </para>
+                  <para> procedure:
+</para>
+                  <programlisting>
+$ pwd
+/Applications/OpenLink Virtuoso/Virtuoso 6.1/database
+
+$ grep DirsAllowed virtuoso.ini
+DirsAllowed              = ., ../vad, ./dumps
+
+$ /opt/virtuoso/bin/isql 1111
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; dump_graphs();
+
+Done. -- 998 msec.
+SQL&gt; quit;
+</programlisting>
+                </listitem>
+                <listitem>
+                  <para>As a result, a dump of the graph will be found in the files dumps/data_XX (located in your Virtuoso db folder):
+</para>
+                  <programlisting>
+&lt;verbatim&gt;
+$ ls dumps
+graph000001_000001.ttl		graph000005_000001.ttl
+graph000001_000001.ttl.graph	graph000005_000001.ttl.graph
+graph000002_000001.ttl		graph000006_000001.ttl
+graph000002_000001.ttl.graph	graph000006_000001.ttl.graph
+graph000003_000001.ttl		graph000007_000001.ttl
+graph000003_000001.ttl.graph	graph000007_000001.ttl.graph
+graph000004_000001.ttl		graph000008_000001.ttl
+graph000004_000001.ttl.graph	graph000008_000001.ttl.graph
+</programlisting>
+                </listitem>
+              </orderedlist>
+            </section>
+          </section>
+          <section xml:id="rdfperfdumpandreloadgraphloadgraph">
+            <title>Load Graphs</title>
+            <para>The stored procedure <emphasis>load_graphs</emphasis>
+
+   procedure performs a bulk
+      load from a file.
+      </para>
+            <section xml:id="rdfperfdumpandreloadgraphloadgraphparams">
+              <title>Parameters</title>
+              <para>The procedure load_graphs has the following parameters:</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>dir</emphasis>
+                  </para>
+                  <para> VARCHAR -- dump directory</para>
+                </listitem>
+              </itemizedlist>
+              <para>Note: The dump directory must be included in the DirsAllowed parameter of the Virtuoso
+        configuration file (virtuoso.ini), or the Virtuoso server will not be able to create or access
+        the data files.
+        </para>
+            </section>
+            <section xml:id="rdfperfdumpandreloadgraphloadgraphsource">
+              <title>Source</title>
+              <para>The procedure <emphasis>load_graphs</emphasis>
+
+   has the following source:</para>
+              <programlisting>
+CREATE PROCEDURE load_graphs
+  ( IN  dir  VARCHAR := 'dumps/' )
+{
+  DECLARE arr ANY;
+  DECLARE g VARCHAR;
+
+  arr := sys_dirlist (dir, 1);
+  log_enable (2, 1);
+  FOREACH (VARCHAR f IN arr) DO
+    {
+      IF (f LIKE '*.ttl')
+	{
+	  DECLARE CONTINUE HANDLER FOR SQLSTATE '*'
+	    {
+	      log_message (sprintf ('Error in %s', f));
+	    };
+  	  g := file_to_string (dir || '/' || f || '.graph');
+	  DB.DBA.TTLP_MT (file_open (dir || '/' || f), g, g, 255);
+	}
+    }
+  EXEC ('CHECKPOINT');
+}
+;
+</programlisting>
+            </section>
+            <section xml:id="rdfperfdumpandreloadgraphloadgraphex">
+              <title>Example</title>
+              <programlisting>
+$ /opt/virtuoso/bin/isql 1112
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; load_graphs();
+
+Done. -- 2392 msec.
+SQL&gt;
+</programlisting>
+            </section>
+          </section>
+        </section>
+      </section>
+      <section xml:id="rdfperfdumpintonquads">
+        <title>RDF dumps from Virtuoso Quad store hosted data into NQuad dumps</title>
+        <section xml:id="rdfperfdumpintonquadswhat">
+          <title>What?</title>
+          <para>How to export RDF model data from Virtuoso's Quad Store in NQuad format.</para>
+        </section>
+        <section xml:id="rdfperfdumpintonquadswhy">
+          <title>Why?</title>
+          <para>When exporting RDF model data from Virtuoso's Quad Store, having the ability to
+    retain and reflect Named Graph IRI based data partitioning is provide significant value to
+    a variety of application profiles.
+    </para>
+        </section>
+        <section xml:id="rdfperfdumpintonquadshow">
+          <title>How?</title>
+          <para>We have created stored procedures for the task. The dump procedure <emphasis>dump_nquads</emphasis>
+
+    leverage SPARQL to facilitate data dump(s) for all graphs excluding the predefined "virtrdf:" one.
+    </para>
+          <section xml:id="rdfperfdumpintonquadsprc">
+            <title>Dump NQuads</title>
+            <section xml:id="rdfperfdumpintonquadsprcparams">
+              <title>Parameters</title>
+              <para>The procedure <emphasis>dump_nquads</emphasis>
+
+   has the following parameters:</para>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>dir</emphasis>
+                  </para>
+                  <para> VARCHAR -- folder where the dumps will be stored </para>
+                </listitem>
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>outstart_fromfile</emphasis>
+                  </para>
+                  <para> INTEGER  -- output start from number n</para>
+                </listitem>
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>file_length_limit</emphasis>
+                  </para>
+                  <para> INTEGER -- maximum length of dump files</para>
+                </listitem>
+                <listitem>
+                  <para>IN </para>
+                  <para>
+                    <emphasis>comp</emphasis>
+                  </para>
+                  <para> INTEGER -- when set to 0, then no gzip will be done. By default is set to 1.</para>
+                </listitem>
+              </itemizedlist>
+            </section>
+            <section xml:id="rdfperfdumpintonquadsprcsource">
+              <title>Source</title>
+              <para>The procedure <emphasis>dump_nquads</emphasis>
+
+   has the following source:</para>
+              <programlisting>
+create procedure dump_nquads (in dir varchar := 'dumps', in start_from int := 1, in file_length_limit integer := 100000000, in comp int := 1)
+{
+  declare inx, ses_len int;
+  declare file_name varchar;
+  declare env, ses any;
+
+  inx := start_from;
+  set isolation = 'uncommitted';
+  env := vector (0,0,0);
+  ses := string_output (10000000);
+  for (select * from (sparql define input:storage "" select ?s ?p ?o ?g { graph ?g { ?s ?p ?o } . filter ( ?g != virtrdf: ) } ) as sub option (loop)) do
+    {
+      declare exit handler for sqlstate '22023'
+	{
+	  goto next;
+	};
+      http_nquad (env, "s", "p", "o", "g", ses);
+      ses_len := length (ses);
+      if (ses_len &gt;= file_length_limit)
+	{
+	  file_name := sprintf ('%s/output%06d.nq', dir, inx);
+	  string_to_file (file_name, ses, -2);
+	  if (comp)
+	    {
+	      gz_compress_file (file_name, file_name||'.gz');
+	      file_delete (file_name);
+	    }
+	  inx := inx + 1;
+	  env := vector (0,0,0);
+	  ses := string_output (10000000);
+	}
+      next:;
+    }
+  if (length (ses))
+    {
+      file_name := sprintf ('%s/output%06d.nq', dir, inx);
+      string_to_file (file_name, ses, -2);
+      if (comp)
+	{
+	  gz_compress_file (file_name, file_name||'.gz');
+	  file_delete (file_name);
+	}
+      inx := inx + 1;
+      env := vector (0,0,0);
+    }
+}
+;
+</programlisting>
+            </section>
+            <section xml:id="rdfperfdumpintonquadsprcex">
+              <title>Example</title>
+              <para>This example demonstrates calling the <emphasis>dump_nquads</emphasis>
+
+   procedure in order to dump all graphs
+        in a compressed nquad dumps, each uncompressed with length 10Mb (./dumps/output000001.nq.gz) :
+        </para>
+              <programlisting>
+SQL&gt; dump_nquads ('dumps', 1, 10000000, 1);
+</programlisting>
+            </section>
+          </section>
+        </section>
+      </section>
+      <section xml:id="rdfperfdumpandreloadgraphsn3">
+        <title>Dump Linked Data View Graph to n3</title>
+        <para>The RDF_QM_TREE_DUMP procedure and its associated procedures below are used
+for dumping one or more RDFView Graphs in a Virtuoso server to a set of
+turtle ttl dataset files in the specified dump directory. The dump generation
+is made as fast as possible by grouping mappings by underlying tables so many
+properties from neighbor database columns can be extracted in one table scan.
+The size of the generated files is limited to 5MB. The dump process creates
+internal stored procedures; their texts are saved in file .dump_procedures.sql in
+the directory of dump files for debugging purposes.
+</para>
+        <para>Note that the dump directory must be included in the <code>DirsAllowed</code>
+
+parameter of the Virtuoso configuration file (e.g., <code>virtuoso.ini</code>
+
+  ), or the
+server will not be allowed to create nor access the dataset file(s).
+</para>
+        <para>
+The <link xlink:href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtBulkRDFLoader">Virtuoso RDF bulk loader</link>
+
+scripts can then be used to load the dumped datasets for the RDFView graphs directly into
+a Virtuoso RDF QUAD store.
+</para>
+        <section xml:id="rdfperfdumpandreloadgraphsn3params">
+          <title>Parameters</title>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>
+                <code>in</code>
+                <emphasis>dest_dir</emphasis>
+              </para>
+              <para><code>VARCHAR</code>
+ - dump directory </para>
+            </listitem>
+            <listitem>
+              <para>
+                <code>in</code>
+                <emphasis>graph_iri</emphasis>
+              </para>
+              <para><code>VARCHAR</code>
+              - IRI of the graph to be dumped; triples from other graphs will be excluded. If NULL, then there's no restriction by graph.</para>
+            </listitem>
+            <listitem>
+              <para>
+                <code>in</code>
+                <emphasis>storage</emphasis>
+              </para>
+              <para><code>VARCHAR</code>
+               - IRI of the quad map storage to use. NULL means use default storage.</para>
+            </listitem>
+            <listitem>
+              <para>
+                <code>in</code>
+                <emphasis>root</emphasis>
+              </para>
+              <para><code>VARCHAR</code>
+               - IRI of the quad map to use, e.g., an IRI of an Linked Data View (or its part). NULL means use all Linked Data Views of the storage (and the default mapping as well).</para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section xml:id="rdfperfdumpandreloadgraphsn3code">
+          <title>Procedure Code</title>
+          <programlisting>
+CREATE PROCEDURE DB.DBA.RDF_QM_TREE_DUMP
+  ( in  dest_dir  VARCHAR,
+    in  graph_iri VARCHAR := NULL,
+    in  storage   VARCHAR := NULL,
+    in  root      VARCHAR := NULL
+  )
+{
+ DECLARE all_qms,
+         grouped_qmvs,
+         launcher_text  ANY;
+ DECLARE grp_ctr,
+         qm_ctr,
+         qm_count       INTEGER;
+ DECLARE sql_file,
+         launcher_name  VARCHAR;
+ IF (NOT (dest_dir LIKE '%/'))
+   dest_dir := dest_dir || '/';
+ sql_file := dest_dir || '.dump_procedures.sql';
+ IF (storage IS NULL)
+   storage := 'http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage';
+ string_to_file (
+   sql_file,
+   '-- This file contains procedure created by DB.DBA.RDF_QM_TREE_DUMP() for storage '
+      || COALESCE (storage, 'NULL')
+      || ' and root quad map '
+      || COALESCE (root, 'NULL')
+      || '\n\n',
+   -2);
+ all_qms := dict_list_keys (DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (graph_iri, storage, root), 2);
+ grouped_qmvs := DB.DBA.RDF_QM_GROUP_BY_SOURCE_TABLES (all_qms);
+ launcher_name := 'RDF_QM_TREE_DUMP_BATCH_' || md5 (serialize (graph_iri) || storage || serialize (root));
+ launcher_text := string_output ();
+ http ('CREATE PROCEDURE DB.DBA."' || launcher_name || '" (in dest_dir VARCHAR)\n{\n', launcher_text);
+ FOR (grp_ctr := length (grouped_qmvs); grp_ctr &gt; 0; grp_ctr := grp_ctr-2)
+   {
+     DECLARE tables, qms, proc_text ANY;
+     DECLARE group_key, proc_name, dump_prefix, cmt VARCHAR;
+     tables := grouped_qmvs [grp_ctr-2];
+     qms := grouped_qmvs [grp_ctr-1];
+     qm_count := length (qms);
+     group_key := md5 (serialize (graph_iri) || storage || serialize (root) || serialize (tables));
+     proc_name := 'RDF_QM_TREE_DUMP_GRP_' || group_key;
+     proc_text := string_output ();
+     cmt := sprintf ('%d quad maps on join of', qm_count);
+     FOREACH (VARCHAR t IN tables) DO cmt := cmt || ' ' || t;
+     http ('  --  ' || cmt || '\n', launcher_text);
+     http ('  DB.DBA."' || proc_name || '" (dest_dir);\n', launcher_text);
+     http ('CREATE PROCEDURE DB.DBA."' || proc_name || '" (in dest_dir VARCHAR)\n', proc_text);
+     http ('{\n', proc_text);
+     http ('  -- ' || cmt || '\n', proc_text);
+     http ('  DECLARE ses, env ANY;\n', proc_text);
+     http ('  DECLARE file_ctr, cmt_len INTEGER;\n', proc_text);
+     http ('  file_ctr := 0;\n', proc_text);
+     http ('  dbg_obj_princ (' || WS.WS.STR_SQL_APOS (cmt) || ', '', file '', file_ctr);\n', proc_text);
+     http ('  ses := string_output ();\n', proc_text);
+     http ('  http (' || WS.WS.STR_SQL_APOS ('#' || cmt || '\n') || ', ses);\n', proc_text);
+     http ('  env := VECTOR (dict_new (16000), 0, '''', '''', '''', 0, 0, 0, 0);\n', proc_text);
+     http ('  cmt_len := LENGTH (ses);\n', proc_text);
+     http ('  FOR (SPARQL DEFINE input:storage &lt;' || storage || '&gt;\n', proc_text);
+     http ('    SELECT ?s1, ?p1, ?o1\n', proc_text);
+     IF (graph_iri IS NOT NULL)
+       {
+         http ('    WHERE { GRAPH &lt;', proc_text); http_escape (graph_iri, 12, proc_text, 1, 1); http ('&gt; {\n', proc_text);
+       }
+     ELSE
+       http ('    WHERE { GRAPH ?g1 {\n', proc_text);
+     FOR (qm_ctr := 0; qm_ctr &lt; qm_count; qm_ctr := qm_ctr + 1)
+       {
+         IF (qm_ctr &gt; 0) http ('            UNION\n', proc_text);
+         http ('            { quad map &lt;' || qms[qm_ctr] || '&gt; { ?s1 ?p1 ?o1 } }\n', proc_text);
+       }
+     http ('          } } ) DO {\n', proc_text);
+     http ('      http_ttl_triple (env, "s1", "p1", "o1", ses);\n', proc_text);
+     http ('      IF (LENGTH (ses) &gt; 5000000)\n', proc_text);
+     http ('        {\n', proc_text);
+     http ('          http ('' .\\n'', ses);\n', proc_text);
+     http ('          string_to_file (sprintf (''%s' || group_key || '_%05d.ttl'', dest_dir, file_ctr), ses, -2);\n', proc_text);
+     http ('          file_ctr := file_ctr + 1;\n', proc_text);
+     http ('          dbg_obj_princ (' || WS.WS.STR_SQL_APOS (cmt) || ', '', file '', file_ctr);\n', proc_text);
+     http ('          ses := string_output ();\n', proc_text);
+     http ('          http (' || WS.WS.STR_SQL_APOS ('#' || cmt || '\n') || ', ses);\n', proc_text);
+     http ('          env := VECTOR (dict_new (16000), 0, '''', '''', '''', 0, 0, 0, 0);\n', proc_text);
+     http ('        }\n', proc_text);
+     http ('    }\n', proc_text);
+     http ('  IF (LENGTH (ses) &gt; cmt_len)\n', proc_text);
+     http ('    {\n', proc_text);
+     http ('      http ('' .\\n'', ses);\n', proc_text);
+     http ('      string_to_file (sprintf (''%s' || group_key || '_%05d.ttl'', dest_dir, file_ctr), ses, -2);\n', proc_text);
+     http ('    }\n', proc_text);
+     http ('}\n', proc_text);
+     proc_text := string_output_string (proc_text);
+     string_to_file (sql_file, proc_text || ';\n\n' , -1);
+     EXEC (proc_text);
+   }
+ http ('}\n', launcher_text);
+ launcher_text := string_output_string (launcher_text);
+ string_to_file (sql_file, launcher_text || ';\n\n' , -1);
+ EXEC (launcher_text);
+ CALL ('DB.DBA.' || launcher_name)(dest_dir);
+}
+;
+
+CREATE FUNCTION DB.DBA.RDF_QM_CONTENT_OF_QM_TREE
+  ( in  graph_iri  VARCHAR := NULL,
+    in  storage    VARCHAR := NULL,
+    in  root       VARCHAR := NULL,
+    in  dict       ANY := NULL
+  ) returns ANY
+{
+ DECLARE res, subqms any;
+ DECLARE graphiri varchar;
+ graphiri := DB.DBA.JSO_SYS_GRAPH();
+ IF (storage IS NULL)
+   storage := 'http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage';
+ DB.DBA.RDF_QM_ASSERT_STORAGE_FLAG (storage, 0);
+ IF (dict IS NULL)
+   dict := dict_new ();
+ IF (root IS NULL)
+   {
+     subqms := ((SELECT DB.DBA.VECTOR_AGG (sub."qmiri")
+         FROM (
+           SPARQL DEFINE input:storage ""
+           SELECT DISTINCT (str(?qm)) AS ?qmiri
+           WHERE { GRAPH `iri(?:graphiri)` {
+                     { `iri(?:storage)` virtrdf:qsUserMaps ?lst .
+                       ?lst ?p ?qm .
+                       FILTER (0 = bif:strstr (str(?p), str(rdf:_)))
+                     } UNION {
+                       `iri(?:storage)` virtrdf:qsDefaultMap ?qm .
+                     } } } ) AS sub ) );
+     FOREACH (varchar qmid IN subqms) DO
+       DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (graph_iri, storage, qmid, dict);
+     RETURN dict;
+   }
+ DB.DBA.RDF_QM_ASSERT_JSO_TYPE (root, 'http://www.openlinksw.com/schemas/virtrdf#QuadMap');
+ IF (graph_iri IS NOT NULL AND
+   EXISTS ((SPARQL DEFINE input:storage ""
+       SELECT (1) WHERE {
+           GRAPH `iri(?:graphiri)` {
+               `iri(?:root)` virtrdf:qmGraphRange-rvrFixedValue ?g .
+               FILTER (str (?g) != str(?:graph_iri))
+             } } ) ) )
+   RETURN dict;
+ IF (NOT EXISTS ((SPARQL DEFINE input:storage ""
+       SELECT (1) WHERE {
+           GRAPH `iri(?:graphiri)` {
+               `iri(?:root)` virtrdf:qmMatchingFlags virtrdf:SPART_QM_EMPTY .
+             } } ) ) )
+   dict_put (dict, root, 1);
+ subqms := ((SELECT DB.DBA.VECTOR_AGG (sub."qmiri")
+     FROM (
+       SPARQL DEFINE input:storage ""
+       SELECT DISTINCT (str(?qm)) as ?qmiri
+       WHERE { GRAPH `iri(?:graphiri)` {
+   		`iri(?:root)` virtrdf:qmUserSubMaps ?lst .
+               ?lst ?p ?qm .
+               FILTER (0 = bif:strstr (str(?p), str(rdf:_)))
+             } } ) AS sub ) );
+ FOREACH (VARCHAR qmid IN subqms) DO
+   DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (graph_iri, storage, qmid, dict);
+ RETURN dict;
+}
+;
+
+CREATE FUNCTION DB.DBA.RDF_QM_GROUP_BY_SOURCE_TABLES (in qms ANY) returns ANY
+{
+ DECLARE res ANY;
+ DECLARE ctr INTEGER;
+ DECLARE graphiri VARCHAR;
+ graphiri := DB.DBA.JSO_SYS_GRAPH();
+ res := dict_new (LENGTH (qms) / 20);
+ FOREACH (VARCHAR qmiri IN qms) DO
+   {
+     DECLARE tbls, acc ANY;
+     tbls := ((SELECT DB.DBA.VECTOR_AGG (sub."tbl")
+         FROM (SELECT subsub."tbl"
+           FROM (
+             SPARQL DEFINE input:storage ""
+             SELECT DISTINCT ?tbl
+             WHERE { GRAPH `iri(?:graphiri)` {
+                       { `iri(?:qmiri)` virtrdf:qmTableName ?tbl .
+                       } UNION {
+                         `iri(?:qmiri)` virtrdf:qmATables ?atbls .
+                         ?atbls ?p ?atbl .
+                         ?atbl virtrdf:qmvaTableName ?tbl
+                       } UNION {
+                         `iri(?:qmiri)` ?fldmap ?qmv .
+                         ?qmv virtrdf:qmvATables ?atbls .
+                         ?atbls ?p ?atbl .
+                         ?atbl virtrdf:qmvaTableName ?tbl .
+                       } } } ) subsub
+           ORDER BY 1 ) AS sub ) );
+     acc := dict_get (res, tbls);
+     IF (acc IS NULL)
+       vectorbld_init (acc);
+     vectorbld_acc (acc, qmiri);
+     dict_put (res, tbls, acc);
+   }
+ res := dict_to_vector (res, 2);
+ FOR (ctr := LENGTH (res); ctr &gt; 0; ctr := ctr-2)
+   {
+     DECLARE acc ANY;
+     acc := aref_set_0 (res, ctr-1);
+     vectorbld_final (acc);
+     aset_zap_arg (res, ctr-1, acc);
+   }
+ RETURN res;
+}
+;
+
+--test dbg_obj_princ (DB.DBA.RDF_QM_GROUP_BY_SOURCE_TABLES (dict_list_keys (DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (null), 2)));
+--test dbg_obj_princ (dict_list_keys (DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (null), 2));
+--test DB.DBA.RDF_QM_TREE_DUMP ('dump/demo', null, null, null);
+--test DB.DBA.RDF_QM_TREE_DUMP ('dump/tpch', 'http://localhost:8600/tpch', null, null);
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfperfloading">
+        <title>Loading RDF</title>
+        <para>There are many functions for loading RDF text, in RDF/XML and Turtle.</para>
+        <para>For loading RDF/XML, the best way is to split the data to be loaded into
+multiple streams and load these in parallel using <link linkend="fn_rdf_load_rdfxml"><function>RDF_LOAD_RDFXML ()</function></link>
+
+  .
+To avoid running out of rollback space for large files and in order to have multiple concurrent loads not
+interfere with each other, the row autocommit mode should be enabled.</para>
+        <para>For example, </para>
+        <programlisting>
+log_enable (2);
+-- switch row-by-row autocommit on and logging off for this session
+DB.DBA.RDF_LOAD_RDFXML (file_to_string_output ('file.xml'), 'base_uri', 'target_graph');
+-- more files here ...
+checkpoint;
+</programlisting>
+        <para>Loading a file with text like the above with isql will load the data. Since the transaction
+logging is off, make a manual checkpoint at the end to ensure that data is persisted upon server
+restart since there is no roll forward log.</para>
+        <para>If large amounts of data are to be loaded, run multiple such streams in parallel. One may have
+for example 6 streams for 4 cores. This means that if up to two threads wait for disk, there is still work
+for all cores.</para>
+        <para>Having substantially more threads than processors or disks is not particularly useful.</para>
+        <para>There exist multithreaded load functions which will load one file on multiple threads:
+<link linkend="rdfapidataimportttlpmt">the DB.DBA.TTLP_MT() function</link>
+
+   and
+<link linkend="rdfapidataimportxmlttlpmt">the DB.DBA.RDF_LOAD_RDFXML_MT() function</link>
+
+  . Experience
+shows that loading multiple files on one thread per file is better.</para>
+        <para>For loading Turtle, some platforms may have a non-reentrant Turtle parser. This means that only
+one load may run at a time. One can try this by calling
+<link linkend="rdfapidataimport"><function>ttlp ()</function></link>
+
+   from two sessions at the same time.
+If these do not execute concurrently, then the best way may be to try
+<link linkend="rdfapidataimport"><function>ttlp_mt</function></link>
+
+   and see if this runs faster than
+a single threaded ttlp call.</para>
+        <section xml:id="rdfperfloadingutility">
+          <title>RDF Bulk Load Utility</title>
+          <para>The RDF loader utility facilitates parallel bulk loading of multiple RDF files. The utility
+         	maintains a database table containing a list of files to load and the status of each file,
+         	whether not loaded, loaded or loaded with error. The table also records load start and
+         	end times.</para>
+          <para>One must have a dba group login for using this and the virtuoso.ini file access
+         	control list must be set up so that the Virtuoso server can open  the files to load.</para>
+          <para>Files are added to the load list with the function <link linkend="fn_ld_dir"><function>ld_dir</function></link>
+
+  :</para>
+          <programlisting>
+ld_dir (in dir_path varchar, in file_mask varchar, in target_graph varchar);
+</programlisting>
+          <para>The file mask is a SQL like pattern to match against the files in the directory.
+         	For example:</para>
+          <programlisting>
+ld_dir ('/data8/2848260', '%.gz', 'http://bsbm.org');
+</programlisting>
+          <para>would load the RDF in all files ending in .gz from the directory given as first parameter.
+         	The RDF would be loaded in the http://bsbm.org graph.</para>
+          <para>If NULL is given for the graph, each file may go to a different graph specified in a
+         	separate file with the name of the RDF source file plus the extension .graph.</para>
+          <para>A .graph file contains the target graph URI without any other content or whitespace.</para>
+          <para>The layout of the load_list table is as follows:</para>
+          <programlisting>
+create table DB.DBA.LOAD_LIST (
+  ll_file varchar,
+  ll_graph varchar,
+  ll_state int default 0, -- 0 not started, 1 going, 2 done
+  ll_started datetime,
+  ll_done datetime,
+  ll_host int,
+  ll_work_time integer,
+  ll_error varchar,
+  primary key (ll_file))
+alter index LOAD_LIST on DB.DBA.LOAD_LIST partition (ll_file varchar)
+create index LL_STATE on DB.DBA.LOAD_LIST (ll_state, ll_file, ll_graph) partition (ll_state int)
+;
+</programlisting>
+          <para>This table may be checked at any time during bulk load for the progress of the load.
+         	ll_state is 1 for files being loaded and 2 for files whose loading has finished.
+         	ll_error is NULL if the load finished without error, else it is the error message.</para>
+          <para>In order to load data from the files in load_list, run as dba:</para>
+          <programlisting>
+DB.DBA.rdf_loader_run ();
+</programlisting>
+          <para>One may run several of these commands on parallel sessions for better throughput.</para>
+          <para>On a cluster one can do:</para>
+          <programlisting>
+cl_exec ('rdf_ld_srv ()');
+</programlisting>
+          <para>This will start one <link linkend="fn_rdf_loader_run">rdf_loader_run()</link>
+
+   on each node of the cluster.
+         Note that in such a
+         	setting all the server processes must see the same files at the same path.</para>
+          <para>On an isql session one may execute rdf_loader_run () &amp; several times, forking a new
+         	isql for each such command, similarly to what a Unix shell does.</para>
+          <para>Because this load is non-transactional and non-logged, one must do an explicit checkpoint
+         	after the load to guarantee a persistent state.</para>
+          <para>On a single server do:</para>
+          <programlisting>
+checkpoint;
+</programlisting>
+          <para>On a cluster do:</para>
+          <programlisting>
+cl_exec ('checkpoint');
+</programlisting>
+          <para>The server(s) are online and can process queries and transactions while a bulk load
+         	is in progress. Periodic checkpoints may occur during the load but the state is guaranteed
+         	to be consistent only after running a checkpoint after all the bulk load threads
+         	have finished.</para>
+          <para>A bulk load should not be forcibly stopped. To make a controlled stop, run:</para>
+          <programlisting>
+rdf_load_stop ();
+</programlisting>
+          <para>This will cause the files being loaded at the time to finish load but no new loads
+         	will start until explicitly started with <link linkend="fn_rdf_loader_run">rdf_loader_run()</link>
+
+  .</para>
+          <para>Specially note that on a cluster the database will be inconsistent if one server
+         	process does a checkpoint and another does not. Thus guaranteeing a checkpoint on all
+         	is necessary. This is easily done with an isql script with the following content:</para>
+          <programlisting>
+ld_dir ('/data8/2848260', '%.gz', 'http://bsbm.org');
+
+-- Record CPU time
+select getrusage ()[0] + getrusage ()[1];
+
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+rdf_loader_run () &amp;
+
+wait_for_children;
+checkpoint;
+
+-- Record CPU time
+select getrusage ()[0] + getrusage ()[1];
+</programlisting>
+          <para>For a cluster, the equivalent is:</para>
+          <programlisting>
+ld_dir ('/data8/2848260', '%.gz', 'http://bsbm.org');
+
+cl_exec ('DB.DBA.RDF_LD_SRV (2)');
+
+cl_exec ('checkpoint');
+</programlisting>
+          <para><link linkend="fn_rdf_loader_run">rdf_loader_run()</link>
+
+   recognizes several file types, including .ttl, .nt, .xml, .rdf,
+         	.owl, .nq, .n4, and others. Internally the function uses
+         	<link linkend="fn_ttlp"><function>DB.DBA.ttlp()</function></link>
+
+   or
+         	<link linkend="fn_rdf_load_rdfxml"><function>DB.DBA.rdf_load_rdfxml</function></link>
+
+  ,
+         	as appropriate.</para>
+          <para>See <link linkend="rdfperfloadinglod">the next section</link>
+
+   for detailed description
+         	of the <link linkend="fn_rdf_loader_run">rdf_loader_run()</link>
+
+   function.</para>
+        </section>
+        <section xml:id="rdfperfloadinglod">
+          <title>Loading LOD RDF data</title>
+          <para>To load the rdf data to LOD instance, perform the following steps:
+</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Configure &amp; start cluster</para>
+            </listitem>
+            <listitem>
+              <para>Execute the file:
+</para>
+              <programlisting>
+--
+--  $Id$
+--
+--  Alternate RDF index scheme for cases where G unspecified
+--
+--  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+--  project.
+--
+--  Copyright (C) 1998-2018 OpenLink Software
+--
+--  This project is free software; you can redistribute it and/or modify it
+--  under the terms of the GNU General Public License as published by the
+--  Free Software Foundation; only version 2 of the License, dated June 1991.
+--
+--  This program is distributed in the hope that it will be useful, but
+--  WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+--  General Public License for more details.
+--
+--  You should have received a copy of the GNU General Public License along
+--  with this program; if not, write to the Free Software Foundation, Inc.,
+--  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+--
+--
+
+drop index RDF_QUAD_OGPS;
+checkpoint;
+create table R2 (G iri_id_8, S iri_id_8, P iri_id_8, O any, primary key (S, P, O, G))
+alter index R2 on R2 partition (S int (0hexffff00));
+
+log_enable (2);
+insert into R2 (G, S, P, O) SELECT G, S, P, O from rdf_quad;
+
+drop table RDF_QUAD;
+alter table r2 rename RDF_QUAD;
+checkpoint;
+create bitmap index RDF_QUAD_OPGS on RDF_QUAD (O, P, G, S) partition (O varchar (-1, 0hexffff));
+create bitmap index RDF_QUAD_POGS on RDF_QUAD (P, O, G, S) partition (O varchar (-1, 0hexffff));
+create bitmap index RDF_QUAD_GPOS on RDF_QUAD (G, P, O, S) partition (O varchar (-1, 0hexffff));
+
+checkpoint;
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Execute:
+</para>
+              <programlisting>
+SQL&gt;cl_exec ('checkpoint);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Execute ld_dir ('directory' , 'mask' , 'graph'), for ex:
+</para>
+              <programlisting>
+SQL&gt;ld_dir ('/dbs/data', '*.gz', 'http://dbpedia.org');
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>Execute on every node with separate client:
+</para>
+              <programlisting>
+SQL&gt;rdf_loader_run();
+</programlisting>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section xml:id="rdfperfloadingunitpro">
+          <title>Loading UniProt RDF data</title>
+          <para>To load the uniprot data, create a function for example such as:</para>
+          <programlisting>
+create function DB.DBA.UNIPROT_LOAD (in log_mode integer := 1)
+{
+  DB.DBA.RDF_LOAD_RDFXML_MT (file_to_string_output('filename1'),'http://base_uri_1', 'destination_graph_1', log_mode, 3);
+  DB.DBA.RDF_LOAD_RDFXML_MT (file_to_string_output('filename2'),'http://base_uri_2', 'destination_graph_2', log_mode, 3);
+  ...
+  DB.DBA.RDF_LOAD_RDFXML_MT (file_to_string_output('filename9'),'http://base_uri_9', 'destination_graph_9', log_mode, 3);
+}
+</programlisting>
+          <para>If you are starting from blank database and you can drop it and re-create in case of error signaled, use it this way:</para>
+          <programlisting>
+checkpoint;
+checkpoint_interval(6000);
+DB.DBA.UNIPROT_LOAD (0),
+checkpoint;
+checkpoint_interval(60);
+</programlisting>
+          <para>If the database contains important data already and there's no way to stop it and backup before the load then use:</para>
+          <programlisting>
+checkpoint;
+checkpoint_interval(6000);
+DB.DBA.UNIPROT_LOAD (),
+checkpoint;
+checkpoint_interval(60);
+</programlisting>
+          <para>Note that the 'number of threads' parameter of DB.DBA.RDF_LOAD_RDFXML() mentions threads
+used to process data from file, an extra thread will read the text and parse it,
+so for 4 CPU cores there's no need in parameter value greater than 3. Three processing
+threads per one parsing tread is usually good ratio because parsing is usually three
+times faster than the rest of loading so CPU loading is well balanced.
+If for example you are using 2 x Quad Xeon, then you can choose between 8
+single-threaded parsers or 2 parsers with 3 processing threads each. With 4 cores you may simply load
+file after file with 3 processing threads. The most important performance tuning is to set the
+[Parameters] section of virtuoso configuration file:</para>
+          <programlisting>
+NumberOfBuffers = 1000000
+MaxDirtyBuffers = 800000
+MaxCheckpointRemap = 1000000
+DefaultIsolation = 2
+</programlisting>
+          <para>Note: these numbers are reasonable for 16 GB RAM Linux box. Usually when there are no such massive operations as loading huge database, you can set up the values as:</para>
+          <programlisting>
+NumberOfBuffers = 1500000
+MaxDirtyBuffers = 1200000
+MaxCheckpointRemap = 1500000
+DefaultIsolation = 2
+</programlisting>
+          <tip>
+            <title>See Also:</title>
+            <para> 
+  </para>
+            <para>
+              <link xlink:href="http://www.openlinksw.com/dataspace/dav/wiki/Main/VirtConfigScale#Configuration%20Options">Virtuoso Configuration Options</link>
+            </para>
+          </tip>
+          <tip>
+            <title>Tip:</title>
+            <para>Thus after loading all data you may wish to shutdown, tweak and start server again.
+If you have ext2fs or ext3fs filesystem, then it's better to have enough free space on disk not to
+make it more than 80% full. When it's almost full it may allocate database file badly, resulting
+in measurable loss of disk access speed. That is not Virtuoso-specific fact, but a common hint
+for all database-like applications with random access to big files.</para>
+          </tip>
+          <para>Here is an example of using awk file for splitting big file smaller ones:</para>
+          <programlisting>
+BEGIN {
+	file_part=1000
+	e_line = "&lt;/rdf:RDF&gt;"
+        cur=0
+        cur_o=0
+	file=0
+	part=file_part
+      }
+	{
+	    res_file_i="res/"FILENAME
+	    line=$0
+	    s=$1
+	    res_file=res_file_i"_"file".rdf"
+
+	    if (index (s, "&lt;/rdf:Description&gt;") == 1)
+	    {
+		cur=cur+1
+		part=part-1
+	    }
+
+	    if (part &gt; 0)
+	    {
+	    	print line &gt;&gt; res_file
+	    }
+
+	    if (part == 0)
+	    {
+#		print "===================== " cur
+	    	print line &gt;&gt; res_file
+		print e_line &gt;&gt; res_file
+		close (res_file)
+		file=file+1
+		part=file_part
+	    	res_file=res_file_i"_"file".rdf"
+		system ("cp beg.txt " res_file)
+	    }
+        }
+END { }
+</programlisting>
+        </section>
+        <section xml:id="rdfperfloadingdbpedia">
+          <title>Loading DBPedia RDF data</title>
+          <para>You can use the following script as an example for loading DBPedia RDF data in Virtuoso:</para>
+          <programlisting>
+#!/bin/sh
+
+PORT=$1
+USER=$2
+PASS=$3
+file=$4
+g=$5
+LOGF=`basename $0`.log
+
+if [ -z "$PORT" -o -z "$USER" -o -z "$PASS" -o -z "$file" -o -z "$g" ]
+then
+  echo "Usage: `basename $0` [DSN] [user] [password] [ttl-file] [graph-iri]"
+  exit
+fi
+
+if [ ! -f "$file" -a ! -d "$file" ]
+then
+    echo "$file does not exists"
+    exit 1
+fi
+
+mkdir READY 2&gt;/dev/null
+rm -f $LOGF $LOGF.*
+
+echo "Starting..."
+echo "Logging into: $LOGF"
+
+DOSQL ()
+{
+    isql $PORT $USER $PASS verbose=on banner=off prompt=off echo=ON errors=stdout exec="$1" &gt; $LOGF
+}
+
+LOAD_FILE ()
+{
+    f=$1
+    g=$2
+    echo "Loading $f (`cat $f | wc -l` lines) `date \"+%H:%M:%S\"`" | tee -a $LOG
+
+    DOSQL "ttlp_mt (file_to_string_output ('$f'), '', '$g', 17); checkpoint;" &gt; $LOGF
+
+    if [ $? != 0 ]
+    then
+	echo "An error occurred, please check $LOGF"
+	exit 1
+    fi
+
+    line_no=`grep Error $LOGF | awk '{ match ($0, /line [0-9]+/, x) ; match (x[0], /[0-9]+/, y); print y[0] }'`
+    newf=$f.part
+    inx=1
+    while [ ! -z "$line_no" ]
+    do
+	cat $f |  awk "BEGIN { i = 1 } { if (i==$line_no) { print \$0; exit; } i = i + 1 }"  &gt;&gt; bad.nt
+	line_no=`expr $line_no + 1`
+	echo "Retrying from line $line_no"
+	echo "@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; ." &gt; tmp.nt
+	cat $f |  awk "BEGIN { i = 1 } { if (i&gt;=$line_no) print \$0; i = i + 1 }"  &gt;&gt; tmp.nt
+	mv tmp.nt $newf
+	f=$newf
+	mv $LOGF $LOGF.$inx
+	DOSQL "ttlp_mt (file_to_string_output ('$f'), '', '$g', 17); checkpoint;" &gt; $LOGF
+
+	if [ $? != 0 ]
+	then
+	    echo "An error occurred, please check $LOGF"
+	    exit 1
+	fi
+	line_no=`grep Error $LOGF | awk '{ match ($0, /line [0-9]+/, x) ; match (x[0], /[0-9]+/, y); print y[0] }'`
+	inx=`expr $inx + 1`
+    done
+    rm -f $newf 2&gt;/dev/null
+    echo "Loaded.  "
+}
+
+echo "======================================="
+echo "Loading started."
+echo "======================================="
+
+if [ -f "$file" ]
+then
+    LOAD_FILE $file $g
+    mv $file READY 2&gt;&gt; /dev/null
+elif [ -d "$file" ]
+then
+    for ff in `find $file -name '*.nt'`
+    do
+	LOAD_FILE $ff $g
+	mv $ff READY 2&gt;&gt; /dev/null
+    done
+else
+   echo "The input is not file or directory"
+fi
+echo "======================================="
+echo "Final checkpoint."
+DOSQL "checkpoint;" &gt; temp.res
+echo "======================================="
+echo "Check bad.nt file for skipped triples."
+echo "======================================="
+
+exit 0
+
+</programlisting>
+        </section>
+        <section xml:id="rdfperfloadingbio2rdf">
+          <title>Loading Bio2RDF data</title>
+          <para>The shell script below was used to import files in n3 notation into OpenLink Virtuoso RDF storage.</para>
+          <para>When an syntax error it will cut content from next line and will retry. This was used on ubuntu linux to import bio2rdf and freebase dumps.</para>
+          <para>Note it uses gawk, so it must be available on system where is tried. Also for recovery additional disk space is needed at max the size of original file.</para>
+          <programlisting>
+#!/bin/bash
+
+PASS=$1
+f=$2
+g=$3
+
+# Usage
+if [ -z "$PASS" -o -z "$f" -o -z "$g" ]
+then
+  echo "Usage: $0 [password] [ttl-file] [graph-iri]"
+  exit
+fi
+
+if [ ! -f "$f" ]
+then
+    echo "$f does not exists"
+    exit
+fi
+
+# Your port here
+PORT=1111  #`inifile -f dbpedia.ini -s Parameters -k ServerPort`
+if test -z "$PORT"
+then
+    echo "Cannot find INI and inifile command"
+    exit
+fi
+
+# Initial run
+isql $PORT dba $PASS verbose=on banner=off prompt=off echo=ON errors=stdout exec="ttlp_mt (file_to_string_output ('$f'), '', '$g'); checkpoint;" &gt; $0.log
+
+# If disconnect etc.
+if [ $? != 0 ]
+then
+    echo "An error occurred, please check $0.log"
+    exit
+fi
+
+# Check for error
+line_no=`grep Error $0.log | awk '{ match ($0, /line [0-9]+/, x) ; match (x[0], /[0-9]+/, y); print y[0] }'`
+newf=$f.part
+inx=1
+
+# Error recovery
+while [ ! -z "$line_no" ]
+do
+    cat $f |  awk "BEGIN { i = 0 } { if (i==$line_no) { print \$0; exit; } i = i + 1 }"  &gt;&gt; bad.nt
+    line_no=`expr $line_no + 1`
+    echo "Retrying from line $line_no"
+    cat $f |  awk "BEGIN { i = 0 } { if (i&gt;=$line_no) print \$0; i = i + 1 }"  &gt; tmp.nt
+    mv tmp.nt $newf
+    f=$newf
+    mv $0.log $0.log.$inx
+    # Run the recovered part
+    isql $PORT dba $PASS verbose=on banner=off prompt=off echo=ON errors=stdout exec="ttlp_mt (file_to_string_output ('$f'), '', '$g'); checkpoint;" &gt; $0.log
+
+    if [ $? != 0 ]
+    then
+	echo "An error occurred, please check $0.log"
+	exit
+    fi
+   line_no=`grep Error $0.log | awk '{ match ($0, /line [0-9]+/, x) ; match (x[0], /[0-9]+/, y); print y[0] }'`
+   inx=`expr $inx + 1`
+done
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="rdfperfsparul">
+        <title>Using SPARUL</title>
+        <para>Since SPARUL updates are generally not meant to be transactional, it is
+	    best to run these in <link linkend="fn_log_enable"><function>log_enable (2)</function></link>
+
+   mode,
+	    which commits every operation as it is done. This prevents one from running out of rollback space. Also for bulk updates, transaction logging can be turned off. If so, one should do a manual checkpoint after the operation to ensure persistence across server restart since there is no roll forward log.</para>
+        <para>To have a roll forward log and row by row autocommit, one may use <link linkend="fn_log_enable"><function>log_enable (3)</function></link>
+
+  . This will write constantly into the log which takes extra time. Having no logging and doing a checkpoint when the whole work is finished is faster.</para>
+        <para>Many SPARUL operations can be run in parallel in this way. If they are independent with respect to their input and output, they can run in parallel and row by row autocommit will ensure they do not end up waiting for each others' locks.</para>
+      </section>
+      <section xml:id="rdfperfgeneraldbpedia">
+        <title>DBpedia Benchmark</title>
+        <para>We ran the DBpedia benchmark queries again with different configurations of Virtuoso.
+Comparing numbers given by different parties is a constant problem. In the case reported here,
+we loaded the full DBpedia 3, all languages, with about 198M triples, onto Virtuoso v5 and Virtuoso Cluster
+v6, all on the same 4 core 2GHz Xeon with 8G RAM. All databases were striped on 6 disks. The Cluster
+configuration was with 4 processes in the same box.
+We ran the queries in two variants:
+</para>
+        <itemizedlist>
+          <listitem>
+            <para>With graph specified in the SPARQL FROM clause, using the default indices.</para>
+          </listitem>
+          <listitem>
+            <para>With no graph specified anywhere, using an alternate indexing scheme.</para>
+          </listitem>
+        </itemizedlist>
+        <para>The times below are for the sequence of 5 queries.
+As there is a query in the set that specifies no condition on S or O and only P,
+thus cannot be done with the default indices With Virtuoso v5. With Virtuoso Cluster v6 it can,
+because v6 is more space efficient. So we added the index:</para>
+        <programlisting>
+create bitmap index rdf_quad_pogs on rdf_quad (p, o, g, s);
+</programlisting>
+        <table>
+          <title/>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry/>
+                <entry>Virtuoso v5 with  gspo, ogps, pogs</entry>
+                <entry>Virtuoso Cluster v6 with gspo, ogps</entry>
+                <entry>Virtuoso Cluster v6 with gspo, ogps, pogs</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>cold</entry>
+                <entry>210 s</entry>
+                <entry>136 s</entry>
+                <entry>33.4 s</entry>
+              </row>
+              <row>
+                <entry>warm</entry>
+                <entry>0.600 s</entry>
+                <entry>4.01 s</entry>
+                <entry>0.628 s</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>Now let us do it without a graph being specified. Note that alter index is valid for v6 or higher.
+For all platforms, we drop any existing indices, and:</para>
+        <programlisting>
+create table r2 (g iri_id_8, s, iri_id_8, p iri_id_8, o any, primary key (s, p, o, g))
+alter index R2 on R2 partition (s int (0hexffff00));
+
+log_enable (2);
+insert into r2 (g, s, p, o) SELECT g, s, p, o from rdf_quad;
+
+drop table rdf_quad;
+alter table r2 rename RDF_QUAD;
+create bitmap index rdf_quad_opgs on rdf_quad (o, p, g, s) partition (o varchar (-1, 0hexffff));
+create bitmap index rdf_quad_pogs on rdf_quad (p, o, g, s) partition (o varchar (-1, 0hexffff));
+create bitmap index rdf_quad_gpos on rdf_quad (g, p, o, s) partition (o varchar (-1, 0hexffff));
+</programlisting>
+        <para>The code is identical for v5 and v6, except that with v5 we use iri_id (32 bit) for
+the type, not iri_id_8 (64 bit). We note that we run out of IDs with v5 around a few billion
+triples, so with v6 we have double the ID length and still manage to be vastly more space efficient.</para>
+        <para>With the above 4 indices, we can query the data pretty much in any combination without hitting
+a full scan of any index. We note that all indices that do not begin with s end with s as a bitmap.
+This takes about 60% of the space of a non-bitmap index for data such as DBpedia.</para>
+        <para>If you intend to do completely arbitrary RDF queries in Virtuoso, then chances are
+you are best off with the above index scheme.</para>
+        <table>
+          <title/>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry/>
+                <entry>Virtuoso v5 with  gspo, ogps, pogs</entry>
+                <entry>Virtuoso Cluster v6 with gspo, ogps, pogs</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>warm</entry>
+                <entry>0.595 s</entry>
+                <entry>0.617 s</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+        <para>The cold times were about the same as above, so not reproduced.</para>
+        <para>It is in the SPARQL spirit to specify a graph and for pretty much any application,
+there are entirely sensible ways of keeping the data in graphs and specifying which ones are
+concerned by queries. This is why Virtuoso is set up for this by default.</para>
+        <para>On the other hand, for the open web scenario, dealing with an unknown large number of graphs,
+enumerating graphs is not possible and questions like which graph of which source asserts x become
+relevant. We have two distinct use cases which warrant different setups of the database, simple as that.</para>
+        <para>The latter use case is not really within the SPARQL spec, so implementations may or may not
+support this.</para>
+        <para>Once the indices are right, there is no difference between specifying a graph and not specifying a
+graph with the queries considered. With more complex queries, specifying a graph or set of graphs does
+allow some optimizations that cannot be done with no graph specified. For example, bitmap intersections
+are possible only when all leading key parts are given.</para>
+        <para>The best warm cache time is with v5; the five queries run under 600 ms after the first go.
+This is noted to show that all-in-memory with a single thread of execution is hard to beat.</para>
+        <para>Cluster v6 performs the same queries in 623 ms. What is gained in parallelism is lost in latency
+if all operations complete in microseconds. On the other hand, Cluster v6 leaves v5 in the dust in any
+situation that has less than 100% hit rate. This is due to actual benefit from parallelism if operations
+take longer than a few microseconds, such as in the case of disk reads. Cluster v6 has substantially
+better data layout on disk, as well as fewer pages to load for the same content.</para>
+        <para>This makes it possible to run the queries without the pogs index on Cluster v6 even when v5 takes prohibitively long.</para>
+        <para>The purpose is to have a lot of RAM and space-efficient data representation.</para>
+        <para>For reference, the query texts specifying the graph are below. To run without specifying
+the graph, just drop the FROM &lt;http://dbpedia.org&gt; from each query. The returned row counts are
+indicated below each query's text.</para>
+        <programlisting>
+SQL&gt;SPARQL
+SELECT ?p ?o
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/Metropolitan_Museum_of_Art&gt; ?p ?o .
+  };
+
+p                                                                                 o
+VARCHAR                                                                           VARCHAR
+_______________________________________________________________________________
+
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   http://umbel.org/umbel/ac/Artifact
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   http://dbpedia.org/class/yago/MuseumsInNewYorkCity
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   http://dbpedia.org/class/yago/ArtMuseumsAndGalleriesInTheUnitedStates
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   http://dbpedia.org/class/yago/Museum103800563
+..
+-- 335 rows
+
+SQL&gt;SPARQL
+PREFIX p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?film1 ?actor1 ?film2 ?actor2
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    ?film1 p:starring &lt;http://dbpedia.org/resource/Kevin_Bacon&gt; .
+    ?film1 p:starring ?actor1 .
+    ?film2 p:starring ?actor1 .
+    ?film2 p:starring ?actor2 .
+};
+
+film1                                       actor1                                    film2                                        ctor2
+VARCHAR                                     VARCHAR                                   VARCHAR                                      ARCHAR
+http://dbpedia.org/resource/The_River_Wild  http://dbpedia.org/resource/Kevin_Bacon   http://dbpedia.org/resource/The_River_Wild   http://dbpedia.org/resource/Kevin_Bacon
+http://dbpedia.org/resource/The_River_Wild  http://dbpedia.org/resource/Kevin_Bacon   http://dbpedia.org/resource/The_River_Wild   http://dbpedia.org/resource/Meryl_Streep
+http://dbpedia.org/resource/The_River_Wild  http://dbpedia.org/resource/Kevin_Bacon   http://dbpedia.org/resource/The_River_Wild   http://dbpedia.org/resource/Joseph_Mazzello
+http://dbpedia.org/resource/The_River_Wild  http://dbpedia.org/resource/Kevin_Bacon   http://dbpedia.org/resource/The_River_Wild   http://dbpedia.org/resource/David_Strathairn
+http://dbpedia.org/resource/The_River_Wild  http://dbpedia.org/resource/Kevin_Bacon   http://dbpedia.org/resource/The_River_Wild   http://dbpedia.org/resource/John_C._Reilly
+...
+--  23910 rows
+
+SQL&gt;SPARQL
+PREFIX p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?artist ?artwork ?museum ?director
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    ?artwork p:artist ?artist .
+    ?artwork p:museum ?museum .
+    ?museum p:director ?director
+  };
+
+artist                                          artwork                                              museum                                                                            director
+VARCHAR                                         VARCHAR                                              VARCHAR                                                                           VARCHAR
+_______________________________________________
+
+http://dbpedia.org/resource/Paul_C%C3%A9zanne   http://dbpedia.org/resource/The_Basket_of_Apples     http://dbpedia.org/resource/Art_Institute_of_Chicago                              James Cuno
+http://dbpedia.org/resource/Paul_Signac         http://dbpedia.org/resource/Neo-impressionism        http://dbpedia.org/resource/Art_Institute_of_Chicago                              James Cuno
+http://dbpedia.org/resource/Georges_Seurat      http://dbpedia.org/resource/Neo-impressionism        http://dbpedia.org/resource/Art_Institute_of_Chicago                              James Cuno
+http://dbpedia.org/resource/Edward_Hopper       http://dbpedia.org/resource/Nighthawks               http://dbpedia.org/resource/Art_Institute_of_Chicago                              James Cuno
+http://dbpedia.org/resource/Mary_Cassatt        http://dbpedia.org/resource/The_Child%27s_Bath       http://dbpedia.org/resource/Art_Institute_of_Chicago                              James Cuno
+..
+-- 303 rows
+
+SQL&gt;SPARQL
+PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?s ?homepage
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/Berlin&gt; geo:lat ?berlinLat .
+    &lt;http://dbpedia.org/resource/Berlin&gt; geo:long ?berlinLong .
+    ?s geo:lat ?lat .
+    ?s geo:long ?long .
+    ?s foaf:homepage ?homepage .
+    FILTER (
+      ?lat        &lt;=     ?berlinLat + 0.03190235436 &amp;&amp;
+      ?long       &gt;=     ?berlinLong - 0.08679199218 &amp;&amp;
+      ?lat        &gt;=     ?berlinLat - 0.03190235436 &amp;&amp;
+      ?long       &lt;=     ?berlinLong + 0.08679199218) };
+
+s                                                                                 homepage
+VARCHAR                                                                           VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/Berlin_University_of_the_Arts                         http://www.udk-berlin.de/
+http://dbpedia.org/resource/Berlin_University_of_the_Arts                         http://www.udk-berlin.de/
+http://dbpedia.org/resource/Berlin_Zoological_Garden                              http://www.zoo-berlin.de/en.html
+http://dbpedia.org/resource/Federal_Ministry_of_the_Interior_%28Germany%29        http://www.bmi.bund.de
+http://dbpedia.org/resource/Neues_Schauspielhaus                                  http://www.goya-berlin.com/
+http://dbpedia.org/resource/Bauhaus_Archive                                       http://www.bauhaus.de/english/index.htm
+http://dbpedia.org/resource/Canisius-Kolleg_Berlin                                http://www.canisius-kolleg.de
+http://dbpedia.org/resource/Franz%C3%B6sisches_Gymnasium_Berlin                   http://www.fg-berlin.cidsnet.de
+..
+-- 48 rows
+
+SQL&gt;SPARQL
+PREFIX geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX p: &lt;http://dbpedia.org/property/&gt;
+SELECT ?s ?a ?homepage
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    &lt;http://dbpedia.org/resource/New_York_City&gt; geo:lat ?nyLat .
+    &lt;http://dbpedia.org/resource/New_York_City&gt; geo:long ?nyLong .
+    ?s geo:lat ?lat .
+    ?s geo:long ?long .
+    ?s p:architect ?a .
+    ?a foaf:homepage ?homepage .
+    FILTER (
+      ?lat        &lt;=     ?nyLat + 0.3190235436 &amp;&amp;
+      ?long       &gt;=     ?nyLong - 0.8679199218 &amp;&amp;
+      ?lat        &gt;=     ?nyLat - 0.3190235436 &amp;&amp;
+      ?long       &lt;=     ?nyLong + 0.8679199218) };
+s                                                                                 a               homepage
+VARCHAR                                                                           VARCHAR              VARCHAR
+_______________________________________________________________________________
+
+http://dbpedia.org/resource/GE_Building                                           http://dbpedia.org/resource/Associated_Architects              http://www.associated-architects.co.uk
+http://dbpedia.org/resource/Giants_Stadium                                        http://dbpedia.org/resource/HNTB              http://www.hntb.com/
+http://dbpedia.org/resource/Fort_Tryon_Park_and_the_Cloisters                     http://dbpedia.org/resource/Frederick_Law_Olmsted              http://www.asla.org/land/061305/olmsted.html
+http://dbpedia.org/resource/Central_Park                                          http://dbpedia.org/resource/Frederick_Law_Olmsted              http://www.asla.org/land/061305/olmsted.html
+http://dbpedia.org/resource/Prospect_Park_%28Brooklyn%29                          http://dbpedia.org/resource/Frederick_Law_Olmsted              http://www.asla.org/land/061305/olmsted.html
+http://dbpedia.org/resource/Meadowlands_Stadium                                   http://dbpedia.org/resource/360_Architecture              http://oakland.athletics.mlb.com/oak/ballpark/new/faq.jsp
+http://dbpedia.org/resource/Citi_Field                                            http://dbpedia.org/resource/HOK_Sport_Venue_Event              http://www.hoksve.com/
+http://dbpedia.org/resource/Citigroup_Center                                      http://dbpedia.org/resource/Hugh_Stubbins_Jr.              http://www.klingstubbins.com
+http://dbpedia.org/resource/150_Greenwich_Street                                  http://dbpedia.org/resource/Fumihiko_Maki              http://www.pritzkerprize.com/maki2.htm
+http://dbpedia.org/resource/Freedom_Tower                                         http://dbpedia.org/resource/David_Childs              http://www.som.com/content.cfm/www_david_m_childs
+http://dbpedia.org/resource/7_World_Trade_Center                                  http://dbpedia.org/resource/David_Childs              http://www.som.com/content.cfm/www_david_m_childs
+http://dbpedia.org/resource/The_New_York_Times_Building                           http://dbpedia.org/resource/Renzo_Piano              http://www.rpbw.com/
+http://dbpedia.org/resource/Trump_World_Tower                                     http://dbpedia.org/resource/Costas_Kondylis              http://www.kondylis.com
+
+13 Rows. -- 2183 msec.
+</programlisting>
+      </section>
+      <section xml:id="rdfstorebenchmarks">
+        <title>RDF Store Benchmarks</title>
+        <section xml:id="rdfstorebenchmarksintroduction">
+          <title>Introduction</title>
+          <para>In a particular RDF Store Benchmarks there is difference if the queries are
+executed with specified graph or with specified multiple graphs. As Virtuoso is quad store,
+not triple store with many tables, it runs queries inefficiently if graphs are specified
+and there are no additional indexes except pre-set GSPO and OGPS. Proper use of the FROM clause
+or adding indexes with graph column will contribute for better results.
+       </para>
+        </section>
+        <section xml:id="rdfstorebenchmarksindexusage">
+          <title>Using bitmap indexes</title>
+          <para>If is known in advance for the current RDF Store Benchmarks that some
+users will not indicate specific graphs then should be done: </para>
+          <itemizedlist>
+            <listitem>
+              <para>either create indexes with graph in last position</para>
+            </listitem>
+            <listitem>
+              <para>or load everything into single graph and specify it somewhere in querying application.</para>
+            </listitem>
+          </itemizedlist>
+          <para>Both methods do not require any changes in query texts</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>For users using Virtuoso 5 is strongly recommended is the usage of additional bitmap indexes:
+</para>
+              <programlisting>
+SQL&gt; create bitmap index RDF_QUAD_POGS on DB.DBA.RDF_QUAD (P,O,G,S);
+SQL&gt; create bitmap index RDF_QUAD_PSOG on DB.DBA.RDF_QUAD (P,S,O,G);
+</programlisting>
+            </listitem>
+            <listitem>
+              <para>For users using Virtuoso 6 or higher, see the new layout 
+              <link linkend="rdfperfrdfscheme">here</link>
+              .</para>
+            </listitem>
+          </itemizedlist>
+          <para>You can create other indexes as well. Bitmap indexes are preferable, but
+if O is the last column, then the index can not be bitmap, so it could be, for e.g.:</para>
+          <programlisting>
+create index RDF_QUAD_PSGO on DB.DBA.RDF_QUAD (P, S, G, O);
+</programlisting>
+          <para>but cannot be:</para>
+          <programlisting>
+create bitmap index RDF_QUAD_PSGO on DB.DBA.RDF_QUAD (P, S, G, O);
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="fastapproxdiffandpatch">
+        <title>Fast Approximate RDF Graph Diff and Patch</title>
+        <para>Two algorithms described below resemble "unified diff" and "patch by unified diff"
+but they work on RDF graphs, not on plain texts.
+</para>
+        <para>They work reasonably for graphs composed from CBDs (concise bounded descriptions) of
+some subjects, if these subjects are either "named" IRIs or can be identified by values of
+their inverse functional properties.
+</para>
+        <para>Many sorts of commonly used graphs match these restrictions, including all graphs
+without blank nodes, most of FOAF files, graphs that can be "pretty-printed" in JSON, most
+of dumps of relational databases etc.
+</para>
+        <para>The basic idea is as simple as zipper:
+</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para>Place one graph at the left and one to the right,</para>
+          </listitem>
+          <listitem>
+            <para>Find a retainer box at the right and a matching pin at the left,</para>
+          </listitem>
+          <listitem>
+            <para>Join them</para>
+          </listitem>
+          <listitem>
+            <para>Pull the slider as long as possible.</para>
+          </listitem>
+          <listitem>
+            <para>Repeat this while there are pins and boxes that can be matched and sliders that can be moved.</para>
+          </listitem>
+        </itemizedlist>
+        <para>An IRI in left graph <code>(say, G1)</code>
+
+   matches to same IRI in right graph <code>(G2)</code>
+
+as pin to box. The same is true for literals too.
+</para>
+        <para>Functional and inverse functional properties are teeth that form chains, algorithm "moves sliders" along these chains, incrementally connecting more and more nodes.
+</para>
+        <para>If there is a match of this sort <code>(O1 in G1 matches O2 in G2)</code>
+
+   and the matched nodes
+are values of same inverse functional property <code>P</code>
+
+   (there are <code>{ S1 P O1 }</code>
+
+   in
+<code>G1</code>
+
+   and <code>{ S2 P O2 }</code>
+
+    in <code>G2</code>
+
+  ) then we guess that <code>S1</code>
+
+matches <code>S2</code>
+
+  .
+</para>
+        <para>If <code>S1</code>
+
+   in <code>G1</code>
+
+   matches <code>S2</code>
+
+   in <code>G2</code>
+
+   and the matched
+nodes are subjects of same functional property <code>P</code>
+
+   ( there are <code>{ S1 P N1 }</code>
+
+   in
+<code>G1</code>
+
+   and <code>{ S2 P N2 }</code>
+
+   in <code>G2</code>
+
+   ) then we guess that <code>N1</code>
+
+matches <code>N2</code>
+
+  , now it's possible to try same interaction on triples where <code>N1</code>
+
+   and
+<code>N2</code>
+
+   are in subject position, that's how slides move. A typical example of a long zipper
+is closed list with matched heads.
+</para>
+        <section xml:id="fastapproxdiffandpatchhow">
+          <title>Make a Diff And Use It</title>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para>Using
+              <link linkend="fn_rdf_graph_diff">DB.DBA.RDF_GRAPH_DIFF</link> </para>
+            </listitem>
+            <listitem>
+              <para>Using 
+              <link linkend="fn_rdf_suo_diff_ttl">DB.DBA.RDF_SUO_DIFF_TTL</link></para>
+            </listitem>
+            <listitem>
+              <para>Using 
+              <link linkend="fn_rdf_suo_apply_patch">DB.DBA.RDF_SUO_APPLY_PATCH</link></para>
+            </listitem>
+          </itemizedlist>
+        </section>
+        <section xml:id="fastapproxdiffandpatchclt">
+          <title>Collect Functional And Inverse Functional Properties</title>
+          <para>Lists of functional properties can be retrieved from an ontology graph by query like:</para>
+          <programlisting>
+SPARQL define output:valmode "LONG"
+SELECT (&lt;LONG::sql:VECTOR_AGG(?s))
+FROM &lt;my-ontology-graph&gt;
+WHERE
+  {
+    ?s a owl:functionalProperty
+  }
+</programlisting>
+          <para>Inverse functional properties could be retrieved by a similar query, but unfortunately the
+	ontology may mention so called NULL values that can be property values for many subjects. Current
+	implementation of diff and patch does not recognize NULL values so they can cause patch with
+	"false alarm" errors. The workaround is to retrieve only properties that have no NULL values declared:
+</para>
+          <programlisting>
+SPARQL define output:valmode "LONG"
+SELECT (&lt;LONG::sql:VECTOR_AGG(?s))
+FROM &lt;my-ontology-graph&gt;
+WHERE
+  {
+    ?s a owl:inverseFunctionalProperty .
+    OPTIONAL { ?s owl:nullIFPValue ?v }
+    FILTER (!Bound(?v))
+  }
+</programlisting>
+          <para>If no ontology is available then appropriate predicates can be obtained from sample graphs using
+	<link linkend="fn_rdf_graph_collect_fp_list">DB.DBA.RDF_GRAPH_COLLECT_FP_LIST</link>
+
+  .
+</para>
+        </section>
+        <section xml:id="fastapproxdiffandpatchimpl">
+          <title>Implementation-Specific Extensions of GUO Ontology</title>
+          <para><emphasis>Note</emphasis>
+
+  : This section contains implementation details that are needed only
+if you want to write your own patch or diff procedure, you don't have to worry about internals if
+you want to use existing procedures.
+</para>
+          <para>Basic GUO ontology is not expressive enough to work with blank nodes, so some custom extensions $
+are needed.
+</para>
+          <para>In the rest of the description:</para>
+          <programlisting>
+@prefix guo: &lt;http://webr3.org/owl/guo#&gt;
+</programlisting>
+          <para>is assumed.</para>
+          <para>The diff contains one node of <code>rdf:type guo:diff</code>
+
+  .
+</para>
+          <para>For debugging purpose it has properties <code>guo:graph1</code>
+
+   and <code>guo:graph2</code>
+
+   that
+corespond to <code>gfrom</code>
+
+   and <code>gto</code>
+
+   arguments of <link linkend="fn_rdf_suo_diff_ttl">DB.DBA.RDF_SUO_DIFF_TTL</link>
+
+  .
+</para>
+          <para>The diff also contains zero or more nodes of <code>rdf:type guo:UpdateInstruction</code>
+
+  . These
+nodes are as described in basic GUO ontology, but <code>guo:target_graph</code>
+
+   is now optional,
+<code>guo:target_subject</code>
+
+   can be a blank node and objects of predicates "inside" values of
+<code>guo:insert</code>
+
+   and <code>guo:delete</code>
+
+   can also be blank nodes. These blank nodes are
+"placeholders" for values, calculated according to the most important GUO extension - rule nodes.
+</para>
+          <para>There are eight sorts of rule nodes, four for <code>gfrom</code>
+
+   side of diff and four similar for
+<code>gto</code>
+
+   side. Out of four sorts related to one side, two are for functional properties and
+two similar are for inverse functional properties. Thus <code>rdf:type-s</code>
+
+   of these nodes are:
+</para>
+          <programlisting>
+guo:from-rule-FP0,
+guo:from-rule-FP1,
+guo:from-rule-IFP0,
+guo:from-rule-IFP1
+</programlisting>
+          <para>and
+</para>
+          <programlisting>
+guo:to-rule-FP0,
+guo:to-rule-FP1,
+guo:to-rule-IFP ,
+guo:to-rule-IFP1 .
+</programlisting>
+          <para>Each rule node has property <code>guo:order</code>
+
+   that is an non-negative integer.
+</para>
+          <para>These integers enumerate all <code>guo:from-rule-</code>
+
+  ... nodes, starting from zero.
+</para>
+          <para>When patch procedure works, these rules are used in this order, the result of each rule
+	is a blank node that either exists in the graph or just created.
+</para>
+          <para>All results are remembered for use in the rest of the patch procedure.
+</para>
+          <para>Similarly, other sequence of these integers enumerate all <code>guo:to-rule-</code>
+
+  ... nodes,
+also starting from zero.
+</para>
+          <para>Consider a sequence of <code>guo:from-rule-</code>
+
+  ... nodes, because <code>guo:to-rule-</code>
+
+nodes have identical properties.
+</para>
+          <para>A rule node can have zero or more values of <code>guo:dep</code>
+
+   property, each value is a
+bnode that is rule node that should be calculated before the current one.
+</para>
+          <para>Every rule has exactly one predicate <code>guo:path</code>
+
+   that is a blank node. Each property
+of this blank node describes one possible "move of slider": predicate to follow is in predicate
+position and a node to start from is in object position. An IRI or a literal in object position is
+used as is, a blank node in object position should be of type <code>guo:from-rule-</code>
+
+  ... and
+have smaller <code>guo:order</code>
+
+   so it refers to already calculated result bnode of some
+preceding rule.
+</para>
+          <para>Rule of form:
+</para>
+          <programlisting>
+R a guo:from-rule-IFP1 ;
+  guo:path [ P1 O1 ; P2 O2 ; ... ; Pn On ] .
+</programlisting>
+          <para>searches for a unique blank node <code>_:Rres</code>
+
+   that is a common subject of triples:
+</para>
+          <programlisting>
+ _:Rres P1 O1
+ _:Rres P2 O2
+  . . .
+ _:Rres Pn On
+</programlisting>
+          <para>in the gfrom graph.
+</para>
+          <para>If subjects differ in these triples or some triples are not found or the subject is not a
+	blank node then an appropriate error is logged and rule fails, otherwise <code>_:Rres</code>
+
+	is remembered as the result of the rule.
+</para>
+          <para>Similarly, rule of form:
+</para>
+          <programlisting>
+R a guo:from-rule-FP1 ;
+  guo:path [ P1 O1 ; P2 O2 ; ... ; Pn On ] .
+</programlisting>
+          <para>searches for a unique blank node <code>_:Rres</code>
+
+   that is a common object of triples:
+</para>
+          <programlisting>
+ O1 P1 _:Rres
+ O2 P2 _:Rres
+  . . .
+ On Pn _:Rres
+</programlisting>
+          <para>in the gfrom graph.
+</para>
+          <para>Rule of form:
+</para>
+          <programlisting>
+R a guo:from-rule-IFP0 ;
+  guo:path [ P1 O1 ; P2 O2 ; ... ; Pn On ] .
+</programlisting>
+          <para>ensures that the <code>gfrom</code>
+
+   graph does not contain any triple like:
+</para>
+          <programlisting>
+ _:Rres P1 O1
+ _:Rres P2 O2
+</programlisting>
+          <para>or
+</para>
+          <programlisting>
+_:Rres Pn On
+</programlisting>
+          <para>It is an error if something exists. If nothing found then the result of the rule is
+	newly created unique blank node. That's how patch procedure creates new blank nodes when
+	it inserts "totally new" data.
+</para>
+          <para>Similarly, rule of form:
+</para>
+          <programlisting>
+R a guo:from-rule-IFP0 ;
+  guo:path [ P1 O1 ; P2 O2 ; ... ; Pn On ] .
+</programlisting>
+          <para>ensures that the <code>gfrom</code>
+
+   graph does not contain any triple like:
+</para>
+          <programlisting>
+O1 P1 _:Rres
+O2 P2 _:Rres
+</programlisting>
+          <para>or
+</para>
+          <programlisting>
+ On Pn _:Rres
+</programlisting>
+          <para>Current version of patch procedure does not use rules <code>guo:to-rule-</code>
+
+  ...  ,
+however they can be used by custom procedure of few sorts. First, these rules can be used to
+produce a "reversed diff". Next, these rules can be used to validate the result of the patch -
+if the patch can not be reverted then the result is "suspicious".
+</para>
+        </section>
+      </section>
+      <section xml:id="rdb2rdftriggers">
+        <title>RDB2RDF Triggers</title>
+        <para>Linked Data Views have many advantages, if compared to static dumps of the database in RDF triples.
+	However, they does not solve few problems. First, inference is supported only for physically stored
+	triples, so one had to chose between convenience of inference and convenience of Linked Data Views. Next,
+	algorithms that selects triples with non-constant graphs and predicates tend to produce enormous
+	texts of SQL queries if Linked Data Views are complicated enough. Finally, there may be a need in export
+	of big and fresh static RDF dump but preparing this dump would take too much time via both RDF
+	Views and traditional methods.
+</para>
+        <para>The solution is set of triggers on source tables of an Linked Data View that edit parts of physical
+	dump on each change of source data. Unlike Linked Data Views that cost nothing while not queried, these
+	triggers add a significant overhead on any data manipulation on sources, continuously. To
+	compensate this, the dump should be in an intensive use and not replaceable by Linked Data Views. In
+	other cases, do not add these triggers.
+</para>
+        <para>It is next to impossible to write such triggers by hands so a small API is provided to
+	generate SQL texts from metadata of Linked Data Views.
+</para>
+        <para>First of all, views in an RDF storage does not work in full isolation from each other.
+	Some of them may partially disable others due to OPTION(EXCLUSIVE) and some may produce one
+	triple in different ways. As a result, triggers are not made on per-view basis. Instead, a
+	special RDF storage is introduced, namely virtrdf:SyncToQuads , all required triples are
+	added to it and triggers are created for the whole storage. Typically an Linked Data View is created
+	in some other storage, e.g., virtrdf:DefaultQuadStorage and then added to virtrdf:SyncToQuads via:
+</para>
+        <programlisting>
+sparql alter quad storage virtrdf:SyncToQuads {
+   create &lt;my_rdf_view&gt; using storage virtrdf:DefaultQuadStorage };
+</programlisting>
+        <para>The following example procedure copies all user-defined Linked Data Views from default quad storage
+	to virtrdf:SyncToQuads:
+</para>
+        <programlisting>
+create procedure DB.DBA.RDB2RDF_COPY_ALL_RDF_VIEWS_TO_SYNC ()
+{
+  for (sparql define input:storage ""
+    select (bif:aref(bif:sprintf_inverse (str(?idx), bif:concat (str(rdf:_), "%d"), 0), 0)) ?qm
+    from virtrdf:
+    where { virtrdf:DefaultQuadStorage-UserMaps ?idx ?qm . ?qm a virtrdf:QuadMap }
+    order by asc (bif:sprintf_inverse (bif:concat (str(rdf:_), "%d"), str (?idx), 1)) ) do
+    exec (sprintf ('sparql alter quad storage virtrdf:SyncToQuads { create &lt;%s&gt; using storage virtrdf:DefaultQuadStorage }', "qm"));
+}
+;
+</programlisting>
+        <para>When the virtrdf:SyncToQuads storage is fully prepared, two API functions can be used:
+</para>
+        <itemizedlist mark="bullet">
+          <listitem>
+            <para><link linkend="fn_sparql_rdb2rdf_list_tables">DB.DBA.SPARQL_RDB2RDF_LIST_TABLES</link>
+            :
+  The function returns a vector of names of tables that are used as sources for Linked Data Views. Application
+  developer should decide what to do with each of them - create triggers or do some application-specific
+  workarounds.
+  </para>
+            <para>Note that if some SQL views are used as sources for Linked Data Views and these views does not have
+  	INSTEAD triggers then workarounds become mandatory for them, not just a choice, because BEFORE
+  	or AFTER triggers on views are not allowed if there is no appropriate INSTEAD trigger. The mode
+  	argument should be zero in current version.
+  </para>
+          </listitem>
+          <listitem>
+            <para><link linkend="fn_sparql_rdb2rdf_codegen">DB.DBA.SPARQL_RDB2RDF_CODEGEN</link>
+            : The
+  function creates an SQL text for a given table and an operation specified by an opcode.
+  </para>
+          </listitem>
+        </itemizedlist>
+        <para>In some cases, Linked Data Views are complicated enough so that BEFORE UPDATE and AFTER DELETE
+	triggers are required in additional to the minimal set. In this case, sparql_rdb2rdf_codegen
+	calls will return a vector of two string sessions, not single string session, and both sessions
+	are sql texts to inspect or execute. In this case, the BEFORE trigger will not delete obsolete
+	quads from RDF_QUAD table, instead it will create records in a special table RDF_QUAD_DELETE_QUEUE
+	as guesses what can be deleted. The AFTER trigger will re-check these guesses, delete related quads
+	if needed and shorten the RDF_QUAD_DELETE_QUEUE.
+</para>
+        <para>The extra activity of triggers on RDF_QUAD, RDF_OBJ, RDF_QUAD_DELETE_QUEUE and other tables
+	and indexes of the storage of "physical" triples may cause deadlocks so the application should
+	be carefully checked for proper support of deadlocks if they were very seldom before turning
+	RDB2RDF triggers on. In some cases, the whole processing of RDB2RDF can be moved to a separate
+	server and connected to the main workhorse server via replication.
+</para>
+        <para>The following example functions create texts of all triggers, save them to files in for
+	further studying and try to load them. That's probably quite bad scenario for a production
+	database, because it's better to read procedures before loading them, especially if they're
+	triggers, especially if some of them may contain errors.
+</para>
+        <programlisting>
+-- This creates one or two files with one or two triggers or other texts and try to load the
+generated sql texts.
+create procedure DB.DBA.RDB2RDF_EXEC_CODEGEN1_FOR_TABLE
+(  in dump_prefix varchar,
+   in tbl varchar,
+   in dump_id any,
+   in txt any )
+{
+  declare fname varchar;
+  declare stat, msg varchar;
+  if (isinteger (dump_id))
+    dump_id := cast (dump_id as varchar);
+  if (__tag of vector = __tag (txt))
+    {
+      DB.DBA.RDB2RDF_EXEC_CODEGEN1_FOR_TABLE (dump_prefix, tbl, dump_id, txt[0]);
+      DB.DBA.RDB2RDF_EXEC_CODEGEN1_FOR_TABLE (dump_prefix, tbl, dump_id || 'p' , txt[1]);
+      return;
+    }
+  if (__tag of varchar &lt;&gt; __tag (txt))
+    txt := string_output_string (txt);
+  fname := sprintf ('%s_Rdb2Rdf.%s.%s.sql', dump_prefix, tbl, dump_id);
+  string_to_file (fname, txt || '\n;\n', -2);
+  if ('0' = dump_id)
+    return;
+  stat := '00000';
+  msg := '';
+  exec (txt, stat, msg);
+  if ('00000' &lt;&gt; stat)
+    {
+      string_to_file (fname, '\n\n- - - - - 8&lt; - - - - -\n\nError ' || stat || ' ' || msg, -1);
+      if (not (subseq (msg, 0, 5) in ('SQ091')))
+        signal (stat, msg);
+    }
+}
+;
+
+-- This creates and loads all triggers, init procedure and debug dump related to one table.
+create procedure DB.DBA.RDB2RDF_PREPARE_TABLE (in dump_prefix varchar, in tbl varchar)
+{
+  declare ctr integer;
+  for (ctr := 0; ctr &lt;= 4; ctr := ctr+1 )
+    DB.DBA.RDB2RDF_EXEC_CODEGEN1_FOR_TABLE (dump_prefix, tbl, ctr, sparql_rdb2rdf_codegen (tbl, ctr));
+}
+;
+
+-- This creates and loads all triggers, init procedure and debug dump related to all tables used by and Linked Data View.
+create procedure DB.DBA.RDB2RDF_PREPARE_ALL_TABLES (in dump_prefix varchar)
+{
+  declare tbl_list any;
+  tbl_list := sparql_rdb2rdf_list_tables (0);
+  foreach (varchar tbl in tbl_list) do
+    {
+      DB.DBA.RDB2RDF_PREPARE_TABLE (dump_prefix, tbl);
+    }
+}
+;
+</programlisting>
+        <para>The following combination of calls prepares all triggers for all Linked Data Views of the default storage:
+</para>
+        <programlisting>
+DB.DBA.RDB2RDF_COPY_ALL_RDF_VIEWS_TO_SYNC ();
+DB.DBA.RDB2RDF_PREPARE_ALL_TABLES (cast (now() as varchar));
+</programlisting>
+        <para>This does not copy the initial state of RDB2RDF graphs to the physical storage, because this can
+	be dangerous for existing RDF data and even if all procedures will work as expected then they may
+	produce huge amounts of RDF data, run out of transaction log limits and thus require
+	application-specific precautions. It is also possible to make initial loading by a SPARUL statements
+	like:
+</para>
+        <programlisting>
+SPARQL
+INSERT IN &lt;snapshot-graph&gt; { ?s ?p ?o }
+FROM &lt;snapshot-htaph&gt;
+WHERE
+ { quad map &lt;id-of-rdf-view&gt;
+ 	  { ?s ?p ?o }
+ };
+</programlisting>
+      </section>
+    </section>

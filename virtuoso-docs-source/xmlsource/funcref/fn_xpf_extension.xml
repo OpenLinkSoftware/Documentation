@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xpf_extension">
+      <refmeta>
+        <refentrytitle>xpf_extension
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>xpf_extension
+</refname>
+        <refpurpose>declare an XPath extension function 
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xpf_extension">
+          <funcprototype xml:id="fproto_xpf_extension">
+            <funcdef>void 
+<function>xpf_extension
+</function>
+
+</funcdef>
+            <paramdef choice="opt">in 
+<parameter>fname
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>procedure_name
+</parameter>
+
+   varchar
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xpf_extension">
+        <title>Description
+</title>
+        <para>
+    This function is used to declare a new XPath extension function or
+redefine an existing function. It can be used in XPath queries and
+XSLT stylesheets. You should use QNames for extension functions.
+Note that the standard XPath functions cannot be redefined.</para>
+        <para><function>xpf_extension()</function>
+
+   stores the functions into
+the SYS_XPF_EXTENSIONS system table.
+    </para>
+        <programlisting>
+      CREATE TABLE
+        DB.DBA.SYS_XPF_EXTENSIONS (
+	    XPE_NAME VARCHAR PRIMARY KEY,
+	    XPE_PNAME VARCHAR
+	    )
+    </programlisting>
+        <para>
+    The input parameters will be retrieved as a strings and then will be converted to the datatype of
+    the corresponding argument of the stored procedure.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xpf_extension">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>fname
+</title>
+          <para>The name of the extension function, which must be the expanded QName
+      of the extension function
+</para>
+        </refsect2>
+        <refsect2>
+          <title>procedure_name
+</title>
+          <para>The fully qualified name of the PL procedure which acts as
+      the extension function. The procedure in question must be granted to PUBLIC,
+      otherwise it will not be registered and error will be signalled.
+
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xpf_extension">
+        <title>Return Types
+</title>
+        <para>None (void).
+</para>
+      </refsect1>
+      <refsect1 xml:id="errors_xpf_extension">
+        <title>Errors
+</title>
+        <table>
+          <title>Errors signalled by
+</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>SQLState
+</entry>
+                <entry>Error Code
+</entry>
+                <entry>Error Text
+</entry>
+                <entry>Description
+</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <errorcode>42001
+</errorcode>
+                </entry>
+                <entry>
+                  <errorcode>XPE01
+</errorcode>
+                </entry>
+                <entry>
+                  <errortext>The function &lt;procedure_name&gt; does not exists
+</errortext>
+                </entry>
+                <entry>if procedure to define as a XPATH extension function is not existing one.
+</entry>
+              </row>
+              <row>
+                <entry>
+                  <errorcode>42001
+</errorcode>
+                </entry>
+                <entry>
+                  <errorcode>XPE02
+</errorcode>
+                </entry>
+                <entry>
+                  <errortext>The 
+&lt;built-in XPATH|XQUERY&gt; function "
+&lt;func name&gt;" cannot be re-defined</errortext>
+                </entry>
+                <entry>if XPATH or XQUERY function to be registered is a core function.
+</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </refsect1>
+      <refsect1 xml:id="examples_xpf_extension">
+        <title>Examples
+</title>
+        <example xml:id="ex_xpf_extension">
+          <title>Declaring a New XSLT Function
+</title>
+          <para>First define a PL procedure, then declare an XPath extension
+function and to represent it.</para>
+          <programlisting>
+SQL&gt; create procedure DB.DBA.str_concat (in a varchar, in b varchar)
+     {
+       return concat (a, ':', b);
+     };
+
+SQL&gt; xpf_extension ('http://example.com/virtuoso/xslt:concat_strings', 'DB.DBA.str_concat');
+</programlisting>
+          <para> The source of the ([http_root]/ext.xsl) XSLT stylesheet </para>
+          <programlisting>
+&lt;?xml version='1.0'?&gt;
+
+&lt;xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/TR/WD-xsl"
+  xmlns:virt="http://example.com/virtuoso/xslt"&gt;
+
+  &lt;xsl:template match="/doc"&gt;
+    &lt;HTML&gt;
+     &lt;BODY&gt;
+     &lt;xsl:if test="function-available('virt:concat_strings')"&gt;
+      &lt;xsl:value-of select="virt:concat_strings ('foo', 'bar')"/&gt;
+     &lt;/xsl:if&gt;
+     &lt;/BODY&gt;
+    &lt;/HTML&gt;
+  &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</programlisting>
+          <para>The source of the
+<programlisting>([http_root]/ext.vsp)</programlisting> VSP page:
+</para>
+          <programlisting>
+&lt;?vsp
+  http_xslt ('file:/ext.xsl');
+?&gt;
+&lt;doc&gt;
+&lt;a/&gt;
+&lt;/doc&gt;
+</programlisting>
+          <para>
+This will produce the following HTML page:
+</para>
+          <programlisting>
+&lt;HTML&gt;&lt;BODY&gt;foo:bar&lt;/BODY&gt;&lt;/HTML&gt;
+</programlisting>
+          <para>Using the definition of the XPath extension function, we can
+include it in XPath expressions.</para>
+          <programlisting>
+SQL&gt; select p from ws..sys_dav_res
+where xpath_contains (RES_CONTENT,
+'[xmlns:virt=''http://example.com/virtuoso/xslt'']
+virt:concat_strings (''Title '', string(/chapter/title))', p);
+</programlisting>
+          <para>This will return the contents of any '/chapter/title' nodes, prefixed
+with constant string 'Title'.
+</para>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xpf_extension">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xpf_extension_remove">
+            <function>xpf_extension_remove
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

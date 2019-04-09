@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="sequenceobjects">
+      <title>Sequence Objects</title>
+      <para>
+Virtuoso supports sequence objects. These can be used to generate sequential
+numbers which can be used as unique identifiers.  A sequence object is
+guaranteed never to give the same number twice.  Each sequence has a
+name and a state. The state of a sequence is stored in the database at
+checkpoint time. Between checkpoints sequence states are logged so that
+a possible roll forward recovery will not lose information.
+</para>
+      <para>
+The SQL functions <function>sequence_next</function>
+
+  () and <function>sequence_set</function>
+
+  () are used to access
+and set the state of sequences.  These take the name of the sequence as
+argument.  This is a server/wide unique string. There are no restrictions
+on the length or character set of the sequence
+</para>
+      <para>
+Sequences do not have to be separately created.  A sequence object
+will automatically be generated when first referenced by <function>sequence_next</function>
+
+  ()
+or sequence_set.
+</para>
+      <programlisting>sequence_next (in name varchar) returns integer
+</programlisting>
+      <programlisting>sequence_set (in name varchar, in state integer, in mode integer)
+		returns integer
+</programlisting>
+      <para>
+Function <function>sequence_next</function>
+
+  () returns the current state of the specified sequence and
+atomically increments it by one.  The next call will thus return a
+number one greater than the previous. The sequence is shared between
+all connections and all transactions.  Using a sequence never involves
+locking.
+</para>
+      <para>
+Function <function>sequence_set</function>
+
+  () sets and returns the state of a sequence object.  The next
+call to <function>sequence_next</function>
+
+  () will return this same number.  If mode equals 0,
+the state is set regardless of the previous state. If mode is non-zero,
+the state is set only if the new state is greater then the previous
+state.  Calling sequence_set ('sequence'' , 0, 1) will always return
+the sequence's state without changing it.
+</para>
+      <para>
+      Each autoincrement column corresponds to an internal sequence object.
+  The name of the sequence object is'DB.DBA.' plus the concatenation
+  of the table's qualifier, owner, table name and column name,
+  e.g. 'DB.DBA.db.dba.my_table.ai_column'.  The user does not
+  normally need to know about the sequence associated with an autoincrement
+  column unless he or she wishes to change the sequence values using the
+  <function>sequence_set()</function>
+
+   function and the sequence objects name.</para>
+      <para>
+See the section on identity columns under create table and the function identity_value and the related ODBC statement option SQL_GETLASTSERIAL for more.
+</para>
+    </section>

@@ -1,0 +1,660 @@
+
+
+H1 Transitivity in SQL
+
+
+Virtuoso SQL supports tree and graph data structures represented with SQL relations through the use of transitive subqueries.
+
+A derived table, i..e. a select inside a from clause, can be declared to be transitive.  This is done by putting the TRANSITIVE modifier after the SELECT keyword, at the place where a DISTINCT or TOP modifier would go.
+
+The syntax of this is:
+
+transitive_decl ::= TRANSITIVE <trans_option>[, ...]
+
+trans_option ::= 
+T_DISTINCT 
+| T_NO_CYCLES
+| T_CYCLES_ONLY
+| T_IN ( <position_list> )
+| T_OUT ( <position_list )
+| T_MAX INTNUM 
+| T_MIN INTNUM
+| T_DIRECTION INTNUM
+| T_EXISTS
+| T_END_FLAG INTNUM
+
+
+position_list ::=  INTNUM [,...]
+
+position_or_path_spec ::= INTNUM | 'step_no' | 'path_id'
+
+
+A transitive derived table has a selection that may consist of four different types of columns.  These are input, output, step data and special columns.
+When a transitive derived table occurs in a query, the enclosing query must specify an equality condition for either all input, all output columns or both.
+The designation of input and output columns is for convenience only.  The order of query execution will be generally decided by the optimizer, unless overridden with the T_DIRECTION option.
+
+Consider a simplified social network application:
+
+create table knows (p1 int, p2 int, primary key (p1, p2))
+alter index knows on knows partition (p1 int);
+create index knows2 on knows (p2, p1) partition (p2 int);
+
+
+insert into knows values (1, 2);
+insert into knows values (1, 3);
+insert into knows values (2, 4);
+
+
+All persons have single integer identifiers.  There is a row in the knows table if person p1 claims to know person p2.
+
+
+The most basic query is to find all the people that a given person knows either directly or indirectly.
+
+
+select * from (select transitive t_in (1) t_out (2) t_distinct  p1, p2 from knows) k where k.p1 = 1;
+
+The transitive derived table simply selects from the knows table.  The
+enclosing top level query gives an initial value for the input column
+of the transitive select.  This leaves the output column P2 unnbound,
+so the query will iterate over the posssible values of P2.  Initially,
+the query loops over the people directly known by 1.  In the next
+stage, it takes the binding of P2 and uses it as a new value of the
+input column P1 to look for people the first degree contact knows and
+so on, until no new values are found.
+
+
+The basic meaning of the transitive modifier is that given initial
+values for input column(s), the subquery is evaluated to produce
+values for the output columns.  Then these values are fed back as
+values of input columns and so forth, until some termination condition
+is reached.  If there are equality conditions for columns designated as output
+but no conditions for columns designated as input, then the same
+process runs from output to input.  The terms input and output do not
+imply execution order.  If there are bindings for both input and
+output columns in the enclosing query, then the transitive derived
+table looks for ways of connecting the input and output bindings.  If
+no such way is found, the subquery is empty and causes the whole
+enclosing query to also have no result.  A transitive derived table
+cannot be the right side of an outer join directly but can be wrapped
+in a derived table that is.  In this way, an outer join usage is also
+possible, whether finding a path is optional.
+
+
+The result set of a transitive subquery can be thought of as a set of
+paths.  A path consists of one or more consecutive bindings for the
+input columns and is ordered.  In our example, a path is p1=1, p1=2,
+p1=4.  This is the path connecting persons 1 and 4.  If there are
+columns in the select that are neither input or output, they too are
+recorded for each step of the path.  The result set may include just
+the ends of a path, i.e. one row where the input columns have the
+beginning and the output columns the end of the path.  This means there is one row per distinct path.  The result set may also include a row for each step on each path.
+
+
+In this example, we bind both ends of the transitive subquery and ask how person 1 and 4 are connected.
+Since the columns p1 and p2 have an equality condition, each row of the result set has these at values 1 and 4 respectively.
+
+
+select * from (select transitive t_in (1) t_out (2) t_direction 3 t_distinct t_shortest_only  p1, p2, t_step (1) as via, t_step ('path_id') as path , t_step ('step_no') as step from knows) k where p1 = 1 and p2 = 4;
+
+P1       P2       VIA                                                                               PATH                                                                              STEP
+
+1        4        1                                                                                 0                                                                                 0
+1        4        2                                                                                 0                                                                                 1
+1        4        4                                                                                 0                                                                                 2
+
+
+The three rightmost columns allow returning information in the intermediate steps of the transitive evaluation. t_step (1) means the value of the column at position 1 at the intermeidate step.  The t_step ('step_no) is the sequence number of the step returned.  The t_step ('path_id') is a number identifying the connection path, since there may be many paths joining persons 1 and 4.
+
+In this situation, the result set has one row per step, including a
+row for the initial and final steps. While the evaluation order may
+vary internally, the result set is presented as if the query were
+evaluated from input to output, i.e. looking for people known by 1,
+finding 2 and 3, then looking for people they know, finding that 2
+knows 4, which is a  solution, since p2 = 4 was specified in the outer select.
+  If the
+outere query had p1 = 4 and p2 = 1, there would be an empty result set
+since there is no path from 4 to 1.
+
+
+For example, if tables have multipart keys, there can be many input and output columns but there must be an equal number of both, since the engine internally feeds the output back into the input or vice versa.  The transitive derived table may be arbitrarily complex.  
+
+We may have an application that returns extra information about a
+step.  This could for example be a metric of distance.  In such a
+case, a column which is neither designated as input nor outpput and is
+not a t_step () function call, will simply be returned as is.
+
+The result set of a transitive subquery will either have one row for each state reached, or it may have one row for each step on the path to each state reached.
+
+The first example returns only the ends of the paths, i.e. directly and indirectly known person id's.  It does not return for each returned id how this person is known, through which set of connections.
+The second example returns a row for each step on each path.
+Steps will be returned if the selection has t_step () calls or columns that are neither input or output.
+
+The forms of t_step are 
+
+t_step (<column number>)
+
+This returns the value that the column, one of the columns designated
+as input, has at this step. The input or output columns themselves, if
+there is a condition on them, look equal to the condition.  This
+allows seeing intermediate values of input columns on a path.
+
+t_step ('step_no')
+
+This returns the ordinal number of the step on the path.  Step -0 corresponds to the input variables being at the value seen in the enclosing query.  Step 1 is one removed from this.  Step numbering is assigned as if evaluating from input to output.
+
+Consider this:
+
+select * from (select transitive t_in (1) t_out (2) t_min (0) t_distinct   p1, p2, t_step (1) as via, t_step ('path_id') as path , t_step ('step_no') as step from knows) k where p1 = 1 ;
+P1       P2       VIA                                                                               PATH                                                                              STEP
+
+1        1        1                                                                                 0                                                                                 0
+1        3        1                                                                                 1                                                                                 0
+1        3        3                                                                                 1                                                                                 1
+1        2        1                                                                                 2                                                                                 0
+1        2        2                                                                                 2                                                                                 1
+1        4        1                                                                                 3                                                                                 0
+1        4        2                                                                                 3                                                                                 1
+1        4        4                                                                                 3                                                                                 2
+
+This returns four paths, all starting at 1: the paths.  The path from
+1 to 1, the path from 1 to 2, the path from 1 to 3 and the path from 1
+to 2 to 4.  The path_id column has values from 0 to 3, distinguishing
+the four different paths returned.  The p1 column is the start of the
+path, thus always 1 since this is given in the outer query.  The p2
+column is the end of the path.  The via column is the value of p1 at
+the intermediate step.  The step number where via is equal to p1 is 0.
+The next step number is 1.  At the highest step number of each path,
+p2 and via are the same.
+
+Now, let us do this in reverse:
+
+select * from (select transitive t_in (1) t_out (2) t_min (0) t_distinct   p1, p2, t_step (1) as via, t_step ('path_id') as path , t_step ('step_no') as step from knows) k where p2 = 4 ;
+P1       P2       VIA                                                                               PATH                                                                              STEP
+
+
+4        4        4                                                                                 0                                                                                 0
+2        4        2                                                                                 1                                                                                 0
+2        4        4                                                                                 1                                                                                 1
+1        4        1                                                                                 2                                                                                 0
+1        4        2                                                                                 2                                                                                 1
+1        4        4                                                                                 2                                                                                 2
+
+
+We give an initial value to p2 and leave p1 free.  Now we get three
+paths, the path from 4 to 4, from 2 to 4 and from 1 to 2 to 4.  We
+enumerate the steps as if counting from input to output, albeit
+internally the evaluation order is the reverse.  Again, step number 0
+has the via column equal to p1 and the highest numbered step has via
+equal to p2.
+
+
+Now we may look more formally at the meaning of the transitive options.
+
+T_DISTINCT - This means that if a binding of input columns is produced more than once, only the first is used.  Id est, the same point is not traversed twice even if many paths lead to it.
+
+T_SHORTEST_ONLY -  If both ends of the path are given, the evaluation stops at the length of path where the first solution is found.  If many paths of equal length are found, they are returned but longer paths are not sought.
+
+T_NO_CYCLES - If a path is found that loops over itself, i.e. a next step has the input values equal to the input values of a previous step on the path, the binding is ignored.
+
+T_CYCLES_ONLY - Only paths that have a cycle, i.e. input values of a subsequent step equal the input values of a previous step on the same path, are returned.
+
+T_MIN (INTNUM) - This means that paths shorter than the number are not returned.  In the examples above, we had min at 0, so that a path of zero length was also returned, i.e. where the first output equals the outer conditions for the inputs.
+
+T_MAX (INTNUM) - This gives a maximum length of path.  Paths longer than this many steps are not returned.  A value of 1 means that the subquery is evaluated once, i.e. the outputs of the first evalyuation are not fed back into the inputs.  Specifying a minimum of 0 and a maximum of one means an optional join.  Specifying min and max both to 1 means an ordinary derived table.
+
+T_DIRECTION INTNUM - A value of 0 (default) means that the SQL
+optimizer decides which way the transitive subquery is evaluated.  1
+means from input to output, 2 from output to input, 3 from both ends.  Supposing we are looking at how two points are related, it makes sense to start expanding the transitive closure at both ends.  in the above example, this would be going from p1 to p2 on one side and from p2 to p1 on the other.  
+
+
+T_IN (column_positions) - This specifies which columns are called input.
+
+T_OUT (column_positions) - This specifies which columns are called output.
+
+T_END_FLAG INTNUM -  This is a column number.  The column number should be neither in nor out.  If this column has a non-0 value, this is considered and end of a path.  This allows application logic other than column equality to decide when a solution has been reached.
+
+T_EXISTS - Only one path is generated and returned.
+
+
+
+
+
+
+
+
+
+
+[Add at the end of inference sect in sparql doc]
+
+H2 Identity With Inverse Functional Properties 
+
+A graph used used with rdfs_rule_set may declare certain proprties to
+be inversely functional.  If one or more inverse functional properties (IFP's)
+are declared in the inference context used with the query, enabled
+with define input:inference = "context_name", then the following
+samantics apply:
+
+1. If a literal is compared with an IRI, then the literal is substituted by all the subject IRI's where this literal occurs as a value of an IFP.
+2. If two IRI's are compared for equality, they will be considererd the same if there is an IFP P such that the same P has the same value on both subjects.
+ 3. If an IRI is processed for distinctness in either distinct or group by, the IRI is first translated to be the IRI with the lowest ID among all IRI's that share an IFP value with this IRI.
+Thus, if two IRI's are compared for distinctness, they will count as one if there is an IFP P with the same value with both IRI's.  Literal data types are not translated into IRI's even if these literals occurred as IFP values of some subject.
+
+It is possible to declare that specific values, even if they occur as values of an IFP in more than onme subject do not constitute identity between the subjects.
+For example, if two subjects were inferred to be the same because they had the same foaf:mbox_sha1sum, the SHA1 hash of mailto:// would be excluded.  Two individuals have an email address that has a common default value are not the same.
+
+In an ontology graph, a property IRI is declared to be inversely
+functional by making it an instance of the
+owl:InverseFunctionalProperty class.  A value of an IFP can be
+declared null, i.e. sharing the value does not imply identity by by
+giving the IFP IRI a
+<http://www.openlinksw.com/schemas/virtrdf#nullIFPValue> property with
+the value to be ignored as the object.
+
+Example
+
+
+ttlp ('
+<john1> a <person> .
+<john2> a <person> .
+<mary> a <person> .
+<mike> a <person> .
+<john1> <name> "John" .
+<john2> <name> "John" .
+<john1> <address> "101 A street" .
+<john2> <address> "102 B street" .
+<john2> <knows> <mike> .
+<john1> <http://www.w3.org/2002/07/owl#sameAs> <john2> .
+<mary> <knows> "John" .
+<mike> <knows> <john1> .
+<mike> <knows> <john2> .
+<john1> <name> "Tarzan" .
+<mike> <nam> "Tarzan" .
+', '', 'ifps');
+
+
+ttlp ('
+<name> a <http://www.w3.org/2002/07/owl#InverseFunctionalProperty> .
+<name> <http://www.openlinksw.com/schemas/virtrdf#nullIFPValue> "Tarzan" .
+', '', 'ifp_list');
+
+rdfs_rule_set ('ifps', 'ifp_list');
+
+sparql define input:inference 'ifps'  select * from <ifps> where {<john1> ?p ?o};
+
+p                                                                                 o
+VARCHAR                                                                           VARCHAR
+_______________________________________________________________________________
+
+address                                                                           101 A street
+name                                                                              John
+http://www.w3.org/2002/07/owl#sameAs                                              john2
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   person
+name                                                                              Tarzan
+name                                                                              John
+knows                                                                             mike
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type                                   person
+address                                                                           102 B street
+
+We see that we get the properties of <john2> also.
+
+sparql define input:inference "ifps" select distinct ?p from <ifps> where { ?p a <person>};
+
+john2
+mike
+mary
+
+We see that we get only one John.  But John is not the same as Mike
+because they share the name Tarzan which is not considered as implying
+identity.  Which John we get is a matter of which gets the lowest
+internal ID.  This is variable and arbitrary at load time but once
+loaded this is permanent as long as the set of subjects with the name
+John does not change.
+
+
+
+
+
+H2 Transitivity in SPARQL 
+
+
+Virtuoso SPARQL allows access to Virtuoso's SQL transitivity extension.  Read the SQL section for a definition of the options.
+The SPARQL syntax is slightly different from the SQL, although the option names and meanings are the same.
+
+In SPARQL, the transitive options occur after a subquery enclosed in braces:
+
+
+The below produces all the IRI's that are the same as <alice >.
+
+select ?syn where {
+{select ?syn where { { select ?x ?syn where {{ ?x owl:sameAs ?syn } union { ?syn owl:sameAs ?x}}  }option (transitive t_in (?x), t_out (?syn), t_distinct, t_min (0) ) } .
+filter (?x = <alice>)}
+
+In this case, we provide a binding for ?x in the filter outside of the
+transitive subquery.  The subquery therefore is made to run from in to
+out.  The same effect would be accomplished if we bound ?syn and
+select ?x, the designations of in and out are arbitrary and for
+transitive steps that can be evaluated equally well in both directions
+this makes no difference.
+
+The transitive subquery in the above is 
+{select ?syn where { { select ?x ?syn where {{ ?x owl:sameAs ?syn } union { ?syn owl:sameAs ?x}}  }option (transitive t_in (?x), t_out (?syn), t_distinct, t_min (0) ) } .
+
+Leaving out the option would just look for one step of owl:sameAs.
+Making it transitive will apply the subquery to all bindings it
+produces until all are visited at least once (the t_distinct modifier).
+
+
+If the transitive step consists of a single triple pattern, there is a shorthand:
+
+<alice> foaf:knows ?friend option (transitive t_min (1)) .
+
+will bind ?friend to all directly and indirectly found foaf:known
+individuals.  If t_min had been 0, Malice> would have also been in the
+generated bindings.
+
+
+
+The syntax is
+
+option (transitive option[,...])
+
+option ::=  t_in (<variable_list>)
+| t_out (<variable_list>)
+| t_distinct 
+| t_shortest_only
+| t_no_cycles
+| t_cycles_only
+| t_min (INTNUM)
+| t_max (INTNUM)
+| t_end_flag (<variable>)
+| t_step (<variiable_or_step>)
+| t_direction INTNUM
+
+variable_list ::= <variable> [,...]
+
+variable_or_step ::= <variable> | path_id' | 'step_no'
+
+Unlike SQL, variable names are used instead of column numbers.  
+Otherwise all the options have the same meaning.
+
+Some examples of the use of transitivity are:
+
+To find out what graphs contain owl:sameAs for Dan York, we do 
+
+ select ?g count (*) where {
+ {select ?x ?alias ?g where {{ graph ?g {?x owl:sameAs ?alias }} union {graph ?g {?alias owl:sameAs ?x}}}}
+	option (transitive, t_in (?x), t_out (?alias), t_distinct, t_min (1)) .
+ filter (?x = <http://www.advogato.org/person/dyork/foaf.rdf#me> ) .
+} group by ?g order by desc 2 limit 30;
+
+Here we select all paths that start with the initial URI and pass
+through one or more sameAs statements.  Each step produces a result of
+the transitive subquery.  The graph where the sameAs triple was found
+is returned and used as the grouping column.  In this way we see how
+many times each graph is used.  Note that graphs are counted many
+times since the graphs comtaining immediate sameAs statements are
+counted for paths of length 1, then again as steps on paths that reach
+to their aliases and so on.
+
+select ?o ?dist ((select count (*) where {?o foaf:knows ?xx}))
+where   {
+    {       select ?s ?o
+      where
+        {           ?s foaf:knows ?o         }
+    }     option (transitive, t_distinct, t_in(?s), t_out(?o), t_min (1), t_max (4), t_step ('step_no') as ?dist) .
+    filter (?s= <http://myopenlink.net/dataspace/person/kidehen#this>)
+  } order by ?dist desc 3 limit 50
+
+This query takes all the people known by kidehen, to a depth between 1
+and 4 applications of the subquery.  It then sorts them by the
+distance and the descending count of connections of each found connection.  This is
+equivalent to the default connections list shown by LinkedIn.
+
+
+
+To find how two people know each other and what graphs are involved in the connection, we do:
+
+select ?link ?g ?step ?path
+where  {
+    {      select ?s ?o ?g
+      where        {
+          graph ?g {?s foaf:knows ?o }}
+    } option (transitive, t_distinct, t_in(?s), t_out(?o), t_no_cycles, T_shortest_only,
+       t_step (?s) as ?link, t_step ('path_id') as ?path, t_step ('step_no') as ?step, t_direction 3) .
+    filter (?s= <http://myopenlink.net/dataspace/person/kidehen#this>
+	&& ?o = <http://www.advogato.org/person/mparaz/foaf.rdf#me>)
+  } limit 20
+
+This query binds both the t_in and t_out variables. The ?g is left as
+a free variable.  Also, specifying ?s and the system defined constants
+step_no and path_id as with t_step, we get for each transitive step a
+row of results with the intermediate binding of ?s, the count of steps
+from the initial ?s and a distinct identifier for the individual path,
+since there can be many distinct paths that link the ?s and ?o
+specified in the filter.
+
+See the SQL transitive option section for details on the meaning of step_no and path_id.
+
+
+
+
+
+
+[Add to ptune.xml]
+H2 Client Level Resource Accounting 
+
+
+Starting with version 6, Virtuoso keeps track of the count of basic database operations performed on behalf of each connected client.
+The resource use statistics are incremented as work on the connection proceeds. The db_activity () function can be called to return the accumulated operation counts and to optionally reset these.
+
+
+The db_activity built-in function has one optional argument.  The possible values are:
+
+0 - (defaul) - Return human readable string and reset the counts.
+1 - return an array of numbers and reset the counts.
+2 - return a human readable string and leave the counts.
+3 - return an array of numbers and leave the counts.
+
+The human readable string is of the form:
+
+ 22.56MR rnd  1.102GR seq     10P disk  1.341GB /  102.7K messages
+
+The postfixes K, M, G, T mean  10^3 to 10^15, except when applied to bytes, where these mean consecutive powers of 1024.
+
+The numbers, left to right are the count of random row lookups,
+sequential row lookups, disk page reads, cluster inter-node traffic in
+bytes and cluster inter-node message count as an integer number of
+messages.  If the configuration is a single server, the two last are
+0.
+
+The random and sequential lookup counts are incremented regardless of whether the row was found or not or whether it matched search conditions.
+
+If the information is retrieved as an array, the array contains integer numbners representing these plus some more metrics.
+
+Index  - ,Meaning 
+-0 - Random lookups 
+1 - sequential lookups 
+3 - lock waits 
+4 - total msec spent in lock wait on some thread.  In a cluster situation, this may be more than elapsed real time.
+5. Disk reads 
+6. Speculative disk reads.  These are also counted in disk reads.  A speculative read is a prefetch made on the basis of a read history of a disk extent.
+7 - Cluster inter node message count
+8. Total bytes sent in cluster inter node traffic.  A message is counted once, when sent.
+
+
+If the thread calling db_activity is a web server thread, the totals are automatically reset when beginning the processing of the current web request.
+
+
+
+
+[Add to SQL, after the SET statement]
+H1  Anytime Queries 
+
+Starting with version 6, Virtuoso offers a partial query evaluation feature that guarantees answers to arbitrary queries within a fixed time.
+This is intended for use in  publicly available SPARQL or SQL end points on large databases.
+This enforces a finite duration to all queries and will strive to return meaningful partial results.
+Thus this provides the same security as a transaction timeout but will be more user friendly since results will generally be returned, also for aggregate queries.
+Outside of a public query service, this may also be handy when exploring a large data set with unknown properties.
+
+The feature is activated with the statement 
+
+set result_timeout == <expression>;
+
+The expression should be a count of miulliseconds.   The scope of the setting is the connection, thus it remains in effect past the return of the calling procedure.
+Setting the timeout to 0 returns to the default state of having no limit on query run time and always returning complete results.
+The initial value of the timeout is 0.  On a web server thread, the timeout is reset to 0 at the start of processing each new request header.
+
+After a query or cursor has exceeded the running time, it is reset.
+In the event of the reset occurring inside an agfgregation, the part
+of the query that produces rows for the aggregation is terminated, the
+timeout is reset and the query continues by using the aggregated
+results that were obtained before the first timeout.  If there is
+again a timeout, the present aggregatin is reset and the query gets
+another lease on life for processing the results accumulated so far.
+Thus, a query which has a select, a group by and an order by can
+consume at most three timeouts.  One for produceing the aggregated
+rows, another for sorting them and finally a third for returning them
+to a client or iterating over them in a stored procedure.
+
+If the timeout occurs outside an aggregation, the result set is simply truncated.
+
+The fact of a query returning partial results is indicated by the
+result set ending with a S1TAT SQL state.  If the result set is read
+to end without this state being signalled, the results are complete
+and the query was not interrupted.  If the result set is not consumed
+to end, the client cannot be sure of its completeness.
+
+
+The error message associated with the S1TAT state contains the human
+readable version of the output of db_activity () for the query.  If
+result_timeout is non-zero, the opening of a cursor or execution of a
+query on a client connection or with the exec () function will reset
+the client resource consumption counters automatically.  This is done
+so as to have the resource consumption statistics for the error
+message scoped to the query.  To get the exact counts, the application
+may call db_activity (1) in the same procedure.  If this is called on
+a client server connection with the timeout on, the counts will be
+reset before db_activity () is called.
+
+The resolution of the timeout is fairly low, timeouts are checked every two seconds with default settings.
+
+A query cannot set a timeout from inside itself.  Only a stored procedure or a top level statement on a client connection can do this.
+
+
+
+[Add to sqloptimizer.xml at the end of the query options]
+H2 ANY ORDER
+
+When applied to a select with no aggregation or order by, this causes the select  to produce results in an order that may vary between consecutive executions and may not correspond to the order of any index.
+In a cluster situation, running a querry in this manner may be up to several times more efficient.  This is not the default since SQL and SPARQL require that two consecutive executions of a query return the same results in the same order even if no order by is specified.
+Selects that contain aggregation or order by evaluate the part which generates input to the aggregation or order in this manner automatically.
+This option affects the select at the end of which it occurs and all selects inside it.
+
+example:
+
+select a.row_no from t1 a, t1 b wherea.row_no = 1 + b.row_no option (any order);
+
+
+
+
+[Add to key_stat ref entry]
+
+'reset' specified as the stat name will reset all counts for  the key in question.
+
+
+
+***
+[part 2]
+
+
+iri_split (in qname varchar, [out local varchar])  returns varchar 
+
+
+Iri is a qualified name.  It is split into the namespace prefix and the local part according to the TTL rules.
+The prefix is returned.  If a second argument is given, it is set to the local part.
+
+
+__xml_get_ns_uri (in str varchar, in flags int)
+
+If str is a globally known namespace prefix, its URI is returned, else null.
+Flags is a bit mask where 1 means to look in the connection, 2 in the global set of known prefixes. 
+
+__xml_get_ns_prefix (in str varchar, in flags int)
+
+If str is a globally known namespace URI, its prefix is returned, else null.
+Flags is a bit mask where 1 means to look in the connection, 2 in the global set of known prefixes. 
+
+
+
+rdf_is_sub (in inf_ctx varchar, in sub_iri iri_id, in super_iri iri_id, in mode int)
+
+This returns true if sub_iri is a subclass or subproiperty of super_iri.  Mode 1 specifies that subclass relations are considereed, mode 3 cpecifies subproperty relations.  Other modes are not permitted.
+
+
+
+
+
+
+***
+
+[Add to description of create table statement, column options]
+
+no compress 
+| compress any
+| compress text 
+
+
+Virtuoso 6 uses key compression by default on key part columns and variable length columns in dependent parts of rows.
+This default behavior is generally appropriate.  There are two types of compression: offset and prefix.  Up to 5 columns of any key may have offset compression and any number of variable length columns may have prefix compression.
+Offset compression applies also to integer columns, so that integers with equal or nearly equal values get compressed. 
+
+Using the compress column options is approprate in the following situations:
+
+- There is a table with large numbers of rows with non-key integer fields that are never updated.
+
+For example:
+
+create table log_table (l_row_no bigint primary key, l_class bigint compress any, l_user bigint compress any)
+
+Changing the compressed integer columns will be inefficient.  A frequently updated column ought not to be compressed.
+
+
+
+There is a table with variable length columns that are often updated:
+
+create table customer (c_id int primary key, c_name varchar, c_status varchar no compress);
+
+This means that c_status will be efficient to update because of no compression but c_name, which will not change frequently will have common leading substrings optimized away.
+The c_id, since it is a key part, will be compressed so that adjacent values are mostly stored  a delta, so that a 4 byte int becomes a 2 byte int.
+
+
+Columns will be compressed when they occur in key positions because there an update entails an insert + delte anyway.
+***
+
+[add to.  If one_of_these is documented, it also allows arrays. Add.]
+IN Predicate 
+
+Virtuoso allows expressions in the values list of the SQL IN predicate.
+These expressions should evaluate to a type comparable with the left hand side or to an array of such elements.
+Thus the expression  
+
+x in (1,2, vector (3, 4))
+
+is equivalent to
+
+X in (1, 2, 3, 4)
+
+
+***
+
+[Addition to anytime queries]
+
+Anytime and Updates and Procedures 
+
+A non-select (i.e. DML) statement executed from any client interface is not affected by a result_timeout setting.
+A DML statement executed inside a procedure is not affected by a result_timeout.
+In a procedure, select statements and cursors are affected by the timeout.  
+The state of the variiables assigned by a fetch statement or an assignment of a scalar subquery 
+is undefined if the execution was interrupted by an anytime exception.
+Thus, to use queries with result timeout from stored procedures, it is best to wrap them in a exec call, executing them as dynamic SQL.
+

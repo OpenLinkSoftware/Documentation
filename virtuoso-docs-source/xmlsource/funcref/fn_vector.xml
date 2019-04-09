@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_vector">
+      <refmeta>
+        <refentrytitle>vector
+</refentrytitle>
+        <refmiscinfo>array
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>vector
+</refname>
+        <refpurpose>make a vector
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_vector">
+          <funcprototype xml:id="fproto_vector">
+            <funcdef>
+              <function>vector
+</function>
+            </funcdef>
+            <paramdef choice="opt"><parameter>elem1
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt"><parameter>elem2
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">
+              <parameter>...
+</parameter>
+            </paramdef>
+            <paramdef choice="opt"><parameter>elem-n
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_vector">
+        <title>Description
+</title>
+        <para><function>vector
+</function>
+
+   returns a new vector (one-dimensional array) constructed from the given arguments.
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_vector">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>
+            <parameter>elem1..n
+</parameter>
+          </title>
+          <para>Values of any types (not necessarily of one and the same type).
+
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_vector">
+        <title>Return Values
+</title>
+        <para>A vector (heterogeneous array) of as many elements as there
+    were arguments containing copies of the arguments.
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_vector">
+        <title>Examples
+</title>
+        <example xml:id="ex_vector_1">
+          <title>Inspecting a vector with dbg_obj_print
+</title>
+          <para>SQL clients can not process vectors directly so the simplest way to look at the content of a vector is to print it no server's console.
+</para>
+          <screen>
+dbg_obj_print (vector (1, 2.34, 'A string', atof('3.14')))
+
+</screen>
+        </example>
+        <example xml:id="ex_vector_2">
+          <title>Pretty-print function for vectors
+</title>
+          <para>The following function gets a heterogeneous vector of strings, nubers and other vectors and returns a string that is an SQL expression that will return a copy of a given vector.
+</para>
+          <screen>create procedure DUMP_VEC_IMPL (inout _vec any, inout _ses any)
+{
+  declare _len, _ctr integer;
+  if (193 &lt;&gt; __tag (_vec))
+    {
+      if (isstring (_vec))
+        http (WS.WS.STR_SQL_APOS (_vec), _ses);
+      else
+        http (cast (_vec as varchar), _ses);
+      return;
+    }
+  _len := length (_vec);
+  _ctr := 0;
+  http ('\nvector (', _ses);
+  while (_ctr &lt; _len)
+    {
+      if (_ctr &gt; 0)
+        http (', ', _ses);
+      DUMP_VEC_IMPL (_vec[_ctr], _ses);
+      _ctr := _ctr+1;
+    }
+  http (')', _ses);
+}
+
+create function DUMP_VEC (in _vec any)
+{
+  declare _ses any;
+  _ses := string_output();
+  DUMP_VEC_IMPL (_vec, _ses);
+  return string_output_string (_ses);
+}
+
+select DUMP_VEC (vector ('abc', 1, vector (3.1415), vector ()));
+callret
+VARCHAR
+_______________________________________________________________________________
+
+vector ('abc', 1,
+vector (3.1415),
+vector ())
+
+1 Rows.
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_vector">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_aset">
+            <function>aset
+</function>
+          </link>
+          <link linkend="fn_aref">
+            <function>aref
+</function>
+          </link>
+          <link linkend="fn_vector_concat">
+            <function>vector_concat
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xmlupdate">
+      <refmeta>
+        <refentrytitle>XMLUpdate
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>XMLUpdate
+</refname>
+        <refpurpose>Create a changed copy of given document by replacing some nodes.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xmlupdate">
+          <funcprototype xml:id="fproto_xmlupdate">
+            <funcdef>any 
+<function>XMLUpdate
+</function>
+
+</funcdef>
+            <paramdef choice="opt">inout 
+<parameter>source
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>path1
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>replacement1
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>path2
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>replacement2
+</parameter>
+
+   any
+</paramdef>
+            <paramdef choice="opt">
+              <parameter>...
+</parameter>
+            </paramdef>
+            <paramdef choice="opt">in 
+<parameter>pathN
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>replacementN
+</parameter>
+
+   any
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xmlupdate">
+        <title>Description
+</title>
+        <para>The function takes of the XML document referenced by
+<parameter>source</parameter>
+
+   XML tree entity, makes a copy of that document;
+then it modifies the copy by finding fragments that are values of
+<parameter>path1</parameter>
+
+  , <parameter>path2</parameter>
+
+  , ..., <parameter>pathN</parameter>
+
+   XPATH expressions and replacing them with
+values specified by <parameter>replacement1</parameter>
+
+  , <parameter>replacement2</parameter>
+
+  , ...,<parameter>replacementN</parameter>
+
+  ;
+the modified copy is returned as the result of the function call.
+</para>
+        <para>Every <parameter>pathI</parameter>
+
+   should be a string that is  a correct XPATH expression.
+Every such expression is evaluated according to the rules for XPATH expressions in XSLT (attribute entities are not cast to their string values).
+The context node is <parameter>source</parameter>
+
+  , context size and position are both equal to 1.
+</para>
+        <para>Every <parameter>replacementI</parameter>
+
+   may be an XML tree entity, a NULL or a value of some other type that will be converted to varchar before use.
+</para>
+        <para>For simplicity, consider the case when there is only one <parameter>path1</parameter>
+
+   XPATH expression parameter and only one
+<parameter>replacement1</parameter>
+
+  . First of all, a copy of the document of the <parameter>source</parameter>
+
+   XML tree entity is created.
+Then <parameter>path1</parameter>
+
+   is evaluated.</para>
+        <para>If the result of evaluation is not an XML entity then no replacement is made and
+the copy of the source document is returned unchanged.
+If the result is an XML entity that is not in the source document (e.g. an entity returned by the call of document(...) function.)
+then no replacement is made either.
+</para>
+        <para>
+If the result of evaluation is an XML entity in the source document then the function finds a node in the copied document that is a copy of
+the node in the source that is returned by XPATH evaluation. This node in the copied document will be referred to as a "highlighted" node.
+</para>
+        <para>
+If the result of evaluation is an attribute entity then the value of the attribute in the highlighted node is changed.
+If <parameter>replacement1</parameter>
+
+   is NULL then the attribute is removed at all, otherwise its value is set to the string value of
+the <parameter>replacement1</parameter>
+
+  .
+</para>
+        <para>
+If the result of evaluation is not an attribute entity but a entity then the highlighted node is replaced with the value of <parameter>replacement1</parameter>
+
+  .
+The method of  replacement depends on the type of the replacement value.
+If <parameter>replacement1</parameter>
+
+   is NULL then the highlighted node is simply removed from the result; if the node is the root or a
+single child of the root then function immediately returns NULL instead of an XML entity (because XML document can not be totally empty),
+otherwise the parent of the highlighted node will simply have one child less.
+If <parameter>replacement1</parameter>
+
+   is an non-empty string then the highlighted node is
+replaced with a new text node whose string value is equal to <parameter>replacement1</parameter>
+
+  .
+If <parameter>replacement1</parameter>
+
+   is an empty string then the effect is exactly the same as in case of NULL because the string value of a text node can not be empty.
+If <parameter>replacement1</parameter>
+
+   is an XML entity that is a root entity of some document then the highlighted node is replaced with a sequence of copies of all children of that root.
+If <parameter>replacement1</parameter>
+
+   is an XML entity of some other sort (XML element, text, comment etc.) then the that is not a root entity of some document then the highlighted node is replaced with a sequence of copies of all children of that root.
+</para>
+        <para>
+After editing the copied document, some normalization may happen. The modified document may contain adjacent text nodes; every sequence of such nodes
+is replaced with one text node whose string value is a concatenation of string values of that nodes. E.g. if the highlighted node is an element &lt;a/&gt;
+that resides between two text nodes "text1" and "text2" and the highlighted node is removed, then these text nodes become neighbors;
+normalization will replace them with a single text node "text1text2"
+</para>
+        <para>
+Now consider the case of more than one replacement made in one function call. If more than one pair of XPATH expression and replacement is given then
+the function first finds all highlighted nodes, all together, then it performs all replacements, then it performs an normalization.
+It is very important to understand that the order of making replacements has nothing to do  with the order of pairs of parameters in the function call.
+If some highlighted node is an ancestor of some other highlighted node then the effect of the replacement of the descendant highlighted node is void:
+the descendant is replaced first; then the ancestor is replaced as a whole, no matter if some of its descendants are modified.
+If a node is the result of two different XPATH expressions ("highlighted more than once"), the order of parameters in the function call
+is used to resolve ambiguity: the last pair of parameters will have a higher priority.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_xmlupdate">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>source
+</title>
+          <para>A source XML tree entity. It is an error to pass persistent XML entity as an argument.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>pathI
+</title>
+          <para>A text of XPATH expression to be used in order to find nodes to replace.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>replacementI
+</title>
+          <para>A replacement value for XML nodes found by 
+<parameter>pathI
+</parameter>
+
+  ; it may be NULL or XML tree entity or a string r anything else but not an persistent XML entity.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_xmlupdate">
+        <title>Return Types
+</title>
+        <para>If the 
+<parameter>source
+</parameter>
+
+   parameter is an XML tree entity then the function returns an XML tree entity that points to the root of the modified copy of the source document or a NULL.
+If the <parameter>source</parameter>
+
+   is an instance of XMLType then a non-schema based instance of XMLType is created from the resulting XML tree entity.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_xmlupdate">
+        <title>Examples
+</title>
+        <example xml:id="ex_xmlupdate_1">
+          <title>A simple replacement of one element with other
+</title>
+          <para>The call of function 
+<function>XMLUpdate
+</function>
+
+   replaces element 'c' with a copy of element 'replacement'.
+</para>
+          <screen>
+select XMLUpdate (xtree_doc('&lt;a&gt;&lt;b&gt;&lt;q/&gt;-&lt;c&gt;Hello&lt;/c&gt;-&lt;/b&gt;&lt;/a&gt;'), '//c', xtree_doc('&lt;replacement/&gt;'))
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;a&gt;
+&lt;b&gt;
+&lt;q /&gt;-
+&lt;replacement /&gt;-
+&lt;/b&gt;
+&lt;/a&gt;</screen>
+        </example>
+        <example xml:id="ex_xmlupdate_2">
+          <title>Two replacements in parallel
+</title>
+          <para>Elements titled 'c1' and 'c3' are replaced with text nodes.
+</para>
+          <screen>
+select XMLUpdate (xtree_doc('
+&lt;a&gt;
+&lt;b&gt;
+&lt;c1&gt;Hello1
+&lt;/c1&gt;
+&lt;c2&gt;Hello2
+&lt;/c2&gt;
+&lt;c3&gt;Hello3
+&lt;/c3&gt;
+&lt;/b&gt;
+&lt;/a&gt;'), '//c1', 'world1', '//c3', 'world3')
+callret
+VARCHAR
+_______________________________________________________________________________
+
+&lt;a&gt;
+&lt;b&gt;world1
+&lt;c2&gt;Hello2
+&lt;/c2&gt;world3
+&lt;/b&gt;
+&lt;/a&gt;</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xmlupdate">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xmlreplace">
+            <function>XMLReplace
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmladdattribute">
+            <function>XMLAddAttribute
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlappendchildren">
+            <function>XMLAppendChildren
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlinsertbefore">
+            <function>XMLInsertBefore
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xmlinsertafter">
+            <function>XMLInsertAfter
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_xslt">
+            <function>xslt
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_xmltype.getnamespace">
+      <refmeta>
+        <refentrytitle>XMLType.getNamespace
+</refentrytitle>
+        <refmiscinfo>xml
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>XMLType.getNamespace
+</refname>
+        <refpurpose>Returns the namespace of the top level element providing the instance
+	is schema-based rather than a fragment.
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_xmltype.getnamespace">
+          <funcprototype xml:id="fproto_xmltype.getnamespace">
+            <funcdef>
+              <function>XMLType.getNamespace
+</function>
+            </funcdef>
+            <paramdef choice="opt"/>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_xmltype.getnamespace">
+        <title>Description
+</title>
+        <para>The member function returns the namespace URI of the top level element
+	providing that the given instance is schema-based and is well-formed.
+    This function returns NULL if the instance is a fragment.
+	If there are many top level elements then they may have different
+	namespace URIs and if there is no top level element then there is nothing
+	to return. It also returns NULL if the instance is non-schema based for compatibility.
+</para>
+      </refsect1>
+      <refsect1 xml:id="ret_xmltype.getnamespace">
+        <title>Return Types
+</title>
+        <para>This function returns a wide string or NULL.
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_xmltype.getnamespace">
+        <title>Examples
+</title>
+        <example xml:id="ex_xmltype.getnamespace">
+          <title>Factors that affect the result of getNamespace()
+</title>
+          <para>The following statements demonstrate how various circumstances may
+      force getNamespace() to return NULL.</para>
+          <screen>
+-- First of all, top level element may have a name with no namespace.
+select XMLType('&lt;local /&gt;').getNamespace()
+_______________________________________________________________________________
+NULL
+
+-- Compatibility: the instance should be schema-based.
+select XMLType('&lt;z:qname xmlns:z="http://www.example.com/"/&gt;').getNamespace()
+_______________________________________________________________________________
+NULL
+
+-- This is schema-based, but top level element has no namespace.
+select XMLType('&lt;local /&gt;', 'http://www.example2.com/test.xsd').getNamespace()
+_______________________________________________________________________________
+NULL
+
+-- Note that for XPATH processor return an empty string, not a NULL,
+-- as a namespace uri of a name with no URI.
+select xpath_eval('namespace-uri(.)', XMLType('&lt;local /&gt;', 'http://www.example2.com/test.xsd'))
+_______________________________________________________________________________
+
+1 Rows. -- 00000 msec.
+
+-- Schema-based instance with nonempty namespace URI.
+select XMLType('&lt;z:qname xmlns:z="http://www.example.com/"/&gt;', 'http://www.example2.com/test.xsd').getNamespace()
+_______________________________________________________________________________
+http://www.example.com/
+
+-- It also works with default namespace URIs.
+select XMLType('&lt;qname xmlns="http://www.example.com/"/&gt;', 'http://www.example2.com/test.xsd').getNamespace()
+_______________________________________________________________________________
+http://www.example.com/
+
+-- Finally, it returns NULL for fragments even if all top-level elements of
+-- a fragment have identical namespace URIs.
+select XMLType('
+    &lt;z:qname xmlns:z="http://www.example.com/"/&gt;
+    &lt;z:qname xmlns:z="http://www.example.com/"/&gt;',
+  'http://www.example2.com/test.xsd').getNamespace()
+_______________________________________________________________________________
+NULL
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_xmltype.getnamespace">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_xmltype.isfragment">
+            <function>XMLType.isFragment()
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="grant">
+      <title>GRANT, REVOKE Statement</title>
+      <programlisting>
+privilege_def
+	: GRANT ALL PRIVILEGES TO grantee
+	| GRANT privileges ON table TO grantee_commalist opt_with_grant_option
+	| GRANT grantee_commalist TO grantee_commalist opt_with_admin_option
+	;
+
+privilege_revoke
+	: REVOKE ALL PRIVILEGES FROM grantee_commalist
+	| REVOKE privileges ON table FROM grantee_commalist
+	| REVOKE grantee_commalist FROM grantee_commalist
+	;
+
+opt_with_grant_option
+	: /* empty */
+	| WITH GRANT OPTION
+	;
+
+opt_with_admin_option
+	: /* empty */
+        | WITH ADMIN OPTION
+ 	;
+
+privileges
+	: ALL PRIVILEGES
+	| ALL
+	| operation_commalist
+	;
+
+operation_commalist
+	: operation
+	| operation_commalist ',' operation
+	;
+
+operation
+	: SELECT priv_opt_column_commalist
+	| INSERT
+	| DELETE
+	| UPDATE priv_opt_column_commalist
+	| REFERENCES opt_column_commalist
+	| EXECUTE
+	| REXECUTE
+	| role_name
+	;
+
+grantee_commalist
+	: grantee
+	| grantee_commalist ',' grantee
+
+	;
+
+grantee
+	: PUBLIC
+	| user
+	;
+
+user
+	: IDENTIFIER
+
+role_name
+	: IDENTIFIER
+
+</programlisting>
+      <para>
+The GRANT and REVOKE statements are used to define privileges on resources to
+users and user groups (roles).  A resource is a table, view or stored procedure.  A grantee
+can be PUBLIC, meaning any present or future user accounts or a user name.  Granting
+a privilege to a user name means that this user AND any users which have this user as their
+user group have the privilege.
+</para>
+      <para>
+Only a granted privilege can be revoked. The sequence:
+</para>
+      <programlisting>
+grant select on employee to public;
+revoke select (e_review) from joe;
+</programlisting>
+      <para>
+Is invalid because the privilege being revoked was not granted, instead
+it was implied by the select on all column to public.
+</para>
+      <para>
+Any role name created by the CREATE ROLE statement is a valid grantee and a valid grantable operation.
+</para>
+      <para>
+The term 'effective privilege of a user' means the set of privileges
+given to a user by virtue of 1. granting them to public 2. granting them to a role which is granted to the user or to a role either directly or indirectly granted to the user or 3. granting them, to the specific user.
+The dba user and all users whose group is 'dba' have all privileges.
+</para>
+      <para>
+The phrase
+</para>
+      <programlisting>
+GRANT ALL PRIVILEGES TO user;
+</programlisting>
+      <para>
+is synonymous with setting the user's group to 'dba'.
+</para>
+      <para>
+The effective privileges inside a trigger are those of the owner of the
+table whose trigger is executing. The privilege of executing a trigger is derived from the
+privilege of performing the trigger action, e.g. update of a specific column.
+</para>
+      <para>
+The effective privilege inside a stored procedure is that of the owner of the procedure.
+The privilege to execute a given procedure is granted with the
+EXECUTE clause.
+</para>
+      <note>
+        <title>Note:</title>
+        <para>The grantee names are identifiers. This means that their case
+can be converted to upper case unless they are quoted. The identifier case
+conversion depends on the global CaseMode setting.
+</para>
+      </note>
+      <para>
+A user may grant or revoke privileges on resources of which he/she is the owner.
+A user with effective dba privileges may manipulate any privileges.
+</para>
+      <example>
+        <title>Examples:</title>
+        <programlisting>
+grant update ("Salary") on "Employees" to "Manager";
+
+grant execute on "SalesReport" to "Accounting";
+</programlisting>
+      </example>
+      <para><emphasis>GRANT REFERENCES</emphasis>
+
+   is a privilege required by a
+    user on a table so that this user can create new tables referencing such tables
+    in foreign keys where he/she would otherwise be restricted.</para>
+      <formalpara>
+        <title>Remote SQL Data Sources</title>
+        <para>To provide further consistent security to remote data, only the DBA
+  group is permitted to use the <function>rexecute()</function>
+
+  , unless
+  explicitly granted.  Caution is required here since any user granted use of
+  <function>rexecute()</function>
+
+   has full control of the remote data source
+  set-up by the DBA, however limited to the overall abilities of the remote
+  user on the remote data source.</para>
+      </formalpara>
+      <para>Users can be granted and denied access to
+  <function>rexecute()</function>
+
+   using the following syntax:</para>
+      <programlisting>
+GRANT REXECUTE ON '&lt;attached_dsn_name&gt;' TO &lt;user_name&gt;
+REVOKE REXECUTE ON '&lt;attached_dsn_name&gt;' FROM &lt;user_name&gt;
+</programlisting>
+      <formalpara>
+        <title>UDTs</title>
+        <para>Security of UDTs is maintained through normal SQL GRANT and REVOKE
+  statements via a simple extension.  You can define the level of access to both native
+  and externally hosted UDTs.  Grants for persistent user defined types
+  are persisted into the SYS_GRANTS table.  Grants on temporary user defined
+  types are in-memory only and are lost (together with the temporary user defined
+  type definition) when the server is restarted.</para>
+      </formalpara>
+      <para>There are two GRANT/REVOKE types for UDTs as follows:</para>
+      <simplelist type="vert">
+        <member><emphasis>EXECUTE</emphasis>
+
+   - all methods and members of a class are accessible to the grantee.</member>
+        <member><emphasis>UNDER</emphasis>
+
+   - the grantee can create subclasses of the class.</member>
+      </simplelist>
+      <programlisting>
+GRANT/REVOKE EXECUTE on &lt;user_defined_type&gt;
+GRANT/REVOKE UNDER on &lt;user_defined_type&gt;
+</programlisting>
+      <note>
+        <title>Note:</title>
+        <para>SQL modules, user defined types and SQL stored procedures are exposed
+	to GRANT/REVOKE in the same namespace, therefore care must be taken avoid
+	inadvertently granting to multiple objects at the same time.</para>
+      </note>
+      <tip>
+        <title>See Also:</title>
+        <para>
+          <link linkend="vdbstoredprocs">Virtual Database Procedures &amp; Functions</link>
+        </para>
+      </tip>
+    </section>

@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfsparqlimplementatiotrans">
+        <title>Transitivity in SPARQL</title>
+        <para>Virtuoso SPARQL allows access to Virtuoso's SQL transitivity extension. Read the
+<link linkend="transitivityinsql">SQL section</link>
+
+   for a definition of the options.</para>
+        <para>The SPARQL syntax is slightly different from the SQL, although the option names
+and meanings are the same.</para>
+        <para>In SPARQL, the transitive options occur after a subquery enclosed in braces:</para>
+        <para>The below produces all the IRI's that are the same as &lt;http://dbpedia.org/resource/New_York&gt;.</para>
+        <programlisting>
+SPARQL
+SELECT ?syn
+WHERE
+  {
+    {
+      SELECT ?x ?syn
+      WHERE
+        {
+          { ?x owl:sameAs ?syn }
+          UNION
+          { ?syn owl:sameAs ?x }
+        }
+    }
+    OPTION ( TRANSITIVE, t_in (?x), t_out (?syn), t_distinct, t_min (0) )
+    FILTER (?x = &lt;http://dbpedia.org/resource/New_York&gt;) .
+  }
+  </programlisting>
+        <para>In this case, we provide a binding for ?x in the filter outside of the
+  transitive subquery. The subquery therefore is made to run from in to
+  out. The same effect would be accomplished if we bound ?syn and
+  SELECT ?x, the designations of in and out are arbitrary and for
+  transitive steps that can be evaluated equally well in both directions
+  this makes no difference.
+  </para>
+        <para>The transitive subquery in the above is </para>
+        <programlisting>
+{SELECT ?syn
+ WHERE
+  {
+    { SELECT ?x ?syn
+      WHERE
+       {
+         { ?x owl:sameAs ?syn }
+         UNION
+         { ?syn owl:sameAs ?x}
+       }
+    } OPTION (TRANSITIVE, t_in (?x), t_out (?syn), t_distinct, t_min (0) )
+  }
+} .
+  </programlisting>
+        <para>Leaving out the option would just look for one step of owl:sameAs.
+  Making it transitive will apply the subquery to all bindings it
+  produces until all are visited at least once (the t_distinct modifier).
+  </para>
+        <para>If the transitive step consists of a single triple pattern, there is a shorthand:</para>
+        <programlisting>
+  &lt;alice&gt; foaf:knows ?friend option (transitive t_min (1))
+  </programlisting>
+        <para>will bind ?friend to all directly and indirectly found foaf:known
+  individuals. If t_min had been 0, Malice&gt; would have also been in the
+  generated bindings.</para>
+        <para>The syntax is</para>
+        <programlisting>
+  option (transitive transitivity_option[,...])
+
+  transitivity_option ::=  t_in (&lt;variable_list&gt;)
+  | t_out (&lt;variable_list&gt;)
+  | t_distinct
+  | t_shortest_only
+  | t_no_cycles
+  | t_cycles_only
+  | t_min (INTNUM)
+  | t_max (INTNUM)
+  | t_end_flag (&lt;variable&gt;)
+  | t_step (&lt;variiable_or_step&gt;)
+  | t_direction INTNUM
+
+  variable_list ::= &lt;variable&gt; [,...]
+
+  variable_or_step ::= &lt;variable&gt; | path_id' | 'step_no'
+  </programlisting>
+        <para>Unlike SQL, variable names are used instead of column numbers.
+  Otherwise all the options have the same meaning.</para>
+        <para>Some examples of the use of transitivity are:</para>
+        <section xml:id="rdfsparqlimplementatiotransexamples">
+          <title>Collection of Transitivity Option Demo Queries for SPARQL</title>
+          <section xml:id="rdfsparqlimplementatiotransexamples1">
+            <title>Example for finding out what graphs contain owl:sameAs for "New York"</title>
+            <para>To find out what graphs contain owl:sameAs for Dan York, we do</para>
+            <programlisting>
+   SELECT ?g ?x count (*) as ?count
+   WHERE {
+           {
+             SELECT ?x ?alias ?g
+             WHERE {
+                     {
+                       GRAPH ?g {?x owl:sameAs ?alias }
+                     }
+             UNION
+                     {
+                      GRAPH ?g {?alias owl:sameAs ?x}
+                     }
+                   }
+           }
+           OPTION ( TRANSITIVE,
+                    t_in (?x),
+                    t_out (?alias),
+                    t_distinct,
+                    t_min (1)) .
+           FILTER (?x = &lt;http://dbpedia.org/resource/New_York&gt; ) .
+         }
+  </programlisting>
+            <para>Here we select all paths that start with the initial URI and pass
+  through one or more sameAs statements. Each step produces a result of
+  the transitive subquery. The graph where the sameAs triple was found
+  is returned and used as the grouping column. In this way we see how
+  many times each graph is used. Note that graphs are counted many
+  times since the graphs containing immediate sameAs statements are
+  counted for paths of length 1, then again as steps on paths that reach
+  to their aliases and so on.</para>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples2">
+            <title>Example for query that takes all the people known by Tim Berners-Lee, to a depth between 1 and 4 applications of the subquery</title>
+            <para>This query takes all the people known by kidehen, to a depth between 1
+  and 4 applications of the subquery. It then sorts them by the
+  distance and the descending count of connections of each found connection. This is
+  equivalent to the default connections list shown by LinkedIn.</para>
+            <programlisting>
+  SPARQL
+  SELECT ?o ?dist ((SELECT COUNT (*) WHERE {?o foaf:knows ?xx}))
+  WHERE
+    {
+      {
+        SELECT ?s ?o
+        WHERE
+          {
+            ?s foaf:knows ?o
+          }
+      } OPTION ( TRANSITIVE,
+                 t_distinct,
+                 t_in(?s),
+                 t_out(?o),
+                 t_min (1),
+                 t_max (4),
+                 t_step ('step_no') as ?dist ) .
+      FILTER (?s= &lt;http://www.w3.org/People/Berners-Lee/card#i&gt;)
+    }
+  ORDER BY ?dist DESC 3
+  LIMIT 50
+  </programlisting>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples3">
+            <title>Example for query that takes all the people known by Tim Berners-Lee, to a depth between 2 and 4 applications of the subquery</title>
+            <para>This query takes all the people known by kidehen, to a depth between 2
+  and 4 applications of the subquery. It then sorts them by the
+  distance and the descending count of connections of each found connection. This is
+  equivalent to the default connections list shown by LinkedIn.</para>
+            <programlisting>
+  SPARQL
+  SELECT ?o ?dist ((SELECT COUNT (*) WHERE {?o foaf:knows ?xx}))
+  WHERE
+    {
+      {
+        SELECT ?s ?o
+        WHERE
+          {
+            ?s foaf:knows ?o
+          }
+      } OPTION ( TRANSITIVE,
+                 t_distinct,
+                 t_in(?s),
+                 t_out(?o),
+                 t_min (2),
+                 t_max (4),
+                 t_step ('step_no') as ?dist) .
+      FILTER (?s= &lt;http://www.w3.org/People/Berners-Lee/card#i&gt;)
+    }
+  ORDER BY ?dist DESC 3
+  LIMIT 50
+  </programlisting>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples4">
+            <title>Example for finding how two people know each other and what graphs are involved in the connection</title>
+            <para>To find how two people know each other and what graphs are involved in the connection, we do:</para>
+            <programlisting>
+  SPARQL
+  SELECT ?link ?g ?step ?path
+  WHERE
+    {
+      {
+        SELECT ?s ?o ?g
+        WHERE
+          {
+            graph ?g {?s foaf:knows ?o }
+          }
+      } OPTION ( TRANSITIVE,
+                 t_distinct,
+                 t_in(?s),
+                 t_out(?o),
+                 t_no_cycles,
+                 T_shortest_only,
+                 t_step (?s) as ?link,
+                 t_step ('path_id') as ?path,
+                 t_step ('step_no') as ?step,
+                 t_direction 3) .
+      FILTER (?s= &lt;http://www.w3.org/People/Berners-Lee/card#i&gt;
+      &amp;&amp; ?o = &lt;http://www.advogato.org/person/mparaz/foaf.rdf#me&gt;)
+    }
+    LIMIT 20
+  </programlisting>
+            <para>This query binds both the t_in and t_out variables. The ?g is left as
+  a free variable. Also, specifying ?s and the system defined constants
+  step_no and path_id as with t_step, we get for each transitive step a
+  row of results with the intermediate binding of ?s, the count of steps
+  from the initial ?s and a distinct identifier for the individual path,
+  since there can be many distinct paths that link the ?s and ?o
+  specified in the filter.</para>
+            <para>See the SQL transitive option section for details on the meaning of step_no and path_id.</para>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples5">
+            <title>Example for TBox Subsumption</title>
+            <para>Subsumption Demo Using Transitivity Clause</para>
+            <para>Yago Class Hierarchy (TBox) Subsumption</para>
+            <para>AlphaReceptors</para>
+            <programlisting>
+# all subjects with IRI: &lt;http://dbpedia.org/class/yago/AlphaReceptor105609111&gt;,
+# that are sub-classes of anything (hence ?y)
+# without restrictions on tree levels
+SELECT ?y
+FROM &lt;http://dbpedia.org/resource/classes/yago#&gt;
+WHERE
+  {
+    {
+      SELECT *
+      WHERE
+        {
+          ?x rdfs:subClassOf ?y .
+        }
+    }
+    OPTION (TRANSITIVE, t_distinct, t_in (?x), t_out (?y) ) .
+    FILTER (?x = &lt;http://dbpedia.org/class/yago/AlphaReceptor105609111&gt;)
+  }
+</programlisting>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples6">
+            <title>Example for Receptors</title>
+            <programlisting>
+SELECT ?x
+FROM &lt;http://dbpedia.org/resource/classes/yago#&gt;
+WHERE
+  {
+    {
+      SELECT *
+      WHERE
+        {
+          ?x rdfs:subClassOf ?y .
+        }
+    } OPTION (transitive, t_distinct, t_in (?x), t_out (?y) ) .
+  FILTER (?y = &lt;http://dbpedia.org/class/yago/Receptor105608868&gt;)
+}
+</programlisting>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples7">
+            <title>Inference Rule example using transitive properties from SKOS vocabulary</title>
+            <para>The following example demostrates the steps how to retrieve the skos ontology, add triples
+for skos:broaderTransitiveinto the graph, define inference rule, and at the and
+execute sparql query with inference rule and transitivity option. The queries were executed against
+the LOD instance (http://lod.openlinksw.com):</para>
+            <orderedlist>
+              <listitem>
+                <para>Make the Context graph, assuming you don't want to load entire SKOS vocabulary into our Quad Store:
+</para>
+                <programlisting>
+SQL&gt;SPARQL
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+INSERT INTO GRAPH &lt;urn:rules.skos&gt; { skos:broader rdfs:subPropertyOf skos:broaderTransitive .
+                                     skos:narrower rdfs:subPropertyOf skos:narrowerTransitive };
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>OR Load entire SKOS ontology into Quad Store via iSQL interface (commandline or HTML based Conductor):
+</para>
+                <programlisting>
+SQL&gt;DB.DBA.RDF_LOAD_RDFXML (http_get ('http://www.w3.org/2009/08/skos-reference/skos-owl1-dl.rdf'), 'no', 'urn:rules.skos');
+Done.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Make Context Rule:
+</para>
+                <programlisting>
+SQL&gt;rdfs_rule_set ('skos-trans', 'urn:rules.skos');
+Done.
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>Go to SPARQL endpoint, for ex. http://lod.openlinksw.com/sparql</para>
+              </listitem>
+              <listitem>
+                <para>Use inference rule pragma to set context rule for SPARQL query, i.e:
+</para>
+                <programlisting>
+SPARQL
+DEFINE input:inference "skos-trans"
+PREFIX p: &lt;http://dbpedia.org/property/&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/resource/&gt;
+PREFIX category: &lt;http://dbpedia.org/resource/Category:&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+PREFIX geo: &lt;http://www.georss.org/georss/&gt;
+
+SELECT DISTINCT ?m ?n ?p ?d
+WHERE
+  {
+    ?m rdfs:label ?n.
+    ?m skos:subject ?c.
+    ?c skos:broaderTransitive category:Churches_in_Paris OPTION (TRANSITIVE) .
+    ?m p:abstract ?d.
+    ?m geo:point ?p
+    FILTER ( lang(?n) = "fr" )
+    FILTER ( lang(?d) = "fr" )
+  }
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>You will get 22 rows returned from the query.
+Note that for comparison, if the option (transitive) is ommitted, then only 2 rows will be returned
+in our example query:
+     </para>
+                <figure xml:id="rdftr" floatstyle="1">
+                  <title>Transitive option</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/trs1.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+            </orderedlist>
+          </section>
+          <section xml:id="rdfsparqlimplementatiotransexamples8">
+            <title>Inference Rule example using
+transitive properties from SKOS vocabulary: Variant II</title>
+            <para>This example shows how to find entities that are subcategories of Protestant Churches, no deeper
+than 3 levels within the concept scheme hierarchy, filtered by a specific subcategory. It demonstrates
+use of inference rules, sub-queries, and filter to obtain entities associated with category:
+Protestant_churches combined with the use of the transitivitve closure, sets to a maximum of 3 steps down a SKOS based concept scheme hierarchy:</para>
+            <orderedlist>
+              <listitem>
+                <para>Make sure the inference rule "skos-trans" is created as described in the previous 
+                <link linkend="rdfsparqlimplementatiotransexamples7">example</link></para>
+              </listitem>
+              <listitem>
+                <para>Go to SPARQL endpoint, for ex. http://lod.openlinksw.com/sparql</para>
+              </listitem>
+              <listitem>
+                <para>Use inference rule pragma to set context rule for SPARQL query, i.e:
+</para>
+                <programlisting>
+DEFINE input:inference "skos-trans"
+PREFIX p: &lt;http://dbpedia.org/property/&gt;
+PREFIX dbpedia: &lt;http://dbpedia.org/resource/&gt;
+PREFIX category: &lt;http://dbpedia.org/resource/Category:&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+PREFIX geo: &lt;http://www.georss.org/georss/&gt;
+
+SELECT DISTINCT ?c AS ?skos_broader
+       ?trans AS ?skos_narrower
+       ?dist AS ?skos_level
+       ?m ?n ?p AS ?geo_point
+WHERE
+  {
+    {
+      SELECT ?c  ?m ?n ?p ?trans ?dist
+      WHERE
+        {
+  	      ?m rdfs:label ?n.
+  	      ?m skos:subject ?c.
+  	      ?c skos:broaderTransitive category:Protestant_churches .
+  	      ?c skos:broaderTransitive ?trans
+                OPTION ( TRANSITIVE,
+                         t_distinct,
+                         t_in (?c),
+                         t_out (?trans),
+                         t_max (3),
+                         t_step ( 'step_no' ) as ?dist ) .
+  	      ?m p:abstract ?d.
+  	      ?m geo:point ?p
+  	      FILTER ( lang(?n) = "en" )
+  	      FILTER ( lang(?d) = "en" )
+        }
+    }
+    FILTER ( ?trans = &lt;http://dbpedia.org/resource/Category:Churches_in_London&gt; )
+  }
+ORDER BY ASC (?dist)
+</programlisting>
+              </listitem>
+              <listitem>
+                <para>You will get 22 rows returned from the query.
+     </para>
+                <figure xml:id="rdftr_01" floatstyle="1">
+                  <title>Transitive option</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/trs2.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+            </orderedlist>
+          </section>
+        </section>
+      </section>

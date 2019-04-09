@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  $Id: UDAZeroConf.xml,v 1.1.1.1 2004/09/09 10:45:25 cvs Exp $
+  (C)Copyright 1996-2018 OpenLink Software
+-->
+<chapter id="UDAZeroConf" >
+<title>Zero Configuration Networking</title>
+<abstract>
+ <para>Zero Configuration Networking is a server administered service that 
+ broadcasts configured available services over IP to allow clients 
+ to discover and used them with no prior knowledge or client specific 
+ configuration.</para>
+ </abstract>
+<chapterinfo>
+  <keywordset>
+    <keyword>ODBC</keyword>
+    <keyword>ODBC Driver</keyword>
+    <keyword>ODBC Drivers</keyword>
+    <keyword>Zero Configuration</keyword>
+    <keyword>Zero Configuration Networking</keyword>
+  </keywordset>
+</chapterinfo>
+<sect1 id="zeroconfintro"><title>Introduction</title>
+<formalpara><title>What is it?</title>
+ <para>Zero Configuration Networking, also known as ZeroConf, is networking that 
+ needs nothing to be pre-configured and no administration to operate.  Zero 
+ Configuration Networking uses industry standard IP protocols to allow devices 
+ to automatically find each other without the need to enter IP addresses or 
+ configure DNS servers.</para></formalpara>
+ <formalpara><title>Why is it Important?</title>
+ <para>ZeroConf enables services on a network built with this support to be 
+ automatically discovered, thereby requiring no knowledge on the part of the 
+ end user attempting to use this service about the specifics of its configuration, 
+ just that it is available for use if selected.</para></formalpara>
+   <para>Using ZeroConfig for installation rollouts or for site maintenance 
+  can significantly reduce administration overhead.  Because the client ODBC 
+  Driver is bound to a service name only, should the details of that service change 
+  the client will automatically re-acquire the new details (this does not include changes 
+  to the name of the service).  For example, 200 client installations configured to 
+  use the service "SalesDB1",  moving the "Sales" database to another server, 
+  perhaps even a different database does not required any further client 
+  configuration, they will automatically connect to the new server.</para>
+  <para>ZeroConf configuration on the server is kept to a minimum.  The 
+  host and port number of the Request Broker are automatically supplied to the 
+  ZeroConf service descriptions on the server when they are broadcast over 
+  the network.  Furthermore, ZeroConf service descriptions can be based 
+  directly on a Server Type that maps to a Database Agent.  
+  If we consider the above example again, moving the "Sales" 
+  database to another machine will not need any ZeroConf adjustment on the
+  server either, the new host and port and automatically discovered and 
+  broadcast with no administrator intervention other than to start the 
+  new Broker and Database.</para>
+</sect1>
+<sect1 id="zerosrvconf"><title>Server Configuration</title>
+<sect1info>
+  <keywordset>
+    <keyword>Zero Configuration Server</keyword>
+    <keyword>Server</keyword>
+    <keyword>Zero Config</keyword>
+  </keywordset>
+</sect1info>
+  <para>The OpenLink Multi-Tier Request Broker now has the ability to Broadcast 
+  ZeroConf services of available Database agent connections on the network.  
+  These can be discovered by the the OpenLink Multi-Tier ODBC client.</para>
+  <sect2 id="zeroconfini"><title>Configuration by Rule Book Edit</title>
+  <para>ZeroConf Support in the Request Broker is configured via the Rule Book.  
+  The Rule Book now contains a new section called [Zero Config].  This section 
+  contains a list of DSN="Connect String" pairs.  The DSN is the name that will 
+  be presented to clients listing available ZeroConf data source, the 
+  Connect String is a string of connection attributes necessary for making 
+  a connection to a Database Agent as the example below shows:</para>
+  <programlisting><![CDATA[
+[Zero Config]
+ZJDBC3= "ServerType=JDBC13;Database=virtuoso.jdbc2.Driver;UID=dba"
+ZSQL2K = "ServerType=SQLServer 2000;Database=pubs;UID=sa"
+SQLServer 2000="Database=pubs;UID=sa"
+]]></programlisting>
+  <para>The syntax is:</para>
+  <programlisting>&lt;Service_name&gt;="Connect String"</programlisting>
+  <para>or:</para>
+  <programlisting>&lt;Server Type&gt;="Connect String"</programlisting>
+  <para>In this second case, there is no Server Type defined within
+  the connect string itself.</para>
+<itemizedlist>
+ <listitem><formalpara><title>&lt;Service_name&gt;</title>
+  <para>This is the service name you want this specific ZeroConf service to be known 
+  as when discovered by any Multi-Tier ZeroConf clients on the network.</para>
+  </formalpara></listitem>
+ <listitem><formalpara><title>Connect String</title>
+ <para>A semi-colon (;) separated list of connection attributes that the Request 
+ Broker will supply to clients for automatically connecting the the requested 
+ DSN.  Note that these attributes can be any of those used by a normal Multi-Tier 
+ client, since this is effectively making DSN-less connection string for clients 
+ to use.  Host and Port cannot be specified, these are automatically supplied by 
+ the broker when the service is requested.</para></formalpara>
+ <note><title>Note:</title>
+ <para>The Host and Port number of the Request Broker are not specifiable, 
+ the Broker will supply these to the services broadcasted automatically.  This 
+ brings a huge saving on administration overhead; if the circumstances of the 
+ networking infrastructure change, the installation is simply moved to another 
+ machine or a backup server activated, no modifications to the ZeroConf details 
+ are required, and the new host:port will be automatically supplied from then on.</para></note>
+ <para>The Connect String must be enclosed in double-quotes.</para>
+ <para>The list of available attributes are:</para>
+ <itemizedlist>
+  <listitem><formalpara><title>ServerType [SVT]</title>
+   <para>Specify agent domain.  This is used by the broker to determine which 
+   agent section to connect the client request to using mapping rules.</para></formalpara></listitem>
+   <listitem><formalpara><title>ServerOptions</title>
+   <para>Server startup options specific to agent/database.</para></formalpara></listitem>
+  <listitem><formalpara><title>Database [DATABASE]</title>
+   <para>Database to use. Agent/database specific.</para></formalpara></listitem> 
+  <listitem><formalpara><title>Options [OPTIONS]</title>
+   <para>Database connect options. Agent/database specific.</para></formalpara></listitem> 
+  <listitem><formalpara><title>UserName [UID]</title>
+   <para>Username to connect as.</para></formalpara></listitem> 
+  <listitem><formalpara><title>Password [PWD]</title>
+   <para>Password for user.</para></formalpara></listitem> 
+  <listitem><formalpara><title>ReadOnly [READONLY]</title>
+   <para>Specify Y(es) for read-only (ro) or N(o) for read-write (rw) 
+   connections. Read only connections are sometimes faster, but can never 
+   modify any database.</para></formalpara></listitem> 
+  <listitem><formalpara><title>FetchBufferSize [FBS]</title>
+   <para>Number of rows (records) to be fetched per call from database agent.  
+   Values range from 1 to 99</para></formalpara></listitem> 
+  <listitem><formalpara><title>Persist</title>
+   <para>Controls whether the Zero Config DSN should be persisted on the client 
+   when select. If set to Yes/Y/T then it will, and if for set to No/N/F then it will only 
+   be used at connect time and not stored in the client which may be deemed a 
+   securty breach.</para></formalpara></listitem>
+ </itemizedlist>
+ </listitem>
+</itemizedlist>
+  </sect2>
+  <sect2 id="zeroconfwiz"><title>Configuration by Wizard</title>
+  <para>The OpenLink Universal Data Access Admin Assistant provides a 
+  graphical remote access interface to the server settings such as those found 
+  in the Rule Book.  This interface has been extended to support configuration of 
+  the ZeroConf settings in the Server Component Administration Section, called Zero 
+  Config Administration.</para>
+  <para>The Zero Config Administration pages are very much like Client 
+  Data Source configuration pages, they have the same layout and descriptions as 
+  they are essentially data sources stored on the server.</para>
+  <para>To make a new Zero Configuration entry, follow this sequence:</para>
+<orderedlist>
+<listitem>
+  <para>From the Server Components Administration menu, chose the
+  Zero Config Administration sub menu, and then Zero Config Administration by Wizard.
+  A list of current confirguations is shown:</para>
+<figure id="zerowiz01" float="1">
+  <title>Zero Config by Wizard - Admin Assistant Configuration</title>
+  <graphic fileref="zerowiz01.png" format="png"></graphic>
+</figure>
+ </listitem>
+<listitem>
+  <para>Press the Add button. Enter a suitable name for the configuration:</para>
+<figure id="zerowiz02" float="1">
+  <title>Zero Config by Wizard - Admin Assistant Configuration</title>
+  <graphic fileref="zerowiz02.png" format="png"></graphic>
+</figure>
+ </listitem>
+<listitem>
+  <para>Enter the database details. The parameters are identical to those
+  in the <link linkend="WizardBasedDSNs">ODBC DSN configuration wizard</link>.</para>
+  <para>For each parameter you wish to configure, you need
+  to enable it by checking the box on the left side.
+  Each field is disabled until the check box is marked.</para>
+<figure id="zerowiz03" float="1">
+  <title>Zero Config by Wizard - Admin Assistant Configuration</title>
+  <graphic fileref="zerowiz03.png" format="png"></graphic>
+</figure>
+ </listitem>
+<listitem>
+  <para>Enter the additional connection parameters. In same way as previous
+  page, each parameter
+  field needs to be enabled by the check mark on the left side.</para>
+<figure id="zerowiz04" float="1">
+  <title>Zero Config by Wizard - Admin Assistant Configuration</title>
+  <graphic fileref="zerowiz04.png" format="png"></graphic>
+</figure>
+ </listitem>
+<listitem>
+  <para>The complete configuration parameters are now shown:</para>
+<figure id="zerowiz05" float="1">
+  <title>Zero Config by Wizard - Admin Assistant Configuration</title>
+  <graphic fileref="zerowiz05.png" format="png"></graphic>
+</figure>
+ </listitem>
+<listitem>
+  <para>The Zero Config entry now appears in the list:</para>
+<figure id="zerowiz07" float="1">
+  <title>Zero Config by Wizard - Admin Assistant Configuration</title>
+  <graphic fileref="zerowiz07.png" format="png"></graphic>
+</figure>
+ </listitem>
+</orderedlist>
+  </sect2>
+  <sect2 id="zeroconfform"><title>Configuration by Form</title>
+  <para>From the Server Components Administration menu, chose the
+  Zero Config Administration sub menu, and then Zero Config Administration by Form.
+The list of current configurations is shown. Chose one to edit or delete,
+or select "add" to make a new configuration.</para>
+<figure id="zeroform01" float="1">
+  <title>Zero Config by Forms - Admin Assistant Configuration</title>
+  <graphic fileref="zeroform01.png" format="png"></graphic>
+</figure>
+  <para>The parameters required in the form are the same as those detailed in the
+  previous section on Rule Book Configuration.
+  The Host and Port fields are not available since this information is 
+  supplied by the Request Broker hosting the service.</para>
+</sect2>
+</sect1>
+<sect1 id="zeroclientconf"><title>Client Configuration</title>
+<sect1info>
+  <keywordset>
+    <keyword>Zero Configuration Client Configuration</keyword>
+    <keyword>Client Configuration</keyword>
+    <keyword>Zero Config</keyword>
+  </keywordset>
+</sect1info>
+  <sect2 id="zeroclientdm"><title>Configuration by Windows ODBC Driver Manager</title>
+  <para>During the configuration of a DSN in the Windows ODBC Driver Manager
+  the Server field offers a drop down list of available Zero Config
+  servers:</para>
+<figure id="odbccl5b" float="1">
+  <title>Windows ODBC Configuration</title>
+  <graphic fileref="odbccl5.gif" format="gif"></graphic>
+</figure>
+</sect2>
+  <sect2 id="zeroclientaa"><title>Configuration by Admin Assistant</title>
+  <para>During the configuration of a DSN in the Admin Assistant
+  it is currently not possible to discover the Zero Config entries.
+  However on Windows it is possible to put the name of a
+  Zero Config entry in the Server field.</para>
+<figure id="zerowiz10" float="1">
+  <title>Windows Zero Config DSN Configuration</title>
+  <graphic fileref="zerowiz10.png" format="png"></graphic>
+</figure>
+</sect2>
+ </sect1>
+</chapter>

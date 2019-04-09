@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="commit_rollback">
+      <title>COMMIT WORK, ROLLBACK WORK Statement</title>
+      <para>
+These statements reset the current transaction.  COMMIT WORK leaves all the changes made
+by the current transaction in effect whereas ROLLBACK work reverses them.
+</para>
+      <para>
+In both cases, the transaction will be in a fresh state, having no locks and
+no changes that could be rolled back.  The rollback operation always succeeds, as any
+change is always reversible until committed.  COMMIT WORK may fail if the
+transaction had been marked to be canceled before the COMMIT WORK operation started.  A failed
+commit has the effect of a rollback but it will signal a SQL STATE descriptive of
+the error, e.g. 40001 (deadlock).
+</para>
+      <para>
+These operations are typically not needed, since the SQLTransact ODBC call and the ODBC
+autocommit mode are used instead for transaction control.  The only use for
+these statements is within stored procedures, where it may be practical to break
+a long sequence of operations into several transactions to reduce lock contention.
+</para>
+      <para>
+These can also be used together with the WHENEVER declaration to automate
+retry upon deadlock inside stored procedures.
+</para>
+      <para>
+Triggers should not normally use these statements.  The exception is the case where
+ a trigger detects a state violating application consistency rules and decides to
+abort the transaction. This can be done by ROLLBACK WORK, typically followed by a call to
+the signal function for notifying the application.
+</para>
+      <example>
+        <title>Examples:</title>
+        <programlisting>
+create procedure retry (in x integer)
+{
+  whenever sql state '40001' goto deal;
+ again:
+  -- action
+  return;
+ deadl:
+   rollback work;
+   goto again;
+}
+
+create trigger sal_negative on "Employee" after update ("Salary")
+{
+  if ("Salary" &lt; 0) {
+    rollback work;
+    signal ('A0001', 'Salary cannot be negative');
+  }
+}
+</programlisting>
+      </example>
+      <tip>
+        <title>See Also:</title>
+        <para><link linkend="fn_txn_error">txn_error</link>
+
+  , <link linkend="fn_txn_killall">txn_killall</link>
+
+  , <link linkend="fn_signal">signal</link>
+
+  </para>
+      </tip>
+    </section>

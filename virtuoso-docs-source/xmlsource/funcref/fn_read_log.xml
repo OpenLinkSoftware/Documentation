@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="fn_read_log">
+      <refmeta>
+        <refentrytitle>read_log
+</refentrytitle>
+        <refmiscinfo>admin
+</refmiscinfo>
+      </refmeta>
+      <refnamediv>
+        <refname>read_log
+</refname>
+        <refpurpose>reads Virtuoso log
+</refpurpose>
+      </refnamediv>
+      <refsynopsisdiv>
+        <funcsynopsis xml:id="fsyn_read_log">
+          <funcprototype xml:id="fproto_read_log">
+            <funcdef>
+              <function>read_log
+</function>
+            </funcdef>
+            <paramdef choice="opt">in 
+<parameter>file
+</parameter>
+
+   varchar
+</paramdef>
+            <paramdef choice="opt">in 
+<parameter>pos
+</parameter>
+
+   integer
+</paramdef>
+          </funcprototype>
+        </funcsynopsis>
+      </refsynopsisdiv>
+      <refsect1 xml:id="desc_read_log">
+        <title>Description
+</title>
+        <para>The 
+<function>read_log
+</function>
+
+   function reads from the Virtuoso Transactions log file from a given position.
+
+</para>
+      </refsect1>
+      <refsect1 xml:id="params_read_log">
+        <title>Parameters
+</title>
+        <refsect2>
+          <title>file
+</title>
+          <para>Virtuoso transaction log file.
+</para>
+        </refsect2>
+        <refsect2>
+          <title>pos
+</title>
+          <para>A given position from which the read to start from.
+</para>
+        </refsect2>
+      </refsect1>
+      <refsect1 xml:id="ret_read_log">
+        <title>Return Types
+</title>
+        <para>The function returns array of transaction values.
+</para>
+      </refsect1>
+      <refsect1 xml:id="examples_read_log">
+        <title>Examples
+</title>
+        <example xml:id="ex_read_log">
+          <title>Sample example
+</title>
+          <screen>
+-- insert sample data so to change the rdf_quad index:
+SQL&gt; SPARQL INSERT INTO &lt;g&gt; { &lt;s&gt; &lt;p&gt; &lt;o&gt; };
+
+-- create the following example procedure
+SQL&gt;
+create procedure rlt (in f any, in inpos int := 0)
+{
+  declare h, op, g, s, p, o any;
+  declare pos int;
+  result_names (op, g, s, p, o);
+  h := file_open (f, inpos);
+  declare r, rr any;
+  while ((rr := read_log (h, pos)) is not null)
+    {
+      declare rw, k any;
+      declare i int;
+      rw := null;
+      k := null;
+      for (i := 1; i &lt; length (rr); i := i + 1)
+        {
+	  r := rr[i];
+	  if (r[0] = 13) -- key insert
+	    {
+	      rw := r[2];
+	      op := 'I';
+	    }
+	  else if (r[0] in (1,8,9)) -- insert,soft,replacing
+	    {
+	      rw := r[1];
+	      op := 'I';
+	    }
+	  else if (r[0] in (3,14)) -- delete
+	    {
+	      rw := r[1];
+	      op := 'D';
+	    }
+	  if (rw is not null)
+	    {
+	      k := rw[0];
+	      if (k = 273) -- RDF_QUAD, should check with SYS_KEYS
+		{
+		  result (op, __ro2sq (rw[1]), __ro2sq (rw[2]), __ro2sq (rw[3]), __ro2sq (rw[4]));
+		}
+	    }
+	}
+    }
+  result (pos + inpos, '', '', '', '');
+}
+;
+
+-- Call the procedure:
+
+-- in case of no changes to the rdf_quad index are done, it will return:
+SQL&gt; rlt('tmp/Virtuoso.trx');
+Query result:
+op 	  g   s   p    o
+ANY   ANY ANY ANY  ANY
+8403
+No. of rows in result: 1
+
+-- in case of changes to the rdf_quad index are done ( example with the short INSERT we did above), it will return for example:
+SQL&gt; rlt('tmp/Virtuoso.trx');
+Query result:
+op 	   g   s   p    o
+ANY    ANY ANY ANY  ANY
+I      g   s   p    o
+71446
+No. of rows in result: 2
+</screen>
+        </example>
+      </refsect1>
+      <refsect1 xml:id="seealso_read_log">
+        <title>See Also
+</title>
+        <para>
+          <link linkend="fn_log_enable">
+            <function>log_enable
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_log_text">
+            <function>log_text
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_log">
+            <function>log
+</function>
+          </link>
+        </para>
+        <para>
+          <link linkend="fn_log10">
+            <function>log10
+</function>
+          </link>
+        </para>
+      </refsect1>
+    </refentry>

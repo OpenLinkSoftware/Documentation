@@ -1,0 +1,923 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="selectstmt">
+      <title>SELECT Statement</title>
+      <section xml:id="selectsyntax">
+        <title>Syntax</title>
+        <para> 
+  </para>
+        <programlisting>
+&lt; select statement: single row &gt; ::= SELECT [ &lt; set quantifier &gt; ] &lt; select list &gt;
+
+      INTO &lt; select target list &gt;
+
+      &lt; table expression &gt;
+
+&lt; select target list &gt; ::=
+      &lt; target specification &gt; [ { &lt; comma &gt; &lt; target specification &gt; }... ]
+
+&lt; query expression &gt; ::=
+      &lt; non-join query expression &gt;
+
+    | &lt; joined table &gt;
+
+&lt; non-join query expression &gt; ::=
+      &lt; non-join query term &gt;
+
+    | &lt; query expression &gt; UNION  [ ALL ]
+          [ &lt; corresponding spec &gt; ] &lt; query term &gt;
+
+    | &lt; query expression &gt; EXCEPT [ ALL ]
+          [ &lt; corresponding spec &gt; ] &lt; query term &gt;
+
+&lt; non-join query term &gt; ::=
+      &lt; non-join query primary &gt;
+
+    | &lt; query term &gt; INTERSECT [ ALL ]
+          [ &lt; corresponding spec &gt; ] &lt; query primary &gt;
+
+&lt; non-join query primary &gt; ::=
+      &lt; simple table &gt;
+
+    | &lt; left parent &gt; &lt; non-join query expression &gt; &lt; right parent &gt;
+
+&lt; simple table &gt; ::=
+      &lt; query specification &gt;
+    | &lt; table value constructor &gt;
+    | &lt; explicit table &gt;
+
+&lt; query specification &gt; ::=
+    SELECT [ &lt; set quantifier &gt; ] &lt; select list &gt; &lt; table expression &gt;
+
+&lt; select list &gt; ::=
+      &lt; asterisk &gt;
+    | &lt; select sublist &gt; [ { &lt; comma &gt; &lt; select sublist &gt; }... ]
+
+&lt; select sublist &gt; ::=
+      &lt; derived column &gt;
+    | &lt; qualifier &gt; &lt; period &gt; &lt; asterisk &gt;
+
+&lt; derived column &gt; ::= &lt; value expression &gt; [ &lt; as clause &gt; ]
+
+&lt; as clause &gt; ::= [ AS ] &lt; column name &gt;
+
+&lt; table expression &gt; ::=
+    &lt; from clause &gt;
+    [ &lt; where clause &gt; ]
+    [ &lt; group by clause &gt; ]
+    [ &lt; having clause &gt; ]
+
+&lt; from clause &gt; ::= FROM &lt; table reference &gt;
+    [ { &lt; comma &gt; &lt; table reference &gt; }... ]
+
+&lt; table reference &gt; ::=
+      &lt; table name &gt; [ [ AS ] &lt; correlation name &gt;
+          [ &lt; left parent &gt; &lt; derived column list &gt; &lt; right parent &gt; ] ]
+    | &lt; derived table &gt; [ AS ] &lt; correlation name &gt;
+          [ &lt; left parent &gt; &lt; derived column list &gt; &lt; right parent &gt; ]
+    | &lt; joined table &gt;
+
+&lt; derived column list &gt; ::= &lt; column name list &gt;
+
+&lt; derived table &gt; ::= &lt; table subquery &gt;
+
+&lt; table subquery &gt; ::= &lt; subquery &gt;
+
+&lt; joined table &gt; ::=
+      &lt; cross join &gt;
+    | &lt; qualified join &gt;
+    | &lt; left parent &gt; &lt; joined table &gt; &lt; right parent &gt;
+
+&lt; cross join &gt; ::=
+    &lt; table reference &gt; CROSS JOIN &lt; table reference &gt;
+
+&lt; qualified join &gt; ::=
+    &lt; table reference &gt; [ NATURAL ] [ &lt; join type &gt; ] JOIN
+      &lt; table reference &gt; [ &lt; join specification &gt; ]
+
+&lt; join type &gt; ::=
+      INNER
+    | &lt; outer join type &gt; [ OUTER ]
+    | UNION
+
+&lt; outer join type &gt; ::=
+      LEFT
+    | RIGHT
+    | FULL
+
+&lt; join specification &gt; ::=
+
+      &lt; join condition &gt;
+    | &lt; named columns join &gt;
+
+&lt; join condition &gt; ::= ON &lt; search condition &gt;
+
+&lt; named columns join &gt; ::=
+    USING &lt; left parent &gt; &lt; join column list &gt; &lt; right parent &gt;
+
+&lt; join column list &gt; ::= &lt; column name list &gt;
+
+&lt; where clause &gt; ::= WHERE &lt; search condition &gt;
+
+&lt; group by clause &gt; ::=
+    GROUP BY &lt; grouping column reference list &gt;
+
+&lt; grouping column reference list &gt; ::=
+
+    &lt; grouping column reference &gt;
+        [ { &lt; comma &gt; &lt; grouping column reference &gt; }... ]
+
+&lt; grouping column reference &gt; ::=
+
+    &lt; column reference &gt; [ &lt; collate clause &gt; ]
+</programlisting>
+        <para> 
+  </para>
+      </section>
+      <section xml:id="descrip">
+        <title>Description</title>
+        <para>
+The SELECT statement is the principal means of information retrieval in SQL.
+A SELECT can retrieve information from one or more tables with arbitrary search criteria.
+SELECT's can also be nested to have the output of one serve as an input or search condition for another.
+Several SELECT's can be combined into one query with the UNION, INTERSECTION and EXCEPT operators.
+</para>
+        <para>
+The SELECT syntax consists of the following parts:
+</para>
+        <programlisting>
+SELECT [DISTINCT] scalar_exp {, scalar_exp}
+	FROM table {, table}
+	WHERE &lt; search condition &gt;
+	GROUP BY &lt; column list &gt;
+	HAVING &lt; search condition &gt;
+	ORDER BY &lt; ordering spec list &gt;
+	FOR UPDATE
+</programlisting>
+        <para>
+All parts are optional. If one or more of the clauses
+appear they must appear in the above order.  All parts do not need to be specified,
+e.g. SELECT A FROM T FOR UPDATE is valid but SELECT A FROM T ORDER BY a WHERE &lt; &lt; 10 is not.
+</para>
+        <note>
+          <title>Note:</title>
+          <para>A select without a FROM clause is allowed.
+</para>
+          <para>
+This is useful for returning values of expressions to the client. Such a select always returns one row,
+with the values listed as columns. Typically only useful from interactive SQL.
+</para>
+          <para>
+Example:
+</para>
+          <para>
+select 1 + 2 as three;
+</para>
+        </note>
+        <para>
+A table reference in the FROM clause can either be a simple table name, another SELECT
+expression of the form described above or a join expression.
+A SELECT inside a FROM is called a derived table. This means that the rows selected by
+the derived table expression are treated as if they constituted a table. This is similar to a
+VIEW reference and a derived table can be thought of as an unnamed in-line VIEW declaration.
+</para>
+        <para>
+A join expression combines table references, which are either simple, derived or joined tables
+themselves into different joins.
+</para>
+        <para>
+A join is an operation that retrieves for each row of one table zero
+or more rows from another table. The join condition specifies how the rows are matched.
+The result of a join is a set of rows containing selected columns from both joined tables.
+Joins are by default so called INNER joins, which means that for a row to be in the result
+there must be a row matching the left table in the right table as specified by the join
+condition. An OUTER join is a join that will produce a result row even if there is no row
+in the right table for the row in the left table. The columns that would have come from the
+right table are then just set to NULL's.
+</para>
+        <programlisting>
+table_ref ::=
+	&lt; table name &gt; [&lt; correlation name &gt;]
+  |	/ query expression ) &lt; correlation name &gt;
+  |	&lt; table ref &gt; &lt; [NATURAL] join &gt; &lt; table ref &gt; &lt; join condition &gt;
+
+join ::=
+  	&lt; empty &gt;
+  |	CROSS
+  |	INNER
+  | 	LEFT [OUTER]
+  | 	RIGHT [OUTER]
+
+join condition ::=
+	&lt; empty &gt;
+  |	ON &lt; search condition &gt;
+  |	USING '(' &lt; column &gt; {, column} ')'
+</programlisting>
+        <para>
+The &lt; correlation name &gt; is an identifier that is used to identify the table in a column
+reference if the same table appears many times in the query expression, e.g. is joined
+with itself.
+</para>
+        <para>
+The CROSS join has no join condition. This means that for each row in the left table all
+rows in the right table are included in the result.
+</para>
+      </section>
+      <!-- ======================================== -->
+
+      <section xml:id="asdec">
+        <title>Column Aliasing - AS Declaration</title>
+        <para>
+Virtuoso supports the AS operator in the selection list of a SELECT
+statement. This notation allows declaring a name and optionally a type
+and precision for a statement's output column.
+</para>
+        <para>
+The syntax is:
+</para>
+        <screen>
+as_exp:
+Scalar_exp AS NAME opt_data_type
+</screen>
+        <para>
+For instance, one can write:
+</para>
+        <programlisting>
+SELECT COUNT (*) AS NUMBEROFROWS FROM XX;
+SELECT COUNT (*) AS NUMBEROFROWS INTEGER (2) FROM XX;
+SELECT CONCATENATE (COL1, COL2) AS RESULTSTRING VARCHAR (50) FROM XX;
+</programlisting>
+        <para>
+The AS expression tells the client to return specified values in the
+SQLDescribeCol, SQLColAttribute or equivalent calls. The semantics of
+statements is not otherwise affected.   An AS expression can appear
+anywhere a scalar expression can but the only place where it has an
+effect is the selection list of a SELECT statement.
+</para>
+        <para>
+If a data type is given and contains a precision, that precision is
+returned to the client as the precision of the column in question.
+</para>
+      </section>
+      <section xml:id="joinexamples">
+        <title>Join examples</title>
+        <para>
+The following three statements produce an identical result.
+</para>
+        <programlisting>
+select Orders.OrderID, ProductID
+    from Orders natural join Order_Details using (OrderID)
+select Orders.OrderID, ProductID
+    from Orders join Order_Details on Orders.OrderID = Order_Details.OrderID
+select Orders.OrderID, ProductID
+    from Orders,  Order_Details where Orders.OrderID = Order_Details.OrderID
+</programlisting>
+        <note>
+          <title>Note:</title>
+          <para>In all these cases if there exists no Order_Details row matching the Orders row there
+will no no result row corresponding to the Orders row.  An outer join can can be used to also
+retrieve left table records for which there is no matching right table record.
+</para>
+        </note>
+        <programlisting>
+select Orders.OrderID, ProductID
+    from Orders natural left outer join Order_Details using (OrderID)
+</programlisting>
+        <para>will produce a result identical to the above sample if for each Orders row there is at least
+one Order_Details row. If there is none however, the OrderID column from Orders will appear
+together with a NULL ProductID from the non-existent Order_Details.
+</para>
+        <para>
+A right outer join is like a left outer join with the left and right tables reversed.
+</para>
+      </section>
+      <section xml:id="ordergrping">
+        <title>Ordering and Grouping</title>
+        <para>
+The result rows of a query can be ordered based on their column values.
+The ORDER BY phrase allows specifying an ascending or descending sort order for a
+any column. The SQL interpreter will use an index if there is an index whose order
+reflects the order in the ORDER BY clause. If there is no appropriate index or if
+ascending and descending order is combined for columns of the same table the SQL
+interpreter will first evaluate the query and then sort the results before returning
+them.
+</para>
+        <tip>
+          <title>See:</title>
+          <para>Optimizations below for more information.</para>
+        </tip>
+        <programlisting>
+ select * from Employees order by BirthDate;
+</programlisting>
+        <para>
+will list all employees, oldest first, in ascending order of birth date.
+</para>
+        <para>
+The GROUP BY clause allows computing functions over repeating groups. Without
+the GROUP by clause set functions (AVG, MIN, MAX, SUM, COUNT) may not be mixed
+with normal columns in a selection list.
+If set functions and columns are mixed, all the columns must appear in the GROUP BY section.
+Such a query will produce as many rows as there are distinct value combinations of the grouping columns.
+The set functions will be computed for each distinct column combination.
+</para>
+        <programlisting>
+select OrderID, sum (UnitPrice * Quantity)
+   from Order_Details group by OrderID
+   having sum (UnitPrice * Quantity) &gt; 5000  order by 2 desc;
+</programlisting>
+        <para>
+Produces the OrderID and total value of the order in decreasing order of order value.
+The HAVING clause specifies that only orders with a value &gt; 5000 will be counted. Note
+that the sum expression in having must be written identically to the same expression
+in the SELECT left.
+</para>
+        <para>
+The 2 in the order by refers to the second column of the select, which has no name,
+it being a function reference.
+</para>
+        <section xml:id="ordergrping_cube">
+          <title>CUBE and ROLLUP</title>
+          <para>Virtuoso database offers a way to increase efficiency of SQL summary queries and simplify the operations. By using
+			the options <code>ROLLUP</code>
+
+   and <code>CUBE</code>
+
+   in <code>GROUP BY</code>
+
+  , can be executed more comprehensive summary
+			operations. The produced result sets could be also produced without using these option but rahter with additional coding
+			and queries.</para>
+          <para>The options <code>ROLLUP</code>
+
+   and <code>CUBE</code>
+
+   extend the result set of <code>GROUP BY</code>
+
+  :</para>
+          <itemizedlist mark="bullet">
+            <listitem>
+              <para><code>ROLLUP</code>
+              : builds a consequence of subtotal aggregates on every queried level including the grand total.</para>
+            </listitem>
+            <listitem>
+              <para><code>CUBE</code>
+              : this option is an extension of </para>
+              <para><code>ROLLUP</code>
+              . It builds all possible subtotal aggregates combinations for given </para>
+              <para><code>GROUP BY</code>
+              .</para>
+            </listitem>
+          </itemizedlist>
+          <para>For example:</para>
+          <programlisting>
+  SELECT j, grouping (j), k, grouping (k), t, grouping (t), SUM (i)
+    FROM MyDemo
+GROUP BY ROLLUP (j,k,t);
+
+  SELECT j, grouping (j), k, grouping (k), t, grouping (t), SUM (i)
+    FROM MyDemoCube
+GROUP BY CUBE (j,k,t);
+</programlisting>
+          <para>The <code>grouping(param)</code>
+
+   procedure returns "1" if the column "param" is not in the
+		dynamic GROUP BY set, and returns "0" otherwise.</para>
+          <para>The result set of:</para>
+          <programlisting>
+  SELECT j, k, t, SUM (i)
+    FROM MyDemo
+GROUP BY ROLLUP (j,k,t) ;
+</programlisting>
+          <para>is equivalent of the accumulated result sets of:</para>
+          <programlisting>
+  SELECT j, k, t, SUM (i)
+    FROM MyDemo
+GROUP BY j,k,t;
+
+  SELECT NULL, k, t, SUM (i)
+    FROM MyDemo
+GROUP BY k,t;
+
+  SELECT NULL, NULL, t, SUM (i)
+    FROM MyDemo
+GROUP BY t;
+
+  SELECT NULL, NULL, NULL, SUM (i)
+    FROM MyDemo;
+</programlisting>
+          <para>The result set of:</para>
+          <programlisting>
+SELECT t,s, SUM (i) FROM MyDemo GROUP BY CUBE (t,s);
+</programlisting>
+          <para>is equivalent of the accumulated result set of:</para>
+          <programlisting>
+  SELECT t,s, SUM (i)
+    FROM MyDemo
+   GROUP BY t,s;
+
+  SELECT t,NULL, SUM (i)
+    FROM MyDemo
+GROUP BY t;
+
+  SELECT s,NULL, SUM (i)
+    FROM MyDemo
+GROUP BY s;
+
+  SELECT NULL,NULL, SUM (i)
+    FROM MyDemo;
+</programlisting>
+        </section>
+      </section>
+      <section xml:id="gsets">
+        <title>Grouping Sets</title>
+        <para>The grouping sets variant of group by allows specifying exactly which combinations of groupings are needed.
+				<code>CUBE</code>
+
+   and <code>ROLLUP</code>
+
+   are shorthands that expand into a grouping sets specification. This is useful
+				for applications like faceted search where there are separate group by's on properties of interest.</para>
+        <para>The grouping function behaves identically to <code>CUBE</code>
+
+   and <code>ROLLUP</code>
+
+  .</para>
+        <para>The syntax is:</para>
+        <programlisting>
+GROUP BY grouping sets (&lt;grouping set&gt;[,...])
+</programlisting>
+        <para>The grouping set is a list of grouping columns in parentheses or <code>()</code>
+
+   to denote an aggregate without grouping.</para>
+        <para>For example:</para>
+        <programlisting>
+  SELECT key_table, key_is_main, COUNT (*)
+    FROM SYS_KEYS
+GROUP BY grouping sets ((key_table), (key_is_main), ());
+</programlisting>
+        <para>This shows for each table the number of indices, then the number of primary key and non-primary key indices
+				across all tables and finally the total number of indices in the schema. A <code>CUBE</code>
+
+   would produce these
+				same groupings but it would further add the <code>key_table</code>
+
+  , <code>key_is_main</code>
+
+   grouping.</para>
+        <para>As an extension to SQL 99 OLAP extensions, the Virtuoso grouping sets specification also supports an <code>ORDER BY</code>
+
+			with optional top. In the place of a grouping set one can write:</para>
+        <programlisting>
+ORDER BY [top k] (&lt;column&gt; [,...])
+</programlisting>
+        <para>In this way a single query can produce a set of ordered result rows and different grouped aggregates on the columns
+				in the result set.</para>
+      </section>
+      <section xml:id="derivedtables">
+        <title>Derived Tables</title>
+        <para>
+A SELECT expression may be used in the place of a table in a FROM clause.
+This provides control over where DISTINCT and ORDER BY operations are evaluated.
+</para>
+        <programlisting>
+select ProductName, UnitsInStock
+    from (select distinct ProductID from Order_Details) O,
+        Products where Products.ProductID = O.ProductID;
+</programlisting>
+        <para>
+This retrieves the name and quantity of products that have been ordered.
+</para>
+        <para>
+An equivalent phrasing would be
+</para>
+        <programlisting>
+select distinct ProductName, UnitsInStock
+   from Order_Details O, Products where Products.ProductID = O.ProductID;
+</programlisting>
+        <para>
+The difference is that the latter retrieves a Products row for each order line whereas
+as the first retrieves a products row for each distinct product  in the order lines.
+The first is therefore faster to evaluate. Also note that the rows in the DISTINCT buffer
+in the first example only consist of the product id whereas they are much longer in the
+second example.
+</para>
+        <para>
+Note that a correlation name is required for derived tables since the derived table is as
+such anonymous.
+</para>
+      </section>
+      <section xml:id="qryexpressions">
+        <title>Query Expressions</title>
+        <programlisting>
+&lt; non-join query expression &gt; ::=
+      &lt; non-join query term &gt;
+    | &lt; query expression &gt; UNION  [ ALL ]
+          [ &lt; corresponding spec &gt; ] &lt; query term &gt;
+    | &lt; query expression &gt; EXCEPT [ ALL ]
+          [ &lt; corresponding spec &gt; ] &lt; query term &gt;
+
+&lt; corresponding spec &gt; ::=
+    CORRESPONDING [ BY &lt; left parent &gt;
+        &lt; corresponding column list &gt; &lt; right parent &gt; ]
+</programlisting>
+        <para>
+Queries can be combined by set operators UNION, INTERSECTION and EXCEPT (set difference).
+The ALL keyword will allow duplicate rows in the result set. The CORRESPONDING BY clause
+allows specifying which columns will be used to determine the equality of rows from the
+left and right operands.
+</para>
+        <programlisting>
+ select OrderID from Orders except
+    corresponding by (OrderID) select OrderID from Order_Details
+</programlisting>
+        <para>
+will produce the OrderID's of orders that have no Order_Details. This is equivalent to:
+select OrderID from Orders a where not exists (select 1 from Order_Details b where a.OrderID = b.OrderID)
+</para>
+        <para>
+Note that the queries, although to a similar effect are executed quite differently.
+There may be significant differences in performance.
+</para>
+      </section>
+      <section xml:id="likepredicate">
+        <title>LIKE Predicate &amp; Search Patterns</title>
+        <para>
+The <emphasis>LIKE</emphasis>
+
+   predicate expects a pattern to be applied to
+a varchar or nvarchar column to qualify the results to be returned from a query.
+</para>
+        <para>
+If the pattern does not begin with an at-sign (@) or with two
+asterisks (**), then we test the equality of the string and pattern
+with ordinary wildcard matching, which behaves
+approximately like the filename pattern matching in the Unix shell.
+(But not like the regular expression matching in utilities like grep
+and sed).
+</para>
+        <para>
+The following characters have special significance in the pattern:
+</para>
+        <simplelist type="vert">
+          <member>?    Matches any single character.</member>
+          <member>*    Matches zero or more of any characters.</member>
+        </simplelist>
+        <para>
+[ ]  (Called a group-expression here)
+Matches any one of the enclosed characters, unless the
+first character following the opening [ is ^, then matches
+only if the character (in the datum string) is not any one of
+those specified after the ^. (i.e. the ^ negates the meaning
+of this expression.)
+</para>
+        <para>
+You can use character ranges like 0-9 (shorthand for 0123456789)
+inside the brackets, in which case the character in the datum
+string must be lexically within the inclusive range of that
+pair (of course the character at the left side of hyphen must
+be lexically (that is, its ASCII value) less than the
+character at the right side).
+</para>
+        <para>
+The hyphen can be included in the character set by putting it
+as the first or last character.  The right bracket (]) can
+be included by putting it as the first character in the expression,
+i.e. immediately after the opening bracket ([) or the caret (^)
+following it.
+</para>
+        <example>
+          <title>Examples:</title>
+          <programlisting>
+[abc]          Matches any of the letters a, b and c.
+[^0123456789]  Matches anything, except digits. (same as [^0-9])
+[[]            Matches [
+[]]            Matches ]
+[][]           Matches ] and [
+[^]]           Matches anything except ]
+[A-Za-z0-9]    Matches all the alphanumeric characters.
+[-*+/]         Matches the four basic arithmetic operators.
+[-]            Matches to single hyphen.
+[]-]           Matches to ] or -
+[-[] or [[-]   Matches to - or [
+</programlisting>
+        </example>
+        <para>
+That is, the hyphen indicates a range between characters, unless
+it is the first or the last character in the group expression,
+in which case it matches just to itself.
+</para>
+        <para><emphasis>@</emphasis>
+
+     Matches the character last matched to ? or group-expression.
+For example ?*@ matches to all strings which begin with the same
+character they end.  However, if there is neither ? nor [] expression
+at the left side of @ in the pattern, then @ matches just to
+itself. (e.g. *@* should match to all e-mail addresses).
+</para>
+        <para>
+Any other characters match ONLY to themselves, that is, not even to
+the upper- or lowercase variants of the same letter. Use expression
+like [Wo][Oo][Rr][Dd] if you want to find any mixed-case variant of
+the word "word", or use the substring search explained below.
+</para>
+        <para>
+However, if the pattern begins with an at-sign (@) then we compare
+the rest of pattern to string with the fuzzy matching,
+allowing differences of few characters in quality and
+quantity (length).  If there is more than one @ in the beginning of
+pattern they are all skipped, and so many
+additional liberties are given for the match function.  The more
+@-signs there are in the beginning, the more fuzzy (liberal) is the
+search.  For example: pattern "@Johnson" will match to string
+"Jonsson" and pattern "@@Johnson" will match also to "Jansson".
+</para>
+        <para>
+If the pattern begins with two asterisks, then we do diacritic- and
+case insensitive substring search,
+trying to find the string given in the rest of pattern from the
+datum string.
+</para>
+        <example>
+          <title>Example:</title>
+          <para>"**escort" will match to "Ford Escort vm. 1975".</para>
+        </example>
+        <para>
+If there are any ISO8859.1 diacritic letters (e.g. vowels with
+accents or umlaut-signs, or letters like the Spanish n with ~ (tilde))
+present in the datum string, then the plain unaccented (7-bit ASCII)
+variant of the same letter in the pattern string will match to it.
+But if there are any diacritic letter specified in the pattern string,
+then it will match only to the upper- or lowercase variant of exactly
+the same diacritic letter.
+</para>
+        <para>
+The rationale behind this is that the people entering the information
+to database can use the exact spelling for the word, for example
+writing the word "Citroen" with the umlaut-e (e with two dots above it),
+as it is actually written in French, and the people who search for
+the Citroens can still find it without need to remember the exact
+orthography of the French, by just giving a word "citroen".
+And this allows also the people who have just plain 7-bit ASCII
+keyboards to search for the words like Ra"a"kkyla" (place in Finland,
+a" means umlaut-a, i.e. a with two dots above it), just by entering
+the word raakkyla.
+</para>
+        <para>
+So the following holds with the substring searches:
+</para>
+        <simplelist type="vert">
+          <member>
+1) Any non-alphabetic character in the pattern matches just to itself
+in the datum string (e.g. ? to ? and 3 to 3).
+</member>
+          <member>
+2) Any 7-bit ASCII letter (A-Z and a-z without any diacritic signs)
+in the pattern matches to any diacritic variant of the same letter
+(as well as to same 7-bit ASCII letter) in the datum string, either
+in the upper- or lowercase.
+</member>
+          <member>
+3) Any diacritic letter (8-bit ISO8859.1 letter) in the pattern matches
+only to the same letter (in the upper- or lowercase) in the datum
+string.
+</member>
+        </simplelist>
+        <note>
+          <title>Note:</title>
+          <para>because the internal matching functions use macros
+which consider also the characters like:
+@, [, \, ], and ^ to be letters, they will match against characters
+`, {, |, }, and ~ respectively, which is just all right, because
+in some older implementations of European character sets those
+characters mark the uppercase and lowercase variants of certain
+diacritic letters.
+</para>
+        </note>
+        <para>
+It is generally better to match
+too liberally and so maybe sometimes give something entirely off
+the wall to the user, than to miss something important because of
+too strict criteria.
+</para>
+        <para>
+Of course, when searching from the data which contains text in
+some wide-character format (like certain coding systems for
+Japanese and Chinese where one character is coded with two bytes)
+neither fuzzy matching function nor nc_strstr function presented here
+should be used, as they would often match on entirely spurious cases.
+</para>
+      </section>
+      <section xml:id="topselectoption">
+        <title>The TOP SELECT Option</title>
+        <programlisting>
+query_term :  SELECT opt_top selection ....
+
+opt_top :  opt_all_distinct [ TOP INTNUM ]
+	|  opt_all_distinct [ TOP SKIPINTNUM, INTNUM ]
+	|  opt_all_distinct [ TOP (num_scalar_exp) ]
+	|  opt_all_distinct [ TOP (skip_num_scalar_exp, num_scalar_exp) ]
+opt_all_distinct : [ ALL | DISTINCT ]
+</programlisting>
+        <para>
+The TOP n phrase can follow an optional ALL or DISTINCT keyword in a SELECT,
+either at top level or inside a query term of an expression or subquery. The query
+with the TOP option will generate at most the indicated number of result rows.
+</para>
+        <para>
+The scope of TOP is the query in question.  For example
+</para>
+        <programlisting>
+select top 3 row_no from t1 best union select top 3 row_no + 1 from t1;
+</programlisting>
+        <para>
+Will always return 4 rows assuming there are at least 3 rows in T1.
+</para>
+        <para>The optional SKIPINTNUM parameter lets you offset the selection
+by SKIPINTNUM number of rows.  If you have a ten-row table and
+<computeroutput>select top 2 from this_table</computeroutput>
+
+   you get
+the first two rows, <computeroutput>select top 2, 2 from this_table</computeroutput>
+
+will return the third and fourth rows only, instead.</para>
+      </section>
+      <section xml:id="caseandco">
+        <title>CASE, NULLIF, COALESCE, CAST Value Expressions</title>
+        <section xml:id="case">
+          <title>The CASE Expression</title>
+          <para>There are many situations where you might find it useful to alter the
+  the data returned by a SQL query based on a few rules.  For example, you may
+  want to display Customers gender as 'Male' or 'Female' based on whether their
+  title is 'Mr' or one of 'Miss', 'Mrs' or 'Ms'.  The CASE expression can
+  easily accommodate this.</para>
+          <para>The Syntax of CASE is:</para>
+          <programlisting>
+CASE
+  WHEN &lt;search-condition&gt; THEN &lt;output&gt;
+  WHEN &lt;search-condition&gt; THEN &lt;output&gt;
+  ...
+  ELSE &lt;output&gt;
+END
+</programlisting>
+          <para>When a &lt;search-condition&gt; is met the corresponding &lt;output&gt;
+  is returned.  If no conditions are met then the &lt;output&gt; after is ELSE
+  is returned as a default value.</para>
+          <example xml:id="ex_caseexp">
+            <title>Using the CASE expression</title>
+            <programlisting>
+SELECT Title, CustomerName,
+  CASE
+    WHEN Title = 'Mr' THEN 'Male'
+    WHEN Title = 'Mrs' THEN 'Female'
+    WHEN Title = 'Miss' THEN Female'
+    WHEN Title = 'Ms' THEN 'Female'
+    ELSE 'Unknown'
+  END as Gender,
+  Company
+  FROM Customers
+</programlisting>
+            <para>May return values such as:</para>
+            <screen>
+Title   Gender  CustomerName        Company
+VARCHAR VARCHAR VARCHAR             VARCHAR
+___________________________________________________________
+
+Mr      Male    Thomas Hardy        Around the Horn
+Miss    Female  Christina Berglund  Berglunds shop
+Mrs     Female  Hanna Moos          Blauer See Delikatessen
+Mr      Male    Laurence Lebihan    Bon app
+</screen>
+          </example>
+          <para>There is also a short hand notation for the CASE expression as follows:</para>
+          <programlisting>
+CASE &lt;search-parameter&gt;
+  WHEN &lt;search-value&gt; THEN &lt;output&gt;
+  WHEN &lt;search-value&gt; THEN &lt;output&gt;
+  ...
+  ELSE &lt;output&gt;
+END
+</programlisting>
+          <para>This short hand is best demonstrated by the rewrite of the above example
+  as follows:</para>
+          <example xml:id="ex_caseexpshort">
+            <title>Using the CASE short-hand expression</title>
+            <programlisting>
+SELECT Title, CustomerName,
+  CASE Title
+    WHEN 'Mr' THEN 'Male'
+    WHEN 'Mrs' THEN 'Female'
+    WHEN 'Miss' THEN Female'
+    WHEN 'Ms' THEN 'Female'
+    ELSE 'Unknown'
+  END as Gender,
+  Company
+  FROM Customers
+</programlisting>
+          </example>
+          <para>In both cases the ELSE keyword is optional.  If ELSE is unspecified
+  then ELSE NULL is implicit.</para>
+        </section>
+        <section xml:id="casenullif">
+          <title>The NULLIF Expression</title>
+          <para>The NULLIF expression is a short hand implementation of a special case
+  of the CASE expression for a popular demand.  Consider the following CASE
+  expression:</para>
+          <programlisting>
+CASE col1
+  WHEN 'something' THEN NULL
+  ELSE col1
+END
+</programlisting>
+          <para>This is replaced by the NULLIF expression which achieves the same
+  result using the following, much shorter expression:</para>
+          <programlisting>
+NULLIF (col1, 'something')
+</programlisting>
+          <para>This is often useful in situations where you have a code to denote
+  a value as unspecified for whatever reason, but in many applications you
+  would rather this was NULL.</para>
+        </section>
+        <section xml:id="casecoalesce">
+          <title>The COALESCE Expression</title>
+          <para>The COALESCE expression is another application of the CASE expression
+  to suit another frequent requirement.  The syntax of COALESCE is as follows:</para>
+          <programlisting>
+COALESCE (value-1, value-2, ..., value-n)
+</programlisting>
+          <para>COALESCE returns the first non-NULL parameter.  This is equivalent to</para>
+          <programlisting>
+CASE
+  WHEN value-1 IS NOT NULL THEN value-1
+  WHEN value-2 IS NOT NULL THEN value-2
+  ...
+  ELSE value-n
+END
+</programlisting>
+        </section>
+        <section xml:id="selcastexp">
+          <title>The CAST Expression</title>
+          <para>SQL has always been considered a strongly typed language, meaning that
+  you cannot have expressions that contain arbitrary data types.  Casting is
+  invaluable for comparing values that are obviously compatible but their
+  data types are not, such as <computeroutput>1 = '1'</computeroutput>
+
+  .  This
+  attempts compares an integer with a char which would not work unless one of the
+  values was cast as follows:</para>
+          <programlisting>cast('1' as integer) = 1</programlisting>
+          <tip>
+            <title>See Also:</title>
+            <para>The <link linkend="dtcasting">CASTING</link>
+
+   section for more
+  information.</para>
+          </tip>
+        </section>
+      </section>
+      <section xml:id="selbreackup">
+        <title>SELECT BREAKUP</title>
+        <para>Virtuoso extends the select statement with a breakup option. This option allows
+a single row selected by a derived table to be seen as multiple rows by the enclosing query.
+</para>
+        <para>This is specially useful when translating relation tables to RDF. Using breakup,
+one can do a single pass over a table and generate multiple triples, each presented as a separate result row.
+</para>
+        <para>The syntax is:
+</para>
+        <programlisting>
+SELECT BREAKUP breakup_term [, ...] FROM ....
+breakup_term ::=
+
+scalar_exp [, scalar_exp...] [WHERE search_condition]
+</programlisting>
+        <para>Each breakup term is a list of comma separated expressions with an optional search condition at
+the end. Each list is treated as a select list in a union, i.e. they must be of equal length and the leftmost
+list must provide a name for each column. This means that an AS declaration is needed if the expression is not a column.
+</para>
+        <para>If a breakup tern has the optional WHERE clause, the condition is evaluated in the scope of the
+select, i.e. all that is defined by the FROM. If the condition is true, the row represented by the breakup term
+is added to the result set of the breakup select, otherwise it is ignored.
+</para>
+        <para>A breakup select is only allowed in a derived table or a union or other set operator term inside
+a derived table. A top level breakup select is not allowed. To have a breakup select as the topmost select, simply write:
+</para>
+        <programlisting>
+select * from (select breakup .... from ...) f;
+</programlisting>
+        <para>Breakup cannot be mixed with distinct, top, group by or order by. Again, to combine these, use nested derived tables.
+</para>
+        <para>Breakup operates equally well on local and remote tables. Breakup is never passed on to a remote but the FROM of a
+breakup select can consist of tables from any source.
+</para>
+        <example>
+          <title>Examples:</title>
+          <programlisting>
+select * from (select breakup (a.row_no, b.fi2) (b.row_no, a.fi3 where a.fi3 is not null)
+from r1..t1 a, r1..t1 b
+where a.row_no &lt; 10 and b.row_no = a.row_no)f;
+</programlisting>
+        </example>
+        <para>This produces 2 rows for each result of the join, except if fi3 is null, in which case only the first term of
+the breakup is returned in the result set.
+</para>
+      </section>
+    </section>

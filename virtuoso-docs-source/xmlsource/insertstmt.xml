@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="insertstmt">
+      <title>INSERT Statement</title>
+      <programlisting>
+    insert_statement
+	    : INSERT insert_mode table priv_opt_column_commalist values_or_query_spec
+	    ;
+
+    insert_mode
+	    : INTO
+	    | REPLACING
+	    | SOFT
+
+    priv_opt_column_commalist
+	    : /* empty */
+	    | '(' column_commalist ')'
+
+	    ;
+
+    values_or_query_spec
+	    : VALUES '(' insert_atom_commalist ')'
+	    | query_spec
+	    ;
+
+    insert_atom_commalist
+	    : insert_atom
+	    | insert_atom_commalist ',' insert_atom
+	    ;
+
+    insert_atom
+	    : scalar_exp
+	    ;
+
+    column_commalist
+	    : column
+	    | column_commalist ',' column
+	    ;
+
+    query_spec
+	    : SELECT opt_all_distinct selection table_exp
+	    ; ... See the SELECT statement next.
+</programlisting>
+      <para>
+New rows (or records) are entered into a database using the INSERT statement.
+</para>
+      <para>
+If you have to enter a NULL you can simply use the keyword NULL, as you would a normal value.  Since
+NULL is a special keyword you do not need to enclose it in single quotes.
+</para>
+      <para>
+You can specify the columns that you are inserting values into in the insert statement.  One
+should always specify the columns that you are inserting into, in case the order of columns in
+the database are not as expected, or you are not inserting values into every column.
+</para>
+      <para>
+If a value is not specified for a column on insert, then the default value will be used for that column.
+If no default value has been specified either by a CREATE or MODIFY TABLE statement then NULL will be used.
+</para>
+      <section xml:id="insertsoft">
+        <title>INSERT SOFT</title>
+        <para><emphasis>INSERT SOFT</emphasis>
+
+   can be used in place of <emphasis>INSERT INTO</emphasis>
+
+if you are unsure whether the value to be inserted into a primary key column will
+violate that constraint.  If the row with this primary key already exists, then the
+new row is not inserted.
+</para>
+        <programlisting>
+SQL&gt; create table insert_test(id integer primary key, txt varchar);
+Done. -- 90 msec.
+SQL&gt; insert into insert_test(id, txt) values(1, 'test');
+Done. -- 0 msec.
+SQL&gt; insert into insert_test(id, txt) values(1, 'test');
+
+*** Error 23000: [Virtuoso ODBC Driver][Virtuoso Server]SR197:
+  Non unique primary key on DB.DBA.insert_test. at line 4 (4) of Top-Level:
+  insert into insert_test(id, txt) values(1, 'test')
+
+SQL&gt; insert soft insert_test(id, txt) values(1, 'testsoft');
+
+Done. -- 0 msec.
+SQL&gt; select * from insert_test;
+id                txt
+INTEGER NOT NULL  VARCHAR
+_______________________________________________________________________________
+
+1                 test
+
+1 Rows. -- 60 msec.
+</programlisting>
+      </section>
+      <section xml:id="insertreplacing">
+        <title>INSERT REPLACING</title>
+        <para><emphasis>INSERT REPLACING</emphasis>
+
+   can be used in place of <emphasis>INSERT INTO</emphasis>
+
+if you are unsure whether the value to be inserted into a primary key column will
+violate that constraint.  If the row with this primary key already exists, then the
+new row will be inserted replacing the old values.
+</para>
+        <programlisting>
+SQL&gt; create table insert_test(id integer primary key, txt varchar);
+Done. -- 90 msec.
+SQL&gt; insert into insert_test(id, txt) values(1, 'test');
+Done. -- 0 msec.
+SQL&gt; insert into insert_test(id, txt) values(1, 'test');
+
+*** Error 23000: [Virtuoso ODBC Driver][Virtuoso Server]SR197:
+  Non unique primary key on DB.DBA.insert_test. at line 4 (4) of Top-Level:
+  insert into insert_test(id, txt) values(1, 'test')
+
+SQL&gt; insert replacing insert_test(id, txt) values(1, 'testreplacing');
+
+Done. -- 0 msec.
+SQL&gt; select * from insert_test;
+id                txt
+INTEGER NOT NULL  VARCHAR
+_______________________________________________________________________________
+
+1                 testreplacing
+
+1 Rows. -- 0 msec.
+</programlisting>
+      </section>
+    </section>

@@ -1,0 +1,1199 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="virtuosospongerfacetinstall">
+      <title>Virtuoso Faceted Browser Installation and configuration</title>
+      <section xml:id="virtuosospongerfacetinstallprereq">
+        <title>Prerequisites</title>
+        <para>Requires <link xlink:href="http://sourceforge.net/project/showfiles.php?group_id=161622&amp;package_id=319652">Virtuoso 6.0 TP1</link>
+
+   or higher for use.
+</para>
+      </section>
+      <section xml:id="virtuosospongerfacetinstallpreinst">
+        <title>Pre Installation</title>
+        <para><emphasis>Note</emphasis>
+
+  : This step is not required for Virtuoso Release 6.1 and above builds</para>
+        <para>If you have an existing Virtuoso 6.x installation, and your Quad Store has greater than
+10K worth of triples, please perform the following steps:
+</para>
+        <orderedlist>
+          <listitem>
+            <para>Run the following commands using the Virtuoso isql program before installing the Faceted
+Browser VAD:
+</para>
+            <programlisting>
+  drop index RDF_QUAD_OPGS;
+  drop index RDF_QUAD_POGS;
+  drop index RDF_QUAD_GPOS;
+  drop index RDF_QUAD_OGPS;
+
+  checkpoint;
+
+  create table R2 (G iri_id_8, S iri_id_8, P iri_id_8, O any, primary key (S, P, O, G));
+  alter index R2 on R2 partition (S int (0hexffff00));
+
+  log_enable (2);
+
+  INSERT INTO R2 (G, S, P, O) select G, S, P, O FROM rdf_quad;
+
+  DROP TABLE RDF_QUAD;
+  ALTER TABLE r2 rename RDF_QUAD;
+
+  checkpoint;
+
+  create bitmap index RDF_QUAD_OPGS on RDF_QUAD (O, P, G, S) partition (O varchar (-1, 0hexffff));
+  create bitmap index RDF_QUAD_POGS on RDF_QUAD (P, O, G, S) partition (O varchar (-1, 0hexffff));
+  create bitmap index RDF_QUAD_GPOS on RDF_QUAD (G, P, O, S) partition (O varchar (-1, 0hexffff));
+
+  checkpoint;
+</programlisting>
+          </listitem>
+        </orderedlist>
+        <para>Note this step may take sometime depending on how many triples are already in your Quad Store.
+</para>
+      </section>
+      <section xml:id="virtuosospongerfacetinstallvadinst">
+        <title>VAD Package Installation</title>
+        <orderedlist>
+          <listitem>
+            <para>Download and install the 
+            <link xlink:href="http://download.openlinksw.com/packages/5.0/virtuoso/fct_dav.vad">Virtuoso Faceted Browser VAD</link>
+
+package using the Conductor System Admin - &gt; Packages tab.
+    </para>
+            <figure xml:id="fctinst1" floatstyle="1">
+              <title>Install the FCT package</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The HTML interface of the Faceted Browser Engine is exposed at: </para>
+            <para>
+              <emphasis>http://&lt;cname&gt;/fct</emphasis>
+            </para>
+            <para>,
+where "cname" is the hostname:portno your Virtuoso instance is running on.
+    </para>
+            <figure xml:id="fctinst3" floatstyle="1">
+              <title>FCT HTML interface</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The Faceted Browser Engine exposes a REST API at the endpoint:
+</para>
+            <para>
+              <emphasis>http://&lt;cname&gt;/fct/service</emphasis>
+            </para>
+            <para>.
+
+</para>
+            <tip>
+              <title>See Also:
+</title>
+              <itemizedlist mark="bullet">
+                <listitem>
+                  <para>
+                    <link linkend="virtuosospongerfacentuirestapi">Virtuoso APIs for Faceted REST services
+</link>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <link linkend="rdfiridereferencingfacetws">Faceted Web Service and Linked Data
+</link>
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </tip>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="virtuosospongerfacetinstallposinst">
+        <title>Post Installation</title>
+        <orderedlist>
+          <listitem>
+            <para>Build Full Text Indexes by running the following commands using the Virtuoso
+</para>
+            <para>
+              <emphasis>isql</emphasis>
+            </para>
+            <para> program:
+</para>
+            <programlisting>
+RDF_OBJ_FT_RULE_ADD (null, null, 'All');
+VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Run the following procedure using the Virtuoso </para>
+            <para>
+              <emphasis>isql</emphasis>
+            </para>
+            <para> program to
+populate label lookup tables periodically and activate the </para>
+            <para>
+              <emphasis>Label</emphasis>
+            </para>
+            <para> text box of the
+</para>
+            <para>
+              <emphasis>Entity Label Lookup</emphasis>
+            </para>
+            <para> tab:
+</para>
+            <programlisting>
+urilbl_ac_init_db()
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Run the following procedure using the Virtuoso </para>
+            <para>
+              <emphasis>isql</emphasis>
+            </para>
+            <para> program to calculate the IRI ranks.
+Note this should be run periodically as the data grows to re-rank the IRIs.
+</para>
+            <programlisting>
+s_rank()
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Perform Network Resource Fetch of some data to load some RDF triples in the quad store. This can easily be done using
+the Virtuoso </para>
+            <para>
+              <emphasis>description.vsp</emphasis>
+            </para>
+            <para> page which provides a hypertext description of RDF Linked Data, by describing
+the following page for example (or one of your choice):
+</para>
+            <programlisting>
+http://cname/about/html/http/news.cnet.com
+</programlisting>
+            <figure xml:id="fctinst4" floatstyle="1">
+              <title>Network Resource Fetch data</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fctinst4_01" floatstyle="1">
+              <title>Network Resource Fetch data</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Use the Faceted Browser Search and Find User Interface to search for information on "CNET":
+    </para>
+            <figure xml:id="fctinst5" floatstyle="1">
+              <title>Faceted Browser Search</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb5.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Results of the following form should be returned for the network resource data being fetched.
+    </para>
+            <figure xml:id="fctinst6" floatstyle="1">
+              <title>Faceted Browser Search Results</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb6.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click "Types" link shown at the right vertical Navigation</para>
+          </listitem>
+          <listitem>
+            <para>Results of the classes/properties should be returned:
+    </para>
+            <figure xml:id="fctinst7" floatstyle="1">
+              <title>Results of the classes/properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>To get Type description, click "Describe" link for a given type, for ex. "Person". </para>
+          </listitem>
+          <listitem>
+            <para>A list of attributes and values should be presented for the given resource. Note that automatically is generated QRCode image for the described entity.
+  	</para>
+            <figure xml:id="fctinst7_01" floatstyle="1">
+              <title>Results of the classes/properties</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb8.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Return back to the Attributes list from above by going to the "Facets" tab. </para>
+          </listitem>
+          <listitem>
+            <para>To exclude a type, un-tick the checkbox associated with the type:
+    </para>
+            <figure xml:id="fctinst8" floatstyle="1">
+              <title>Exclude Type(s)</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click the Type URI link</para>
+          </listitem>
+          <listitem>
+            <para>Results of excluding the Type(s) should be shown:
+    </para>
+            <figure xml:id="fctinst9" floatstyle="1">
+              <title>Results of Excluded Type(s)</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>The Faceted Browser Web service endpoint can also be queried to obtain the same results:
+</para>
+            <programlisting>
+$ more cnet.xml
+&lt;?xml version="1.0"?&gt;
+&lt;query xmlns="http://openlinksw.com/services/facets/1.0" inference="" same-as=""&gt;
+  &lt;text&gt;CNET&lt;/text&gt;
+  &lt;view type="text" limit="20" offset=""/&gt;
+&lt;/query&gt;
+
+$ curl -H "Content-Type: text/xml" -d @cnet.xml  http://cname/fct/service
+&lt;fct:facets xmlns:fct="http://openlinksw.com/services/facets/1.0/"&gt;
+&lt;fct:sparql&gt;    SELECT ?s1 as ?c1, (bif:search_excerpt (bif:vector ('CNET'), ?o1)) as ?c2, ?sc, ?rank WHERE {{{ SELECT ?s1, (?sc * 3e-1) as ?sc, ?o1, (sql:rnk_scale (&lt;LONG::IRI_RANK&gt; (?s1))) as ?rank  WHERE { ?s1 ?s1textp ?o1 . ?o1 bif:contains  '"CNET"'  option (score ?sc)  . } ORDER BY DESC (?sc * 3e-1 + sql:rnk_scale (&lt;LONG::IRI_RANK&gt; (?s1)))  LIMIT 20  OFFSET 0 }}}&lt;/fct:sparql&gt;
+&lt;fct:time&gt;16&lt;/fct:time&gt;
+&lt;fct:complete&gt;yes&lt;/fct:complete&gt;
+&lt;fct:timeout&gt;0&lt;/fct:timeout&gt;
+&lt;fct:db-activity&gt;   131R rnd     36R seq      0P disk      0B /      0 messages&lt;/fct:db-activity&gt;
+ &lt;fct:result type="text"&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;4.5&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.com"&gt;http://news.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;Technology News - CNET News&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;&lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;4.5&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com/2547-1_3-0-20.xml"&gt;http://news.cnet.com/2547-1_3-0-20.xml&lt;/fct:column&gt;
+    &lt;fct:column&gt;CNET News.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;&lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;4.5&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com"&gt;http://news.cnet.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;Technology News - CNET News&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;&lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3.9&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.com"&gt;http://news.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;Technology News - CNET News&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;Technology News &lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3.9&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com"&gt;http://news.cnet.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;Technology News - CNET News&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;Technology News &lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.com"&gt;http://news.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;Technology News - CNET News&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;Tech news and business reports by &lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com/2547-1_3-0-20.xml"&gt;http://news.cnet.com/2547-1_3-0-20.xml&lt;/fct:column&gt;
+    &lt;fct:column&gt;CNET News.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;Tech news and business reports by &lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com"&gt;http://news.cnet.com&lt;/fct:column&gt;
+    &lt;fct:column&gt;Technology News - CNET News&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;Tech news and business reports by &lt;b&gt;CNET&lt;/b&gt; News.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.com#6"&gt;http://news.com#6&lt;/fct:column&gt;
+    &lt;fct:column&gt;There's an electric car in your future&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;... &lt;b&gt;CNET&lt;/b&gt; Car Tech posts photos of electric cars expected to come out by 2011.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com/2547-1_3-0-20.xml#9"&gt;http://news.cnet.com/2547-1_3-0-20.xml#9&lt;/fct:column&gt;
+    &lt;fct:column&gt;There's an electric car in your future&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;... &lt;b&gt;CNET&lt;/b&gt; Car Tech posts photos of electric cars expected to come out by 2011.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com#9"&gt;http://news.cnet.com#9&lt;/fct:column&gt;
+    &lt;fct:column&gt;There's an electric car in your future&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;... &lt;b&gt;CNET&lt;/b&gt; Car Tech posts photos of electric cars expected to come out by 2011.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.com#6"&gt;http://news.com#6&lt;/fct:column&gt;
+    &lt;fct:column&gt;There's an electric car in your future&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;... &lt;b&gt;CNET&lt;/b&gt; Car Tech posts photos of electric cars expected to come out by 2011.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com/2547-1_3-0-20.xml#9"&gt;http://news.cnet.com/2547-1_3-0-20.xml#9&lt;/fct:column&gt;
+    &lt;fct:column&gt;There's an electric car in your future&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;... &lt;b&gt;CNET&lt;/b&gt; Car Tech posts photos of electric cars expected to come out by 2011.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+  &lt;fct:row&gt;
+    &lt;fct:column datatype="trank"&gt;3&lt;/fct:column&gt;
+    &lt;fct:column datatype="erank"&gt;5.881291583872905e-014&lt;/fct:column&gt;
+    &lt;fct:column datatype="url" shortform="http://news.cnet.com#9"&gt;http://news.cnet.com#9&lt;/fct:column&gt;
+    &lt;fct:column&gt;There's an electric car in your future&lt;/fct:column&gt;
+    &lt;fct:column&gt;&lt;span class="srch_xerpt"&gt;... &lt;b&gt;CNET&lt;/b&gt; Car Tech posts photos of electric cars expected to come out by 2011.&lt;/span&gt;&lt;/fct:column&gt;
+  &lt;/fct:row&gt;
+ &lt;/fct:result&gt;
+&lt;/fct:facets&gt;
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Click "New search" from the Entity Relations Navigation and go to "Entity Label Lookup" tab:
+    </para>
+            <figure xml:id="fctinst10" floatstyle="1">
+              <title>Query Faceted Browser Web service endpoint</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the Label auto-complete text box of the Entity Label Lookup tab, enter the name of an rdfs label to be Described:
+    </para>
+            <figure xml:id="fctinst11" floatstyle="1">
+              <title>Select a URI from the list of available Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select a URI from the list of available Labels to obtain a description of the URI:
+  	  </para>
+            <figure xml:id="fctinst11_01" floatstyle="1">
+              <title>Select a URI from the list of available Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fctinst11_02" floatstyle="1">
+              <title>Select a URI from the list of available Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click "Facets" and go to "Entity URI Lookup" tab:
+    </para>
+            <figure xml:id="fctinst12" floatstyle="1">
+              <title>Enter URI</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb15.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>In the URI auto-complete text box of the Entity URI Lookup tab enter the name URI to be Described:
+  	  </para>
+            <figure xml:id="fctinst12_01" floatstyle="1">
+              <title>Enter URI</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb16.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Select a URI from the list of available Labels to obtain a description of the URI:
+    </para>
+            <figure xml:id="fctinst13" floatstyle="1">
+              <title>Obtain a description of the URI</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb17.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fctinst13_01" floatstyle="1">
+              <title>Obtain a description of the URI</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb18.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>If data is loaded into the quad store via DML functions (TTLP, RDF_LOAD_RDFXML etc.) the
+following procedure needs to run from </para>
+            <para>
+              <emphasis>isql</emphasis>
+            </para>
+            <para> to build the free text indexes required each time:
+</para>
+            <programlisting>
+VT_INC_INDEX_DB_DBA_RDF_OBJ ()
+</programlisting>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="virtuosospongerfaceurilabels">
+        <title>URI Labels</title>
+        <orderedlist>
+          <listitem>
+            <para>Go to http://cname/fct</para>
+          </listitem>
+          <listitem>
+            <para>Enter a free text search pattern (for example, "Camcorder" as consumer product), and click Search:
+    </para>
+            <figure xml:id="fctinst13_02" floatstyle="1">
+              <title>URI Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb19.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Your initial query results page will display a list of literal value snippets where for each URL will be displayed a label:
+    </para>
+            <figure xml:id="fctinst13_03" floatstyle="1">
+              <title>URI Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb20.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click for ex. on the URL link of the first row result.</para>
+          </listitem>
+          <listitem>
+            <para>The product description page should be shown and a list of Attributes and Values will be presented. An URL label of the product also will be shown: "Charges Lithium Ion 800 series batteries":
+    </para>
+            <figure xml:id="fctinst13_04" floatstyle="1">
+              <title>URI Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb21.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fctinst13_05" floatstyle="1">
+              <title>URI Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb22.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fctinst13_06" floatstyle="1">
+              <title>URI Labels</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb23.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="virtuosospongerfaceusagest">
+        <title>Usage Statistics</title>
+        <orderedlist>
+          <listitem>
+            <para>Use the Faceted Browser Search and Find User Interface to search for information on "Michael Jackson":
+     </para>
+            <figure xml:id="virtfacetusage1" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb24.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Results of the following form should be returned for the network resource data being fetched.
+     </para>
+            <figure xml:id="virtfacetusage2" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb25.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click the "Types" link under "Entity Relations Navigation".
+   </para>
+          </listitem>
+          <listitem>
+            <para>Results about "Michael Jackson" as Type/Label/Count list should be displayed:
+     </para>
+            <figure xml:id="virtfacetusage2_01" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb26.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You can navigate amongst the search results pages by using the "Prev" and "Next" buttons. Click for ex. "Next":
+     </para>
+            <figure xml:id="virtfacetusage2_02" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb27.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click a type link, for ex.:
+</para>
+            <programlisting>
+http://dbpedia.org/class/yago/Artist109812338
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Should be shown type results and:
+</para>
+            <programlisting>
+Displaying Ranked Entity Names and Text summaries where:
+
+Entity1 has any Attribute with Value "Michael Jackson" Drop.
+Entity1 is a yago:Artist109812338 . Drop
+</programlisting>
+            <figure xml:id="virtfacetusage9" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb28.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click the link:
+</para>
+            <programlisting>
+dbpedia:Michael_Jackson
+</programlisting>
+          </listitem>
+          <listitem>
+            <para>Results about "Michael Jackson" as Attribute/Value list should be presented:
+     </para>
+            <figure xml:id="virtfacetusage9_01" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb29.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="virtfacetusage9_02" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb30.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="virtfacetusage9_03" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb31.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="virtfacetusage9_04" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb32.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You can navigate amongst the search results pages by using the "First", "Prev", "Next" and "Last" buttons. Click for ex. "Last":
+     </para>
+            <figure xml:id="virtfacetusage10" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb33.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="virtfacetusage10_01" floatstyle="1">
+              <title>Usage Statistics</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb34.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>"Metadata" tab.</para>
+          </listitem>
+          <listitem>
+            <para>Results of usage statistics for "Michael Jackson" grouped in 4 tabs should be shown:
+</para>
+            <orderedlist>
+              <listitem>
+                <para>Referenced by Graphs: shows how many times the URI is found as subject in the relevant graph(s):
+</para>
+                <programlisting>
+SPARQL
+SELECT ?g count (*)
+where
+  {
+    graph ?g { &lt;URI&gt; ?p ?o }
+  }
+group by ?g
+order by desc 2
+limit 20
+</programlisting>
+                <figure xml:id="virtfacetusage4" floatstyle="1">
+                  <title>Usage Statistics</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/fb35.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>Source Graphs:  shows how many times the URI is found as object in the relevant graph(s):
+</para>
+                <programlisting>
+SPARQL
+SELECT ?g count (*)
+where
+  {
+    graph ?g { ?s ?p &lt;URI&gt;  }
+  }
+group by ?g
+order by desc 2
+limit 20
+</programlisting>
+                <figure xml:id="virtfacetusage5" floatstyle="1">
+                  <title>Usage Statistics</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/fb36.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>Direct co-references: shows results as subject and calculated rank, based on running transitive closure over owl:sameAs of the URI in subject or object:
+</para>
+                <programlisting>
+SPARQL
+SELECT ?syn ( sql:rnk_scale (&lt;LONG::IRI_RANK&gt; (?syn)))
+where
+  {
+    { SELECT ?s ?syn
+      where
+       {
+         {?syn owl:sameAs ?s } union {?s owl:sameAs ?syn}
+       }
+    }
+    option (transitive, t_distinct, t_min (0), T_in (?s), t_out (?syn)) . filter (!isliteral (?syn) &amp;amp;&amp;amp; ?s = &lt;URI&gt; )
+  }
+order by desc 2
+limit 20
+</programlisting>
+                <figure xml:id="virtfacetusage6" floatstyle="1">
+                  <title>Usage Statistics</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/fb37.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>Indirect co-references: shows expanded results for objects concur with the URI by IFP:
+</para>
+                <programlisting>
+SPARQL
+SELECT distinct ?syn ?p ?o (sql:rnk_scale (&lt;LONG::IRI_RANK&gt; (?syn)))
+where
+  { &lt;URI&gt; ?p ?o .  filter (0 != (&lt;LONG::bif:rdf_is_sub&gt; ("b3sifp", ?p, lod:ifp_like, 3))) .
+    ?syn ?p ?o .
+}
+order by desc 4
+limit 20
+</programlisting>
+                <figure xml:id="virtfacetusage7" floatstyle="1">
+                  <title>Usage Statistics</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/fb38.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+            </orderedlist>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="virtuosospongerfacetexample">
+        <title>Examples</title>
+        <para>
+          <emphasis>Faceted Browsing Sample using LOD Cloud Cache data space</emphasis>
+        </para>
+        <para>The following example demonstrates a simple scenario of tracking Kingsley Idehen's conversations
+across the Web, using the Virtuoso Faceted Browser hosted on LOD.</para>
+        <orderedlist>
+          <listitem>
+            <para>Go to http://lod.openlinksw.com/fct/
+     </para>
+            <figure xml:id="fb2" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Enter a free text search pattern (for example, "Kingsley Idehen"), and click Search
+     </para>
+            <figure xml:id="f1" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f1.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Your initial query results page will display a list of literal value snippets from property
+values associated with the query text pattern
+     </para>
+            <figure xml:id="f2" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Using the Navigation section on the right, click on "Types", which alters the contents
+of the query results area by presenting CURIE based hyperlinks for each of the Entity Types associated
+with Property values that contains the query text pattern
+     </para>
+            <figure xml:id="f3" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You can perform 
+            <emphasis>Describe</emphasis>
+             for a given found type, by clicking the "Describe" link in the "Type" column. For ex, for "atom:Entry" the produced describe type page would show a list of Attributes and Values + automatically generated QRCode image:
+     </para>
+            <figure xml:id="f4" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f4.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click "Facets" tab to return to the Types content page from the previous step.</para>
+          </listitem>
+          <listitem>
+            <para>Click on the "foaf:Person" link to narrow the result set down to Entities of this Type,
+un-hatch the checkbox beside this link for Negation (filtering out) based on this Entity Type
+     </para>
+            <figure xml:id="f7" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f7.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <itemizedlist mark="bullet">
+              <listitem>
+                <para>For Negation (filtering out) based on this Entity Type un-hatch the check-box shown besides the link:
+         </para>
+                <figure xml:id="f5" floatstyle="1">
+                  <title>Faceted Navigation Example</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/f5.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+                <figure xml:id="f6" floatstyle="1">
+                  <title>Faceted Navigation Example</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/f6.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+              <listitem>
+                <para>You can filter further, by switching (pivoting) to the a Property based view, by returning
+to the Navigation section and then clicking on "Properties" or "Referencing Properties" links; in either
+case, you have further filtering of based on the combination of Properties and Entities where Entities
+in the result-set contain values matching the query text pattern
+         </para>
+                <figure xml:id="f8" floatstyle="1">
+                  <title>Faceted Navigation Example</title>
+                  <mediaobject>
+                    <imageobject>
+                      <imagedata fileref="ui/f8.png"/>
+                    </imageobject>
+                  </mediaobject>
+                </figure>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>
+            <para>From "Entity Relations Navigation" click "Attributes".
+     </para>
+            <figure xml:id="f9" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f9.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You can navigate amongst the search results pages by using the "Prev" and "Next" buttons. Click for ex. "Next":
+     </para>
+            <figure xml:id="f10" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f10.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>From the list of Property Types, click on the "foaf:interest" link to filter further,
+based on the values of this property:
+     </para>
+            <figure xml:id="f11" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f11.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>From the list of "foaf:interest" Values, click on "About:Linked Data", which filters
+the result-set further to display reveal Entity Identifier Links (Generic HTTP URIs) and Labels for
+each "foaf:Person" associated with the property "foaf:interest", in the LOD data space:
+     </para>
+            <figure xml:id="f12" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f12.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on one of the HTTP URIs in the filtered results-set to obtain a detailed structured
+   	description of a given Entity i.e. about the person Kingsley Uyi Idehen. Each listed Property is
+   	a </para>
+            <para>
+              <emphasis>Link</emphasis>
+            </para>
+            <para>; thus, each Property is a link to other structured Entity descriptions. Additionally,
+   	a QRCode image will be produced automatically for the given entity:
+     </para>
+            <figure xml:id="f13" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f13.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="f14" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f14.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="f15" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f15.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="f16" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f16.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>You can navigate amongst the search results pages by using the "First", "Prev", "Next" and "Last" buttons. Click for ex. "Last":
+     </para>
+            <figure xml:id="f17" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f17.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="f18" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f18.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on "
+            <emphasis>Metadata</emphasis>
+            " link to get a summary view of this Linked Data Space, "Source"
+   and "Reference" graphs are akin to saying "Table X" and "Table Y" where each table is the container
+   of Records re. RDBMS or Worksheet re. Spreadsheet.:
+     </para>
+            <figure xml:id="f19" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f19.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="f20" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f20.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>"Direct" and "InDirect" coreferences show other references (Identifiers) that relate
+   	associated with Kingsley Idehen (like saying: here are his other names or his know by this name
+   	in this other place):
+     </para>
+            <figure xml:id="fct12" floatstyle="1">
+              <title>f21 Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f21.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="f22" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f22.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click on "Settings" check "owl:sameAs" and it sets a context mode for the session
+(meaning: a set of rules to take place):
+     </para>
+            <figure xml:id="f23" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f23.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Go back to the "Direct Co-reference" tab:
+     </para>
+            <figure xml:id="f24" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/f24.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>As result each link will unveil a union (combination) of all the the data associated
+with all Kingsley Idehen's other Identifiers (other Names in other places), i.e., they all show the
+same data.</para>
+          </listitem>
+          <listitem>
+            <para>Go to "Facets" and then from "Entity Relations Navigation" click "New Search".</para>
+          </listitem>
+          <listitem>
+            <para>Enter a free text search pattern  (for example, "
+            <code>Camcorder</code>
+            " as consumer product),
+   and click Search:
+     </para>
+            <figure xml:id="fb19" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb19.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Your initial query results page will display a list of literal value snippets where for
+   	each URI will be displayed a label:
+     </para>
+            <figure xml:id="fb20" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb20.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para>Click for ex. on the URL link ofthe first row result.</para>
+          </listitem>
+          <listitem>
+            <para>The product description page should be shown and a list of Attributes and Values will be
+   	presented. An URI label of the product also will be shown: "CG-800":
+     </para>
+            <figure xml:id="fb21" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb21.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fb22" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb22.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+            <figure xml:id="fb23" floatstyle="1">
+              <title>Faceted Navigation Example</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="ui/fb23.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </orderedlist>
+      </section>
+    </section>

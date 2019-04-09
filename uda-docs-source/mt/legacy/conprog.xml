@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+  $Id: conprog.xml,v 1.1.1.1 2004/09/09 10:45:20 cvs Exp $
+  (C)Copyright 1996-2018 OpenLink Software
+-->
+<sect1 id="conprog"><title>Progress Troubleshooting &amp; Advanced Configuration</title>
+<sect1info>
+  <keywordset>
+    <keyword>Progress ODBC Driver</keyword>
+    <keyword>Advanced</keyword>
+    <keyword>Troubleshooting</keyword>
+  </keywordset>
+</sect1info>
+   <formalpara><title>Assumptions</title>
+    <para>It assumed at this point that you have successfully
+    installed OpenLink's client and server components on one or more computers within
+    your I.T. infrastructure.</para></formalpara>
+   <formalpara><title>Conceptual Overview</title>
+    <para>Understanding the fundamental concepts that drive the
+    OpenLink Data Access Drivers for Progress is central to you exploiting the deliberate
+    simplicity of our product architecture. A failure to grasp these concepts will certainly
+    make the last sentence an absolute contradiction in terms.</para></formalpara>
+   <sect2 id="conprogudacomps"><title>OpenLink Data Access Components</title>
+	<para>Your OpenLink Data Access Driver Suite (Multi-Tier Edition)
+    consists of the following components, subdivided by prime function:</para>
+	<itemizedlist>
+	  <listitem>Client Components (OpenLink Database Agent Service Consumers)
+      <itemizedlist>
+        <listitem>Generic ODBC Driver (the file &quot;oplodb32.dll&quot; under
+          windows or OS/2, &quot;oplodbc.sl&quot; or &quot;oplodbc.so&quot; under UNIX)</listitem>
+        <listitem>Generic Driver for JDBC™ (the files
+          &quot;opljdbc.zip&quot; or &quot;opljdbc.jar&quot;)</listitem>
+        <listitem>Generic UDBC Driver (the end product of statically linking
+          the file libudbc.o or dynamically linking the file &quot;libudbc.so&quot; or
+          libudbc.sl&quot; under UNIX)</listitem>
+      </itemizedlist>
+	 </listitem>
+	 <listitem>Server Components (OpenLink Database Agent Service Providers)
+      <itemizedlist>
+        <listitem>OpenLink Request Broker (the file &quot;oplrqb&quot; or
+          &quot;oplrqb.exe&quot; depending on operating system)</listitem>
+        <listitem>OpenLink Database Agents (the files &quot;pro63e_sv&quot; or
+          &quot;pro73c_sv&quot; or &quot;pro82a_sv&quot; depending on major and minor Progress
+          Database Server version and sub-version number)</listitem>
+      </itemizedlist>
+	  </listitem>
+	 </itemizedlist>
+    <para>The prime function of your OpenLink Components does not
+    determine their physical location within your I.T. infrastructure, this is driven instead
+    by the logical structure and nature of your database connectivity requirements.</para>
+   </sect2>
+   <sect2 id="conproghowtoprog"><title>How OpenLink&apos;s Data Access Drivers Connect To Your Progress Database</title>
+	<para>A process diagram is provided below to assist with the
+    understanding of how the various OpenLink components work in concert, with the sole
+    objective of providing you with Secure, High-Performance, and Highly Configurable access
+    to Progress Database Engines.</para>
+     <figure id="conprog1" float="1"><title>Progress Connection Conceptual Diagram</title>
+      <graphic fileref="conprog1.gif" format="gif" width="596" deoth="392"></graphic></figure>
+    <para>The steps explained:</para>
+<orderedlist>
+      <listitem>An ODBC/JDBC/UDBC Application uses the relevant data access
+        standards Driver binding mechanism to locate and associate itself with the relevant
+        OpenLink Driver.</listitem>
+      <listitem>The chosen OpenLink Driver then uses its in-built Database
+        Independent Communications layer to broadcast an OpenLink Database Agent service request
+        to the OpenLink Request Broker.</listitem>
+      <listitem>The OpenLink Request Broker analyzes the request in step 3
+        and then determines from the information obtained from the OpenLink Sessions Rules Book
+        (the file oplrqb.ini), if an OpenLink Database Agent for Progress is available. If the
+        OpenLink Request Broker determines that a Progress Database Agent does not exist, it will
+        indicate it findings via an error condition and resultant error message viewable via your
+        ODBC/JDBC/UDBC application.</listitem>
+      <listitem>The OpenLink Request Broker initializes a new OpenLink
+        Database Agent For Progress instance or associates the new Progress Database session
+        request with an existing OpenLink Database Agent For Progress instance.</listitem>
+      <listitem><para>OpenLink Database Agent For Progress instance uses your
+        chosen Inter Process Communications (IPC) mechanism to initialize a session with a
+        Progress Database Server that supports the chosen IPC mechanism. The default mechanism
+        chosen by the OpenLink Database Agent For Progress is shared memory. You can opt to use
+        TCP sockets by doing one of the following (as long as you have started a TCP sockets based
+        Database Server for your Progress Database Engine by using the command: </para>
+<programlisting><![CDATA[
+proserve &lt;dbname&gt; -S &lt;service name&gt; -N TCP –H localhost):
+]]></programlisting>
+        <para>Place the Progress Database Connection Parameters 
+        <computeroutput>- S &lt;service name&gt; -N TCP –H localhost </computeroutput>
+        into the &quot;Options&quot; field of the OpenLink ODBC Data Source Configuration Utility,
+        should you be using OpenLink ODBC Drivers.</para>
+        <para>Place the Progress Database Connection Parameters 
+        <computeroutput>- S &lt;service name&gt; -N TCP –H localhost </computeroutput>
+		as &quot;/OPTIONS&quot; JDBC URL attribute values, should you be using OpenLink Drivers
+        for JDBC™.Place the Progress Database Connection Parameters 
+		<computeroutput>- S &lt;service name&gt; -N TCP –H localhost</computeroutput>
+        as &quot;OPTIONS&quot; connect string values, should you be using OpenLink UDBC or
+        OpenLink’s Unix based ODBC Drivers.</para>
+		<para>The OpenLink Session Rules Book (oplrqb.ini) allows you to control this behavior
+        centrally, alleviating yourself from the cost of maintaining numerous client based
+        connection parameters. This is done by placing the Progress Database Connection Parameters
+        <computeroutput>- S &lt;service name&gt; -N TCP –H localhost</computeroutput>
+		as &quot;ConnectOptions&quot; section-key values within the Progress Database Agent configuration
+        (&quot;[generic_prox]&quot;) section of the Session Rules Book.</para></listitem>
+      <listitem>At this point your Progress Database Session is established</listitem>
+      <listitem>ODBC/JDBC/UDBC Driver binding and database session
+        establishment is completed, and the ODBC/JDBC/UDBC Driver Manager 
+		is no longer required while the Progress Database Session remains open.</listitem>
+      <listitem>The OpenLink Request Broker like the Driver Managers in step
+        7 is no longer required (until session closure) while data is being exchanged directly
+        between ODBC/JDBC/UDBC applications, the OpenLink Database Agents for Progress, and your
+        Progress Database Engine.</listitem>
+    </orderedlist>
+    </sect2>
+    <sect2 id="conprogtrblesht"><title>Initial Connection Problems</title>
+    <para>The OpenLink Database Agent for Progress is a Hybrid of
+    OpenLink &amp; Progress ESQL/C components, indicating that the actual OpenLink Database
+    Agent for Progress is for all intents and purposes a Progress ESQL/C client.</para>
+    <para>The files &quot;proxxx_sv&quot; or &quot;proxx_sv.exe&quot;
+    are your OpenLink Database Agent for Progress executables (note: xxx represents Progress
+    major and minor release numbers e.g. Progress 7.3C would be represented as pro73c_sv).
+    These files are always situated in the &quot;bin&quot; sub-directory of your OpenLink
+    installation directory.</para>
+    <para>When you attempt to make an ODBC/JDBC/UDBC connection to
+    your Progress Database Engine(s), and you encounter a problem, one of the following error
+    conditions would typically be presented to you via your ODBC/JDBC/UDBC application:</para>
+	<itemizedlist>
+      <listitem>&quot;There is no server this database you are attempting to
+        connect with&quot;, even though you know there is a server running for that database. </listitem>
+    </itemizedlist>
+    <itemizedlist>
+      <listitem>&quot;Shared memory of a particular version was expected,
+        but shared memory of another version has been found&quot;</listitem>
+    </itemizedlist>
+    <para>The conditions above arise due to the fact that the
+    OpenLink Database Agent for Progress not being built using Progress ESQL/C libraries that
+    do not match your Progress Database Server to the exact minor release. This is to say that
+    although the OpenLink Database Agent for Progress may have been built using ESQL/C
+    libraries for Progress 7.3A, you will still have a version incompatibility problem of this
+    nature should you attempt to connect this ESQL/C client to a Progress 7.3C Database Server
+    process.</para>
+    <para>This error condition arises as a result of the fact that
+    the OpenLink Database Agent for Progress defaults to using Shared Memory for its Inter
+    Process Communications (IPC) , and that Shared Memory is very version sensitive nature
+    albeit the fastest IPC mechanism .</para>
+    <para>There are two possible ways to work around this situation
+    when it arises.</para>
+	<orderedlist>
+      <listitem>Change the default IPC mechanism of the OpenLink Database
+        Agent for Progress, from Shared Memory to TCP sockets, as TCP 
+		sockets based IPC is version sensitive.</listitem>
+      <listitem>Rebuild/Relink your OpenLink Database Agent for Progress,
+        achieved by running an OpenLink provided link script that produces a new OpenLink Database
+        Agent for Progress executable with an exact Shared Memory match for your Progress Database
+        Server.</listitem>
+    </orderedlist>
+</sect2>
+<sect2 id="conprogsocketspro"><title>Making OpenLink Database Agent Use a Sockets Based IPC</title>
+		<para>Pre-Configuration Check List:</para>
+    <itemizedlist>
+      <listitem>Progress Database Server installation must be licensed to
+        use Progress Client Networking.
+        </listitem>
+      <listitem>TCP networking must be installed, configured and up and
+        running on the Progress Database Server machine. (The command: ping localhost will quickly
+        determine if TCP is configured correctly on your server machine).
+        </listitem>
+      <listitem><para>You need to create an entry in the &quot;services&quot;
+        file (situated in the UNIX &quot;/etc&quot; directory) for one or more Progress TCP
+        Sockets based Database Servers. The &quot;services&quot; file is standard TCP
+        configuration file that is used to match Service Names to the TCP port number from which
+        their services can be accessed. The entries in this file follow the format shown below:</para>
+<table colsep="1" frame="all" rowsep="0" shortentry="0" tocentry="1"
+	tabstyle="decimalstyle" orient="land" pgwide="0">
+<tgroup align="char" charoff="50" char="." cols="3">
+<thead>
+ <row>
+   <entry>Service Name</entry><entry>Port/Protocol</entry><entry>Comment</entry>
+ </row>
+</thead>
+<tbody>
+          <row>
+            <entry>netwall</entry>
+            <entry>533/udp</entry>
+            <entry># -for emergency broadcasts</entry>
+          </row>
+          <row>
+            <entry>uucp</entry>
+            <entry>540/tcp</entry>
+            <entry># uucp daemon</entry>
+          </row>
+          <row>
+            <entry>remotefs</entry>
+            <entry>556/tcp</entry>
+            <entry># Brunhoff remote filesystem</entry>
+          </row>
+          <row>
+            <entry>pppmsg</entry>
+            <entry>911/tcp</entry>
+            <entry># PPP daemon</entry>
+          </row>
+          <row>
+            <entry>listen </entry>
+            <entry>1025/tcp</entry>
+            <entry># listener RFS remote_file_sharing</entry>
+          </row>
+          <row>
+            <entry>nterm</entry>
+            <entry>1026/tcp</entry>
+            <entry># remote_login network_terminal </entry>
+          </row>
+		  </tbody></tgroup></table>
+      </listitem>
+    </itemizedlist>
+      <para>You need to choose the name of a service and a port number
+      that is not currently used by a tcp service (in the case illustrated above, for example,
+      number 1026 is already being used). </para>
+      <para>Thus, if you chose to use the name <emphasis>&quot;pro8srv&quot; </emphasis>for
+      your Progress TCP Sockets based Database Server’s Service Name. And you chose to make
+      its services available at TCP port # 9001 (and you have checked the file to make sure it
+      is not being used) you would add the following entry (note that the third entry is simply
+      a comment as it is preceded with a &quot;#&quot;):</para>
+        <programlisting><![CDATA[pro8srv 9001/tcp # for Progress database sales ]]></programlisting>
+<sect3 id="conprogsockets"><title>Configuration Steps</title>
+   <note><title>Note:</title>
+     <para>(Assuming a Progress Database named &quot;sales.db&quot; using as TCP Service
+    &quot;pro8srv&quot;)</para></note>
+<itemizedlist>
+  <listitem><emphasis>Progress Server Components</emphasis>
+  <itemizedlist>
+      <listitem><para>Assuming the database file &quot;<emphasis>sales.db&quot; </emphasis>is
+        situated in directory &quot;<emphasis>/usr/data&quot;</emphasis>. Start your Progress TCP Sockets based
+        Database Server process using the command:</para>
+      <programlisting><![CDATA[>proserve /usr/data/sales.db -S pro8srv –N TCP –H localhost ]]></programlisting>
+    </listitem></itemizedlist>
+	</listitem>
+	<listitem><emphasis>OpenLink Server Components (Database Agent for Progress)</emphasis>
+	 <itemizedlist>
+      <listitem><para>The OpenLink Session Rules Book (oplrqb.ini) allows you to
+        control all OpenLink Data Access clients (ODBC/JDBC/UDBC) centrally, alleviating yourself
+        from the time cost of maintaining numerous client based connection parameters. </para>
+        <para>This is done by placing the Progress Database Connection Parameters 
+		<computeroutput>-S &lt;service name&gt; -N TCP –H localhost</computeroutput>
+		as &quot;ConnectOptions&quot; section-key values within
+        the Progress Database Agent configuration ( &quot;[generic_prox]&quot; ) section of the
+        Session Rules Book e.g.:</para>
+<programlisting><![CDATA[
+[generic_pro8]
+Program = pro8_sv
+ServerOptions = -q –d mdy –TB 30 –TM 30 –e 25
+Database = /usr/data/sales.db
+ConnectOptions = -S pro8srv –N TCP –H localhost
+]]></programlisting>
+</listitem>
+    </itemizedlist>
+	</listitem>
+	<listitem><para><emphasis>OpenLink Client Components 
+	(Drivers for ODBC/JDBC™/UDBC)</emphasis></para>
+	<para>You only have to resort to the steps below if circumstances
+    within your organization demand client side configuration, otherwise the server based
+    approach using the OpenLink Session Rules Book (oprqb.ini) is much more effective and
+    convenient.</para>
+	<itemizedlist>
+      <listitem><emphasis>OpenLink ODBC Drivers</emphasis> - Place the Progress Database
+        Connection Parameters: <computeroutput>-S pro8srv –N TCP –H localhost</computeroutput>
+        into the &quot;Options&quot; field of the OpenLink ODBC Data Source Configuration Utility
+        </listitem>
+      <listitem><para><emphasis>OpenLink Drivers for JDBC</emphasis>™ - Use the Progress
+        Database Connection Parameters:
+       <computeroutput>-S pro8srv –N TCP –H localhost</computeroutput> 
+	   as &quot;/OPTIONS&quot; OpenLink JDBC URL attribute values e.g.:</para>
+<programlisting><![CDATA[
+jdbc:openlink://dbservermachine/DSN=dsn_progress/OPTIONS=-S pro8srv –N TCP –H localhost
+]]></programlisting>
+        </listitem>
+      <listitem><para><emphasis>OpenLink UNIX based ODBC or UDBC Drivers</emphasis> - 
+	  Use the Progress Database Connection Parameters:
+	  <computeroutput>-S pro8srv –N TCP –H localhost</computeroutput> as 
+	  &quot;OPTIONS&quot; connect string values e.g.:</para>
+<programlisting><![CDATA[
+DSN=dsn_progress;OPTIONS=-S pro8srv –N TCP –H localhost
+]]></programlisting></listitem>
+    </itemizedlist>
+	</listitem>
+	</itemizedlist>
+</sect3>
+<sect3 id="conprogrebuildlink"><title>REBUILDING/RELINKING
+    Your OpenLink Database Agent For Progress</title>
+	<para>As explained earlier an OpenLink Database Agent for
+    Progress is a combination of OpenLink specific libraries (data access and network server
+    modules) and Progress specific libraries provided situated in the &quot;probuild&quot;
+    sub-directory under your Progress installations $DLC directory.</para>
+    <para>Should you desire the superior performance that Shared
+    Memory has over TCP sockets, then rebuilding/relinking your OpenLink Database Agent for
+    Progress provides an alternative solution to Shared Memory incompatibility problems that
+    may be impeding your ability to establish an OpenLink session with your Progress Database
+    Server.</para>
+    <para><emphasis>Activity Prerequisites </emphasis></para>
+<itemizedlist>
+  <listitem>You must have a ‘C’ library linker installed and running on your 
+  machine (part of your operating systems ‘C’ compiler kit)</listitem>
+  <listitem>You must have a &quot;probuild&quot; sub-directory situated
+      under the $DLC (progress installation directory) directory.</listitem>
+  <listitem>You must have a &quot;lib&quot; sub-directory situated
+      under your OpenLink Server Components installation directory, and it must contain the
+      following components:
+      <itemizedlist>
+        <listitem>A link script file named &quot;mkdlcX&quot; (where X
+          represents your Progress installation’s major release number e.g. for Progress 7.3C
+          this would be lddlc7).</listitem>
+        <listitem>A link script named &quot;ldproX&quot; (where X represents
+          your Progress installation’s major release number e.g. for Progress 7.3C this would
+          be ldpro7).</listitem>
+        <listitem>An OpenLink specific link library file named
+          &quot;pro7_sv.o&quot;</listitem>
+      </itemizedlist>
+	 </listitem>
+	</itemizedlist>
+    <para><emphasis>Rebuild/Relink Steps</emphasis></para>
+	<orderedlist>
+      <listitem>Create a UNIX environment variable named &quot;<emphasis>DLC&quot; </emphasis>and
+        set its value your Progress installation directory. You do not need to do this as this
+        environment variable is already set, the output from the command: echo $DLC will enable
+        you determine if this has been set.</listitem>
+      <listitem><para>Create a UNIX environment variable named &quot;<emphasis>PROLOAD&quot;
+        </emphasis>and set its value to <emphasis>$DLC/probuild </emphasis>From 
+		the UNIX command line prompt this is
+        achieved by typing in the following:</para>
+<programlisting><![CDATA[
+PROLOAD=$DLC/probuild ; export PROLOAD
+]]></programlisting>
+        </listitem>
+      <listitem>Change directory to the ‘lib’ sub-directory under
+        your OpenLink Server Components installation directory
+        </listitem>
+      <listitem>Run the script &quot;<emphasis>mkdlcX&quot;, </emphasis>the aim here being
+        the production of a file named <emphasis>&#39;dlcX.o&#39;</emphasis> (where X represents your Progress
+        installations major release number)</listitem>
+      <listitem>If you receive an error messages from <emphasis>step 4</emphasis> stating
+        that one or more Progress libraries cannot be found, please edit <emphasis>mkdlcX</emphasis> and remove
+        any references to the file(s) identified in the error message.</listitem>
+      <listitem>Run the script &#39;<emphasis>ldproX</emphasis>&#39; . This will produce a new
+        OpenLink Database Agent for Progress version X (proX_sv), and place the new executable
+        file in the &quot;bin&quot; sub-directory of your OpenLink installation directory (the
+        directory immediately adjacent to the &quot;lib&quot; directory from where you performed
+        steps 1 – 5).</listitem>
+    </orderedlist>
+</sect3>
+</sect2>
+<sect2 id="conprogDistributedDatabases"><title>Distributed Databases, Array Fields, Database Triggers</title>
+    <para>Our ODBC Drivers facillate the support of the above through
+    the use of a custom &quot;Data Dictionary File&quot;, this file is built by running the
+    OpenLink provided Progress Program File &quot;<emphasis>setup.p</emphasis>&quot;
+    situated in the &quot;bin&quot; sub-directory below the OpenLink base installation
+    directory. </para>
+    <para>Once the script has been run, modify the OpenLink
+    &quot;Session Rules Book&quot; using the gudilines displayed when the &quot;
+	<emphasis>setup.p</emphasis>&quot; program completes.</para>
+    <para>Note: To make use of Progress Database Triggers please
+    ensure that the Logical Database name to which your Triggers have been compiled matches
+    the value that you provide to the &quot;-ld&quot; parameter when setting your Progress
+    Database Connect options during the execution of &quot;setup.p&quot; . </para>
+    <para><emphasis>Example: </emphasis></para>
+    <para>If you have compiled your triggers against a database
+    physically identified as &quot;/usr/progress/demo.db&quot; but logically identified as
+    &quot;mydemo&quot; your &quot;setup.p&quot; Database Connection String would be:</para>
+    <para>/usr/progress/demo -ld mydemo</para>
+</sect2>
+<sect2 id="conprogusingoplodbc"><title>Using OpenLink ODBC, Progress &amp; Microsoft Access</title>
+    <para><emphasis>The Mysterious &quot;Admin&quot; Account &amp;
+    Disabling the JET Scrollable Cursor (Dynaset) Facility</emphasis></para>
+    <para>Please ensure that you have the following OpenLink Settings
+    enabled :</para>
+    <para><emphasis>Client</emphasis></para>
+    <itemizedlist>
+	  <listitem>OpenLink ODBC DSN &quot;no login dialog box&quot; check
+      box is checked</listitem>
+      <listitem>OPENLINK.INI settings 
+	  (<computeroutput>\Local Machine\Software\ODBC\OPENLINK.INI\Communications</computeroutput>) 
+	  ShowErrors Key is also set to &quot;No&quot; , this ensures that OpenLink Specific 
+	  error messages aren&#39;t shown.</listitem>
+	 </itemizedlist>
+	<para><emphasis>Server</emphasis></para>
+    <itemizedlist>
+	  <listitem>Ensure the following Mapping Rule exists as the first
+      line of the [Mapping Rules] section of yor &quot;Session Rules Book&quot; :</listitem>
+	  </itemizedlist>
+<programlisting><![CDATA[
+[Mapping Rules]
+;*:*:blank:*:*:*:rw = reject You should specify a username and password
+*:*:Admin:*:*:*:rw = reject User Admin Account Does Not Exist In Your Progress Database
+]]></programlisting>
+      <para>The above alleviates the need to depend of JetTryAuth or TryJetAuth.</para>
+</sect2>
+<sect2 id="conprogjetsetngs"><title>Key Microsoft Access Jet Engines Setting That Can Affect Your OpenLink ODBC Experience</title>
+    <para>The following sections describe Windows registry settings
+    settings for the Microsoft Jet database engine for connection to an ODBC database. These
+    registry settings must be added by the user or by your application; the ODBC Driver Setup
+    program does not write default values to the location:</para>
+<programlisting><![CDATA[
+\HKEY_LOCAL_MACHINE\Software\Microsoft\Access\7.0\Jet\3.5\Engines\ODBC
+]]></programlisting>
+    <para>Initialization Settings for Jet-connected ODBC Databases, found at:</para>
+<programlisting><![CDATA[
+\HKEY_LOCAL_MACHINE\Software\Microsoft\Office\8.0\Access\Jet\3.5\Engines\ODBC
+]]></programlisting>
+    <para>folder contains initialization settings for the Microsoft Jet 
+	database engine. Before you can add any of the following values to the 
+	registry, you must create the ODBC folder under the Jet\3.5\Engines folder.</para>
+    <para>To create the new folder, open the Jet\3.5\Engines folder
+    in the Registry Editor and click Add Key on the Edit menu. In the Key Name: edit box, type
+    ODBC and click OK. The Registry Editor creates a new folder below the Jet\3.5\Engines
+    folder.</para>
+<note><title>Note:</title>
+  <para>If you are using Windows NT, the Add Key dialog box
+    also contains an edit box for the registry key class; you 
+	can leave this setting blank.</para></note>
+    <para>Typical settings for the entries in the
+    Jet\3.5\Engines\ODBC folder are shown in the following example.</para>
+<programlisting><![CDATA[
+LoginTimeout=20
+QueryTimeout=60
+ConnectionTimeout=600
+AsyncRetryInterval=500
+AttachCaseSensitive=0
+AttachableObjects=&#39;TABLE&#39;,&#39;VIEW&#39;,&#39;SYSTEM TABLE&#39;,&#39;ALIAS&#39;,&#39;SYNONYM&#39;
+SnapshotOnly=0
+TraceSQLMode=0
+TraceODBCAPI=0
+DisableAsync=0
+JetTryAuth=1
+PreparedInsert=0
+PreparedUpdate=0
+FastRequery=0
+]]></programlisting>
+    <para>The Jet database engine uses the ODBC entries as follows:</para>
+	<formalpara><title>LoginTimeout</title>
+     <para>The number of seconds a login attempt can continue before 
+	 timing out. The default is 20 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>QueryTimeout</title>
+     <para>The number of seconds a query can run (total processing time) 
+	 before timing out. The default is 60 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>ConnectionTimeout</title>
+     <para>The number of seconds a cached connection can remain idle
+	 before timing out. The default is 600 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>AsyncRetryInterval</title> 
+	<para>The number of milliseconds between polls to determine if the server 
+	is done processing a query. This entry is used for asynchronous processing 
+	only. The default is 500 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>AttachCaseSensitive</title> 
+	<para>An indicator of whether to match table names exactly when linking. 
+	Values are 0 (link the first table matching the specified name, regardless 
+	of case) and 1 (link a table only if the name matches exactly).  
+    The default is 0 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>AttachableObjects</title>
+	<para>A list of server object types to which linking will be allowed. The 
+	default is: &#39;TABLE&#39;, &#39;VIEW&#39;, &#39;SYSTEM TABLE&#39;, &#39;ALIAS&#39;,
+    &#39;SYNONYM&#39; (values are of type REG_SZ).</para>
+	</formalpara>
+    <formalpara><title>SnapshotOnly</title>
+     <para>An indicator of whether Recordset objects are forced to be of snapshot 
+	 type. Values are 0 (allow dynasets) and 1 (force snapshots only). The default 
+	 is 0 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>TraceSQLMode</title>
+     <para>An indicator of whether the Jet database engine will trace SQL statements 
+	 sent to an ODBC data source in SQLOUT.txt.  Values are 0 (no) and 1 (yes). 
+	 The default is 0 (values are of type REG_DWORD). This entry 
+    is interchangeable with SQLTraceMode.</para>
+	</formalpara>
+    <formalpara><title>TraceODBCAPI </title>
+    <para>An indicator of whether to trace ODBC API calls in ODBCAPI.txt. Values 
+	are 0 (no) and 1 (yes). The default is 0 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>DisableAsync</title>
+     <para>An indicator of whether to force synchronous query execution. 
+	 Values are 0 (use asynchronous query execution if possible) and 1 (force 
+	 synchronous query execution). The default is 1 (values are of type
+    REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>JetTryAuth</title>
+     <para>An indicator of whether to try using the Microsoft Access user name 
+	 and password to log in to the server before prompting.  Values are 0 (no) 
+	 and 1 (yes). The default is 1 (values are of type REG_DWORD).</para>
+	</formalpara>
+    <formalpara><title>PreparedInsert</title>
+     <para>An indicator of whether to use a prepared INSERT statement that 
+	 inserts data in all columns. Values are 0 (use a custom
+    INSERT statement that inserts only non-Null values) and 1 (use a prepared INSERT
+    statement). The default is 0 (values are of type REG_DWORD).Using prepared INSERT
+    statements can cause Nulls to overwrite server defaults and can cause triggers to execute
+    on columns that weren&#39;t inserted explicitly.</para>
+	</formalpara>
+    <formalpara><title>PreparedUpdate</title>
+     <para>An indicator of whether to use a prepared UPDATE statement that 
+	 updates data in all columns. Values are 0 (use a custom
+    UPDATE statement that sets only columns that have changed) and 1 (use a prepared UPDATE
+    statement). The default is 0 (values are of type REG_DWORD).Using prepared UPDATE
+    statements can cause triggers to execute on unchanged columns.</para>
+	</formalpara>
+    <formalpara><title>FastRequery</title>
+     <para>An indicator of whether to use a prepared SELECT statement 
+	 for parameterized queries. Values are 0 (no) and 1 (yes). The
+    default is 0 (values are of type REG_DWORD).</para>
+	</formalpara>
+</sect2>
+</sect1>
