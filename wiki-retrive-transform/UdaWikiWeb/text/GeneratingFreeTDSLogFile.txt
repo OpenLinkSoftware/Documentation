@@ -1,0 +1,104 @@
+%META:TOPICPARENT{name="TroubleshootingUDALoggingTracing"}%
+= Generating TDS Protocol Logs =
+
+%TOC%
+
+== Basic information ==
+
+Our ODBC Drivers for Sybase and Microsoft SQL Server use the <nop>FreeTDS Libraries for their network connectivity layer. 
+
+Most troubleshooting of these drivers can be done through the ordinary [[GeneratingClientsideODBCTracesAllDrivers|ODBC Traces and Driver Debug Logs]], but sometimes protocol-level logs are necessary.
+
+== Specifics ==
+
+TDS protocol logging is enabled by setting the <b><code>TDSDUMP</code></b> environment variable to the name of the file where the log should be written.
+
+Environment variables are set differently on different operating systems.
+
+With Enterprise Edition (Multi-Tier), this may be set in the <code>[Environment ...]</code> stanza that's active for the connections in question.  It may also be set before starting the Broker (such that it's set for the Broker process, and inherited by all its child Agent processes).
+
+With Lite Edition (Single-Tier), this may be set in the relevant stanza of the <code>openlink.ini</code> file on Unix-like OS, or for the active login session before launching the ODBC client application on Windows, macOS, or Unix-like OS.
+
+=== macOS a/k/a Mac OS X ===
+
+Details vary with different versions of macOS.
+
+==== Mojave (10.14), High Sierra (10.13), Sierra (10.12), El Capitan (10.11), Yosemite (10.10), Mavericks (10.9), Mountain Lion (10.8), or Lion (10.7) ====
+
+As of Lion, these simple Terminal.app commands will do the job, creating the {{{tdsdump.txt}}} file on the ODBC user's Desktop.
+
+* To enable TDS logging --
+{{{
+launchctl setenv TDSDUMP ~/Desktop/tdsdump.txt
+}}}
+It is often preferable to fully specify the path, "{{{/Users/ShortUsername/}}}", instead of using the shortcut, "{{{~/}}}" --
+{{{
+launchctl setenv TDSDUMP /Users/ShortUsername/Desktop/tdsdump.txt
+}}}
+
+
+* To disable TDS logging --
+{{{
+launchctl unsetenv TDSDUMP 
+}}}
+
+
+Note that any active applications will not notice the change; you have to quit and relaunch.  
+
+A reboot or user log out will unset the variables set with these commands, and you'll need to re-set them afterward.  Persistent settings (not usually appropriate for TDS logging) can be made through a {{{launchd.plist}}}, [[http://www.dowdandassociates.com/blog/content/howto-set-an-environment-variable-in-mac-os-x-launchd-plist/| as described elsewhere]].
+
+
+==== Lion (10.7), Snow Leopard (10.6), Leopard (10.5), Tiger (10.4), Panther (10.3), Jaguar (10.2), Puma (10.1), or Cheetah (10.0) ====
+
+On Snow Leopard (10.6) and earlier, this is best done by creating (or editing) a file called {{{environment.plist}}} in a (normally invisible) directory called {{{.MacOSX}}}, in the user's home directory.  This method also works on Lion (10.7).
+
+You can execute either of these commands in Terminal.app, to open the file for editing in TextEdit.app --
+{{{
+open -e /Users/ShortUsername/.MacOSX/environment.plist
+
+open -e ~/.MacOSX/environment.plist
+}}}
+
+%BR%%BR%If the file already exists, just add these two lines to the main {{{<dict>}}} block --
+{{{
+        <key>TDSDUMP</key>
+        <string>~/Desktop/tdsdump.txt</string>
+}}}
+
+%BR%%BR%If you're creating a new file, make sure it contains this entire block --
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" 
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>TDSDUMP</key>
+        <string>~/Desktop/tdsdump.txt</string>
+</dict>
+</plist>
+}}}
+
+
+=== Unix-like OS (AIX, HP-UX, Linux, Solaris, etc.) ===
+
+Commands vary with your active shell, among other variables, so we cannot provide an exhaustive list.  A couple of examples --
+{{{
+export TDSDUMP=/tmp/freetds.log                 ## some Unix systems
+
+set TDSDUMP=/tmp/freetds.log ; export TDSDUMP   ## other Unix systems
+}}}
+
+
+=== Windows (all versions) ===
+
+You can send the log to any location in the accessible filesystem, local or remote.  This is a simple example --
+{{{
+set TDSDUMP=C:\freetds.log
+}}}
+
+You can also use the **System** control panel, **Advanced** tab, **Environment Variables** button.
+
+
+== For more information... ==
+
+Further details on usage can be found on the [[http://www.freetds.org/userguide/logging.htm|FreeTDS Web Site]].

@@ -1,0 +1,76 @@
+%META:TOPICPARENT{name="PreinstallInformixLiteUnix"}%
+
+= Configure the Informix Native Client on Unix-like OS =
+
+Use the following steps to configure the Informix native client to connect to the desired Informix DBMS.
+
+# Log in to the Informix server host as the Informix user.
+# Ensure that the Informix environment is properly set.  Minimally, {{{$INFORMIXDIR}}} and {{{$INFORMIXSERVER}}} must be set correctly for the target instance.  The following command --
+{{{
+env &#x7c; grep INF
+}}}
+-- should get results similar to these --
+{{{
+-bash-2.05b$ env &#x7c; grep INF
+INFORMIXDIR=/dbs/informix/IDS10
+INFORMIXSERVER=opllinux3
+-bash-2.05b$ 
+}}}
+# Execute the following commands exactly as written --
+{{{
+cd $INFORMIXDIR/etc
+grep `echo $INFORMIXSERVER` sqlhosts 
+}}}
+You should get output like this --
+{{{
+-bash-2.05b$ cd $INFORMIXDIR/etc
+-bash-2.05b$ grep `echo $INFORMIXSERVER` sqlhosts 
+opllinux3 onsoctcp 	opllinux3	inf10srv 
+-bash-2.05b$ 
+}}}
+# There are 4 columns in the output.  You'll need information related to each column, though it may not be the value you see there.
+#* The first column of the output should be the value seen earlier for {{{$INFORMIXSERVER}}}.
+#* The second column shows the connection protocol supported by this {{{$INFORMIXSERVER}}}, e.g., {{{onsoctcp}}}, {{{ontlitcp}}}.  //**NOTE:** If the connection protocol name does not include "tcp," you cannot connect directly to this instance over the network, and you cannot use [[http://uda.openlinksw.com/odbc-informix-st/|our Single-Tier solution]] unless it is being used directly on the Informix server host.  You **can** use [[http://uda.openlinksw.com/odbc-informix-mt/|our Multi-Tier solution]], if you can install some <nop>OpenLink components directly on the Informix server host. //
+#* The third column shows the hostname or IP address of the machine on which the Informix server runs.  The hostname used here may be short (infhost) or fully-qualified (infhost.example.com); you need to know the fully-qualified DNS-resolvable hostname or the IP address for the client configuration.  You can use the following commands to learn the needed value(s) --
+{{{
+hostname
+host `hostname`
+/sbin/ifconfig
+host <ip address from ifconfig>
+nslookup <ip address from ifconfig>
+}}}
+#* The fourth column shows the port name or number for the Informix listener.  If it's a name, you'll need to get the port number from {{{/etc/services}}} --
+{{{
+grep inf10srv /etc/services
+}}}
+-- like so --
+{{{
+-bash-2.05b$ grep inf10srv /etc/services
+inf10srv	5678/tcp			# Informix 10 server
+-bash-2.05b$ 
+}}}
+# Log out of the Informix server host, and log in to the Single-Tier client host, again as the Informix user.  If you haven't already downloaded and installed the Informix Client SDK, [[http://www14.software.ibm.com/webapp/download/search.jsp?rs=ifxdl|now is the time to do so]].
+# Ensure that the Informix environment is properly set.  Minimally, {{{$INFORMIXDIR}}} must be set correctly for the Client SDK, and {{{$INFORMIXSERVER}}} must be set correctly for the target instance.  The following command --
+{{{
+env &#x7c; grep INF
+}}}
+-- should get results similar to these --
+{{{
+-bash-2.05b$ env &#x7c; grep INF
+INFORMIXDIR=/dbs/informix/CSDK10
+INFORMIXSERVER=opllinux3
+-bash-2.05b$ 
+}}}
+# Edit (or create, if necessary) the {{{$INFORMIXDIR/etc/sqlhosts}}} file and add a line similar to the one you got from the Informix server, along these lines --
+{{{
+<$INFORMIXSERVER>     <protocol>     <hostname or IP address>     <service name or port number>
+}}}
+For example --
+{{{
+informix_tcp     onsoctcp     192.168.123.231     inf10srv
+}}}
+//**NOTE:** If you use a service name here, you must also add an appropriate line to {{{/etc/services}}}.  For best results, the service name should be the same on both server and client hosts, and it **must** use the same port number.//
+{{{
+inf10srv	5678/tcp			# remote Informix 10 server
+}}}
+# Save and exit the file.

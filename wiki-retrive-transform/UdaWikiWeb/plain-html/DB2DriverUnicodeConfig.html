@@ -1,0 +1,32 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ConfigureUDAFeatures"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ConfigureUDAFeatures"}%--><p> <br></p><h2><a name="DB2 Unicode"></a>DB2 Unicode</h2>
+<p> <br></p><h3><a name="Driver Configuration"></a>Driver Configuration</h3>
+<p>There are no specific environment variables that need to be set for the DB/2 Driver to handle Unicode data.
+ One special consideration when inserting Unicode data into the daatbase though is that you cannot insert literal Unicode values into the database.
+ Instead these values have to be inserted as bound parameters as follows:<br></p><pre>CREATE TABLE UTEST (F1 GRAPHIC(20), F2 VARGRAPHIC(20), F3 LONG VARGRAPHIC,
+        F4 DBCLOB(100));
+
+         Successfully connected to DSN &#39;UO_db2&#39;.
+SQLBindParameter:
+  In: StatementHandle = 0x00751860, ParameterNumber = 1,
+      InputOutputtype = SQL_PARAM_INPUT=1, ValueType = SQL_C_WCHAR=-8,
+      ParameterType = SQL_WCHAR=-8, ColumnSize = 0, DecimalDigits = 0,
+      ParameterValuePtr = &quot;?????&quot;, BufferLength = 0,
+      StrLen_or_IndPtr = SQL_NTS=-3, SQL_LEN_DATA_AT_EXEC = FALSE,
+      Buffer Size = 600
+   Return:       SQL_SUCCESS=0
+SQLExecDirect:
+   In: Statementhandle = 0x00751860, StatementText = &quot;insert into utest(f1) 
+values(?)&quot;, Statementlength = 31
+   Return:       SQL_SUCCESS=0
+SQLExecDirect:
+   In: Statementhandle = 0x00751860, StatementText = &quot;select * from utest&quot;, 
+Statementlength = 19
+   Return:       SQL_SUCCESS=0
+
+Get Data All:
+&quot;F1&quot;, &quot;F2&quot;, &quot;F3&quot;, &quot;F4&quot;
+&quot;АБВГД               &quot;, &lt;Null&gt;, &lt;Null&gt;, NO DATA
+1 row fetched from 4 columns.
+
+</pre><p> <br>This is because the Graphic string data types are compatible only with other graphic string data types, and never with numeric, character string, or datetime data types.</p><p>Note that additional Unicode support has been added to the DB/2 agent for VARCHAR, LONGVARCHAR, CLOB &amp; BLOB types, although a specific Patch (FIXPAK7) is required from IBM to obtain this support in DB/2 v 7.2 databases and FIXPAK 3 &amp; 7 are required for DB/2 v7.1 databases.</p><p>The application code page must be set to UTF-8, which can be done by issuing the command:<br></p><pre>db2set DB2CODEPAGE=1208
+</pre><p>on the client (DB2 Lite) or server (DB2 agent) as appropriate.</p><p>See Also: <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/DB2UnicodeConfig" class="wikiword">DB2UnicodeConfig</a> <br></p></div></body></html>

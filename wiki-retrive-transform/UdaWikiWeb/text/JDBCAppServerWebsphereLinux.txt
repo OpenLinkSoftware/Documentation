@@ -1,0 +1,306 @@
+%META:TOPICPARENT{name="InstallConfigJDBC"}%
+= Using UDA with IBM <nop>WebSphere 6 (Linux) =
+
+%TOC%
+
+== Required components ==
+
+You will need to download the following components
+
+* IBM <nop>WebSphere - [[http://www.ibm.com|download]]
+* opltest.war Web Application - [[./opltest.war|download]]
+* OpenLink jar file - one of these, appropriate to the selected JDK/JRE -
+|  *JDK/JRE/JVM*  |  *OpenLink JDBC Driver*  |
+|  1.1  |  [[http://www.openlinksw.com/][opljdbc.jar]]  |
+|  1.2 or 1.3  |  [[http://www.openlinksw.com/][opljdbc2.jar]]  |
+|  1.4 or 1.5  |  [[http://www.openlinksw.com/][opljdbc3.jar]]  |
+|  1.6  |  [[http://www.openlinksw.com/][opljdbc4.jar]]  |
+|  1.7  |  [[http://www.openlinksw.com/][opljdbc4_1.jar]]  |
+|  1.7  |  [[http://www.openlinksw.com/][opljdbc4_2.jar]]  |
+
+
+== Install IBM <nop>WebSphere ==
+ 
+Currently, there is only a graphical install available on Linux. 
+
+The {{{-console}}} command line option is not currently implemented. 
+
+Extract the .tar.gz into a suitable temporary directory, such as -- 
+{{{/tmp/websphere}}}
+
+Double click on -- {{{/tmp/websphere/WAS/install}}} -- to initiate the installation process. 
+
+Select {{{Next}}}, Accept the license agreement then {{{Next}}} again. 
+
+A System Prerequisites Check will be performed. 
+
+NOTE: You may be warned that the Operating System is not supported. Ignore this warning. 
+
+Select Next several times leaving all options at their default values to begin the installation. 
+
+Untick {{{Launch the First Steps Console}}} then select {{{Finish}}}. 
+
+
+== Starting IBM <nop>WebSphere Server ==
+
+Start IBM <nop>WebSphere Server using the command -- 
+{{{/opt/IBM/WebSphere/AppServer/bin/startServer server1}}}
+
+Browse to the following url to verify that Sun Java Application Server is up and running -- 
+{{{http://websphere_server:9060/ibm/console/}}}
+
+NOTE: The IBM <nop>WebSphere Server may take several minutes to start.
+
+
+== Install <nop>OpenLink jar files ==
+
+Copy the {{{.jar}}} file chosen for your JDK/JVM/JRE 
+into the directory -- {{{/opt/IBM/WebSphere/AppServer/openlink/lib}}}
+
+NOTE: Create this directory if it does not exist.
+
+Open the Admin Console --
+{{{http://websphere_server:9060/ibm/console/}}}
+
+Enter any User ID then select {{{Log in}}}
+
+Select {{{Environment -> <nop>WebSphere Variables}}}
+
+Select the variable --
+{{{User-defined_JDBC_DRIVER_PATH}}}
+
+Edit the {{{Value}}} property to read--
+{{{${WAS_INSTALL_ROOT}/openlink/lib}}}
+
+Select {{{Apply}}}
+
+The page will refresh with a message ot the top prompting to save the changes to the master configuration.
+
+Select {{{Save}}} then select {{{Save}}} again.
+
+The <nop>WebSphere Variables page will redisplay.
+
+Restart <nop>WebSphere -- 
+{{{/opt/IBM/WebSphere/AppServer/bin/stopServer server1
+/opt/IBM/WebSphere/AppServer/bin/startServer server1}}}
+
+NOTE: The IBM <nop>WebSphere Server may take several minutes to start.
+
+
+== Configure Resources ==
+
+NOTE: These instructions must be followed precisely.
+
+=== Create the JDBC Provider ===
+
+Open the Admin Console --
+{{{http://websphere_server:9060/ibm/console/}}}
+
+and enter any User ID then select {{{Log in}}}
+
+Select {{{Resources -> JDBC Providers}}}
+
+Select {{{New}}}
+
+In the {{{Step 1}}} list box select {{{User-defined}}} then {{{Next}}}
+
+Enter the {{{General Properties}}} --
+
+  | *Name*  | opljdbc3  |
+  | *Class path*  | ${User-defined_JDBC_DRIVER_PATH}/opljdbc3.jar  |
+  | *Implementation class name*  | openlink.javax.OPLConnectionPoolDataSource  |
+
+Select {{{Apply}}}
+
+The page will refresh with a message at the top prompting to save the changes to the master configuration.
+
+Select {{{Save}}} then select {{{Save}}} again.
+
+The {{{JDBC providers}}} page will redisplay with the provider {{{opljdbc3}}} added to the list.
+
+
+=== Create the data source ===
+
+Select the provider you just created.
+
+Select {{{Data Sources}}} to the right of the providers {{{General Properties}}}
+
+Select {{{New}}}
+
+Enter the {{{General Properties}}} --
+
+  | *Name*  | o32opljdbc3  |
+  | *JNDI name*  | jdbc/o32opljdbc3  |
+
+Select the {{{Select a data store helper class}}} radio button and highlight the class --
+{{{(com.ibm.websphere.rsadapter.GenericDataStoreHelper)}}}
+
+Select {{{Apply}}}
+
+The page will refresh with a message at the top prompting to save the changes to the master configuration.
+
+Select {{{Save}}} then select {{{Save}}} again.
+
+The {{{Data sources}}} page will redisplay with the data source {{{o32opljdbc3}}} added to the list.
+
+
+=== Create the data source custom property ===
+
+Select the data source you just created.
+
+Select {{{Custom properties}}} to the right of the providers {{{General Properties}}}
+
+Select {{{New}}}
+
+Enter the {{{General Properties}}} --
+
+  | *Name*  | URL  |
+  | *Value*  | jdbc:openlink://192.168.0.150:5000/SVT=Odbc/Database=sqlserver/UID=sa/PWD=sa  |
+  | *Type*  | java.lang.String  |
+
+Select {{{Apply}}}
+
+The page will refresh with a message ot the top prompting to save the changes to the master configuration.
+
+Select {{{Save}}} then select {{{Save}}} again.
+
+The Custom properties page will redisplay with the custom property added to the list.
+
+
+== Test the data source ==
+
+Select {{{Data sources}}} in the navigation structure at the top of the page.
+
+Tick the data source you just created.
+
+Select {{{Test connection}}}
+
+You will need to repeat the above for the following providers / data sources / JNDI Names --
+
+  | *Provider*  | *Data source*  | *JNDI name*  | 
+  | opljdbc2  | o32opljdbc2  | jdbc/o32opljdbc2  |
+  | opljdbc2  | m32opljdbc2  | jdbc/m32opljdbc2  |
+  | opljdbc3  | o32opljdbc3  | jdbc/o32opljdbc3  |
+  | opljdbc3  | m32opljdbc3  | jdbc/m32opljdbc3  |
+
+
+== Prepare the Web Application ==
+
+Demonstrating how to build and deploy a Web application from the beginning is beyond the scope of this short tutorial so what follows is a quick method of altering the JDBC URLs and SQL statements in an existing Web application.
+
+NOTE: Be careful when moving .war files about using Internet Explorer. Sometimes they will be renamed to .zip by Internet Explorer.
+
+=== Rename the .war file to .zip ===
+
+Rename - {{{opltest.war}}} -to- {{{opltest.zip}}}
+
+You will then be able to unzip the archive to get at the files inside it.  (Some utilities can unzip the .war archive without renaming.)
+{{{unzip opltest.zip}}}
+
+=== Edit JDBC URLs ===
+
+Edit the driver class and the JDBC connection URL in the file --
+{{{/META-INF/context.xml}}}
+
+NOTE: Ensure that the edited file is placed back into the archive.
+{{{zip -r ../opltest *}}}
+
+
+=== Edit the SQL statement(s) ===
+
+You will need to edit the SQL statement(s) in <i>the following JSP files</i> based on the chosen database determined by the JDBC URL in the file --
+{{{/META-INF/context.xml}}}
+
+Edit the JSP files --
+{{{
+opljdbc.jsp
+opljdbc2.jsp 
+opljdbc3.jsp
+}}} 
+
+There are two main areas of interest --
+
+#The &lt;sql:query&gt; tag which select the datasource as defined in - {{{/META-INF/context.xml}}}%BR% 
+which contains the SQL query itself -- %BR% 
+{{{<sql:query var="resultset" dataSource="jdbc/opljdbc2">
+		select SupplierID, CompanyName, ContactName, ContactTitle from Suppliers
+	</sql:query>}}}
+		%BR% 
+#The one or more ${row.column_name} constructs that output data as per the SQL query %BR% 
+{{{${row.SupplierID}
+${row.CompanyName} }}}
+
+
+NOTE: Ensure that the edited file is placed back into the archive.
+{{{zip -r ../opltest *}}}
+
+=== Rename the .zip file back to .war ===
+
+Rename the file {{{opltest.zip}}} back to {{{opltest.war}}}
+
+
+== Deploy opltest Web Application ==
+
+Open the Admin Console --
+{{{http://websphere_server:9060/ibm/console/}}}
+
+and enter any User ID then select {{{Log in}}}
+
+Select {{{Applications -> Install New Application}}}
+
+=== Preparing for the application installation ===
+
+Select the {{{Local file system}}} radio button.
+
+Browse to the war file {{{optest.war}}}
+
+Set the {{{Context root}}} to --
+{{{opltest}}}
+
+Select {{{Next}}} then {{{Next}}} again 
+
+=== Application Security Warnings ===
+
+Select {{{Continue}}}
+
+=== Install New Application ===
+
+# Select installation options %BR%
+Change the {{{Application name}}} to {{{opltest}}}%BR%
+Select {{{Next}}}%BR%
+# Map modules to servers%BR%
+Select {{{Next}}}%BR%
+# Map resource references to resources%BR%
+Scroll down the page to see the table showing the resources defined by the file WEB-INF/web.xml%BR%
+Enter the {{{JNDI name}}} for its corresponding {{{Reference binding}}} as follows --%BR%
+| *Reference binding*  | *JNDI name*  |
+| jdbc/o32opljdbc1  | jdbc/o32opljdbc3  |
+| jdbc/m32opljdbc1  | jdbc/m32opljdbc3  |
+| jdbc/o32opljdbc2  | jdbc/o32opljdbc2  |
+| jdbc/m32opljdbc2  | jdbc/m32opljdbc2  |
+| jdbc/o32opljdbc3  | jdbc/o32opljdbc3  |
+| jdbc/m32opljdbc3  | jdbc/m32opljdbc3  |
+Select {{{Next}}}%BR%
+# Map virtual hosts for Web modules%BR%
+Select {{{Next}}}%BR%
+# Summary%BR%
+Select {{{Finish}}}
+
+The application will now be installed.
+
+Select the {{{Save to Master Configuration}}} link at the bottom of the page.
+
+Select {{{Save}}}
+
+Select {{{Applications -> Enterprise Applications}}}
+
+You will see the new application {{{opltest}}} listed with a red cross for its status.
+
+Select the check box to the left of {{{opltest}}}
+
+Select {{{Start}}}
+
+The page will refresh and the red cross will have changed to a green arrow.
+
+The newly deployed application is now available at the following URL --
+{{{http://websphere_server:9080/opltest/index.html}}}

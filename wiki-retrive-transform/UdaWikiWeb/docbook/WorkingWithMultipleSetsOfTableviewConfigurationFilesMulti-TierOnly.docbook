@@ -1,0 +1,74 @@
+<docbook><section><title>WorkingWithMultipleSetsOfTableviewConfigurationFilesMulti-TierOnly</title><para>The following instructions enable you to configure OpenLink Rulebooks and Data Sources for multiple tableview file sets.</para><orderedlist spacing="compact"><listitem> Use a text editor to open your Rulebook (oplrqb.ini).
+</listitem>
+<listitem> Locate the <computeroutput>[Domain Aliases]</computeroutput> section.
+</listitem>
+<listitem> Create one descriptive alias for each set of tableview files.
+ For example: <programlisting>Customer View                   = custv
+Order View                     = ordv
+</programlisting></listitem>
+<listitem> Locate the <computeroutput>[Mapping Rules]</computeroutput> section.
+</listitem>
+<listitem> Create new rules which reference your new domain aliases.
+ For example: <programlisting>custv:*:*:*:*:*:*          = accept customer_view
+ordv:*:*:*:*:*:*           = accept order_view
+</programlisting></listitem>
+<listitem> Locate the <computeroutput>[generic agent]</computeroutput> sections.
+</listitem>
+<listitem> Create new <computeroutput>[agent]</computeroutput> sections which reference the &quot;accept agent&quot; sections of your rules.
+ For example: <programlisting>[customer_view]
+Program       = pro81a_sv.exe  ;; MUST REFERENCE VALID DATABASE AGENT EXECUTABLE
+Environment   = CUSTV          ;; PASS UNIQUE, DESCRIPTIVE NAME.
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+
+[order_view]
+Program       = pro81a_sv.exe
+Environment   = ORDV
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+</programlisting></listitem>
+<listitem> Add <computeroutput>ConnectOptions</computeroutput> parameters which pass the full path to the appropriate <computeroutput>.pf</computeroutput> file.
+ For example: <programlisting>[customer_view]
+Program       = pro82a_sv.exe
+Environment   = CUSTV
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+ConnectOptions = -pf /usr/lpp/openlink/bin/custview.pf
+
+[order_view]
+Program       = pro82a_sv.exe
+Environment   = ORDV
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+ConnectOptions = -pf /usr/lpp/openlink/bin/ordview.pf
+</programlisting></listitem>
+<listitem> Locate your Rulebook&#39;s <computeroutput>[Environment ***]</computeroutput> sections.
+ For example: <programlisting>[Environment PROGRESS81A]
+;TABLEVIEW	=
+CURSOR_SENSITIVITY = LOW
+DLC                = D:\DBS\Progress\Pro81a
+Path               = D:\DBS\Progress\Pro81a\BIN;D:\WINNT\System32
+</programlisting></listitem>
+<listitem> Create one <computeroutput>[Environment ***]</computeroutput> section for each new <computeroutput>[agent]</computeroutput> section.
+ Set each <computeroutput>TABLEVIEW</computeroutput> attribute to target the associated <computeroutput>.dat</computeroutput> file.
+ For example: <programlisting>[Environment CUSTV]
+TABLEVIEW	   = /usr/lpp/openlink/bin/custview.dat
+CURSOR_SENSITIVITY = LOW
+DLC                = D:\DBS\Progress\Pro82a
+Path               = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+
+[Environment ORDV]
+TABLEVIEW	   = /usr/lpp/openlink/bin/ordview.dat
+CURSOR_SENSITIVITY = LOW
+DLC                = D:\DBS\Progress\Pro82a
+Path               = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+</programlisting></listitem>
+<listitem> Save your changes and exit the file.
+</listitem>
+<listitem> Restart your Request Broker.
+</listitem>
+<listitem> Change the Domain or ServerType in your client Data Source Names to the appropriate newly defined Domain Alias, e.g., &quot;Customer View&quot; or &quot;Order View&quot;.
+</listitem>
+<listitem> Test your connections.
+</listitem>
+</orderedlist></section></docbook>

@@ -1,0 +1,86 @@
+%META:TOPICPARENT{name="ConfigureUDAFeatures"}%
+
+
+<nop>OpenLink Product Support does not provide customized shell scripts to automate Broker startup or any other feature of our software. However, we do provide a sample shell script as a courtesy to those individuals who may want general guidance before creating their own scripts.
+
+
+{{{
+>> Begin file
+
+#!/bin/sh
+# 
+# Run the OpenLink Request Broker
+
+# For entry in /etc/rc2.d/SnnOpenLinkBroker, where nn is 90 or higher.
+# Typically, nn is 98 so that it precedes the CDE login process which
+# does not return.
+
+BIN_DIR=/usr/openlink/bin
+
+if [ "$1" = stop ]
+then
+   echo "Shutting down OpenLink Request Broker ..."
+
+   # This code derived from the OpenLink rqbshut script.
+   #######################################################################
+
+   process=oplrqb
+   set - `ps -e | grep " $process\$" | grep -v grep`
+
+   if [ $# -eq 0 ]
+   then
+   echo $0: $process is not running
+   exit 1
+   fi
+
+   kill $1 2>/dev/null
+   if [ $# -eq 0 ]
+   then
+   echo $0: unable to shutdown $process
+   exit 1
+   fi
+
+   echo $0: $process shutdown complete
+   exit 0
+   echo "Shut down process but not exiting script"
+fi
+
+# Else, assume start.
+
+# BIN_DIR=/export/home/openlink/sschadt/bin
+exe=$BIN_DIR/oplrqb
+if [ -x $exe ]
+then
+   # See OpenLink installation guide for alternatives.
+
+   if id | grep "uid=0" >/dev/null 2>&1
+   then
+       # Start broker under its owner's identity.
+
+       #  set - `ls -l $exe`   (this line was clearing out $1)
+
+       # See if the file exists and use $? to determine outcome
+       ls -l $exe >/dev/null 2>&1
+       if [ $? -eq 0 ]
+       then
+           id="$1"
+           echo "The id being used is '$id'"
+           echo "Starting OpenLink Request Broker with '"$id"' identity."
+           su "$id" -c "$exe &"
+           echo "ps -ef | grep opl ..."
+           ps -ef | grep opl
+           exit $?
+       fi
+   fi
+
+   echo "Starting OpenLink Request Broker."
+   $exe >/dev/null 2>&1 &
+   exit $?
+
+else
+   echo "OpenLink Request Broker not found: $exe"
+   exit 1
+fi
+
+<< end of file 
+}}}

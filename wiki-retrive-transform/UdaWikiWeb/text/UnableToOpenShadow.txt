@@ -1,0 +1,117 @@
+%META:TOPICPARENT{name="ErrorMessagesU"}%
+   
+=Unable to open a Request Broker license (Network failure)=
+
+A variety of factors contribute to the "Network failure" error. If you encounter network failures, take the action that corresponds to the operating system on which the error occurs:
+
+%TOC%
+
+==For a Unix Broker host==
+
+# Log into the problem machine.
+# Run {{{ps -ef}}} and make sure that {{{oplmgr}}}, {{{oplrqb}}}, and {{{www_sv}}} are not running. Kill any relevant processes. For example:
+{{{
+ps -ef | grep oplmgr
+ps -ef | grep oplrqb
+ps -ef | grep www_sv
+}}}
+# {{{cd}}} to the root of your <nop>OpenLink installation, where you find {{{openlink.sh}}} and {{{openlink.csh}}}.
+# Set the <nop>OpenLink environment by running the appropriate script for your shell --
+| *shell* | *command* |
+| <code>sh, bash, zsh, ksh</code> and related | <code><nowiki>. ./openlink.sh</nowiki></code> |
+| <code>csh, tcsh</code> and related | <code><nowiki>source ./openlink.csh</nowiki></code> |
+# {{{cd}}} into the {{{bin}}} sub-directory of your <nop>OpenLink installation.
+# Use {{{ls -al}}} to insure that {{{oplrqb.log}}} is writable by its owner.
+# {{{vi oplrqb.ini}}}
+# Locate the {{{[Protocol TCP]}}} section. For example:
+{{{
+[Protocol TCP]
+PingWatchdog = No
+PingInterval = 600
+Listen = 5000
+PortLow = 5000
+PortHigh = 6000
+;IPAddress = 127.0.0.1
+}}}
+# Remove the semicolon from the {{{IPAddress}}} parameter.
+# Hardcode your machine's IP address.
+# Record the value passed to {{{Listen}}}.
+# Exit the file.
+# Run {{{netstat -a}}} to insure that UDP and TCP ports {{{60001}}} are free. For example:
+{{{
+netstat -a | grep 60001
+}}}
+# Run {{{netstat -a}}} to insure that the TCP port passed to Listen is free. For example:
+{{{
+netstat -a | grep 5000
+}}}
+# Run {{{./oplmgr -?}}} to insure that you do not have version 0.9.4. If you do, you have a bug, and you must stop and contact <nop>OpenLink Product Support. For example:
+{{{
+[root@r3 bin]# ./oplmgr -?
+OpenLink License Manager
+Version 0.9.4 as of Fri Feb 03 2006 (Release 6.0 cvsid 00082).
+Compiled for Linux 2.4.20-43.9.legacysmp (i686-pc-linux-glibc23)
+Copyright (C) OpenLink Software.
+}}}
+# Use {{{ls -al}}} to make sure that all files in {{{~/openlink/bin}}} and {{{~/openlink/lib}}} have file ownership.
+# Remove any files named {{{.opl*}}} or {{{opl*}}} in {{{/tmp}}} --
+{{{
+rm /tmp/.opl* /tmp/opl*
+}}}
+# Start your Request Broker process.
+# Test your connection.
+
+If the same error persists send the following resources to <nop>OpenLink Product Support:
+
+# A copy of your {{{oplrqb.lic}}} file
+# The output of these commands --
+{{{
+strace ./oplrqb -fd
+oplrqb -?
+}}}
+
+==For a Windows Broker host==
+
+# Log into the problem machine.
+# Use the Services utility to insure that the <nop>OpenLink License Manager and <nop>OpenLink Request Broker are shut down. 
+# Use the Task Manager to make sure that www_sv is not running. Kill any relevant processes.
+# Expand your **Start** -> **Programs** menu.
+# Expand the <nop>OpenLink Data Access Drivers folder.
+# Click the Session Rules Book entry. This should open the {{{oplrqb.ini}}} file (a.k.a. Session Rules Book) in Notepad.
+# Locate the {{{[Protocol TCP]}}} section. For example:
+{{{
+[Protocol TCP]
+PingWatchdog = No
+PingInterval = 600
+Listen = 5000
+PortLow = 5000
+PortHigh = 6000
+;IPAddress = 127.0.0.1
+}}}
+# Remove the semicolon from the {{{IPAddress}}} parameter.
+# Hardcode your machine's IP address.
+# Record the value passed to {{{Listen}}}.
+# Exit the file.
+# Open an CMD/DOS session.
+# Run {{{netstat}}} to insure that TCP and UDP ports 60001, and the TCP port passed to Listen, are free.
+# {{{cd}}} into the {{{bin}}} sub-directory of the <nop>OpenLink installation.
+# Run {{{oplmgr -?}}} to insure that you do not have version 0.9.4. If you do, you have a bug. For example:
+{{{
+[root@r3 bin]# ./oplmgr -?
+OpenLink License Manager
+Version 0.9.4 as of Fri Feb 03 2006 (Release 6.0 cvsid 00082).
+Compiled for Linux 2.4.20-43.9.legacysmp (i686-pc-linux-glibc23)
+Copyright (C) OpenLink Software.
+}}}
+# If you have a new license file, put it in the bin sub-directory of your <nop>OpenLink installation.
+# Restart the <nop>OpenLink License Manager using the Services panel.
+# Restart the <nop>OpenLink Request Broker using the Services panel.
+# Test your connection
+
+If the same error persists send the following resources:
+# A copy of your {{{oplrqb.lic}}} file
+# The output of these commands --
+{{{
+strace ./oplrqb -fd
+oplrqb -?
+}}}

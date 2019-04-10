@@ -1,0 +1,20 @@
+<docbook><section><title>PHPSDefaultAssignmentOfDynamicCursorCausesMiscellaneousSQLQueryErrors</title><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">PHP Development Resources</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">PHP&#39;s default assignment of dynamic cursor causes miscellaneous SQL query errors</bridgehead>
+<para>PHP interrogates ODBC drivers, to see whether the driver supports the <computeroutput><ulink url="SQLExtendedFetch">SQLExtendedFetch</ulink>()</computeroutput> API call.
+ If that support is present, PHP SQL resultset functions all request a <emphasis>Dynamic (or Bi-Directional Scrollable) Cursor</emphasis>, regardless of any other considerations.</para>
+<para>All SQL queries made using a Dynamic Cursor requires that the SQL table in question have an ODBC-compliant primary key defined (an index is insufficient, whether unique or not).</para>
+<para>Additionally, the <ulink url="OpenLink">OpenLink</ulink> cursor library does not support all queries on scrollable cursors, even when a primary key is defined.
+ Some queries that <ulink url="OpenLink">OpenLink</ulink> Support have discovered can be problematic use aggregate functions, have a &#39;group by&#39; clause, or call stored procedures.
+ </para>
+<para>Error messages include --</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><computeroutput>No key columns found for table referenced by scrollable cursor.
+ </computeroutput></listitem> <listitem><computeroutput>SELECT statement contains a GROUP BY clause.</computeroutput></listitem></itemizedlist>
+<para>An upcoming update to <ulink url="OpenLink">OpenLink</ulink> drivers (Release 6.x, after September 2006) will resolve this issue for good and all, without any need for recompilation of PHP, nor changes to the database schema.</para>
+<para>If you are encountering these problems before this update, and cannot modify the underlying database schema, you will need to modify your PHP source and recompile.
+ </para>
+<para>For PHP 4.2 and below, you can have PHP disable server-side cursor functionality in all SQL statements by making a change in PHP&#39;s ODBC handling source.
+ </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><para>Edit the PHP source file <computeroutput>ext/odbc/php_odbc.c</computeroutput></para></listitem> <listitem><para>Change the last two instances of <computeroutput>SQL_CURSOR_DYNAMIC</computeroutput> to <computeroutput>SQL_CURSOR_FORWARD_ONLY</computeroutput></para></listitem> <listitem><para><ulink url="http://www.iodbc.org/index.php?page=languages%2Fphp%2Fodbc-phpHOWTO">Recompile PHP with iODBC support</ulink>.</para></listitem></itemizedlist>
+<para>For PHP 4.2 and above, you can make this behavior take effect at query-time, by preventing all use of the <computeroutput><ulink url="SQLExtendedFetch">SQLExtendedFetch</ulink>()</computeroutput> API call.</para> <itemizedlist mark="bullet" spacing="compact"><listitem><para>Edit the PHP source file <computeroutput>ext/odbc/php_odbc_include.h</computeroutput></para></listitem> <listitem><para>Around line 96 there will be a block of <computeroutput>#ifdef</computeroutput> and <computeroutput>#define</computeroutput> statements pertaining to iODBC . Replace the one that says </para> <blockquote><programlisting><computeroutput>#define HAVE_SQL_EXTENDED_FETCH 1</computeroutput></programlisting></blockquote> <para>with one that says </para> <blockquote><programlisting><computeroutput>#undef HAVE_SQL_EXTENDED_FETCH</computeroutput></programlisting></blockquote></listitem> <listitem><para><ulink url="http://www.iodbc.org/index.php?page=languages%2Fphp%2Fodbc-phpHOWTO">Recompile PHP with iODBC support</ulink>.</para></listitem></itemizedlist>
+<para>If none of the above suggestions solves the problem, please <ulink url="http://support.openlinksw.com/">open a support case</ulink>, and forward the page source with an ODBC trace showing the page&#39;s execution, referencing your case number in the subject header, to <ulink url="mailto:technical.support@openlinksw.com">technical.support@openlinksw.com</ulink>.</para> 
+</section></docbook>

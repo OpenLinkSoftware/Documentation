@@ -1,0 +1,104 @@
+<docbook><section><title>ConfigureOracleRAC</title><para> </para><title>Oracle Real Application Clustering</title>Oracle Real Application Clustering
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What is Real Application Clustering?</bridgehead>
+<para>Oracle Real Application Clustering (RAC) uses  Transparent Application Failover (TAF) which is a protocol within Oracle whereby, if a connection to a database node fails, it can be re-established against an alternative node.<figure><graphic fileref="ConfigureOracleRAC/ora_rac.png" /></figure></para>
+<para>Once a broken connection has failed-over, an application can continue without any special action on its part.
+ However, TAF does not restore all facets of a connection.
+ For instance, TAF does not:</para><itemizedlist mark="bullet" spacing="compact"><listitem> restore active transactions - any active transactions are rolled back at the time of failure because TAF cannot preserve active transactions after failover: the application instead receives an error message until a <computeroutput>ROLLBACK</computeroutput> is submitted </listitem>
+<listitem> restore session properties set using &#39;<computeroutput>ALTER SESSION</computeroutput>&#39; </listitem>
+<listitem> maintain the state of server-side program variables, such as PL/SQL package states</listitem>
+</itemizedlist><para>If any of these situations apply to a failed connection, an application may need to take action following failover to return the connection fully to the desired state.
+ In order to do this, the application may request to be notified when failover has occurred.
+ Both the &quot;Lite&quot; Edition and the &quot;Enterprise&quot; Edition Generic Client provide this facility through TAF event notifications.</para><para>The &quot;Lite&quot; Edition ODBC Driver and the &quot;Enterprise&quot; Edition Database Agent both enable configuration of the failover retry interval and the maximum number of failover retries, in the event that failover is not successful on the first attempt.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> How to Configure UDA to use Oracle Real Application Clustering </bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Single-Tier &quot;Lite&quot; Edition on Unix-like OS </bridgehead>
+<orderedlist spacing="compact"><listitem> Log in to the machine that hosts the Single-Tier (Lite) drivers.
+</listitem>
+<listitem> Use a text editor to open the <computeroutput>openlink.ini</computeroutput> (<computeroutput>$OPENLINKINI</computeroutput>) file that resides in the bin sub-directory of the Single-Tier installation.
+</listitem>
+<listitem> Locate the <computeroutput>[Environment Oracle 10.x]</computeroutput> section.
+</listitem>
+<listitem> Create and set the following two variables: <programlisting>OPL_TAF_MAX_RETRIES    = 10    ; This is the maximum number of times that the driver will retry the connection.
+OPL_TAF_RETRY_INTERVAL = 5     ; This is the number of seconds that the driver will wait between connection attempts.
+</programlisting></listitem>
+<listitem> Save your changes and exit the file.</listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Single-Tier &quot;Lite&quot; Edition on Windows </bridgehead>
+<para> </para><orderedlist spacing="compact"><listitem> Log in to the machine that hosts the Single-Tier &quot;Lite&quot; Edition drivers.
+</listitem>
+<listitem> Launch your ODBC Data Sources Administrator.
+</listitem>
+<listitem> Locate the relevant DSN.
+</listitem>
+<listitem> Click the Configure button.
+</listitem>
+<listitem> Scroll through the configuration screens until you find the &quot;Enable TAF&quot; checkbox.
+</listitem>
+<listitem> Check the TAF checkbox to prompt the driver to attempt multiple failover connections to alternative DBMS nodes.
+</listitem>
+<listitem> Configure the rest of the fields related to TAF: <itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>Maximum Retries</emphasis> - This is the maximum number of times that the driver will retry the connection.
+</listitem>
+<listitem> <emphasis>Retry Interval (secs)</emphasis> - This is the number of seconds that the driver will wait between connection attempts.</listitem>
+</itemizedlist></listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Multi-Tier &quot;Enterprise&quot; Edition on any OS </bridgehead>
+<orderedlist spacing="compact"><listitem> Log in to the machine that hosts the Multi-Tier server components installation.
+</listitem>
+<listitem> Use a text editor to open the <computeroutput>oplrqb.ini</computeroutput> file that resides in the bin sub-directory of the Multi-Tier installation.
+</listitem>
+<listitem> Locate the <computeroutput>[Environment ORACLE10]</computeroutput> section.
+</listitem>
+<listitem> Create and set the following two variables: <programlisting>OPL_TAF_MAX_RETRIES    = 10    ; This is the maximum number of times that the driver will retry the connection.
+OPL_TAF_RETRY_INTERVAL = 5     ; This is the number of seconds that the driver will wait between connection attempts.
+</programlisting></listitem>
+<listitem> Save your changes and exit the file.
+</listitem>
+<listitem> Restart the Request Broker.</listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Programmatic Considerations </bridgehead>
+<para>Our ODBC drivers notify ODBC applications that failover has occurred using two mechanisms: event call-backs and SQLSTATEs.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3"> TAF Event Notification: Call-backs </bridgehead>
+<para>An application can register a failover call-back routine by setting the proprietary connection attribute <computeroutput>SQL_ATTR_EVENT_CALL-BACK (1280)</computeroutput> on an open connection.
+ The routine&#39;s address is supplied as the value of <computeroutput>SQLSetConnectAttr</computeroutput>&#39;s <computeroutput>ValuePtr</computeroutput> argument.
+ The same call-back routine can be registered for more than one connection.
+ The call-back routine&#39;s signature must take the form: </para><programlisting>void (*call-back) (oplevent_t   oplEvent, 
+                   SQLHANDLE    handle, 
+                   SQLUSMALLINT eventInfo) 
+</programlisting><para> where:</para><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis><computeroutput>oplEvent</computeroutput></emphasis> is an integer indicating the type of event which took place.
+</listitem>
+<listitem> <emphasis><computeroutput>context</computeroutput></emphasis> is an application-supplied ODBC handle identifying the context the event is taking place in.
+</listitem>
+<listitem> <emphasis><computeroutput>eventInfo</computeroutput></emphasis> is an unsigned integer code providing more information about the event.
+ The values returned depend on the type of event.
+ <emphasis><computeroutput>0</computeroutput></emphasis> signifies &#39;no further information available&#39;</listitem>
+</itemizedlist><para><emphasis><computeroutput>oplEvent</computeroutput></emphasis> is of type <computeroutput>oplevent_t</computeroutput>, an enumerated type enumerating the types of events reported to event call-backs.
+ <computeroutput>oplevent_t</computeroutput> is defined as follows: </para><programlisting>typedef enum 
+  {
+    OPL_EV_NONE             = 0, 
+    OPL_EV_FAILOVER_SUCCESS = 16, 
+    OPL_EV_FAILOVER_ABORT   = 17 
+  }
+  oplevent_t; 
+</programlisting><para> At the moment, only failover events are supported through the <computeroutput>OPL_EV_FAILOVER_xxx</computeroutput> event class.
+ Other types of event may be supported in the future using this call-back mechanism.
+ <computeroutput>OPL_EV_FAILOVER_SUCCESS</computeroutput> indicates that failover was successful, <computeroutput>OPL_EV_FAILOVER_ABORT</computeroutput> that failover was aborted.</para><para><emphasis><computeroutput>context</computeroutput></emphasis> is the ODBC handle (<computeroutput>HDBC</computeroutput>) of the connection for which the application wishes to receive event notifications.
+ This handle should be supplied to the ODBC driver when the call-back is registered, using another Oracle-specific connection attribute, <computeroutput>SQL_ATTR_EVENT_CONTEXT (1281)</computeroutput>.
+ If this attribute is not set, the call-back receives <computeroutput>SQL_NULL_HANDLE</computeroutput> for the handle argument.
+ (If other event types are supported in the future, this attribute may accept other types of ODBC handle, e.g., handles of type <computeroutput>SQL_HANDLE_STMT</computeroutput>, depending on the scope of the event.)</para><para><emphasis><computeroutput>eventInfo</computeroutput></emphasis> is reserved for future use.
+ All failover events currently return <computeroutput>0</computeroutput>.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3"> TAF Event Notification: SQLSTATEs </bridgehead>
+<para>In addition to being informed of failover through a call-back routine, an ODBC application also receives notification through <computeroutput>SQLSTATE</computeroutput>s.
+ After failover completes, the first ODBC call to return on the affected connection can return one of two proprietary <computeroutput>SQLSTATE</computeroutput>s, <computeroutput>IM500</computeroutput> or <computeroutput>IM501</computeroutput>:</para><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis><computeroutput>IM500</computeroutput></emphasis> denotes successful failover completion.
+ If the ODBC call generated no other errors, the call returns <computeroutput>SQL_SUCCESS_WITH_INFO</computeroutput> with <computeroutput>SQLSTATE IM500</computeroutput> and is accompanied by the informational message &quot;<computeroutput>Failover completed</computeroutput>&quot;.
+ As usual, the SQLSTATE and diagnostic message can be retrieved using <computeroutput>SQLGetDiagRec()</computeroutput>.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis><computeroutput>IM501</computeroutput></emphasis> (&quot;<computeroutput>Failover aborted</computeroutput>&quot;) indicates failover was unsuccessful.
+ A function returning this SQLSTATE returns with return code <computeroutput>SQL_ERROR</computeroutput>.</listitem>
+</itemizedlist><para>If the ODBC call returning the failover SQLSTATE fails for some reason, a diagnostic record holding the failover SQLSTATE and message is appended to any diagnostic records already generated by the failing call.
+ In this case, even if failover was successful, a <computeroutput>SQLSTATE IM500</computeroutput> may be accompanied by a function return code of <computeroutput>SQL_ERROR</computeroutput>.
+ For instance, if a transaction was open at the time failover took place, <computeroutput>SQLExecute()</computeroutput> may return <computeroutput>SQL_ERROR</computeroutput> with two diagnostic records, for example:</para><itemizedlist mark="bullet" spacing="compact"><listitem> DiagRec #1 ? <programlisting>Native error: 25402 
+SQLSTATE: HY000 
+Message: [OpenLink][ODBC][Oracle Server]ORA-25402: transaction must roll back
+</programlisting></listitem>
+<listitem> DiagRec #2 ? <programlisting>Native error: 0 
+SQLSTATE: IM500 
+Message: [OpenLink][ODBC][Oracle Server]Failover completed.
+</programlisting></listitem>
+</itemizedlist><para><emphasis><emphasis>Note:</emphasis> Failover notification using TAF-specific SQLSTATEs cannot be used independently of failover call-backs.
+ The use of these SQLSTATEs is only triggered when an application registers a failover call-back.</emphasis></para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related Links </bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem> <ulink url="http://www.oracle.com/index.html|Oracle">http://www.oracle.com/index.html|Oracle</ulink> </listitem>
+<listitem> <ulink url="http://www.oracle.com/technology/products/ias/hi_av/904ha.pdf">TAF in Oracle 10g</ulink> </listitem>
+<listitem> <ulink url="http://www.oracle.com/technology/tech/oci/htdocs/oci_faq.html">OCI FAQs (including TAF)</ulink></listitem>
+</itemizedlist><para> </para></section></docbook>

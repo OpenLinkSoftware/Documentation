@@ -1,0 +1,72 @@
+%META:TOPICPARENT{name="ErrorMessagesN"}%
+==Error Messages (N)==
+
+[[UDAErrorMessages|A]] [[ErrorMessagesB|B]] [[ErrorMessagesC|C]] [[ErrorMessagesD|D]] [[ErrorMessagesE|E]] [[ErrorMessagesF|F]] [[ErrorMessagesG|G]] [[ErrorMessagesH|H]] [[ErrorMessagesI|I]] [[ErrorMessagesJ|J]] [[ErrorMessagesK|K]] [[ErrorMessagesL|L]] [[ErrorMessagesM|M]] [[ErrorMessagesN|N]] [[ErrorMessagesO|O]] [[ErrorMessagesP|P]] [[ErrorMessagesQ|Q]] [[ErrorMessagesR|R]] [[ErrorMessagesS|S]] [[ErrorMessagesT|T]] [[ErrorMessagesU|U]] [[ErrorMessagesV|V]] [[ErrorMessagesW|W]] [[ErrorMessagesX|X]] [[ErrorMessagesY|Y]] [[ErrorMessagesZ|Z]] [[ErrorMessagesSymbols|#]]
+
+   
+===Non SELECT in r/o connection===
+
+The "Non SELECT in r/o connection" error message suggest that you have read-only permissions on the table against which you are trying to query. Review this possibility. Additionally, your <nop>OpenLink Session Rules Book may be enforcing READONLY connections. The following instructions will help you to verify or dismiss this fact:
+
+1. Use a text editor to open the oplrqb.ini file which you find in the /bin sub-directory of your <nop>OpenLink server components installation.
+
+2. Scroll down to [Domain Aliases].
+
+3. Locate the domain, which you pass in the Domain or <nop>ServerType field of your client's DSN. For example:
+
+{{{
+Informix 7 = inf7
+}}}
+
+4. Scroll down to [Mapping Rules].
+
+5. Locate your domain alias abbreviation. For example:
+
+{{{
+inf7:*:*:*:*:*:* = accept generic_inf7
+}}}
+
+6. Find the [generic_xxxx] section which is associated with your alias. For example:
+
+{{{
+[generic_inf72]
+Description = Default settings for Informix 7.2 agent
+Program = inf72_sv
+Environment = INFORMIX72
+OpsysLogin = Yes
+ReUse = never
+;CommandLine =
+;ConnectOptions =
+;Directory = /tmp
+;Database =
+;Userid =
+;Password =
+ReadOnly = Yes
+}}}
+
+7. Insure that <nop>ReadOnly is set to No. For example:
+
+{{{
+ReadOnly = No
+}}}
+
+9. If you make changes, restart or reinitialize your <nop>OpenLink Request Broker.
+
+Finally, one build of <nop>OpenLink's 3.2 software (3.20.09.14) contains a bug. These 3.2 clients issue a <nop>SQLSetConnectOption ODBC API call, which sets the SQL_ACCESS_MODE to 1. This enforces a read-only connection. Below, you will see a sample ODBC API call associated with this problem:
+
+{{{
+ENTER SQLSetConnectOption
+HDBC 091D14D8
+UWORD 101 <SQL_ACCESS_MODE>
+SQLLEN 1
+}}}
+
+If your 3.2 software contains this bug, you will need to upgrade your software. (The fix was introduced in <nop>OpenLink 4.0.) If you are uncertain about the presence of a bug, forward a trace and your client driver version to <nop>OpenLink Product Support.
+
+    
+===Evidence===
+
+Session Rules Book
+Request Broker Log 
+Database Agent Version String 
+    

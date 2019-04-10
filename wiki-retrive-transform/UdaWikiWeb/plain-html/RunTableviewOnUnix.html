@@ -1,0 +1,198 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ConfigureProgressTableview"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ConfigureProgressTableview"}%--><p>The <nop></nop>OpenLink Data Access Drivers for Progress (SQL-89 Engine) support Distributed Databases, Database Triggers, and Array Fields through a custom &quot;Data Dictionary File&quot;.
+ This file is created by running the <nop></nop>OpenLink-provided Progress Program File <tt>setup.p</tt>, found in the <tt>~/openlink/bin/</tt> or <tt>~/openlink/scripts/Progress/</tt> directory.</p><blockquote><i>Note: The Progress SQL-92 Engine, available in Progress 9.1 and later, does not support tableview functionality.
+ Thus, <nop></nop>OpenLink Data Access Drivers built for this Engine cannot support these features.
+ The SQL-89 Engine remains a default element of all Progress 9.x installations, and appears as of this writing to be present in Progress 10.x, although Progress has announced its deprecation.
+ <nop></nop>OpenLink Software will continue to build and provide Drivers for the SQL-89 Engine, supporting these features and functions, as long as possible.</i></blockquote>
+<p>Once the script has been run, modify the <nop></nop>OpenLink Rulebook, <tt>oplrqb.ini</tt>, following the guidelines displayed when the <tt>setup.p</tt> program completes.</p><p>After installing an <nop></nop>OpenLink Driver for Progress, you will find the following files in the <tt>~/openlink/bin/</tt> or <tt>~/openlink/scripts/Progress/</tt> directory: <br><br></p><pre>setup.p
+setup.i
+oplrvc1.p
+oplrvc2.p
+</pre><b><tt>setup.p</tt></b> is a Progress script program.
+ When the program runs it will ask you what databases you wish to connect to.
+ Based on your responses, it will generate a catalog of all the databases and tables found within, which will be stored in a tableview file (<tt>.dat</tt>), and an associated parameter file (<tt>.pf</tt>).
+<p>Use of these files will allow you to connect to multiple databases, see all tables in all databases through <tt>SQLTables()</tt>, and use array fields through ODBC.</p><h3><a name="Prerequisites"></a> Prerequisites </h3>
+<ol><li> Most importantly, you must have a <b>4GL Development System license</b> to run this script.
+ Client Networking alone is not sufficient.
+ This script does not need to be run on the client host which will use the resulting tableview files, however -- the script may be run on any host which has the licensed 4GL Development System, and the same versions of the Client Networking libraries as will be used on the ODBC client host(s).
+<br></li>
+<li> Before running this program, <b>all the databases you wish to include must be accessible</b> -- that their database servers are running -- because the program will need to connect to them.
+<br></li>
+<li> Make sure that your <b><tt>$DLC</tt> environment variable is set correctly to point to your Progress DLC directory</b>.
+<br><br><pre><br>DLC=/dbs/dlc7.3E
+export DLC
+</pre><br></li>
+<li> The <b><tt>PROPATH</tt> environment variable may need to include the current working directory and the directory containing the <tt>setup.p</tt> utility files</b>.</li>
+</ol><h3><a name="Steps"></a> Steps </h3>
+<ol><li> Navigate to the directory holding your <tt>setup.p</tt> file (<tt>~/openlink/bin/</tt> or <tt>~/openlink/scripts/Progress/</tt>), and execute this command -- <br><br><pre><br>$DLC/bin/pro -p setup.p
+</pre><br><blockquote><i>Note: This may vary between versions.
+ In Progress 6, <tt>pro</tt> is in <tt>$DLC</tt>, not <tt>$DLC/bin</tt>.
+ </i></blockquote> <br></li>
+<li> You should see the following screen: <br><br><pre><br>       @@@@@@   @@@@@@   @@@@@@@   @@@@@   @@@@@@   @@@@@@@   @@@@@    @@@@@
+       @     @  @     @  @     @  @     @  @     @  @        @     @  @     @
+      @     @  @     @  @     @  @        @     @  @        @        @
+     @@@@@@   @@@@@@   @     @  @  @@@@  @@@@@@   @@@@@     @@@@@    @@@@@
+    @        @   @    @     @  @     @  @   @    @              @        @
+   @        @    @   @     @  @     @  @    @   @        @     @  @     @
+  @        @     @  @@@@@@@   @@@@@   @     @  @@@@@@@   @@@@@    @@@@@
+
+                           Progress Software Corporation
+                                    14 Oak Park
+                            Bedford, Massachusetts 01730
+                                    617-280-4000
+
+       PROGRESS is a registered trademark of Progress Software Corporation
+      Copyright 1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995
+                        by Progress Software Corporation
+                             All Rights Reserved
+
+PROGRESS Version 7.3C as of Thu Jun 29 15:05:14 EDT 1995
+</pre><br></li>
+<li> Press any key, to get to the next screen: <br><br><pre><br>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 ______________________________ ________________________________________ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+
+
+Enter data or press PF4 to end.
+</pre><br></li>
+<li> At this point, you will need to give the program information to contact the databases you want to include here.
+ First, type the full path to your Progress database.
+ For instance: <br><br><pre><br>/users/progress/dbs/pro7test
+</pre><br><blockquote><i>Note: To make use of Progress Database Triggers, the Logical Database name to which the Triggers have been compiled must match the value that you provide for the <tt>-ld</tt> parameter when setting your Progress Database Connect options through <tt>setup.p</tt>.
+ </i> <br><br><br><i><b>Example:</b></i> <br><br><br><i>If the triggers have been compiled against a database physically identified as <tt>/usr/progress/demo.db</tt>, and logically identified as <tt>mydemo</tt>, your <tt>setup.p</tt> Database Connection String should be: </i> <br><br><pre><br>/usr/progress/demo -ld mydemo
+</pre><br></blockquote> <br></li>
+<li> Hit enter, to shift to the next field.
+<br></li>
+<li> If your database is running in sockets (recommended), type the -SNH parameters.
+ For example: <br><br><pre><br>-S pro82a -N tcp -H myserver
+</pre><br></li>
+<li> When you are done, hit Enter.
+<br><br><pre><br>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+
+
+Enter data or press PF4 to end.
+</pre><br></li>
+<li> After entering the line of information, press return.
+ There will be a brief pause while the program checks that the database server is running and can be contacted.
+ Once verified, <tt>OK</tt> will appear at the end of the line.
+<br><br><pre><br>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ OK|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+
+
+Enter data or press PF4 to end.
+</pre><br></li>
+<li> The cursor will move to the next line.
+ Repeat the above procedure for each database.
+<br></li>
+<li> Press <tt>PF4</tt> when finished.
+ You will then need to supply the name for the <tt>.dat</tt> and <tt>.pf</tt> files.
+ The default is simply <tt>tableview</tt>, but you can choose a more meaningful name if you prefer.
+ If given the option to select a location for the files, pass the full path to your <tt>~/openlink/bin/</tt> directory.
+<br><br><pre><br>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ OK|
+| 2 ______________________________ ________________________________________ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+Basename for .pf and .dat files_____________________ 
+
+Enter data or press PF4 to end.
+</pre><br></li>
+<li> After a brief period the program will finish: <br><br><pre><br>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ OK|
+| 2 ______________________________ ________________________________________ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+Creating .pf file to use
+Creating .dat file with table information 
+
+Procedure Complete. Press space bar to continue.
+</pre><br></li>
+</ol></div></body></html>

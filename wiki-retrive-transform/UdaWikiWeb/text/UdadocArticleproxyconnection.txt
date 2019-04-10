@@ -1,0 +1,121 @@
+
+= doc.Article.proxyconnection
+
+%TOC%
+
+   
+This document gives a short description of the [[OpenLink]]  Proxy Agent, a specialized Agent that allows [[OpenLink]]  connections over non-routing firewalls. 
+
+Like other Proxy services, the client connects to the Proxy Agent instead of to the actual service; the Proxy Agent then connects to the real service which presumably lies on a machine that shouldn't normally be accessible from outside the network. With this setup, it is possible to grant selective anonymous access to databases that are otherwise not accessible from the Internet; this greatly enhances the functionality of access-methods such as JDBC. 
+
+The biggest challenge in using this tool is to configure two rule-books, one on the destination and one on the firewall, to act in concert. It is therefore highly recommended to review the Rule-book documentation before proceeding with this document. 
+
+It is assumed on this document that the Proxy Agent setup runs on a secured firewall and anonymous access from the Internet must be granted to a database called `PARTS', residing on the main Oracle server. Other setups should be easily obtainable starting from this example. This example also assumes a Unix-based firewall; other platforms will vary predictably on file-name and directory conventions. 
+
+We assume a working installation on the database server, so the only thing that must be added is the installation on the firewall. On the firewall, the following is needed: 
+
+*A Request Broker; the executable oplrqb under Unix, other platforms having various extensions, e.g. oplrqb.exe.  
+*The Proxy Agent; executable rpc_sv under Unix, having various extensions on other platforms, such as rpc_sv.exe.  
+*A Rule-book, the file oplrqb.ini.  
+These components can be installed in any directory, as long as they can find each other via the Rule-Book. The standard path in our documentation is /usr/openlink/bin for these components, so we'll assume this path in the following sections. 
+
+The most important thing is what to enter in the Rule-book on the firewall. Before starting here, however, check that the anonymous access account is available (we'll use the Oracle well-known account scott with the password tiger here). It is also important to decide, in the case of anonymous access, whether the account will be password-protected and where the password will be stored. The options are: 
+
+*No password, just the account will do;  
+*Store the password in the database server's Rule-book;  
+*Store the password in the firewall's Rule-book;  
+*Give the password to the anonymous users.  
+For anonymous access, not all of these make sense, but for other cases this overview may be useful. We'll assume storage of the account information on the firewall, because this is often the safest place on the network. 
+
+We need an entry in the Rule-book on the firewall that makes a connection to a machine called dbserver, with an Oracle 7 database called PARTS, with the account scott, password tiger. The rule-book part that specifies this is: 
+
+
+|  Host |  = dbserver  |  Database |  = PARTS  |
+ |  [[ServerType]]  |  = Oracle 7  |
+ |  [[UserID]]  |  = scott  |
+ |  Password |  = tiger  |
+ |  [[ReadOnly]]  |  = Yes  |
+  
+This specifies how the Proxy Agent must connect to the inside database. However, we also need to specify how users must connect to the Proxy Agent. This is done in the standard Rule-book way, with the small exception that we add a domain alias for clarity: 
+
+
+ |  rpc |  = rpc  |
+  
+
+ |  rpc:anonparts:*:*:*:*:* |  = accept proxy_parts  |
+  
+
+ |  Program |  proxy_sv  |
+ |  Reuse |  always  |
+  
+Summarizing: if somebody connects to the database anonparts, database type rpc, then the Proxy Agent proxy_sv will be started. The Proxy Agent will immediately make a connection to the PARTS database if we specify the connection information in the [proxy_parts] section, so the final Rule-book entry for proxy_parts looks like: 
+
+
+|  Program |  proxy_sv  |  Reuse |  always  |
+ |  Host |  = dbserver  |
+ |  Database |  = PARTS  |
+ |  [[ServerType]]  |  = Oracle 7  |
+ |  [[UserID]]  |  = scott  |
+ |  Password |  = tiger  |
+ |  [[ReadOnly]]  |  = Yes  |
+  
+Clients can now connect to SVT=rpc;DATABASE=anonparts and will be indirectly connected to the Oracle database. Note that all traffic at all times flows through the Proxy Agent: no direct networking routes between client and server are necessary. (The server type rpc is not part of our default client distributions. One may either choose to add the server type to the list of known server types on the client, which normally is as simple as adding a line to a text file, or choose to use an existing server type such as "Oracle 7". However, this leaks some information to the outside which may not be allowed in all environments.) 
+
+As always, the Rule-book overrides incoming information, which makes it extremely important in the case of anonymous access to specify all security-relevant data in the Rule-book. If you omitted the Database tag, users could connect to every Oracle 7 database with a scott/tiger entry and so on. Therefore it is extremely important to make these entries as complete as possible. The complete list of entries that can be used here to override call information is: 
+
+
+|  [[ServerOptions]]   |  Database  |
+ |  [[ConnectOptions]]   |
+ |  [[UserId]]   |
+ |  Password  |
+ |  Host  |
+ |  [[ServerType]]   |
+ |  [[ReadOnly]]   |
+  
+Note that Host can be regarded as mandatory here. If this is left out, the Proxy Agent will try to connect to a null-host specification, which will lead to unexpected behavior. This also means that a Proxy Agent entry in the Rule-book is always hardwired to a certain host. We feel that this is a good security measure. Of course, you are free to define as many Proxy Agent entries as you have hosts running [[OpenLink]]  services. 
+
+Apart from the above example, there are lot of other uses for the Proxy Agent. First, if the username and password are left out from the rule-book, full authorization information must be passed from the client for a connection to succeed. In this way, one can allow employees to access some data from their home locations. The example below combines both types of access: 
+
+
+ |  rpc:anonparts:*:*:*:*:* |  rpc:emporders:*:*:*:*:*  |
+ |  = accept proxy_parts |  = accept proxy_orders  |
+  
+
+ |  Program |  proxy_sv  |
+ |  Reuse |  always  |
+ |  Host |  = dbserver  |
+ |  Database |  = PARTS  |
+ |  [[ServerType]]  |  = Oracle 9  |
+ |  [[UserID]]  |  = scott  |
+ |  Password |  = tiger  |
+ |  [[ReadOnly]]  |  = Yes  |
+  
+
+ |  Program |  proxy_sv  |
+ |  Reuse |  always  |
+ |  Host |  = dbserver  |
+ |  Database |  = ORDERS  |
+ |  [[ServerType]]  |  = Oracle 9  |
+ |  [[ReadOnly]]  |  = Yes  |
+  
+Better security can be obtained in this case by restricting the machines which are allowed to connect to proxy_orders: 
+
+
+ |  ^employee1.isp.net$ |  = athome  |
+ |  ^employee2.isp.net$ |  = athome  |
+ |  ^employee3.home.org$ |  = athome  |
+  
+
+ |  rpc:anonparts:*:*:*:*:* |  = accept proxy_parts  |
+ |  rpc:emporders:*:*:athome:*:* |  = accept proxy_orders  |
+ |  rpc:emporders:*:*:*:*:* |  = reject You don't have access to this database  |
+  
+With help of the [Machine Aliases] section especially, it is possible to specify a rich set of firewalling rules in order to determine who gets access to which database instances. Anonymous access can be filtered-out entirely, or redirected to a specific user/password combination internally, as well. 
+
+Remember that the left-hand-side of Alias Rules are always regular expressions in the POSIX regexp format. If you want to match complete names, you need to explicitly include the start and end of lines with the caret and dollar tokens. Normally you can leave them out but when dealing with security applications it is important to make the regular expression match as specific as possible. Think about what could happen if you wrote just employee1.isp.net in the example above and somebody came in from the machine employee1.isp.net.hackers.org - they would get access! 
+
+The [[OpenLink]]  Proxy Agent gives you the possibility to cater for a lot of cases where database access is normally not possible or not possible in a secure way. The rich syntax of the Rule-book gives fine control over access, but also has the risk of leaving security holes. Therefore, it is important to check the implications of every change in the Rule Book and keep in mind that regular expressions may match more than what they appear to match on first sight. With this in mind, we think that the [[OpenLink]]  Proxy Agent is a very useful addition to the set of proxy servers normally running on a firewall. 
+
+
+----
+  

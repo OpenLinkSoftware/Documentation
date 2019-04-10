@@ -1,0 +1,133 @@
+%META:TOPICPARENT{name="CodeSamples"}%
+
+{{{
+<?vsp 
+  declare _name, _email, _title, _area, _pwd, _cpwd, _platform, _lang, _sub, _res varchar; 
+  _res := get_keyword('res', params, ''); 
+  _sub := get_keyword('sub', params, ''); 
+  if (_res <> '') 
+    _name := _email := _title := _area := _platform := _lang := ''; 
+  else 
+  { 
+    _name := trim(get_keyword('name', params, '')); 
+    _email := trim(get_keyword('email', params, '')); 
+    _title := get_keyword('title', params, ''); 
+    _area := get_keyword('area', params, ''); 
+    _pwd := get_keyword('pwd', params, ''); 
+    _cpwd := get_keyword('cpwd', params, ''); 
+    _platform := get_keyword('platform', params, ''); 
+    _lang := get_keyword('lang', params, ''); 
+  } 
+?><html> 
+
+<head> 
+<style> 
+      .message {font-family:Times New Roman; font-size:9pt; color:#800000; text-align:center} 
+</style> 
+<title>The OpenLink Developer</title> 
+</head> 
+
+<body bgcolor="#ffffff"> 
+<form METHOD="POST" action="devregister.vsp"> 
+<table border="0" width="73%" cellpadding="5"> 
+  <tr> 
+    <td width="100%" colspan="2" height="66"><font face="Verdana" size="2">The 
+      OpenLink <b><font color="#808000">Developer's Tools &amp; Demos</font></b> 
+      pages is designed for <font color="#000000">Virtuoso</font><font color="#808000"><b> 
+      solutions developers</b></font>. Join today to receive personalized 
+      instruction and other resources which will enable you to accomplish all of 
+      your Virtuoso development goals.</font></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Name: 
+      </font></td> 
+    <td width="66%"><input type="text" name="name" size="20" value="<?=_name?>"></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Email:</font></td> 
+    <td width="66%"><input type="text" name="email" size="20" value="<?=_email?>"></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Jobtitle:</font></td> 
+    <td width="66%"><select size="1" name="title"><?vsp for(select JobTitle from opie.opie.JobTitle where JobTitle <> 'Other' order by JobTitle) do { ?> 
+  <OPTION <?=select_if(_title, JobTitle)?>><?=JobTitle?></OPTION> <?vsp } ?> 
+  <OPTION <?=select_if(_title, 'Other')?>>Other</OPTION> 
+      </select></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Development 
+      Arena:</font></td> 
+    <td width="66%"><select size="1" name="area"><?vsp for(select DevArena from opie.opie.DevArena order by DevArena) do { ?> 
+  <OPTION <?=select_if(_area, DevArena)?>><?=DevArena?></OPTION> <?vsp } ?> 
+      </select></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Platform:</font></td> 
+    <td width="66%"><select size="1" name="platform"><?vsp for(select Platform from opie.opie.Platforms order by Platform) do { ?> 
+  <OPTION <?=select_if(_platform, Platform)?>><?=Platform?></OPTION> <?vsp } ?> 
+      </select></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Languages:</font></td> 
+    <td width="66%"><select size="1" name="lang"><?vsp for(select ScriptLang from opie.opie.ScriptLang where "ScriptLang" <> 'Other' order by ScriptLang) do { ?> 
+  <OPTION <?=select_if(_lang, ScriptLang)?>><?=ScriptLang?></OPTION> <?vsp } ?> 
+          <OPTION <?=select_if(_lang, 'Other')?>>Other</OPTION> 
+      </select></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Password:</font></td> 
+    <td width="66%"><input type="password" name="pwd" size="20"></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"><font face="Verdana" size="2" color="#31639C">Confirm 
+      Password:</font></td> 
+    <td width="66%"><input type="password" name="cpwd" size="20"></td> 
+  </tr> 
+  <tr> 
+    <td width="34%"></td> 
+    <td width="66%"><input type="submit" value="Submit" name="sub"><input type="reset" value="Reset" name="res"></td> 
+  </tr> 
+</table> 
+</form> 
+<?vsp 
+  if (_sub <> '') 
+  { 
+?> 
+    <hr> 
+<?vsp 
+    declare _message varchar; 
+    _message := '<table><tr><td class="message">%s</td></tr></table>'; 
+    if (_name = '' or _email = '' or _title = '' or _area = '' or _pwd = '' or _cpwd = '' or _platform = '' or _lang = '') 
+    { 
+      http(sprintf(_message, 'You have not entered all the necessary fields.')); 
+    } 
+    else if(_pwd <> _cpwd) 
+    { 
+      http(sprintf(_message, 'Passwords do not match!')); 
+    } 
+    else if (exists(select 1 from opie.opie.DevReg where Email = _email)) 
+    { 
+      http(sprintf(_message, 'This E-Mail has already been registered.')); 
+    } 
+    else 
+    { 
+      insert into opie.opie.DevReg (Name, Email, JobTitle, DevArea, Platform, ScriptLang, Passwd) 
+              values (_name, _email, _title, _area, _platform, _lang, _pwd); 
+      http(sprintf(_message, 'You have been registered.<br />In a few moments you will be entering the Developer\'s Page.')); 
+      declare _uid integer; 
+      _uid := (select DID from opie.opie.DevReg where Email = _email); 
+?> 
+    <SCRIPT language="javascript"> 
+    function jumpTo() 
+    { 
+      document.location = 'developerpage.vsp?uid=' + <?=_uid?>; 
+    } 
+    window.setTimeout('jumpTo()', 9000); 
+    </SCRIPT> 
+<?vsp 
+    } 
+  } 
+?> 
+</body> 
+</html> 
+}}}

@@ -1,0 +1,45 @@
+<docbook><section><title>OperationNotSupportedOnSocketsInternalRPCCallFailed</title><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Error Messages (O)</bridgehead>
+<para><ulink url="UDAErrorMessages">A</ulink> <ulink url="ErrorMessagesB">B</ulink> <ulink url="ErrorMessagesC">C</ulink> <ulink url="ErrorMessagesD">D</ulink> <ulink url="ErrorMessagesE">E</ulink> <ulink url="ErrorMessagesF">F</ulink> <ulink url="ErrorMessagesG">G</ulink> <ulink url="ErrorMessagesH">H</ulink> <ulink url="ErrorMessagesI">I</ulink> <ulink url="ErrorMessagesJ">J</ulink> <ulink url="ErrorMessagesK">K</ulink> <ulink url="ErrorMessagesL">L</ulink> <ulink url="ErrorMessagesM">M</ulink> <ulink url="ErrorMessagesN">N</ulink> <ulink url="ErrorMessagesO">O</ulink> <ulink url="ErrorMessagesP">P</ulink> <ulink url="ErrorMessagesQ">Q</ulink> <ulink url="ErrorMessagesR">R</ulink> <ulink url="ErrorMessagesS">S</ulink> <ulink url="ErrorMessagesT">T</ulink> <ulink url="ErrorMessagesU">U</ulink> <ulink url="ErrorMessagesV">V</ulink> <ulink url="ErrorMessagesW">W</ulink> <ulink url="ErrorMessagesX">X</ulink> <ulink url="ErrorMessagesY">Y</ulink> <ulink url="ErrorMessagesZ">Z</ulink> <ulink url="ErrorMessagesSymbols">#</ulink></para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Operation Not Supported on Sockets (Internal RPC Call Failed)</bridgehead>
+<para><emphasis>Error Synopsis</emphasis></para><para>Operation Not Supported on Sockets Internal RPC Call Failed</para><para>Some customers with large User licenses, 100+ database agent connections, have been experiencing problems where any connection after a certain amount of time, is rejected and no connection is allowed to the database.
+ This fails when trying to achieve a Server Handle.
+ The most common machine I have seen this error occur on is SCO and the most common database is Progress.</para><para><emphasis>Cause</emphasis></para><para>NB.
+ By all means, the list of causes below is not extensive and if any other possible causes are known, please inform me.</para><para>When the database agent makes a successful connection, it opens up a certain amount of file descriptors on the Operating System.
+ The most common are:</para><para>stdin stdout stderr</para><para>It also opens database file descriptors.
+ Consequently, depending on the database involved, as many as 10 file descriptors can be open at one time and in some cases, even more.
+ An example is Progress, which opens up, files to the database .bi and .lg files and the .db file itself plus two other files for the sockets etc.</para><para>If the machine has not been configured to cope with a large amount of file descriptors, this will cause an overload and no more file descriptors can be open.
+ This results in the agent not been able to connect.</para><para>The limit can be reached in one of two ways.
+ This is because File descriptors can either be a System Wide or User limit.
+ The worst proponent of this is Progress.</para><para>When Progress makes a connection, it derives the owner of the process as the user that started the database.
+ This is because it does not require a database user to make a connection.
+ Consequently, it cannot associate the process with different users other than the user who starts the broker.</para><para>The outcome of this is obvious.
+ If the machine has been set a User limit of 110 which is the default value and if the broker makes more than 100 connections, that&#39;s 10 files * 100 agents which works out at 1000 file descriptors.
+ This will have exceeded the limit and as a result, cause the problem the user experiences.</para><para><emphasis>Solution</emphasis></para><para>A few possible solutions are</para><para>1.
+ Increase the MaxFiles, Nofiles and Maxproc values within the Kernel.
+ In the case of other Unix machines, you will need to determine the corresponding values if they differ.
+ These values were based on the SCO Kernel.
+ I have used a ratio of 1:10 when determining the values for those settings.
+ In some cases, for instance MaxProc has a setting of 0, which allows the value to be determined dynamically.
+ In the case of the customer who had 320-database connections, I have increased the value of NoFiles and MaxFiles to be 3200.<para>To check the user limit, change your OS shell to ksh and run ulimit -a.
+ This will list the value of NoFiles.</para><para>2.
+ In the case of Progress, it is best to advise the customer not to use root as the user when starting the broker, as this user would undoubtedly have opened up other files as part of its normal operations.
+ Consequently, create an openlink user account to handle the start of the broker.
+ This will limit the amount of files been open by the root user.</para><para>3.
+ A possible cause is also the amount of Sockets connections the OS can create.
+ To increase Sockets size, increase the TCP &amp; UDP portion of the Network Card.
+ By default this is 512 but it&#39;s advisable to increase this to 1024.
+ For large loads, the maximum is 2048.
+ Again this is done in the Kernel.
+ ./configure and netconfig are the commands you will need to change values in the kernel if you are not using X Windows.</para><para>To use ./configure, cd to /etc/conf/cf.d and run the command ./configure.</para><para>Network parameters can be set from the but if you wish to run it individually, run netconfig from the shell.</para><para>4.
+ Another keen ally is the Reuse Rule.
+ By reusing, the agent will not need to open a new batch of files for every connection as the agent will be shared and will already have had the files open.<para>To use ReUse, there are two factors that need to be taken into consideration.
+ Firstlt, it is important that all consultants understand how to create custom rules.
+ As various applications will be used, the consultant will need, with the help of the user, to understand the way applications are used so that appropriate aliases can be set up that will redirect to specific Mapping Rules.
+ Within these rules, the agent will have the option of Reusing or not as the case may be.
+ With the advent of Version 4.0, users can now run multiple brokers on their Servers.
+ As a result, the broker can be started with different users and these brokers can be delegated different tasks as opposed to one broker handling all the incoming connections.</para><para>The second consideration is performance, which can always be a factor when sharing databases agent.
+ In the case of Progress, it is not multi-threaded and so a queue effect will come into effect when the agents are shared.</para><para>5.
+ Finally, it is also important to note what the database is doing at the point when the connection stops.
+ Please monitor the database as simple things such as Telnet sessions that directly access the database open files as well as database connections.
+ Each database uses its own utility to do this.
+ For Progress, I ran promon and checked on the activity.</para><para> Note: The list is not extensive so be aware of any other solutions that have not been mentioned.
+ It is a knowledge base article so please feel free to amend or add as appropriate.</para></para></para></section></docbook>

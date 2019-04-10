@@ -1,0 +1,41 @@
+=Manual Configuration of Single-Tier Lite Driver for Oracle=
+
+# Edit the {{{$OPENLINKINI}}} file, e.g., {{{/opt/openlink/bin/openlink.ini}}}, and make sure the environment section for the driver contains the right entries. It should look something like this:
+{{{
+[Environment Oracle 10.x]
+ORACLE_HOME            = /dbs/oracle10g/oracle/product/10.1.0/client_1
+;ORACLE_SERVER          = T
+;TWO_TASK               = P:
+;ODBC_CATALOGS          = Y                      ; Uncomment after loading odbccat10.sql
+;MULTIPLEX_LDA          = 5                      ; Allow 5 OpenLink clients on a single lda
+;OPL_USR_TBLS_FIRST     = Y                      ; Sort SQLTables starting with user tables
+SHOW_REMARKS           = N                      ; Retrieve SQLColumns REMARKS field
+CURSOR_SENSITIVITY     = LOW                    ; Set to HIGH after loading odbccat10.sql
+;OCI_PREFETCH_ROWS      = 100                    ; Number of rows to prefetch
+;OCI_PREFETCH_MEMORY    = 65535                  ; Amount of memory to use for prefetching
+;NLS_LANG               = AMERICAN_AMERICA.UTF8  ; Set to codepage required by client application
+ORACLE_SID             = ORCL
+}}}          
+These environment variable values are database specific and are described in detail later in this section.
+# Edit the {{{$ODBCINI}}} file, e.g., {{{/opt/openlink/bin/odbc.ini}}}, and adjust the settings of the sample DSN that is found there:
+{{{
+[ora100_lite]
+Driver          = /opt/openlink/lib/ora100_mt_lt.so
+ServerType      = Oracle 10.x
+Username        =
+Password        =
+Database        =
+Options         =
+FetchBufferSize = 99
+ReadOnly        = no
+DeferLongFetch  = no
+JetFix          = no
+Description     = Sample Oracle 10.x Lite Connection
+}}}
+All modifications except the Driver value will be saved when reinstalling this or any other Lite Driver.
+# For most Lite drivers the {{{LD_LIBRARY_PATH}}} (or {{{SHLIB_PATH}}} or {{{LIBPATH}}}) environment variables must be set before you can load the driver. You will not find these in the {{{$OPENLINKINI}}} file, as the settings there are set by the driver after it has loaded.
+#* If the installer finds relevant environment variables, e.g., {{{ORACLE_HOME}}}, it will note the appropriate {{{LD_LIBRARY_PATH}}} settings, and add them automatically to the {{{openlink.sh}}} script. This file should always be run before trying to use the Lite Drivers, e.g.:
+{{{
+. ./openlink.sh
+}}}          
+#* If this script is not properly executed, the system library loader will give an error message stating it cannot find some dependent shared libraries to load.

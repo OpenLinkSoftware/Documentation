@@ -1,0 +1,38 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ErrorMessagesC"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ErrorMessagesC"}%--><p> <br></p><h1><a name="Error Message:"></a> Error Message: <tt>Cannot support multiple connections over shared memory (-27000)</tt> </h1>
+<p>This message occurs when a single instance of a multi-threaded Multi-Tier Database Agent for Informix (e.g., <tt>inf9_mv</tt>) is making multiple connections to a target <tt>$INFORMIXSERVER</tt> which is configured to accept shared memory connections.</p><p>Multiple database connections from a single Agent instance to a single <tt>$INFORMIXSERVER</tt> will succeed only if Informix is configured to accept sockets-based connections.</p><p>There are a few solutions to this error message.
+ In order of preference for optimal performance and resource conservation --</p><ol><li> Reconfigure Informix to accept sockets-based connections, and adjust the Rulebook configuration to match.
+ This may require configuring an alias for the <tt>$INFORMIXSERVER</tt>.
+ If done properly, this will cause no disruption to any other connections being made via shared memory.<br> <br></li>
+<li> Adjust the Rulebook&#39;s <strong><tt>reuse</tt></strong> rule(s) for the multi-threaded Database Agent(s) to specify <strong><tt>never</tt></strong> (so only one connection to Informix will ever be made by a single Agent instance).
+ For example -- <br><br><pre><br>[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program     = inf9_mv
+Environment = INFORMIX2000
+OpsysLogin  = No
+ReUse       = never
+;CommandLine 	=
+;ConnectOptions =
+;Directory 	= /tmp
+;Database 	=
+;Userid		=
+;Password 	=
+;ReadOnly	= Yes
+</pre><br></li>
+<li> Adjust the Rulebook to specify the <strong>single-threaded Database Agent(s)</strong> instead of the multi-threaded.
+ This requires that the <strong><tt>inf##_sv</tt></strong> corresponding to the currently configured <tt>inf##_mv</tt> executable also be present in the <tt>.../openlink/bin/</tt> directory.
+ Any <strong><tt>reuse</tt></strong> rules must <strong>also</strong> be adjusted to specify <strong><tt>never</tt></strong>, so this option is more work than option #2, above.
+ For example -- <br><br><pre><br>[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program     = inf9_sv
+Environment = INFORMIX2000
+OpsysLogin  = No
+ReUse       = never
+;CommandLine 	=
+;ConnectOptions =
+;Directory 	= /tmp
+;Database 	=
+;Userid		=
+;Password 	=
+;ReadOnly	= Yes
+</pre><br></li>
+</ol></div></body></html>

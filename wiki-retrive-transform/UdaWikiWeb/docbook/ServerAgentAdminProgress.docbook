@@ -1,0 +1,46 @@
+<docbook><section><title>ServerAgentAdminProgress</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">Server Agent Administration</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Progress </bridgehead>
+<para>When configuring a Progress database agent the critical configuration items are:</para><itemizedlist mark="bullet" spacing="compact"><listitem>  Database Identification - this is an actual database name e.g &quot;demo&quot; or &quot;isports&quot;, which identifies the actual Progress database file that you want to be connected with.
+ This is the value that you enter into the &quot;Database Name&quot; field of either your Admin Assistant form or wizard dialog.
+ If you choose to have database identification take at the client rather than server, you enter this value into the &quot;Database Name&quot; field or connection attribute when configuring your OpenLink client.</listitem>
+</itemizedlist><para>Progress provides a number of environment variables for configuring database clients, the basic set required for successfully connecting your database agent to an Progress database server are tabulated below:</para><para>Table: 1.
+ Default Rule Book settings
+</para><table><title /><tgroup><thead /><tbody>
+<row><entry><emphasis>Rule Book Section &amp; parameters</emphasis></entry><entry><emphasis>Default Rule Book Settings</emphasis></entry><entry><emphasis>Notes</emphasis></entry></row>
+<row><entry>[Environment PROGRESS8]</entry><entry /><entry /></row>
+<row><entry>DLC</entry><entry>/<para>dbs/dlc8</para></entry><entry>Must be full path to the Progress dlc directory.</entry></row>
+<row><entry>PROCFG</entry><entry>/<para>dbs/dlc8/progress.cfg</para></entry><entry>Must be the full path and filename to the progress.cfg file. This parameter is optional. Use it if the license file can not be found.</entry></row>
+<row><entry>TABLEVIEW</entry><entry /><entry><para>Must be the full path and filename to the table view file (tableview.dat). See detailed TABLEVIEW document for more information</para></entry></row>
+<row><entry>TABLEVIEW_QUALIFIER</entry><entry>Y</entry><entry><para>Add owner information to select statement</para></entry></row>
+<row><entry>DEADLOCK_TIMEOUT</entry><entry><para>60</para></entry><entry>Seconds to wait for lock to release.</entry></row>
+<row><entry>INSERT_LOGICAL</entry><entry>Y</entry><entry><para>Rewrite character TRUE/FALSE to logical</para></entry></row>
+<row><entry>UPDATE_LOGICAL</entry><entry>Y</entry><entry><para>Rewrite character TRUE/FALSE to logical</para></entry></row>
+<row><entry>SPACE_QUOTE_IDENTIFIER</entry><entry>Y 	</entry><entry><para>If the SPACE_QUOTE_IDENTIFIER keyword is unset, it defaults to true, i.e., a space is returned as the quote character. To make the driver return an empty string for the quote character, this keyword must be set to N. Most applications work properly with the default behavior (SPACE_QUOTE_IDENTIFIER  Y). </para><para>Known exceptions include some versions of Microsoft Visio, the Microsoft SQL Server DTS Wizard and Business Objects.</para></entry></row>
+<row><entry>MIN_FIELD_LEN</entry><entry /><entry><para>Minimum length for char field or expression.</para></entry></row>
+<row><entry>MAX_FIELD_LEN</entry><entry /><entry><para>Minimum length for char field or expression.</para></entry></row>
+</tbody></tgroup></table>
+<para>To connect to multiple databases through a single OpenLink client connection and/or to make use array type columns you must run the OpenLink provided &quot;setup.p&quot; utility.
+ Please refer to the setup.p document for detailed information on the use of this script.</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Configuring Progress Session Resources</bridgehead>
+<para>You can control default behavior and progress server session resource allocation by entering standard progress session parameters in the &quot;Server Options&quot; field within the Admin Assistant&#39;s database agent configuration wizard dialogs or forms.</para><para>The following values are set for you by default at installation time and displayed as depicted below within the &quot;Server Options&quot; fields of the Admin Assistant Forms and Wizard dialogs.</para><programlisting>-T /tmp -d mdy -TB 31 -TM 31 
+</programlisting><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Database Agent Specific Issues</bridgehead>
+<para>Progress database servers support sockets and shared memory based methods of Inter Process Communication (IPC), unfortunately the shared memory approach which is much faster than sockets and the preferred approach by many users bears a cost of version incompatibility.
+ This implies that your OpenLink database agents need to be an exact version match with your backend Progress database server in order to successfully initiate shared memory based database sessions (note: these agents are built using the Progress Embedded SQL package).</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Rebuilding Progress Database agents</bridgehead>
+<para>To get around the issue explained above OpenLink provides a relinkable library and script file that enables you to build an OpenLink database agent that has an exact match to the version of Progress that you have installed.
+ See the section below on Relinking Progress Agents for details.</para><para>If shared memory based IPC isn&#39;t an issue for you then start your Progress server with the -S, -N, and -H options indicating the use of a sockets based Progress database server.
+ This mode of operation is Progress version independent.</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Application Server &amp; 3-Tier Architecture Configuration</bridgehead>
+<para>There may be situations in which you are unable to install your OpenLink Request Broker and Database Agents on the same machine as the one hosting your Progress database server.
+ Irrespective of the reasons that lead you to this scenario, it is possible to configure your OpenLink database agents hosted on your Application Server machine such that they connect to a remote Progress database on your Database Server machine using Progress database specific networking (Progress Client Networking) as opposed to OpenLink&#39;s Database Independent Networking.
+ The end result being a 3-tier distributed OpenLink architecture in which the communication between OpenLink clients and database agents use OpenLink Database independent Networking, while the communication between the Progress database agent and the Progress database server uses Progress Client Networking.</para><para>Configuration Steps:</para><para>Assuming you have a Progress Database Server machine called &quot;mainserver2&quot; that has a sockets based Progress Server process running, you would enter the following (assuming a TCP/IP based network):</para><para>1.
+ Ensure that you have a usable connection to Progress using its native networking (Progress Client Networking) using the following remote database connection parameters:</para><programlisting>      -S mainserver2 -H mainserver -N tcp .
+</programlisting><para> 2.
+ Add the following values to the &quot;Connect Options&quot; field within the Admin Assistant Forms or Wizards used to configure your database agent in the Rulebook.
+ If you choose to set this value on the client simply enter the same value into to the &quot;Options&quot; attribute associated with the configuration of your OpenLink client (see OpenLink ODBC or JDBC or UDBC client configuration for more details):</para><programlisting>      -S mainserver2 -H mainserver -N tcp
+</programlisting><para> </para><programlisting>See Also:
+
+Progress Connection Trouble Shooting
+</programlisting><para> </para><programlisting>See Also:
+
+Application Server Architecture for various illustrations of distributed client-server architectures supported by </programlisting><para>OpenLink database agent
+ </para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Unicode Configuration</bridgehead>
+<para>See the <ulink url="UnicodeSection">Unicode section</ulink> for configuration details.
+</para></section></docbook>

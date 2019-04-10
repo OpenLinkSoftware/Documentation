@@ -1,0 +1,89 @@
+%META:TOPICPARENT{name="ErrorMessagesU"}%
+
+= Error Message: {{{Unable to contact the OpenLink License Manager}}} =
+
+Release 6.x (and Release 5.2 on some platforms) and newer drivers ship with the separate <nop>OpenLink License Manager, {{{oplmgr}}}. 
+
+%TOC%
+
+== General Guidance, for Windows, Linux, and other Unix-like OS (except Mac OS X) ==
+
+If you receive the above error message, check whether the <nop>OpenLink License Manager is running on the licensed host -- i.e., the Request Broker host for the Enterprise Edition (Multi-Tier); the client driver host for the Lite or Express Editions (Single-Tier); or the Virtuoso server host.
+* on Windows, use the <b>Task Manager</b> or similar.
+* on Unix-like OS, use a command like this (may vary, depending on your active shell) --
+{{{
+ps -ef | grep oplmgr | grep -v grep
+}}}
+
+
+If the License Manager is already running, make sure that [[OplmgrNetworking|networking and firewalls are properly configured]].
+
+If networking and firewall are configured properly, and the License Manager is running, but the error persists, then kill the {{{oplmgr}}} process (e.g., {{{kill -9 <PID>}}}), and proceed as below.
+
+If the License Manager is not running, do this:
+
+# Ensure the proper license file(s) is/are in place, and named as we shipped them (e.g., {{{pro9_lt.lic}}}, {{{oplrqb.lic}}}, {{{ee_inf_lt.lic}}}).
+# Remove or rename any expired or otherwise extraneous <nop>OpenLink license files.
+# Create or modify the <b><code><nowiki>OPL_LICENSE_DIR</nowiki></code></b> environment variable, and ensure that it includes each and every directory that contains one of your active <nop>OpenLink license file(s).
+# Start the License Manager --
+#* On Windows, use the <b>Services</b> or <b>Component Services</b> control panel (often found in the <b>Administrative Tools</b> sub-folder).
+#* On Unix-like OS, set the <nop>OpenLink environment by running the appropriate script for your shell (adjusting the path as appropriate) --
+| *shell* | *command* |
+| <code>sh, bash, zsh</code> and related | <code><nowiki>. /path/to/openlink.sh</nowiki></code> |
+| <code>ksh</code> and related | <code><nowiki>source /path/to/openlink.sh</nowiki></code> |
+| <code>csh, tcsh</code> and related | <code><nowiki>source /path/to/openlink.csh</nowiki></code> |
+#** Our recent distributions start the License Manager as part of the above scripts; if you see no message about {{{oplmgr}}} starting, then also execute this command -- 
+{{{
+oplmgr +start
+}}}
+# Confirm that the License Manager has started successfully --
+#* on Windows, use the <b>Task Manager</b> or similar.
+#* on Unix-like OS, use a command like this (may vary, depending on your active shell) --
+{{{
+ps -ef | grep oplmgr | grep -v grep
+}}}
+# Test a connection.
+
+== Special Guidance for Mac OS X ==
+
+Changes in the Gatekeeper in Snow Leopard (10.8.x), Mavericks (10.9.x), Yosemite (10.10.x), and El Capitan (10.11.x) required updated License Manager binaries and startup scripts.  Current driver installers resolve this.  Updated {{{oplmgr}}} installers are also available.
+
+# Please download this installer package for use with Release 6.x or 7.x on El Capitan (10.11.x), Yosemite (10.10.x), Mavericks (10.9), Snow Leopard (10.8.x), or Lion (10.7.x) -- [[http://opldownload.s3.amazonaws.com/uda/components/7.0/universal-apple-macosx10.7-32/oplmgr.pkg| oplmgr.pkg]]
+# Double-click to run the .pkg.%BR%%BR%
+# This installer should automatically move any previously installed license files from --
+{{{
+/Library/Application Support/openlink/bin/*.lic
+}}}
+-- to --
+{{{
+/Library/Application Support/openlink/Licenses/*.lic
+}}}
+-- but some users have reported otherwise, so you <i>may</i> need to do this relocation yourself, with <code>/Applications/Utilities/Terminal.app</code> --
+{{{
+cd "/Library/Application Support/openlink/Licenses"
+
+sudo mv ../bin/*.lic .
+}}}
+# Confirm that the oplmgr process is running with this Terminal.app command --
+{{{
+ps -ef | grep oplmgr | grep -v grep
+}}}
+If it's running, output should look something like this --
+{{{
+    0   111     1   0 Wed09AM ??         0:00.57 /Library/Application Support/OpenLink/bin/oplmgr -fd /Library/Application Support/OpenLink/Licenses
+}}}
+If it's not running, try a reboot, or manually execute the following Terminal.app command, and then check for the process again --
+{{{
+sudo /Library/Application\ Support/OpenLink/bin/oplmgr -fd /Library/Application\ Support/OpenLink/Licenses &
+}}}
+# Once the oplmgr process is running, try testing the driver again.
+    
+
+== Related Documentation ==
+
+* [[MTFirewallConfiguration | Firewall Considerations for Multi-Tier "Enterprise" Edition Data Access Drivers]]
+* [[ConfigureServer-sideFirewallsForMulti-TierConnectivity | Configuring Server-side Firewalls for Multi-Tier Connectivity]]
+* [[OplmgrNetworking | OpenLink License Manager Networking Considerations]]
+* [[ConfigureMulti-TierRequestBrokerForUseOnMachinesWithMultipleNetworkCards | Configure Multi-Tier Request Broker for Use on Machines with Multiple Network Cards]]
+* [[OplmgrLicenseLocations | OpenLink License Manager Usage Notes]]
+* [[OplmgrStopStart | Start the License Manager Process]]

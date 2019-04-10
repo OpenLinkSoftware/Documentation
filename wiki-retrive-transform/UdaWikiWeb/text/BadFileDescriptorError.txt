@@ -1,0 +1,65 @@
+%META:TOPICPARENT{name="ErrorMessagesI"}%
+
+= Error Message: {{{Internal RPC call failed (Bad file descriptor)}}} =
+
+%TOC%
+
+== Background ==
+
+Historically, <i>{{{Bad file descriptor}}}</i> errors were fairly rare, and were exclusively associated with Sybase and SQL Server database agents based on the DB-LIB and CT-LIB client libraries. <i>{{{RPC: Timed Out}}}</i> variants of the file descriptor error appeared when our components unsuccessfully tried to obtain a socket. Sometimes these errors were permissions related. And, there was little that users could do to configure around this problem.
+
+Today's <i>{{{Bad file descriptor}}}</i> errors are significantly different in nature. They are intermittent errors that tend to appear suddenly, after long periods of stability. When users encounter this type of error, configuration changes have often been made to the machine hosting the server-side Multi-Tier components. Most commonly, Anti-Virus Software, Windows Updates, and/or SQL Server patches have affected hostname resolution and/or TCP port usage on the affected machine.
+
+== Common Solutions ==
+
+=== With Any Database Agent ===
+
+To resolve such errors when using any Database Agent, start by checking the [[ConfiguringMTCommunicationsAttributes|Multi-Tier communications settings, particularly the timeouts, on both Generic Client and Broker host]].
+
+=== With a Database Agent for Sybase or Microsoft SQL Server ===
+
+If you are receiving these errors when connecting to Sybase or Microsoft SQL Server, and adjusting the communications settings doesn't resolve them, take the following action:
+
+# Ensure that you are using our TDS-based database agents. These agents are typically named sql_mv or sql_sv. (The older DB-LIB and CT-LIB agents can not bypass this problem.) 
+# Use a text editor to open the active Rulebook file, typically {{{$OPENLINK_INSTALL/bin/oplrqb.ini}}} on the Broker host.
+# Locate the {{{[generic_sql]}}} section.
+# Build an argument string based on the following <nop>ConnectOptions:
+#* **{{{-H <FQDN>}}}** - Fully-qualified domain name (i.e., DNS-resolvable hostname) or IP address of the SQL Server host machine
+#* **{{{-P <port number>}}}** - TCP Port at which the target SQL Server instance is listening
+#* **{{{-V <version>}}}** - SQL Server version. Acceptable values are **{{{10.0}}}** for SQL Server 2008, **{{{9.0}}}** for SQL Server 2005, **{{{8.0}}}** for SQL Server 2000, **{{{7.0}}}** for SQL Server 7.x.  
+#* **{{{-I <instance>}}}** - SQL Server instance name on the specified host machine (-H). This option can be used in preference to the "-S" SQL Server name option above for connecting to a SQL Server instance name
+#* **{{{-S <server-name>}}}** - //Not recommended.  {{{-H}}} and {{{-I}}} are preferred.//  Specifies a target SQL Server instance by combining the host and instance names as "{{{<FQDN>\\<instance>}}}", e.g., "{{{sql-host.example.com\\demo-instance}}}". Note the double backslash ({{{\\}}}) between the <nop>SQLServerName and <nop>InstanceName.
+#* **{{{-F <fail-over server name>}}}** - Specify Fail over server name for Database Mirroring
+#* **{{{-N <size>}}}** - Network Packet size, which is a value that determines the number of bytes per network packet transferred from the database server to the client. The correct setting of this attribute can improve performance. When set to 0, the initial default, the driver uses the default packet size as specified in the Sybase server configuration. When set to -1, the driver computes the maximum allowable packet size on the first connect to the data source and saves the value in the system information.
+#* **{{{-O <value>}}}**  Prepared Method, which is a value that determines whether stored procedures are created on the server for every call to SQLPrepare. When set to Full (2), stored procedures are created for every call to SQLPrepare, which can decrease performance when processing static statements. When set to Partial(1), the initial default, the driver creates stored procedures only if the statement contains parameters. Otherwise, the statement is cached and executed directly at SQLExecute time. When set to None (0), the driver never creates stored procedures.
+#* **{{{-L <language>}}}** - The name of a Microsoft SQL Server supported national language. The default language is English.
+#* **{{{-C <character set>}}}** - The name of an installed character set on the server. By default it is the setting on the Microsoft SQL Server.
+#* **{{{-A}}}** - Turn Off ANSI NULL handling
+#* **{{{-E}}}** - Turn On SSL Strong Data Encryption
+#* **{{{-R}}}** - Turn On SSL Server Certificate Verification
+#* **{{{-D <filename>}}}** - Specify Name of Certificate Authority file to be used for SSL Certificate Verification
+#* **{{{-Z}}}** - Turn On Snapshot Serializable Isolation
+#* **{{{-M}}}** - Turn On Multiple Active Result Sets (MARS)
+# Uncomment the {{{ConnectOptions =}}} parameter by removing the leading semicolon (if present), and put the string you just built as the value.  For example:
+{{{
+ConnectOptions = -S mysqlserver.company.com -P 1433 -V 8.0
+}}}
+# Save your changes and exit the file.
+# Restart the Request Broker Service.
+# Test.
+
+== For Persistent Cases ==
+
+If the problem persists, take the following action:
+
+# Obtain the database agent version string. 
+# Note the mapscode.c line on which the error occurs. This will be helpful for development. For example: 
+{{{
+12:11:21 ERROR (f:\devel\openlink\binsrc\oplrqb\mapscode.c:594): internal rpc call failed (Bad file descriptor): RPC: Timed out 
+}}}
+# Get the precise version of the operating system on which the failure occurs. 
+# Ascertain whom the user is logged in as. Perhaps Administrative access may alleviate the problem. 
+# Insure that unnecessary processes are terminated on the server that is associated with this problem. This alleviates resource use, which may contribute to the problem. 
+# Attempt a 3-Tier connection to another SQL Server DBMS. 
+# Attempt a Single-Tier connection to the same SQL Server instance.
+

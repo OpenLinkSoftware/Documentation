@@ -1,0 +1,30 @@
+%META:TOPICPARENT{name="ErrorMessagesI"}%
+
+= Error Message: Invalid packet length =
+
+This error typically occurs when using an SQL-92 driver (as opposed to an SQL-89 driver) against a Progress DBMS which is not accepting SQL-92 connections.
+
+The Progress instance may simply need to be restarted with SQL conenctions enabled on the primary broker, or <a href="http://progress.atgnow.com/esprogress/documentDisplay.do?clusterName=CombinedCluster&preview=1&groupId=2&page=https://progress.atgnow.com/esprogress/docs/Solutions/Progress/ESERVER_P126491.xhtml&docType=1006&amp;resultType=5002&docProp=$solution_id&amp;docPropValue=p7843">a secondary SQL-92 Broker may be configured to accept ODBC connections</a>.
+
+The latter case can be confirmed by the occurrence of the following error message in the Progress native database log --
+{{{
+Server's received count 1 does not equal client(1)'s send count 16777216.
+}}}
+%BR%
+
+A secondary SQL broker is generally started with a second <code><nowiki>.pf</nowiki></code> file, containing at least the following parameters --
+
+|  <code><nowiki>-db&#160;&lt;DatabasePath&gt;</nowiki></code> | Path to database. Same as that in the primary <code><nowiki>.pf</nowiki></code> file.  |
+|  <code><nowiki>-H&#160;&lt;Hostname&gt;</nowiki></code>  | Hostname. Same as that in the primary <code><nowiki>.pf</nowiki></code> file.  |
+|  <code><nowiki>-S&#160;&lt;ServiceName&gt;</nowiki></code>  | Service name for this broker.  Port must also be assigned in <code><nowiki>/etc/services</nowiki></code>.  Both name and port must differ from those of the primary broker.  |
+|  <code><nowiki>-N&#160;TCP</nowiki></code>  | Always, TCP. Same as that in the primary <code><nowiki>.pf</nowiki></code> file.  |
+|  <code><nowiki>-Mpb&#160;&lt;MaxServers&gt;</nowiki></code>  | Sets the maximum number of servers for this broker.  |
+|  <code><nowiki>-<nop>ServerType&#160;SQL</nowiki></code>  | Specifies that this broker will handle SQL connections.  |
+|  <code><nowiki>-m3</nowiki></code>   | Specifies that this is a secondary broker.  |
+Start this broker after the first one, with a command like (your exact command may vary) --
+{{{
+proserve -pf /path/to/second.pf
+}}}
+Any other parameters set in the primary {{{.pf}}} file will be inherited.
+
+One thing you may need to override/change on a secondary SQL broker for <nop>OpenEdge 10.1B and higher is the {{{-Ma}}} parameter. This is typically set low for an ABL/4GL broker, but high for an SQL broker.

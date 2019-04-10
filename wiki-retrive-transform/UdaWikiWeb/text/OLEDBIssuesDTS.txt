@@ -1,0 +1,93 @@
+%META:TOPICPARENT{name="OLEDBKnownIssues"}%
+
+= Known Issues with the Single-Tier "Lite" Edition OLE DB Provider for ODBC Data Sources -- SQL Server Data Transformation Services (DTS) =
+
+%TOC%
+
+== Overall Issues ==
+
+* The provider implements the {{{IRowsetFastLoad}}} interface. This interface began in the Microsoft OLE DB Provider for SQL Server, and is required by SQL Server DTS, even on third-party OLE DB providers. Export of tables from SQL Server to Oracle using DTS is made possible by this interface.
+
+* The provider uses a scrollable cursor to support scrolling over rowsets. Our scrollable cursor implementation requires a unique row identifier (e.g., primary key, {{{rowid}}}, etc.) to act as a key column. If the table(s) used to populate the OLE DB rowset do not include a primary key or similar, the provider can still deliver a rowset; however, it will be read-only. 
+#* With Oracle, the {{{rowid}}} pseudo-column is used as this key; the table does not need a primary key for the rowset to be writeable. 
+#* With DB2, the table(s) must have a primary key; otherwise, the rowset will be read-only.
+
+* If you choose to export all primary and foreign keys in the table, DTS appears to assume it is talking to SQL Server when creating the target table, because DTS uses specific Transact-SQL syntax in the {{{CREATE TABLE}}} command to express the primary key as a table constraint. 
+#* Oracle and some other DBMS accept this syntax.
+#* DB2 and some other DBMS reject this syntax. Consequently, the only current way to successfully use DTS to export a table to DB2 is to manually create the target table before launching DTS. When the target table already exists, DTS does not attempt to create it; it just copies the data from the source table. //**Note:** The manually created table must have a primary key.//
+
+* DTS does not correctly quote target table names. The user must specify target table names using the exact case expected by the target; e.g., when exporting to Oracle, the table name must be given in uppercase.
+
+== Provider Options in the SQL Server Enterprise Manager ==
+
+When setting up a Linked Server using the Enterprise Manager, you can configure the way SQL Server uses your OLE DB provider by clicking on the **Provider Options** button just under the box where the provider is selected. The options in the Provider Options dialog box will apply globally to the provider, not to the specific Linked Server configuration, so any changes made here will effect all Linked Servers using that provider. A list of all the servers using the provider is shown in the bottom half of the box.
+
+Note that once a Linked Server has been created, these options cannot be changed in the property page for that server. To change these options after a Linked Server has been created, you have to create a new Linked Server and alter the options there. Making changes to these options when creating a new Linked Server affects all existing Linked Servers. When you set up a Linked Server, the options you choose effectively become the defaults for the provider you are using.
+
+A document describing the Provider Options, called //Configuring OLE DB Providers for Distributed Queries//, can be found in the SQL Server Books Online documentation or [[http://msdn.microsoft.com/library/default.asp?url=/library/en-us/adminsql/ad_1_server_8ib7.asp|in the MSDN website]].
+
+By default, none of these options is enabled for our driver. These options are specifically for SQL Server distributed queries using Linked Servers; they are not general OLE DB options.
+
+=== Provider Options ===
+
+* **Dynamic Parameters** - May be enabled, because this provider supports the {{{ICommandWithParameters}}} interface.
+    
+* **Nested Queries** - May be enabled, because this provider allows {{{SELECT}}} in a {{{FROM}}} clause. Note that this should not be enabled if the target ODBC Driver, ODBC DSN, or backend DBMS does not allow nested queries. Enabling this option may cause concerns with the underlying Cursor libraries.
+    
+* **Level Zero Only** - Should not be enabled.
+    
+* **Allow <nop>InProcess** - This option should be enabled. Checking this option stops errors like:
+{{{
+Error 7311: Could not obtain the schema rowset for OLE DB provider 'UNKNOWN'. 
+The provider supports the interface, but returns a failure code when it is 
+used. OLE DB error trace [OLE/DB Provider 'UNKNOWN' 
+IDBSchemaRowset::GetRowset returned 0x800706c6:].
+}}}
+Error {{{0x800706c6}}} translates to {{{RPC_S_INVALID_BOUND}}}. The error message identifies the OLE DB provider that the error comes from as {{{UNKNOWN}}} and our log files show no sign of the error. SQL Server uses a proxy/stub DLL, {{{msdaps.dll}}}, to marshal OLE DB interfaces between processes/apartments. These errors from the '{{{UNKNOWN}}}' provider come from {{{msdaps.dll}}}. If the OLE DB provider is invoked out-of-process or is marked as apartment model, then this stub gets used. By default, if the OLE DB provider is a Microsoft provider then SQL Server invokes it in-process and this proxy is not used. Checking the //Allow <nop>InProcess// box when using our provider ensures that this stub DLL is not used and so avoids this error.
+
+* **<nop>NonTransactedUpdates** - this is entirely up to the user to choose.
+    
+* **<nop>IndexAsAccessPath** - Should be left disabled.
+    
+* **<nop>DisallowAdhocAccess** - Disables use of {{{OPENROWSET}}} and {{{OPENDATASOURCE}}} with the provider. Up to the user to choose
+
+
+== Connection Error 0x80004005 ==
+
+If the linked server has problems connecting then the following error is generated:
+{{{
+Error 7399: OLE DB provider 'OpenLinkODBC' reported an error. The provider
+did not give any information about the error. OLE DB error trace [OLE/DB
+Provider'OpenLinkODBC' IDBInitialize::Initialize returned 0x80004005: The
+provider did not give any information about the error.].
+}}}
+
+Causes of this error include:
+* The ODBC DSN does not exist or is not configured and connecting correctly
+* The target database is not running or reachable.
+* Username and/or password is not set up correctly on the security property page.
+* An incorrect table, column, or owner name in the SQL statement.
+
+==Using SQL Server Authentication==
+
+When using {{{OPENROWSET}}} or {{{OPENDATASOURCE}}} options while logging into SQL Server using SQL Server authentication, the following error might be seen:
+{{{
+Could not perform Windows NT authentication because delegation is not
+available.
+}}}
+
+This error may be avoided by connecting to SQL Server with Windows authentication.
+
+This problem only occurs when using {{{OPENROWSET}}} and {{{OPENDATASOURCE}}}, i.e., when connection information is given within the query.  This issue does not occur when querying against a Linked Server which was set up in the Enterprise Manager, as with {{{OPENQUERY}}}.
+
+==Linking Progress Servers==
+
+Linking to the Progress SQL-89 engine //generally// works if the linked server is set up in the Enterprise Manager and the {{{OPENQUERY}}} syntax is used.
+
+The Progress SQL-89 engine does not handle the SQL generated by SQL Server when using the {{{OPENROWSET}}} or {{{OPENDATASOURCE}}} syntax.
+
+Linking to Progress using a SQL-92 datasource //generally// works using {{{OPENQUERY}}}, {{{OPENDATASOURCE}}}, and {{{OPENROWSET}}}.
+
+==Inconsistent Metadata==
+
+Queries that fail with errors about inconsistent metadata usually indicate that the ODBC driver returns different information in response to the {{{SQLColumns()}}} and {{{SQLDescribeCol()}}} ODBC API calls.  This is generally due to a bug in the ODBC driver, and should be referred to the ODBC driver vendor.

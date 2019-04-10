@@ -1,0 +1,56 @@
+<docbook><section><title>TroubleshootingUDAoplshut</title><para> </para><title> Output of oplshut </title> Output of <computeroutput>oplshut</computeroutput> 
+<para>The command <computeroutput>oplshut -s</computeroutput> produces output like this: </para><programlisting>[openlink@openlinux bin]$ oplshut -s
+SVPID  SVTYPE  MACHINE            OPSYS  APPLIC    DATABASE  USERNAME  CONNECT
+-----------------------------------------------------------------------------------
+ 1480  mys3    dyn2.example.com   msdos  cppdmo32  test      mysql     Mar 30 12:01
+</programlisting><para> Here is a brief overview of the output displayed by <computeroutput>oplshut -s</computeroutput>:</para><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>SVPID</emphasis> - Associates a Process Identification Number with a database agent.
+ You can run oplshut +kill &lt;svpid&gt; to terminate database agents that will not disconnect.
+ For example: <programlisting>oplshut +kill 1480
+</programlisting><emphasis><emphasis>Note:</emphasis> <computeroutput>oplshut +kill</computeroutput>} will terminate <emphasis>all</emphasis> connections associated with an agent process.
+ This is important since multi-threaded agents may handle multiple connections simultaneously.</emphasis></listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>SVTYPE</emphasis> - Passes a label which identifies the Domain Alias, which was used to establish the connection.
+ The Domain Aliases appear in the Session Rules Book (oplrqb.ini).
+ For example: <programlisting>[Domain Aliases]
+DB2          = db2
+Informix 5     = inf5
+Informix 6     = inf6
+Informix 7.1   = inf71
+Informix 7.2   = inf72
+Informix 7.3   = inf73
+Informix 2000  = inf2000
+Ingres 6       = ing6
+MySQL 3.x      = mys3
+</programlisting>These aliases facilitate the resolution and configuration of connections.
+ They associate each connection request with a specific Mapping Rule, Database Agent configuration section, and Environment section.
+ For example: <programlisting>[Environment MYSQL]
+CURSOR_SENSITIVITY = LOW
+
+[Mapping Rules]
+mys3:**:**:**:**:**:**  = accept generic_mys3
+
+[generic_mys3]
+Description = Default settings for MySQL 3.x agent
+Program       = mys3_mv
+Environment = MYSQL
+ReUse       = always
+</programlisting> </listitem>
+<listitem> <emphasis>MACHINE</emphasis> - Identifies the machine from which the connection request originated.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>OPSYS</emphasis> - Identifies the operating system of the machine, from which the connection originated.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>APPLIC</emphasis> - Identifies the application that has initiated the connection.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>DATABASE</emphasis> - Identifies the target database to which the driver connects.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>USERNAME</emphasis> - Identifies the username used to authenticate against the database or operating system.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>CONNECT</emphasis> - The connection&#39;s inception date and time.
+ This field is useful for detection of lingering connections.</listitem>
+</itemizedlist><para> <emphasis>Note:</emphasis> If stability problems arise, you should compare the output of the following two commands (substituting your Agent configuration stanza for &quot;generic_agent&quot;):</para><programlisting>oplshut -s
+
+ps -ef | grep generic_agent</programlisting>
+<para>Certain older Request Brokers can suffer from corruption of the internal tables that they use to monitor connections.
+ Consequently, Brokers lose track of agents.
+ While oplshut -s shows no or few agent connections, ps -ef | grep generic_agent will show many agents.
+ Here is normal oplshut and ps output: </para><programlisting>bash$ oplshut -s
+SVPID  SVTYPE  MACHINE             OPSYS  APPLIC    DATABASE  USERNAME  CONNECT
+------------------------------------------------------------------------------------
+30003  mys3    dyn243.example.com  msdos  cppdmo32  Northwin  sa        Apr 09 10:46
+
+bash$ ps -ef | grep generic_mys3
+openlink 30003   29324  0 10:46:33  0:00 generic_mys3 +internal </programlisting><para>Abnormal output would have <computeroutput>ps</computeroutput> showing more agent processes than <computeroutput>oplshut</computeroutput>.</para></section></docbook>

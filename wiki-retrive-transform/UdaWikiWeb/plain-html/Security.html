@@ -1,0 +1,24 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="MTRequestBrokerAdministration"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="MTRequestBrokerAdministration"}%--><p> <br></p><h1><a name="Multi-Tier"></a> Multi-Tier <tt>security</tt> Utility </h1>
+<p>Due to the Unix security model, certain kernel calls can only be used when the process is run by, or with the permissions of, the <tt>root</tt> user.</p><p>One of these function calls was needed for the <tt>PingWatchDog</tt> protocol (deprecated since UDA Release 4.x).
+ Database security considerations, including the <nop></nop>OpSysLogin feature, can also lead to this need.
+ In both case, the Request Broker must be run as <tt>root</tt>.</p><p>This can be accomplished in two ways:</p><ol><li> The user logs in as <tt>root</tt> before launching the Request Broker.
+<br></li>
+<li> The Request Broker is flagged to run under root privileges, and the user enabled to launch it from any normally privileged account.</li>
+</ol><p>The first option requires that all the user(s) who launch the Broker must know the root password, which should not generally be given to ordinary users.</p><p>Therefore we have built a solution which enables the second option, without all user(s) needing to know the root password.
+ The system administrator or other user who does know the root password can activate this solution by executing the following commands as <tt>root</tt> (adjusting the file path as needed for the local installation): <br><br></p><pre>$ cd /opt/openlink/bin
+$ ./security -s 
+</pre><p> <br>This will have the following effects --</p><ol><li> The permissions of the <tt>oplrqb</tt> executable are changed so it takes on the identity of &quot;<tt>root</tt>&quot; when launched.
+<br></li>
+<li> The Broker now knows the filesystem location of the Rulebook file, <tt>oplrqb.ini</tt>, and will not accept certain startup flags so it cannot be tricked to read in a different Rulebook file at launch.
+<br></li>
+<li> The Rulebook file can now only be written to by the &quot;<tt>root</tt>&quot; account; other accounts will only be able to read this file.</li>
+</ol><p>Any time a user tries to launch or terminate the broker, the <strong><tt>StartupBy</tt></strong> or <strong><tt>ShutdownBy</tt></strong> value within the <strong><tt>[Security]</tt></strong> section of the Rulebook is checked to see whether the user is allowed to do so.
+ To have full effect, the default wildcard values for these keywords should be replaced with relevant specific username(s).</p><p>As noted above, the Rulebook can now only be written to by the &quot;<tt>root</tt>&quot; user.
+ This means that ordinary users cannot modify this file, which often seems like an unpleasant side effect.
+ To overcome this, some system administrators are temped to modify the mode of the Rulebook file, reopening security risks.
+ This should be avoided.
+ Instead, the <strong><tt>IncludeRuleBook</tt></strong> parameter within the <strong><tt>[Security]</tt></strong> section should be used to divide the Rulebook into parts which others can manage as appropriate.
+ The system administrator can split up the Rulebook into different files which than can be included from the master Rulebook.
+ This makes specific sections available to normal users, but allows the system administrator to decide which sections can (or cannot!) be overruled by normal users.
+ The included Rulebooks cannot overrule any section within the master Rulebook.
+ This is a very powerful way of dealing with high security installations within large companies.</p><p> <br></p></div></body></html>

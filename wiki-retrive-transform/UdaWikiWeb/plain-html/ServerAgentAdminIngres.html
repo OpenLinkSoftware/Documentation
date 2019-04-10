@@ -1,0 +1,40 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ServerAgentAdministration"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ServerAgentAdministration"}%--><h2><a name="Server Agent Administration"></a>Server Agent Administration</h2>
+<h3><a name="Ingres"></a> Ingres </h3>
+<p>When configuring an Ingres database agent the critical configuration items are:</p><ul><li>  Database Identification - this is an actual database name e.g &quot;demo&quot;, which identifies the actual Ingres database that you want to be connected with.
+ This is the value that you enter into the &quot;Database Name&quot; field of either your Admin Assistant&#39;s database agent configuration form or wizard dialog.
+ If you choose to have database identification take at the client rather than server, you enter this value into the &quot;Database Name&quot; field or connection attribute when configuring your <nop></nop>OpenLink client.</li>
+</ul><ul><li>  User Authentication - To log into <nop></nop>OpenIngres | Ingres II databases you need to create an internal user entry in the database which matches the userid that starts the <nop></nop>OpenLink Ingres Database agent (oig[1|2]_sv).
+ Thus if your userid is openlink you need to create a user openlink that is capable of switching to another internal user.
+ A default <nop></nop>OpenIngres | Ingres II database will have entries for Ingres and root.
+ You can also enable the <nop></nop>OpenLink &#39;opsyslogin&#39; feature in the <nop></nop>OpenLink Rule Book (oplrqb.ini) that will force the userid of the agent to be changed to that of the username that has been authenticated by the Operating system, and assuming this is a valid Ingres user will be allowed to connect by the database.</li>
+</ul><p>Ingres provides a number of environment variables for configuring database clients, the basic set required for successfully connecting your database agent to an Ingres database server are tabulated below:</p><p>Table: 8.2.4.1.
+ Default Rule Book settings
+</p><table class="wikitable">
+<tr><td><strong>Rule Book Section &amp; parameters</strong></td><td><strong>Default Rule Book Settings</strong></td><td><strong>Notes</strong></td></tr>
+<tr><td colspan="2">[Environment OPENINGRES1], [Environment INGRES_II]</td><td>Parameters are common in Open Ingres 1 and Ingres II</td></tr>
+<tr><td>II_DATE_FORMAT</td><td><p>US</p></td><td>Defines the output format for dates as dd-mmm-yyyy. This should not be changed inside the Rule Book since it enables the best compatibility with <nop></nop>OpenLink. This will not affect any other Progress applications.</td></tr>
+<tr><td>II_SYSTEM</td><td>/<p>dbs</p></td><td>Full path to the directory immediately below the Progress/ directory e.g. if your Progress installation directory is /dbs/Progress then set this to /dbs</td></tr>
+<tr><td>ING_SET</td><td><p>set lockmode session where readlock</p><p>nolock</p></td><td>This makes sure when the Ingres agent is started, the first thing it does is runs this command. The command itself makes sure that a simple select statement does not lock all the rows it selects.</td></tr>
+<tr><td>USE_OWNER</td><td>Y <p>or N</p></td><td>Only applicable for Ingres 6.4 databases. If set to Y forces the driver to return the ingres internal table owner as the schema name for the table, as this was required for early version of MSQuery.</td></tr>
+</table>
+<h4><a name="Security Enhancement"></a>Security Enhancement</h4>
+<p>Due to the fact that Ingres 6.4 leaves username and password verification to the host operating system (Ingres II does not have this problem), it is possible to close what could be an ODBC, UDBC, JDBC, or OLE-DB security loophole by utilizing the <nop></nop>OpenLink database agent &quot;<nop></nop>OpsysLogin&quot; facility which can be enabled through the Admin Assistant.
+ By enabling this feature your Ingres database agent will verify user accounts at the operating system level before attempting to connect to your Ingres database.
+ It is important to note that &quot;super-user&quot; or Administrator (depending on operating system) privileges are required to successfully use this feature.
+ This implies that the account that starts the request broker must possess one of the aforementioned system level privileges, on the other hand these privileges aren&#39;t required for your actual <nop></nop>OpenLink client sessions.</p><h4><a name="Rebuilding Ingres Database Agents"></a>Rebuilding Ingres Database Agents</h4>
+<nop></nop><p>OpenLink provides a relinkable library and script files that enable you to rebuild your database agents as shared, as opposed to statically linked binaries, or for the purposes of getting a closer database implementation fit, should your Ingres database environment be a more recent release than the actual version used by <nop></nop>OpenLink to build the database agent installed on your system.
+ Please read the Relinking <nop></nop>OpenLink Database Agents section that follows, for details on how to perform this task.</p><h4><a name="Application Server &amp; 3-Tier Architecture Configuration"></a>Application Server &amp; 3-Tier Architecture Configuration</h4>
+<p>There may be situations in which you are unable to install your <nop></nop>OpenLink Request Broker and Database Agents on the same machine as the one hosting your Ingres database server.
+ Irrespective of the reasons that lead you to this scenario, it is possible to configure your <nop></nop>OpenLink database agents hosted on your Application Server machine such that they connect to a remote Ingres database on your Database Server machine using Ingres database specific networking (Ingres Net) as opposed to <nop></nop>OpenLink&#39;s Database Independent Networking.
+ The end result being a 3-tier distributed <nop></nop>OpenLink architecture in which the communication between <nop></nop>OpenLink clients and database agents use <nop></nop>OpenLink Database independent Networking, while the communication between the Ingres database agent and the Ingres database server uses Ingres Net.</p><p>Configuration Steps:</p><p>Assuming that you have an Ingres Database server machine called &quot;mainserver2&quot; that has an Ingres Net server process running.</p><p>1.
+ On your Application Server (the machine hosting your database agent) create an Ingres Net vnode called &quot;mainserver2&quot; (for purpose of this example only) if you do not have a working vnode on this machine.</p><p>2.
+ Ensure that you have a usable connection to your remote Ingres database using the vnode &quot;mainserver2&quot;.</p><p>3.
+ Add the following values to the &quot;Server Options&quot; field within the Admin Assistant Forms or Wizards used to configure your database agent.
+ If you choose to set this value on the client simply enter the same value into to the &quot;Database Name&quot; Attribute associated with the configuration of your <nop></nop>OpenLink client (see <nop></nop>OpenLink ODBC or JDBC or UDBC client configuration for more details):<br></p><pre>      mainserver2
+</pre><p> <br><br></p><pre>See Also:
+
+Application Server Architecture for various illustrations of distributed client-server architectures supported by OpenLink database agent
+</pre><p> <br><br></p><pre>Note:
+
+OpenLink Drivers for Ingres II, both Single- and Multi-Tier, are based on the OpenAPI Interface, and are intended only for use only with Ingres II. In some environments, these Drivers may also permit connection to OpenIngres 1.x and 2.x, which are also based on the OpenAPI Interface; however, these Drivers have not been certified for such connections, and they are made at the User&#39;s discretion and risk. These Drivers will not support connections to Ingres 6.4 or previous under any conditions. Drivers for versions of Ingres prior to Ingres II may be available for some platforms; please inquire at product availability, if you require such a Driver.
+</pre></div></body></html>

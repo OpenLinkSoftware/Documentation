@@ -1,0 +1,103 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ConfigureSQLMultipleInstances"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ConfigureSQLMultipleInstances"}%--><p> <br></p><h2><a name="Single Driver Connectivity to Multiple Instances"></a>Single Driver Connectivity to Multiple Instances  </h2>
+<p> <br></p><h3><a name="Single-Tier Drivers on Unix Client to SQL Server 2005"></a>Single-Tier Drivers on Unix Client to SQL Server 2005</h3>
+<p>Use the following instructions to connect one client to multiple SQL Server instances:</p><ol><li> <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/HowDoIFindMySQLServerInstanceName" class="wikiword">Identify your Microsoft SQL Server instance names</a> <br></li>
+<li> Log in to the machine that hosts your <nop></nop>OpenLink Single-Tier driver.
+<br></li>
+<li> <tt>cd</tt> into the root of the <nop></nop>OpenLink installation.
+<br></li>
+<li> Use the <tt>bash</tt> or <tt>sh</tt> command to open a bash or bourne shell.
+<br></li>
+<li> Execute this command: <br><br><pre><br>. ./openlink.sh
+</pre><br></li>
+<li> cd into the bin sub-directory of <nop></nop>OpenLink.
+<br></li>
+<li> vi the openlink.ini file.
+<br></li>
+<li> Locate the <tt>[Server Types]</tt> section.
+<br></li>
+<li> Create a meaningful label for each of your SQL Server instances.
+ For example: <br><br><pre><br>[Server Types]
+DB2             =
+Informix 5      =
+Informix 6      =
+.
+.
+.
+Instance1        =
+Instance2        =
+</pre><br></li>
+<li> Locate this stanza in the file -- <br><br><pre><br>[Environment SQLServer 2005]
+FREETDSCONF        = /usr/openlink/bin/freetds.conf
+DSQUERY            = SQLSERVER  ; Load this section from freetds.conf
+TDSHOST            = host.domain        ; Point this to your SQLServer machine
+TDSPORT            = 1433
+TDSVER             = 8.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading oplrvc.sql
+</pre><br></li>
+<li> Copy and paste this stanza once for each new SQL Server instance that you want to add.
+<br></li>
+<li> Make the following modifications to the new stanzas -- <br><ol><li> Modify <tt>[Environment SQLServer 2005]</tt> so that &quot;<tt>SQL Server 2005</tt>&quot; is replaced with one of the labels you created above;e.g., <tt>[Environment Instance1]</tt>.
+<br></li>
+<li> Pass the hostname or IP address of the SQL Server instance to <tt>TDSHOST</tt>.
+<br></li>
+<li> Pass the tcp port associated with the instance to <tt>TDSPORT</tt>.
+<br></li>
+<li> Set <tt>TDSVER</tt> to <tt>9.0</tt> for SQL Server 2005.
+<br></li>
+<li> Ensure you have an end result similar to this -- <br><br><pre><br>[Environment Server 1]
+FREETDSCONF        = /usr/openlink/bin/freetds.conf
+DSQUERY            = SQLSERVER  ; Load this section from freetds.conf
+TDSHOST            = 192.158.12.121        
+TDSPORT            = 1433
+TDSVER             = 9.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading oplrvc.sql
+
+[Environment Server 2]
+FREETDSCONF        = /usr/openlink/bin/freetds.conf
+DSQUERY            = SQLSERVER
+TDSHOST            = 192.158.12.121        
+TDSPORT            = 1434
+TDSVER             = 9.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading oplrvc.sql
+</pre><br></li>
+</ol></li>
+<li> Save your changes and exit the file.
+<br></li>
+<li> vi odbc.ini.
+<br></li>
+<li> Proceed to create your DSNs as per usual.
+ However, pass the appropriate label from the <tt>[Server Types]</tt> section of openlink.ini.
+ For example -- <br><br><pre><br>[Development DSN]
+Driver          = /usr/openlink/lib/sql_mt_lt.so
+ServerType      = Instance1
+Username        = sa
+;Password        = 
+Database        = Northwind
+Options         = -H 192.158.12.121 -P 1433 -V 9.0
+FetchBufferSize = 99
+ReadOnly        = no
+DeferLongFetch  = no
+JetFix          = no
+Description     = connection to Instance1
+
+[Production DSN]
+Driver          = /usr/openlink/lib/sql_mt_lt.so
+ServerType      = Instance2
+Username        = sa
+;Password        = 
+Database        = pubs
+Options         = -H 192.158.12.121 -P 1434 -V 9.0
+FetchBufferSize = 99
+ReadOnly        = no
+DeferLongFetch  = no
+JetFix          = no
+Description     = connection to Instance2
+</pre><br></li>
+<li> Save your changes and exit the file.
+<br></li>
+<li> Test.
+<br></li>
+</ol></div></body></html>

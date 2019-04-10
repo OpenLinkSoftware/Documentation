@@ -1,0 +1,23 @@
+<docbook><section><title>TheDecimalFieldPrecisionIsTooSmallToAcceptTheNumericYouAttendToAdd</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">Error Messages</bridgehead>
+<para><ulink url="UDAErrorMessages">A</ulink> <ulink url="ErrorMessagesB">B</ulink> <ulink url="ErrorMessagesC">C</ulink> <ulink url="ErrorMessagesD">D</ulink> <ulink url="ErrorMessagesE">E</ulink> <ulink url="ErrorMessagesF">F</ulink> <ulink url="ErrorMessagesG">G</ulink> <ulink url="ErrorMessagesH">H</ulink> <ulink url="ErrorMessagesI">I</ulink> <ulink url="ErrorMessagesJ">J</ulink> <ulink url="ErrorMessagesK">K</ulink> <ulink url="ErrorMessagesL">L</ulink> <ulink url="ErrorMessagesM">M</ulink> <ulink url="ErrorMessagesN">N</ulink> <ulink url="ErrorMessagesO">O</ulink> <ulink url="ErrorMessagesP">P</ulink> <ulink url="ErrorMessagesQ">Q</ulink> <ulink url="ErrorMessagesR">R</ulink> <ulink url="ErrorMessagesS">S</ulink> <ulink url="ErrorMessagesT">T</ulink> <ulink url="ErrorMessagesU">U</ulink> <ulink url="ErrorMessagesV">V</ulink> <ulink url="ErrorMessagesW">W</ulink> <ulink url="ErrorMessagesX">X</ulink> <ulink url="ErrorMessagesY">Y</ulink> <ulink url="ErrorMessagesZ">Z</ulink> <ulink url="ErrorMessagesSymbols">#</ulink></para><bridgehead class="http://www.w3.org/1999/xhtml:h3">The decimal field precision is too small to accept the numeric you attend to add</bridgehead>
+<para> <emphasis>Problem</emphasis></para><para>Informix&#39;s DECIMAL type can hold both fixed-point and floating-point values.</para><para>1) DECIMAL (p,s) -- Holds fixed point values with precision p, scale s.
+ <computeroutput>p &lt;= 32</computeroutput>, <computeroutput>s &lt;= p</computeroutput>, range 10^-130..10^124.</para><para>2) DECIMAL (p) -- Non-ANSI db: Holds floating point data with precision p.
+ANSI db: DECIMAL (p) interpreted as DECIMAL(p,0)</para><para>3) DECIMAL -- Interpreted as DECIMAL(16).
+ Holds floating point data with precision 16.</para><para> The problem occurs with columns defined using the 2nd and 3rd forms above, i.e.
+ when a DECIMAL column holds floating-point data.
+ When Informix detects such a column, it reports the column&#39;s scale as 255.
+ The maximum scale of a DECIMAL column holding fixed-point data is 32, so 255 indicates floating-point data.
+ Our agent was detecting when <computeroutput>scale = 255</computeroutput> and adjusted the scale to a more meaningful value for ODBC.
+ However the adjusted scale value was not always appropriate, which caused Access to baulk.</para><para>A column&#39;s scale can be retrieved through several ODBC functions: SQLDescribeCol, SQLColAttributes, SQLColumns.
+ In the case of this bug, SQLColumns was causing the trouble - MS Access wasn&#39;t calling SQLDescribeCol or SQLColumns when linking a table or fetching data from the linked table.<para>The agent as was...
+SQLColumns, SQLDescribeCol and SQLColAttribute mapped an Informix DECIMAL to the ODBC SQL type SQL_DECIMAL.
+ When <computeroutput>scale=255</computeroutput> was detected, the agent adjusted the scale to match the column&#39;s precision.<para><emphasis>Fix</emphasis></para><para>The agent as it is now...
+SQLColumns, SQLDescribeCol and SQLColAttribute map:<para> An Informix DECIMAL holding fixed-point data to the ODBC SQL type SQL_DECIMAL.
+ The reported scale is that reported by Informix.
+An Informix DECIMAL holding floating-point data to ODBC SQL_FLOAT.
+ The reported scale is NULL (SQLColumns) or 0 (SQLDescribeCol and SQLColAttribute).(Which is what the native MS SQL Server driver does with a FLOAT column.)<para>The above mappings apply when the jetfix option is off.
+ When this option is enabled, an Informix DECIMAL column is mapped to the ODBC SQL_DOUBLE type, irrespective of whether it holds fixed-point or floating-point data.
+ Because the maximum precision of a SQL_DOUBLE is 15, rounding may occur when fetching from DECIMAL, DECIMAL(p) or DECIMAL(p,s) columns where p&gt;15.</para><para> <emphasis>Testing</emphasis></para><para>I created a test table create table bug5552 (id int, d1 decimal(5,2), d2 decimal(6), d3 decimal) and inserted the values 1, 321.12, 654.321, 654321.0987654321 2, 654.32, 65432.1, 6543210987654321 3, 92.37, 6.54321e6, 6.543210987654321e2 4, 987.65, 6.54321e41, 6.543210987654321e49</para><para>The values were chosen to use the full precision of each column.</para><para>All the above values could be retrieved correctly from a linked table in MS Access 2000 with jetfix on or off.
+ Note that Access fetches these columns into MS Access Number columns, the precision of which varies depending on the underlying Field Size property.
+ Consequently, Access may round some of the values.
+</para></para></para></para></para></section></docbook>

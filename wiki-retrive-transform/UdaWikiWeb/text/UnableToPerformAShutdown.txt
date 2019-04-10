@@ -1,0 +1,46 @@
+%META:TOPICPARENT{name="ErrorMessagesU"}%
+
+= Error Message: {{{Unable to perform a shutdown (You are not authorized to initiate shutdown)}}} =
+
+
+Take the following action to rectify this problem.
+
+# Open your server's {{{oplrqb.ini}}} file in a text editor (vi, emacs, TextEdit.app, BBEdit.app, Notepad.exe, Wordpad.exe, etc.).
+# Locate the {{{[Request Broker]}}} section.
+# Locate the {{{HostNameResolver}}} parameter.
+# Ensure that there are no semicolons in front of {{{HostNameResolver}}}.
+# Set {{{HostNameResolver=No}}} to match exclusively by IP address.  If {{{HostNameResolver=Yes}}}, DNS lookups will be used, but these may simply echo the IP address, or any of several hostnsmes (e.g., {{{arthur}}}, {{{arthur.example.com}}}, {{{192.168.123.234}}}, others).
+{{{
+[Request Broker]
+BinaryDirectory = c:\openlink\openlink software\uda\multi-tier\v5.0\bin
+CommandLine = -dv
+Protocols = tcp
+;MaxAgents = 0
+;MaxConnections = 0
+HostNameResolver = No
+}}}
+# Locate the {{{[Security]}}} section.
+# Ensure that both {{{ShutdownBy}}} and {{{ShutdownFrom}}} are set, and that there are no leading semicolons ("{{{;}}}") or hashes ("{{{#}}}") on these lines.
+# Ensure that the user issuing the shutdown command (e.g., {{{george}}}) is included in the {{{ShutdownBy}}} value.  Ensure that the IP address and all likely DNS lookup results for the machine they're using (e.g., {{{arthur}}}, {{{arthur.example.com}}}, {{{192.168.123.234}}}), are included in the {{{ShutdownFrom}}} value. Note that regex is active on these values, so you must escape the dot-separators in IP addresses and host names; you may need to escape other characters, depending on your host- and user-names.  
+#* In this example, users {{{root}}} and {{{george}}} can issue Startup and Shutdown commands, from the Broker host itself, or from the listed remote host --
+{{{
+[Security]
+StartupBy = root, george
+ShutdownBy = root, george
+ShutdownFrom = arthur, arthur\.example\.com, 192\.168\.123\.234, localhost, 127\.0\.0\.1
+}}}
+#* You may wish to test with these set to wildcard values, but note that this is a potential security issue which can open a Denial Of Service vulnerability, especially in the {{{ShutdownFrom}}} setting.  
+{{{
+[Security]
+StartupBy = *, .*
+ShutdownBy = *, .*
+ShutdownFrom = *, .*
+}}}
+# Save your changes.
+# Force-quit the Request Broker, using the Process Manager on Windows, {{{kill}}} command on Unix, or similar techniques.  Confirm that the process has been terminated before proceeding.
+# Launch your Request Broker.
+# Test a friendly Broker shutdown, using {{{oplshut}}}, the Services control panel on Windows, etc.
+
+== Evidence ==
+
+* Session Rulebook

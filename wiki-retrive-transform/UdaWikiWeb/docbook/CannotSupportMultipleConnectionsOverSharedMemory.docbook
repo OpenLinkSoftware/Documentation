@@ -1,0 +1,38 @@
+<docbook><section><title>CannotSupportMultipleConnectionsOverSharedMemory</title><para> </para><title> Error Message: Cannot support multiple connections over shared memory (-27000) </title> Error Message: <computeroutput>Cannot support multiple connections over shared memory (-27000)</computeroutput> 
+<para>This message occurs when a single instance of a multi-threaded Multi-Tier Database Agent for Informix (e.g., <computeroutput>inf9_mv</computeroutput>) is making multiple connections to a target <computeroutput>$INFORMIXSERVER</computeroutput> which is configured to accept shared memory connections.</para><para>Multiple database connections from a single Agent instance to a single <computeroutput>$INFORMIXSERVER</computeroutput> will succeed only if Informix is configured to accept sockets-based connections.</para><para>There are a few solutions to this error message.
+ In order of preference for optimal performance and resource conservation --</para><orderedlist spacing="compact"><listitem> Reconfigure Informix to accept sockets-based connections, and adjust the Rulebook configuration to match.
+ This may require configuring an alias for the <computeroutput>$INFORMIXSERVER</computeroutput>.
+ If done properly, this will cause no disruption to any other connections being made via shared memory. </listitem>
+<listitem> Adjust the Rulebook&#39;s <emphasis><computeroutput>reuse</computeroutput></emphasis> rule(s) for the multi-threaded Database Agent(s) to specify <emphasis><computeroutput>never</computeroutput></emphasis> (so only one connection to Informix will ever be made by a single Agent instance).
+ For example -- <programlisting>[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program     = inf9_mv
+Environment = INFORMIX2000
+OpsysLogin  = No
+ReUse       = never
+;CommandLine 	=
+;ConnectOptions =
+;Directory 	= /tmp
+;Database 	=
+;Userid		=
+;Password 	=
+;ReadOnly	= Yes
+</programlisting></listitem>
+<listitem> Adjust the Rulebook to specify the <emphasis>single-threaded Database Agent(s)</emphasis> instead of the multi-threaded.
+ This requires that the <emphasis><computeroutput>inf##_sv</computeroutput></emphasis> corresponding to the currently configured <computeroutput>inf##_mv</computeroutput> executable also be present in the <computeroutput>.../openlink/bin/</computeroutput> directory.
+ Any <emphasis><computeroutput>reuse</computeroutput></emphasis> rules must <emphasis>also</emphasis> be adjusted to specify <emphasis><computeroutput>never</computeroutput></emphasis>, so this option is more work than option #2, above.
+ For example -- <programlisting>[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program     = inf9_sv
+Environment = INFORMIX2000
+OpsysLogin  = No
+ReUse       = never
+;CommandLine 	=
+;ConnectOptions =
+;Directory 	= /tmp
+;Database 	=
+;Userid		=
+;Password 	=
+;ReadOnly	= Yes
+</programlisting></listitem>
+</orderedlist></section></docbook>

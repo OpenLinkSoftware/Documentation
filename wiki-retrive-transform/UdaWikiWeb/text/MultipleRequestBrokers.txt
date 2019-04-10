@@ -1,0 +1,137 @@
+%META:TOPICPARENT{name="MTRequestBrokerAdministration"}%
+
+===Multiple Request Brokers===
+
+There are now three different behaviors for running the broker under Windows that are affected by the type of Windows operating system, and the +foreground and +debug flags.
+
+====METHOD 1 - As a service====
+
+When:
+
+* Under NT/XP/2000, when no +foreground or +debug has been specified. The oplrqb service will start, but only if it has been registered. When no +instance is specified, it will use the default instance. If this fails, it will run as method 2 or 3.
+    
+* Under NT/2000, with a +service start [+instance identifier] If this fails, it will exit with an error.
+
+{{{
+Note 1:
+
+When starting oplrqb without options, it will attempt to auto start an existing service. if that fails, it will attempt methods 2 and 3 (see below)
+}}}
+
+{{{
+Note 2:
+
+You'll need to do +service create first, the broker doesn't do this by itself.
+}}}
+
+====METHOD 2 - With debugging console====
+
+When:
+
+* with +foreground or +debug, started from explorer/dos box
+    
+* without +foreground or +debug option, started from a dos box.
+
+{{{
+Note:
+
+Start up mode is different when launched from a dos box. If there are no command line options specified, the broker will now default to +debug when started in a dos box.
+
+the +foreground and +debug options take precedence over method 1 (starting the service)
+}}}
+
+====METHOD 3 - User Specific Service (characterized by a Services Tray Icon)====
+
+When:
+
+* started from explorer, without +foreground/+debug
+(NT/XP/2000: Method 1 is tried first)
+
+{{{
+Note:
+
+It will attempt to locate oplrqb.ini in the current directory, unless +config file has been specified.
+}}}
+
+====Startup Mode Summary====
+
+To summarize, here is some pseudo code:
+
+{{{
+if OS = NT or OS = Win2000 or OS = XP then
+  if no +foreground or +debug options then
+    if there is a service installed then
+      silently attempt to start the service
+      if this succeeds then exit
+    endif
+endif
+
+if +foreground or +debug options then
+  allocate a debugging console
+  run in the foreground
+
+else if started from a dos box then
+  set +foreground and +debug
+  allocate a debugging console
+  run in the foreground
+
+else
+  create the splash window and assume tray behavior
+endif
+
+Note: it is possible to make the oplrqb service allocate a debugging
+console. To do this, specify +debug while creating the service
+(example: oplrqb +service create +debug)
+}}}
+
+====Multiple Service Instances====
+
+Multiple instances of the broker work only for NT/XP/2000 when running as a service.
+
+There is one default instance (unnamed) which is used when no +instance command line flag has been specified.
+
+examples:
+
+{{{
+oplrqb +service create
+}}}
+
+Registers the default service instance. This service will use the oplrqb.ini rulebook in the current directory
+
+{{{
+oplrqb +service create +instance 1 +config f:\openlink
+}}}
+
+Registers the oplrqb_1 service instance This service will use the oplrqb.ini rulebook in f:\openlink
+
+{{{
+oplrqb +service create +config f:\openlink\test\debug.ini +debug
+}}}
+
+Registers the default service instance. This service will use the debug.ini rulebook in f:\openlink\test This service will produce debug output in a console. This service will not auto start, use oplrqb +service start
+
+Other service commands:
+
+{{{
+  +service auto [+instance id]    Set start up type to Automatic
+  +service manual [+instance id]  Set start up type to Manual
+  +service start [+instance id]   Start up the service
+  +service stop [+instance id]    Stops up the service
+  +service delete [+instance id]  Unregisters up the service
+}}}
+
++service list has been extended to show the rulebook that the instance uses as well as other status information.
+
+To configure another Broker instance manually:
+
+* create a new directory
+
+* create a new rulebook in this directory
+
+* set <nop>BinaryDirectory in this new rulebook to the installation directory of oplrqb.exe (need to share binaries & licensing)
+
+* Specify a different Listen port
+
+* Either disable www_sv in the rulebook or create a new www_sv.ini with '<nop>HttpPort' key value set to a unique value other than the default 8000.
+
+* create another entry using +instance <id> +config <the_new_rulebook_ini>

@@ -1,0 +1,23 @@
+%META:TOPICPARENT{name="OLEDBObjectsInterfaces"}%
+
+===Creating a Rowset===
+
+The session contains the interface that enables consumers to open a database and create a rowset object containing all rows in the database. The<nop>OpenLink provider implements both the **<nop>IOpenRowset**, and the **ICommand** (and associated **<nop>ICommandText** , **<nop>ICommandProperties** ) interfaces on the session to create a rowset.
+
+====Instantiating and Exposing a Rowset====
+
+The **<nop>IOpenRowset** interface contains a single method: **<nop>OpenRowset**. **<nop>IOpenRowset** is a required interface on the session. **<nop>IOpenRowset::<nop>OpenRowset** can be used by consumers that do not support command objects to generate a rowset of all rows in a table or index.
+
+The **ICommand** interface contains the method: **Execute**. **ICommand::Execute** generates a rowset from the SQL query set by **<nop>ICommandText::<nop>SetCommandText**.
+
+====Consumer and Provider Interactions with the Rowset====
+
+After receiving the rowset interface pointer, the consumer can request rowset metadata from the provider through **<nop>IColumnsInfo**. The consumer then creates bindings by requesting **IAccessor** from the provider and specifying the bindings through **IAccessor::<nop>CreateAccessor**. The provider returns a handle to the accessor to the consumer.
+
+The consumer then requests a number of rows from the provider using **IRowset::<nop>GetNextRows**. The provider retrieves the data for these rows and stores it in the data cache. The provider then returns an array of row handles to the consumer. Each row handle returned by the provider has an initial reference count of one. The consumer is then free to get the data for any rows from the provider using **<nop>GetData**. The consumer supplies **<nop>GetData** with the row handle, the handle of an accessor, and the buffer location into which to return the data; the provider copies the data to the location specified by the consumer.
+
+To update rows, consumers call **<nop>IRowsetChange::<nop>SetData**, which sets the data in the data cache to the values specified by the consumer. To delete rows from the rowset, the consumer calls **<nop>IRowsetChange::<nop>DeleteRows**. To insert rows into the rowset, the consumer calls **<nop>IRowsetChange::<nop>InsertRow**. Note that the <nop>OpenLink Provider is not able to fetch back a newly inserted row if the underlying datasource does not provide this functionality.
+
+When the consumer makes any change to data in the data cache, the effects of the change are written to the data source immediately. OLE DB specifies a change-buffering model, which enables the consumer to make changes that are not realized until the consumer calls **<nop>IRowsetUpdate::Update**; this model is not supported by the <nop>OpenLink provider.
+
+When the consumer has finished working with a row, it can release the row by calling **IRowset::<nop>ReleaseRows**. **<nop>ReleaseRows** simply decrements the reference count on the row in the data cache. If the reference count for that row reaches zero, the row data is released from the data cache.

@@ -1,0 +1,300 @@
+%META:TOPICPARENT{name="UDASystemIntegrationConfigDocs"}%
+
+== Data Migration & Integration Configuration ==
+
+===Configuring an ODBC data source using Oracle Heterogeneous Services for HP/UX (Release 8i and up)===
+
+** Parts of this article were extracted from Doc ID Note:214834.1 from Oracle's [[http://metalink.oracle.com|Metalink]] website (http://metalink.oracle.com) **
+
+====PURPOSE====
+
+Setup of HSODBC on HP-UX 11.0 differs from other UNIX platforms.
+
+====SCOPE & APPLICATION====
+
+This note describes how to set up HSODBC (heterogeneous services) for HP-UX 11.0 using Oracle 9.2 release. It is similar for 9.1 release, but the directory structure changed between 8i and 9i. If using this note for 8i, please keep in mind that the library directory structure has changed.
+
+This article is divided into four different parts:
+
+- Part I describes how to relink the HSODBC executable (if necessary)
+- Part II describes the configuration process of HSODBC
+- Part III is a summary of how to set HSODBC up for Oracle 8i on HP-UX
+
+
+====Part I: How to relink the HSODBC executable====
+
+(Everything done in this section is done as the ORACLE user.)
+
+While most ODBC drivers are linked with a C++ compiler, Oracle is linked with a C compiler. This can cause issues on HP-UX machines. The {{{hsodbc}}} library must be relinked with C++ compiler. This document contains relinking instructions for release 9i. A description for an Oracle 8i relink can be found in Note:150458.1 Relinking Heterogeneous Serviceon HP-UX):
+
+# See if the following file exists on HP-UX:
+{{{
+/opt/aCC/lib/cpprt0_stub.o
+}}}
+# If it does not exist, use these instruction to create it:
+## Create a file called {{{cpprt0_stub.s}}} with the following contents:
+{{{
+.code
+; stubs for static constructors in a.out
+.export __StaticCtorTable_Start,data
+.export __StaticCtorTable_End,data
+__StaticCtorTable_Start
+__StaticCtorTable_End
+
+.data
+; stubs for static constructors in a.out, compiled with +z/+Z
+.export __ZStaticCtorTable_Start,data
+.export __ZStaticCtorTable_End,data
+__ZStaticCtorTable_Start
+__ZStaticCtorTable_End
+}}}
+//**Note:** If you create the file on a PC, don't forget to transfer the file in ASCII mode.//
+# If you created the file, use the following command to compile it:
+{{{
+as cpprt0_stub.s -o ./cpprt0_stub.o
+}}}
+# Rename the files {{{hsodbc}}} and {{{hsodbc0}}} in the directory {{{$ORACLE_HOME/bin}}}. 
+# Then change to the directory {{{$ORACLE_HOME/rdbms/lib}}}. 
+# Copy the file {{{cpprt0_stub.o}}} to this directory.
+# Set the {{{HSA_ODBC_SYSLIBS}}} environment variable:
+{{{
+export HSA_ODBC_SYSLIBS="cpprt0_stub.o -lstd -lstream -lCsup -lcl -ldld"
+}}}
+# Relink of the hsodbc library is done as follows:
+{{{
+/usr/ccs/bin/make -f ins_rdbms.mk ihsodbc
+}}}
+The linking should proceed without any error and create the {{{hsodbc}}} file in the {{{$ORACLE_HOME/bin}}} directory.
+# To make sure, that the linking worked, simply type {{{hsodbc}}} and press enter. For Oracle 9.2 {{{hsodbc}}} executable a similar screen to the following will appear:
+{{{
+ora920 @ hsodbc
+
+Oracle Corporation --- TUESDAY OCT 15 2002 09:31:32.746
+
+Heterogeneous Agent Release 9.2.0.1.0 - Production Built with
+Driver for ODBC
+}}}
+This will indicate that the relinking was successful. Please don't proceed with the next part, if this part was unsuccessful!
+
+
+====Part II: How to configure HSODBC====
+
+(Complete all steps in this section using the Oracle user account that starts the listener!)
+
+The following elements must be configured:
+* {{{listener.ora}}}
+* {{{tnsnames.ora}}}
+* {{{init<SID>.ora}}}
+* Oracle environment
+* Oracle database
+
+
+=====1) The listener needs a new SID entry like the following:=====
+
+{{{
+(SID_DESC =
+  (SID_NAME = hsodbc)
+  (ORACLE_HOME = /u01/app/oracle/product/9.2.0)
+  (PROGRAM = hsodbc)
+  (ENVS="SHLIB_PATH=/u05/odbc/lib:/u01/app/oracle/product/9.2.0/lib32")
+)
+}}}
+
+Set the {{{ORACLE_HOME}}} entry and the {{{ENVS}}} entry accordingly. {{{ORACLE_HOME}}} must point to your {{{ORACLE_HOME}}} directory and the {{{ENVS}}} string contains entries for the {{{SHLIB_PATH}}}. The {{{SHLIB_PATH}}} setting must contain the Oracle and ODBC library paths, at a minimum.
+
+
+Note: Differing from 8i releases, the 32 bit Oracle libraries are now located in the {{{lib32}}} directory while for 8i the 32 bit library was located in the {{{lib}}} directory. So please pay attention to this while using older configuration files. More details can be found in **Note: 109621.1**.
+
+Here is a sample {{{listener.ora}}} file:
+{{{
+SID_LIST_LISTENER920 =
+   (SID_LIST =
+      (SID_DESC =
+         (SID_NAME = hsodbc)
+         (ORACLE_HOME = /u01/app/oracle/product/9.2.0)
+         (PROGRAM = hsodbc)
+         (ENVS="SHLIB_PATH=/u05/odbc/lib:/u01/app/oracle/product/9.2.0/lib32")
+      )
+   )
+
+LISTENER920 =
+   (DESCRIPTION_LIST =
+      (DESCRIPTION =
+         (ADDRESS_LIST =
+            (ADDRESS = 
+               (PROTOCOL = TCP)
+               (HOST = <hostname of the Oracle Server>)
+               (PORT = 1921)
+            )
+         )
+         (ADDRESS_LIST =
+            (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC))
+         )
+      )
+   )
+}}}
+
+This {{{listener.ora}}} file contains a listener called {{{LISTENER920}}} instead of the default name {{{LISTENER}}}. To stop/start the listener from above, the {{{current_listener}}} must be set to {{{listener920}}}.
+
+The listener must be restarted after changing the {{{listener.ora}}}!
+
+
+=====2) The {{{tnsnames.ora}}} needs an entry for the HSODBC alias:=====
+
+{{{
+hsodbc.DE.ORACLE.COM =
+   (DESCRIPTION =
+      (ADDRESS_LIST =
+         (ADDRESS = 
+            (PROTOCOL = TCP)
+            (HOST = <hostname of the Oracle Server>)
+            (PORT = 1921)
+         )
+      )
+      (CONNECT_DATA =
+         (SID= hsodbc)
+      )
+      (HS=)
+   )
+}}}
+
+Your TNS alias domain will likely differ from the one used above ({{{de.oracle.com}}}), depending on the parameter in the {{{sqlnet.ora}}}:
+
+{{{NAMES.DEFAULT_DOMAIN = de.oracle.com}}}
+
+The most important entry is the {{{(HS=)}}} keyword. This keyword must be added manually, and opening the Net Configuration Assistants will remove this entry from your {{{tnsnames.ora}}} file! The {{{(HS=)}}} parameter must be outside the {{{SID}}} section and specifies that this connector uses the Oracle Heterogeneous Service Option.
+
+Restart the listener after adding the TNS alias. Then, use {{{tnsping <alias>}}} to perform a connectivity check.
+{{{
+tnsping hsodbc
+}}}
+
+{{{tnsping}}} should come back with a successful message.
+
+=====3) {{{init.ora}}}:=====
+
+The {{{SID}}} is also relevant for the {{{init.ora}}} file. The name of the file is {{{init<SID>.ora}}}. In this example, it is called {{{inithsodbc.ora}}}. The file is located at {{{$ORACLE_HOME/hs/admin/}}}. It should contain the following entries:
+{{{
+#
+# HS init parameters
+#
+HS_FDS_CONNECT_INFO = mssql
+HS_FDS_TRACE_LEVEL = off
+HS_FDS_SHAREABLE_NAME = <OpenLink home directory>/lib/libiodbc.so 
+# 
+# ODBC specific environment variables
+#
+set ODBCINI=/dbs/openlink/32bit/v42/bin/odbc.ini
+set ODBCINSTINI=/dbs/openlink/32bit/v42/bin/odbcinst.ini
+#
+# *** The following variables are extra requirements of the OpenLink ODBC drivers 
+# ***
+set OPENLINKINI=[OpenLink home directory]/bin/openlink.ini
+set PATH=$PATH:[OpenLink home directory]/bin
+set SHLIB_PATH=$SHLIB_PATH:[OpenLink home directory]/lib
+}}}
+
+Short explanation of the parameters:
+* {{{HS_FDS_CONNECT_INFO}}} points to the ODBC DSN configured in PART I of this note.
+* {{{HS_FDS_SHAREABLE_NAME}}} points to the ODBC Driver Manager library at {{{<OpenLink home directory>/lib/<ODBCLIB>}}}
+
+=====5) Configuring the Oracle database=====
+
+You need to create a database link. To proceed, connect with the username/password that has sufficient rights to create a database link (i.e., {{{system}}}). The syntax is:
+{{{
+CREATE [PUBLIC] DATABASE LINK <name>
+CONNECT TO "<UID>" IDENTIFIED BY "<pwd>" USING '<tnsalias>';
+}}}
+
+Using values found in our previous example files, the following syntax would be used to connect to the Microsoft SQL Server:
+{{{
+CREATE DATABASE LINK sqlserver
+CONNECT TO "sa" IDENTIFIED BY "sa" USING 'hsodbc';
+}}}
+
+The database link name is "{{{sqlserver}}}". Username and password must be in double quotes, because they are case sensitive. '{{{hsodbc}}}' points to the TNS alias in the {{{tnsnames.ora}}} file that calls the HS subsystem.
+
+If everything is configured properly, a select of the {{{EMP}}} table (created for the {{{demoodbc}}} program) should be successful:
+{{{
+select * from "EMP"@sqlserver;
+}}}
+
+//**Note:** The {{{EMP}}} table is capitalized in the Microsoft SQL Server database. Because Microsoft SQL Server is case sensitive, the {{{EMP}}} table must be surrounded by double quotes in the context of the query.//
+
+{{{@sqlserver}}} points to the name of the database link to the Microsoft SQL Server.
+
+
+====Part III How to set it up for Oracle 8i on HP-UX====
+
+
+ODBC is independent from the Oracle version being used. Therefore, Part I of this document is the same for 8i and 9i Oracle database releases.
+
+Relinking as described in Part II varies substantially. These are the steps that need to be followed:
+
+# Check to see if {{{/opt/aCC/lib/cpprt0_stub.o}}} exists.
+# If it does not exist, create it as described in Part II above.
+# Copy this file to {{{$ORACLE_HOME/rdbsm/lib}}} directory.
+# Change to {{{$ORACLE_HOME/rdbsm/lib}}} directory.
+# Copy/paste the command into a script on the HP-UX machine, make it executable ({{{chmod +x}}}), and run it.
+{{{
+cc -Wl,+s -Wl,+n \
+-o $ORACLE_HOME/rdbms/lib/hsodbc \
+-L $ORACLE_HOME/rdbms/lib \
+-L $ORACLE_HOME/lib \
+-o $ORACLE_HOME/rdbms/lib/hsodbc \
+$ORACLE_HOME/hs/lib/hsodbc.o \
+$ORACLE_HOME/rdbms/lib/defopt.o \
+$ORACLE_HOME/rdbms/lib/homts.o \
+$ORACLE_HOME/rdbms/lib/ssdbaed.o \
+$ORACLE_HOME/rdbms/lib/cpprt0_stub.o \
+-L $ORACLE_HOME/hs/lib/ \
+-lnavhoa \
+-lnavshr \
+-lnvbaseshr \
+-lagtsh \
+-lpls8 \
+-lplp8 \
+-lclntsh \
+-lnls8 \
+-lcore8 \
+-lnls8 \
+-lcore8 \
+-lnls8 \
+`cat $ORACLE_HOME/lib/sysliblist` \
+-lm \
+-lstd -lstream -lCsup -lcl -ldld
+}}}
+# The new {{{hsodbc}}} executable is built in the {{{$ORACLE_HOME/rdbms/lib}}} directory. Rename the old {{{hsodbc}}} library {{{$ORACLE_HOME/bin/hsodbc}}} and then move the new {{{hsodbc}}} to the {{{$ORACLE_HOME/bin}}} location.
+# Test again while entering {{{hsodbc}}} and pressing enter key.  A message like the following should appear:
+{{{
+ora817 @ /u01/app/oracle/product/8.1.7/rdbms/lib hsodbc
+}}}
+# A select in SQL*Plus via the db link should be possible now.
+
+
+=====Part III contains minor variations.=====
+
+The description of the {{{tnsnames.ora}}} and {{{init.ora}}} of the HS subsystem is also valid for 8i. The {{{CREATE DATABASE LINK}}} statement is also the same. Only the {{{listener.ora}}} file differs slightly in regards to the {{{ENVS}}} setting.
+
+In release 9i, the 32 bit libraries are stored at: {{{$ORACLE_HOME/lib32}}}
+
+In 8i, the 32 bit libraries are stored in: {{{$ORACLE_HOME/lib}}}
+
+The {{{Oracle_Home}}} is the home directory of 8i release. Therefore, the {{{SID}}} section looks like:
+
+{{{
+(SID_DESC =
+   (SID_NAME = hsodbc)
+   (ORACLE_HOME = /u01/app/oracle/product/8.1.7)
+   (PROGRAM = hsodbc)
+   (ENVS=SHLIB_PATH=/u05/odbc/lib:/u01/app/oracle/product/8.1.7/lib)
+)
+}}}
+
+
+
+
+====RELATED DOCUMENTS====
+
+* [[http://metalink.oracle.com|Metalink]] NOTE:150458.1
+* [[http://metalink.oracle.com|Metalink]] NOTE:109621.1

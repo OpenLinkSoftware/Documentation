@@ -1,0 +1,41 @@
+%META:TOPICPARENT{name="ErrorMessagesE"}%
+= Error Message: {{{Error in Network Daemon. (8933)}}} =
+
+This error comes from Progress itself, and is frequently associated with the "Personal Database" Progress license. You must determine whether or not any Progress licensing restrictions would prohibit your client components from connecting to a remote database, or prohibit your target database from accepting connections from remote clients. Such Progress licensing is outside of our control.
+
+Once Progress licensing has been ruled out, proceed to confirm the UDA connection configuration --
+
+# Make sure both client and server host have the same definition for the relevant Progress service port.%BR%%BR%
+## Open the Progress database server's {{{%SYSTEM32%/Drivers/etc/services}}} or {{{/etc/services}}} file.%BR%%BR%
+## Locate the service associated with the Progress database, and make note of that port number. For example:
+{{{
+pro10c   8897
+}}}
+## Include an identical in your client's {{{%SYSTEM32%/Drivers/etc/services}}} or {{{/etc/services}}} file. %BR%%BR%
+# If the error persists, start the database in sockets mode using the port number (rather than the service name) from the services file. For example:
+{{{
+$DLC/bin/proserve demo.db -S 8897 -N TCP -H proserver.mycompany.com
+}}}
+# You can also try using the port number (instead of the service name) in your data source. For example:
+{{{
+-S 8897 -N TCP -H proserver.mycompany.com
+}}}
+# If the issue still persists, and you're using our Multi-Tier solution --%BR%%BR%
+## Open the Broker Rulebook (e.g., {{{oplrqb.ini}}}) in a text editor, and locate this section:
+{{{
+[Protocol TCP]
+PingWatchdog = No     ; Send check-alive packets
+PingInterval = 600    ; every <PingInterval> seconds
+;IPAddress    = 192.168.123.231
+PortLow      = 5000
+;PortHigh     = 60000
+Listen       = 5000
+}}}
+## Uncomment (i.e., remove the leading semicolon from) {{{PortHigh}}}, and set it to {{{6000}}}. For example:
+{{{
+PortHigh = 6000
+}}}
+## Save your changes and exit the text editor.%BR%%BR%
+## Confirm that any firewalls between Client and Broker host, and on the Broker host itself, permit connections to (and replies from) all ports in the range from {{{PortLow}}} to {{{PortHigh}}} (including those ports), as well as the port for {{{Listen}}}.%BR%%BR%
+## Confirm that any firewalls permit connections to (and replies from) all ports between Progress {{{-minport}}} and {{{-maxport}}} settings.%BR%%BR%
+# Retest your connection.

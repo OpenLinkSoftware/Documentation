@@ -1,0 +1,60 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ErrorMessagesU"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ErrorMessagesU"}%--><h1><a name="Unresolved symbol <symbol> or Undefined reference to <symbol>"></a>Unresolved symbol &lt;symbol&gt; or Undefined reference to &lt;symbol&gt;</h1>
+<p> <br><!--Begin of %TOC{}%--><p> <br></p><div class="MACRO_TOC"> <br> <div class="wikitoc"> <br>  <ul> <br><li><a href="#General%20Guidance">General Guidance</a></li> <br><li><a href="#If%20the%20error%20messages%20came%20up%20during%20a%20Multi-Tier%20Generic%20Client%20installation">If the error messages came up during a Multi-Tier Generic Client installation</a></li> <br><li><a href="#If%20the%20error%20messages%20came%20up%20while%20relinking%20a%20Multi-Tier%20Database%20Agent%20or%20Single-Tier%20Lite%20Driver%20for%20Progress%2C%20on%20Linux">If the error messages came up while relinking a Multi-Tier Database Agent or Single-Tier Lite Driver for Progress, on Linux</a></li> <br><li><a href="#If%20the%20error%20messages%20came%20up%20while%20relinking%20any%20other%20Multi-Tier%20Database%20Agent%20or%20Single-Tier%20Lite%20Driver">If the error messages came up while relinking any other Multi-Tier Database Agent or Single-Tier Lite Driver</a></li> <br><li><a href="#Evidence">Evidence</a></li><p>  </p></ul> <br> </div> <br></div><!--End of %TOC{}%--> <br></p><h2><a name="General Guidance"></a>General Guidance</h2>
+<p>To resolve these errors, start by finding where the missing symbols are defined:</p><ol><li> Access the machine, which contains your <nop></nop>OpenLink server components installation.
+<br></li>
+<li> <code>cd</code> into your database&#39;s <code><nowiki>/lib</nowiki></code> sub-directory.
+<br></li>
+<li> Run the following command: <br><br><blockquote><code><nowiki> nm -A *.so | grep &lt;symbol&gt; </nowiki></code></blockquote><br> <br>For example, if the error you got was &quot;<code><nowiki>Unresolved symbol xsendto</nowiki></code>&quot; or &quot;<code><nowiki>Undefined reference to xsendto</nowiki></code>&quot;, the command would be <br><br><blockquote><code><nowiki> nm -A *.so | grep xsendto </nowiki></code></blockquote><br> <br></li>
+<li> If the symbol does not exist, stop and contact <nop></nop>OpenLink Product Support.
+ Otherwise,....
+<br></li>
+<li> Record the names of the files which contain your symbols.
+ The filename will be the first item in the <code>nm</code> output.</li>
+</ol><h2><a name="If the error messages came up during a Multi-Tier Generic Client installation"></a>If the error messages came up during a Multi-Tier Generic Client installation</h2>
+<p>Add the directory/ies that contains the library/ies found above to the shared library environment variable for your OS (i.e., <code><nowiki>LD_LIBRARY_PATH</nowiki></code>, <code><nowiki>LIBPATH</nowiki></code>, or <code><nowiki>SHLIB_PATH</nowiki></code>).
+ For example: <br><br></p><blockquote><code><nowiki>set LIBPATH=/app/product/oracle/8.0.4/lib:$LIBPATH</nowiki></code></blockquote><br><p> <br></p><h2><a name="If the error messages came up while relinking a Multi-Tier Database Agent or Single-Tier Lite Driver for Progress, on Linux"></a>If the error messages came up while relinking a Multi-Tier Database Agent or Single-Tier Lite Driver for Progress, on Linux </h2>
+<p><em>For errors regarding <code>__ctype_b</code>, <code>__ctype_tolower</code>, and <code>__ctype_toupper</code>, follow the guidance in this section.
+ For other errors, proceed to the next section below.</em></p><p><em>Instructions in this section were based on Progress Knowledgebase Article ID#P101259.</em></p><p>32-bit <nop></nop>OpenEdge 10.1B and earlier, including Progress 9.1x and earlier, are built on <nop></nop>RedHat 2.1, with an older version of glibc (2.3.2-5 or earlier).
+ These older versions of glibc contain definitions of <code>__ctype_b</code>, <code>__ctype_tolower</code>, and <code>__ctype_toupper</code>.</p><p>These definitions are not contained in more recent versions of glibc -- but they remain necessary for Database Agent or Lite Driver relinking.
+ You can either relink on a Linux machine which has such an older version of glibc (again, 2.3.2-5 or earlier), or follow the instructions below.</p><ol><li> Create a file named &quot;<code>libctype.c</code>&quot; with these contents -- <br><br><pre><br>#include &lt;stdlib.h&gt;
+#include &lt;ctype.h&gt;
+
+__const unsigned short int * __ctype_b;
+__const __int32_t  * __ctype_tolower;
+__const __int32_t  * __ctype_toupper;
+
+void __attribute__((constructor)) my_init() {
+   __ctype_b = * __ctype_b_loc();
+   __ctype_tolower = * __ctype_tolower_loc();
+   __ctype_toupper = * __ctype_toupper_loc();
+}
+
+void __attribute__((destructor)) my_clean() {
+}
+</pre><br></li>
+<li> Compile that with the command -- <br><br><pre><br>gcc -O2 -shared -o libctype.so libctype.c
+</pre><br></li>
+<li> Amend your <tt>ldpro</tt> script, or <tt>build_rx.sh</tt> for <nop></nop>OpenEdge 10, to include a reference to the newly created <tt>libctype.so</tt> library.
+<br></li>
+<li> Execute the <tt>ldpro</tt> script, or <tt>build_rx.sh</tt> for <nop></nop>OpenEdge 10; the build should now succeed.
+<br></li>
+<li> Be sure to deploy the new <tt>libctype.so</tt> along with the executable you just built, as the executable now depends on this library.</li>
+</ol><p> <br></p><h2><a name="If the error messages came up while relinking any other Multi-Tier Database Agent or Single-Tier Lite Driver"></a>If the error messages came up while relinking any other Multi-Tier Database Agent or Single-Tier Lite Driver</h2>
+<ol><li> <code>cd</code> into the <code><nowiki>/lib</nowiki></code> sub-directory of your <nop></nop>OpenLink installation.
+<br></li>
+<li> Open the script which produced the error in your favorite text editor (vi, emacs, etc.).
+<br></li>
+<li> Determine where to add the new library.
+ Most often, it is added to the <code>cc -s -o</code> line.
+ Oracle users must add it to the <code>make -f</code> line.
+ Progress users who encounter errors with <code>mkdlc</code> must add it to <code>$PRO_EXTRA</code>.
+ For example: <br><br><blockquote><code><nowiki>$PRO_EXTRA \ $PROLOAD/4gl/&lt;missing file&gt;.o \ </nowiki></code></blockquote><br> <br></li>
+<li> Save your changes and exit your relink script.
+<br></li>
+<li> Relink your database agent.</li>
+</ol><p> <br></p><h2><a name="Evidence"></a>Evidence</h2>
+<ul><li> Database Agent Version String <br></li>
+<li> DBMS Version <br></li>
+<li> Relink Script(s) <br></li>
+<li> Output of <code>uname -a</code> <br></li>
+</ul></div></body></html>

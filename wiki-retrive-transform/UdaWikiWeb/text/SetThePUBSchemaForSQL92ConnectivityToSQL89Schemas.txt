@@ -1,0 +1,47 @@
+%META:TOPICPARENT{name="ConfigureUDAFeatures"}%
+
+= Targeting the PUB schema through DSN connection attributes =
+
+When using SQL-92 drivers for Progress, you may find that queries using single-element identifiers which worked fine with the SQL-89 drivers, e.g., --
+{{{
+SELECT * FROM tablename
+}}}
+-- now require use of the {{{PUB}}} owner identifier, e.g., --
+{{{
+SELECT * FROM PUB.tablename
+}}}
+
+This is due to a number of changes in the underlying Progress layers, from SQL-89 to SQL-92.
+
+== Solution ==
+
+This can generally be worked around by using our "**Initial SQL**" option.
+
+This solution removes the need to prefix identifiers in new queries with "{{{PUB.}}}", but any queries which already include the prefix should continue to work just fine.
+
+Simply create a text file, e.g., {{{openlink.sql}}}, containing the following line --
+{{{
+SET SCHEMA 'PUB';
+}}}
+
+<i><b>Note: </b>In some environments, varying with the precise version of the Progress and <nop>OpenLink components in use, the trailing semicolon may need to be removed, changing the file content to --</i>
+{{{
+SET SCHEMA 'PUB'
+}}}
+
+
+=== Single-Tier "Lite" Edition Setup ===
+
+Set the "**Initial SQL**" field of your DSN to the full path to the file created above, including its file extension (e.g., {{{/opt/openlink/bin/openlink.sql}}}, {{{C:\Program Files\OpenLink Software\UDA\bin\openlink.sql}}}, {{{/Library/Application Support/openlink/bin/openlink.sql}}}). 
+
+On Windows, this DSN attribute is found on the fourth pane of the Setup Dialog, under the heading **Additional connect parameters**.  
+
+On a Unix client, the {{{$ODBCINI}}} DSN keyword to hold this value is **{{{initsql}}}**.
+
+=== Multi-Tier "Enterprise" Edition Setup ===
+
+For connections with our  Multi-Tier driver, the {{{openlink.sql}}} file must be located on the Broker host, and the [[RulesBookSettingsGeneric| Rulebook must be adjusted to specify it]] through the <code>CommandLine</code> Agent setup parameter, and the <code>+initsql</code> argument, for instance --
+
+{{{
+Commandline = +initsql /opt/openlink/bin/openlink.sql
+}}}

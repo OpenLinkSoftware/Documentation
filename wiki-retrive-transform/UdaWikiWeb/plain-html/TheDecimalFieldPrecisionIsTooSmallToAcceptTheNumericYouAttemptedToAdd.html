@@ -1,0 +1,44 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ErrorMessagesT"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ErrorMessagesT"}%--><h1><a name="Error Message:"></a> Error Message: <tt>The decimal field precision is too small to accept the numeric you attempted to add.</tt> </h1>
+<!--Begin of %TOC{}%--><p> <br></p><div class="MACRO_TOC"> <br> <div class="wikitoc"> <br>  <ul> <br><li><a href="#Problem">Problem</a></li> <br><li><a href="#Fix">Fix</a></li> <br><li><a href="#Testing">Testing</a></li><p>  </p></ul> <br> </div> <br></div><!--End of %TOC{}%--><h2><a name="Problem"></a>Problem</h2>
+<p>Informix&#39;s <tt>DECIMAL</tt> type can hold both fixed-point and floating-point values.</p><ul><li> <tt>DECIMAL (p,s)</tt> — Holds fixed point values with precision <tt>p</tt>, scale <tt>s</tt>.
+ <tt>p &lt;= 32</tt>, <tt>s &lt;= p</tt>, range <tt>10^-130 - 10^124</tt>.
+<br></li>
+<li> <tt>DECIMAL (p)</tt> — <br><ul><li> Non-ANSI db — Holds floating point data with precision <tt>p</tt>.
+<br></li>
+<li> ANSI db — <tt>DECIMAL (p)</tt> interpreted as <tt>DECIMAL(p,0)</tt>.
+<br></li>
+</ul></li>
+<li> <tt>DECIMAL</tt> — Interpreted as <tt>DECIMAL(16)</tt>.
+ Holds floating point data with precision 16.</li>
+</ul><p> <br>The problem occurs with columns defined using the second and third forms above, i.e., when a <tt>DECIMAL</tt> column holds floating-point data.
+ When Informix detects such a column, it reports the column&#39;s scale as 255.
+ The maximum scale of a <tt>DECIMAL</tt> column holding fixed-point data is 32, so 255 indicates floating-point data.
+ Our agent was detecting when <tt>scale = 255</tt> and adjusting the scale to a more meaningful value for ODBC.</p><p>The issue was that the driver always mapped an Informix <tt>DECIMAL</tt> to the ODBC SQL type <tt>SQL_DECIMAL</tt>, and when <tt>scale=255</tt> was detected, the driver adjusted the scale to match the column&#39;s precision.
+ However the adjusted scale value was not always appropriate, which caused Access to balk.
+ A column&#39;s scale can be retrieved through several ODBC functions: <tt>SQLDescribeCol()</tt>, <tt>SQLColAttributes()</tt>, <tt>SQLColumns()</tt>, and this fix applies to all of these calls.</p><h2><a name="Fix"></a>Fix</h2>
+<p>The driver now maps: <br></p><ul><li> When the <tt>jetfix</tt> option is off: <br><ul><li> An Informix <tt>DECIMAL</tt> holding fixed-point data to the ODBC SQL type <tt>SQL_DECIMAL</tt>.
+ The reported scale is that reported by Informix.
+<br></li>
+<li> An Informix <tt>DECIMAL</tt> holding floating-point data to ODBC <tt>SQL_FLOAT</tt>.
+ The reported scale is <tt>NULL</tt> (<tt>SQLColumns()</tt>) or <tt>0</tt> (<tt>SQLDescribeCol()</tt> and <tt>SQLColAttribute()</tt>).
+ (This is how the Microsoft&#39;s driver for SQL Server handles a <tt>FLOAT</tt> column.) <br></li>
+</ul></li>
+<li> When the <tt>jetfix</tt> option is on: <br><ul><li> An Informix <tt>DECIMAL</tt> column is mapped to the ODBC <tt>SQL_DOUBLE</tt> type, irrespective of whether it holds fixed-point or floating-point data.
+ Because the maximum precision of a <tt>SQL_DOUBLE</tt> is 15, rounding may occur when fetching from <tt>DECIMAL</tt>, <tt>DECIMAL(p)</tt>, or <tt>DECIMAL(p,s)</tt> columns where <tt>p&gt;15</tt>.</li>
+</ul></li>
+</ul><p> <br></p><h2><a name="Testing"></a>Testing</h2>
+<p>Create and populate a test table — <br><br></p><pre>CREATE TABLE bug5552 
+   ( id INT, 
+     d1 DECIMAL(5,2), 
+     d2 DECIMAL(6), 
+     d3 DECIMAL
+   ) ;
+
+INSERT INTO bug5552 
+   VALUES (1, 321.12,    654.321,    654321.0987654321 ) 
+   VALUES (2, 654.32,    65432.1,     6543210987654321 ) 
+   VALUES (3,  92.37,  6.54321e6,  6.543210987654321e2 )
+   VALUES (4, 987.65, 6.54321e41, 6.543210987654321e49 ) ;
+</pre><p> <br>These values were chosen to use the full precision of each column.</p><p>All of these values should be retrieved correctly from a linked table in Microsoft Access whether <tt>jetfix</tt> is on or off.
+ Note that Microsoft Access fetches these columns into <tt>NUMBER</tt> columns, the precision of which varies depending on the underlying Field Size property; consequently, some values may be rounded.
+<br></p></div></body></html>

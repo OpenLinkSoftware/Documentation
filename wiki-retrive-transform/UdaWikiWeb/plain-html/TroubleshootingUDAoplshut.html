@@ -1,0 +1,56 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%--><p> <br></p><h1><a name="Output of"></a> Output of <tt>oplshut</tt> </h1>
+<p>The command <tt>oplshut -s</tt> produces output like this: <br><br></p><pre>[openlink@openlinux bin]$ oplshut -s
+SVPID  SVTYPE  MACHINE            OPSYS  APPLIC    DATABASE  USERNAME  CONNECT
+-----------------------------------------------------------------------------------
+ 1480  mys3    dyn2.example.com   msdos  cppdmo32  test      mysql     Mar 30 12:01
+</pre><p> <br>Here is a brief overview of the output displayed by <tt>oplshut -s</tt>:</p><ul><li> <strong>SVPID</strong> - Associates a Process Identification Number with a database agent.
+ You can run <code>oplshut +kill &lt;svpid&gt;</code> to terminate database agents that will not disconnect.
+ For example: <br><br><pre><br>oplshut +kill 1480
+</pre><br><em><strong>Note:</strong> <tt>oplshut +kill</tt>} will terminate <strong>all</strong> connections associated with an agent process.
+ This is important since multi-threaded agents may handle multiple connections simultaneously.</em></li>
+</ul><ul><li> <strong>SVTYPE</strong> - Passes a label which identifies the Domain Alias, which was used to establish the connection.
+ The Domain Aliases appear in the Session Rules Book (<code>oplrqb.ini</code>).
+ For example: <br><br><pre><br>[Domain Aliases]
+DB2          = db2
+Informix 5     = inf5
+Informix 6     = inf6
+Informix 7.1   = inf71
+Informix 7.2   = inf72
+Informix 7.3   = inf73
+Informix 2000  = inf2000
+Ingres 6       = ing6
+MySQL 3.x      = mys3
+</pre><br>These aliases facilitate the resolution and configuration of connections.
+ They associate each connection request with a specific Mapping Rule, Database Agent configuration section, and Environment section.
+ For example: <br><br><pre><br>[Environment MYSQL]
+CURSOR_SENSITIVITY = LOW
+
+[Mapping Rules]
+mys3:**:**:**:**:**:**  = accept generic_mys3
+
+[generic_mys3]
+Description = Default settings for MySQL 3.x agent
+Program       = mys3_mv
+Environment = MYSQL
+ReUse       = always
+</pre><br> <br></li>
+<li> <strong>MACHINE</strong> - Identifies the machine from which the connection request originated.</li>
+</ul><ul><li> <strong>OPSYS</strong> - Identifies the operating system of the machine, from which the connection originated.</li>
+</ul><ul><li> <strong>APPLIC</strong> - Identifies the application that has initiated the connection.</li>
+</ul><ul><li> <strong>DATABASE</strong> - Identifies the target database to which the driver connects.</li>
+</ul><ul><li> <strong>USERNAME</strong> - Identifies the username used to authenticate against the database or operating system.</li>
+</ul><ul><li> <strong>CONNECT</strong> - The connection&#39;s inception date and time.
+ This field is useful for detection of lingering connections.</li>
+</ul><p> <strong>Note:</strong> If stability problems arise, you should compare the output of the following two commands (substituting your Agent configuration stanza for &quot;generic_agent&quot;):<code></code></p><pre>oplshut -s
+
+ps -ef <nop>| grep generic_agent</nop></pre>
+<p>Certain older Request Brokers can suffer from corruption of the internal tables that they use to monitor connections.
+ Consequently, Brokers lose track of agents.
+ While <code>oplshut -s</code> shows no or few agent connections, <code>ps -ef | grep generic_agent</code> will show many agents.
+ Here is normal <code>oplshut</code> and <code>ps</code> output: <br><code></code></p><pre>bash$ oplshut -s
+<br>SVPID  SVTYPE  MACHINE             OPSYS  APPLIC    DATABASE  USERNAME  CONNECT
+<br><nop>------------------------------------------------------------------------------------
+<br>30003  mys3    dyn243.example.com  msdos  cppdmo32  Northwin  sa        Apr 09 10:46
+
+bash$ ps -ef <nop>| grep generic_mys3
+<br>openlink 30003   29324  0 10:46:33  0:00 generic_mys3 +internal </nop></nop></pre><p>Abnormal output would have <tt>ps</tt> showing more agent processes than <tt>oplshut</tt>.</p></div></body></html>

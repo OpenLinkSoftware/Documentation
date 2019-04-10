@@ -1,0 +1,106 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ConfigureSQLMultipleInstances"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ConfigureSQLMultipleInstances"}%--><p> <br></p><h2><a name="Single Driver Connectivity to Multiple Instances"></a>Single Driver Connectivity to Multiple Instances  </h2>
+<p> <br></p><h3><a name="Single-Tier Drivers on Unix Client to SQL Server 2000"></a>Single-Tier Drivers on Unix Client to SQL Server 2000</h3>
+<p> <br>Use the following instructions to connect to SQL Server DBMSs that host multiple SQL Server instances:</p><p>1.
+ Use the following steps to identify your instance names --</p><ul><li> <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/HowDoIFindMySQLServerInstanceName" class="wikiword">Microsoft SQL Server instance name</a></li>
+</ul><p>Microsoft SQL Server instance names should be immediately visible.
+ Example: SQLSERV1, SQLSERV2.</p><p>2.
+ Login to the machine that hosts your <nop></nop>OpenLink Single-Tier driver.</p><p>3.
+ cd into the root of the <nop></nop>OpenLink installation.</p><p>4.
+ Use the bash or sh command to open a bash or bourne shell.</p><p>5.
+ Execute this command:<br></p><pre>. ./openlink.sh
+</pre><p> <br>6.
+ cd into the bin sub-directory of <nop></nop>OpenLink.</p><p>7.
+ vi the openlink.ini file.</p><p>8.
+ Locate the <tt>[Server Types]</tt> section.</p><p>9.
+ Create a meaningful label for each of your SQL Server instances.
+ For example:<br></p><pre>[Server Types]
+DB2             =
+Informix 5      =
+Informix 6      =
+.
+.
+.
+Server 1        =
+Server 2        =
+</pre><p> <br>10.
+ Locate this stanza in the file --<br></p><pre>[Environment SQLServer 2000]
+FREETDSCONF        = /usr/openlink/bin/freetds.conf
+DSQUERY            = SQLSERVER  ; Load this section from freetds.conf
+TDSHOST            = host.domain        ; Point this to your SQLServer machine
+TDSPORT            = 1433
+TDSVER             = 8.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading oplrvc.sql
+</pre><p> <br>11.
+ Copy and paste this stanza once for each new SQL Server instance that you want to add.</p><p>12.
+ Make the following modifications to the new stanzas --</p><p>a) Modify <tt>[Environment SQLServer 2000]</tt> so that &quot;SQL Server 2000&quot; is replaced with one of the labels you created above;e.g., <tt>[Environment Server 1]</tt>.</p><p>b) Pass the desired instance name to DSQUERY.
+ For example <tt>DSQUERY=SQLSERV1</tt>.</p><p>c) Pass the hostname or IP address of the SQL Server instance to TDSHOST.</p><p>d) Pass the tcp port associated with the instance to TDSPORT.</p><p>e) Set TDSVER to 8.0, if any other value appears.</p><p>f) Ensure you have an end result similar to this --<br></p><pre>[Environment Server 1]
+FREETDSCONF        = /usr/openlink/bin/freetds.conf
+DSQUERY            = SQLSERV1  ; Load this section from freetds.conf
+TDSHOST            = 192.158.12.121        
+TDSPORT            = 1433
+TDSVER             = 8.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading oplrvc.sql
+
+[Environment Server 2]
+FREETDSCONF        = /usr/openlink/bin/freetds.conf
+DSQUERY            = SQLSERV2  
+TDSHOST            = 192.158.12.121        
+TDSPORT            = 1434
+TDSVER             = 8.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading oplrvc.sql
+</pre><p> <br>13.
+ Save your changes and exit the file.</p><p>14.
+ vi freetds.conf.</p><p>15.
+ Make one new entry per each SQL Server instance using these conventions --<br></p><pre>[&lt;Instance Name&gt;]
+host                    = &lt;ntmachine.domain.com&gt;
+port                    = &lt;port&gt;
+tds version             = 8.0
+try server logins       = yes
+</pre><p> <br>For example --<br></p><pre>[SQLSERVER1]
+host                    = 192.158.12.121    
+port                    = 1433
+tds version             = 8.0
+try server logins       = yes
+
+
+[SQLSERV2]
+host                    = 192.158.12.121    
+port                    = 1434
+tds version             = 8.0
+try server logins       = yes
+</pre><p> <br>16.
+ Save your changes and exit the file.</p><p>17.
+ vi odbc.ini.</p><p>18.
+ Proceed to create your DSNs as per usual.
+ However, pass the appropriate label from the <tt>[Server Types]</tt> section of openlink.ini.
+ For example --<br></p><pre>[Development DSN]
+Driver          = /usr/openlink/lib/sql_mt_lt.so
+ServerType      = Server 1
+Username        = sa
+Password        = sa
+Database        = Northwind
+Options         = -H 192.158.12.121 -P 1433 -V 8.0
+FetchBufferSize = 99
+ReadOnly        = no
+DeferLongFetch  = no
+JetFix          = no
+Description     = Sample SQLServer 2000 Lite Connection
+
+[Production DSN]
+Driver          = /usr/openlink/lib/sql_mt_lt.so
+ServerType      = Server 2
+Username        = sa
+Password        = sa
+Database        = pubs
+Options         = -H 192.158.12.121 -P 1434 -V 8.0
+FetchBufferSize = 99
+ReadOnly        = no
+DeferLongFetch  = no
+JetFix          = no
+Description     = Sample SQLServer 2000 Lite Connection
+</pre><p> <br>19 Save your changes and exit the file.</p><p>20.
+ Test.
+<br></p></div></body></html>

@@ -1,0 +1,62 @@
+%META:TOPICPARENT{name="ErrorMessagesO"}%
+==Error Messages (O)==
+
+[[UDAErrorMessages|A]] [[ErrorMessagesB|B]] [[ErrorMessagesC|C]] [[ErrorMessagesD|D]] [[ErrorMessagesE|E]] [[ErrorMessagesF|F]] [[ErrorMessagesG|G]] [[ErrorMessagesH|H]] [[ErrorMessagesI|I]] [[ErrorMessagesJ|J]] [[ErrorMessagesK|K]] [[ErrorMessagesL|L]] [[ErrorMessagesM|M]] [[ErrorMessagesN|N]] [[ErrorMessagesO|O]] [[ErrorMessagesP|P]] [[ErrorMessagesQ|Q]] [[ErrorMessagesR|R]] [[ErrorMessagesS|S]] [[ErrorMessagesT|T]] [[ErrorMessagesU|U]] [[ErrorMessagesV|V]] [[ErrorMessagesW|W]] [[ErrorMessagesX|X]] [[ErrorMessagesY|Y]] [[ErrorMessagesZ|Z]] [[ErrorMessagesSymbols|#]]
+
+    
+===Operation Not Supported on Sockets (Internal RPC Call Failed)===
+
+**Error Synopsis**
+
+Operation Not Supported on Sockets
+Internal RPC Call Failed
+
+Some customers with large User licenses, 100+ database agent connections, have been experiencing problems where any connection after a certain amount of time, is rejected and no connection is allowed to the database. This fails when trying to achieve a Server Handle. The most common machine I have seen this error occur on is SCO and the most common database is Progress.
+
+**Cause**
+
+NB. By all means, the list of causes below is not extensive and if any other possible causes are known, please inform me.
+
+When the database agent makes a successful connection, it opens up a certain amount of file descriptors on the Operating System. The most common are:
+
+stdin
+stdout
+stderr
+
+It also opens database file descriptors. Consequently, depending on the database involved, as many as 10 file descriptors can be open at one time and in some cases, even more. An example is Progress, which opens up, files to the database .bi and .lg files and the .db file itself plus two other files for the sockets etc.
+
+If the machine has not been configured to cope with a large amount of file descriptors, this will cause an overload and no more file descriptors can be open. This results in the agent not been able to connect.
+
+The limit can be reached in one of two ways. This is because File descriptors can either be a System Wide or User limit. The worst proponent of this is Progress.
+
+When Progress makes a connection, it derives the owner of the process as the user that started the database. This is because it does not require a database user to make a connection. Consequently, it cannot associate the process with different users other than the user who starts the broker.
+
+The outcome of this is obvious. If the machine has been set a User limit of 110 which is the default value and if the broker makes more than 100 connections, that's 10 files * 100 agents which works out at 1000 file descriptors. This will have exceeded the limit and as a result, cause the problem the user experiences.
+
+**Solution**
+
+A few possible solutions are
+
+1. Increase the <nop>MaxFiles, <nop>Nofiles and <nop>Maxproc values within the Kernel. In the case of other Unix machines, you will need to determine the corresponding values if they differ. These values were based on the SCO Kernel. I have used a ratio of 1:10 when determining the values for those settings. In some cases, for instance <nop>MaxProc has a setting of 0, which allows the value to be determined dynamically. In the case of the customer who had 320-database connections, I have increased the value of <nop>NoFiles and <nop>MaxFiles to be 3200.
+
+To check the user limit, change your OS shell to ksh and run ulimit -a. This will list the value of <nop>NoFiles.
+
+2. In the case of Progress, it is best to advise the customer not to use root as the user when starting the broker, as this user would undoubtedly have opened up other files as part of its normal operations. Consequently, create an openlink user account to handle the start of the broker. This will limit the amount of files been open by the root user.
+
+3. A possible cause is also the amount of Sockets connections the OS can create. To increase Sockets size, increase the TCP & UDP portion of the Network Card. By default this is 512 but it's advisable to increase this to 1024. For large loads, the maximum is 2048. Again this is done in the Kernel. ./configure and netconfig are the commands you will need to change values in the kernel if you are not using X Windows.
+
+To use ./configure, cd to /etc/conf/cf.d and run the command ./configure.
+
+Network parameters can be set from the but if you wish to run it individually, run netconfig from the shell.
+
+4. Another keen ally is the <nop>Reuse Rule. By reusing, the agent will not need to open a new batch of files for every connection as the agent will be shared and will already have had the files open.
+
+To use <nop>ReUse, there are two factors that need to be taken into consideration. Firstlt, it is important that all consultants understand how to create custom rules. As various applications will be used, the consultant will need, with the help of the user, to understand the way applications are used so that appropriate aliases can be set up that will redirect to specific Mapping Rules. Within these rules, the agent will have the option of Reusing or not as the case may be. With the advent of Version 4.0, users can now run multiple brokers on their Servers. As a result, the broker can be started with different users and these brokers can be delegated different tasks as opposed to one broker handling all the incoming connections.
+
+The second consideration is performance, which can always be a factor when sharing databases agent. In the case of Progress, it is not multi-threaded and so a queue effect will come into effect when the agents are shared.
+
+5. Finally, it is also important to note what the database is doing at the point when the connection stops. Please monitor the database as simple things such as Telnet sessions that directly access the database open files as well as database connections. Each database uses its own utility to do this. For Progress, I ran promon and checked on the activity.
+
+
+Note: The list is not extensive so be aware of any other solutions that have not been mentioned. It is a knowledge base article so please feel free to amend or add as appropriate.
+        

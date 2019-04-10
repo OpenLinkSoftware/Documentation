@@ -1,0 +1,54 @@
+%META:TOPICPARENT{name="DevelopWiODBCSDK"}%
+
+==iODBC SDK Development==
+
+===Linking iODBC and ODBC Applications on Mac OS===
+
+====Porting Mac OS Classic ODBC applications to Mac OS X====
+
+Carbon is a framework included with Apple's Mac OS X operating system. It is derived from the original Macintosh Toolbox programming interface. Carbon on Mac OS X is an entirely new implementation. It is a superset of the original Toolbox functionality with many changes and additions to run under the Mac OS X operating system.
+
+A subset of Carbon is also available on previous versions of the Mac OS, all the way back to Mac OS 8.1 or Mac OS 8.6, depending on the functionality required. This enables developers to create applications from one set of source code that will run on both the original Macintosh operating system as well as Mac OS X. Carbon applications can even take advantage of special Mac OS X features when running on Mac OS X, and continue to run as they have otherwise on earlier versions of the Mac OS.
+
+Cocoa is a rich set of object-oriented frameworks that allow for the most rapid development of applications on Mac OS X. Using Cocoa, developers can create full-featured applications in a fraction of the time they would need for procedural languages. Applications from UNIX and other OS platforms can also be brought to Mac OS X quickly by using Cocoa to build state-of-the-art Aqua user interfaces while retaining most existing core code.
+
+The Cocoa application environment is designed specifically for Mac OS X-only native applications. It is comprised of a set of object-oriented frameworks that support rapid development and high productivity. The Cocoa frameworks include a full-featured set of classes designed to create robust and powerful Mac OS X applications. The object-oriented design simplifies application development and debugging.
+
+Figure: 1. iODBC SDK on Mac iODBC SDK on Mac %BR% %BR%
+
+<img src="%ATTACHURLPATH%/Porting.png" style="wikiautogen"/>
+
+See Also:
+
+* [[http://developer.apple.com/cocoa/|Cocoa]]
+
+* [[http://developer.apple.com/carbon/|Carbon]]
+
+
+====Migration of iODBC applications to Carbon====
+
+The iODBC CFM Bridge is the library that Carbon applications must be linked against. This bridge is responsible for redirecting the ODBC API calls to the right iODBC version applicable to the platform that the application is running on, be it Mac OS Classic or Mac OS X.
+
+The iODBC CFM Bridge must be used exclusively. If you link against the iODBC CFM Bridge, ensure that no other iODBC libraries are linked in your project. iODBC CFM Bridge linked applications require a valid iODBC installation on the target platform in order run successfully.
+
+Any CFM libraries used must be included in your System-Extensions folder of your Mac Classic system in order to successfully support carbon applications at runtime.
+
+====Migration of iODBC applications to Cocoa====
+
+Under Project Builder, you have to put all the frameworks that your application will use in your project. Implicitly, all these frameworks will be used. Also, you have to be sure that the machine where you will run the application includes all the frameworks you link with. In such cases, iODBC can be shipped with your application including all the frameworks.
+
+This is the most straight forward way to proceed, but you can also directly use the compiler and linker command line shipped with Project Builder. In a such case, you must add options to inform the compiler and linker that you want to use a specific framework. The sources do not have to change.
+
+During the compilation phase, use the -Fdir option on the compiler command line to add a search path to the framework path, where dir is the path you want to add. You may only specify one path per -F option, but you are not limited to the number of -F options used. iODBC compilations only require -F/Library/Frameworks and -F/System/Library/Frameworks options. Hence, tne complete cc{{{=}}} compilation command line may look like this:
+
+{{{
+cc -c "-F/Library/Frameworks" "-F/System/Library/Frameworks" ... mysources.c
+}}}
+
+During the linkage phase, you will have to use the same option as above and to specify at the end of the command line all the frameworks with which you want to link, preceded with the option -framework . A complete cc linkage command line may look like this:
+
+{{{
+cc -o "myapplication" "-F/Library/Frameworks" "-F/System/Library/Frameworks" ... \
+  -framework "iODBC" -framework "iODBCinst" -framework "iODBCadm" 
+}}}
+   

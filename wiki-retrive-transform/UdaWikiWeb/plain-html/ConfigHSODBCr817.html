@@ -1,0 +1,87 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="UDASystemIntegrationConfigDocs"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="UDASystemIntegrationConfigDocs"}%--><p> <br></p><h2><a name="Data Migration &amp; Integration Configuration"></a> Data Migration &amp; Integration Configuration </h2>
+<h3><a name="Configuring an ODBC data source using Oracle Heterogeneous Services (Release 8.1.7 and below)"></a>Configuring an ODBC data source using Oracle Heterogeneous Services (Release 8.1.7 and below)</h3>
+<h4><a name="PURPOSE"></a>PURPOSE</h4>
+<p>A step by step guide to setting up and troubleshooting Heterogeneous Services using Generic Connectivity on a Unix platform.</p><p> <br></p><h4><a name="Instructions"></a>Instructions</h4>
+<ol><li> Install Heterogeneous Services with the Oracle Installer.
+ If it&#39;s already installed, you&#39;ll see an &quot;<tt>hs</tt>&quot; directory under <tt>$ORACLE_HOME</tt>.
+<br></li>
+<li> Install the data dictionary tables and views for Heterogeneous Services.
+<br><ol><li> Log in to the Oracle database as <strong><tt>sys</tt></strong>.
+<br></li>
+<li> The data dictionary tables and views may already be installed on the server.
+ You can query the data dictionary to check for their existence.
+<br><br><pre><br>SELECT table_name FROM dba_tables WHERE table_name LIKE &#39;HS%&#39;;
+SELECT view_name FROM dba_views WHERE view_name LIKE &#39;HS%&#39;;
+</pre><br></li>
+<li> If they are not already present, run the &quot;<strong><tt>caths.sql</tt></strong>&quot; script.
+ This script is located in <tt>rdbms/admin</tt>.
+<br><br><pre><br>cd $ORACLE_HOME
+sqlplus   # provide authentication when prompted
+@rdbms/admin/caths.sql
+</pre><br></li>
+</ol></li>
+<li> Install your ODBC driver and configure an ODBC DSN.
+<br><ul><li> Ensure that connections work by testing via the <tt>iodbctest</tt> sample application (found in <tt>~/openlink/bin/</tt> or <tt>~/openlink/samples/ODBC/</tt>) and/or the HTTP-based <nop></nop>OpenLink ODBC Administrator.
+<br></li>
+<li> If your driver has an <tt>HSODBC_FIX</tt> or similar option, be sure it is enabled in the DSN you&#39;ll be using.
+ This is known to be present in OpenLink<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/OpenLink&parent=ConfigHSODBCr817" class="wikiword">?</a> drivers for PostgreSQL<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/PostgreSQL&parent=ConfigHSODBCr817" class="wikiword">?</a>.
+<br></li>
+</ul></li>
+<li>  Make sure the following entries are added to the <tt>$ORACLE_HOME/network/admin/tnsnames.ora</tt> and <tt>$ORACLE_HOME/network/admin/listener.ora</tt> files.
+ Change the <tt>host</tt> and <tt>$ORACLE_HOME</tt> values to suit your installation.
+<br><ul><li> <strong><tt>tnsnames.ora</tt></strong> <br><br><pre><br>hsodbc=
+  (description=
+    (address=(protocol=tcp)(host=solaris_server)(port=1521))
+    (connect_data=(sid=hsodbc))
+    (hs=ok)
+  )
+</pre><br></li>
+<li> <strong><tt>listener.ora</tt></strong> <br><br><pre><br>sid_list_listener=
+  (sid_list=
+    (sid_desc=
+      (sid_name=hsodbc)
+      (ORACLE_HOME = /dbs/oracle8i/64-bit/8.1.6)
+      (program= hsodbc)
+    )
+  )
+</pre><br></li>
+</ul></li>
+<li> Start the Oracle listener: <br><br><pre><br>lsnrctl
+start
+</pre><br></li>
+<li> You should now have a service handler for <tt>hsodbc</tt>.
+<br></li>
+<li> Make sure all environment variables set by the openlink.sh are also set in the <tt>$ORACLE_HOME/hs/admin/inithsodbc.ora</tt> (sample values -- your paths may vary).
+ Pay particular attention to the shared library path settings, as this variable name varies on different platforms.
+<br><br><pre><br># This is a sample agent init file that contains the HS parameters that are
+# needed for an ODBC Agent.
+
+#
+# HS init parameters
+#
+HS_FDS_CONNECT_INFO = &lt;Your ODBC DSN Name&gt;
+# HS_FDS_TRACE_LEVEL = 4
+# HS_FDS_TRACE_FILE_NAME = hs.log
+# *** Full path to ODBC Driver Manager ***
+HS_FDS_SHAREABLE_NAME = /dbs/openlink/32bit/v42/lib/libiodbc.so
+#
+# ODBC specific environment variables
+#
+set ODBCINI=/dbs/openlink/32bit/v42/bin/odbc.ini
+set ODBCINSTINI=/dbs/openlink/32bit/v42/bin/odbcinst.ini
+# *** The following variables are extra requirements of the OpenLink ODBC drivers ***
+set OPENLINKINI=/dbs/openlink/32bit/v42/bin/openlink.ini
+set FREETDSCONF=/dbs/openlink/32bit/v42/bin/freetds.conf
+set OPL_LICENSE_DIR=/dbs/openlink/32bit/v42/bin/
+set PATH=$PATH:/dbs/openlink/32bit/v42/bin
+set LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/dbs/openlink/32bit/v42/lib
+</pre><br></li>
+<li> Connect to the Oracle database and create a database link to access the target database.
+ Be sure to use the appropriate quotes as noted below.
+<br><br><pre><br>SQL&gt; CREATE DATABASE LINK hsodbc                      # &lt;= the link you&#39;ll reference in Oracle queries 
+SQL&gt;   CONNECT TO &quot;user&quot; IDENTIFIED BY &quot;password&quot;     # &lt;= valid user/pwd on target DB
+SQL&gt;   USING &#39;hsodbc&#39;;                                # &lt;= the TNSname you defined earlier
+</pre><br></li>
+<li> Once this is done, you should be able to select from a remote table in your DSN: <br><br><pre><br>SQL&gt; SELECT * FROM table@hsodbc;
+</pre><br></li>
+</ol></div></body></html>

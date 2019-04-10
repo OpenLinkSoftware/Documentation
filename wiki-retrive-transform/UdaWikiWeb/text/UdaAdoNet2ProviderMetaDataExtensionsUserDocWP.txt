@@ -1,0 +1,226 @@
+%META:TOPICPARENT{name="UDAWhitePapers"}%
+=<nop>OpenLink Metadata Extensions for ADO.NET
+
+
+%TOC%
+
+==ADO.NET's Shortcomings as a Datasource-Independent API
+
+For all the strengths of ADO.NET, one of its major weaknesses is the lack of a rigid specification to which data providers must conform. ADO.NET differs markedly from some of its Microsoft forebears in this respect.
+
+Unlike ADO.NET, the ODBC and OLE DB data access standards were built around rigid specifications detailing the functionality drivers must provide. Whilst the looseness of the ADO.NET specification might make it easier to write providers for data sources which don't fully conform to a rigid DBMS model and "lower the high bar" set by ODBC and OLE DB, the downside of this approach is that writing data source independent code becomes far more difficult. Indeed, one of the main reasons for the major success of ODBC and its ubiquity is its ability to allow developers to write database-agnostic applications.
+
+ADO.NET 1.x is particularly weak at supporting provider independent code. Although it is possible to exploit polymorphism and use instances of the System.Data.IDbxxx interfaces (e.g. <nop>IDbConnection), it is still necessary to instantiate a provider specific class (e.g. System.Data.Odbc.OdbcConnection, System.Data.OracleClient.OracleConnection etc.) and then upcast this to the appropriate <nop>IDbxxx interface. Apart from the ability to obtain the schema of a result set (through the <nop>IDataReader.<nop>GetSchemaTable method), metadata support in ADO.NET 1.x is completely absent.
+
+ADO.NET 2.0 goes some way towards addressing these most obvious shortcomings of ADO.NET 1.x. The new <nop>DbProviderFactory class contains methods for creating instances of a provider's implementation of the data source classes, using information supplied at runtime. Schema information for the data source can be obtained through <nop>DbConnection.<nop>GetSchema( ). However, in keeping with the apparent design philosophy of ADO.NET, the schema information which a provider must supply is not specified. Again, this militates against writing data source independent code. Even Microsoft's own ADO.NET 2.0 providers differ significantly in the schema information they provide. (This can be seen by comparing, for example, the XML schemas of the Tables metadata collections returned by the System.Data.SqlClient and System.Data.Odbc providers when connected to SQL Server.) The lack of uniformity is  less of an issue if you use a generic bridge provider, such as System.Data.Odbc, because the schema for each metadata collection, e.g. the Tables collection, is the same irrespective of the database connected to, be it SQL Server, Oracle or some other DBMS. But, the extent of the schema information exposed by the Microsoft's ADO.NET provider for ODBC is typically far less than is available from the underlying ODBC driver. The very limited schema information exposed by the provider and the lack of a firm metadata specification in ADO.NET 2.0 fall far short of what is required to write database independent query tools and deductive data-centric applications.
+
+==Plugging the Metadata Gaps
+
+===Cross-Database Uniformity
+
+To enhance the metadata available from ADO.NET, <nop>OpenLink's UDA providers for .NET now expose all the schema information available from ODBC. The enhanced metadata support is not restricted to <nop>OpenLink's ODBC bridge provider for .NET, but extends to it's managed .NET data providers - the <nop>GenericClient, SQLServer and Sybase providers. By exposing ODBC-like metadata through ADO.NET, the <nop>OpenLink providers plug a large gap in ADO.NET using a familiar and well established standard, at the same time providing cross database uniformity across all the databases supported by <nop>OpenLink.
+
+===Building on ADO.NET 2.0 's Schema Support
+
+The metadata extensions build on the loose metadata support in ADO.NET 2.0 accessed through <nop>DbConnection.<nop>GetSchema( ).
+
+<nop>GetSchema returns a metadata collection in the form of a <nop>DataTable. An application specifies which metadata collection it requires by supplying a metadata collection name to <nop>GetSchema. The ADO.NET specification does not state explicitly which metadata collections a provider should support. However, it appears that, at a minimum, providers should support the collections defined by the <nop>DbMetaDataCollectionNames class, that is: <nop>MetaDataCollections, <nop>DataSourceInformation, <nop>DataTypes, <nop>ReservedWords and Restrictions. <nop>MetaDataCollections contains all the schema names supported by a provider.
+
+===More Detailed Catalog Information
+
+<nop>OpenLink UDA providers extend the above list to include: Columns, <nop>ColumnPrivileges, <nop>ExtendedDataSourceInformation, <nop>ForeignKeys, Indexes, <nop>PrimaryKeys, Procedures, <nop>ProcedureColumns, <nop>ProcedureParameters, <nop>SpecialColumns, <nop>TablePrivileges, Tables and Views.
+
+Of the 'non-standard' schemas supported by UDA providers, with the exception of <nop>ExtendedDataSourceInformation, each has an ODBC analogue. For example, the Tables collection maps to the ODBC catalog call <nop>SQLTables, likewise the <nop>PrimaryKeys collection maps to <nop>SQLPrimaryKeys. In each case, the number, names, types and permitted values of the columns in the <nop>DataTable returned by <nop>GetSchema( ) match the result set specified by the ODBC standard for the corresponding ODBC catalog call. By way of illustration, part of the XML schema for the <nop>PrimaryKeys <nop>DataTable is shown below.
+
+{{{
+       <xs:element name="PrimaryKeys">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TABLE_CAT" type="xs:string" minOccurs="0" />
+              <xs:element name="TABLE_SCHEM" type="xs:string" minOccurs="0" />
+              <xs:element name="TABLE_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="COLUMN_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="KEY_SEQ" type="xs:short" minOccurs="0" />
+              <xs:element name="PK_NAME" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+}}}
+
+===More Detailed Data Source Information
+
+As well as catalog information, another key requirement for creating deductive data-aware applications is knowledge of the capabilities and idiosyncrasies of the data source. For instance, whether a database supports mixed case, uppercase or lowercase names for schema objects. To aid writing data source independent code, this information should ideally be available in a standard form. 'Standard' ADO.NET 2.0 includes a <nop>DataSourceInformation schema for this purpose. Unfortunately, as with their support for catalog information, the Microsoft providers return only very limited information in this schema collection. This can be seen from the partial XML schema below which reflects the <nop>DataSourceInformation collection returned by the Microsoft <nop>SqlClient and Odbc providers.
+
+{{{
+        <xs:element name="DataSourceInformation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompositeIdentifierSeparatorPattern" type="xs:string" minOccurs="0" />
+              <xs:element name="DataSourceProductName" type="xs:string" minOccurs="0" />
+              <xs:element name="DataSourceProductVersion" type="xs:string" minOccurs="0" />
+              <xs:element name="DataSourceProductVersionNormalized" type="xs:string" minOccurs="0" />
+              <xs:element name="GroupByBehavior" type="xs:int" minOccurs="0" />
+              <xs:element name="IdentifierPattern" type="xs:string" minOccurs="0" />
+              <xs:element name="IdentifierCase" type="xs:int" minOccurs="0" />
+              <xs:element name="OrderByColumnsInSelect" type="xs:boolean" minOccurs="0" />
+              <xs:element name="ParameterMarkerFormat" type="xs:string" minOccurs="0" />
+              <xs:element name="ParameterMarkerPattern" type="xs:string" minOccurs="0" />
+              <xs:element name="ParameterNameMaxLength" type="xs:int" minOccurs="0" />
+              <xs:element name="ParameterNamePattern" type="xs:string" minOccurs="0" />
+
+              <xs:element name="QuotedIdentifierPattern" type="xs:string" minOccurs="0" />
+              <xs:element name="QuotedIdentifierCase" type="xs:int" minOccurs="0" />
+              <xs:element name="StatementSeparatorPattern" type="xs:string" minOccurs="0" />
+              <xs:element name="StringLiteralPattern" type="xs:string" minOccurs="0" />
+              <xs:element name="SupportedJoinOperators" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+}}}
+
+In contrast to this very limited information, ODBC can provide far more detailed information about a data source through the <nop>SQLGetInfo( ) function. <nop>OpenLink providers make all this information available through a new ADO.NET schema collection called "<nop>ExtendedDataSourceInformation". The <nop>OpenLink providers still support the <nop>DataSourceInformation schema which shares the same format as the Microsoft providers detailed above. The splitting of the data source information into 'standard' and 'extended' categories across the <nop>DataSourceInformation and <nop>ExtendedDataSourceInformation schemas gives applications the option of only retrieving more detailed information when required. Visual Studio 2005, for instance, only requires the <nop>DataSourceInformation schema.
+
+An example <nop>ExtendedDataSourceInformation schema for SQL Server 2005, written as XML, is shown below:
+
+{{{
+<?xml version="1.0" standalone="yes"?>
+  <ExtendedDataSourceInformation>
+    <AggregateFunctions>64</AggregateFunctions>
+    <AlterDomain>0</AlterDomain>
+    <AlterTable>39017</AlterTable>
+    <CatalogLocation>1</CatalogLocation>
+    <CatalogName>Y</CatalogName>
+    <CatalogNameSeparator>.</CatalogNameSeparator>
+    <CatalogTerm>database</CatalogTerm>
+    <CatalogUsage>7</CatalogUsage>
+    <CollationSeq>ISO 8859-1</CollationSeq>
+    <ColumnAlias>Y</ColumnAlias>
+    <ConcatNullBehavior>0</ConcatNullBehavior>
+    <ConvertFunctions>3</ConvertFunctions>
+    <CorrelationName>2</CorrelationName>
+    <CreateAssertion>0</CreateAssertion>
+    <CreateCharacterSet>0</CreateCharacterSet>
+    <CreateCollation>0</CreateCollation>
+    <CreateDomain>0</CreateDomain>
+    <CreateSchema>3</CreateSchema>
+    <CreateTable>1</CreateTable>
+    <CreateTranslation>0</CreateTranslation>
+    <CreateView>3</CreateView>
+    <CursorCommitBehavior>1</CursorCommitBehavior>
+    <CursorRollbackBehavior>1</CursorRollbackBehavior>
+    <DatabaseName>cmsb1</DatabaseName>
+    <DataSourceReadOnly>N</DataSourceReadOnly>
+    <DDLIndex>3</DDLIndex>
+    <DefaultTxnIsolation>2</DefaultTxnIsolation>
+    <DescribeParameter>Y</DescribeParameter>
+    <DropAssertion>0</DropAssertion>
+    <DropCharacterSet>0</DropCharacterSet>
+    <DropCollation>0</DropCollation>
+    <DropDomain>0</DropDomain>
+    <DropSchema>0</DropSchema>
+    <DropTable>1</DropTable>
+    <DropTranslation>0</DropTranslation>
+    <DropView>1</DropView>
+    <ExpressionsInOrderBy>Y</ExpressionsInOrderBy>
+    <IdentifierQuoteChar>"</IdentifierQuoteChar>
+    <IndexKeywords>3</IndexKeywords>
+    <InfoSchemaViews>7585780</InfoSchemaViews>
+    <InsertStatement>7</InsertStatement>
+    <Integrity>Y</Integrity>
+    <LikeEscapeClause>Y</LikeEscapeClause>
+    <MaxBinaryLiteralLen>524288</MaxBinaryLiteralLen>
+    <MaxCatalogNameLen>128</MaxCatalogNameLen>
+    <MaxCharLiteralLen>524288</MaxCharLiteralLen>
+    <MaxColumnNameLen>128</MaxColumnNameLen>
+    <MaxColumnsInGroupBy>0</MaxColumnsInGroupBy>
+    <MaxColumnsInIndex>16</MaxColumnsInIndex>
+    <MaxColumnsInOrderBy>0</MaxColumnsInOrderBy>
+    <MaxColumnsInSelect>4096</MaxColumnsInSelect>
+    <MaxColumnsInTable>1024</MaxColumnsInTable>
+    <MaxCursorNameLen>128</MaxCursorNameLen>
+    <MaxIdentifierLen>128</MaxIdentifierLen>
+    <MaxIndexSize>900</MaxIndexSize>
+    <MaxProcedureNameLen>134</MaxProcedureNameLen>
+    <MaxRowSize>8060</MaxRowSize>
+    <MaxRowSizeIncludesLong>N</MaxRowSizeIncludesLong>
+    <MaxSchemaNameLen>128</MaxSchemaNameLen>
+    <MaxStatementLen>524288</MaxStatementLen>
+    <MaxTableNameLen>128</MaxTableNameLen>
+    <MaxTablesInSelect>32</MaxTablesInSelect>
+    <MaxUserNameLen>128</MaxUserNameLen>
+    <MultResultSets>Y</MultResultSets>
+    <MultipleActiveTxn>Y</MultipleActiveTxn>
+    <NonNullableColumns>1</NonNullableColumns>
+    <NullCollation>1</NullCollation>
+    <NumericFunctions>16777215</NumericFunctions>
+    <Procedures>Y</Procedures>
+    <ProcedureTerm>stored procedure</ProcedureTerm>
+    <SchemaTerm>owner</SchemaTerm>
+    <SchemaUsage>31</SchemaUsage>
+    <SearchPatternEscape>\</SearchPatternEscape>
+    <SpecialCharacters>....</SpecialCharacters>
+    <SqlConformance>1</SqlConformance>
+    <Sql92DateTimeFunctions>0</Sql92DateTimeFunctions>
+    <Sql92ForeignKeyDeleteRule>0</Sql92ForeignKeyDeleteRule>
+    <Sql92ForeignKeyUpdateRule>0</Sql92ForeignKeyUpdateRule>
+    <Sql92Grant>16</Sql92Grant>
+    <Sql92NumericValueFunctions>0</Sql92NumericValueFunctions>
+    <Sql92Predicates>7</Sql92Predicates>
+    <Sql92RelationalJoinOperators>858</Sql92RelationalJoinOperators>
+    <Sql92Revoke>16</Sql92Revoke>
+    <Sql92RowValueConstructor>15</Sql92RowValueConstructor>
+    <Sql92StringFunctions>6</Sql92StringFunctions>
+    <Sql92ValueExpressions>15</Sql92ValueExpressions>
+    <StringFunctions>5242879</StringFunctions>
+    <Subqueries>31</Subqueries>
+    <SystemFunctions>7</SystemFunctions>
+    <TableTerm>table</TableTerm>
+    <TimeDateAddIntervals>511</TimeDateAddIntervals>
+    <TimeDateDiffIntervals>511</TimeDateDiffIntervals>
+    <TimeDateFunctions>2097151</TimeDateFunctions>
+    <TxnCapable>2</TxnCapable>
+    <TxnIsolationOption>15</TxnIsolationOption>
+    <Union>3</Union>
+  </ExtendedDataSourceInformation>
+}}}
+
+Each of the elements in the above metadata corresponds to a particular <nop>SQLGetInfo ( ) information type. e.g. <nop>CatalogUsage corresponds to the ODBC <nop>SQLGetInfo <nop>InfoType SQL_CATALOG_USAGE. All the <nop>InfoType's defined by <nop>SQLGetInfo are included except for those which either have an equivalent in the <nop>DataSourceInformation collection or reflect a feature of the ODBC driver itself rather than the underlying data source.
+
+In order to cater for cases where <nop>SQLGetInfo returns a bitmask, the <nop>OpenLink ADO.NET providers define corresponding bit fields (as enumerated types) so that the state of the various flags in the returned bitmask can be tested easily. All the enumerated types defined for this purpose are contained in the provider. <nop>MetaData namespace, e.g. OpenLink.Data.OdbcClient.MetaData. As an example, the enum <nop>AggregateFunctions contains the flags defined by ODBC's SQL_AF_xxx flags to test the SQL_AGGREGATE_FUNCTIONS response.
+
+{{{
+        [Flags]
+        public enum AggregateFunctions : uint
+        {
+            All = 0x40,
+            Avg = 0x01,
+            Count = 0x02,
+            Distinct = 0x20,
+            Max = 0x04,
+            Min = 0x08,
+            Sum = 0x10,
+        }
+}}}
+
+Enumerations are similarly defined for cases where <nop>SQLGetInfo returns an integer value restricted to a limited range of values. e.g. For SQL_CORRELATION_NAME, there is a corresponding enum:
+
+{{{
+        public enum CorrelationName : ushort
+        {
+            None = 0,
+            Different = 1,
+            Any = 2,
+        }
+}}}
+
+
+==Metadata Support for ADO.NET 1.x
+
+As well as extending the metadata support in ADO.NET 2.0, <nop>OpenLink providers deal with the woeful metadata provision in ADO.NET 1.x by including the ADO.NET 2.0 metadata support in their ADO.NET 1.x providers.
+The <nop>OpenLink ADO.NET 1.x providers expose a <nop>GetSchema( ) method on the <nop>OPLConnection object which functions exactly the same as in the ADO.NET 2.0 providers.
+
+Where the .NET Framework v2 defines metadata related classes and enums for ADO.NET 2.0, which are missing in v1 of the Framework, the <nop>OpenLink providers supply equivalents. The classes and enums in question are <nop>CatalogLocation, <nop>GroupByBehavior, <nop>SupportedJoinOperators, <nop>IdentifierCase, <nop>DbMetaDataCollectionNames and <nop>DbMetaDataColumnNames, all of which are contained in the System.Data.Common namespace. The <nop>OpenLink ADO.NET 1.x providers define equivalents in their providerName.<nop>MetaData namespace.
+
+==Summary - Promoting Datasource Independence
+
+<nop>OpenLink are continuing their commitment to promoting database independent application development by actively addressing the considerable weaknesses of ADO.NET in this regard. By extending the weak metadata support in ADO.NET to expose an ODBC-like metadata infrastructure across all their providers and all supported databases, <nop>OpenLink ADO.NET providers offer the promise of datasource-agnostic development to .NET developers in the face of a movement by Microsoft away from the datasource independent models embraced by its earlier data access standards.

@@ -1,0 +1,82 @@
+<docbook><section><title>UnresolvedSymbolX</title><title>Unresolved symbol &lt;symbol&gt; or Undefined reference to &lt;symbol&gt;</title>Unresolved symbol &lt;symbol&gt; or Undefined reference to &lt;symbol&gt;
+<para>  </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">General Guidance</bridgehead>
+<para>To resolve these errors, start by finding where the missing symbols are defined:</para><orderedlist spacing="compact"><listitem> Access the machine, which contains your OpenLink server components installation.
+</listitem>
+<listitem> cd into your database&#39;s <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowiki/lib</span> sub-directory.
+</listitem>
+<listitem> Run the following command: <blockquote><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowiki nm -A *.so | grep &lt;symbol&gt; </span></blockquote> For example, if the error you got was &quot;<span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiUnresolved symbol xsendto</span>&quot; or &quot;<span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiUndefined reference to xsendto</span>&quot;, the command would be <blockquote><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowiki nm -A *.so | grep xsendto </span></blockquote> </listitem>
+<listitem> If the symbol does not exist, stop and contact OpenLink Product Support.
+ Otherwise,....
+</listitem>
+<listitem> Record the names of the files which contain your symbols.
+ The filename will be the first item in the nm output.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">If the error messages came up during a Multi-Tier Generic Client installation</bridgehead>
+<para>Add the directory/ies that contains the library/ies found above to the shared library environment variable for your OS (i.e., <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiLD_LIBRARY_PATH</span>, <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiLIBPATH</span>, or <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiSHLIB_PATH</span>).
+ For example: </para><blockquote><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiset LIBPATH=/app/product/oracle/8.0.4/lib:$LIBPATH</span></blockquote><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">If the error messages came up while relinking a Multi-Tier Database Agent or Single-Tier Lite Driver for Progress, on Linux </bridgehead>
+<para><emphasis>For errors regarding __ctype_b, __ctype_tolower, and __ctype_toupper, follow the guidance in this section.
+ For other errors, proceed to the next section below.</emphasis></para><para><emphasis>Instructions in this section were based on Progress Knowledgebase Article ID#P101259.</emphasis></para><para>32-bit OpenEdge 10.1B and earlier, including Progress 9.1x and earlier, are built on RedHat 2.1, with an older version of glibc (2.3.2-5 or earlier).
+ These older versions of glibc contain definitions of __ctype_b, __ctype_tolower, and __ctype_toupper.</para><para>These definitions are not contained in more recent versions of glibc -- but they remain necessary for Database Agent or Lite Driver relinking.
+ You can either relink on a Linux machine which has such an older version of glibc (again, 2.3.2-5 or earlier), or follow the instructions below.</para><orderedlist spacing="compact"><listitem> Create a file named &quot;libctype.c&quot; with these contents -- <programlisting>#include &lt;stdlib.h&gt;
+#include &lt;ctype.h&gt;
+
+__const unsigned short int * __ctype_b;
+__const __int32_t  * __ctype_tolower;
+__const __int32_t  * __ctype_toupper;
+
+void __attribute__((constructor)) my_init() {
+   __ctype_b = * __ctype_b_loc();
+   __ctype_tolower = * __ctype_tolower_loc();
+   __ctype_toupper = * __ctype_toupper_loc();
+}
+
+void __attribute__((destructor)) my_clean() {
+}
+</programlisting></listitem>
+<listitem> Compile that with the command -- <programlisting>gcc -O2 -shared -o libctype.so libctype.c
+</programlisting></listitem>
+<listitem> Amend your <computeroutput>ldpro</computeroutput> script, or <computeroutput>build_rx.sh</computeroutput> for OpenEdge 10, to include a reference to the newly created <computeroutput>libctype.so</computeroutput> library.
+</listitem>
+<listitem> Execute the <computeroutput>ldpro</computeroutput> script, or <computeroutput>build_rx.sh</computeroutput> for OpenEdge 10; the build should now succeed.
+</listitem>
+<listitem> Be sure to deploy the new <computeroutput>libctype.so</computeroutput> along with the executable you just built, as the executable now depends on this library.</listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">If the error messages came up while relinking any other Multi-Tier Database Agent or Single-Tier Lite Driver</bridgehead>
+<orderedlist spacing="compact"><listitem> cd into the <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowiki/lib</span> sub-directory of your OpenLink installation.
+</listitem>
+<listitem> Open the script which produced the error in your favorite text editor (vi, emacs, etc.).
+</listitem>
+<listitem> Determine where to add the new library.
+ Most often, it is added to the cc -s -o line.
+ Oracle users must add it to the make -f line.
+ Progress users who encounter errors with mkdlc must add it to $PRO_EXTRA.
+ For example: <blockquote><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowiki$PRO_EXTRA \ $PROLOAD/4gl/&lt;missing file&gt;.o \ </span></blockquote> </listitem>
+<listitem> Save your changes and exit your relink script.
+</listitem>
+<listitem> Relink your database agent.</listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Evidence</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem> Database Agent Version String </listitem>
+<listitem> DBMS Version </listitem>
+<listitem> Relink Script(s) </listitem>
+<listitem> Output of uname -a </listitem>
+</itemizedlist></section></docbook>

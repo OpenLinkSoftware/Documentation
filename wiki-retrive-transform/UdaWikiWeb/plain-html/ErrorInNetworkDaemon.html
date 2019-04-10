@@ -1,0 +1,33 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ErrorMessagesE"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ErrorMessagesE"}%--><p> <br></p><h1><a name="Error Message:"></a> Error Message: <tt>Error in Network Daemon. (8933)</tt> </h1>
+<p>This error comes from Progress itself, and is frequently associated with the &quot;Personal Database&quot; Progress license.
+ You must determine whether or not any Progress licensing restrictions would prohibit your client components from connecting to a remote database, or prohibit your target database from accepting connections from remote clients.
+ Such Progress licensing is outside of our control.</p><p>Once Progress licensing has been ruled out, proceed to confirm the UDA connection configuration --</p><ol><li> Make sure both client and server host have the same definition for the relevant Progress service port.<br><br> <br><ol><li> Open the Progress database server&#39;s <tt>%SYSTEM32%/Drivers/etc/services</tt> or <tt>/etc/services</tt> file.<br><br> <br></li>
+<li> Locate the service associated with the Progress database, and make note of that port number.
+ For example: <br><br><pre><br>pro10c   8897
+</pre><br></li>
+<li> Include an identical in your client&#39;s <tt>%SYSTEM32%/Drivers/etc/services</tt> or <tt>/etc/services</tt> file.
+ <br><br> <br></li>
+</ol></li>
+<li> If the error persists, start the database in sockets mode using the port number (rather than the service name) from the services file.
+ For example: <br><br><pre><br>$DLC/bin/proserve demo.db -S 8897 -N TCP -H proserver.mycompany.com
+</pre><br></li>
+<li> You can also try using the port number (instead of the service name) in your data source.
+ For example: <br><br><pre><br>-S 8897 -N TCP -H proserver.mycompany.com
+</pre><br></li>
+<li> If the issue still persists, and you&#39;re using our Multi-Tier solution --<br><br> <br><ol><li> Open the Broker Rulebook (e.g., <tt>oplrqb.ini</tt>) in a text editor, and locate this section: <br><br><pre><br>[Protocol TCP]
+PingWatchdog = No     ; Send check-alive packets
+PingInterval = 600    ; every &lt;PingInterval&gt; seconds
+;IPAddress    = 192.168.123.231
+PortLow      = 5000
+;PortHigh     = 60000
+Listen       = 5000
+</pre><br></li>
+<li> Uncomment (i.e., remove the leading semicolon from) <tt>PortHigh</tt>, and set it to <tt>6000</tt>.
+ For example: <br><br><pre><br>PortHigh = 6000
+</pre><br></li>
+<li> Save your changes and exit the text editor.<br><br> <br></li>
+<li> Confirm that any firewalls between Client and Broker host, and on the Broker host itself, permit connections to (and replies from) all ports in the range from <tt>PortLow</tt> to <tt>PortHigh</tt> (including those ports), as well as the port for <tt>Listen</tt>.<br><br> <br></li>
+<li> Confirm that any firewalls permit connections to (and replies from) all ports between Progress <tt>-minport</tt> and <tt>-maxport</tt> settings.<br><br> <br></li>
+</ol></li>
+<li> Retest your connection.</li>
+</ol></div></body></html>

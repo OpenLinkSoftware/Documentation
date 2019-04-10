@@ -1,0 +1,106 @@
+%META:TOPICPARENT{name="InstallConfigODBC"}%
+
+==Additional Reading==
+
+===ODBC to Jet Data Type Mapping===
+
+==== Overview====
+
+When linking to a remote table, Microsoft Jet uses the ODBC {{{SQLColumns()}}} API call to gather information on the fields in the table. The information returned by {{{SQLColumns()}}} determines how the data type of each field will be mapped to a Microsoft Jet data type.
+
+Jet uses the **{{{fSqlType}}}**, **{{{lPrecision}}}**, and **{{{wScale}}}** values to determine an appropriate local data type, on a field-by-field basis, and uses that data type to represent the remote data in a linked table. Each time Microsoft Jet executes an action or parameter query against the remote data source, the information stored in the linked table is used to ensure that ODBC calls are made with a valid ODBC data type.
+
+The Jet Engine's mapping of the ODBC {{{SQL_DECIMAL}}} and {{{SQL_NUMERIC}}} types is detailed below. The mapping of these column types is problematic when the precision of a column is greater than 15. Under these circumstances, Jet maps the column to the Jet Text type. This is done to preserve precision, since the maximum precision of the Jet numeric types is 15. Unfortunately, once mapped to the Text type, the data is no longer recognized as being numeric.
+
+To overcome this limitation, the <nop>OpenLink  //**Jetfix**// option changes the ODBC type returned by {{{SQLColumns}}} for native database column types which would normally be reported as {{{SQL_DECIMAL}}} or {{{SQL_NUMERIC}}}. These include {{{MONEY}}}, {{{DECIMAL}}}, and {{{NUMERIC}}} columns in the remote table. With Jetfix enabled, these columns are typically reported as {{{SQL_DOUBLE}}}, which Jet always maps to {{{Number (Double)}}}. The result is that Jet recognizes the data as numeric, albeit with a possible loss of precision, depending on the actual data values.
+
+==== ODBC to Jet Data Type Mapping performed by Jet Engine ====
+
+<table class="data">
+  <tbody><tr>
+    <th class="data" colspan="3">ODBC Data Type</th>
+    <th class="data" rowspan="2">Jet Data Type†</th>
+    <th class="data" rowspan="2">Notes</th>
+  </tr>
+
+  <tr>
+    <th class="data">Type </th>
+    <th class="data">Precision //{{{p}}}// </th>
+    <th class="data">Scale //{{{s}}}// </th>
+  </tr>
+
+
+  <tr>
+
+    <td class="data" rowspan="7">
+          <p>{{{SQL_DECIMAL}}} %BR%%BR% //or// %BR%%BR% {{{SQL_NUMERIC}}}</p>
+        </td>
+    <td class="data">p&nbsp;&lt;&#61;&nbsp;4</td>
+    <td class="data">s&nbsp;&#61;&nbsp;0</td>
+
+    <td class="data">   {{{Number (Integer)}}}   </td>
+    <td class="data">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="data">p&nbsp;&lt;&#61;&nbsp;9</td>
+    <td class="data">s&nbsp;&#61;&nbsp;0</td>
+    <td class="data">   {{{Number (Long Integer)}}}   </td>
+
+    <td class="data">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="data">p&nbsp;&lt;&#61;&nbsp;15</td>
+    <td class="data">0&nbsp;&lt;&#61;&nbsp;s&nbsp;&lt;&#61;&nbsp;4</td>
+    <td class="data">   {{{Number (Double)}}}   </td>
+
+    <td class="data">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="data">p&nbsp;&lt;&#61;&nbsp;15</td>
+    <td class="data">s&nbsp;&gt;&nbsp;4</td>
+    <td class="data">   {{{Number (Double)}}}   </td>
+
+    <td class="data">"ODBC to Jet Data Type Mapping" document unclear here.</td>
+  </tr>
+  <tr>
+    <td class="data">p&nbsp;&#61;&nbsp;19</td>
+    <td class="data">s&nbsp;&#61;&nbsp;4</td>
+    <td class="data">   {{{Currency}}}   </td>
+    <td class="data">MS SQL Server only</td>
+
+      </tr>
+  <tr>
+    <td class="data">p&nbsp;&#61;&nbsp;10</td>
+    <td class="data">s&nbsp;&#61;&nbsp;4</td>
+    <td class="data">   {{{Currency}}}   </td>
+    <td class="data">MS SQL Server only</td>
+      </tr>
+
+  <tr>
+    <td class="data">p&nbsp;&gt;&nbsp;15</td>
+    <td class="data">   irrelevant   </td>
+    <td class="data">   {{{Text}}}   </td>
+    <td class="data">Not documented. Based on testing.</td>
+  </tr>
+
+
+</tbody></table>
+
+
+†The Jet Data Type is a property setting available in the table Design view.
+
+====Jet Data Type Ranges====
+
+
+| **Jet Data Type** |  **Range** |
+|{{{Integer}}}  | 	–32,768 to +32,767 |
+|{{{Long Integer}}} 	| –2,147,483,648 to +2,147,483,647 |
+|{{{Double}}}  |	-1.8E+308  -1.8E-308, 1.8E-308  1.8E+308 |
+|{{{Currency}}}  | – 922,337,203,685,477.5808 to +922,337,203,685,477.5807 |
+
+
+====References====
+
+
+* Microsoft Knowledge base article [[support.microsoft.com/kb/214854|KB214854, "Improved ODBC <nop>DataType Mappings with Jet 4.0"]].
+* Chapter 9, "Developing Client/Server Application", of [[http://openlibrary.org/b/OL802690M/Microsoft_Jet_database_engine_programmer%27s_guide|Microsoft Jet Database Engine Programmer's Guide, Second Edition]]. Redmond, WA: Microsoft Press, 1997.

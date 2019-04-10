@@ -1,0 +1,44 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="TroubleshootingUDALoggingTracing"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="TroubleshootingUDALoggingTracing"}%--><p> <br></p><h1><a name="Generating TDS Protocol Logs"></a> Generating TDS Protocol Logs </h1>
+<!--Begin of %TOC{}%--><p> <br></p><div class="MACRO_TOC"> <br> <div class="wikitoc"> <br>  <ul> <br><li><a href="#Basic%20information">Basic information</a></li> <br><li><a href="#Specifics">Specifics</a></li><ul><li><a href="#macOS%20a%2Fk%2Fa%20Mac%20OS%20X">macOS a/k/a Mac OS X</a></li>
+<ul><li><a href="#Mojave%20%2810.14%29%2C%20High%20Sierra%20%2810.13%29%2C%20Sierra%20%2810.12%29%2C%20El%20Capitan%20%2810.11%29%2C%20Yosemite%20%2810.10%29%2C%20Mavericks%20%2810.9%29%2C%20Mountain%20Lion%20%2810.8%29%2C%20or%20Lion%20%2810.7%29">Mojave (10.14), High Sierra (10.13), Sierra (10.12), El Capitan (10.11), Yosemite (10.10), Mavericks (10.9), Mountain Lion (10.8), or Lion (10.7)</a></li> <br><li><a href="#Lion%20%2810.7%29%2C%20Snow%20Leopard%20%2810.6%29%2C%20Leopard%20%2810.5%29%2C%20Tiger%20%2810.4%29%2C%20Panther%20%2810.3%29%2C%20Jaguar%20%2810.2%29%2C%20Puma%20%2810.1%29%2C%20or%20Cheetah%20%2810.0%29">Lion (10.7), Snow Leopard (10.6), Leopard (10.5), Tiger (10.4), Panther (10.3), Jaguar (10.2), Puma (10.1), or Cheetah (10.0)</a></li> <br></ul>
+<li><a href="#Unix-like%20OS%20%28AIX%2C%20HP-UX%2C%20Linux%2C%20Solaris%2C%20etc.%29">Unix-like OS (AIX, HP-UX, Linux, Solaris, etc.)</a></li> <br><li><a href="#Windows%20%28all%20versions%29">Windows (all versions)</a></li> <br></ul>
+<li><a href="#For%20more%20information...">For more information...</a></li>
+<p>  </p></ul> <br> </div> <br></div><!--End of %TOC{}%--><h2><a name="Basic information"></a> Basic information </h2>
+<p>Our ODBC Drivers for Sybase and Microsoft SQL Server use the <nop></nop>FreeTDS Libraries for their network connectivity layer.</p><p>Most troubleshooting of these drivers can be done through the ordinary <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/GeneratingClientsideODBCTracesAllDrivers" class="wikiword">ODBC Traces and Driver Debug Logs</a>, but sometimes protocol-level logs are necessary.</p><h2><a name="Specifics"></a> Specifics </h2>
+<p>TDS protocol logging is enabled by setting the <b><code>TDSDUMP</code></b> environment variable to the name of the file where the log should be written.</p><p>Environment variables are set differently on different operating systems.</p><p>With Enterprise Edition (Multi-Tier), this may be set in the <code>[Environment ...]</code> stanza that&#39;s active for the connections in question.
+ It may also be set before starting the Broker (such that it&#39;s set for the Broker process, and inherited by all its child Agent processes).</p><p>With Lite Edition (Single-Tier), this may be set in the relevant stanza of the <code>openlink.ini</code> file on Unix-like OS, or for the active login session before launching the ODBC client application on Windows, macOS, or Unix-like OS.</p><h3><a name="macOS a/k/a Mac OS X"></a> macOS a/k/a Mac OS X </h3>
+<p>Details vary with different versions of macOS.</p><h4><a name="Mojave (10.14), High Sierra (10.13), Sierra (10.12), El Capitan (10.11), Yosemite (10.10), Mavericks (10.9), Mountain Lion (10.8), or Lion (10.7)"></a> Mojave (10.14), High Sierra (10.13), Sierra (10.12), El Capitan (10.11), Yosemite (10.10), Mavericks (10.9), Mountain Lion (10.8), or Lion (10.7) </h4>
+<p>As of Lion, these simple Terminal.app commands will do the job, creating the <tt>tdsdump.txt</tt> file on the ODBC user&#39;s Desktop.</p><ul><li> To enable TDS logging -- <br><br><pre><br>launchctl setenv TDSDUMP ~/Desktop/tdsdump.txt
+</pre><br>It is often preferable to fully specify the path, &quot;<tt>/Users/ShortUsername/</tt>&quot;, instead of using the shortcut, &quot;<tt>~/</tt>&quot; -- <br><br><pre><br>launchctl setenv TDSDUMP /Users/ShortUsername/Desktop/tdsdump.txt
+</pre><br></li>
+</ul><ul><li> To disable TDS logging -- <br><br><pre><br>launchctl unsetenv TDSDUMP 
+</pre><br></li>
+</ul><p>Note that any active applications will not notice the change; you have to quit and relaunch.</p><p>A reboot or user log out will unset the variables set with these commands, and you&#39;ll need to re-set them afterward.
+ Persistent settings (not usually appropriate for TDS logging) can be made through a <tt>launchd.plist</tt>, <a href="http://www.dowdandassociates.com/blog/content/howto-set-an-environment-variable-in-mac-os-x-launchd-plist/" class="absuri">as described elsewhere</a>.</p><p> <br></p><h4><a name="Lion (10.7), Snow Leopard (10.6), Leopard (10.5), Tiger (10.4), Panther (10.3), Jaguar (10.2), Puma (10.1), or Cheetah (10.0)"></a> Lion (10.7), Snow Leopard (10.6), Leopard (10.5), Tiger (10.4), Panther (10.3), Jaguar (10.2), Puma (10.1), or Cheetah (10.0) </h4>
+<p>On Snow Leopard (10.6) and earlier, this is best done by creating (or editing) a file called <tt>environment.plist</tt> in a (normally invisible) directory called <tt>.MacOSX</tt>, in the user&#39;s home directory.
+ This method also works on Lion (10.7).</p><p>You can execute either of these commands in Terminal.app, to open the file for editing in TextEdit.app -- <br><br></p><pre>open -e /Users/ShortUsername/.MacOSX/environment.plist
+
+open -e ~/.MacOSX/environment.plist
+</pre><p> <br><br><br>If the file already exists, just add these two lines to the main <tt>&lt;dict&gt;</tt> block -- <br><br></p><pre>        &lt;key&gt;TDSDUMP&lt;/key&gt;
+        &lt;string&gt;~/Desktop/tdsdump.txt&lt;/string&gt;
+</pre><p> <br><br><br>If you&#39;re creating a new file, make sure it contains this entire block -- <br><br></p><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; 
+        &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+        &lt;key&gt;TDSDUMP&lt;/key&gt;
+        &lt;string&gt;~/Desktop/tdsdump.txt&lt;/string&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+</pre><h3><a name="Unix-like OS (AIX, HP-UX, Linux, Solaris, etc.)"></a> Unix-like OS (AIX, HP-UX, Linux, Solaris, etc.) </h3>
+<p>Commands vary with your active shell, among other variables, so we cannot provide an exhaustive list.
+ A couple of examples -- <br><br></p><pre>export TDSDUMP=/tmp/freetds.log                 ## some Unix systems
+
+set TDSDUMP=/tmp/freetds.log ; export TDSDUMP   ## other Unix systems
+</pre><h3><a name="Windows (all versions)"></a> Windows (all versions) </h3>
+<p>You can send the log to any location in the accessible filesystem, local or remote.
+ This is a simple example -- <br><br></p><pre>set TDSDUMP=C:\freetds.log
+</pre><p> <br>You can also use the <strong>System</strong> control panel, <strong>Advanced</strong> tab, <strong>Environment Variables</strong> button.</p><p> <br></p><h2><a name="For more information..."></a> For more information...
+ </h2>
+<p>Further details on usage can be found on the <a href="http://www.freetds.org/userguide/logging.htm" class="absuri">FreeTDS Web Site</a>.
+<br></p></div></body></html>

@@ -1,0 +1,62 @@
+<docbook><section><title>DataIsTruncated</title><para> </para><title> Data is Truncated when Retrieved from Progress Databases </title> Data is Truncated when Retrieved from Progress Databases 
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Background </bridgehead>
+<para>Counterintuitively, the Progress 4GL database engine permits storage of character strings which exceed the field width (<computeroutput>SQL_WIDTH</computeroutput>) declared in the Progress Data Dictionary (by default, Progress sets <computeroutput>SQL_WIDTH</computeroutput> to twice the character-width of a field).
+ For instance, given a table with a <computeroutput>CHAR(16)</computeroutput> column, Progress will allow insertion of any number of characters into that column.
+ In a related but different issue, the Progress 4GL engine returns a fixed width of 8 for all character expressions in SQL queries, regardless of how long their actual value may be.</para><para>These two behaviors create problems with client applications that use <computeroutput>SQLDescribeCol()</computeroutput> (as they should) to determine the maximum amount of data in a field.
+ Applications are only told about, and may only receive, the Data Dictionary-defined length of data (e.g., 16 characters in the <computeroutput>CHAR(16)</computeroutput> field), even though the actual data might be 20 (or 200, or more!) characters long, leading to data truncation, buffer overruns, and other issues.</para><para>This condition is often revealed by the error message -- </para><programlisting>Column &lt;column_name&gt; in table &lt;table_name&gt; has value exceeding its max length or precision.
+</programlisting><para> Various errors related to buffer overruns -- signal 11, SIGSEGV, segmentation fault -- may also be caused by this condition.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Optimal Solution (mandatory for SQL-92 connections) </bridgehead>
+<para>The best way to work around the first behavior is to set the <emphasis>Data Dictionary</emphasis> definitions appropriately for the actual content of the fields, <emphasis><emphasis>and this is mandatory for SQL-92 connections</emphasis></emphasis> (i.e., all connections to Progress OpenEdge 10.x, and many connections to Progress 9.1x).
+ Progress OpenEdge 10.x and later include native reporting utilities (As quoted in this <ulink url="http://www.progresstalk.com/threads/newbie-question.105767/">Progress Community forum post</ulink>, <ulink url="http://knowledgebase.progress.com/articles/Article/P7640">Progress KB P7640</ulink> indicated that &quot;Since 9.1D06, DBTool can be used to identify and fix <computeroutput>SQL_WIDTH</computeroutput> problems.&quot;) which can provide the actual maximum data width, and you can then use the <emphasis>Options</emphasis> &gt;&gt; <emphasis>SQL Properties</emphasis> &gt;&gt; <emphasis>Adjust Field Width</emphasis> utility <ulink url="http://knowledgebase.progress.com/articles/Article/P26984">to change the field definition to match</ulink>.
+ Older versions of Progress may have corresponding features which you can use with the help of a Progress DBA, Progress Support, or the Progress Knowledgebase.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Workaround Options (only possible with SQL-89 connections) </bridgehead>
+<para>However, if you cannot change your Data Dictionary for any reason, OpenLink drivers offer work-around settings which may serve your needs for SQL-89 connections (available to any Progress 7.x through 9.x instance).
+ (These work-arounds are not appropriate for all situations, so please test your own environment carefully!)</para><itemizedlist mark="bullet" spacing="compact"><listitem> When <emphasis><computeroutput>MIN_FIELD_LEN</computeroutput></emphasis>, or <emphasis>Field Size Minimum</emphasis>, is set, it will over-ride any lower value for any column in the Data Dictionary, including the value of 8 for character expressions in SQL queries.
+ This value will be returned for <computeroutput>SQLDescribeCol()</computeroutput> calls, and any data values which are shorter than this length will be space-padded to reach it.
+ <emphasis><emphasis>Note:</emphasis> This space-padding can radically increase network traffic, and thus this work-around should only be used when the Data Dictionary absolutely cannot be modified.</emphasis></listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem> When <emphasis><computeroutput>MAX_FIELD_LEN</computeroutput></emphasis>, or <emphasis>Field Size Maximum</emphasis>, is set, this value will over-ride the 4GL&#39;s default of 8 for all character expressions in SQL queries.
+ <emphasis><emphasis>Note:</emphasis> Field Size Minimum (<computeroutput>MIN_FIELD_LEN</computeroutput>) over-rides Field Size Maximum (<computeroutput>MAX_FIELD_LEN</computeroutput>), if both are set, and Field Size Minimum is greater.</emphasis></listitem>
+</itemizedlist><para><emphasis><emphasis>Be advised:</emphasis> The Progress Data Dictionary may still affect display size and precision.
+ Data will always be returned, but some applications will still only display the amount of data accounted for in the Dictionary.
+ Moreover, <emphasis>all</emphasis> fields will return the amount of data specified by <computeroutput>MIN_FIELD_LEN</computeroutput> or Field Size Minimum.
+ Values which are shorter than the specified length will be space-padded.</emphasis></para><para>To use these work-arounds, follow the instructions for your driver type:</para><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Multi-Tier Enterprise Edition </bridgehead>
+<orderedlist spacing="compact"><listitem> Access your OpenLink server components installation.
+</listitem>
+<listitem> Use a text editor to open your Broker Rulebook (e.g., <computeroutput>oplrqb.ini</computeroutput>), found by default in the <computeroutput>/bin/</computeroutput> sub-directory of your OpenLink installation.
+</listitem>
+<listitem> Locate the <computeroutput>[Environment PROGRESSXXX]</computeroutput> section corresponding to the active Databse Agent for Progress.
+ For example: <programlisting>[Environment PROGRESS82A]
+;TABLEVIEW =
+;TABLEVIEW_QUALIFIER = Y
+;DEADLOCK_TIMEOUT = 60 ; Seconds to wait for lock to release
+;INSERT_LOGICAL = Y
+;UPDATE_LOGICAL = Y
+;MIN_FIELD_LEN =
+;MAX_FIELD_LEN =
+CURSOR_SENSITIVITY = LOW
+DLC = D:\DBS\Progress\Pro82a
+Path = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+</programlisting></listitem>
+<listitem> Remove the leading semicolon &quot;<computeroutput>;</computeroutput>&quot; from the <computeroutput>MIN_FIELD_LEN</computeroutput> entry, and set the value to the actual maximum length of your field contents.
+<programlisting>MIN_FIELD_LEN = 143
+</programlisting></listitem>
+<listitem> Remove the leading semicolon &quot;<computeroutput>;</computeroutput>&quot; from the <computeroutput>MAX_FIELD_LEN</computeroutput> entry, and set the value to the actual expected length of your SQL query character expressions, if longer than <computeroutput>MIN_FIELD_LEN</computeroutput>.
+<programlisting>MAX_FIELD_LEN = 200
+</programlisting></listitem>
+<listitem> Save your changes and exit the file.
+</listitem>
+<listitem> Restart or reinitialize the Broker to make your change take effect.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Single-Tier Lite Edition </bridgehead>
+<orderedlist spacing="compact"><listitem> Launch the <emphasis>Data Sources (ODBC)</emphasis> control panel (typically, Start &gt;&gt; Control Panel &gt;&gt; Administrative Tools) </listitem>
+<listitem> Locate and highlight your Progress DSN.
+</listitem>
+<listitem> Click <emphasis>Configure</emphasis>.
+</listitem>
+<listitem> Click the <emphasis>Progress Options</emphasis> tab.
+</listitem>
+<listitem> Set <emphasis>Field Size Minimum</emphasis> to the <emphasis>maximum</emphasis> size of the problem field(s).
+</listitem>
+<listitem> Set <emphasis>Field Size Maximum</emphasis> to the <emphasis>maximum</emphasis> expected length of any SQL query character expressions, if longer than <emphasis>Field Size Minimum</emphasis>.
+</listitem>
+<listitem> Save your DSN.
+</listitem>
+<listitem> Test.</listitem>
+</orderedlist></section></docbook>
