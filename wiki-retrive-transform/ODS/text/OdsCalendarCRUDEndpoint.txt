@@ -1,0 +1,108 @@
+%META:TOPICPARENT{name="OdsCalendar"}%
+
+---+Manipulate my Calendar data via CRUD RESTful using Calendar CalDAV Endpoint
+
+%TOC%
+
+
+---++What?
+Calendar CRUD (<b>C</b>reate, <b>R</b>ead, <b>U</b>pdate, <b>D</b>elete) Endpoint Service.
+
+---++Why?
+Using CRUD RESTful Endpoint service provides an easy way to manage calendar tasks/events.
+
+---++How?
+Knowing an Calendar CRUD Endpoint Service endpoint URL, one can perform the following activities:
+   * Copy-paste vCard files containing calendar tasks/events. So once pasted, the system creates the calendar tasks/events;
+   * Edit task(s)/event(s);
+   * Update task(s)/event(s);
+   * Delete task(s)/event(s);
+   * Update RDF Data for the Calendar instance. Depending on the instance's model:
+      * When model is "Closed", will be updated the RDF Data for the instance's private graph:
+<verbatim>
+http://cname/dataspace/protected/[name-of-the-instance]
+</verbatim>
+      * When model is "Opened", will be updated the RDF Data for the ODS Dataspace public graph:
+<verbatim>
+http://cname/dataspace/[name-of-the-instance]
+</verbatim>
+
+
+
+---+++Example with Calendar instance that has Member model from type "Closed" and is not set "Visible to public"
+
+   1. Suppose a user, for ex. "demo", has created Calendar instance with name "demoCalendar" and <code>Member model</code> is "Closed":
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud1.png" />%BR%%BR%
+   1 Mount the Calendar CalDAV Endpoint URL <code> http://localhost:8890/DAV/home/demo/calendars/demoCalendar/</code> 
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud2.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud3.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud4.png" />%BR%%BR%
+   1 Drop a .vcf file, for ex. <a href="%ATTACHURLPATH%/demo-calendar.ics" style="wikiautogen">demo-calendar.ics</a> into the mapped CalDAV Calendar folder:
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud5.png" />%BR%%BR%
+   1 The user demo's Calendar Dataspace instance UI now should show under "Tasks"/"Events" the new imported task(s)/event(s):
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud6.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud7.png" />%BR%%BR%
+   1 [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID]] for user "demo" WebID.
+   1 [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtAuthFOAFSSLACL][Secure your SPARQL Endpoint via user "demo" WebID]], for ex.:
+<verbatim>
+-- user "demo" WebID:
+http://localhost:8890/dataspace/person/demo#this
+
+-- SPARQL-WebID Endpoint:
+-- https://localhost:4433/sparql-webid
+</verbatim>
+   1 Access the SPARQL-WebID Endpoint.
+   1 When challenged for authentication select the generated from above certificate for user "demo":
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud8.png" />%BR%%BR%
+   1 The SPARQL-WebID Endpoint UI should be presented:
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud9.png" />%BR%%BR%
+   1 Enter the following query:
+<verbatim>
+SELECT * 
+FROM <http://localhost:8890/dataspace/protected/demoCalendar>
+WHERE {?s ?p ?o}
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud10.png" />%BR%%BR%
+   1 As result no rows are found.
+
+
+
+---+++Example with Calendar instance that has Member model from type "Opened" and is set "Visible to Public"
+
+   1. Suppose a user, for ex. "demo", has created Calendar instance with name "demoCalendar" and <code>Member model</code> is "Opened" and is set "Visible to Public".
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud12.png" />%BR%%BR%
+   1 Mount the Calendar CalDAV Endpoint URL <code> http://localhost:8890/DAV/home/demo/calendars/demoCalendar/</code> 
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud2.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud3.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud4.png" />%BR%%BR%
+   1 Drop a .ics file, for ex. * <a href="%ATTACHURLPATH%/demo-calendar.ics" style="wikiautogen">demo-calendar.ics</a> into the mapped CalDAV Calendar folder:
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud5.png" />%BR%%BR%
+   1 The user demo's Calendar Dataspace instance UI now should show under "Tasks"/"Events" the new imported task(s)/event(s):
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud6.png" />%BR%%BR%
+   1 Access the SPARQL Public Endpoint.
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud13.png" />%BR%%BR%
+   1 Suppose there is inserted from above task with id= 1032
+   1 Enter the following query:
+<verbatim>
+SELECT * 
+FROM <http://localhost:8890/dataspace>
+WHERE 
+  {
+    <http://localhost:8890/dataspace/demo/calendar/demoCalendar/Task/1032#this> ?p ?o
+  }
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud14.png" />%BR%%BR%
+   1 Click "Run Query".
+   1 As result the freshly inserted RDF Data for the task in question will be displayed:
+%BR%%BR%<img src="%ATTACHURLPATH%/clcrud15.png" />%BR%%BR%
+
+
+
+
+
+
+---++Related 
+
+   * [[http://ietfreport.isoc.org/idref/draft-ietf-vcarddav-carddav/][CalDAV Specification]]
+   * [[OdsCalendar][ODS-Calendar Dataspace]]
+   

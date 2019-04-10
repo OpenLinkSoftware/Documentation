@@ -1,0 +1,1190 @@
+<docbook><section><title>ODSControllerJSPAPILoginSource</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">ODS Controller for JSP API Login Source Code</bridgehead>
+<para>The following source code represents the ODS Controller for JSP API Login users.jsp file:</para>
+<programlisting>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;!--
+ -
+ -  $Id: users.jsp,v 1.8 2009/12/30 16:00:57 ddimitrov Exp $
+ -
+ -  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+ -  project.
+ -
+ -  Copyright (C) 1998-2007 OpenLink Software
+ -
+ -  This project is free software; you can redistribute it and/or modify it
+ -  under the terms of the GNU General Public License as published by the
+ -  Free Software Foundation; only version 2 of the License, dated June 1991.
+ -
+ -  This program is distributed in the hope that it will be useful, but
+ -  WITHOUT ANY WARRANTY; without even the implied warranty of
+ -  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ -  General Public License for more details.
+ -
+ -  You should have received a copy of the GNU General Public License along
+ -  with this program; if not, write to the Free Software Foundation, Inc.,
+ -  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ -
+ -
+--&gt;
+
+&lt;%@ page import=&quot;java.sql.*&quot; %&gt;
+&lt;%@ page import=&quot;java.io.*&quot; %&gt;
+&lt;%@ page import=&quot;java.util.*&quot; %&gt;
+&lt;%@ page import=&quot;java.net.HttpURLConnection&quot; %&gt;
+&lt;%@ page import=&quot;java.net.MalformedURLException&quot; %&gt;
+&lt;%@ page import=&quot;java.net.ProtocolException&quot; %&gt;
+&lt;%@ page import=&quot;java.net.URL&quot; %&gt;
+&lt;%@ page import=&quot;java.net.URLEncoder&quot; %&gt;
+
+&lt;%@ page import=&quot;java.security.MessageDigest&quot; %&gt;
+&lt;%@ page import=&quot;java.security.NoSuchAlgorithmException&quot; %&gt;
+&lt;%@ page import=&quot;sun.misc.BASE64Encoder&quot; %&gt;
+
+&lt;%@ page import=&quot;javax.xml.parsers.*&quot; %&gt;
+&lt;%@ page import=&quot;javax.xml.xpath.*&quot; %&gt;
+
+&lt;%@ page import=&quot;org.xml.sax.InputSource&quot; %&gt;
+
+&lt;%@ page import=&quot;org.w3c.dom.*&quot; %&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Virtuoso Web Applications&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/ods/default.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/ods/ods-bar.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/ods/users/css/users.css&quot; /&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/users/js/oid_login.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/users/js/users.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/common.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/CalendarPopup.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      // OAT
+      var toolkitPath=&quot;/ods/oat&quot;;
+      var featureList = [&quot;dom&quot;, &quot;ajax2&quot;, &quot;ws&quot;, &quot;json&quot;, &quot;tab&quot;, &quot;dimmer&quot;, &quot;combolist&quot;];
+    &lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/oat/loader.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      // publics
+      var cPopup;
+      function myInit()
+      {
+        // CalendarPopup
+        if ($(&quot;cDiv&quot;))
+        {
+          cPopup = new CalendarPopup(&quot;cDiv&quot;);
+          cPopup.isShowYearNavigation = true;
+        }
+
+        OAT.Preferences.imagePath = &quot;/ods/images/oat/&quot;;
+        OAT.Preferences.stylePath = &quot;/ods/oat/styles/&quot;;
+        OAT.Preferences.showAjax = false;
+
+        if ($(&quot;pf&quot;))
+        {
+          var tab = new OAT.Tab (&quot;content&quot;);
+          tab.add (&quot;tab_0&quot;, &quot;page_0&quot;);
+          tab.add (&quot;tab_1&quot;, &quot;page_1&quot;);
+          tab.add (&quot;tab_2&quot;, &quot;page_2&quot;);
+          tab.add (&quot;tab_3&quot;, &quot;page_3&quot;);
+          tab.add (&quot;tab_4&quot;, &quot;page_4&quot;);
+          tab.go (0);
+        }
+      }
+      OAT.MSG.attach(OAT, OAT.MSG.OAT_LOAD, myInit);
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;%!
+    XPathFactory factory = XPathFactory.newInstance();
+    XPath xpath = factory.newXPath();
+
+    Document createDocument (String S)
+    {
+      try
+      {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        if (factory == null)
+	        throw new RuntimeException(&quot;Unable to create XML document factory&quot;);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        if (builder == null)
+	        throw new RuntimeException(&quot;Unable to create XML document factory&quot;);
+        StringReader stringReader = new StringReader(S);
+        InputSource is = new InputSource(stringReader);
+	      return builder.parse(is);
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException(&quot;Error creating XML document factory : &quot; + e.getMessage());
+      }
+    }
+
+    String encrypt (String S)
+    {
+      String hash = new String(&quot;&quot;);
+      try {
+        MessageDigest md = MessageDigest.getInstance(&quot;SHA-1&quot;);
+        byte[] textBytes = S.getBytes(&quot;UTF-8&quot;);
+        md.update(textBytes);
+        for (byte b : md.digest()) {
+          hash += Integer.toHexString(b &amp; 0xff);
+        }
+      }
+      catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      }
+      catch (UnsupportedEncodingException ex) {
+        ex.printStackTrace();
+      }
+      return hash;
+    }
+
+    String httpParam (String prefix, String key, String value)
+      throws Exception
+    {
+      String S = &quot;&quot;;
+      if (value != null)
+        S = prefix + key + &quot;=&quot; + URLEncoder.encode(value);
+      return S;
+    }
+
+    String httpRequest (String httpMethod, String method, String params)
+      throws Exception
+    {
+      HttpURLConnection connection = null;
+      DataOutputStream wr = null;
+      BufferedReader rd  = null;
+      StringBuilder sb = null;
+      String line = null;
+      URL serverAddress = null;
+      Boolean isFirst = true;
+
+      try {
+        serverAddress = new URL(&quot;http://localhost:8005/ods/api/&quot;+method);
+
+        //Set up the initial connection
+        connection = (HttpURLConnection)serverAddress.openConnection();
+        connection.setRequestMethod(httpMethod);
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+        connection.setReadTimeout(10000);
+        connection.connect();
+
+        //get the output stream writer and write the output to the server
+        wr = new DataOutputStream(connection.getOutputStream());
+        if (params != null) {
+          wr.writeBytes(params);
+        }
+        wr.flush ();
+        wr.close ();
+
+        //read the result from the server
+        rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        sb = new StringBuilder();
+
+        while ((line = rd.readLine()) != null) {
+          if (!isFirst)
+            sb.append(&#39;\n&#39;);
+          sb.append(line);
+          isFirst = false;
+        }
+        rd.close ();
+        return sb.toString();
+      }
+      catch (MalformedURLException e) {
+        e.printStackTrace();
+      }
+      catch (ProtocolException e) {
+        e.printStackTrace();
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+      finally {
+        //close the connection, set all objects to null
+        connection.disconnect();
+        rd = null;
+        sb = null;
+        wr = null;
+        connection = null;
+      }
+      throw new Exception (&quot;Bad request!&quot;);
+    }
+
+    String xpathEvaluate (Document doc, String xpathString)
+      throws XPathExpressionException
+    {
+      return xpath.evaluate(xpathString, doc);
+    }
+
+    void outFormTitle (javax.servlet.jsp.JspWriter out, String formName)
+      throws IOException
+    {
+      if (formName.equals(&quot;login&quot;))
+        out.print(&quot;Login&quot;);
+      if (formName.equals(&quot;register&quot;))
+        out.print(&quot;Register&quot;);
+      if (formName.equals(&quot;user&quot;))
+        out.print(&quot;View Profile&quot;);
+      if (formName.equals(&quot;profile&quot;))
+        out.print(&quot;Edit Profile&quot;);
+    }
+
+    void outSelectOptions (javax.servlet.jsp.JspWriter out, String fieldValue, String listValue)
+      throws IOException, SQLException
+    {
+      outSelectOptions (out, fieldValue, listValue, null);
+    }
+
+    void outSelectOptions (javax.servlet.jsp.JspWriter out, String fieldValue, String listValue, String paramValue)
+    {
+      try
+      {
+        String params;
+        params = httpParam (&quot;&quot;, &quot;key&quot;, listValue);
+        if (paramValue != null)
+          params += httpParam (&quot;&amp;&quot;, &quot;param&quot;, paramValue);
+        String retValue = httpRequest (&quot;GET&quot;, &quot;lookup.list&quot;, params);
+        Document doc = createDocument(retValue);
+
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+        XPathExpression expr = xpath.compile(&quot;/items/item/text()&quot;);
+
+        Object result = expr.evaluate(doc, XPathConstants.NODESET);
+        NodeList nodes = (NodeList) result;
+        for (int i = 0; i &lt; nodes.getLength(); i++) {
+          String F = nodes.item(i).getNodeValue();
+          out.print (&quot;&lt;option&quot; + ((fieldValue.equals(F)) ? &quot; selected=\&quot;selected\&quot;&quot;: &quot;&quot;) + &quot;&gt;&quot; + F + &quot;&lt;/option&gt;&quot;);
+        }
+      } catch (Exception e) {
+      }
+    }
+  %&gt;
+  &lt;%
+    String $_form = request.getParameter(&quot;form&quot;);
+    if ($_form == null)
+      $_form = &quot;login&quot;;
+    String $_sid = request.getParameter(&quot;sid&quot;);
+    String $_realm = &quot;wa&quot;;
+    String $_error = &quot;&quot;;
+    String $_retValue;
+    Document $_document = null;
+    String params = null;
+
+    try
+    {
+      if ($_form.equals(&quot;login&quot;))
+      {
+        if (request.getParameter(&quot;lf_login&quot;) != null)
+        {
+          try
+          {
+            params = httpParam ( &quot;&quot;, &quot;user_name&quot;, request.getParameter(&quot;lf_uid&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;password_hash&quot;, encrypt (request.getParameter(&quot;lf_uid&quot;)+request.getParameter(&quot;lf_password&quot;)));
+            $_retValue = httpRequest (&quot;GET&quot;, &quot;user.authenticate&quot;, params);
+            if ($_retValue.indexOf(&quot;&lt;failed&gt;&quot;) == 0)
+            {
+  		        $_document = createDocument($_retValue);
+              throw new Exception(xpathEvaluate($_document, &quot;/failed/message&quot;));
+            }
+            $_sid = $_retValue;
+            $_form = &quot;user&quot;;
+          }
+          catch (Exception e)
+          {
+            $_error = e.getMessage();
+          }
+        }
+      }
+
+      if ($_form.equals(&quot;user&quot;))
+      {
+        if (request.getParameter(&quot;uf_profile&quot;) != null)
+          $_form = &quot;profile&quot;;
+      }
+
+      if ($_form.equals(&quot;profile&quot;))
+      {
+        if (request.getParameter(&quot;pf_update&quot;) != null)
+        {
+          try {
+            params = httpParam ( &quot;&quot;, &quot;sid&quot;                   , $_sid) +
+                     httpParam (&quot;&amp;&quot;, &quot;realm&quot;                 , $_realm) +
+                     httpParam (&quot;&amp;&quot;, &quot;mail&quot;                  , request.getParameter(&quot;pf_mail&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;title&quot;                 , request.getParameter(&quot;pf_title&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;firstName&quot;             , request.getParameter(&quot;pf_firstName&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;lastName&quot;              , request.getParameter(&quot;pf_lastName&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;fullName&quot;              , request.getParameter(&quot;pf_fullName&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;gender&quot;                , request.getParameter(&quot;pf_gender&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;birthday&quot;              , request.getParameter(&quot;pf_birthday&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;icq&quot;                   , request.getParameter(&quot;pf_icq&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;skype&quot;                 , request.getParameter(&quot;pf_skype&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;yahoo&quot;                 , request.getParameter(&quot;pf_yahoo&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;aim&quot;                   , request.getParameter(&quot;pf_aim&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;msn&quot;                   , request.getParameter(&quot;pf_msn&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeDefaultMapLocation&quot;, request.getParameter(&quot;pf_homeDefaultMapLocation&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeCountry&quot;           , request.getParameter(&quot;pf_homecountry&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeState&quot;             , request.getParameter(&quot;pf_homestate&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeCity&quot;              , request.getParameter(&quot;pf_homecity&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeCode&quot;              , request.getParameter(&quot;pf_homecode&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeAddress1&quot;          , request.getParameter(&quot;pf_homeaddress1&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeAddress2&quot;          , request.getParameter(&quot;pf_homeaddress2&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeTimezone&quot;          , request.getParameter(&quot;pf_homeTimezone&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeLatitude&quot;          , request.getParameter(&quot;pf_homelat&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeLongitude&quot;         , request.getParameter(&quot;pf_homelng&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homePhone&quot;             , request.getParameter(&quot;pf_homePhone&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;homeMobile&quot;            , request.getParameter(&quot;pf_homeMobile&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessIndustry&quot;      , request.getParameter(&quot;pf_businessIndustry&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessOrganization&quot;  , request.getParameter(&quot;pf_businessOrganization&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessHomePage&quot;      , request.getParameter(&quot;pf_businessHomePage&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessJob&quot;           , request.getParameter(&quot;pf_businessJob&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessCountry&quot;       , request.getParameter(&quot;pf_businesscountry&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessState&quot;         , request.getParameter(&quot;pf_businessstate&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessCity&quot;          , request.getParameter(&quot;pf_businesscity&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessCode&quot;          , request.getParameter(&quot;pf_businesscode&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessAddress1&quot;      , request.getParameter(&quot;pf_businessaddress1&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessAddress2&quot;      , request.getParameter(&quot;pf_businessaddress2&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessTimezone&quot;      , request.getParameter(&quot;pf_businessTimezone&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessLatitude&quot;      , request.getParameter(&quot;pf_businesslat&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessLongitude&quot;     , request.getParameter(&quot;pf_businesslng&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessPhone&quot;         , request.getParameter(&quot;pf_businessPhone&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessMobile&quot;        , request.getParameter(&quot;pf_businessMobile&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessRegNo&quot;         , request.getParameter(&quot;pf_businessRegNo&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessCareer&quot;        , request.getParameter(&quot;pf_businessCareer&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessEmployees&quot;     , request.getParameter(&quot;pf_businessEmployees&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessVendor&quot;        , request.getParameter(&quot;pf_businessVendor&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessService&quot;       , request.getParameter(&quot;pf_businessService&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessOther&quot;         , request.getParameter(&quot;pf_businessOther&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessNetwork&quot;       , request.getParameter(&quot;pf_businessNetwork&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;businessResume&quot;        , request.getParameter(&quot;pf_businessResume&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;securitySecretQuestion&quot;, request.getParameter(&quot;pf_securitySecretQuestion&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;securitySecretAnswer&quot;  , request.getParameter(&quot;pf_securitySecretAnswer&quot;)) +
+                     httpParam (&quot;&amp;&quot;, &quot;securitySiocLimit&quot;     , request.getParameter(&quot;pf_securitySiocLimit&quot;));
+
+            $_retValue = httpRequest (&quot;POST&quot;, &quot;user.update.fields&quot;, params);
+            if ($_retValue.indexOf(&quot;&lt;failed&gt;&quot;) == 0)
+            {
+  		        $_document = createDocument($_retValue);
+              throw new Exception(xpathEvaluate($_document, &quot;/failed/message&quot;));
+            }
+            $_form = &quot;user&quot;;
+          }
+          catch (Exception e)
+          {
+            $_error = e.getMessage();
+            $_form = &quot;login&quot;;
+          }
+        }
+        else if (request.getParameter(&quot;pf_cancel&quot;) != null)
+        {
+          $_form = &quot;user&quot;;
+        }
+      }
+
+      if ($_form.equals(&quot;user&quot;) || $_form.equals(&quot;profile&quot;))
+      {
+        try
+        {
+          params = httpParam ( &quot;&quot;, &quot;sid&quot;   , $_sid) +
+                   httpParam (&quot;&amp;&quot;, &quot;realm&quot; , $_realm);
+          if ($_form.equals(&quot;profile&quot;))
+            params += httpParam (&quot;&amp;&quot;, &quot;short&quot;, &quot;0&quot;);
+          $_retValue = httpRequest (&quot;GET&quot;, &quot;user.info&quot;, params);
+		      $_document = createDocument($_retValue);
+          if (&quot;&quot;.compareTo(xpathEvaluate($_document, &quot;/failed/message&quot;)) != 0)
+            throw new Exception (xpathEvaluate($_document, &quot;/failed/message&quot;));
+        }
+        catch (Exception e)
+        {
+          $_error = e.getMessage();
+          $_form = &quot;login&quot;;
+        }
+      }
+
+      if ($_form.equals(&quot;login&quot;))
+      {
+        $_sid = &quot;&quot;;
+      }
+    }
+    catch (Exception e)
+    {
+      $_error = &quot;Failure to connect to JDBC. &quot; + e.getMessage();
+    }
+  %&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;cDiv&quot; style=&quot;position: absolute; visibility: hidden; background-color: white; z-index: 10;&quot;&gt;
+    &lt;/div&gt;
+    &lt;form name=&quot;page_form&quot; method=&quot;post&quot;&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; id=&quot;sid&quot; value=&quot;&lt;% out.print($_sid); %&gt;&quot; /&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;realm&quot; id=&quot;realm&quot; value=&quot;&lt;% out.print($_realm); %&gt;&quot; /&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;form&quot; id=&quot;form&quot; value=&quot;&lt;% out.print($_form); %&gt;&quot; /&gt;
+      &lt;div id=&quot;ob&quot;&gt;
+        &lt;div id=&quot;ob_left&quot;&gt;&lt;a href=&quot;/ods/?sid=&lt;% out.print($_sid); %&gt;&amp;realm=&lt;% out.print($_realm); %&gt;&quot;&gt;ODS Home&lt;/a&gt; &gt; &lt;% outFormTitle (out, $_form); %&gt;&lt;/div&gt;
+        &lt;%
+          if ($_form != &quot;login&quot;)
+          {
+        %&gt;
+        &lt;div id=&quot;ob_right&quot;&gt;&lt;a href=&quot;#&quot; onclick=&quot;javascript: return logoutSubmit2();&quot;&gt;Logout&lt;/a&gt;&lt;/div&gt;
+        &lt;%
+          }
+        %&gt;
+      &lt;/div&gt;
+      &lt;div id=&quot;MD&quot;&gt;
+        &lt;table cellspacing=&quot;0&quot;&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;img style=&quot;margin: 60px;&quot; src=&quot;/ods/images/odslogo_200.png&quot; /&gt;&lt;br /&gt;
+              &lt;div id=&quot;ob_links&quot; style=&quot;display: none; margin-left: 60px;&quot;&gt;
+                &lt;a id=&quot;ob_links_foaf&quot; href=&quot;#&quot;&gt;
+                  &lt;img border=&quot;0&quot; alt=&quot;FOAF&quot; src=&quot;/ods/images/foaf.gif&quot;/&gt;
+                &lt;/a&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+              &lt;%
+              if ($_form.equals(&quot;login&quot;))
+              {
+              %&gt;
+              &lt;div id=&quot;lf&quot; class=&quot;form&quot;&gt;
+                &lt;%
+                  if ($_error != &quot;&quot;)
+                  {
+                    out.print(&quot;&lt;div class=\&quot;error\&quot;&gt;&quot; + $_error + &quot;&lt;/div&gt;&quot;);
+                  }
+                %&gt;
+                &lt;div class=&quot;header&quot;&gt;
+                  Enter your Member ID and Password
+                &lt;/div&gt;
+                &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                  &lt;tr&gt;
+                    &lt;th width=&quot;30%&quot;&gt;
+                      &lt;label for=&quot;lf_uid&quot;&gt;Member ID&lt;/label&gt;
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;input type=&quot;text&quot; name=&quot;lf_uid&quot; value=&quot;&quot; id=&quot;lf_uid&quot; /&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      &lt;label for=&quot;lf_password&quot;&gt;Password&lt;/label&gt;
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;input type=&quot;password&quot; name=&quot;lf_password&quot; value=&quot;&quot; id=&quot;lf_password&quot; /&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      or
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot; /&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      &lt;label for=&quot;lf_openID&quot;&gt;Login with OpenID&lt;/label&gt;
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;input type=&quot;text&quot; name=&quot;lf_openID&quot; value=&quot;&quot; id=&quot;lf_openID&quot; class=&quot;openID&quot; size=&quot;40&quot;/&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                &lt;/table&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;lf_login&quot; value=&quot;Login&quot; id=&quot;lf_login&quot; onclick=&quot;javascript: return lfLoginSubmit2();&quot; /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;%
+              }
+              if ($_form.equals(&quot;user&quot;))
+              {
+              %&gt;
+              &lt;div id=&quot;uf&quot; class=&quot;form&quot;&gt;
+                &lt;div class=&quot;header&quot;&gt;
+                  User profile
+                &lt;/div&gt;
+                &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                  &lt;tr&gt;
+                    &lt;th width=&quot;30%&quot;&gt;
+                      Login Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_name&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/name&quot;)); %&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      E-mail
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_mail&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/mail&quot;)); %&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      Title
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_title&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/title&quot;)); %&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      First Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_firstName&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/firstName&quot;)); %&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      Last Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_lastName&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/lastName&quot;)); %&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      Full Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_fullName&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/fullName&quot;)); %&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                &lt;/table&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;uf_profile&quot; value=&quot;Edit Profile&quot; /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;%
+              }
+              if ($_form.equals(&quot;profile&quot;))
+              {
+              %&gt;
+              &lt;div id=&quot;pf&quot; class=&quot;form&quot; style=&quot;width: 800px;&quot;&gt;
+                &lt;%
+                  if ($_error != &quot;&quot;)
+                  {
+                    out.print(&quot;&lt;div class=\&quot;error\&quot;&gt;&quot; + $_error + &quot;&lt;/div&gt;&quot;);
+                  }
+                %&gt;
+                &lt;div class=&quot;header&quot;&gt;
+                  Update user profile
+                &lt;/div&gt;
+                &lt;ul id=&quot;tabs&quot;&gt;
+                  &lt;li id=&quot;tab_0&quot; title=&quot;Personal&quot;&gt;Personal&lt;/li&gt;
+                  &lt;li id=&quot;tab_1&quot; title=&quot;Contact&quot;&gt;Contact&lt;/li&gt;
+                  &lt;li id=&quot;tab_2&quot; title=&quot;Home&quot;&gt;Home&lt;/li&gt;
+                  &lt;li id=&quot;tab_3&quot; title=&quot;Business&quot;&gt;Business&lt;/li&gt;
+                  &lt;li id=&quot;tab_4&quot; title=&quot;Security&quot;&gt;Security&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;div style=&quot;min-height: 180px; border: 1px solid #aaa; margin: -13px 5px 5px 5px;&quot;&gt;
+                  &lt;div id=&quot;content&quot;&gt;&lt;/div&gt;
+
+                  &lt;div id=&quot;page_0&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_title&quot;&gt;Title&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;select name=&quot;pf_title&quot; id=&quot;pf_title&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;%
+                              {
+                                String[] V = {&quot;Mr&quot;, &quot;Mrs&quot;, &quot;Dr&quot;, &quot;Ms&quot;};
+                                String S = xpathEvaluate($_document, &quot;/user/title&quot;);
+                                for (int N = 0; N &lt; V.length; N++)
+                                  out.print(&quot;&lt;option&quot; + ((V[N].equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;&quot; + V[N] + &quot;&lt;/option&gt;&quot;);
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_firstName&quot;&gt;First Name&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_firstName&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/firstName&quot;)); %&gt;&quot; id=&quot;pf_firstName&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_lastName&quot;&gt;Last Name&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_lastName&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/lastName&quot;)); %&gt;&quot; id=&quot;pf_lastName&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_fullName&quot;&gt;Full Name&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_fullName&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/fullName&quot;)); %&gt;&quot; id=&quot;pf_fullName&quot; size=&quot;60&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_mail&quot;&gt;E-mail&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_mail&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/mail&quot;)); %&gt;&quot; id=&quot;pf_mail&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_gender&quot;&gt;Gender&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_gender&quot; value=&quot;&quot; id=&quot;pf_gender&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;%
+                              {
+                                String[] V = {&quot;Male&quot;, &quot;Female&quot;};
+                                String[] V1 = {&quot;male&quot;, &quot;female&quot;};
+                                String S = xpathEvaluate($_document, &quot;/user/gender&quot;);
+                                for (int N = 0; N &lt; V.length; N++)
+                                  out.print(&quot;&lt;option value=\&quot;&quot; + V1[N] + &quot;\&quot;&quot; +((V1[N].equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;&quot; + V[N] + &quot;&lt;/option&gt;&quot;);
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_birthday&quot;&gt;Birthday&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input name=&quot;pf_birthday&quot; id=&quot;pf_birthday&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/birthday&quot;)); %&gt;&quot; onclick=&quot;cPopup.select ($(&#39;pf_birthday&#39;), &#39;pf_birthday_select&#39;, &#39;yyyy-MM-dd&#39;);&quot;/&gt;
+                          &lt;a href=&quot;#&quot; name=&quot;pf_birthday_select&quot; id=&quot;pf_birthday_select&quot; onclick=&quot;cPopup.select ($(&#39;pf_birthday&#39;), &#39;pf_birthday_select&#39;, &#39;yyyy-MM-dd&#39;); return false;&quot;&gt; &lt;/a&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_1&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_icq&quot;&gt;ICQ&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_icq&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/icq&quot;)); %&gt;&quot; id=&quot;pf_icq&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_skype&quot;&gt;Skype&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_skype&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/skype&quot;)); %&gt;&quot; id=&quot;pf_skype&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_yahoo&quot;&gt;Yahoo&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_yahoo&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/yahoo&quot;)); %&gt;&quot; id=&quot;pf_yahoo&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_aim&quot;&gt;AIM&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_aim&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/aim&quot;)); %&gt;&quot; id=&quot;pf_aim&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_msn&quot;&gt;MSN&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_msn&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/msn&quot;)); %&gt;&quot; id=&quot;pf_msn&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_2&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_homecountry&quot;&gt;Country&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;select name=&quot;pf_homecountry&quot; id=&quot;pf_homecountry&quot; onchange=&quot;javascript: return updateState(&#39;pf_homecountry&#39;, &#39;pf_homestate&#39;);&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;%
+                              outSelectOptions (out, xpathEvaluate($_document, &quot;/user/homeCountry&quot;), &quot;Country&quot;);
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homestate&quot;&gt;State/Province&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;span id=&quot;span_pf_homestate&quot;&gt;
+                            &lt;script type=&quot;text/javascript&quot;&gt;
+                              OAT.MSG.attach(OAT, OAT.MSG.OAT_LOAD, function (){updateState(&quot;pf_homecountry&quot;, &quot;pf_homestate&quot;, &quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeState&quot;)); %&gt;&quot;);});
+                            &lt;/script&gt;
+                          &lt;/span&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homecity&quot;&gt;City/Town&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homecity&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeCity&quot;)); %&gt;&quot; id=&quot;pf_homecity&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homecode&quot;&gt;Zip/Postal Code&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homecode&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeCode&quot;)); %&gt;&quot; id=&quot;pf_homecode&quot; style=&quot;width: 220px;&quot;/&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeaddress1&quot;&gt;Address1&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeaddress1&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeAddress1&quot;)); %&gt;&quot; id=&quot;pf_homeaddress1&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeaddress2&quot;&gt;Address2&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeaddress2&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeAddress2&quot;)); %&gt;&quot; id=&quot;pf_homeaddress2&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeTimezone&quot;&gt;Time-Zone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_homeTimezone&quot; id=&quot;pf_homeTimezone&quot;&gt;
+                            &lt;%
+                              {
+                                String S = xpathEvaluate($_document, &quot;/user/homeTimezone&quot;);
+                                String NS;
+                                for (int N = -12; N &lt;= 12; N++) {
+                                  NS = Integer.toString(N);
+                                  out.print(&quot;&lt;option value=\&quot;&quot; + NS + &quot;\&quot;&quot; +((NS.equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;GMT &quot; + NS + &quot;:00&lt;/option&gt;&quot;);
+                                }
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homelat&quot;&gt;Latitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homelat&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeLatitude&quot;)); %&gt;&quot; id=&quot;pf_homelat&quot; /&gt;
+                          &lt;label&gt;
+                            &lt;input type=&quot;checkbox&quot; name=&quot;pf_homeDefaultMapLocation&quot; id=&quot;pf_homeDefaultMapLocation&quot; onclick=&quot;javascript: setDefaultMapLocation(&#39;home&#39;, &#39;business&#39;);&quot; /&gt;
+                            Default Map Location
+                          &lt;/label&gt;
+                        &lt;td&gt;
+                      &lt;tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homelng&quot;&gt;Longitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homelng&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeLongitude&quot;)); %&gt;&quot; id=&quot;pf_homelng&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homePhone&quot;&gt;Phone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homePhone&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homePhone&quot;)); %&gt;&quot; id=&quot;pf_homePhone&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeMobile&quot;&gt;Mobile&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeMobile&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/homeMobile&quot;)); %&gt;&quot; id=&quot;pf_homeMobile&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_3&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_businessIndustry&quot;&gt;Industry&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;select name=&quot;pf_businessIndustry&quot; id=&quot;pf_businessIndustry&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;%
+                              outSelectOptions (out, xpathEvaluate($_document, &quot;/user/businessIndustry&quot;), &quot;Industry&quot;);
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessOrganization&quot;&gt;Organization&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessOrganization&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessOrganization&quot;)); %&gt;&quot; id=&quot;pf_businessOrganization&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessHomePage&quot;&gt;Organization Home Page&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessHomePage&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessHomePage&quot;)); %&gt;&quot; id=&quot;pf_businessNetwork&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessJob&quot;&gt;Job Title&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessJob&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessJob&quot;)); %&gt;&quot; id=&quot;pf_businessJob&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_businesscountry&quot;&gt;Country&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;select name=&quot;pf_businesscountry&quot; id=&quot;pf_businesscountry&quot; onchange=&quot;javascript: return updateState(&#39;pf_businesscountry&#39;, &#39;pf_businessState&#39;);&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;%
+                              outSelectOptions (out, xpathEvaluate($_document, &quot;/user/businessCountry&quot;), &quot;Country&quot;);
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessstate&quot;&gt;State/Province&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;span id=&quot;span_pf_businessstate&quot;&gt;
+                            &lt;script type=&quot;text/javascript&quot;&gt;
+                              OAT.MSG.attach(OAT, OAT.MSG.OAT_LOAD, function (){updateState(&quot;pf_businesscountry&quot;, &quot;pf_businessstate&quot;, &quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessState&quot;)); %&gt;&quot;);});
+                            &lt;/script&gt;
+                          &lt;/span&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesscity&quot;&gt;City/Town&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesscity&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessCity&quot;)); %&gt;&quot; id=&quot;pf_businesscity&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesscode&quot;&gt;Zip/Postal Code&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesscode&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessCode&quot;)); %&gt;&quot; id=&quot;pf_businesscode&quot; style=&quot;width: 220px;&quot;/&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessaddress1&quot;&gt;Address1&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessaddress1&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessAddress1&quot;)); %&gt;&quot; id=&quot;pf_businessaddress1&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessaddress2&quot;&gt;Address2&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessaddress2&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessAddress2&quot;)); %&gt;&quot; id=&quot;pf_businessaddress2&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessTimezone&quot;&gt;Time-Zone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessTimezone&quot; id=&quot;pf_businessTimezone&quot;&gt;
+                            &lt;%
+                              {
+                                String S = xpathEvaluate($_document, &quot;/user/businessTimezone&quot;);
+                                String NS;
+                                for (int N = -12; N &lt;= 12; N++) {
+                                  NS = Integer.toString(N);
+                                  out.print(&quot;&lt;option value=\&quot;&quot; + NS + &quot;\&quot;&quot; +((NS.equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;GMT &quot; + NS + &quot;:00&lt;/option&gt;&quot;);
+                                }
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesslat&quot;&gt;Latitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesslat&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessLatitude&quot;)); %&gt;&quot; id=&quot;pf_businesslat&quot; /&gt;
+                          &lt;label&gt;
+                            &lt;input type=&quot;checkbox&quot; name=&quot;pf_businessDefaultMapLocation&quot; id=&quot;pf_businessDefaultMapLocation&quot; onclick=&quot;javascript: setDefaultMapLocation(&#39;business&#39;, &#39;business&#39;);&quot; /&gt;
+                            Default Map Location
+                          &lt;/label&gt;
+                        &lt;td&gt;
+                      &lt;tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesslng&quot;&gt;Longitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesslng&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessLongitude&quot;)); %&gt;&quot; id=&quot;pf_businesslng&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessPhone&quot;&gt;Phone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessPhone&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessPhone&quot;)); %&gt;&quot; id=&quot;pf_businessPhone&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessMobile&quot;&gt;Mobile&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessMobile&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessMobile&quot;)); %&gt;&quot; id=&quot;pf_businessMobile&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessRegNo&quot;&gt;VAT Reg number (EU only) or Tax ID&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessRegNo&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessRegNo&quot;)); %&gt;&quot; id=&quot;pf_businessRegNo&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessCareer&quot;&gt;Career / Organization Status&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessCareer&quot; id=&quot;pf_businessCareer&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;%
+                              {
+                                String[] V = {&quot;Job seeker-Permanent&quot;, &quot;Job seeker-Temporary&quot;, &quot;Job seeker-Temp/perm&quot;, &quot;Employed-Unavailable&quot;, &quot;Employer&quot;, &quot;Agency&quot;, &quot;Resourcing supplier&quot;};
+                                String S = xpathEvaluate($_document, &quot;/user/businessCareer&quot;);
+                                for (int N = 0; N &lt; V.length; N++)
+                                  out.print(&quot;&lt;option&quot; + ((V[N].equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;&quot; + V[N] + &quot;&lt;/option&gt;&quot;);
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessEmployees&quot;&gt;No. of Employees&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessEmployees&quot; id=&quot;pf_businessEmployees&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;%
+                              {
+                                String[] V = {&quot;1-100&quot;, &quot;101-250&quot;, &quot;251-500&quot;, &quot;501-1000&quot;, &quot;&gt;1000&quot;};
+                                String S = xpathEvaluate($_document, &quot;/user/businessEmployees&quot;);
+                                for (int N = 0; N &lt; V.length; N++)
+                                  out.print(&quot;&lt;option&quot; + ((V[N].equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;&quot; + V[N] + &quot;&lt;/option&gt;&quot;);
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessVendor&quot;&gt;Are you a technology vendor&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessVendor&quot; id=&quot;pf_businessVendor&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;%
+                              {
+                                String[] V = {&quot;Not a Vendor&quot;, &quot;Vendor&quot;, &quot;VAR&quot;, &quot;Consultancy&quot;};
+                                String S = xpathEvaluate($_document, &quot;/user/businessVendor&quot;);
+                                for (int N = 0; N &lt; V.length; N++)
+                                  out.print(&quot;&lt;option&quot; + ((V[N].equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;&quot; + V[N] + &quot;&lt;/option&gt;&quot;);
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessService&quot;&gt;If so, what technology and/or service do you provide?&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessService&quot; id=&quot;pf_businessService&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;%
+                              {
+                                String[] V = {&quot;Enterprise Data Integration&quot;, &quot;Business Process Management&quot;, &quot;Other&quot;};
+                                String S = xpathEvaluate($_document, &quot;/user/businessService&quot;);
+                                for (int N = 0; N &lt; V.length; N++)
+                                  out.print(&quot;&lt;option&quot; + ((V[N].equals(S)) ? (&quot; selected=\&quot;selected\&quot;&quot;): (&quot;&quot;)) + &quot;&gt;&quot; + V[N] + &quot;&lt;/option&gt;&quot;);
+                              }
+                            %&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessOther&quot;&gt;Other Technology service&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessOther&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessOther&quot;)); %&gt;&quot; id=&quot;pf_businessOther&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessNetwork&quot;&gt;Importance of OpenLink Network for you&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessNetwork&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessNetwork&quot;)); %&gt;&quot; id=&quot;pf_businessNetwork&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessResume&quot;&gt;Resume&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;textarea name=&quot;pf_businessResume&quot; id=&quot;pf_businessResume&quot; style=&quot;width: 220px;&quot;&gt;&lt;% out.print(xpathEvaluate($_document, &quot;/user/businessResume&quot;)); %&gt;&lt;/textarea&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_4&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+                          &lt;span id=&quot;pf_change_txt&quot;&gt;&lt;/span&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th style=&quot;text-align: left; background-color: #F6F6F6;&quot; colspan=&quot;2&quot;&gt;
+                          Password Settings
+                        &lt;/th&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot; nowrap=&quot;nowrap&quot;&gt;
+                          &lt;label for=&quot;pf_oldPassword&quot;&gt;Old Password&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;password&quot; name=&quot;pf_oldPassword&quot; value=&quot;&quot; id=&quot;pf_oldPassword&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_newPassword&quot;&gt;New Password&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;password&quot; name=&quot;pf_newPassword&quot; value=&quot;&quot; id=&quot;pf_newPassword&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_password&quot;&gt;Repeat Password&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;password&quot; name=&quot;pf_newPassword2&quot; value=&quot;&quot; id=&quot;pf_newPassword2&quot; /&gt;
+                          &lt;input type=&quot;button&quot; name=&quot;pf_change&quot; value=&quot;Change&quot; onclick=&quot;javascript: return pfChangeSubmit();&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th style=&quot;text-align: left; background-color: #F6F6F6;&quot; colspan=&quot;2&quot;&gt;
+                          Password Recovery
+                        &lt;/th&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_securitySecretQuestion&quot;&gt;Secret Question&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_securitySecretQuestion&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/securitySecretQuestion&quot;)); %&gt;&quot; id=&quot;pf_securitySecretQuestion&quot; style=&quot;width: 220px;&quot; /&gt;
+                          &lt;select name=&quot;pf_secretQuestion_select&quot; value=&quot;&quot; id=&quot;pf_secretQuestion_select&quot; onchange=&quot;setSecretQuestion ();&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option value=&quot;&quot;&gt;~pick predefined~&lt;/option&gt;
+                            &lt;option value=&quot;First Car&quot;&gt;First Car&lt;/option&gt;
+                            &lt;option value=&quot;Mothers Maiden Name&quot;&gt;Mothers Maiden Name&lt;/option&gt;
+                            &lt;option value=&quot;Favorite Pet&quot;&gt;Favorite Pet&lt;/option&gt;
+                            &lt;option value=&quot;Favorite Sports Team&quot;&gt;Favorite Sports Team&lt;/option&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_securitySecretAnswer&quot;&gt;Secret Answer&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_securitySecretAnswer&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/securitySecretAnswer&quot;)); %&gt;&quot; id=&quot;pf_securitySecretAnswer&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th style=&quot;text-align: left; background-color: #F6F6F6;&quot; colspan=&quot;2&quot;&gt;
+                          Applications restrictions
+                        &lt;/th&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_securitySiocLimit&quot;&gt;SIOC Query Result Limit  &lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_securitySiocLimit&quot; value=&quot;&lt;% out.print(xpathEvaluate($_document, &quot;/user/securitySiocLimit&quot;)); %&gt;&quot; id=&quot;pf_securitySiocLimit&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                &lt;/div&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;pf_update&quot; value=&quot;Update&quot; /&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;pf_cancel&quot; value=&quot;Cancel&quot; /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;%
+              }
+              %&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+    &lt;div id=&quot;FT&quot;&gt;
+      &lt;div id=&quot;FT_L&quot;&gt;
+        &lt;a href=&quot;http://www.openlinksw.com/virtuoso&quot;&gt;&lt;img alt=&quot;Powered by OpenLink Virtuoso Universal Server&quot; src=&quot;/ods/images/virt_power_no_border.png&quot; border=&quot;0&quot; /&gt;&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div id=&quot;FT_R&quot;&gt;
+        &lt;a href=&quot;/ods/faq.html&quot;&gt;FAQ&lt;/a&gt; | &lt;a href=&quot;/ods/privacy.html&quot;&gt;Privacy&lt;/a&gt; | &lt;a href=&quot;/ods/rabuse.vspx&quot;&gt;Report Abuse&lt;/a&gt;
+        &lt;div&gt;
+          Copyright © 1999-2009 OpenLink Software
+        &lt;/div&gt;
+      &lt;/div&gt;
+     &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</programlisting></section></docbook>

@@ -1,0 +1,97 @@
+<docbook><section><title>OdsBriefcaseSkyDrive</title><para> </para>
+<title> Using ODS-Briefcase to mediate access to data stored on Microsoft OneDrive</title> Using ODS-Briefcase to mediate access to data stored on Microsoft OneDrive
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para><ulink url="https://onedrive.live.com/about/">Microsoft OneDrive</ulink> (formerly SkyDrive) is a service that allows users to upload and sync files to a cloud storage, and then access them from a Web browser or their local device.
+ It is part of the <ulink url="http://www.live.com">Windows Live</ulink> set of online services and allows users to keep the files private, share them only with chosen contacts, or make them public.</para>
+<para>OneDrive file storage offers users a number of features:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Free online storage: allows 7GB of free online cloud storage </listitem>
+<listitem>Can be used for back up of photos or documents, or for making them public and/or sharing a folder with friends </listitem>
+<listitem>Drag-and-drop upload: uploading files by simply dragging files from one&#39;s computer and dropping them into OneDrive </listitem>
+<listitem>Create and share office (Word, Excel, and PowerPoint) documents which can then be shared through <ulink url="http://hotmail.com">Hotmail</ulink></listitem>
+</itemizedlist><para>ODS-Briefcase offers a new &quot;OneDrive&quot; folder type which provides several additional features, once the ODS system is configured with a registered Windows API key and secret pair:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Specify credentials for authentication against OneDrive, enabling retrieval of any or all of your folders and files, including any associated metadata </listitem>
+<listitem>Specify which Sponger Extractor Cartridges and Sponger Meta Cartridges should be run against your OneDrive data </listitem>
+<listitem>Save fetched data, metadata, and Sponger output, into a newly created OneDrive-specific RDF Graph in the Virtuoso RDF Quad Store </listitem>
+<listitem>Specify other ODS Users or WebID ACLs who should be granted access to your OneDrive data through ODS-Briefcase</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Example</bridgehead>
+<para>Here is a sample scenario showing the whole process, from setting the Windows Live API key in ODS, to retrieving all OneDrive content to ODS-Briefcase.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A <ulink url="http://www.live.com/">Windows Live user account</ulink> </listitem>
+<listitem>Files and folders (data) stored in your <ulink url="https://onedrive.live.com/">OneDrive Space</ulink> </listitem>
+<listitem>Administrative (DBA) access to a <ulink url="http://virtuoso.openlinksw.com/">Virtuoso Server</ulink> instance, on which the following have been installed -- <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="https://virtuoso.openlinksw.com/download/">ODS-Framework VAD package</ulink> </listitem>
+<listitem><ulink url="https://virtuoso.openlinksw.com/download/">ODS-Briefcase VAD package</ulink> </listitem>
+<listitem><ulink url="https://virtuoso.openlinksw.com/download/">Virtuoso RDF Mappers VAD package</ulink></listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Steps</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 1 - Get a Live Connect API key for use with ODS-Briefcase</bridgehead>
+<emphasis>Note that at present, each Virtuoso + ODS instance can only be configured with a single Live Connect API key, which will then be used by all ODS-Briefcase users when targeting OneDrive from that instance.
+ Microsoft may impose limitations on this key&#39;s use.
+ Such limitations are outside the scope of OpenLink or Virtuoso control.</emphasis><orderedlist spacing="compact"><listitem>Browse to &lt;<ulink url="http://msdn.microsoft.com/en-us/live/ff519582">http://msdn.microsoft.com/en-us/live/ff519582</ulink>&gt;: <ulink url="OdsBriefcaseSkyDrive/step1-1.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-1.png" /></figure></ulink> </listitem>
+<listitem>Click on <emphasis>My Apps</emphasis> -- or browse directly to <ulink url="https://manage.dev.live.com/">https://manage.dev.live.com/</ulink> -- and enter your Windows Live user credentials: <ulink url="OdsBriefcaseSkyDrive/step1-2.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-2.png" /></figure></ulink> </listitem>
+<listitem>Enter a name for your Live Connect client application (i.e., your ODS-Briefcase instance) to be known by, e.g., &quot;MyODSOneDrive&quot;, choose the primary language Windows Live should use when interacting with its users, and click the <emphasis>I Accept</emphasis> button: <ulink url="OdsBriefcaseSkyDrive/step1-3.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-3.png" /></figure></ulink> </listitem>
+<listitem>You will be shown a <emphasis>Client ID</emphasis> and <emphasis>Client Secret</emphasis> for the newly registered application.
+ (You can copy these now, or come back for them later; they will also show up on the &quot;API Settings&quot; section of the &quot;Application Settings Page&quot;.
+ Do be aware that you will need these in the steps that follow.)  Click <emphasis>Application Settings Page</emphasis>.
+<ulink url="OdsBriefcaseSkyDrive/step1-4.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-4.png" /></figure></ulink> </listitem>
+<listitem>Click <emphasis>API Settings</emphasis>.
+<ulink url="OdsBriefcaseSkyDrive/step1-5.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-5.png" /></figure></ulink> </listitem>
+<listitem>Set the <emphasis>Redirect domain</emphasis> to the authority component of your Virtuoso + ODS instance URL, http://&lt;cname&gt;[:&lt;port&gt;], e.g., &lt;<ulink url="http://example.com">http://example.com</ulink>&gt;, and click <emphasis>Save</emphasis>.
+ <emphasis>Note that Live Connect only permits one OneDrive client application to come from a given domain.</emphasis>  Click <emphasis>Save</emphasis>.
+<ulink url="OdsBriefcaseSkyDrive/step1-6.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-6.png" /></figure></ulink> </listitem>
+<listitem>You can close this tab/window once your changes are shown as saved: <ulink url="OdsBriefcaseSkyDrive/step1-7.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step1-7.png" /></figure></ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 2 - Configure ODS to use your Live Connect API key and secret</bridgehead>
+<orderedlist spacing="compact"><listitem>Browse to your Virtuoso + ODS instance, http://&lt;cname&gt;[:&lt;port&gt;]/ods, e.g., &lt;<ulink url="http://example.com/ods/">http://example.com/ods/</ulink>&gt;, and click <emphasis>Sign In</emphasis>.
+<ulink url="OdsBriefcaseSkyDrive/step2-1.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step2-1.png" /></figure></ulink> </listitem>
+<listitem>Log in as a Virtuoso+ODS user with Administrator privileges, e.g., dba.
+<ulink url="OdsBriefcaseSkyDrive/step2-2.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step2-2.png" /></figure></ulink> </listitem>
+<listitem>Click on <emphasis>Site Settings</emphasis>: <ulink url="OdsBriefcaseSkyDrive/step2-3.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step2-3.png" /></figure></ulink> </listitem>
+<listitem>Click on <emphasis>Login Authentication Keys</emphasis>: <ulink url="OdsBriefcaseSkyDrive/step2-4.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step2-4.png" /></figure></ulink> </listitem>
+<listitem>Select <emphasis>OneDrive API</emphasis> in the <emphasis>API Name</emphasis> menu, provide the <emphasis>Client ID</emphasis> and <emphasis>Client secret</emphasis> from the new Live Connect application you created above, and click <emphasis>Add</emphasis>.
+<ulink url="OdsBriefcaseSkyDrive/step2-5.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step2-5.png" /></figure></ulink> </listitem>
+<listitem>ODS-Briefcase is now configured to use OneDrive.
+<ulink url="OdsBriefcaseSkyDrive/step2-6.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step2-6.png" /></figure></ulink></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 3 - Access files stored on OneDrive through ODS-Briefcase</bridgehead>
+<orderedlist spacing="compact"><listitem>Browse to your Virtuoso + ODS instance, http://&lt;cname&gt;[:&lt;port&gt;]/ods, e.g., &lt;<ulink url="http://example.com/ods/">http://example.com/ods/</ulink>&gt;.
+<ulink url="OdsBriefcaseSkyDrive/step3-01.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-01.png" /></figure></ulink> </listitem>
+<listitem>Log in as a Virtuoso+ODS user with normal privileges, e.g., demo.
+<ulink url="OdsBriefcaseSkyDrive/step3-02.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-02.png" /></figure></ulink> </listitem>
+<listitem>Click to the <emphasis>ODS-Briefcase</emphasis> application: <ulink url="OdsBriefcaseSkyDrive/step3-03.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-03.png" /></figure></ulink> </listitem>
+<listitem>Click <emphasis>New Folder</emphasis> from the main Briefcase control strip: <ulink url="OdsBriefcaseSkyDrive/step3-04.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-04.png" /></figure></ulink> </listitem>
+<listitem>In the New Folder form, specify a <emphasis>Folder Name</emphasis>, e.g., <emphasis>MyOneDriveFolder</emphasis>, and set the <emphasis>Folder type</emphasis> to <emphasis>OneDrive</emphasis>: <ulink url="OdsBriefcaseSkyDrive/step3-05.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-05.png" /></figure></ulink> </listitem>
+<listitem>Click to the newly visible <emphasis>OneDrive</emphasis> tab: <ulink url="OdsBriefcaseSkyDrive/step3-06.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-06.png" /></figure></ulink> </listitem>
+<listitem>All RDF data extracted from and otherwise collected about your Google Drive files will be saved to a named graph, where the default name is constructed from the host ODS instance, the ODS username, and the Briefcase folder name -- http://&lt;host&gt;[:&lt;port&gt;]/DAV/home/&lt;user-name&gt;/&lt;folder-name&gt;#this -- so, in this example, the default graph would be named &lt;<ulink url="http://example.com/ods/demo/MyOneDriveFolder#this">http://example.com/ods/demo/MyOneDriveFolder#this</ulink>&gt;.
+ Expert users may wish to change this graph name, but the default is suitable for most users.
+<ulink url="OdsBriefcaseSkyDrive/step3-07.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-07.png" /></figure></ulink> </listitem>
+<listitem>You can also turn on the <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger">Virtuoso Sponger</ulink>, to process your Google Drive files more comprehensively.
+ When the Sponger is enabled for your folder, you can specify which &quot;Sponger Extractor Cartridges&quot; and &quot;Sponger Meta Cartridges&quot; will be run over the files in your Google Drive.
+ You can enable all cartridges, but this will introduce some processing overhead.
+ It&#39;s generally best to enable only those cartridges which will be applicable to your files and their content.
+ For instance, you may know that you&#39;ll only be storing Microsoft and Open Office documents here, and that you want to find all Named Entities described by DBpedia.
+ Then, click &quot;Authenticate&quot;, to connect your new folder to your OneDrive: <ulink url="OdsBriefcaseSkyDrive/step3-08.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-08.png" /></figure></ulink> </listitem>
+<listitem>You&#39;ll be prompted to enter your Windows Live user&#39;s credentials.
+ Note that this Windows Live user need not be the application owner/&quot;developer&quot; who got the API key earlier.
+<ulink url="OdsBriefcaseSkyDrive/step3-09.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-09.png" /></figure></ulink> </listitem>
+<listitem>Windows Live will prompt for confirmation that you intend to let your application (&quot;MyODSOneDrive&quot;) have access to your OneDrive content.
+ Click <emphasis>Yes</emphasis>.
+<ulink url="OdsBriefcaseSkyDrive/step3-10.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-10.png" /></figure></ulink> </listitem>
+<listitem>Your Windows Live user&#39;s real name will now be displayed.
+ Click <emphasis>Create</emphasis> to finish the folder creation process.
+<ulink url="OdsBriefcaseSkyDrive/step3-11.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-11.png" /></figure></ulink> </listitem>
+<listitem>Your new OneDrive-linked folder should now be displayed in your Briefcase resources list: <ulink url="OdsBriefcaseSkyDrive/step3-12.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-12.png" /></figure></ulink> </listitem>
+<listitem>Click the folder name to see the resources ODS-Briefcase has found in your OneDrive Dataspace: <ulink url="OdsBriefcaseSkyDrive/step3-13.png"><figure><graphic fileref="OdsBriefcaseSkyDrive/step3-13.png" /></figure></ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/SK7WAI">How Linked Data &amp; WebID Deliver Controlled Access to Resources in Google Drive, OneDrive, DropBox, Box.Net, and Amazon S3</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseAmazonS3">Using ODS-Briefcase to mediate access to data stored on Amazon S3</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseBoxNet">Using ODS-Briefcase to mediate access to data stored on Box (a/k/a box.com or box.net)</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseDropBox">Using ODS-Briefcase to mediate access to data stored on DropBox</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseGoogleDrive">Using ODS-Briefcase to mediate access to data stored on Google Drive</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseFolders">Manage different Briefcase type folders in Briefcase</ulink> </listitem>
+<listitem><ulink url="OdsBriefcase">ODS-Briefcase</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger">Virtuoso Sponger</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSources">OpenLink-supplied Virtuoso Sponger Cartridges</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMeta">Supported Meta Cartridges in Virtuoso</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaREST">Meta Cartridges Usage via REST Request</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples">Parametrized Examples of Meta Cartridge Usage via REST Request</ulink></listitem>
+</itemizedlist></section></docbook>

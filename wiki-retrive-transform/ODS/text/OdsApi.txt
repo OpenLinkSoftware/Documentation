@@ -1,0 +1,393 @@
+%TOC%
+
+
+---+ODS API for data access & manipulation
+
+The code location is the <code><nowiki>ods_controllers</nowiki>.sql</code> file 
+from the ODS package.
+
+All requests are authorized via one of :
+   1. HTTP authentication (not yet supported)
+   2. OAuth
+   3. VSPX session (sid & realm)
+   4. <code>username=&lt;user&gt;&password=&lt;pass&gt;</code>
+
+The authenticated account becomes the effective user.
+
+Important Note: Any API method MUST follow naming convention as follows:
+   * methods : <code>ods.&lt;object type&gt;.&lt;action&gt;</code>
+   * parameters : <code>&lt;lower_case&gt;</code>
+   * composite parameters: atom-pub, OpenSocial XML format
+   * response : GData format, i.e., Atom extension
+
+Note: some of the methods below use <code><nowiki>ods_api.sql code</nowiki></code>
+
+---++Supported Web Services Endpoints
+
+Full collection of Supported Web Services Endpoints can be viewed [[ODSWebServicesEndpoints][here]].
+
+---+++User account activity
+
+---++++User register
+
+   * <b>Description</b>: register ODS user
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.register"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>name</nowiki></code>: desired user account name
+      * <code><nowiki>password</nowiki></code>: desired password
+      * <code><nowiki>email</nowiki></code>: user's e-mail address
+
+---++++Authenticate ODS account
+
+   * <b>Description</b>: Authenticate ODS account using name & password hash. Will 
+establish a session in VSPX_SESSION table
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.authenticate"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>user_name</nowiki></code>: ODS user name
+      * <code><nowiki>password_hash</nowiki></code>: password hash
+
+---++++User Update
+
+   * <b>Description</b>: Update user details
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.update"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>user_info</nowiki></code>: array of user details
+
+---++++User password change
+
+   * <b>Description</b>: Change user's password
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.password_change"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>new_password</nowiki></code>: new password
+
+---++++User delete
+
+   * <b>Description</b>: Deletes ODS user
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>name</nowiki></code>: Name of the ODS user to be deleted
+
+---++++User freeze
+
+   * <b>Description</b>: Freeze User. This is ODS admin privilege
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.freeze"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>name</nowiki></code>: Name of the ODS user to be frozen.
+
+---++++Get User Details
+
+   * <b>Description</b>: Gets ODS user details
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.get"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>name</nowiki></code>: the name of the ODS user
+
+---++++Search for user
+
+   * <b>Description</b>: performs search for ODS user by given pattern
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.search"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>pattern</nowiki></code>: the search pattern
+
+---+++Social Network activity
+
+
+---++++Invite User
+
+   * <b>Description</b>: Sends invitation to friends
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.invite"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>friends_email</nowiki></code>: email to which the invitation 
+to be sent
+      * <code><nowiki>custom_message</nowiki></code>: the message to be included 
+in the invitation
+
+---++++Process invitation
+
+   * <b>Description</b>: process given invitation
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.invitation"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>invitation_id</nowiki></code>: id of the invitation
+      * <code><nowiki>approve</nowiki></code>: if <code>1</code>, approved; if 
+<code>0</code>, not approved.
+
+---++++Get user's invitations
+
+   * <b>Description</b>: get user's invitations
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.invitations.get"</nowiki></code>
+   * <b>Parameters</b>: none
+
+
+---++++User terminate relation
+
+   * <b>Description</b>: Terminates relation friend with user
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.relation_terminate"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>friend</nowiki></code>: the name of the user in relation with.
+
+---++User Settings
+
+---++++Tagging Rules
+
+---++++User Add Tagging Rules 
+
+   * <b>Description</b>: adds tagging rules
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.tagging_rules.add"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>rulelist_name</nowiki></code>: name of the rule
+      * <code><nowiki>rules</nowiki></code>: array of the rule set
+      * <code><nowiki>is_public</nowiki></code>: if <code>1</code>, public; else, private
+
+
+---++++User Delete Tagging rule
+
+   * <b>Description</b>: deletes user tagging rule
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.tagging_rules.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>rulelist_name</nowiki></code>: name of the rule to be deleted
+
+---++++User Update Tagging Rule
+
+   * <b>Description</b>: updates user tagging rule
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.tagging_rules.update"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>rulelist_name</nowiki></code>: rule name
+      * <code><nowiki>rule</nowiki></code>: array of values for the tagging rule to be updated.
+
+---++++Hyperlinking Rules
+
+---++++User Add hyperlinking rules
+
+   * <b>Description</b>: Adds hyperlinking to rules.
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.hyperlinking_rules.add"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>rules</nowiki></code>: rules to be added
+
+---++++User Update hyperlinking rules
+
+   * <b>Description</b>: Update hyperlinking rules
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.hyperlinking_rules.update"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>rules</nowiki></code>: rules to be updated
+
+---++++User Delete hyperlinking rules
+
+   * <b>Description</b>: Delete User hyperlinking rules
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.hyperlinking_rules.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>rules</nowiki></code>: rules to be deleted
+
+---++++Topic Of Interests
+
+---++++User Add Topic Of Interest
+
+   * <b>Description</b>: Add Topic Of Interest
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.topicOfInterest.new"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>topicURI</nowiki></code>: topic interest URI for adding
+      * <code><nowiki>topicLabel</nowiki></code>: label/description of the URI
+
+---++++User Delete Topic Of Interest
+
+   * <b>Description</b>: Add Topic Of Interest
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.topicOfInterest.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>topicURI</nowiki></code>: topic interest URI for deleting
+
+---++++Thing Of Interests
+
+---++++User Add Thing Of Interest
+
+   * <b>Description</b>: Add Thing Of Interest
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.thingOfInterest.new"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>thingURI</nowiki></code>: thing interest URI for adding
+      * <code><nowiki>thingLabel</nowiki></code>: label/description of the URI
+
+---++++User Delete Thing Of Interest
+
+   * <b>Description</b>: Add Thing Of Interest
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.thingOfInterest.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>thingURI</nowiki></code>: thing interest URI for deleting
+
+---++++Offer List
+
+---++++User Add Offer
+
+   * <b>Description</b>: Add Offer
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.offer.new"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>offerName</nowiki></code>: name of the offer for adding
+      * <code><nowiki>offerComment</nowiki></code>: description of the offer
+
+---++++User Delete Offer
+
+   * <b>Description</b>: Delete Offer
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.offer.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>offerName</nowiki></code>: name of the offer for deleting
+
+---++++User Add Offer Property
+
+   * <b>Description</b>: Add Offer Property
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.offer.property.new"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>offerName</nowiki></code>: offer name
+      * <code><nowiki>offerProperty</nowiki></code>: offer RDF property for adding
+      * <code><nowiki>offerPropertyLabel</nowiki></code>: property label
+
+---++++User Delete Offer Property
+
+   * <b>Description</b>: Add Offer Property
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.offer.property.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>offerName</nowiki></code>: offer name
+      * <code><nowiki>offerProperty</nowiki></code>: offer RDF property for deleting
+
+---++++Wish List
+
+---++++User Add Wish
+
+   * <b>Description</b>: Add Wish
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.wish.new"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>wishName</nowiki></code>: wish name
+      * <code><nowiki>wishType</nowiki></code>: wish type with values: 'has' or 'wish'
+      * <code><nowiki>wishComment</nowiki></code>: description of the wish
+
+---++++User Delete Wish
+
+   * <b>Description</b>: Delete Wish
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.wish.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>wishName</nowiki></code>: wish name for deleteing
+
+---++++User get FOAF data
+
+   * <b>Description</b>: Gets User data by given FOAF IRI
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."user.getFOAFData"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>foafIRI</nowiki></code>: foafIRI of the user
+
+---+++Application instance activity
+
+---++++Instance Create
+
+   * <b>Description</b>: Creates ODS instance
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.create"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>type</nowiki></code>: class type of the instance
+      * <code><nowiki>name</nowiki></code>: name of the instance
+      * <code><nowiki>description</nowiki></code>: short description
+      * <code><nowiki>model</nowiki></code>: model of the instance
+      * <code><nowiki>public</nowiki></code>: if 1</nowiki></code>, public; else, private
+
+---++++Instance Update
+
+   * <b>Description</b>: Update instance properties
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.update"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance
+      * <code><nowiki>name</nowiki></code>: name of the instance
+      * <code><nowiki>description</nowiki></code>: description of the instance
+      * <code><nowiki>model</nowiki></code>: model type
+      * <code><nowiki>public</nowiki></code>: if 1</nowiki></code>, public; else, private
+
+---++++Instance Delete
+
+   * <b>Description</b>: Delete Instance
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.delete"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance to be deleted
+
+---++++Join to Instance
+
+   * <b>Description</b>: Join existing instance
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.join"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance to join to
+
+---++++Join instance Remove
+
+   * <b>Description</b>: Remove existing join to instance
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.disjoin"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance to remove the join from
+
+---++++Instance Join Approve 
+
+   * <b>Description</b>: Approve request to join to instance
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.join_approve"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance to join
+      * <code><nowiki>uname</nowiki></code>: username requested the join
+
+---++++Notification Services
+
+   * <b>Description</b>: Returns notification services properties
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."notification.services"</nowiki></code>
+   * <b>Parameters</b>: none
+
+---++++Instance Notification Services
+
+   * <b>Description</b>: Returns instance services notification
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.notification.services"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: instance id
+
+---++++Instance Notification Set
+
+   * <b>Description</b>: Instance notification set
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.notification.set"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance
+      * <code><nowiki>services</nowiki></code>: array of services properties values
+
+
+---++++Instance Notification Cancel
+
+   * <b>Description</b>: Cancel Instance Notification
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.notification.cancel"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance
+      * <code><nowiki>services</nowiki></code>: list of services
+
+---++++Instance Notification Log
+
+   * <b>Description</b>: Shows instance notification log
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.notification.log"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance
+
+---++++Instance Search
+
+   * <b>Description</b>: Search for instance by given pattern
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.search"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>pattern</nowiki></code>: search pattern
+
+---++++Instance Get
+
+   * <b>Description</b>: Get Instance Properties
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."instance.get"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>inst_id</nowiki></code>: id of the instance
+
+---+++Global Actions
+
+---++++Site Search
+
+   * <b>Description</b>: Search within the ODS Data Space
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API."site.search"</nowiki></code>
+   * <b>Parameters</b>:
+      * <code><nowiki>pattern</nowiki></code>: search pattern
+      * <code><nowiki>options</nowiki></code>: search options
+
+---++++Error Handler
+
+   * <b>Description</b>: Error handler
+   * <b>API name</b>: <code><nowiki>ODS.ODS_API.error_handler</nowiki></code>
+   * <b>Parameters</b>: none
+
+
+CategoryODS CategoryOpenSource CategoryAPI

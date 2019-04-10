@@ -1,0 +1,275 @@
+<docbook><section><title>FacebookAPI</title><title> The Facebook Client API as a User Defined Type (UDT)</title> The Facebook Client API as a User Defined Type (UDT)
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What is the Facebook Client API?</bridgehead>
+<para>The Facebook Client API gives developers an easy way to communicate with Facebook, handling authentication with transparent communication.
+ It may be used with any VSP or VSPX page, including but not limited to ODS.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How do I use the Facebook Client API?</bridgehead>
+<para>To get access to the the Facebook Client API, you should execute the <ulink url="FacebookAPI/facebook.sql">facebook.sql</ulink> script through iSQL.</para>
+<para>Note: Be sure to upgrade to the latest version of the ods_framework_dav.vad package, to get the latest versions of all files.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> What is the expected result?</bridgehead>
+<para>After execution of the SQL file, a type with name &quot;DB.DBA.Facebook&quot; will be created.
+ Creating an object of this type with the correct parameter(s) will set up a functional REST client for Facebook.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Description of usage</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The DB.DBA.Facebook type consists of a main object containing all the properties (api_key, api_secret) required to establish a connection to Facebook and user that is currently logged in to Facebook.
+</listitem>
+<listitem>The Facebook user has no interaction with (api_key, api_secret).
+ The developer must set api_key and api_secret.
+ Essential part of the UDT is its property named &quot;api_client&quot; — <itemizedlist mark="bullet" spacing="compact"><listitem>This property is of type DB.DBA.FacebookRestClient, also made available after execution of facebook.sql.
+</listitem>
+<listitem>This property is the real REST client that takes care of authentication and communication to Facebook.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Examples</bridgehead>
+<programlisting>DECLARE  appapikey, appsecret   VARCHAR;
+DECLARE  _facebook              DB.DBA.Facebook;
+DECLARE  _user                  INTEGER;
+
+-- here you should put the 32-character API key that corresponds to 
+-- the application you have created in Facebook.
+appapikey := &#39;5568c178ad6a4cef74da4848b164602c&#39;; 
+
+-- here you should put the 32-character API secret that corresponds 
+-- to the application you have created in Facebook.
+appsecret := &#39;f35a624a0c9d153a6fa712a439bea14b&#39;; 
+
+_facebook := new Facebook(appapikey, appsecret, params, lines);
+
+-- Constructor method for the UDT should contain 4 obligatory parameters -  
+-- API key, API secret, params, and lines parameters available in VSP
+
+-- With this action the API is set up.
+
+-- To work with Facebook data, we must make the Facebook user login
+
+_user := _facebook.require_login();
+
+-- after successful login, _user is INTEGER that contains Facebook user ID.
+
+-- All further communication to Facebook is related to api_client property:
+
+-- for example if we want to take full name of current user:
+
+DECLARE _xmle ANY;
+
+_xmle := _facebook.api_client.users_getInfo(CAST(_user AS VARCHAR),&#39;name&#39;);
+
+-- Here we CAST _user as VARCHAR, as the first parameter is comma-separated  
+-- list of the users IDs for which we need the field &quot;name&quot;. On successful  
+-- execution, _xmle will contain xml entity with the result. We should 
+-- parse it in order to get what we need from result. For example, if we 
+-- need name as VARCHAR we can perform the following:
+
+DECLARE  _uname  VARCHAR;
+_uname := 
+  CAST ( xpath_eval ( &#39;/users_getInfo_response/user/name&#39;, 
+                      _res
+                    ) AS VARCHAR
+       );
+
+   METHOD auth_getSession
+      (
+        auth_token    ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD users_getInfo
+      (
+        uids          ANY, 
+        fields        ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD users_isAppAdded
+      () 
+      RETURNS         ANY,
+   METHOD friends_areFriends
+      (
+        uids1         ANY, 
+        uids2         ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD friends_get
+      () 
+      RETURNS         ANY,
+   METHOD events_get
+      (
+        uid           INTEGER, 
+        eids          ANY,
+        start_time    INTEGER,
+        end_time      INTEGER,
+        rsvp_status   VARCHAR 
+      ) 
+      RETURNS         ANY,
+   METHOD events_get
+      (
+        uid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD events_getMembers
+      (
+        eid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD fql_query
+      (
+        _query        VARCHAR 
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishStoryToUser
+      (
+        title         VARCHAR,
+        body          VARCHAR,
+        image_1       VARCHAR,
+        image_1_link  VARCHAR,
+        image_2       VARCHAR,
+        image_2_link  VARCHAR,
+        image_3       VARCHAR,
+        image_3_link  VARCHAR,
+        image_4       VARCHAR,
+        image_4_link  VARCHAR,
+        priority      INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishStoryToUser
+      (
+        title         VARCHAR,
+        body          VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishActionOfUser
+      (
+        title         VARCHAR,
+        body          VARCHAR,
+        image_1       VARCHAR,
+        image_1_link  VARCHAR,
+        image_2       VARCHAR,
+        image_2_link  VARCHAR,
+        image_3       VARCHAR,
+        image_3_link  VARCHAR,
+        image_4       VARCHAR,
+        image_4_link  VARCHAR,
+        priority      INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishActionOfUser
+      (
+        title         VARCHAR,
+        body          VARCHAR 
+      ) 
+      RETURNS         ANY,
+   METHOD friends_getAppUsers
+      () 
+      RETURNS         ANY,
+   METHOD groups_get
+      (
+        uid           INTEGER, 
+        gids          ANY
+      ) 
+      RETURNS         ANY,
+   METHOD groups_getMembers
+      (
+        gid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD notifications_get
+      () 
+      RETURNS         ANY,
+   METHOD notifications_send
+      (
+        to_ids        ANY,
+        notification  VARCHAR,
+        email         VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD notifications_sendRequest
+      (
+        to_ids        ANY,
+        type          VARCHAR,
+        content       VARCHAR,
+        image         VARCHAR,
+        invite        INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD photos_get
+      (
+        subj_id       INTEGER,
+        aid           INTEGER,
+        pids          ANY
+      ) 
+      RETURNS         ANY,
+   METHOD photos_getAlbums
+      (
+        uid           INTEGER,
+        aids          INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD photos_getTags
+      (
+        pids          ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD profile_setFBML
+      (
+        markup        VARCHAR,
+        uid           INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD profile_getFBML
+      (
+        uid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD fbml_refreshImgSrc
+      (
+        _url          VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD fbml_refreshRefUrl
+      (
+        _url          VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD fbml_setRefHandle
+      (
+        _handle       VARCHAR,
+        fbml          VARCHAR 
+      ) 
+      RETURNS         ANY
+
+-- You can find a description for each method at the beginning of the  
+-- method definition in facebook.sql or in 
+-- http://wiki.developers.facebook.com/index.php/API
+
+-- there are 3 methods that are related to REST communication but not 
+-- to API function.
+   METHOD generate_sig
+      (
+        params_array ANY, 
+        secret VARCHAR
+      ) 
+      RETURNS VARCHAR,
+   METHOD call_method
+      (
+        method VARCHAR,
+        params ANY
+      ) 
+      RETURNS ANY,
+   METHOD post_request
+      (
+        method VARCHAR,
+        params ANY
+      ) 
+      RETURNS ANY,
+
+-- all functions return XML entity as result, except 
+-- auth_getSession(), 
+-- users_getInfo(uids ANY, fields ANY), and 
+-- users_isAppAdded()
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="OdsFacebookIntegration">ODS Facebook Guide</ulink> </listitem>
+<listitem><ulink url="OdsFacebookIntegrationSetupAdminGuide">ODS Facebook Integration Administrators Guide</ulink> </listitem>
+<listitem><ulink url="OdsFacebookIntegrationLinkODSFacebook">Link existing ODS user with Facebook account</ulink> </listitem>
+<listitem><ulink url="OdsFacebookIntegrationLinkODSFacebookSignUp">Link ODS user with Facebook account using the Sign Up Facebook feature</ulink>.
+</listitem>
+<listitem><ulink url="OdsFacebookIntegrationLinkODSFacebookProfile">Link existing ODS user with Facebook account using the Profile Setup Feature</ulink>.
+</listitem>
+<listitem><ulink url="OdsFacebookIntegrationAuthentcFacebook">Authenticate in ODS using your Facebook account</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryODS">CategoryODS</ulink> <ulink url="CategoryOpenSource">CategoryOpenSource</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryHowTo">CategoryHowTo</ulink> </para>
+</section></docbook>

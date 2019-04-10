@@ -1,0 +1,89 @@
+<docbook><section><title>ODSWebIDIdPEx1</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">Using Virtuoso&#39;s <ulink url="WebID">WebID</ulink> Verify Proxy Service with an X.509 certificate <ulink url="WebID">WebID</ulink>: VSP Example</bridgehead>
+<programlisting>&lt;?vsp
+  declare webid, error, action, hostUrl, url, callback, certificate any;
+
+	webid := get_keyword (&#39;webid&#39;, params);
+	error := get_keyword (&#39;error&#39;, params);
+	action := get_keyword (&#39;go&#39;, params);
+  if (length (webid) or length (error))
+    goto html;
+
+  if (not length (action))
+    goto html;
+
+  if (not is_http_ctx ())
+  {
+    error := &#39;No certificate&#39;;
+    goto html;
+  }
+
+  hostUrl := http_request_header (http_request_header () , &#39;Host&#39; , null , sys_connected_server_address ());
+  if (isstring (hostUrl) and strchr (hostUrl , &#39;:&#39;) is null)
+  {
+    declare hp varchar;
+    declare hpa any;
+
+    hp := sys_connected_server_address ();
+    hpa := split_and_decode (hp , 0 , &#39;\0\0:&#39;);
+    if (hpa [1] &lt;&gt; &#39;80&#39;)
+      hostUrl := hostUrl || &#39;:&#39; || hpa [1];
+  }
+  if (hostUrl not like &#39;https://%&#39;)
+    hostUrl := &#39;https://&#39; || hostUrl;
+
+  certificate := client_attr (&#39;client_certificate&#39;);
+  callback := hostUrl || &#39;/ods/webid_demo.vsp&#39;;
+  url := sprintf (&#39;http://id.myopenlink.net/ods/webid_verify.vsp?callback=%U&amp;certificate=%U&#39;, callback, certificate);
+  http_status_set (302);
+  http_header (sprintf (&#39;Location: %s\r\n&#39;, url));
+  return;
+
+html:
+?&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;WebID Verification Demo - VSP&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;WebID Verification Demo - VSP&lt;/h1&gt;
+    &lt;div&gt;
+      This will check your X.509 Certificate&#39;s WebID  watermark. &lt;br/&gt;Also note this service supports ldap, http, mailto, acct scheme based WebIDs.
+    &lt;/div&gt;
+    &lt;br/&gt;
+    &lt;br/&gt;
+    &lt;div&gt;
+      &lt;form method=&quot;get&quot;&gt;
+        &lt;input type=&quot;submit&quot; name=&quot;go&quot; value=&quot;Check&quot;/&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+    &lt;?vsp
+      if (length (webid) or length (error))
+      {
+    ?&gt;
+      &lt;div&gt;
+      	The return values are:
+  	    &lt;ul&gt;
+          &lt;?vsp
+            if (length (webid))
+            {
+          ?&gt;
+  	      &lt;li&gt;WebID -  &lt;?V webid ?&gt;&lt;/li&gt;
+  	      &lt;li&gt;Timestamp in ISO 8601 format - &lt;?V get_keyword (&#39;ts&#39;, params) ?&gt;&lt;/li&gt;
+          &lt;?vsp
+            }
+            if (length (error))
+            {
+          ?&gt;
+  	      &lt;li&gt;Error - &lt;?V error ?&gt;&lt;/li&gt;
+          &lt;?vsp
+            }
+          ?&gt;
+  	    &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;?vsp
+      }
+    ?&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+</programlisting></section></docbook>

@@ -1,0 +1,112 @@
+<docbook><section><title>VAL_ValCustomization</title><title> VAL Customization</title> VAL Customization
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>VAL can be customized in various ways, by manipulating the triples in a set of pre-defined private graphs.
+Typically these details will be hidden behind user interface elements, but it is good to know them anyway.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Customizing the Standard VAL Authentication Page</bridgehead>
+<para>VAL allows some customization of the authenticate.vsp page (also see the <ulink url="VAL_AuthenticateVspTutorial">the VAL VSP Authentication Tutorial</ulink>).</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Customizing the Logos</bridgehead>
+<para>Logos displayed on the authentication page can easily be customized per application realm.
+ By default, VAL shows details about the identity provider on the left, and the Virtuoso logo as the image on the right.</para>
+<para>To set the left and right logos for the default realm, one can simply insert corresponding triples into the VAL config graph:</para>
+<programlisting>SPARQL
+PREFIX  oplcfg:  &lt;http://www.openlinksw.com/ontology/configuration#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+INSERT
+  INTO &lt;urn:virtuoso:val:config&gt; 
+    {
+      oplacl:DefaultRealm  oplcfg:hasLeftLogo  &lt;http://path/to/a-logo.png&gt; ;
+                           oplcfg:hasRightLogo &lt;http://path/to/another-logo.png&gt; .
+    };
+</programlisting><para>Similarly, the href targets of these logos (which default as shown here) can be set via: </para>
+<programlisting>SPARQL
+PREFIX  oplcfg:  &lt;http://www.openlinksw.com/ontology/configuration#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+INSERT
+  INTO &lt;urn:virtuoso:val:config&gt; 
+    {
+      oplacl:DefaultRealm  oplcfg:hasLeftAnchor   &lt;http://www.openlinksw.com/&gt; ;
+                           oplcfg:hasRightAnchor  &lt;http://virtuoso.openlinksw.com/&gt; .
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Customizing the Access Request Dialog</bridgehead>
+<para>There are two modes to how the Access Request Dialog is to be presented: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>the user needs to press a button to show it (the default) </listitem>
+<listitem>the dialog is shown automatically when an authenticated person is has been denied access to a resource</listitem>
+</itemizedlist><para>This setting is tied to the application realm, which means that it does not apply to any other realm.</para>
+<para>To show the dialog automatically in the default realm, one sets the following property: </para>
+<programlisting>SPARQL
+PREFIX  oplcfg:  &lt;http://www.openlinksw.com/ontology/configuration#&gt;
+INSERT
+  INTO &lt;urn:virtuoso:val:config&gt; 
+    {
+      &lt;urn:virtuoso:val:realms:default&gt;  oplcfg:hasRequestAccessDialogMode  oplcfg:SimpleRequestAccessDialog
+    };
+</programlisting><para> To restore the default, one simply deletes the configuration: </para>
+<programlisting>SPARQL
+PREFIX  oplcfg:  &lt;http://www.openlinksw.com/ontology/configuration#&gt;
+DELETE
+  FROM &lt;urn:virtuoso:val:config&gt; 
+    {
+      &lt;urn:virtuoso:val:realms:default&gt;  oplcfg:hasRequestAccessDialogMode  oplcfg:SimpleRequestAccessDialog
+    };
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Customizing the ACL Graphs</bridgehead>
+<para>The VAL ACL system uses a set of named graphs to store rules, groups, and restrictions.
+ By default, VAL uses one graph for each combination of application realm and ACL resource type.
+ It uses the default hostname (HOST in the example below) of the Virtuoso instance.</para>
+<emphasis>Example:</emphasis> The default graph which stores the rules in the default realm is the following: <programlisting>http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm
+</programlisting><para> On firsts usage of the API to create a rule, group, or restriction this graph will be created and made private.
+ It will then be stored in the VAL configuration using the oplacl:hasRuleDocument property:</para>
+<programlisting>{ oplacl:DefaultRealm  oplacl:hasRuleDocument  &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt; }
+</programlisting><para> It is possible to customize these graphs (ideally before the API creates them) which might be desireable for manual ACL resource creation via SPARQL Insert.
+ Since VAL will honor the setting above one can simply add the required triples into the VAL config graph.</para>
+<emphasis>Example:</emphasis> Given that one wants to change the rule, group, and restriction graphs for the default application realm, the following will do:<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX  oplres:  &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+WITH &lt;urn:virtuoso:val:config&gt;
+  INSERT
+    {
+      oplacl:DefaultRealm         oplacl:hasRuleDocument  &lt;urn:acl:rules&gt; ;
+                                 oplacl:hasGroupDocument  &lt;urn:acl:groups&gt; ;
+                           oplres:hasRestrictionDocument  &lt;urn:acl:restrictions&gt; .
+    };
+</programlisting><para> VAL will honor these settings, and store and read all rules, groups, and restrictions from the configured graphs.</para>
+<para> <emphasis>Warnings:</emphasis></para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Be aware that <emphasis><emphasis>VAL does not automatically migrate</emphasis></emphasis> rules, groups, and restrictions between graphs.
+ This means that changing the graph identifiers will disable existing rules, groups, and restrictions.
+ </listitem>
+<listitem>It is highly recommended that these graphs be made and kept private: <programlisting>DB.DBA.RDF_GRAPH_GROUP_INS
+  ( &#39;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&#39;, &#39;urn:acl:rules&#39; );
+DB.DBA.RDF_GRAPH_GROUP_INS
+  ( &#39;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&#39;, &#39;urn:acl:groups&#39; );
+DB.DBA.RDF_GRAPH_GROUP_INS
+  ( &#39;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&#39;, &#39;urn:acl:restrictions&#39; );
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Customizing the Page Footers</bridgehead>
+<para>VAL&#39;s own /sparql integration allows to set a custom page footer.
+ This can be used to for example show social sharing controls via Javascript commands.
+ Each endpoint has its own configuration.
+ The following example shows how the main /sparql endpoint of <ulink url="http://my.openlinksw.com">http://my.openlinksw.com</ulink> can be enhanced with social sharing controls:</para>
+<programlisting>SPARQL
+PREFIX  oplcfg:  &lt;http://www.openlinksw.com/ontology/configuration#&gt;
+WITH &lt;urn:virtuoso:val:config&gt;
+  INSERT 
+    {
+      &lt;http://my.openlinksw.com/sparql&gt;  oplcfg:hasFooter  [
+                                                                               a  oplcfg:HtmlSnippet ;
+                                                              oplcfg:hasHtmlBody  &quot;&quot;&quot;&lt;script type=&quot;text/javascript&quot; src=&quot;http://s7.addthis.com/js/300/addthis_widget.js&quot;&gt;
+                                                                                     &lt;/script&gt;
+                                                                                     &lt;script type=&quot;text/javascript&quot;&gt;
+                                                                                       addthis.layers({
+                                                                                         &#39;theme&#39; : &#39;transparent&#39;,
+                                                                                         &#39;share&#39; : {
+                                                                                           &#39;position&#39; : &#39;right&#39;,
+                                                                                           &#39;services&#39; : &#39;google,linkedin,twitter,facebook,more&#39;
+                                                                                         }
+                                                                                       });
+                                                                                     &lt;/script&gt;
+                                                                                  &quot;&quot;&quot;
+                                                            ] 
+    }
+</programlisting><para> </para>
+</section></docbook>

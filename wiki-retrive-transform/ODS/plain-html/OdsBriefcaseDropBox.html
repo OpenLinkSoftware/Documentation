@@ -1,0 +1,97 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="OdsBriefcase"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="OdsBriefcase"}%--><p> </p>
+<h1><a name="Using ODS-Briefcase to mediate access to data stored in Dropbox"></a> Using ODS-Briefcase to mediate access to data stored in Dropbox</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Example">Example</a></li>
+<ul><li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Steps">Steps</a></li><ul><li><a href="#1%20-%20Get%20a%20Dropbox%20API%20key%20and%20secret%20pair%20for%20use%20with%20ODS-Briefcase">1 - Get a Dropbox API key and secret pair for use with ODS-Briefcase</a></li> <li><a href="#2%20-%20Configure%20ODS%20to%20use%20your%20Dropbox%20API%20key%20and%20secret">2 - Configure ODS to use your Dropbox API key and secret</a></li> <li><a href="#3%20-%20Access%20files%20stored%20on%20Dropbox%20through%20ODS-Briefcase">3 - Access files stored on Dropbox through ODS-Briefcase</a></li> </ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>Dropbox is a free service that lets you bring all your photos, docs, and videos anywhere.
+ Any file you save to your Dropbox will automatically be copied to all your computers, phones, and even the Dropbox website.</p>
+<p>ODS Briefcase offers a new &quot;Dropbox&quot; folder type which provides several additional features, once the ODS system is configured with a registered Dropbox API key and secret pair:</p>
+<ul><li>Specify credentials for authentication against Dropbox, enabling retrieval of any or all of your folders and files, including any associated metadata </li>
+<li>Specify which Sponger Extractor Cartridges and Sponger Meta Cartridges should be run against your Dropbox data </li>
+<li>Save fetched data, metadata, and Sponger output, into a newly created Dropbox-specific RDF Graph in the Virtuoso RDF Quad Store </li>
+<li>Specify other ODS Users or <nop></nop>WebID-based ACLs which should be granted access to your Dropbox data through ODS Briefcase</li>
+</ul><h2><a name="Example"></a> Example</h2>
+<p>Here is a sample scenario showing the whole process, from setting the Dropbox API key and secret pair in ODS, to retrieving all Dropbox content to ODS Briefcase.</p>
+<h3><a name="Prerequisites"></a> Prerequisites</h3>
+<ul><li>A <a href="https://www.dropbox.com/" class="absuri">Dropbox user account</a> </li>
+<li>Files and folders (data) stored in your <a href="https://www.dropbox.com/install" class="absuri">Dropbox Space</a> </li>
+<li>Administrative (DBA) access to a <a href="http://virtuoso.openlinksw.com/" class="absuri">Virtuoso Server</a> instance, on which the following have been installed -- <ul><li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">ODS-Framework VAD package</a> </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">ODS-Briefcase VAD package</a> </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso RDF Mappers VAD package</a></li>
+</ul></li>
+</ul><h3><a name="Steps"></a> Steps</h3>
+<h4><a name="1 - Get a Dropbox API key and secret pair for use with ODS-Briefcase"></a> 1 - Get a Dropbox API key and secret pair for use with ODS-Briefcase</h4>
+<i>Note that at present, each Virtuoso + ODS instance can only be configured with a single Dropbox API key, which will then be used by all ODS-Briefcase users when targeting Dropbox from that instance.
+ By default, Dropbox limits each application to 5 users (Dropbox accounts).
+ This means that 5 different Dropbox account holders can create Dropbox type folders at your Virtuoso ODS instance.
+ This limitation is outside the scope of <nop></nop>OpenLink or Virtuoso control.
+ If you&#39;ll have more than 5 Dropbox users working through your ODS instance, you will need to apply to Dropbox for production status.</i><ol><li>Browse to &lt;<a href="https://www.dropbox.com/developers/apps" class="absuri">https://www.dropbox.com/developers/apps</a>&gt;, and log in with your existing Dropbox user credentials: <br><br><a href="OdsBriefcaseDropBox/step1-1.png" target="_blank"><img src="OdsBriefcaseDropBox/step1-1.png" width="600px"></a><br><br> </li>
+<li>Agree to the <i>Dropbox Developer Terms and Conditions</i>: <br><br><a href="OdsBriefcaseDropBox/step1-2.png" target="_blank"><img src="OdsBriefcaseDropBox/step1-2.png" width="600px"></a><br><br> </li>
+<li>Click <b>Create an App</b>: <br><br><a href="OdsBriefcaseDropBox/step1-3.png" target="_blank"><img src="OdsBriefcaseDropBox/step1-3.png" width="600px"></a><br><br> </li>
+<li>Enter a name for your Dropbox client application (i.e., your ODS-Briefcase instance) to be known by, e.g., &quot;<nop></nop>MyODSDropbox&quot;.
+ A description is also required; put as much or as little as you like.
+ Tick the <b>Full Dropbox</b> check-box, and click <b>Create</b>: <br><br><a href="OdsBriefcaseDropBox/step1-4.png" target="_blank"><img src="OdsBriefcaseDropBox/step1-4.png" width="600px"></a><br><br> </li>
+<li>You will be shown the &quot;Options&quot; page for your new application, including the <b>App key</b> and <b>App secret</b> pair.
+ (You can copy these now, or come back for them later.
+ Do be aware that you will need these strings for the steps that follow.)  Optionally, add the URI of your ODS host Virtuoso instance as the <b>Website</b>.
+ If you make any changes on this form, click <b>Update</b>; otherwise, click <b>Cancel</b> to end the application creation process.
+<br><br><a href="OdsBriefcaseDropBox/step1-5.png" target="_blank"><img src="OdsBriefcaseDropBox/step1-5.png" width="600px"></a><br><br> </li>
+<li>Your new application will show up in the &quot;My apps&quot; list.
+<br><br><a href="OdsBriefcaseDropBox/step1-6.png" target="_blank"><img src="OdsBriefcaseDropBox/step1-6.png" width="600px"></a><br><br></li>
+</ol><p> </p>
+<h4><a name="2 - Configure ODS to use your Dropbox API key and secret"></a> 2 - Configure ODS to use your Dropbox API key and secret</h4>
+<ol><li>Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;<a href="http://example.com/ods/" class="absuri">http://example.com/ods/</a>&gt;, and click <b>Sign In</b>.
+<br><br><a href="OdsBriefcaseDropBox/step2-1.png" target="_blank"><img src="OdsBriefcaseDropBox/step2-1.png" width="600px"></a><br><br> </li>
+<li>Log in as a Virtuoso+ODS user with Administrator privileges, e.g., <code>dba</code>.
+<br><br><a href="OdsBriefcaseDropBox/step2-2.png" target="_blank"><img src="OdsBriefcaseDropBox/step2-2.png" width="600px"></a><br><br> </li>
+<li>Click on <b>Site Settings</b>: <br><br><a href="OdsBriefcaseDropBox/step2-3.png" target="_blank"><img src="OdsBriefcaseDropBox/step2-3.png" width="600px"></a><br><br> </li>
+<li>Click on <b>Login Authentication Keys</b>: <br><br><a href="OdsBriefcaseDropBox/step2-4.png" target="_blank"><img src="OdsBriefcaseDropBox/step2-4.png" width="600px"></a><br><br> </li>
+<li>Select <b>Dropbox API</b> in the <b>API Name</b> menu, provide the <b>App key</b> and <b>App secret</b> you got when you registered the application with Dropbox, and click <b>Add</b>.
+<br><br><a href="OdsBriefcaseDropBox/step2-5.png" target="_blank"><img src="OdsBriefcaseDropBox/step2-5.png" width="600px"></a><br><br> </li>
+<li>ODS-Briefcase is now configured to use the Dropbox API.
+<br><br><a href="OdsBriefcaseDropBox/step2-6.png" target="_blank"><img src="OdsBriefcaseDropBox/step2-6.png" width="600px"></a><br><br></li>
+</ol><p> </p>
+<h4><a name="3 - Access files stored on Dropbox through ODS-Briefcase"></a> 3 - Access files stored on Dropbox through ODS-Briefcase</h4>
+<ol><li>Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;<a href="http://example.com/ods/" class="absuri">http://example.com/ods/</a>&gt;.
+<br><br><a href="OdsBriefcaseDropBox/step3-01.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-01.png" width="600px"></a><br><br> </li>
+<li>Log in as a Virtuoso+ODS user with normal privileges, e.g., <code>demo</code>.
+<br><br><a href="OdsBriefcaseDropBox/step3-02.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-02.png" width="600px"></a><br><br> </li>
+<li>Click to the <b>ODS-Briefcase</b> application: <br><br><a href="OdsBriefcaseDropBox/step3-03.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-03.png" width="600px"></a><br><br> </li>
+<li>Click <b>New Folder</b> from the main Briefcase control strip: <br><br><a href="OdsBriefcaseDropBox/step3-04.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-04.png" width="600px"></a><br><br> </li>
+<li>In the New Folder form, specify a <b>Folder Name</b>, e.g., <b><nop></nop>MyDropboxFolder</b>, and set the <b>Folder type</b> to <b>Dropbox</b>: <br><br><a href="OdsBriefcaseDropBox/step3-05.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-05.png" width="600px"></a><br><br> </li>
+<li>Click to the newly visible <b>Dropbox</b> tab: <br><br><a href="OdsBriefcaseDropBox/step3-06.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-06.png" width="600px"></a><br><br> </li>
+<li>All RDF data extracted from and otherwise collected about your Dropbox files will be saved to a named graph, where the default name is constructed from the host ODS instance, the ODS username, and the Briefcase folder name -- <code>http://&lt;host&gt;[:&lt;port&gt;]/DAV/home/&lt;user-name&gt;/&lt;folder-name&gt;#this</code> -- so, in this example, the default graph would be named &lt;<a href="http://example.com/ods/demo/MyDropboxFolder#this" class="absuri">http://example.com/ods/demo/MyDropboxFolder#this</a>&gt;.
+ Expert users may wish to change this graph name, but the default is suitable for most users.
+<br><br><a href="OdsBriefcaseDropBox/step3-07.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-07.png" width="600px"></a><br><br> </li>
+<li>You can also turn on the <a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger" class="absuri">Virtuoso Sponger</a>, to process your Dropbox files more comprehensively.
+ When the Sponger is enabled for your folder, you can specify which &quot;Sponger Extractor Cartridges&quot; and &quot;Sponger Meta Cartridges&quot; will be run over the files in your Dropbox.
+ You can enable all cartridges, but this will introduce some processing overhead.
+ It&#39;s generally best to enable only those cartridges which will be applicable to your files and their content.
+ For instance, you may know that you&#39;ll only be storing Microsoft and Open Office documents here.
+ Then, click &quot;Authenticate&quot;, to connect your new folder to your Dropbox: <br><br><a href="OdsBriefcaseDropBox/step3-08.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-08.png" width="600px"></a><br><br> </li>
+<li>You&#39;ll be prompted to enter your Dropbox user&#39;s credentials.
+ Note that this Dropbox user need not be the application owner/&quot;developer&quot; who got the API key earlier.
+<br><br><a href="OdsBriefcaseDropBox/step3-09.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-09.png" width="600px"></a><br><br> </li>
+<li>Dropbox will prompt for confirmation that you intend to let your application (&quot;MyODSDropbox<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/MyODSDropbox&parent=OdsBriefcaseDropBox" class="wikiword">?</a>&quot;) have access to your Dropbox content.
+ Click <b>Allow</b>.
+<br><br><a href="OdsBriefcaseDropBox/step3-10.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-10.png" width="600px"></a><br><br> </li>
+<li>Your Dropbox user name and associated email address will now be displayed.
+ Click <b>Create</b> to finish the folder creation process.
+<br><br><a href="OdsBriefcaseDropBox/step3-11.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-11.png" width="600px"></a><br><br> </li>
+<li>Your new Dropbox-linked folder should now be displayed in your Briefcase resources list: <br><br><a href="OdsBriefcaseDropBox/step3-12.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-12.png" width="600px"></a><br><br> </li>
+<li>Click the folder name to see the resources ODS-Briefcase has found in your Dropbox Dataspace: <br><br><a href="OdsBriefcaseDropBox/step3-13.png" target="_blank"><img src="OdsBriefcaseDropBox/step3-13.png" width="600px"></a><br><br></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://bit.ly/SK7WAI" class="absuri">How Linked Data &amp; WebID Deliver Controlled Access to Resources in Google Drive, Microsoft OneDrive (formerly SkyDrive), DropBox, Box.Net, and Amazon S3</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcaseAmazonS3" class="wikiword">Using ODS-Briefcase to mediate access to data stored on Amazon S3</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcaseBoxNet" class="wikiword">Using ODS-Briefcase to mediate access to data stored on Box (a/k/a box.com or box.net)</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcaseGoogleDrive" class="wikiword">Using ODS-Briefcase to mediate access to data stored on Google Drive</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcaseSkyDrive" class="wikiword">Using ODS-Briefcase to mediate access to data stored on Microsoft OneDrive (formerly SkyDrive)</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcaseFolders" class="wikiword">Manage different Briefcase type folders in Briefcase</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcase" class="wikiword">ODS-Briefcase</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger" class="absuri">Virtuoso Sponger</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSources" class="absuri">OpenLink-supplied Virtuoso Sponger Cartridges</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMeta" class="absuri">Supported Meta Cartridges in Virtuoso</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaREST" class="absuri">Meta Cartridges Usage via REST Request</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples" class="absuri">Parameterized Examples of Meta Cartridge Usage via REST Request</a></li>
+</ul></div></body></html>

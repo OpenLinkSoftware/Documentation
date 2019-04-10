@@ -1,0 +1,87 @@
+%META:TOPICPARENT{name="VirtConfigureCartridges"}%
+
+---+Sponger OAuth Support via VAL
+
+%TOC%
+
+[[http://en.wikipedia.org/wiki/OAuth][OAuth]] is an open standard for authorization. OAuth provides a method for users to grant third-party access to their resources without sharing their passwords. It also provides a way to grant limited access (in scope, duration, etc.). In the OAuth model, the client (which is not the resource owner, but is acting on their behalf) requests access to resources controlled by the resource owner, but hosted by the server.
+
+In the context of the Sponger, the resources being accessed are typically subsets of a user's profile and their associated data (e.g. microposts) from a sites such as Facebook or <nowiki>LinkedIn</nowiki>. Which parts of their profile and data are shared are controlled by the access permissions they grant. The Sponger acts as an OAuth client, extracting and transforming the selected user data into Linked Data, stored in Virtuoso, ready for querying, aggregation etc.
+
+In order for the client, i.e. Sponger, to access resources, it first has to obtain permission from the resource owner.  This permission is expressed in the form of a token and matching shared-secret.  The purpose of the token is to make it unnecessary for the resource owner to share their credentials with the client.  Unlike the resource owner credentials, tokens can be issued with a restricted scope and limited lifetime, and revoked independently.
+
+---++Use of OAuth by Sponger Cartridges
+
+Numerous Sponger cartridges use OAuth to gain access to data held by various services. Before the Twitter cartridge, for instance, can transform Twitter microposts to Linked Data, a Twitter user must first grant an OAuth access token to the Sponger. Once granted, this access token is used to sign requests made to the Twitter API. What public data can be accessed this way depends on the permissions policies of the site in question. When sponging a URI, if that URI is a user's public profile URI, the Sponger cartridge will check whether that user has granted an access token.
+
+---++Virtuoso Authentication Layer
+
+The Virtuoso Authentication Layer (VAL) provides an internal Virtuoso API for handling any authentication in Virtuoso. VAL supports systems
+like <nowiki>OpenID</nowiki>, <nowiki>BrowserID</nowiki>, and a variety of OAuth services such as Facebook, Google, or Twitter. Several Sponger cartridges use VAL for OAuth access token granting. Consequently, the Sponger is dependent on the VAL VAD (Virtuoso Application Distribution), which must be installed before the Cartridges VAD. VAL is shipped as part of Virtuoso, but the latest VADs can also be downloaded directly from the [[http://virtuoso.openlinksw.com/download/][Virtuoso downloads page]].
+
+(Other non-VAL-based cartridges which use OAuth rely on a single access token and secret for signing all API requests. These 'global' access tokens are normally obtained when registering the Sponger as an OAuth client application with the relevant web service and are saved in the cartridge options. We are in the process of migrating these cartridges to use 'per-user' access tokens granted through VAL.)
+
+---++Configuring Cartridges to use VAL OAuth
+
+The cartridges supporting per-user OAuth access tokens are: Facebook, <nowiki>LinkedIn</nowiki>, Twitter, Google+, Instagram, Meetup and Xing.
+
+Some of these cartridges implemented their own OAuth access token management prior to the introduction of VAL. This pre-VAL OAuth support can still be used if desired, although VAL is the recommended mechanism for granting and managing OAuth tokens. Details of how to configure these cartridges to use their original pre-VAL OAuth support is described in the section for the appropriate cartridge under topic [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtConfigureCartridges][Sponger Cartridge Configuration and Implementation Notes]].
+
+The pre-VAL OAuth support will be removed in the near future. Until this is done, to have cartridges use VAL for OAuth token generation, check the 'Sponger OAuth Binding - Use VAL OAuth' checkbox in the Conductor's Sponger 'Configuration' panel, reachable by navigating through the tabs 'Linked Data' > 'Sponger' > 'Configuration'.
+
+<img src="%ATTACHURLPATH%/use_val_with_sponger_cb.jpg" style="wikiautogen"/>
+
+Note: This option only enables VAL OAuth token generation for cartridges. VAL authentication and access control, including controlling access to the Sponger in general or to specific cartridges, are enabled by enabling the appropriate VAL scope (for more information refer to the [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ValPublicWikiDoc][VAL API documentation]].)
+
+---+++Registering OAuth Application Keys In Virtuoso
+
+Each of the above web services requires that the Sponger be registered as an OAuth application. The configuration guidelines below detail how to do this. On successfully registering the Sponger application, each service provides an application ID and secret which must be saved in Virtuoso. 
+
+Once you've obtained a new application ID and secret, register them in Virtuoso using Conductor's "Login Authentication Keys" form which is accessed through the "Linked Data" and "OAuth Service Binding" tabs. (This last tab will not be displayed unless the VAL VAD is installed).
+
+<img src="%ATTACHURLPATH%/app_id_key_registration.jpg" style="wikiautogen"/>
+
+*Note*: The Sponger and ODS share application IDs and secrets. OAuth client applications registered by ODS are usable by the Sponger and vice versa; so that a service such as Facebook need be registered only once.
+
+After registering a service's keys, you can grant the Sponger access to your profile data via that service's icon on the /sponger endpoint. 
+
+<img src="%ATTACHURLPATH%/sponger_front_page_buttons.jpg" style="wikiautogen"/>
+
+
+On granting an access token, you can sponge your profile on the 3rd party service through the corresponding cartridge.
+
+---+++Registering the Sponger as an OAuth Client Application
+
+The documentation for the [[http://web.ods.openlinksw.com/odsdox/group__ods__module__user.html#ods_authentication_url_services][ODS User Profile Management API]] details all the authentication services supported by VAL, how to obtain application IDs and secrets, and the required application settings. Refer to the documentation for user.authenticate.authenticationUrl(), section "Supported Services"
+
+Only a subset of the authentication services supported by VAL have cartridges which exploit OAuth: i.e. <nowiki>LinkedIn</nowiki>, Facebook, Twitter and Instagram. Taking Facebook as an example...
+
+---++++Registering the Sponger as a Facebook Client Application
+
+Client IDs (application ID and secret) can be created at https://developers.facebook.com/apps . The Facebook client app should be configured as "Website with Facebook login" with a site URL matching the host of the Sponger installation. For example, if the Sponger instance runs on <nowiki>http://myhost.com:8890</nowiki> then the URL in the Facebook app should be <nowiki>http://myhost.com:8890</nowiki>.
+
+<img src="%ATTACHURLPATH%/fb_oauth_client_reg.jpg" style="wikiautogen"/>
+
+Make a note of the App ID and App Secret generated by Facebook before saving the changes. Then register these app keys with Virtuoso as described above. The Facebook cartridge should now be configured and ready to allow individual users to grant access to their Facebook data
+
+---++Granting a Facebook Access Token
+
+To allow the Sponger to gain access to your Facebook data, you must first grant an OAuth access token. Start by clicking on the Facebook icon on the /sponger main page.
+
+<img src="%ATTACHURLPATH%/sponger_front_page_fb_button.jpg" style="wikiautogen"/>
+
+If you are not already logged into Facebook, you will be prompted to do so, to confirm your identity. Facebook will then display details of the permissions being requested by the Sponger application and the scope of the information it will have access to.
+
+<img src="%ATTACHURLPATH%/fb_app_permissions_req.jpg" style="wikiautogen"/>
+
+Grant access to the Sponger by clicking on 'Go to App'; at which point Facebook will generate an access token which is saved in Virtuoso for future use and subsequent (re)sponges of your data.
+
+---++Sponging Your Facebook Data
+
+If the token granting is successful, the Sponger displays a confirmation page containing two sample links for sponging your profile. These links offer alternative views of your Linked Data through the /about and /describe Sponger proxies.
+
+<img src="%ATTACHURLPATH%/fb_binding_confirmation.jpg" style="wikiautogen"/>
+
+Clicking the first of these should result in a browser page similar to that below, showing your Facebook profile sponged and converted to browseable Linked Data.
+
+<img src="%ATTACHURLPATH%/about_me.jpg" style="wikiautogen"/>

@@ -1,0 +1,263 @@
+<html><body><div class="topic-text"><h1><a name=""></a> WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDEmailVerification" class="wikiword">?</a>-based Email Verification in ODS</h1>
+<p>VERY rough draft doc...</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Simple%20Browser-based%20demonstration">Simple Browser-based demonstration</a></li> <li><a href="#Detailed%20demonstration%2C%20similar%20to%20above%2C%20using%20cURL%20on%20the%20command-line">Detailed demonstration, similar to above, using cURL on the command-line</a></li>
+<ul><li><a href="#Pass%20Your%20Email%20Address%20as%20a%20URL%20parameter">Pass Your Email Address as a URL parameter</a></li><ul><li><a href="#Example">Example</a></li> </ul><li><a href="#Verify%20Your%20Email%20via%20a%20URL%20to%20a%20Resource%20protected%20by%20a">Verify Your Email via a URL to a Resource protected by a</a></li><ul><li><a href="#Verification">Verification</a></li> </ul><li><a href="#Access%20Example">Access Example</a></li><ul><li><a href="#JSON">JSON</a></li> <li><a href="#Microdata%2BJSON">Microdata+JSON</a></li> <li><a href="#N3">N3</a></li> <li><a href="#HTML%2BMicrodata">HTML+Microdata</a></li> <li><a href="#XHTML%2BRDFa">XHTML+RDFa</a></li> <li><a href="#RDF%2FXML">RDF/XML</a></li> </ul> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Prerequisites"></a> Prerequisites</h2>
+<ol><li>Get an ODS account and edit your profile, using one of these tools -- <ul><li>HTML and Javascript -- <code>http://&lt;cname&gt;/javascript/users/users.html</code>, e.g.: <a href="http://id.myopenlink.net/javascript/users/users.html" class="absuri">http://id.myopenlink.net/javascript/users/users.html</a> </li>
+<li>Virtuoso Server Pages (VSP) -- <code>http://&lt;cname&gt;/vsp/users/users.vsp</code>, e.g: <a href="http://id.myopenlink.net/vsp/users/users.vsp" class="absuri">http://id.myopenlink.net/vsp/users/users.vsp</a> </li>
+<li>PHP-based server pages -- <code>http://&lt;cname&gt;/php/users/users.php</code>, e.g: <a href="http://id.myopenlink.net/php/users/users.php" class="absuri">http://id.myopenlink.net/php/users/users.php</a></li>
+</ul></li>
+</ol><h2><a name="Simple Browser-based demonstration"></a> Simple Browser-based demonstration</h2>
+ To verify an email address (i.e., a <code>mailto:</code> scheme URI) -- <ol><li>Go to: <code> <a href="http://id.myopenlink.net/mv/" class="absuri">http://id.myopenlink.net/mv/</a> </code> or <code><a href="http://ods-qa.openlinksw.com/mv/" class="absuri">http://ods-qa.openlinksw.com/mv/</a> </code> </li>
+<li>Enter your email address </li>
+<li>Check your mail box for a message that includes a URL to a Resource protected by a WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDEmailVerification" class="wikiword">?</a>-based ACL.
+ Clicking on the URL results in the creation of a triple in the host data space, associating your WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDEmailVerification" class="wikiword">?</a> with the sha1sum-based hash of the verified email address.
+ (The Graph IRI is of the form: <code>http://&lt;data-space-cname&gt;/mv/data/{data-space-generated-hash}</code>.) </li>
+<li>Check your results with SPARQL or cURL against <code>https://&lt;dataspace-cname&gt;/mv/mc.vsp?confirm=&lt;emailHash&gt;</code></li>
+</ol><h2><a name="Detailed demonstration, similar to above, using cURL on the command-line"></a> Detailed demonstration, similar to above, using cURL on the command-line</h2>
+<h3><a name="Pass Your Email Address as a URL parameter"></a> Pass Your Email Address as a URL parameter</h3>
+ <ul><li><b>entry endpoint:</b> <code>http://&lt;dataspace-cname&gt;/mv/mv.vsp</code> </li>
+<li><b>parameters:</b> <code>mbox = &lt;email address&gt;</code></li>
+</ul><h4><a name="Example"></a> Example</h4>
+<br><pre>curl -H &quot;Accept:application/json&quot; -i http://id.myopenlink.net/mv/mv.vsp?mbox={YourEmailAddress}
+{&quot;status&quot;:&quot;ok&quot;, &quot;message&quot;:&quot;A confirmation mail was sent, please check your mail box.&quot;}
+</pre><h3><a name="Verify Your Email via a URL to a Resource protected by a"></a> Verify Your Email via a URL to a Resource protected by a WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDEmailVerification" class="wikiword">?</a>-based ACL</h3>
+<ul><li><b>verification endpoint:</b> <code>https://&lt;dataspace-cname&gt;/mv/mc.vsp</code> </li>
+<li><b>parameters:</b> <code>confirm = &lt;hash-sent-via-email&gt;</code> </li>
+<li><b>authentication:</b> use the PEM file associated with your WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDEmailVerification" class="wikiword">?</a>.</li>
+</ul><p> </p>
+<h4><a name="Verification"></a> Verification</h4>
+<br><pre>$ curl -k -H &quot;Accept:application/json, */*;q=0.1&quot; -i -E &lt;local-pem-file&gt;.pem:&lt;password&gt;  https://&lt;dataspace-cname&gt;/mv/mc.vsp?confirm=&lt;HashSentInEmail&gt;
+{&quot;status&quot;:&quot;verified&quot;, &quot;document_url&quot;:&quot;http://&lt;dataspace-cname&gt;/mv/data/f7fa16ed3c806045faa3109e83b9e3581419fb40&quot;} 
+</pre><p> </p>
+<ul><li><b>Graph IRI for data created in data space:</b> <code>http://&lt;data-space-cname&gt;/mv/data/{data-space-generated-hash}</code></li>
+</ul><h3><a name="Access Example"></a> Access Example</h3>
+<h4><a name="JSON"></a> JSON</h4>
+<br><pre># curl -i -L -H &quot;Accept: application/json&quot; http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 30 Jul 2011 20:36:16 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/sparql?query=construct%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20%7D%20%20from%20%3Chttp%3A%2F%2Flocalhost%2Fmv%3E%20where%20%7B%20%3Fs%20%3Fp%20%3Fo%20%20.%20%3Fs%20foaf%3AprimaryTopic%20%3Ft%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20filter%20%28%3Fs%20%3D%20%3Chttp%3A%2F%2Fods-qa.openlinksw.com%2Fmv%2Fdata%2Fafacf6b868e6cb36f71d2cecc6d531a26ce1f2ef%3E%20%29%20%7D%20&amp;format=
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Date: Sat, 30 Jul 2011 20:36:16 GMT
+Accept-Ranges: bytes
+Content-Type: application/json; charset=UTF-8
+Content-Length: 413
+
+{
+ &quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot; : { &quot;http://xmlns.com/foaf/0.1/mbox_sha1sum&quot; : [ { &quot;type&quot; : &quot;literal&quot;, &quot;value&quot; : &quot;r6z2uGjmyzb3HSzsxtUxomzh8u8=&quot; } ] } ,
+ &quot;http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef&quot; : { &quot;http://xmlns.com/foaf/0.1/primaryTopic&quot; : [ { &quot;type&quot; : &quot;uri&quot;, &quot;value&quot; : &quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot; } ] }
+}
+</pre><p> </p>
+<h4><a name="Microdata+JSON"></a> Microdata+JSON</h4>
+<br><pre># curl -i -L -H &quot;Accept: application/json&quot; http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 30 Jul 2011 20:36:16 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/sparql?query=construct%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20%7D%20%20from%20%3Chttp%3A%2F%2Flocalhost%2Fmv%3E%20where%20%7B%20%3Fs%20%3Fp%20%3Fo%20%20.%20%3Fs%20foaf%3AprimaryTopic%20%3Ft%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20filter%20%28%3Fs%20%3D%20%3Chttp%3A%2F%2Fods-qa.openlinksw.com%2Fmv%2Fdata%2Fafacf6b868e6cb36f71d2cecc6d531a26ce1f2ef%3E%20%29%20%7D%20&amp;format=
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Date: Sat, 30 Jul 2011 20:36:16 GMT
+Accept-Ranges: bytes
+Content-Type: application/json; charset=UTF-8
+Content-Length: 413
+
+{
+ &quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot; : { &quot;http://xmlns.com/foaf/0.1/mbox_sha1sum&quot; : [ { &quot;type&quot; : &quot;literal&quot;, &quot;value&quot; : &quot;r6z2uGjmyzb3HSzsxtUxomzh8u8=&quot; } ] } ,
+ &quot;http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef&quot; : { &quot;http://xmlns.com/foaf/0.1/primaryTopic&quot; : [ { &quot;type&quot; : &quot;uri&quot;, &quot;value&quot; : &quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot; } ] }
+}
+</pre><h4><a name="N3"></a> N3</h4>
+ <br><pre># curl -i -L -H &quot;Accept: text/n3&quot; http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 30 Jul 2011 20:38:06 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/sparql?query=construct%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20%7D%20%20from%20%3Chttp%3A%2F%2Flocalhost%2Fmv%3E%20where%20%7B%20%3Fs%20%3Fp%20%3Fo%20%20.%20%3Fs%20foaf%3AprimaryTopic%20%3Ft%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20filter%20%28%3Fs%20%3D%20%3Chttp%3A%2F%2Fods-qa.openlinksw.com%2Fmv%2Fdata%2Fafacf6b868e6cb36f71d2cecc6d531a26ce1f2ef%3E%20%29%20%7D%20&amp;format=
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Date: Sat, 30 Jul 2011 20:38:06 GMT
+Accept-Ranges: bytes
+Content-Type: text/n3; charset=UTF-8
+Content-Length: 305
+
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix ns1: &lt;http://ods-qa.openlinksw.com/dataspace/person/kidehen#&gt; .
+ns1:this    foaf:mbox_sha1sum    &quot;r6z2uGjmyzb3HSzsxtUxomzh8u8=&quot; .
+@prefix ns2: &lt;http://ods-qa.openlinksw.com/mv/data/&gt; .
+ns2:afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef    foaf:primaryTopic    ns1:this
+</pre><p> </p>
+<h4><a name="HTML+Microdata"></a> HTML+Microdata</h4>
+<br><pre>curl -i -L -H &quot;Accept: text/html&quot; http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 30 Jul 2011 20:41:32 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/sparql?query=construct%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20%7D%20%20from%20%3Chttp%3A%2F%2Flocalhost%2Fmv%3E%20where%20%7B%20%3Fs%20%3Fp%20%3Fo%20%20.%20%3Fs%20foaf%3AprimaryTopic%20%3Ft%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20filter%20%28%3Fs%20%3D%20%3Chttp%3A%2F%2Fods-qa.openlinksw.com%2Fmv%2Fdata%2Fafacf6b868e6cb36f71d2cecc6d531a26ce1f2ef%3E%20%29%20%7D%20&amp;format=
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Date: Sat, 30 Jul 2011 20:41:32 GMT
+Accept-Ranges: bytes
+Content-Type: text/html; charset=UTF-8
+Content-Length: 1558
+
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;head&gt;
+    &lt;title&gt;HTML Microdata document&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;This document contains 2 facts in HTML Microdata format.&lt;/p&gt;
+    &lt;p&gt;A generic web browser may not display them properly but the document can be 
+    saved on disk and used by some appropriate program or sent to a third party.
+    Use &quot;Save As&quot; or &quot;Send To&quot; menu item of the browser; choose &quot;HTML&quot; file type, 
+    not &quot;text file&quot; or &quot;web archive&quot;.&lt;/p&gt;
+    &lt;p&gt;The rest of the document may look like garbage for humans or not displayed 
+    by the browser.&lt;/p&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;th&gt;Prefix&lt;/th&gt;
+        &lt;th&gt;Namespace IRI&lt;/th&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;xsdh&lt;/td&gt;
+        &lt;td&gt;http://www.w3.org/2001/XMLSchema#&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;n2&lt;/td&gt;
+        &lt;td&gt;http://ods-qa.openlinksw.com/mv/data/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;n3&lt;/td&gt;
+        &lt;td&gt;http://xmlns.com/foaf/0.1/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;n4&lt;/td&gt;
+        &lt;td&gt;http://ods-qa.openlinksw.com/dataspace/person/kidehen#&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;rdf&lt;/td&gt;
+        &lt;td&gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;dl itemscope itemid=&quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot;&gt;
+      &lt;dt&gt;Subject Item&lt;/dt&gt;
+      &lt;dd&gt;n4:this&lt;/dd&gt;
+      &lt;dt&gt;n3:mbox_sha1sum&lt;/dt&gt;
+      &lt;dd&gt;
+        &lt;span itemprop=&quot;http://xmlns.com/foaf/0.1/mbox_sha1sum&quot;&gt;r6z2uGjmyzb3HSzsxtUxomzh8u8=&lt;/span&gt;
+      &lt;/dd&gt;
+    &lt;/dl&gt;
+    &lt;dl itemscope itemid=&quot;http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef&quot;&gt;
+      &lt;dt&gt;Subject Item&lt;/dt&gt;
+      &lt;dd&gt;n2:afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef&lt;/dd&gt;
+      &lt;dt&gt;n3:primaryTopic&lt;/dt&gt;
+      &lt;dd&gt;
+        &lt;a itemprop=&quot;http://xmlns.com/foaf/0.1/primaryTopic&quot; 
+          href=&quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot;&gt;n4:this&lt;/a&gt;
+      &lt;/dd&gt;
+    &lt;/dl&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre><p> </p>
+<h4><a name="XHTML+RDFa"></a> XHTML+RDFa</h4>
+<br><pre>curl -i -L -H &quot;Accept: application/xhtml+xml&quot; http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 30 Jul 2011 20:44:59 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/sparql?query=construct%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20%7D%20%20from%20%3Chttp%3A%2F%2Flocalhost%2Fmv%3E%20where%20%7B%20%3Fs%20%3Fp%20%3Fo%20%20.%20%3Fs%20foaf%3AprimaryTopic%20%3Ft%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20filter%20%28%3Fs%20%3D%20%3Chttp%3A%2F%2Fods-qa.openlinksw.com%2Fmv%2Fdata%2Fafacf6b868e6cb36f71d2cecc6d531a26ce1f2ef%3E%20%29%20%7D%20&amp;format=
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Date: Sat, 30 Jul 2011 20:44:59 GMT
+Accept-Ranges: bytes
+Content-Type: application/xhtml+xml; charset=UTF-8
+Content-Length: 1159
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML+RDFa 1.0//EN&quot; &quot;http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+ xmlns:xsdh=&quot;http://www.w3.org/2001/XMLSchema#&quot;
+ xmlns:n2=&quot;http://ods-qa.openlinksw.com/mv/data/&quot;
+ xmlns:n3=&quot;http://xmlns.com/foaf/0.1/&quot;
+ xmlns:n4=&quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#&quot;
+ xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+  &lt;head&gt;
+    &lt;title&gt;RDFa+XHTML document&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;This document contains 2 facts in XHTML+RDFa format.&lt;/p&gt;
+    &lt;p&gt;A generic web browser may not display them but the document can be saved 
+    on disk and used by some appropriate program or sent to a third party. 
+    Use &quot;Save As&quot; or &quot;Send To&quot; menu item of the browser; choose &quot;HTML&quot; file type, 
+    not &quot;text file&quot; or &quot;web archive&quot;.&lt;/p&gt;
+    &lt;p&gt;The rest of the document may look like garbage for humans or not displayed 
+    by the browser.&lt;/p&gt;
+    &lt;div about=&quot;[n4:this]&quot;&gt;
+      &lt;div property=&quot;n3:mbox_sha1sum&quot;&gt;r6z2uGjmyzb3HSzsxtUxomzh8u8=&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div about=&quot;[n2:afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef]&quot;&gt;
+      &lt;div rel=&quot;n3:primaryTopic&quot; resource=&quot;[n4:this]&quot; /&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre><p> </p>
+<h4><a name="RDF/XML"></a> RDF/XML</h4>
+<br><pre>curl -i -L -H &quot;Accept: application/rdf+xml&quot; http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Sat, 30 Jul 2011 20:56:06 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/sparql?query=construct%20%7B%20%3Fs%20%3Fp%20%3Fo%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20%7D%20%20from%20%3Chttp%3A%2F%2Flocalhost%2Fmv%3E%20where%20%7B%20%3Fs%20%3Fp%20%3Fo%20%20.%20%3Fs%20foaf%3AprimaryTopic%20%3Ft%20.%20%3Ft%20%3Ftp%20%3Fto%20.%20filter%20%28%3Fs%20%3D%20%3Chttp%3A%2F%2Fods-qa.openlinksw.com%2Fmv%2Fdata%2Fafacf6b868e6cb36f71d2cecc6d531a26ce1f2ef%3E%20%29%20%7D%20&amp;format=
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3130 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Date: Sat, 30 Jul 2011 20:56:06 GMT
+Accept-Ranges: bytes
+Content-Type: application/rdf+xml; charset=UTF-8
+Content-Length: 641
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot; 
+  xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-schema#&quot;&gt;
+&lt;rdf:Description rdf:about=&quot;http://ods-qa.openlinksw.com/mv/data/afacf6b868e6cb36f71d2cecc6d531a26ce1f2ef&quot;&gt;
+  &lt;foaf:primaryTopic xmlns:foaf=&quot;http://xmlns.com/foaf/0.1/&quot; 
+    rdf:resource=&quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot;/&gt;
+&lt;/rdf:Description&gt;
+&lt;rdf:Description rdf:about=&quot;http://ods-qa.openlinksw.com/dataspace/person/kidehen#this&quot;&gt;
+  &lt;foaf:mbox_sha1sum xmlns:foaf=&quot;http://xmlns.com/foaf/0.1/&quot;&gt;r6z2uGjmyzb3HSzsxtUxomzh8u8=&lt;/foaf:mbox_sha1sum&gt;
+&lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+</pre><p> <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/CategoryInternal" class="wikiword">CategoryInternal</a> </p>
+</div></body></html>

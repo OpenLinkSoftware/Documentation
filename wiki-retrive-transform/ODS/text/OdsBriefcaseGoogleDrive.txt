@@ -1,0 +1,131 @@
+%META:TOPICPARENT{name="OdsBriefcase"}%
+---+ Using ODS-Briefcase to mediate access to data stored in Google Drive
+
+%TOC%
+
+---++ Introduction
+
+Google Drive is a way to store your files on Google's servers, or in the Cloud. If you run the [[https://tools.google.com/dlpage/drive][free Google Drive application]], then you get a folder on your computer (Windows or Mac OS X) that looks just like a directory on your hard disk that you can drag your files in to. Anything stored in that folder is kept on your hard disk and is also copied to your account in the cloud. You can access those files through drive.google.com or from other computers, including mobile devices. 
+
+Google Drive file storage offers users a number of features:
+
+   * flexibility: the synchronization can be performed from different devices or using the web version.
+   * free 5 MB storage by default: can be extended with pay option
+   * usable as backup service
+   * your resources are encrypted 
+
+ODS Briefcase offers a new "GDrive" folder type which provides several additional features, once the ODS system is configured with a registered Google API key and secret pair:
+
+   * Specify credentials for authentication against Google Drive, enabling retrieval of any or all of your folders and files, including any associated metadata
+   * Specify which Sponger Extractor Cartridges and Sponger Meta Cartridges should be run against your GDrive data
+   * Save fetched data, metadata, and Sponger output, into a newly created GDrive-specific RDF Graph in the Virtuoso RDF Quad Store
+   * Specify other ODS Users or <nop>WebID-based ACLs which should be granted access to your GDrive data through ODS Briefcase
+
+---++ Example
+
+Here is a sample scenario showing the whole process, from setting the Google Drive API key and secret pair in ODS, to retrieving all Google Drive content to ODS Briefcase.
+
+---+++ Prerequisites
+
+   * A [[https://mail.google.com/][Google user account]], configured with [[http://drive.google.com/start][Google Drive access]]
+   * Files and folders (data) stored in your [[https://drive.google.com/][Google Drive Space]]
+   * Administrative (DBA) access to a [[http://virtuoso.openlinksw.com/][Virtuoso Server]] instance, on which the following have been installed --
+      * [[https://virtuoso.openlinksw.com/download/][ODS-Framework VAD package]]
+      * [[https://virtuoso.openlinksw.com/download/][ODS-Briefcase VAD package]]
+      * [[https://virtuoso.openlinksw.com/download/][Virtuoso RDF Mappers VAD package]]
+
+---+++ Steps
+
+---++++ 1 - Get a Google Drive API key and secret pair for use with ODS-Briefcase
+
+<i>Note that at present, each Virtuoso + ODS instance can only be configured with a single Google Drive API key, which will then be used by all ODS-Briefcase users when targeting Google Drive from that instance. Google imposes limitations on the API key's use (currently set to 500,000 requests/day).  This limitation is outside the scope of <nop>OpenLink or Virtuoso control.</i>
+
+   1 Browse to &lt;[[http://code.google.com/apis/console][the Google APIs Console]]&gt;, and log in with your existing Google user credentials:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-01.png" target="_blank"><img src="%ATTACHURLPATH%/step1-01.png" width="600px" /></a>%BR%%BR%
+   1 If this is your first Google API Project, click the big <b>Create Project</b> button:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-02.png" target="_blank"><img src="%ATTACHURLPATH%/step1-02.png" width="600px" /></a>%BR%%BR%
+   1 If you already have some Google API Projects, select <b>Create Project</b> from the Project menu.
+   1 You should now be on the Services tab for your new API Project (or you can click to it).  Click the <b>Drive API</b> switch, to change it from <b>OFF</b> to <b>ON</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-03.png" target="_blank"><img src="%ATTACHURLPATH%/step1-03.png" width="600px" /></a>%BR%%BR%
+   1 If prompted, agree to the <i>Google APIs Terms of Service</i>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-04.png" target="_blank"><img src="%ATTACHURLPATH%/step1-04.png" width="600px" /></a>%BR%%BR%
+   1 The <b>Drive API</b> switch should now show <b>ON</b>.  Click <b>API Access</b> in the upper-left navigation area:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-05.png" target="_blank"><img src="%ATTACHURLPATH%/step1-05.png" width="600px" /></a>%BR%%BR%
+   1 Click <b>Create an OAuth 2.0 client ID...</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-06.png" target="_blank"><img src="%ATTACHURLPATH%/step1-06.png" width="600px" /></a>%BR%%BR%
+   1 On the <b>Branding Information</b> pane, enter a "Product name" for your GDrive client application (i.e., your ODS-Briefcase instance) to be known by, e.g., "<nop>MyODSGoogleDrive".  You can also associate an logo with it, if you like.  Then click <b>Next</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-07.png" target="_blank"><img src="%ATTACHURLPATH%/step1-07.png" width="600px" /></a>%BR%%BR%
+   1 On the <b>Client ID Settings</b> pane, leave the default <b>Web application</b> for <b>Application type</b>.  Click the <b>more options</b> link for <b>Your site or hostname</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-08.png" target="_blank"><img src="%ATTACHURLPATH%/step1-08.png" width="600px" /></a>%BR%%BR%
+   1 For <b>Authorized Redirect URIs</b>, put your ODS instance's Google interface URL, <code>http://&lt;host&gt;[:&lt;port&gt;]/ods/access_google.vsp</code>, e.g., &lt;[[http://example.com/ods/access_google.vsp][http://example.com/ods/access_google.vsp]]&gt;.  For <b>Authorized JavaScript Origins</b>, put the root URI of your Virtuoso instance, &lt;[[http://example.com][http://example.com]]&gt;.  For best results, include URLs using both <code>http</code> and <code>https</code> schemes.  Click <b>Create client ID</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-09.png" target="_blank"><img src="%ATTACHURLPATH%/step1-09.png" width="600px" /></a>%BR%%BR%
+   1 Your new OAuth 2.0 ID will now be displayed, in a new <b>Client ID for web applications</b> section.  The <b>Email address</b> and <b>Client secret</b> shown here are your Google API Key and Secret:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-10.png" target="_blank"><img src="%ATTACHURLPATH%/step1-10.png" width="600px" /></a>%BR%%BR%
+   1 You may wish to use the <b>API Project</b> menu's <b>Rename...</b> option to change this project's name -- especially if you may create more than one project over time.
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-11.png" target="_blank"><img src="%ATTACHURLPATH%/step1-11.png" width="600px" /></a>%BR%%BR%
+   1 This example project, renamed:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-12.png" target="_blank"><img src="%ATTACHURLPATH%/step1-12.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ 2 - Configure ODS to use your Google API key and secret 
+
+   1 Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/][http://example.com/ods/]]&gt;, and click <b>Sign In</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-1.png" target="_blank"><img src="%ATTACHURLPATH%/step2-1.png" width="600px" /></a>%BR%%BR%
+   1 Log in as a Virtuoso+ODS user with Administrator privileges, e.g., <code>dba</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-2.png" target="_blank"><img src="%ATTACHURLPATH%/step2-2.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>Site Settings</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-3.png" target="_blank"><img src="%ATTACHURLPATH%/step2-3.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>Login Authentication Keys</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-4.png" target="_blank"><img src="%ATTACHURLPATH%/step2-4.png" width="600px" /></a>%BR%%BR%
+   1 Select <b>Google API</b> in the <b>API Name</b> menu, provide the <b>Email address</b> and <b>Client secret</b> from the new <b>Client ID for web applications</b> you created above, and click <b>Add</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-5.png" target="_blank"><img src="%ATTACHURLPATH%/step2-5.png" width="600px" /></a>%BR%%BR%
+   1 ODS-Briefcase is now configured to use the Google API.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-6.png" target="_blank"><img src="%ATTACHURLPATH%/step2-6.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ 3 - Access files stored on Google Drive through ODS-Briefcase 
+
+   1 Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/][http://example.com/ods/]]&gt;.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-01.png" target="_blank"><img src="%ATTACHURLPATH%/step3-01.png" width="600px" /></a>%BR%%BR%
+   1 Log in as a Virtuoso+ODS user with normal privileges, e.g., <code>demo</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-02.png" target="_blank"><img src="%ATTACHURLPATH%/step3-02.png" width="600px" /></a>%BR%%BR%
+   1 Click to the <b>ODS-Briefcase</b> application: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-03.png" target="_blank"><img src="%ATTACHURLPATH%/step3-03.png" width="600px" /></a>%BR%%BR%
+   1 Click <b>New Folder</b> from the main Briefcase control strip:
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-04.png" target="_blank"><img src="%ATTACHURLPATH%/step3-04.png" width="600px" /></a>%BR%%BR%
+   1 In the New Folder form, specify a <b>Folder Name</b>, e.g., <b><nop>MyGoogleDriveFolder</b>, and set the <b>Folder type</b> to <b>Google Drive</b>: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-05.png" target="_blank"><img src="%ATTACHURLPATH%/step3-05.png" width="600px" /></a>%BR%%BR%
+   1 Click to the newly visible <b>Google Drive</b> tab: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-06.png" target="_blank"><img src="%ATTACHURLPATH%/step3-06.png" width="600px" /></a>%BR%%BR%
+   1 All RDF data extracted from and otherwise collected about your Google Drive files will be saved to a named graph, where the default name is constructed from the host ODS instance, the ODS username, and the Briefcase folder name -- <code>http://&lt;host&gt;[:&lt;port&gt;]/DAV/home/&lt;user-name&gt;/&lt;folder-name&gt;#this</code> -- so, in this example, the default graph would be named &lt;[[http://example.com/ods/demo/MyGoogleDriveFolder#this][http://example.com/ods/demo/MyGoogleDriveFolder#this]]&gt;.  Expert users may wish to change this graph name, but the default is suitable for most users.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-07.png" target="_blank"><img src="%ATTACHURLPATH%/step3-07.png" width="600px" /></a>%BR%%BR%
+   1 You can also turn on the [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger][Virtuoso Sponger]], to process your Google Drive files more comprehensively.  When the Sponger is enabled for your folder, you can specify which "Sponger Extractor Cartridges" and "Sponger Meta Cartridges" will be run over the files in your Google Drive.  You can enable all cartridges, but this will introduce some processing overhead.  It's generally best to enable only those cartridges which will be applicable to your files and their content.  For instance, you may know that you'll only be storing Microsoft and Open Office documents here.  Then, click "Authenticate", to connect your new folder to your Google Drive: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-08.png" target="_blank"><img src="%ATTACHURLPATH%/step3-08.png" width="600px" /></a>%BR%%BR%
+   1 You'll be prompted to enter your Google Drive user's credentials.  Note that this Google Drive user need not be the application owner/"developer" who got the API key earlier.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-09.png" target="_blank"><img src="%ATTACHURLPATH%/step3-09.png" width="600px" /></a>%BR%%BR%
+   1 Google will prompt for confirmation that you intend to let your application ("MyODSGoogleDrive") have access to your Google Drive content.  Click <b>Allow access</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-10.png" target="_blank"><img src="%ATTACHURLPATH%/step3-10.png" width="600px" /></a>%BR%%BR%
+   1 Your Google user name and associated email address will now be displayed.  Click <b>Create</b> to finish the folder creation process.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-11.png" target="_blank"><img src="%ATTACHURLPATH%/step3-11.png" width="600px" /></a>%BR%%BR%
+   1 Your new Google Drive-linked folder should now be displayed in your Briefcase resources list: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-12.png" target="_blank"><img src="%ATTACHURLPATH%/step3-12.png" width="600px" /></a>%BR%%BR%
+   1 Click the folder name to see the resources ODS-Briefcase has found in your Google Drive Dataspace:
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-13.png" target="_blank"><img src="%ATTACHURLPATH%/step3-13.png" width="600px" /></a>%BR%%BR%
+
+
+
+---++ Related 
+
+   * [[http://bit.ly/SK7WAI][How Linked Data & WebID Deliver Controlled Access to Resources in Google Drive, Microsoft OneDrive (formerly SkyDrive), DropBox, Box.Net, and Amazon S3]]
+   * [[https://developers.google.com/drive/register][Guide how to register Google Application]]
+   * [[OdsBriefcaseAmazonS3][Using ODS-Briefcase to mediate access to data stored on Amazon S3]]   
+   * [[OdsBriefcaseBoxNet][Using ODS-Briefcase to mediate access to data stored on Box (a/k/a box.com or box.net)]]
+   * [[OdsBriefcaseDropBox][Using ODS-Briefcase to mediate access to data stored on DropBox]]
+   * [[OdsBriefcaseSkyDrive][Using ODS-Briefcase to mediate access to data stored on Microsoft OneDrive (formerly SkyDrive)]]
+   * [[OdsBriefcaseFolders][Manage different Briefcase type folders in Briefcase]]
+   * [[OdsBriefcase][ODS-Briefcase]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger][Virtuoso Sponger]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMeta][Supported Meta Cartridges in Virtuoso]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridges Usage via REST Request]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parameterized Examples of Meta Cartridge Usage via REST Request]]

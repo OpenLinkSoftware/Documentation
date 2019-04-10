@@ -1,0 +1,71 @@
+%META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%
+---++ Software Agent & <nop>WebID Profile Document Creation
+
+The OpenLink <nop>YouID certificate generation service (http://id.myopenlink.net/youid/) can be used to create a Digital Identity for a local or one of the available social media user accounts, automatically providing a certificate and <nop>WebID profile document that can be used as the Software Agent for the application connection. 
+
+   1 If a local user is to be used as will be used here then a local user needs to first be created from the OpenLink Data Spaces home page (http://id.myopenlink.net/ods), but clicking on the <code>Signup</code> button in the top right:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-02.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 Select the local Digest username, email address, password, agree to terms and click the <code>signup</code> Button:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-03.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 The account will be created and automatically logged into:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-04.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 Go to the OpenLink YouID certificate generation service (http://id.myopenlink.net/youid/), Click on the <code>Create New Identity Card</code> button to proceed and create the new Digital Identity :
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-01.png" style="wikiautogen" height="250" width="640"/> %BR%%BR%
+   1 Enter the details for the new Digital Identity noting the automatically generated <nop>WebID in red ( i.e. http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#identity in this example ) and the password for the generated p12 certificate and click on the <code>Create Identity Card</code> button to generate:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-05.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 Select the <code>Download</code> or <code>email</code> options to obtain the Pkcs12 certificate bundle for the generated Digital identity and save it for use when making the <nop>WebID+TLS+Delegation connection:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-06.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 Using the ODS <code>Briefcase</code> application navigate to the location of your newly generated <nop>WebID profile document which can be used for both the software agent profile document and  delegation user profile document (or they could be separate).
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-07.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 Select the <code>profile.ttl</code> document for editing using the Edit Action icon on the right:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-08.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 The content of the profile.ttl file will be opened in the briefcase editor. Note the <code>verify</code> button as the top  of the editor which can be used to validate the ttl content of the file before saving:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDSoftwareAgentDocCreation-09.png" style="wikiautogen" height="480" width="640"/> %BR%%BR%
+   1 Add the following content to the end of the profile.ttl document and save it:
+<verbatim>
+## Profile Document combining credentials of Software Agent and Registered Users ##
+
+## This document leverages the portability of relative hash-based HTTP URIs as Entity Identifiers ##
+
+@prefix oplcert: <http://www.openlinksw.com/schemas/cert#> .
+@prefix cert: <http://www.w3.org/ns/auth/cert#>. 
+@prefix acl: <http://www.w3.org/ns/auth/acl#> . 
+@prefix oplacl: <http://www.openlinksw.com/ontology/acl#>
+
+## Software Agent Credentials ##
+
+<#identity> 
+foaf:name "A Software Agent" ;
+oplcert:onBehalfOf <#wtd> ;
+cert:key [
+                 cert:exponent "65537"^^xsd:integer ;
+                 cert:modulus   
+"ac0d101708c6c74c098b1dab6e3d89a60c3e36d2ff8348ff3da565ab95647c66c96494cf1d9c8cf35b636d1971f1b676426a26d5c5ef345eb08b9b7ad7973dbdc3d686be9803cd973f3d386751772067ba4656848b027b0ab8589cc9b0f00cf5d29fed2d009542e1510ea333076f0d91f3b112dfd9980a13302176fba0b0f77cbc3c61b4becd572c8808cf3491a5d3e4563b8cc4f03df2774ef64925f57cb9760b161ea9afa65f26e90ea25dd79863da2d6ec2bd992e513e7d325a9de44518cbc90b8300201432184bcb0725b49f9653553cba2e632b2a2ce9719d25109e35d12f278c727f1c559437430c042ae94593ac9cda57855923bc0dd23f6103b46179"^^xsd:hexBinary
+] .
+
+## User Credentials (OnBehalfOf relation participants) ##
+
+
+<#wtd> 
+oplacl:hasIdentityDelegate <#identity> .
+</verbatim>
+
+---+++Key Points
+
+In this profile.ttl document the key points of note are that:
+
+   1 It is being used as both the application software agent's and delegating users' shared profile document. If it is preferred to have separate delegating user profile documents, this can be done - the URL of each user's distinct profile document is simply pointed to by the oplacl:onBehalfOf property in the software agent's profile document, similar to the shared profile document example above. But there is a strong case for a single document being used for ease of management.
+   1 The <code>oplcert:onBehalfOf</code> attribute is used to reference the <nop>WebIDs (each contained within a user profile document) of the users the software agent is authenticating on behalf of.
+   1 The  <code>oplacl:hasIdentityDelegate</code> attribute identifies the <nop>WebID of the software agent that acts as a delegate of connecting users, authenticating on their behalf. As indicated, the user <nop>WebIDs can be stored in separate user <nop>WebID profile document if preferred.
+   1 The <code>cert:key</code> attribute contains the public key of the software agent certificate, which is actually included (but not shown here) in its <nop>YouID auto-generated profile document i.e. profile.ttl and thus can be seen from the generated content. Particularly if separate software agent and user profile documents are used (but still required if a combined document is used), inclusion of the software agent's public key in the user profile document provides a critical validation check between the software agent and the delegating user who is authorising the <nop>OnBehalfOf connection.
+   1 Only one public key is required. Irrespective of whether a single or separate profile documents are used, it/they contain just the public key of the software agent. When using <nop>WebID authentication delegation, the users being authenticated do not require a public/private key pair. They require only a <nop>WebID - this can be provided without needing TLS, for instance by one of many third-party <nop>OAuth-based authentication services supported by VAL, and hence without needing a user key pair, so reducing the administration overhead when authenticating many users.
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,130 @@
+%META:TOPICPARENT{name="OdsAddressbook"}%
+
+
+---+Manipulate my Addressbook data via CRUD RESTful using Addressbook CardDAV Endpoint
+
+%TOC%
+
+
+---++What?
+AddressBook CRUD (<b>C</b>reate, <b>R</b>ead, <b>U</b>pdate, <b>D</b>elete) Endpoint Service.
+
+---++Why?
+Using CRUD RESTful Endpoint service provides an easy way to manage contacts.
+
+---++How?
+Knowing an Addressbook CRUD Endpoint Service endpoint URL, one can perform the following activities:
+   * Copy-paste vCard files containing contacts. So once pasted, the system creates the contacts;
+   * Edit contact(s);
+   * Update contact(s);
+   * Delete contact(s);
+   * Update RDF Data for the Addressbook instance. Depending on the instance's model:
+      * When model is "Closed", will be updated the RDF Data for the instance's private graph:
+<verbatim>
+http://cname/dataspace/protected/[name-of-the-instance]
+</verbatim>
+      * When model is "Opened", will be updated the RDF Data for the ODS Dataspace public graph:
+<verbatim>
+http://cname/dataspace/[name-of-the-instance]
+</verbatim>
+
+
+
+---+++Example with Addressbook instance that has Member model from type "Closed" and is not set "Visible to public"
+
+   1. Suppose a user, for ex. "demo", has created Addressbook instance with name "demoAddressBook" and <code>Member model</code> is "Closed":
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud1.png" />%BR%%BR%
+   1 Mount the Addressbook CardDAV Endpoint URL <code> http://localhost:8890/DAV/home/demo/addressbooks/demoAddressBook/</code> 
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud2.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud3.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud4.png" />%BR%%BR%
+   1 Drop a .vcf file, for ex. kidehen.vcf into the mapped CardDAV Addressbook folder:
+<verbatim>
+-- kidehen.vcf
+BEGIN:VCARD
+VERSION:3.0
+REV:2012-01-23T15:30:04-05:00
+UID:B12074BC-DB7B-47F5-856E-2DBD08923381-ABSPlugin
+NICKNAME:Idehen
+FN:Kingsley Idehen
+N:Idehen;Kingsley;;
+ORG:OpenLink Software
+TITLE:CEO
+END:VCARD
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud5.png" />%BR%%BR%
+   1 The user demo's Addressbook Dataspace instance UI now should show under "My Contacts" the new imported contact(s):
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud6.png" />%BR%%BR%
+   1 [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID]] for user "demo" WebID.
+   1 [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtAuthFOAFSSLACL][Secure your SPARQL Endpoint via user "demo" WebID]], for ex.:
+<verbatim>
+-- user "demo" WebID:
+http://localhost:8890/dataspace/person/demo#this
+
+-- SPARQL-WebID Endpoint:
+-- https://localhost:4433/sparql-webid
+</verbatim>
+   1 Access the SPARQL-WebID Endpoint.
+   1 When challenged for authentication select the generated from above certificate for user "demo":
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud8.png" />%BR%%BR%
+   1 The SPARQL-WebID Endpoint UI should be presented:
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud9.png" />%BR%%BR%
+   1 Enter the following query:
+<verbatim>
+SELECT * 
+FROM <http://localhost:8890/dataspace/protected/demoAddressBook>
+WHERE {?s ?p ?o}
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud10.png" />%BR%%BR%
+   1 As result no rows are found.
+
+
+
+---+++Example with Addressbook instance that has Member model from type "Opened" and is set "Visible to Public"
+
+   1. Suppose a user, for ex. "demo", has created Addressbook instance with name "demoAddressBook" and <code>Member model</code> is "Opened" and is set "Visible to Public".
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud12.png" />%BR%%BR%
+   1 Mount the Addressbook CardDAV Endpoint URL <code> http://localhost:8890/DAV/home/demo/addressbooks/demoAddressBook/</code> 
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud2.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud3.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud4.png" />%BR%%BR%
+   1 Drop a .vcf file, for ex. kidehen.vcf into the mapped CardDAV Addressbook folder:
+<verbatim>
+-- kidehen.vcf
+BEGIN:VCARD
+VERSION:3.0
+REV:2012-01-23T15:30:04-05:00
+UID:B12074BC-DB7B-47F5-856E-2DBD08923381-ABSPlugin
+NICKNAME:Idehen
+FN:Kingsley Idehen
+N:Idehen;Kingsley;;
+ORG:OpenLink Software
+TITLE:CEO
+END:VCARD
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud5.png" />%BR%%BR%
+   1 The user demo's Addressbook Dataspace instance UI now should show under "My Contacts" the new imported contact(s):
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud6.png" />%BR%%BR%
+   1 Access the SPARQL Public Endpoint.
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud13.png" />%BR%%BR%
+   1 Suppose the inserted from above contact has id=1004.
+   1 Enter the following query:
+<verbatim>
+SELECT * 
+FROM <http://localhost:8890/dataspace>
+WHERE {<http://localhost:8890/dataspace/demo/addressbook/demoAddressBook/1004> ?p ?o}
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud14.png" />%BR%%BR%
+   1 Click "Run Query".
+   1 As result the freshly inserted RDF Data for the contact in question will be displayed:
+%BR%%BR%<img src="%ATTACHURLPATH%/abcrud15.png" />%BR%%BR%
+
+
+
+
+
+
+---++Related 
+
+   * [[http://ietfreport.isoc.org/idref/draft-ietf-vcarddav-carddav/][CardDAV Specification]]
+   * [[OdsAddressbook][ODS-Addressbook Dataspace]]

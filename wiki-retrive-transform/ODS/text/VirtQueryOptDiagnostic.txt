@@ -1,0 +1,42 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Virtuoso Diagnostics for Query Optimization
+
+Queries involving a large number of possible plans may run out of memory during optimization.  There 
+are a number of settings that influence query optimization memory utilization.
+
+These are set in the <code>virtuoso.ini</code> file, or can be altered on a running system with the 
+<b><code>[[http://docs.openlinksw.com/virtuoso/fn_dbf_set.html][__dbf_set()]]</code></b> function.
+
+| *INI section* | *INI param name*                                            | *default value*          | *__dbf_set flag_name*                                           | *__dbf_set flag_name description* |
+| Parameters    |  <code><nowiki>MaxMemPoolSize</nowiki></code>               |  <code>200000000</code>  |  <code><nowiki>sqlo_max_mp_size</nowiki></code>                 | The <b><code><nowiki>sqlo_max_mp_size</nowiki></code></b> is a size limit in bytes for transient memory consumption. Increasing this may help. The <b><code><nowiki>sqlo_max_mp_size</nowiki></code> </b> should be over 10M; increasing this over 100M is seldom useful but can be tried.  |
+| Parameters    |  <code><nowiki>MaxOptimizeLayouts</nowiki></code>           |  <code>1000</code>       |  <code><nowiki>sqlo_max_layouts</nowiki></code>                 | Decreasing <b><code><nowiki>sqlo_max_layouts</nowiki></code></b> will reduce the number of plans tried, hence save memory. Reasonable values for <b><code><nowiki>sqlo_max_layouts</nowiki></code></b> are 0 for no limit, or somewhere in excess of 500.  |
+| Parameters    |  <code><nowiki>StopCompilerWhenXOverRunTime</nowiki></code> |  <code>0</code>          |  <code><nowiki>sqlo_compiler_exceeds_run_factor</nowiki></code> | Setting <b><code><nowiki>sqlo_compiler_exceeds_run_factor</nowiki></code></b> to 1 will stop opttimization once the best plan is expected to take less time than the amount of time spent optimizing so far.  |
+| Flags         |  <code><nowiki>enable_joins_only</nowiki></code>            |  <code>1</code>          |  <code><nowiki>enable_joins_only</nowiki></code>                | Setting <b><code><nowiki>enable_joins_only</nowiki></code></b> will cause the optimizer to only consider next plan candidates that are connected by a join to the existing partial plan. In other words, no [[http://dbpedia.org/resource/Cartesian_product][Cartesian products]] will be considered. This may save some space and time. <b>Note:</b> This option is now the default with <b><code><nowiki>3215</nowiki></code></b>+ builds and there are no known cases when it should be set to 0. |
+
+When reporting issues with query optimization, it will be useful to include statistics from the database 
+in order to facilitate reproducing the effect. The <b><code>[[http://docs.openlinksw.com/virtuoso/fn_stat_export.html][stat_export()]]</code></b> 
+function produces a statistics summary that can be read back into another database with the 
+<b><code>[[http://docs.openlinksw.com/virtuoso/fn_stat_import.html][stat_import()]]</code></b> function.
+
+   * To export statistics:
+<verbatim>
+string_to_file ('stat.dv', serialize(stat_export()), -2);
+
+or
+
+exp_stat_to_file ('stat.dv');   which does not have 10MB file size limit
+</verbatim>
+
+   * To load exported statistics into a database:
+<verbatim>
+stat_import (deserialize (file_to_string ('stat.dv')));
+</verbatim>
+
+When exporting statistics as part of bug reporting, make sure to run the queries exhibiting the problem before exporting the stats.  The queries drive statistics gathering.
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/sqloptimizer.html][Virtuoso SQL Optimization]]

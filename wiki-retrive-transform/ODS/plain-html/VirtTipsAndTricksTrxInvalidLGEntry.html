@@ -1,0 +1,37 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How do I recover from &quot;Invalid log entry in replay&quot; when transaction log is being replayed during server start?"></a> How do I recover from &quot;Invalid log entry in replay&quot; when transaction log is being replayed during server start?</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Error%20Condition">Error Condition</a></li> <li><a href="#Recovery%20Methods">Recovery Methods</a></li>
+<ul><li><a href="#Single-Server%20Deployments%20of%20both%20Open%20Source%20and%20Commercial%20Edition">Single-Server Deployments of both Open Source and Commercial Edition</a></li> <li><a href="#Replication%20Cluster%20Deployments%20of%20Commercial%20Edition">Replication Cluster Deployments of Commercial Edition</a></li> <li><a href="#Elastic%20Cluster%20Deployments%20of%20Commercial%20Edition">Elastic Cluster Deployments of Commercial Edition</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Error Condition"></a> Error Condition</h2>
+<p>A Virtuoso transaction log file may fail to replay, with an error of the form: </p>
+<br><pre>11:42:57 Invalid log entry in replay. Delete transaction log virtuoso.trx or truncate at point of error. 
+Valid data may exist after this record. A log record begins with bytes 193 188 5 188 0. Error at offset 13205546
+11:42:57 Searching for the next valid header signature starting at 13205547
+11:42:57 No valid looking header found.
+11:42:57 Server exiting
+</pre><p> Resolution of this error varies with the kind of Virtuoso server you&#39;re running.</p>
+<h2><a name="Recovery Methods"></a> Recovery Methods</h2>
+<h3><a name="Single-Server Deployments of both Open Source and Commercial Edition"></a> Single-Server Deployments of both Open Source and Commercial Edition</h3>
+<i><b>WARNING:</b> Do not use this recovery method on Cluster Deployments of Commercial Edition.</i><p>This can be recovered by truncating to the transaction log to the reported error offset.</p>
+<p>Users on Unix-like OS can use the built-in <code>dd</code> command; Windows users must first install <a href="http://sourceforge.net/projects/windd/" class="absuri">WinDD</a> or <a href="http://www.cygwin.com/" class="absuri">cygwin</a> to get the same functionality.</p>
+<p>Given the error above, the recovery steps on a Unix-like OS would look like those below.
+</p>
+<ol><li>Rename the bad <code>trx</code> file.
+<br><pre><br>mv virtuoso.trx old.trx
+</pre><br></li>
+<li>Use the <code>dd</code> to create a truncated copy of the file.
+ The <code>count</code> value should match that shown for <code>Error at offset <i>value</i></code>.
+<br><pre><br>dd if=old.trx of=new.trx bs=1 count=13205546
+</pre><br>Output will look like this.
+<br><pre><br>13205546+0 records in
+13205546+0 records out
+</pre><br></li>
+<li>Now move the truncated file into place.
+<br><pre><br>mv new.trx virtuoso.trx
+</pre><br></li>
+<li>Then restart Virtuoso with the truncated transaction log.
+<br><pre><br>virtuoso-iodbc-t -f
+</pre><br> Stopping and restarting Virtuoso as normal should now succeed.</li>
+</ol><h3><a name="Replication Cluster Deployments of Commercial Edition"></a> Replication Cluster Deployments of Commercial Edition</h3>
+<i>Recovery instructions coming soon!  Until then, please <a href="http://support.openlinksw.com/support/online-support.vsp" class="absuri">contact Support for assistance</a>.</i><h3><a name="Elastic Cluster Deployments of Commercial Edition"></a> Elastic Cluster Deployments of Commercial Edition</h3>
+<i>Recovery instructions coming soon!  Until then, please <a href="http://support.openlinksw.com/support/online-support.vsp" class="absuri">contact Support for assistance</a>.</i></div></body></html>

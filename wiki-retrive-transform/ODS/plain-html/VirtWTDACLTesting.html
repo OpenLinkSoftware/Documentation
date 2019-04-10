@@ -1,0 +1,66 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%--><p> </p>
+<h1><a name=""></a> <nop></nop>WebID+TLS+Delegation ACL Testing</h1>
+<p>A basic <nop></nop>WebID+TLS+Delegation connection can now be made as detailed below.</p>
+<p>First the Public Key (PEM file) for the Virtuoso self-signed certificate created previously when performing the <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtWTDServerSetup" class="wikiword">Virtuoso TLS Setup</a> needs to be downloaded from the <code>dba</code> user account.
+ In the Conductor, a <b>download</b> link for each available cryptographic key may be found in the <b>System Admin -&gt; User Accounts -&gt; Users</b> tab:  <br><br> <img src="VirtWTDACLTesting/VirtWTDACLTesting-01.png" style="wikiautogen" height="350" width="640"> <br><br> Once downloaded, the PEM file may be loaded into an Operating System Keystore such that it is automatically available when needed, or passed in the connect string as the server public key (<code>-T</code> parameter), to provide a full chain of trust for the connection.
+ Note the public key (PEM file) for the <nop></nop>YouID generated certificate (e.g., <code>ca_list_shop_2016.pem</code>) and the Virtuoso PEM file can be combined into a single PEM file, which may then be passed to Virtuoso as part of the TLS connect string.</p>
+<p>The <code>isql</code> command line tool may be used to verify the <nop></nop>WebID+TLS+Delegation connection, as shown below: </p>
+<br><pre>C:\Program Files\OpenLink Software\Virtuoso 7.2\database&gt;..\bin\isql 1113 &quot;&quot; 1 -X WebIDTlsDelegation_id_myopenlink_net.p12 -T ca_list_shop_2016.pem -W http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; sparql SELECT COUNT (*) FROM &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; WHERE {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+2
+
+1 Rows. -- 16 msec.
+SQL&gt; sparql SELECT COUNT (*) FROM &lt;penPermID-bulk-industry-20151111_095806.ttl.gz&gt; WHERE {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+0
+
+1 Rows. -- 16 msec.
+SQL&gt; SELECT * FROM sys_users;
+
+*** Error 42000: [OpenLink][Virtuoso ODBC Driver][Virtuoso Server]ACL01: Statement is prohibited
+at line 3 of Top-Level:
+SELECT * FROM sys_users
+SQL&gt;
+</pre><p> <code>isql</code> can also be used to verify that connections using another user&#39;s <nop></nop>WebID profile document (<code>-W</code> parameter) that has not been configured to allow the delegation of connections <nop></nop>OnBehalfOf the Software agent, cannot execute SPARQL queries: </p>
+<br><pre>C:\Program Files\OpenLink Software\Virtuoso 7.2\database&gt;..\bin\isql 1113 &quot;&quot; 1 -X WebIDTlsDelegation_id_myopenlink_net.p12 -T ca_list_shop_2016.pem -W http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; sparql SELECT COUNT (*) FROM &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; WHERE {?s ?p ?o};
+
+*** Error 42000: [OpenLink][Virtuoso ODBC Driver][Virtuoso Server]SQ033: SELECT access denied for column G of table DB.DBA.RDF_QUAD, user ID 5
+at line 1 of Top-Level:
+sparql SELECT COUNT (*) FROM &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; WHERE {?s ?p ?o}
+SQL&gt;
+</pre><p> </p>
+<h2><a name="ODBC Connection"></a> ODBC Connection</h2>
+<p>Details on how to configure and make and ODBC Connections can be found at:</p>
+<ul><li><a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/WebIDTLSDelegationWhatWhyHow#ODBC%20Connection" class="absuri">ODBC DSN Configuration</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/WebIDTLSDelegationWhatWhyHow#ODBC%20CPPDemo%20Interactive%20SQL%20Application" class="absuri">CPPDemo Sample Application</a></li>
+</ul><h2><a name="Tracing"></a>Tracing</h2>
+<p>The VAL Configuration UI, accessible through the Conductor menus and links &quot;System Admin &gt; Packages &gt; VAL Configure&quot;, includes a tracing option to debug SQL client connections made using certificates.</p>
+<img src="VirtWTDACLTesting/trace_sql_cert_logins.png" style="wikiautogen"><p>When enabled, console trace output similar to that below shows the progress of the login and delegation.
+</p>
+<br><pre>isql localhost:2113 &quot;&quot; 1 -X ./keys/software_agent.p12 -T ./keys/ca_list_shop_2016_with_localhost.pem -W http://id.myopenlink.net/DAV/home/jsmith/youid_profile.ttl#i
+</pre><p> </p>
+<br><pre>DB.DBA.USER_CERT_LOGIN: Checking VAL ACLs for Query scope in SQL realm
+DB.DBA.WEBID_CHECK_DELEGATE: Looking for existence of: &lt;http://kingsley.idehen.net/DAV/home/kidehen/agent-profile-document.ttl#i&gt; cert:onBehalfOf &lt;http://id.myopenlink.net/DAV/home/jsmith/youid_profile.ttl#i&gt; in &lt;http:59FB336FB5FA814F086C2AD38D37D53C&gt;
+DB.DBA.WEBID_CHECK_DELEGATE: Found onBehalfOf relation. Loading profile document http://id.myopenlink.net/DAV/home/jsmith/youid_profile.ttl
+DB.DBA.WEBID_CHECK_DELEGATE: Found public key of software agent in delegating user&#39;s profile document
+DB.DBA.USER_CERT_LOGIN: Agent/WebID &lt;http://id.myopenlink.net/DAV/home/jsmith/youid_profile_160420.ttl#i&gt;
+			has SPARQL permissions: read: 1, write: 0, sponge: 0
+DB.DBA.USER_CERT_LOGIN: Setting graph security callback
+</pre></div></body></html>

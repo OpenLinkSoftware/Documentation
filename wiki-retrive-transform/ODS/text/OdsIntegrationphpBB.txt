@@ -1,0 +1,181 @@
+%META:TOPICPARENT{name="Ods"}%
+
+---+ ODS Integration of phpBB
+
+%TOC%
+
+---++What is phpBB?
+
+phpBB is the most famous Open Source product for online forums. Here you can find instructions how to use Virtuoso Database for hosting phpBB tables, and use it as Application Server with php hosting. 
+
+---+++Install VAD
+
+   1. Start virtuoso db using the hosting_php.so ( .dll for win users). In oder to use this plugin, it needs to be included in your virtuoso ini file as follows:
+<verbatim>
+...
+[Plugins]
+# for ex. here the location of the plugins is the plugin folder
+LoadPath = ./plugin
+...
+Load6    = Hosting,hosting_php.so
+...
+</verbatim>
+      * Notes: Make sure you have the following line in your virtuoso.ini section <nowiki>[Parameters]</nowiki> (for instance that is used for phpBB database). If not set phpBB would not work correct with the Virtuoso DB:
+<verbatim>
+PrefixResultNames        = 0
+</verbatim>
+   1. Setup "Local Virtuoso" DSN (note the empty space in the name!) in order to access any of the application URLs.
+      * For windows users, please perform the following steps:
+         1.  Go to Start >> Settings >> Control Panel >> Administrative Tools >> Data Sources (ODBC)
+         1. Go to tab "User DSN" and click "Add"
+         1. Select the "OpenLink Virtuoso (version)" driver and click "Finish"
+         1. Enter "Name": <nowiki><code>Local Virtuoso</code</nowiki>
+         1. Enter "Description": <nowiki><code>My Local Virtuoso</code</nowiki>
+         1. For "Server", enter your Virtuoso's hostname and ISQL port, e.g., <nowiki><code>localhost:1116</code</nowiki>
+         1. Click "Next"
+         1. Enter a username for "Login ID", e.g., <nowiki><code>dba</code</nowiki>
+         1. Enter the user's "Password". For dba, the default password is <nowiki><code>dba</code</nowiki>.
+         1. Click "Next"
+         1. Click "Finish".
+   1. Installing packages:
+      1. Using ISQL:
+         1. Install the ODS <nowiki>ods_framework_dav.vad</nowiki> package:
+<verbatim>
+DB.DBA.VAD_INSTALL('tmp/ods_framework_dav.vad',0);
+</verbatim>
+         1. Install the phpBB3 phpBB3_fs.vad package:
+<verbatim>
+SQL> DB.DBA.VAD_INSTALL('tmp/phpBB3_fs.vad',0);
+</verbatim>
+      1. Using Conductor UI:
+         * For more information see [[OdsIntegrationphpBBInstallCond][here]].
+
+---+++Linked Data View Scripts
+
+   * You can find the <nowiki>phpBB3</nowiki> Linked Data View scripts [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtRDFViewPHPBB3][here]]. Note that they are included in the phpBB3 package.
+
+---+++Configuration
+
+   1. In case you want to change the dba password, you need to locate the file below in your FS and change the <b>$dbpasswd<b/> value:
+<verbatim>
+vad\vsp\phpBB3\config.php
+</verbatim>
+      * <b>Important:</b> In the config.php file leave the tables prefix to default "phpbb_" as well as $dbuser. 
+
+---+++phpBB3 Administration
+
+   * For more information see [[OdsIntegrationphpBBAdm][here]] .
+
+---+++phpBB3 and ODS Newsgroups
+
+   1. Install the ODS Discussion <nowiki>ods_discussion_dav.vad</nowiki> package. For ex. from ISQL:
+<verbatim>
+SQL>DB.DBA.VAD_INSTALL('tmp/ods_discussion_dav.vad',0);
+</verbatim>
+   1. <a href="%ATTACHURLPATH%/phpBB-news-create_procedures.sql" style="wikiautogen">phpBB-news-create_procedures.sql</a>: create procedures which are needed later:
+<verbatim>
+isql localhost:1116 dba dba phpBB-news-create_procedures.sql
+</verbatim>
+   1. <a href="%ATTACHURLPATH%/phpBB-news-fill_tables.sql" style="wikiautogen">phpBB-news-fill_tables.sql</a>: modifies the phpBB tables and fills them with data from Virtuoso News tables and ODS tables:
+<verbatim>
+isql localhost:1116 phpBB-news-fill_tables.sql
+</verbatim>
+   1. <a href="%ATTACHURLPATH%/phpBB-news-create_triggers.sql" style="wikiautogen">phpBB-news-create_triggers.sql</a>
+<verbatim>: creates the triggers which will sync the data between phpBB and Virtuoso news tables:
+<verbatim>
+isql localhost:1116 phpBB-news-create_triggers.sql
+</verbatim>
+   1. In order to make new news groups or to subscribe to other servers you should use the admin or Conductor UI:
+      1. From ISQL install the Conductor <nowiki>conductor_dav.vad</nowiki> package:
+<verbatim>
+DB.DBA.VAD_INSTALL('tmp/conductor_dav.vad',0);
+</verbatim>
+      1. Go to http://host:port/conductor
+         * <img src="%ATTACHURLPATH%/pb10.png" style="wikiautogen"/>
+      1. Login as dba and go to NNTP:
+         * <img src="%ATTACHURLPATH%/pb11.png" style="wikiautogen"/>
+      1. Enter Server Address, port and if needed user name and password and click the button "Add".
+         * <img src="%ATTACHURLPATH%/pb12.png" style="wikiautogen"/>
+      1. Click the server address link
+         * <img src="%ATTACHURLPATH%/pb13.png" style="wikiautogen"/>
+      1. Click the "Subscribe to newsgroups" link.
+         * <img src="%ATTACHURLPATH%/pb14.png" style="wikiautogen"/>
+      1. Click the Subscribe link for Group name
+         * <img src="%ATTACHURLPATH%/pb15.png" style="wikiautogen"/>
+      1. As result the group will be shown in the list of "Subscribed groups for ..." Click its Newsgroup name link.
+         * <img src="%ATTACHURLPATH%/pb16.png" style="wikiautogen"/>
+      1. As result will be shown the page with information about the newsgroup and the messages that have been retrieved.
+         * <img src="%ATTACHURLPATH%/pb17.png" style="wikiautogen"/>
+   1 Register in ODS. Then with the created account you will be able to log in at phpBB3 UI:
+      1. Go to http://host:port/ods 
+         * <img src="%ATTACHURLPATH%/pb2.png" style="wikiautogen"/>
+      1. Click the "Sign Up" link
+      1. Enter in the shown form Login Name, etc, and click the "Sign Up" button.
+         * <img src="%ATTACHURLPATH%/pb3.png" style="wikiautogen"/>
+   1. Access the <nowiki>phpBB3</nowiki> home page: http://host:port/phpBB3
+      * <img src="%ATTACHURLPATH%/pb1.png" style="wikiautogen"/>
+   1. Click the Login link and enter the user name and pwd you have entered when registering in ODS:
+      * <img src="%ATTACHURLPATH%/pb4.png" style="wikiautogen"/>
+   1. As result you will be successfully logged in to the phpBB3 UI. 
+      * <img src="%ATTACHURLPATH%/pb5.png" style="wikiautogen"/>
+   1. Click the link of the forum with name "Your first forum".
+      * <img src="%ATTACHURLPATH%/pb6.png" style="wikiautogen"/>
+   1. Click the "new topic" button
+      * <img src="%ATTACHURLPATH%/pb7.png" style="wikiautogen"/>
+   1. Enter in the form in the Subject and text-area fields some values and click the "Submit" button.
+      * <img src="%ATTACHURLPATH%/pb8.png" style="wikiautogen"/>
+   1. As result your topic will be created.
+      * <img src="%ATTACHURLPATH%/pb9.png" style="wikiautogen"/>
+
+---++++Newsgroup support available
+
+In case you have installed the ODS Discussion <nowiki>ods_discussion_dav.vad</nowiki> package, executed the 3 files as described above and added a newsgroup from Conductor, then:
+
+   1. Access the <nowiki>phpBB3</nowiki> home page: http://host:port/phpBB3:
+      * <img src="%ATTACHURLPATH%/pb18.png" style="wikiautogen"/>
+   1. As result will be shown the phpBB3 UI with list of the subscribed for NewsGroups. Click the Login link and enter the user name and pwd you have entered when registering in ODS:
+      * <img src="%ATTACHURLPATH%/pb4.png" style="wikiautogen"/>
+   1. As result you will be successfully logged in to the phpBB3 UI. 
+      * <img src="%ATTACHURLPATH%/pb19.png" style="wikiautogen"/>
+   1. Click on the newsgroup name link.
+      * <img src="%ATTACHURLPATH%/pb20.png" style="wikiautogen"/>
+   1. As result will be shown the posts for this newsgroup. Click the "Post a new topic" link.
+   1. Enter in the form in the Subject and text-area fields some values and click the "Submit" button.
+      * <img src="%ATTACHURLPATH%/pb21.png" style="wikiautogen"/>
+   1. As result your topic will be created.
+      * <img src="%ATTACHURLPATH%/pb22.png" style="wikiautogen"/>
+   1. You can view your post also from the ODS UI:
+      1. Go to http://host:port/ods and login as ODS user.
+         * <img src="%ATTACHURLPATH%/pb23.png" style="wikiautogen"/>
+      1. Go to ODS->Discussions
+         * <img src="%ATTACHURLPATH%/pb24.png" style="wikiautogen"/>
+      1. Click the link "Discussions"
+         * <img src="%ATTACHURLPATH%/pb25.png" style="wikiautogen"/>
+      1. Click the link "List" for the newsgroup you have posted your message to.
+         * <img src="%ATTACHURLPATH%/pb26.png" style="wikiautogen"/>  
+      1. Click the Read link for your message shown at the top of the messages list.
+      1. As result your message details will be shown.
+         * <img src="%ATTACHURLPATH%/pb27.png" style="wikiautogen"/>
+  
+---+++URI Schemes
+<verbatim>
+http://<your-instance-cname>/phpBB3/user/<ods-user-id>
+</verbatim>
+
+---++Download
+
+   * You can download the <nowiki>phpBB3</nowiki> VAD package from [[https://virtuoso.openlinksw.com/download/][here]].
+
+---++References
+
+---+++See Also
+
+   * [[http://virtuoso.openlinksw.com/wiki/main/Main/PHPBB3SIOCRef][phpBB 3 SIOC Reference]]
+
+---+++Related
+
+   * [[http://my-movies.s3.amazonaws.com/Virtuoso_PHPBB3_Vista_Linked_Data_Demo.mov.zip][Windows Vista (x64) Virtuoso Installation Movie]]
+   * [[http://my-movies.s3.amazonaws.com/Virtuoso_PHPBB3_MacOSX_Linked_Data_Demo.mov.zip][Mac OS X (x64 & Universal binary) Virtuoso  Installation Movie]]
+   * [[http://my-movies.s3.amazonaws.com/Virtuoso_PHPBB3_EC2_AMI_Linked_Data_Demo.zip][Virtuoso EC2 Cloud Edition Installation Movie]]
+
+CategorySPARQL CategorySIOC CategoryODS CategoryWebSite

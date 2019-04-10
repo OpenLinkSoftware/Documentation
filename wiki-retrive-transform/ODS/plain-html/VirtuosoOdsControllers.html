@@ -1,0 +1,121 @@
+<html><body><div class="topic-text"><!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Overview">Overview</a></li> <li><a href="#Access%20point">Access point</a></li> <li><a href="#Authentication">Authentication</a></li>
+<ul><li><a href="#Password%20Hash%20Authentication">Password Hash Authentication</a></li><ul><li><a href="#Password%20Hash%20Authentication%20Example">Password Hash Authentication Example</a></li> </ul><li><a href="#OAuth">OAuth</a></li><ul><li><a href="#OAuth%20%20Examples">OAuth  Examples</a></li> </ul></ul><li><a href="#Response%20format">Response format</a></li> <li><a href="#API%20methods">API methods</a></li><ul><li><a href="#Framework%20Controllers">Framework Controllers</a></li> <li><a href="#ODS%20Data%20Spaces%20Controllers">ODS Data Spaces Controllers</a></li> </ul><li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h1><a name="ODS Controllers"></a> ODS Controllers</h1>
+<h2><a name="Overview"></a> Overview</h2>
+<p>ODS Controllers enable programmatic manipulation of ODS based Data Spaces via RESTful Web Services.</p>
+<h2><a name="Access point"></a> Access point</h2>
+<p>The API can be accessed via REST using <code>http://host:port/ods/api/[method]</code>.
+ Parameters specific to each method are given as URL parameters if using <code>GET</code>, as <code>www-url-encoded</code> or <code>multipart/form-data</code> if using <code>POST</code>.</p>
+<p>The API can be accessed via UI page using <code>http://host:port/ods/oauth_test.vsp</code>.</p>
+<h2><a name="Authentication"></a> Authentication</h2>
+<p>Most API calls which modify data, i.e., CRUD operations, need authentication; thus the requests need to be authenticated using OAuth, or session + password hashes.
+ The user account used to authenticate in either case MUST have relevant privileges to a given ODS data space.
+ This is done by granting owner or author level membership to the given data space.</p>
+<p> </p>
+<h3><a name="Password Hash Authentication"></a>Password Hash Authentication</h3>
+<p>When authenticating via password hashes parameters &#39;user_name&#39; and &#39;password_hash&#39; need to be specified.
+ The password hash uses the <code>sha1</code> digest algorithm and includes both the user name and the password.</p>
+<h4><a name="Password Hash Authentication Example"></a>Password Hash Authentication Example</h4>
+<p>To authenticate user <code>demo</code> with password <code>foobar</code> the sha1 digest of the term <code>demofoobar</code> needs to be provided.
+ This can be created via openssl or any sha1 tool: </p>
+<br><pre># echo -n &quot;demofoobar&quot; | openssl dgst -sha1
+# echo -n &quot;demofoobar&quot; | sha1sum
+</pre><p> </p>
+<h3><a name="OAuth"></a>OAuth</h3>
+<p>The user account for authentication must have OAuth tokens generated via ODS -&gt; Settings -&gt; OAuth keys.
+ This UI provides a list of all applications to which the user has access (i.e., he/she is member or owner).
+ If an instance needs to be accessed with OAuth, user simply selects the instance from the list and clicks &#39;generate keys&#39;.
+ The generated consumer key &amp; token will be associated to the active ODS user account and selected application instance.</p>
+<p>Once a consumer token is available, the sequence below must be done in order to establish an authorized session: </p>
+<ol><li>client uses request_token to get a token/secret pair for establishing session using consumer token </li>
+<li>client asks OAuth server to authorize the token from step 1 </li>
+<li>using authorized token from step 1, client asks OAuth server for authentication token </li>
+<li>with authentication token from step 3, clients can access instance data associated with the consumer token from step 1</li>
+</ol><h4><a name="OAuth  Examples"></a>OAuth  Examples</h4>
+<p>To demonstrate the above, we supply <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersClientApi" class="wikiword">a simple client written in VSP</a>.</p>
+<p>Also there are available <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersClientApiExamples" class="wikiword">Examples of sample session</a> recorded with the client above.</p>
+<p> </p>
+<h2><a name="Response format"></a> Response format</h2>
+<p>The following Response format are supported by the ODS Controllers implementation:</p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=0&col=1">Operation</a></th><th id="1"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=1&col=2">Format</a></th><th id="2"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=2&col=3">Example</a></th><th id="3"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=3&col=4">Description</a></th></tr><tr><td>IUD operations</td><td> On success; On failure</td><td><b>On success</b>: <verbatim>&lt;result&gt;<br>  &lt;code&gt;NNN&lt;/code&gt;<br>  &lt;message&gt;human readable explanation if applicable&lt;/message&gt;<br>&lt;/result&gt;</verbatim><br><b>On failure</b>:  <verbatim>&lt;failed&gt;<br>  &lt;code&gt;NNN&lt;/code&gt;<br>  &lt;message&gt;human readable explanation&lt;/message&gt;<br>&lt;/failed&gt;</verbatim></td><td>The IUD methods return an XML response with code &amp; message format are On success and On failure</td></tr><tr><td>Search (get)</td><td> </td><td> </td><td>The search methods returns results in RDF format according to FOAF, SIOC and SIOC types module ontology. See ODS RDF model.</td></tr></table>
+<h2><a name="API methods"></a> API methods</h2>
+<p>All APIs are acting on behalf of the user who established authentication, i.e., the user which is authorized.
+ The APIs where user is subject of removal or freeze as well as registration the user name is passed as parameter.
+ Therefore user.register, user.delete would need user name as input parameter where user.update, instance.create will use the user from authentication information.</p>
+<h3><a name="Framework Controllers"></a> Framework Controllers</h3>
+<p> </p>
+
+<table class="wikitable">
+<tr><th id="4"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=4&col=1">Controller</a></th><th id="5"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=5&col=2">Demo Links</a></th><th id="6"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=6&col=3">Description</a></th></tr>
+<tr><td><b>user.register</b> (<br>  name varchar,<br>  password varchar<br>  email varchar<br>)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx1" class="wikiword">Example</a></td><td>Registers new user.</td></tr>
+<tr><td><b>user.authenticate</b> (<br>  user_name varchar,<br>  password_hash varchar<br>)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx2" class="wikiword">Example</a></td><td>Authenticates existing user. </td></tr>
+<tr><td><b>user.update</b> (user_info any)</td><td> </td><td>Updates user&#39;s data. </td></tr>
+<tr><td><b>user.password_change</b> (new_password varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx3" class="wikiword">Example</a></td><td>Changes user password. </td></tr>
+<tr><td><b>user.delete</b> (name varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx4" class="wikiword">Example</a></td><td>Deletes user. </td></tr>
+<tr><td><b>user.enable</b> (name varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx5" class="wikiword">Example</a></td><td>Enables user. </td></tr>
+<tr><td><b>user.disable</b> (name varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx6" class="wikiword">Example</a></td><td>Disables user. </td></tr>
+<tr><td><b>user.get</b> (name varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx7" class="wikiword">Example</a></td><td>Gets user data. </td></tr>
+<tr><td><b>user.search</b> (pattern varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx8" class="wikiword">Example</a></td><td>Performs search for user by given pattern. </td></tr>
+<tr><td><b>user.invite</b> (<br>  friends_email varchar,<br>  custom_message varchar default<br>)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx9" class="wikiword">Example</a></td><td> Invites user</td></tr>
+<tr><td><b>user.invitation</b>  (<br>  invitation_id varchar,<br>   approve int<br>)</td><td> </td><td>Gets user invitation details. </td></tr>
+<tr><td><b>user.invitations.get</b> ()</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersUserEx10" class="wikiword">Example</a></td><td>Gets all user&#39;s invitations. </td></tr>
+<tr><td><b>user.relation_terminate</b> (friend varchar)</td><td> </td><td> Terminates a relation with user.</td></tr>
+<tr><td><b>user.tagging_rules.add</b> (<br>  rulelist_name varchar,<br>  rules any,<br>  is_public int default 1<br>)</td><td> </td><td>Adds tagging rule. </td></tr>
+<tr><td><b>user.tagging_rules.delete</b> (rulelist_name varchar)</td><td> </td><td>Deletes tagging rule. </td></tr>
+<tr><td><b>user.tagging_rules.update</b> (<br>  rulelist_name varchar,<br>  rules any<br>)</td><td> </td><td>Updates tagging rule. </td></tr>
+<tr><td><b>user.hyperlinking_rules.add</b> (rules any)</td><td> </td><td>Adds user hyperlinking rule. </td></tr>
+<tr><td><b>user.hyperlinking_rules.update</b> (rules any)</td><td> </td><td>Updates user hyperlinking rule.</td></tr>
+<tr><td><b>user.hyperlinking_rules.delete</b> (rules any)</td><td> </td><td>Deletes user hyperlinking rule. </td></tr>
+<tr><td><b>user.annotation.add</b> (<br>  claimIri varchar,<br>  claimRelation varchar,<br>  claimValue varchar<br>)</td><td> </td><td>Adds user annotation. </td></tr>
+<tr><td><b>user.annotation.delete</b> (<br>  claimIri varchar,<br>  claimRelation varchar,<br>  claimValue varchar<br>)</td><td> </td><td> Deletes user annotation.</td></tr>
+<tr><td><b>instance.create</b> (<br>  type varchar,<br>  name varchar,<br>  description varchar,<br>  model int,<br>  public int<br>)</td><td> <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx1" class="wikiword">Example</a></td><td>Creates ODS Dataspace instance. Its type can be:<br>  * AddressBook<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/AddressBook&parent=VirtuosoOdsControllers" class="wikiword">?</a><br>  * Bookmark<br>  * Calendar<br>  * Community<br>  * IM (Messenger)<br>  * Polls<br>  * WEBLOG2 (Weblog)<br>  * eCRM<br>  * eNews2<br>  * oDrive (Briefcase)<br>  * oGallery<br>  * oMail (Webmail)<br>  * oWiki</td></tr>
+<tr><td><b>instance.update</b> (<br>  inst_id int,<br>  name varchar,<br>  description varchar,<br>  model int,<br>  public int<br>)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx2" class="wikiword">Example</a> </td><td>Updates instance&#39;s details. </td></tr>
+<tr><td><b>instance.delete</b> (inst_id int)</td><td> </td><td> Deletes existing instance.</td></tr>
+<tr><td><b>instance.freeze</b> (name varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx3" class="wikiword">Example</a> </td><td> Freeze existing instance. Its owner is no more able to manage the instance.</td></tr>
+<tr><td><b>instance.unfreeze</b> (name varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx4" class="wikiword">Example</a> </td><td>Unfreeze existing instance. Its owner is then enabled to manage the instance. </td></tr>
+<tr><td><b>instance.join</b> (inst_id int)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx5" class="wikiword">Example</a> </td><td>Joins user to existing instance. </td></tr>
+<tr><td><b>instance.disjoin</b> (inst_id int)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx6" class="wikiword">Example</a> </td><td>Dis-joins user to an existing instance he/she is member of. </td></tr>
+<tr><td><b>instance.join_approve</b> (<br>  inst_id int,<br>   uname varchar<br>)</td><td> </td><td> Performs instance join approve.</td></tr>
+<tr><td><b>instance.notification.services</b> (in inst_id integer)</td><td> </td><td> Shows instance notification services details.</td></tr>
+<tr><td><b>instance.notification.set</b> (<br>  inst_id int,<br>  services any<br>)</td><td> </td><td> Sets instance notification data.</td></tr>
+<tr><td><b>instance.notification.cancel</b> (<br>  inst_id int,<br>  services any<br>)</td><td> </td><td> Cancels instance notification services.</td></tr>
+<tr><td><b>instance.notification.log</b> (inst_id int)</td><td> </td><td> Shows instance notification log.</td></tr>
+<tr><td><b>instance.get</b> (inst_id int)</td><td> </td><td> Gets instance&#39;s details.</td></tr>
+<tr><td><b>instance.get.id</b> (instanceName varchar)</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersInstanceEx7" class="wikiword">Example</a> </td><td> Returns instance name by given instance id.</td></tr>
+<tr><td><b>site.search</b> (<br>  pattern varchar,<br>  options any<br>)</td><td> </td><td> Executes search over the ODS Data space data by given pattern.</td></tr>
+</table>
+<h3><a name="ODS Data Spaces Controllers"></a> ODS Data Spaces Controllers</h3>
+<p>The following ODS Data Spaces offer a variety of application specific controllers:</p>
+
+<table class="wikitable">
+<tr><th id="7"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=7&col=1">ODS Data Space</a></th><th id="8"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=8&col=2">Controllers</a></th><th id="9"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=9&col=3">Programmers Guide</a></th><th id="10"><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllers?sort=10&col=4">Description</a></th></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcase" class="wikiword">Briefcase</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersBriefcase" class="wikiword">List</a></td><td> </td><td> Briefcase Data Space collection of controllers covers all activities for managing user resources.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBlog" class="wikiword">Weblog</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersWeblog" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsWeblogProgrammersGuide" class="wikiword">View</a> </td><td> Weblog Data Space collection of controllers includes manipulation of user weblog posts, hyperlinking tags, etc. </td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsAddressbook" class="wikiword">Addressbook</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersAddressbook" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsAddressbookProgrammersGuide" class="wikiword">View</a></td><td> AdressBook<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/AdressBook&parent=VirtuosoOdsControllers" class="wikiword">?</a> Data Space collection of controllers covers different ways of managing user&#39;s contacts, personal data, annotations and many others.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBookmarkManager" class="wikiword">Bookmarks</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersBookmarks" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBookmarkManager" class="wikiword">View</a></td><td> Bookmarks Data Space collection includes a rich number of controllers for managing user&#39;s bookmarks details, organizing the collected data by folders,  manage sharing options and many others. </td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsPolls" class="wikiword">Polls</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersPolls" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsPollsProgrammersGuide" class="wikiword">View</a></td><td> Polls Data Space collection of controllers offers a variety of commands for creating., editing, deleting users polls.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsCalendar" class="wikiword">Calendar</a></td><td> <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersCalendar" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsCalendarProgrammersGuide" class="wikiword">View</a></td><td> Calendar Data Space collection of controllers covers organizing user&#39;s Calendar events and tags, import and export, managing subscriptions and publications.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsFeedManager" class="wikiword">Feed Manager</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersFeeds" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsFeedManagerProgrammersGuide" class="wikiword">View</a></td><td> Feed Manager Data Space collection of controllers covers managing user&#39;s subscriptions data, import and export, changing specific feed&#39;s details, and many others.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsMail" class="wikiword">Webmail</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersWebmail" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsWebmailProgrammersGuide" class="wikiword">View</a> </td><td> Webmail Data Space collection of controllers covers managing user&#39;s webmail data.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsDiscussions" class="wikiword">Discussion</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersDiscussion" class="wikiword">List</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsDiscussionsProgrammersGuide" class="wikiword">View</a></td><td> Discussions Data Space collection of controllers covers managing discussions groups and posts data.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsGallery" class="wikiword">Gallery</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersGallery" class="wikiword">List</a></td><td> </td><td> Gallery Data Space collection of controllers covers managing user&#39;s own galleries&#39; images and settings.</td></tr>
+<tr><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsWiki" class="wikiword">Wiki</a></td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersWiki" class="wikiword">List</a></td><td> </td><td> Wiki Data Space collection of controllers covers managing user&#39;s wiki articles details, upstreaming and many others.</td></tr>
+<tr><td>Messenger</td><td><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsControllersMessenger" class="wikiword">List</a></td><td> </td><td>MessengerData<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/MessengerData&parent=VirtuosoOdsControllers" class="wikiword">?</a> Space collection of controllers covers  managing user&#39;s messages.</td></tr>
+</table>
+<h2><a name="References"></a>References</h2>
+<ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoAppODSUsers" class="wikiword">ODS REST based Controller Interfaces</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/OAuth" class="absuri">OpenLink&#39;s explanation of OAuth</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/VirtuosoOAuthServer" class="absuri">Virtuoso OAuth server</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtOAuthControllers" class="wikiword">Using OAuth with ODS</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsUbiquity" class="wikiword">ODS Ubiquity Commands</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/VirtOAuth" class="absuri">Virtuoso OAuth Implementation</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtODSOAuthQA" class="wikiword">Testing Virtuoso OAuth with 3rd Party OAuth Clients</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsUbiquityTutorialsOAuth" class="wikiword">OAuth Ubiquity Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtOAuthTestTool" class="wikiword">Virtuoso OAuth Test Tool for ODS Controllers</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/VirtOAuthSPARQL" class="absuri">Virtuoso SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsUbiquityTutorials" class="wikiword">ODS Ubiquity Tutorials</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtOAuthExamples" class="wikiword">OAuth Applications Authentication examples</a> </li>
+<li><a href="http://oauth.net/core/1.0/" class="absuri">OAuth API</a></li>
+</ul><p><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/CategoryODS" class="wikiword">CategoryODS</a> <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> </p>
+</div></body></html>

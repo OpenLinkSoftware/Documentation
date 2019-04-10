@@ -1,0 +1,245 @@
+<docbook><section><title>VAL_AuthenticateVspTutorial</title><title> VAL VSP Authentication Tutorial</title> VAL VSP Authentication Tutorial
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>VAL, the Virtuoso Authentication Layer, provides a means to easily add authentication and ACL support to existing or new VSP-based applications.
+ This tutorial demonstrates the main steps used to do so.
+ We are using curi — the Compressed URI Service — as an example.</para>
+<para>For curi we want to add login information, a means for the user to logout, and ACLs to protect the service.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Tutorial</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 1 - Check for existing authentication information</bridgehead>
+<para>The first and simplest step is to check if the user has already provided authentication information as supported by VAL.
+ This can be achieved by simply calling <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__main.html#gae4565eb3fc3b48886af76de88fb72dd2">VAL.DBA.authentication_details_for_connection()</ulink> at the top of the VSP page:</para>
+<programlisting>DECLARE  val_serviceId, 
+         val_sid, 
+         val_realm, 
+         val_uname       VARCHAR ;
+DECLARE  val_isRealUser  INTEGER ;
+
+-- Important since &quot;realm&quot; is an &quot;INOUT&quot; parameter!
+val_realm := NULL;
+
+VAL.DBA.authentication_details_for_connection 
+  (
+    sid=&gt;val_sid,
+    serviceId=&gt;val_serviceId,
+    uname=&gt;val_uname,
+    isRealUser=&gt;val_isRealUser,
+    realm=&gt;val_realm
+  );
+</programlisting><para> <emphasis>Note:</emphasis> <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__main.html#gae4565eb3fc3b48886af76de88fb72dd2">VAL.DBA.authentication_details_for_connection()</ulink> will honor a non-NULL realm parameter and only return authentication data for the given realm.
+ Additionally it will honor the app_realm setting in the virtual directory serving the page in question.
+ Thus, there are two ways to define the realm for an application: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Set it in the virtual directory </listitem>
+<listitem>Force it manually via the realm parameter</listitem>
+</itemizedlist><para>After the call to <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__main.html#gae4565eb3fc3b48886af76de88fb72dd2">VAL.DBA.authentication_details_for_connection()</ulink>, the application can use the information.
+ The most important one is the value of val_serviceId which defines who is authenticated.
+ If it is NULL, then the user has not authenticated yet.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 2 - Add Log-in and Log-out Links</bridgehead>
+<para>VAL provides an authentication (log in) page and a logout page to support the most simple login and logout links possible.
+ Given that the application page is stored in pageUrl, the following links can be used:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Authenticate (log in) <programlisting>&lt;a href=&quot;/val/authenticate.vsp?returnto=&lt;?/pageUrl?&gt;&quot;&gt;Login&lt;/a&gt;
+</programlisting></listitem>
+<listitem>Log out <programlisting>&lt;a href=&quot;/val/logout.vsp?returnto=&lt;?/pageUrl?&gt;&quot;&gt;Logout&lt;/a&gt;
+</programlisting> However, in our case a dedicated login page is more desirable, since it allows us to configure certain aspects of authenticate.vsp. Thus, we create a new page login.vsp with the following content (or at least parts of it):</listitem>
+</itemizedlist><programlisting>&lt;?vsp
+  connection_set (&#39;__val_auth_page__&#39;, &#39;/c/login.vsp&#39;);
+  connection_set (&#39;__val_req_res_label__&#39;, &#39;Compressed URI Service&#39;);
+  connection_set (&#39;__val_oauth_scope__&#39;, &#39;basic&#39;);
+?&gt;
+&lt;?include /DAV/VAD/val/authenticate.vsp ?&gt;
+</programlisting><para> The settings should be obvious: </para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> <emphasis>__val_auth_page__</emphasis>  </entry><entry> We tell authenticate.vsp to use login.vsp instead of its own URL for all login links.  </entry></row>
+<row><entry> <emphasis>__val_req_res_label__</emphasis>  </entry><entry> A custom label for the login dialog to tell the user which service they log into.  </entry></row>
+<row><entry> <emphasis>__val_oauth_scope__</emphasis>  </entry><entry> The optional OAuth scope to use (basic, profile, or dav). This is only of interest for applications that reuse the created OAuth sessions for additional API calls to the 3rd-party service. </entry></row>
+</tbody></tgroup></table>
+<para> So we end up with code for creating a login/logout box like the following: </para>
+<programlisting>IF (val_serviceId IS NOT NULL ) 
+  {
+    http (sprintf (&#39;Logged in as %s&#39;, val_serviceId));
+    http (sprintf (&#39;&lt;a href=&quot;/val/logout.vsp?returnto=%U&quot;&gt;Logout&lt;/a&gt;&#39;, pageUrl));
+  }
+ELSE
+  {
+    http (sprintf (&#39;&lt;a href=&quot;login.vsp?returnto=%U&quot;&gt;Login&lt;/a&gt;&#39;, pageUrl));
+  }
+</programlisting><para> When the user authenticates, they will be redirected to the pageUrl with a newly created sid cookie.
+ The logout page will remove that cookie.</para>
+<emphasis>Tip:</emphasis> A slightly nicer logged in message with link can be created with code like the following which makes use of the two utility procedures <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__tools.html#ga43385dfc887ccad03701cfc9f4a143c0">VAL.DBA.get_profile_url()</ulink> and <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__tools.html#gaca32625bec8fc5666c905918997e3c96">VAL.DBA.get_profile_name()</ulink>: <programlisting>DECLARE  x, n  VARCHAR;
+
+x := VAL.DBA.get_profile_url (val_serviceId);
+
+n := COALESCE (VAL.DBA.get_profile_name (val_serviceId), val_serviceId);
+
+IF (NOT x IS NULL)
+  http (sprintf (&#39;&lt;a href=&quot;%s&quot;&gt;%V&lt;/a&gt;&#39;, x, n));
+ELSE
+  http (n);
+</programlisting><para> <emphasis>Warning:</emphasis> Be aware that WebID logout is not always possible, as it requires a redirect to the unprotected (i.e., HTTP instead of HTTPS) application page.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 3 - Set Up 40x Pages</bridgehead>
+<para>A typical situation for authentication-enabled applications is forcing the user to authenticate.
+ Ideally this is done by combining 40x page options in the virtual directory with VAL&#39;s authenticate.vsp page (which we used above for the login links).
+ Here, we simply create a new file 40x.vsp which has the following content:</para>
+<programlisting>&lt;?vsp
+  connection_set (       &#39;__val_req_res__&#39;, &#39;urn:virtuoso:access:curi&#39;     );
+  connection_set ( &#39;__val_req_acl_scope__&#39;, &#39;urn:virtuoso:val:scopes:curi&#39; );
+  connection_set ( &#39;__val_req_res_label__&#39;, &#39;Compressed URI Service&#39;       );
+  connection_set (     &#39;__val_auth_page__&#39;, &#39;/c/login.vsp&#39;                 );
+  connection_set (       &#39;__val_err_msg__&#39;, http_param (&#39;error.msg&#39;)       );
+?&gt;
+&lt;?include /DAV/VAD/val/authenticate.vsp ?&gt;
+</programlisting><para> authenticate.vsp can be configured via a set of connection settings: </para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> <emphasis>__val_req_res__</emphasis>  </entry><entry> The resource which is protected, i.e., which requires the login. This is only used to retrieve ownership information for the &quot;request access&quot; dialog that authenticate.vsp will show if access was denied. This will default to the returnto URL if not provided, and should that also be NULL (as is the case if authenticate.vsp is used as 40x_page) then the requested URL will be used.  </entry></row>
+<row><entry> <emphasis>__val_req_acl_scope__</emphasis>  </entry><entry> The ACL scope in which the above resource is protected. This is only used to retrieve ownership information for the &quot;request access&quot; dialog that authenticate.vsp will show if access was denied. If not given, then no &quot;request access&quot; dialog is shown.  </entry></row>
+<row><entry> <emphasis>__val_req_res_label__</emphasis>  </entry><entry> An optional label for the login dialog showing the user for which service they are authenticating.  </entry></row>
+<row><entry> <emphasis>__val_auth_page__</emphasis>  </entry><entry> We tell authenticate.vsp to use our custom page login.vsp instead of its own URL for all login links.  </entry></row>
+<row><entry> <emphasis>__val_err_msg__</emphasis>  </entry><entry> An error message indicating any kind of error. This should be set to http_param (&#39;error.msg&#39;) for the simple reason that Virtuoso does clear the http params before processing the 40x page.  </entry></row>
+</tbody></tgroup></table>
+<para>This page will be used as 40x page in the virtual directory configuration:</para>
+<programlisting>DB.DBA.VHOST_DEFINE (
+  lpath=&gt;&#39;/c&#39;,
+  ppath=&gt;&#39;/DAV/VAD/c_uri/&#39;,
+  is_dav=&gt;1,
+  vsp_user=&gt;&#39;CURI&#39;,
+  ses_vars=&gt;0,
+  opts=&gt;vector (
+    &#39;url_rewrite&#39;, &#39;c_uri_lst&#39;,
+    &#39;401_page&#39;, &#39;40x.vsp&#39;,
+    &#39;403_page&#39;, &#39;40x.vsp&#39;),
+  is_default_host=&gt;0
+);
+</programlisting><para> Then the application can raise a permission denied error as shown in the following example:</para>
+<programlisting>IF (val_serviceId IS NULL) 
+  {
+    http_status_set(401);
+  }
+ELSE
+  {
+    connection_set (&#39;__val_denied_service_id__&#39;, val_serviceId);
+    http_status_set(403);
+  }
+RETURN &#39;&#39;;
+</programlisting><para> If val_serviceId is NULL, then the user has not logged in, and the application simply requests that they do.
+ Otherwise, 403 indicates that permission was denied to the authenticated user.
+ The authenticated user is communicated to authenticate.vsp via the __val_denied_service_id__ connection setting.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 4 - Use ACL Rules to Protect a Web Service</bridgehead>
+<para>Above we saw how to use authenticate.vsp as a 40x_page.
+ Now we will add ACL protection to the curi service, and put the new 40x_page to use.</para>
+<para>We want to be able to grant some people the right to create new compressed URIs, and others the right to read these.
+ To that end, we define a new scope, urn:virtuoso:val:scopes:curi, which is only used for curi, and a virtual resource URI which is used to grant permissions, urn:virtuoso:access:curi.
+These URIs are arbitrary; the scheme we use here is meant to be easily recognizable.
+ In theory they could be any URI one wanted to use.</para>
+<para>VAL makes use of scope definitions to get default access modes for disabled scopes (the default).
+ Thus we start by defining our new scope in the corresponding VAL ACL schema graph (Hint: standard scopes for DAV, etc., are defined in the <ulink url="OpenLink">OpenLink</ulink> ACL ontology, <ulink url="http://www.openlinksw.com/c/9BWWW4FP">http://www.openlinksw.com/ontology/acl#</ulink>; example: <ulink url="http://www.openlinksw.com/c/9DGR44OK">oplacl:Dav</ulink>):</para>
+<programlisting>SPARQL
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+INSERT
+  INTO &lt;urn:virtuoso:val:acl:schema&gt; 
+    {
+      &lt;urn:virtuoso:val:scopes:curi&gt;                           a  oplacl:Scope ;
+                                                      rdfs:label  &quot;Compressed URIs&quot; ;
+                                                    rdfs:comment  &quot;&quot;&quot;SQL ACL scope which contains all ACL rules granting permission to 
+                                                                     create and read compressed URIs. By default anyone can fully use 
+                                                                     the service.&quot;&quot;&quot; ;
+                                      oplacl:hasApplicableAccess  oplacl:Read   , 
+                                                                  oplacl:Write  ;
+                                         oplacl:hasDefaultAccess  oplacl:Read   , 
+                                                                  oplacl:Write  .
+    };
+</programlisting><para> The most important part is oplacl:hasDefaultAccess, which defines the access modes used when ACL evaluation has not been enabled for the curi scope.
+ In such case, everyone is allowed to create and read compressed URIs.</para>
+<para>Now, at the top of the create.vsp page which allows to create new compressed URIs, we add the following ACL check (after the code from above):</para>
+<programlisting>IF (    NOT val_isRealUser 
+     OR NOT VAL.DBA.is_admin_user (val_uname)
+   ) 
+     {
+       IF ( NOT VAL.DBA.check_access_mode_for_resource 
+              (
+                 serviceId=&gt;val_serviceId,
+                 resource=&gt;&#39;urn:virtuoso:access:curi&#39;,
+                 realm=&gt;val_realm,
+                 scope=&gt;&#39;urn:virtuoso:val:scopes:curi&#39;,
+                 mode=&gt;VAL.DBA.oplacl_iri (&#39;Write&#39;),
+                 webidGraph=&gt;val_webidGraph,
+                 certificate=&gt;val_cert,
+                 honorScopeState=&gt;1
+              )
+          ) 
+            {
+              connection_set (&#39;__val_denied_service_id__&#39;, val_serviceId);
+              connection_set (&#39;__val_req_acl_mode__&#39;, VAL.DBA.oplacl_iri (&#39;Write&#39;));
+
+              IF (val_serviceId is NULL)
+                http_status_set(401);
+              ELSE
+                http_status_set(403);
+              RETURN &#39;&#39;;
+            }
+     }
+</programlisting><para> Some of this code we already know from before.
+ But the big first part is new.
+ First we check if we are logged in as an admin user.
+ VAL provides us with the convenient procedure <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__tools.html#ga6d55cc950a8e04c8e1372dad15521922">VAL.DBA.is_admin_user()</ulink> for that.
+ Of course, only &quot;real&quot; (i.e., SQL) users can be administrators of the Virtuoso instance.
+ If no admin credentials were provided, we continue with the ACL check using <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html#gacf6968026928ce87b9e96ac872247961">VAL.DBA.check_access_mode_for_resource()</ulink>, which allows us to check for exactly one mode on one resource for one service ID.
+ Here we use all the details that were provided by <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__main.html#gae4565eb3fc3b48886af76de88fb72dd2">VAL.DBA.authentication_details_for_connection()</ulink>, and combine them with the resource and scope URIs we defined above.</para>
+<para>Since we want to create a compressed URI, we use the oplacl:Write access mode.
+ Should no ACL exist which grants access, we continue to raise a 40x error.
+ But before we do that, we set two more variables: </para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> <emphasis>__val_denied_service_id__</emphasis>  </entry><entry> This is important, as it allows authenticate.vsp to know that access has been denied to a certain person, and the user should be asked to reauthenticate. Without this setting, having found authentication information, authenticate.vsp would simply return to the returnto URL. This would result in an endless loop. Should no authentication information exist yet, then authenticate.vsp will simply ask for it.  </entry></row>
+<row><entry> <emphasis>__val_req_acl_mode__</emphasis>  </entry><entry> Like the resource and the scope settings above, the mode is only used for the &quot;request access&quot; dialog. It allows authenticate.vsp to create a more detailed access request message to the resource owner.  </entry></row>
+</tbody></tgroup></table>
+<para>Finally we add the same code to the get.vsp page which handles the conversion of compressed to uncompressed URIs.
+ The only difference is the access mode:</para>
+<programlisting>IF (    NOT val_isRealUser 
+     OR NOT VAL.DBA.is_admin_user (val_uname) 
+   ) 
+     {
+       IF ( NOT VAL.DBA.check_access_mode_for_resource 
+              (
+                serviceId=&gt;val_serviceId,
+                resource=&gt;&#39;urn:virtuoso:access:curi&#39;,
+                realm=&gt;val_realm,
+                scope=&gt;&#39;urn:virtuoso:val:scopes:curi&#39;,
+                mode=&gt;VAL.DBA.oplacl_iri (&#39;Read&#39;),
+                webidGraph=&gt;val_webidGraph,
+                certificate=&gt;val_cert,
+                honorScopeState=&gt;1
+              )
+          ) 
+            {
+              connection_set (&#39;__val_denied_service_id__&#39;, val_serviceId);
+              connection_set (&#39;__val_req_acl_mode__&#39;, VAL.DBA.oplacl_iri (&#39;Read&#39;));
+              IF (val_serviceId IS NULL)
+                http_status_set(401);
+              ELSE
+                http_status_set(403);
+              RETURN &#39;&#39;;
+            }
+      }
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 5 - The Access Request Dialog</bridgehead>
+authenticate.vsp provides a simple dialog through which users who have been denied access to a certain resource, may request such access from the resource owner.
+ This dialog is shown by authenticate.vsp if the following conditions hold true:<itemizedlist mark="bullet" spacing="compact"><listitem>The user has been denied access, i.e., __val_denied_service_id__ is non-NULL.
+ (See above for details.) </listitem>
+<listitem>The owner of the resource to which access has been denied can be determined.
+ This means __val_req_res__ has to be non-NULL, and an owner has to be set.
+(DAV resources are handled as special cases; for every other resource, see <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__utility__api.html#ga39324e0e0cf5fcaf259dac362357b92c">VAL.DBA.set_resource_ownership()</ulink>, <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__utility__api.html#ga3eb4fcc5cff60079013beebdf58c9ae3">VAL.DBA.add_ownership_graph()</ulink>, and friends.) </listitem>
+<listitem>VAL has a means to contact the owner.
+ That means an email address has to be known (see <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__tools.html#ga0e3510e9b6a77b33558bd6d78814afc3">VAL.DBA.email_address_for_service_id()</ulink>), and the instance&#39;s sendmail configuration has to be valid (see <ulink url="http://docs.openlinksw.com/val/group__val__auth__module__tools.html#ga882a0ac491ca06f6514220b72f608bd2">VAL.DBA.smtp_server_available()</ulink>).</listitem>
+</itemizedlist><para>If these conditions are fulfilled, the user is given the option to write a message to the owner of the resource, requesting that access be granted.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 6 - Run an Application Under a Specific SQL User Account</bridgehead>
+<para>In the case of curi, the VSP pages are not executed as the dba user, but using the dedicated account CURI which improves security and is generally recommended.
+However, since most of the internal VAL API procedures require special permissions, this user needs to be granted the VAL_AUTH and VAL_ACL roles to be able to execute:</para>
+<programlisting>GRANT VAL_AUTH 
+   TO CURI;
+GRANT VAL_ACL 
+   TO CURI;
+</programlisting><para> (The <ulink url="http://docs.openlinksw.com/val/index.html">API documentation</ulink> of various procedures includes hints about which role grants the right to execute that procedure.) </para>
+</section></docbook>

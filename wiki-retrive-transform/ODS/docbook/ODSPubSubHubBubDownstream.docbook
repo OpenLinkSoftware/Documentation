@@ -1,0 +1,85 @@
+<docbook><section><title>ODSPubSubHubBubDownstream</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">ODS <ulink url="PubSubHubBub">PubSubHubBub</ulink> Downstream API</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">What</bridgehead>
+ The API is used in the ODS Application Downstream UI part and can be called as:<programlisting>PSH.DBA.ods_cli_subscribe 
+  (
+    in inst_id int, 
+    in hub varchar, 
+    in mode varchar, 
+    in topic varchar
+)
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Parameters</bridgehead>
+<para>The API entry parameters are as follows:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>inst_id: the ODS instance Id integer </listitem>
+<listitem>hub: the hub url </listitem>
+<listitem>mode: &#39;subscribe&#39; or &#39;unsubscribe&#39; </listitem>
+<listitem>topic: the feed URL to subscribe</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Why</bridgehead>
+ The API should be called in the ODS Applications downstream UIs in order to allow push subscriptions.
+For ex.
+ it is used in ODS Weblog in downstream ui.<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">How</bridgehead>
+<para>When subscribed, a record into following table will be added so the UI can show them and to be possible to unsubscribe :</para>
+<programlisting>create table &quot;DB&quot;.&quot;DBA&quot;.&quot;WA_PSH_SUBSCRIPTIONS&quot;
+(
+  &quot;PS_INST_ID&quot; INTEGER, -- ODS instance Id
+  &quot;PS_URL&quot; VARCHAR, -- the feed Url
+  &quot;PS_TS&quot; TIMESTAMP, -- modification date/time
+  &quot;PS_HUB&quot; VARCHAR, -- the Hub endpoint Url
+  PRIMARY KEY (&quot;PS_INST_ID&quot;, &quot;PS_URL&quot;)
+);
+</programlisting><para>Also the ODS define it&#39;s own callback:</para>
+<programlisting>&lt;/psh/odscb.vsp?inst=&lt;instanceid&gt;
+</programlisting><para> This should not be used separately as subscription  API already use it.</para>
+<para>Since every application defines own tables to import data from feeds every application should have a  stored procedure in following pattern :</para>
+<programlisting>PSH.DBA.ods_&lt;application type&gt;_psh_cbk (feed_url, content, instance_id)
+</programlisting><para> &lt;application type&gt;is one of :</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>weblog, </listitem>
+<listitem>calendar, </listitem>
+<listitem>mail, etc.</listitem>
+</itemizedlist><para>same convention used in the ods rdf views and sioc data.</para>
+<para>The above will be called when Hub pushes the feed changes, thus every application should call inside whatever logic it has to make new record.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Code</bridgehead>
+<programlisting>create procedure PSH.DBA.ods_cli_subscribe 
+  (
+    in inst_id int, 
+    in hub varchar, 
+    in mode varchar, 
+    in topic varchar
+  )
+{
+  declare token, subsu, callback, head, ret varchar;
+
+  if (__proc_exists (&#39;PSH.DBA.cli_subscribe&#39;) is null)
+    signal (&#39;42000&#39;, &#39;The PubSubHub package is not installed&#39;);
+
+  if (hub is not null)
+    {
+      token := md5 (uuid ());
+
+      callback := sprintf (&#39;http://%s/psh/odscb.vsp?inst=%d&#39;, WA_GET_HOST (), inst_id);
+
+      PSH..cli_subscribe (&#39;dba&#39;, mode, topic, &#39;feed&#39;, null, token);
+
+      subsu := sprintf (&#39;%s?hub.callback=%U&amp;hub.mode=%U&amp;hub.topic=%U&amp;hub.verify=sync&amp;hub.verify_token=%U&#39;, hub, callback, mode, topic, token);
+      commit work;	     
+
+      ret := http_get (subsu, head);
+
+      if (head[0] not like &#39;HTTP/1._ 20_ %&#39;)
+	{
+	  signal (&#39;39000&#39;, &#39;The Hub rejects subscription request, please verify you are allowed to use it.&#39;);
+	}
+    }
+
+  if (mode = &#39;subscribe&#39;)
+    insert replacing DB.DBA.WA_PSH_SUBSCRIPTIONS (PS_INST_ID, PS_HUB, PS_URL) values (inst_id, hub, topic);
+  else
+    delete from DB.DBA.WA_PSH_SUBSCRIPTIONS where PS_INST_ID = inst_id and PS_URL = topic;
+  commit work;	     
+}
+;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+ </section></docbook>

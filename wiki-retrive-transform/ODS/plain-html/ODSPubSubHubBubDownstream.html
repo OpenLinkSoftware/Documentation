@@ -1,0 +1,87 @@
+<html><body><div class="topic-text"><!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#ODS">ODS</a></li>
+<ul><li><a href="#What">What</a></li><ul><li><a href="#Parameters">Parameters</a></li> </ul><li><a href="#Why">Why</a></li> <li><a href="#How">How</a></li> <li><a href="#Code">Code</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p> </p>
+<h2><a name="ODS"></a>ODS PubSubHubBub<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/PubSubHubBub&parent=ODSPubSubHubBubDownstream" class="wikiword">?</a> Downstream API</h2>
+<h3><a name="What"></a>What</h3>
+ The API is used in the ODS Application Downstream UI part and can be called as:<br><pre>PSH.DBA.ods_cli_subscribe 
+  (
+    in inst_id int, 
+    in hub varchar, 
+    in mode varchar, 
+    in topic varchar
+)
+</pre><p> </p>
+<h4><a name="Parameters"></a>Parameters</h4>
+<p>The API entry parameters are as follows:</p>
+<ul><li><code>inst_id</code>: the ODS instance Id integer </li>
+<li><code>hub</code>: the hub url </li>
+<li><code>mode</code>: &#39;subscribe&#39; or &#39;unsubscribe&#39; </li>
+<li><code>topic</code>: the feed URL to subscribe</li>
+</ul><h3><a name="Why"></a>Why</h3>
+ The API should be called in the ODS Applications downstream UIs in order to allow push subscriptions.
+For ex.
+ it is used in ODS Weblog in downstream ui.<p> </p>
+<h3><a name="How"></a>How</h3>
+<p>When subscribed, a record into following table will be added so the UI can show them and to be possible to unsubscribe :</p>
+<br><pre>create table &quot;DB&quot;.&quot;DBA&quot;.&quot;WA_PSH_SUBSCRIPTIONS&quot;
+(
+  &quot;PS_INST_ID&quot; INTEGER, -- ODS instance Id
+  &quot;PS_URL&quot; VARCHAR, -- the feed Url
+  &quot;PS_TS&quot; TIMESTAMP, -- modification date/time
+  &quot;PS_HUB&quot; VARCHAR, -- the Hub endpoint Url
+  PRIMARY KEY (&quot;PS_INST_ID&quot;, &quot;PS_URL&quot;)
+);
+</pre><p>Also the ODS define it&#39;s own callback:</p>
+<br><pre>&lt;/psh/odscb.vsp?inst=&lt;instanceid&gt;
+</pre><p> This should not be used separately as subscription  API already use it.</p>
+<p>Since every application defines own tables to import data from feeds every application should have a  stored procedure in following pattern :</p>
+<br><pre>PSH.DBA.ods_&lt;application type&gt;_psh_cbk (feed_url, content, instance_id)
+</pre><p> &lt;application type&gt;is one of :</p>
+<ul><li>weblog, </li>
+<li>calendar, </li>
+<li>mail, etc.</li>
+</ul><p>same convention used in the ods rdf views and sioc data.</p>
+<p>The above will be called when Hub pushes the feed changes, thus every application should call inside whatever logic it has to make new record.</p>
+<h3><a name="Code"></a>Code</h3>
+<br><pre>create procedure PSH.DBA.ods_cli_subscribe 
+  (
+    in inst_id int, 
+    in hub varchar, 
+    in mode varchar, 
+    in topic varchar
+  )
+{
+  declare token, subsu, callback, head, ret varchar;
+
+  if (__proc_exists (&#39;PSH.DBA.cli_subscribe&#39;) is null)
+    signal (&#39;42000&#39;, &#39;The PubSubHub package is not installed&#39;);
+
+  if (hub is not null)
+    {
+      token := md5 (uuid ());
+
+      callback := sprintf (&#39;http://%s/psh/odscb.vsp?inst=%d&#39;, WA_GET_HOST (), inst_id);
+
+      PSH..cli_subscribe (&#39;dba&#39;, mode, topic, &#39;feed&#39;, null, token);
+
+      subsu := sprintf (&#39;%s?hub.callback=%U&amp;hub.mode=%U&amp;hub.topic=%U&amp;hub.verify=sync&amp;hub.verify_token=%U&#39;, hub, callback, mode, topic, token);
+      commit work;	     
+
+      ret := http_get (subsu, head);
+
+      if (head[0] not like &#39;HTTP/1._ 20_ %&#39;)
+	{
+	  signal (&#39;39000&#39;, &#39;The Hub rejects subscription request, please verify you are allowed to use it.&#39;);
+	}
+    }
+
+  if (mode = &#39;subscribe&#39;)
+    insert replacing DB.DBA.WA_PSH_SUBSCRIPTIONS (PS_INST_ID, PS_HUB, PS_URL) values (inst_id, hub, topic);
+  else
+    delete from DB.DBA.WA_PSH_SUBSCRIPTIONS where PS_INST_ID = inst_id and PS_URL = topic;
+  commit work;	     
+}
+;
+</pre><p> </p>
+<h2><a name="Related"></a>Related</h2>
+ </div></body></html>

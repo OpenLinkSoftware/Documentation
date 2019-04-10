@@ -1,0 +1,202 @@
+%META:TOPICPARENT{name="OdsMail"}%
+
+---+ Guide to using ODS-Mail for Mail Merge
+
+%TOC%
+
+---++ What is it? 
+
+ODS-Mail has an "Email Merge" feature that enables dynamic email message construction, merging content with data from:
+
+   * ODS-AddressBook
+   * vCard collections 
+   * CSV documents
+
+These "merge-sources" may be local or remote HTTP-accessible files, including SPARQL SELECT Queries which deliver CSV-formatted output.
+
+---++ Why is this important? 
+
+Just as printed mail merges once did, this provides a productive mechanism by which to generate 
+email messages to dispatch information, on a highly focused basis, to relevant contacts. 
+
+---++ How do I use it? 
+
+---+++ Step 1 - Prepare Recipient List
+
+Create or locate your recipient list ("merge-source" document), in any supported format --
+
+   * <b>vCard</b>
+<verbatim>
+BEGIN:VCARD
+VERSION:2.1
+N:Gump;Forrest
+FN:Forrest Gump
+ORG:Bubba Gump Shrimp Co.
+TITLE:Shrimp Man
+PHOTO;GIF:http://www.example.com/dir_photos/my_photo.gif
+TEL;WORK;VOICE:(111) 555-1212
+TEL;HOME;VOICE:(404) 555-1212
+ADR;WORK:;;100 Waters Edge;Baytown;LA;30314;United States of America
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:100 Waters Edge=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+ADR;HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
+LABEL;HOME;ENCODING=QUOTED-PRINTABLE:42 Plantation St.=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+EMAIL;PREF;INTERNET:forrestgump@example.com
+REV:20080424T195243Z
+END:VCARD
+</verbatim>
+   * <b>CSV</b>
+<verbatim>
+key,firstName,lastName,mbox
+0,John,Smith,john.smith@example.com
+1,Anna,Clarks,anna.clarks@example.com
+2,Rojer,Danrette,rojer.danrette@example.com
+3,Kate,Sigton,kate.sigton@example.com
+4,Tim,Craft,tim.craft@example.com
+</verbatim>
+   * <b>SPARQL Query Results URL</b> where the output format is set to CSV
+      1 Suppose the following SPARQL query:
+<verbatim>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT DISTINCT  ?person, 
+                 ?firstName, 
+                 ?lastName, 
+                 ?mbox
+  WHERE 
+    {
+      ?person  a              foaf:Person
+            ;  foaf:firstName ?firstName
+            ;  foaf:lastName  ?lastName
+            ;  foaf:mbox      ?mbox
+    }  
+  LIMIT 100    
+</verbatim>
+      1 Test it against your Virtuoso SPARQL Endpoint before passing it to the email merge tool.
+         * The <b>SPARQL Query Results URL</b> is:
+<verbatim>
+http://example.com/sparql?default-graph-uri=&query=PREFIX+rdf%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0ASELECT+DISTINCT+%3Fperson%2C+%3FfirstName%2C+%3FlastName%2C+%3Fmbox%0D%0AWHERE+%0D%0A++{%0D%0A++++%3Fperson+a+foaf%3APerson+%3B%0D%0A++++++++++++foaf%3AfirstName+%3FfirstName+%3B%0D%0A++++++++++++foaf%3AlastName++%3FlastName+%3B%0D%0A++++++++++++foaf%3Ambox++++++%3Fmbox+.%0D%0A++}++%0D%0ALIMIT+100&format=csv&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on
+</verbatim>
+         * [[http://bit.ly/1oo0XdX][Live results]] should be similar to the following:
+<verbatim>
+"person","firstName","lastName","mbox"
+"http://www.miroslavmilic.com/#Miroslav%20Milic","Miroslav","Mili?","mailto:miroslav.milic@gmail.com"
+"http://www.morelab.deusto.es/resource/pcuriel","Pablo","Curiel","mailto:pablo.curiel.alamo@gmail.com"
+"http://www.morelab.deusto.es/resource/pcuriel","Pablo","Curiel","mailto:pcuriel@deusto.es"
+"http://www.morelab.deusto.es/resource/pcuriel","Pablo","Curiel","mailto:pablo.curiel@deusto.es"
+"http://tw.rpi.edu/instances/EricRozell","Eric","Rozell","mailto:rozele@rpi.edu"
+"http://tw.rpi.edu/instances/EricRozell","Eric","Rozell","mailto:rozele@rpi.edu"
+"http://tw.rpi.edu/instances/TimLebo","Tim","Lebo","mailto:lebot@rpi.edu"
+"http://f-dengler.de/foaf#fd","Frank","Dengler","mailto:frank.dengler@kit.edu"
+"http://f-dengler.de/foaf#fd","Frank","Dengler","mailto:dengler@aifb.uni-karlsruhe.de"
+"http://f-dengler.de/foaf#fd","Frank","Dengler","mailto:dengler@kit.edu"
+"http://f-dengler.de/foaf#fd","Frank","Dengler","mailto:frank.dengler@aifb.uni-karlsruhe.de"
+</verbatim>
+
+---+++ Step 2 - Prepare Merge Template
+
+   2. Go to the ODS-Mail application home page:
+%BR%%BR%<a href="%ATTACHURLPATH%/mail1.png" target="_blank"><img src="%ATTACHURLPATH%/mail1.png" width="600px" /></a>%BR%%BR%
+   3. Drill down to <b>Preferences</b> -> <b>Templates</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/mail2.png" target="_blank"><img src="%ATTACHURLPATH%/mail2.png" width="600px" /></a>%BR%%BR%
+   4. Click <b>Create</b> for a new Template, or click <b>Edit</b> to work with an existing one:
+%BR%%BR%<a href="%ATTACHURLPATH%/mail3.png" target="_blank"><img src="%ATTACHURLPATH%/mail3.png" width="600px" /></a>%BR%%BR%
+      * ODS-Mail supports merge placeholders only in the <b><code>To:</code></b> and <b><code>Subject:</code></b> headers, 
+and the message body.
+      * Wrap placeholder strings in double-braces (e.g.,  <b><code>{{place holder}}</code></b>) to indicate content merge 
+insertion points.  
+      * If you can, use placeholder strings that match the field names you've used in your merge source.  Don't worry if
+you don't know what those names are yet -- during the mail merge process, you will be prompted to set up a manual mapping 
+between any unrecognized template placeholders and the fields in your merge-source.
+      * ODS-Mail supports a number of default template placeholders, which follow the other conventions for field mapping 
+in ODS. If your placeholders have other names, then you will be prompted to provide a mapping for this merge.
+         * <code>{{Title}}</code> 
+         * <code>{{First Name}}</code>
+         * <code>{{Middle Name}}</code>
+         * <code>{{Last Name}}</code>
+         * <code>{{Gender}}</code>
+         * <code>{{Birthday}}</code>
+         * <code>{{Company}}</code>
+         * <code>{{Job Title}}</code>
+         * <code>{{Home Street}}</code>
+         * <code>{{Home Street 2}}</code>
+         * <code>{{Home City}}</code>
+         * <code>{{Home State}}</code>
+         * <code>{{Home Postal Code}}</code>
+         * <code>{{Home Country}}</code>
+         * <code>{{Home Phone}}</code>
+         * <code>{{Home Fax}}</code>
+         * <code>{{E-mail Address}}</code> 
+      * Due to nuances of Web browser, Web server, Mail server, and Mail client interaction, you may want to 
+test with a simple merge to only yourself, to ensure that all content is delivered as intended.  For example:
+         * In the "To:" header --
+<verbatim>
+To: "{{name}}" &lt;{{mbox}}&gt; 
+</verbatim>
+-- will preview and be output as the SMTP-deliverable --
+<verbatim>
+To: Fred Jones fjones@example.com
+</verbatim>
+-- while -- 
+<verbatim>
+To: &amp;quot;{{name}}&amp;quot; &amp;lt;{{mbox}}&amp;gt; 
+</verbatim>
+-- will preview as --
+<verbatim>
+To: "Fred Jones" <fjones@example.com>
+</verbatim>
+-- but be output as the SMTP-undeliverable -- 
+<verbatim>
+To: &amp;quot;Fred Jones&amp;quot; &amp;lt;fjones@example.com&amp;gt; 
+</verbatim>
+         * In the Body --
+<verbatim>
+Dear {{firstname}},
+</verbatim>
+-- will render as --
+<verbatim>
+Dear Fred,
+</verbatim>
+         * In the Body --
+<verbatim>
+&amp;quot;&amp;#123;&amp;#123;firstname&amp;#125;&amp;#125; &amp;#123;&amp;#123;lastName&amp;#125;&amp;#125;&amp;quot; &amp;lt;&amp;#123;&amp;#123;mbox&amp;#125;&amp;#125;&amp;gt; 
+</verbatim>
+-- will render as --
+<verbatim>
+"Fred Jones" <fjones@example.com>
+</verbatim>
+   5. Click <b>Save</b> to preserve your changes.  <i><b>Note:</b> When creating a new template, you will only have a <b>Save</b> 
+button, until you do so. When editing an existing template, you will have both <b>Save</b> and <b>Merge</b> buttons from the 
+start, and clicking <b>Merge</b> will automatically save your changes before proceeding.  If you wish to discard changes to
+the template, you must click the <b>Cancel</b> button.</i>
+   6. Click <b>Merge</b> button to save your changes and proceed to the actual email merge-and-send process:
+%BR%%BR%<a href="%ATTACHURLPATH%/mail3.png" target="_blank"><img src="%ATTACHURLPATH%/mail4.png" width="600px" /></a>%BR%%BR%
+
+
+---+++ Step 3 - Preview and Send the Merged Messages
+
+   1 Click <b>Merge</b>, and then select a CSV data source
+%BR%%BR%<a href="%ATTACHURLPATH%/mailMerge_2.png" target="_blank"><img src="%ATTACHURLPATH%/mailMerge_2.png" width="600px" /></a>%BR%%BR%
+   1 Map each template placeholder to a column name in the structured data source, and indicate whether this column should be used for record de-duplication.
+<verbatim>
+  mbox      => E-mail Address
+  lastName  => Last Name      
+  firstName => First Name     
+</verbatim>
+%BR%%BR%<a href="%ATTACHURLPATH%/mailMerge_3.png" target="_blank"><img src="%ATTACHURLPATH%/mailMerge_3.png" width="600px" /></a>%BR%%BR%
+   1 Merge the data with the template, and preview the mapping and email messages:
+      * *Table showing mappad data*
+%BR%%BR%<a href="%ATTACHURLPATH%/mailMerge_4.png" target="_blank"><img src="%ATTACHURLPATH%/mailMerge_4.png" width="600px" /></a>%BR%%BR%
+      * *Preview single message*
+%BR%%BR%<a href="%ATTACHURLPATH%/mailMerge_5.png" target="_blank"><img src="%ATTACHURLPATH%/mailMerge_5.png" width="600px" /></a>%BR%%BR%
+   1 Send messages
+
+
+---++Glossary
+
+   * <b>merge-source</b> -- data source for email merge, in a supported format (i.e., CSV or vCard)
+   * <b>placeholder</b> -- marker of the form, "<code>{{mbox}}</code>," indicating the merge insertion points in a template 
+
+
+---++Related
+
+   * [[OdsMail][ODS-Mail]]

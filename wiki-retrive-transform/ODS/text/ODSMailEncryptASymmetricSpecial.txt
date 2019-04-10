@@ -1,0 +1,99 @@
+---+ ODS Webmail Example for Encrypting Emails using special search of the recipient's Public Key by domain
+
+ODS Webmail offers the feature of sending encrypted message to recipient by gathering information for the recipient using [[http://xrdprovisioning.net/specs/1.0/wd01/xrd-provisioning-1.0-wd01.html][XRD Provisioning Protocol]].
+
+Assume John wants to send encrypted email message to Kate, and Kate does not share her public key to John and John does not have Kate in his AddressBook contacts. Instead, when John attempts to send encrypted email message to recipient for ex: <b><nowiki>kate@mytest.com</nowiki></b>, then the system perform search by the given recipient domain, using the XRD protocol, if there is registered user in ODS with the given mail. In case of found, next the system checks if the user has X.509 Certificate. If found, request its public key. When the public key is retrieved successfully, the message should be send successfully and then retrieved from Kate her ODS Webmail Inbox.
+
+The scenario from below describes these steps:
+
+
+---++Prerequisites
+
+   1. Perform the steps from the [[OdsMailInstallGuide][Virtuoso ODS-Mail Installation Guide]].
+      * In our example we will use for domain name: mytest.com
+   1 Install the ODS Addressbook vad package: [[https://virtuoso.openlinksw.com/download/][<nowiki>ods_addressbook_dav</nowiki>.vad]]
+   1 Set the Virtuoso Server HTTP port and DefaultHost  from [URIQA] section in the ini section by default to be 80:
+<verbatim>
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = mytest.com:8893
+...
+</verbatim>
+   1 Make sure, for ex. for Windows users, to set the domain i.e. <b>mytest.com</b> in C:\Windows\system32\drivers\etc.\host:
+<verbatim>
+...
+127.0.0.1       mytest.com
+...
+</verbatim>
+
+---++Configure ODS User and Webmail settings
+
+   1 Register user John with email for ex.: <b><nowiki>john@yahoo.com</nowiki></b>
+%BR%%BR%<img src="%ATTACHURLPATH%/e1.png" />%BR%%BR%
+   1 Register user Kate respectively with email for ex.: <b><nowiki>kate@mytest.com</nowiki></b>
+%BR%%BR%<img src="%ATTACHURLPATH%/e29.png" />%BR%%BR%
+   1 John and Kate create ODS Webmail instances:
+      1 Go to Application Settings ->Application Management and click "New Web Application" button:
+%BR%%BR%<img src="%ATTACHURLPATH%/e3.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/e4.png" />%BR%%BR%
+      1 Click "Create Application" for application type "Mail".
+      1 In the presented form choose domain "mytest.com":
+%BR%%BR%<img src="%ATTACHURLPATH%/e5.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/e6.png" />%BR%%BR%
+      1 Click "Create and Launch Application" 
+   1 John [[ODSGenerateX509Certificate][creates X.509 Certificate]] with mail <b><nowiki>john@mytest.com</nowiki></b>.
+   1 Kate [[ODSGenerateX509Certificate][creates X.509 Certificate]] with mail <b><nowiki>kate@mytest.com</nowiki></b>.
+   1 John exports his X.509 Certificate, for ex. to local file with name <b>john.p12</b>.
+   1 Kate exports her X.509 Certificate, for ex. to local file with name <b>kate.p12</b>.
+   1 Kate imports the content of her certificate in ODS Profile Edit->Security->X.509 Certificates.
+%BR%%BR%<img src="%ATTACHURLPATH%/e30.png" />%BR%%BR%
+   1 John and Kate set in their ODS Profile a Private Key:
+      1 Go to Profile ->Edit ->Security->Certificate & Private Key
+%BR%%BR%<img src="%ATTACHURLPATH%/e12.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/e13.png" />%BR%%BR%
+      1 Click "Import key from local file" and respectively for John select his certificate john.p12 and for Kate select her certificate kate.p12:
+%BR%%BR%<img src="%ATTACHURLPATH%/e14.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/e15.png" />%BR%%BR%
+      1 Enter "Key Name" for ex. respectively for John: <b>JohnKey</b> and for Kate: <b>KateKey</b> and provide the certificate password:
+%BR%%BR%<img src="%ATTACHURLPATH%/e16.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/e17.png" />%BR%%BR%
+      1 Click "Import Key"
+      1 As result for both John and Kate should be displayed in the Certificate & Private Key List the imported certificate:
+%BR%%BR%<img src="%ATTACHURLPATH%/e18.png" />%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/e19.png" />%BR%%BR%
+   1 John configures his Webmail Settings:
+      1 Go to Webmail instance->Preferences and set:
+         1 For "Encryption (with certificate)": select the "JohnKey" key.
+         1 Select "Required (can't send message unless all recipients have certificates)"
+%BR%%BR%<img src="%ATTACHURLPATH%/e20.png" />%BR%%BR%
+         1 Finally click "Save"to set the changes.
+      1 Kate goes to her Webmail instance->Preferences and sets:
+         1 For "Encryption (with certificate)": select the "KateKey" key.
+%BR%%BR%<img src="%ATTACHURLPATH%/e21.png" />%BR%%BR%
+         1 Finally click "Save"to set the changes.
+   1 John sends encrypted email message to recipient <b><nowiki>kate@mytest.com</nowiki></b>
+      1 John goes to his Webmail instance -> Write Message:
+%BR%%BR%<img src="%ATTACHURLPATH%/e22.png" />%BR%%BR%
+      1 John recipient email <b><nowiki>kate@mytest.com></nowiki></b>:
+%BR%%BR%<img src="%ATTACHURLPATH%/e24.png" />%BR%%BR%
+      1 John enters "Subject" for ex: "This is encrypted msg" and "Message": "Simple test" 
+%BR%%BR%<img src="%ATTACHURLPATH%/e25.png" />%BR%%BR%
+      1 John clicks "send message" 
+      1 The system perform search by the given recipient domain if there is registered user in ODS with the given mail. In case of found, next the system checks if the user has X.509 Certificate. If found, request its public key. When the public key is retrieved successfully, a message for successfully sending the message should be shown:
+%BR%%BR%<img src="%ATTACHURLPATH%/e26.png" />%BR%%BR%
+   1 Kate receives the encrypted message from John:
+      1 Kate goes to her Webmail instance -> Inbox where should be displayed the new message from John:
+%BR%%BR%<img src="%ATTACHURLPATH%/e27.png" />%BR%%BR%      
+%BR%%BR%<img src="%ATTACHURLPATH%/e28.png" />%BR%%BR%           
+
+---++Related
+
+   * [[OdsMail][ODS-Mail]]
+   * [[ODSMailEncryptAsymmetric][ODS Webmail Example for Encrypting Emails ]]
+   * [[ODSMailEncrypt][ODS Webmail Guide for Optionally Encrypting Emails]]
+   * [[ODSMailSendDigitallySignedMsg][ODS Guide for Sending Digitally Signed Messages]]
+   * [[ODSMailWebIDSMIME][ODS-Mail Evaluate SMIME + WebID Support Guide]]   
+

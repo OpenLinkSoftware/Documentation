@@ -1,0 +1,206 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ODSIndex"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="ODSIndex"}%--><h1><a name="Delegated"></a> Delegated WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> Verification Service</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%3F">What?</a></li> <li><a href="#Why%3F">Why?</a></li> <li><a href="#How%3F">How?</a></li>
+<ul><li><a href="#Examples%20of%20using%20the%20Web%20ID%20Verification%20Service%20Endpoint%20with%20requesting%20Web%20ID%20authentication%20Service%20Endpoint">Examples of using the Web ID Verification Service Endpoint with requesting Web ID authentication Service Endpoint</a></li><ul><li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Example%201">Example 1</a></li> <li><a href="#Example%202">Example 2</a></li> </ul><li><a href="#Examples%20Using%20cURL">Examples Using cURL</a></li><ul><li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Example%201%3A%20Call%20the%20Web%20ID%20Verification%20Service%20with%20Certificate%20and%20Callback%20URL%20Parameters">Example 1: Call the Web ID Verification Service with Certificate and Callback URL Parameters</a></li> <li><a href="#Example%202%3A%20Call%20the%20Web%20ID%20Verification%20Service%20without%20Certificate%20and%20Callback%20URL%20Parameters">Example 2: Call the Web ID Verification Service without Certificate and Callback URL Parameters</a></li> </ul><li><a href="#Client%20Using%20the%20Web%20ID%20Verification%20Service%20Sample%20Scenarios">Client Using the Web ID Verification Service Sample Scenarios</a></li><ul><li><a href="#Virtuoso%20Server%20Pages%20%28VSP%29%20Example">Virtuoso Server Pages (VSP) Example</a></li> <li><a href="#Javascript%20Example">Javascript Example</a></li> <li><a href="#PHP%20Example">PHP Example</a></li> </ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What?"></a>What?</h2>
+ A delegated (proxy) service that provides WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> verification to 3rd party HTTP applications.
+ This service currently uses WebIDs<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebIDs&parent=ODSWebIDIdP" class="wikiword">?</a> based on the following URI schemes: <code>http:</code>, <code>ldap:</code>, <code>mailto:</code>, <code>acct:</code>.
+ Other URI schemes will be added over time.<h2><a name="Why?"></a>Why?</h2>
+ WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> shouldn&#39;t require developers and end-users to build every layer of the technology stack en route to exploitation.
+ This service provides a simple URL pattern for existing HTTP applications seeking to verify WebIDs<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebIDs&parent=ODSWebIDIdP" class="wikiword">?</a> via the WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> verification protocol.<h2><a name="How?"></a>How?</h2>
+<p>This service takes the following inputs via URL parameters:</p>
+<ul><li>a callback URL (for your actual authentication service endpoint); </li>
+<li>optional X.509 certificate for the identity being verified by the calling service.</li>
+</ul><p>It returns the following payload via URL parameters: </p>
+<ul><li>verified WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a>; </li>
+<li>error: error code if verification fails; </li>
+<li>ts: timestamp in ISO 8601 format; </li>
+<li>RSA-SHA1 digest (digital signature) of the URL returned to the calling service.</li>
+</ul><p> </p>
+<h3><a name="Examples of using the Web ID Verification Service Endpoint with requesting Web ID authentication Service Endpoint"></a> Examples of using the Web ID Verification Service Endpoint with requesting Web ID authentication Service Endpoint</h3>
+<p>These examples make use of the following endpoints:</p>
+<ol><li><a href="http://id.myopenlink.net/ods/webid_demo.html" class="absuri">http://id.myopenlink.net/ods/webid_demo.html</a> -- an authentication service that delegates WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> verification to a proxy service </li>
+<li><a href="http://id.myopenlink.net/ods/webid_verify.vsp" class="absuri">http://id.myopenlink.net/ods/webid_verify.vsp</a> -- actual proxy (delegated) service.</li>
+</ol><p> </p>
+<h4><a name="Prerequisites"></a> Prerequisites</h4>
+<p>If you want to use your own Virtuoso instance for this exercise, please ensure the following steps are performed:</p>
+<ol><li>Start Virtuoso server instance (locally, remote, EC2 AMI, etc.
+ ); </li>
+<li>Configure an <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSSetupSSL" class="wikiword">HTTPS Listener</a> for handling HTTPS requests from HTTP user agents (clients); </li>
+<li>Install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">ODS Framework VAD package</a>; </li>
+<li>Install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">HTML based Certificate Generator VAD package</a>; </li>
+<li>Create an <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateX509Certificate" class="wikiword">X.509 Certificate</a> with WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark.
+ Otherwise, simply use the live certificate generation service at: <a href="http://id.myopenlink.net/certgen/." class="absuri">http://id.myopenlink.net/certgen/.</a></li>
+</ol><p> </p>
+<h4><a name="Example 1"></a> Example 1</h4>
+<ol><li>Go to <a href="http://id.myopenlink.net/ods/webid_verify.vsp" class="absuri">http://id.myopenlink.net/ods/webid_verify.vsp</a> : <br><br><img src="ODSWebIDIdP/http1.png"><br> <img src="ODSWebIDIdP/http2.png"><br><br> </li>
+<li>Using the form presented, fill in the following: <ul><li>&quot;Requesting service endpoint:&quot;: <a href="http://id.myopenlink.net/ods/webid_demo.html" class="absuri">http://id.myopenlink.net/ods/webid_demo.html</a> </li>
+<li>Leave the X.509 certificate input area empty: <br><br> <img src="ODSWebIDIdP/http5.png"> <br><br> <img src="ODSWebIDIdP/http6.png"> </li>
+</ul></li>
+<li>Click &quot;Verify&quot;.
+</li>
+<li>As result you should be redirected to the callback URL and in this case the verification will fail since it doesn&#39;t have an X.509 certificate to verify, but a new form is presented due to the effects of the callback URL of the calling service: <br><br> <img src="ODSWebIDIdP/http7.png"> </li>
+<li>Click on the &quot;Check&quot; button and you will be challenged to presented an X.509 certificate, and if the certificate presented bears a WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark in its Subject Alternative Name (SAN) slot, verification will be successful.
+<br><br> <img src="ODSWebIDIdP/http8.png"> <br><br> <img src="ODSWebIDIdP/http9.png"></li>
+</ol><h4><a name="Example 2"></a> Example 2</h4>
+ <ol><li>Go to <a href="http://id.myopenlink.net/ods/webid_verify.vsp" class="absuri">http://id.myopenlink.net/ods/webid_verify.vsp</a> : <br><br><img src="ODSWebIDIdP/http1.png"> <br><img src="ODSWebIDIdP/http2.png"><br><br> </li>
+<li>Using the form presented, fill in the following: <ul><li>&quot;Requesting service endpoint:&quot;: <a href="http://id.myopenlink.net/ods/webid_demo.html" class="absuri">http://id.myopenlink.net/ods/webid_demo.html</a> </li>
+<li>Paste a base64 DER or PEM encoded representation of the X.509 certificate (that has a WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark in its SAN slot) into the X.509 certificate input area: <br><br> <img src="ODSWebIDIdP/http3.png"> <img src="ODSWebIDIdP/http3a.png"><br><br> </li>
+</ul></li>
+<li>Click &quot;Verify&quot;.
+</li>
+<li>As result you should be redirected to the callback URL and in our case the verification is successful - the WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a>, Subject, RSA-SHA1 digest (digital signature) of the callback URL returned, and timestamp in ISO 8601 format will be presented.
+<br><br> <img src="ODSWebIDIdP/http4.png"><br><br></li>
+</ol><h3><a name="Examples Using cURL"></a> Examples Using cURL</h3>
+<h4><a name="Prerequisites"></a> Prerequisites</h4>
+<p>If you want to use your own Virtuoso instance for this exercise, please ensure the following steps are performed:</p>
+<ol><li>Start Virtuoso server instance (locally, remote, EC2 AMI, etc.
+ ); </li>
+<li>Configure an <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSSetupSSL" class="wikiword">HTTPS Listener</a> for handling HTTPS requests from HTTP user agents (clients); </li>
+<li>Install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">ODS Framework VAD package</a>; </li>
+<li>Install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">HTML based Certificate Generator VAD package</a>; </li>
+<li>Create an <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateX509Certificate" class="wikiword">X.509 Certificate</a> with WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark.
+ Otherwise, simply use the live certificate generation service at: <a href="http://id.myopenlink.net/certgen/." class="absuri">http://id.myopenlink.net/certgen/.</a> </li>
+<li>Using the service at: <a href="http://id.myopenlink.net/certgen/," class="absuri">http://id.myopenlink.net/certgen/,</a> export the generated X.509 Certificate and its associated private key to a local PKCS#12 (.p12 of .pfx) file system e.g., the file: &quot;demo.p12&quot; and password: &quot;test&quot;; or simply export to a PEM file.
+</li>
+<li>Alternatively, you can achieve the same using OpenSSL<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenSSL&parent=ODSWebIDIdP" class="wikiword">?</a> utilities by executing the following from the command line: <br><pre><br>openssl pkcs12 -in demo.p12 -out demo.pem -nodes
+</pre><br></li>
+</ol><h4><a name="Example 1: Call the Web ID Verification Service with Certificate and Callback URL Parameters"></a>Example 1: Call the Web ID Verification Service with Certificate and Callback URL Parameters</h4>
+<p>In this example the cURL command includes the &quot;<code>-E</code>&quot; parameter which provides the X.509 certificate required by the proxy verification service: </p>
+<br><pre>curl -i -k -E demo.pem:test https://id.myopenlink.net/ods/webid_verify.vsp?callback=http://id.myopenlink.net/ods/webid_demo.html
+
+HTTP/1.1 302 Found
+Server: Virtuoso/06.03.3131 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Mon, 06 Feb 2012 12:55:55 GMT
+Accept-Ranges: bytes
+Location: http://id.myopenlink.net/ods/webid_demo.html?webid=http%3A%2F%2Fid.myopenlink.net%2Fdataspace%2Fperson%2Fdemo%23this&amp;ts=2012-02-06T07%3A55%3A55.000011-05%3A00&amp;signature=vVhmk%2Fni1WN%2BEahDdnslPOd%2F8RCXdfdK1Syo4hDrIwCBf%2FDpGIMQjI%2FAhyIZW%2BsvV%2BKlWRBeFsDWyVZjRK6bkx2sC%2B4R4Pj1zH8539p7j8H0j8BLqBV9E3yhVvwTUhf4YdqVbXAzGBVwkuaxpfePWCjFhmvwAtkHH25Mo1wwvCE%3D
+Content-Length: 0
+</pre><p> </p>
+<ol><li>In case of successful WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> verification, the WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> should be returned, as above: <br><pre><br>webid=http%3A%2F%2Fid.myopenlink.net%2Fdataspace%2Fperson%2Fdemo%23this   
+</pre><br></li>
+<li>Additionally a timestamp in ISO 8601 format should be returned, as above: <br><pre><br>ts=2012-02-06T07%3A55%3A55.000011-05%3A00
+</pre><br> </li>
+</ol><h4><a name="Example 2: Call the Web ID Verification Service without Certificate and Callback URL Parameters"></a>Example 2: Call the Web ID Verification Service without Certificate and Callback URL Parameters</h4>
+<p>In this example the cURL command excludes the &quot;<code>-E</code>&quot; parameter.
+ Thus, an X.509 certificate isn&#39;t presented to the proxy verification service: </p>
+<br><pre>curl -i -k https://id.myopenlink.net/ods/webid_verify.vsp?callback=http://id.myopenlink.net/ods/webid_demo.html
+
+HTTP/1.1 302 Found
+Server: Virtuoso/06.03.3131 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Mon, 06 Feb 2012 13:02:28 GMT
+Accept-Ranges: bytes
+Location: http://id.myopenlink.net/ods/webid_demo.html?error=noCert&amp;ts=2012-02-06T08%3A02%3A28-05%3A00&amp;signature=Kp99KHmQwv8Ar7R4L5Iofh3ZO63uPUkZu%2FZiS%2FUz%2BF8pdXMQiS4Mjy5vH3WGkqCGLLrEJv1Rth%2BTfZ7TXohtwNrIveZR6jIymLYyacaTY70VZ6Em%2B6SbJxuE3mzfKlmEOeKGIZQkDQcn67PjI2TQ42830ybXjobDr9t9DoNZTHE%3D
+Content-Length: 0
+</pre><p> </p>
+<ol><li>In case of any error, the service returns &quot;<code>error=..</code>&quot; as it is in our example showing there is no certificate to verify: <br><pre><br>error=noCert  
+</pre><br> cURL showcases how the client of a WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> authentication client and proxy service can exchange messages using REST patterns via HTTP.</li>
+</ol><p> </p>
+<h3><a name="Client Using the Web ID Verification Service Sample Scenarios"></a> Client Using the Web ID Verification Service Sample Scenarios</h3>
+<p>The following examples include Virtuoso PL (VSP), JavaScript<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/JavaScript&parent=ODSWebIDIdP" class="wikiword">?</a>, and PHP variants.
+ Each has as part of their prototype (or call signature) an Address (a URL) that is used by the <code>webid_verify.vsp</code> service.</p>
+<p> </p>
+<h4><a name="Virtuoso Server Pages (VSP) Example"></a> Virtuoso Server Pages (VSP) Example</h4>
+<p>This example presents a VSP client leveraging service with an X.509 Cert bearing a standard http: scheme URI re.
+ its SAN hosted WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark.</p>
+<ul><li>View the code <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdPVSPEx1" class="wikiword">here</a>; <ul><li><b>Note</b>: The VSP pages can be tested/used both in case they are located in OS file system / or DAV.
+ <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdPVSPModify" class="wikiword">See more details</a>.</li>
+</ul></li>
+</ul><p>Trying the service via <b>http</b>:</p>
+<ol><li>Access http://&lt;cname&gt;/ods/webid/webid_demo.vsp: <br><br><img src="ODSWebIDIdP/js14.png"><br><br> </li>
+<li>Click the &quot;Check&quot; button.
+</li>
+<li>As a result you should be challenged to present an certificate that has WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark: <br><br><img src="ODSWebIDIdP/js15.png"><br><br> </li>
+<li>Click &quot;Ok&quot;.
+</li>
+<li>As a result you should be redirected to a page with URL including the signature and timestamp REST pattern parameters, and in case of successful authentication, you should be presented the WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> extracted value and timestamp in ISO 8601 format: <br><br><img src="ODSWebIDIdP/js16.png"><br><br></li>
+</ol><p> </p>
+<h4><a name="Javascript Example"></a> Javascript Example</h4>
+<p>This example presents a JavaScript<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/JavaScript&parent=ODSWebIDIdP" class="wikiword">?</a> client leveraging service with an X.509 Cert bearing a standard http: scheme URI re.
+ its SAN hosted WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark.</p>
+<ul><li>View the code <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdPJScriptEx1" class="wikiword">here</a>; <ul><li><b>Note</b>: The Javascript pages can be tested/used both in case they are located in OS file system / or DAV.
+ <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdPJavascriptModify" class="wikiword">See more details</a>.</li>
+</ul></li>
+</ul><p>Trying the service via <b>http</b>:</p>
+<ol><li>Access http://&lt;cname&gt;/ods/webid/webid_demo.html : <ul><li>Note: Optionally you can hatch &quot;Check Certificate Expiration&quot;: <br><br><img src="ODSWebIDIdP/js17.png"><br><br> </li>
+</ul></li>
+<li>Click the &quot;Check&quot; button.
+</li>
+<li>As a result you should be challenged to present an certificate that has WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark: <br><br><img src="ODSWebIDIdP/js15.png"><br><br> </li>
+<li>Click &quot;Ok&quot;.
+</li>
+<li>As a result you should be redirected to a page with URL including the signature and timestamp REST pattern parameters, and in case of successful authentication, you should be presented the WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> extracted value, Subject, MD5, SHA1 and timestamp in ISO 8601 format: <br><br><img src="ODSWebIDIdP/js18.png"><br><br></li>
+</ol><h4><a name="PHP Example"></a> PHP Example</h4>
+<p>This example presents a PHP client leveraging service with an X.509 Cert bearing a standard http: scheme URI re.
+ its SAN hosted WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark.</p>
+<ul><li>View the code <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdPPHPEx1" class="wikiword">here</a>; <ul><li><b>Notes</b>: The PHP pages can be tested/used only when they are located in OS file system.
+ <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdPPHPModify" class="wikiword">See more details</a>.</li>
+</ul></li>
+</ul><p> Trying the service via <b>http</b>:</p>
+<ol><li>Access http://&lt;cname&gt;/ods/webid/webid_demo.php : <br><br><img src="ODSWebIDIdP/js19.png"><br><br> </li>
+<li>Click the &quot;Check&quot; button.
+</li>
+<li>As a result you should be challenged to present an certificate that has WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> watermark: <br><br><img src="ODSWebIDIdP/js15.png"><br><br> </li>
+<li>Click &quot;Ok&quot;.
+</li>
+<li>As a result you should be redirected to a page with URL including the signature and timestamp REST pattern parameters, and in case of successful authentication, you should be presented the WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> extracted value and timestamp in ISO 8601 format: <br><br><img src="ODSWebIDIdP/js20.png"><br><br></li>
+</ol><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdpProxy" class="wikiword">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate bearing an LDAP scheme WebID</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLEndpointProtection" class="absuri">Safeguarding your Virtuoso-hosted SPARQL Endpoint</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpointProtection" class="absuri">SPARQL Endpoint Protection Methods Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/" class="absuri">Virtuoso documentation</a> <ul><li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint" class="absuri">SPARQL Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri" class="absuri">Service Endpoint Security</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl" class="absuri">Managing a SPARQL Web Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">SPARQL</a> </li>
+</ul></li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuide" class="absuri">Virtuoso Tips and Tricks Collection</a> <ul><li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLDET" class="absuri">SPARQL Endpoint DET Configuration Guide</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSecurityWebID" class="absuri">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtOAuthSPARQL" class="absuri">SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpoints" class="absuri">Securing SPARQL endpoints</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsSPARQLAuth" class="wikiword">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtAuthServerUI" class="absuri">Virtuoso Authentication Server UI</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSSL" class="absuri">Manage a SPARQL-WebID based Endpoint</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtODSSecurityWebID" class="wikiword">WebID Protocol Support in OpenLink Data Spaces</a>.
+</li>
+<li>Manage ODS Datadspaces Objects WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=ODSWebIDIdP" class="wikiword">?</a> Access Control Lists (ACLs): <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebID" class="wikiword">ODS Briefcase WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDPerson" class="wikiword">Person Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDGroup" class="wikiword">Group Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDPublic" class="wikiword">Public WebID based ACL Guide</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACL" class="wikiword">ODS Feed Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACL" class="wikiword">ODS Calendar WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACL" class="wikiword">ODS Bookmark Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACL" class="wikiword">ODS Addressbook  WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSPkiSetup" class="wikiword">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSSetupSSL" class="wikiword">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetupSSL" class="absuri">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtODSPubSubHub" class="wikiword">Setting up PubSubHub in ODS</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtPubSubHub" class="wikiword">PubSubHubBub Demo Client Example</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtFeedPubSubHub" class="wikiword">Feed subscription via PubSubHub protocol Example</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtPubSubHubACL" class="wikiword">Setting Up PubSubHub to use WebID Protocol or IP based control lists</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsKeyImport" class="wikiword">CA Keys Import using Conductor</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateX509Certificate" class="wikiword">Generate an X.509 Certificate hosted WebID Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore" class="wikiword">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore" class="wikiword">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDShareFile" class="wikiword">ODS Briefcase WebID Protocol Share File Guide</a> </li>
+<li><a href="http://esw.w3.org/topic/foaf+ssl" class="absuri">WebID Protocol Specification</a> </li>
+<li><a href="https://foaf.me/simpleLogin.php" class="absuri">Test WebID Protocol Certificate page</a> </li>
+<li><a href="http://test.foafssl.org/cert/" class="absuri">WebID Protocol Certificate Generation page</a></li>
+</ul></div></body></html>

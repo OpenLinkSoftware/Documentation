@@ -1,0 +1,119 @@
+%TOC%
+
+
+---++ODS PubSubHubBub Downstream API
+
+---+++What
+The API is used in the ODS Application Downstream UI part and can be called as:
+
+<verbatim>
+PSH.DBA.ods_cli_subscribe 
+  (
+    in inst_id int, 
+    in hub varchar, 
+    in mode varchar, 
+    in topic varchar
+)
+</verbatim>
+
+---++++Parameters
+
+The API entry parameters are as follows:
+
+   * <code>inst_id</code>: the ODS instance Id integer 
+   * <code>hub</code>: the hub url 
+   * <code>mode</code>: 'subscribe' or 'unsubscribe'
+   * <code>topic</code>: the feed URL to subscribe
+
+---+++Why 
+The API should be called in the ODS Applications downstream UIs in order to allow push subscriptions.
+For ex. it is used in ODS Weblog in downstream ui. 
+
+
+---+++How
+
+When subscribed, a record into following table will be added so the UI can show them and to be possible to unsubscribe :
+
+<verbatim>
+create table "DB"."DBA"."WA_PSH_SUBSCRIPTIONS"
+(
+  "PS_INST_ID" INTEGER, -- ODS instance Id
+  "PS_URL" VARCHAR, -- the feed Url
+  "PS_TS" TIMESTAMP, -- modification date/time
+  "PS_HUB" VARCHAR, -- the Hub endpoint Url
+  PRIMARY KEY ("PS_INST_ID", "PS_URL")
+);
+</verbatim>
+
+
+Also the ODS define it's own callback:
+
+<verbatim>
+</psh/odscb.vsp?inst=<instanceid>
+</verbatim>
+
+This should not be used separately as subscription  API already use it.
+
+Since every application defines own tables to import data from feeds every application should have a  stored procedure in following pattern :
+
+<verbatim>
+PSH.DBA.ods_<application type>_psh_cbk (feed_url, content, instance_id)
+</verbatim>
+
+&lt;application type&gt;is one of : 
+
+   * weblog, 
+   * calendar, 
+   * mail, etc. 
+
+same convention used in the ods rdf views and sioc data.
+
+The above will be called when Hub pushes the feed changes, thus every application should call inside whatever logic it has to make new record. 
+
+---+++Code
+
+<verbatim>
+create procedure PSH.DBA.ods_cli_subscribe 
+  (
+    in inst_id int, 
+    in hub varchar, 
+    in mode varchar, 
+    in topic varchar
+  )
+{
+  declare token, subsu, callback, head, ret varchar;
+
+  if (__proc_exists ('PSH.DBA.cli_subscribe') is null)
+    signal ('42000', 'The PubSubHub package is not installed');
+
+  if (hub is not null)
+    {
+      token := md5 (uuid ());
+
+      callback := sprintf ('http://%s/psh/odscb.vsp?inst=%d', WA_GET_HOST (), inst_id);
+
+      PSH..cli_subscribe ('dba', mode, topic, 'feed', null, token);
+
+      subsu := sprintf ('%s?hub.callback=%U&hub.mode=%U&hub.topic=%U&hub.verify=sync&hub.verify_token=%U', hub, callback, mode, topic, token);
+      commit work;	     
+
+      ret := http_get (subsu, head);
+
+      if (head[0] not like 'HTTP/1._ 20_ %')
+	{
+	  signal ('39000', 'The Hub rejects subscription request, please verify you are allowed to use it.');
+	}
+    }
+
+  if (mode = 'subscribe')
+    insert replacing DB.DBA.WA_PSH_SUBSCRIPTIONS (PS_INST_ID, PS_HUB, PS_URL) values (inst_id, hub, topic);
+  else
+    delete from DB.DBA.WA_PSH_SUBSCRIPTIONS where PS_INST_ID = inst_id and PS_URL = topic;
+  commit work;	     
+}
+;
+</verbatim>
+
+
+
+---++Related
