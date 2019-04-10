@@ -1,0 +1,169 @@
+%META:TOPICPARENT{name="OATDOCIndex"}%
+---+ datasource.js
+
+Is an Ajax Database Connectivity (ADBC) layer. Provides data access support for various data sources (SQL, SPARQL, SOAP, etc.) and allows binding and execution of callbacks upon data arrival. Data are fetched on demand and cached.
+
+%TOC%
+
+---++ Objects
+
+---+++ OAT.DataSource(type)
+
+Creates new <tt>DataSource</tt> object.<tt>type</tt>is one of <tt>TYPE_constants</tt>.
+
+---++ Properties
+
+---+++ OAT.DataSource::connection
+
+Assigns an <tt>OAT.Connection</tt> object to this DataSource.
+
+---+++ OAT.DataSource::options
+
+Object with various properties, dependent on DataSource <tt>TYPE_</tt>:
+    * <tt><b>TYPE_SQL</b></tt>
+   * <tt>*query*</tt> - SQL query
+   * <tt>*limit*</tt> - cursor limit
+   * <tt>*cursortype*</tt> - 0/1; 0 - snapshot, 1 - dynaset
+   * <tt><b>TYPE_SOAP</b></tt>
+   * <tt>*service*</tt> - name of WSDL service
+   * <tt>*rootelement*</tt> - name of root input WSDL element
+   * <tt>*inputobj*</tt> - input WSDL object (see [[OATDOCws][ws.js]] documentation for details)
+   * <tt><b>TYPE_REST</b></tt> ,<tt><b>TYPE_SPARQL</b></tt> , <tt><b>TYPE_GDATA</b></tt>
+   * <tt>*query*</tt> - HTTP GET querystring
+   * <tt>*output*</tt> - 0/1; 0 - xml, 1 = json
+   * <tt>*xpath*</tt> - bool; how are outputFields specified? True = XPath expressions; False = node names
+
+---+++ OAT.DataSource::outputFields
+
+List of wanted fields in fetched data.
+
+---++ Methods
+
+---+++ OAT.DataSource::bindRecord(recordCallback)
+
+Listens for new data records. When new record is available, <tt>recordCallback</tt> is executed with 2 arguments: <tt>record data</tt> and <tt>record index</tt>.
+
+---+++ OAT.DataSource::bindPage(pageCallback)
+
+Listens for new data record pages. When new data page (record set) is available, <tt>pageCallback</tt> is executed with 2 arguments:<tt>page data</tt> and <tt>page index</tt>.
+
+---+++ OAT.DataSource::bindFile(fileCallback)
+
+Listens for new data file. When new data file is available, <tt>fileCallback</tt> is executed with 1 argument: <tt>file contents</tt>.
+
+---+++ OAT.DataSource::bindEmpty(emptyCallback)
+
+Listens for empty dataset. When empty dataset arrives, <tt>emptyCallback</tt> is executed.
+
+---+++ OAT.DataSource::bindHeader(headerCallback)
+
+Listens for data header. When header arrives, <tt>headerCallback</tt> is executed with 1 argument: <tt>data header</tt>.
+
+---+++ OAT.DataSource::advanceRecord(recordIndex)
+
+Advances through records.<tt>recordIndex</tt> must be an integer.
+
+---++ Constants
+
+---+++ OAT.DataSourceData.TYPE_SQL
+
+ToBeDone
+
+---+++ OAT.DataSourceData.TYPE_SOAP
+
+ToBeDone
+
+---+++ OAT.DataSourceData.TYPE_REST
+
+ToBeDone
+
+---+++ OAT.DataSourceData.TYPE_SPARQL
+
+ToBeDone
+
+---+++ OAT.DataSourceData.TYPE_GDATA
+
+ToBeDone
+
+---++ Examples
+
+---+++ REST Example
+
+<verbatim>
+var conn = new OAT.Connection(OAT.ConnectionData.TYPE_REST, {url:"myfile.xml"});
+
+var ds = new OAT.DataSource(OAT.DataSourceData.TYPE_REST);
+ds.connection = conn;
+ds.options.output = 0; /* fetch result as XML */
+ds.options.xpath = 1; /* outputFields are specified as XPATH expressions */
+ds.outputFields = ['//result/binding[@name="created"]/node()/text()',
+                                        '//result/binding[@name="creator"]/node()/text()',
+                                        '//result/binding[@name="item_title"]/node()/text()',
+                                        '//result/binding[@name="url"]/node()/text()'];
+
+var recordCallback = function(data, index) {
+        alert('Data at index ' + index + ':\n' + data );
+}
+ds.bindRecord(recordCallback);
+ds.advanceRecord(0);
+</verbatim>
+
+---+++ SQL Example
+
+<verbatim>
+var conn = new OAT.Connection(OAT.ConnectionData.TYPE_XMLA, {dsn:"DSN=Local_Instance",endpoint:"/XMLA"});
+
+var ds = new OAT.DataSource(OAT.DataSourceData.TYPE_SQL);
+ds.connection = conn;
+ds.options.query = "SELECT OrderID, CustomerID, EmployeeID FROM Demo.demo.Orders";
+
+var recordCallback = function(data, index) {
+        alert('Data at index ' + index + ':\n' + data );
+}
+ds.bindRecord(recordCallback);
+ds.advanceRecord(0);
+</verbatim>
+
+---+++ SPARQL Example
+
+<verbatim>
+var connection = new OAT.Connection(OAT.ConnectionData.TYPE_REST,{url:"/sparql/"});
+var q = "SELECT ?s, ?p, ?o FROM <http://www.flickr.com/search/?q=rdf+semanticweb&s=rec> WHERE { ?s ?p ?o . }";
+
+var ds = new OAT.DataSource(OAT.DataSourceData.TYPE_SPARQL);
+ds.outputFields = ['//result/binding[@name="s"]/node()/text()',
+   '//result/binding[@name="p"]/node()/text()',
+   '//result/binding[@name="o"]/node()/text()'];
+
+ds.connection = connection;
+ds.options.query = "query="+encodeURIComponent(q)+"&format=xml";
+ds.options.output = 0; /* fetch result as XML */
+ds.options.xpath = 1; /* outputFields are specified as XPATH expressions */
+
+var recordCallback = function(data, index) {
+        alert('Data at index ' + index + ':\n' + data );
+}
+ds.bindRecord(recordCallback);
+ds.advanceRecord(0);
+</verbatim>
+
+---+++ GData Example
+
+<verbatim>
+var conn = new OAT.Connection(OAT.ConnectionData.TYPE_REST, {url:"gdata.xml"});
+
+var ds = new OAT.DataSource(OAT.DataSourceData.TYPE_GDATA);
+ds.connection = conn;
+ds.options.output = 0;
+ds.options.xpath = 1;
+ds.outputFields = [ "//atom:feed/atom:entry/atom:title" ];
+
+var recordCallback = function(data, index) {
+        alert('Data at index ' + index + ':\n' + data );
+}
+
+ds.bindRecord(recordCallback);
+ds.advanceRecord(0);
+</verbatim>
+
+CategoryDocumentation CategoryOAT CategoryOpenSource CategoryToBeDone
