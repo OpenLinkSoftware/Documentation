@@ -38,7 +38,7 @@ tlog "Identified [$count] wiki pages in cluster $clustername"
 
 tlog "Retrieving as DocBook, HTML and text formats - go get a coffee"
 count=0
-grep -Ei '\.txt' $clustername.txt | sed -E 's/^ *//; s/  *[0-9]+.*$// ; s/\.txt$//' | head -n 20 | while read pg
+grep -Ei '\.txt' $clustername.txt | sed -E 's/^ *//; s/  *[0-9]+.*$// ; s/\.txt$//' |  while read pg
 do
   echo "curl -s '$clusterBaseURL/$pg?command=plain-html' > $clustername/plain-html/$pg.html"
   echo "curl -s '$clusterBaseURL/$pg?command=docbook' > $clustername/docbook/$pg.docbook"
