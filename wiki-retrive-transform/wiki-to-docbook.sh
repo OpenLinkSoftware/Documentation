@@ -28,6 +28,7 @@ mkdir -p $clustername/docbook
 mkdir -p $clustername/text
 mkdir -p $clustername/plain-html
 mkdir -p $clustername/plain-html-tidy
+mkdir -p $clustername/md
 mkdir -p $clustername/docbook-local
 mkdir -p $clustername/creole
 mkdir -p $clustername/rdf
@@ -63,6 +64,7 @@ do
   echo "xsltproc html2docbook.xsl $clustername/plain-html-tidy/$pg.html > $clustername/docbook-local/$pg.docbook"
   echo "xsltproc html2rdf.xsl $clustername/plain-html-tidy/$pg.html > $clustername/rdf/$pg.rdf"
   echo "xsltproc docbook2creole.xsl $clustername/docbook/$pg.docbook > $clustername/creole/$pg.txt"
+  echo "pandoc -f html -t markdown -o $clustername/md/$pg.md $clustername/plain-html-tidy/$pg.html"
   echo $((count++)) | grep -iq '0$' && ret=$(find $clustername -type f | wc -l) && echo "echo  ...$ret" && echo sleep 1
 done | time nice parallel -j4
 
