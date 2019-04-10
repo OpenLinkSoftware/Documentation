@@ -1,0 +1,31 @@
+%META:TOPICPARENT{name="ProductComparisonSheet"}%
+---++ Oracle Connection Pooling Fact Sheet
+
+---+++What it is
+
+Oracle Connection-Pooling gives you the ability to retain a pool of open connections to the database within the ODBC Driver, thereby avoiding costly connection-establishment overhead for every connection from the client. Being implemented in the ODBC Driver means you do not have to rely on the Driver Manager component implementing connection-pooling for you, and have finer control over how it behaves too.
+Figure: 3.6.1.1.
+
+<img src="%ATTACHURLPATH%/OCIDiagram.png" style="wikiautogen"/>
+
+---+++Benefits
+
+OCI separates the concept of database sessions (user logins) from physical connections (server attachments). By pooling connections, it is possible for an application to multiplex several sessions over fewer physical connections. Because the number of physical connections is less than the number of database sessions in use by the application and because the shared pool of physical connections typically has a corresponding back-end server pool containing an identical number of dedicated server processes; the number of back-end server processes is also reduced by connection pooling. Thus many more database sessions can be multiplexed. If the number of back-end server processes may cause scaling problems on the database, OCI connection pooling can be of benefit.
+
+Client-side connection pooling by the driver manager may be done on a per-process basis. For instance, on Unix each application gets its own driver-manager instance in its process. In contrast, in a multi-threaded <nop>OpenLink agent with connection re-use enabled, an agent connection pool can span different client processes. Cross-client connection pooling may be preferable to client-side connection pooling in certain application domains and may offer better scalability. For instance, if the agent is used by an application server or web server.
+
+---+++How it Works
+
+If OCI connection pooling is enabled, a separate connection pool is created for each Oracle instance connected to. All connections specifying the same server instance (i.e. the same TNS service name) share the same connection pool. The connection pool is reference counted and only destroyed when the last Lite/agent connection using it is closed down.
+
+Each agent connection holds a reference to an OCI connection pool record or OCPR. The OCPR contains a handle to the OCI connection pool associated with the Oracle instance connected to. The agent maintains a hash table of OCPRs, keyed by instance name. Each OCPR is reference counted. The reference count for an OCPR is incremented each time an agent uses the connection pool to connect to the associated Oracle instance, and decremented when the agent connection is closed. The OCPR is destroyed, and the connection pool closed, when the last agent connection using it is closed.
+
+When an agent is about to establish a connection to an Oracle instance, it searches for an OCPR for the instance. If one exists, a connection pool for that instance already exists. The agent requests an OCI connection from this pool and increments the reference count of the OCPR. If one doesn't exist, the agent creates an OCI connection pool for the instance by registering a new OCPR.
+
+*Note:* different ODBC DSNs, using this driver and the same server instance, may specify different pool settings (max pool size, min pool size etc.) The settings of the first DSN to connect fixes the characteristics of the pool.
+
+The maximum number of connection pools supported by an Oracle agent or Lite driver is 100. Each connection pool allows up to 500 connections, depending on the value set in the environment variable <nowiki>OCI_CONNPOOL_MAX</nowiki> or the Lite driver setup dialog. The maximum linger time is 300 seconds.
+
+Oracle Connection Pooling is currently configurable via the clientside DSN configuration screens. Visit <nop>OpenLink's Uda Wiki Web to obtain explicit instructions for your UDA driver format and operating system.
+
+[[http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/ConfigureOraclePooling?][Configure Oracle Connection Pooling]]
