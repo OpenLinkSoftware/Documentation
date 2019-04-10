@@ -45,7 +45,7 @@ do
   echo "curl -s '$clusterBaseURL/$pg?command=docbook' > $clustername/docbook/$pg.docbook"
   echo "curl -s '$clusterBaseURL/$pg?command=text' > $clustername/text/$pg.txt"
   echo $((count++)) | grep -iq '0$' && ret=$(find $clustername -type f | wc -l) && echo "echo  ...$ret" && echo sleep 1
-done | time nice parallel -j4
+done | nice parallel -j4
 
 
 tlog "Tidying local HTML"
@@ -54,7 +54,7 @@ grep -Ei '\.txt' $clustername.txt | sed -E 's/^ *//; s/  *[0-9]+.*$// ; s/\.txt$
 do
   tidy -i -c -asxhtml $clustername/plain-html/$pg.html > $clustername/plain-html-tidy/$pg.html 2> /dev/null
   echo $((count++)) | grep -iq '0$' && ret=$(find $clustername -type f | wc -l) && echo "echo  ...$ret" && echo sleep 1
-done | time nice parallel -j4
+done | nice parallel -j4
 
 
 tlog "Running local transformations"
@@ -66,7 +66,7 @@ do
   echo "xsltproc docbook2creole.xsl $clustername/docbook/$pg.docbook > $clustername/creole/$pg.txt"
   echo "pandoc -f html -t markdown -o $clustername/md/$pg.md $clustername/plain-html-tidy/$pg.html"
   echo $((count++)) | grep -iq '0$' && ret=$(find $clustername -type f | wc -l) && echo "echo  ...$ret" && echo sleep 1
-done | time nice parallel -j4
+done | nice parallel -j4
 
 
 tlog "All done"
