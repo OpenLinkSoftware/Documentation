@@ -1,0 +1,216 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtGraphReplication"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtGraphReplication"}%--><h1><a name="Replication Example: Chain Topology"></a> Replication Example: Chain Topology</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li>
+<ul><li><a href="#Database%20INI%20Parameters">Database INI Parameters</a></li> <li><a href="#Database%20DSNs">Database DSNs</a></li> <li><a href="#Install%20Conductor%20package">Install Conductor package</a></li> </ul><li><a href="#Create%20Publication%20on%20db1">Create Publication on db1</a></li> <li><a href="#Create%20subscription%20from%20db2%20to%20db1%27s%20Publication">Create subscription from db2 to db1&#39;s Publication</a></li> <li><a href="#Create%20Publication%20on%20db2">Create Publication on db2</a></li> <li><a href="#Create%20subscription%20from%20db3%20to%20db2%27s%20Publication">Create subscription from db3 to db2&#39;s Publication</a></li> <li><a href="#Insert%20Data%20into%20a%20Named%20Graph%20on%20the%20db1%20Virtuoso%20Instance">Insert Data into a Named Graph on the db1 Virtuoso Instance</a></li> <li><a href="#Check%20data%20on%20the%20Destination%20instances%20db2%20and%20db3">Check data on the Destination instances db2 and db3</a></li> <li><a href="#Add%20new%20data%20on%20db1">Add new data on db1</a></li> <li><a href="#Check%20again%20data%20on%20the%20Destination%20instances%20db2%20and%20db3">Check again data on the Destination instances db2 and db3</a></li> <li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p> </p>
+<h2><a name="Introduction"></a> Introduction</h2>
+<p>The following How-To walks you through setting up Virtuoso RDF Graph Replication in a Chain Topology.
+<br><br><img src="VirtGraphReplicationChain/topo-chain.png"><br><br></p>
+<h2><a name="Prerequisites"></a>Prerequisites</h2>
+<h3><a name="Database INI Parameters"></a>Database INI Parameters</h3>
+<p>Suppose there are 3 Virtuoso instances respectively with the following ini parameters values:</p>
+<ol><li>virtuoso1.ini: <br><pre><br>...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = localhost:8891
+...
+[Replication]
+ServerName   = db1
+...
+</pre><br></li>
+<li>virtuoso2.ini: <br><pre><br>...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2
+...
+</pre><br></li>
+<li>virtuoso3.ini: <br><pre><br>...
+[Database]
+DatabaseFile    = virtuoso3.db
+TransactionFile = virtuoso3.trx
+ErrorLogFile     = virtuoso3.log
+...
+[Parameters]
+ServerPort               = 1113
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = localhost:8893
+...
+[Replication]
+ServerName   = db3
+...
+</pre><br></li>
+</ol><h3><a name="Database DSNs"></a>Database DSNs</h3>
+<p>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, <b>Start</b> menu -&gt; <b>Control Panel</b> -&gt; <b>Administrative Tools</b> -&gt; <b>Data Sources (ODBC)</b>; on Mac OS X, <code>/Applications/Utilities/OpenLink ODBC Administrator.app</code>) to create a System DSN for each of db1, db2, db3, with names db1, db2 and db3, respectively.</p>
+<h3><a name="Install Conductor package"></a>Install Conductor package</h3>
+<p>On each of the 3 Virtuoso instances install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">conductor_dav.vad</a> package.</p>
+<h2><a name="Create Publication on db1"></a>Create Publication on db1</h2>
+<ol><li>Go to <a href="http://localhost:8891/conductor" class="absuri">http://localhost:8891/conductor</a> and log in as dba </li>
+<li>Go to Conductor -&gt; Replication -&gt; Transactional -&gt; Publications <br><br><img src="VirtGraphReplicationChain/m1.png"><br><br> </li>
+<li>Click <b>Enable RDF Publishing</b> </li>
+<li>As result publication with the name <b>RDF Publication</b> should be created <br><br><img src="VirtGraphReplicationChain/m2.png"><br><br> </li>
+<li>Click the link which is the publication name.
+</li>
+<li>The publication items page will be shown: <br><br><img src="VirtGraphReplicationChain/m3.png"><br><br> </li>
+<li>Enter for Graph IRI: <br><pre><br>http://example.org
+</pre><br><br><br><img src="VirtGraphReplicationChain/m4.png"><br><br> </li>
+<li>Click Add New </li>
+<li>The item will be created and shown in the list of items for the currently viewed publication.
+<br><br><img src="VirtGraphReplicationChain/m5.png"><br><br></li>
+</ol><h2><a name="Create subscription from db2 to db1's Publication"></a>Create subscription from db2 to db1&#39;s Publication</h2>
+<ol><li>Log in at <a href="http://localhost:8892/conductor." class="absuri">http://localhost:8892/conductor.</a> </li>
+<li>Go to Replication -&gt; Transactional -&gt; Subscriptions: <br><br><img src="VirtGraphReplicationChain/m6.png"><br><br> </li>
+<li>Click <b>New Subscription</b>: <br><br><img src="VirtGraphReplicationChain/m7.png"><br><br> </li>
+<li>From the list of &quot;Specify new data source&quot; select Data Source db1: <br><br><img src="VirtGraphReplicationChain/m8.png"><br><br> </li>
+<li>Enter for db1 dba user credentials: <br><br><img src="VirtGraphReplicationChain/m9.png"><br><br> </li>
+<li>Click &quot;Add Data Source&quot;: </li>
+<li>As result <b>db1</b> will be shown in the &quot;Connected Data Sources&quot; list.
+<br><br><img src="VirtGraphReplicationChain/m10.png"><br><br> </li>
+<li>Click &quot;Publications list&quot;: <br><br><img src="VirtGraphReplicationChain/m11.png"><br><br> </li>
+<li>As result will be shown the list of available publications for the selected data source.
+ Select the one with name &quot;RDF Publication&quot; and click &quot;List Items&quot;.
+<br><br><img src="VirtGraphReplicationChain/m12.png"><br><br> </li>
+<li>As result will be shown the &quot;Confirm subscription&quot; page.
+<br><br><img src="VirtGraphReplicationChain/m13.png"><br><br> </li>
+<li>The sync interval by default is 10 minutes.
+ For the testing purposes, we will change it to 1 minute.
+<br><br><img src="VirtGraphReplicationChain/m14.png"><br><br> </li>
+<li>Click &quot;Subscribe&quot;.
+</li>
+<li>The subscription will be created.
+<br><br><img src="VirtGraphReplicationChain/m15.png"><br><br></li>
+</ol><h2><a name="Create Publication on db2"></a>Create Publication on db2</h2>
+<ol><li>Go to <a href="http://localhost:8892/conductor" class="absuri">http://localhost:8892/conductor</a> and log in as dba, </li>
+<li>Go to Conductor -&gt; Replication -&gt; Transactional -&gt; Publications: <br><br><img src="VirtGraphReplicationChain/m16.png"><br><br> </li>
+<li>Click <b>Enable RDF Publishing</b>: </li>
+<li>As result publication with the name <b>RDF Publication</b> should be created: <br><br><img src="VirtGraphReplicationChain/m17.png"><br><br> </li>
+<li>Click the link which is the publication name.
+</li>
+<li>The publication items page will be shown: <br><br><img src="VirtGraphReplicationChain/m18.png"><br><br> </li>
+<li>Enter for Graph IRI: <br><pre><br>http://example.org
+</pre><br><br><br><img src="VirtGraphReplicationChain/m19.png"><br><br> </li>
+<li>Click Add New.
+</li>
+<li>The item will be created and shown in the list of items for the currently viewed publication.
+<br><br><img src="VirtGraphReplicationChain/m20.png"><br><br></li>
+</ol><p> </p>
+<h2><a name="Create subscription from db3 to db2's Publication"></a>Create subscription from db3 to db2&#39;s Publication</h2>
+<ol><li>Log in at <a href="http://localhost:8893/conductor." class="absuri">http://localhost:8893/conductor.</a> </li>
+<li>Go to Replication -&gt; Transactional -&gt; Subscriptions: <br><br><img src="VirtGraphReplicationChain/m21.png"><br><br> </li>
+<li>Click <b>New Subscription</b>: <br><br><img src="VirtGraphReplicationChain/m22.png"><br><br> </li>
+<li>From the list of &quot;Specify new data source&quot; select Data Source db2: <br><br><img src="VirtGraphReplicationChain/m23.png"><br><br> </li>
+<li>Enter for db2 dba user credentials: <br><br><img src="VirtGraphReplicationChain/m24.png"><br><br> </li>
+<li>Click &quot;Add Data Source&quot;: <br><br><img src="VirtGraphReplicationChain/m25.png"><br><br> </li>
+<li>As result <b>db2</b> will be shown in the &quot;Connected Data Sources&quot; list.
+ Select it and click &quot;Publications list&quot;: <br><br><img src="VirtGraphReplicationChain/m26.png"><br><br> </li>
+<li>As result will be shown the list of available publications for the selected data source.
+ Select the one with name &quot;RDF Publication&quot; and click &quot;List Items&quot;.
+<br><br><img src="VirtGraphReplicationChain/m27.png"><br><br> </li>
+<li>As result will be shown the &quot;Confirm subscription&quot; page.
+<br><br><img src="VirtGraphReplicationChain/m28.png"><br><br> </li>
+<li>The sync interval by default is 10 minutes.
+ For the testing purposes, we will change it to 1 minute.
+<br><br><img src="VirtGraphReplicationChain/m29.png"><br><br> </li>
+<li>Click &quot;Subscribe&quot;.
+</li>
+<li>The subscription will be created.
+<br><br><img src="VirtGraphReplicationChain/m30.png"><br><br></li>
+</ol><h2><a name="Insert Data into a Named Graph on the db1 Virtuoso Instance"></a>Insert Data into a Named Graph on the db1 Virtuoso Instance</h2>
+<ol><li>Log in at <a href="http://localhost:8891/conductor." class="absuri">http://localhost:8891/conductor.</a> </li>
+<li>Go to Linked Data-&gt; Quad Store Upload: <br><br><img src="VirtGraphReplicationChain/m31.png"><br><br> </li>
+<li>In the shown form: <ol><li>Tick the box for <b>Resource URL</b> and enter your resource URL, e.g.: <br><pre><br>http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+</pre><br></li>
+<li>Enter for Named Graph IRI: <br><pre><br>http://example.org
+</pre><br><br><br><img src="VirtGraphReplicationChain/m32.png"><br><br> </li>
+</ol></li>
+<li>Click Upload.
+</li>
+<li>Should be shown message for successful upload: <br><br><img src="VirtGraphReplicationChain/m33.png"><br><br> </li>
+<li>Check the count of the inserted triples by executing a query like the following against the SPARQL endpoint, <a href="http://localhost:8891/sparql:" class="absuri">http://localhost:8891/sparql:</a> <br><pre><br>SELECT COUNT(*) 
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</pre><br><br><br><img src="VirtGraphReplicationChain/m34.png"><br><br> </li>
+<li>Should be shown <b>57</b> as total.
+<br><br><img src="VirtGraphReplicationChain/m35.png"><br><br></li>
+</ol><h2><a name="Check data on the Destination instances db2 and db3"></a>Check data on the Destination instances db2 and db3</h2>
+<ol><li>To check the starting count, on each of the Destination Virtuoso Instances db2 and db3 from  SPARQL Endpoint execute: <br><pre><br>SELECT COUNT(*) 
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</pre><br></li>
+<li>Should return <b>57</b> as total.
+<br><br><img src="VirtGraphReplicationChain/m35.png"><br><br></li>
+</ol><h2><a name="Add new data on db1"></a>Add new data on db1</h2>
+<ol><li>Disconnect db2 and db3.
+</li>
+<li>On the Host Virtuoso Instance db1 go to Conductor -&gt; Database -&gt; Interactive SQL enter the following statement: <br><pre><br>SPARQL INSERT INTO GRAPH &lt;http://example.org&gt; 
+  { 
+     &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+     &lt;http://xmlns.com/foaf/0.1/interest&gt;
+     &lt;http://dbpedia.org/resource/Web_Services&gt; 
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt; 
+  { 
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;  	
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;  	
+    &lt;http://dbpedia.org/resource/Web_Clients&gt; 
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt; 
+  { 
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;  	
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;  	
+    &lt;http://dbpedia.org/resource/SPARQL&gt; 
+  } ;
+</pre><br><br><br><img src="VirtGraphReplicationChain/m36.png"><br><br> </li>
+<li>Click &quot;Execute&quot;.
+</li>
+<li>As result the triples will be inserted: <br><br><img src="VirtGraphReplicationChain/m36a.png"><br><br> </li>
+<li>Check the count of the destination instance graph&#39;s triples by executing the following query like against the SPARQL endpoint, <a href="http://localhost:8891/sparql:" class="absuri">http://localhost:8891/sparql:</a> <br><pre><br>SELECT COUNT(*) 
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</pre><br></li>
+<li>Should be shown <b>60</b> as total.
+<br><br><img src="VirtGraphReplicationChain/m38.png"><br><br></li>
+</ol><h2><a name="Check again data on the Destination instances db2 and db3"></a>Check again data on the Destination instances db2 and db3</h2>
+<ol><li>Start instances db2 and db3.
+</li>
+<li>To confirm that the triple count has increased by the number of inserted triples, execute the following on the Destination Virtuoso Instance db2 and db3 SPARQL Endpoint: <br><pre><br>SELECT COUNT(*) 
+   FROM &lt;http://example.org&gt;
+WHERE { ?s ?p ?o }
+</pre><br></li>
+<li>Should be shown <b>60</b> as total: <br><br><img src="VirtGraphReplicationChain/m38.png"><br><br></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationStar" class="wikiword">Replication Example: Star Topology</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationBiDirectional" class="wikiword">Replication Example: 2-node Bi-directional Topology</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationPSQL" class="wikiword">Set up RDF Replication via procedure calls</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub" class="absuri">Example of Linked Data Usage of PubSubHubbub Implementation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRdfReplScenarios" class="wikiword">Exploit Virtuoso&#39;s Replication Functionality Web based Solutions</a></li>
+</ul></div></body></html>

@@ -1,0 +1,92 @@
+<html><body><div class="topic-text"><h1><a name="Virtuoso HTML+Variants Cartridge Configuration"></a>Virtuoso HTML+Variants Cartridge Configuration</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Overview">Overview</a></li>
+<ul><li><a href="#Core%20HTML">Core HTML</a></li> <li><a href="#Data%20Islands">Data Islands</a></li> <li><a href="#Reification">Reification</a></li> </ul><li><a href="#Passthrough%20Mode">Passthrough Mode</a></li> <li><a href="#Options">Options</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Overview"></a>Overview</h2>
+<p>The HTML and Variants extractor cartridge handles various XML document formats including HTML, XHTML and pure RDF (XML, Turtle, N3).</p>
+<p>RDF sources are ingested directly.</p>
+<p>Sources that look like HTML are passed through HTML Tidy before further extraction can take place.</p>
+<p>Many dialects for embedding microdata (collectively known as &quot;data-islands&quot;) are supported.</p>
+<p>Certain well-known domain-specific standards (such as Twitter Cards) are also supported.</p>
+<p> </p>
+<h3><a name="Core HTML"></a>Core HTML</h3>
+<p>At its core, the HTML+Variants cartridge identifies the following aspects of a webpage:</p>
+<ul><li>Title and other well-known data in &lt;meta&gt; tags such as description, author, keywords, encoding, etc </li>
+<li>images referenced </li>
+<li>links to alternate forms of the current document </li>
+<li>links to other referenced documents </li>
+<li>x509 Certificate fingerprints </li>
+<li>the page content </li>
+<li>any RSS or Atom feeds it finds</li>
+</ul><p>In a second extraction, the following are also supported:</p>
+<ul><li>Twitter Cards </li>
+<li>OpenGraph markup (og: prefix) </li>
+<li>any link@rel becomes a predicate </li>
+<li>any meta@name becomes a predicate</li>
+</ul><p>Because the mapping between an HTML document and a logical primary entity is not always clear, there is an option whereby </p>
+<ul><li>any mention of latitude and longitude in a meta tag is extracted</li>
+</ul><h3><a name="Data Islands"></a>Data Islands</h3>
+<p>There are many ways in which an HTML document can contain embedded data, termed data-islands.</p>
+<p>Because of its significance, HTML5 Microdata is regarded as an island, although it is processed along with other formats in the GRDDL loop - a second island encompassing:</p>
+<ul><li>AB Meta </li>
+<li>BSBM </li>
+<li>Dublin Core </li>
+<li>eRDF </li>
+<li>geoURL </li>
+<li>Google Base </li>
+<li>hAudio </li>
+<li>hCalendar </li>
+<li>hCard </li>
+<li>hListing </li>
+<li>hNews </li>
+<li>hProduct </li>
+<li>hRecipe </li>
+<li>hResume </li>
+<li>hReview </li>
+<li>hReview-aggregate </li>
+<li>HR-XML </li>
+<li>Microsoft XML Spreadsheet 2003 </li>
+<li>Ning Metadata </li>
+<li>relLicense </li>
+<li>Slidy </li>
+<li>Word 2003 XML Document </li>
+<li>XBRL </li>
+<li>XDDL </li>
+<li>XFN Profile </li>
+<li>XFN Profile2 </li>
+<li>xFolk</li>
+</ul><p>Recent W3C standards have proposed the use of the HTML &lt;script type=&quot;text/turtle&quot;&gt;...&lt;/script&gt; tag for storing Turtle RDF triples.</p>
+<p>Relatedly, Google promote the use of the same HTML &lt;script type=&quot;application/ld+json&quot;&gt;...&lt;/script&gt; tag for storing data in JSON-LD format.</p>
+<h3><a name="Reification"></a>Reification</h3>
+<p>Data in each of the above islands can be reified (default: enabled apart from the plethora of GRDDL microformats), by which for every statement extracted, an rdf:Statement entity is created summarizing the statement&#39;s subect, predicate and object/value along with a pointer to the data-island whence it came.</p>
+<p>Enabled by default, this reification can be disabled selectively for </p>
+<ul><li>HTML core + meta extraction (together) </li>
+<li>RDFa data </li>
+<li>Turtle-in-script </li>
+<li>JSON-LD-in-script </li>
+<li>all the supported GRDDL formats </li>
+<li>HTML5-Microdata</li>
+</ul><p> </p>
+<h2><a name="Passthrough Mode"></a>Passthrough Mode</h2>
+<p>Previously, the HTML+Variants cartridge used to be regarded as a fall-back, to be invoked in cases where no other extractor cartridge could handle the document.</p>
+<p>This has changed; by default, the HTML cartridge is now the first to be invoked; this requires its exit-status be set to permit control to flow into other cartridges.</p>
+<p>If the HTML cartridge detects another enabled cartridge that might contribute to the data, it assigns its output to the container entity representing the HTML document; in cases where no other cartridge is likely, it makes statements using the primary entity URI as a subject instead.</p>
+<p>If you wish to move the HTML cartridge back to the bottom of the list, you should also change the passthrough back to `no&#39;.</p>
+<p> </p>
+<h2><a name="Options"></a>Options</h2>
+<p>The HTML+Variants cartridge supports the following options:</p>
+<p> </p>
+<ul><li>passthrough_mode=yes  - whether to expect other cartridges to contribute </li>
+<li>fallback-mode=no - whether to run only if no other cartridge has contributed </li>
+<li>get-feeds=no - whether to include data from RSS and Atom feeds </li>
+<li>preview-length=512 (deprecated) - how long a bibo:abstract to generate </li>
+<li>add-html-meta=yes - add data extracted from &lt;meta&gt; tags </li>
+<li>rdfa=yes - include data from RDFa </li>
+<li>reify_html=1  - whether the core data should be reified </li>
+<li>reify_html5md=1 - whether the HTML5-Microdata should be reified </li>
+<li>reify_rdfa=1 - whether RDFa data should be reified </li>
+<li>reify_turtle=1 - whether Turtle data embedded in &lt;script&gt; elements should be reified </li>
+<li>reify_jsonld=1 - whether JSON-LD data embedded in &lt;script&gt; elements should be reified </li>
+<li>reify_all_grddl=0 - whether all the GRDDL sources should be reified </li>
+<li>loose=yes - look for latitude and longitude information in meta tags</li>
+</ul><ul><li><img src="VirtCartConfigHTML/VirtCartConfigHTML.png" style="wikiautogen"> </li>
+</ul></div></body></html>

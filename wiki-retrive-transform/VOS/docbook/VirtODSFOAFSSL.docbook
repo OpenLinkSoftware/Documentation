@@ -1,0 +1,86 @@
+<docbook><section><title>VirtODSFOAFSSL</title><title>FOAF+SSL Support in OpenLink Data Spaces</title>FOAF+SSL Support in OpenLink Data Spaces
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+<emphasis>FOAF+SSL</emphasis> is an authentication and authorization protocol that links a &#39;&#39;[Web ID]&#39;&#39; or &quot;<ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/GetAPersonalURIIn5MinutesOrLess">Personal URI</ulink>&quot; to a public key to create a global, decentralized, distributed, and secure authentication system that functions with existing browsers.<para>FOAF+SSL uses PKI standards ? usually thought of as hierarchical trust management tools ? <ulink url="http://blogs.sun.com/bblfish/entry/foaf_ssl_pki_and_the">in a decentralized web-of-trust way</ulink>.
+The web of trust is built using semantic web vocabularies (particularly <ulink url="http://www.foaf-project.org/">FOAF</ulink>) published in RESTful manner to form [Linked Data].</para>
+<para>Based on well known existing standards, FOAF+SSL is currently in development, and is being discussed on the <ulink url="http://lists.foaf-project.org/mailman/listinfo/foaf-protocols">FOAF protocols mailing list</ulink>.</para>
+<para>For the most recent description of the protocol, read the one-page &#39;&#39;<ulink url="http://blogs.sun.com/bblfish/entry/foaf_ssl_adding_security_to">FOAF+SSL: Adding Security to Open Distributed Social Networks</ulink>&#39;&#39;.
+For a more detailed explanation of how the authentication works, see &#39;&#39;<ulink url="http://blogs.sun.com/bblfish/entry/more_on_authorization_in_foaf">FOAF+SSL: Creating a Web of Trust without Key Signing Parties</ulink>&#39;&#39;.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+<para>Automatic discovery of interpersonal trust relationships enables automatic application of appropriate permissions.</para>
+<para>In other words, data owners can set fuzzy permissions like &quot;only let my friends see this&quot; or &quot;only let my family edit this.&quot;  Applications can discover the relationships between the data owner and the data requester/user, and permit (or disallow) any attempted actions, without needing the data owner to explicitly set permissions for each potential user.</para>
+<para>One example might be a parent setting permissions on a photo gallery, to permit viewing only by &quot;immediate family&quot;.
+ The parent need not list each and every such relative specifically for this application -- and need not add new permissions for a new family member (whether by marriage, birth, or otherwise), though they <emphasis>do</emphasis> need to be added to the owner&#39;s FOAF.
+When a new user comes and asks to see the pictures, the gallery application would check the relationships declared by each person (the owner and the visitor), and if they matched up (in other words, the visitor could not get in simply by <emphasis>claiming</emphasis> a family relationship; the relationship must be confirmed by the owner&#39;s FOAF data), the pictures would be shown.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> x.509 certificate</bridgehead>
+<para>The FOAF+SSL consumer needs an x509 certificate with v3 extension &quot;Subject Alternate Name&quot;.
+This attribute is used for the owner&#39;s Web ID.
+ For testing purposes we used <ulink url="OpenSSL">OpenSSL</ulink> demo CA to generate such certificates.
+ If you are not using the <ulink url="OpenSSL">OpenSSL</ulink> demo CA, you must first setup a self-signed CA; read <ulink url="OpenSSL">OpenSSL</ulink> documents on how to do this.</para>
+<orderedlist spacing="compact"><listitem>Add the following line to the [usr_cert] section of the openssl.cnf file — <programlisting>subjectAltName=$ENV::ALTNAME
+</programlisting></listitem>
+<listitem>Set the environment variable ALTNAME to the owner&#39;s Web ID, e.g., <programlisting>export ALTNAME=URI:http://localhost/dataspace/person/myname#this
+</programlisting></listitem>
+<listitem>Make a self-signed certificate, e.g., <programlisting>$ CA.pl -newreq (follow the dialog) 
+$ CA.pl -sign
+</programlisting></listitem>
+<listitem>When asked to commit the certificate, make sure you see several lines above, like — <programlisting>           X509v3 Subject Alternative Name: 
+                URI:http://localhost/dataspace/person/myname#this 
+</programlisting></listitem>
+<listitem>If your browser wants a PKCS#12 bundle, you must make one — <programlisting>$ openssl pkcs12 -export -in newcert.pem -inkey newkey.pem -out mycert.p12 
+</programlisting></listitem>
+<listitem>Rename newcert.pem and newkey.pem, to mycert.pem and mykey.pem for example.
+ The PEM format of the certificate will be needed below.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Setting up Virtuoso HTTPS</bridgehead>
+<para>To enable the HTTPS listener, you will need another certificate.
+ Existing certificates may not have Subject Alternate Name, so you may want to generate one as in the previous section.</para>
+<orderedlist spacing="compact"><listitem>The next step is to move newcert.pem, newkey.pem, and cacert.pem into the server&#39;s working directory.
+ In our test case, we put the keys in a &#39;keys&#39; sub-directory, and added the following lines to the [HTTPServer] section of the Virtuoso INI file, virtuoso.ini: <programlisting>SSLPort                     = 4443
+SSLCertificate              = ./keys/localhost.cert.pem
+SSLPrivateKey               = ./keys/localhost.key.pem
+X509ClientVerifyCAFile      = ./keys/localhost.ca.pem
+X509ClientVerify            = 1
+X509ClientVerifyDepth       = 15
+</programlisting></listitem>
+<listitem>Also in the Virtuoso INI file, in the [URIQA] section, <ulink url="DefaultHost">DefaultHost</ulink> (localhost:8890 below) must be edited to correspond to the DNS-resolvable host name (&quot;CNAME&quot;) of the Virtuoso host, combined with the <ulink url="ServerPort">ServerPort</ulink> as set in the [HTTPServer] section of the same INI file.
+<programlisting>[URIQA]
+DynamicLocal = 1
+DefaultHost  = localhost:8890
+</programlisting>For instance, if the CNAME of the host is virtuoso.example.com, and the <ulink url="ServerPort">ServerPort</ulink> is 4321, the <ulink url="DefaultHost">DefaultHost</ulink> should be set to virtuoso.example.com:4321 <programlisting>[URIQA]
+DynamicLocal = 1
+DefaultHost  = virtuoso.example.com:4321
+</programlisting></listitem>
+<listitem>Start the Virtuoso server, and look at the log file.
+ Once HTTPS is up, you should see something like — <programlisting>HTTPS Using X509 Client CA ....
+HTTPS/X509 server online at 4443
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Setting Up Firefox</bridgehead>
+<orderedlist spacing="compact"><listitem>In the Preferences dialog, open the Advanced tab, and click the &quot;View certificates&quot; button.
+<figure><graphic fileref="VirtODSFOAFSSL/Picture_1.png" /></figure> </listitem>
+<listitem>Click the &quot;Add exception&quot; button ,and enter the address of the HTTPS server you&#39;ve just configured, i.e., <ulink url="https://virtuoso.example.com:4443/">https://virtuoso.example.com:4443/</ulink> </listitem>
+<listitem>Click OK, and confirm the exception.
+<figure><graphic fileref="VirtODSFOAFSSL/Picture_2.png" /></figure> </listitem>
+<listitem>Click to the &quot;Your Certificates&quot; tab, and import mycert.p12.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Configuring ODS Account to use FOAF+SSL</bridgehead>
+<orderedlist spacing="compact"><listitem>Log in to your ODS account, and edit your profile.
+</listitem>
+<listitem>Click to the Security Tab, and scroll to the bottom, where you will find the X.509 certificate entry area.
+</listitem>
+<listitem>Copy &amp; paste the PEM format of the certificate (i.e., the content of mykey.pem, from earlier).
+</listitem>
+<listitem>Press &quot;Save Certificate&quot; button, and you are set.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Testing the setup</bridgehead>
+<para>To test, we recommend <ulink url="http://www.mozilla.com/firefox/">Firefox</ulink> v3 with the <ulink url="https://addons.mozilla.org/en-US/firefox/addon/5596">Tabulator extension</ulink>.
+Firefox must be set to ask for RDF, as instructed in the <ulink url="http://dig.csail.mit.edu/2007/tab/">Tabulator documentation</ulink>.</para>
+<orderedlist spacing="compact"><listitem>Enter an ODS user&#39;s URI in the address bar, and the fun begins.
+</listitem>
+<listitem>You should see a protected document&#39;s URI.
+ Note that there is no specific &quot;address&quot; data seen: <figure><graphic fileref="VirtODSFOAFSSL/Picture_3.png" /></figure> </listitem>
+<listitem>When clicked, the browser will ask the user to select a certificate (note: certificate details are erased in picture below).
+<figure><graphic fileref="VirtODSFOAFSSL/Picture_4.png" /></figure> </listitem>
+<listitem>Now the protected document includes the private address data alongside the previously visible public data! <figure><graphic fileref="VirtODSFOAFSSL/Picture_5.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> FOAF+SSL ACLs</bridgehead>
+<para>You can set FOAF+SSL ACLs from the <ulink url="VirtAuthServerUI">Virtuoso Authentication Server UI</ulink>.
+ A sample tutorial can be viewed <ulink url="VirtAuthFOAFSSLACL">here</ulink>.
+</para>
+</section></docbook>

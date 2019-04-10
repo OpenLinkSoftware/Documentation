@@ -1,0 +1,118 @@
+<docbook><section><title>VirtSPARQLDET</title><title> Enabling Dynamic Extended Types (DETs) on a Virtuoso SPARQL Endpoint</title> Enabling Dynamic Extended Types (DETs) on a Virtuoso SPARQL Endpoint
+<para>Conventional SPARQL endpoints serialize query results into a range of formats, which are immediately sent back to the requesting user agent.</para>
+<para>Using SPARQL-Protocol URLs to share result sets is powerful, but this is not always feasible, especially because some data access tools are written to only load data from files.</para>
+<para>Virtuoso addresses the obvious need for file-based access to SPARQL query result sets via its built-in &quot;dynamic <ulink url="WebDAV">WebDAV</ulink> resource generator,&quot; a feature that leverages the Virtuoso server&#39;s native support of the <ulink url="WebDAV">WebDAV</ulink> protocol.
+ Through this feature, it is possible to connect any <ulink url="WebDAV">WebDAV</ulink> client, which include most desktop operating systems (Windows, Mac OS X, Linux) and many other applications (e.g., Excel), directly to a SPARQL query result set as though it were opening up a local file.</para>
+<para>The steps below show how to set up a Virtuoso instance to permit saving query results from its SPARQL endpoint into its built-in <ulink url="WebDAV">WebDAV</ulink> repository.</para>
+<emphasis>Note: SPARQL-SSL is alias of SPARQL-<ulink url="WebID">WebID</ulink></emphasis><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Configuration</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">SPARQL-<ulink url="WebID">WebID</ulink></bridgehead>
+<orderedlist spacing="compact"><listitem>Make sure the steps from the <ulink url="VirtSPARQLSecurityWebID">Secure SPARQL Endpoint Guide using WebID Protocol</ulink> are performed.
+</listitem>
+<listitem>As result should be created new account &quot;SPUIDN&quot;, where N is 1, 2, etc.
+<itemizedlist mark="bullet" spacing="compact"><listitem>Note: for the purposes of this guide, we will use <emphasis>SPUID1</emphasis> name for the SQL user account under which runs the Web Service endpoint.
+</listitem>
+</itemizedlist></listitem>
+<listitem>Set the SQL user account to be DAV enabled: <orderedlist spacing="compact"><listitem><ulink url="VirtSPARQLDETAccountDAVEnableISQL">Via direct table config</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLDETAccountDAVEnableCondt">Using the Conductor UI</ulink> </listitem>
+</orderedlist></listitem>
+<listitem>The DAV home directory (for e.g., <emphasis>/DAV/home/SPUID1/</emphasis>) should be created and the path to it should be set in the table: DB.DBA.SYS_USERS (using U_HOME field).
+ Note: do not forget the leading and the trailing slash chars: <orderedlist spacing="compact"><listitem>Using Conductor, go to System Admin -&gt; User Accounts <figure><graphic fileref="VirtSPARQLDET/sp1.png" /></figure> </listitem>
+<listitem>For the SQL User from above click the &quot;Edit&quot; link from the very right column.
+</listitem>
+<listitem>Set  &quot;DAV Home Path&quot; to &quot;/DAV/home/SPUID1/&quot; </listitem>
+<listitem>Hatch &quot;Create&quot; <figure><graphic fileref="VirtSPARQLDET/sp4.png" /></figure> </listitem>
+<listitem>Click &quot;Save&quot;.
+</listitem>
+</orderedlist></listitem>
+<listitem>The home directory should contain a subdirectory named <emphasis>&quot;saved-sparql-results&quot;</emphasis> <orderedlist spacing="compact"><listitem>Using Conductor, go  to Web Application Server -&gt; Content Management and view path &quot;DAV/home/SPUID1&quot;: <figure><graphic fileref="VirtSPARQLDET/sp5.png" /></figure> </listitem>
+<listitem>Click &quot;New Folder&quot; </listitem>
+<listitem>In the shown form enter for &quot;Folder name&quot;: saved-sparql-results <figure><graphic fileref="VirtSPARQLDET/sp6.png" /></figure> </listitem>
+<listitem>Click &quot;Create&quot; </listitem>
+</orderedlist><itemizedlist mark="bullet" spacing="compact"><listitem>Note: the subdirectory should be of <emphasis>&quot;<ulink url="DynaRes">DynaRes</ulink>&quot;</emphasis> for DAV Extension Type.
+</listitem>
+</itemizedlist></listitem>
+<listitem>Make sure <emphasis>sparql-webid</emphasis> virtual folder is defined for the ssl port: <orderedlist spacing="compact"><listitem>Go to Conductor -&gt; Web Application Server -&gt;Virtual Domains &amp; Directories <figure><graphic fileref="VirtSPARQLDET/sp7.png" /></figure> </listitem>
+<listitem>Locate the <emphasis>sparql-webid</emphasis> virtual folder.
+ If not found, click &quot;New directory&quot; </listitem>
+<listitem>Select &quot;Type&quot;: SPARQL access point and click &quot;Next&quot;: <figure><graphic fileref="VirtSPARQLDET/sp8.png" /></figure> </listitem>
+<listitem>In the presented form enter respectively: <itemizedlist mark="bullet" spacing="compact"><listitem>Path: /sparql-webid </listitem>
+<listitem>Hatch &quot;Physical path is a <ulink url="WebDAV">WebDAV</ulink> repository&quot; </listitem>
+<listitem>Hatch &quot;Map the logical path to a single page&quot; </listitem>
+<listitem>Physical path: /!sparql/ </listitem>
+<listitem>VSP User: dba </listitem>
+<listitem>Authentication Method: SSL </listitem>
+<listitem>Authentication Function: DB.DBA.FOAF_SSL_AUTH </listitem>
+<listitem>Advanced: <programlisting>https_cert=db:https_key_cname;
+https_key=db:https_key_cname;
+https_verify=3;
+https_cv_depth=10;
+</programlisting></listitem>
+<listitem>Note: cname appearances of &quot;.&quot; should be replaced with &quot;_&quot;, so for ex for host &quot;id.myopenlink.net&quot; the advanced option value should be: <programlisting>https_cert=db:https_key_id_myopenlink_net;
+https_key=db:https_key_id_myopenlink_net;
+https_verify=3;
+https_cv_depth=10;
+</programlisting><figure><graphic fileref="VirtSPARQLDET/sp9.png" /></figure> <figure><graphic fileref="VirtSPARQLDET/sp10.png" /></figure> </listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+<listitem>Once the steps from above have been completed, your SPARQL endpoint will include additional controls for saving query results to dynamically constructed <ulink url="WebDAV">WebDAV</ulink> resources: <orderedlist spacing="compact"><listitem>Go to the SPARQL+<ulink url="WebID">WebID</ulink> endpoint, https://&lt;cname&gt;:&lt;port&gt;/sparql-webid, where &lt;cname&gt;:&lt;port&gt; are replaced by your local server values.
+</listitem>
+<listitem>Select the user&#39;s certificate: <figure><graphic fileref="VirtSPARQLDET/a4.png" /></figure> </listitem>
+<listitem>The SPARQL Query UI will be shown: <figure><graphic fileref="VirtSPARQLDET/a5.png" /></figure></listitem>
+</orderedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLEndpointProtection">Safeguarding your Virtuoso-hosted SPARQL Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpointProtection">SPARQL Endpoint Protection Methods Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/">Virtuoso documentation</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint">SPARQL Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri">Service Endpoint Security</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl">Managing a SPARQL Web Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">SPARQL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLDET">SPARQL Endpoint DET Configuration Guide</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSecurityWebID">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpoints">Securing SPARQL endpoints</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</ulink> </listitem>
+<listitem><ulink url="VirtAuthServerUI">Virtuoso Authentication Server UI</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSSL">Manage a SPARQL-WebID based Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtSetupSSL">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID">WebID Protocol Support in OpenLink Data Spaces</ulink>.
+</listitem>
+<listitem>Manage ODS Datadspaces Objects <ulink url="WebID">WebID</ulink> Access Control Lists (ACLs): <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID">ODS Briefcase WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson">Person Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup">Group Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic">Public WebID based ACL Guide</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL">ODS Feed Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL">ODS Calendar WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL">ODS Bookmark Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL">ODS Addressbook  WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub">Setting up PubSubHub in ODS</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub">PubSubHubBub Demo Client Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub">Feed subscription via PubSubHub protocol Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL">Setting Up PubSubHub to use WebID Protocol or IP based control lists</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport">CA Keys Import using Conductor</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate">Generate an X.509 Certificate hosted WebID Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile">ODS Briefcase WebID Protocol Share File Guide</ulink> </listitem>
+<listitem><ulink url="http://esw.w3.org/topic/foaf+ssl">WebID Protocol Specification</ulink> </listitem>
+<listitem><ulink url="https://foaf.me/simpleLogin.php">Test WebID Protocol Certificate page</ulink> </listitem>
+<listitem><ulink url="http://test.foafssl.org/cert/">WebID Protocol Certificate Generation page</ulink> </listitem>
+</itemizedlist></section></docbook>

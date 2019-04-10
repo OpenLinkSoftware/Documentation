@@ -1,0 +1,154 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="Understanding Relationship semantics and reasoning"></a>Understanding Relationship semantics and reasoning</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%3F">What?</a></li> <li><a href="#Why%3F">Why?</a></li> <li><a href="#How%3F">How?</a></li>
+<ul><li><a href="#Example">Example</a></li><ul><li><a href="#Unambiguous%20Entity%20Naming%20and%20Web%20oriented%20Linked%20Data">Unambiguous Entity Naming and Web oriented Linked Data</a></li> <li><a href="#Good%20Reasoning">Good Reasoning</a></li><ul><li><a href="#First%20Magic%20Triple">First Magic Triple</a></li> <li><a href="#Second%20Magic%20Triple">Second Magic Triple</a></li> <li><a href="#Third%20Magic%20Triple">Third Magic Triple</a></li> </ul></ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What?"></a>What?</h2>
+<p>Using relationship semantics, reasoning, and inference to facilitate a data merge across disparate ontologies.
+ In this case, we are building a derivative ontology from schema.org and schema.rdfs.org that addresses:</p>
+<ul><li>entity name (denotation) disambiguation </li>
+<li>optional distinction of &#39;description&#39; and &#39;definition&#39; semantics (in our world view, a &#39;definition&#39; is very precise &#39;description&#39; while a &#39;description&#39; is a somewhat lossy &#39;definition&#39;) .</li>
+</ul><h2><a name="Why?"></a>Why?</h2>
+<p>Unambiguous entity naming via de-referencable URIs, structured data, and entity relationship semantics enable extremely flexible data integration that supports alternative worldviews for different data consumers.
+ For instance, merging schema.org, schema.rdfs.org, and our own mapping ontology occurs in frictionless manner that leaves everyone to work with views that best serve there usecase specific needs.</p>
+<p> </p>
+<h2><a name="How?"></a>How?</h2>
+<p>Import the schema.org, schema.rdfs.org ontologies into a Virtuoso instance.
+ Then use SPARQL 1.1 Update commands to generate new triples in our specific named graph.
+ Once the records are in place, add additional an addition triple (a magic triple, so to speak) that resolves potential conflicts between the &#39;description&#39; and &#39;definition&#39; properties that propagates across the entire quad store without actually materializing new triples per occurrence.
+ Basically, this is about backward-chained (materialized temporarily at evaluation time) as opposed to forward-chained (materialized triples) form of inference.</p>
+<p> </p>
+<h3><a name="Example"></a>Example</h3>
+<p>Let&#39;s takes as an example the <a href="http://schema.rdfs.org/all.ttl" class="absuri">schema.rdfs.org ontology</a> resource file where there are definitions for Classes such as:</p>
+<p> </p>
+<br><pre>@prefix schema: &lt;http://schema.org/&gt;.
+....
+schema:Book a rdfs:Class;
+    rdfs:label &quot;Book&quot;@en;
+    rdfs:comment &quot;A book.&quot;@en;
+    rdfs:subClassOf schema:CreativeWork;
+    rdfs:isDefinedBy &lt;http://schema.org/Book&gt;.
+</pre><p> i.e.
+ we have the following triple:</p>
+<br><pre>@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;.
+&lt;http://schema.org/Book&gt; rdfs:isDefinedBy &lt;http://schema.org/Book&gt; .
+</pre><p> </p>
+<h4><a name="Unambiguous Entity Naming and Web oriented Linked Data"></a>Unambiguous Entity Naming and Web oriented Linked Data</h4>
+<p>To aid inference and reasoning, the following must be reflected in the Virtuoso quad store:</p>
+<ul><li>Every class is defined by an ontology </li>
+<li>Every property is defined by an ontology </li>
+<li>Every ontology, class, and property is described by a document </li>
+<li>Every ontology, its classes, and its properties must be distinctively denoted (named) using a de-referencable URI </li>
+<li>Every Web document that describes the above must also have distinct URI.</li>
+</ul><p> As a cost-effective best practice, for scenarios such as this, you can disambiguate the Web document and an Ontology (an abstract entity) by appending a &quot;#&quot; to the Web document URL.
+ Net effect is two distinct identifiers for the Web Document and the Ontology represented by its content.</p>
+<p>Once URIs are in place for the web document and the ontology, we need to create a relations, via a new triple, that expresses the relationship between these two entities.
+ This relationship is expressed as:</p>
+<p>&lt;&lt; Resume From Here &gt;&gt;</p>
+<p>Applied to the triple from above, it would look like:</p>
+<br><pre>@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;.
+&lt;http://schema.org/Book#this&gt; rdfs:isDefinedBy &lt;http://schema.org/Book#this&gt; .
+</pre><p> Since the class <code>Book</code> is defined by the <code> &lt;<a href="http://schema.rdfs.org/all.ttl#>" class="absuri">http://schema.rdfs.org/all.ttl#&gt;</a> </code> ontology, then this triple needs to be added:</p>
+<br><pre>@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;.
+&lt;http://schema.org/Book&gt; rdfs:isDefinedby &lt;http://schema.rdfs.org/all.ttl#&gt;
+</pre><p>Let view it with the Virtuoso Sponger by accessing the URL: </p>
+<br><pre>http://host:port/describe/?url=http://schema.org/Book%23this
+</pre><p> <br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic1.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic1.png" width="600px"></a><br><br></p>
+<h4><a name="Good Reasoning"></a>Good Reasoning</h4>
+<h5><a name="First Magic Triple"></a>First Magic Triple</h5>
+<p>For good reasoning, our mapping is still not enough for the &quot;rdfs:isDefinedby&quot; representation.
+ <b>First magic-triple-add</b> fix is:</p>
+<br><pre># INSERT the Magic Triple:
+SPARQL 
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; 
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;  
+PREFIX wdrs: &lt;http://www.w3.org/2007/05/powder-s#&gt; 
+INSERT INTO &lt;http://schema.org/docs/schemaorg&gt;  
+  { 
+     rdfs:isDefinedBy rdfs:subPropertyOf wdrs:describedby .
+  };
+</pre><p> Let&#39;s see what the reasoner will shown for <code> describedby </code> by accessing the following URL: </p>
+<br><pre>http://host:port/describe/?url=http://www.w3.org/2007/05/powder-s%23describedby
+</pre><br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic2.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic2.png" width="600px"></a><br><br><p> The magic triple is presented as &quot;is subPropertyOf&quot; &quot;IsDefinedBy<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/IsDefinedBy&parent=VirtTipsAndTricksUnderstandingRelationshipSemantics" class="wikiword">?</a>&quot;.</p>
+<p> </p>
+<h5><a name="Second Magic Triple"></a>Second Magic Triple</h5>
+<p>In our example <a href="http://schema.rdfs.org/all.ttl" class="absuri">schema.rdfs.org ontology</a> resource file there are definitions for Classes such as:</p>
+<br><pre>@prefix schema: &lt;http://schema.org/&gt;.
+....
+schema:Book a rdfs:Class;
+    rdfs:label &quot;Book&quot;@en;
+    rdfs:comment &quot;A book.&quot;@en;
+    rdfs:subClassOf schema:CreativeWork;
+    rdfs:isDefinedBy &lt;http://schema.org/Book&gt;.
+</pre><p>Also suppose as per above, the mapping ontology we are using is &lt; <a href="http://schema.rdfs.org/all" class="absuri">http://schema.rdfs.org/all</a># &gt;</p>
+<p>As a Class/Property cannot be defined by itself, then this triple:</p>
+<br><pre>&lt;http://schema.rdfs.org/all&gt; a owl:Ontology .
+...
+schema:Book rdfs:isDefinedBy &lt;http://schema.org/Book&gt; 
+</pre><p> in our mapping should look like:</p>
+<br><pre>&lt;http://schema.org/Book#this&gt; &lt;http://www.w3.org/2000/01/rdf-schema#isDefinedBy&gt; &lt;http://schema.rdfs.org/all&gt; .
+</pre><p>And to save costly creation of new triples, a <b>2nd magic-triple-add</b> fix should be added:</p>
+<br><pre>&lt;http://schema.rdfs.org/all&gt; owl:sameAs &lt;http://schema.rdfs.org/all#&gt; .
+</pre><p> So finally the mapping should look like:</p>
+<br><pre>&lt;http://schema.org/Book#this&gt; &lt;http://www.w3.org/2000/01/rdf-schema#isDefinedBy&gt; &lt;http://schema.rdfs.org/all&gt; .
+&lt;http://schema.rdfs.org/all&gt; owl:sameAs &lt;http://schema.rdfs.org/all#&gt; .
+</pre><p>The achieved effect will be that all &lt; <a href="http://schema.rdfs.org/all" class="absuri">http://schema.rdfs.org/all</a> &gt; can be seen as &lt; <a href="http://schema.rdfs.org/all" class="absuri">http://schema.rdfs.org/all</a># &gt; by the reasoner.</p>
+<p>Let&#39;s see what the reasoner will shown for <code></code> by accessing the following URL: </p>
+<br><pre>http://host:port/describe/?url=http://schema.org/Book
+</pre><br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic3.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic3.png" width="600px"></a><br><br><p> Follow for &quot;isDefinedBy&quot; the &quot;The schema.org terms in RDFS+OWL&quot; link <a href="http://host:port/describe/?url=http%3A%2F%2Fschema.rdfs.org%2Fall:" class="absuri">http://host:port/describe/?url=http%3A%2F%2Fschema.rdfs.org%2Fall:</a></p>
+<p> <br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic4.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic4.png" width="600px"></a><br><br></p>
+<p> The magic triple is presented as &quot;sameAs&quot; &quot;<a href="http://schema.rdfs.org/all" class="absuri">http://schema.rdfs.org/all</a>#&quot; .</p>
+<h5><a name="Third Magic Triple"></a>Third Magic Triple</h5>
+<p> Let&#39;s take a look at the initial example document from above, where we have an ontology, classes and properties:</p>
+<br><pre>&lt;http://schema.rdfs.org/all&gt; a owl:Ontology;
+    dct:title &quot;The schema.org terms in RDFS+OWL&quot;@en;
+    dct:description &quot;This is a conversion of the terms defined at schema.org to RDFS and OWL.&quot;@en;
+    foaf:page &lt;http://schema.rdfs.org/&gt;;
+    rdfs:seeAlso &lt;http://schema.org/&gt;;
+    rdfs:seeAlso &lt;http://github.com/mhausenblas/schema-org-rdf&gt;;
+    dct:hasFormat &lt;http://schema.rdfs.org/all.ttl&gt;;
+    dct:hasFormat &lt;http://schema.rdfs.org/all.rdf&gt;;
+    dct:hasFormat &lt;http://schema.rdfs.org/all.nt&gt;;
+
+-- Classes
+schema:Book a rdfs:Class;
+    rdfs:label &quot;Book&quot;@en;
+    rdfs:comment &quot;A book.&quot;@en;
+    rdfs:subClassOf schema:CreativeWork;
+    rdfs:isDefinedBy &lt;http://schema.org/Book&gt;;
+....
+-- Properties
+schema:about a rdf:Property;
+    rdfs:label &quot;About&quot;@en;
+    rdfs:comment &quot;The subject matter of the content.&quot;@en;
+    rdfs:domain schema:CreativeWork;
+    rdfs:range schema:Thing;
+    rdfs:isDefinedBy &lt;http://schema.org/CreativeWork&gt;;
+....
+</pre><p> In the beginning the ontology is described, then each class, property is described too.
+ However are missing triples for description of how the document in question is in a relation with the ontology, the classes and the properties.</p>
+<p>So an Ontology is a document.
+ The characteristics of a document will not contradict those of an Ontology so a <b>3td-magic-triple-add</b> fix can be added:</p>
+<br><pre>owl:Ontology rdfs:subClassOf foaf:Document, bibo:Document .
+</pre><p>The reasoning will be complete!</p>
+<p> Let&#39;s see what the reasoner will show by accessing the following URL: </p>
+<br><pre>http://host:port/describe/?url=http%3A%2F%2Fschema.rdfs.org%2Fall
+</pre><br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic4.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic4.png" width="600px"></a><br><br><p>Follow the attribute &quot;type&quot; value link &quot;Ontology&quot;.</p>
+<p> <br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic5.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic5.png" width="600px"></a><br><br></p>
+<p>The magic triple is presented as attribute &quot;subClassOf&quot; with two values &quot;Document&quot;, respectively:</p>
+<p> </p>
+<br><pre>-- FOAF
+http://kidehen.idehen.net/describe/?url=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2FDocument
+</pre><p> <br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic6.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic6.png" width="600px"></a><br><br></p>
+<p>and</p>
+<br><pre>-- Bibo
+http://localhost:8890/describe/?url=http%3A%2F%2Fpurl.org%2Fontology%2Fbibo%2FDocument
+</pre><p> <br><br><a href="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic7.png" target="_blank"><img src="VirtTipsAndTricksUnderstandingRelationshipSemantics/magic7.png" width="600px"></a><br><br></p>
+<p>See our <a href="http://wiki.usnet.private/dataspace/dav/wiki/Main/VirtSchemaOWL" class="absuri">detailed Guide</a> for How to Convert <a href="http://schema.rdfs.org/all.ttl" class="absuri">http://schema.rdfs.org/all.ttl</a> to our schema definition.</p>
+<p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso Documentation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfig" class="wikiword">Install and Configure Virtuoso Faceted Browser</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService" class="wikiword">VirtuosoFacetsWebService</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoLODSampleTutorial" class="wikiword">Use Faceted Navigation to Explore Virtuoso hosted Linked Data</a></li>
+</ul></div></body></html>

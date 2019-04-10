@@ -1,0 +1,31 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I write custom crawler using PL?"></a>How can I write custom crawler using PL?</h1>
+<p>The following code is an example of loading data via crawler with special function to  generate link for downloading:</p>
+<br><pre>create procedure EUROPEANA_STORE (in _host varchar, in _url varchar, in _root varchar, inout _content varchar, in _s_etag varchar, in _c_type varchar, in store_flag int := 1, in udata any := null, in lev int := 0)
+{
+   declare url varchar;
+   declare xt, xp any;
+   declare old_mode int;
+   xt := xtree_doc (_content, 2);
+   xp := xpath_eval (&#39;//table//tr/td/a[@href]/text()&#39;, xt, 0);
+   commit work;
+   old_mode := log_enable (3,1);
+   foreach (any u in xp) do
+     {
+       u := cast (u as varchar);
+       url := sprintf (&#39;http://semanticweb.cs.vu.nl/europeana/api/export_graph?graph=%U&amp;mimetype=default&amp;format=turtle&#39;, u);
+       dbg_printf (&#39;%s&#39;, u);
+	 {
+	   declare continue handler for sqlstate &#39;*&#39; { 
+	     dbg_printf (&#39;ERROR: %s&#39;, __SQL_MESSAGE);
+	   };
+	   SPARQL LOAD ?:url into GRAPH ?:u;
+	 }
+     }
+   log_enable (old_mode, 1);
+   return WS.WS.LOCAL_STORE (_host, _url, _root, _content, _s_etag, _c_type, store_flag, 0);
+}
+</pre><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/htmlconductorbar.html#contentcrawlerrdf" class="absuri">Set Up the Content Crawler to Gather RDF</a> </li>
+</ul></div></body></html>

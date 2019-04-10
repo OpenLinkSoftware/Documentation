@@ -1,0 +1,76 @@
+%META:TOPICPARENT{name="VirtAWSPublicDataSets"}%
+
+---++DBpedia 3.3 Clustered Server Edition
+  
+|<strong>Description:</strong>| DBpedia 3.3 (a Virtuoso based Linked Open Data Space) |
+|<strong>Virtuoso Server Type:</strong>  | Cluster Edition |
+|<strong>Snapshot ID (Linux/Unix):</strong>  | snap-be70f5d7 |
+|<strong>Size:</strong> | 80GB |
+|<strong>Creation Date:</strong> | 2009-10-17 |
+|<strong>Last Updated:</strong>  | 2009-10-17 |
+|<strong>License:</strong> | Creative Commons: Attribution Share Alike  |
+|<strong>Submitted By:<strong>| OpenLink Software |
+|<strong>Source:</strong> | http://www.openlinksw.com |
+
+   1 If not already running, instantiate a [[VirtInstallationEC2][Virtuoso EC2 AMI instance]]
+   1 From the [[https://console.aws.amazon.com/ec2/home][AWS Management Console]], select the "Volumes" link under the "Elastic Block Storage" section
+ %BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets01.png" style="wikiautogen"/>%BR%%BR%
+   1 Click on the "Create Volume" button and set "Size" to 80GB, "Availability Zone" to match the zone of your running Virtuoso EC2 AMI instance and "Snaphot" to the required DBpedia 3.3 Cluster snapshot. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets02.png" style="wikiautogen"/>%BR%%BR%
+   1 Select the newly created volume and click on the "Attach Volume" button to attach the volume to the required Virtuoso EC2 AMI instance
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets03.png" style="wikiautogen"/>%BR%%BR%
+   1 Select the "Instance"  and "Device" the volume should be attached to and click "Attach" 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets04.png" style="wikiautogen"/>%BR%%BR%
+   1 The volume will now be listed as "attached" to the specified Virtuoso EC2 AMI instance id.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets05.png" style="wikiautogen"/>%BR%%BR%
+   1 Note a list of available Virtuoso public snapshots can be obtain by select the "Snapshot" link in the AWS console, selecting "Public Snapshots" from the viewing drop down list box and search for "Virtuoso". A volume can be created for any of these snapshots and attached to a Virtuoso EC2 AMI instance
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets06.png" style="wikiautogen"/>%BR%%BR%
+   1 "ssh" into the Virtuoso EC2 AMI instance
+<verbatim>
+$ ssh -i MyKeyPair.pem root@<ec2-ami-public-dns-cname>
+Last login: Sat Oct 17 09:02:39 2009 from 217.43.105.235 
+[root@domU-12-31-39-00-00-61 virtuoso]# mkdir /opt/virtuoso/dbpedia
+[root@domU-12-31-39-00-00-61 virtuoso]# mount /dev/sdh /opt/virtuoso/dbpedia
+[root@domU-12-31-39-00-00-61 virtuoso]# ls -l /opt/virtuoso/dbpedia/
+total 40
+lrwxrwxrwx 1 root root    17 Oct 12 15:12 bin -> /opt/virtuoso/bin
+drwxr-xr-x 2  500  500  4096 Apr 28 13:01 data
+lrwxrwxrwx 1 root root    21 Oct 12 15:12 install -> /opt/virtuoso/install
+drwx------ 2  500  500 16384 Apr  8  2009 lost+found
+-rwxr-xr-x 1 root root  3428 Oct 12 15:12 mk_cluster.sh
+drwxr-xr-x 4 root root  4096 Oct 12 17:54 s01
+drwxr-xr-x 4 root root  4096 Oct 12 17:54 s02
+drwxr-xr-x 4 root root  4096 Oct 12 17:54 s03
+drwxr-xr-x 4 root root  4096 Oct 12 17:54 s04
+lrwxrwxrwx 1 root root    34 Oct 12 16:43 virtuoso -> /opt/virtuoso/bin/virtuoso-iodbc-t
+</verbatim>
+   1 To run the newly attached data set, first setup your Virtuoso environment
+<verbatim>
+[root@domU-12-31-39-00-00-61 ~]# cd /opt/virtuoso
+[root@domU-12-31-39-00-00-61 virtuoso]# . ./virtuoso-environment.sh
+</verbatim>
+   1 Change directory to the mounted data set and set the VIRTUOSO_HOME environment variable to this location
+<verbatim>
+[root@domU-12-31-39-00-00-61 virtuoso]# cd /opt/virtuoso/dbpedia33
+[root@domU-12-31-39-00-00-61 dbpedia33]# export VIRTUOSO_HOME=`pwd`
+</verbatim>
+   1 Run the "virtuoso-start.sh" script to start the Virtuoso server containing the attached data set
+<verbatim>
+[root@domU-12-31-39-00-00-61 dbpedia]# virtuoso-start.sh
+Starting Virtuoso instance in [s01]
+Starting Virtuoso instance in [s02]
+Starting Virtuoso instance in [s03]
+Starting Virtuoso instance in [s04]
+[root@domU-12-31-39-00-00-61 dbpedia]#
+</verbatim>
+   1 Note the Virtuoso Server "dba" user's password is set to the default of "dba" for the dataset, it is recommended this be changed to a suitably secure password using the "System Admin -> User Accounts" tab of the Virtuoso Conductor (http://ec2-ami-public-dns-cname/conductor).
+%BR%%BR%
+   1 The Virtuoso hosted data set can now be explored using a HTML browser or queried from the SPARQL or Facet Browser web service endpoints.  For example in the case of the DBpedia 3.3 datasets
+   * A description of the resource Bob Marley can be viewed as:  http://ec2-ami-public-dns-cname/resource/Bob_Marley 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets07.png" style="wikiautogen"/>%BR%%BR%
+   *  A Faceted Search can be performed on a resource at http://ec2-ami-public-dns-cname/fct
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets08.png" style="wikiautogen"/>%BR%
+%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets09.png" style="wikiautogen"/>%BR%%BR%
+%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets10.png" style="wikiautogen"/>%BR%%BR%
+   *  A SPARQL query can be run to obtain information on a resource at http://ec2-ami-public-dns-cname/sparql
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets11.png" style="wikiautogen"/>%BR%

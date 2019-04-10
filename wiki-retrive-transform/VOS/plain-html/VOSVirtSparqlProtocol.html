@@ -1,0 +1,87 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICINFO{author="RumiTsekova" date="1154521482" format="1.1" version="1.1"}%--><p> </p>
+<!--End of %META:TOPICINFO{author="RumiTsekova" date="1154521482" format="1.1" version="1.1"}%--> <!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--></p>
+<h2><a name="Virtuoso SPARQL Query Service"></a><notoc></notoc>Virtuoso SPARQL Query Service</h2>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Virtuoso%20SPARQL%20Query%20Service">Virtuoso SPARQL Query Service</a></li>
+<ul><li><a href="#Introduction">Introduction</a></li> <li><a href="#Service%20Endpoint">Service Endpoint</a></li> <li><a href="#Request%20Methods">Request Methods</a></li> <li><a href="#Functions">Functions</a></li> <li><a href="#Request%20Parameters">Request Parameters</a></li> <li><a href="#Response%20Codes">Response Codes</a></li> <li><a href="#Response%20Format">Response Format</a></li> <li><a href="#Additional%20Response%20Formats%20--%20SELECT">Additional Response Formats -- SELECT</a></li> <li><a href="#Examples">Examples</a></li> <li><a href="#Implementation%20Notes">Implementation Notes</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h3><a name="Introduction"></a> Introduction</h3>
+<p>The Virtuoso SPARQL query service implements the <a href="http://www.w3.org/TR/rdf-sparql-protocol/" class="absuri">SPARQL Protocol for RDF</a> (W3C Working Draft 25 January 2006) providing SPARQL query processing for RDF data available on the open internet.</p>
+<p>The query processor extends the standard protocol to provide support for multiple output formats.
+ At present this uses additional query parameters.</p>
+<p> </p>
+<h3><a name="Service Endpoint"></a> Service Endpoint</h3>
+<p>Virtuoso reserves the path &#39;/sparql/&#39; and a synonym path &#39;/SPARQL/&#39; for SPARQL service.</p>
+<p>In the current implementation, Virtuoso defines virtual directories for HTTP requests that come to the port specified as &#39;ServerPort<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ServerPort&parent=VOSVirtSparqlProtocol" class="wikiword">?</a>&#39; in the &#39;[HTTPServer]&#39; section of Virtuoso configuration file and refer to one of these two path strings.
+ So if the Virtuoso installation on host example.com listens for HTTP requests on port 8080 then client applications should use the &#39;service endpoint&#39; string equal to &#39;<a href="http://example.com:8080/sparql/&quot;." class="absuri">http://example.com:8080/sparql/&#39;.</a></p>
+<p>Both GET and POST requests are supported by both server and client.
+ The server recognizes the &#39;Accept: ...&#39; line of request header to find MIME types preferred by the connected client and adjust the output mode of the response.
+The client chooses between GET and POST automatically, using the length of query text as a criterion.</p>
+<p>If the SPARQL endpoint is accessed without any url and query entered, will be shown a page with interactive query form.</p>
+<h3><a name="Request Methods"></a> Request Methods</h3>
+
+<table class="wikitable">
+<tr><td>Method </td><td>Supported?</td><td> Notes </td></tr>
+<tr><td>GET </td><td>Yes </td><td> short queries are sent in GET mode </td></tr>
+<tr><td>POST </td><td>Yes </td><td> Queries longer than 1900 bytes are POST-ed </td></tr>
+<tr><td>DELETE</td><td colspan="2">No</td></tr>
+<tr><td>PUT</td><td>No</td></tr>
+</table>
+<h3><a name="Functions"></a> Functions</h3>
+<p>The SPARQL client can be invoked by three similar functions.</p>
+
+<table class="wikitable">
+<tr><td>Function</td><td>Notes</td></tr>
+<tr><td>DB.DBA.SPARQL_REXEC</td><td>behaves like DBA.SPARQL_EVAL, but executes the query on the specified server. The procedure does not return anything. Instead, it creates a result set. </td></tr>
+<tr><td>DB.DBA.SPARQL <u>REXEC_TO_ARRAY</u></td><td>behaves like DBA.SPARQL_EXEC_TO_ARRAY (), but executes the query on the specified server. The function return a vector of rows, where every row is represented by a vector of values of fields.</td></tr>
+<tr><td>DB.DBA.SPARQL_REXEC_WITH_META</td><td> has no local &#39;SPARQL_EVAL&#39; analog. It produces not only an array of result rows but also array of metadata about result set in a format used by the exec () function.</td></tr>
+</table>
+<h3><a name="Request Parameters"></a> Request Parameters</h3>
+
+<table class="wikitable">
+<tr><td> Parameter </td><td> Notes </td><td> Required? </td><td> Occurrence </td></tr>
+<tr><td> service </td><td> service URI such as &#39;<a href="http://demo.openlinksw.com/sparql/&quot;" class="absuri">http://demo.openlinksw.com/sparql/&#39;</a> </td><td> Yes</td><td> </td></tr>
+<tr><td> query </td><td> text of the query </td><td> Yes</td><td> </td></tr>
+<tr><td> dflt_graph </td><td> default graph URI (string or NULL) </td><td> No </td><td> </td></tr>
+<tr><td> named_graphs </td><td> vector of named graphs (or NULL to not override what&#39;s specified in the query </td><td> No </td><td> </td></tr>
+<tr><td> req_hdr </td><td> additional HTTP header lines that should be passed to the service; &#39;Host: ...&#39; is most popular </td><td> No </td><td> </td></tr>
+<tr><td> maxrows </td><td> limit on numbers of rows that should be returned (actual size of result set may differ) </td><td> No </td><td> </td></tr>
+<tr><td> bnode_dict </td><td> dictionary of known blank node names, or NULL for usual loading </td><td> No </td><td> </td></tr>
+</table>
+<h3><a name="Response Codes"></a> Response Codes</h3>
+<h3><a name="Response Format"></a> Response Format</h3>
+<p>All standard MIME types of SPARQL Protocol are supported.</p>
+
+<table class="wikitable">
+<tr><td>Mimetype</td><td>Supported for result of Query</td></tr>
+<tr><td>&#39;application/sparql-results+xml&#39;</td><td>SELECT</td></tr>
+<tr><td>&#39;application/sparql-results+xml&#39;</td><td>ASK</td></tr>
+<tr><td>&#39;application/rdf+xml&#39;</td><td>CONSTRUCT</td></tr>
+<tr><td>&#39;application/rdf+xml&#39;</td><td>DESCRIBE</td></tr>
+<tr><td>&#39;text/rdf+n3&#39;</td><td>CONSTRUCT</td></tr>
+<tr><td>&#39;text/rdf+n3&#39;</td><td>DESCRIBE</td></tr>
+</table>
+<p>If the HTTP header returned by the remote server does not contain &#39;Content-Type&#39; line, the MIME type may be guessed from the text of the returned body.
+Error messages returned from the service are returned as XML documents, using the mime type application/xml.
+ The documents consist of a single element containing an error message.</p>
+<h3><a name="Additional Response Formats -- SELECT"></a> Additional Response Formats -- SELECT</h3>
+<p>Use the format parameter to select one of the following alternate output formats:</p>
+
+<table class="wikitable">
+<tr><td>Format Value</td><td> Description</td><td> Mimetype</td></tr>
+<tr><td>HTML</td><td> HTML document containing query summary and tabular results </td><td> text/html</td></tr>
+<tr><td>JSON </td><td>JSON serialization of results. Conforms to the draft specification Serializing SPARQL Query Results in JSON  </td><td> application/sparql-results+json</td></tr>
+<tr><td>Javascript</td><td> Javascript serialization of results. Generates an HTML table with the CSS class sparql. The table contains a column indicating row number and additional columns for each query variable. Each query solution contributes one row of the table. Unbound variables are indicated with a non-breaking space in the appropriate table cells. </td><td> application/javascript</td></tr>
+<tr><td>XML</td><td> </td><td> application/sparql-results+xml </td></tr>
+<tr><td>TURTLE</td><td> </td><td> text/rdf+n3 </td></tr>
+</table>
+<p> </p>
+<h3><a name="Examples"></a> Examples</h3>
+<p>There is also a live  <a href="http://demo.openlinksw.com/sparql_demo" class="absuri">Virtuoso Demo Server</a> instance available at all times for experimentation and demonstrations.
+ It includes a collection of saved queries demonstrating Virtuoso&#39;s implementation of the <a href="http://www.w3.org/TR/rdf-dawg-uc/" class="absuri">DAWG&#39;s SPARQL test-suite</a>; a collection of SPARQL query language use-cases that enables interactive and simplified testing of a RDF Triple Store&#39;s SPARQL implementation.</p>
+<h3><a name="Implementation Notes"></a> Implementation Notes</h3>
+<p>This service has been implemented using <a href="http://docs.openlinksw.com/virtuoso" class="absuri">OpenLink Virtuoso</a>.</p>
+<!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryWebSite" class="wikiword">CategoryWebSite</a>  <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryOpenSource" class="wikiword">CategoryOpenSource</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategorySPARQL" class="wikiword">CategorySPARQL</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a></p>
+<p> </p>
+</div></body></html>

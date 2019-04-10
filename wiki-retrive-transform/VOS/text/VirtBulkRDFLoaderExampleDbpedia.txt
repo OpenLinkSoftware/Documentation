@@ -1,0 +1,59 @@
+%META:TOPICPARENT{name="VirtBulkRDFLoader"}%
+
+
+---+ Virtuoso Bulk Load Example: DBpedia data sets
+
+The following example demonstrates how to upload the DBpedia data sets into Virtuoso using the Bulk Loading Sequence.
+
+   1 Assuming there is a folder named "<code>tmp</code>" in your filesystem, and it is within a directory specified in the <b><code>[[http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#fp_acliniallowed][DirsAllowed]]</code></b> param defined in your <code>virtuoso.ini</code> file.
+   1 Load the required DBpedia data sets into the "<code>tmp</code>" folder
+      * The latest data sets can be downloaded from the [[http://wiki.dbpedia.org/Downloads][DBpedia Download]] page. Note the compressed bzip'ed "<code>.bz2</code>" data set files need to be uncompressed first as the bulk loader scripts only supports the auto extraction of gzip'ed "<code>.gz</code>" files.
+   1 If it hasn't already been, execute the [[VirtBulkRDFLoaderScript][Bulk Loading script]].
+   1 Register the graph IRI under which the triples are to be loaded, e.g., "<code><nowiki>http://dbpedia.org</nowiki></code>":
+<verbatim>
+SQL> ld_dir ('tmp', '*.*', 'http://dbpedia.org');
+Done. -- 90 msec.
+</verbatim>
+      * Note that while this procedure will also work with gzip'ed files, it is important to keep the pattern: <code><nowiki>&lt;name&gt;.&lt;ext&gt;.gz</nowiki></code>, e.g., '<code><nowiki>ontology.owl.gz</nowiki></code>'  or <code><nowiki>ontology.nt.gz</nowiki></code>
+      * Note that if there are other data files in your folder (<code>tmp</code>), then their content will also be loaded into the specified graph.
+%BR%%BR%
+   1 Create a file named <b><code>global.graph</code></b> in the "<code>tmp</code>" folder, with its entire content being the URI of the desired target graph, e.g.,
+<verbatim>
+http://dbpedia.org
+</verbatim>
+   1 Finally, execute the <code><nowiki>rdf_loader_run</nowiki></code> procedure.  This may take some time, depending on the size of the data sets.
+<verbatim>
+SQL> rdf_loader_run ();
+Done. -- 100 msec.
+</verbatim>
+   1 As a result, the Virtuoso log should contain notification that the loading has completed: 
+<verbatim>
+10:21:50 PL LOG: Loader started
+10:21:50 PL LOG: No more files to load. Loader has finished
+</verbatim>
+   1 Run a <code><nowiki>checkpoint</nowiki></code> to commit all transactions to the database.
+<verbatim>
+SQL> checkpoint;
+Done. -- 53 msec.
+</verbatim>
+   1 To check the inserted triples for the given graph, execute a query similar to -- 
+<verbatim>
+SQL> SPARQL
+SELECT COUNT(*) 
+  FROM <http://dbpedia.org>
+  WHERE 
+    {
+      ?s ?p ?o
+    } ;
+</verbatim>
+   1 Install the [[https://virtuoso.openlinksw.com/download/][DBpedia]] and [[https://virtuoso.openlinksw.com/download/][RDF Mappers]] VAD packages, using either the Virtuoso Conductor or the following manual commands:
+<verbatim>
+SQL> vad_install ('dbpedia_dav.vad', 0);
+SQL> vad_install ('rdf_mappers_dav.vad', 0);
+</verbatim>
+   1 The Virtuoso-hosted data set can now be explored using a HTML browser, or queried from the SPARQL or Faceted Browser web service endpoints. For example, with the DBpedia 3.5.1 data sets, a description of the resource Bob Marley can be viewed as: <code><nowiki>http://&lt;your-cname&gt;:&lt;your-port&gt;/resource/Bob_Marley </nowiki></code>
+ %BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets07.png" style="wikiautogen"/> %BR%%BR%
+
+---++Related
+
+   * [[VirtBulkRDFLoader][Virtuoso Bulk data set loader]]

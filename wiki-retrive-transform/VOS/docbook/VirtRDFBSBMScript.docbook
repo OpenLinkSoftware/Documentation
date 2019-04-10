@@ -1,0 +1,457 @@
+<docbook><section><title>VirtRDFBSBMScript</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">BSBM Linked Data Views Script to set up your own instance</bridgehead>
+<programlisting>create procedure DB.DBA.exec_no_error(in expr varchar)
+{
+	declare state, message, meta, result any;
+	exec(expr, state, message, vector(), 0, meta, result);
+}
+;
+
+
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.ProductFeature (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar(1500) not null,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.ProductFeature to public
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.ProductType (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar(1500) not null,
+  parent integer,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.ProductType to public
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.Producer (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar(1500) not null,
+  homepage varchar(100) not null,
+  country char(2) not null,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.Producer to public
+;
+DB.DBA.exec_no_error(&#39;create index producer_homepage on DB.DBA.Producer (homepage)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index producer_country on DB.DBA.Producer (country)&#39;)
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.Product (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar not null,
+  producer integer not null,
+  propertyNum1 integer,
+  propertyNum2 integer,
+  propertyNum3 integer,
+  propertyNum4 integer,
+  propertyNum5 integer,
+  propertyNum6 integer,
+  propertyTex1 varchar(250),
+  propertyTex2 varchar(250),
+  propertyTex3 varchar(250),
+  propertyTex4 varchar(250),
+  propertyTex5 varchar(250),
+  propertyTex6 varchar(250),
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.Product to public
+;
+DB.DBA.exec_no_error(&#39;create index product_lbl on DB.DBA.Product (label)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create unique index product_producer_nr on DB.DBA.Product (producer, nr)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index product_pn1 on DB.DBA.Product (propertyNum1)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index product_pn2 on DB.DBA.Product (propertyNum2)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index product_pn3 on DB.DBA.Product (propertyNum3)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create text index on DB.DBA.Product (label) with key nr&#39;)
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.ProductTypeProduct (
+  product integer not null,
+  productType integer not null,
+  PRIMARY KEY (product, productType)
+)&#39;)
+;
+grant select on DB.DBA.ProductTypeProduct to public
+;
+DB.DBA.exec_no_error(&#39;create index ptype_inv on DB.DBA.ProductTypeProduct (productType, product)&#39;)
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.ProductFeatureProduct (
+  product integer not null,
+  productFeature integer not null,
+  PRIMARY KEY (product, productFeature)
+)&#39;)
+;
+grant select on DB.DBA.ProductFeatureProduct to public
+;
+DB.DBA.exec_no_error(&#39;create index pfeature_inv on DB.DBA.ProductFeatureProduct (productFeature, product)&#39;)
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.Vendor (
+  nr integer primary key,
+  label varchar(100) not null,
+  comment varchar not null,
+  homepage varchar(100) not null,
+  country char(2) not null,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.Vendor to public
+;
+DB.DBA.exec_no_error(&#39;create index vendor_country on DB.DBA.Vendor (country)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index vendor_homepage on DB.DBA.Vendor (homepage)&#39;)
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.Offer (
+  nr integer primary key,
+  product integer not null,
+  producer integer,
+  vendor integer not null,
+  price double precision not null,
+  validFrom date not null,
+  validTo date not null,
+  deliveryDays integer not null,
+  offerWebpage varchar(100) not null,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.Offer to public
+;
+DB.DBA.exec_no_error(&#39;create index offer_product on DB.DBA.Offer (product, deliveryDays)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create unique index offer_producer_product on DB.DBA.Offer (producer, product, nr)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index offer_validto on DB.DBA.Offer (validTo)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index offer_vendor_product on DB.DBA.Offer (vendor, product)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index offer_webpage on DB.DBA.Offer (offerWebpage)&#39;)
+;
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.Person (
+  nr integer primary key,
+  name varchar(30) not null,
+  mbox_sha1sum char(40) not null,
+  country char(2) not null,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.Person to public
+;
+
+DB.DBA.exec_no_error(&#39;CREATE TABLE DB.DBA.Review (
+  nr integer primary key,
+  product integer not null,
+  producer integer,
+  person integer not null,
+  reviewDate date not null,
+  title varchar(250) not null,
+  text long varchar not null,
+  textlang char(2) not null,
+  rating1 integer,
+  rating2 integer,
+  rating3 integer,
+  rating4 integer,
+  publisher integer not null,
+  publishDate date not null
+)&#39;)
+;
+grant select on DB.DBA.Review to public
+;
+DB.DBA.exec_no_error(&#39;create unique index review_product on DB.DBA.Review (product, producer, nr)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create index review_person_1 on DB.DBA.Review (person, product, title)
+create index review_person on DB.DBA.Review (person)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create unique index review_product_person_producer on DB.DBA.Review (product, person, producer, nr)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create unique index review_producer_product on DB.DBA.Review (producer, product, nr)&#39;)
+;
+DB.DBA.exec_no_error(&#39;create bitmap index review_textlang on DB.DBA.Review (textlang)&#39;)
+;
+DB.DBA.XML_SET_NS_DECL (&#39;foaf&#39;, &#39;http://xmlns.com/foaf/0.1/&#39;, 2)
+;
+DB.DBA.XML_SET_NS_DECL (&#39;dc&#39;, &#39;http://purl.org/dc/elements/1.1/&#39;, 2)
+;
+DB.DBA.XML_SET_NS_DECL (&#39;xsd&#39;, &#39;http://www.w3.org/2001/XMLSchema-datatypes/&#39;, 2)
+;
+DB.DBA.XML_SET_NS_DECL (&#39;rev&#39;, &#39;http://purl.org/stuff/rev#&#39;, 2)
+;
+DB.DBA.XML_SET_NS_DECL (&#39;bsbm&#39;, &#39;http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/&#39;, 2)
+;
+DB.DBA.XML_SET_NS_DECL (&#39;bsbm-inst&#39;, &#39;http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/&#39;, 2)
+;
+
+sparql drop quad map bsbm:SingleGraphView
+;
+
+sparql create iri class bsbm:ProductFeature-iri &quot;http://^{URIQADefaultHost}^/bsbm/ProductFeature%d#this&quot; (in nr integer)
+;
+
+sparql create iri class bsbm:ProductType-iri &quot;http://^{URIQADefaultHost}^/bsbm/ProductType%d#this&quot; (in nr integer)
+;
+
+sparql create iri class bsbm:Producer-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromProducer%d/Producer%d#this&quot; (in producer integer, in nr integer)
+;
+
+sparql create iri class bsbm:Product-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromProducer%d/Product%d#this&quot; (in producer integer, in nr integer)
+;
+
+sparql create iri class bsbm:Vendor-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromVendor%d/Vendor%d#this&quot; (in vendor integer, in nr integer)
+;
+
+sparql create iri class bsbm:Offer-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromVendor%d/Offer%d#this&quot; (in vendor integer, in nr integer)
+;
+
+sparql create iri class bsbm:StdInst-iri &quot;http://^{URIQADefaultHost}^/bsbm/StandardizationInstitution%d#this&quot; (in publisher integer)
+;
+
+sparql create iri class bsbm:Person-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromRatingSite%d/Person%d#this&quot; (in publisher integer, in nr integer)
+;
+
+sparql create iri class bsbm:Review-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromRatingSite%d/Review%d#this&quot; (in site integer, in nr integer)
+;
+
+sparql create iri class bsbm:ISO3166-country-iri &quot;http://downlode.org/rdf/iso-3166/countries#%U&quot; (in code varchar)
+;
+
+sparql create iri class bsbm:homepage-iri &quot;%s&quot; (in homepage varchar) option (returns &quot;http://%s&quot;)
+;
+
+sparql create iri class bsbm:RatingSite-iri &quot;http://^{URIQADefaultHost}^/bsbm/dataFromRatingSite%d/RatingSite%d#this&quot; (in rsite integer, in nr integer)
+;
+
+sparql
+alter quad storage virtrdf:DefaultQuadStorage
+from DB.DBA.ProductFeature as pfeature
+from DB.DBA.ProductType as ptype
+from DB.DBA.Producer as producer
+from DB.DBA.Product as product text literal product.label
+from DB.DBA.ProductTypeProduct as ptypeproduct
+from DB.DBA.ProductFeatureProduct as pfeatureproduct
+from DB.DBA.Vendor as vendor
+from DB.DBA.Offer as offer
+from DB.DBA.Person as person
+from DB.DBA.Review as review
+where (^{product.}^.nr = ^{ptypeproduct.}^.product)
+where (^{product.}^.nr = ^{pfeatureproduct.}^.product)
+  {
+    create bsbm:SingleGraphView as graph iri (&quot;http://^{URIQADefaultHost}^/bsbm&quot;) option (exclusive)
+      {
+	bsbm:Product-iri (product.producer, product.nr)
+          a bsbm:Product ;
+	  rdfs:label product.label ;
+          rdfs:comment product.comment ;
+          bsbm:producer bsbm:Producer-iri (product.producer, product.producer) ;
+          bsbm:productPropertyTextual1 product.propertyTex1 ;
+          bsbm:productPropertyTextual2 product.propertyTex2 ;
+          bsbm:productPropertyTextual3 product.propertyTex3 ;
+          bsbm:productPropertyTextual4 product.propertyTex4 ;
+          bsbm:productPropertyTextual5 product.propertyTex5 ;
+          bsbm:productPropertyTextual6 product.propertyTex6 ;
+          bsbm:productPropertyNumeric1 product.propertyNum1 ;
+          bsbm:productPropertyNumeric2 product.propertyNum2 ;
+          bsbm:productPropertyNumeric3 product.propertyNum3 ;
+          bsbm:productPropertyNumeric4 product.propertyNum4 ;
+          bsbm:productPropertyNumeric5 product.propertyNum5 ;
+          bsbm:productPropertyNumeric6 product.propertyNum6 ;
+          rdf:type bsbm:ProductType-iri (ptypeproduct.productType) ;
+          bsbm:productFeature bsbm:ProductFeature-iri (pfeatureproduct.productFeature) ;
+          dc:publisher bsbm:Producer-iri (product.publisher, product.publisher) ;
+          dc:date product.publishDate .
+
+        bsbm:ProductType-iri (ptype.nr)
+          a bsbm:ProductType ;
+          rdfs:label ptype.label ;
+          rdfs:comment ptype.comment ;
+          rdfs:subClassOf bsbm:ProductType-iri (ptype.parent) ;
+          dc:publisher bsbm:StdInst-iri (ptype.publisher) ;
+          dc:date ptype.publishDate .
+
+        bsbm:ProductFeature-iri (pfeature.nr)
+          a bsbm:ProductFeature ;
+          rdfs:label pfeature.label ;
+          rdfs:comment pfeature.comment ;
+          dc:publisher bsbm:StdInst-iri (pfeature.publisher) ;
+          dc:date pfeature.publishDate .
+
+        bsbm:Producer-iri (producer.nr, producer.nr)
+          a bsbm:Producer ;
+          rdfs:label producer.label ;
+          rdfs:comment producer.comment ;
+          foaf:homepage bsbm:homepage-iri (producer.homepage) ;
+          bsbm:country bsbm:ISO3166-country-iri (producer.country) ;
+          dc:publisher bsbm:Producer-iri (producer.nr, producer.nr) ;
+          dc:date producer.publishDate .
+
+        bsbm:Vendor-iri (vendor.nr, vendor.nr)
+          a bsbm:Vendor ;
+          rdfs:label vendor.label ;
+          rdfs:comment vendor.comment ;
+          foaf:homepage bsbm:homepage-iri (vendor.homepage) ;
+          bsbm:country bsbm:ISO3166-country-iri (vendor.country) ;
+          dc:publisher bsbm:Vendor-iri (vendor.publisher, vendor.publisher) ;
+          dc:date vendor.publishDate .
+
+        bsbm:Offer-iri (offer.vendor, offer.nr)
+          a bsbm:Offer ;
+          bsbm:product bsbm:Product-iri (offer.producer, offer.product) ;
+          bsbm:vendor bsbm:Vendor-iri (offer.vendor, offer.vendor) ;
+          bsbm:price offer.price ;
+          bsbm:validFrom offer.validFrom ;
+          bsbm:validTo offer.validTo ;
+          bsbm:deliveryDays offer.deliveryDays ;
+          bsbm:offerWebpage bsbm:homepage-iri (offer.offerWebpage) ;
+          dc:publisher bsbm:Vendor-iri (offer.publisher, offer.publisher) ;
+          dc:date offer.publishDate .
+
+        bsbm:Person-iri (person.publisher, person.nr)
+          a foaf:Person ;
+          foaf:name person.name ;
+          foaf:mbox_sha1sum person.mbox_sha1sum ;
+          bsbm:country bsbm:ISO3166-country-iri (person.country) ;
+          dc:publisher bsbm:RatingSite-iri (person.publisher, person.publisher) ;
+          dc:date person.publishDate .
+
+        bsbm:Review-iri (review.publisher, review.nr)
+          a rev:Review ;
+          bsbm:reviewFor bsbm:Product-iri (review.producer, review.product) ;
+          bsbm:producer bsbm:Producer-iri (review.producer, review.producer) ;
+          rev:reviewer bsbm:Person-iri (review.publisher, review.person) ;
+          bsbm:reviewDate review.reviewDate ;
+          dc:title review.title ;
+          rev:text review.text lang review.textlang ;
+          bsbm:rating1 review.rating1 ;
+          bsbm:rating2 review.rating2 ;
+          bsbm:rating3 review.rating3 ;
+          bsbm:rating4 review.rating4 ;
+          dc:publisher bsbm:RatingSite-iri (review.publisher, review.publisher) ;
+          dc:date review.publishDate .
+      }
+  }
+;
+
+delete from db.dba.url_rewrite_rule_list where urrl_list like &#39;bsbm_%&#39;;
+delete from db.dba.url_rewrite_rule where urr_rule like &#39;bsbm_%&#39;;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;bsbm_rule2&#39;,
+    1,
+    &#39;([^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/bsbm%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&amp;format=%U&#39;,
+    vector(&#39;path&#39;, &#39;path&#39;, &#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;bsbm_rule1&#39;,
+    1,
+    &#39;([^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/about/html/http/^{URIQADefaultHost}^%s%%23this&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;bsbm_rule3&#39;,
+    1,
+    &#39;(/[^#]*)/\x24&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;%U&#39;,
+    vector(&#39;path&#39;),
+    null,
+    null,
+    0,
+    null
+    );
+
+create procedure DB.DBA.REMOVE_BSBM_RDF_DET()
+{
+  declare colid int;
+  colid := DAV_SEARCH_ID(&#39;/DAV/home/demo/bsbm&#39;, &#39;C&#39;);
+  if (colid &lt; 0)
+    return;
+  update WS.WS.SYS_DAV_COL set COL_DET=null where COL_ID = colid;
+}
+;
+
+DB.DBA.REMOVE_BSBM_RDF_DET();
+
+drop procedure DB.DBA.REMOVE_BSBM_RDF_DET;
+
+create procedure DB.DBA.BSBM_MAKE_RDF_DET()
+{
+    declare uriqa_str varchar;
+    uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+    uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/bsbm&#39;;
+    DB.DBA.&quot;RDFData_MAKE_DET_COL&quot; (&#39;/DAV/home/demo/bsbm/RDFData/&#39;, uriqa_str, NULL);
+    VHOST_REMOVE (lpath=&gt;&#39;/bsbm/data/rdf&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/bsbm/data/rdf&#39;, ppath=&gt;&#39;/DAV/home/demo/bsbm/RDFData/All/&#39;, is_dav=&gt;1, vsp_user=&gt;&#39;dba&#39;);
+}
+;
+
+DB.DBA.BSBM_MAKE_RDF_DET();
+
+drop procedure DB.DBA.BSBM_MAKE_RDF_DET;
+
+-- procedure to convert path to DET resource name
+create procedure DB.DBA.BSBM_DET_REF (in par varchar, in fmt varchar, in val varchar)
+{
+  declare res, iri any;
+  declare uriqa_str varchar;
+  uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/bsbm&#39;;
+  iri := uriqa_str || replace(val, &#39;/&#39;, &#39;_&#39;);
+  res := sprintf (&#39;iid (%d).rdf&#39;, iri_id_num (iri_to_id (iri)));
+  return sprintf (fmt, res);
+}
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;bsbm_rdf&#39;, 1,
+    &#39;/bsbm/(.*)&#39;, vector(&#39;path&#39;), 1, 
+    &#39;/bsbm/data/rdf/%U&#39;, vector(&#39;path&#39;),
+    &#39;DB.DBA.BSBM_DET_REF&#39;,
+    &#39;application/rdf.xml&#39;,
+    2,  
+    303);
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;bsbm_rule_list1&#39;,
+    1,
+    vector (
+                &#39;bsbm_rule1&#39;,
+                &#39;bsbm_rule2&#39;,
+                &#39;bsbm_rule3&#39;,
+                &#39;bsbm_rdf&#39;
+          ));
+
+DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/bsbm&#39;);
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/bsbm&#39;, ppath=&gt;&#39;/DAV/home/demo/bsbm/&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1,
+           is_brws=&gt;0, opts=&gt;vector (&#39;url_rewrite&#39;, &#39;bsbm_rule_list1&#39;));
+
+</programlisting></section></docbook>

@@ -1,0 +1,1048 @@
+---+Pivot Collections
+
+---++Contents
+
+Part 1: Introduction
+   * [[#AncIntroduction][Introduction]]
+      * [[#AncCreatingCollections][Creating Collections]]
+      * [[#AncVirtuosoSupport][Virtuoso Support for Pivot Collections]]
+      * [[#AncPivotViewer][<nowiki>PivotViewer</nowiki>]]
+         * [[#AncPivotViewerCombo][Combining A Human UI with Machine Readable Data]]
+         * [[#AncPivotViewerHypermedia][A Viewer for Hypermedia-based Structured Data]]
+   * [[#AncConfiguringVirtuoso][Configuring Virtuoso's CXML Support]]
+      * [[#AncVerifyingYourInstallation][Verifying your installation]]
+      * [[#AncImageMagick][<nowiki>ImageMagick</nowiki>]]
+      * [[#AncCxmlGenerationFromSparql][CXML Generation from /sparql]]
+
+Part 2: <nowiki>SparqlCxml</nowiki>
+   * [[#AncSparqlCxml][<nowiki>SparqlCxml</nowiki>]]
+      * [[#AncKeyParts][<nowiki>PivotViewer & Collection XML</nowiki> - Key Parts]]
+         * [[#AncPivotViewerUI][<nowiki>PivotViewer</nowiki> UI]]
+         * [[#AncCollectionXml][Collection XML]]
+      * [[#AncSparqlEndpointCxmlExtensions][SPARQL Endpoint CXML Extensions]]
+      * [[#AncRdfToCxmlMappingBasicApproach][RDF to CXML Mapping - The Basic Approach]]
+         * [[#AncRdfToCxmlMappingSelect][SELECT]]
+         * [[#AncRdfToCxmlMappingDescribe][DESCRIBE and CONSTRUCT]]
+      * [[#AncDefaultSettings][Default Settings]]
+      * [[#AncFacetTypeAutoDetection][Auto-Detection of Facet Type]]
+      * [[#AncReservedQueryVariables][<nowiki>SparqlCxml</nowiki> Reserved Query Variables]]
+         * [[#AncReservedQueryVariablesExamples][Examples]]
+         * [[#AncQueryVariableOrder][Query Variable Order]]
+         * [[#AncReservedGeoQueryVariables][Reserved Query Variables for Geodata]]
+      * [[#AncGraphVirtCxml][Graph virtcxml]]
+         * [[#AncVirtcxmlFacetType][<nowiki>virtcxml:FacetType</nowiki>]]
+         * [[#AncVirtcxmlSetItemImage][Setting an Item's Image]]
+         * [[#AncVirtcxmlSetItemName][Setting an Item's Name]]
+         * [[#AncVirtcxmlSetItemDescription][Setting an Item's Description]]
+         * [[#AncVirtcxmlSetFacetName][Setting a Facet's Name]]
+         * [[#AncVirtcxmlSetFacetDatatype][Setting a Facet's Datatype]]
+         * [[#AncVirtcxmlSetQrcodeFacet][Setting the Facet Used to Generate a QR code]]
+         * [[#AncExcludingFacetFilterPanel][Excluding a Facet from the Filter Panel]]
+      * [[#AncUsingLabels][Using Labels in Place of URIs]]
+         * [[#AncExploitingInferencing][Exploiting Inferencing]]
+         * [[#AncAutoLabels][Automatic Labels]]
+         * [[#AncLabelLocalization][Label Localization]]
+      * [[#AncLinkType][Link Typing]]
+         * [[#AncLinkTypeUIOpts][Link Typing Options]]
+         * [[#AncLinkTypeQryStringParam][Controlling Link Typing through /sparql Query String Parameters]]
+         * [[#AncLinkTypeVirtuosoPL][Controlling Link Typing through Virtuoso/PL]]
+
+Part 3: [[VirtSparqlCxmlDzcs][SparqlCxml Deep Zoom Collections]]
+
+Part 4: [[VirtSparqlCxmlPivotViewer][PivotViewer]]
+
+Part 5: [[VirtSparqlCxmlImport][Importing CXML]]
+
+Part 6: [[VirtSparqlCxmlFacetPivotBridge][Facet Pivot Bridge]]
+
+Part 7: [[VirtSparqlCxmlDETs][DETs : Persisting SPARQL Query Results to DAV]]
+
+Part 8: [[VirtSparqlCxmlFAQs][Frequently Asked Questions (FAQs)]]
+
+Part 9: [[VirtSparqlCxmlGlossary][Glossary]]
+
+---
+#AncIntroduction
+---++Introduction
+
+Microsoft's [[http://www.silverlight.net/learn/pivotviewer/][PivotViewer]] is a Silverlight control which makes it easy to view, sort and filter huge datasets on the web. <nowiki>PivotViewer</nowiki> lets you view thousands of items at once and visualize them in ways that expose relationships, groupings or trends in the data. <nowiki>PivotViewer's</nowiki> powerful sorting and filtering make it simple to drill down into a large dataset to an item of interest with specific features. This functionality makes it a powerful tool in application domains such as business intelligence or deep comparison shopping. 
+
+Central to <nowiki>PivotViewer</nowiki> is the notion of a Collection. Collections combine large groups of similar items on the internet, allowing the web to be viewed as a web of data rather than a series of isolated pages. Collections are composed of two parts:
+
+   * XML - The items in the collection are described in XML, in a ".cxml" file.
+   * Images - The images in the collection are described in Deep Zoom format.
+
+Conceptually, a collection is just like any other web content. There?s a set of files on a server, and a local client that knows how to display them. In the current web, the files are traditionally HTML and images. In the collection case, the files are CXML and Deep Zoom-formatted (DZC) images. When the user views the collection from a web browser, a web page hosting the <nowiki>PivotViewer</nowiki> Silverlight Control is used to display the files.
+
+<img src="%ATTACHURLPATH%/pivot_architecture.png" style="wikiautogen"/>
+
+#AncCreatingCollections
+---+++Creating Collections
+Creating a collection has four distinct steps:
+
+   1. Pick your data - First, pick a set of data to turn into a collection.
+   2. Create XML and images - Describe the data in Collection XML (CXML) and transform the images to the Deep Zoom format.
+   3. Host the collection - To share your collection with others, host it on a web server.
+   4. View it - View the collection in a browser by downloading a web page which hosts the <nowiki>PivotViewer</nowiki> Silverlight control.
+
+#AncVirtuosoSupport
+---+++Virtuoso Support for Pivot Collections
+
+Virtuoso Universal Application Server is an ideal platform for creating and hosting Pivot collections, combining amongst other things a powerful hybrid RDF/SQL/XML data store and HTTP server, which together support each of the collection creation steps outlined above. Virtuoso provides the ability to generate and view dynamic collections created directly from RDF data, with automatic Deep Zoom image generation, using custom or default images, and the option of including [[http://en.wikipedia.org/wiki/QR_Code][QR codes]] (matrix bar codes). The source RDF data may be hosted directly in Virtuoso, or extracted from external RDF and non-RDF data sources using the Virtuoso Sponger, or from SQL data using Linked Data Views or SPASQL.
+
+Though designed from the outset as a viewer for web data, the reach and utility of <nowiki>PivotViewer</nowiki> are enhanced greatly by driving it using RDF as the "data substrate", the same standards-based data format used by the Data Web and the basis of numerous massive open datasets hosted in the Linked Open Data cloud. 
+
+To provide this RDF underpinning, the main components of Virtuoso's CXML offering comprise:
+   * <nowiki>SparqlCxml</nowiki> - An extension of Virtuoso's standard /sparql endpoint functionality to allow serialization of SPARQL query result sets as CXML
+   * <nowiki>PivotViewer</nowiki> - A cross-browser Pivot collection viewer, hosting the Silverlight <nowiki>PivotViewer</nowiki> control, for viewing Virtuoso-hosted or external 3rd party Pivot collections.
+   * [[VirtSparqlCxmlFacetPivotBridge][Facet Pivot Bridge]] - A bridge to <nowiki>PivotViewer</nowiki> from Virtuoso's Faceted query service for RDF, offering the facility to save Faceted search result sets as Pivot collections.
+
+#AncPivotViewer
+---+++<nowiki>PivotViewer</nowiki>
+
+#AncPivotViewerCombo
+---++++Combining A Human UI with Machine Readable Data
+
+Part of what makes <nowiki>PivotViewer</nowiki> compelling as a viewer for the Data Web is its use of images in place of raw URIs. The RDF browsers available to date typically present little more than lists of entity URIs. In contrast, <nowiki>PivotViewer</nowiki> uses an image, rather than an entity URI, as the primary UI representation of the entity, making for a much more intuitive user experience. While the image tiles provide visual cues for human interaction, the underlying machine readable RDF data remains accessible via hyperlinks.  
+
+To further support this interaction paradigm, Virtuoso's CXML support includes other refinements not evident in typical Pivot collections. These include:
+   * the ability to generate collections comprising a mix of several entity types, in contrast to Pivot collections from other sources which support only one entity type 
+   * the use of icons to supply default images for entities which do not have their own (custom) image
+   * an extensible icon ontology to associate different icons with different entity classes
+
+The screenshot below shows a Virtuoso generated collection displayed by the Virtuoso <nowiki>PivotViewer</nowiki>, a small VSP-based (Virtuoso Server Pages) application hosting the Silverlight <nowiki>PivotViewer</nowiki> control. The screenshot illustrates the use of a silhouette icon for members of the Frankfurt Semantic Web Meetup group who do not have a foaf:image.
+ 
+<img src="%ATTACHURLPATH%/frankfurt_semweb_meetup.jpg" style="wikiautogen"/>
+
+The source data for the above collection was supplied by a SPARQL DESCRIBE query:
+<verbatim>
+describe ?s from <http://www.meetup.com/Frankfurt-Semantic-Web-Meetup/members/> where {?s a foaf:Person} limit 2000
+</verbatim>
+submitted to the SPARQL endpoint at http://linkeddata.uriburner.com/sparql via the <nowiki>PivotViewer</nowiki> at http://linkeddata.uriburner.com/PivotViewer/. The full request URI being:
+<verbatim>
+http://linkeddata.uriburner.com/PivotViewer/?url=http%3A%2F%2Flinkeddata.uriburner.com%2Fsparql%3Fdefault-graph-uri%3D%26query%3Ddescribe%2520%253Fs%2520from%2520%253Chttp%253A%252F%252Fwww.meetup.com%252FFrankfurt-Semantic-Web-Meetup%252Fmembers%252F%253E%2520where%2520%257B%253Fs%2520a%2520foaf%253APerson%257D%2520limit%25202000%250D%250A%26timeout%3D%26should-sponge%3D%26format%3Dtext%252Fcxml%26CXML_redir_for_subj%3D%26CXML_redir_for_hrefs%3D
+</verbatim>
+
+#AncPivotViewerHypermedia
+---++++A Viewer for Hypermedia-based Structured Data
+
+While at first glance <nowiki>PivotViewer</nowiki> might be seen as a viewer for RDF data, the utility of <nowiki>PivotViewer</nowiki> and Virtuoso's <nowiki>SparqlCxml</nowiki> subsystem extends beyond RDF. While intended to be a general method of representing information, RDF is nonetheless a form of EAV (Entity-Attribute-Value) model where data is overtly defined and constrained by a conceptual schema that's based on first-order logic. Thus, <nowiki>PivotViewer</nowiki> should be seen in the broader context as a viewer for EAV model data at intranet or interweb scales. The EAV model coupled with the use of dereferenceable identifiers in the entity, attribute or value slots enables the use of hypermedia resources for structured data representation and interchange, more commonly known as Linked Data. It's extremely important to note that Linked Data is not (in any way) inextricably bound to RDF.
+
+In this broader (format agnostic) definition of Linked Data, data definition and description is expressed using EAV tuples where each of the following are uniquely discernible:
+   * entities (aka subjects)
+   * entity attributes (aka subject attributes) and
+   * attribute values (aka subject attribute values)
+
+Each tuple is a proposition (due to its first-order logic grounding) as well as a database record. Each entity (object) has a dereferenceable ID, a hypermedia link, that resolves to the address of its representation. This representation is negotiable, courtesy of HTTP content-negotiation.
+
+It is important to recognize that RDF defines a data model *and* Subject-Predicate-Object (or Entity-Attribute-Value) 3-tuples (triples) statements (proposition oriented records) that can be expressed in a wide variety of syntaxes that includes: RDF/XML, Turtle, N3, N-Triples, HTML+RDFa etc. At the model level its only tangible distinction from EAV is its overtness with regards to first-order logic foundation. At the data expression level SPO or EAV triples are indistinguishable bar RDF's emphasis on URI/IRI style identifiers in the Subject, Predicate, and Object (optionally) slots. 
+
+In the context of <nowiki>PivotViewer</nowiki> as a Linked Data explorer, the CXML data format provides a generalized means of describing Linked Data/EAV data for display, while SPARQL provides a query language for specifying the Linked Data to be contained in the dynamic collection being generated. The Linked Data itself can comes from many sources. Virtuoso can ingest data from a plethora of data sources associated with a wide variety of formats that includes RDF, XML (including Web Services), SQL, various binary formats (iCalendar, vCard etc).
+
+<nowiki>Pivotviewer</nowiki>, together with <nowiki>SparqlCxml</nowiki>, provides:
+   * the ability to interact with Linked Data without the distraction of raw URIs. URIs are normally replaced by or hidden behind (via a link) the label of the entity they identify
+   * a powerful tool for drilling down into collections, whether static or dynamically generated from SPARQL queries, and for sharing dynamic collections through query URLs
+   * a front-end to utilize Virtuoso's free text search and, through the Pivot Facet Bridge, faceted query capabilities
+   * a Linked Data viewer with the focus on 'whole data' representation. Data is displayed at the conceptual level, rather than the logical level as typified by most database exploration tools. Whereas at the logical level, data is often split across tables as an artifact of normalization, the conceptual level provides a 'whole data' view in which the entities and the concepts they represent are no longer fragmented. The concepts remain the focal point of a user's interaction with the data.
+
+#AncConfiguringVirtuoso
+---++Configuring Virtuoso's CXML Support
+
+Support for CXML is available in the Virtuoso Commercial Edition Release 6.02.3129 or above. It is not included in Virtuoso Open-Source Edition. To enable the CXML functionality, the necessary VADs (Virtuoso Application Distribution) must be installed. These are:
+
+   * sparql_cxml - Supports CXML and Deep Zoom Collection (DZC) generation from a /sparql endpoint
+   * <nowiki>PivotViewer</nowiki> - A VSP-based collection viewer for viewing Virtuoso generated and 3rd party collections
+      * Requires:
+         * c_uri - A URI shortener for creating compressed URIs
+
+and optionally:
+   * <nowiki>fct_pivot_bridge</nowiki> - An extension to the Facets web service for generating collections from snapshots of faceted query result sets
+      * Requires:
+         * cartridges - Provides base RDF functionality and the Sponger framework for converting non-RDF data to RDF
+         * fct - Virtuoso Facets web service. A general purpose RDF query facility for facet based browsing
+         * sparql_cxml, <nowiki>PivotViewer</nowiki>
+
+Any VAD listed under 'Requires' must be installed before the VAD under which it appears.
+
+In addition, to support Deep Zoom image and QRcode generation, the Virtuoso [[http://www.imagemagick.org/][ImageMagick]] and [[http://en.wikipedia.org/wiki/QR_Code][QRcode]] plugins must be installed. A Virtuoso distribution includes both the <nowiki>ImageMagick</nowiki> plugin (im.so or im.dll) and QRcode plugin (qrcode.so or qrcode.dll) as standard. The plugins should be enabled in the Plugins section of your virtuoso.ini file, e.g.:
+<verbatim>
+[Plugins]
+LoadPath=../hosting
+Load1=Hosting,hosting_perl.so
+...
+Load6=plain, im
+Load7=plain, qrcode
+</verbatim>
+
+The supporting <nowiki>ImageMagick</nowiki> or QRcode libraries used by these plugins are statically linked, so there is no need to install them separately.
+
+Finally, ensure that the <nowiki>DefaultHost</nowiki> parameter under the URIQA section of your virtuoso.ini file is set appropriately for the host. If you anticipate viewing collections served by a host other than the one hosting <nowiki>PivotViewer</nowiki>, cross-domain access must be enabled as detailed in [[VirtSparqlCxmlPivotViewer][Part 4: PivotViewer]], section "Cross-domain Collection Browsing".
+
+#AncVerifyingYourInstallation
+---+++Verifying your installation
+
+#AncImageMagick
+---++++<nowiki>ImageMagick</nowiki>
+
+To confirm that the <nowiki>ImageMagick</nowiki> plugin is working, execute the following query through Conductor's ISQL interface and check that the return value is 3.
+<verbatim>
+select "IM XYtoMorton"(1,1)
+</verbatim>
+
+#AncCxmlGenerationFromSparql
+---++++CXML Generation from /sparql
+
+The sparql_cxml VAD creates a small amount of test data for verifying the installation. In Conductor's /sparql interface (e.g. <nowiki>http://localhost:8890/sparql</nowiki>), enter the query below and select 'CXML' from the 'Format Results As' dropdown before running it.
+#AncExampleTourismCollection
+<verbatim>
+prefix ski: <http://www.openlinksw.com/ski_resorts/schema#>
+prefix camp: <http://www.openlinksw.com/campsites/schema#>
+
+describe ?s where {{ ?s a ski:SkiResort . } union { ?s a camp:Campsite . }}
+</verbatim>
+
+Your browser should display the generated CXML file. Copy the URL from your browser's address bar, open a browser window to /PivotViewer (e.g. http://localhost:8890/PivotViewer/) and paste the SPARQL query URL into the 'Pivot collection URL' textbox. After clicking 'Submit', you should see a collection view similar to that below:
+
+<img src="%ATTACHURLPATH%/pivot_viewer_tourism.jpg" style="wikiautogen" width="1000" height="864"/><br/>
+<a href="%ATTACHURLPATH%/pivot_viewer_tourism.jpg" target="_blank">Click to enlarge</a>
+
+#AncSparqlCxml
+---++<nowiki>SparqlCxml</nowiki>
+
+A Virtuoso /sparql endpoint can render a SPARQL query result in numerous serialization formats, one of which is CXML. The query driving the CXML generation may be a SELECT, DESCRIBE or a CONSTRUCT. The CXML generation process essentially consists of mapping the entities, attributes and values contained in the SPARQL result set to CXML Items, Facets and Facet values. <nowiki>SparqlCxml</nowiki> allows a high degree of control over the SPARQL to CXML mapping through the use of reserved query variables and a configuration graph virtcxml.  
+
+#AncKeyParts
+---+++<nowiki>PivotViewer & Collection XML</nowiki> - Key Parts
+
+Before describing the Virtuoso RDF to Pivot interface, it's worthwhile to identify the main components of the <nowiki>PivotViewer</nowiki> UI and Collection XML to establish the terminology for the remainder of the text.
+
+#AncPivotViewerUI
+---++++<nowiki>PivotViewer</nowiki> UI
+
+The main parts of the <nowiki>PivotViewer UI</nowiki> are identified below:<br/>
+
+<img src="%ATTACHURLPATH%/pivot_view_components.png" style="wikiautogen"/>
+
+#AncCollectionXml
+---++++Collection XML
+
+The following sample XML specifies a simple collection with only one item.
+
+<verbatim>
+    <?xmlversion="1.0"?>
+    <CollectionName="Hello World Collection"SchemaVersion="1.0" 
+        xmlns="http://schemas.microsoft.com/collection/metadata/2009" 
+        xmlns:p="http://schemas.microsoft.com/livelabs/pivot/collection/2009" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FacetCategories>
+            <FacetCategory Name="Hello World Facet Category One" Type="String"/>
+        </FacetCategories>
+        <Items ImgBase="helloworld.dzc">
+            <Item Img="#0" Id="0" Href="http://www.getpivot.com"Name="Hello World!">
+                <Description>This is the only item in the collection.</Description>
+                <Facets>
+                    <Facet Name="Hello World Facet Category One">
+                        <String Value="Hello World Facet Value"/>
+                    </Facet>
+                </Facets>
+            </Item>
+       </Items>
+    </Collection>
+</verbatim>
+
+Each part of the XML is surfaced in the <nowiki>PivotViewer</nowiki> as depicted below:
+
+#AncCxmlSurfacing
+
+<img src="%ATTACHURLPATH%/hello_world_surfacing.png" style="wikiautogen"/>
+
+#AncSparqlEndpointCxmlExtensions
+---+++SPARQL Endpoint CXML Extensions
+
+The Virtuoso SPARQL protocol endpoint /sparql supports a number of extensions to the SPARQL standard specifically for CXML.
+
+"text/cxml" and "text/cxml+qrcode" have been added to the list of formats recognized by the query string 'format' parameter. The "text/cxml" output format is available for SELECT, DESCRIBE and CONSTRUCT. "text/cxml+qrcode" is available only for DESCRIBE and CONSTRUCT. e.g.
+<verbatim>
+http://uriburner.com/sparql?default-graph-uri=&should-sponge=&query=select+*+WHERE+{%3Fhref+a+foaf%3APerson%3B+foaf%3Aname+%3Fname%3B+foaf%3Adepiction+%3Fimage}+limit+20&format=text%2Fcxml
+</verbatim>
+
+When using the /sparql UI, these format options are activated by selecting either "CXML (Pivot Collection)" or "CXML (Pivot Collection with QRcodes)" from the "Format Results As" dropdown. For DESCRIBE and CONSTRUCT, the "text/cxml+qrcode" output option adds a QRcode adjacent to the custom or default image for each item. For SELECT, the addition or omission of a QRcode alongside the item image is controlled through the ?qrcode reserved query variable.
+ 
+Corresponding pragmas ' define output:format "CXML" ' and ' define output:format "CXML;QRCODE" ' are available for when executing SPARQL queries directly from Virtuoso PL or from a Virtuoso client. e.g.
+<verbatim>
+sparql define output:format "CXML"
+select * WHERE { ?href a foaf:Person; foaf:name ?name; foaf:depiction ?image } limit 20
+</verbatim>
+
+#AncRdfToCxmlMappingBasicApproach
+---+++RDF to CXML Mapping - The Basic Approach
+
+The way in which SPARQL result sets are converted to CXML differs for SELECTs and DESCRIBEs or CONSTRUCTs. The broad approach is outlined below to explain the default mapping. Options for tailoring the default mapping are described in subsequent sections.
+
+#AncRdfToCxmlMappingSelect
+---++++SELECT
+
+Each distinct subject URI forms a CXML Item whose Name and Href are the subject URI. Each variable in the query which is not a subject URI becomes a facet named virtcxml:Facet<i>variable</i>; where the variable name is converted to title case. The variables' values become the values of the corresponding facet. The default type of each facet is CXML String. A query such as:
+<verbatim>
+prefix ski: <http://www.openlinksw.com/ski_resorts/schema#>
+prefix camp: <http://www.openlinksw.com/campsites/schema#>
+
+select * where 
+{
+  { ?s a ski:SkiResort . ?s ?p ?o . optional { ?s foaf:depiction ?image } }
+  union
+  { ?s a camp:Campsite . ?s ?p ?o . optional { ?s foaf:depiction ?image } } 
+}
+</verbatim>
+
+creates a collection with facet categories <nowiki>virtcxml:FacetP</nowiki> and <nowiki>virtcxml:FacetO</nowiki>, as shown in the CXML document tree fragment below. ?image is one of several special variables reserved for controlling the RDF to CXML mapping. These reserved variables are not used as facets.
+
+<img src="%ATTACHURLPATH%/select_cxml_doc_tree.jpg" style="wikiautogen"/>
+
+The default facet names generated by a SELECT, in this example <nowiki>virtcxml:FacetP</nowiki> and <nowiki>virtcxml:FacetO</nowiki>, can be changed through graph virtcxml: as described below. 
+
+#AncRdfToCxmlMappingDescribe
+---++++DESCRIBE and CONSTRUCT
+
+Like SELECT, each distinct subject URI again forms a CXML Item whose Name and Href are the subject URI. Unlike SELECT, no other query variables play a part in determining the facet categories. Instead they are derived directly from the DESCRIBE or CONSTRUCT output, whereby each distinct predicate, i.e. property, becomes a facet category. Each predicate value becomes a facet value. The full set of facet categories is a union of the properties of each entity type in the result set. Again, the default type of each facet is CXML String. The query:
+
+<verbatim>
+describe ?s where {{ ?s a ski:SkiResort } union { ?s a camp:Campsite . }}
+</verbatim>
+
+creates the facet categories shown below. Notice that the reserved variable ?image is not used to identify which entity property will provide the Deep Zoom images. Only SELECTs use reserved variables to tailor the CXML mapping. DESCRIBE and CONSTRUCT instead use entries in graph virtcxml: to both identify which entity properties supply particular CXML names and attributes and, if automatic facet type detection isn't possible, to override the default facet type of CXML String.  
+
+<img src="%ATTACHURLPATH%/describe_cxml_doc_tree.jpg" style="wikiautogen"/>
+
+#AncDefaultSettings
+---+++Default Settings
+
+The default settings for the CXML generation include the following defaults:
+
+   * <nowiki>FacetCategory</nowiki> attributes
+      * Name
+         * Defaults to a short property name, without a prefix. e.g. Predicate <nowiki>http://www.openlinksw.com/campsites/schema#distance_from_calais_km</nowiki> becomes a <nowiki>FacetCategory</nowiki> with Name=<nowiki>"distance_from_calais_km"</nowiki>
+      * Type
+         * Defaults to CXML type "String" if the RDF data is not typed. If the data is typed, for example through an RDF typed literal, <nowiki>SparqlCxml</nowiki> sets the appropriate CXML facet type automatically. 
+      * <nowiki>IsFilterVisible</nowiki>, <nowiki>IsMetaDataVisible</nowiki>, <nowiki>IsWordWheelVisible</nowiki>
+         * All default to "true"
+   * Facet attributes
+      * Name
+         * As with the <nowiki>FacetCategory</nowiki> Name attribute, defaults to a short property name.
+      * Type
+         * As with the <nowiki>FacetCategory</nowiki> Type attribute, defaults to "String".
+   * Item attributes
+      * Name
+         * Defaults to the URI of the entity described by the Item element
+      * Href
+         * Defaults to the URI of the entity described by the Item element
+
+#AncFacetTypeAutoDetection
+---+++Auto-Detection of Facet Type
+
+RDF typed literals are automatically mapped to the appropriate CXML type. The xsd:integer, xsd:float, xsd:double and xsd:decimal types are mapped to CXML Number, xsd:datetime is mapped to CXML <nowiki>DateTime</nowiki> and strings longer than 100 characters are mapped to CXML <nowiki>LongString</nowiki>. e.g.
+
+<verbatim>
+:Le_Jard oplcamp:last_updated "2010-12-01T00:00:00Z"^^xsd:dateTime .
+:La_Plagne oplski:expert_slopes "18"^^xsd:integer .
+</verbatim>
+
+Properties of type CXML Number can be filtered using the <nowiki>PivotViewer</nowiki> "slider filter" (shown below associated with the <nowiki>ski_resort:expert_slopes</nowiki> property/facet) to restrict the displayed items to those within a certain range of the property.
+
+<img src="%ATTACHURLPATH%/slider_filter.jpg" style="wikiautogen"/>
+
+ Similarly, <nowiki>PivotViewer</nowiki> enables a date filter for CXML <nowiki>DateTime</nowiki> values.
+
+<img src="%ATTACHURLPATH%/pivotviewer_date_filter.jpg" style="wikiautogen"/>
+
+RDF values which are URIs are handled as a special case. They may be mapped to a CXML Link, String or <nowiki>LongString</nowiki> depending on the <nowiki>SparqlCxml</nowiki> link typing options in force. These are described in section [[#AncLinkType][Link Typing]]  
+
+#AncReservedQueryVariables
+---+++<nowiki>SparqlCxml</nowiki> Reserved Query Variables
+
+<nowiki>SparqlCxml</nowiki> defines a list of reserved variables for use in SPARQL SELECTs to identify which predicates are to be used to set particular CXML element and attribute values. These reserved variables, or identifiers, are defined in graph virtcxml: which is created when the sparql_cxml VAD is installed. Each identifier is prefixed by virtcxml:Facet. The table below lists the virtcxml:Facetxxx Facet descriptors defined in virtcxml:, the reserved variable used to denote each Facet descriptor in a SELECT and the corresponding CXML element or attribute whose value is set by the reserved variable.
+
+| virtcxml Entity		| Reserved SELECT variable	| CXML Element/Attribute	| Description |
+| virtcxml:<nowiki>FacetCopyright</nowiki>        | ?copyright                | Item/d1p1:Copyright       | A facet for a copyright link about the item |
+| virtcxml:<nowiki>FacetDescription</nowiki>	| ?description			| Item/Description		| A facet for a text description of an item to be displayed in the info panel |
+| virtcxml:<nowiki>FacetHref</nowiki>		| ?href				| Item/@Href			| A facet for an URL associated with an item. Double-clicking the item in the Pivot client will navigate the user to this URL |
+| virtcxml:<nowiki>FacetId</nowiki>		| ?id				| Item/@Id			| A facet for an unique id of an item in the item list. If not specified the decimal representation of serial is used |
+| virtcxml:<nowiki>FacetImage</nowiki>		| ?image			| Item/@Img		| A facet for an absolute URI of the image that will be added to an automatically created single-use collection |
+| virtcxml:<nowiki>FacetImg</nowiki>		| ?img				| Item/@Img			| A facet for a relative image URI (for use with a third party Deep Zoom Collection) |
+| virtcxml:<nowiki>FacetItemtype</nowiki>		| ?itemtype				| -			| A facet for an item type that is used, for example, to choose the fallback icon for the item |
+| virtcxml:<nowiki>FacetName</nowiki>		| ?name				| Item/@Name			| A facet for a name of the item which will appear at the top of the info panel |
+| virtcxml:<nowiki>FacetQrcode</nowiki>		| ?qrcode			| Item/@Img		| A facet for QRcode data that should be placed in the image |
+| virtcxml:<nowiki>FacetRelated</nowiki>		| ?related			| Item/d1p1:Related		| A facet for links to web-pages or collections related to the item |
+
+The reserved variables are only used for a SELECT, not a DESCRIBE or CONSTRUCT. The last two query forms instead use graph virtcxml: to control the CXML mapping. For the moment, we'll confine our attention to SELECTs.
+
+The following example, which selects a number of products (or services), illustrates the use of the reserved ?name and ?image variables to identify which predicates, i.e. product attributes, will act as a product's name and image - in this case rdfs:label and foaf:depiction respectively.
+
+<verbatim>
+select distinct * where { ?s a gr:ProductOrServiceModel; foaf:depiction ?image; rdfs:label ?name } limit 500
+</verbatim>
+
+The prefix gr: identifies the <nowiki>GoodRelations</nowiki> namespace, http://purl.org/goodrelations/v1#. (An explicit prefix declaration is not needed because this is a well-known namespace predefined in Virtuoso in table <nowiki>DB.DBA.SYS_XML_PERSISTENT_NS_DECL</nowiki>.) 
+
+#AncReservedQueryVariablesExamples
+---++++Examples
+
+The queries below further illustrate the use of the reserved query variables. All can be executed against http://uriburner.com/sparql. A snippet of the generated CXML is shown to highlight how an element or attribute is influenced by the variable(s). Refer to the [[#AncCxmlSurfacing][graphic]] presented earlier for details of how different CXML elements are surfaced in <nowiki>PivotViewer</nowiki>. 
+
+---
+<b>Example 1:</b>
+<verbatim>
+define input:inference "virtrdf-label"
+prefix geosp: <http://rdf.geospecies.org/ont/geospecies#>
+
+select distinct * where { ?s a <http://lod.taxonconcept.org/ontology/txn.owl#GeoSpeciesTaxon> ; foaf:depiction ?image ; virtrdf:label ?name ; geosp:hasCommonName ?cn ; geosp:hasClassName "Insecta" .
+} limit 2000
+</verbatim>
+[[http://uriburner.com/c/DIDNPP][View Pivot collection]]
+
+<img src="%ATTACHURLPATH%/qry_var_eg1.png" style="wikiautogen"/>
+
+---
+<b>Example 2:</b>
+<verbatim>
+define input:inference "virtrdf-label"
+select * where { ?s a <http://purl.org/ontology/wo/Species> ;
+<http://purl.org/ontology/wo/order> <http://www.bbc.co.uk/nature/order/Primate#order> ;
+<http://purl.org/ontology/wo/family> ?family ;
+<http://purl.org/ontology/wo/livesIn> ?lives_in ;
+foaf:depiction ?image; virtrdf:label ?name; dcterms:description ?description. ?href foaf:primaryTopic ?s .
+} limit 2000
+</verbatim>
+[[http://uriburner.com/c/DH6J27][View Pivot collection]]
+
+<img src="%ATTACHURLPATH%/qry_var_eg2.png" style="wikiautogen"/>
+---
+<b>Example 3:</b>
+<verbatim>
+define input:inference "virtrdf-label"
+prefix geosp: <http://rdf.geospecies.org/ont/geospecies#>
+
+select distinct * where {?s a <http://lod.taxonconcept.org/ontology/txn.owl#GeoSpeciesTaxon> ; foaf:depiction ?image ; virtrdf:label ?name ; foaf:isPrimaryTopicOf ?href ; rdfs:seeAlso ?related ; geosp:hasCommonName "Tiger" ; geosp:hasClassName ?className . } limit 3000
+</verbatim>
+[[http://uriburner.com/c/DIDTV4][View Pivot collection]]
+
+<img src="%ATTACHURLPATH%/qry_var_eg3.png" style="wikiautogen"/>
+---
+<b>Example 4:</b>
+<verbatim>
+prefix mtp: <http://www.openlinksw.com/schemas/meetup/>
+prefix dc: <http://purl.org/dc/elements/1.1/>
+
+select * from <http://www.meetup.com/semweb-25/members/>  where  {
+?href ?p ?o ; foaf:depiction ?image; foaf:name ?name; mtp:id ?id; dc:description ?description .filter (!isBlank(?description)) 
+} limit 200
+</verbatim>
+[[http://kingsley.idehen.net/PivotViewer/?url=http%3A%2F%2Fkingsley.idehen.net%2Fc%2FMRLBK%23%2524facet0%2524%3Dvirtcxml%253AFacetP%26%2524view%2524%3D1%26%24tab%24%3D0%26%24zoom%24%3D2][View Pivot collection]]
+
+<img src="%ATTACHURLPATH%/qry_var_eg4.png" style="wikiautogen"/>
+---
+<b>Example 5:</b>
+<verbatim>
+PREFIX wo: <http://purl.org/ontology/wo/>
+
+SELECT DISTINCT  ?s as ?href ?name ?kname ?image ?hname ?description 
+WHERE {?s wo:kingdom ?kingdom; dcterms:description ?description; rdfs:label ?name; wo:livesIn ?habitat.  ?kingdom rdfs:label ?kname. ?habitat rdfs:label ?hname OPTIONAL {?s foaf:depiction ?image.} } limit 2500
+</verbatim>
+[[http://uriburner.com/c/DI463N][View Pivot collection]]
+---
+<b>Example 6:</b>
+<verbatim>
+# Capture subject URI in QR code
+# Use foaf:name as anchor text and subject URI as href of main item link in PivotViewer properties panel
+# Use foaf:depiction image for Tiles (DZI) for DZC
+
+SELECT DISTINCT ?href 
+                ?image 
+                ?href as ?qrcode
+                ?name ?page
+                ?description ?created ?modified
+                ?country ?postcode ?region  ?locality ?latitude ?longitude
+WHERE { 
+       ?href a foaf:Person;
+           foaf:depiction ?image; foaf:name ?name; foaf:homepage ?page;
+           dc:description ?description; dcterms:created ?created; dcterms:modified ?modified;
+           vcard:Country ?country; vcard:Pcode ?postcode; vcard:Region ?region; vcard:Locality ?locality;
+           geo:lat ?latitude; geo:long ?longitude.      
+      }
+</verbatim>
+
+---
+<b>Example 7:</b>
+
+The next example shows the use of ?image to identify the custom image to be displayed for an item, and ?qrcode to identify the property (in this case the item URI) to be encoded in the QRcode adjacent to the main image. It also illustrates the use of Virtuoso's federated SPARQL capability (SPARQL-FED) via the service keyword.
+
+<verbatim>
+prefix gr: <http://purl.org/goodrelations/v1#>
+prefix icecat: <http://linkedopencommerce.com/schemas/icecat/v1/>
+
+select distinct ?href ?href as ?qrcode ?name ?description ?manufacturer ?image where { service <http://linkeddata.uriburner.com/sparql> {
+  ?href a gr:ProductOrServiceModel . 
+  ?href icecat:hasModelName ?name .
+  ?href icecat:hasLongSummaryDescription ?description .
+  ?href gr:hasManufacturer ?manufacturer .
+  ?href ?p ?o .
+  ?href foaf:depiction ?image .
+  ?o bif:contains '(SONY AND CAMCORDER)' . 
+}}
+</verbatim>
+
+The following image slice taken from the resulting <nowiki>PivotViewer</nowiki> display shows product images with their generated QRcodes.
+
+<img src="%ATTACHURLPATH%/camcorder_qrcode.jpg" style="wikiautogen"/>
+---
+<b>Example 8:</b>
+
+If no custom image can be found for an item, an icon is used instead. Here we see the image being provided by the foaf:depiction property which is included in an optional triple pattern so as to include in the collection items without a foaf:depiction. These items are depicted by the default icon, the 'RDF molecule', as shown below.
+
+<verbatim>
+select distinct ?s ?image ?id 
+from <http://www.meetup.com/linkeddata/members/> where { 
+	service <http://uriburner.com/sparql> {
+		?s ?p ?o; foaf:name ?id .
+		optional { ?s foaf:depiction ?image }
+	} 
+} limit 100
+</verbatim>
+<img src="%ATTACHURLPATH%/select_no_itemtype.jpg" style="wikiautogen"/>
+
+Rather than use the same icon for all items without an image, it's possible to display a class-specific icon to give an indication of the item's type. The icon to be displayed is selected from a small extensible set provided by the <nowiki>SparqlCxml</nowiki> VAD, based on the item's rdfs:type. (More details of how this is done can be found in [[VirtSparqlCxmlDzcs][SparqlCxmlDeep Zoom Collections]] in section 'Default Images for Pivot Collections'.)
+
+When generating CXML from a DESCRIBE or CONSTRUCT, an item's rdfs:type is readily available and the choice of icon is made automatically. For a SELECT, it's necessary to indicate an item's type through the ?itemtype reserved query variable. When the above query is modified to include ?itemtype, the default icon is replaced by a 'silhouette' which depicts items of type foaf:Person.
+<verbatim>
+select distinct ?s ?image ?id ?itemtype 
+from <http://www.meetup.com/linkeddata/members/> where { 
+	service <http://uriburner.com/sparql> {
+		?s ?p ?o; foaf:name ?id ; a ?itemtype .
+		optional { ?s foaf:depiction ?image }
+	}
+} limit 100 
+</verbatim>
+
+<img src="%ATTACHURLPATH%/select_with_itemtype.jpg" style="wikiautogen"/>
+---
+<b>Example 9:</b>
+
+Using a fixed image as the item depiction, with the item's URI forming the QRcode
+<verbatim>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix frbr: <http://purl.org/vocab/frbr/core#>
+prefix dct: <http://purl.org/dc/terms/>
+
+select ?work as ?href ?date ?description ?valid ?subject as ?qrcode ?image ?name
+      (<http://i.telegraph.co.uk/telegraph/multimedia/archive/01590/backbenchers-pa_1590370c.jpg>) as ?image
+where
+{ service <http://gov.tso.co.uk/legislation/sparql> ( define lang:dialect 65535 )
+  {{
+    select *
+    where               
+    {
+      ?work a frbr:Work .
+      ?work dct:title ?description .
+      ?work dct:created ?date .
+      ?work dct:subject ?subject .
+      ?work dct:valid ?valid .
+      ?work rdfs:label ?name .
+      optional {?work foaf:depiction ?image} .
+      filter (?date >= "2010-10-15"^^xsd:date)
+    }                
+    limit 100
+  }}
+}
+</verbatim>
+
+or
+
+<verbatim>
+select ?s as ?href, (<http://www.railaroundbirmingham.co.uk/graphics/crests.jpg>) as ?image, ?p, ?o from <http://spending.lichfielddc.gov.uk/data> where {?s ?p ?o} limit 1000
+</verbatim>
+---
+
+#AncQueryVariableOrder
+---++++Query Variable Order
+
+If a wildcard SELECT list isn't used, the query variables in the SELECT list must include one representing the subject URI. The variable corresponding to the subject URI must also be <b>first</b> in the select list.
+In the next example, ?href is, as well as setting each Item's Href attribute,  also acting as a placeholder for the subject URI (in place of the more usual ?s).
+
+<verbatim>
+PREFIX wo: <http://purl.org/ontology/wo/>
+
+SELECT DISTINCT  ?href ?name  ?kingdom ?image ?habitat ?page ?adaptation ?prog
+WHERE {?href wo:kingdom ?kingdom; wo:adaptation ?adaptation; wo:livesIn ?habitat; rdfs:label ?name. OPTIONAL {?prog po:subject ?href.} OPTIONAL {?href foaf:depiction ?image.} OPTIONAL {?page foaf:primaryTopic ?href} }  limit 500
+</verbatim>
+A re-ordered select list of 'SELECT DISTINCT ?name ?href ...' would be rejected by the SPARQL compiler.
+---
+#AncReservedGeoQueryVariables
+---++++Reserved Query Variables for Geodata
+
+<nowiki>PivotViewer's</nowiki> "Map" tab displays any geo-data contained in the collection as map markers. Currently <nowiki>PivotViewer</nowiki> looks for two kinds of facet to find geo-location points:
+   1 A pair of numeric facets named "latitude" and "longitude" (or which have these substrings in the facet name). The facet values are combined to form a geo-marker.
+   2 Any facet named "location" (or which contains the substring "location") is used to do geo-location lookups, with some special handing for facet values in the formats below. Any other format is passed to the <nowiki>BingMap GeoLocation</nowiki> API to try to retrieve a co-ordinate pair.
+      * Twitter coordinates: format - ?t: &lt;double&gt;, &lt;double&gt;
+      * iPhone co-ordinates: format - iPhone: &lt;double&gt;, &lt;double&gt;
+      * Generic co-ordinates: format - &lt;double&gt;, &lt;double&gt;
+      * Generic coordinates: format - &lt;double&gt;?, &lt;double&gt;?
+
+The searches for "latitude", "longitude" or "location" in a facet name are case-insensitive. <nowiki>PivotViewer</nowiki> uses an internal cache to minimize the number of lookups.
+    
+Thus ?latitude, ?longitude and ?location can be viewed as special variables specifically for <nowiki>PivotViewer</nowiki>. Conversely, the previously mentioned special variables ?image, ?qrcode etc are only for CXML generation.
+
+---
+#AncGraphVirtCxml
+---+++Graph virtcxml
+
+Graph <nowiki>&lt;http://www.openlinksw.com/schemas/virtcxml#&gt;</nowiki> can be used to customize the CXML generation for DESCRIBEs and CONSTRUCTs. The graph can also be referred to by its short name virtcxml: which is declared in table <nowiki>DB.DBA.SYS_XML_PERSISTENT_NS_DECL</nowiki> (e.g. select * from virtcxml: where { .... ) The graph is created by the sparql_cxml VAD and populated with some default settings for popular ontologies such as the Dublin Core and FOAF. Add entries to this graph as needed for your own collections.
+
+#AncVirtcxmlFacetType
+---++++<nowiki>virtcxml:FacetType</nowiki>
+
+Customization of the DESCRIBE output is done primarily by associating a <nowiki>virtcxml:FacetType</nowiki> with an entity property. The entity property to be modified is declared as being an instance of the class <nowiki>virtcxml:FacetCategoryPattern</nowiki>. The property's datatype can then be set by assigning the desired CXML type to the <nowiki>virtcxml:FacetType</nowiki> property. The supported types include the standard CXML datatypes, String, <nowiki>LongString</nowiki>, Number, <nowiki>DateTime</nowiki> and Link; but also some pseudo datatypes for setting certain item attributes from RDF property values. These special datatypes correspond to the [[#AncReservedQueryVariables][reserved query variables]] presented earlier. They are:
+
+| Datatype | Equivalent Reserved SELECT Variable	| CXML Element/Attribute |
+| Item/d1p1:Copyright | ?copyright  | A facet for a copyright link about the item |
+| Item/Description| ?description		| A facet for a text description of an item to be displayed in the info panel |
+| Item/@Href | ?href	| A facet for an URL associated with an item. Double-clicking the item in the Pivot client will navigate the user to this URL |
+| Item/@Id | ?id | A facet for an unique id of an item in the item list. If not specified the decimal representation of serial is used |
+| Item/@virt:Image | ?image | A facet for an absolute URI of the image that will be added to an automatically created single-use collection |
+| Item/@Img | ?img | A facet for an relative URI of the image in the collection |
+| Item/@virt:Itemtype		| ?itemtype	  | A facet for an item type that is used, for example, to choose the fallback icon for the item |
+| Item/@Name | ?name | A facet for a name of the item which will appear at the top of the info panel |
+| Item/@virt:QRcode | ?qrcode | A facet for QRcode data that should be placed in the image |
+| Item/d1p1:Related | ?related	| A facet for links to web-pages or collections related to the item |
+
+Examples of their use follow.
+
+#AncVirtcxmlSetItemImage
+---++++Setting an Item's Image
+
+An item's foaf:depiction property supplies the item's image:
+<verbatim>
+foaf:depiction
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/@virt:Image" ;
+  virtcxml:FacetDescription "A facet for absolute URI of depiction of a collection item" .
+</verbatim>
+
+As with the other pseudo datatypes, more than one property can be declared as being of type "Item/@virt:Image". This would typically be the case where the collections to be generated include more than one entity type. In which case, there would be one "Item/@virt:Image" declaration for each included type, except where they share the same image property. For any entity type without a "Item/@virt:Image" property, an icon is displayed as a fallback image.
+
+Building on the above definition, graph virtcxml supports a virtcxml:aliasOf property as a shorthand notation for declaring properties as having <nowiki>FacetType</nowiki> "Item/@virt:Image". As an illustration of how the graph can be customized by a developer, the SPARUL insert statement below declares mo:image as an alias of foaf:depiction to enable the use of images available through the mo:image property as custom images (aka ABox images) in the DESCRIBE query which follows. The query itself can be executed against endpoint http://lod.openlinksw.com/sparql.
+<verbatim>
+sparql
+prefix virtcxml: <http://www.openlinksw.com/schemas/virtcxml#> 
+prefix mo: <http://purl.org/ontology/mo/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+
+insert data into virtcxml:
+{
+  mo:image virtcxml:aliasOf foaf:depiction .
+};
+</verbatim>
+Without this declaration (which is included in the graph virtcxml by default), only icons (aka TBox images) would be displayed by <nowiki>PivotViewer</nowiki>. 
+<verbatim>
+DESCRIBE ?s FROM <http://www.bbc.co.uk/music/> 
+WHERE { ?s a mo:SoloMusicArtist ; mo:image ?img .} LIMIT 100
+</verbatim>
+Note:<br/>
+?img ensures that each artist has a custom image. It should not be confused with the reserved query variable ?image, used only by SELECTs.
+
+#AncVirtcxmlSetItemName
+---++++Setting an Item's Name
+If an item has any of the properties foaf:name, rdfs:label, dc:title or dcterms:title, use it as the item's name:
+<verbatim>
+foaf:name
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/@Name" ;
+  virtcxml:FacetDescription "A facet for full name of a person" .
+  ...
+rdfs:label
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/@Name" ;
+  virtcxml:FacetDescription "Facet to use for name of item" .
+  ...
+dc:title
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/@Name" ;
+  virtcxml:FacetDescription "Facet to use for name of item" .
+
+dcterms:title
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/@Name" ;
+  virtcxml:FacetDescription "Facet to use for name of item" .
+</verbatim>
+
+#AncVirtcxmlSetItemDescription
+---++++Setting an Item's Description
+
+For any item with a Dublin Core description property, use this for the CXML Item/Description element. For campsite items, use the camp:description property, and for ski resorts use the ski:description property.
+Note that the property to use can have any name, it need not be named <i>prefix:</i>description.
+<verbatim>
+dc:description
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/Description" ;
+  virtcxml:FacetDescription "Facet to use for item description" .
+
+dcterms:description
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/Description" ;
+  virtcxml:FacetDescription "Facet to use for item description" .
+  ...
+camp:description
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/Description" ;
+  virtcxml:FacetDescription "Facet to use for campsite description" .
+  ...
+ski:description
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/Description" ;
+  virtcxml:FacetDescription "Facet to use for ski resort description" .
+</verbatim>
+
+#AncVirtcxmlSetFacetName
+---++++Setting a Facet's Name
+
+Use 'Type of Resort' in place of 'camp:resort_type' as the name of the facet:
+<verbatim>
+camp:resort_type
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetName "Type of Resort" ;
+  virtcxml:FacetDescription "Type of resort" .
+</verbatim>
+
+The ability to override a facet's name is not limited to DESCRIBEs. The default facet names generated by a SELECT can also be overridden in the same way. For instance, the facet name <nowiki>'virtcxml:FacetO'</nowiki> created for query variable ?o in a SELECT starting:
+<verbatim>
+select ?s ?p ?o where ...
+</verbatim>
+can be changed to 'Object' with an entry in virtcxml of the form:
+<verbatim>
+virtcxml:FacetO
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetName "Object" ;
+  virtcxml:FacetDescription "Renaming of facet associated with ?o" .
+</verbatim>
+Likewise for
+<verbatim>
+select ?s ?p ?o as ?loc ...
+</verbatim>
+<verbatim>
+virtcxml:FacetLoc
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetName "Location" ;
+  virtcxml:FacetDescription "..." .
+</verbatim>
+
+#AncVirtcxmlSetFacetDatatype
+---++++Setting a Facet's Datatype
+
+Overriding the default CXML String datatype for item properties:
+
+The following examples show how to set the facet type using the <nowiki>virtcxml:FacetType</nowiki> property. However this should not be necessary for numeric and datetime values. If the values are RDF typed literals, the facet datatype is set automatically.
+<verbatim>
+ski:altitude_m
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Number" ;
+  virtcxml:FacetDescription "Resort altitude (m)" .
+  ...
+rdfs:seeAlso
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Link" ;
+  virtcxml:FacetDescription "Related item" .
+</verbatim>
+
+#AncVirtcxmlSetQrcodeFacet
+---++++Setting the Facet Used to Generate a QR code
+
+For SELECTs, reserved query variable ?qrcode identifies the property to use for generating QR codes. However this variable is unavailable for DESCRIBEs and CONSTRUCTs. For the latter, two options exist. Either designate the property to use through an entry in graph virtcxml: or, in the absence of such an entry, use the default behaviour whereby the subject URI is automatically used as the basis for the QR code, assuming QR code generation has been enabled through the /sparql query string setting "format=text/cxml+qrcode", or through the SPASQL pragma 'define output:format "CXML;QRCODE"' as described above in [[#AncSparqlEndpointCxmlExtensions][SPARQL Endpoint CXML Extensions]].
+
+To specify a QR code source-property in virtcxml:, assign the property a <nowiki>virtcxml:FacetType</nowiki> property of "Item/@virt:QRcode". e.g.
+<verbatim>
+gr:hasEAN_UCC-13
+	a virtcxml:FacetCategoryPattern ;
+	virtcxml:FacetType "Item/@virt:QRcode" ;
+	virtcxml:FacetDescription "Use a product's GoodRelations EAN-UCC-13 code (Universal Product Code) for it's QRcode" .
+</verbatim>
+
+In most circumstances it will probably be preferable to QR-encode the item (subject) URI, in which case an entry in virtcxml: is not needed.
+
+#AncExcludingFacetFilterPanel
+---++++Excluding a Facet from the Filter Panel
+
+There may be occasion where there is little reason to include a facet in the <nowiki>PivotViewer</nowiki> filter panel, for instance if the facet value is unique for each item and you are unlikely to want to filter on this facet. To exclude a facet from the filter panel, set its <nowiki>virtcxml:PivotIsFilterVisible</nowiki> property to "false" in virtcxml: e.g.
+<verbatim>
+foaf:mbox_sha1sum
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetName "SHA1 of a Personal Mailbox" ;
+  virtcxml:FacetType "String" ;
+  virtcxml:PivotIsFilterVisible "false" .
+</verbatim>
+
+#AncUsingLabels
+---+++Using Labels in Place of URIs
+
+In the world of RDF, a URI is the primary currency for naming and identifying classes, properties and individuals. In contrast, in <nowiki>PivotViewer</nowiki> items and properties are identified by name, and property values are in the main character strings. The screenshot on the left below shows the visual impact of property values which are resource URIs rather than literals, if PivotViewer's auto-label feature (see below) is disabled. (This feature cannot be disabled by end-users, but has been in the following example to illustrate its effect). The values for facet <nowiki>virtcxml:FacetHabitat</nowiki> were returned by the query:
+
+<verbatim>
+SELECT DISTINCT  ?s as ?href ?kingdom ?image ?habitat WHERE {?s <http://purl.org/ontology/wo/kingdom> ?kingdom; <http://purl.org/ontology/wo/livesIn> ?habitat. OPTIONAL {?s foaf:depiction ?image . } } limit 2500
+</verbatim>
+
+<br/>
+<img src="%ATTACHURLPATH%/property_labels1.jpg" style="wikiautogen"/>
+<img src="%ATTACHURLPATH%/property_labels2.jpg" style="wikiautogen"/>
+<br/>
+The values for property <nowiki>http://purl.org/ontology/wo/livesIn</nowiki> (corresponding to facet <nowiki>virtcxml:FacetHabitat</nowiki>) are individuals identified by URIs, e.g. <nowiki>http://www.bbc.co.uk/nature/habitats/Tropical_and_subtropical_grasslands,_savannas,_and_shrublands#habitat</nowiki>, which while great for machine-readable data does little for end-user readability. From a user's perspective, it's clearly preferable that URIs should be hidden as far as possible.
+
+One option would be to display a property's label in place of its URI and keep the property type as CXML String. While for some properties, such as rdfs:seeAlso, it may be desirable to  type the property as CXML Link, and use the property label for the anchor text, in most cases using CXML String makes for a better user experience and more searchable collections. The reason being that facets of type CXML Link are not exposed in the Filter panel for filtering, whereas facets of type CXML String are. In order to achieve the desired effect, the query could be recast to retrieve labels attached to properties through the rdfs:label predicate:
+ 
+<verbatim>
+SELECT DISTINCT  ?s as ?href ?name ?kname ?image ?hname WHERE {?s <http://purl.org/ontology/wo/kingdom> ?kingdom; rdfs:label ?name; <http://purl.org/ontology/wo/livesIn> ?habitat. OPTIONAL {?s foaf:depiction ?image.} ?kingdom rdfs:label ?kname. ?habitat rdfs:label ?hname} limit 2500
+</verbatim>
+[[http://uriburner.com/c/DIZQEG][View Pivot collection]]
+
+The screenshot above right shows the effect of ?hname in the <nowiki>PivotViewer</nowiki> Filter panel. (The order of the images is different because <nowiki>PivotViewer</nowiki> orders on <nowiki>virtcxml:FacetHabitat</nowiki> in the first case and <nowiki>virtcxml:FacetHname</nowiki> in the second.) Those below show the impact of ?name on the item name in the Info panel, replacing the aardvark URI by the much more readable 'Aardvark'.
+
+<br/>
+<img src="%ATTACHURLPATH%/item_name1.jpg" style="wikiautogen"/>
+
+<img src="%ATTACHURLPATH%/item_name2.jpg" style="wikiautogen"/>
+<br/>
+
+#AncExploitingInferencing
+---++++Exploiting Inferencing
+The last example showed rdfs:label being used to supply human-friendly labels for some properties. Inferencing provides a more generic approach to the problem, particularly where a collection may consist of more than one entity type. Virtuoso defines an inference context, virtrdf-label, specifically for inferring property labels. The context, defined in graph virtrdf-label, declares many properties routinely used for labels as being a subproperty of virtrdf:label. e.g.
+<verbatim>
+rdfs:label rdfs:subPropertyOf <http://www.openlinksw.com/schemas/virtrdf#label>
+dcterms:title rdfs:subPropertyOf <http://www.openlinksw.com/schemas/virtrdf#label>
+...
+</verbatim>
+By including the pragma 'define input:inference "virtrdf-label" before the last query above, label inferencing is enabled and any reference to rdfs:label could be replaced by virtrdf:label.
+
+#AncAutoLabels
+---++++Automatic Labels
+
+When handling property values which are URIs, rather than require the query to convert these URIs to labels through the inclusion of additional rdfs:label (or virtrdf:label) patterns, such as "?kingdom rdfs:label ?kname . ?habitat rdfs:label ?hname ." as illustrated above, Virtuoso will attempt to infer such labels automatically. Similarly for property URIs, Virtuoso will attempt to find the property's label and use this for the property (i.e. facet) name rather than use the [[http://en.wikipedia.org/wiki/CURIE][CURIE]] format of the property URI. For example, "Creator" is used as a property name is place of "dc:creator". When searching for auto-labels, <nowiki>SparqlCxml</nowiki> looks first in graph virtcxml: for facet names set using the <nowiki>virtcxml:FacetName</nowiki> property, before querying the local quad store for labels revealed through the virtrdf-label inference context.
+
+The next example shows how the aesthetics of a recipe description can be improved using auto-labels. Starting from the Conductor's /sparql UI and executing the illustrated query
+
+<img src="%ATTACHURLPATH%/recipe_qry_string_facets.jpg" style="wikiautogen"/>
+
+generates a query result URI which when passed to <nowiki>PivotViewer</nowiki> results in
+
+<img src="%ATTACHURLPATH%/recipe_pvt_string_facets.jpg" style="wikiautogen"/>
+
+Notice that the values for facet dv:ingredient are labels, not URIs. The ingredient URIs have been hidden by the auto-labelling. The full RDF description of the ingredient 'almonds' is given by:
+
+<verbatim>
+SELECT * WHERE { <http://kingsley.idehen.net/about/id/entity/http/www.bbc.co.uk/food/recipes/almondymincepies_14566#hrecipe55g%2F2oz%20ground%20almonds%20> ?p ?o}
+</verbatim>
+which returns 
+| *p* | *o* |
+| <nowiki>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</nowiki> |<nowiki>http://rdf.data-vocabulary.org/Ingredient</nowiki> |
+| <nowiki>http://rdf.data-vocabulary.org/name</nowiki> | almonds |
+| <nowiki>http://rdf.data-vocabulary.org/amount</nowiki> | 55g/2oz ground almonds |
+
+and which reveals that the auto-labelling has used property  &lt;<nowiki>http://rdf.data-vocabulary.org/name</nowiki>&gt; in place of the ingredient URI. In order for this to happen, the virtrdf-label inference context declares dv:name as an rdfs:subPropertyOf virtrdf:label.
+
+<verbatim>
+SELECT * from <virtrdf-label> WHERE {?s ?p ?o}
+</verbatim>
+includes in its output
+| *s* | *p* | *o* |
+| <nowiki>http://rdf.data-vocabulary.org/name</nowiki> | <nowiki>http://www.w3.org/2000/01/rdf-schema#subPropertyOf</nowiki> | <nowiki>http://www.openlinksw.com/schemas/virtrdf#label</nowiki> |
+
+Also note that in the above DESCRIBE query, ?image functions as an ordinary variable, not a reserved query variable, as is the case with a SELECT. It is used to ensure each returned recipe has an accompanying image. For this DESCRIBE, in order to specify that the images for the DZC are provided by dv:photo, an appropriate entry was added to graph virtcxml using a simple [[http://www.w3.org/Submission/SPARQL-Update/][SPARUL]] statement:
+
+<verbatim>
+sparql 
+prefix dv: <http://rdf.data-vocabulary.org/>
+
+insert data into virtcxml:
+{
+  dv:photo
+    a virtcxml:FacetCategoryPattern ;
+    virtcxml:FacetType "Item/@virt:Image" ;
+    virtcxml:FacetDescription "A facet for use as an item image" .
+}
+</verbatim> 
+
+*Note*:<br/>
+Auto-label extraction for URIs will *not* be performed if a facet is explicitly typed as CXML Link in graph virtcxml. An entry such as
+<verbatim>
+prefix dv: <http://rdf.data-vocabulary.org/>
+. . .
+dv:ingredient
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetName "Ingredient" ;
+  virtcxml:FacetType "Link" .
+</verbatim>
+for facet "Ingredient" will result in the facet values using a URI for both the Link's anchor text and href, instead of an inferred label for the anchor text. Auto-label extraction is only done when [[#AncFacetTypeAutoDetection][auto-type detection]] takes place.
+
+#AncLabelLocalization
+---++++Label Localization
+
+In order to exploit URI to label conversion to maximum effect, it is important that ontologies and instance data use language tags in multi-lingual scenarios to localize property values, as illustrated by this made-up extract
+<verbatim>
+:EWD1036 a bibo:Document ;
+  dc:creator "E. W. Dijkstra"@en ;
+  dc:subject  "computer science"@en ;
+  dc:subject  "informatique"@fr ;
+  dc:title "The Cruelty of Really Teaching Computer Science"@en .
+</verbatim>
+
+Graph virtrdf-label declares dc:title rdfs:subPropertyOf virtrdf:label; so that dc:title serves as a potential label. Queries used for CXML generation can then restrict results, and hence labels, to a particular language by specifying the appropriate language tag. e.g.
+<verbatim>
+DESCRIBE ?s WHERE { ?s a bibo:Document ; dc:subject "computer science"@en }
+SELECT * WHERE { ?s dc:subject ?subject ; ... FILTER ( lang(?subject) = "EN" ) }
+</verbatim>
+
+At present the onus is on the query writer to use language tags in the base query, but it is anticipated that <nowiki>SparqlCxml</nowiki> will in future perform this kind of filtering automatically through detection of the locale being used by the user agent.
+
+#AncLinkType
+---+++Link Typing
+
+The default setting for the auto-label feature is to set the type of the replacement labels to CXML String. However, the property URIs can also be typed as CXML Link, if required, with the auto-label acting as the anchor text and the property URI as the href. In the /sparql UI the dropdowns 'Style for RDF subjects' and 'Style for other links' control the target CXML type used by auto-labelling. The choice of CXML String as the default is because it isn't possible to filter on properties typed as CXML Link; <nowiki>PivotViewer</nowiki> does not display Link properties in the filter panel. Typing a facet like foaf:topicOfInterest as Link would prevent a user from selecting a group of people with the same interest, e.g. <nowiki>http://dbpedia.org/resource/Semantic+Web</nowiki>, via the filter panel.
+
+Our recipe example used 'Convert to string facets', as can be seen in the raw CXML for the dv:ingredient facet
+
+<verbatim>
+<Collection SchemaVersion="1.0" Name="SPARQL Query Results">
+  <FacetCategories>
+    <FacetCategory Name="dv:author" Type="String"/>
+    <FacetCategory Name="dv:cookTime" Type="String"/>
+    <FacetCategory Name="dv:ingredient" Type="String"/>
+    <FacetCategory Name="dv:instructions" Type="LongString" d1p1:IsFilterVisible="false"/>
+    <FacetCategory Name="dv:name" Type="String"/>
+    <FacetCategory Name="dv:yield" Type="String"/>
+    <FacetCategory Name="Subject Type" Type="String" d1p1:IsFilterVisible="true" d1p1:IsMetaDataVisible="true" d1p1:IsWordWheelVisible="true"/>
+  </FacetCategories>
+  <Items ImgBase="http://kingsley.idehen.net/DeepZoomCache/cxml35073.dzc">
+    <Item Id="0" Img="#0" Href="http://kingsley.idehen.net/about/id/entity/http/www.bbc.co.uk/food/recipes/almondymincepies_14566#hrecipe" Name="Almondy mince pies">
+      <Facets>
+        <Facet Name="dv:author">
+          <String Value="Silvana Franco"/>
+        </Facet>
+        <Facet Name="dv:cookTime">
+          <String Value="10 to 30 mins"/>
+        </Facet>
+        <Facet Name="dv:ingredient">
+          <String Value="cream"/>
+          . . .
+          <String Value="almonds"/>
+          . . .
+        </Facet>
+</verbatim>
+
+If 'Style for other links' is set to 'Make plain links', the output for dv:ingredient becomes
+
+<verbatim>
+<Collection SchemaVersion="1.0" Name="SPARQL Query Results">
+  <FacetCategories>
+    . . .
+    <FacetCategory Name="dv:ingredient" Type="Link" d1p1:IsFilterVisible="false"/>
+    . . .
+  </FacetCategories>
+        . . .
+        <Facet Name="dv:ingredient">
+          <Link Href="http://kingsley.idehen.net/about/id/entity/http/www.bbc.co.uk/food/recipes/almondymincepies_14566#hrecipecream%2C%20custard%2C%20or%20brandy%20butter%2C%20to%20serve" 
+                Name="cream"/>
+           . . .
+           <Link Href="http://kingsley.idehen.net/about/id/entity/http/www.bbc.co.uk/food/recipes/almondymincepies_14566#hrecipe55g%2F2oz%20ground%20almonds%20"
+                 Name="almonds"/>
+           . . .
+        </Facet>
+</verbatim>
+
+Should you want to override the 'Style for ...' dropdown settings and force the type of a suitable property to Link, you can do so by adding an entry for the property in graph virtcxml:, assigning it a <nowiki>virtcxml:FacetType</nowiki> of "Link". The installed virtcxml: does this for rdfs:seeAlso,
+
+<verbatim>
+rdfs:seeAlso
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Link" ;
+  virtcxml:FacetDescription "Related item" .
+</verbatim>
+
+A property with <nowiki>virtcxml:FacetType</nowiki> "Link" will be typed as Link only if all its values are URIs and none are literals. Again, where auto-labels can be found, these provide the anchor text.
+
+#AncLinkTypeUIOpts
+---++++Link Typing Options
+
+The full set of link-typing options available in the /sparql UI are detailed below. The Facet Pivot Bridge and <nowiki>PivotViewer</nowiki> (via the 'Edit' feature) also expose the same options. Pick one of these options when executing SPARQL from any of these services.
+
+'CXML link behavior' Dropdown:
+   * Sets the CXML type of URIs to String or Link, optionally performing a DESCRIBE on the subject
+   * Permitted Values:
+      * Local Faceted Navigation Links
+         * What?
+            * Generates links that enable faceted navigation/browsing within the local CXML data island hosted by page. If users need to exit the CXML data island they can only do so via the link behind the data item's name at the top of the info panel on the right of the <nowiki>PivotViewer</nowiki> display.
+         * Why?
+            * Allows a <nowiki>PivotViewer</nowiki> user to search, sort and filter across image tile, bar graph, data grid and map views to find data items of specific interest.
+         * How?
+            * Instead of using the URI as the facet value with a facet type of CXML Link, this option changes the facet type to CXML String and replaces the facet value with any label associated with the entity identified by the URI. In this context a label is any entity property which is a virtrdf:label, as defined by graph (inference context) virtrdf-label.
+      * External Resource Links
+         * What?
+            * Generates links that enable a <nowiki>PivotViewer</nowiki> user to exit the local CXML data island to an external description page for the selected data item reference (URI).
+         * Why?
+            * Allows a <nowiki>PivotViewer</nowiki> user to search, sort and filter across image tile, bar graph, data grid and map views to find data items of specific interest, and then exit to an external resource via property values. This feature provides an additional exit to the data item name link.
+         * How?
+            * Uses the unadorned URI directly as the link href, keeping the facet type as CXML Link.
+            * The URI forms the href of the CXML Link, with the anchor text provided by the entity's label.
+      * External Faceted Navigation Links
+         * What?
+            * Generates links that enable faceted navigation/browsing via object property values (those that have URI/IRI reference values).
+         * Why?
+            * Allows a <nowiki>PivotViewer</nowiki> user to search, sort and filter across image tile, bar graph, data grid and map views to find data items of specific interest. Once the data item of interest is located, you also have the option to open up new <nowiki>PivotViewer</nowiki> pages via properties of your current data item of interest.
+         * How?
+            * Replaces the entity URI by a wrapper URI to perform a SPARQL DESCRIBE of the entity, returning the result as CXML and launching <nowiki>PivotViewer</nowiki> to display it.
+            * The wrapper URI takes the form 'http://&lt;localhost&gt;/<nowiki>PivotViewer</nowiki>?url=http://&lt;localhost&gt;//sparql?query=describe+&lt;URI&gt;&format=text/cxml+qrcode' (the full URL encoding is not shown)
+            * The wrapper URI forms the href of the CXML Link, with the anchor text provided by the entity's label.
+      * External Description Resource (Turtle)
+         * What?
+            * Generates links that provide access to data item description resources in Turtle format.
+         * Why?
+            * Allows a <nowiki>PivotViewer</nowiki> user to search, sort and filter across image tile, bar graph, data grid and map views to find data items of specific interest. Once the data item of interest is located, you can use this link to access a data item description resouce (document) in Turtle format. Of course, you can simply alter the Turtle URL for other data formats supported by Virtuoso.
+         * How?
+            * Replaces the entity URI by a wrapper URI to perform a SPARQL DESCRIBE of the entity, returning the result as TTL.
+            * The wrapper URI takes the form 'http://&lt;localhost&gt;/sparql?query=describe+&lt;URI&gt;&format=text/rdf+n3' (the full URL encoding is not shown)
+            * The wrapper URI forms the href of the CXML Link, with the anchor text provided by the entity's label.
+      * External Description Resource (CXML)
+         * What?
+            * Provides links to access CXML-based resources usable by other <nowiki>PivotViewer</nowiki> instances i.e, Virtuoso or non-Virtuoso hosted.
+         * Why?
+            * Allows a <nowiki>PivotViewer</nowiki> user to search, sort and filter across image tile, bar graph, data grid and map views to find data items of specific interest. Once the data item of interest is located, you can use this link type to access a CXML resource for use elsewhere.
+         * How?
+            * Replaces the entity URI by a wrapper URI to perform a SPARQL DESCRIBE of the entity, returning the result as CXML.
+            * The wrapper URI takes the form 'http://&lt;localhost&gt;/sparql?query=describe+&lt;URI&gt;&format=text/cxml+qrcode' (again the full URL encoding is not shown)
+            * The wrapper URI forms the href of the CXML Link, with the anchor text provided by the entity's label.
+
+#AncLinkTypeQryStringParam
+---++++Controlling Link Typing through /sparql Query String Parameters
+
+The link styling options provided by the /sparql UI ultimately reduce to two query string parameters in the SPARQL query URI it builds. Query string parameter <nowiki>CXML_redir_for_hrefs</nowiki> corresponds to the 'CXML link behavior' dropdown.  It can take one of the following values:
+   * null : Sets the "Local Faceted Navigation Links" option
+   * '121' : Sets the "External Resource Links" option
+   * '<nowiki>LOCAL_PIVOT</nowiki>' : Sets the  "External Faceted Navigation Links" option
+   * '<nowiki>LOCAL_TTL</nowiki>' : Sets the "External Description Resource (Turtle)" option
+   * '<nowiki>LOCAL_CXML</nowiki>' : Sets the "External Description Resource (CXML)" option
+
+Parameter <nowiki>CXML_redir_for_subjs</nowiki> is reserved for future use and should be set to null.
+
+#AncLinkTypeVirtuosoPL
+---++++Controlling Link Typing through Virtuoso/PL
+
+When executing a SPARQL query directly from Virtuoso/PL, the controls used by the /sparql and /fct UIs for CXML link styling are not available. To specify the required CXML link typing in Virtuoso/PL, set the connection variables <nowiki>SPARQL_CXML_redir_for_subjs</nowiki> and <nowiki>SPARQL_CXML_redir_for_hrefs</nowiki>. In the code extract below:
+<verbatim>
+  connection_set ('SPARQL_CXML_redir_for_subjs', redir_for_subjs);
+  connection_set ('SPARQL_CXML_redir_for_hrefs', redir_for_hrefs);
+
+  qry := 'sparql define output:format "CXML;QRCODE" define sql:describe-mode "SPO" describe ?s1 where { . . . } ';
+  sqls := '00000';
+  exec (qry, sqls, msg, vector(), 1, meta, result);
+  . . .
+</verbatim>
+
+variables <nowiki>redir_for_subjs</nowiki> and <nowiki>redir_for_hrefs</nowiki> take the same values as the <nowiki>CXML_redir_for_subjs</nowiki> and <nowiki>CXML_redir_for_hrefs</nowiki> query string parameters.

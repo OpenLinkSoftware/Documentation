@@ -1,0 +1,149 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtAWSPublicDataSets"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtAWSPublicDataSets"}%--><h1><a name="Getting Started with DBpedia via preloaded and preconfigured Amazon EC2 AMIs for Virtuoso Cluster Edition"></a> Getting Started with DBpedia via preloaded and preconfigured Amazon EC2 AMIs for Virtuoso Cluster Edition</h1>
+<ol><li>If not already running, instantiate a <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtInstallationEC2" class="wikiword">Virtuoso EC2 AMI instance</a>.
+ Note that we recommend a minimum 64-bit extra large image Virtuoso Release 6 AMI instance (ami-23d0334a) with 15GB of memory be used, which is an &quot;Extra Large (m1.xlarge, 15GB)&quot; AMI instance type.
+</li>
+<li>You can obtain a list of available Virtuoso public snapshots from the <a href="https://console.aws.amazon.com/ec2/home" class="absuri">AWS Management Console</a> by clicking the &quot;Snapshot&quot; link, selecting &quot;Public Snapshots&quot; from the viewing drop-down list, and searching for <i>Virtuoso</i>.
+ An EBS volume can be created for any of these snapshots and attached to a Virtuoso EC2 AMI instance.
+<br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets06.png" style="wikiautogen"><br><br><br> 
+<table class="wikitable">
+<tr><td><strong>Description</strong></td><td align="center">  DBpedia 3.8 - Virtuoso 6.4 Cluster Edition  </td></tr>
+<tr><td><strong>Virtuoso Server Type</strong>  </td><td align="center">  Cluster Edition  </td></tr>
+<tr><td><strong>Snapshot ID (Linux/Unix)</strong> </td><td align="center">  snap-02baf371  </td></tr>
+<tr><td><strong>Size</strong> </td><td align="center">  75 GB  </td></tr>
+<tr><td><strong>Creation Date</strong> </td><td align="center">  2012-08-28  </td></tr>
+<tr><td><strong>Last Updated</strong> </td><td align="center">  2012-08-28  </td></tr>
+<tr><td><strong>License</strong> </td><td align="center">  Creative Commons: Attribution Share Alike  </td></tr>
+<tr><td><strong>Submitted By<strong> </strong></strong></td><td align="center">  <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Software  </td></tr>
+<tr><td><strong>Source</strong> </td><td align="center">  <a href="http://www.openlinksw.com" class="absuri">http://www.openlinksw.com</a>  </td></tr>
+</table>
+ <br><br> </li>
+<li>Select the &quot;Volumes&quot; link under the &quot;Elastic Block Storage&quot; section <br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets01.png" style="wikiautogen"><br><br> </li>
+<li>Click on the &quot;Create Volume&quot; button and set &quot;Size&quot; to 75GB, &quot;Availability Zone&quot; to match the zone of your running Virtuoso EC2 AMI instance and &quot;Snaphot&quot; to the required DBpedia AWS snapshot.
+<br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets02.png" style="wikiautogen"><br><br> </li>
+<li>Select the newly created volume and click on the &quot;Attach Volume&quot; button to attach the volume to the required Virtuoso EC2 AMI instance <br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets03.png" style="wikiautogen"><br><br> </li>
+<li>Select the &quot;Instance&quot; and &quot;Device&quot; to which the volume should be attached, and click &quot;Attach&quot; <br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets04.png" style="wikiautogen"><br><br> </li>
+<li>The volume will now be listed as &quot;attached&quot; to the specified Virtuoso EC2 AMI instance id.
+<br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets05.png" style="wikiautogen"><br><br> </li>
+<li><b><code>ssh</code></b> into the Virtuoso EC2 AMI instance and create a directory for the Virtuoso DBpedia 3.8 snapshot volume attached previously to be mounted under.
+<br><pre><br>$ ssh -i MyKeyPair.pem root@&lt;ec2-ami-public-dns-cname&gt;
+[root@ip-10-218-91-224 ~]# cd /opt/virtuoso
+[root@ip-10-218-91-224 virtuoso]# ls
+bin       hosting  lib  virtuoso-environment.csh  vsp
+database  install  vad  virtuoso-environment.sh
+[root@ip-10-218-91-224 virtuoso]# . ./virtuoso-environment.sh
+[root@ip-10-218-91-224 virtuoso]# mkdir dbpedia
+</pre><br></li>
+<li>Mount the Virtuoso DBpedia 3.8 snapshot volume.
+<br><pre><br>[root@ip-10-218-91-224 virtuoso]# mount /dev/sdf /opt/virtuoso/dbpedia
+</pre><br></li>
+<li>Check the mount point to ensure the operation was successful.
+<br><pre><br>[root@ip-10-218-91-224 virtuoso]# ls -l /opt/virtuoso/dbpedia/
+total 40
+lrwxrwxrwx 1 root root    17 May  5 16:56 bin -&gt; /opt/virtuoso/bin
+-rwxr-xr-x 1 root root   293 May  6 08:04 crestore.sh
+-rwxr-xr-x 1 root root    97 May  6 08:23 cstart.sh
+lrwxrwxrwx 1 root root    21 May  5 13:29 install -&gt; /opt/virtuoso/install
+drwx------ 2  500  500 16384 Apr  8  2009 lost+found
+drwxr-xr-x 3 root root  4096 May  6 17:11 cluster_01
+drwxr-xr-x 3 root root  4096 May  6 16:40 cluster_02
+drwxr-xr-x 3 root root  4096 May  6 16:40 cluster_03
+drwxr-xr-x 3 root root  4096 May  6 16:41 cluster_04
+[root@ip-10-218-91-224 virtuoso]
+</pre><br></li>
+<li>To run the newly attached data set, first set up your Virtuoso environment, and ensure the default database instance has been stopped.
+<br><pre><br>[root@ip-10-218-91-224 ~]# cd /opt/virtuoso
+[root@ip-10-218-91-224 virtuoso]# . ./virtuoso-environment.sh
+[root@ip-10-218-91-224 virtuoso]# virtuoso-stop.sh
+</pre><br></li>
+<li>Navigate to the mounted data set, and set the <code>VIRTUOSO_HOME</code> environment variable to this location.
+<br><pre><br>[root@ip-10-218-91-224 virtuoso]# cd /opt/virtuoso/dbpedia
+[root@ip-10-218-91-224 dbpedia# export VIRTUOSO_HOME=`pwd`
+</pre><br></li>
+<li>Note that as stated in step 1, it is recommended these DBpedia snaphots be used with a minimum 64-bit extra large image Virtuoso Release 6 AMI instance (ami-23d0334a) with 15GB of memory.
+ Should you choose to use the &quot;large image&quot; with only 7.5GB memory then the Virtuoso configuration file (virtuoso.ini) must be edited, and the &quot;<code>NumberOfBuffers</code>&quot; parameter therein reduced from <code>1000000</code> to <code>500000</code> before attempting to start the Virtuoso server instance; otherwise, it will fail to start due to lack of memory.
+ Note as this is a 4 node cluster the &quot;<code>NumberOfBuffers</code>&quot; should be split across the &quot;virtuoso.ini&quot; for each node ie <code>250000</code> for 16GB RAM and <code>125000</code> for 7.5GB RAM.
+ For more details please refer to the <a href="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html" class="absuri">Virtuoso RDF Performance Tuning Guide</a> in the online documentation.
+</li>
+<li>Run the following command to remove any old transaction log files that may still be in place before starting the cluster.
+<br><pre><br>[root@ip-10-218-91-224 virtuoso]# rm cluster_0*/database.trx
+</pre><br></li>
+<li>Run the <code>virtuoso-start.sh</code> script to start the Virtuoso server containing the attached data set.
+<br><pre><br>[root@ip-10-218-91-224 dbpedia]# virtuoso-start.sh
+Starting Virtuoso instance in [cluster_01]
+Starting Virtuoso instance in [cluster_02]
+Starting Virtuoso instance in [cluster_03]
+Starting Virtuoso instance in [cluster_04]
+[root@ip-10-218-91-224 dbpedia]#
+</pre><br></li>
+<li>Note the preconfigured Virtuoso Server &quot;dba&quot; user&#39;s password is set to the default of &quot;dba&quot;.
+ It is strongly recommended that this be changed to a suitably secure password using the <b>System Admin</b> -&gt; <b>User Accounts</b> tab in the Virtuoso Conductor (<code>http://ec2-ami-public-dns-cname/conductor/</code>).
+<br><br> </li>
+<li>The Virtuoso hosted data set can now be explored using an HTML browser, or queried from the SPARQL or Faceted Browser web service endpoints.
+ For example, in the DBpedia datasets -- <ul><li>A description of the resource Bob Marley can be viewed as:  <code>http://ec2-ami-public-dns-cname/resource/Bob_Marley </code> <br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets07.png" style="wikiautogen"><br><br> </li>
+<li>A Faceted Search can be performed on a resource at <code>http://ec2-ami-public-dns-cname/fct </code> <br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets08.png" style="wikiautogen"><br> <br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets09.png" style="wikiautogen"><br><br> <br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets10.png" style="wikiautogen"><br><br> </li>
+<li>A SPARQL query can be run to obtain information on a resource at <code>http://ec2-ami-public-dns-cname/sparql </code> <br><br><img src="VirtAWSDBpedia38/VirtAWSPublicDataSets11.png" style="wikiautogen"><br> </li>
+</ul></li>
+</ol><h2><a name="Related Items"></a> Related Items</h2>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtInstallationEC2" class="wikiword">Virtuoso EC2 AMI instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAWSPublicDataSets" class="wikiword">Pre-configured &amp; Pre-loaded Virtuoso instances (DBpedia, BBC Music &amp; Programmes etc.)</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMIDBpediaInstall" class="wikiword">Creating Your Own DBpedia 3.2 Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMINeuroCommonsInstall" class="wikiword">Creating Your Own Neurocommons Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMIBio2rdfInstall" class="wikiword">Creating Your Own Bio2RDF Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMIMusicBrainzInstall" class="wikiword">Creating Your Own MusicBrainz Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLEndpointProtection" class="wikiword">Safeguarding your Virtuoso-hosted SPARQL Endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpointProtection" class="wikiword">SPARQL Endpoint Protection Methods Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/" class="absuri">Virtuoso documentation</a> <ul><li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint" class="absuri">SPARQL Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri" class="absuri">Service Endpoint Security</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl" class="absuri">Managing a SPARQL Web Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">SPARQL</a> </li>
+</ul></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLDET" class="wikiword">SPARQL Endpoint DET Configuration Guide</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSecurityWebID" class="wikiword">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpoints" class="wikiword">Securing SPARQL endpoints</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth" class="absuri">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Virtuoso Authentication Server UI</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSSL" class="wikiword">Manage a SPARQL-WebID based Endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSetupSSL" class="wikiword">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL" class="absuri">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID" class="absuri">WebID Protocol Support in OpenLink Data Spaces</a>.
+</li>
+<li>Manage ODS Datadspaces Objects WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtAWSDBpedia38" class="wikiword">?</a> Access Control Lists (ACLs): <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID" class="absuri">ODS Briefcase WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson" class="absuri">Person Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup" class="absuri">Group Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic" class="absuri">Public WebID based ACL Guide</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL" class="absuri">ODS Feed Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL" class="absuri">ODS Calendar WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL" class="absuri">ODS Bookmark Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL" class="absuri">ODS Addressbook  WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup" class="absuri">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub" class="absuri">Setting up PubSubHub in ODS</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub" class="absuri">PubSubHubBub Demo Client Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub" class="absuri">Feed subscription via PubSubHub protocol Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL" class="absuri">Setting Up PubSubHub to use WebID Protocol or IP based control lists</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport" class="absuri">CA Keys Import using Conductor</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate" class="absuri">Generate an X.509 Certificate hosted WebID Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore" class="absuri">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore" class="absuri">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP" class="absuri">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy" class="absuri">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile" class="absuri">ODS Briefcase WebID Protocol Share File Guide</a> </li>
+<li><a href="http://esw.w3.org/topic/foaf+ssl" class="absuri">WebID Protocol Specification</a> </li>
+<li><a href="https://foaf.me/simpleLogin.php" class="absuri">Test WebID Protocol Certificate page</a> </li>
+<li><a href="http://test.foafssl.org/cert/" class="absuri">WebID Protocol Certificate Generation page</a> </li>
+</ul></div></body></html>

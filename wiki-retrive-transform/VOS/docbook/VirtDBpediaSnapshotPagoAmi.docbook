@@ -1,0 +1,280 @@
+<docbook><section><title>VirtDBpediaSnapshotPagoAmi</title><title> DBpedia Snapshot (Virtuoso PAGO) EBS-backed EC2 AMI</title> DBpedia Snapshot (Virtuoso PAGO) EBS-backed EC2 AMI
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>In addition to the <ulink url="VirtInstallationEC2">Instance-backed EC2 AMI</ulink> that has been available since 2008, a standard unpopulated Virtuoso instance is available as an EBS-backed EC2 AMI based on either a <emphasis><ulink url="https://aws.amazon.com/marketplace/pp/B00ZWMSNOG">BYOL (Bring Your Own License)</ulink></emphasis> or a <emphasis><ulink url="https://aws.amazon.com/marketplace/pp/B011VMCZ8K/">PAGO (Pay As You Go)</ulink></emphasis> basis.
+ In each case, the AMI delivers a preconfigured Virtuoso instance.</para>
+<para>We also now offer two PAGO variants, both pre-loaded with DBpedia data.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The <emphasis>DBpedia Snapshot (Virtuoso PAGO)</emphasis> (documented on this page) starts as a static instance, preloaded with the DBpedia 2016-10 dataset, mirroring the public <ulink url="http://wiki.dbpedia.org/OnlineAccess">DBpedia</ulink> instance found at <ulink url="http://dbpedia.org/sparql">http://dbpedia.org/sparql</ulink>.
+ You can make changes to this data, but it will not track changes made to Wikipedia nor DBpedia-Live.
+ </listitem>
+<listitem>The <emphasis><ulink url="https://aws.amazon.com/marketplace/pp/B012DSCFEK">DBpedia Live (Virtuoso PAGO)</ulink></emphasis> (documented on <ulink url="VirtPayAsYouGoEBSBackedAMIDBpedia2015">another page</ulink>) starts as a static instance, preloaded with the DBpedia 2016-04 dataset, and includes an optional switch that enables data updates based on the Wikipedia firehose, effectively giving you a mirror of the public <ulink url="http://wiki.dbpedia.org/online-access/DBpediaLive">DBpedia-Live</ulink> instance found at <ulink url="http://live.dbpedia.org/sparql">http://live.dbpedia.org/sparql</ulink>.</listitem>
+</itemizedlist><para>This type of AMI provides several fundamental benefits including —</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Virtuoso DBMS Server is preinstalled with basic tuning for the host operating system.
+ (That said, since we support many AMI machine types/sizes, you should still <ulink url="#Performance%20Notes">tune the configuration to suit the available RAM in your instance</ulink>.) </listitem>
+<listitem>DBpedia Dataset is preloaded and preconfigured (and may be configurable to auto-update).
+</listitem>
+<listitem>You can start and stop the DBpedia instance without having to terminate its host AMI.
+</listitem>
+<listitem>With the hourly model, you pay only for the time the AMI is used.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>An <ulink url="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html/103-7399647-0537426?">Amazon Web Services</ulink> (AWS) account.
+</listitem>
+<listitem>Recently created AWS accounts will have been automatically signed up for the <ulink url="http://www.amazon.com/b/ref=sc_fe_l_2?ie=UTF8&amp;node=201590011&amp;no=3435361&amp;me=A36L942TSJ2AJA">Amazon S3 and EC2 Web Service</ulink>.
+ If you created your AWS account a long time ago, you may now need to manually sign up for these services.
+</listitem>
+<listitem>Ensure an AWS security group allowing access to ports 22 (standard SSH), 80 (standard HTTP), and 8890 (Virtuoso HTTP-based Admin) is used.
+ (This is the setup of the AMI offerings.)</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Instantiating DBpedia Snapshot (Virtuoso PAGO) via Web Interface</bridgehead>
+<orderedlist spacing="compact"><listitem>Locate the <ulink url="https://aws.amazon.com/marketplace/pp/B012DSCFEK">DBpedia Snapshot (Virtuoso PAGO)</ulink> image in AWS Marketplace and click the <emphasis>Continue</emphasis> button.
+<ulink url="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO01.png"><figure><graphic fileref="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO01.png" /></figure></ulink> </listitem>
+<listitem>Choose a suitable size <emphasis>EC2 Instance Type</emphasis> and <emphasis>Key Pair</emphasis>, then click on the button <emphasis>Launch with 1-click</emphasis> button.
+<ulink url="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO02.png"><figure><graphic fileref="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO02.png" /></figure></ulink> </listitem>
+<listitem>A confirmation dialog will be presented indicating the image has been deployed.
+<ulink url="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO03.png"><figure><graphic fileref="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO03.png" /></figure></ulink> </listitem>
+<listitem>Check the in the <ulink url="https://console.aws.amazon.com/">AWS Console</ulink> EC2 images Web Interface that the image has been successfully instantiated.
+<ulink url="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO04.png"><figure><graphic fileref="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGO04.png" /></figure></ulink> </listitem>
+<listitem>Load the Virtuoso Admin Console (a/k/a Conductor) in your browser to confirm all is running properly: <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}:8890/conductor
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> First-time Setup &amp; Usage Notes</bridgehead>
+<para>These steps in this section are only necessary the first time you start the Virtuoso instances on the AMI.
+ This section may be ignored thereafter, as it is not necessary after AMI reboots.</para>
+<para>There are two Virtuoso instances in this AMI.
+ One which comes up quickly, with no significant content, so you know the AMI is basically functional; and one which comes up more slowly, with the full DBpedia dataset, which takes significant time to start due to some Amazon requirements for such AWS instances.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Basic Instance</bridgehead>
+<orderedlist spacing="compact"><listitem>ssh into your instantiated AMI using a command of the form — <programlisting>ssh -i {secure-pem-file} ec2-user@{amazon-ec2-dns-name-or-ip-address}
+</programlisting></listitem>
+<listitem>The Virtuoso DBMS Server for the Basic Instance will have started with the AMI.
+ You can verify this with -- <programlisting>ps -ef | grep &quot;virt*&quot; | grep -v grep
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>If you do not see a running instance, execute the following commands, and then repeat the command above.
+<programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-start.sh database
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>We strongly recommend you now use the Conductor to change the password for the &#39;dba&#39; user from the the AMI <emphasis>instance-id</emphasis>.
+ <orderedlist spacing="compact"><listitem>Retrieve the AMI instance-id by either -- <itemizedlist mark="bullet" spacing="compact"><listitem>checking the AMI properties presented by the Amazon AWS console UI -- <ulink url="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGOAwsConsole.png"><figure><graphic fileref="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGOAwsConsole.png" /></figure></ulink> </listitem>
+<listitem>executing the following command in the Linux shell -- <programlisting>curl http://169.254.169.254/latest/meta-data/instance-id
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Execute this command sequence -- <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+cd bin
+./isql localhost:1112 dba
+</programlisting></listitem>
+<listitem>When prompted for password, provide the instance-id </listitem>
+<listitem>At the SQL&gt; prompt, execute these two commands -- <programlisting>vad_install(&#39;/opt/virtuoso/vad/conductor_dav.vad&#39;,0)
+quit
+</programlisting></listitem>
+<listitem>Load the Conductor interface.
+<programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}:8890/conductor
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>If you get any error at this point, execute the following commands, and then re-try loading the Conductor in your web browser.
+<programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-stop.sh database
+virtuoso-start.sh database
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>At the authentication challenge, log in as the <emphasis>dba</emphasis> user, with the AMI <emphasis>instance-id</emphasis> as the password.
+ <emphasis><emphasis>Note:</emphasis> If unable to connect to the Virtuoso server using the  <emphasis>instance-id</emphasis> as password, please <ulink url="http://download.openlinksw.com:8080/download/register.vsp?hname=support">register with our Support Site</ulink>, and <ulink url="http://support.openlinksw.com/support/techadd.vsp">create a Support Case</ulink> for fastest assistance.</emphasis> </listitem>
+<listitem>Drill down to <emphasis>System Admin</emphasis> → <emphasis>User Accounts</emphasis>.
+</listitem>
+<listitem>Locate the <emphasis>dba</emphasis> user, and click the associated <emphasis>Edit</emphasis> link.
+</listitem>
+<listitem>The form allows many things to be changed.
+ For now, just input your desired password into both <emphasis>Password</emphasis> and <emphasis>Confirm Password</emphasis> boxes, and click the <emphasis>Save</emphasis> button.
+</listitem>
+<listitem>You can now perform other administrative tasks through the Conductor interface, or return to basic use.</listitem>
+</orderedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> DBpedia Instance</bridgehead>
+<orderedlist spacing="compact"><listitem>ssh into your instantiated AMI using — <programlisting>ssh -i {secure-pem-file} ec2-user@{ec2-dns-name-or-ip-address}
+</programlisting></listitem>
+<listitem>Stop the Basic Instance (to conserve system and license resources) by running — <programlisting>virtuoso-stop.sh dbpedia
+</programlisting></listitem>
+<listitem>Start the Virtuoso DBMS Server against the DBpedia Database by issuing the commands below.
+ <emphasis><emphasis>Note:</emphasis> At initial launch, it takes the Virtuoso DBMS Server approximately 20 minutes to bring the DBpedia database online, due to its size.
+ </emphasis> <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-start.sh dbpedia
+</programlisting></listitem>
+<listitem>We strongly recommend you now use the Conductor to change the password for the &#39;dba&#39; user from the the AMI <emphasis>instance-id</emphasis>.
+ <orderedlist spacing="compact"><listitem>Retrieve the AMI instance-id by either -- <itemizedlist mark="bullet" spacing="compact"><listitem>checking the AMI properties presented by the Amazon AWS console UI -- <ulink url="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGOAwsConsole.png"><figure><graphic fileref="VirtDBpediaSnapshotPagoAmi/VirtDBpedia2015PAGOAwsConsole.png" /></figure></ulink> </listitem>
+<listitem>executing the following command in the Linux shell -- <programlisting>curl http://169.254.169.254/latest/meta-data/instance-id
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Load the Conductor interface <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}/conductor
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>If you get any error at this point, execute the following commands, and then re-try loading the Conductor in your web browser.
+<programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-stop.sh dbpedia
+virtuoso-start.sh dbpedia
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>At the authentication challenge, log in as the <emphasis>dba</emphasis> user, with the AMI <emphasis>instance-id</emphasis> as the password.
+ <emphasis><emphasis>Note:</emphasis> If unable to connect to the Virtuoso server using the  <emphasis>instance-id</emphasis> as password, please <ulink url="http://download.openlinksw.com:8080/download/register.vsp?hname=support">register with our Support Site</ulink>, and <ulink url="http://support.openlinksw.com/support/techadd.vsp">create a Support Case</ulink> for fastest assistance.</emphasis> </listitem>
+<listitem>Drill down to <emphasis>System Admin</emphasis> → <emphasis>User Accounts</emphasis>.
+</listitem>
+<listitem>Locate the <emphasis>dba</emphasis> user, and click the associated <emphasis>Edit</emphasis> link.
+</listitem>
+<listitem>The form allows many things to be changed.
+ For now, just input your desired password into both <emphasis>Password</emphasis> and <emphasis>Confirm Password</emphasis> boxes, and click the <emphasis>Save</emphasis> button.
+</listitem>
+<listitem>You can now perform other administrative tasks through the Conductor interface, or return to basic DBpedia use.</listitem>
+</orderedlist></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> DBpedia Snapshot (Virtuoso PAGO) Database Interaction via Web Interface</bridgehead>
+<para>Once online, your DBpedia Snapshot instance will be ready for use from —  </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Basic Linked Data Exploration Page — an obvious starting point <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}/resource/DBpedia
+</programlisting></listitem>
+<listitem>Faceted Browsing Endpoint <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}/fct
+</programlisting></listitem>
+<listitem>Advanced Faceted Browsing Page <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}/describe/?uri=http://dbpedia.org/resource/DBpedia
+</programlisting></listitem>
+<listitem>SPARQL Query Service Endpoint <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}/sparql
+</programlisting></listitem>
+<listitem>Virtuoso Instance Administration Page (Virtuoso Conductor) <programlisting>http://{amazon-ec2-ami-dns-name-or-ip-address}/conductor
+</programlisting></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Administering the Virtuoso Instance via SSH</bridgehead>
+<para>All scripts for starting and stopping the Virtuoso instance are found in the following locations —</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>/etc/rc.d/init.d</emphasis> — scripts that enable automatic database server instantiation at operating system (AMI) boot or reboot time  </listitem>
+<listitem><emphasis>/opt/virtuoso</emphasis> — scripts for starting and stopping the database server within a running operating system (AMI)</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> License Manager</bridgehead>
+<para>The OpenLink License Manager must be launched before you launch the Virtuoso instance, and must remain running at all times for Virtuoso to run.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Start the License Manager <programlisting>/etc/rc.d/init.d/oplmgr start
+</programlisting> </listitem>
+<listitem>Stop the License Manager <programlisting>/etc/rc.d/init.d/oplmgr stop
+</programlisting> </listitem>
+<listitem>Restart the License Manager <programlisting>/etc/rc.d/init.d/oplmgr restart
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Virtuoso Server</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Start the Basic Virtuoso Server <programlisting>/etc/rc.d/init.d/virtuoso start
+</programlisting> </listitem>
+<listitem>Stop the Basic Virtuoso Server <programlisting>/etc/rc.d/init.d/virtuoso stop
+</programlisting> </listitem>
+<listitem>Restart the Basic Virtuoso Server <programlisting>/etc/rc.d/init.d/virtuoso restart
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Virtuoso DBpedia Server</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Start the DBpedia Virtuoso Server <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-start.sh dbpedia
+</programlisting> </listitem>
+<listitem>Stop the DBpedia Virtuoso Server <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-stop.sh dbpedia
+</programlisting> </listitem>
+<listitem>Restart the DBpedia Virtuoso Server <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-stop.sh dbpedia
+virtuoso-start.sh dbpedia
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Command-line Interaction with the Virtuoso Database Instance</bridgehead>
+<orderedlist spacing="compact"><listitem>Set the Virtuoso environment variables by running the command below.
+ <emphasis><emphasis>Note:</emphasis> This does and must start with dot-space-slash.</emphasis> <programlisting>. /opt/virtuoso/virtuoso-enterprise.sh
+</programlisting></listitem>
+<listitem>Run the Virtuoso &quot;<emphasis>isql</emphasis>&quot; command line tool to connect to the database.
+ <emphasis><emphasis>Note:</emphasis> your EC2 AMI&#39;s <emphasis>instance-id</emphasis> will be the dba user&#39;s password, until you change it (as recommended above).
+ </emphasis> <programlisting>$ isql 1111 -U dba -P {Password}
+Connected to OpenLink Virtuoso
+Driver: 07.10.3214 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt;
+</programlisting></listitem>
+<listitem>Run the &quot;<emphasis>tables</emphasis>&quot; command to obtain a list of tables in the default schema <programlisting>SQL&gt; tables;
+Showing SQLTables of tables like &#39;NULL.NULL.NULL&#39;, tabletype/colname like &#39;NULL&#39;
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+DB               DBA              ADM_XML_VIEWS    SYSTEM TABLE     NULL
+.
+.
+.
+DB               DBA              SYS_SQL_INVERSE  SYSTEM TABLE     NULL
+DB               DBA              SYS_TRIGGERS     SYSTEM TABLE     NULL
+DB               DBA              SYS_VIEWS        SYSTEM TABLE     NULL
+
+209 Rows. -- 1890 msec.
+SQL&gt;
+</programlisting></listitem>
+<listitem>You can stop the Virtuoso Database Server by running — <programlisting>virtuoso-stop.sh dbpedia
+</programlisting></listitem>
+<listitem>You can restart the Virtuoso Database Server by running — <programlisting>virtuoso-start.sh dbpedia
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Performance Notes</bridgehead>
+<para>Please be aware of the following, which impact the performance and utility of your AMI:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>This AMI includes a bundled Virtuoso license which enables 10 Database Sessions and the use of 4 logical processors.
+ Licenses that upgrade these attributes are available as paid upgrade options.
+ </listitem>
+<listitem>Virtuoso always takes full advantage of the memory it&#39;s configured to use.
+ <emphasis>This may be much less than is found in its host environment/AMI.</emphasis>  This AMI is pre-configured for an m3.large EC2 Instance Type, so will use 7GB of RAM.
+ If you choose a larger EC2 Instance Type (such as the recommended m3.2xlarge), then the NumberOfBuffer and MaxDirtyBuffers parameters in the /opt/virtuoso/dbpedia/dbpedia.ini configuration file should be increased to correspond to the chosen Instance Type&#39;s available memory, as detailed in the <ulink url="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFPerformanceTuning#General%20Memory%20Usage%20Settings">Virtuoso Performance Tuning Guide</ulink>.
+ A few examples are shown below.
+ After changing these or any other settings in the INI file, restart the Virtuoso server <ulink url="#Virtuoso%20Server">as described above</ulink>.
+ 
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry> m3.large </entry><entry>  7 GB  </entry><entry>   680000 </entry><entry>   500000 </entry></row>
+<row><entry> r3.large </entry><entry>  15 GB  </entry><entry>   1360000 </entry><entry>   1000000 </entry></row>
+<row><entry> r3.xlarge </entry><entry>  30.5 GB  </entry><entry>   2720000 </entry><entry>   2000000 </entry></row>
+<row><entry> r3.2xlarge </entry><entry>  61 GB  </entry><entry>   5450000 </entry><entry>   4000000 </entry></row>
+</tbody></tgroup></table>
+  </listitem>
+<listitem>There are a wide range of AMI choices, offering various combinations of system memory and logical processors.
+ To improve performance, use an <emphasis>EC2 Instance Type</emphasis> with more memory and more logical processors.
+ To make use of additional processors, you will need to also acquire an upgraded Virtuoso license.</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Troubleshooting</bridgehead>
+<para>If you encounter any problems resolving the sample DBpedia URIs listed in the steps above, please:</para>
+<orderedlist spacing="compact"><listitem>Determine whether Virtuoso is running, with this command <programlisting>ps -ef | grep &quot;virt*&quot; | grep -v grep
+</programlisting></listitem>
+<listitem>Check the log of Virtuoso&#39;s most recent activity with one of these commands <itemizedlist mark="bullet" spacing="compact"><listitem>for the DBpedia instance <programlisting>tail /dbpedia/*.log
+</programlisting></listitem>
+<listitem>for the basic instance <programlisting>tail /opt/virtuoso/dbpedia/*.log
+</programlisting> The output of those commands will show you whether the initial Virtuoso DBpedia DB setup (which can take a while due to DB size) is still in progress, the setup encountered some error, or the setup has completed but Virtuoso awaits one of the following commands:</listitem>
+</itemizedlist></listitem>
+</orderedlist><itemizedlist mark="bullet" spacing="compact"><listitem>Startup Commands <itemizedlist mark="bullet" spacing="compact"><listitem>Startup of the Basic Instance <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-start.sh database
+</programlisting></listitem>
+<listitem>Startup of the DBpedia Instance <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-start.sh dbpedia
+</programlisting> </listitem>
+</itemizedlist></listitem>
+<listitem>Restart commands <itemizedlist mark="bullet" spacing="compact"><listitem>Restart the Basic Instance <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-stop.sh database
+virtuoso-start.sh database
+</programlisting></listitem>
+<listitem>Restart the DBpedia Instance <programlisting>cd /opt/virtuoso
+. ./virtuoso-environment.sh    # this must start dot-space-dot-slash
+virtuoso-stop.sh dbpedia
+virtuoso-start.sh dbpedia
+</programlisting></listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related Items</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSInstallationEC2">OpenLink Data Spaces Installation</ulink> </listitem>
+<listitem>EC2 &amp; AMI related information <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtPayAsYouGoEBSBackedAMI">Virtuoso Pay As You Go (PAGO) EBS-backed EC2 AMI</ulink> </listitem>
+<listitem><ulink url="VirtInstallationEC2">Instance-backed Virtuoso EC2 AMI</ulink> </listitem>
+<listitem><ulink url="VirtAWSPublicDataSets">Pre-configured &amp; Pre-loaded Virtuoso instances (DBpedia 3.8, BBC Music &amp; Programmes, etc.)</ulink> </listitem>
+<listitem><ulink url="VirtEC2AMINeuroCommonsInstall">Creating Your Own Neurocommons Instance</ulink> </listitem>
+<listitem><ulink url="VirtEC2AMIBio2rdfInstall">Creating Your Own Bio2RDF Instance</ulink> </listitem>
+<listitem><ulink url="VirtEC2AMIMusicBrainzInstall">Creating Your Own MusicBrainz Instance</ulink> </listitem>
+<listitem><ulink url="VirtEc2ExtensionUI">Backup your Virtuoso EC2 AMI to S3</ulink> </listitem>
+<listitem><ulink url="VirtEC2AMIElasticBlockStorageConfig">Configure your Virtuoso EC2 AMI for use with Amazon Elastic Block Storage (EBS)</ulink> </listitem>
+<listitem><ulink url="http://calculator.s3.amazonaws.com/calc5.html">Amazon-provided AWS Simple Monthly Cost Calculator</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Protecting your Virtuoso-hosted SPARQL Endpoint <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLEndpointProtection">Safeguarding your Virtuoso-hosted SPARQL Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpointProtection">SPARQL Endpoint Protection Methods Collection</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpoints">Securing SPARQL endpoints</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSecurityWebID">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">SPARQL OAuth Tutorial</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/">Virtuoso documentation</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">Virtuoso&#39;s SPARQL support</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLDET">SPARQL Endpoint DET (DEV Extension Type) Configuration Guide</ulink></listitem>
+</itemizedlist></listitem>
+</itemizedlist><para> <ulink url="CategoryHowTo">CategoryHowTo</ulink> <ulink url="CategoryODS">CategoryODS</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryDocumentation">CategoryDocumentation</ulink> <ulink url="CategoryEC2">CategoryEC2</ulink></para>
+<para> </para>
+</section></docbook>

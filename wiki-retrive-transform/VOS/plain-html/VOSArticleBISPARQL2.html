@@ -1,0 +1,312 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICPARENT{name="VOSArticles"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VOSArticles"}%--></p>
+<h1><a name="Business Intelligence Extensions for SPARQL"></a>Business Intelligence Extensions for SPARQL</h1>
+<a href="mailto:oerling@openlinksw.com">Orri Erling</a>  (Program Manager, <nop></nop>OpenLink Virtuoso) and <br> <a href="mailto:imikhailov@openlinksw.com">Ivan Mikhailov</a> (Lead Developer, <nop></nop>OpenLink Virtuoso).<nop></nop><p>OpenLink Software, 10 Burlington Mall Road Suite 265 Burlington, MA 01803 U.S.A<br> <a href="http://www.openlinksw.com/" class="absuri">http://www.openlinksw.com/</a></p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Abstract">Abstract</a></li> <li><a href="#Introduction%20and%20Motivation">Introduction and Motivation</a></li> <li><a href="#Test%20Data">Test Data</a></li> <li><a href="#SPARQL%20Extensions">SPARQL Extensions</a></li>
+<ul><li><a href="#Expressions">Expressions</a></li> <li><a href="#Aggregation">Aggregation</a></li> <li><a href="#Nesting%20of%20Queries%20and%20Named%20Results">Nesting of Queries and Named Results</a></li> </ul><li><a href="#Sample%20Queries">Sample Queries</a></li> <li><a href="#Experiments">Experiments</a></li> <li><a href="#Conclusions">Conclusions</a></li> <li><a href="#Related">Related</a></li> <li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Abstract"></a>Abstract</h2>
+<p>We believe that the possibility to use SPARQL as a front end to heterogenous data without significant cost in performance or expressive power is key to RDF taking its rightful place as the <i>lingua franca</i> of data-integration.
+ To this effect, we demonstrate how RDF and SPARQL can tackle a standard relational workload.</p>
+<p>We discuss extending SPARQL for business intelligence (BI) workloads and relate experiences on running SPARQL against relational and native RDF databases.
+ We use the well known TPC-H benchmark as our reference schema and workload.
+ We define a mapping of the TPC-H schema to RDF and restate the queries as BI extended SPARQL.
+ To this effect, we define aggregation and nested queries for SPARQL.</p>
+<p>We demonstrate that it is possible to perform the TPC-H workload restated in SPARQL against an existing RDBMS without loss of performance or expressivity and without changes to the RDBMS.</p>
+<p> </p>
+<h2><a name="Introduction and Motivation"></a>Introduction and Motivation</h2>
+<p>RDF promises to be a top-level representation for data extracted or dynamically mapped from any conceivable source.
+ Thus, RDF&#39;s chief promise is in the field of information integration, analysis and discovery.
+ Yet it is difficult to imagine any business reporting, let alone more complex information integration task that would not involve aggregating and grouping.</p>
+<p>As a data access and data integration vendor, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> has a natural interest in seeing SPARQL succeed as a top level language for answering business questions on data mapped from any present day data warehouse or other repository.</p>
+<p>This potential role of SPARQL is however fundamentally undermined if SPARQL cannot perform any part of the database industry&#39;s baseline business intelligence benchmark, TPC-H.</p>
+<p>To this effect, we have extended SPARQL with expressions in results, aggregates and grouping and derived tables.
+ These extensions allow a straightforward translation of arbitrary SQL queries to SPARQL.
+ We call this extended SPARQL &quot;SPARQL BI&quot;.</p>
+<p>We demonstrate the operation of SPARQL BI versions of TPC-H queries on relational data managed by Virtuoso and Oracle.
+ We also demonstrate the same workload on the same data stored as RDF in Virtuoso.</p>
+<h2><a name="Test Data"></a>Test Data</h2>
+ We use the TPC-H schema mapped to RDF in all our examples.
+ The table names are directly converted to classes and the column names are directly converted to predicates in namespace <code><a href="http://www.openlinksw.com/schemas/TPC-H" class="absuri">http://www.openlinksw.com/schemas/TPC-H</a></code>.
+ The prefix <code>tpch</code> is used to refer to this namespace throughout the paper.<h2><a name="SPARQL Extensions"></a>SPARQL Extensions</h2>
+ <h3><a name="Expressions"></a>Expressions</h3>
+<p>In its proposed recommendation form, SPARQL does not allow returning any value that is not retrieved through a triple pattern.
+ Expressions are only allowed in filters but cannot be returned.
+We lift this restriction by allowing expressions in the result set.
+Consider:</p>
+<br><pre>SELECT (?extendedprice * (1 - ?discount))
+  WHERE
+    {
+      ?line  a                       tpch:lineitem   ;
+             tpch:lineextendedprice  ?extendedprice  ;
+             tpch:linediscount       ?discount
+    }
+</pre><p> We can shorten the notation as </p>
+<br><pre>SELECT ( ?line-&gt;tpch:extendedprice * ( 1 - ?line-&gt;tpch:discount ) )
+  WHERE { ?line  a  tpch:lineitem }
+</pre><p> The <code>-&gt;</code> (dereference) operator allows referring to a property without naming it as a variable.
+ This is exactly equivalent to having a triple pattern binding a variable to the mentioned property of the subject within the group pattern enclosing the reference.
+ For a select, the enclosing group pattern is considered to be the top level pattern of the where clause or in the event of a union, the top level of each term of the union.
+ Each distinct dereference adds exactly one triple pattern to the enclosing group pattern, thus multiple uses <code>-&gt;</code> do not each add a triple pattern.
+ Having multiple copies of an identical pattern might lead to changes in cardinality if multiple input graphs were being considered.</p>
+<p>If a line item had multiple discounts or extended prices, then we would get the cartesian product of both.
+ If a property referenced via -&gt; is absent, the expression does not get evaluated in the first place.</p>
+<p>The optional dereference operator <code>|&gt;</code> will produce an unbound value if the property does not exist.
+ Further, mentioning the same chain of dereferences multiple times in the same group pattern will not cause redundant triple patterns to be added or result in more joining that is necessary.</p>
+<p>We further allow expressions in the place of variables in triple patterns.
+ To scope the above query to orders by customers in France, we could write:</p>
+<br><pre>SELECT ( ?li-&gt;tpch:extendedprice * ?li-&gt;tpch:discount )
+  WHERE
+    {
+      ?li                                                     a            tpch:lineitem  .
+      ?li-&gt;tpch:l_orderkey-&gt;tpch:o_custkey-&gt;tpch:c_nationkey  tpch:n_name  &quot;France&quot;
+    }
+</pre><p>The sequence of dereferences expands into triple patterns, as in: </p>
+<br><pre>...  ?li  tpch:l_orderkey   ?v1       .
+     ?v1  tpch:o_custkey    ?v2       .
+     ?v2  tpch:c_nationkey  ?v3       .
+     ?v3  tpch:n_name       &quot;France&quot;  .
+</pre><h3><a name="Aggregation"></a>Aggregation</h3>
+<p>We introduce the <i><code>SUM</code></i>, <i><code>COUNT</code></i>, <i><code>AVG</code></i>, <i><code>MIN</code></i>, and <i><code>MAX</code></i> aggregate functions from SQL.
+ Their semantics with respect to <code>NULL</code> are inherited from SQL.
+ To count result rows without regard to any value being defined, <i><code>COUNT (*)</code></i> is introduced.</p>
+<p>If grouping is desired, aggregate expressions can be combined with non- aggregate expressions in a selection list.
+ The non-aggregate expressions will function as grouping columns, i.e., the aggregates are calculated for each distinct combination of the grouping columns.
+ No special <code>GROUP BY</code> clause is needed.</p>
+<br><pre>SELECT  ?l-&gt;tpch:l_linestatus 
+        COUNT(*) 
+        SUM(?l-&gt;tpch:extendedprice)
+  WHERE { l  a  tpch:lineitem }
+</pre><p>gives the count and total value of lineitems for each distinct lineitem status.
+User defined aggregates from Virtuoso SQL can be used in SPARQL as well, using the <code>sql:</code> namespace.</p>
+<h3><a name="Nesting of Queries and Named Results"></a>Nesting of Queries and Named Results</h3>
+<p>SQL allows nesting queries, in effect treating the evaluation of a query as a table (derived table) or as a value in an expression (scalar subquery).
+We allow embedding a SPARQL <code>SELECT</code> in the place of a triple pattern.
+ The syntax is as in --</p>
+<br><pre>SELECT  ?line
+  WHERE
+    {
+      ?line  a  tpch:lineitem  .
+      { SELECT MAX ( ?l2-&gt;tpch:extendedprice ) AS ?maxprice
+          WHERE { ?l2  a  tpch:lineitem } 
+      } .
+      FILTER ( line-&gt;tpch:extendedprice = ?maxprice ) 
+    }
+</pre><p> This selects all lineitems with extendedprice equal to the highest extended- price in the set of lineitems.</p>
+<p>We note that we have a SQL-style explicit comparison for joining the nested select with the outer select.
+ The bindings that are in scope in the pattern containing the nested select are also in scope inside the nested select.
+ In this the scope rules resemble SQL&#39; s rules for subqueries.</p>
+<p>In Virtuoso SQL and Virtuoso/PL we allow SPARQL queries in all places where &quot;plain&quot; SQL <code>SELECT</code> could be used, e.g., SQL query can contain SPARQL subqueries.</p>
+<h2><a name="Sample Queries"></a>Sample Queries</h2>
+<p>Due to space constraints, we chose to pick only two of the <a href="http://demo.openlinksw.com/DAV/home/demo/tpch/" class="absuri">twenty-two queries of the TPC-H workload</a>.
+ These were selected because of their relative complexity and use of nested queries.</p>
+<p>The TPC-H definition states the business questions for Q15 and Q18 as follows: </p>
+<br><pre>Q15, The Top Supplier Query finds the supplier who contributed the 
+most to the overall revenue for parts shipped during a given quarter 
+of a given year.  In case of a tie, the query lists all suppliers 
+whose contribution was equal to the maximum, presented in supplier 
+number order.
+
+Q18, The Large Volume Customer Query finds a list of the top 100 
+customers who have ever placed large quantity orders. The query lists 
+the customer name, customer key, the order key, date and total price 
+and the quantity for the order.
+</pre><p> The Q15 SQL text used with Virtuoso is: </p>
+<br><pre>    SELECT  s_suppkey, 
+            s_name, 
+            s_address, 
+            s_phone, 
+            total_revenue
+      FROM  supplier,
+            (   SELECT                                    l_suppkey  AS  supplier_no,
+                        SUM( l_extendedprice * ( 1 - l_discount ) )  AS  total_revenue
+                  FROM  lineitem
+                 WHERE  l_shipdate &gt;= { D &#39;1996-01-01&#39; } 
+                   AND  l_shipdate &lt; { FN timestampadd ( SQL_TSI_MONTH, 3, {d &#39;1996-01-01&#39;} ) }
+              GROUP BY  l_suppkey
+            )  AS revenue
+      WHERE  s_suppkey = supplier_no 
+        AND  total_revenue = ( SELECT max(total_revenue)
+                                 FROM (   SELECT                                     l_suppkey  AS  supplier_no, 
+                                                  SUM ( l_extendedprice * ( 1 - l_discount ) )  AS  total_revenue
+                                            FROM  lineitem
+                                           WHERE  l_shipdate &gt;= { D &#39;1996-01-01&#39; } 
+                                             AND  l_shipdate &lt; { FN timestampadd ( SQL_TSI_MONTH, 3, {d &#39;1996-01-01&#39;} ) }
+                                        GROUP BY  l_suppkey 
+                                      )  AS revenue
+                             )
+  ORDER BY s_suppkey
+  ;
+</pre><p>The corresponding SPARQL BI text is:</p>
+<br><pre>SPARQL
+PREFIX  tpch  &lt;http://openlinksw.com/schemas/TPC-H/&gt;
+SELECT  ?supplier 
+        ?s_name 
+        ?s_address 
+        ?s_phone 
+        ?total_revenue
+  WHERE
+    {
+      ?supplier  a               tpch:supplier  ;
+                 tpch:s_name     ?s_name        ;
+                 tpch:s_address  ?s_address     ;
+                 tpch:s_phone    ?s_phone       .
+      { 
+        SELECT  ?supplier
+                (
+                  SUM ( l_extendedprice * ( 1 - l_discount ) ) 
+                )
+                  AS ?total_revenue
+         WHERE
+           {
+             ?lineitem  a                tpch:lineitem  ;
+                        tpch:l_shipdate  ?l_shipdate    ;
+                        tpch:l_suppkey   ?supplier      .
+             FILTER
+               ( 
+                 ?l_shipdate &gt;= xsd:date (&#39;1996-01-01&#39;) 
+                 AND
+                 ?l_shipdate &lt; bif:dateadd (&#39;month&#39;, 3, xsd:date (&#39;1996-01-01&#39;)) 
+               )
+           }
+      }
+      { 
+        SELECT MAX ( ?all_totals.total_revenue ) AS ?maxtotal
+         WHERE
+           {
+             { 
+               SPARQL 
+               SELECT ( 
+                        SUM ( l_extendedprice * ( 1 - l_discount ) ) 
+                      )
+                        AS ?total_revenue
+                WHERE
+                  {
+                    ?lineitem  a                tpch:lineitem  ;
+                               tpch:l_shipdate  ?l_shipdate    ;
+                               tpch:l_suppkey   ?l_suppkey     .
+                    FILTER
+                      ( ?l_shipdate &gt;= xsd:date (&#39;1996-01-01&#39;) 
+                        AND
+                        ?l_shipdate &lt; bif:dateadd (&#39;month&#39;, 3, xsd:date (&#39;1996-01-01&#39;)) 
+                      )
+                  }
+             } AS all_totals
+           }
+      }
+      FILTER 
+        ( ?total_revenue = ?maxtotal )
+    }
+  ORDER BY  ?supplier
+;
+</pre><p> The Virtuoso text of Q18 is:</p>
+<br><pre>  SELECT  c_name, 
+          c_custkey, 
+          o_orderkey, 
+          o_orderdate, 
+          o_totalprice,
+          SUM ( l_quantity )
+    FROM  lineitem, 
+          orders, 
+          customer
+   WHERE
+          o_orderkey 
+            IN (   SELECT  l_orderkey
+                     FROM  lineitem
+                 GROUP BY  l_orderkey
+                   HAVING  SUM( l_quantity ) &gt; 250 
+               )
+     AND  c_custkey = o_custkey
+     AND o_orderkey = l_orderkey
+GROUP BY  c_name, 
+          c_custkey, 
+          o_orderkey, 
+          o_orderdate, 
+          o_totalprice
+ORDER BY  o_totalprice DESC, 
+          o_orderdate;
+</pre><p> The SPARQL BI version is: </p>
+<br><pre>  SELECT  ?c_name 
+          ?customer 
+          ?order 
+          ?o_orderdate 
+          ?o_totalprice
+          SUM ( ?l_quantity )
+    FROM  &lt;http://example.com/tpcd&gt;
+   WHERE  
+     {
+       ?customer  a                     tpch:customer  ; 
+                  foaf:name             ?c_name        .
+       ?order     a                     tpch:order     ;
+                  tpch:ordertotalprice  ?o_totalprice  ;
+                  tpch:orderdate        ?o_orderdate   ; 
+                  tpch:has_customer     ?customer      .
+       [          a                     tpch:lineitem  ; 
+                  tpch:linequantity     ?l_quantity    ;
+                  tpch:has_order        ?order      
+       ]                                               .
+       {
+         SELECT       ?sum_order 
+                 SUM (?quantity) AS ?sum_q
+          WHERE 
+            {
+              [     a                  tpch:lineitem  ;
+                    tpch:linequantity  ?quantity      ;
+                    tpch:has_order     ?sum_order 
+              ]
+            }
+       }                                              .
+     FILTER
+       (
+         ?sum_order = ?order 
+         AND 
+         ?sum_q &gt; 250
+       )
+     }
+ORDER BY  DESC (?o_totalprice) 
+          ?o_orderdate
+</pre><h2><a name="Experiments"></a>Experiments</h2>
+<p>For this test, we had the test data on both an Oracle 10G server and a Virtuoso 5.0 server on the same machine.
+ The tables from the Oracle and Virtuoso servers were attached to another Virtuoso server, which served as the SPARQL front end.</p>
+<p>For Q15, Virtuoso SQL gave the answer in 180 ms and with SPARQL the answer took 3800 ms.
+ For Q18, Virtuoso SQL gave 340 ms and SPARQL 371 ms.</p>
+<p>The large difference with Q15 is due to the SQL compiler choosing a different plan because the reformulated text has a different structure.
+ Some further tuning will eliminate the difference.</p>
+<p>With the Oracle backend, we obtained the correct answers but our setup did not pass the queries through to Oracle as a single SQL statement; hence the performance was less than would have been seen if the queries were natively submitted to Oracle.</p>
+<p>Some further adjustments will result in the queries passing through the pipeline as single statements, at which point we will have a negligible translation overhead.</p>
+<p>The test database was at 1 percent scale, hence the results are not about TPC-H performance <i>per se</i>, but are solely aimed at verifying that the correct answers are produced and queries are executed as close to the data as possible.</p>
+<p>We also dumped the data as physical triples stored in Virtuoso.
+ Our aim is to arrange things so that the physical triples version will at no point be more than three times slower than the equivalent relational setting on Virtuoso, running with a database scaled to 100G.
+ Reaching this requires some enhancements to our SQL implementation, specifically for dealing with queries with dozens of joined tables.
+ We note that we get a self-join for each column referenced.
+ This work was not completed at the submission deadline.</p>
+<p>Since the features discussed were first implemented within days of the submission deadline, no tuning or adaptation of the Virtuoso SQL was possible within the time limit, hence results are not anywhere near final and most interesting experiments had to be left out.</p>
+<p>We intend to further study the comparative performance of SPARQL going to natively stored triples and compare this with SQL performance with single instance and clustered Virtuoso databases.
+ One line of future work is benchmarking SPARQL and SQL based vertical storage schemes.
+ We note that the RDF model is a vertical storage scheme almost by nature.
+ Declaring that triples with given predicates be stored apart, in a table that keeps only subject and object results in a column-oriented store.</p>
+<p>We further intend to broaden the scope of the present example around TPC-H by including more sources in the mapping.
+ This will demonstrate that the same queries can be run without loss of performance on a number of similar but distinct relational database instances.
+ Thus SPARQL does become a data integration tool that exceeds the capabilities of SQL views merging data from multiple sources, for example.</p>
+<h2><a name="Conclusions"></a>Conclusions</h2>
+<p>The work discussed here demonstrates the feasibility of querying existing relational data through extended SPARQL without loss of performance or expressivity and without any modification to the relational data store in question.
+ A skeptic might ask what the value of an alternate syntax for SQL is, when SQL is universally known and applied.
+ We would point out that us bringing SPARQL on par with SQL for decision support queries is not aimed at replacing SQL but at making SPARQL capable of fulfilling its role as a language for integration.</p>
+<p>Indeed, we retain all of SPARQL&#39;s and RDF&#39;s flexibility for uniquely identifying entities, for abstracting away different naming conventions, layouts and types of primary and foreign keys and so forth.</p>
+<p>In the context of mapping relational data to RDF, we could map several instances of comparable but different schemas to the common terminology and couch all our queries within this terminology.
+ Further, we can join from this world of mapped data to native RDF data, such as the data in the Linking Open Data project.
+ For example, we could join regional sales data to the US census data set within a single query.</p>
+<p>Once we have demonstrated that performance or expressivity barriers do not cripple SPARQL when performing traditional SQL tasks, we have removed a significant barrier from enterprise adoption of RDF and open data.</p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://demo.openlinksw.com/DAV/home/demo/tpch/" class="absuri">TPC-H workload Sample Queries</a></li>
+</ul><p> </p>
+<h2><a name="References"></a>References</h2>
+ <ol><li>W3C RDF Data Access Working Group: SPARQL Query Language for RDF: <a href="http://www.w3.org/TR/rdf-sparql-query/" class="absuri">http://www.w3.org/TR/rdf-sparql-query/</a> </li>
+<li>Transaction Processing Performance Council: TPC-H  a Decision Support Benchmark.
+<a href="http://www.tpc.org/tpch/" class="absuri">http://www.tpc.org/tpch/</a> </li>
+<li>Orri Erling, Ivan Mikahilov: Adapting an ORDBMS for RDF Storage and Mapping.
+ Proceedings of the First Conference on Social Semantic Web.
+ Leipzig (CSSW 2007), SABRE.
+ Volume P-113 of GI-Edition - Lecture Notes in Informatics.
+ Bonner Kollen Verlag, ISBN 978-3-88579-207-9 </li>
+</ol></div></body></html>

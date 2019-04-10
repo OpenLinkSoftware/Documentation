@@ -1,0 +1,536 @@
+%META:TOPICPARENT{name="VOS"}%
+---+ Virtuoso Geo Spatial Enhancements
+
+%TOC%
+
+---++ Introduction
+As of Virtuoso 7.1 (both Open Source and Commercial Editions), a number of major enhancements have been made to Geo Spatial support, improving the Geometry data types and functions supported, and increasing compliance with the emerging [[http://www.geosparql.org][GeoSPARQL]] and [[http://www.opengeospatial.org][OGC]] standards.
+
+---++ Virtuoso Geo Spatial Geometry data types and sample queries
+
+The table below outlines the common WKT (Well Known Text) representations for several types of geometric objects used in RDF:
+%BR%%BR%
+   <img src="%ATTACHURLPATH%/VirtWktGeomerticObjects.png" alt="graphic table of WKT representations" style="wikiautogen" />
+%BR%%BR%
+The following queries "count the number of items of each type, whose coordinates fall within a bounded box shape" for the various RDF geometry data types now supported by Virtuoso. The links are to live examples of the query running against the OpenLink [[http://lod.openlinksw.com/sparql][LOD Cloud Cache]] instance.
+
+---+++ BOX
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM &lt;http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry> ?p .
+    FILTER ( bif:st_intersects ( bif:st_geomfromtext ( "BOX(0.3412 43.5141, 9.3412 48.0141)" ), ?p ) )
+  } 
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2P7mk9C][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2w5TOwl][View the SPARQL Query Results via SPARQL Protocol URL]] 
+
+
+---+++ POLYGON
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry>  ?p .
+    FILTER ( bif:st_intersects ( bif:st_geomfromtext ( "POLYGON((1 2, 6 1, 9 3, 8 5, 3 6, 1 2))" ), ?p ) )
+  }  
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2w6GnfS][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2KReyxl][View the SPARQL Query Results via SPARQL Protocol URL]] 
+
+---+++ POLYGON WITH HOLE
+
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry>  ?p .
+    FILTER ( bif:st_intersects ( bif:st_geomfromtext ( "POLYGON((1 2, 6 1, 9 3, 8 5, 3 6, 1 2), (3 3, 5 5, 6 2, 3 3))" ), ?p ) )
+  } 
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2Ox1G1I][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2B9JXLJ][View the SPARQL Query Results via SPARQL Protocol URL]] 
+
+---+++ MULTIPOLYGON
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry>  ?p .
+    FILTER ( bif:st_intersects ( bif:st_geomfromtext ( "MULTIPOLYGON(((1 2, 6 1, 9 3, 3 6, 1 2)), ((4 9, 7 6, 9 8, 4 9)))" ), ?p ) )
+  }  
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2BaoL8p][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2KRPshK][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---+++ GEOMETRY COLLECTION
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry> ?p .
+    FILTER ( bif:st_intersects ( bif:st_geomfromtext ( "GEOMETRYCOLLECTION( POINT(4 5), POINT(7 4), POINT(6 2), LINESTRING(4 5, 6 7, 7 4, 6 2), POLYGON((1 2, 6 1, 9 3, 8 5, 3 6, 1 2)) )" ), ?p ) )
+  }  
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2vEUsSc][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2P8nmSH][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---+++ MULTI POINT
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry>  ?p .
+    FILTER( bif:st_intersects( bif:st_geomfromtext( "MULTIPOINT(3 7, 4 2, 8 6)" ), ?p ) )
+  }  
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2nDC1sU][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2w9O84w][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---+++ LINE STRING
+
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry>  ?p .
+    FILTER( bif:st_intersects( bif:st_geomfromtext( "LINESTRING(1 2, 3 6, 9 4)" ), ?p ) )
+  }  
+GROUP BY ?f  
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2MployU][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2KNAiu4][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---+++ MULTI LINE STRING
+
+<verbatim>
+SELECT         ?f AS ?facet 
+        COUNT(?s) AS ?cnt
+FROM <http://linkedgeodata.org/>
+WHERE 
+  { 
+    ?s  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   ?f .
+    ?s  <http://www.w3.org/2003/01/geo/wgs84_pos#geometry>  ?p .
+    FILTER( bif:st_intersects( bif:st_geomfromtext( "MULTILINESTRING((1 8, 4 4), (4 9, 8 5, 6 2, 1 4))" ), ?p ) )
+  } 
+GROUP BY ?f 
+ORDER BY DESC(?cnt) 
+LIMIT 10
+</verbatim>
+
+   * [[https://bit.ly/2Me8rZI][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   * [[https://bit.ly/2MoEN2R][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---+++ Supported shape types
+
+<verbatim>
+BOX, BOX2D, BOX3D, BOXM, BOXZ, BOXZM
+CIRCULARSTRING
+COMPOUNDCURVE
+CURVEPOLYGON
+EMPTY
+GEOMETRYCOLLECTION, GEOMETRYCOLLECTIONM, GEOMETRYCOLLECTIONZ, GEOMETRYCOLLECTIONZM
+LINESTRING, LINESTRINGM, LINESTRINGZ, LINESTRINGZM
+MULTICURVE
+MULTILINESTRING, MULTILINESTRINGM, MULTILINESTRINGZ, MULTILINESTRINGZM
+MULTIPOINT, MULTIPOINTM, MULTIPOINTZ, MULTIPOINTZM
+MULTIPOLYGON, MULTIPOLYGONM, MULTIPOLYGONZ, MULTIPOLYGONZM
+POINT, POINTM, POINTZ, POINTZM
+POLYGON, POLYGONM, POLYGONZ, POLYGONZM
+POLYLINE, POLYLINEZ
+RING, RINGM, RINGZ, RINGZM
+</verbatim>
+
+---+++ Not yet supported shape types
+
+<verbatim>
+CIRCULARSTRINGM, CIRCULARSTRINGZ, CIRCULARSTRINGZM
+COMPOUNDCURVEM, COMPOUNDCURVEZ, COMPOUNDCURVEZM
+CURVE, CURVEM, CURVEZ, CURVEZM
+CURVEPOLYGONM, CURVEPOLYGONZ, CURVEPOLYGONZM
+GEOMETRY, GEOMETRYZ, GEOMETRYZM
+MULTICURVEM, MULTICURVEZ, MULTICURVEZM
+MULTIPATCH
+MULTISURFACE, MULTISURFACEM, MULTISURFACEZ, MULTISURFACEZM
+POLYHEDRALSURFACE, POLYHEDRALSURFACEM, POLYHEDRALSURFACEZ, POLYHEDRALSURFACEZM
+POLYLINEM
+SURFACE, SURFACEM, SURFACEZ, SURFACEZM
+TIN, TINM, TINZ, TINZM
+</verbatim>
+
+---++ Virtuoso Geo Spatial geometry functions
+
+The following Virtuoso Geo Spatial geometry functions are available for use in both SQL & RDF Geo Spatial queries. The listed functions are built-in SQL functions. As all built-in functions of Virtuoso, geo-specific functions can be called from SPARQL with prefix <code>bif:</code> (e.g. <code><nowiki>bif:earth_radius()</nowiki></code> or <code><nowiki>&lt;bif:earth_radius>()&gt;</nowiki></code>)
+
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_earth_radius.html][earth_radius()]]</b>
+%BR% returns geom.mean of radius of Earth in kilometers, 6367.43568
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_haversine_deg_km.html][haversine_deg_km (lat1, long1, lat2, long2)]]</b>
+%BR% returns distance between two points on Earth sphere, adjusting radius of sphere to latitudes.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_dist_from_point_to_line_segment.html][dist_from_point_to_line_segment (Xpoint, Ypoint, Xsegment1, Ysegment1,Xsegment2, Ysegment2)]]</b>
+%BR% return the distance between a point and a segment on a plane.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_point.html][st_point (x,y, {z, {m}})]]</b>
+%BR% returns a point with given coordinates in default SRID. z and/or m may be missing or equal to NULL, indicating the absence of coordinate.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_linestring.html][st_linestring (item1, item2,..., itemN)]]</b>
+%BR% returns a linestring in default SRID, the coordinates of vertices are specified by arguments that are points, 2-, 3- or 4-item vectors of
+coordinates, linestrings, arcstrings or vectors of the above mentioned values. Repeating vertices are automatically removed, except the case of repeating vertices in the middle of a linestring/arcstring argument.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_x.html][st_x (point)]]</b>
+%BR% returns X or longitude of a point.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_y.html][st_y (point)]]</b>
+%BR% returns Y or longitude of a point.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_Z.html][st_z (point)]]</b>
+%BR% returns Z coordinate of geometry.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_XMin.html][ST_XMin (shape), ST_YMin (shape), ST_XMax (shape), ST_YMax (shape)]]</b>
+%BR% return boundaries of a bounding box around a shape. Bounding boxes around arcs are calculated in assumption that no one arc is longer than a half of full circle.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_intersects.html][st_intersects (shape1, shape2 {, proximity})]]</b>
+%BR% checks whether two shapes intersect or some of its points are within the specified proximity. Current version is not complete and does not support arcs of all sorts and rings of polygons, this is fixed in the next release.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_may_intersect.html][st_may_intersect (shape1, shape2 {, proximity})]]</b>
+%BR% checks whether bounding boxes of two shapes intersect or some of its points are within the specified proximity. This is much faster than full [[http://docs.openlinksw.com/virtuoso/fn_st_intersects.html][st_intersects()]] check (actually that is the initial part of [[http://docs.openlinksw.com/virtuoso/fn_st_intersects.html][st_intersects()]] execution)
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_contains.html][st_contains (haystack_shape, needle_shape {, proximity})]]</b>
+%BR% checks whether <code><nowiki>haystack_shape</nowiki></code> contains the <code><nowiki>needle_shape</nowiki></code>. If proximity is specified, it is treated as an extra wide border around <code><nowiki>haystack_shape</nowiki></code>. In current version, only a combination of bounding box and a point is supported, the functionality will be extended in the next release.
+%BR%%BR%
+
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_within.html][st_within (needle_shape, haystack_shape {, proximity})]]</b>
+%BR% returns true if all points of <code><nowiki>haystack_shape</nowiki></code> are in the <code><nowiki>needle_shape</nowiki></code>. 
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_distance.html][st_distance (shape1, shape2)]]</b>
+%BR% returns the distance in units of plane or in kilometers on sphere.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_isgeometry.html][isgeometry (v)]]</b>
+%BR% returns whether the given v is a spatial object.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_astext.html][st_astext (shape)]]</b>
+%BR% return EWKT representation of a shape.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_SRID.html][ST_SRID (shape)]]</b>
+%BR% returns SRID of shape's spatial reference system or 0 for shape on
+plane.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_SetSRID.html][ST_SetSRID (shape, new_srid)]]</b>
+%BR% replaces the SRID of a shape but does not transform the shape or its coordinates from old SRID to a new one.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_geomfromtext.html][st_geomfromtext (ewkt_text)]]</b>
+%BR% Parses the string and returns the corresponding geometry.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_ewkt_read.html][st_ewkt_read (ewkt_text)]]</b>
+%BR% Parses the given text as a EWKT and returns the parsed shape.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_http_st_ewkt.html][http_st_ewkt (shape, ses)]]</b>
+%BR% Writes a EWKT representation of a shape to the given session, a fast replacement for <code><nowiki>http (st_astext (shape), ses)</nowiki></code>.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_http_st_dxf_entity.html][http_st_dxf_entity (shape, attrs, ses)]]</b>
+%BR% writes a DXF (Data Exchange Format) representation of shape into the given output session. <code>Attrs</code> is a vector of arbitrary DXF properties in form <code>(tag1, value1, tag2, value2...)</code> where tags are integer codes according to DXF specification; related values are not validated and are printed to the session as-is. Current version does not support <code>ARCSTRINGs</code>, <code>CURVEs</code>, nor <code>CURVEPOLYGONs</code>. If <code>shape</code> is null, the function returns without writing anything to the shape.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_get_bounding_box.html][st_get_bounding_box (shape)]]</b>
+%BR% returns BOX2D that is a bounding box of a shape.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_GeometryType.html][GeometryType (shape)]]</b>
+%BR% returns EWKT type name of a shape.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_NumGeometries.html][ST_NumGeometries (shape)]]</b>
+%BR% returns number of members of a MULTI... or ...COLLECTION shape, 1 for other sorts of shapes.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_GeometryN.html][ST_GeometryN (shape, idx)]]</b>
+%BR% Given a 1-based index of a member of a MULTI... or ...COLLECTION shape, returns the member.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_ExteriorRing.html][ST_ExteriorRing (polygon_shape)]]</b>
+%BR% Returns an external (the very first) ring of a polygon.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_NumInteriorRings.html][ST_NumInteriorRings (polygon_shape)]]</b>
+%BR% returns number of interior rings of the given polygon, NULL if shape is not a polygon.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_InteriorRingN.html][ST_InteriorRingN (polygon_shape, idx)]]</b>
+%BR% Given a 1-based index of an interior ring of a polygon, returns the ring. Wrong index is not reported as an error and NULL is returned.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_get_bounding_box_n.html][st_get_bounding_box_n (shape, idx)]]</b>
+%BR% Given a 1-based index of a member of a <code>MULTI...</code> or <code>...COLLECTION</code> shape, returns the bounding box of a member. This is a fast equivalent of [[http://docs.openlinksw.com/virtuoso/fn_st_get_bounding_box.html][st_get_bounding_box (ST_GeometryN (shape,idx))]].
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_Translate.html][ST_Translate (shape, dX, dY {, dZ})]]</b>
+%BR% returns a copy of a shape with all coordinates shifted by the provided dX, dY and dZ.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_TransScale.html][ST_TransScale (shape, dX, dY, Xfactor, Yfactor)]]</b>
+%BR% returns a copy of a shape with all coordinates shifted by the provided dX, dY and then multiplied by Xfactor and Yfactor. In the current version, different values for Xfactor and Yfactor will result in distorted arcs.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_st_transform_by_custom_projection.html][st_transform_by_custom_projection (shape, algorithm_id, ...)]]</b>
+%BR% Performs a custom projection of shape, using the specified algorithm and algorithm-specific arguments. Current version supports only one algorithm, [[http://docs.openlinksw.com/virtuoso/fn_st_transform_by_custom_projection.html][st_transform_by_custom_projection (shape, 'OLAEAPS', long_of_center, lat_of_center)]] for Oblique Lampert Azimuthal Equal-Area Projection System with the specified center point.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform (shape, dest_srid, {orig_proj4_string, dest_proj4_string})]]</b> 
+%BR% Transforms the given shape from its current spatial reference system to one specified by <code><nowiki>dest_srid</nowiki></code>. Two optional arguments are for "cheating": the SRID of the resulting shape is set to <code><nowiki>dest_srid</nowiki></code> but the conversion is done by proj4 using <code><nowiki>origin_proj4_string</nowiki></code> for projection of original shape and <code><nowiki>dest_proj4_string</nowiki></code> for the result. If <code><nowiki>orig_proj4_string</nowiki></code> or <code><nowiki>dest_proj4_string</nowiki></code> argument is passed but is NULL instead of string, the projection corresponding to original or destination SRID is used. [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform]] is provided by a separate plugin named v7proj4, as described below. When the plugin is loaded, functions like [[http://docs.openlinksw.com/virtuoso/fn_ST_Intersects.html][ST_Intersects()]] support pairs of arguments with different SRIDs by converting coords of second argument into the system of the first one, as required by OGC and <nowiki>GeoSPARQL</nowiki>.
+%BR%%BR%
+   * <b>[[http://docs.openlinksw.com/virtuoso/fn_postgis_proj_version.html][postgis_proj_version()]]</b>
+%BR% Returns the version of proj4 in use, as a string, for compatibility with <nowiki>PostGIS</nowiki>.
+
+---++ Open Source v7proj4 Plug-in
+
+The Virtuoso v7proj4 hosted plugin module is required for performing transformation between different coordinates systems using the [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform()]] function. The plugin is based on [[http://trac.osgeo.org/proj/][Frank Warmerdam's proj4]] library and it's practical to have the proj4 package installed on every box of Virtuoso cluster, even if the build is performed on single machine or on different location at all. The reason is that the plugin should load data about coordinate systems to work and the simplest way to get the right data from a high-quality source is to use the package.
+
+---+++ Compiling v7proj4 Plug-in
+
+The v7proj4 is currently available in the default develop/7 branch of the "[[https://github.com/v7fasttrack/virtuoso-opensource][v7fasttrack]]" git repository and can be build with this command sequence:
+
+<verbatim>
+git clone https://github.com/v7fasttrack/virtuoso-opensource.git
+cd virtuoso-opensource 
+./autogen.sh
+export CFLAGS="-msse4.2 -DSSE42"
+./configure 
+make -j 24
+make install
+</verbatim>
+
+Note first the "proj.4" library must be installed on the system and can be [[http://trac.osgeo.org/proj/wiki/WikiStart#Download][proj.4 download]] area, which the configure script will detect the installation of enabling the v7proj4 plugin library to be built in ~/libsrc/plugin/.libs:
+
+<verbatim>
+bash-3.2$ ls libsrc/plugin/.libs/v7proj4*
+libsrc/plugin/.libs/v7proj4.a
+libsrc/plugin/.libs/v7proj4.la
+libsrc/plugin/.libs/v7proj4.lai
+libsrc/plugin/.libs/v7proj4_la-import_gate_virtuoso.o
+libsrc/plugin/.libs/v7proj4_la-sql_v7proj4.o
+libsrc/plugin/.libs/v7proj4_la-v7proj4_plugin.o
+libsrc/plugin/.libs/v7proj4.so
+libsrc/plugin/.libs/v7proj4.ver
+</verbatim>
+
+---+++ Installation and Configuration of v7proj4 Plug-in
+
+When the plugin (<code>v7proj4.so</code>) is built, it needs to be added to the <code>[Plugins]</code> section of the Virtuoso configuration file (<code>virtuoso.ini</code> or the like), on every node if running in a cluster:
+
+<verbatim>
+[Plugins]
+LoadPath = ./plugins
+Load2    = plain, v7proj4
+</verbatim>
+
+If everything is fine then the virtuoso.log file will contain something like the following lines after the next startup:
+<verbatim>
+21:30:10 { Loading plugin 1: Type `plain', file `shapefileio' in `.'
+21:30:10   ShapefileIO version 0.1virt71 from OpenLink Software
+21:30:10   Shapefile support based on Frank Warmerdam's Shapelib
+21:30:10   SUCCESS plugin 1: loaded from ./plugins/shapefileio.so }
+21:30:10 { Loading plugin 2: Type `plain', file `v7proj4' in `.'
+21:30:11   plain version 3208 from OpenLink Software
+21:30:11   Cartographic Projections support based on Frank Warmerdam's proj4 library
+21:30:11   SUCCESS plugin 2: loaded from ./plugins/v7proj4.so }
+21:30:11 OpenLink Virtuoso Universal Server
+21:30:11 Version 07.10.3208-pthreads for Linux as of Mar 31 2014
+...
+21:30:28 PL LOG: Initial setup of DB.DBA.SYS_V7PROJ4_SRIDS data from files in "/usr/share/proj"
+21:30:30 PL LOG: DB.DBA.SYS_V7PROJ4_SRIDS now contains 6930 spatial reference systems
+...
+21:30:32 Server online at 1720 (pid 9654)
+</verbatim>
+
+To store descriptions of coordinate systems, the plugin creates a table:
+<verbatim>
+CREATE TABLE  DB.DBA.SYS_V7PROJ4_SRIDS 
+  (
+    SR_ID            INTEGER,
+    SR_FAMILY        VARCHAR NOT NULL,
+    SR_TAG           VARCHAR,
+    SR_ORIGIN        VARCHAR NOT NULL,
+    SR_IRI           IRI_ID_8,
+    SR_PROJ4_STRING  VARCHAR NOT NULL,
+    SR_WKT           VARCHAR,
+    SR_COMMENT       VARCHAR,
+    SR_PROJ4_XML     ANY,
+    primary key (SR_ID, SR_FAMILY) 
+  );
+</verbatim>
+
+This is filled with data from files <code>epsg</code>, <code>esri</code>, <code>esri.extra</code>, <code>nad83</code>, and <code>nad27</code> of directory <code><nowiki>/usr/share/proj</nowiki></code>. Note these files must exist in the <code><nowiki>/usr/share/proj</nowiki></code> directory; otherwise, a message will be reported in the log file, indicating the file could not be found. Every row of the table is identified with the name of the "family" of coordinate systems and an integer SRID. Different sources may assign the same SRID to different reference systems, however descriptions of well-known systems match exactly or the difference is not noticeable for any practical application. 
+
+The loading process uses family names '<code>EPSG</code>', '<code>ESRI</code>', '<code>NAD83</code>' and '<code>NAD27</code>'. When the [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform()]] searches for a coordinate system that corresponds to a given SRID, it returns the first record found while checking the families in the following order: '<code>PG</code>', '<code>EPSG</code>', '<code>ESRI</code>','<code>NAD83</code>', '<code>NAD27</code>'. It is therefore generally practical to put all custom definitions in '<code>PG</code>' family, giving them the highest priority.
+
+A sample [[http://www.epsg.org][EPSG]] file containing the mapping for the <code>proj.4</code> [[http://spatialreference.org/ref/epsg/4326/][EPSG:4326]] coordinate system is:
+
+<verbatim>
+$ cat /usr/share/proj/epsg 
+&lt;4326>+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&lt;>
+$
+</verbatim>
+<verbatim>
+SQL> SELECT * FROM DB.DBA.SYS_V7PROJ4_SRIDS;
+SR_ID              SR_FAMILY          SR_TAG    SR_ORIGIN              SR_IRI    SR_PROJ4_STRING                                    SR_WKT    SR_COMMENT   SR_PROJ4_XML
+INTEGER NOT NULL   VARCHAR NOT NULL   VARCHAR   VARCHAR NOT NULL       VARCHAR   VARCHAR NOT NULL                                   VARCHAR   VARCHAR      VARCHAR
+________________   ________________   _______   ____________________   _______   ________________________________________________   _______   __________   ____________
+
+4326               EPSG               4326      /usr/share/proj/epsg   NULL      +datum=WGS84 +ellps=WGS84 +no_defs +proj=longlat             NULL         NULL
+
+1 Rows. -- 0 msec.
+SQL> 
+</verbatim>
+
+There are two procedures available for loading more coordinate systems:
+
+   * <code><nowiki>DB.DBA.V7PROJ4_LOAD_SYS_SRIDS</nowiki></code> is called at server startup, if the v7proj4 plugin is loaded:
+<verbatim>
+DB.DBA.V7PROJ4_LOAD_SYS_SRIDS 
+  ( 
+    IN projdir              VARCHAR := '/usr/share/proj', 
+    IN only_if_empty_table  INTEGER := 0 
+  )
+</verbatim>
+   * <code><nowiki>DB.DBA.V7PROJ4_LOAD_INIT_FILE</nowiki></code> is a lower-level procedure:
+<verbatim>
+DB.DBA.V7PROJ4_LOAD_INIT_FILE 
+  ( 
+    IN  path        VARCHAR, 
+    IN  _sr_family  VARCHAR
+  )
+</verbatim>
+
+
+The main part of <code><nowiki>DB.DBA.V7PROJ4_LOAD_SYS_SRIDS()</nowiki></code> is a sequence of:
+<verbatim>
+ DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/epsg', 'EPSG');
+ DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/esri', 'ESRI');
+ DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/esri.extra', 'ESRI');
+ DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/nad83', 'NAD83');
+ DB.DBA.V7PROJ4_LOAD_INIT_FILE (projdir || '/nad27', 'NAD27');
+</verbatim>
+
+Rows with the same SRID but different <code><nowiki>SR_FAMILY</nowiki></code> values may exist in the table;
+however, only one projection per SRID is used, and <code><nowiki>SR_FAMILY</nowiki></code> defines the
+priority. The internal search query for projection by SRID is:
+<verbatim>
+SELECT COALESCE
+   (
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID= :0 AND SR_FAMILY='PG' ), 
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID= :0 AND SR_FAMILY='EPSG' ), 
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID= :0 AND SR_FAMILY='ESRI' ), 
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID= :0 AND SR_FAMILY='NAD83' ), 
+     ( SELECT SR_PROJ4_STRING FROM DB.DBA.SYS_V7PROJ4_SRIDS WHERE SR_ID= :0 AND SR_FAMILY='NAD27' ) 
+   );
+</verbatim>
+
+This means that for [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform()]], function '<code>PG</code>' overrides everything else, <code>EPSG</code> is the next highest priority, then <code>ESRI</code>, <code>NAD83</code>, and <code>NAD27</code>. However, custom queries and procedure may select whatever they please (including <code>SR_FAMILY</code> values not listed here, strings from other tables, etc.), and may feed projection strings directly to [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform()]].
+
+The coordinate systems can also be updated by directly manipulating the <code><nowiki>DB.DBA.SYS_V7PROJ4_SRIDS</nowiki></code> table. (This table is readable by public, and writable only by DBA.) After editing the table, call the "<code><nowiki>Proj4 cache_reset()</nowiki></code>" function to prevent the SQL runtime from using previously-prepared projections that might now be obsolete. Note that <code>proj4</code> projections are for normalized data in radians, while Virtuoso stores shapes using numbers that come from WKT; i.e., they're latitudes and longitudes in degrees, for almost all cases. 
+
+The <code>v7proj4</code> plugin automatically applies the <code><nowiki>RAD_TO_DEG</nowiki></code> multiplier before conversion and/or the <code><nowiki>RAD_TO_DEG</nowiki></code> multiplier after conversion, when source and/or destination coordinate systems are latitude-longitude or geocentric. Even if this conversion is done automatically, you should remember that it happens, because many "how-to" instructions for spatial data sets contain paragraphs like "how to convert these data to WGS-84" and much sample C/C++ code contains transformations like <code><nowiki>{ x *= RAD_TO_DEG; y *= RAD_TO_DEG; }</nowiki></code>. These transformations will probably be redundant in the corresponding Virtuoso/PL code, while <code>proj4</code> strings can be used unchanged and simply passed as the 3rd and 4th arguments of the [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform()]] function. If degrees-to-radians conversion is made twice, the data may be calculated as if the shape is located in a totally different place of ellipsoid. If the post-transformation radians-to-degrees conversion is also made twice, the resulting shape may <i>look</i> like the real one but coordinates may be tens of kilometers away from the correct values.
+
+---+++ Example usage of ST_Transform() 
+
+Below are some example uses of the [[http://docs.openlinksw.com/virtuoso/fn_ST_Transform.html][ST_Transform()]] function to transform some of the sample coordinate systems loaded into Virtuoso:
+
+<verbatim>
+SQL> SELECT * FROM DB.DBA.SYS_V7PROJ4_SRIDS;
+SR_ID              SR_FAMILY          SR_TAG    SR_ORIGIN              SR_IRI    SR_PROJ4_STRING                                                                                                                                                                         SR_WKT    SR_COMMENT   SR_PROJ4_XML
+INTEGER NOT NULL   VARCHAR NOT NULL   VARCHAR   VARCHAR NOT NULL       VARCHAR   VARCHAR NOT NULL                                                                                                                                                                        VARCHAR   VARCHAR      VARCHAR
+________________   ________________   _______   ____________________   _______   _____________________________________________________________________________________________________________________________________________________________________________________   _______   __________   ____________
+
+2005               EPSG               2005      /usr/share/proj/epsg   NULL      +ellps=clrk80 +k=0.9995000000000001 +lat_0=0 +lon_0=-62 +no_defs +proj=tmerc +units=m +x_0=400000 +y_0=0                                                                                          NULL         NULL
+2249               EPSG               2249      /usr/share/proj/epsg   NULL      +datum=NAD83 +ellps=GRS80 +lat_0=41 +lat_1=42.68333333333333 +lat_2=41.71666666666667 +lon_0=-71.5 +no_defs +proj=lcc +to_meter=0.3048006096012192 +x_0=200000.0001016002 +y_0=750000             NULL         NULL
+4326               EPSG               4326      /usr/share/proj/epsg   NULL      +datum=WGS84 +ellps=WGS84 +no_defs +proj=longlat                                                                                                                                                  NULL         NULL
+
+3 Rows. -- 1 msec.
+SQL> SELECT st_transform (st_geomfromtext ('POLYGON((-16 20.25,-16.1 20.35,-15.9 20.35,-16 20.25))'), 1, '+proj=latlong +ellps=clrk66', '+proj=merc +ellps=clrk66 +lat_ts=33');
+unnamed
+VARCHAR NOT NULL
+_____________________________________________________________________________________________________________________________________________
+
+SRID=1;POLYGON((-1495284.211473 1920596.789917,-1504629.737795 1930501.842961,-1485938.685152 1930501.842961,-1495284.211473 1920596.789917))
+
+1 Rows. -- 0 msec.
+SQL> SELECT ST_AsText(ST_Transform(ST_GeomFromText('POLYGON((743238 2967416,743238 2967450, 743265 2967450,743265.625 2967416,743238 2967416))',2249),4326)) AS wgs_geom;
+wgs_geom
+VARCHAR NOT NULL
+___________________________________________________________________________________________________________________
+
+POLYGON((-71.177685 42.390290,-71.177684 42.390383,-71.177584 42.390383,-71.177583 42.390289,-71.177685 42.390290))
+
+1 Rows. -- 1 msec.
+SQL> 
+</verbatim>
+
+   * <a href="%ATTACHURLPATH%/GeoApiSparql.log" style="wikiautogen">GeoApiSparql.log</a>
+
+---++ Future Plans 
+
+   * Full support for all DE9-IM based operations.
+   * Full support for <nowiki>GeoSPARQL</nowiki>.
+   * Additional functions for splitting compound geometries into parts and constructing geometries (except operations that get shapes as arguments and returns other shapes).
+
+---++ Related
+
+   * [[http://geoknow.eu][GeoKnow]] -- Making the Web an Exploratory for Geospatial Knowledge
+      * [[http://svn.aksw.org/projects/GeoKnow/Public/D1.3.2_Continuous_Report_on_Performance_Evaluation.pdf][Continuous Report on Performance Evaluation]]
+      * [[http://svn.aksw.org/projects/GeoKnow/Public/D2.1.1_Market_and_Research_Overview.pdf][Market and Research Overview]]
+      * [[http://svn.aksw.org/projects/GeoKnow/Public/D2.2.1_Integration_of_Geospatial_Databases.pdf][Integration of Geospatial Databases]]
+      * [[http://svn.aksw.org/projects/GeoKnow/Public/D2.3.1_Prototype_of_Built-in_Geospatial_Capabilities.pdf][Prototype of Built in Geospatial Capabilities]]
+   * Virtuoso Geo SPARQL Geometry Tutorials
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2830%29][BOX]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2831%29][POLYGON ]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2832%29][POLYGON WITH HOLE]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2833%29][MULTIPOLYGON]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2834%29][GEOMETRY COLLECTION]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2835%29][MULTIPOINT]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2836%29][LINESTRING]]
+      * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_10/SPARQL_Tutorials_Part_10.html#%2837%29][MULTILINESTRING]]

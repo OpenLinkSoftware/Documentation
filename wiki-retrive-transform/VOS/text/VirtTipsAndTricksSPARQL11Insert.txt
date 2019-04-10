@@ -1,0 +1,294 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection"}%
+
+---+Virtuoso SPARQL 1.1. INSERT Usage Examples 
+
+%TOC%
+
+---++What?
+This guide contains Virtuoso SPARQL 1.1. INSERT Usage examples queries which you can run against 
+any SPARQL endpoint that supports SPARQL 1.1 and the ability to allow a verified user perform 
+INSERT operations. 
+
+---++Why?
+Using INSERTS provides flexible way of adding data to graphs.
+
+---++How?
+
+Here are some examples showcasing Virtuoso's support for this functionality:
+
+
+---+++INSERT DATA Examples 
+
+---++++Adding One Triple Example
+
+This example request describes 1 triple to be added to the named graph identified by the IRI &lt;urn:sparql:tests:insert:data&gt;
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<#book1> <#price> 42 .
+</verbatim>
+   1 Load the sample data:
+<verbatim>
+INSERT DATA
+  { 
+    GRAPH <urn:sparql:tests:insert:data> 
+      { 
+        <#book1> <#price> 42 
+      } 
+  }
+</verbatim>
+   1 Query the graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:insert:data> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/WFcxEN][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/Xc45My][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---+++INSERT (Informative) Examples
+
+---++++Coping Triples Based on a Pattern Example
+
+This example copies triples from one named graph to another named graph based on a pattern: 
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#book1> <http://purl.org/dc/elements/1.1/title> "Fundamentals of Compiler Design" .
+<#book1> <http://purl.org/dc/elements/1.1/date>  "1977-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+<#book2> <#price> 42 .
+<#book2> <http://purl.org/dc/elements/1.1/title>   "David Copperfield" .
+<#book2> <http://purl.org/dc/elements/1.1/creator> "Edmund Wells" .
+<#book2> <http://purl.org/dc/elements/1.1/date>    "1948-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+<#book3> <http://purl.org/dc/elements/1.1/title>   "SPARQL 1.1 Tutorial" .
+</verbatim>
+   1 Load the sample data into graph &lt;urn:sparql:tests:insert:informative&gt;;
+<verbatim>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+INSERT INTO <urn:sparql:tests:insert:informative> 
+  {
+    <#book1> <http://purl.org/dc/elements/1.1/title> "Fundamentals of Compiler Design" .
+    <#book1> <http://purl.org/dc/elements/1.1/date>  "1977-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+    <#book2> <#price> 42 .
+    <#book2> <http://purl.org/dc/elements/1.1/title>   "David Copperfield" .
+    <#book2> <http://purl.org/dc/elements/1.1/creator> "Edmund Wells" .
+    <#book2> <http://purl.org/dc/elements/1.1/date>    "1948-01-01T00:00:00-02:00"^^xsd:dateTime .
+  }
+</verbatim>
+   1 Assume another Raw Data Representation in Turtle:
+<verbatim>
+<#book4> <http://purl.org/dc/elements/1.1/title> "SPARQL 1.0 Tutorial" .
+</verbatim>
+   1 Load the sample data into graph &lt;urn:sparql:tests:insert:informative2&gt;;
+<verbatim>
+INSERT INTO <urn:sparql:tests:insert:informative2> 
+  {
+    <#book4> <http://purl.org/dc/elements/1.1/title> "SPARQL 1.0 Tutorial" .
+  }
+</verbatim>
+   1 Copy triples from the &lt;urn:sparql:tests:insert:informative2&gt; named graph to the &lt;urn:sparql:tests:insert:informative&gt; named graph based on a pattern: 
+<verbatim> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+INSERT 
+  { 
+    GRAPH <urn:sparql:tests:insert:informative2> { ?book ?p ?v } 
+  }
+WHERE
+  { 
+    GRAPH  <urn:sparql:tests:insert:informative>
+      { 
+        ?book <http://purl.org/dc/elements/1.1/date> ?date .
+        FILTER ( ?date > "1970-01-01T00:00:00-02:00"^^xsd:dateTime )
+        ?book ?p ?v
+      } 
+  }	
+</verbatim>
+   1 Query the &lt;urn:sparql:tests:insert:informative2&gt; graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:insert:informative2> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/VscJad][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/U7dlqI][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---++++Coping Triples Based on a Name and Mail Example
+
+This example copies triples of name and email from one named graph to another. Some individuals may not have an address, but the name is copied regardless:
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+_:a  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   <http://xmlns.com/foaf/0.1/Person> . 
+_:a  <http://xmlns.com/foaf/0.1/name>                    "Alice" . 
+_:a  <http://xmlns.com/foaf/0.1/mbox>                    <mailto:alice@example.com> . 
+
+_:b  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   <http://xmlns.com/foaf/0.1/Person> . 
+_:b  <http://xmlns.com/foaf/0.1/name>                    "Bob" . 
+</verbatim>
+   1 Load the sample data into graph &lt;urn:sparql:tests:insert:informative3&gt;;
+<verbatim>
+INSERT INTO <urn:sparql:tests:insert:informative3> 
+  {
+    _:a  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://xmlns.com/foaf/0.1/Person> . 
+    _:a  <http://xmlns.com/foaf/0.1/name>                   "Alice" . 
+    _:a  <http://xmlns.com/foaf/0.1/mbox>                   <mailto:alice@example.com> . 
+
+    _:b  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://xmlns.com/foaf/0.1/Person> . 
+    _:b  <http://xmlns.com/foaf/0.1/name>  "Bob" . 
+  }
+</verbatim>
+   1 Assume in another named graph &lt;urn:sparql:tests:insert:informative4&gt; there are no triples inserted.
+   1 Copy triples of name and email from &lt;urn:sparql:tests:insert:informative3&gt; to &lt;urn:sparql:tests:insert:informative4&gt; :
+<verbatim>
+INSERT 
+  { 
+    GRAPH <urn:sparql:tests:insert:informative4>
+      {
+        ?person  <http://xmlns.com/foaf/0.1/name>  ?name . 
+        ?person  <http://xmlns.com/foaf/0.1/mbox>  ?email 
+      }
+  }
+WHERE
+  { 
+    GRAPH  <urn:sparql:tests:insert:informative3>
+      {
+        ?person  <http://xmlns.com/foaf/0.1/name>  ?name . 
+        OPTIONAL { ?person  <http://xmlns.com/foaf/0.1/mbox>  ?email } 
+      } 
+  }    
+</verbatim>
+   1 Query the &lt;urn:sparql:tests:insert:informative4&gt; graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:insert:informative4> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/WGBJ0v][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/TkyT1t][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++++Copy Triples and Delete Physical Objects Example
+
+This example request first copies triples from one named graph to another named graph based on a pattern; triples about all the copied objects that are classified as Physical Objects are then deleted. This demonstrates two operations in a single request, both of which share common PREFIX definitions:
+
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<#book1> <http://purl.org/dc/elements/1.1/title> "Fundamentals of Compiler Design" .
+<#book1> <http://purl.org/dc/elements/1.1/date> "1996-01-01T00:00:00-02:00"^^xsd:dateTime .
+<#book1> a <http://purl.org/dc/dcmitype/PhysicalObject> .
+
+<#book3> <http://purl.org/dc/elements/1.1/title> "SPARQL 1.1 Tutorial" .
+</verbatim>
+   1 Load the sample data into graph &lt;urn:sparql:tests:insert:informative5&gt;;
+<verbatim>
+INSERT INTO <urn:sparql:tests:insert:informative5> 
+  {
+    <#book1> <http://purl.org/dc/elements/1.1/title> "Fundamentals of Compiler Design" .
+    <#book1> <http://purl.org/dc/elements/1.1/date> "1996-01-01T00:00:00-02:00"^^xsd:dateTime .
+    <#book1> a <http://purl.org/dc/dcmitype/PhysicalObject> .
+
+    <#book3> <http://purl.org/dc/elements/1.1/title> "SPARQL 1.1 Tutorial" .
+  }
+</verbatim>
+   1 Assume another Raw Data Representation in Turtle:
+<verbatim>
+<#book4> <http://purl.org/dc/elements/1.1/title> "SPARQL 1.0 Tutorial" .
+</verbatim>
+   1 Load the sample data into graph &lt;urn:sparql:tests:insert:informative6&gt;;
+<verbatim>
+INSERT INTO <urn:sparql:tests:insert:informative6> 
+  {
+    <#book4> <http://purl.org/dc/elements/1.1/title> "SPARQL 1.0 Tutorial" .
+  }
+</verbatim>
+   1 Copy triples from &lt;urn:sparql:tests:insert:informative5&gt; to &lt;urn:sparql:tests:insert:informative6&gt;
+<verbatim>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+INSERT
+  { 
+    GRAPH <urn:sparql:tests:insert:informative6> { ?book ?p ?v } 
+  }
+WHERE
+  { 
+    GRAPH  <urn:sparql:tests:insert:informative5>
+      { 
+        ?book <http://purl.org/dc/elements/1.1/date> ?date . 
+        FILTER ( ?date < "2000-01-01T00:00:00-02:00"^^xsd:dateTime )
+        ?book ?p ?v
+      }
+   } 
+</verbatim>
+   1 Delete triples about all the copied objects that are classified as Physical Objects: 
+<verbatim>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+WITH <urn:sparql:tests:insert:informative5>
+DELETE
+ { 
+   ?book ?p ?v 
+ }
+WHERE
+ { 
+   ?book <http://purl.org/dc/elements/1.1/date> ?date ;
+   a <http://purl.org/dc/dcmitype/PhysicalObject> .
+   FILTER ( ?date < "2000-01-01T00:00:00-02:00"^^xsd:dateTime ) 
+   ?book ?p ?v .
+ }   
+</verbatim>
+   1 Query the &lt;urn:sparql:tests:insert:informative5&gt; graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:insert:informative5> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/Xca6Jg][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/W6FCdX][View the SPARQL Query Results via SPARQL Protocol URL]]
+   1 Query the &lt;urn:sparql:tests:insert:informative6&gt; graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:insert:informative6> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/XXIVCG][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/12eJG15][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+
+---++Related
+
+   * [[http://www.w3.org/TR/2012/PR-sparql11-update-20121108/#insertData][SPARQL 1.1 INSERT DATA]]
+   * [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol (HTTP based Query Service)]]  
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtTipsAndTricksSPARQL11FeaturesExamplesCollection][Virtuoso SPARQL 1.1 Usage Examples Collection]]
+   * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_9/SPARQL_Tutorials_Part_9.html][Virtuoso SPARQL 1.1 Syntax Tutorial]]
+   * [[http://bit.ly/Uo5hP6][Virtuoso SPARQL 1.1 INSERT Tutorial]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]

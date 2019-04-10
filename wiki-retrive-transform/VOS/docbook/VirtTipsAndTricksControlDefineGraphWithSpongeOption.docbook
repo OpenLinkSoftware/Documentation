@@ -1,0 +1,65 @@
+<docbook><section><title>VirtTipsAndTricksControlDefineGraphWithSpongeOption</title><para> </para>
+<title>Defining Linked Data Graphs via WebDAV DET Folders</title>Defining Linked Data Graphs via <ulink url="WebDAV">WebDAV</ulink> DET Folders
+<para>Virtuoso provides the ability for you to create a dynamically generated folder (collection) that&#39;s accessible to HTTP/WebDAV clients.
+ This functionality is delivered via the <ulink url="WebDAV">WebDAV</ulink> properties: virt:rdf_sponger and virt:rdf_graph .</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ This guide walks you through the process of creating a dynamically generated <ulink url="WebDAV">WebDAV</ulink> folder that acts as a conduit to the Virtuoso Quad Store, with the option to associating the resource generation with the Sponger linked data middleware.
+ Note, by associating the sponger with this kind of resource you end up enriching the final Linked Data graph that&#39;s saved to the Quad Store due to the contributions from a variety of content transformation, natural language processor, and linked data lookup services.<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+ Simplifies the creation of Linked Data in the Virtuoso Quad store.
+ A dynamically generated <ulink url="WebDAV">WebDAV</ulink> collection (folder) looks like conventional folder to HTTP and <ulink url="WebDAV">WebDAV</ulink> clients.
+ Thus, you can use drag &amp; drop, cut and paste, and related patterns for getting Linked Data into your Virtuoso Quad Store.<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+ Using Virtuoso&#39;s Conductor perform the following steps:<orderedlist spacing="compact"><listitem>Create Virtuoso user using Conductor, for ex.
+ with name &quot;john&quot; and pwd 1.
+</listitem>
+<listitem>Create for the user a RDF Sink folder for ex.
+ with name &quot;<ulink url="MySinkFolder">MySinkFolder</ulink>&quot; from type &quot;RDF Upload Folder&quot; or use the rdf_sink folder created automatically for your user.
+</listitem>
+<listitem>In the properties page of the RDF sink folder add in the <ulink url="WebDAV">WebDAV</ulink> section this property <emphasis>virt:rdf_graph</emphasis> with value: <programlisting>http://host:port/DAV/home/&lt;user-name&gt;/&lt;rdf-sink-folder&gt;/
+
+-- For our example it would be:
+http://localhost:8890/DAV/home/john/MySinkFolder/
+</programlisting></listitem>
+<listitem>Add another property <emphasis>virt:rdf_sponger</emphasis> with value &quot;on&quot;.
+<figure><graphic fileref="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink1.png" /></figure> </listitem>
+<listitem>Upload RDF files to the RDF Sink folder <emphasis><ulink url="MySinkFolder">MySinkFolder</ulink></emphasis>, for ex.
+ upload a file with name &quot;data.rdf&quot;.
+<figure><graphic fileref="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink2.png" /></figure> </listitem>
+<listitem>As a result the RDF data should be stored in graph depending on your folder name etc.: <programlisting>http:///local.virt/DAV/home/&lt;user-name&gt;/&lt;rdf-sink-folder&gt;/&lt;resource&gt;
+
+-- This would be as follows:
+http:///local.virt/DAV/home/john/MySinkFolder/data.rdf
+</programlisting><orderedlist spacing="compact"><listitem>Go to <ulink url="http://host:port/sparql">http://host:port/sparql</ulink> ; </listitem>
+<listitem>Execute simple query to view the graph triples: <programlisting>SELECT  * 
+FROM &lt;http://local.virt/DAV/home/john/MySinkFolder/data.rdf&gt;
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</programlisting><figure><graphic fileref="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink3.png" /></figure> <figure><graphic fileref="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink4.png" /></figure> </listitem>
+</orderedlist></listitem>
+<listitem>In order to define any graph you want with the options from above, you should execute: <programlisting>SQL&gt; DAV_PROP_SET (&#39;/DAV/home/&lt;user-name&gt;/&lt;rdf-sink-folder&gt;/&#39;,  &#39;virt:rdf_graph&#39;, iri, &lt;user-name&gt;, &lt;password&gt;);
+
+-- In our example it would be:
+SQL&gt; DAV_PROP_SET (&#39;/DAV/home/john/MySinkFolder/&#39;,  &#39;virt:rdf_graph&#39;, &#39;http://mydata.com&#39;, &#39;john&#39;, &#39;1&#39;);
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>Note: calling this function uses the given IRI as the graph IRI when sponging stuff put in &lt;your-rdf-sink-folder&gt;  </listitem>
+</itemizedlist></listitem>
+<listitem>Finally you should execute the following command to get the RDF data from the new graph: <programlisting>SQL&gt; SELECT DAV_PROP_GET (&#39;/DAV/home/&lt;user-name&gt;/&lt;your-rdf-sink-folder&gt;/&#39;, &#39;virt:rdf_graph&#39;,&lt;user-name&gt;, &lt;password&gt;);
+
+-- At this point you should execute:
+SQL&gt; SELECT DAV_PROP_GET (&#39;/DAV/home/john/MySinkFolder/&#39;, &#39;virt:rdf_graph&#39;,&#39;john&#39;, &#39;1&#39;);
+
+Query result:
+DAV_PROP_GET
+http://localhost:8890/DAV/home/john/MySinkFolder/
+
+No. of rows in result: 1 
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="VirtRDFInsert">RDF Insert Methods in Virtuoso</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfandsparql.html">RDF Data Access and Data Management</ulink></listitem>
+</itemizedlist><para> </para>
+</section></docbook>

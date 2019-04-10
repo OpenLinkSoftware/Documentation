@@ -1,0 +1,267 @@
+<html><body><div class="topic-text"><h1><a name="Virtuoso RDF Replication scenarios"></a> Virtuoso RDF Replication scenarios</h1>
+<p> <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Setup">Setup</a></li>
+<ul><li><a href="#Installing%20Virtuoso">Installing Virtuoso</a></li> <li><a href="#Setting%20up%20MASTER">Setting up MASTER</a></li> <li><a href="#Setup%20SPARE%20master">Setup SPARE master</a></li> <li><a href="#Setup%20FARM-1">Setup FARM-1</a></li> <li><a href="#Setup%20FARM-2%20from%20scratch">Setup FARM-2 from scratch</a></li> <li><a href="#Setup%20FARM-3%20using%20blueprint%20from%20FARM-1%20installation">Setup FARM-3 using blueprint from FARM-1 installation</a></li> <li><a href="#Setup%20FARM-4%20using%20clone%20of%20FARM-1">Setup FARM-4 using clone of FARM-1</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--></p>
+<h2><a name="Introduction"></a> Introduction</h2>
+<table class="image" align="center" border="0"> <caption align="bottom">Network Topology</caption> <tr><td> <img src="VirtRdfReplScenarios/topo-scenario.png" style="wikiautogen" alt="[Graphical representation of the Network]"> </td></tr> </table><p> In this document we will examine a proposed setup for a back-end server called MASTER which publishes a number of graphs to a set of front-end machines called FARM-1 ..
+ FARM-n and discuss a couple of common scenarios like adding an extra machine to the farm, or replacing a broken instance of MASTER.</p>
+<p>In this example we will assume each virtuoso instance running on its own machine, so they can use the same port numbers for both the main server (default 1111) as well as the http port (default 8890) as each machine has an unique IP addresses.
+ In the example we use <tt>MASTER-IP</tt> and <tt>FARM-x-IP</tt> which should be replaced by either the real IP address or the DNS name of the machine in question.</p>
+<p>Since there will be a reverse-proxy service in front of the farm, all virtuoso instances should have the URIQA Default host set to the outside name for this service.
+ In this example we will use <a href="http://test.example.com" class="absuri">http://test.example.com</a> as the web service we are trying to setup.</p>
+<h2><a name="Setup"></a> Setup</h2>
+<h3><a name="Installing Virtuoso"></a> Installing Virtuoso</h3>
+<p>All machines in this setup should be installed with similar installation paths like:</p>
+<ul><li><tt>/opt/virtuoso</tt> </li>
+<li><tt>/dbs/virtuoso</tt> </li>
+<li><tt>/virtuoso</tt> </li>
+<li>...</li>
+</ul><p>The partition should be big enough to have room for the Virtuoso binaries and libraries, the transaction logs, backups and, if you do not want to use the striping feature of Virtuoso, it will need to have room for the main database files as well.</p>
+<p>Here are the quick installation steps</p>
+<ol><li>Login as root </li>
+<li>Create local user called virtuoso using the chosen installation path as home direcotory </li>
+<li>Login as virtuoso </li>
+<li>Extract <tt>virtuoso-universal-server-6.1.tar</tt> in home directory </li>
+<li>Run <code>sh install.sh</code> to install Virtuoso </li>
+<li>Remove the file install.sh virtuoso-universal-server-6.1.tar virtuoso-server.taz if not otherwise needed </li>
+<li>Run <code>bin/virtuoso-stop.sh</code> to shutdown this Virtuoso instance </li>
+<li>Install virtuoso.lic for this system in $HOME/bin directory</li>
+</ol><p>As the replication process needs to make an ODBC connection to the MASTER machine, all machines should have the following information in the <tt>$HOME/bin/odbc.ini</tt>: </p>
+<br><pre>[ODBC Data Sources]
+..
+MASTER_DSN = OpenLink Virtuoso
+
+..
+[MASTER_DSN]
+Driver = OpenLink Virtuoso
+Address = MASTER_IP:1111
+</pre><p> </p>
+<h3><a name="Setting up MASTER"></a> Setting up MASTER</h3>
+<p>The MASTER machine is the back-end server machine.
+ Various applications feed SPARQL data into this machine it publishes a set of graphs using RDF Replication.</p>
+<p>The MASTER machine should ideally be equipped with multiple redundant disks in <b>RAID-1</b> or  <b>RAID-6</b> mode to minimize the risk that a single bad disk takes down the system.
+ From a Virtuoso point of view we will use a combination of online backups combined with checkpoint audit trail to backup the content of the database in a safe way.
+ The online backups, the checkpoint audit trail as well as the replication logs can also be copied to secondary storage using the <tt>rsync</tt> command and can be easily scripted as a cron job.</p>
+<p>Changes to database/virtuoso.ini </p>
+<br><pre>...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 1     ; enable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...  
+[Replication]
+ServerName   = MASTER
+ServerEnable = 1 
+QueueMax     = 5000000
+...
+</pre><p> Once the MASTER is started using the <tt>bin/virtuoso-start.sh</tt> script we must enable RDF replication before we start add data to the graphs we wish to replicate, so every record is accounted for by the replication process.
+ If there is existing data in the graphs to be published, then this data would need to be added to a subscriber manually since the replication process creates a delta set of changes since publishing was enabled.</p>
+<p>To enable publishing of the graph we use the <tt>isql</tt> program to connect to the MASTER instance: </p>
+<br><pre>$ isql MASTER-IP:1111
+
+-- and run the following commands:
+
+-- enable this instance as a publisher
+rdf_repl_start();
+
+-- add graphs to replication list
+rdf_repl_graph_ins(&#39;http://test.example.com&#39;);
+</pre><p> Next we create a backup directory inside the database directory and setup the online backup, again using the <tt>isql</tt> program: </p>
+<br><pre>$ cd database
+$ mkdir backup
+$ isql MASTER_IP:1111
+
+-- and run the following commands:
+
+-- clear any previous context
+backup_context_clear();
+
+-- start the backup
+backup_online (&#39;bkup-#&#39;, 1000000, 0, vector (&#39;backup&#39;));
+</pre><p> The following files can now be backed up using rsync or similar tool to another machine:</p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRdfReplScenarios?sort=0&col=1">Files</a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRdfReplScenarios?sort=1&col=2">Description</a></th></tr><tr><td>database/backup/*.bp</td><td>the incremental backup files</td></tr><tr><td>database/virtuoso.trx</td><td>the main transaction log containing the most recent updates to the database that have not been checkpointed into the database</td></tr><tr><td>database/virtuosoTIMESTAMP.trx</td><td>all the previous transaction logs which can be used to reconstruct the database</td></tr><tr><td>database/<verbatim>__</verbatim>rdf_repl*.log</td><td>all the replication logs containing the changes to the published graph</td></tr></table>
+<p>NOTE: Since the database is constantly modified during operation,  it is of NO use to backup the virtuoso.db using an rsync script unless the virtuoso instance was shutdown beforehand, or certain extra precautions are taken which we will explain later on.</p>
+<p> </p>
+<h3><a name="Setup SPARE master"></a> Setup SPARE master</h3>
+<p>The SPARE machine is a replica of the MASTER machine.
+ This machine subscribes to the publication of the MASTER to keep an exact match of the RDF graphs, but also publishes this data without any initial subscribers.</p>
+<p>The SPARE machine should ideally be equipped similar to the MASTER machine, with multiple redundant disks in <b>RAID-1</b> or <b>RAID-6</b> mode to minimize the risk that a single bad disk takes down the system.
+ From a Virtuoso point of view we will use a combination of online backups combined with checkpoint audit trail to backup the content of the database in a safe way.
+ The online backups, the checkpoint audit trail as well as the replication logs can also be copied to secondary storage using the <tt>rsync</tt> command and can be easily scripted as a cron job.</p>
+<p>Changes to database/virtuoso.ini </p>
+<br><pre>...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 1     ; enable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...  
+[Replication]
+ServerName   = SPARE
+ServerEnable = 1 
+QueueMax     = 5000000
+...
+</pre><p> We must enable RDF replication before we start add data to the graphs we wish to replicate, so every record is accounted for by the replication process.
+ If there is existing data in the graphs to be published, then this data would need to be added to a subscriber manually since the replication process creates a delta set of changes since publishing was enabled.</p>
+<p>To enable publishing of the graph, as well as subscribing to the MASTER, we first start up this Virtuoso instance with <tt>bin/virtuoso-start.sh</tt> and then use the <tt>isql</tt> program to connect to the SPARE instance: </p>
+<br><pre>$ bin/virtuoso-start.sh
+$ isql SPARE-IP:1111
+
+-- and run the following commands:
+
+-- enable this instance as a publisher
+rdf_repl_start();
+
+-- add graphs to replication list
+rdf_repl_graph_ins(&#39;http://test.example.com&#39;);
+
+-- connect to master
+repl_server (&#39;MASTER&#39;, &#39;MASTER_DSN&#39;);
+
+-- start subscribing to __rdf_repl
+repl_subscribe (&#39;MASTER&#39;, &#39;__rdf_repl&#39;, &#39;dav&#39;, &#39;dav&#39;, &#39;dba&#39;, &#39;dba&#39;);
+
+-- start initial replication
+repl_sync_all ();
+
+-- add subscription to scheduler
+DB.DBA.SUB_SCHEDULE (&#39;MASTER&#39;, &#39;__rdf_repl&#39;, 1);
+</pre><p> Next we create a backup directory inside the database directory and setup the online backup, again using the <tt>isql</tt> program: </p>
+<br><pre>$ cd database
+$ mkdir backup
+$ isql SPARE_IP:1111
+
+-- and run the following commands:
+
+ -- clear any previous context
+ backup_context_clear();
+ 
+ -- start the backup
+ backup_online (&#39;bkup-#&#39;, 1000000, 0, vector (&#39;backup&#39;));
+</pre><p> The following files can now be backed up using rsync or similar tool to another machine:</p>
+
+<table class="wikitable">
+<tr><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRdfReplScenarios?sort=2&col=1">Files</a></th><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRdfReplScenarios?sort=3&col=2">Description</a></th></tr>
+<tr><td>database/backup/*.bp</td><td>the incremental backup files</td></tr>
+<tr><td>database/virtuoso.trx</td><td>the main transaction log containing the most recent updates to the database that have not been checkpointed into the database</td></tr>
+<tr><td>database/virtuosoTIMESTAMP.trx</td><td>all the previous transaction logs which can be used to reconstruct the database</td></tr>
+<tr><td>database/<verbatim>__</verbatim>rdf_repl*.log</td><td>all the replication logs containing the changes to the published graph</td></tr>
+</table>
+<p>Note: Since the database is constantly modified during operation,  it is of NO use to backup the virtuoso.db using an rsync script unless the virtuoso instance was shutdown beforehand, or certain extra precautions are taken which we will explain later on.</p>
+<p> </p>
+<h3><a name="Setup FARM-1"></a> Setup FARM-1</h3>
+<p>The FARM-1 machine is the first front-end server machine.
+ It subscribes to the publication of the MASTER instance to keep up-to-date.</p>
+<p>The FARM-1 machine can be run on simpler hardware than the MASTER instance.It does not require the same level of redundancy in terms of hard disks etc, as there are a number of these machines running in parallel each capable of returning results to the proxy.
+ If one FARM machine dies, it can simply be taken from the reverse-proxy list, repaired or replaced with a fresh machine before it is added to the list of servers in the reverse proxy.
+ As such it does not need to be backed up separately, although we could make a backup of this installation to quickly install the rest of the identical FARM boxes.</p>
+<p>Change the database/virtuoso.ini file: </p>
+<br><pre>...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 0     ; disable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...  
+[Replication]
+ServerName   = FARM-1        ; each FARM machine needs to have a unique replication name
+ServerEnable = 1 
+QueueMax     = 5000000
+...
+</pre><p>Next we start up the Virtuoso instance using the <tt>bin/virtuoso-start.sh</tt> command and use the <tt>isql</tt> program to subscribe to the MASTER: </p>
+<br><pre>$ bin/virtuoso-start.sh
+$ isql FARM-1-IP:1111
+
+-- connect to master
+repl_server (&#39;MASTER&#39;, &#39;MASTER_DSN&#39;);
+
+-- start subscribing to __rdf_repl
+repl_subscribe (&#39;MASTER&#39;, &#39;__rdf_repl&#39;, &#39;dav&#39;, &#39;dav&#39;, &#39;dba&#39;, &#39;dba&#39;);
+
+-- start initial replication
+repl_sync_all ();
+
+-- add subscription to scheduler
+DB.DBA.SUB_SCHEDULE (&#39;MASTER&#39;, &#39;__rdf_repl&#39;, 1);
+</pre><p> At this point we can shutdown this Virtuoso instance using the <tt>bin/virtuoso-stop.sh</tt> command and make a copy of the whole virtuoso installation as a blueprint to copy to another FARM-x machine.</p>
+<p> </p>
+<h3><a name="Setup FARM-2 from scratch"></a> Setup FARM-2 from scratch</h3>
+<p>We can repeat the same steps we did for the FARM-1 machine, and just make sure we use FARM-2 as the replication name in the database/virtuoso.ini file and use FARM-2-IP:1111 as an argument to the <tt>isql</tt> program.</p>
+<p>Change bin/virtuoso.ini: </p>
+<br><pre>[Replication]
+ServerName = FARM-2
+</pre><h3><a name="Setup FARM-3 using blueprint from FARM-1 installation"></a> Setup FARM-3 using blueprint from FARM-1 installation</h3>
+<p>Extract the tarred/zipped copy of the installation made at the end of the setup of FARM-1.</p>
+<p>Before starting up the instance, we only need to give this instance a unique name for replication:</p>
+<p>Change bin/virtuoso.ini: </p>
+<br><pre>[Replication]
+ServerName = FARM-3
+</pre><p> Next we start up the Virtuoso instance using the <tt>bin/virtuoso-start.sh</tt> command and since the subscription records and schedule are already performed in the previous step, we just use the <tt>isql</tt> program to perform a sync against the MASTER:</p>
+<br><pre>$ bin/virtuoso-start.sh
+$ isql FARM-3-IP:1111
+
+-- change replication name
+DB.DBA.REPL_SERVER_RENAME (&#39;FARM-1&#39;, &#39;FARM-3&#39;)
+
+-- sync against master
+repl_sync_all();
+</pre><h3><a name="Setup FARM-4 using clone of FARM-1"></a> Setup FARM-4 using clone of FARM-1</h3>
+<p>If the system has been running for some time, it may not be practical to do a replication from start, so there is an alternative way to setup a new FARM-4 machine.</p>
+<p>We can either restore the blue-print backup we make at the end of FARM-1 installation, or we do a fresh installation of virtuoso on the FARM-4 machine.</p>
+<p>In both cases we shutdown the virtuoso instance and remove the database, as we are going to replace this.
+</p>
+<br><pre>$ bin/virtuoso-stop.sh
+$ cd database
+$ rm virtuoso.db virtuoso.trx virtuoso.log virtuoso.pxa
+</pre><p> Change the database/virtuoso.ini file: </p>
+<br><pre>...
+[Parameters]
+SchedulerInterval    = 1     ; run the internal scheduler every minute
+CheckpointAuditTrail = 0     ; disable audit trail on transaction logs
+CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
+...
+[URIQA]
+DefaultHost = test.example.com
+...  
+[Replication]
+ServerName   = FARM-4        ; each FARM machine needs to have a unique replication name
+ServerEnable = 1 
+QueueMax     = 5000000
+...
+</pre><p> Next we are going to temporarily disable checkpointing on FARM-1 machine so we can copy its database without risking corruption: </p>
+<br><pre>$ isql FARM-1-IP:1111
+
+-- disable automatic checkpointing
+checkpoint_interval (-1);
+
+-- and do an explicit checkpoint
+checkpoint;
+</pre><p> It is now safe to copy the database across using the rsync command: </p>
+<br><pre>$ rsync -avz virtuoso@FARM-1-IP:/path/to/virtuoso/database/virtuoso.db database/virtuoso.db
+</pre><p> Next we re-enable checkpoint interval on FARM-1: </p>
+<br><pre> $ isql FARM-1-IP:1111
+
+ -- re-enable checkpointing
+ checkpoint_interval(60);
+</pre><p> The last step is to start the database: </p>
+<br><pre>$ bin/virtuoso-start.sh
+$ isql FARM-4-IP:1111
+
+-- change replication name
+DB.DBA.REPL_SERVER_RENAME (&#39;FARM-1&#39;, &#39;FARM-4&#39;)
+
+-- sync against master
+repl_sync_all();
+</pre><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplication" class="wikiword">Virtuoso RDF Graph Replication Guide</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationPSQL" class="wikiword">Howto setup RDF GRAPH Replication using the Virtuoso API</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/functions.html#repl" class="absuri">Virtuoso API for replication</a></li>
+</ul></div></body></html>

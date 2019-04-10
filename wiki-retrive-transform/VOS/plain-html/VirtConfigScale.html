@@ -1,0 +1,173 @@
+<html><body><div class="topic-text"><h1><a name="Configuring Virtuoso for Scale"></a>Configuring Virtuoso for Scale</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Background">Background</a></li>
+<ul><li><a href="#Structure%20of%20a%20Virtuoso%20Installation">Structure of a Virtuoso Installation</a></li> <li><a href="#Operation">Operation</a></li> <li><a href="#Configuration%20Options">Configuration Options</a></li> </ul><li><a href="#Analysis">Analysis</a></li> <li><a href="#Default">Default</a></li> <li><a href="#Embedded%20%2F%20Minimal">Embedded / Minimal</a></li><ul><li><a href="#Comparison%20with%20LAMP">Comparison with LAMP</a></li> </ul><li><a href="#Enterprise-wide">Enterprise-wide</a></li> <li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Background"></a> Background</h2>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso is an engine of many features.
+ It incorporates a database engine, Web server, RDF Quad Store, SPARQL processor, and the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Spaces (ODS) suite of applications for bookmarks, briefcase, wiki, webmail, etc.</p>
+<p>Naturally, each of these features has its dependencies and consequences for resource usage, be that in-memory or on disk.</p>
+<p>Here we present an overview of 3 possible configurations for Virtuoso.</p>
+<p>For comparison, we use Virtuoso Open-Source Edition (VOS) compiled on Debian GNU/Linux (&quot;Testing&quot; distribution).</p>
+<p> </p>
+<h3><a name="Structure of a Virtuoso Installation"></a> Structure of a Virtuoso Installation</h3>
+<p>A typical Virtuoso installation comprises the following files/areas:</p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtConfigScale?sort=0&col=1">Directory </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtConfigScale?sort=1&col=2">Description </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtConfigScale?sort=2&col=3">Files </a></th><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtConfigScale?sort=3&col=4">Size </a></th></tr><tr><td> <code>/usr/bin/</code> </td><td> Vital operating binaries for server and command-line client </td><td> <code>virtuoso-t</code> <br> <code>isql-v</code> <br> <code>isql-vw</code> </td><td align="center">  9.2 MB </td></tr><tr><td> <code>/usr/share/virtuoso/vad/</code> </td><td> ODS and other packages (cartridges/sponger, tutorial, demo, isparql, etc.)  </td><td> <code>cartridges_dav.vad</code> <br> <code>doc_dav.vad</code> </td><td align="center">  131 MB </td></tr><tr><td> <code>/usr/lib/</code> </td><td> client drivers for ODBC &amp; JDBC </td><td> <code>jdbc-2.0/virtjdbc*.jar</code> <br> <code>virtodbc*.so</code> </td><td align="center">  12 MB </td></tr><tr><td> <code>/usr/lib/virtuoso/hosting/</code> </td><td> Runtime loadable plugins for hosting and wiki markup </td><td> <code>wikiv.so</code> <br> <code>mediawiki.so</code> <br> <code>creolewiki.so</code> </td><td align="center">  3.6 MB </td></tr><tr><td> <code>/var/lib/virtuoso/vsp/</code> </td><td> Splash-page for top-level web interface </td><td> <code>vsp/</code> <br> <code>vsmx/</code> <br> <code>images/</code> <br> <code>frames/</code> <br> <code>css/</code> <br> <code>index.html</code> <br> etc. </td><td align="center">  1.5 MB </td></tr><tr><td> <code>/usr/share/doc/virtuoso-opensource/</code> </td><td> Misc README data for OS platform </td><td> <code>README.Debian</code> <br> <code>README.CVS.gz</code> <br> etc. </td><td align="center">  128 KB </td></tr><tr><td> <code>/usr/lib/jena/</code> </td><td> Java class modules for using Virtuoso from Jena </td><td> <code>virt_jena.jar</code> </td><td align="center">  56 KB </td></tr><tr><td> <code>/usr/lib/sesame/</code> </td><td> Java class modules for using Virtuoso from Sesame </td><td> <code>virt_sesame2.jar</code> </td><td align="center">  56 KB </td></tr><tr><td> <code>/var/lib/virtuoso/db</code> </td><td> Default database directory </td><td> <code>virtuoso.ini</code> <br> <code>virtuoso.db</code> </td><td align="center">  12 MB </td></tr></table>
+<h3><a name="Operation"></a> Operation</h3>
+<p>When the server is run against a given <code>.ini</code> file, it looks for a database at the name and location specified in that file.
+ If none is found, the server will create an empty database with minimal system schema.</p>
+<p>If it finds an appropriate directory containing <code>*.vad</code> files (set in the virtuoso.ini file during &#39;<code>make install</code>&#39;), Virtuoso will install the Conductor package by default.</p>
+<p>From there on, the Virtuoso administrator is expected to use the Conductor, <code>&lt;http://localhost:8890/conductor/&gt;</code>, to install further packages such as the ODS application suite, etc.</p>
+<p>After a checkpoint, a <code>virtuoso.db</code> file forms a portable unit encapsulating the entirety of a database instance, and can be moved between servers, so you can implement custom applications and schemas using the client interfaces (iSQL, ODBC, JDBC, etc.) and avoid installing any of the packages — even the Conductor — should you so desire.</p>
+<h3><a name="Configuration Options"></a> Configuration Options</h3>
+<p>The following parameters in a <code>virtuoso.ini</code> file defining a Virtuoso instance control the resource consumption and performance:</p>
+
+<table class="wikitable">
+<tr><td> <b><code>[Database]</code></b> </td></tr>
+<tr><td> <code>DatabaseFile</code> </td><td> <code>virtuoso.db</code> </td><td> Filename of database file </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Database" class="absuri">docs</a> </td></tr>
+<tr><td> <code>FileExtend</code> </td><td> <code>200</code> </td><td> The amount of 8K-sized pages by which the database file automatically grows when the current file is not large enough.  </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Database" class="absuri">docs</a> </td></tr>
+<tr><td> <code>MaxCheckpointRemap</code> </td><td> <code>2000</code> </td><td> Controls how many pages may be stored other than their logical page during checkpoints </td><td> <a href="http://docs.openlinksw.com/virtuoso/CHECKPOINT.html#checkpointparams" class="absuri">docs</a> </td></tr>
+<tr><td> <code>Striping</code> </td><td> <code>0</code> </td><td> Enables the database file-striping mechanism </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Striping" class="absuri">docs</a> </td></tr>
+<tr><td> <b><code>[Parameters]</code></b> </td></tr>
+<tr><td> <code>ServerThreads</code> <br> a/k/a <br> <code>MaxClientConnections</code> </td><td> <code>20</code> </td><td> maximum concurrent number of SQL (ODBC, JDBC, ADO.NET, OLE DB, XMLA, and/or iSQL) connections the instance will handle; should typically be close to but not over the licensed number of concurrent connections minus the <code>ServerThreads</code> or <code>MaxClientConnections</code> setting in the <code>[HttpServer]</code> stanza</td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm/#ini_parameters_serverthreads" class="absuri">docs</a> </td></tr>
+<tr><td> <code>CheckpointInterval</code> </td><td> <code>60</code> </td><td> interval (minutes) at which Virtuoso will automatically make a database checkpoint </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Parameters" class="absuri">docs</a> </td></tr>
+<tr><td> <code>NumberOfBuffers</code> </td><td> <code>2000</code> </td><td> controls the amount of RAM (8K pages) used by Virtuoso to cache database files </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Parameters" class="absuri">docs</a>  </td></tr>
+<tr><td> <code>MaxDirtyBuffers</code> </td><td> <code>1200</code> </td><td> The maximum number of modified buffers to store before writing  </td><td> </td></tr>
+<tr><td> <code>MaxStaticCursorRows</code> </td><td> <code>5000</code> </td><td> the maximum number of rows returned by a static cursor </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#fp_checkpointAuditTrail" class="absuri">docs</a> </td></tr>
+<tr><td> <code>FreeTextBatchSize</code> </td><td> <code>100000</code> </td><td> the amount of text data processed in one batch of the free-text index during batch reindexing </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Parameters" class="absuri">docs</a>  </td></tr>
+<tr><td> <b><code>[HTTPServer]</code></b> </td></tr>
+<tr><td><code>ServerThreads</code> <br> a/k/a <br> <code>MaxClientConnections</code> </td><td> <code>10</code> </td><td> Maximum concurrent HTTP sessions the instance will handle; should be less than the the licensed number of concurrent connections </td><td> <a href="http://docs.openlinksw.com/virtuoso/webserver.html#vspconf" class="absuri">docs</a> </td></tr>
+<tr><td> <code>MaxKeepAlives</code> </td><td> <code>10</code> </td><td> A maximum number of HTTP sockets with <code><nop></nop>KeepAlive</code> connections </td><td> <a href="http://docs.openlinksw.com/virtuoso/webserver.html#vspconf" class="absuri">docs</a> </td></tr>
+<tr><td> <code>KeepAliveTimeout</code> </td><td> <code>10</code> </td><td> Timeout (in seconds) before an idle HTTP connection is closed </td><td> <a href="http://docs.openlinksw.com/virtuoso/webserver.html#vspconf" class="absuri">docs</a> </td></tr>
+<tr><td> <code>HTTPThreadSize</code> </td><td> <code>280000</code> </td><td> Stack-size of an HTTP thread for handling connection and processing  </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_HTTPServer" class="absuri">docs</a> </td></tr>
+<tr><td> <b><code>[Striping]</code></b> </td></tr>
+<tr><td> <code>Segment1</code> </td><td> <code>100M, db-seg1-1.db, db-seg1-2.db</code> </td><td> Segment-specification for disk-striping </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Striping" class="absuri">docs</a> </td></tr>
+<tr><td> <code>Segment2</code> </td><td> <code>100M, db-seg2-1.db</code> </td><td> </td><td> </td></tr>
+<tr><td> <b><code>[SPARQL]</code></b> </td></tr>
+<tr><td> <code>ResultSetMaxRows</code> </td><td> <code>100000</code> </td><td> Maximum number of rows in a SPARQL resultset  </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_SPARQL" class="absuri">docs</a> </td></tr>
+<tr><td> <b><code>[Plugins]</code></b> </td></tr>
+<tr><td> <code>LoadPath</code> </td><td> <code>/usr/lib/virtuoso/hosting</code> </td><td> Directory in which to search for plugins </td><td> <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_Plugins" class="absuri">docs</a> </td></tr>
+<tr><td> <code>Load1</code> </td><td> <code>plain, wikiv</code> </td><td> Main ODS-Wiki markup parser </td><td> </td></tr>
+<tr><td> <code>Load2</code> </td><td> <code>plain, mediawiki</code> </td><td> Auxiliary <nop></nop>MediaWiki markup parser module for ODS-Wiki </td><td> </td></tr>
+<tr><td> <code>Load3</code> </td><td> <code>plain, creolewiki</code> </td><td> Auxiliary Creole wiki markup parser module for ODS-Wiki </td><td> </td></tr>
+<tr><td> <code>Load4</code> </td><td> <code>plain, im</code> </td><td> <nop></nop>ImageMagick plugin used by ODS-Gallery </td><td> </td></tr>
+<tr><td> <code>Load5</code> </td><td> <code>plain, wbxml2</code> </td><td> <nop></nop>WbXML plugin used by the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/SyncML" class="wikiword">SyncML</a> package </td><td> </td></tr>
+<tr><td> <code>Load6</code> </td><td> <code>plain, hslookup</code> </td><td> Required for some Sponger Cartridge operations  </td><td> </td></tr>
+<tr><td> <code>Load7</code> </td><td> <code>Hosting, hosting_php.so</code> </td><td> Module for hosting PHP scripts within Virtuoso </td><td> </td></tr>
+<tr><td> <code>;Load8</code> </td><td> <code>Hosting,hosting_perl.so</code> </td><td> Module for hosting Perl scripts within Virtuoso (unsupported at present) </td><td> </td></tr>
+<tr><td> <code>;Load9</code> </td><td> <code>Hosting,hosting_python.so</code> </td><td> Module for hosting Python scripts within Virtuoso (unsupported at present) </td><td> </td></tr>
+<tr><td> <code>;Load10</code> </td><td> <code>Hosting,hosting_ruby.so</code> </td><td> Module for hosting Ruby scripts within Virtuoso (unsupported at present) </td><td> </td></tr>
+<tr><td> <code>;Load11</code> </td><td> <code>msdtc,msdtc_sample</code> </td><td> For Microsoft XA transaction support </td><td> </td></tr>
+</table>
+<p>  <b>Notes</b>:</p>
+<ul><li>Striping is an obvious way to control the amount of disk-space used; by default, striping is off (<code>0</code>), so the <code>[Striping]</code> section does not come into play.
+</li>
+<li>The checkpoint-interval setting is simply the amount of time for which a temporary database will grow before being checkpointed into the main <code>virtuoso.db</code> file, so the choice is scenario-dependent.
+ For a given incoming transaction rate, a short interval will give frequent smaller checkpoints, while specifying a longer interval will make fewer, slower, checkpoints.
+</li>
+<li>The numbers of threads in the database engine as a whole and specifically allocated to the HTTP server will control performance, and each thread will cost a given amount of memory.
+</li>
+<li>Naturally you can disable any or all unused plugins to further reduce the memory footprint; for example, if not running ODS-Wiki, you can remove the <code>wikiv</code>, <code>mediawiki</code>, and <code>creolewiki</code> plugins.</li>
+</ul><p>We have a documentation page on <a href="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdfperfgeneral" class="absuri">tuning Virtuoso for RDF usage</a>.</p>
+<h2><a name="Analysis"></a> Analysis</h2>
+<p>Virtuoso provides the <code>status()</code> command, which may be executed through the SQL interface (e.g., <code>isql-v(1)</code>).</p>
+<p>The resultset from this command is <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#DBSTAT" class="absuri">documented here</a>, but we specifically highlight consideration of the <code>NumberOfBuffers</code> parameter; <code>status()</code> output shows how many buffers the server is actually using, so you can tailor the allocated number accordingly.</p>
+<h2><a name="Default"></a> Default</h2>
+<p>By default, the Debian <code>virtuoso-opensource</code> package enables all possible hosting options except Mono.</p>
+
+<table class="wikitable">
+<tr><td> package <code>.deb</code> </td><td align="center">   58 MB </td></tr>
+<tr><td> server binary, <code>/usr/bin/virtuoso-t</code> </td><td align="center">   8.3 MB </td></tr>
+<tr><td> default database with Conductor installed </td><td align="center">   37 MB </td></tr>
+<tr><td> Virtual memory allocation </td><td align="center">   354 MB </td></tr>
+<tr><td> Resident memory used </td><td align="center">   125 MB </td></tr>
+</table>
+<h2><a name="Embedded / Minimal"></a> Embedded / Minimal</h2>
+<p>The minimum that is required to run Virtuoso is the server executable (<code>virtuoso-t</code> for the Open Source Edition [VOS], or <code>virtuoso-iodbc-t</code> for the Enterprise Edition) compiled with as few options as possible, and the <code>virtuoso.ini</code> file.
+ From there, the first time the server is run against the <code>virtuoso.ini</code>, it will create the empty database (<code>virtuoso.db</code>) with minimal schema.</p>
+<p>The most important parameter to consider when optimizing for size is <code>NumberOfBuffers</code>.</p>
+<p>By applying a few changes to <code>virtuoso.ini</code>, one can quite dramatically reduce the memory footprint:</p>
+<br><pre>[Database]
+FileExtend         = 100                  ; down from 200
+MaxCheckpointRemap = 1000                 ; down from 2000
+
+[TempDatabase]
+MaxCheckpointRemap = 1000                 ; down from 2000
+ 
+[Parameters]
+ServerThreads      = 5                    ; down from 10
+# MaxClientConnections = 5                ; alias for ServerThreads
+CheckpointInterval = 10                   ; down from 60
+NumberOfBuffers    = 100                  ; down from 2000
+MaxDirtyBuffers    = 50                   ; down from 1200
+SchedulerInterval  = 5                    ; down from 10
+FreeTextBatchSize  = 1000                 ; down from 100000
+
+[HTTPServer]
+ServerThreads      = 2                    ; down from 5
+# MaxClientConnections = 2                ; alias for ServerThreads
+KeepAliveTimeout   = 5                    ; down from 10
+HTTPThreadSize     = 10000                ; down from 280000
+ 
+[Client]
+SQL_PREFETCH_ROWS  = 10                   ; down from 100
+SQL_PREFETCH_BYTES = 4096                 ; down from 16000
+ 
+[Replication]
+ServerEnable       = 0                    ; changed from 1
+
+[Zero Config]
+;ServerName         = virtuoso (SAUCE)    ; commented-out
+
+[SPARQL]
+ResultSetMaxRows   = 10000                ; down from 100000
+ 
+[Plugins]
+; ...                                        ; comment-out all plugins
+</pre><p> Result: </p>
+
+<table class="wikitable">
+<tr><td> default empty database with no Conductor installed   </td><td align="center">   12 MB </td></tr>
+<tr><td> Virtual memory allocation   </td><td align="center">   150 MB </td></tr>
+<tr><td> Resident memory used   </td><td align="center">   70 MB </td></tr>
+</table>
+<p>Executing <code>status()</code> shows that 1000 buffers are allocated and only 270 are in use.</p>
+<h3><a name="Comparison with LAMP"></a>Comparison with LAMP</h3>
+<p>On the same machine, we installed Apache 2.x and <nop></nop>MySQL 5.0 server using standard Debian GNU/Linux packages:</p>
+<br><pre>bash$ sudo apt-get install mysql-server apache2
+</pre><p> This is not quite comparing like with like; Virtuoso includes not only HTTP and SQLinterfaces, but also a complete RDF Quad Store, SPARQL processor, free-text indexer, etc.
+ However, out-of-the-box <nop></nop>MySQL and Apache consumptions compare to the above-tuned Virtuoso as follows:</p>
+
+<table class="wikitable">
+<tr><td> </td><td> <b>Apache</b> </td><td> <b>MySQL<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MySQL&parent=VirtConfigScale" class="wikiword">?</a></b> </td><td> <b>Virtuoso</b> </td></tr>
+<tr><td> package <code>*.deb</code>  </td><td align="center">   45.6 MB </td><td align="center">  -  </td><td align="center">   58 MB </td></tr>
+<tr><td> server binary  </td><td align="center">   0.3 MB </td><td align="center">   7 MB </td><td align="center">   8.3 MB </td></tr>
+<tr><td> default empty database  </td><td align="center">  -  </td><td align="center">   21 MB </td><td align="center">   12 MB </td></tr>
+<tr><td> virtual memory allocation  </td><td align="center">   229 MB </td><td align="center">   123 MB </td><td align="center">   350 MB </td></tr>
+<tr><td> resident memory usage  </td><td align="center">   2.8 MB </td><td align="center">   15 MB </td><td align="center">   70 MB </td></tr>
+</table>
+<h2><a name="Enterprise-wide"></a>Enterprise-wide</h2>
+<p>In larger installations, the <code><nop></nop>NumberOfBuffers</code> parameter should be increased, but there is no point in making the process so large it has to swap.
+Therefore we recommend about 60% of memory be allocated to buffers.</p>
+<p>As examples, we consider two instances: our own web-server, <a href="http://www.openlinksw.com/" class="absuri">www.openlinksw.com</a> (running on Debian GNU/Linux), and <a href="http://dbpedia.org/" class="absuri">DBpedia.org</a> (running on Sun Solaris).</p>
+
+<table class="wikitable">
+<tr><td> </td><td align="center"> <b>www</b>   </td><td align="center"> <b>DBpedia</b>   </td></tr>
+<tr><td>Virtual memory allocated </td><td align="center">   2734 MB </td><td align="center">   6257 MB </td></tr>
+<tr><td>Resident memory </td><td align="center">   662 MB (65%) </td><td align="center">   6216 MB (38%) </td></tr>
+<tr><td>Striping </td><td align="center">   0   </td><td align="center">   0   </td></tr>
+<tr><td><code><nop></nop>CheckpointInterval</code> </td><td align="center">   120   </td><td align="center">   60   </td></tr>
+<tr><td><code><nop></nop>NumberOfBuffers</code> </td><td align="center">   20000, <br> 18511 used   </td><td align="center">   100000, <br> 99964 used   </td></tr>
+<tr><td><code><nop></nop>MaxDirtyBuffers</code> </td><td align="center">   8000 </td><td align="center">   40000 </td></tr>
+<tr><td><code><nop></nop>MaxCheckpointRemap</code> </td><td align="center">   16000 </td><td align="center">   80000 </td></tr>
+<tr><td><code><nop></nop>FreeTextBatchSize</code> </td><td align="center">   100000 </td><td align="center">   100000 </td></tr>
+<tr><td><code><nop></nop>ServerThreads</code> (a/k/a <code><nop></nop>MaxClientConnections</code>) </td><td align="center">   10 </td><td align="center">   1000 </td></tr>
+<tr><td>HTTP <code><nop></nop>ServerThreads</code> (a/k/a <code><nop></nop>MaxClientConnections</code>) </td><td align="center">   250 </td><td align="center">   100 </td></tr>
+<tr><td><code><nop></nop>HTTPThreadSize</code> </td><td align="center">   280000 </td><td align="center">   10000000 </td></tr>
+<tr><td>Plugins </td><td align="center">   only <code>wikiv</code>   </td><td align="center">   <code>wikiv</code>, <code>imagemagick</code>, <code>wbxml2</code>   </td></tr>
+<tr><td>SPARQL <code><nop></nop>ResultSetMaxRows</code> </td><td align="center">   1000 </td><td align="center">   1000 </td></tr>
+</table>
+<h2><a name="References"></a>References</h2>
+<ul><li>Virtuoso <a href="http://docs.openlinksw.com/virtuoso/perfdiag.html" class="absuri">performance diagnostics</a> </li>
+<li>Virtuoso <a href="http://docs.openlinksw.com/virtuoso/ptune.html" class="absuri">performance tuning</a></li>
+</ul><p> </p>
+</div></body></html>

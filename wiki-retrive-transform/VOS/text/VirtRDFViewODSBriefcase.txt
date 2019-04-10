@@ -1,0 +1,88 @@
+%META:TOPICPARENT{name="VirtRDFViews"}%
+
+---+++RDF View for ODS Briefcase
+
+<strong>IMPORTANT!</strong> The following code is part of the ODS global VIEW regarding the Briefcase part, it is not a separate VIEW and is strongly recommended NOT to be executed directly. Instead, you should use the code from [[VirtRDFViewODSGlobal][ODS RDF Views Deployment and Demo Scripts]].
+
+<verbatim>
+sparql prefix ods: <http://www.openlinksw.com/virtuoso/ods/>
+
+        # Briefcase
+	create iri class ods:odrive_forum "http://^{URIQADefaultHost}^/dataspace/%U/briefcase/%U"
+		(in uname varchar not null, in inst_name varchar not null)
+		option (returns "http://^{URIQADefaultHost}^/dataspace/%U/briefcase/%U" ) .
+	create iri class ods:odrive_post "http://^{URIQADefaultHost}^%s"
+		(in path varchar not null) option (returns "http://^{URIQADefaultHost}^/DAV/%s") .
+	create iri class ods:odrive_post_text "http://^{URIQADefaultHost}^%s/text"
+		(in path varchar not null) option (returns "http://^{URIQADefaultHost}^/DAV/%s/text") .
+
+</verbatim>
+
+<verbatim>
+sparql
+    prefix sioc: <http://rdfs.org/sioc/ns#>
+    prefix sioct: <http://rdfs.org/sioc/types#>
+    prefix atom: <http://atomowl.org/ontologies/atomrdf#>
+    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    prefix foaf: <http://xmlns.com/foaf/0.1/>
+    prefix dc: <http://purl.org/dc/elements/1.1/>
+    prefix dct: <http://purl.org/dc/terms/>
+    prefix skos: <http://www.w3.org/2004/02/skos/core#>
+    prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+    prefix bm: <http://www.w3.org/2002/01/bookmark#>
+    prefix exif: <http://www.w3.org/2003/12/exif/ns/>
+    prefix ann: <http://www.w3.org/2000/10/annotation-ns#>
+    prefix wikiont: <http://sw.deri.org/2005/04/wikipedia/wikiont.owl#>
+    prefix calendar: <http://www.w3.org/2002/12/cal#>
+    prefix ods: <http://www.openlinksw.com/virtuoso/ods/>
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_ODRIVE_POSTS as odrv_posts
+      where (^{odrv_posts.}^.U_MEMBER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_ODRIVE_TAGS as odrv_tags
+      where (^{odrv_tags.}^.U_OWNER = ^{users.}^.U_NAME)
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+
+            # Briefcase
+	    ods:odrive_post (odrv_posts.RES_FULL_PATH) a foaf:Document ;
+	    dc:title odrv_posts.RES_NAME ;
+	    dct:created odrv_posts.RES_CREATED ;
+	    dct:modified odrv_posts.RES_MODIFIED ;
+	    sioc:content odrv_posts.RES_DESCRIPTION ;
+	    sioc:has_creator ods:user (odrv_posts.U_OWNER) ;
+	    foaf:maker ods:person (odrv_posts.U_OWNER) ;
+	    sioc:has_container ods:odrive_forum (odrv_posts.U_MEMBER, odrv_posts.WAI_NAME) .
+
+	    ods:odrive_forum (odrv_posts.U_MEMBER, odrv_posts.WAI_NAME)
+	    sioc:container_of
+	    ods:odrive_post (odrv_posts.RES_FULL_PATH) .
+
+	    ods:user (odrv_posts.U_OWNER)
+	    sioc:creator_of
+	    ods:odrive_post (odrv_posts.RES_FULL_PATH) .
+
+	    ods:odrive_post (odrv_tags.RES_FULL_PATH)
+	    sioc:topic
+	    ods:tag (odrv_tags.U_OWNER, odrv_tags.TAG) .
+
+	    ods:tag (odrv_tags.U_OWNER, odrv_tags.TAG) a skos:Concept ;
+	    skos:prefLabel odrv_tags.TAG ;
+	    skos:isSubjectOf ods:odrive_post (odrv_tags.RES_FULL_PATH) .
+            # end Briefcase
+            #---
+	  } .
+    } .
+;
+</verbatim>
+CategoryVirtuoso CategoryRDF CategoryBriefcase
+
+
+
+
+
+

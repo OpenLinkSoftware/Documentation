@@ -1,0 +1,36 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="Interrogating attributes of a Virtuoso Server instance via SPARQL"></a> Interrogating attributes of a Virtuoso Server instance via SPARQL</h1>
+<p>Sometimes you need to know the version or other details about the Virtuoso instance you&#39;re running SPARQL queries against, and only have access to the SPARQL interface, possibly through a proxy page that strips out the server version information included on the default <code>/sparql</code> page.</p>
+<p>You can leverage Virtuoso&#39;s built-in-functions, such as <a href="http://docs.openlinksw.com/virtuoso/fn_sys_stat/"><code>sys_stat</code></a>, and the associated <code>bif:</code> SPARQL prefix, to interrogate the server for various details, such as -- </p>
+<br><pre>PREFIX  bif:  &lt;bif:&gt;
+
+SELECT
+  ( bif:sys_stat(&#39;st_dbms_name&#39;)          AS ?name )
+  ( bif:sys_stat(&#39;st_dbms_ver&#39;)           AS ?version )
+  ( bif:sys_stat(&#39;st_build_date&#39;)         AS ?build_date )
+
+##   The following line must be commented for execution on 
+##   builds produced before the switch from `cvs` to `git`;
+##   it only works on versions later than v6.1.5
+
+# ( bif:sys_stat(&#39;git_head&#39;)              AS ?git_head )   
+
+  ( bif:sys_stat(&#39;st_build_thread_model&#39;) AS ?thread )
+  ( bif:sys_stat(&#39;st_build_opsys_id&#39;)     AS ?opsys )
+
+##   The following two lines must be commented for execution 
+##   on VOS; these only work on Enterprise Edition
+
+# ( bif:sys_stat(&#39;st_lic_owner&#39;)          AS ?owner )
+# ( bif:sys_stat(&#39;st_lic_serial_number&#39;)  AS ?serial )
+
+WHERE
+  {  ?s  ?p  ?o  }
+LIMIT 1
+</pre><p>As noted in the SPARQL above, the <code>st_lic_owner</code> and <code>st_lic_serial_number</code> arguments are only valid on the Commercial Edition, and will produce a SPARQL error on the Open Source Edition.
+ Similarly, the <code>git_head</code> argument is only valid on builds produced after source code management was switched from <code>cvs</code> to <code>git</code>, circa v6.1.5, in March, 2012.</p>
+<p> The <a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_name%27%29++++++++++AS+%3Fname+%29%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_ver%27%29+++++++++++AS+%3Fversion+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_date%27%29+++++++++AS+%3Fbuild_date+%29%0D%0A%0D%0A%23%23+The+following+line+must+be+commented+for+execution+on+%0D%0A%23%23+builds+produced+before+the+switch+from+%60cvs%60+to+%60git%60%3B%0D%0A%23%23+it+only+works+on+versions+later+than+v6.1.5%0D%0A++%28+bif%3Asys_stat%28%27git_head%27%29++++++++++++++AS+%3Fgit_head+%29+++%0D%0A%0D%0A++%28+bif%3Asys_stat%28%27st_build_thread_model%27%29+AS+%3Fthread+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_opsys_id%27%29+++++AS+%3Fopsys+%29%0D%0A%0D%0A%23%23+The+following+two+lines+line+must+be+commented+for+execution+%0D%0A%23%23+on+VOS%3B+these+only+work+on+Enterprise+Edition%0D%0A++%28+bif%3Asys_stat%28%27st_lic_owner%27%29++++++++++AS+%3Fowner+%29%0D%0A++%28+bif%3Asys_stat%28%27st_lic_serial_number%27%29++AS+%3Fserial+%29%0D%0A%0D%0AWHERE%0D%0A++%7b++%3Fs++%3Fp++%3Fo++%7d%0D%0ALIMIT+1&format=text%2Fhtml&timeout=30000&debug=on&run=+Run+Query+" class="absuri">query output</a> will resemble the following --</p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=0&col=1">name  </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=1&col=2">version  </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=2&col=3">build_date  </a></th><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=3&col=4">git_head  </a></th><th id="4"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=4&col=5">thread  </a></th><th id="5"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=5&col=6">opsys  </a></th><th id="6"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=6&col=7">owner  </a></th><th id="7"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCheckSvrVersionViaSparql?sort=7&col=8">serial  </a></th></tr><tr><td align="center">  <code>OpenLink Virtuoso  VDB Server</code>      </td><td align="center">      <code>07.20.3228</code>      </td><td align="center">      <code>Apr 10 2018</code>      </td><td align="center">      <code>7913e54</code>      </td><td align="center">      <code>-pthreads</code>      </td><td align="center">      <code>Linux</code>      </td><td align="center">      <code>LOD operated by OpenLink Software</code>      </td><td align="center">      <code>opl-lod</code>      </td></tr></table>
+<p> </p>
+</div></body></html>

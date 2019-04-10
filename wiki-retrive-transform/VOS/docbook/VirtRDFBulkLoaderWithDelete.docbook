@@ -1,0 +1,51 @@
+<docbook><section><title>VirtRDFBulkLoaderWithDelete</title><para> </para>
+<title> Delta-aware bulk loading of datasets into Virtuoso</title> Delta-aware bulk loading of datasets into Virtuoso
+ <bridgehead class="http://www.w3.org/1999/xhtml:h2"> Why</bridgehead>
+<para>High performance bulk-revision of existing data, on a par with simple bulk insertion of similar data, is best achieved by finding the difference (the &quot;delta&quot;) between an existing graph or dataset and the new graph or dataset being loaded, and then applying that differential or &quot;graph delta&quot; to the quad store.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What</bridgehead>
+<para>Given an existing dataset hosted by Virtuoso, identified by a named graph IRI, and one that&#39;s being loaded from N-Quad files in the filesystem, Virtuoso&#39;s bulk load process can automatically determine the differences between the two datasets and quickly apply relevant INSERTs, UPDATEs, and DELETEs to the existing dataset.</para>
+<para>The Virtuoso RDF Bulk Loader is told to use this &quot;graph delta&quot; load process with a special option called <emphasis>with_delete</emphasis>, applied in the <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html">ld_dir()</ulink> or <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir_all.html">ld_dir_all()</ulink> commands.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The with_delete option is available in <itemizedlist mark="bullet" spacing="compact"><listitem>Virtuoso Enterprise Edition Release 6.x, version 06.04.3134 or greater, only in cluster mode </listitem>
+<listitem>Virtuoso Enterprise Edition Release 7.0 and later, in both cluster and single-server mode </listitem>
+<listitem><emphasis><emphasis>Note:</emphasis> with_delete functionality is not available in Virtuoso Open Source Edition (VOS).</emphasis> </listitem>
+</itemizedlist></listitem>
+<listitem>N-Quad datasets where every graph name is specified within the dataset.
+<itemizedlist mark="bullet" spacing="compact"><listitem>Graphs may be in any order.
+ Multiple graphs may be in one file, however all triples from each graph must be together; triples from different graphs cannot be intermingled.
+ (In SQL terms, GROUP BY graphname; no ORDER BY is  necessary.) </listitem>
+<listitem>All triples from any given graph must be in the same file as all other triples from that graph.
+ No graph may have triples in multiple files, else the triples from the last file loaded will comprise the entirety of the updated graph.
+  </listitem>
+</itemizedlist></listitem>
+<listitem>Virtuoso must be allocated at least 200 bytes of RAM per quad in the dataset being loaded.
+ As may be obvious, loading large graphs with this option can have a significant impact on Virtuoso&#39;s memory use. </listitem>
+<listitem>The Virtuoso server must be running with a <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#configsrvstupfiles">default transaction isolation level</ulink> of 2, READ COMMITTED.
+ Ensure that the [Parameters] section of the Virtuoso configuration file (default, virtuoso.ini) includes the following entry, and restart the Virtuoso server.
+<programlisting>DefaultIsolation = 2
+</programlisting></listitem>
+<listitem>The following lock mode settings should be set before using the with_delete option: <programlisting>cl_exec (&#39;__dbf_set (&#39;&#39;lock_escalation_pct&#39;&#39;, 200)&#39;);
+cl_exec (&#39;__dbf_set (&#39;&#39;enable_distinct_key_dup_no_lock&#39;&#39;, 1)&#39;);
+</programlisting></listitem>
+<listitem>The dataset files must not contain multiple graphs which have the same name but contain different triples.
+ Doing so will result in unpredictable triple counts, depending on which dataset file is being loaded on a given thread, which is non-deterministic.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Basic usage</bridgehead>
+<para>Using the <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html">ld_dir()</ulink> or <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir_all.html">ld_dir_all()</ulink> commands as usual, set the target_graph argument to &#39;with_delete&#39; for each dataset file specified in ll_file that is known to require an update/reload.</para>
+<para>For example -- </para>
+<programlisting>ld_dir (&#39;/data8/2848260&#39;, &#39;%.gz&#39;, &#39;with_delete&#39;);
+ld_dir_all (&#39;/data8/&#39;, &#39;%.gz&#39;, &#39;with_delete&#39;);
+</programlisting><para> Once all are set run the rdf_loader_run() or cl_exec(&#39;rdf_ld_srv()&#39;) commands to enable the update/reload to commence.</para>
+<para>As many rdf_loader_run() or cl_exec(&#39;rdf_ld_srv()&#39;) commands can be invoked as threads/cores are available across the machines the Virtuoso cluster is being run on for fast parallel loading of the datasets, as would typically be done for the initial bulk load of the datasets.</para>
+<para>Note that all RDF loader threads can be stopped using the following command at which point all currently running threads will be allowed to complete and then exit: </para>
+<programlisting>rdf_load_stop()
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Diagnostics</bridgehead>
+<para>A diagnostic log of the with_delete activity may be written to a file called g_log.txt on each cluster instance.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>To enable this log, run the following command: <programlisting>cl_exec (&#39;__dbf_set (&#39;&#39;enable_g_replace_log&#39;&#39;,1)&#39;)
+</programlisting></listitem>
+<listitem>To disable this log, run the following command: <programlisting>cl_exec (&#39;__dbf_set (&#39;&#39;enable_g_replace_log&#39;&#39;,0)&#39;)
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtBulkRDFLoader">Virtuoso RDF Bulk Loader</ulink> </listitem>
+</itemizedlist></section></docbook>

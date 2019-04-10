@@ -1,0 +1,122 @@
+<docbook><section><title>VirtuosoOAuthServer</title><para>  </para>
+<title> OAuth server</title> OAuth server
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> General</bridgehead>
+<para>The <ulink url="OAuth">OAuth</ulink> protocol enables web services consumers to access protected resources via an API without requiring users to supply the service credentials to the consumers.
+It&#39;s a generic methodology for unobtrusive, wire protocol level authenticated data access over HTTP.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> API</bridgehead>
+<para>Virtuoso implements the OAuth Core 1.0 specification, and exposes the following API endpoints:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Request token</bridgehead>
+<emphasis>Endpoint:</emphasis> http://server-cname/OAuth/request_token<para> <emphasis>Parameters</emphasis> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>oauth_consumer_key</emphasis> — The Consumer Key.
+</listitem>
+<listitem><emphasis>oauth_signature_method</emphasis> — The signature method the Consumer used to sign the request.
+</listitem>
+<listitem><emphasis>oauth_signature</emphasis> — The signature as defined in Signing Requests (Signing Requests).
+</listitem>
+<listitem><emphasis>oauth_timestamp</emphasis> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</listitem>
+<listitem><emphasis>oauth_nonce</emphasis> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</listitem>
+<listitem><emphasis>oauth_version</emphasis> — OPTIONAL.
+ If present, value MUST be 1.0 .</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Example</bridgehead>
+<emphasis>Request:</emphasis> <programlisting>http://localhost:8890/OAuth/request_token?oauth_version=1.0&amp;oauth_nonce
+=dad4cb071e2169cbcaa051d404ac61a3&amp;oauth_timestamp=1201873644&amp;oauth_cons
+umer_key=f756023be5ff1f20881cf8fe398069f3976b2304&amp;oauth_signature_metho
+d=HMAC-SHA1&amp;oauth_signature=z76k5fQ0msFsQzCmhO%2FJZ329ZUE%3D
+</programlisting><para> <emphasis><emphasis>Note:</emphasis> all long lines in example texts are split, i.e., the GET request is single line.</emphasis></para>
+<emphasis>Response:</emphasis> <programlisting>oauth_token=b4e22daa117b0bebf60ab6ba6e401edc7addd78c&amp;oauth_token_secret
+=4de6e3ab17553a0a385ebf6a3b4dd30f
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Authorization</bridgehead>
+<emphasis>Endpoint:</emphasis> http://server-cname/OAuth/authorize<para> <emphasis>Parameters:</emphasis> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>oauth_token</emphasis> — The Request Token obtained in the previous step.
+ The current implementation of the Service Provider declare this parameter as REQUIRED.
+</listitem>
+<listitem><emphasis>oauth_callback</emphasis> — OPTIONAL.
+ The Consumer MAY specify a URL the Service Provider will use to redirect the User back to the Consumer when Obtaining User Authorization (Obtaining User Authorization) is complete.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Example</bridgehead>
+<emphasis>Request:</emphasis> <programlisting>http://localhost:8890/OAuth/authorize?oauth_token=b4e22daa117b0bebf60ab
+6ba6e401edc7addd78c&amp;oauth_callback=http%3A%2F%2Flocalhost%3A8890%2Foaut
+h%2Fexample%2Fclient.php%3Fkey%3Df756023be5ff1f20881cf8fe398069f3976b23
+04%26secret%3Dcc249bfb732039d8ecba9e4f94fdead7%26token%3Db4e22daa117b0b
+ebf60ab6ba6e401edc7addd78c%26token_secret%3D4de6e3ab17553a0a385ebf6a3b4
+dd30f%26endpoint%3Dhttp%253A%252F%252Flocalhost%253A8890%252FOAuth%252F
+authorize
+</programlisting><para> The User will be asked via web page to accept or decline the token.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Access token</bridgehead>
+<emphasis>Endpoint:</emphasis> http://server-cname/OAuth/access_token<para> <emphasis>Parameters:</emphasis> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>oauth_consumer_key</emphasis> — The Consumer Key.
+</listitem>
+<listitem><emphasis>oauth_token</emphasis> — The Request Token obtained previously.
+</listitem>
+<listitem><emphasis>oauth_signature_method</emphasis> — The signature method the Consumer used to sign the request.
+</listitem>
+<listitem><emphasis>oauth_signature</emphasis> — The signature as defined in Signing Requests (Signing Requests).
+</listitem>
+<listitem><emphasis>oauth_timestamp</emphasis> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</listitem>
+<listitem><emphasis>oauth_nonce</emphasis> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</listitem>
+<listitem><emphasis>oauth_version</emphasis> — OPTIONAL.
+ If present, value MUST be 1.0 .</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Example</bridgehead>
+<emphasis>Request:</emphasis> <programlisting>http://localhost:8890/OAuth/access_token?oauth_version=1.0&amp;oauth_nonce=
+8ad75091a66bdd741472be42149c828e&amp;oauth_timestamp=1201873800&amp;oauth_consu
+mer_key=f756023be5ff1f20881cf8fe398069f3976b2304&amp;oauth_token=b4e22daa11
+7b0bebf60ab6ba6e401edc7addd78c&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_s
+ignature=tCxy0Lod4%2Bp%2FCBPV7Ph7RrsHXe4%3D
+</programlisting><para> <emphasis>Response:</emphasis> </para>
+<programlisting>oauth_token=8c03b3da93480ca4728cc1194d6d03962f3bb5bb&amp;oauth_token_secret
+=854fd29c00adcedff4fbeaeb96584911
+</programlisting><para> In addition to the endpoints, it defines an API for PL applications to check authentication:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Authentication verification</bridgehead>
+<programlisting>OAUTH.DBA.check_authentication (in params any, in lines any)
+</programlisting><para> <emphasis>Parameters:</emphasis> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>params</emphasis> — an array of strings representing the HTTP parameters </listitem>
+<listitem><emphasis>lines</emphasis> — an array of HTTP request headers</listitem>
+</itemizedlist><emphasis>Result:</emphasis> <itemizedlist mark="bullet" spacing="compact"><listitem>on success, it returns integer 1.
+</listitem>
+<listitem>on failure, it signals an SQL error.</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Sample code</bridgehead>
+<para>A sample service (oauth.vsp): </para>
+<programlisting>&lt;html&gt;
+&lt;body&gt;
+&lt;?vsp
+  OAUTH..check_authentication (params, lines);
+?&gt;
+An OAuth testing page
+&lt;/body&gt;
+&lt;/html&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Sample request</bridgehead>
+<programlisting>http://localhost:8890/admin/oauth.vsp?oauth_version=1.0&amp;oauth_nonce=d57
+640869b994b2d51bf9800229c4997&amp;oauth_timestamp=1201873935&amp;oauth_consumer
+_key=f756023be5ff1f20881cf8fe398069f3976b2304&amp;oauth_token=8c03b3da93480
+ca4728cc1194d6d03962f3bb5bb&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_sign
+ature=X3K4lr9bJVz5YLnnyJDkykQZivY%3D
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Sample response</bridgehead>
+<programlisting>&lt;html&gt;
+&lt;body&gt;
+An OAuth testing page
+&lt;/body&gt;
+&lt;/html&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="OAuth">OpenLink&#39;s explanation of OAuth</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthControllers">Using OAuth with ODS</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquity">ODS Ubiquity Commands</ulink> </listitem>
+<listitem><ulink url="VirtOAuth">Virtuoso OAuth Implementation</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsControllers">ODS Controllers</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtODSOAuthQA">Testing Virtuoso OAuth with 3rd Party OAuth Clients</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquityTutorialsOAuth">OAuth Ubiquity Tutorial</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthTestTool">Virtuoso OAuth Test Tool for ODS Controllers</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">Virtuoso SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquityTutorials">ODS Ubiquity Tutorials</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthExamples">OAuth Applications Authentication examples</ulink> </listitem>
+<listitem><ulink url="http://oauth.net/core/1.0/">OAuth API</ulink> </listitem>
+<listitem><ulink url="VirtAuthServerUI">Virtuoso Authentication Server UI</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryODS">CategoryODS</ulink> <ulink url="CategoryOAuth">CategoryOAuth</ulink> <ulink url="CategoryVOS">CategoryVOS</ulink> <ulink url="CategoryDocumentation">CategoryDocumentation</ulink> </para>
+</section></docbook>

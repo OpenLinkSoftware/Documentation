@@ -1,0 +1,178 @@
+<docbook><section><title>VirtGraphProtocolCURLExamples</title><para> </para>
+<title>SPARQL 1.1.
+ Graph Store HTTP Protocol cURL Examples Collection</title>SPARQL 1.1.
+ Graph Store HTTP Protocol cURL Examples Collection
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ How to use the SPARQL Graph Store protocol to Create, Read, Update, and Delete RDF documents on a compliant server.<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+<para>This protocol enables creation of local RDF documents that are deposited to remote servers, over the HTTP protocol.
+ It is important to note that the payload can take any of the following forms:</para>
+<orderedlist spacing="compact"><listitem>RDF content constructed using any RDF concrete syntax (or notation e.g., N-Triples, Turtle, JSON-LD, RDF/XML) -- via PUT method </listitem>
+<listitem>RDF content constructed using SPARQL 1.1 Insert, Delete -- via POST method </listitem>
+<listitem>RDF content constructed using SPARQL 1.1 Update -- via POST or PATCH methods.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para>Here are the steps for creating RDF documents on a remote server, using this protocol, via curl and the /sparql-graph-crud endpoint&#39;s HTML form:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Prerequisites</bridgehead>
+<para>Assume the following Raw Data Representation in Turtle that we are going to use in the examples from below: </para>
+<programlisting>@prefix:     &lt;http://example.org/book/&gt; .
+@prefix ns:  &lt;http://example.org/ns#&gt; .
+
+:book1  &lt;http://purl.org/dc/elements/1.1/title&gt;     &quot;SPARQL Tutorial&quot; .
+:book1  ns:price     42 .
+:book1  ns:discount  0.2 .
+
+:book2  &lt;http://purl.org/dc/elements/1.1/title&gt;     &quot;The Semantic Web&quot; .
+:book2  ns:price     23 .
+:book2  ns:discount  0.25 .
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> cURL Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> HTTP PUT Example</bridgehead>
+<orderedlist spacing="compact"><listitem>Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:put&gt;: <programlisting>curl --digest --user dba:dba --verbose --url &quot;http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:put&quot; -T books.ttl 
+
+&gt; PUT /sparql-graph-crud-auth?graph-uri=urn:example:put HTTP/1.1
+&gt; Authorization: Digest username=&quot;dba&quot;, realm=&quot;SPARQL&quot;, nonce=&quot;6e1df3edb51389debbe9648a9edd9baa&quot;, uri=&quot;/sparql-graph-crud-auth?graph-uri=urn:example:i
+nsert&quot;, cnonce=&quot;ICAgICAgICAgICAgICAgICAgICAgICAgICA5OTcyOTc=&quot;, nc=00000001, qop=auth, response=&quot;83de54bda064de2d59bdd5845eac4f8c&quot;, opaque=&quot;5ebe2294ecd
+0e0f08eab7690d2a6ee69&quot;, algorithm=&quot;MD5&quot;
+&gt; User-Agent: curl/7.29.0
+&gt; Host: example.com
+&gt; Accept: */*
+&gt; Content-Length: 337
+&gt; Expect: 100-continue
+
+&gt; HTTP/1.1 100 Continue
+&gt; We are completely uploaded and fine
+&gt; HTTP/1.1 201 Created
+&gt; Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+&gt; Connection: Keep-Alive
+&gt; Content-Type: text/html; charset=UTF-8
+&gt; Date: Tue, 30 Jul 2013 08:19:52 GMT
+&gt; Accept-Ranges: bytes
+&gt; Content-Length: 0
+</programlisting></listitem>
+<listitem>Query the graph data: <programlisting>SELECT * 
+FROM &lt;urn:graph:update:test:put&gt; 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> HTTP GET Example</bridgehead>
+<orderedlist spacing="compact"><listitem>Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:get&amp;gt: <programlisting>curl --digest --user dba:dba --verbose --url &quot;http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:get&quot; -T books.ttl 
+</programlisting></listitem>
+<listitem>Query the graph data: <programlisting>curl --verbose --url &quot;http://example.com/sparql-graph-crud?graph-uri=urn:graph:update:test:get&quot;
+
+&gt; GET /sparql-graph-crud?graph-uri=urn:graph:update:test:get HTTP/1.1
+&gt; User-Agent: curl/7.29.0
+&gt; Host: example.com
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+&lt; Connection: Keep-Alive
+&lt; Date: Tue, 30 Jul 2013 09:09:18 GMT
+&lt; Accept-Ranges: bytes
+&lt; Content-Type: text/turtle; charset=UTF-8
+&lt; Content-Length: 291
+&lt;
+@prefix ns0:    &lt;http://example.org/ns#&gt; .
+@prefix ns1:    &lt;http://example.org/book/&gt; .
+ns1:book1       ns0:price       42 ;
+                ns0:discount    0.2 .
+@prefix dc:     &lt;http://purl.org/dc/elements/1.1/&gt; .
+ns1:book1       dc:title        &quot;SPARQL Tutorial&quot; .
+ns1:book2       ns0:price       23 ;
+                ns0:discount    0.25 ;
+                dc:title        &quot;The Semantic Web&quot; . 
+</programlisting></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> HTTP DELETE Example</bridgehead>
+<orderedlist spacing="compact"><listitem>Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:delete&amp;gt: <programlisting>curl --digest --user dba:dba --verbose --url &quot;http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:delete&quot; -T books.ttl 
+</programlisting></listitem>
+<listitem>Delete the graph data: <programlisting>curl --digest --user dba:dba --verbose --url &quot;http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:delete&quot; -X DELETE
+
+* Server auth using Digest with user &#39;dba&#39;
+&gt; DELETE /sparql-graph-crud-auth?graph-uri=urn:graph:update:test:delete HTTP/1.1
+&gt; User-Agent: curl/7.29.0
+&gt; Host: example.com
+&gt; Accept: */*
+
+&lt; HTTP/1.1 200 OK
+&lt; Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+&lt; Connection: Keep-Alive
+&lt; Content-Type: text/html; charset=UTF-8
+&lt; Date: Tue, 30 Jul 2013 09:13:52 GMT
+&lt; Accept-Ranges: bytes
+&lt; Content-Length: 0
+</programlisting></listitem>
+<listitem>Query the graph to ensure there are no triples after the deletion: <programlisting>curl --verbose --url &quot;http://example.com/sparql-graph-crud?graph-uri=urn:graph:update:test:delete&quot;
+
+&gt; GET /sparql-graph-crud?graph-uri=urn:graph:update:test:delete HTTP/1.1
+&gt; User-Agent: curl/7.29.0
+&gt; Host: example.com
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 404 Not Found
+&lt; Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+&lt; Connection: Keep-Alive
+&lt; Content-Type: text/html; charset=UTF-8
+&lt; Date: Tue, 30 Jul 2013 09:17:38 GMT
+&lt; Accept-Ranges: bytes
+&lt; Content-Length: 0
+</programlisting></listitem>
+<listitem>Alternatively you can query the graph data with the following SPARQL Query: <programlisting>SELECT * 
+FROM &lt;urn:graph:update:test:delete&gt; 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</programlisting></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> HTTP POST Example</bridgehead>
+<orderedlist spacing="compact"><listitem>Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:post&amp;gt: <programlisting>curl --digest --user dba:dba --verbose --url &quot;http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:post&quot; -X POST -T books.ttl
+
+&gt; POST /sparql-graph-crud-auth?graph-uri=urn:graph:update:test:post HTTP/1.1
+&gt; Authorization: Digest username=&quot;dba&quot;, realm=&quot;SPARQL&quot;, nonce=&quot;5ea29244cf548f6acd927573fc4bace0&quot;, uri=&quot;/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:post&quot;, cnonce=&quot;ICAgICAgICAgICAgICAgICAgICAgICAgICAxODgwNjY=&quot;, nc=00000001, qop=auth, response=&quot;cd5fcd139247a4023441598945ba024b&quot;, opaque=&quot;5ebe2294ecd0e0f08eab7690d2a6ee69&quot;, algorithm=&quot;MD5&quot;
+&gt; User-Agent: curl/7.29.0
+&gt; Host: example.com
+
+&lt; HTTP/1.1 201 Created
+&lt; Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+&lt; Connection: Keep-Alive
+&lt; Content-Type: text/html; charset=UTF-8
+&lt; Date: Tue, 30 Jul 2013 09:39:20 GMT
+&lt; Accept-Ranges: bytes
+</programlisting></listitem>
+<listitem>Query the graph data: <programlisting>curl --verbose --url &quot;http://example.com/sparql-graph-crud?graph-uri=urn:graph:update:test:post&quot;
+&gt; GET /sparql-graph-crud?graph-uri=urn:graph:update:test:post HTTP/1.1
+&gt; User-Agent: curl/7.29.0
+&gt; Host: localhost:8890
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+&lt; Connection: Keep-Alive
+&lt; Date: Tue, 30 Jul 2013 09:46:12 GMT
+&lt; Accept-Ranges: bytes
+&lt; Content-Type: text/turtle; charset=UTF-8
+&lt; Content-Length: 291
+&lt;
+@prefix ns0:    &lt;http://example.org/ns#&gt; .
+@prefix ns1:    &lt;http://example.org/book/&gt; .
+...
+</programlisting></listitem>
+<listitem>Alternatively you can query the graph data with the following SPARQL Query: <programlisting>SELECT * 
+FROM &lt;urn:graph:update:test:post&gt; 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321/">SPARQL 1.1 Graph Store HTTP Protocol Specification</ulink> </listitem>
+<listitem><ulink url="VirtGraphUpdateProtocol">Virtuoso SPARQL 1.1 Graph Store HTTP Protocol Support</ulink> </listitem>
+<listitem><ulink url="VirtGraphUpdateProtocolUI">sparql-graph-crud-auth Endpoint UI Usage Example</ulink> </listitem>
+<listitem><ulink url="VirtLDP">Using Virtuoso as LDP Client and Server Guide</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqloauthendpointauth">Virtuoso SPARQL Authentication</ulink></listitem>
+</itemizedlist></section></docbook>

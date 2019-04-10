@@ -1,0 +1,76 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtRDFViews"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtRDFViews"}%--><h3><a name="RDF View for ODS Briefcase"></a>RDF View for ODS Briefcase</h3>
+<strong>IMPORTANT!</strong> The following code is part of the ODS global VIEW regarding the Briefcase part, it is not a separate VIEW and is strongly recommended NOT to be executed directly.
+ Instead, you should use the code from <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFViewODSGlobal" class="wikiword">ODS RDF Views Deployment and Demo Scripts</a>.<br><pre>sparql prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+        # Briefcase
+	create iri class ods:odrive_forum &quot;http://^{URIQADefaultHost}^/dataspace/%U/briefcase/%U&quot;
+		(in uname varchar not null, in inst_name varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/briefcase/%U&quot; ) .
+	create iri class ods:odrive_post &quot;http://^{URIQADefaultHost}^%s&quot;
+		(in path varchar not null) option (returns &quot;http://^{URIQADefaultHost}^/DAV/%s&quot;) .
+	create iri class ods:odrive_post_text &quot;http://^{URIQADefaultHost}^%s/text&quot;
+		(in path varchar not null) option (returns &quot;http://^{URIQADefaultHost}^/DAV/%s/text&quot;) .
+
+</pre><p> </p>
+<br><pre>sparql
+    prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+    prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+    prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+    prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+    prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+    prefix dct: &lt;http://purl.org/dc/terms/&gt;
+    prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+    prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+    prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+    prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+    prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+    prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+    prefix calendar: &lt;http://www.w3.org/2002/12/cal#&gt;
+    prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_ODRIVE_POSTS as odrv_posts
+      where (^{odrv_posts.}^.U_MEMBER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_ODRIVE_TAGS as odrv_tags
+      where (^{odrv_tags.}^.U_OWNER = ^{users.}^.U_NAME)
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+
+            # Briefcase
+	    ods:odrive_post (odrv_posts.RES_FULL_PATH) a foaf:Document ;
+	    dc:title odrv_posts.RES_NAME ;
+	    dct:created odrv_posts.RES_CREATED ;
+	    dct:modified odrv_posts.RES_MODIFIED ;
+	    sioc:content odrv_posts.RES_DESCRIPTION ;
+	    sioc:has_creator ods:user (odrv_posts.U_OWNER) ;
+	    foaf:maker ods:person (odrv_posts.U_OWNER) ;
+	    sioc:has_container ods:odrive_forum (odrv_posts.U_MEMBER, odrv_posts.WAI_NAME) .
+
+	    ods:odrive_forum (odrv_posts.U_MEMBER, odrv_posts.WAI_NAME)
+	    sioc:container_of
+	    ods:odrive_post (odrv_posts.RES_FULL_PATH) .
+
+	    ods:user (odrv_posts.U_OWNER)
+	    sioc:creator_of
+	    ods:odrive_post (odrv_posts.RES_FULL_PATH) .
+
+	    ods:odrive_post (odrv_tags.RES_FULL_PATH)
+	    sioc:topic
+	    ods:tag (odrv_tags.U_OWNER, odrv_tags.TAG) .
+
+	    ods:tag (odrv_tags.U_OWNER, odrv_tags.TAG) a skos:Concept ;
+	    skos:prefLabel odrv_tags.TAG ;
+	    skos:isSubjectOf ods:odrive_post (odrv_tags.RES_FULL_PATH) .
+            # end Briefcase
+            #---
+	  } .
+    } .
+;
+</pre><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryBriefcase" class="wikiword">CategoryBriefcase</a></p>
+</div></body></html>

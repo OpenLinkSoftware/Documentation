@@ -1,0 +1,45 @@
+<docbook><section><title>VirtTipsAndTricksFedOptionClauseSupport</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">How to handle SPARQL-FED queries for SPARQL endpoints with no OPTION() clause supported?</bridgehead>
+<para>Suppose the following sample scenario:</para>
+<orderedlist spacing="compact"><listitem>Assume the following SPARQL-FED query: <programlisting>PREFIX wp:         &lt;http://vocabularies.wikipathways.org/wp#&gt; 
+PREFIX atlasterms: &lt;http://rdf.ebi.ac.uk/terms/atlas/&gt; 
+PREFIX efo:        &lt;http://www.ebi.ac.uk/efo/&gt; 
+
+SELECT DISTINCT ?wpTitle ?dbXref ?expressionValue 
+WHERE 
+  {
+    { 
+      GRAPH &lt;http://wikipathways&gt;
+        {
+          ?pwElement dcterms:isPartOf ?wpPathway .
+          ?wpPathway dc:identifier &lt;http://identifiers.org/wikipathways/WP455&gt; .
+          ?wpPathway dc:title ?wpTitle .
+          ?pwElement wp:bdbEnsembl ?dbXref .
+        } 
+      SERVICE &lt;https://www.ebi.ac.uk/fgpt/atlasrdf/sparql&gt; 
+       {
+        ?value atlasterms:hasFactorValue ?factor . 
+        ?value atlasterms:isMeasurementOf ?probe . 
+        ?value atlasterms:pValue ?pvalue . 
+        ?value rdfs:label ?expressionValue . 
+        ?probe atlasterms:dbXref ?dbXref .
+        ?disFactor rdfs:subClassOf+ efo:EFO_0000408 .
+        ?disease rdf:type ?disFactor .
+        ?disFactor rdfs:label ?label .
+    }
+  }
+}
+</programlisting></listitem>
+<listitem>Execute the query from Virtuoso sparql endpoint </listitem>
+<listitem>As result you should get the following error: <programlisting>Virtuoso 37000 Error SP031: SPARQL compiler: 
+SERVICE &lt;https://www.ebi.ac.uk/fgpt/atlasrdf/sparql&gt; at line 18 does not 
+support OPTION (...) clause for triples so SPARQL query can not be composed
+</programlisting></listitem>
+</orderedlist><para>The error message means that the <emphasis> <ulink url="https://www.ebi.ac.uk/fgpt/atlasrdf/sparql">https://www.ebi.ac.uk/fgpt/atlasrdf/sparql</ulink> </emphasis>  sparql endpoint does not support OPTION clause.</para>
+<para>Basically, one should be able to use the following command to interrogate a target SPARQL endpoint (if initial SPARQL-FED fails): </para>
+<programlisting>SPARQL
+LOAD SERVICE  &lt;{SPARQL-END-POINT-URL}&gt; DATA
+</programlisting><para> So in our example it would be: </para>
+<programlisting>LOAD SERVICE  &lt;https://www.ebi.ac.uk/fgpt/atlasrdf/sparql&gt; DATA ;
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksDiscoverSPARQFedCapabilities">How to discover the capabilities of a SPARQL endpoint en route to enhancing SPARQL-FED usage from Virtuoso instances?</ulink> </listitem>
+</itemizedlist></section></docbook>

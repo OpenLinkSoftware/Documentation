@@ -1,0 +1,70 @@
+<html><body><div class="topic-text"><br><pre>import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.RDFNode;
+
+import virtuoso.jena.driver.*;
+
+public class VirtuosoSPARQLExample8 {
+
+	/**
+	 * Executes a SPARQL query against a virtuoso url and prints results.
+	 */
+	public static void main(String[] args) {
+
+		String url;
+		if(args.length == 0)
+		    url = &quot;jdbc:virtuoso://localhost:1111&quot;;
+		else
+		    url = args[0];
+
+/*			STEP 1			*/
+		VirtGraph set = new VirtGraph (url, &quot;dba&quot;, &quot;dba&quot;);
+
+/*			STEP 2			*/
+System.out.println(&quot;\nexecute: CLEAR GRAPH &lt;http://test1&gt;&quot;);
+                String str = &quot;CLEAR GRAPH &lt;http://test1&gt;&quot;;
+                VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(str, set);
+                vur.exec();                  
+
+System.out.println(&quot;\nexecute: INSERT INTO GRAPH &lt;http://test1&gt; { &lt;aa&gt; &lt;bb&gt; &#39;cc&#39; . &lt;aa1&gt; &lt;bb1&gt; 123. }&quot;);
+                str = &quot;INSERT INTO GRAPH &lt;http://test1&gt; { &lt;aa&gt; &lt;bb&gt; &#39;cc&#39; . &lt;aa1&gt; &lt;bb1&gt; 123. }&quot;;
+                vur = VirtuosoUpdateFactory.create(str, set);
+                vur.exec();                  
+
+/*			STEP 3			*/
+/*		Select all data in virtuoso	*/
+System.out.println(&quot;\nexecute: SELECT * FROM &lt;http://test1&gt; WHERE { ?s ?p ?o }&quot;);
+		Query sparql = QueryFactory.create(&quot;SELECT * FROM &lt;http://test1&gt; WHERE { ?s ?p ?o }&quot;);
+
+/*			STEP 4			*/
+		QueryExecution vqe = VirtuosoQueryExecutionFactory.create (sparql, set);
+
+		ResultSet results = vqe.execSelect();
+		while (results.hasNext()) {
+			QuerySolution rs = results.nextSolution();
+		    RDFNode s = rs.get(&quot;s&quot;);
+		    RDFNode p = rs.get(&quot;p&quot;);
+		    RDFNode o = rs.get(&quot;o&quot;);
+		    System.out.println(&quot; { &quot; + s + &quot; &quot; + p + &quot; &quot; + o + &quot; . }&quot;);
+		}
+
+
+System.out.println(&quot;\nexecute: DELETE FROM GRAPH &lt;http://test1&gt; { &lt;aa&gt; &lt;bb&gt; &#39;cc&#39; }&quot;);
+                str = &quot;DELETE FROM GRAPH &lt;http://test1&gt; { &lt;aa&gt; &lt;bb&gt; &#39;cc&#39; }&quot;;
+                vur = VirtuosoUpdateFactory.create(str, set);
+                vur.exec();                  
+
+System.out.println(&quot;\nexecute: SELECT * FROM &lt;http://test1&gt; WHERE { ?s ?p ?o }&quot;);
+		vqe = VirtuosoQueryExecutionFactory.create (sparql, set);
+                results = vqe.execSelect();
+		while (results.hasNext()) {
+			QuerySolution rs = results.nextSolution();
+		    RDFNode s = rs.get(&quot;s&quot;);
+		    RDFNode p = rs.get(&quot;p&quot;);
+		    RDFNode o = rs.get(&quot;o&quot;);
+		    System.out.println(&quot; { &quot; + s + &quot; &quot; + p + &quot; &quot; + o + &quot; . }&quot;);
+		}
+
+	
+	}
+}
+</pre></div></body></html>

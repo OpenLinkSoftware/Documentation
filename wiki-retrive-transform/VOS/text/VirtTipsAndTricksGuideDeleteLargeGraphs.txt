@@ -1,0 +1,30 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+--+ How can I delete graphs containing large numbers of triples from the Virtuoso Quad Store?
+
+By default, triple deletion is performed as part of a transaction, which is stored in memory until the operation is completed and committed to the database. During typical server operation, deleting one or more graphs containing a large number of triples (generally millions or more) can consume available memory to the point where the operation <i>cannot</i> be completed, and thus the graph(s) cannot be deleted.
+
+Such large graphs can be cleared by changing the transaction log mode to <code>autocommit</code> on each operation, deleting the graph(s) or triples. This is easily done using the Virtuoso <code>[[http://docs.openlinksw.com/virtuoso/fn_log_enable.html][log_enable]]</code> function, with the settings <code>log_enable(3,1)</code>. 
+
+This function may be called on its own, prior to the delete operation, via iSQL (either command-line or the Conductor variant), as shown:
+<verbatim>
+log_enable(3,1);
+SPARQL CLEAR GRAPH  <graph-name>; 
+</verbatim>
+
+<code>log_enable()</code> may also be called as a pragma specified in a SPARUL query:
+<verbatim>
+SPARQL DEFINE sql:log-enable 3 
+CLEAR GRAPH  <graph-name>; 
+</verbatim>
+
+Triples can also be deleted directly from the <code>RDF_QUAD</code> table via SQL, but note that this method will not remove any free-text index data that might be associated with the graph, which <code>CLEAR GRAPH ...</code> would do automatically. The SQL operation would look something like this:
+<verbatim>
+log_enable(3,1);
+DELETE FROM rdf_quad WHERE g = iri_to_id ('http://mygraph.org');
+</verbatim>
+
+---++ Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Guide]]
+   * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparul][Virtuoso SPARUL Update Language For RDF Graphs]]

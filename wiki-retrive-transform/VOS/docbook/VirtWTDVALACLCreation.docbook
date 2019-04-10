@@ -1,0 +1,757 @@
+<docbook><section><title>VirtWTDVALACLCreation</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> <ulink url="WebID">WebID</ulink>+TLS+Delegation VAL ACL Creation</bridgehead>
+<para>The VAL ACLs to be applied to the Virtuoso server instance allowing  SPARQL query access rights to specified named graphs against the Default(HTTP) &amp; SQL Realms, can now be created and loaded into the Virtuoso server.
+ The following sample script file allows SPARQL query access rights via the HTTP &amp; SQL interfaces.
+ See the online documentation for more details on <ulink url="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ValQuickStartGuide">VAL ACL configuration</ulink>.
+ Note the references to {URIQA-DefaultHost-INI-file-setting} in the script needs to be set to the same value as the URIQA DefaultHost setting in the INI (virtuoso.ini) file.
+</para>
+<programlisting>C:\Program Files\OpenLink Software\Virtuso 7.2\database&gt; type loadacl.sql
+
+-- Goal:
+
+-- Restrict access to a specific named graph. In this case you have a named
+-- graph IRI derived from each turtle document url in your RDF dump.
+
+-- ACL Rules Declaration Script run via Virtuosos iSQL interface:
+
+-- Make Public Graph Private by adding it to Private Named Graph Group
+
+DB.DBA.RDF_GRAPH_GROUP_INS
+(&#39;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&#39;,&#39;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&#39;) ;
+
+DB.DBA.RDF_GRAPH_GROUP_INS
+(&#39;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&#39;,&#39;OpenPermID-bulk-industry-20151111_095806.ttl.gz&#39;) ;
+
+
+-- Conditional Group Description HTTP Realm
+
+-- Cleanup 
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+DELETE
+{
+  &lt;#groupBasicNetID&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#groupBasicNetID&gt; ?p ?o .
+}
+;
+
+-- Conditional Group Definition
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+INSERT 
+{
+  &lt;#groupBasicNetID&gt; 
+    a &lt;http://www.openlinksw.com/ontology/acl#ConditionalGroup&gt; ;
+    &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Identities Denoted using a NetID based Identifier&quot; ;
+    &lt;http://www.openlinksw.com/ontology/acl#hasCondition&gt; [
+      a &lt;http://www.openlinksw.com/ontology/acl#GroupCondition&gt;, 
+	&lt;http://www.openlinksw.com/ontology/acl#GenericCondition&gt; ;
+      &lt;http://www.openlinksw.com/ontology/acl#hasCriteria&gt; &lt;http://www.openlinksw.com/ontology/acl#NetID&gt; ;
+      &lt;http://www.openlinksw.com/ontology/acl#hasComparator&gt; &lt;http://www.openlinksw.com/ontology/acl#IsNotNull&gt; ;
+      &lt;http://www.openlinksw.com/ontology/acl#hasValue&gt; 1
+    ] .
+}
+;
+
+-- Clear ACL Cache
+
+VAL.DBA.clear_graph_acl_cache() ;
+		
+-- Generic Default Realm (HTTP) Access to SPARQL with Sponger enabled. 
+
+-- Cleanup
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+DELETE 
+{
+  &lt;#NetIDSpongerAccessRule1&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#NetIDSpongerAccessRule1&gt; ?p ?o .
+}
+;
+
+-- ACL Definition 
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+INSERT
+{
+  &lt;#NetIDSpongerAccessRule1&gt;  
+    a acl:Authorization ;
+    rdfs:label &quot;Read &amp; Sponger Access Authorization for NetIDs&quot; ;
+    rdfs:comment &quot;&quot;&quot;This ACL rule grants Sponger access to any identity denoted by a URI where identity claims 
+		    are de-referenced and then verified using a variety of authentication protocols e.g., HTTP Digest, TLS basic,
+		    OAuth, WebID-TLS, OpenID, or Mozilla Persona
+		 &quot;&quot;&quot; ; 
+    foaf:maker &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ;	 
+    acl:accessTo &lt;urn:virtuoso:access:sparql&gt; ;
+    oplacl:hasAccessMode oplacl:Read, oplacl:Sponge ;
+    acl:agent &lt;#groupBasicNetID&gt; ;
+    oplacl:hasRealm oplacl:DefaultRealm ;
+    oplacl:hasScope  oplacl:Query .
+}
+;
+	
+-- Declare DeaultRealm (HTTP) ACL
+-- Cleanup 
+
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+DELETE
+{
+  &lt;#HttpTLSPrivateNamedGraphRule1&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#HttpTLSPrivateNamedGraphRule1&gt; ?p ?o .
+}
+;
+
+-- ACL Definition 
+-- Protection of Private Named Graph identified by IRI: &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; 
+  
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+INSERT
+{
+  &lt;#HttpTLSPrivateNamedGraphRule1&gt;  
+    a  acl:Authorization ;
+    rdfs:label &quot;Private Named Graph ACL (HTTP Realm) for Named Graph Identified by IRI: &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;&quot; ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    oplacl:hasAccessMode  oplacl:Read ;
+    acl:accessTo &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; ;
+    acl:agent &lt;#groupBasicNetID&gt; ;
+    oplacl:hasScope  oplacl:PrivateGraphs ;
+    oplacl:hasRealm  oplacl:DefaultRealm .
+}
+;
+
+-- Cleanup 
+
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+DELETE
+{
+  &lt;#HttpTLSPrivateNamedGraphRule2&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#HttpTLSPrivateNamedGraphRule2&gt; ?p ?o .
+}
+;
+
+-- ACL Definition 
+-- Protection of Private Named Graph identified by IRI: &lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt; 
+
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+INSERT
+{
+  &lt;#HttpTLSPrivateNamedGraphRule2&gt; 
+    a  acl:Authorization ;
+    rdfs:label &quot;Private Named Graph ACL (HTTP Realm) for Named Graph Identified by IRI: &lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt;&quot; ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    oplacl:hasAccessMode oplacl:Read ;
+    acl:accessTo &lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt; ;
+    acl:agent 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; ;
+    oplacl:hasScope oplacl:PrivateGraphs ;
+    oplacl:hasRealm oplacl:DefaultRealm .
+}
+;
+	
+--- End of Default (HTTP) Realm ACLs for Protected Named Graphs --- 
+	
+	
+---- Start of SQLRealm ACLs ----
+
+-- Static Group Description
+
+-- Cleanup 
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#SQLTLSstaticGroup&gt; ?p ?o
+}
+WHERE
+{
+  &lt;#SQLTLSstaticGroup&gt; ?p ?o
+}
+;
+
+-- Group Definition
+	
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT 
+{
+  &lt;#SQLTLSstaticGroup&gt; 
+    a foaf:Group ;
+    foaf:name  &quot;Conventional Group&quot; ;
+    rdfs:comment &quot;&quot;&quot;Conventioal group used to which a collection of WebIDs (in the form of a list) belong. &quot;&quot;&quot; ;
+    foaf:member 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; .
+}
+;
+	
+-- Conditional Group Description SQL Realm
+
+-- Cleanup 
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#SQLTLSgroupBasicNetID&gt; ?p ?o
+}
+WHERE
+{
+  &lt;#SQLTLSgroupBasicNetID&gt; ?p ?o
+}
+;
+
+
+-- Conditional Group Definition
+
+SPARQL
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#SQLTLSgroupBasicNetID&gt; 
+    a &lt;http://www.openlinksw.com/ontology/acl#ConditionalGroup&gt; ;
+    &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Identities Denoted using a NetID based Identifier&quot; ;
+    &lt;http://www.openlinksw.com/ontology/acl#hasCondition&gt; [
+      a &lt;http://www.openlinksw.com/ontology/acl#GroupCondition&gt;, 
+	&lt;http://www.openlinksw.com/ontology/acl#GenericCondition&gt; ;
+      &lt;http://www.openlinksw.com/ontology/acl#hasCriteria&gt; &lt;http://www.openlinksw.com/ontology/acl#NetID&gt; ;
+      &lt;http://www.openlinksw.com/ontology/acl#hasComparator&gt; &lt;http://www.openlinksw.com/ontology/acl#IsNotNull&gt; ;
+      &lt;http://www.openlinksw.com/ontology/acl#hasValue&gt; 1
+    ] .
+}
+;
+	
+--  Grant NetID Group Access to SQL Realm 
+-- Cleanup
+
+SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#NetIDTLSSQLAccessRule1&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#NetIDTLSSQLAccessRule1&gt; ?p ?o .
+}
+;
+
+-- ACL Definition
+
+SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#NetIDTLSSQLAccessRule1&gt; a acl:Authorization ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    rdfs:label &quot;SQL Realm Access Authorization ACL for NetIDs&quot; ;
+    rdfs:comment &quot;&quot;&quot;Conditional Group based ACL that provides NetIDs with SQL Realm Access.&quot;&quot;&quot; ;
+    oplacl:hasAccessMode oplacl:Read ;
+    acl:accessTo &lt;urn:virtuoso:access:sql&gt; ;
+    acl:agent &lt;#groupBasicNetID&gt;, &lt;#staticGroup&gt;  ;
+    oplacl:hasScope oplacl:Query ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+		
+		
+-- SPASQL Access Privileges Grant to a Specific WebID (this is required for LOD Connectivity Licenses )--
+-- Cleanup
+
+SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#WebIDTLSPASQLAccessRule1&gt; ?p ?o.
+}
+WHERE
+{
+  &lt;#WebIDTLSPASQLAccessRule1&gt; ?p ?o.
+}
+;
+
+-- ACL Description 
+
+SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#WebIDTLSPASQLAccessRule1&gt; a acl:Authorization ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    rdfs:label &quot;SQL Realm Access Authorization ACL&quot; ;
+    rdfs:comment &quot;&quot;&quot;Mandatory ACL for granting access to SQL Realm which then enables ODBC, JDBC, ADO.NET, OLE-DB compliant
+		    application access, subject to Agent &amp; User Identity.&quot;&quot;&quot; ;
+    oplacl:hasAccessMode oplacl:Read ;
+    acl:accessTo &lt;urn:virtuoso:access:sparql&gt; ;
+    acl:agent 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; ;
+    oplacl:hasScope oplacl:Query ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+
+
+-- SQL Realm Authorizations (enables execution of SQL queries via SQL+TLS connections)
+
+-- Cleanup
+
+SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#WebIDTLSSQLAccessRule1&gt; ?p ?o.
+}
+WHERE
+{
+  &lt;#WebIDTLSSQLAccessRule1&gt; ?p ?o.
+}
+;
+
+-- ACL Description 
+
+SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#WebIDTLSSQLAccessRule1&gt; a acl:Authorization ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    rdfs:label &quot;SQL Realm Access Authorization ACL&quot; ;
+    rdfs:comment &quot;&quot;&quot;Mandatory ACL for granting access to SQL Realm which then enables ODBC, JDBC, ADO.NET, OLE-DB compliant
+		    application access, subject to Agent &amp; User Identity.&quot;&quot;&quot; ;
+    oplacl:hasAccessMode oplacl:Read ;
+    acl:accessTo &lt;urn:virtuoso:access:sql&gt; ;
+    acl:agent 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; ;
+    oplacl:hasScope oplacl:Query ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+
+
+
+--- SQL Query Access Restrictions (SQLRealm re. ODBC, JDBC, ADO.NET) --- 
+-- Query Request Rate
+-- Cleanup
+
+SPARQL 
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX oplrest: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#URIBurnerTLSSQLAccessRestriction1&gt; ?p ?o . 
+}
+WHERE
+{
+  &lt;#URIBurnerTLSSQLAccessRestriction1&gt; ?p ?o . 
+}
+;
+
+-- Restriction Definition
+
+SPARQL 
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX oplrest: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#URIBurnerTLSSQLAccessRestriction1&gt; 
+    a oplrest:Restriction ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    rdfs:label &quot;SQL Realm Query Rate Restriction&quot; ;
+    rdfs:comment &quot;&quot;&quot;Mandatory Restriction for metering Query Request Rates per second.&quot;&quot;&quot; ;
+    oplacl:hasAccessMode oplacl:Read ;
+    oplrest:hasRestrictedResource &lt;urn:virtuoso:restrictions:sql-request-rate&gt; ;
+    oplrest:hasMaxValue &quot;100&quot;^^xsd:integer ;
+    acl:agent 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+
+
+-- Query Results Size 
+-- Cleanup
+
+SPARQL 
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX oplrest: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE
+{
+  &lt;#URIBurnerTLSSQLAccessRestriction2&gt; ?p ?o . 
+}
+WHERE
+{
+  &lt;#URIBurnerTLSSQLAccessRestriction2&gt; ?p ?o . 
+}
+;
+
+
+-- Restriction Definition
+SPARQL 
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX oplrest: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+
+WITH GRAPH &lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#URIBurnerTLSSQLAccessRestriction2&gt; 
+    a oplrest:Restriction ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    rdfs:label &quot;SQL Realm Resultset [Query Solution] Size Restriction&quot; ;
+    rdfs:comment &quot;&quot;&quot;Mandatory Restriction for restrictng maximum size of query resultsets [solutions].&quot;&quot;&quot; ;
+    oplrest:hasRestrictedResource &lt;urn:virtuoso:restrictions:sql-result-rows&gt; ;
+    oplrest:hasMaxValue &quot;200&quot;^^xsd:integer ;
+    acl:agent 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+
+-- Private Graph ACL Private Named Graph identified by IRI: &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;
+-- Cleanup 
+
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE 
+{
+  &lt;#TLSSQLPrivateNamedGraphRule1&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#TLSSQLPrivateNamedGraphRule1&gt; ?p ?o .
+}
+;
+
+-- ACL Description
+  
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#TLSSQLPrivateNamedGraphRule1&gt; 
+    a  acl:Authorization ;
+    rdfs:label &quot;Private Named Graph ACL (SQL Realm) for Named Graph Identified by IRI: &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;&quot; ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    oplacl:hasAccessMode  oplacl:Read ;
+    acl:accessTo &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; ;
+    acl:agent &lt;#SQLTLSgroupBasicNetID&gt;, &lt;#SQLTLSstaticGroup&gt;  ;
+    oplacl:hasScope  oplacl:PrivateGraphs ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+
+
+-- Private Graph ACL Private Named Graph identified by IRI: &lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt;
+-- Cleanup 
+
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+DELETE 
+{
+  &lt;#TLSSQLPrivateNamedGraphRule2&gt; ?p ?o .
+}
+WHERE
+{
+  &lt;#TLSSQLPrivateNamedGraphRule2&gt; ?p ?o .
+}
+;
+
+-- ACL Description
+  
+SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+
+WITH 
+&lt;http://{URIQA-DefaultHost-INI-file-setting}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+INSERT
+{
+  &lt;#TLSSQLPrivateNamedGraphRule2&gt; 
+    a  acl:Authorization ;
+    rdfs:label &quot;Private Named Graph ACL (SQL Realm) for Named Graph Identified by IRI: &lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt;&quot; ;
+    foaf:maker &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ;
+    oplacl:hasAccessMode  oplacl:Read ;
+    acl:accessTo &lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt; ;
+    acl:agent 
+      &lt;http://opluswin7qa.usnet.private:8890/dataspace/person/kidehen#this&gt; ,
+      &lt;http://kingsley.idehen.net/dataspace/person/kidehen#this&gt; ,
+      &lt;https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i&gt; ,
+      &lt;http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/cblakeley/youid_profile_160420.ttl#i&gt; , 
+      &lt;https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/hwilliams/YouID/Hugh_Williams_id_myopenlink_net_1/profile.ttl#identity&gt; , 
+      &lt;http://id.myopenlink.net/DAV/home/danielhm/profile.ttl#i&gt; , 
+      &lt;http://kingsley.idehen.net/DAV/home/kidehen/onno_profile.ttl#i&gt; ,
+      &lt;http://id.myopenlink.net/youid/profiles/6a93163fed72f5cac745c25dd3a8ad36/Hugh_Williams_id_myopenlink_net/profile.ttl#hwilliams&gt; ,
+      &lt;http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd&gt; ;
+    oplacl:hasScope  oplacl:PrivateGraphs ;
+    oplacl:hasRealm oplacl:SqlRealm .
+}
+;
+
+-- Add sample data
+
+SPARQL
+WITH &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;
+INSERT { &lt;#this&gt; &lt;#relatedTo&gt; &lt;#that&gt; } ;
+
+SPARQL
+WITH &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;
+INSERT {&lt;#kingsley&gt; &lt;#knows&gt; &lt;#hugh&gt; } ;
+
+COMMIT WORK ;
+</programlisting><para> A normal digest connection can then be made to the Virtuoso database using isql command line tool and the script loaded into Virtuoso as follows: </para>
+<programlisting>C:\Program Files\OpenLink Software\Virtuso 7.2\database&gt; ..\bin\isql 1111
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; load loadacl.sql;
+
+Done. -- 4 msec.
+
+Done. -- 0 msec.
+
+Done. -- 4 msec.
+
+Done. -- 8 msec.
+
+Done. -- 1 msec.
+
+Done. -- 43 msec.
+
+Done. -- 3 msec.
+
+Done. -- 2 msec.
+
+Done. -- 2 msec.
+
+Done. -- 2 msec.
+
+Done. -- 3 msec.
+
+Done. -- 2 msec.
+
+Done. -- 2 msec.
+
+Done. -- 2 msec.
+
+Done. -- 5 msec.
+
+Done. -- 2 msec.
+
+Done. -- 3 msec.
+
+Done. -- 2 msec.
+
+Done. -- 3 msec.
+
+Done. -- 2 msec.
+
+Done. -- 3 msec.
+
+Done. -- 1 msec.
+
+Done. -- 4 msec.
+
+Done. -- 1 msec.
+
+Done. -- 4 msec.
+
+Done. -- 1 msec.
+
+Done. -- 2 msec.
+
+Done. -- 2 msec.
+
+Done. -- 3 msec.
+
+Done. -- 0 msec.
+SQL&gt; 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtWTDServerSetup">Virtuoso Server WebID+TLS+Delegation Setup</ulink> </listitem>
+<listitem><ulink url="VirtWTDSoftwareAgentDocCreation">Software Agent &amp; WebID Profile Document Creation</ulink> </listitem>
+<listitem><ulink url="VirtWTDACLTesting">WebID+TLS+Delegation ACL Testing</ulink> </listitem>
+<listitem><ulink url="VirtWTDWebIdProfileDocInNamedGraph">Using Named Graph for hosting WebID Profile Document Data</ulink> </listitem>
+</itemizedlist></section></docbook>

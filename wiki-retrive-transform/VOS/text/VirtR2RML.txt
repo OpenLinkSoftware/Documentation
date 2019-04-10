@@ -1,0 +1,175 @@
+---+ Virtuoso R2RML Support
+
+%TOC% 
+
+---++What is R2RML?
+
+[[http://www.w3.org/TR/r2rml/][R2RML]] is a language for expressing customized mappings from relational databases to RDF data sets. Such mappings provide the ability to view existing relational data in the RDF data model, expressed in a structure and target vocabulary of the mapping author's choice. 
+
+R2RML mappings are themselves RDF graphs written in Turtle syntax. 
+
+---++Why use it?
+
+As a W3C working draft, R2RML is becoming the generic standard adopted by most vendors of tools mapping relational data to RDF, enabling the interoperability of R2RML scripts, whether created with such tools or by hand.
+
+---++How do I use it with Virtuoso?
+
+Virtuoso has its own previously-developed proprietary equivalent of R2RML called [[http://www.openlinksw.com/dataspace/dav/wiki/Main/VOSSQL2RDF][Linked Data Views]], which uses Virtuoso's [[http://virtuoso.openlinksw.com/whitepapers/relational%20rdf%20views%20mapping.html][Meta Schema Mapping Language]] to map relational data to RDF. 
+
+R2RML support is achieved by the inclusion of a simple translator which basically translates R2RML syntax to Virtuoso's own Linked Data Views syntax, which can then be executed to create the Linked Data Views themselves.
+
+---+++ Install R2RML VAD package.
+
+First you will need to ensure you have the R2RML VAD package [[https://virtuoso.openlinksw.com/download/][(rdb2rdf_dav.vad)]] installed.
+
+---+++ Test with simple test script (basic.sql)
+
+Then, the easiest way to test functionality is by executing the attached <code>[[%ATTACHURLPATH%/basic.sql][basic.sql]]</code> script via the command line <code>isql</code> tool:
+
+   1 First, copy <code>basic.sql</code> into <code><nowiki>&#60;VIRTUOSO_INSTALL&#62;/bin/</nowiki></code>.
+   2 Next, open Unix session or Windows Command Prompt and execute:
+<verbatim>
+cd <OPENLINK_INSTALL>/bin
+
+./isql     (Unix)
+isql.exe   (Windows)
+
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL>
+</verbatim>
+   3 Then, within isql execute:
+<verbatim>
+SQL> load basic.sql;
+</verbatim>
+   4 Execution should finish with a simple SPARQL query that will return Linked Data for the test table created at the start of the script:
+<verbatim>
+s                               p                                                  o
+VARCHAR                         VARCHAR                                            VARCHAR
+________________________________________________________________________________________________________________
+
+http://example.com/product/1    http://example.com/product#id                      1
+http://example.com/product/1    http://example.com/product#name                    Virtuoso
+http://example.com/product/1    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://example.com/ns#product
+3 Rows. -- 0 msec.
+</verbatim>
+NOTE: Subsequent executions of <code>basic.sql</code> will return an error since the test table will already exist. However, the remainder of the script will execute fine.
+
+---+++ Examining basic.sql
+
+   1 We start by creating and populating the test table:
+<verbatim>
+CREATE TABLE "R2RML"."TEST"."PRODUCT"
+  (
+    id   INTEGER PRIMARY KEY ,
+    name VARCHAR(100)
+  );
+
+INSERT SOFT "R2RML"."TEST"."PRODUCT" 
+  VALUES 
+    (
+      1, 'Virtuoso'
+    );
+</verbatim>
+   2 Next we clear any graphs (temporary or permanent) that are to be used during this process:
+<verbatim>
+SPARQL CLEAR GRAPH <http://temp/product> ;
+SPARQL CLEAR GRAPH <http://example.com/> ;
+</verbatim>
+   3 Next we use the <code>[[http://docs.openlinksw.com/virtuoso/fn_ttlp.html][DB.DBA.TTLP()]]</code> procedure to insert the R2RML into a temporary graph, <code><nowiki>&#60;http://temp/product&#62;</nowiki></code>:
+<verbatim>
+DB.DBA.TTLP 
+  (
+    ' @prefix       rr:  <http://www.w3.org/ns/r2rml#>    .
+      @prefix      exa:  <http://example.com/ns#>         .
+      @prefix  product:  <http://example.com/product#>    .
+
+      <http://example.com/ns#TriplesMap1>
+          a                              rr:TriplesMap  ;
+
+          rr:logicalTable 
+            [ 
+              rr:tableSchema  "R2RML"    ; 
+              rr:tableOwner   "TEST"     ; 
+              rr:tableName    "PRODUCT" 
+            ];
+
+          rr:subjectMap 
+            [ 
+              rr:template  "http://example.com/product/{id}" ;
+              rr:class     exa:product                       ;
+              rr:graph     <http://example.com/>
+            ];
+
+          rr:predicateObjectMap
+            [
+              rr:predicate  product:id  ;
+              rr:objectMap  
+                [ 
+                  rr:column  "id" 
+                ];
+            ];
+
+          rr:predicateObjectMap
+            [
+              rr:predicate  product:name  ;
+              rr:objectMap 
+                [ 
+                  rr:column "name" 
+                ];
+            ];
+         .
+    ', 
+    'http://temp/product',
+    'http://temp/product' 
+  );
+</verbatim>
+   4 Next, there is a series of commented out lines that can be used for sanity checking:
+<verbatim>
+--SELECT DB.DBA.R2RML_TEST ('http://temp/product');
+
+--DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL');
+
+-- Running the validation in order to find error in name of R2RML description graph
+--DB.DBA.OVL_VALIDATE ('http://temp/product-nosuch', 'http://www.w3.org/ns/r2rml#OVL');
+
+-- Running the validation in order to find error in name of R2RML metadata graph
+--DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL-nosuch');
+
+--SELECT DB.DBA.R2RML_EXECUTE ('http://temp/product');
+</verbatim>
+   4 Next, <code><nowiki>DB.DBA.R2RML&#95;MAKE&#95;QM&#95;FROM&#95;G()</nowiki></code> is used to perform the conversion from R2RML into Virtuoso's own Linked Data Views script.
+The output is then prepended with the keyword '<code>SPARQL</code>' and a space, and executed using <code>[[http://docs.openlinksw.com/virtuoso/fn_exec.html][exec()]]</code>:
+<verbatim>
+EXEC ('SPARQL ' || DB.DBA.R2RML_MAKE_QM_FROM_G ('http://temp/product'));
+</verbatim>
+<i><b>Note:</b> The final triples are placed in the graph defined in the R2RML script itself (<code><nowiki>&#60;http://example.com/&#62;</nowiki></code>) %BR%%BR% Alternatively, the destination graph can be specified as an optional second parameter of <code><nowiki>DB.DBA.R2RML&#95;MAKE&#95;QM&#95;FROM&#95;G()</nowiki></code> </i>:
+<verbatim>
+DB.DBA.R2RML&#95;MAKE&#95;QM&#95;FROM&#95;G
+  (
+    (
+      IN g VARCHAR 
+   [, IN target_graph VARCHAR := NULL]
+    )
+  )
+</verbatim>
+   5 Finally, a simple SPARQL statement is executed to prove data is returned:
+<verbatim>
+SPARQL
+  SELECT * 
+  FROM <http://example.com/>
+  WHERE {?s ?p ?o .};
+</verbatim>
+
+---++Related
+
+   * [[VirtGenerateR2RMLLinkedDataView][Generate Linked Data Views via R2RML from iSQL]]
+   * [[VirtConductorR2RMLImport][Virtuoso Conductor R2RML Import Wizard]]
+   * [[VirtConductorR2RMLImportNorthwind][Example importing R2RML script for Northwind database and generating RDF Linked Data Views]]
+   * [[VirtTipsAndTricksGuideConductorR2RML][Generate Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources]]
+   * W3C page for [[http://www.w3.org/TR/r2rml/][R2RML: RDB to RDF Mapping Language]]  
+
+---+++Additional demo files
+
+   * <a href="%ATTACHURLPATH%/basic.sql" style="wikiautogen">basic.sql</a>
+   * <a href="%ATTACHURLPATH%/demo.sql" style="wikiautogen">demo.sql</a>

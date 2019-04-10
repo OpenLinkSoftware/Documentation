@@ -1,0 +1,75 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I use the LOAD command to import RDF data?"></a> How can I use the LOAD command to import RDF data?</h1>
+<p>SPARQL INSERT can be done using the LOAD command:</p>
+<br><pre>SPARQL INSERT INTO &lt;..&gt; { .... } [[FROM ...] { ... }]
+
+SPARQL LOAD &lt;x&gt; [INTO &lt;y&gt;]
+
+-- &lt;ResourceURL&gt; will be the Graph IRI of the loaded data:
+SPARQL LOAD &lt;ResourceURL&gt; 
+</pre><p> </p>
+<h2><a name="Examples"></a>Examples</h2>
+<h3><a name="Load from Resource URL"></a>Load from Resource URL</h3>
+<p>In order to load data from resource URL for ex: <a href="http://www.w3.org/People/Berners-Lee/card#i" class="absuri">http://www.w3.org/People/Berners-Lee/card#i</a> , execute  the following command with isql:</p>
+<br><pre>SQL&gt; SPARQL LOAD &lt;http://www.w3.org/People/Berners-Lee/card#i&gt;;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; into graph &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; -- done
+
+1 Rows. -- 703 msec.
+SQL&gt;
+</pre><p> </p>
+<h3><a name="Load from file"></a>Load from file</h3>
+<ol><li>Create DAV collection which is visible to the public, for ex: <a href="http://localhost:8890/DAV/tmp" class="absuri">http://localhost:8890/DAV/tmp</a> </li>
+<li>Upload to the DAV collection a file, for example with name listall.rq and with the following content: <br><pre><br>SPARQL
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+SELECT ?x ?p ?o
+FROM &lt;http://mygraph.com&gt;
+WHERE
+  {
+    ?x rdf:type sioc:User .
+    ?x ?p ?o.
+    ?x sioc:id ?id .
+    FILTER REGEX(str(?id), &quot;^King&quot;)
+  }
+ORDER BY ?x
+</pre><br></li>
+<li>Execute  the following command from isql: <br><pre><br>SQL&gt;SPARQL LOAD bif:concat (&quot;http://&quot;, bif:registry_get(&quot;URIQADefaultHost&quot;), &quot;/DAV/tmp/listall.rq&quot;) into graph &lt;http://myNewGraph.com&gt;;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load &lt;http://localhost:8890/DAV/tmp/listall.rq&gt; into graph &lt;http://myNewGraph.com&gt; -- done
+
+1 Rows. -- 321 msec.
+</pre><br> </li>
+</ol><h3><a name="Directly LOAD triples using iSQL"></a>Directly LOAD triples using iSQL</h3>
+<p>Triples can be directly loaded into Virtuoso specifying the literal values to inserted, by executing a command of the following form from isql:</p>
+<br><pre>SQL&gt;SPARQL INSERT INTO graph &lt;http://mygraph.com&gt;
+{
+  &lt;http://myopenlink.net/dataspace/Kingsley#this&gt;
+  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+  &lt;http://rdfs.org/sioc/ns#User&gt; .
+
+  &lt;http://myopenlink.net/dataspace/Kingsley#this&gt;
+  &lt;http://rdfs.org/sioc/ns#id&gt;
+  &lt;Kingsley&gt; .
+
+  &lt;http://myopenlink.net/dataspace/Caroline#this&gt;
+  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+  &lt;http://rdfs.org/sioc/ns#User&gt; .
+
+  &lt;http://myopenlink.net/dataspace/Caroline#this&gt;
+  &lt;http://rdfs.org/sioc/ns#id&gt;
+  &lt;Caroline&gt; .
+};
+
+</pre><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html" class="absuri">RDF Insert Methods in Virtuoso</a> </li>
+</ul></div></body></html>

@@ -1,0 +1,233 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+
+---+ Faceted Browsing Service
+
+%TOC%
+
+---++What
+
+The Virtuoso Faceted Browser service is a general purpose RDF data query facility for faceted browsing over entity relationship types (i.e. relations). It takes an XML or JSON description of the desired view, and generates the reply in the form of  XML or JSON documents comprised of the requested data. For The user agent or a local web page can use XSLT for rendering out for end users, when XML documents are returned. Likewise, JSON oriented tools can be used to transform  JSON documents as part of user experience via Javascript based applications.
+
+---++Why
+
+The selection of facets and values is represented as an XML tree. Such a representation 
+is easier to process in an application than the SPARQL source text or a parse tree of 
+SPARQL, and more compactly captures the specific subset of SPARQL needed for faceted 
+browsing. The Web service also returns the SPARQL source text, which can serve as a 
+basis for hand-crafted queries.
+
+---++How
+The top element of the tree is <code>&lt;query&gt;</code>.  It must be in namespace 
+"<code><nowiki>http://openlinksw.com/services/facets/1.0/</nowiki></code>". 
+
+The <code>&lt;query&gt;</code> element has the following attributes:
+
+
+|*Attribute*|*Description*|
+|<code><b>graph</b>="<nowiki>graph_iri</nowiki>"</code>|installed default is to search in all graphs, but system defaults may override this|
+|<code><b>timeout</b>="<nowiki>no_of_msec</nowiki>"</code>|installed default is no timeout, but system defaults may override this|
+|<code><b>inference</b>="name"</code>|where <code>name</code> is the name of an inference context declared with <code><nowiki>rdfs_rule_set</nowiki></code>.|
+|<code><b>same-as</b>="boolean"</code>|If "<code>boolean</code>" is "<code>yes</code>", then <code>owl:sameAs</code> links will be considered in the query evaluation.|
+
+
+The result is a tree of the form:
+<verbatim>
+<facets xmlns="http://openlinksw.com/services/facets/1.0/">
+  <result>
+    <row>
+      <column datatype="..." shortform="..." xml:lang="...">...</column>
+    </row>
+  </result> 
+  <time>msecs</time>
+  <complete>yes or no</complete>
+  <db-activity>resource use string</db-activity>
+  <sparql>sparql statement text</sparql>
+</verbatim>
+
+
+
+
+
+
+By convention, the first column is the subject selected by the view element, typically 
+a URI; the second is a label of the URI; and the third, if present, is either a count 
+or a search summary.
+
+The first column's text child is the text form of the value. The column element has the 
+following attributes qualifying this further:
+
+|*Attribute*|*Description*|
+|<code><b>datatype</b></code>|The xsd type of the value. If this is a URI, the datatype is "<code>uri</code>".|
+|<code><b>shortform</b></code>|If the value is a URI, this is an abbreviated form where known namespaces are replaced with their prefixes, and very long URIs are middle-truncated, preserving start and end.|
+|<code><b>xml:lang</b></code>|if the value is a language tagged string, this is the language.|
+
+The query has the top level element &lt;query&gt;. The child elements of this represent 
+conditions pertaining to a single subject. A join is expressed with the property or 
+property-of element. This has in turn children which state conditions on a property of 
+the first subject. <b>property</b> and <b>property-of elements</b> can be nested to an 
+arbitrary depth and many can occur inside one containing element. In this way, tree-shaped 
+structures of joins can be expressed.
+
+Expressing more complex relationships, such as intermediate grouping, subqueries, arithmetic
+or such requires writing the query in SPARQL. The XML format is a shorthand for easy automatic 
+composition of queries needed for showing facets, not a replacement for SPARQL.
+
+A facet query contains a single view element. This specifies which subject of the joined 
+subjects is shown. Its attributes specify the manner of viewing, e.g., a list of distinct 
+values, a list of distinct values with occurrence counts, a list of properties or classes 
+of the selected subjects, etc.
+
+The top query element or any property or property-of element can have the following 
+types of children:
+
+
+|*Type of children*|*Description*|
+|<code><b>&lt;text property="iri"&gt;text pattern&lt;/text&gt;</b></code>|The subject has an O that matches the text pattern. If property is given, the text pattern must occur in a value of this property. If not specified, any property will do. The value "none" for property is the same as not specifying a property. This is restricted to occurring directly under the top level query element.|
+|<code><b>&lt;class iri="iri" inference="ctx_name" /&gt;</code>| The S must be an instance of this class. If inference is specified then option (input:inference "ctx_name" is added and applies to this pattern alone.|
+|<code><b>&lt;property iri="iri" same_as="yes" inference="ctx_name"&gt;</b></code>|The child elements of this are conditions that apply to the value of this property of the S that is in scope in the enclosing <code>&lt;query&gt;</code> or <code>&lt;property&gt;</code> element. If <code>same_as</code> is present, then option <code>(input:same-as "yes")</code> is added to the triple pattern which specifies this property. If inference is present, then option<code> (input:inference "ctx_name")</code> is added to the triple pattern for the property.|
+|<code><b>&lt;property-of iri="iri" same_as="yes" inference="ctx_name" &gt;</b></code>|The child elements of this are conditions that apply to an S which has property "iri" whose object is the S in scope in the enclosing <code>&lt;query&gt;</code> or <code>&lt;property&gt;</code> element. The options are otherwise the same as with property.|
+|<code><b>&lt;value datatype="type" xml:lang="lng" op="= <nowiki>|</nowiki> &lt; <nowiki>|</nowiki> &gt; <nowiki>|</nowiki> &gt;= <nowiki>|</nowiki>| &lt;="&gt;value &lt;/value&gt;</b></code><nowiki>|</nowiki> When this occurs inside <code>&lt;property&gt;</code> or <code>&lt;property-of&gt;</code> this means that the property in scope has the specified relation to the value. type and language can be used for XML typed or language tagged literals. The "uri" type means that the value is a qualified name of a URI. If this occurs directly under the <code>&lt;query&gt;element,</code> this means that the query starts with a fixed subject. If this is so, then there must be property or propertyof elements or the view element must specify properties or classes, list is not allowed as a view type. This is so because the query must have at least one triple pattern.|
+|<code><b>&lt;view type="view" limit="n" offset="n" &gt;</b></code>| This may occur once inside a <code>&lt;query&gt;</code> element but may occur either at top level or inside property or property-of elements. This specifies what which subject is presented in the result set.|
+
+ The type can be:
+
+|*Label*|*Syntax Usage*|
+|<b>properties</b>|<verbatim><br/>SELECT  ?p COUNT (*)<br/>WHERE  { ?this_s  ?p  ?any_o ... }<br/>GROUP BY  ?p<br/>ORDER BY  DESC 2 <br/>LIMIT 1 <br/> OFFSET 0</verbatim>|
+|<b>properties-in</b>|SELECT  ?p<br/>COUNT (*)<br/>WHERE  { ?any_s  ?p  ?this_s ... }<br/>GROUP BY  ?p<br/>ORDER BY  DESC 2<br/>LIMIT 1<br/>OFFSET 0|
+|<b>classes</b>|SELECT  ?c  COUNT (*)<br/>WHERE {?xx  a  ?c ... }<br/>GROUP BY  ?c<br/>ORDER BY DESC 2<br/>LIMIT 1<br/>OFFSET 0|
+|<b>text</b>|<verbatim><br/>SELECT DISTINCT  ?s (bif:search_excerpt (sql:search_terms ("pattern"), ?o))<br/>WHERE { ... }<br/>ORDER BY ?s<br/>LIMIT 1<br/>OFFSET 0<br/></verbatim>|
+|<b>list</b>|<verbatim><br/>SELECT DISTINCT  ?s long::sql:fct_label (?s)<br/>WHERE { ... }<br/>ORDER BY ?s<br/>LIMIT 1<br/>OFFSET 0<br/></verbatim>|
+|<b>list-count</b>|<verbatim><br/>SELECT  ?s COUNT (*)<br/>WHERE { ... }<br/>GROUP BY ?s<br/>ORDER BY DESC 2<br/></verbatim>|
+|<b>alphabet</b>|<verbatim><br/>SELECT  (sql:subseq (?s, 0, 1)) COUNT (*)<br/>WHERE { ... }<br/>GROUP BY (sql:subseq (?s, 0, 1))<br/>ORDER BY 1<br/></verbatim>|
+|<b>geo</b>|<verbatim><br/>SELECT  DISTINCT ?lat ?long ?s<br/>WHERE { ?s geo:lat ?lat .<br/>?s  geo:long  ?long  .<br/>... }<br/></verbatim>|
+|<b>years</b>|<verbatim><br/>SELECT  sql::year (?s)  COUNT (*) <br/>WHERE { ... }<br/>GROUP BY  (bif:year (?s))<br/>ORDER BY 1<br/>LIMIT 1<br/>OFFSET 0<br/></verbatim>|
+|<b>months</b>|<verbatim><br/>SELECT  sql::round_month (?s) COUNT (*)<br/>WHERE { ... }<br/>GROUP BY  (sql:round_month (?s))<br/>ORDER BY 1<br/>LIMIT 1<br/>OFFSET 0<br/></verbatim>|
+|<b>weeks</b>|<verbatim><br/>SELECT  sql::round_week (?s) COUNT (*)<br/>WHERE { ... }<br/>GROUP BY  (sql:round_week (?s))<br/>ORDER BY 1<br/>LIMIT 1<br/>OFFSET 0<br/></verbatim>|
+|<b>describe</b>|<verbatim><br/>DESCRIBE  ?s<br/>WHERE { ... }<br/>LIMIT 1<br/>OFFSET 0<br/></verbatim>|
+
+
+---+++ Customizing 
+
+The following types of customization will be generally useful:
+
+   * Resource accounting and limitations, managing access and login  
+   * Localization, choice of labels shown with class/property/instance URIs 
+   * Adding types of views, for example timelines, map or business graphics 
+   * Controlling navigation, for example choosing what type of view is initially 
+presented when opening a given property.
+   * Page layout, captions, help texts, etc.
+
+The source code is deivided in two SQL files and a number of XSLT sheets.
+The file <code>facet.sql</code> has the code for the web service. The <code>facet_view.sql</code> file contains 
+the procedures for the sample HTML interface.
+
+---+++ Examples for Customizing 
+
+See a detailed collection of examples [[VirtuosoFacetsWebServiceCustmExamples][here]].
+
+---+++ Choice of Labels
+
+The Virtuoso Facets web service offers the feature of using label inferencing for better labels handling. This enables the automated use labels for anchor text in faceted browser pages across property names and their values, when value is a URI reference.
+
+We use inference for labels called "facets". The inference is:
+<verbatim>
+-- The SPARUL statement for loading it into the Quad Store:
+SPARQL INSERT INTO GRAPH <facets> 
+  {
+    rdfs:label     rdfs:subPropertyOf  virtrdf:label  .
+    dc:title       rdfs:subPropertyOf  virtrdf:label  .
+    foaf:name      rdfs:subPropertyOf  virtrdf:label  .
+    foaf:nick      rdfs:subPropertyOf  virtrdf:label  .
+    geonames:name  rdfs:subPropertyOf  virtrdf:label  .
+  }
+
+--Making the rule from the graph:
+rdfs_rule_set ('facets', 'facets');
+</verbatim>
+
+<b>Note</b>: In case a labels oriented inference rule already exists e.g., for <code>virtrdf-label</code>, then all you need to do is run the procedure:
+
+<verbatim>
+rdfs_rule_set('facets','virtrdf-label');
+</verbatim>
+
+
+---++++ Examples for Choice of Labels
+   
+   * [[VirtuosoFacetsWebServiceChoiceExample][Choice of Labels]]
+   * [[VirtTipsAndTricksCustomControlLabelsURI][Custom Controlling Virtuoso Labels for URI functionality]]
+
+
+---++++Enable Labels
+To enable the labels, user "dba"should do:
+<verbatim>
+registry_set ('fct_desc_value_labels', '1');
+</verbatim>
+
+Otherwise the labels will be off by default.
+
+
+
+---+++ <nowiki>WebService</nowiki> Interfaces
+
+---++++ REST Interface
+
+The Virtuoso Facets web service provide the following REST interface:
+
+|*Component*|*Description*|
+|Service description|* Endpoint: <code><nowiki>http://cname/fct/service</nowiki></code> or <code><nowiki>http://lod.openlinksw.com/fct/service</nowiki></code><br/>* HTTP method: <code>POST</code><br/>* Content-Type: MUST be '<code>text/xml</code>'<br/>* The entity body must be XML document with top element '<code>query</code>' as described above. <br/>* The request response namespace MUST be "<code><nowiki>http://openlinksw.com/services/facets/1.0</nowiki></code>"|
+|Error conditions|All error conditions are reported via '<code><nowiki>&lt;error&gt;Error explanation&lt;/error&gt;</nowiki></code>'|
+|Files|The <code>facet_svc.sql</code> contains web service code and virtual directory mapping, and it uses <code><nowiki>fct_req.xsl</nowiki></code> and <code><nowiki>fct_resp.xsl</nowiki></code> as request and response filters.|
+
+---+++++Examples Using CURL program
+
+   * [[VirtuosoFacetsWebServiceCURLExample1][Example 1]]
+   * [[VirtuosoFacetsWebServiceCURLExample2][Example 2]]
+
+---++++ SOAP Interface
+
+The facet web service is also available via SOAP protocol. 
+
+The request message contains single element 'query' with syntax explained earlier. Also 
+the SOAPAction HTTP header should be '#query'. After successful evaluation of the query, 
+the service will return a SOAP envelope containing in the Body element single 'facets' 
+element described above.
+
+
+---++++ Example for SOAP Interface
+
+See a detailed example [[VirtuosoFacetsWebServiceSOAPExample][here]].
+
+---+++ Virtuoso Facets API for REST services
+
+A full list of Facets API calls for REST services can be viewed [[VirtFacetBrowserAPIs][here]].
+
+---+++Tutorials 
+
+   * [[VirtuosoLODSampleTutorial][Faceted Browsing Sample using LOD Cloud Cache data space]].
+
+--+++ Related
+
+   * Linked Data:   
+      * [[VirtuosoFacetsViewsLinkedData][Faceted Views over Large-Scale Linked Data]]   
+   * Facet Browser Installation and configuration:   
+      * [[VirtFacetBrowserInstallConfig][Virtuoso Facet Browser Installation and configuration]]   
+   * Facet APIs:
+      * [[VirtFacetBrowserAPIs][Virtuoso APIs for FCT REST services]]
+      * [[VirtFacetBrowserAPIsFCTEXEC][<code><nowiki>fct_exec</nowiki></code> API Example]]                   
+   * Pivot Viewer and CXML:         
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxmlFacetPivotBridge#AncSparqlCxmlFacetPivotBridge][Facet Pivot Bridge -  A bridge to PivotViewer from Virtuoso's Faceted query service for RDF]]      
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxml#AncFacetTypeAutoDetection][Auto-Detection of Facet Type]]
+   * Tutorials:
+      * [[VirtuosoLODSampleTutorial][Faceted Browsing Sample using LOD Cloud Cache data space]]         
+      * [[VirtuosoFacetsWebServiceSOAPExample][SOAP Facets Example]]   
+      * [[VirtFacetBrowserInstallConfigQueried][Querying The Facet Browser Web Service endpoint]]  
+      * [[VirtFCTFeatureQueries][Virtuoso Facet Browser Featured Queries]]      
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtVisualizeWithPivotViewer#GenFCT][Visualizing Your Data With PivotViewer Using The Facet Browser]]       
+      * [[VirtTipsAndTricksCustomControlLabelsURI][Custom Controlling Virtuoso Labels for URI functionality Example]]
+      * [[VirtuosoFacetsWebServiceCustmExamples][Facets Web Service: Examples for customizing different types]]
+      * [[VirtuosoFacetsWebServiceChoiceExample][Facets Web Service: Choice of Labels Example]]      
+   * Downloads:   
+      * [[http://shop.openlinksw.com/license_generator/virtuoso-download/][Latest Virtuoso]]
+      * [[https://virtuoso.openlinksw.com/download/][Virtuoso Facet Browser VAD package]]

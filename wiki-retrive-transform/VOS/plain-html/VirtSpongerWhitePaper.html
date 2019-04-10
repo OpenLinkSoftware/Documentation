@@ -1,0 +1,870 @@
+<html><body><div class="topic-text"><h1><a name="Virtuoso Sponger"></a>Virtuoso Sponger</h1>
+<h3><a name="Situation Analysis"></a>Situation Analysis</h3>
+<p>Recent estimates (circa.
+ March &#39;09) from the Linked Open Data (LOD) community put the size of burgeoning Web of Linked Data at approximately 4.5 billion triples; in reality, this number is much larger due to the fact that the LOD community estimates are basically approximations of the data from the LOD Cloud pictorial which is primarily based on the following Linked Data source types:</p>
+<ul><li>Loads from public RDF dump archives </li>
+<li>Loads from dumps released by crawlers such as PingTheSemanticWeb, Sindice, and Falcons</li>
+</ul><p>What these estimates do not cover is the amount of RDF based Linked Data generated &quot;on the fly&quot; by RDF middleware technologies (a/k/a &quot;RDFizers&quot;).
+ Naturally, tracking the count of this form of Web is somewhat mercurial due to the fact that all of the RDFized data isn&#39;t necessarily available via a public RDF archive dump.</p>
+<p>This white paper covers Virtuoso&#39;s in-built RDFizer middleware, popularly known as the &quot;Sponger,&quot; a very powerful cross platform solution for generating RDF Linked Data &quot;on the fly&quot;.
+ The Sponger exposes its services via the Virtuoso SPARQL Engine, Content Crawler, and a RESTful API.</p>
+<p>Other facets of Virtuoso&#39;s Linked-Data-related feature set are explored in the accompanying white papers <a href="http://virtuoso.openlinksw.com/Whitepapers/pdf/Virtuoso_SQL_to_RDF_Mapping.pdf" class="absuri">Virtuoso RDF Views - Getting Started Guide</a> and <a href="http://virtuoso.openlinksw.com/Whitepapers/html/vdld_html/VirtDeployingLinkedDataGuide.html" class="absuri">Deploying Linked Data</a> .</p>
+<p> <a name="AncContents">
+ </a></p>
+<h2><a name="Contents"></a>Contents</h2>
+<ul><li><a href="#AncContents" style="anchorhere">Contents</a> </li>
+<li><a href="#AncWhat" style="anchorhere">What Is The Sponger?</a> </li>
+<li><a href="#AncSponger" style="anchorhere">Sponger Benefits</a> </li>
+<li><a href="#AncUsing" style="anchorhere">Using The Sponger</a> <ul><li><a href="#AncSPARQL" style="anchorhere">SPARQL Query Processor</a> <ul><li><a href="#AncSPARQL1" style="anchorhere">SPARQL Extensions for IRI Dereferencing of FROM Clauses</a> </li>
+<li><a href="#AncSPARQL2" style="anchorhere">SPARQL Extensions for IRI Dereferencing of Variables</a> </li>
+</ul></li>
+<li><a href="#AncProxy" style="anchorhere">RDF Proxy Service</a> </li>
+<li><a href="#AncNePrUrFo" style="anchorhere">New Proxy URI Formats (Sept 09)</a> </li>
+<li><a href="#AncOpenLink" style="anchorhere">OpenLink RDF Client Applications</a> </li>
+<li><a href="#AncODSBriefc" style="anchorhere">ODS-Briefcase (Virtuoso WebDAV)</a> <ul><li><a href="#AncSponger1" style="anchorhere">Sponger and ODS-Briefcase Structured Data Extractor Interrelationship</a> </li>
+</ul></li>
+<li><a href="#AncDirectly" style="anchorhere">Directly via Virtuoso PL</a> </li>
+</ul></li>
+<li><a href="#AncConsuming" style="anchorhere">Consuming the Generated RDF Structured Data</a> </li>
+<li><a href="#AncData" style="anchorhere">Data Sources Supported by the Sponger</a> </li>
+<li><a href="#AncDoes" style="anchorhere">How Does It Work?</a> <ul><li><a href="#AncMetadata" style="anchorhere">Metadata Extraction</a> <ul><li><a href="#AncExtraction" style="anchorhere">Extraction Pipeline</a> </li>
+</ul></li>
+<li><a href="#AncMapping" style="anchorhere">Mapping to Ontologies</a> </li>
+<li><a href="#AncSIOC" style="anchorhere">SIOC as a Data Space Glue Ontology</a> </li>
+<li><a href="#AncProxy1" style="anchorhere">Proxy Service Caching</a> </li>
+</ul></li>
+<li><a href="#AncSponger2" style="anchorhere">Sponger Architecture</a> <ul><li><a href="#AncMetadata1" style="anchorhere">Metadata Extractors</a> </li>
+<li><a href="#AncOntology" style="anchorhere">Ontology Mappers</a> </li>
+<li><a href="#AncCartridge" style="anchorhere">Cartridge Registry</a> </li>
+<li><a href="#AncCartridge1" style="anchorhere">Cartridge Invocation</a> </li>
+<li><a href="#AncMetaCartr" style="anchorhere">Meta-Cartridges</a> </li>
+</ul></li>
+<li><a href="#AncSponger3" style="anchorhere">Sponger Configuration Using Conductor</a> <ul><li><a href="#AncCartridge2" style="anchorhere">Cartridge Packaging &amp; Deployment</a> </li>
+<li><a href="#AncXSLT" style="anchorhere">XSLT Templates</a> </li>
+<li><a href="#AncGRDDL" style="anchorhere">GRDDL Mappings</a> </li>
+<li><a href="#AncMetaCartr1" style="anchorhere">Meta-Cartridges</a> </li>
+</ul></li>
+<li><a href="#AncCustom" style="anchorhere">Custom Cartridges</a> <ul><li><a href="#AncCartridge3" style="anchorhere">Cartridge Hook Prototype</a> </li>
+<li><a href="#AncExample" style="anchorhere">Example Cartridge Implementations</a> <ul><li><a href="#AncBasic" style="anchorhere">Basic Sponger Cartridge</a> </li>
+<li><a href="#AncFlickr" style="anchorhere">Flickr Cartridge</a> </li>
+</ul></li>
+<li><a href="#AncSponger4" style="anchorhere">Sponger Permissions</a> </li>
+</ul></li>
+<li><a href="#AncCustom1" style="anchorhere">Custom Resolvers</a> </li>
+<li><a href="#AncSponger5" style="anchorhere">Sponger Usage Examples</a> <ul><li><a href="#AncProxy2" style="anchorhere">RDF Proxy Service Example</a> </li>
+<li><a href="#AncSPARQL3" style="anchorhere">SPARQL Processor</a> </li>
+<li><a href="#AncCustom2" style="anchorhere">Custom Cartridge</a> </li>
+</ul></li>
+<li><a href="#AncRdfaSupport" style="anchorhere">RDFa Support - Ingest &amp; Generation</a> </li>
+<li><a href="#AncAppendix" style="anchorhere">Appendix A: Ontologies Supported by ODS-Briefcase</a> </li>
+<li><a href="#AncAppendix1" style="anchorhere">Appendix B: RDF Cartridges VAD Package</a> <ul><li><a href="#AncHTTP" style="anchorhere">HTTP in RDF</a> </li>
+<li><a href="#AncXHTML" style="anchorhere">XHTML and Feeds</a> </li>
+<li><a href="#AncFlickr1" style="anchorhere">Flickr Images / URLs</a> </li>
+<li><a href="#AncAmazon" style="anchorhere">Amazon Articles / URLs</a> </li>
+<li><a href="#AnceBay" style="anchorhere">eBay Articles / URLs</a> </li>
+<li><a href="#AncOpenOffice" style="anchorhere">OpenOffice Documents</a> </li>
+<li><a href="#AncYahoo" style="anchorhere">Yahoo Traffic Data URLs</a> </li>
+<li><a href="#AnciCalendar" style="anchorhere">iCalendar Files</a> </li>
+<li><a href="#AncBinary" style="anchorhere">Binary Content, PDF &amp; Powerpoint Files</a> </li>
+</ul></li>
+<li><a href="#AncAppendix2" style="anchorhere">Appendix C: Configuring the Aperture Framework</a> </li>
+<li><a href="#AncGlossary" style="anchorhere">Glossary</a></li>
+</ul><a name="AncWhat">
+<p> </p>
+<h2><a name="What Is The Sponger?"></a>What Is The Sponger?</h2>
+<p> Virtuoso includes theSponger, built-in RDF middleware for transforming non-RDF data into RDF &quot;on the fly&quot;.
+ Its goal is to use non-RDF Web data sources as input, e.g.
+ (X)HTML Web Pages, (X)HTML Web pages hosting microformats, and even Web services such as those from Google, Del.icio.us, Flickr etc., and create RDF as output.
+ The implication of this facility is that you can use non-RDF data sources as Linked Data Web data sources.</p>
+<p> As depicted below, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a>&#39;s broad portfolio of Linked-Data-aware products supports a number of routes for creating or consuming Linked Data.
+ The Sponger provides a key platform for developers to generate quality data meshes from unstructured or semi-structured data.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/linked_data_gen_opts3a.png" alt="OpenLink Linked Data generation options"> </div><p>Figure 1: OpenLink Linked Data generation options</p>
+<p>Architecturally, the Sponger is comprised of a number of Cartridges which are themselves comprised of a Metadata Extractor and RDF Schema/Ontology Mapper components.
+ Metadata extracted from non-RDF resources is used as the basis for generating structured data by mapping it to a suitable ontology.
+ In Data Objects terms, the job of a cartridge is to extract metadata from Web resources, be they Web pages or Web services, and to make best-effort Data Object description graphs using the extracted metadata.</p>
+<p> The Sponger is highly customizable.
+ Custom cartridges can be developed using any language supported by the Virtuoso Server Extensions API enabling RDF instance data generation from resource types not available in the default Sponger Cartridge collection bundled as a Virtuoso VAD package (<code>cartridges_dav.vad</code>).</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/sponger1_090422.png" alt=""></div><p> Figure 2: Virtuoso metadata extraction &amp; RDF structured data generation</p>
+<p> <a name="AncSponger">
+ </a></p>
+<h2><a name="Sponger Benefits"></a>Sponger Benefits</h2>
+<p>The Sponger delivers middleware that accelerates the bootstrapping of the Data Web by generating RDF Linked Data from non-RDF data sources, unobtrusively.
+ This &quot;Swiss army knife&quot; for on-the-fly Linked Data generation provides a bridge between the traditional Document Web and the Linked Data Web (&quot;Data Web&quot;).</p>
+<p>Sponging data from non-RDF Web sources and converting it to RDF exposes the data in a canonical form for querying and inference, and enables fast and easy construction of linked data driven mesh-ups as opposed to code driven Web 2.0 mash-ups.</p>
+<p> The RDF extraction and instance data generation products that offer functionality demonstrated by the Sponger are also commonly referred to as RDFizers.</p>
+<p> <a name="AncUsing">
+ </a></p>
+<h2><a name="Using The Sponger"></a>Using The Sponger</h2>
+<p> The Sponger can be invoked via the following mechanisms:</p>
+<ul><li>Virtuoso SPARQL query processor </li>
+<li>RDF Proxy Service </li>
+<li>OpenLink RDF client applications </li>
+<li>ODS-Briefcase (Virtuoso WebDAV) </li>
+<li>Directly via Virtuoso PL</li>
+</ul><a name="AncSPARQL">
+<p> </p>
+<h3><a name="SPARQL Query Processor"></a>SPARQL Query Processor</h3>
+<p> Virtuoso extends the <a href="http://dbpedia.org/resource/SPARQL" class="absuri">SPARQL Query Language</a> such that it is possible to download RDF resources from a given IRI, parse, and then store the resulting triples in a graph, with all three operations performed during the SPARQL query-execution process.
+ The IRI/URI of the graph used to store the triples is usually equal to the URL where the resources are downloaded from, consequently the feature is known as &quot;IRI/URI dereferencing&quot;.
+ If a SPARQL query instructs the SPARQL processor to retrieve the target graph into local storage, then the SPARQL sponger will be invoked.</p>
+<p>The SPARQL extensions for IRI dereferencing are described below.
+ Essentially these enable downloading and local storage of selected triples either from one or more named graphs, or based on a proximity search from a starting URI for entities matching the select criteria and also related by the specified predicates, up to a given depth.
+ For full details please refer to the <a href="http://docs.openlinksw.com/virtuoso/contents.html" class="absuri">OpenLink Virtuoso Reference Manual</a> , section <a href="http://docs.openlinksw.com/virtuoso/rdfiridereferencing.html" class="absuri">Linked Data - IRI Dereferencing</a> .</p>
+<b>Note:</b> For brevity, any reference to URI/IRIs above or in subsequent sections implies an <i>HTTP</i> URI/IRI, where IRI is an internationalized URI.
+ Similarly, in the context of the Sponger, the term IRI in the Virtuoso reference documentation should be taken to mean an <i>HTTP</i> IRI.<a name="AncSPARQL1">
+<p> </p>
+<h4><a name="SPARQL Extensions for IRI Dereferencing of FROM Clauses"></a>SPARQL Extensions for IRI Dereferencing of FROM Clauses</h4>
+<p> Virtuoso extends the syntax of the SPARQL &quot;FROM&quot; and &quot;FROM NAMED&quot; clauses.
+ It allows an additional list of options at the end of both clauses: <code>option ( get: param1 value1, get: param2 value2, ...) </code>, where the names of the allowed parameters are:</p>
+<ul><li><b><code>get:soft</code></b> is the retrieval mode.
+ Supported values are &quot;<code>soft</code>,&quot; and &quot;<code>replace</code>&quot; or &quot;<code>replacing</code>&quot;.
+<ul><li>If the value is &quot;<code>soft</code>&quot; and the destination graph is already populated (i.e., isn&#39;t empty), then the SPARQL processor will not try to retrieve triples.
+ The <code>get:soft</code> option must be present in order for the other <code>get:...</code> options to be recognized.
+</li>
+<li>Values &quot;<code>replace</code>&quot; or &quot;<code>replacing</code>&quot; clear the local graph cache.
+</li>
+</ul></li>
+<li><b><code>get:uri</code></b> is the IRI to retrieve if it is not equal to the IRI of the <code>FROM</code> clause.
+ This option can be used if the data should be retrieved from a mirror, rather than the original resource location, or in any other case where the destination graph IRI differs from the location of the resource.
+</li>
+<li><b><code>get:method</code></b> is the HTTP method which should be used to retrieve the resource.
+ Supported methods are &quot;<code>GET</code>&quot; for plain HTTP, and &quot;<code>MGET</code>&quot; for a URIQA web service endpoint.
+ By default, &quot;<code>MGET</code>&quot; is used for IRIs that end with &quot;<code>/</code>&quot; and &quot;<code>GET</code>&quot; for everything else.
+</li>
+<li><b><code>get:refresh</code></b> is the maximum allowed age of the locally cached resource, irrespective of what is specified by the server where the resource resides.
+ The option value is a positive integer specifying the maximum age in seconds.
+ Virtuoso reads HTTP headers and uses the &quot;<code>Date</code>,&quot; &quot;<code>ETag</code>,&quot; &quot;<code>Expires</code>,&quot; &quot;<code>Last-Modified</code>,&quot; &quot;<code>Cache-Control</code>,&quot; and &quot;<code>Pragma: no-cache</code>&quot; fields to calculate when the resource should be reloaded.
+ The <code>get:refresh</code> option value can override and reduce this calculated value, but cannot increase it.
+</li>
+<li><b><code>get:proxy</code></b> is the address (in the form of a &quot;<code>host:port</code>&quot; string) of the proxy server to use if direct download is impossible.</li>
+</ul><p>Example: </p><pre style="overflow:auto;"><br>SPARQL<br>SELECT ?id<br>FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;<br>  OPTION (get:soft &quot;soft&quot;, get:method &quot;GET&quot;)<br>FROM NAMED &lt;http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/sioc.ttl&gt;<br>  OPTION (get:soft &quot;soft&quot;, get:method &quot;GET&quot;)<br>WHERE { GRAPH ?g { ?id a ?o } }<br>LIMIT 10;<br></pre>
+<p>If a <code>get:...</code> parameter repeats for every <code>FROM</code> clause, it can be written as a global <code>pragma</code>, so the above query can be rewritten as: </p><pre style="overflow:auto;"><br>SPARQL<br>define get:method &quot;GET&quot;<br>define get:soft &quot;soft&quot;<br>SELECT ?id<br>FROM NAMED &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;<br>FROM NAMED &lt;http://www.openlinksw.com/dataspace/oerling/weblog/Orri%20Erling%27s%20Blog/sioc.ttl&gt;<br>WHERE { GRAPH ?g { ?id a ?o } }<br>LIMIT 10;<br></pre>
+<a name="AncSPARQL2">
+<p> </p>
+<h4><a name="SPARQL Extensions for IRI Dereferencing of Variables"></a>SPARQL Extensions for IRI Dereferencing of Variables</h4>
+<p>In addition to the &quot;<code>define get:...</code>&quot; SPARQL extensions for IRI dereferencing in FROM clauses, Virtuoso supports dereferencing SPARQL IRIs used in the WHERE clause (graph patterns) of a SPARQL query via a set of &quot;<code>define input:grab-...</code>&quot; pragmas.</p>
+<p> Consider an RDF resource which describes a member of a contact list, <i>user1</i>, and also contains statements about other users, <i>user2</i> and<i>user3</i>, known to him.
+ Resource <i>user3</i> in turn contains statements about <i>user4</i> and so on.
+ If all the data relating to these users were loaded into Virtuoso&#39;s RDF database, the query to retrieve the details of all the users could be quite simple.
+ e.g.: </p><pre style="overflow:auto;"><br>sparql<br>prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;<br>prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;<br>select ?id ?firstname ?nick<br>where<br>  {<br>    graph ?g<br>      {<br>        ?id rdf:type foaf:Person .<br>        ?id foaf:firstName ?firstname .<br>        ?id foaf:knows ?fn .<br>        ?fn foaf:nick ?nick .<br>      }<br>   }<br>limit 10;<br></pre>
+<p>But what if some or all of these resources were not present in Virtuoso&#39;s quad store? The highly distributed nature of the Linked Data Web makes it highly likely that these interlinked resources would be spread across several data spaces.
+ Virtuoso&#39;s &quot;<code>input:grab-...</code>&quot; extensions to SPARQL enable IRI dereferencing in such a way that all appropriate resources are loaded (i.e., &quot;fetched&quot;) during query execution, even if some of the resources are not known beforehand.
+ For any particular resource matched, and if necessary downloaded, by the query, it is possible to download related resources via a designated predicate path(s) to a specifiable depth (i.e., number of &#39;hops&#39;, distance, or degrees of separation [i.e., compute Transitive Closures in SPARQL]).</p>
+<p> Using Virtuoso&#39;s &#39;input:grab-&#39; pragmas to enable sponging, the above query might be recast to: </p><pre style="overflow:auto;"><br>sparql<br>define input:grab-var &quot;?more&quot;<br>define input:grab-depth 10<br>define input:grab-limit 100<br>define input:grab-base &quot;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300&quot;<br>prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;<br>prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;<br>prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;<br><br>select ?id ?firstname ?nick<br>where {<br>    graph ?g {<br>               ?id rdf:type foaf:Person .<br>               ?id foaf:firstName ?firstname .<br>               ?id foaf:knows ?fn .<br>               ?fn foaf:nick ?nick .<br>               optional { ?id rdfs:SeeAlso ?more }<br>            }<br>}<br>limit 10;<br></pre>
+<p>Another example showing a designated predicate traversal path via the input:grab-seealso extension is: </p><pre style="overflow:auto;"><br>sparql<br>define input:grab-iri &lt;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl&gt;<br>define input:grab-var &quot;id&quot;<br>define input:grab-depth 10<br>define input:grab-limit 100<br>define input:grab-base &quot;http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300&quot;<br>define input:grab-seealso &lt;foaf:maker&gt;<br>prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;<br><br>select ?id<br>where<br>  {<br>    graph ?g<br>      {<br>        ?id a foaf:Person .<br>      }<br>  }<br>limit 10;<br></pre>
+<p>A summary of the input:grab pragmas is given below.
+ Again, for full details please refer to the <a href="http://docs.openlinksw.com/virtuoso/contents.html" class="absuri">Virtuoso Reference Manual</a> .</p>
+<ul><li><b>input:grab-var</b> specifies the name of the SPARQL variable whose values should be used as IRIs of resources that should be downloaded.
+</li>
+<li><b>input:grab-iri</b> specifies an IRI that should be retrieved before executing the rest of the query, if it is not in the quad store already.
+ (This pragma can be included multiple times).
+</li>
+<li><b>input:grab-seealso</b> (or its synonym <b>input:grab-follow-predicate</b>) specifies a predicate IRI to be used when traversing a graph.
+ (This pragma can be included multiple times).
+</li>
+<li><b>input:grab-limit</b> sets the maximum number of resources (graph subject or object nodes) to be retrieved from a target graph.
+</li>
+<li><b>input:grab-depth</b> sets the maximum &#39;degrees of separation&#39; or links (predicates) between nodes in the target graph.
+</li>
+<li><b>input:grab-all &quot;yes&quot;</b> instructs the SPARQL processor to dereference everything related to the query.
+ All variables and literal IRIs in the query become values for input:grab-var and input:grab-iri.
+ The resulting performance may be very bad.
+</li>
+<li><b>input:grab-base</b> specifies the base IRI to use when converting relative IRIs to absolute.
+ (Default: empty string).
+</li>
+<li><b>input:grab-destination</b> overrides the default IRI dereferencing and forces all retrieved triples to be stored in the specified graph.
+</li>
+<li><b>input:grab-loader</b> identifies the procedure used to retrieve each resource via HTTP, parse and store it.
+ (Default: DB.DBA.RDF_SPONGE_UP) </li>
+<li><b>input:grab-resolver</b> identifies the procedure that resolves IRIs and determines the HTTP method of retrieval.
+ (Default: <code>DB.DBA.RDF_GRAB_RESOLVER_DEFAULT</code>)</li>
+</ul><a name="AncProxy">
+<p> </p>
+<h3><a name="RDF Proxy Service"></a>RDF Proxy Service</h3>
+<p> Sponger functionality is also exposed via Virtuoso&#39;s proxy service endpoints (/about/html/&lt;uri&gt; or /about/rdf/&lt;uri&gt;), which provide an in-built REST style Web service available in any Virtuoso standard installation.
+ The Sponger proxies convert a web resource into RDF by taking a target URL and either returning the content &quot;as is&quot; or transforming (by sponging) to RDF.
+ The extracted RDF is then returned directly, if requested via &#39;/about/rdf&#39;, or rendered as HTML, if requested via &#39;/about/html&#39;.
+ Thus, the proxy service can be used as a &#39;pipe&#39; for RDF browsers to browse non-RDF sources.</p>
+<p> When the cartridges package is installed, Virtuoso reserves the paths &#39;/about/rdf/&#39; and &#39;/about/html/&#39; for the RDF proxy service.
+ For example, if a Virtuoso installation on host example.com listens for HTTP requests on port 8890, then client applications should use a &#39;service endpoint&#39; string equal to &#39;<a href="http://example.com:8890/about/rdf&quot;" class="absuri">http://example.com:8890/about/rdf&#39;</a> or &#39;<a href="http://example.com:8890/about/html&quot;." class="absuri">http://example.com:8890/about/html&#39;.</a> If the cartridges package is not installed, then the service uses the path &#39;/proxy/rdf/&#39;.
+ (<b>Note:</b> The old RDF proxy service pattern &#39;/proxy/&#39; is now deprecated.)</p>
+<p> <b>Example:</b></p>
+<p> The following URLs return information about musician John Cale, gleaned from the MusicBrainz music metadatabase, rendered as RDF or HTML respectively.</p>
+<ul><li><a href="http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html" class="absuri">http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html</a> </li>
+<li><a href="http://demo.openlinksw.com/about/html/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html" class="absuri">http://demo.openlinksw.com/about/html/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html</a></li>
+</ul><p>The results of pasting each URL into a browser are shown below.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/jcale_about_rdf.png" alt="Fetched RDF metadata about John Cale"></div><p> Figure 3: Fetched RDF data returned by the /about/rdf proxy</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/jcale_about_html.png" alt="Sponger RDF metadata about John Cale rendered as HTML"></div><p> Figure 4: Fetched RDF data returned by the /about/html proxy</p>
+<p> The HTML rendering is provided by description.vsp, a Virtuoso Server Page (Virtuoso&#39;s equivalent of ASP) which is invoked by the /about/html proxy.
+Description.vsp underpins the &#39;Page Description&#39; facility (menu option &#39;View Page MetaData<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MetaData&parent=VirtSpongerWhitePaper" class="wikiword">?</a>&#39;) in the OpenLink Data Explorer (see below).
+Whilst the simple HTML representation is adequate for many purposes, clearly the raw RDF returned by the /about/rdf or /about/id proxies is unlikely to be consumed in this way.
+ The primary aim of the Sponger proxies is to provide a building block for RDF-aware client applications to request and consume the fetched RDF metadata.</p>
+<a name="AncNePrUrFo">
+<p> </p>
+<h3><a name="New Proxy URI Formats (Sept 09)"></a>New Proxy URI Formats (Sept 09)</h3>
+<p>As of September 2009, the Sponger proxy paths /about/html and /about/rdf have been augmented to support a richer slash URI scheme for identifying an entity and its metadata in a variety of representation formats.</p>
+<p>The proxy path /about/html returns an XHTML description of an entity as before, but now includes richer embedded RDFa.
+ Although some of the examples in this document still refer to /about/rdf (which is still usable), please bear in mind that this path has been deprecated in favor of /about/id.</p>
+<p>The new proxy path /about/id returns an RDF description of an entity, using a default serialization format of RDF/XML.
+ Different serialization formats can be requested by specifying the appropriate media type in an Accept header.
+ Supported alternative formats are N3, Turtle (TTL) or NTriples.
+ Alternatively, rather than using /about/id in combination with an Accept header specifying a media type, it is also possible to request a serialization format directly using another new proxy path /about/data.
+ In this case, no Accept header is required as the required format is specified as part of the request URL.</p>
+<p>To dereference the description of a Web-addressable resource via your browser simply type in one of the following URL patterns:</p>
+<ul><li>HTML description - http://&lt;sponger proxy host&gt;/about/html/&lt;URLscheme&gt;/&lt;hostname&gt;/&lt;localpart&gt; </li>
+<li>RDF description - http://&lt;sponger proxy host&gt;/about/data/&lt;format&gt;/&lt;URLscheme&gt;/&lt;hostname&gt;/&lt;localpart&gt; where format is one of xml, n3, nt, ttl or json.</li>
+</ul><h4><a name="Examples"></a>Examples</h4>
+<p>The examples which follow, illustrating how RDF metadata about a product described at www.bestbuy.com can be requested in different formats, use a public Virtuoso Sponger service hosted at linkeddata.uriburner.com.
+ For more information refer to the <a href="http://www.uriburner.com/wiki/URIBurner/" class="absuri">URIBurner Wiki</a>.</p>
+<p>Notice how requests to /about/id are redirected to /about/html, /about/data/nt, /about/data/xml or /about/data/json depending on the requested format.
+ The required URL rewriting rules are preconfigured when the cartridges VAD is installed.</p>
+<h5><a name="HTML+RDFa based metadata"></a>HTML+RDFa based metadata</h5>
+<br><pre>curl -I -H &quot;Accept: text/html&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278&quot;
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 01 Sep 2009 21:41:52 GMT
+Accept-Ranges: bytes
+Location: http://linkeddata.uriburner.com/about/html/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278
+Content-Length: 13
+</pre><p> or</p>
+<br><pre>curl -I -H &quot;Accept: application/xhtml+xml&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278&quot;
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Thu, 03 Sep 2009 14:33:45 GMT
+Accept-Ranges: bytes
+Location: http://linkeddata.uriburner.com/about/html/http/www.bestbuycom/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278
+Content-Length: 13 
+</pre><p> </p>
+<h5><a name="N3 based metadata"></a>N3 based metadata</h5>
+<br><pre>curl -I -H &quot;Accept: text/n3&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278&quot;
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Date: Tue, 01 Sep 2009 21:38:44 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: /about/data/nt/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Type: text/n3; qs=0.8
+Location: http://linkeddata.uriburner.com/about/data/nt/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Length: 13
+</pre><p> </p>
+<h5><a name="RDF/XML based metadata"></a>RDF/XML based metadata</h5>
+<br><pre>curl -I -H &quot;Accept: application/rdf+xml&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278&quot;
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Date: Tue, 01 Sep 2009 21:33:23 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: /about/data/xml/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Type: application/rdf+xml; qs=0.95
+Location: http://linkeddata.uriburner.com/about/data/xml/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Length: 13
+</pre><p> </p>
+<h5><a name="JSON based metadata"></a>JSON based metadata</h5>
+<br><pre>curl -I -H &quot;Accept: application/rdf+json&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.bestbuycom/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278&quot;
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Date: Tue, 01 Sep 2009 11:22:52 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: /about/data/json/http/www.bestbuycom/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Type: application/rdf+json; qs=0.7
+Location: http://linkeddata.uriburner.com/about/data/json/http/www.bestbuycom/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Length: 13
+</pre><p> <a name="AncOpenLink">
+ </a></p>
+<h3><a name="OpenLink RDF Client Applications"></a>OpenLink RDF Client Applications</h3>
+<p> OpenLink currently provides two main RDF client applications</p>
+<ul><li><a href="http://ode.openlinksw.com" class="absuri">OpenLink Data Explorer</a> (ODE) </li>
+<li><a href="http://demo.openlinksw.com/DAV/JS/isparql/index.html" class="absuri">iSPARQL</a></li>
+</ul><p>ODE is a Linked Data explorer packaged as a Firefox plugin (support for other browsers is planned).
+ iSPARQL is an interactive AJAX-based SPARQL query builder with support for SPARQL QBE, bundled as part of the <a href="http://oat.openlinksw.com" class="absuri">OpenLink Ajax Toolkit</a> (OAT).
+ Both RIA clients utilize sponging extensively.</p>
+<p> The ODE plugin is dual faceted - RDF data can be viewed and explored natively, through its integral RDF browser, or, as described above, rendered as HTML through ODE&#39;s &#39;View Page Metadata&#39; option.
+ The screenshots below show ODE&#39;s RDF browser being launched through the &#39;View Linked Data Sources&#39; popup menu.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/twitter_home.png" alt="Sponging Crunchbase with ODE"></div><p> Figure 5: Launching ODE&#39;s RDF browser</p>
+<p> The RDF browser then displays Network Resource RDF data being fetched via the Crunchbase cartridge.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/twitter_ode_rdf.png" alt="Sponging Crunchbase with ODE"></div><p> Figure 6: ODE RDF browser displaying Network Resource Crunchbase fetched data.</p>
+<p> iSPARQL directs queries to the configured SPARQL endpoint.
+ When targeting a Virtuoso /SPARQL service, Virtuoso specific sponging options can be enabled through the &#39;Preferences&#39; dialog box.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/isparql_options.png" alt="iSPARQL sponging options"></div><p> Figure 7: iSPARQL sponging options</p>
+<p> The iSPARQL sponger settings are appended to SPARQL queries through the &#39;<code>should-sponge</code>&#39; query parameter.
+ These are translated to IRI dereferencing pragmas on the server as follows: </p><table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px;"><b><i>iSPARQL sponging setting</i></b></td><td style="border: 1px solid #999999; padding: 1px 4px;"><b><i><code>/sparql</code> endpoint: &quot;<code>should-sponge</code>&quot; query parameter value</i></b></td><td style="border: 1px solid #999999; padding: 1px 4px;"><b><i>SPARQL processor directives</i></b></td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px;"><b>Use only local data</b></td><td style="border: 1px solid #999999; padding: 1px 4px;">N/A</td><td style="border: 1px solid #999999; padding: 1px 4px;">N/A</td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px;"><b>Retrieve remote RDF data for all missing source graphs</b></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>soft</code></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>define get:soft &quot;soft&quot;</code></td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px;"><b>Retrieve all missing remote RDF data that might be useful</b></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>grab-all</code></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>define input:grab-all &quot;yes&quot;<br>define input:grab-depth 5<br>define input:grab-limit 100</code></td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px;"><b>Retrieve all missing remote RDF data that might be useful including seeAlso references</b></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>grab-seealso</code></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>define input:grab-all &quot;yes&quot;<br>define input:grab-depth 5<br>define input:grab-limit 200<br>define input:grab-seealso &lt;http://www.w3.org.2000/01/rdf-schema#seeAlso&gt;<br>define input:grab-seealso &lt;http://xmlns.com/foaf/0.1/seeAlso&gt;</code> </td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px;"><b>Try to download all referenced resources</b></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>grab-everything</code></td><td style="border: 1px solid #999999; padding: 1px 4px;"><code>define input:grab-all &quot;yes&quot;<br>define input:grab-intermediate &quot;yes&quot;<br>define input:grab-depth 5<br>define input:grab-limit 500<br>define input:grab-seealso &lt;http://www.w3.org.2000/01/rdf-schema#seeAlso&gt;<br>define input:grab-seealso &lt;http://xmlns.com/foaf/0.1/seeAlso&gt;<br></code></td></tr></table>
+<a name="AncODSBriefc">
+<p> </p>
+<h3><a name="ODS-Briefcase (Virtuoso"></a>ODS-Briefcase (Virtuoso <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a>)</h3>
+<p> ODS-Briefcase is a component of <a href="http://virtuoso.openlinksw.com/wiki/main/Main/OdsIndex" class="absuri">OpenLink Data Spaces</a> (ODS), a new generation distributed collaborative application platform for creating Semantic Web presence via Data Spaces derived from weblogs, wikis, feed aggregators, photo galleries, shared bookmarks, discussion forums and more.
+ It is also a high level interface to the Virtuoso <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> repository.</p>
+<p> ODS-Briefcase offers file-sharing functionality that includes the following features:</p>
+<ul><li>Web browser-based interactions </li>
+<li>Web Services (direct use of the HTTP based <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> protocol) </li>
+<li>SPARQL query language support - all <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> resources are exposed as <a href="http://sioc-project.org/" class="absuri">SIOC</a> ontology instance data (RDF data sets)</li>
+</ul><p>When resources or documents are put into the ODS Briefcase and are made publicly readable (via a Unix-style +r permission or ACL setting) and the resource in question is of a supported content type, metadata is automatically extracted at file upload time.</p>
+<p> <b>Note</b> :<i>ODS-Briefcase extracts metadata from a wide array of file formats, automatically.</i></p>
+<p> The extracted metadata is available in two forms, pure <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> and RDF (with RDF/XML or N3/Turtle serialization options), that is optionally synchronized with the underlying Virtuoso Quad Store.</p>
+<p> All public readable resources in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> have their owner, creation time, update time, size and tags published, plus associated content type dependent metadata.
+ This <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> metadata is also available in RDF form as a SPARQL queryable graph accessible via the SPARQL protocol endpoint using the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> location as the RDF data set URI (graph or data source URI).</p>
+<p> You can also use a special RDF_Sink folder to automate the process of uploading RDF resources files into the Virtuoso Quad Store via <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> or raw HTTP.
+ The properties of the special folder control whether sponging (RDFization) occurs.
+ Of course, by default, this feature is enabled across all Virtuoso and ODS installations (with an ODS-Briefcase Data Space instance enabled).</p>
+<p> <b>Raw HTTP Example using CURL:</b> </p><pre style="overflow:auto;"><br>Username: demo<br>Password: demo<br>Source File: wine.rdf<br>Destination Folder:<br>http://demo.openlinksw.com/DAV/home/demo/rdf_sink/<br>Content Type: application/rdf+xml<br><br>$ curl -v -T wine.rdf -H content-type:application/rdf+xml http://demo.openlinksw.com/DAV/home/demo/rdf_sink/ -u demo:demo<br></pre>
+<p>Finally, you can also get RDF data into Virtuoso&#39;s Quad Store via <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> using the Virtuoso Web Crawler utility (configurable via the Virtuoso Conductor UI).
+ This feature also provides the ability to enable or disable Sponging as depicted below.</p>
+<p> <a name="AncSponger1">
+ </a></p>
+<h4><a name="Sponger and ODS-Briefcase Structured Data Extractor Interrelationship"></a>Sponger and ODS-Briefcase Structured Data Extractor Interrelationship</h4>
+<p> As the Sponger and ODS-Briefcase both extract structured data, what is the relationship between these two facilities?</p>
+<p> The principal difference between the two is that the Sponger is an<i>RDF data crawler &amp; generator</i> , whereas Briefcase&#39;s structured data extractor is a <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> resource<i>filter</i> . The Briefcase structured data extractor is aimed at providing RDF data from <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> resources.
+ Thus, if none of the available Sponger cartridges are able to extract metadata and produce RDF structured data, the Sponger calls upon the Briefcase extractor as the last resort in the RDF structured data generation pipeline.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig2_top.jpg" alt="Frame5"></div> <br> <div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig2_bottom.jpg" alt="Frame5"></div><p> Figure 8: Conductor&#39;s content import configuration panel</p>
+<p> <a name="AncDirectly">
+ </a></p>
+<h3><a name="Directly via Virtuoso PL"></a>Directly via Virtuoso PL</h3>
+<p> Sponger cartridges are invoked through a cartridge hook which provides a Virtuoso PL entry point to the packaged functionality.
+ Should you wish to utilize the Sponger from your own Virtuoso PL procedures, you can do so by calling these hook routines directly.
+ Full details of the hook function prototype and how to define your own cartridges are presented later in this document.</p>
+<p> <a name="AncConsuming">
+ </a></p>
+<h2><a name="Consuming the Generated RDF Structured Data"></a>Consuming the Generated RDF Structured Data</h2>
+<p> The generated RDF-based structured data (RDF) can be consumed in a number of ways, depending on whether or not the data is persisted in Virtuoso&#39;s RDF Quad Store.</p>
+<p> If the data is persisted, it can be queried through the Virtuoso SPARQL endpoint associated with any Virtuoso instance: /sparql.
+ The RDF is exposed in a graph typically identified using a URL matching the source resource URL from which the RDF data was generated.
+ Naturally, any SQL query can also access this, since SPARQL can be freely intermixed with SQL via Virtuoso&#39;s SPASQL (SPARQL inside SQL) functionality.
+ RDF data is also accessible through Virtuoso&#39;s implementation of the <a href="http://sw.nokia.com/uriqa/URIQA.html" class="absuri">URIQA</a> protocol.</p>
+<p> If not persisted, as is the case with the RDF Proxy Service, the data can be consumed by an RDF aware Web client, e.g.
+ an RDF browser such as the OpenLink Data Explorer (ODE).</p>
+<p> <a name="AncData">
+ </a></p>
+<h2><a name="Data Sources Supported by the Sponger"></a>Data Sources Supported by the Sponger</h2>
+<ul><li>RDF, including N3 or Turtle: automatically recognized ontologies include: </li>
+<li>SIOC, SKOS, FOAF, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a>, Annotea, Music Ontology, Bibliograhic Ontology, EXIF, vCard, and others </li>
+<li>(X)HTML pages </li>
+<li>HTML header metadata tags: Dublin Core </li>
+<li>Embedded microformats: eRDF, RDFa, hCard, hCalendar, XFN and xFolk </li>
+<li>Syndication Formats </li>
+<li>RSS 2.0 </li>
+<li>Atom </li>
+<li>OPML </li>
+<li>OCS </li>
+<li>XBEL (for bookmarks) </li>
+<li>GRDDL </li>
+<li>REST-style Web Service APIs: Google Base, Flickr, Del.icio.us, Ning, Amazon, eBay, Freebase, Facebook, Slideshare, Wikipedia, Musicbrainz, YouTube<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/YouTube&parent=VirtSpongerWhitePaper" class="wikiword">?</a>, FriendFeed<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/FriendFeed&parent=VirtSpongerWhitePaper" class="wikiword">?</a>, CrunchBase<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CrunchBase&parent=VirtSpongerWhitePaper" class="wikiword">?</a>, Digg, raw HTTP etc.
+</li>
+<li>Files: A multitude of built-in extractors are available for a variety of file formats and MIME types including: </li>
+<li>Binary files: MS Office, OpenOffice<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenOffice&parent=VirtSpongerWhitePaper" class="wikiword">?</a>, Open Document Format, images, audio, video etc.
+</li>
+<li>Web services contract files: (BPEL, WSDL), XBRL, XBEL </li>
+<li>Data exchange formats: iCalendar, vCard </li>
+<li>Virtuoso VADs </li>
+<li>OpenLink licence files </li>
+<li>Third party metadata extraction frameworks: Aperture, Spotlight and SIMILE RDFizers</li>
+</ul><a name="AncDoes">
+<p> </p>
+<h2><a name="How Does It Work?"></a>How Does It Work?</h2>
+<a name="AncMetadata">
+<p> </p>
+<h3><a name="Metadata Extraction"></a>Metadata Extraction</h3>
+<p> When an RDF aware client requests data from a network accessible resource via the Sponger the following events occur:</p>
+<ul><li>A request is made for data in RDF form (explicitly via Content Negotiation using HTTP Accept Headers), and if RDF is returned nothing further happens.
+</li>
+<li>If RDF isn&#39;t returned, the Sponger passes the data through a Metadata Extraction Pipeline (using Metadata Extractors).
+</li>
+<li>The extracted data is transformed into RDF via a Mapping Pipeline . RDF entities (instance data) are generated by way of ontology matching and mapping.
+</li>
+<li>RDF instance data (aka.
+ RDF Structured Linked Data) are returned to the client.</li>
+</ul><a name="AncExtraction">
+<p> </p>
+<h4><a name="Extraction Pipeline"></a>Extraction Pipeline</h4>
+<p>Depending on the file or format type detected at ingest, the Sponger applies the appropriate metadata extractor.
+ Detection occurs at the time of content negotiation instigated by the retrieval user agent.
+ The normal metadata extraction pipeline processing is follows:</p>
+<ul><li>The Sponger tries to get RDF data (including N3 or Turtle) directly from the dereferenced URL.
+ If it finds some, it returns it, otherwise, it continues.
+</li>
+<li>If the URL refers to a HTML file, the Sponger tries to find &quot;link&quot; elements referring to RDF documents.
+ If it finds one or more of them, it adds their triples into a temporary RDF graph and continues its processing.
+</li>
+<li>The Sponger then scans for microformats markup or GRDDL profile URIs.
+ If either is found, RDF triples are generated and added to a temporary RDF graph before continuing.
+</li>
+<li>If the Sponger finds eRDF or RDFa data in the HTML file, it extracts it from the HTML file and inserts it into the RDF graph before continuing.
+</li>
+<li>If the Sponger finds it is talking to a web service such as Google Base, it maps the API of the web service with an ontology, creates triples from that mapping and inserts the triples into the temporary RDF graph.
+</li>
+<li>The next fallback is scanning of the HTML header for different Web 2.0 types or RSS 1.1, RSS 2.0, Atom, etc.
+</li>
+<li>Failing those tests, the scan then uses standard Web 1.0 rules to search in the header tags for metadata (typically Dublin Core) and transforms them to RDF and again adds them to the temporary graph.
+ Other HTTP response header data may also be transformed to RDF.
+</li>
+<li>If nothing has been retrieved at this point, the Briefcase metadata extractor is tried.
+</li>
+<li>Finally, if nothing is found, the Sponger will return an empty graph (should the HTTP cartridge be disabled).</li>
+</ul><a name="AncMapping">
+<p> </p>
+<h3><a name="Mapping to Ontologies"></a>Mapping to Ontologies</h3>
+<p> RDF generation is done on the fly either using built-in XSLT processors, or in the case of GRDDL, the associated XSLT (exposed via Profile URIs) and local or remote XSLT processors.
+ The RDF generation performed by the Mapping Pipeline is based on an internal mapping table which associates the source data&#39;s type with schemas and ontologies.
+ This mapping will vary depending on if you are using Virtuoso with or without the ODS layer.
+ If the ODS application layer (meaning the ODS-Framework and the ODS-Briefcase Data Space application at the very least) is present, the Sponger performs additional mapping using <a href="http://dbpedia.org/resource/SIOC" class="absuri">SIOC</a> , <a href="http://dbpedia.org/resource/SKOS" class="absuri">SKOS</a> , <a href="http://dbpedia.org/resource/FOAF_%28software%29" class="absuri">FOAF</a> , <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a>, <a href="http://dbpedia.org/resource/Annotea" class="absuri">Annotea</a> bookmarks, Annotea annotations, <a href="http://en.wikipedia.org/wiki/Exif" class="absuri">EXIF</a> , and other ontologies depending on the source data.</p>
+<p> The number of ontologies handled by the Sponger is being increased constantly.
+ To identify which ontologies are supported, view the Conductor&#39;s RDF Cartridges configuration panel as described later.
+ For details of how to determine the full ontology set supported by Briefcase, refer to Appendix A.</p>
+<p> <a name="AncSIOC">
+ </a></p>
+<h3><a name="SIOC as a Data Space Glue Ontology"></a>SIOC as a Data Space Glue Ontology</h3>
+<p> ODS has its own built-in cartridges for the SIOC ontology which it uses as a data space &quot;glue&quot; ontology.
+ SIOC provides a generic data model of containers, items, item types, and associations between items.
+ The actual classes defined by SIOC include: User, UserGroup<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/UserGroup&parent=VirtSpongerWhitePaper" class="wikiword">?</a>, Role, Site, Forum and Post.
+ A separate <a href="http://rdfs.org/sioc/types" class="absuri">SIOC types module</a> (sioc-t) extends the <a href="http://rdfs.org/sioc/spec/" class="absuri">SIOC Core ontology</a> by defining additional super-classes, sub-classes and sub-properties to the original SIOC terms.
+ Subclasses include: AddressBook, BookmarkFolder, Briefcase, EventCalendar, ImageGallery, Wiki, Weblog, BlogPost, Wiki plus many others.
+ Within this generic model, SIOC permits the use of other ontologies (FOAF etc.) in describing attributes of SIOC entities that provide sound conceptual partitioning of data spaces that expose RDF Linked Data.
+ Superclasses include: Container (a generic container of Items) and Space (Data Spaces).
+ Thus, it&#39;s safe to say that SIOC delivers a generic wrapper, or &quot;glue&quot;, ontology for integrating structured RDF data from a myriad of heterogeneous web accessible data sources.</p>
+<p> All the data containers (briefcases, blogs, wikis, discussions etc.) maintained by the various ODS application realms (Data Spaces) describe and expose their data as SIOC instance data.
+ The <a href="http://virtuoso.openlinksw.com/wiki/main/Main/ODSSIOCRef" class="absuri">ODS SIOC Reference Guide</a> details the SIOC mappings for each ODS application component (ODS-Framework, ODS-Weblog, ODS-Briefcase, ODS-Feed-Manager, ODS-Wiki, ODS-Mail, ODS-Calendar, ODS-Bookmark-Manager, ODS-Gallery, ODS-Polls, ODS-Addressbook, ODS-Discussion and ODS-Community).
+ <a href="http://virtuoso.openlinksw.com/wiki/main/Main/VOSODSSparqlSamples" class="absuri">Example SPARQL queries</a> for interacting with the SIOC instance data are also shown.
+ In the context of the Sponger, the SIOC mappings used by ODS-Briefcase are some of the most powerful aspects of ODS as a whole (i.e.
+ delivering a platform independent and web architecture based variant of Mac OS X&#39;s Spotlight functionality).</p>
+<p> <a name="AncProxy1">
+ </a></p>
+<h3><a name="Proxy Service Caching"></a>Proxy Service Caching</h3>
+<p> When the Proxy Service is invoked by a user agent, the Sponger caches the imported data in temporary Virtuoso storage.
+ The cache&#39;s invalidation rules conform to those of traditional Web browsers.
+ The data expiration time is determined based on subsequent data fetches of the same resource.
+ The first data retrieval records the &#39;expires&#39; header.
+ On subsequent fetches, the current time is compared to the expiration time stored in the local cache.
+ If HTTP &#39;expires&#39; header data isn&#39;t returned by the source data server, the Sponger will derive its own expiration time by evaluating the &#39;date&#39; header and &#39;last-modified&#39; HTTP headers.
+ The cache can be forcefully cleared using the SPARQL extensions get:soft &quot;replace&quot; or get:soft &quot;replacing&quot;, as described earlier in the section &quot;SPARQL Extensions for IRI Dereferencing&quot;.</p>
+<p> <a name="AncSponger2">
+ </a></p>
+<h2><a name="Sponger Architecture"></a>Sponger Architecture</h2>
+<p> As described earlier and illustrated below, the Sponger is comprised of cartridges which are themselves comprised of metadata extractors and ontology mappers.
+ A cartridge is invoked through its cartridge hook, a Virtuoso PL procedure entry point and binding to the cartridge&#39;s metadata extractor and ontology mapper.</p>
+<p> <a name="AncMetadata1">
+ </a></p>
+<h3><a name="Metadata Extractors"></a>Metadata Extractors</h3>
+<p> Metadata extractors perform the initial data extraction operations against data sources that include: (X)HTML documents, XML based syndication formats (RSS, Atom, OPML, OCS etc.), binary files, REST style Web services and Microformats (non GRDDL, GRDDL, eRDF, and RDFa).
+ Each metadata extractor is aligned to at least one ontology mapper.</p>
+<p> Metadata extractors are built using Virtuoso PL, C/C++, Java or any other external language supported by Virtuoso&#39;s Server Extension API.
+ Of course, Virtuoso&#39;s own metadata extractors are written in Virtuoso PL.
+ Third party extractors can be harnessed through the external language support, examples being XMP and <a href="http://en.wikipedia.org/wiki/Spotlight_%28software%29" class="absuri">Spotlight</a> (both C/C++ based), <a href="http://aperture.sourceforge.net/" class="absuri">Aperture</a> (Java based), and SIMILE RDFizers (also Java based).</p>
+<p> <a name="AncOntology">
+ </a></p>
+<h3><a name="Ontology Mappers"></a>Ontology Mappers</h3>
+<p> Sponger ontology mappers perform the the task of generating RDF instance data from extracted metadata (non-RDF) using ontologies associated with a given data source type.
+ They are typically XSLT (using GRDDL or an in-built Virtuoso mapping scheme) or Virtuoso PL based.
+ Virtuoso comes preconfigured with a large range of ontology mappers contained in one or more Sponger cartridges.
+ Nevertheless you are free to create and add your own cartridges, ontology mappers, or metadata extractors.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/sponger2_090422.png" alt=""></div><p> Figure 9: Sponger architecture</p>
+<p> Below is an extract from the stylesheet /DAV/VAD/cartridges/xslt/main/flickr2rdf.xsl, used for extracting metadata from Flickr images.
+ Here, the template combines RDF metadata extraction and ontology mapping based on the FOAF and Dublin Core ontologies.
+</p><pre style="overflow:auto;"><br>  &lt;xsl:template match=&quot;owner&quot;&gt;<br>  &lt;rdf:Description rdf:nodeID=&quot;person&quot;&gt;<br>  &lt;rdf:type rdf:resource=&quot;http://xmlns.com/foaf/0.1/#Person&quot; /&gt;<br>  &lt;xsl:if test=&quot;@realname != &#39;&#39;&quot;&gt;<br>  &lt;foaf:name&gt;&lt;xsl:value-of select=&quot;@realname&quot;/&gt;&lt;/foaf:name&gt;<br>  &lt;/xsl:if&gt;<br>  &lt;foaf:nick&gt;&lt;xsl:value-of select=&quot;@username&quot;/&gt;&lt;/foaf:nick&gt;<br>  &lt;/rdf:Description&gt;<br>  &lt;/xsl:template&gt;<br>  &lt;xsl:template match=&quot;photo&quot;&gt;<br>  &lt;rdf:Description rdf:about=&quot;{$baseUri}&quot;&gt;<br>  &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2003/12/exif/ns/IFD&quot;/&gt;<br>  &lt;xsl:variable name=&quot;lic&quot; select=&quot;@license&quot;/&gt;<br>  &lt;dc:creator rdf:nodeID=&quot;person&quot; /&gt;<br>  ...<br></pre>
+<a name="AncCartridge">
+<p> </p>
+<h3><a name="Cartridge Registry"></a>Cartridge Registry</h3>
+<p> Once a Sponger cartridge has been developed it must be plugged into the SPARQL engine by registering it in the Cartridge Registry, i.e.
+ by adding a record in the table DB.DBA.SYS_RDF_MAPPERS, either manually via DML, or more easily through Conductor (Virtuoso&#39;s browser-based administration console), which provides a UI for adding your own cartridges.
+ Sponger configuration using Conductor is described in detail later.
+ For the moment, we&#39;ll focus on outlining the broad architecture of the Sponger.</p>
+<p> The SYS_RDF_MAPPERS table definition is as follows: </p><pre style="overflow:auto;"><br>create table DB.DBA.SYS_RDF_MAPPERS (<br>  RM_ID integer identity,         -- cartridge ID, designate order of execution<br>  RM_PATTERN varchar,             -- a REGEX pattern to match URL or MIME type<br>  RM_TYPE varchar default &#39;MIME&#39;, -- which property of the current resource to match: MIME or URL<br>  RM_HOOK varchar,                -- fully qualified PL function name e.g. DB.DBA.MY_CARTRIDGE_FUNCTION<br>  RM_KEY  long varchar,           -- API specific key to use<br>  RM_DESCRIPTION long varchar,    -- Cartridge description (free text)<br>  RM_ENABLED integer default 1,   -- 0 or 1 integer flag to include or exclude the given cartridge from Sponger processing chain<br>  RM_OPTIONS any,                 -- cartridge specific options<br>  RM_PID integer identity,        -- for internal use only<br>  primary key (RM_HOOK)<br>  );<br></pre>
+<a name="AncCartridge1">
+<p> </p>
+<h3><a name="Cartridge Invocation"></a>Cartridge Invocation</h3>
+<p> The Virtuoso SPARQL processor supports IRI dereferencing via the Sponger.
+ Thus, if the SPARQL query contains references to non-default graph URIs the Sponger goes out (via HTTP) to grab the RDF data sources exposed by the data source URIs and then places them into local storage (as Default or Named Graphs depending on the SPARQL query).
+ Since SPARQL is RDF based, it can only process RDF-based structured data, serialized using RDF/XML, Turtle or N3 formats.
+ As a result, when the SPARQL processor encounters a non-RDF data source, a call to the Sponger is triggered.
+ The Sponger then locates the appropriate cartridge for the data source type in question, resulting in the production of SPARQL-palatable RDF instance data.
+ If none of the registered cartridges are capable of handling the received content type, the Sponger will attempt to obtain RDF instance data via the in-built <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> metadata extractor.</p>
+<p> Sponger cartridges are invoked during the aforementioned pipeline as follows:</p>
+<p> When the SPARQL processor dereferences a URI, it plays the role of an HTTP user agent (client) that makes a content type specific request to an HTTP server via the HTTP request&#39;s Accept headers.
+ The following then occurs:</p>
+<ul><li>If the content type returned is RDF then no further transformation is needed and the process stops.
+ For instance, when consuming an (X)HTML document with a GRDDL profile, the profile URI points to a data provider that simply returns RDF instance data.
+</li>
+<li>If the content type is not RDF (i.e.
+ application/rdf+xml or text/rdf+n3 ), for instance &#39;text/plain&#39;, the Sponger looks in the Cartridge Registry iterating over every record for which the RM_ENABLED flag is true, with the look-up sequence ordered on the RM_ID column values.
+ For each record, the processor tries matching the content type or URL against the RM_PATTERN value and, if there is match, the function specified in RM_HOOK column is called.
+ If the function doesn&#39;t exist, or signals an error, the SPARQL processor looks at next record.
+</li>
+<li>If the hook returns zero, the next cartridge is tried.
+ (A cartridge function can return zero if it believes a subsequent cartridge in the chain is capable of extracting more RDF data.) </li>
+<li>If the result returned by the hook is negative, the Sponger is instructed that no RDF was generated and the process stops.
+</li>
+<li>If the hook result is positive, the Sponger is informed that structured data was retrieved and the process stops.
+</li>
+<li>If none of the cartridges match the source data signature (content type or URL), the built-in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> metadata extractor&#39;s RDF generator is called.
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/flowchart2.png" alt=""></div></li>
+</ul><p> Figure 10: Sponger cartridge invocation flowchart</p>
+<p> <a name="AncMetaCartr">
+ </a></p>
+<h3><a name="Meta-Cartridges"></a>Meta-Cartridges</h3>
+<p> Thus far our description of cartridges and the RDF generation process has focussed on &#39;primary&#39; Sponger cartridges.
+ Virtuoso also supports another cartridge type - a &#39;<b>meta-cartridge</b> &#39;.
+ Meta-cartridges act as post-processors in the cartridge pipeline, augmenting entity descriptions in an RDF graph with additional information gleaned from &#39;lookup&#39; data sources and web services.
+ The lookup web service typically offers a REST API that provides full text search and which is used as the basis for meta-cartridges to add triples to the Sponger graph construction pipeline.</p>
+<p> The way a meta-cartridge operates is essentially the same as a primary cartridge, that is it has a cartridge hook function with the same signature and it inserts data into the quad store through entity extraction and ontology mapping as before.
+ Where meta-cartridges differ from primary cartridges is in their intent and their position in the cartridge invocation pipeline.
+ The purpose of meta-cartridges is to enrich graphs produced by other (primary) cartridges.
+ They serve as general post-processors to add additional information about selected entities in an RDF graph.
+ The added triples typically expose the extra information through the &quot;rdfs:seeAlso&quot; predicate.</p>
+<p> Virtuoso includes a number of meta-cartridges to utilize lookup and classification services such as <a href="http://www.opencalais.com/" class="absuri">Calais</a> (entity identification from unstructured documents), <a href="http://www.zemanta.com/" class="absuri">Zemanta</a> (recommendation of related content), <a href="http://www.hoovers.com/free/" class="absuri">Hoovers</a> (company and industry facts) and <a href="http://www.umbel.org/" class="absuri">UMBEL</a> (a classification framework for subject concept references).
+ Another example is the &#39;World Bank&#39; meta-cartridge which adds information relating to a country&#39;s GDP, its exports of goods and services as a percentage of GDP etc; retrieved using the <a href="http://www.worldbank.org" class="absuri">World Bank</a> web service API.</p>
+<p> Meta-cartridges in the meta-cartridge registry are configured to match a given MIME type or URI pattern.
+ Matching meta-cartridges are invoked in order of their configured sequence value.
+ Ordinarily the meta-cartridge hook function should return 0, in which case the next meta-cartridge in the post-processing chain will be invoked.
+ If it returns 1 or -1, the post-processing stops and no further meta-cartridges are invoked.
+ Notice that, as shown in the above flowchart, if the target URL returns RDF directly meta-cartridges may be invoked even if primary cartridges are not.</p>
+<b>Note: Meta-cartridges are only available in the closed source version of Virtuoso.</b> The meta-cartridge feature is disabled in Virtuoso Open Source edition (VOS).
+ Meta-cartridge stylesheets reside in DAV/VAD/cartridges/xslt/meta.
+ In VOS, this directory is empty.<a name="AncSponger3">
+<p> </p>
+<h2><a name="Sponger Configuration Using Conductor"></a>Sponger Configuration Using Conductor</h2>
+<p> The Virtuoso Conductor provides a graphical UI for most Virtuoso administration tasks, including interfaces for managing Sponger Cartridges.</p>
+<p> <a name="AncCartridge2">
+ </a></p>
+<h3><a name="Cartridge Packaging &amp; Deployment"></a>Cartridge Packaging &amp; Deployment</h3>
+<p> The cartridges VAD (Virtuoso Application Distribution) bundles a variety of pre-built cartridges for generating RDF instance data from a large range of popular Web resources and file types.
+ Appendix B provides full details of the VAD&#39;s contents.
+ The cartridges installed by the VAD can be viewed and configured through Conductor&#39;s Cartridges pane reached via the RDF &gt; Sponger tabs.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig5_top.jpg" alt=""></div><div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig5_bottom.jpg" alt=""></div><p> Figure 11: Conductor&#39;s RDF Cartridges pane</p>
+<p> Earlier we outlined the structured data generation pipeline in which the search sequence for possible sources of metadata is controlled by the RDF cartridge ordering.
+ This ordering can configured through the Conductor UI, as shown.
+ The order in which cartridges are tried is reflected in the &#39;Seq#&#39; values.</p>
+<p> Among the various entry fields are fields for the cartridge hook function and the URL/MIME-type pattern, corresponding to the RM <u>HOOK and RM_PATTERN columns of the SYS_RDF_MAPPERS table.</u></p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig6_top.jpg" alt=""></div> <br> <div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig6_bottom.jpg" alt=""></div><p> Figure 12: Flickr cartridge configuration settings</p>
+<p> <a name="AncXSLT">
+ </a></p>
+<h3><a name="XSLT Templates"></a>XSLT Templates</h3>
+<p> The RDF Cartridges VAD package includes a number of XSLT templates, all located in the folder /DAV/VAD/cartridges/xslt/main/.
+ All the available templates can be viewed through Virtuoso&#39;s <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> browser, as illustrated below.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig7.jpg" alt=""></div><p> Figure 13: RDF Cartridges VAD package - XSLT templates</p>
+<p> <a name="AncGRDDL">
+ </a></p>
+<h3><a name="GRDDL Mappings"></a>GRDDL Mappings</h3>
+<p> Some of the XSLT templates contained in /DAV/VAD/cartridges/xslt/main/ are GRDDL filters.
+ The GRDDL filters can be configured through the GRDDL Mappings panel in Conductor.
+ The URI for stylesheets stored in a Virtuoso <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> repository takes the form <code>virt://WS.WS.SYS.DAV_RES.RES_FULL_PATH.RES_CONTENT</code>.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/fig8.jpg" alt=""></div><p> Figure 14: RDF Cartridges VAD package - GRDDL filters</p>
+<p> <a name="AncMetaCartr1">
+ </a></p>
+<h3><a name="Meta-Cartridges"></a>Meta-Cartridges</h3>
+<p> As with &#39;primary&#39; cartridges, Conductor provides a panel for managing meta-cartridges.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/metacartridge_config_screen_top.png" alt="Conductor's meta-cartridge configuration panel"></div> <br> <div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/metacartridge_config_screen_bottom.png" alt="Conductor's meta-cartridge configuration panel"></div><p> Figure 15: Conductor&#39;s RDF Meta-cartridges pane</p>
+<p> Like primary cartridges, meta-cartridges can be scoped to a URL or content-type (MIME type) by specifying an appropriate pattern.
+ Subject to it being written to be data-source agnostic, associating a meta-cartridge with one or more content-types is generally preferable to scoping by URL.</p>
+<p> <a name="AncCustom">
+ </a></p>
+<h2><a name="Custom Cartridges"></a>Custom Cartridges</h2>
+<p> The Sponger is fully extensible by virtue of its pluggable Cartridge architecture.
+ New data formats can be fetched by creating new cartridges.
+ While OpenLink is actively adding cartridges for new data sources, you are obviously free to develop your own custom cartridges.
+ To this end, details of the cartridge hook and example cartridge implementations are presented below.</p>
+<p> <a name="AncCartridge3">
+ </a></p>
+<h3><a name="Cartridge Hook Prototype"></a>Cartridge Hook Prototype</h3>
+<p> Every Virtuoso PL hook function used to plug a custom Sponger cartridge into the Virtuoso SPARQL engine must have a parameter list with the following parameters (the names of the parameters are not important, but their order and presence are) :</p>
+<p> <b>in graph_iri</b> <b>varchar</b> : the IRI of the graph currently being retrieved/crawled</p>
+<p> <b>in new origin_uri varchar</b> : the URL of the document being retrieved</p>
+<p> <b>in destination varchar</b> : the destination/target graph IRI</p>
+<p> <b>inout content any</b> : the content of the document retrieved by Sponger</p>
+<p> <b>inout async_queue any</b> : if the PingService initialization parameter has been configured in the [SPARQL] section of the virtuoso.ini file, this is a pre-allocated asynchronous queue to be used to call the <a href="http://pingthesemanticweb.com/" class="absuri">PingTheSemanticWeb</a> notification service</p>
+<p> <b>inout ping_service any</b> : the URL of a ping service, as assigned to the PingService parameter in the [SPARQL] section of the virtuoso.ini configuration file.
+ This argument could be used to notify the <a href="http://ping.semanticweb.org/" class="absuri">PingTheSemanticWeb</a> notification service</p>
+<p> <b>inout api_key any</b> : a string value specific to a given cartridge, contained in the RM_KEY column of the DB.DBA.SYS_RDF_MAPPERS table.
+ The value can be a single string or a serialized array of strings providing cartridge specific data</p>
+<p> <b>inout opts any</b> : cartridge specific options held in a Virtuoso PL vector which acts as an array of key-value pairs.</p>
+<p> <a name="AncExample">
+ </a></p>
+<h3><a name="Example Cartridge Implementations"></a>Example Cartridge Implementations</h3>
+<p> The examples which follow provide a brief insight into the basic internals of a cartridge.
+ For more in-depth descriptions of how to write custom cartridges, please refer to the <a href="http://virtuoso.openlinksw.com/Whitepapers/html/VirtSpongerCartridgeProgrammersGuide.html" class="absuri">Sponger Cartridge Programmer&#39;s Guide</a> .</p>
+<p> <a name="AncBasic">
+ </a></p>
+<h4><a name="Basic Sponger Cartridge"></a>Basic Sponger Cartridge</h4>
+<p> In our first example (which is available in the form of an <a href="http://demo.openlinksw.com/tutorial/rdf/rd_s_1/rd_s_1.vsp" class="absuri">on-line tutorial</a> ) we implement a basic cartridge, which maps the MIME type text/plain to an imaginary ontology which extends the class Document from FOAF with properties &#39;txt:UniqueWords<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/UniqueWords&parent=VirtSpongerWhitePaper" class="wikiword">?</a>&#39; and &#39;txt:Chars&#39;, where the prefix &#39;txt:&#39; is specified as &#39;urn:txt:v0.0:&#39;.
+</p><pre style="overflow:auto;"><br>use DB;<br><br>create procedure DB.DBA.RDF_LOAD_TXT_META<br>(<br>  in graph_iri varchar,<br>  in new_origin_uri varchar,<br>  in dest varchar,<br>  inout ret_body any,<br>  inout aq any,<br>  inout ps any,<br>  inout ser_key any<br>)<br>{<br>  declare words, chars int;<br>  declare vtb, arr, subj, ses, str any;<br>  declare ses any;<br>  -- if any error we just say nothing can be done<br>  declare exit handler for sqlstate &#39;*&#39;<br>  {<br>    return 0;<br>  };<br>  subj := coalesce (dest, new_origin_uri);<br>  vtb := vt_batch ();  chars := length (ret_body);<br>  -- using the text index procedures we get a list of words<br>  vt_batch_feed (vtb, ret_body, 1);<br>  arr := vt_batch_strings_array (vtb);<br>  -- the list has &#39;word&#39; and positions array, so we must divide by 2<br>  words := length (arr) / 2;<br>  ses := string_output ();<br><br>  -- we compose a N3 literal<br>  http (sprintf (&#39;&lt;%s&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;    &lt;http://xmlns.com/foaf/0.1/Document&gt; .\n&#39;, subj), ses);<br>  http (sprintf (&#39;&lt;%s&gt; &lt;urn:txt:v0.0:UniqueWords&gt; &quot;%d&quot; .\n&#39;, subj, words), ses);<br>  http (sprintf (&#39;&lt;%s&gt; &lt;urn:txt:v0.0:Chars&gt; &quot;%d&quot; .\n&#39;, subj, chars), ses);<br>  str := string_output_string (ses);<br>  -- we push the N3 text into the local store<br>  DB.DBA.TTLP (str, new_origin_uri, subj);<br>  return 1;<br>};<br><br>delete from DB.DBA.SYS_RDF_MAPPERS where RM_HOOK = &#39;DB.DBA.RDF_LOAD_TXT_META&#39;;<br>insert soft DB.DBA.SYS_RDF_MAPPERS (RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DESCRIPTION)<br>    values (&#39;(text/plain)&#39;, &#39;MIME&#39;, &#39;DB.DBA.RDF_LOAD_TXT_META&#39;, null, &#39;Text Files (demo)&#39;);<br>-- Set invocation order (RM_ID) to some large number so we don&#39;t break existing cartridges<br>update DB.DBA.SYS_RDF_MAPPERS set RM_ID = 2000 where RM_HOOK = &#39;DB.DBA.RDF_LOAD_TXT_META&#39;;<br></pre>
+<p>To test the cartridge you can use /sparql endpoint with option &#39;Retrieve remote RDF data for all missing source graphs&#39; to execute: </p><pre style="overflow:auto;"><br>select * from &lt;URL-of-a-txt-file&gt; where { ?s ?p ?o }<br></pre>
+<p>Notice in this example the use of DB.DBA.TTLP( ) to load the extracted structured data into the Virtuoso Quad Store.
+ This RDF data import function parses TTL (TURTLE or N3) and inserts the triples into the table DB.DBA.RDF_QUAD, one of the key tables underpinning the Quad Store.
+ For further details of Virtuoso&#39;s RDF and SPARQL API, please refer to the <a href="http://docs.openlinksw.com/virtuoso/contents.html" class="absuri">OpenLink Virtuoso Reference Manual</a> .</p>
+<p> <a name="AncFlickr">
+ </a></p>
+<h4><a name="Flickr Cartridge"></a>Flickr Cartridge</h4>
+<p> The next example shows the Virtuoso/PL procedure RDF_LOAD_FLICKR_IMG at the heart of the Virtuoso&#39;s Flickr Sponger cartridge: </p><pre style="overflow:auto;"><br>--no_c_escapes-<br>  create procedure DB.DBA.RDF_LOAD_FLICKR_IMG (<br>  in graph_iri varchar, in new_origin_uri varchar, in dest varchar,<br>  inout _ret_body any, inout aq any, inout ps any, inout _key any,<br>  inout opts any)<br>  {<br>  declare xd, xt, url, tmp, api_key, img_id, hdr, exif any;<br>  declare exit handler for sqlstate &#39;*&#39;<br>  {<br>  return 0;<br>  };<br><br>  tmp := sprintf_inverse (new_origin_uri,<br>  &#39;http://farm%s.static.flickr.com/%s/%s_%s.%s&#39;, 0);<br>  img_id := tmp[2];<br>  api_key := _key;<br>  --cfg_item_value (virtuoso_ini_path (), &#39;SPARQL&#39;, &#39;FlickrAPIkey&#39;);<br>  if (tmp is null or length (tmp) &lt;&gt; 5 or not isstring (api_key))<br>  return 0;<br>  url := sprintf<br>  (&#39;http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&amp;photo_id=%s&amp;api_key=%s&#39;, img_id, api_key);<br>  tmp := http_get (url, hdr);<br>  if (hdr[0] not like &#39;HTTP/1._ 200 %&#39;)<br>  signal (&#39;22023&#39;, trim(hdr[0], &#39;\r\n&#39;), &#39;RDFXX&#39;);<br>  xd := xtree_doc (tmp);<br>  exif := xtree_doc (&#39;&lt;rsp/&gt;&#39;);<br>  {<br>  declare exit handler for sqlstate &#39;*&#39; { goto ende; };<br>  url := sprintf   (&#39;http://api.flickr.com/services/rest/?method=flickr.photos.getExif&amp;photo_id=%s&amp;api_key=%s&#39;, img_id, api_key);<br>  tmp := http_get (url, hdr);<br>  if (hdr[0] like &#39;HTTP/1._ 200 %&#39;)<br>  exif := xtree_doc (tmp);<br>  ende:;<br>  }<br>  xt := xslt (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/flickr2rdf.xsl&#39;, xd,<br>  vector (&#39;baseUri&#39;, coalesce (dest, graph_iri), &#39;exif&#39;, exif));<br>  xd := serialize_to_UTF8_xml (xt);<br>  DB.DBA.RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));<br>  return 1;<br>  }<br></pre>
+<p>Here the http_get( ) function retrieves an HTML page associated with the specified image, which is then parsed into an XML entity and in-memory XML parse tree by xtree_doc( ).
+ Using the xslt( ) function with the stylesheet flickr2rdf.xsl, the XML entity is transformed into RDF/XML which is in turn parsed by RDF_LOAD_RDFXML( ) and the extracted triples loaded into the Virtuoso Quad Store.</p>
+<p> <a name="AncSponger4">
+ </a></p>
+<h3><a name="Sponger Permissions"></a>Sponger Permissions</h3>
+<p> In order to allow the Sponger to update the local RDF quad store with triples constituting the Network Resource structured data being fetched, the role &quot;SPARQL_UPDATE&quot; must be granted to the account &quot;SPARQL&quot;.
+ This should normally be the case.
+ If not, you must manually grant this permission.
+ As with most Virtuoso DBA tasks, the Conductor provides the simplest means of doing this.</p>
+<p> <a name="AncCustom1">
+ </a></p>
+<h2><a name="Custom Resolvers"></a>Custom Resolvers</h2>
+<p> The Sponger supports pluggable &quot;Custom Resolver&quot; cartridges in order to support the dereferencing of other forms of URIs besides HTTP URLs, such as URN schemes.
+ The handle-based DOI naming scheme, the URN naming scheme, and also the URN-based LSID scheme, are examples of custom resolvers.</p>
+<p> By supporting alternate resolvers the range of data sources which can be linked into the Semantic Data-Web is extended enormously.
+ The LSID resolver enables URN-based resources to be accessible as linked data.
+ Similarly, the DOI resolver permits the huge collection of DOI-based data sources to be linked into the Web of Linked Data (Data Web).</p>
+<p> An example SPARQL query dereferencing a URN-based URI is shown below: </p><pre style="overflow:auto;"><br>http://demo.openlinksw.com/sparql?default-graph-uri=urn:lsid:ubio.org:namebank:11815&amp;should-sponge=soft&amp;query=SELECT+*+WHERE+{?s+?p+?o}&amp;format=text/html&amp;debug=on<br></pre>
+<p>As one would expect, the RDF Proxy Service also recognizes URNs.
+ e.g: </p><pre style="overflow:auto;"><br>http://demo.openlinksw.com/proxy/rdf/?url=urn:lsid:ubio.org:namebank:11815&amp;force=rdf<br></pre>
+<a name="AncSponger5">
+<p> </p>
+<h2><a name="Sponger Usage Examples"></a>Sponger Usage Examples</h2>
+<p> <a name="AncProxy2">
+ </a></p>
+<h3><a name="RDF Proxy Service Example"></a>RDF Proxy Service Example</h3>
+<p> The file <a href="http://www.ivan-herman.net/foaf.html" class="absuri">http://www.ivan-herman.net/foaf.html</a> contains a short profile of the W3C Semantic Web Activity Lead Ivan Herman.
+ This XHTML file contains RDF embedded as RDFa.
+ Running the file through the Sponger via Virtuoso&#39;s RDF proxy service extracts the embedded FOAF data as pure RDF, as can be seen by executing </p><pre style="overflow:auto;"><br>curl -H &quot;Accept: application/rdf+xml&quot; http://linkeddata.uriburner.com/about/rdf/http://www.ivan-herman.net/foaf.html<br></pre>
+<p>(linkeddata.uriburner.com hosts a public Virtuoso instance.) Though this example demonstrates the action of the /about/rdf/ service quite transparently, it is a basic and unwieldy way to view RDF.
+ As described earlier, the <a href="http://demo.openlinksw.com/DAV/JS/rdfbrowser/index.html" class="absuri">OpenLink Data Explorer</a> uses the same proxy service to provide a more polished means to extract and view the fetched RDF data.</p>
+<p> <a name="AncSPARQL3">
+ </a></p>
+<h3><a name="SPARQL Processor"></a>SPARQL Processor</h3>
+<p> As an alternative to using the RDF proxy service, we can perform Network Resource Fetch directly from within the SPARQL processor.
+ After logging into Virtuoso&#39;s Conductor interface, the following query can be issued from the Interactive SQL (iSQL) panel: </p><pre style="overflow:auto;"><br>sparql<br>define get:uri &quot;http://www.ivan-herman.net/foaf.html&quot;<br>define get:soft &quot;soft&quot;<br>select * from &lt;http://mygraph&gt; where {?s ?p ?o}<br></pre>
+<p>Here the sparql keyword invokes the SPARQL processor from the SQL interface and the Network Resource RDF data being fetched from page <a href="http://www.ivan-herman.net/foaf.html" class="absuri">http://www.ivan-herman.net/foaf.html</a> is loaded into the local RDF quad store as graph http://mygraph .</p>
+<p> The new graph can then be queried using the basic SPARQL client normally available in a default Virtuoso installation at http://localhost:8890/sparql/.
+ e.g.: </p><pre style="overflow:auto;"><br>select * from &lt;http://mygraph&gt; where {?s ?p ?o}<br></pre>
+<a name="AncCustom2">
+<p> </p>
+<h3><a name="Custom Cartridge"></a>Custom Cartridge</h3>
+<p> The Virtuoso/PL code for a simple custom cartridge, DB.DBA.RDF_LOAD_TXT_META, was presented earlier.
+ Included in the code was the SQL required to register the cartridge in the Cartridge Registry.
+ Paste the whole of this code into Conductor&#39;s iSQL interface and execute it to define and register the cartridge.</p>
+<p> Create a simple text document with a .txt extension.
+ This must now be made Web accessible.
+ A simple way to do this is to expose it as a <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> resource using Virtuoso&#39;s built-in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> support.
+ Login to Virtuoso&#39;s ODS Briefcase application, navigate to your Public folder and upload your text document, ensuring that the file extension is .txt, the MIME type is set to text/plain and the file permissions are rw-r--r--.
+ If, for the purposes of this example, you logged into a local default Virtuoso instance as user &#39;dba&#39; and uploaded a file named &#39;ODS_sponger_test.txt&#39;, the file would be Web accessible via the URL http://localhost:8890/DAV/home/dba/Public/ODS_sponger_test.txt.</p>
+<p> To perform Network Resource Fetch of the document using the RDF_LOAD_TXT_META cartridge, use the basic SPARQL client available at http://localhost:8890/sparql to execute the query </p><pre style="overflow:auto;"><br>select * from<br>&lt;http://localhost:8890/DAV/home/dba/Public/ODS_sponger_test.txt&gt;<br>where {?s ?p ?o}<br></pre>
+<p>with the option &#39;Retrieve remote RDF data for all missing source graphs&#39; set.</p>
+<a name="AncRdfaSupport">
+<p> </p>
+<h2><a name="RDFa Support - Ingest &amp; Generation"></a>RDFa Support - Ingest &amp; Generation</h2>
+<p>With Yahoo and Google both having announced support for <a href="http://www.w3.org/TR/rdfa-syntax/" class="absuri">RDFa</a>, this metadata markup syntax has assumed a new importance.
+ Nonetheless, viewed in the context of OpenLink&#39;s RDF support, it simply constitutes another supported syntax for encoding RDF metadata, alongside RDF/XML, N3, Turtle, NTriples and JSON.</p>
+<p>The Virtuoso Sponger will, via the xHTML cartridge, automatically ingest any RDFa found when sponging an XHTML resource and cache the extracted RDF in the quad store.
+ Conversely, if a client requests a resource description in the form of XHTML, Virtuoso will embed RDFa into the returned XHTML automatically.
+ Virtuoso can generate RDFa for a Network Resource being fetched even if the original resource was not described using RDFa.
+ Likewise RDFa can be generated for resources whose RDF descriptions were imported directly into the quad store, rather than being fetched.</p>
+<p>In our <a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide" class="absuri">Deploying Linked Data Guide</a>, we emphasize the distinction between a real world concept or entity and its, possibly many, descriptions, where each description is associated with a different media-type.
+ When dereferencing an entity URI, the description returned is determined by the media-type(s) specified in any Accept headers expressing the client&#39;s preferred representation formats.
+ As shown earlier in the examples from section <a href="#AncNePrUrFo" style="anchorhere">New Proxy URI Formats</a>, a client can request an RDFa description of an entity, i.e.
+ XHTML+RDFa, either by supplying an Accept header with a media-type of application/xhtml+xml or text/html,</p>
+<p>e.g.
+</p><pre style="overflow: auto;"><br>  curl -I -H &quot;Accept: application/xhtml+xml&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.crunchbase.com/company/twitter&quot;<br></pre>      or <pre style="overflow: auto;"><br>     curl -I -H &quot;Accept: text/html&quot; &quot;http://linkeddata.uriburner.com/about/id/http/www.crunchbase.com/company/twitter&quot;<br></pre> or by using the /about/html proxy directly, e.g.: <pre style="overflow: auto;"><br>e.g. curl -I &quot;http://linkeddata.uriburner.com/about/html/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&amp;type=product&amp;id=1218115079278&quot;<br></pre>
+<p>The /about/html proxy underpins the OpenLink Data Explorer&#39;s &quot;View Page Metadata&quot; option.
+ The latter generates an XHTML+RDFa rendering of RDF metadata using the page description facilities of the VSP page description.vsp.
+ (For a brief discussion of description.vsp please refer to <a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_description_vsp" class="absuri">Appendix A: Description.vsp - Rendering RDF as HTML</a> in the <a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide" class="absuri">Deploying Linked Data Guide</a>.)</p>
+<p>The screenshot below shows ODE&#39;s &quot;View Page Metadata&quot; output when <a href="http://www.crunchbase.com/company/twitter" class="absuri">http://www.crunchbase.com/company/twitter</a> is fetched by the public Sponger at <a href="http://linkeddata.uriburner.com" class="absuri">http://linkeddata.uriburner.com</a>.
+ The subsequent screenshot highlights some of the RDFa markup in a heavily cutdown extract from the description.vsp generated page source.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/twitter_desc_vsp.png" alt="Fetched Twitter company profile"> </div><p>Figure 16: Fetched Twitter company profile</p>
+<p> </p><div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/rdfa_extract.png" alt="Page source extract highlighting snippets of generated RDFa"> </div>
+<p>Figure 17: Page source extract highlighting snippets of generated RDFa</p>
+<p>Essentially, in the description.vsp output page, values listed under the &quot;Has Attributes &amp; Values&quot; tab are described using RDFa attributes @rel and @resource, if the object part of the triple is a URI, or using @property if the object part is a literal.
+ Entities listed under the &quot;Is Attribute Value Of&quot; tab  are described using RDFa attributes @rev and @resource.</p>
+<p>Bear in mind that the /about/...
+ proxies need not be specified directly by a client, that is they need not form part of the HTTP request URL.
+ They can be invoked indirectly through appropriately configured URL rewriting rules.
+ As described in detail in the Linked Data Deployment Guide section &quot;Transparent Content Negotiation Examples&quot;, requests can be redirected via /about/html in response to a request for media-type application/xhtml+xml or text/html.
+ In this way, assuming rewrite rules set up along the lines described in <a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_TCN#AncDbpedia" class="absuri">Transparent Content Negotiation Examples / DBpedia</a>, a Yahoo or Google spider crawling <a href="http://dbpedia.org/resource/The_Beatles" class="absuri">http://dbpedia.org/resource/The_Beatles</a> would be served XHTML+RDFa generated dynamically from the base RDF.</p>
+<p> <a name="AncAppendix">
+ </a></p>
+<h2><a name="Appendix A: Ontologies Supported by ODS-Briefcase"></a>Appendix A: Ontologies Supported by ODS-Briefcase</h2>
+<p> The full range of ontologies and mappings supported by the ODS-Briefcase metadata extractor is reflected in the contents of the Virtuoso directory DAV/VAD/oDrive/schemas/ (e.g.
+ for a local Virtuoso instance, this would be http://localhost:8890/DAV/VAD/oDrive/schemas/).</p>
+<p> The schema directory is browsed easily using the Conductor <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> Browser.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtSpongerWhitePaper/appendixA_1.jpg" alt=""></div><p> The schema files packaged in Briefcase cover both standard and custom ontologies.
+ The standard ontologies include FOAF, OpenDocument<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenDocument&parent=VirtSpongerWhitePaper" class="wikiword">?</a>, RSS , XBEL , Apple Spotlight and vCard.
+ Others are proprietary OpenLink ontologies for describing file types and content.</p>
+<p> Below is a partial listing of one of these files, Office.rdf, which defines the proprietary Office ontology used by Virtuoso for mapping Microsoft Office documents to RDF structured data.
+</p><pre style="overflow:auto;"><br>  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>  &lt;!--<br>  -<br>  -  $Id: Office.rdf,v 1.4 2007/05/10 08:51:53 ddimitrov Exp $<br>  -<br>  -  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)<br>  -  project.<br>  -<br>  -  Copyright (C) 1998-2007 OpenLink Software<br>  -<br>  ...<br>  -<br>  --&gt;<br>  &lt;rdf:RDF xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-schema#&quot;<br>  xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;<br>  xmlns:owl =&quot;http://www.w3.org/2002/07/owl#&quot;<br>  xmlns:virtrdf=&quot;http://www.openlinksw.com/schemas/virtrdf#&quot;<br>  xml:base=&quot;http://www.openlinksw.com/schemas/Office#&quot;&gt;<br>  &lt;owl:Ontology rdf:about=&quot;http://www.openlinksw.com/schemas/Office#&quot;&gt;<br>  &lt;rdfs:label&gt;Microsoft Office document&lt;/rdfs:label&gt;<br>  &lt;rdfs:comment&gt;The Microsoft Office format general attributes.&lt;/rdfs:comment&gt;<br>  &lt;virtrdf:catName&gt;Office Documents (Microsoft)&lt;/virtrdf:catName&gt;<br>  &lt;virtrdf:version&gt;1.00&lt;/virtrdf:version&gt;<br>  &lt;/owl:Ontology&gt;<br>  &lt;rdf:Property rdf:about=&quot;http://www.openlinksw.com/schemas/Office#TypeDescr&quot;&gt;<br>  &lt;rdfs:Range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;<br>  &lt;virtrdf:cardinality&gt;single&lt;/virtrdf:cardinality&gt;<br>  &lt;virtrdf:label&gt;Document Type&lt;/virtrdf:label&gt;<br>  &lt;virtrdf:catName&gt;Document Type&lt;/virtrdf:catName&gt;<br>  &lt;/rdf:Property&gt;<br>  &lt;rdf:Property rdf:about=&quot;http://www.openlinksw.com/schemas/Office#Author&quot;&gt;<br>  &lt;rdfs:Range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;<br>  &lt;virtrdf:cardinality&gt;single&lt;/virtrdf:cardinality&gt;<br>  &lt;virtrdf:label&gt;Author&lt;/virtrdf:label&gt;<br>  &lt;virtrdf:defaultValue&gt;No name&lt;/virtrdf:defaultValue&gt;<br>  &lt;virtrdf:catName&gt;Author&lt;/virtrdf:catName&gt;<br>  &lt;/rdf:Property&gt;<br>  &lt;rdf:Property rdf:about=&quot;http://www.openlinksw.com/schemas/Office#LastAuthor&quot;&gt;<br>  &lt;rdfs:Range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;<br>  &lt;virtrdf:cardinality&gt;single&lt;/virtrdf:cardinality&gt;<br>  &lt;virtrdf:label&gt;Last Author&lt;/virtrdf:label&gt;<br>  &lt;virtrdf:defaultValue&gt;No name&lt;/virtrdf:defaultValue&gt;<br>  &lt;virtrdf:catName&gt;Last Author&lt;/virtrdf:catName&gt;<br>  &lt;/rdf:Property&gt;<br>  &lt;rdf:Property rdf:about=&quot;http://www.openlinksw.com/schemas/Office#Company&quot;&gt;<br>  &lt;rdfs:Range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;<br>  &lt;virtrdf:cardinality&gt;single&lt;/virtrdf:cardinality&gt;<br>  &lt;virtrdf:label&gt;Company&lt;/virtrdf:label&gt;<br>  &lt;virtrdf:defaultValue&gt;No name&lt;/virtrdf:defaultValue&gt;<br>  &lt;virtrdf:catName&gt;Company&lt;/virtrdf:catName&gt;<br>  &lt;/rdf:Property&gt;<br>  &lt;rdf:Property rdf:about=&quot;http://www.openlinksw.com/schemas/Office#Words&quot;&gt;<br>  &lt;rdfs:Range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;/&gt;<br>  &lt;virtrdf:cardinality&gt;single&lt;/virtrdf:cardinality&gt;<br>  &lt;virtrdf:label&gt;Word Count&lt;/virtrdf:label&gt;<br>  &lt;/rdf:Property&gt;<br>  ...<br>  &lt;rdf:Property rdf:about=&quot;http://www.openlinksw.com/schemas/Office#Created&quot;&gt;<br>  &lt;rdfs:Range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#dateTime&quot;/&gt;<br>  &lt;virtrdf:cardinality&gt;single&lt;/virtrdf:cardinality&gt;<br>  &lt;virtrdf:label&gt;Date Created&lt;/virtrdf:label&gt;<br>  &lt;virtrdf:catName&gt;Created&lt;/virtrdf:catName&gt;<br>  &lt;/rdf:Property&gt;<br>  &lt;/rdf:RDF&gt;</pre>
+<a name="AncAppendix1">
+<p> </p>
+<h2><a name="Appendix B: RDF Cartridges VAD Package"></a>Appendix B: RDF Cartridges VAD Package</h2>
+<p> Virtuoso supplies cartridges for extracting RDF data from certain popular Web resources and file types in the form of the VAD (Virtuoso Application Distribution) package cartridges_dav.vad.
+ If not already present, it can be installed using Conductor or the VAD_INSTALL function.
+ Please refer to the <a href="http://docs.openlinksw.com/virtuoso/contents.html" class="absuri">Virtuoso Reference Manual</a> for detailed information on VADs and VAD management.</p>
+<p> Details of each of the cartridges contained in the cartridges VAD are given below.</p>
+<p> <a name="AncHTTP">
+ </a></p>
+<h3><a name="HTTP in RDF"></a>HTTP in RDF</h3>
+<p> A cartridge for mapping HTTP request and response messages to the HTTP vocabulary expressed in RDF, as defined by <a href="http://www.w3.org/2006/http.rdfs" class="absuri">http://www.w3.org/2006/http.rdfs</a> .</p>
+<p> This cartridge is disabled by default.
+ If it is enabled, it must be first in the order of execution.
+ The cartridge hook function always returns 0, allowing other cartridge to return additional RDF instance data.</p>
+<p> <a name="AncXHTML">
+ </a></p>
+<h3><a name="XHTML and Feeds"></a>XHTML and Feeds</h3>
+<p> This is a composite cartridge for discovering in HTML pages metadata embedded in a variety of forms.
+ The cartridge looks for RDF data in the order listed below:</p>
+<ul><li>Embedded/linked RDF </li>
+<li>Scans for metadata in a linked RDF document identified by a link element, e.g.
+ &lt;link rel=&quot;meta&quot; type=&quot;application/rdf+xml&quot; href=&quot;<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/#section-rdf-in-HTML" class="absuri">http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/#section-rdf-in-HTML</a>&quot; see=&quot;see&quot; a=&quot;a&quot; style=&quot;absuri&quot;&gt;Using RDF/XML with HTML and XHTML ) </li>
+<li>RDF embedded in xHTML (as markup or inside XML comments) </li>
+<li>Micro-formats </li>
+<li>GRDDL / GRDDL Data Views - <a href="http://www.w3.org/2003/g/data-view" class="absuri">http://www.w3.org/2003/g/data-view</a> </li>
+<li>eRDF - <a href="http://research.talis.com/2005/erdf/profile" class="absuri">http://research.talis.com/2005/erdf/profile</a> </li>
+<li>RDFa </li>
+<li>hCard - XMDP profile: <a href="http://www.w3.org/2006/03/hcard" class="absuri">http://www.w3.org/2006/03/hcard</a> </li>
+<li>hCalendar - XMDP profile: <a href="http://dannyayers.com/microformats/hcalendar-profile" class="absuri">http://dannyayers.com/microformats/hcalendar-profile</a> </li>
+<li>hReview - XMDP profile: <a href="http://dannyayers.com/micromodels/profiles/hreview" class="absuri">http://dannyayers.com/micromodels/profiles/hreview</a> </li>
+<li><a href="http://wiki.creativecommons.org/RelLicense" class="absuri">relLicense</a> - Creative Commons (CC) license schema: <a href="http://web.resource.org/cc/schema.rdf" class="absuri">http://web.resource.org/cc/schema.rdf</a> </li>
+<li><a href="http://dublincore.org/" class="absuri">Dublin Core (DCMI)</a> - Vocabulary definition: <a href="http://purl.org/dc/elements/1.1/" class="absuri">http://purl.org/dc/elements/1.1/</a> </li>
+<li>geoURL - Vocabulary definition: <a href="http://www.w3.org/2003/01/geo/wgs84_pos" class="absuri">http://www.w3.org/2003/01/geo/wgs84_pos#</a> </li>
+<li>Google Base - OpenLink Virtuoso specific mapping </li>
+<li><a href="http://www.ning.com/" class="absuri">Ning</a> Metadata </li>
+<li>Feeds extraction </li>
+<li>RSS/RDF - SIOC &amp; <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> </li>
+<li>RSS 1.0 - RSS/RDF, SIOC &amp; <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> </li>
+<li>Atom 1.0 - RSS/RDF, SIOC &amp; <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> </li>
+<li>RSS/RDF: <a href="http://purl.org/rss/1.0/" class="absuri">http://purl.org/rss/1.0/</a> </li>
+<li><a href="http://sioc-project.org/" class="absuri">SIOC</a> - Vocabulary definition: <a href="http://rdfs.org/sioc/ns" class="absuri">http://rdfs.org/sioc/ns#</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> - Vocabulary definition: <a href="http://atomowl.org/ontologies/atomrdf.rdf" class="absuri">http://atomowl.org/ontologies/atomrdf.rdf</a> </li>
+<li>xHTML metadata transformation using FOAF (foaf:Document) and Dublin Core properties (dc:title, dc:subject etc.) </li>
+<li><a href="http://www.foaf-project.org/" class="absuri">FOAF</a> - Vocabulary definition: <a href="http://xmlns.com/foaf/0.1/" class="absuri">http://xmlns.com/foaf/0.1/</a></li>
+</ul><a name="AncFlickr1">
+<p> </p>
+<h3><a name="Flickr Images / URLs"></a>Flickr Images / URLs</h3>
+<p> A Sponger cartridge for Flickr images, using the Flickr REST API.
+ To function properly it must have a configured key.
+ The Flickr cartridge generates RDF instance data using: CC license, Dublin Core, Dublin Core Metadata Terms, GeoURL, FOAF and <a href="http://www.exif.org/" class="absuri">EXIF</a> (ontology definition: <a href="http://www.w3.org/2003/12/exif/ns/" class="absuri">http://www.w3.org/2003/12/exif/ns/</a> ).</p>
+<p> <a name="AncAmazon">
+ </a></p>
+<h3><a name="Amazon Articles / URLs"></a>Amazon Articles / URLs</h3>
+<p> A cartridge for Amazon articles using the Amazon REST API.
+ It needs a Amazon API key in order to be functional.</p>
+<p> <a name="AnceBay">
+ </a></p>
+<h3><a name="eBay Articles / URLs"></a>eBay Articles / URLs</h3>
+<p> Implements <a href="http://www.linuxjournal.com/article/9037" class="absuri">eBay&#39;s REST API</a> in order to generate RDF from eBay articles.
+ It needs a key and user name to be configured in order to work.</p>
+<p> <a name="AncOpenOffice">
+ </a></p>
+<h3><a name="Documents"></a>OpenOffice<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenOffice&parent=VirtSpongerWhitePaper" class="wikiword">?</a> Documents</h3>
+<p> OpenOffice<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenOffice&parent=VirtSpongerWhitePaper" class="wikiword">?</a> documents contain metadata which can be extracted using UNZIP, so this cartridge needs the Virtuoso UNZIP plugin to be configured on the server.
+ (Each OpenOffice file is actually a collection of XML documents stored in a ZIP archive).</p>
+<p> <a name="AncYahoo">
+ </a></p>
+<h3><a name="Yahoo Traffic Data URLs"></a>Yahoo Traffic Data URLs</h3>
+<p> Transforms <a href="http://developer.yahoo.com/traffic/rest/V1/index.html" class="absuri">Yahoo traffic data</a> to RDF.</p>
+<p> <a name="AnciCalendar">
+ </a></p>
+<h3><a name="iCalendar Files"></a>iCalendar Files</h3>
+<p> Transforms <a href="http://en.wikipedia.org/wiki/iCalendar" class="absuri">iCalendar</a> files to RDF as per <a href="http://www.w3.org/2002/12/cal/ical" class="absuri">http://www.w3.org/2002/12/cal/ical#</a> .</p>
+<p> <a name="AncBinary">
+ </a></p>
+<h3><a name="Binary Content, PDF &amp; Powerpoint Files"></a>Binary Content, PDF &amp; Powerpoint Files</h3>
+<p> Unknown binary content, PDF or MS PowerPoint files, or indeed any file type handled by an Aperture extractor, can be transformed to RDF using the <a href="http://aperture.sourceforge.net" class="absuri">Aperture</a> framework, a Java framework for extracting and querying full-text content and metadata from various information systems (file systems, web sites, mail boxes etc) and file formats (documents, images etc).
+ For details of how to configure the Aperture cartridge see Appendix C.</p>
+<p> <a name="AncAppendix2">
+ </a></p>
+<h2><a name="Appendix C: Configuring the Aperture Framework"></a>Appendix C: Configuring the Aperture Framework</h2>
+<hr><p> In order to work, the Aperture cartridge requires a Virtuoso instance with Java hosting support, and the Aperture framework and the MetaExtractor.class to be installed on the host system.</p>
+<p>To set up Virtuoso to host and run the Aperture framework, follow these steps:</p>
+<ul><li>Install a Virtuoso binary which includes built-in Java hosting support (The executable name will indicate whether the required hosting support is built in - a suitably enabled executable will include javavm in the name, for example virtuoso-javavm-t, rather than virtuoso-t).
+</li>
+<li>Download the Aperture framework from <a href="http://aperture.sourceforge.net" class="absuri">http://aperture.sourceforge.net</a>.
+</li>
+<li>Unpack the contents of the framework&#39;s lib directory into an &#39;aperture&#39; subdirectory of the Virtuoso working directory, i.e.
+ of the directory containing the database and virtuoso.ini files.
+</li>
+<li>Ensure the Virtuoso working directory includes a &#39;lib&#39; subdirectory containing the file MetaExtractor.class.
+      (At the current time MetaExtractor.class in not included in the cartridges VAD.
+ Please contact OpenLink Technical Support to obtain a copy.) </li>
+<li>In the [Parameters] section of the virtuoso.ini configuration file: <ul><li>Add the line (linebreaks have been inserted for clarity): <br><pre><br>JavaClasspath = lib:aperture/DFKIUtils2.jar:aperture/JempBox-0.2.0.jar:aperture/activation-1.0.2-upd2.jar:aperture/aduna-commons-xml-2.0.jar:
+aperture/ant-compression-utils-1.7.1.jar:aperture/aperture-1.2.0.jar:aperture/aperture-examples-1.2.0.jar:aperture/aperture-test-1.2.0.jar:
+aperture/applewrapper-0.2.jar:aperture/bcmail-jdk14-132.jar:aperture/bcprov-jdk14-132.jar:aperture/commons-codec-1.3.jar:aperture/commons-httpclient-3.1.jar:
+aperture/commons-lang-2.3.jar:aperture/demork-2.1.jar:aperture/flickrapi-1.0.jar:aperture/fontbox-0.2.0-dev.jar:aperture/htmlparser-1.6.jar:
+aperture/ical4j-1.0-beta4.jar:aperture/infsail-0.1.jar:aperture/jacob-1.10.jar:aperture/jai_codec-1.1.3.jar:aperture/jai_core-1.1.3.jar:aperture/jaudiotagger-1.0.8.jar:
+aperture/jcl104-over-slf4j-1.5.0.jar:aperture/jpim-0.1-aperture-1.jar:aperture/junit-3.8.1.jar:aperture/jutf7-0.9.0.jar:aperture/mail-1.4.jar:
+aperture/metadata-extractor-2.4.0-beta-1.jar:aperture/mstor-0.9.11.jar:aperture/nrlvalidator-0.1.jar:aperture/openrdf-sesame-2.2.1-onejar-osgi.jar:
+aperture/osgi.core-4.0.jar:aperture/pdfbox-0.7.4-dev-20071030.jar:aperture/poi-3.0.2-FINAL-20080204.jar:aperture/poi-scratchpad-3.0.2-FINAL-20080204.jar:
+aperture/rdf2go.api-4.6.2.jar:aperture/rdf2go.impl.base-4.6.2.jar:aperture/rdf2go.impl.sesame20-4.6.2.jar:aperture/rdf2go.impl.util-4.6.2.jar:
+aperture/slf4j-api-1.5.0.jar:aperture/slf4j-jdk14-1.5.0.jar:aperture/unionsail-0.1.jar:aperture/winlaf-0.5.1.jar
+</pre><br></li>
+<li>Ensure <code>DirsAllowed</code> includes directories <code>/tmp</code> (or other temporary directory for the host operating system), <code>lib</code>, and <code>aperture</code>.
+</li>
+</ul></li>
+<li>Start the Virtuoso server </li>
+<li>Configure the cartridge either by installing the cartridges VAD or, if the VAD is already installed, by executing procedure DB.DBA.RDF_APERTURE_INIT.
+</li>
+<li>During the VAD installation process, RDF_APERTURE_INIT() configures the Aperture cartridge.
+ If you look in the list of available cartridges under the RDF &gt; Sponger tab in Conductor, you should see an entry for &#39;Binary Files&#39;.</li>
+</ul><p>To check the cartridge has been configured, connect with Virtuoso&#39;s ISQL tool:</p>
+<ul><li>Issue the command<br> <br><pre><br>      SQL &gt; select udt_is_available(&#39;APERTURE.DBA.MetaExtractor&#39;);
+</pre><br></li>
+<li>Copy a test PDF document to the Virtuoso working directory, then execute <br><pre><br>      SQL&gt; select APERTURE.DBA.&quot;MetaExtractor&quot;().getMetaFromFile (&#39;some_pdf_in_server_working_dir.pdf&#39;, 0);
+</pre><br>       ...
+ some RDF data should be returned ...</li>
+</ul><p>You should now be able to retrieve all document types supported by the Aperture framework, (using one of the standard Sponger invocation mechanisms, for instance with a URL of the form http://localhost:8890/about/rdf/http://targethost/targetfile.pdf), subject to the MIME type pattern filters configured for the cartridge in the Conductor UI.
+ By default the Aperture cartridge is registered to match MIME types (application/octet-stream)|(application/pdf)|(application/mspowerpoint).
+ To retrieve all the MIME types Aperture is capable of handling, changed the MIME type pattern to &#39;application/.*&#39;.</p>
+<p>Important: The installation guidelines presented above have been verified on Mac OS X with Aperture 1.2.0.
+ Some adjustment may be needed for different operating systems or versions of Aperture.</p>
+<a name="AncGlossary">
+<p> </p>
+<h2><a name="Glossary"></a>Glossary</h2>
+<p> <b>Aperture</b> - a Java framework for extracting and querying full-text content and metadata from various information systems (file systems, web sites, mail boxes etc) and file formats (documents, images etc).</p>
+<p>  <a href="http://www.cnri.reston.va.us/" class="absuri">CRNI</a>  <a href="http://www.handle.net/" class="absuri">Handle System</a> - provides unique persistent identifiers (handles) for Internet resources.
+ It is a general purpose distributed information system providing identifier and resolution services through a namespace and an open set of protocols which allow handles to be resolved into the information necessary to locate, access and use the resources they identify.</p>
+<p> <b>Data Spaces</b> - points of presence on the web for accessing structured data gleaned from a variety of heterogeneous data sources.</p>
+<p> <b>DOI</b> - a digital object identifier.
+ A location-independent, permanent document or digital resource identifier, based on the CNRI Handle System, which does not change, even if the resource is relocated.
+ DOIs are resolved through the DOI resolver.</p>
+<p>  <a href="http://research.talis.com/2005/erdf/wiki/Main/RdfInHtml" class="absuri">eRDF</a> - HTML Embeddable RDF.
+ A technique for embedding a subset of RDF into (X)HTML.</p>
+<p>  <a href="http://en.wikipedia.org/wiki/Hcard" class="absuri">hCard</a> - a microformat for publishing the contact details of people, companies, organizations, and places, in (X)HTML, Atom, RSS, or arbitrary XML.</p>
+<p>  <a href="http://en.wikipedia.org/wiki/GeoURL" class="absuri">geoURL</a> - is a location-to-URL reverse directory allowing you to find URLs by their proximity to a given location.</p>
+<p>  <a href="http://www.w3.org/TR/grddl-primer" class="absuri">GRDDL</a> -Gleaning Resource Descriptions from Dialects of Languages - a mechanism for extracting RDF data from XML and XHTML documents using transformation algorithms typically represented in XSLT.
+ The transformation algorithms may be explicitly associated using a link element in the head of the document, or held in an associated metadata profile document or namespace document.</p>
+<p>  <a href="http://linkeddata.org/" class="absuri">Linked Data</a> - A Data Access by Reference mechanism that uses HTTP as a pointer system for accessing the negotiated representation of resource/entity descriptions.
+ For example, an RDF model based resource description can be projected (represented) using (X)HTML, N3, Turtle or RDF/XML via content negotiation.
+ At all times the data access mechanism and ultimate presentation/representation format are distinct.</p>
+<p> <b>LSID</b> - a life science identifier.
+ A URN-based identifier for a piece of Web-based biological information.
+ LSIDs occupy one namespace (<code>urn:lsid</code>) in the URN naming scheme.</p>
+<p>  <a href="http://microformats.org/" class="absuri">microformats</a> - markup that allows the expression of semantics in an HTML (or XHTML) web page.
+ Programs can extract meaning from a standard web page that is marked up with microformats.</p>
+<p>  <a href="http://www.ning.com/" class="absuri">Ning</a> - an online platform for creating social networks and websites</p>
+<p> <b>ODS</b> - <a href="http://virtuoso.openlinksw.com/wiki/main/Main/OdsIndex" class="absuri">OpenLink Data Spaces</a> . A new generation distributed collaborative application platform for creating Semantic Web presence via Data Spaces derived from: weblogs, wikis, feed aggregators, photo galleries, shared bookmarks, discussion forums, and more.</p>
+<p>  <a href="http://ping.semanticweb.org/" class="absuri">PingTheSemanticWeb</a> - a repository for RDF documents.
+ You can notify this service that you have created or updated an RDF document on your web site, or you can import a list of recently created or updated RDF documents.</p>
+<p> <b>RDF browser</b> - a piece of technology that enables you to browse RDF data sources by traversing data links.
+ The key difference between this approach and traditional browsing is that RDF data links are typed (they possess inherent meaning and context) whereas traditional HTML links are untyped.
+ There are a number of RDF Browsers currently available, including <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a>&#39;s <a href="http://ode.openlinksw.com" class="absuri">ODE</a> , <a href="http://www.w3.org/2005/ajar/tab" class="absuri">Tabulator</a> and <a href="http://sites.wiwiss.fu-berlin.de/suhl/bizer/ng4j/disco/" class="absuri">DISCO</a> .</p>
+<p> <b>Spotlight</b> - a file system metadata extraction and search facility in Mac OS X.</p>
+<p> <b>structured data</b> - data organized into semantic chunks or entities, with similar entities grouped together in relations or classes.
+ (Michael Bergman provides an in-depth discussion of current Semantic Web terminology, and proposals for bringing more clarity to this area, in his post <a href="http://www.mkbergman.com/?m=20070722" class="absuri">More Structure, More Terminology and (hopefully) More Clarity</a> ).</p>
+<p> <b>URIQA</b> - The <a href="http://sw.nokia.com/uriqa/URIQA.html" class="absuri">URI Query Agent Model</a> . A model for interacting with Semantic Web enabled web servers.
+ It introduces new HTTP methods to indicate to a web server that, for a given resource URI, it should return a concise bounded description of that resource rather than a representation of it.</p>
+<p> <b>URN</b> - Uniform Resource Name.
+ A form of Uniform Resource Identifier (URI) which uniquely identifies a resource but which, unlike a Uniform Resource Locator (URL), does not specify its location.</p>
+<p> <b>VAD</b> - Virtuoso Application Distribution.
+ A packaging and distribution system for extending Virtuoso.
+ A VAD encapsulates the components of a self-contained Virtuoso application, including table creation, default data, stored procedures, web services, and content.
+ VADs are easily installed through Virtuoso&#39;s Conductor browser interface.</p>
+<p> </p>
+</a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></div></body></html>

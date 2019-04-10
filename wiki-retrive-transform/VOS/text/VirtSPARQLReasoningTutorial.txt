@@ -1,0 +1,334 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection"}%
+
+
+---+Tutorial Demonstrating Reasoning via SPARQL
+
+%TOC%
+
+
+---++What?
+This tutorial demonstrates "on the fly" reasoning (i.e., not persistence of inferred query results) via the use of inference rules or SPARQL 1.1 property path functionality.
+
+---++Why?
+
+Reasoning is a topic of discussion that suffers (like most things related to the Semantic Web vision) unduely due to poor narratives and simple examples. 
+
+---++How?
+To make this example as simple as possible, we are going to use data that represents the relationships among key members of the British royal family. Basically we will use DBpedia identifiers (HTTP URIs) to denote:
+
+   1. Each family member;
+   1. Predicates/Properties that express entity relationship semantics between family members.
+
+<b>Family Members</b>:
+
+   1. &lt;http://dbpedia.org/resource/Prince_William_of_Wales&gt; -- Prince William .
+   2. &lt;http://dbpedia.org/resource/Prince_Harry_of_Wales&gt; -- Prince Harry .
+   3. &lt;http://dbpedia.org/resource/Elizabeth_Bowes-Lyon&gt; -- their great grandmother .
+   4. &lt;http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom&gt; -- Queen (their grandmother) .
+   5. &lt;http://dbpedia.org/resource/Charles%2C_Prince_of_Wales&gt; -- Prince of Wales (their father ) .
+
+<b>Predicates/Properties</b>:
+
+The predicates we used in this exercise have been sourced from the relationship vocabulary at: &lt;http://purl.org/vocab/relationship/&gt; .
+In this guide we make specific use of the following:
+
+   1. <code>rel:siblingOf</code> .
+   2. <code>rel:ancestorOf</code> .
+
+---+++Step 1.: Raw Data
+
+Using Turtle [1] notation we can use a RDF based Linked Data graph to express how the royals are related:
+
+<verbatim>
+## Turtle based Data Representation Start ##
+
+@prefix rel: <http://purl.org/vocab/relationship/> .
+
+<http://dbpedia.org/resource/Prince_William_of_Wales>
+rel:siblingOf <http://dbpedia.org/resource/Prince_Harry_of_Wales> .
+<http://dbpedia.org/resource/Elizabeth_Bowes-Lyon>
+rel:ancestorOf <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> .
+<http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom>
+rel:ancestorOf <http://dbpedia.org/resource/Charles%2C_Prince_of_Wales> .
+<http://dbpedia.org/resource/Charles%2C_Prince_of_Wales>
+ rel:ancestorOf <http://dbpedia.org/resource/Prince_William_of_Wales> .
+
+## End ##
+</verbatim>
+
+---+++Step 2.: Data Loading
+
+Now that we have raw data (in the form of a Turtle based entity relationship graph) in place, we can now proceed to load this data into a SPARQL 1.1 compliant Virtuoso DBMS. Virtuoso enables us load data using any of the following methods:
+
+   1. [[VirtTipsAndTricksSPARQL11Load][SPARQL 1.1 LOAD]] -- whereby we load the data into Virtuoso from a local or remoted file comprised of the Turtle raw data above;
+   2. [[VirtTipsAndTricksSPARQL11Insert][SPARQL 1.1 INSERT]] -- we load the data declaratively using SPARQL query patterns;
+   3. SPASQL -- we load the data using Virtuoso's SQL/SPARQL hybrid language which provides an intuitive transition from SQL to SPARQL, for those familiar with SQL data manipulation language constructs.
+
+---++++Step 2.1.: SPARQL 1.1
+<verbatim>
+## Create Instance Data for Relationship Ontology
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+INSERT
+  {
+    GRAPH <urn:owl:inference:tests> 
+      {
+        <http://dbpedia.org/resource/Prince_William_of_Wales> rel:siblingOf <http://dbpedia.org/resource/Prince_Harry_of_Wales> .
+        <http://dbpedia.org/resource/Elizabeth_Bowes-Lyon> rel:ancestorOf <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> .
+        <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> rel:ancestorOf
+        <http://dbpedia.org/resource/Charles%2C_Prince_of_Wales> .
+        <http://dbpedia.org/resource/Charles%2C_Prince_of_Wales> rel:ancestorOf <http://dbpedia.org/resource/Prince_William_of_Wales> .
+      }
+  }
+</verbatim>
+
+---++++Step 2.2.: SPASQL
+
+<verbatim>
+## Create Instance Data for Relationship Ontology
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+INSERT into GRAPH <urn:owl:inference:tests>
+  {
+    <http://dbpedia.org/resource/Prince_William_of_Wales> rel:siblingOf <http://dbpedia.org/resource/Prince_Harry_of_Wales> .
+    <http://dbpedia.org/resource/Elizabeth_Bowes-Lyon> rel:ancestorOf <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> .
+    <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> rel:ancestorOf
+        <http://dbpedia.org/resource/Charles%2C_Prince_of_Wales> .
+    <http://dbpedia.org/resource/Charles%2C_Prince_of_Wales> rel:ancestorOf <http://dbpedia.org/resource/Prince_William_of_Wales> .
+  }
+</verbatim>
+
+
+---+++Step 3.: Verify Data
+
+To verify that your data has been created, execute the following basic SPARQL query:
+
+<verbatim>
+## Verify Data
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    ?s ?p ?o .
+  }
+</verbatim>
+
+   * [[http://bit.ly/1q4X9ll][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1sgquLM][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---+++Step 4.: Setting Up Inference Rules
+
+We are using terms from the relationship vocabulary to drive this exercise, so we need to make Virtuoso aware of this through the use of an inference rule declaration that binds said rule to the relationship vocabulary. To complete this particular task you need to execute the commands that follow via Virtuoso's SQL interfaces (command-line, ODBC, JDBC, ADO.NET, or XMLA):
+
+<verbatim>
+sparql clear graph <http://vocab.org/relationship/>;
+sparql load <http://vocab.org/relationship/rel-vocab-20100607.rdf> into <http://vocab.org/relationship/>;
+
+rdfs_rule_set ('urn:owl:inference:rules:tests', 'http://vocab.org/relationship/') ;
+</verbatim>
+
+
+---+++Step 5.: Verify Rule's existence
+
+<verbatim>
+SELECT *
+FROM sys_rdf_schema
+</verbatim>
+
+---+++Step 6.: SPARQL Inference Queries
+
+---++++Who are the descendants of the entity denoted by the DBpedia Identifier: &lt;<nowiki>http://dbpedia.org/resource/Elizabeth_Bowes-Lyon</nowiki>&gt; ?
+
+In this case we will use a Virtuoso SPARQL pragma to conditionally invoke Virtuoso's in-built reasoner against the rule created earlier:
+
+<verbatim>
+DEFINE input:inference 'urn:owl:inference:rules:tests'
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Elizabeth_Bowes-Lyon>
+    rel:ancestorOf ?o
+  }
+</verbatim>
+   * [[http://bit.ly/1oxrbRw][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1vROOce][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++++Who are the descendants of the entity denoted by the DBpedia Identifier: &lt;<nowiki>http://dbpedia.org/resource/Elizabeth_Bowes-Lyon</nowiki>&gt; ?
+
+In this case, we will use SPARQL 1.1 Property Paths to achieve the same goal via the <code>"+"</code> unary operator applied to the <code>rel:ancestorOf</code> predicate in the SPARQL query pattern:
+
+<verbatim>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+     <http://dbpedia.org/resource/Elizabeth_Bowes-Lyon> rel:ancestorOf+ ?o.
+
+  }
+</verbatim>
+   * [[http://bit.ly/1dXDuSC][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1sgqHhU][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++++Who are the descendants of the entity denoted by the DBpedia Identifier: &lt;<nowiki>http://dbpedia.org/resource/Elizabeth_Bowes-Lyon</nowiki>&gt; ?
+
+In this case, neither the use of a SPARQL inference rules pragma nor a SPARQL 1.1 property paths are put to use, so you end up with in incomplete result (or solution):
+
+
+<verbatim>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Elizabeth_Bowes-Lyon> rel:ancestorOf ?o . 
+  }
+</verbatim>
+   * [[http://bit.ly/1oxrko8][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/QKS0Dd][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++++Who are the siblings of the entity denoted by the DBpedia Identifier: &lt;<nowiki>http://dbpedia.org/resource/Prince_Harry_of_Wales</nowiki>&gt; ?
+
+
+This collection of queries leverages with the semantics of the <code>rel:siblingOf</code> predicate. This particular predicate's semantics imply that the subject and object positions in triples have no effect on the query result. Thus, the position of the DBpedia Identifier: &lt;http://dbpedia.org/resource/Prince_Harry_of_Wales&gt; in the SPARQL triple pattern has no effect on the eventual query result, when reasoning is in use.
+
+---+++++Using the Virtuoso SPARQL inference rules pragma
+
+
+Using the <b>Virtuoso inference rule SPARQL pragma approach</b> the query would be as follows:
+
+<verbatim>
+DEFINE input:inference 'urn:owl:inference:rules:tests'
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Prince_Harry_of_Wales> rel:siblingOf ?o . 
+  }
+</verbatim>
+   * [[http://bit.ly/1oxs6Bn][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1E15Rd7][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---+++++Using SPARQL 1.1 property paths
+
+
+Using <b>SPARQL 1.1 property paths approach</b> to get the same effect via combined use of the following operators with the <code>rel:siblingOf</code> query pattern predicate: <code>"/"</code> (path sequence operator), <code>"^"</code> inverse operator, a one or more <code>("+")</code>. The resulting SPARQL query takes the following form:
+
+
+<verbatim>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Prince_Harry_of_Wales> (rel:siblingOf+|^rel:siblingOf) ?o .
+  }
+</verbatim>
+   * [[http://bit.ly/1gUYXLx][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/Pw3V6q][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---+++++Using no inference rules pragmas or SPARQL 1.1 property paths
+
+
+Executing the SPARQL query <b>without inference rules pragmas or SPARQL 1.1 property paths</b> results in an empty results set. The query in question would take the form below. Of course, you can simply comment out the Virtuoso SPARQL pragma declaration too.
+
+
+<verbatim>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Prince_Harry_of_Wales> rel:siblingOf ?o . 
+  }
+</verbatim>
+   * [[http://bit.ly/1dXEs0Z][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1dXErtS][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++++The entity denoted by the DBpedia Identifier: &lt;<nowiki>http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom</nowiki>&gt; is the descendant of whom?
+
+
+This collection of queries leverage the <code>inverseOf</code> semantics that underly the <code>rel:descendantOf</code> predicate. Basically, this is about the opposite (inverse) implications of an ancestor and a descendant. The object of an ancestor triple is the subject of a descendant triple which implies that my raw data doesn't need to explicitly include any <code>rel:descendantOf</code> triples.
+
+
+
+---+++++Using the Virtuoso SPARQL inference rules pragma ( descendant of whom)
+
+Using the Virtuoso SPARQL inference rules pragma your SPARQL query would be as follows:
+
+<verbatim>
+DEFINE input:inference 'urn:owl:inference:rules:tests'
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> rel:descendantOf ?o . 
+  }
+</verbatim>
+   * [[http://bit.ly/1gUZe0X][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1dTfpg3][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---+++++Using SPARQL 1.1 property paths
+
+Using SPARQL 1.1 property paths to achieve the same result via use of the alternative paths operator <code>("|")</code> combined with the inverse <code>("^")</code> operator leads to the following query:
+
+<verbatim>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> rel:descendantOf|^rel:ancestorOf ?o . 
+  }
+</verbatim>
+   * [[http://bit.ly/1jJnLqc][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1k74sK2][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---+++++Using no inference rules pragmas or SPARQL 1.1 property paths
+
+Executing the SPARQL query without a Virtuoso inference rule pragma or SPARQL 1.1 query paths alternative, you will get an empty result for the following:
+
+<verbatim>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+
+SELECT *
+FROM <urn:owl:inference:tests>
+WHERE
+  {
+    <http://dbpedia.org/resource/Elizabeth_II_of_the_United_Kingdom> rel:descendantOf ?o . 
+  }
+</verbatim>
+   * [[http://bit.ly/1lFv84o][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/1hnodVZ][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++Related
+
+   1 [[VirtTipsAndTricksVOSvsCommercialEdition][SPARQL Named Graphs with SPARQL 1.1 Property Paths and Reasoning]]
+   1 [[http://www.w3.org/TR/turtle/][W3C Turtle Spec]].
+   1 [[http://www.w3.org/TR/2010/WD-sparql11-property-paths-20100126/][SPARQL 1.1 Property Paths]].
+   1 [[http://bit.ly/UydU9t][Simple SPARQL based Data Integration that leverages inference or SPARQL 1.1 Property Paths]]. 
+   1 [[VirtTipsAndTricksSPARQL11FeaturesExamplesCollection][Virtuoso SPARQL 1.1 Features Examples Collection]]

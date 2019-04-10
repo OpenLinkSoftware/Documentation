@@ -1,0 +1,69 @@
+<docbook><section><title>VirtDeployLinkedWikiV2</title><para> </para>
+<title>Installing The LinkedWiki Extension Version 2.0.1 Alpha </title>Installing The LinkedWiki Extension Version 2.0.1 Alpha 
+<para>The <ulink url="LinkedWiki">LinkedWiki</ulink> extension allows you to embed a SPARQL query and display the results in your wiki page.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A working copy of MediaWiki hosted on Virtuoso.
+ (See <ulink url="http://wiki.usnet.private/dataspace/dav/wiki/Main/MediaWikiInstalltionGuide">the installation guide for MediaWiki on Virtuoso</ulink>).</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 1.
+ Download the Extension.</bridgehead>
+<para>Go to the <ulink url="http://www.mediawiki.org/wiki/Extension:LinkedWiki">LinkedWik Extension page</ulink>.
+ Using the links in the box on the right hand side, download the v2.0.1Alpha1 <ulink url="LinkedWiki">LinkedWiki</ulink> extension.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 2.
+ Extract.</bridgehead>
+<para>Move the downloaded zip file into your MediaWiki extensions folder.
+ You will find this folder in <emphasis>your Virtuoso installation directory</emphasis>/vsp/vad/vsp/MediaWiki/extension.
+ Extract the extension.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 3.
+ Enable and Configure.</bridgehead>
+<para>The <ulink url="LinkedWiki">LinkedWiki</ulink> extension is enabled by adding the following line to the <emphasis>your Virtuoso installation directory</emphasis>/vsp/vad/vsp/MediaWiki/LocalSettings.php file </para>
+<programlisting>require_once( &quot;{$IP}/extensions/LinkedWiki/LinkedWiki.php&quot; );
+$wgLinkedWikiGraphWiki = &#39;http://example.org/mydefaultgraphname&#39;; 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Using <ulink url="LinkedWiki">LinkedWiki</ulink></bridgehead>
+ <ulink url="LinkedWiki">LinkedWiki</ulink> lets you embed a SPARQL query in a wiki page and display the results as a table.
+ If you have the Widgets extension installed you can also display the results using one of the widgets.<bridgehead class="http://www.w3.org/1999/xhtml:h3">Simple Query Examples</bridgehead>
+ A simple query to get all the triples in all the graphs on a specified endpoint looks like this: <programlisting>{{#sparql:select * where { ?x ?y ?z . } LIMIT 5 | endpoint=http://localhost:8890/sparql}}
+</programlisting><para>This displays the first 5 triples from the specified endpoint.
+ The results will look something like this:</para>
+<figure><graphic fileref="VirtDeployLinkedWikiV2/result1.png" /></figure><para>The properties of the current page can be queried using either of the following: </para>
+<programlisting>{{#sparql:PREFIX a:&lt;http://localhost:8890/MediaWiki/index.php?title=Special:URIResolver/&gt;  select * where { a:{{PAGENAMEE}} ?y ?z . } | endpoint = http://localhost:8890/sparql }}
+</programlisting><para>or </para>
+<programlisting>{{#sparql:select * where { &lt;http://localhost:8890/MediaWiki/index.php?title=Special:URIResolver/{{PAGENAMEE}}&gt; ?y ?z . }  | endpoint = http://localhost:8890/sparql }}
+</programlisting><para>The results will look something like:</para>
+<figure><graphic fileref="VirtDeployLinkedWikiV2/result2.png" /></figure><para>You can specify which endpoint you want to query so, this example queries the sparql endpoint on dbpedia to find the number of nations participating in each Olympic games: </para>
+<programlisting>{{#sparql:select distinct ?Games ?Olympiad ?NumberOfNations {?s a &lt;http://dbpedia.org/ontology/Olympics&gt; .
+?s &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; ?Games .
+?s &lt;http://dbpedia.org/property/years&gt; ?Olympiad .
+?s &lt;http://dbpedia.org/ontology/numberOfParticipatingNations&gt; ?NumberOfNations
+FILTER (lang(?Games) = &quot;en&quot;)}
+order by ?Games | endpoint = http://dbpedia.org/sparql }}
+</programlisting><para>and returns results something like this:</para>
+<figure><graphic fileref="VirtDeployLinkedWikiV2/results3.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h2">Using <ulink url="LinkedWiki">LinkedWiki</ulink> with the Widget Extension</bridgehead>
+ First ensure you have the Widget Extension installed and configured.
+ You will have to add any widgets that you want to use to display the results.
+ The <ulink url="LinkedWiki">LinkedWiki</ulink> extension parses the result set from the sparql query so it becomes a set of key value pairs that are then included as parameters to the widget.
+ So, for example, a query that selects location information as a point would result in a set of parameters something like this.
+<programlisting>rows.0.point=43.30, 5.38 | rows.1.point=48.83, 2.3 | rows.2.point=49.93, 2.3
+</programlisting><para>The widget must be able to handle parameters of this form.</para>
+<para>One example is a Google maps widget developed specifically for displaying <ulink url="LinkedWiki">LinkedWiki</ulink> results.
+ This widget can be found <ulink url="https://0x20.be/Widget:Google_Static_Maps">here</ulink>.</para>
+<para>To use the widget to display the results from a sparql query on a map you would do something like this </para>
+<programlisting>{{#wsparql:Google_Static_Maps
+|query=SELECT ?s ?point ?label
+WHERE {
+?s &lt;http://www.georss.org/georss/point&gt; ?point .
+?s a &lt;http://schema.org/StadiumOrArena&gt; .
+?s &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; ?label .
+FILTER bif:contains(?label, &quot;Olympic and Stadium&quot;) .
+FILTER (lang(?label) =&#39;en&#39;)
+}
+limit 20
+|endpoint = http://dbpedia.org/sparql 
+|defaultcolor=blue
+|zoom=2
+|size=512x512
+|maptype=roadmap}}
+</programlisting><para> The result will be a map embedded in the wiki page that show the location of Olympic stadia around the world.
+</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="VirtDeployLinkedWikiV2/map1.png" /></figure> </listitem>
+</itemizedlist></section></docbook>

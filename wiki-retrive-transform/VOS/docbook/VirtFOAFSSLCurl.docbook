@@ -1,0 +1,68 @@
+<docbook><section><title>VirtFOAFSSLCurl</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">Creating and Using a SPARQL-SSL based Endpoint</bridgehead>
+<para>The following guide describes the basic steps for setting up an SSL protected and <ulink url="WebID">WebID</ulink> based SPARQL Endpoint (SPARQL-SSL).
+ The guide also covers the use of Virtuoso PL functions and the Virtuoso Conductor for SPARQL endpoint creation and configuration.
+ It also covers the use of cURL for exercising the newly generated SPARQL-SSL endpoint.</para>
+<para> </para>
+<orderedlist spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup">Setup the CA issuer and https listener</ulink> </listitem>
+<listitem>Define the /sparql-ssl endpoint on an HTTPS based listener (HTTPS service endpoint), for example using Virtuoso PL: <programlisting>DB.DBA.VHOST_DEFINE (
+	 lhost=&gt;&#39;127.0.0.1:443&#39;,
+	 vhost=&gt;&#39;localhost&#39;,
+	 lpath=&gt;&#39;/sparql-ssl&#39;,
+	 ppath=&gt;&#39;/!sparql/&#39;,
+	 is_dav=&gt;1,
+	 auth_fn=&gt;&#39;DB.DBA.FOAF_SSL_AUTH&#39;,
+	 vsp_user=&gt;&#39;dba&#39;,
+	 ses_vars=&gt;0,
+	 auth_opts=&gt;vector (&#39;https_cert&#39;, &#39;db:https_key_localhost&#39;, &#39;https_key&#39;, &#39;db:https_key_localhost&#39;, &#39;https_verify&#39;, 3, &#39;https_cv_depth&#39;, 10),
+	 opts=&gt;vector (&#39;noinherit&#39;, 1),
+	 is_default_host=&gt;0
+);
+</programlisting></listitem>
+<listitem><ulink url="VirtAuthServerUI">Setup the SPARQL-SSL endpoint and define ACLs</ulink> using the Virtuoso Conductor </listitem>
+<listitem>Export your private key and its associated <ulink url="WebID">WebID</ulink> based X.509 certificate from your Firefox browser or System&#39;s Key Manager into PEM (PKCS12) file <orderedlist spacing="compact"><listitem>If using Firefox use the menu path: Advanced-&gt;View Certificates, then  click Backup for your certificate with name &quot;mykey&quot;.
+</listitem>
+<listitem>The file &quot;mykey.p12&quot; will be created.
+ To disable password protection so that you can use this file in non-interactive mode (e.g.
+ with cURL and other HTTP clients) execute: <programlisting>openssl pkcs12 -in mykey.p12 -out mykey.pem -nodes 
+</programlisting></listitem>
+</orderedlist></listitem>
+<listitem><ulink url="VirtFOAFSSLCurlExample1">Test the SPARQL-SSL endpoint with cURL</ulink> (listening on default HTTPS 443 port): <itemizedlist mark="bullet" spacing="compact"><listitem>Note: In this example we use the &quot;-k / --insecure&quot; option with cURL since we are going to be using self-signed X.509 certificates signed by self-signed root CA.
+</listitem>
+</itemizedlist></listitem>
+<listitem>Import your key it via Conductor UI: <orderedlist spacing="compact"><listitem>Go to Conductor -&gt; System Admin-&gt;User Accounts <figure><graphic fileref="VirtFOAFSSLCurl/c1.png" /></figure> </listitem>
+<listitem>Click &quot;Edit&quot; for your user <figure><graphic fileref="VirtFOAFSSLCurl/c2.png" /></figure> </listitem>
+<listitem>Change &quot;User type&quot; to: SQL/ODBC and <ulink url="WebDAV">WebDAV</ulink> <figure><graphic fileref="VirtFOAFSSLCurl/c3.png" /></figure> </listitem>
+<listitem>Enter your ODS user <ulink url="WebID">WebID</ulink>: <programlisting>http://cname:port/dataspace/person/username#this
+</programlisting><figure><graphic fileref="VirtFOAFSSLCurl/c4.png" /></figure> </listitem>
+<listitem>Click &quot;Save&quot; </listitem>
+<listitem>Click again &quot;Edit&quot; for your user </listitem>
+<listitem>In &quot;PKCS12 file:&quot; click the Browse&quot; button and select your key.
+</listitem>
+<listitem>Enter a local Key Name, for e.g., &quot;cli_key&quot; </listitem>
+<listitem>Enter key password <figure><graphic fileref="VirtFOAFSSLCurl/c5.png" /></figure> </listitem>
+<listitem>Click &quot;Import Key&quot; </listitem>
+<listitem>As result the key will be stored with name for ex.
+ cli_key <figure><graphic fileref="VirtFOAFSSLCurl/c6.png" /></figure> </listitem>
+<listitem>Click &quot;Save&quot; </listitem>
+</orderedlist></listitem>
+<listitem><ulink url="VirtFOAFSSLCurlExample2">Test the SPARQL-SSL endpoint with http_client</ulink> (listening on default HTTPS 443 port).</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Demo Examples</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://demo.openlinksw.com/tutorial/rdf/fs_s_1/fs_s_1.vsp">Using HTTP client to perform FOAF+SSL connection</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub">Setting up PubSubHub in ODS</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub">PubSubHubBub Demo Client Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub">Feed subscription via PubSubHub protocol Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL">Setting Up PubSubHub to use FOAF+SSL or IP based control lists</ulink> </listitem>
+<listitem><ulink url="VirtAuthServerUI">Set FOAF+SSL ACLs using the Virtuoso Authentication Server UI</ulink> </listitem>
+<listitem><ulink url="VirtAuthFOAFSSLACL">FOAF+SSL ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSFOAFSSL">FOAF+SSL Support in OpenLink Data Spaces</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup">Guide to Setting up a X.509 certificate issuer and HTTPS listener and Generating ODS user certificates</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport">CA Keys Import using Conductor</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseFOAFSSLODSCert">Generate an X.509 Certificate hosted WebID Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseFOAFSSLShareFile">ODS Briefcase FOAF+SSL Share File Guide</ulink> </listitem>
+<listitem><ulink url="http://esw.w3.org/topic/foaf+ssl">FOAF+SSL Specification</ulink> </listitem>
+<listitem><ulink url="https://foaf.me/simpleLogin.php">Test FOAF+SSL Certificate page</ulink> </listitem>
+<listitem><ulink url="http://test.foafssl.org/cert/">FOAF+SSL Certificate Generation page</ulink> </listitem>
+<listitem><ulink url="https://demo.openlinksw.com/sparql-ssl">Virtuoso Demo SPARQL-SSL Endpoint</ulink> </listitem>
+</itemizedlist></section></docbook>

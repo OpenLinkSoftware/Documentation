@@ -1,0 +1,112 @@
+<html><body><div class="topic-text"><h1><a name="Extending RDFDemo to Display Images and Longer Text Fields"></a>Extending RDFDemo to Display Images and Longer Text Fields</h1>
+ This document will guide you through extending RDFDemo so that longer text fields can be displayed as a block of text and so that links to images and web pages can be viewed in a browser window.
+<h3><a name="Pre-requisites"></a>Pre-requisites</h3>
+ <ol><li>A working copy of the RDFDemo application created in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLRDFDemoModifyNorthwind" class="wikiword">Modifying the Northwind Ontology to Add Labels</a>.</li>
+</ol><h2><a name="Modifying the Application."></a>Modifying the Application.
+</h2>
+<h3><a name="Displaying Text"></a>Displaying Text</h3>
+ We will modify the form that show the details of the selected item so that when the text in the boxes is too long to be seen in full a button will appear beside the box on the form and if you click the button the complete text will be displayed in a separate window.
+<ol><li>Add a new class, MoreButton that extends System.Windows.Forms.Button.
+<ul><li>In the <b>Solution Explorer</b> right click on the RDFDemo project and select <b>Add</b> then <b>New Item</b>.
+</li>
+<li>Add a new class called MoreButton.cs.
+<br><img src="VirtSPASQLRDFDemoImageText/MoreButton.png" style="wikiautogen"> </li>
+<li>The following using statement goes at the top of the file: <br><pre><br>using System.Windows.Forms;
+</pre><br></li>
+<li>The MoreButton class must inherit from System.Windows.Forms.Button so the class definition line should look like this <br><pre><br>    class MoreButton : Button
+</pre><br></li>
+<li>Add the following code to the body of the MoreButton class: <br><pre><br>        String longText;
+
+        public MoreButton(String text)
+        {
+            longText = text;
+            this.Text = &quot;More&quot;;
+        }
+
+        protected override void  OnClick(EventArgs e)
+        {
+            Form moreForm = new Form();
+            TextBox moreBox = new TextBox();
+            moreBox.Text = longText;
+            moreBox.Width = 300;
+            moreBox.Height = 250;
+            moreBox.ScrollBars = ScrollBars.Vertical;
+            moreBox.Multiline = true;
+            moreBox.WordWrap = true;
+            moreBox.Select(0, 0);
+            moreBox.ReadOnly = true;
+            moreForm.Controls.Add(moreBox);
+            moreForm.Width = 320;
+            moreForm.Height = 280;
+            moreForm.ShowDialog();
+        }
+</pre><br></li>
+</ul></li>
+<li>In displayData in the ExtendedStringHandler class, when the labels and TextBoxes are added to the form check if the text is too big for the box.
+ If it is then add a MoreButton that will display all the text in a separate window.
+<br><pre><br>                        if (textBoxList[i].DataBindings[0].DataSource.ToString().Length &gt; 80
+                            &amp;&amp; !(textBoxList[i].DataBindings[0].DataSource is SqlExtendedString))
+                        {
+                            moreButtonList.Add(new MoreButton(textBoxList[i].DataBindings[0].DataSource.ToString()));
+                            moreButtonList[moreButtonList.Count - 1].Location = new Point(550, i * 22 + 50);
+                            describeForm.Controls.Add(moreButtonList[moreButtonList.Count -1]);
+                        }
+</pre><br></li>
+<li>We will also need a list to hold the buttons as they are created so the following needs to be added to the member variables at the top of the ExtendedStringHandler class.
+<br><pre><br>        List&lt;MoreButton&gt; moreButtonList = new List&lt;MoreButton&gt;();
+</pre><br></li>
+<li>Build and run the application.
+ If you click through to an Employee page you will see the Notes field now has a button labeled More next to it.
+ If you click on that button the text from the Notes field is displayed in a new window.
+ <br><img src="VirtSPASQLRDFDemoImageText/NotesForm.png" style="wikiautogen"></li>
+</ol><h3><a name="Displaying Images and Web Pages"></a>Displaying Images and Web Pages</h3>
+ Next we will modify the form so that item identified as images or web pages will be opened in a browser window.
+ Again we will do this by adding a button beside the box on the form that will open the browser window.
+<ol><li>Add a new class, OpenButton that extends System.Windows.Forms.Button.
+<ul><li>In the <b>Solution Explorer</b> right click on the RDFDemo project and select <b>Add</b> then <b>New Item</b> </li>
+<li>Add a new class called OpenButton.cs. </li>
+<li>The following using statement goes at the top of the file: <br><pre><br>using System.Windows.Forms;
+</pre><br></li>
+<li>The OpenButton class must inherit from System.Windows.Forms.Button so the class definition line should look like this <br><pre><br>    class OpenButton : Button
+</pre><br></li>
+<li>Add the following code to the body of the OpenButton class: <br><pre><br>        String urlText;
+
+        public OpenButton(String text)
+        {
+            urlText = text;
+            this.Text = &quot;Open&quot;;
+        }
+
+        protected override void  OnClick(EventArgs e)
+        {
+            System.Diagnostics.Process.Start(urlText);
+        }
+</pre><br></li>
+</ul></li>
+<li>In displayData in the ExtendedStringHandler class, where we added the code to check for long text fields we now need to check for IRIs that identify images and web pages.
+ As a simple first attempt we will check for matching labels.
+ So for example, if a property label is &#39;image&#39; or &#39;webpage&#39;, we will assume it can be opened in a browser window and put an OpenButton beside it.
+<br><pre><br>                        if (labelList[i].Text == &quot;website&quot;
+                            || labelList[i].Text == &quot;image&quot;
+                            || labelList[i].Text == &quot;depiction&quot;
+                            || labelList[i].Text == &quot;page&quot;
+                            || labelList[i].Text == &quot;url&quot;
+                            || labelList[i].Text == &quot;image skyline&quot;)
+                        {
+                            openButtonList.Add(new OpenButton(textBoxList[i].DataBindings[0].DataSource.ToString()));
+                            openButtonList[openButtonList.Count - 1].Location = new Point (550, i * 22 + 50);
+                            describeForm.Controls.Add(openButtonList[openButtonList.Count - 1]);
+                        }
+</pre><br></li>
+<li>We will also need a list to hold the buttons as they are created so the following needs to be added to the member variables at the top of the ExtendedStringHandler class.
+<br><pre><br>        List&lt;OpenButton&gt; openButtonList = new List&lt;OpenButton&gt;();
+</pre><br></li>
+<li>Build and run the application.
+ If you click through to an Employee page now you will see that the Image field now has a button labeled Open next to it.
+ If you click on that button the image is opened in your default browser.
+ <br><img src="VirtSPASQLRDFDemoImageText/ImageWindow.png" style="wikiautogen"></li>
+</ol><h2><a name="Next Steps"></a> Next Steps</h2>
+ It has already been mentioned that the property labels are also dereferenceable <a href="http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype" class="absuri">IRIs</a>.
+ We used this feature to find a short name to display rather that the complete <a href="http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype" class="absuri">IRI</a>.
+ The next step is to make the labels clickable so the ontology itself can also be explored.<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLRDFDemoClickableLabels" class="wikiword">Extending RDFDemo To Make The Property Labels Clickable</a> </p>
+</div></body></html>

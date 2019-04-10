@@ -1,0 +1,325 @@
+---+ Virtuoso (Open Source and Commercial) Upgrade Notes
+
+%TOC%
+
+---++ Introduction
+
+   * <i><b>Important:</b> To upgrade from Release 4.x or earlier to Release 6.x or 
+later, you *must* first perform an incremental upgrade to Release 5.x; then, 
+upgrade from Release 5.x to current.</i>%BR%%BR%
+   * Always make sure the database has been properly shut down and the
+transaction log (<code>virtuoso.trx</code>) is empty before performing any of the
+following updates/upgrades.  This is easily done by launching Virtuoso with the 
+extra command-line argument, "<code>[[http://docs.openlinksw.com/virtuoso/dbadm.html#COMMANDLINE][+checkpoint-only]]</code>".  Virtuoso will
+launch, replay the transaction log, run a checkpoint (which zeroes the transaction 
+log), and exit cleanly.%BR%%BR%
+   * Before upgrading any database, it is always a wise precaution to
+[[http://virtuoso.openlinksw.com:8889/doc/html/backup.html][make a proper backup]].
+
+
+---++ Upgrading from Release 7.x to a newer Release 7.x
+
+   1. Shut down your Virtuoso 7.x instance as normal.%BR%%BR%
+   2. Check the size of the <code>.trx</code> file, typically found alongside
+the <code>.db</code> and <code>.ini</code> files.%BR%%BR%
+      * If zero bytes, proceed to step 3.%BR%%BR%
+      * If larger than zero bytes, start the instance from the
+command line with the extra argument, 
+"<code>[[http://docs.openlinksw.com/virtuoso/dbadm.html#COMMANDLINE][+checkpoint-only]]</code>", and recheck <code>.trx</code> file size -- expecting zero bytes.  %BR%%BR%
+      * If larger <code>.trx</code> files persist, [[http://support.openlinksw.com/support/online-support.vsp][contact Technical Support]].%BR%%BR%
+   3. Start a fresh terminal session, and install the newer v7.x binary
+components, either atop or after removing the older v7.x binary
+components.%BR%%BR%
+   4. Set the environment with the new Virtuoso 7.x script, and
+start the instance with the new Virtuoso 7.x binary.
+
+
+---++ Upgrading from Release 6.x to Release 7.x
+
+   1. Shut down your Virtuoso 6.x instance as normal.%BR%%BR%
+   2. Check the size of the <code>.trx</code> file, typically found alongside
+the <code>.db</code> and <code>.ini</code> files.%BR%%BR%
+      * If zero bytes, proceed to step 3.%BR%%BR%
+      * If larger than zero bytes, start the instance from the
+command line with the extra argument, 
+"<code>[[http://docs.openlinksw.com/virtuoso/dbadm.html#COMMANDLINE][+checkpoint-only]]</code>", 
+and recheck <code>.trx</code> file size -- expecting zero bytes.  %BR%%BR%
+      * If larger <code>.trx</code> files persist, [[http://support.openlinksw.com/support/online-support.vsp][contact Technical Support]].%BR%%BR%
+   3. Start a fresh terminal session, and install the newer v7.x binary components, either 
+atop or after removing the older v6.x binary components.  For best results, also download 
+the latest VAD archives for your [[http://download3.openlinksw.com/index.html?prefix=uda/vad-packages/][Enterprise Edition]] 
+or [[http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/][Open Source Edition]] Virtuoso version.%BR%%BR%
+   4. Set the environment with the new Virtuoso 7.x script, and
+start the instance with the new Virtuoso 7.x binary, which will automatically upgrade the v6.x 
+to the new v7.x database structure in its original row wise storage format.%BR%%BR%
+   5. Virtuoso 7 supports [[http://docs.openlinksw.com/virtuoso/coredbengine.html#colstore][Column wise storage]] 
+providing 3 times better data compression over row wise storage, enabling 3 times the data to be stored 
+in the same memory and disk space. Thus conversion of relevant existing tables to column wise storage 
+should be considered, especially for Business Intelligence type work loads and RDF Data Storage, with the 
+document [[VirtTipsAndTricksRowToColStoreConversion][How to convert from Row Store to Column Store Table]] 
+providing an example on how this can be done for the <code>RDF_QUAD</code> table used for RDF Data storage.
+
+---++ Upgrading from Release 6.1.x to a newer Release 6.1.x
+
+<i><b>Note:</b> See special note below, for transition from
+Virtuoso 6.1.3 or earlier to Virtuoso 6.1.4 or later.</i>
+
+The database format did not change between various versions of Virtuoso 6.1.x, so 
+from a database standpoint no particular steps need to be performed before upgrading 
+to a newer version of Virtuoso 6.1.x.  
+
+However, you <b><i>must</i></b> properly clear the transaction logs prior to 
+installing the newer binaries, as they may otherwise have a different version 
+tag. In such case, the Virtuoso server will print a message like the following, 
+and refuse to launch:
+<verbatim>
+The transaction log file has been produced by server version
+'06.01.xxxx'. The version of this server is '06.01.yyyy'. If the
+transaction log is empty or you do not want to replay it then delete
+it and start the server again. Otherwise replay the log using the
+server of version '06.01.xxxx' and make checkpoint and shutdown
+to ensure that the log is empty, then delete it and start using
+new version.
+</verbatim>
+
+---+++ Upgrading from Release 6.1.3 or earlier, to Release 6.1.4 or later
+
+In Virtuoso versions before 6.1.4, some RDF data in the quad store could be 
+stored in a way that could break the sequence of an index, causing wrong 
+results to be passed back.
+
+We have addressed this by adding an automated check into 6.1.4 (and later) 
+to detect whether this condition is present, and to fix the index when needed.
+
+The first time a Release 6.1.3 or earlier database is started with 
+a Release 6.1.4 or later binary, the following text will appear in the 
+Virtuoso session log:
+<verbatim>
+  21:05:36 PL LOG: This database may contain RDF data that could cause indexing problems on previous versions of the server.
+  21:05:36 PL LOG: The content of the DB.DBA.RDF_QUAD table will be checked and an update may automatically be performed if
+  21:05:36 PL LOG: such data is found.
+  21:05:36 PL LOG: This check will take some time but is made only once.
+</verbatim>
+
+As the message says, this check may take some time, depending on the number 
+of stored quads.  
+
+If the check succeeds, Virtuoso will mark the check as "done" within the 
+database file, so it will not affect subsequent restarts of the instance,
+and the following message will be entered in the log:
+<verbatim>  
+21:05:36 PL LOG: No need to update DB.DBA.RDF_QUAD
+</verbatim>
+
+The database will continue to perform the startup routines and go
+into an online state.
+
+
+If the condition is detected, however, the following message will
+appear in the log, and the Virtuoso server will refuse to start --
+
+<verbatim>
+  21:05:36 PL LOG: An update is required.
+  21:05:36 PL LOG:
+  21:05:36 PL LOG: NOTICE: Before Virtuoso can continue fixing the DB.DBA.RDF_QUAD table and its indexes
+  21:05:36 PL LOG:         the DB Administrator should check make sure that:
+  21:05:36 PL LOG:
+  21:05:36 PL LOG:          * there is a recent backup of the database
+  21:05:36 PL LOG:          * there is enough free disk space available to complete this conversion
+  21:05:36 PL LOG:          * the database can be offline for the duration of this conversion
+  21:05:36 PL LOG:
+  21:05:36 PL LOG:         Since the update can take a considerable amount of time on large databases
+  21:05:36 PL LOG:         it is advisable to schedule this at an appropriate time.
+  21:05:36 PL LOG:
+  21:05:36 PL LOG: To continue the DBA must change the virtuoso.ini file and add the following flag:
+  21:05:36 PL LOG:
+  21:05:36 PL LOG:     [Parameters]
+  21:05:36 PL LOG:     AnalyzeFixQuadStore = 1
+  21:05:36 PL LOG:
+  21:05:36 PL LOG: For additional information please contact OpenLink Support <support@openlinksw.com>
+  21:05:36 PL LOG: This process will now exit.
+</verbatim>
+
+Since the update will take a substantial amount of time and additional
+disk space depending on the size of the quad store, we do not 
+automatically start the update process.  Instead, 
+we hand control back to you, and let you decide when to perform this
+update. If you want to delay the update, you should restart with the 
+older binary, as the new binary will never launch with this database.
+
+Once you have checked the backups and disk space, and found an
+appropriate time-slot to run this update, you should edit the
+<code>virtuoso.ini</code> file and add the following flag:
+<verbatim>
+[Parameters]
+AnalyzeFixQuadStore = 1
+</verbatim>
+
+Upon starting the Virtuoso server, the following messages will appear in the <code>virtuoso.log</code> file:
+<verbatim>
+  21:05:57 PL LOG: This database may contain RDF data that could cause indexing problems on previous versions of the server.
+  21:05:57 PL LOG: The content of the DB.DBA.RDF_QUAD table will be checked and an update may automatically be performed if
+  21:05:57 PL LOG: such data is found.
+  21:05:57 PL LOG: This check will take some time but is made only once.
+  21:05:57 PL LOG:
+  21:05:57 PL LOG: An update is required.
+  21:05:57 PL LOG: Please be patient.
+  21:05:57 PL LOG: The table DB.DBA.RDF_QUAD and two of its additional indexes will now be patched.
+  21:05:57 PL LOG: In case of an error during the operation, delete the transaction log before restarting the server.
+  21:05:57 Checkpoint started
+  21:05:57 Checkpoint finished, log off
+  21:05:57 PL LOG: Phase 1 of 9: Gathering statistics ...
+  21:05:58 PL LOG:  * Index sizes before the processing: 002565531 RDF_QUAD, 002565531 POGS, 001171100 OP
+  21:05:58 PL LOG: Phase 2 of 9: Copying all quads to a temporary table ...
+  21:07:26 PL LOG: * Index sizes of temporary table: 001171100 OP
+  21:07:26 PL LOG: Phase 3 of 9: Cleaning the quad storage ...
+  21:07:51 PL LOG: Phase 4 of 9: Refilling the quad storage from the temporary table...
+  21:09:17 PL LOG: Phase 5 of 9: Cleaning the temporary table ...
+  21:09:41 PL LOG: Phase 6 of 9: Gathering statistics again ...
+  21:09:41 PL LOG: * Index sizes after the processing: 002565531 RDF_QUAD, 002565531 POGS, 001171100 OP
+  21:09:41 PL LOG: Phase 7 of 9: integrity check (completeness of index RDF_QUAD_POGS of DB.DBA.RDF_QUAD) ...
+  21:10:00 PL LOG: Phase 8 of 9: integrity check (completeness of primary key of DB.DBA.RDF_QUAD) ...
+  21:10:17 PL LOG: Phase 9 of 9: final checkpoint...
+  21:10:20 Checkpoint started
+  21:10:22 Checkpoint finished, log off
+  21:10:22 PL LOG: Update complete.
+</verbatim>
+
+If the update process detects any problem, it will put some debug
+output into the <code>virtuoso.log</code> and exit. At this point, you are
+advised to remove the <code>virtuoso.trx</code> file and contact [[http://support.openlinksw.com/][OpenLink Support]].
+
+When the update process completes successfully, the database is left in an online state.
+
+---++ Upgrading from Release 6.0.x to Release 6.1.x 
+
+The database file format has not changed, but the introduction of a newer
+RDF index requires you run a script to upgrade the <code>RDF_QUAD</code> 
+table. Since this can be a lengthy task and take extra disk space (up to twice 
+the space used by the original <code>RDF_QUAD</code> table may be required 
+during conversion) this is not done automatically on startup.
+
+After upgrading the binary, you cannot perform any SPARQL queries until
+the new <code>RDF_QUAD</code> table is installed. The steps for this are:
+
+   1 Shut down the database and verify the <code>.trx</code> file is empty.%BR%%BR%
+   1 Check to make sure you have enough disk space to upgrade the 
+<code>RDF_QUAD</code> table.%BR%%BR%
+   1 Check to make sure you have a proper backup of the database.%BR%%BR%
+   1 Edit <code>virtuoso.ini</code> and disable <code><nop>VADInstallDir</code> 
+and optionally the <code>[HTTPServer]</code> section for duration of the upgrade.%BR%%BR%
+   1 Start up the database.%BR%%BR%
+   1 Connect with <code>isql</code> to your database and run the 
+<code><nowiki>libsrc/Wi/clrdf23.sql</nowiki></code>
+script. <i>Depending on the number of quad records this can take
+several hours.</i> Once the conversion is complete, the database 
+will shut itself down.%BR%%BR%
+   1 For best results, also download the latest VAD archives for your new version 
+of [[http://download3.openlinksw.com/index.html?prefix=uda/vad-packages/][Enterprise Edition]] 
+or [[http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/][Open Source Edition]].
+   1 Edit <code>virtuoso.ini</code> and re-enable the <code><nop>VADInstallDir</code> 
+and, if disabled above, the <code>[HTTPServer]</code> section.%BR%%BR%
+   1 Start the database as normal.
+
+
+---++ Upgrading from Release 5.x to Release 6.1.x 
+
+<i><b>***NOTE***</b> Previous to Virtuoso 6.1.0, Virtuoso 6.x binaries would try to 
+work against Virtuoso 5.x database files.  This can cause irreparable corruption.  
+Please proceed with caution!</i>
+
+If you attempt to use a Virtuoso 5.x database file with a Virtuoso 6.1.x or later 
+server, the server will refuse to launch, with a message like that below:
+<verbatim>
+The database you are opening was last closed with a server of
+version xxxx. The present server is of version yyyy. This server
+does not read this pre-6.0 format.
+</verbatim>
+
+The database file format has changed substantially between Virtuoso 5.x and 
+Virtuoso 6.x. To upgrade your database, you must dump all data from
+the Virtuoso 5.x database and re-load it into Virtuoso 6.x.
+
+Regular Virtuoso 5.x RDBMS tables can be dumped with the <code>dbdump</code> tool, 
+producing scripts that can be replayed using the <code>isql</code> tool.
+
+For the Virtuoso 5.x <code>RDF_QUAD</code> table, we have a set of stored procedures
+that will dump graphs into a set of backup files, which can then be reloaded
+into the Virtuoso 6.x database. Contact us at 
+<code>&lt;[[mailto:vos.admin@openlinksw.com][vos.admin@openlinksw.com]]&gt;</code>
+for more info.
+
+For best results, also download the latest VAD archives for your new version 
+of [[http://download3.openlinksw.com/index.html?prefix=uda/vad-packages/][Enterprise Edition]] 
+or [[http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/][Open Source Edition]] Virtuoso version.
+
+
+---++ Upgrading from Release 5.x to a newer Release 5.x 
+
+The database format did not change between various versions of Virtuoso
+5.x, so from a database standpoint no particular steps need to be
+performed before upgrading to a newer version of Virtuoso 5.
+
+The only requirement is that you must properly shut down the database
+prior to installing the latest binaries, as the transaction logs will otherwise 
+have a different version tag. In such case, the Virtuoso server will
+print a message like the following, and refuse to launch:
+<verbatim>
+The transaction log file has been produced by server version
+'05.00.xxxx'. The version of this server is '05.00.yyyy'. If the
+transaction log is empty or you do not want to replay it then delete
+it and start the server again. Otherwise replay the log using the
+server of version '05.00.xxxx' and make checkpoint and shutdown
+to ensure that the log is empty, then delete it and start using
+new version.
+</verbatim>
+
+---++ Upgrading from Release 4.x or earlier, to Release 5.x (and later)
+
+If you have Virtuoso Release 4.x or earlier, with or without ODS, preserving 
+your data while upgrading your installation and databases to Release 5.x or 
+later requires the steps described below.
+
+<i><b>Important:</b> To upgrade from Release 4.x or earlier to Release 6.x or 
+later, you *must* first perform an incremental upgrade to Release 5.x; then, 
+[[#Upgrading%20from%20Release%205.x%20to%20Release%206.1.x][upgrade from Release 5.x to current]].</i>
+
+If you do not have any old data, you can skip this process, and simply 
+use the new <code>demo</code> database, which has all the current ODS 
+applications pre-installed.
+
+
+---+++ Virtuoso binary components
+
+   1 Shut down the existing server. %BR%%BR%
+   1 Start the Release 5.x server executable you have built or downloaded into 
+the same directory.%BR%%BR%
+   1 There is a change in the DAV metadata represented in the RDF store.  
+This requires a one-time manual update which changes the DAV graph name,
+removing its trailing slash.  To update everything, log in as <code>dba</code> 
+with <code>isql</code> and execute:
+<verbatim>
+SQL> dav_replicate_all_to_rdf_quad (1);
+</verbatim>
+
+---+++ ODS applications and data
+
+To upgrade the ODS applications and preserve any data you may have 
+in them, do the following:
+
+   1 Shut down the server. %BR%%BR%
+   1 Take a backup of the database file(s), just in case.%BR%%BR%
+   1 Start the server.%BR%%BR%
+   1 Re-install/upgrade the VAD package corresponding to each installed 
+application. For the Open Source Edition, these are found in the 
+<code>/share/virtuoso/vad/</code> directory in the tree where <code>make 
+install</code> copies the results of the build; for Commercial Edition, 
+they are found in the /vad/ directory.  Updated VAD packages can be downloaded for 
+both [[http://download3.openlinksw.com/index.html?prefix=uda/vad-packages/][Enterprise Edition]] 
+and [[http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/][Open Source Edition]].%BR%%BR%
+   1 Upgrade the installation through the Conductor (recommended), or by 
+executing the following command in <code>isql</code>:
+<verbatim>
+SQL> vad_install('ods_framework_dav.vad', 0);
+</verbatim>
+   1 Repeat for each installed ODS or other VAD package.

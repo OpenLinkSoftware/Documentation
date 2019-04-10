@@ -1,0 +1,159 @@
+%META:TOPICPARENT{name="VirtSPARQLEndpointProtection"}%
+
+---+ Managing a WebID-based SPARQL Endpoint
+
+%TOC%
+
+---++ Introduction
+
+The following guide describes the basic steps for setting up an SSL protected and WebID based SPARQL Endpoint (SPARQL-WebID). The guide also covers the use of Virtuoso PL functions and the Virtuoso Conductor for SPARQL endpoint creation and configuration. It also covers the use of cURL for exercising the newly generated SPARQL-WebID endpoint.
+
+
+<i>Note: SPARQL-SSL is alias of SPARQL-WebID</i>
+
+---++ Create a WebID-based SPARQL Endpoint
+
+   1 [[http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup][Setup the CA issuer and https listener]]
+   1 Create the SPARQL-WebID endpoint:
+      1 By installing the [[https://virtuoso.openlinksw.com/download/][policy_manager_dav.vad]] package, which will create the SPARQL-WebID endpoint, or: 
+      1 Manually: Define the /sparql-webid endpoint on an HTTPS based listener (HTTPS service endpoint), for example using Virtuoso PL:
+<verbatim>
+DB.DBA.VHOST_DEFINE (
+	 lhost=>'127.0.0.1:443',
+	 vhost=>'localhost',
+	 lpath=>'/sparql-webid',
+	 ppath=>'/!sparql/',
+	 is_dav=>1,
+	 auth_fn=>'DB.DBA.FOAF_SSL_AUTH',
+	 vsp_user=>'dba',
+	 ses_vars=>0,
+	 auth_opts=>vector ('https_cert', 'db:https_key_localhost', 'https_key', 'db:https_key_localhost', 'https_verify', 3, 'https_cv_depth', 10),
+	 opts=>vector ('noinherit', 1),
+	 is_default_host=>0
+);
+</verbatim>
+   1 [[VirtAuthServerUI][Setup the SPARQL-WebID endpoint and define ACLs]] using the Virtuoso Conductor
+   1 Export your private key and its associated WebID based X.509 certificate from your Firefox browser or System's Key Manager into PEM (PKCS12) file 
+      1 If using Firefox use the menu path: Advanced->View Certificates, then  click Backup for your certificate with name "mykey".
+      1 The file "mykey.p12" will be created. To disable password protection so that you can use this file in non-interactive mode (e.g. with cURL and other HTTP clients) execute:
+<verbatim>
+openssl pkcs12 -in mykey.p12 -out mykey.pem -nodes 
+</verbatim>
+   1 [[VirtWebIDCurlExample1][Test the SPARQL-WebID endpoint with cURL]] (listening on default HTTPS 443 port): 
+      * Note: In this example we use the "-k / --insecure" option with cURL since we are going to be using self-signed X.509 certificates signed by self-signed root CA. 
+   1 Import your key it via Conductor UI:
+      1 Go to Conductor -> System Admin->User Accounts
+%BR%%BR%<img src="%ATTACHURLPATH%/c1.png" />%BR%%BR%
+      1 Click "Edit" for your user
+%BR%%BR%<img src="%ATTACHURLPATH%/c2.png" />%BR%%BR%
+      1 Change "User type" to: SQL/ODBC and WebDAV
+%BR%%BR%<img src="%ATTACHURLPATH%/c3.png" />%BR%%BR%
+      1 Enter your ODS user WebID:
+<verbatim>
+http://cname:port/dataspace/person/username#this
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/c4.png" />%BR%%BR%
+      1 Click "Save"
+      1 Click again "Edit" for your user
+      1 In "PKCS12 file:" click the Browse" button and select your key.
+      1 Enter a local Key Name, for e.g., "cli_key"
+      1 Enter key password
+%BR%%BR%<img src="%ATTACHURLPATH%/c5.png" />%BR%%BR%
+      1 Click "Import Key"
+      1 As result the key will be stored with name for ex. cli_key
+%BR%%BR%<img src="%ATTACHURLPATH%/c6.png" />%BR%%BR%
+      1 Click "Save"
+   1 [[VirtWebIDCurlExample2][Test the SPARQL-WebID endpoint with http_client]] (listening on default HTTPS 443 port).
+
+---+++Demo Examples
+
+   * [[http://demo.openlinksw.com/tutorial/rdf/fs_s_1/fs_s_1.vsp][Using HTTP client to perform WebID Protocol connection]]
+
+---++Disable Default SPARQL Endpoint
+
+---+++Using iSQL
+
+   1 To disable /sparql, execute: 
+<verbatim>
+DB.DBA.VHOST_REMOVE (lpath=>'/sparql');
+</verbatim>
+   1 To add the endpoint again via PL, execute:
+<verbatim>
+DB.DBA.VHOST_DEFINE (lpath=>'/sparql/', ppath => '/!sparql/', is_dav => 1, vsp_user => 'dba', opts => vector('noinherit', 1)); 
+</verbatim>
+
+---+++Using Conductor UI  
+
+   1 Go to http://cname:port/conductor .
+   1 Enter user dba credentials.
+   1 Go to "Web Application Server" -> "Virtual Domains & Directories".
+%BR%%BR%<img src="%ATTACHURLPATH%/s1.png" />%BR%%BR%
+   1 Find the logical path "/sparql".
+%BR%%BR%<img src="%ATTACHURLPATH%/s2.png" />%BR%%BR%
+   1 Click "Edit" from the "Action" column.
+%BR%%BR%<img src="%ATTACHURLPATH%/s3.png" />%BR%%BR%
+   1 Change "VSP User" to "nobody".
+%BR%%BR%<img src="%ATTACHURLPATH%/s4.png" />%BR%%BR%
+   1 Click "Save Changes".
+   1 As result the SPARQL Endpoint should be shown as disabled:
+%BR%%BR%<img src="%ATTACHURLPATH%/s5.png" />%BR%%BR%
+
+ 
+
+
+---++Related
+
+   * [[VirtSPARQLEndpointProtection][Safeguarding your Virtuoso-hosted SPARQL Endpoint]]
+   * [[VirtTipsAndTricksGuideSPARQLEndpointProtection][SPARQL Endpoint Protection Methods Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/][Virtuoso documentation]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint][SPARQL Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri][Service Endpoint Security]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl][Managing a SPARQL Web Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][SPARQL]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+      * [[VirtSPARQLDET][SPARQL Endpoint DET Configuration Guide]]       
+      * [[VirtSPARQLSecurityWebID][WebID Protocol & SPARQL Endpoint ACLs Tutorial]]
+      * [[VirtOAuthSPARQL][SPARQL OAuth Tutorial]]
+      * [[VirtTipsAndTricksGuideSPARQLEndpoints][Securing SPARQL endpoints]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth][SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint]]
+   * [[VirtAuthServerUI][Virtuoso Authentication Server UI]]
+   * [[VirtSPARQLSSL][Manage a SPARQL-WebID based Endpoint]]
+   * [[VirtSetupSSL][Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL][Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener]]  
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID][WebID Protocol Support in OpenLink Data Spaces]].
+   * Manage ODS Datadspaces Objects WebID Access Control Lists (ACLs):
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID][ODS Briefcase WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson][Person Entity WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup][Group Entity WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic][Public WebID based ACL Guide]]      
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL][ODS Feed Manager WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL][ODS Calendar WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL][ODS Bookmark Manager WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL][ODS Addressbook  WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup][Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub][Setting up PubSubHub in ODS]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub][PubSubHubBub Demo Client Example]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub][Feed subscription via PubSubHub protocol Example ]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL][Setting Up PubSubHub to use WebID Protocol or IP based control lists]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsKeyImport][CA Keys Import using Conductor]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID Guide]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP][Using Virtuoso's WebID Verification Proxy Service with a WebID-bearing X.509 certificate]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy][Using Virtuoso's WebID Identity Provider (IdP) Proxy Service with an X.509 certificate]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile][ODS Briefcase WebID Protocol Share File Guide]]
+   * [[http://esw.w3.org/topic/foaf+ssl][WebID Protocol Specification]]
+   * [[https://foaf.me/simpleLogin.php][Test WebID Protocol Certificate page]]
+   * [[http://test.foafssl.org/cert/][WebID Protocol Certificate Generation page]]

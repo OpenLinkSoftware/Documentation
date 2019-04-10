@@ -1,0 +1,394 @@
+%VOSWARNING%
+
+
+---+Virtuoso Programmer's Guide - RDF Middleware ("Sponger")
+
+---++++v1.1<br/>September 2009
+
+OpenLink Virtuoso's Sponger is an RDFizer providing middleware for creating RDF linked data from non-RDF data sources. The Sponger forms part of the extensible RDF framework built into Virtuoso Universal Server. A key component of the Sponger's pluggable architecture is its support for Sponger Cartridges, which themselves are comprised of an Entity Extractor and an Ontology Mapper. Virtuoso bundles numerous pre-written cartridges for RDF data extraction from a wide range of data sources. However, developers are free to develop their own custom cartridges. This programmer's guide describes how.
+
+The guide is a companion to the [[VirtSpongerWhitePaper][Virtuoso Sponger whitepaper]]. The whitepaper describes the Sponger in depth, covering its architecture, configuration, use, and integration with other Virtuoso facilities such as the OpenLink Data Spaces (ODS) application framework. This guide focuses solely on custom cartridge development.
+
+
+---+++Table of Contents
+---++++[[VirtSpongerCartridgeProgrammersGuide][Part 1]]
+   * [[#AncSpongerOverview][Sponger Overview]]
+      * What is it?
+      * How is it used?
+         * SPARQL Query Processor IRI Dereferencing
+         * RDF Proxy Service
+         * New Proxy URI Formats (Sept 09)
+      * Cartridge Architecture	
+         * Entity Extractor	
+            * Extraction Pipeline	
+         * Ontology Mapper	
+         * Cartridge Registry	
+      * Cartridge Invocation
+         * Meta-Cartridges	
+   * [[#AncCartridgesBundledWithVirtuoso][Cartridges Bundled with Virtuoso]]
+      * Cartridges VAD	
+      * Example Source Code	
+   * [[#AncIsACustomCartridgeNecessary][Is A Custom Cartridge Necessary?]]	
+      * What's Already Covered	
+         * Document Resources	
+            * GRDDL
+         * Web Services	
+---++++[[VirtuosoSpongerCartridgeProgrammersGuide_Part2][Part 2]]
+   * Creating Custom Cartridges	
+      * The Anatomy of a Cartridge	
+         * Cartridge Hook Function	
+            * Return Value	
+            * Specifying the Target Graph	
+            * Specifying & Retrieving Cartridge Specific Options	
+            * API Keys	
+         * XSLT - The Fulcrum	
+            * Virtuoso's XML Infrastructure & Tools	
+         * General Cartridge Pipeline	
+         * Error Handling with Exit handlers	
+         * Loading RDF into the Quad Store	
+            * <nowiki>RDF_LOAD_RDFXML</nowiki> & TTLP	
+            * Attribution
+            * Deleting Existing Graphs	
+            * Proxy Service Data Expiration	
+      * Ontology Mapping	
+         * Passing Parameters to the XSLT Processor
+         * An RDF Description Template
+            * Defining A Generic Resource Description Wrapper	
+            * Using SIOC as a Generic Container Model	
+            * Naming Conventions for Sponger Generated Descriptions
+      * Registering & Configuring Cartridges	
+         * Using SQL	
+         * Using Conductor	
+         * Installing Stylesheets	
+      * Example - MusicBrainz: A Music Metadatabase	
+         * MusicBrainz XML Web Service	
+         * RDF Output	
+         * Cartridge Hook Function	
+         * XSLT Stylesheet	
+      * Meta-Cartridges	
+         * Registration	
+         * Invocation	
+      * Example - A Campaign Finance Meta-Cartridge for Freebase	
+         * New York Times Campaign Finance (NYTCF) API	
+         * Sponging Freebase	
+            * Using OpenLink Data Explorer	
+            * Using the Command Line
+         * Installing the Meta-Cartridge	
+         * NYTCF Meta-Cartridge Functions	
+         * NYTCF Meta-Cartridge Stylesheet
+         * Testing the Meta-Cartridge	
+         * How The Meta-Cartridge Works
+---++++[[VirtSpongerCartridgeProgrammersGuide_Part3][Part 3]]
+   * Useful Virtuoso Functions	
+      * String Functions	
+         * <nowiki>sprintf_inverse</nowiki>	
+         * <nowiki>split_and_decode</nowiki>
+      * Retrieving URLs	
+         * <nowiki>http_get</nowiki>	
+         * <nowiki>http_request_header</nowiki>	
+      * Handling Non-XML Response Content
+         * <nowiki>json_parse</nowiki>	
+      * Writing Arbitrarily Long Text	
+         * http	
+         * <nowiki>string_output</nowiki>
+         * <nowiki>string_output_string</nowiki>	
+      * XML & XSLT	
+         * <nowiki>xtree_doc</nowiki>	
+         * <nowiki>xpath_eval</nowiki>
+         * <nowiki>DB.DBA.RDF_MAPPER_XSLT</nowiki>	
+      * Character Set Conversion	
+         * <nowiki>serialize_to_UTF8_xml</nowiki>
+      * Loading Data Into the Quad Store
+         * <nowiki>DB.DBA.RDF_LOAD_RDFXML</nowiki>
+         * DB.DBA.TTLP
+      * Debug Output
+         * <nowiki>dbg_obj_print</nowiki>
+   * References
+   * Appendix A: PingTheSemanticWeb RDF Notification Service	
+   * Appendix B: Main Namespaces used by OpenLink Cartridges	
+   * Appendix C: Freebase Cartridge & Stylesheet	
+
+#AncSpongerOverview
+---+Sponger Overview
+
+The "Sponger" is an example of a new class of tools for converting non-RDF data into RDF. Such tools are known as <i>RDFizers</i>. Introduced in Virtuoso Universal Server 5.0, the Sponger is packaged in an easily extensible framework, with tight integration to the Virtuoso RDF Quad Store.
+
+---++What is it?
+
+The Sponger provides built-in RDF middleware for transforming non-RDF data into RDF "on the fly". Its goal is to take non-RDF Web data sources (e.g., (X)HTML Web Pages, (X)HTML Web pages hosting microformats, and even Web services such as those from Google, Del.icio.us, Flickr, etc.) as input, and create RDF as output. The implication of this facility is that you can use non-RDF data sources as Semantic Web data sources.
+
+As depicted below, OpenLink's broad portfolio of Linked-Data-aware products supports a number of routes for creating or consuming Linked Data. The Sponger provides a key platform for developers to generate quality data meshes from unstructured or semi-structured data. 
+
+   <div align="center">
+   <img src="%ATTACHURLPATH%/linked_data_gen_opts3a.png" style="wikiautogen"/>
+   <p><b>Figure 1: <nowiki>OpenLink</nowiki> Linked Data generation options</b></p>
+   </div>
+
+---++How is it used?
+
+The Sponger can be invoked via the following mechanisms: 
+   1 Virtuoso SPARQL query processor 
+   2 OpenLink RDF client applications via the Virtuoso RDF Proxy Service
+   3 From Virtuoso PL, by calling the cartridge hook function directly
+   4 ODS-Briefcase (Virtuoso WebDAV) - a component of the OpenLink Data Spaces distributed collaborative application platform
+
+File metadata extraction by ODS-Briefcase isn't discussed further in this document. For details, please refer to the [[VirtSpongerWhitePaper][Virtuoso Sponger whitepaper]].
+
+   <div align="center">
+   <img src="%ATTACHURLPATH%/sponger1_090422.png" style="wikiautogen"/>
+   <p><b>Figure 2: Sponger architecture and invocation mechanisms</b></p>
+   </div>
+
+---+++SPARQL Query Processor IRI Dereferencing
+
+The Sponger is transparently integrated into the Virtuoso SPARQL query processor, where it supports <i>IRI dereferencing</i>.
+
+Given the distributed nature of RDF data, it is quite possible when executing a SPARQL query that some of the referenced data resides outside the local quad store. To cope with this scenario, the Virtuoso SPARQL query processor can be instructed to retrieve the external data and cache it in local quad storage. This feature is exposed through a set of Virtuoso SPARQL extensions known as "IRI dereferencing". Essentially these enable downloading and local storage of selected triples either from one or more named graphs or based on a proximity search from a starting URI for entities matching the select criteria and also related by the specified predicates, up to a given depth. Because the SPARQL processor understands only RDF data (serialized as RDF/XML, Turtle, N3), it utilizes the Sponger RDF mapper functionality when dereferencing web or file resources which don't naturally contain RDF data.
+
+---+++RDF Proxy Service
+
+View [[VirtInteractSpongerMiddlewareRESTPatterns][details]] about interacting with Sponger Middleware via RESTful Patterns.
+
+---+++New Proxy URI Formats (Sept '09)
+
+As of September 2009, the Sponger proxy paths /about/html and /about/rdf have been augmented to support a richer slash URI scheme for identifying an entity and its metadata in a variety of representation formats. 
+
+The proxy path /about/html returns an XHTML description of an entity as before, but now includes richer embedded RDFa. Although some of the examples in this document still refer to /about/rdf (which is still usable), please bear in mind that this path has been deprecated in favor of /about/id.
+
+The new proxy path /about/id returns an RDF description of an entity, using a default serialization format of RDF/XML. Different serialization formats can be requested by specifying the appropriate media type in an Accept header. Supported alternative formats are N3, Turtle (TTL), or NTriples. Alternatively, rather than using /about/id in combination with an Accept header specifying a media type, it is also possible to request a serialization format directly using another new proxy path /about/data. In this case, no Accept header is required as the required format is specified as part of the request URL.
+
+To dereference the description of a Web-addressable resource via your browser simply type in one of the following URL patterns:
+
+   * HTML description - http://&lt;sponger proxy host&gt;/about/html/&lt;URLscheme&gt;/&lt;hostname&gt;/&lt;localpart&gt;
+   * RDF description - http://&lt;sponger proxy host&gt;/about/data/&lt;format&gt;/&lt;URLscheme&gt;/&lt;hostname&gt;/&lt;localpart&gt; where format is one of xml, n3, nt, ttl, or json.
+
+---++++Examples
+
+The examples which follow, illustrating how RDF metadata about a product described at www.bestbuy.com can be requested in different formats, use a public Virtuoso Sponger service hosted at linkeddata.uriburner.com. For more information refer to the [[http://www.uriburner.com/wiki/URIBurner/][URIBurner Wiki]].
+
+Notice how requests to /about/id are redirected to /about/html, /about/data/nt, /about/data/xml, or /about/data/json depending on the requested format. The required URL rewriting rules are preconfigured when the cartridges VAD is installed.
+
+---+++++HTML+RDFa based metadata
+
+<verbatim>
+curl -I -H "Accept: text/html" "http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278"
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 01 Sep 2009 21:41:52 GMT
+Accept-Ranges: bytes
+Location: http://linkeddata.uriburner.com/about/html/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278
+Content-Length: 13
+</verbatim>
+
+or 
+
+<verbatim>
+curl -I -H "Accept: application/xhtml+xml" "http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278"
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Thu, 03 Sep 2009 14:33:45 GMT
+Accept-Ranges: bytes
+Location: http://linkeddata.uriburner.com/about/html/http/www.bestbuycom/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278
+Content-Length: 13 
+</verbatim>
+
+---+++++N3 based metadata
+
+<verbatim>
+curl -I -H "Accept: text/n3" "http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278"
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Date: Tue, 01 Sep 2009 21:38:44 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: /about/data/nt/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Type: text/n3; qs=0.8
+Location: http://linkeddata.uriburner.com/about/data/nt/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Length: 13
+</verbatim>
+
+---+++++RDF/XML based metadata
+
+<verbatim>
+curl -I -H "Accept: application/rdf+xml" "http://linkeddata.uriburner.com/about/id/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278"
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Date: Tue, 01 Sep 2009 21:33:23 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: /about/data/xml/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Type: application/rdf+xml; qs=0.95
+Location: http://linkeddata.uriburner.com/about/data/xml/http/www.bestbuy.com/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Length: 13
+</verbatim>
+
+---+++++JSON based metadata
+
+<verbatim>
+curl -I -H "Accept: application/rdf+json" "http://linkeddata.uriburner.com/about/id/http/www.bestbuycom/site/olspage.jsp?skuId=9491935&type=product&id=1218115079278"
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3040 (Solaris) x86_64-sun-solaris2.10-64  VDB
+Connection: close
+Date: Tue, 01 Sep 2009 11:22:52 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: /about/data/json/http/www.bestbuycom/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Type: application/rdf+json; qs=0.7
+Location: http://linkeddata.uriburner.com/about/data/json/http/www.bestbuycom/site/olspage.jsp?skuId=9491935%26type=product%26id=1218115079278
+Content-Length: 13
+</verbatim>
+
+
+---++Cartridge Architecture
+
+The Sponger is comprised of cartridges which are themselves comprised of an entity extractor and an ontology mapper. Entities extracted from non-RDF resources are used as the basis for generating structured data by mapping them to a suitable ontology. A cartridge is invoked through its cartridge hook, a Virtuoso/PL procedure entry point and binding to the cartridge's entity extractor and ontology mapper.
+
+---+++Entity Extractor
+
+When an RDF aware client requests data from a network accessible resource via the Sponger the following events occur: 
+   * A request is made for data in RDF form (explicitly via HTTP Accept Headers), and if RDF is returned nothing further happens.
+   * If RDF isn't returned, the Sponger passes the data through a <b>Entity Extraction Pipeline</b> (using Entity Extractors).
+   * The extracted data is transformed into RDF via a <b>Mapping Pipeline</b>. RDF instance data is generated by way of ontology matching and mapping.
+   * RDF instance data (aka. RDF Structured Linked Data) are returned to the client.
+
+---++++Extraction Pipeline
+
+Depending on the file or format type detected at ingest, the Sponger applies the appropriate entity extractor. Detection occurs at the time of content negotiation instigated by the retrieval user agent. The normal extraction pipeline processing is as follows:
+
+   * The Sponger tries to get RDF data (including N3 or Turtle) directly from the dereferenced URL. If it finds some, it returns it, otherwise, it continues.   
+   * If the URL refers to a HTML file, the Sponger tries to find "link" elements referring to RDF documents. If it finds one or more of them, it adds their triples into a temporary RDF graph and continues its processing.
+   * The Sponger then scans for microformats or GRDDL. If either is found, RDF triples are generated and added to a temporary RDF graph before continuing. 
+   * If the Sponger finds eRDF or RDFa data in the HTML file, it extracts it from the HTML file and inserts it into the RDF graph before continuing.   
+   * If the Sponger finds it is talking with a web service such as Google Base, it maps the API of the web service with an ontology, creates triples from that mapping and includes the triples into the temporary RDF graph.
+   * The next fallback is scanning of the HTML header for different Web 2.0 types or RSS 1.1, RSS 2.0, Atom, etc. 
+   * Failing those tests, the scan then uses standard Web 1.0 rules to search in the header tags for metadata (typically Dublin Core) and transform them to RDF and again add them to the temporary graph. Other HTTP response header data may also be transformed to RDF.
+   * If nothing has been retrieved at this point, the ODS-Briefcase metadata extractor is tried.
+   * Finally, if nothing is found, the Sponger will return an empty graph.
+
+---+++Ontology Mapper
+
+Sponger ontology mappers perform the the task of generating RDF instance data from extracted entities (non-RDF) using ontologies associated with a given data source type. They are typically XSLT (using GRDDL or an in-built Virtuoso mapping scheme) or Virtuoso/PL based. Virtuoso comes preconfigured with a large range of ontology mappers contained in one or more Sponger cartridges.
+
+---+++Cartridge Registry
+
+To be recognized by the SPARQL engine, a Sponger cartridge must be registered in the Cartridge Registry by adding a 
+record to the table <nowiki>DB.DBA.SYS_RDF_MAPPERS</nowiki>, either manually via DML, or more easily through Conductor, Virtuoso's browser-based administration console, which provides a UI for adding your own cartridges. (Sponger configuration using Conductor is described in detail later.) 
+The <nowiki>SYS_RDF_MAPPERS</nowiki> table definition is as follows:
+
+<verbatim>
+create table "DB"."DBA"."SYS_RDF_MAPPERS"
+(
+"RM_ID" INTEGER IDENTITY,  -- cartridge ID. Determines the order of the cartridge's invocation in the Sponger processing chain
+"RM_PATTERN" VARCHAR,  -- a REGEX pattern to match the resource URL or MIME type
+"RM_TYPE" VARCHAR,  -- which property of the current resource to match: "MIME" or "URL"
+"RM_HOOK" VARCHAR,  -- fully qualified Virtuoso/PL function name
+"RM_KEY" LONG VARCHAR,  -- API specific key to use
+"RM_DESCRIPTION" LONG VARCHAR,  -- cartridge description (free text)
+"RM_ENABLED" INTEGER,  -- a 0 or 1 integer flag to exclude or include the cartridge from the Sponger processing chain
+"RM_OPTIONS" ANY,  -- cartridge specific options
+"RM_PID" INTEGER IDENTITY,
+PRIMARY KEY ("RM_PATTERN", "RM_TYPE")
+);
+</verbatim>
+
+---++Cartridge Invocation
+
+The Virtuoso SPARQL processor supports IRI dereferencing via the Sponger. If a SPARQL query references non-default graph URIs, the Sponger goes out (via HTTP) to fetch the Network Resource data source URIs and inserts the extracted RDF data into the local RDF quad store. The Sponger invokes the appropriate cartridge for the data source type to produce RDF instance data. If none of the registered cartridges are capable of handling the received content type, the Sponger will attempt to obtain RDF instance data via the in-built WebDAV metadata extractor. 
+
+Sponger cartridges are invoked as follows:
+
+When the SPARQL processor dereferences a URI, it plays the role of an HTTP user agent (client) that makes a content type specific request to an HTTP server via the HTTP request's Accept headers. The following then occurs:
+
+   * If the content type returned is RDF then no further transformation is needed and the process stops. For instance, when consuming an (X)HTML document with a GRDDL profile, the profile URI points to a data provider that simply returns RDF instance data.
+   * If the content type is not RDF (i.e., <code>application/rdf+xml</code> or <code>text/rdf+n3</code>), for instance '<code>text/plain</code>', the Sponger looks in the Cartridge Registry iterating over every record for which the <nowiki>RM_ENABLED</nowiki> flag is true, with the look-up sequence ordered on the <nowiki>RM_ID</nowiki> column values. For each record, the processor tries matching the content  type or URL against the <nowiki>RM_PATTERN</nowiki> value and, if there is match, the function specified in <nowiki>RM_HOOK</nowiki> column is called. If the function doesn't exist, or signals an error,  the SPARQL processor looks at next record.
+      * If the hook returns zero, the next cartridge is tried. (A cartridge function can return zero if it believes a subsequent cartridge in the chain is capable of extracting more RDF data.) 
+      * If the result returned by the hook is negative, the Sponger is instructed that no RDF was generated and the process stops.
+      * If the hook result is positive, the Sponger is informed that structured data was retrieved and the process stops.
+   * If none of the cartridges match the source data signature (content type or URL), the ODS-Briefcase WebDAV metadata extractor and RDF generator is called.
+
+---+++Meta-Cartridges
+
+The above describes the RDF generation process for 'primary' Sponger cartridges. Virtuoso also supports another cartridge type - a '<b>meta-cartridge</b>'. Meta-cartridges act as post-processors in the cartridge pipeline, augmenting entity descriptions in an RDF graph with additional information gleaned from 'lookup' data sources and web services. Meta-cartridges are described in more detail in a later section.
+
+   <div align="center">
+   <img src="%ATTACHURLPATH%/flowchart2.png" style="wikiautogen"/>
+   <p>
+   <b>Figure 3: Sponger cartridge invocation flowchart</b>
+   </p>
+   </div>
+
+#AncCartridgesBundledWithVirtuoso
+---+Cartridges Bundled with Virtuoso
+
+---++Cartridges VAD
+
+Virtuoso supplies a number of prewritten cartridges for extracting RDF data from a variety of popular Web resources and file types. The cartridges are bundled as part of the <nowiki>cartridges</nowiki> VAD (Virtuoso Application Distribution). Appendix B of the Virtuoso Sponger whitepaper briefly outlines the cartridges contained in the VAD.
+
+To see which cartridges are available, look at the 'Cartridges' screen in Conductor. This can be reached through the 'Linked Data' > 'Sponger' > 'Extractor Cartridges' /'Meta Cartridges' tabbed menu items.
+
+<div align="center">
+<img src="%ATTACHURLPATH%/cartridge_conductor_config1.png" style="wikiautogen"/>
+</div>
+
+To check which version of the <nowiki>cartridges</nowiki> VAD is installed, or to upgrade it, refer to Conductor's 'VAD Packages' screen, reachable through the 'System Admin' > 'Packages' menu items.
+
+The latest VADs for the closed source releases of Virtuoso can be downloaded from the [[https://virtuoso.openlinksw.com/download/][downloads]] area on the OpenLink website. Select either the 'DBMS (WebDAV) Hosted' or 'File System Hosted' product format from the 'Distributed Collaborative Applications' section, depending on whether you want the Virtuoso application to use WebDAV or native filesystem storage. VADs for Virtuoso Open Source edition (VOS) are available for [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSDownload][download]] from the VOS Wiki.
+
+---++Example Source Code
+
+For developers wanting example cartridge code, the most authoritative reference is the <nowiki>cartridges</nowiki> VAD source code itself. This is included as part of the VOS distribution. After downloading and unpacking the sources, the script used to create the cartridges, and the associated stylesheets can be found in:
+
+   * &lt;vos root&gt;/binsrc/<nowiki>rdf_mappers/rdf_mappers</nowiki>.sql
+   * &lt;vos root&gt;/binsrc/<nowiki>rdf_mappers/</nowiki>xslt/main/*.xsl
+
+Alternatively, you can look at the actual cartridge implementations installed in your Virtuoso instance by inspecting the cartridge hook function used by a particular cartridge. This is easily identified from the 'Cartridge name' field of Conductor's 'Cartridges' screen, after selecting the cartridge of interest. The hook function code can be viewed from the 'Schema Objects' screen under the 'Database' menu, by locating the function in the 'DB' > 'Procedures' folder. Stylesheets used by the cartridges are installed in the WebDAV folder <nowiki>DAV/VAD/cartridges/xslt/main</nowiki>. This can be explored using Conductor's WebDAV interface. The actual rdf_mappers.sql file installed with your system can also be found in the DAV/VAD/cartridges folder.
+
+#AncIsACustomCartridgeNecessary
+---+Is A Custom Cartridge Necessary?
+
+Virtuoso comes well supplied with a variety of Sponger cartridges and GRDDL filters. When then is it necessary to write your own cartridge?
+
+In the main, writing a new cartridge should only be necessary to generate RDF from a REST-style Web service not supported by an existing cartridge, or to customize the output from an existing cartridge to your own requirements. Apart from these circumstances, the existing Sponger infrastructure should meet most of your needs. This is particularly the case for document resources.
+
+---++What's Already Covered
+
+---+++Document Resources
+
+We use the term <i>document resource</i> to identify content which is not being returned from a Web service. Normally it can broadly be conceived as some form of document, be it a text based entity or some form of file, for instance an image file.
+
+In these cases, the document either contains RDF, which can be extracted directly, or it  holds metadata in a supported format which can be transformed to RDF using an existing filter.
+
+The following cases should all be covered by the existing Sponger cartridges:
+   * embedded or linked RDF
+   * RDFa, eRDF and other popular microformats extractable directly or via GRDDL
+   * popular syndication formats (RSS 2.0 , Atom, OPML , OCS , XBEL)
+
+---++++GRDDL
+
+GRDDL (Gleaning Resource Descriptions from Dialects of Languages) is mechanism for deriving RDF data from XML documents and in particular XHTML pages. Document authors may associate transformation algorithms, typically expressed in XSLT, with their documents to transform embedded metadata into RDF.
+
+The <nowiki>cartridges</nowiki> VAD installs a number of GRDDL filters for transforming popular microformats (such as RDFa, eRDF, or hCalendar) into RDF. The available filters can be viewed, or configured, in Conductor's 'GRDDL Filters for XHTML' screen. Navigate to the 'Cartridges' screen using the 'RDF' > 'Cartridges' menu items, then select the 'GRDDL Mappings' tab to display the 'GRDDL Filters for XHTML' screen. GRDDL filters are held in the WebDAV folder /DAV/VAD/cartridges/xslt/main alongside other XSLT templates. The Conductor interface allows you to add new GRDDL filters should you so wish.
+
+For an introduction to GRDDL, try the [[http://www.w3.org/TR/grddl-primer/][GRDDL Primer]]. To underline GRDDL's utility, the primer includes an example of transforming Excel spreadsheet data, saved as XML, into RDF.
+
+A comprehensive [[http://esw.w3.org/topic/CustomRdfDialects][list of stylesheets]] for transforming HTML and non-HTML XML dialects is maintained on the [[http://esw.w3.org/topic/][ESW Wiki]]. The list covers a range of microformats, syndication formats and feedlists.
+
+---+++Web Services
+
+To see which Web Services are already catered for, view the list of cartridges in Conductor's <b>Cartridges</b> screen.
+
+[[VirtuosoSpongerCartridgeProgrammersGuide_Part2][Continued - Part 2]]

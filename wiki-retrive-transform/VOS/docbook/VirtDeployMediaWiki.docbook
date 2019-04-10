@@ -1,0 +1,118 @@
+<docbook><section><title>VirtDeployMediaWiki</title><title> Deploying MediaWiki on Virtuoso</title> Deploying <ulink url="MediaWiki">MediaWiki</ulink> on Virtuoso
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What is MediaWiki?</bridgehead>
+MediaWiki is a popular open-source wiki engine written in PHP.
+ The guide below shows how to run it in Virtuoso.<bridgehead class="http://www.w3.org/1999/xhtml:h3">Install VAD</bridgehead>
+<orderedlist spacing="compact"><listitem>Start virtuoso db using the hosting_php.so ( .dll for win users).
+ To use this plugin, it must be included in your virtuoso ini file as follows: <programlisting>...
+[Plugins]
+# for ex. here the location of the plugins is the plugin folder
+LoadPath = ./plugin
+...
+Load6    = Hosting,hosting_php.so
+...
+</programlisting></listitem>
+<listitem>Setup &quot;Local Virtuoso&quot; DSN (note the empty space in the name!) in order to access any of the application URLs.
+<itemizedlist mark="bullet" spacing="compact"><listitem>For windows users, please perform the following steps: <orderedlist spacing="compact"><listitem>Go to Start &gt;&gt; Settings &gt;&gt; Control Panel &gt;&gt; Administrative Tools &gt;&gt; Data Sources (ODBC) </listitem>
+<listitem>Go to tab &quot;User DSN&quot; and click &quot;Add&quot; </listitem>
+<listitem>Select the &quot;<ulink url="OpenLink">OpenLink</ulink> Virtuoso (version)&quot; driver and click &quot;Finish&quot; </listitem>
+<listitem>Enter &quot;Name&quot;: Local Virtuoso</listitem>
+<listitem>Enter &quot;Description&quot;: My Local Virtuoso</listitem>
+<listitem>For &quot;Server&quot;, enter your Virtuoso&#39;s hostname and ISQL port, e.g., localhost:1116</listitem>
+<listitem>Click &quot;Next&quot; </listitem>
+<listitem>Enter a username for &quot;Login ID&quot;, e.g., dba</listitem>
+<listitem>Enter the user&#39;s &quot;Password&quot;.
+ For dba, the default password is dba</listitem>
+<listitem>Click &quot;Next&quot; </listitem>
+<listitem>Click &quot;Finish&quot;.
+</listitem>
+</orderedlist></listitem>
+</itemizedlist></listitem>
+<listitem>From ISQL, execute: <programlisting>SQL&gt; DB.DBA.VAD_INSTALL(&#39;tmp/mediawiki_fs.vad&#39;,0);
+</programlisting>This will install MediaWiki version 1.18.4 and Semantic MediaWiki version 1.8 .
+</listitem>
+<listitem>Go to http://<emphasis>yourvirtuosohost:port</emphasis>/MediaWiki This will show the start page of the MediaWiki installer and will look like this: <figure><graphic fileref="VirtDeployMediaWiki/mw.png" /></figure> </listitem>
+<listitem>Click the <emphasis>complete the installation</emphasis> link.
+ This will open a Language selection page.
+<emphasis>Tip:</emphasis> If you have run the mediawiki installer before it may remember you settings and not start the installation from the beginning.
+ In this case you should click the <emphasis>restart installation</emphasis> link in the menu on the right hand side.
+<figure><graphic fileref="VirtDeployMediaWiki/Install.png" /></figure> </listitem>
+<listitem>Select your language and click the <emphasis>Continue</emphasis> button.
+ This will open the Welcome to MediaWiki page.
+</listitem>
+<listitem>About half way down the page there should be a green message saying <emphasis>The environment has been checked.
+ You can install <ulink url="MediaWiki">MediaWiki</ulink>.</emphasis>  Click the <emphasis>Continue</emphasis> button at the bottom of the page.
+ This will take you to the Connect to Database page.
+</listitem>
+<listitem>Virtuoso should be selected for you.
+ When using Virtuoso there are no further settings required so just click the <emphasis>Continue</emphasis> button.
+</listitem>
+<listitem>Setup the name of your wiki the and Administrator account.
+ Select <emphasis>Ask me more questions</emphasis> before clicking <emphasis>Continue</emphasis> to enable <emphasis><ulink url="VirtuosoAuth">VirtuosoAuth</ulink></emphasis>.
+</listitem>
+<listitem>On the Options page in the Extensions section select VirtuosoAuth.
+ Click <emphasis>Continue</emphasis>.
+</listitem>
+<listitem>Once the tables have been created you will be propmpted to download LocalSetting.php.
+<figure><graphic fileref="VirtDeployMediaWiki/mediawiki.png" /></figure> </listitem>
+<listitem>Move the downloaded LocalSettings.php  into <emphasis>virtuoso</emphasis> <emphasis>installation</emphasis> <emphasis>folder</emphasis>/vsp/vad/vsp/MediaWiki.
+</listitem>
+<listitem>To enable VirtuosoAuth edit LocalSettings.php and add the following <programlisting>enableVirtuosoAuth();
+</programlisting>after <programlisting>require_once( &quot;$IP/extensions/VirtuosoAuth/VirtuosoAuth.php&quot; );
+</programlisting></listitem>
+<listitem>Click on the <emphasis>enter your wiki</emphasis> link or go to http://<emphasis>yourvirtuosohost:port</emphasis>/MediaWiki you should see something like this: <figure><graphic fileref="VirtDeployMediaWiki/complete.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">User Authentication with the VirtuosoAuth Extension</bridgehead>
+The VirtuosoAuth extension extends the way users can be authenticated in MediaWiki.With the extension enabled, usernames and passwords are authenticated by Virtuoso as well as MediaWiki.  What this means is that an existing Virtuoso user does not have to specifically set up a MediaWiki account, just use her Virtuoso username and password in the MediaWiki login dialog.In addition, the extension allows users to authenticate themselves using an OpenId or WebID.  In either case a matching MediaWiki user is silently created the first time the user logins in.  In order to use a WebID you will need to have the ODS-Framework installed and your Virtuoso Server configured as an HTTPS listener.In the case where authentication is via an OpenId or WebId and the username from the OpenId or WebId matches an existing MediaWiki username then the user is prompted for the mediawiki password.  The OpenId or WebId is then associated with that MediaWiki user.If your instance of Virtuoso has the ODS-Framework installed then the VirtuosoAuth extension will attempt to authenticate users as ODS users.  Additionally, when a new mediawiki user is created an ODS account will also be created for that user.  New MediaWiki/ODS users can be created from a username and password or from an existing OpenId or WebId.<bridgehead class="http://www.w3.org/1999/xhtml:h4">Using the VirtuosoAuth extension with a Private Wiki</bridgehead>
+ MediaWiki can be configured as a private wiki which means that users must be logged in to read any pages.
+ If you are using the <ulink url="VirtuosoAuth">VirtuosoAuth</ulink> extension with a private wiki then the VirtuosoAuth login page must be added to the white list of pages that can be read before logging in.
+ This is done by adding the following line to LocalSettings.php <programlisting>$wgWhitelistRead = array( &quot;Special:VOILogin&quot; );
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Installing Extensions on a Virtuoso Hosted MediaWiki</bridgehead>
+<para>Extensions let you customize how MediaWiki looks and works.
+ There are many extensions available to <ulink url="http://www.mediawiki.org/wiki/Special:ExtensionDistributor">download</ulink>  from the MediaWiki web site.
+ For general instructions on installing extensions see the <ulink url="http://www.mediawiki.org/wiki/Manual:Extensions">Extensions manual page</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Download the Extension.</bridgehead>
+<para>Extensions can be downloaded using the the <ulink url="http://www.mediawiki.org/wiki/Special:ExtensionDistributor">Extensions Distributor</ulink> or from the extensions page on the MediaWiki web site.</para>
+<figure><graphic fileref="VirtDeployMediaWiki/download1.png" /></figure><para>Select the required extension from the drop down list.
+ Click the <emphasis>Continue</emphasis> button.</para>
+<figure><graphic fileref="VirtDeployMediaWiki/download2.png" /></figure><para>If there are different versions of the extension available you can choose the one that matches your version of MediaWiki.  If you have installed the Virtuoso VAD then you have MediaWiki version 1.18.
+ Once you have selected the version click the <emphasis>Continue</emphasis> button.
+ You will then see a confirmation screen with some instructions for unpacking the download.
+ Your download should start automatically.</para>
+<figure><graphic fileref="VirtDeployMediaWiki/download3.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h4">Unpack the Extension</bridgehead>
+<para>Move the downloaded file to the extensions folder of your MediaWiki installation.
+ This will be in <emphasis>your Virtuoso installation folder</emphasis>/vsp/vad/vsp/MediaWiki/extensions.
+ Unzip the extension.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Enable the Extension</bridgehead>
+<para>Extensions are enabled in the LocalSettings.php file in the root of your MediaWiki installation.
+ Typically, this will mean adding a line similar to the following at the end of LocalSettings.php.
+</para>
+<programlisting>require_once( &quot;$IP/extensions/extension_name/extension_name.php&quot; );
+</programlisting><para>Some extensions will have additional settings that can be modified by adding them to LocalSettings.php.
+ See the documentation for the particular extension that you are installing.</para>
+<para>For example, if you are installing the Widgets extension then you would add the following line to LocalSettings.php to enable it: </para>
+<programlisting>require_once(&quot;$IP/extensions/Widgets/Widgets.php&quot;);
+</programlisting><para> The Widgets extension also needs the following to be set in LocalSettings.php: </para>
+<programlisting>$wgGroupPermissions[&#39;sysop&#39;][&#39;editwidgets&#39;] = true;
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3">Linked Data View Scripts</bridgehead>
+<para>After you have installed the MediaWiki mediawiki_fs.vad package you may want to set up Linked Data Views of the <ulink url="MediaWiki">MediaWiki</ulink> database tables.
+ The benefits of doing so are described in <ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/MediaWikiSIOCRef">MediaWiki SIOC Reference</ulink>.</para>
+<para>Setting up the views is simply a matter of executing a script in ISQL.
+ The script is included in the <ulink url="MediaWiki">MediaWiki</ulink> VAD and can be found in <emphasis>your Virtuoso installation folder</emphasis>/vsp/vad/vsp/MediaWiki/maintenance/virtuoso/MediaWiki <emphasis>rdf_views_script.sql</emphasis></para>
+<programlisting>isql localhost:1116 dba dba MediaWiki_rdf_views_script.sql
+</programlisting><orderedlist spacing="compact"><listitem><itemizedlist mark="bullet" spacing="compact"><listitem>The MediaWiki Linked Data Views script can also be found <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtRDFViewMediaWiki">here</ulink>.</listitem>
+</itemizedlist></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">URI Schemes</bridgehead>
+ <programlisting>http://&lt;your-instance-cname&gt;/MediaWiki/user/&lt;ods-user-id&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Download</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Download the MediaWiki VAD package from <ulink url="https://virtuoso.openlinksw.com/download/">here</ulink>.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.mediawiki.org/">MediaWiki</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">See Also</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/MediaWikiSIOCRef">MediaWiki SIOC Reference</ulink> </listitem>
+<listitem><ulink url="VirtDeploSemanticMediaWiki">Installing and Configuring SemanticMediaWiki using Virtuoso</ulink> </listitem>
+<listitem><ulink url="VirtDeployLinkedWikiV2">Installing and Configuring the LinkedWiki v2.0.1 Extension</ulink> </listitem>
+<listitem><ulink url="VirtDeployLinkedWikiV1">Installing and Configuring the LinkedWiki v1.0.1.2 Extension</ulink></listitem>
+</itemizedlist><para> <ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategorySIOC">CategorySIOC</ulink> <ulink url="CategorySPARQL">CategorySPARQL</ulink> <ulink url="CategoryWiki">CategoryWiki</ulink>  <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink></para>
+</section></docbook>

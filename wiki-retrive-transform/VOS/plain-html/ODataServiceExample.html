@@ -1,0 +1,132 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><p> </p>
+<h1><a name="Creating an OData Publishing Endpoint using Virtuoso's ADO.NET Data Provider"></a>Creating an OData Publishing Endpoint using Virtuoso&#39;s ADO.NET Data Provider</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li>
+<ul><li><a href="#What%20is%20OData%3F">What is OData?</a></li> <li><a href="#Why%20is%20OData%20Important%3F">Why is OData Important?</a></li> <li><a href="#How%20are%20Virtuoso%20and%20OData%20Connected%3F">How are Virtuoso and OData Connected?</a></li> </ul><li><a href="#How%20Do%20I%20use%20Virtuoso%20to%20Publish%20OData%20%3F">How Do I use Virtuoso to Publish OData ?</a></li> <li><a href="#How%20do%20I%20Consume%20the%20Published%20OData%3F">How do I Consume the Published OData?</a></li><ul><li><a href="#Notes">Notes</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<h3><a name="What is OData?"></a> What is OData?</h3>
+ <a href="http://www.odata.org/" class="absuri">OData</a> is an HTTP-based data protocol, with associated data representation formats (Atom and JSON).
+ The underlying data model takes the form of an Entity-Attribute-Value graph, and originates from the Entity Frameworks aspect of ADO.NET.
+ In this model, individual entities, entity attributes, and (optionally) attribute values are identified by Uniform Resource Identifiers (URIs).
+ In short, OData decouples wire protocol data access and data representation formats from the ADO.NET platform.<p>The simplest service consists of a single feed hosting a basic Entity-Attribute-Value model tuple represented in Atom or JSON.
+ Typically a service will provide a number of feeds, listed in the top-level service document.
+ The model is published at the top level as a service-specific metadata document.</p>
+<h3><a name="Why is OData Important?"></a> Why is OData Important?</h3>
+<p>The Open Data Protocol (OData) is a protocol for sharing data.
+ Producers expose data as an OData service at an HTTP location (i.e., a URL) which is then available to OData consumers.
+ As the OData protocol is based on the <a href="http://tools.ietf.org/html/rfc5023" class="absuri">AtomPub</a> standard, the simplest consumer can take the form of any HTTP user agent (e.g., a Web Browser), which is then able to browse entity-attribute-value model data stored within the Atom feeds.
+ Likewise, Rich Internet Application clients, launched from within browsers or as stand-alone applications, such as the <a href="http://silverlight.net/content/samples/odataexplorer/" class="absuri">Silverlight OData Explorer</a>, may be used to browse this data.
+ Either way, data from a range of disparate sources can be exposed as HTTP-accessible structured hypermedia resources (delivered by the Atom Feed).</p>
+<p>By cleanly separating client and server roles, OData can serve as an HTTP analog of the platform-specific <a href="http://en.wikipedia.org/wiki/Open_Database_Connectivity" class="absuri">ODBC</a> (version 2.0, as of this writing).
+ As with ODBC, data consuming applications can be developed independently from data sources, and a single application can consume data from a range of disparate sources.
+ The OData service endpoint can be specified at runtime just as an ODBC Data Source Name (DSN) would be.</p>
+<p> </p>
+<h3><a name="How are Virtuoso and OData Connected?"></a> How are Virtuoso and OData Connected?</h3>
+<p>Virtuoso is a hybrid data server with native data management and integration capabilities covering RDF via SPARQL, ODBC or JDBC accessible Relational Data Sources; XML via XQuery/XPath; Web Services; and other HTTP-accessible Hypermedia and non-Hypermedia resources.
+ Virtuoso includes a high-performance native ADO.NET data provider that provides access to its Relational-, RDF Graph-, and Document-model based storage engines, and thereby also makes data from these engines accessible to OData-based data consumers.</p>
+<p> </p>
+<h2><a name="How Do I use Virtuoso to Publish OData ?"></a> How Do I use Virtuoso to Publish OData ?</h2>
+<p>There are two ways to produce OData from Virtuoso: one approach uses Virtuoso&#39;s built-in support of the lightweight and platform-agnostic OData protocol; the other uses Virtuoso&#39;s ADO.NET provider.
+ This guide covers use of the ADO.NET provider.</p>
+<p>To create an OData service endpoint using Virtuoso and its ADO.NET provider, you will need the following in place:</p>
+<ul><li>Microsoft Visual Studio 2010 </li>
+<li>The ADO.NET Entity Framework 4.0 runtime and associated tools (included in Visual Studio 2010, but not installed by default)</li>
+</ul><p>At the start of your Visual Studio project creation, you must establish a connection with the database(s) hosting the data to be exposed by the service.
+ Once a connection has been established, you can generate a data model which lays the foundation for publishing an OData service.</p>
+<p>The following steps show how to expose the Northwind Demo database in Virtuoso as an OData Service using the Virtuoso ADO.NET Provider: </p>
+<ol><li>Launch the <b>Visual Studio 2010 IDE</b>.
+</li>
+<li>Choose <b>New Project</b> from the <b>File</b> menu to create a <b>Web Application</b> project.
+</li>
+<li>When the <b>New Project</b> window appears, choose either <b>Visual Basic</b> or <b>Visual C#</b> as the programming language.
+</li>
+<li>Within the language category, click on <b>Web</b>, and select <b>ASP.NET Web Application</b> from the right-hand panel.
+<br><br><a href="ODataServiceExample/NewProject.png"><img src="ODataServiceExample/NewProject.png" alt="NewProject.png"></a><br><br> </li>
+<li>Choose a name for the project, for example <code>ODataWebApplication</code>, and click OK.
+</li>
+<li>This will create a new project called OdataWebApplication.
+<br><br><a href="ODataServiceExample/ODataWebAppProject.png"><img src="ODataServiceExample/ODataWebAppProject.png"></a><br><br> </li>
+<li>To set up the database connection and generate the data model, right click on the OdataWebApplication project name in the <b>Solution Explorer</b> pane; then select the <b>Add -&gt; New Item</b> menu item.
+</li>
+<li>The <b>Add New Item</b> dialog will appear.
+ Choose <b>Data</b> from the <b>Installed Templates</b>; then select the <b>ADO.NET Entity Data Model</b> template from the right-hand pane.
+ Name the model <b><code>DemoModel.edmx</code></b>, and click <b>Add</b> to start the creation of the ADO.NET Entity Data Model.
+<br><br><a href="ODataServiceExample/AddModel.png"><img src="ODataServiceExample/AddModel.png" alt="AddModel.png"></a><br><br> </li>
+<li>In the <b>Entity Data Model Wizard</b> dialog&#39;s <b>Choose Model Contents</b> pane, select the <b>Generate from Database</b> model type and click <b>Next</b>.
+<br><br><a href="ODataServiceExample/EdmWizard.png"><img src="ODataServiceExample/EdmWizard.png" alt="EdmWizard.png"></a><br><br> </li>
+<li>In the <b>Entity Data Model Wizard</b> dialog&#39;s <b>Choose your Data Connection</b> pane, select the <b>New Connection</b> button.
+<br><br><a href="ODataServiceExample/EdmWizard2.png"><img src="ODataServiceExample/EdmWizard2.png" alt="EdmWizard2.png"></a><br><br> </li>
+<li>In the <b>Choose Data Source</b> dialog, select the <b><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso Data Source</b> from the list displayed and click <b>Continue</b>.
+<br><br><a href="ODataServiceExample/ChangeDataSource.png"><img src="ODataServiceExample/ChangeDataSource.png" alt="ChangeDataSource.png"></a><br><br> </li>
+<li>In the <b>Add Connection</b> dialog, specify the <b>hostname</b>, <b>port number</b>, <b>username</b>, and <b>password</b> for the target Virtuoso Server and check the <b>Save Password</b> box.
+<br><br><a href="ODataServiceExample/ConnProps2.png"><img src="ODataServiceExample/ConnProps2.png" alt="ConnProps2.png"></a><br><br> </li>
+<li>Select the <b>Select Database From List</b> radio button and choose <b>Demo</b> from the drop down list, assuming the <b>Virtuoso Demo Database</b> is installed.
+<br><br><a href="ODataServiceExample/ChooseDatabase.png"><img src="ODataServiceExample/ChooseDatabase.png" alt="ChooseDatabase.png"></a><br><br> </li>
+<li>Click the <b>Test Connection</b> button to verify the connection is successful and then click <b>OK</b> to add the connection.
+</li>
+<li>Set the entity connect string name to <b><code>VirtuosoDemoEntities</code></b> (remember the name you set here, as it is required in step 20 below) and click <b>Next</b>.
+<br><br><a href="ODataServiceExample/EdmWizard3.png"><img src="ODataServiceExample/EdmWizard3.png" alt="EdmWizard3.png"></a><br><br> </li>
+<li>In the <b>Choose your Database Objects</b> pane, tick the <b>Tables</b> check-box to select all tables in the Demo database for addition to the Entity Data Model, set the Model Namespace to <b>VirtuosoDemoModel</b>, and click <b>Finish</b>.
+<br><br><a href="ODataServiceExample/EdmWizard4.png"><img src="ODataServiceExample/EdmWizard4.png" alt="EdmWizard4.png"></a><br><br> </li>
+<li>The <b>VirtuosoDemoModel.edmx</b> EDM will be created, with the tables and relationships displayed in the Visual Studio IDE.
+<br><br><a href="ODataServiceExample/DataModel.png"><img src="ODataServiceExample/DataModel.png" alt="DataModel.png"></a><br><br> </li>
+<li>Now to create the service.
+ Right click on the <b>ODataWebApplication</b> project name of the Solution Explorer pane, then select the <b>Add -&gt; New Item</b> menu item.
+</li>
+<li>The <b>Add New Item</b> dialog will appear.
+ Select <b>Web</b> from the installed templates, and choose the <b>WCF Data Service</b> template in the right-hand pane.
+ Name the service <b><code>VirtuosoOData.svc</code></b>, and click <b>Add</b> to create the OData Service.
+<br><br><a href="ODataServiceExample/AddNewService2.png"><img src="ODataServiceExample/AddNewService2.png" alt="AddNewService2.png"></a><br><br> </li>
+<li>In the <b><code>VirtuosoOData.svc.cs</code></b> Data Service file created by the steps above, add the data source class name of <b><code>VirtuosoDemoEntities</code></b> (note: this is the name set in step 15, above) as the DataService name, and enable access to the Data Service by adding the entry <b><code>config.SetEntitySetAccessRule(&quot;*&quot;, EntitySetRights.All);</code></b> in the InitializeService method.
+<br><pre><br>public static void InitializeService(DataServiceConfiguration config)
+  {
+     // TODO: set rules to indicate which entity sets and service operations are visible, updatable, etc.
+     // Examples:
+     // config.SetEntitySetAccessRule(&quot;MyEntityset&quot;, EntitySetRights.AllRead);
+     // config.SetServiceOperationAccessRule(&quot;MyServiceOperation&quot;, ServiceOperationRights.All);
+     config.SetEntitySetAccessRule(&quot;*&quot;, EntitySetRights.All);
+     config.DataServiceBehavior.MaxProtocolVersion = DataServiceProtocolVersion.V2;
+  }
+</pre><br></li>
+<li>To test the OData Service, simply hit <code>Ctrl+F5</code> within Visual Studio, which will start the development web server, run the OData Services server therein, and load a Web browser page displaying the list of available tables/entities of the Demo database.
+<br><br><a href="ODataServiceExample/TestService.png"><img src="ODataServiceExample/TestService.png" alt="TestService.png"></a><br><br></li>
+</ol><h2><a name="How do I Consume the Published OData?"></a> How do I Consume the Published OData?</h2>
+<p>The simplest way to consume the service is to use a web browser to browse the Atom feed.
+ This is what is done when testing the service in Visual Studio.
+ As well as the top-level list of feeds provided by the service, it is straightforward to access a specific entity instance.
+ For example, to access the <code>ALFKI</code> record of the <code>Customers</code> table, simply append <b><code>/Customers(&#39;ALFKI&#39;)</code></b> to the service root URI.
+<br><br><a href="ODataServiceExample/SingleRecord.png"><img src="ODataServiceExample/SingleRecord.png" alt="SingleRecord.png"></a><br><br> Similarly, the metatdata document can examined by appending <code>/$metadata</code> to the service instance URI.
+ The metadata document is useful for finding information about the entities provided on the service.</p>
+<p>Alternatively, the service can be consumed by a more sophisticated application like the <a href="http://silverlight.net/content/samples/odataexplorer/" class="absuri">Silverlight OData Explorer</a>.</p>
+<ol><li>While the OData service is running, open the Silverlight OData Explorer as a stand-alone application on the local machine.
+</li>
+<li>Choose a workspace name, and give your data service root URI.
+<br><br><a href="ODataServiceExample/VirtuosoServiceUri.png"><img src="ODataServiceExample/VirtuosoServiceUri.png" alt="VirtuosoServiceUri.png"></a><br><br> </li>
+<li>The entity types available on your service are listed in the <b>Collections</b> box, and by selecting one, you can see a list of all entities of the chosen type.
+<br><br><a href="ODataServiceExample/ViewCollection.png"><img src="ODataServiceExample/ViewCollection.png" alt="ViewCollection.png"></a><br><br></li>
+</ol><p>The Silverlight OData Explorer also allows you to update data via the service.
+ For example:</p>
+<ol><li>List the <code>Customers</code> entities.
+<br><br><a href="ODataServiceExample/OriginalData.png"><img src="ODataServiceExample/OriginalData.png" alt="OriginalData.png"></a><br><br> </li>
+<li>Click the <b>Edit</b> button at the left of the record you wish to update.
+ This opens an edit dialog where you can make changes to the attributes of the entity.
+<br><br><a href="ODataServiceExample/EntityDetails.png"><img src="ODataServiceExample/EntityDetails.png" alt="EntityDetails.png"></a><br><br> </li>
+<li>By clicking <b>SaveChanges</b>, you propagate your edits back to the underlying data store.
+ If you close the edit box and reload the list of entities, you will see that the record has been updated.
+<br><br><a href="ODataServiceExample/UpdatedData.png"><img src="ODataServiceExample/UpdatedData.png" alt="UpdatedData.png"></a><br><br></li>
+</ol><h3><a name="Notes"></a> Notes</h3>
+<ol><li><b>Important</b> - To view Atom data (the default format returned by an ADO.NET Data Service) in Internet Explorer, you must first ensure that <b>Feed Reading View<b></b> is turned off.
+ This can be done on the <b>Content</b> tab of <b>Tools</b> in <b>Internet Options</b>.
+</b></li>
+<li>If a Data Services entity instance URI page fails to load, turn <b>Verbose error</b>s on by adding <b><code>config.UseVerboseErrors = true;</code></b> to the <code>virtuoso.svc.cs</code> InitializeService method to obtain more detailed information from the server as to why the page failed to load: <br><pre><br>      public static void InitializeService(IDataServiceConfiguration config)
+      {
+      config.UseVerboseErrors = true;
+      config.SetEntitySetAccessRule(&quot;*&quot;, EntitySetRights.All);
+      }
+</pre><br> </li>
+</ol><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFODataExample" class="wikiword">Acessing RDF Triples as OData Service</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAdoNet35Provider" class="wikiword">Virtuoso ADO.NET 3.5 Provider</a> </li>
+<li><a href="http://www.odata.org/" class="absuri">Open Data Protocol</a> </li>
+<li><a href="http://msdn.microsoft.com/en-us/library/dd831853.aspx" class="absuri">Visual Studio 2010</a></li>
+</ul></div></body></html>

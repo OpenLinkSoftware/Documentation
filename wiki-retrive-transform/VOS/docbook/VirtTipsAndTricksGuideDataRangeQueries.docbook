@@ -1,0 +1,41 @@
+<docbook><section><title>VirtTipsAndTricksGuideDataRangeQueries</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">How to Manage Date Range in SPARQL queries?</bridgehead>
+<para>The following examples demonstrate how to manage date range in a SPARQL query:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Example 1</bridgehead>
+<programlisting>SELECT ?s ?date 
+FROM &lt;http://dbpedia.org&gt; 
+WHERE 
+  { 
+    ?s ?p ?date . FILTER ( ?date &gt;= &quot;19450101&quot;^^xsd:date &amp;&amp; ?date &lt;= &quot;19451231&quot;^^xsd:date )  
+  } 
+LIMIT 100
+</programlisting><para> <ulink url="http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;query=SELECT+%3Fs+%3Fdate+%0D%0AFROM+%3Chttp%3A%2F%2Fdbpedia.org%3E+%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Fdate+.+FILTER+%28+%3Fdate+%3E%3D+%2219450101%22%5E%5Exsd%3Adate+%26%26+%3Fdate+%3C%3D+%2219451231%22%5E%5Exsd%3Adate+%29++%0D%0A++%7D+%0D%0ALIMIT+100&amp;format=text%2Fhtml&amp;timeout=0&amp;debug=on">View the results</ulink> of the query execution on the <ulink url="http://dbpedia.org">dbpedia</ulink> instance.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Example 2</bridgehead>
+<para>Suppose there is the following query using bif:contains for date:</para>
+<programlisting>SELECT DISTINCT ?s ?date 
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    ?s ?p ?date . FILTER( bif:contains(?date, &#39;&quot;1945*&quot;&#39; ) &amp;&amp; (str(?p) != str(rdfs:label)) )
+  }
+LIMIT 30
+</programlisting><para> If ?date is of type xsd:date or xsd:dateTime and of valid syntax then bif:contains(?date, &#39;&quot;1945*&quot;&#39; ) will not found it, because it will be parsed at load/create and stored as SQL DATE value.</para>
+<para>So if data are all accurate and typed properly then the filter is: </para>
+<programlisting>(?date &gt;= xsd:date(&quot;1945-01-01&quot;) &amp;&amp; ?date &lt; xsd:date(&quot;1946-01-01&quot;))
+</programlisting><para> i.e.
+ the query should be:</para>
+<programlisting>SELECT DISTINCT ?s ?date
+FROM &lt;http://dbpedia.org&gt;
+WHERE
+  {
+    ?s ?p ?date . FILTER( ?date &gt;= xsd:date(&quot;1945-01-01&quot;) &amp;&amp; ?date &lt; xsd:date(&quot;1946-01-01&quot;) &amp;&amp; (str(?p) != str(rdfs:label)) )
+  }
+LIMIT 10
+</programlisting><para><ulink url="http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;query=SELECT+DISTINCT+%3Fs+%3Fdate%0D%0A%0D%0AWHERE%0D%0A++%7B%0D%0A++++%3Fs+%3Fp+%3Fdate+.+FILTER%28+%3Fdate+%3E%3D+xsd%3Adate%28%221945-01-01%22%29+%26%26+%3Fdate+%3C+xsd%3Adate%28%221946-01-01%22%29+%26%26+%28str%28%3Fp%29+%21%3D+str%28rdfs%3Alabel%29%29+%29%0D%0A++%7D%0D%0ALIMIT+10&amp;format=text%2Fhtml&amp;timeout=0&amp;debug=on">View the results</ulink> of the query execution on the <ulink url="http://dbpedia.org">dbpedia</ulink> instance.</para>
+<para> If data falls, then the free-text will be OK for tiny examples but not for &quot;big&quot; cases because <emphasis>bif:contains(?date, &#39;&quot;1945*&quot;&#39;)</emphasis> would require that less than 200 words in the table begins with 1945.
+ Still, some data can be of accurate type and syntax so range comparison should be used for them and results aggregated via UNION.</para>
+<para>If dates mention timezones then the application can chose the beginning and the end of the year in some timezones other than the default.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuideDataRangeIndexFilter">How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">SPARQL</ulink></listitem>
+</itemizedlist></section></docbook>

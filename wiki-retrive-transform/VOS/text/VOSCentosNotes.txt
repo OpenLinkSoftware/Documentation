@@ -1,0 +1,242 @@
+%META:TOPICPARENT{name="VOSBuild"}%
+---+How to Install Virtuoso Open Source (VOS) on CentOS Linux
+
+%TOC%
+
+---++Starting Point
+
+   1 We start from a freshly installed Linux installation having chosen the "server"
+package set.
+   1 Linux OS configurations: when first installed, CentOS runs <code>setup(1)</code> on reboot.
+At that time or by running it again subsequently, we make a couple of changes:
+      * On general principles, it is wise to disable the insecure & unrequired
+services (e.g., RPC, portmapper, etc.), unless you're also going to use them.
+      * It may be wise to open port <code>8890/tcp</code> in the firewall configuration to allow
+external access to Virtuoso's web-based interfaces such as the Conductor.
+   1 Update the indexes of available packages by running
+<verbatim>
+yum update
+</verbatim>
+   1 We recommend installing as a normal user, and using <code>sudo</code> only for the final <code>make
+install</code> phase, so create a new user with the <code>adduser</code> command and run
+<code>visudo</code> to add them to <code>sudoers</code>.
+
+---++Installing Virtuoso
+
+Virtuoso is not currently packaged for CentOS, so has to be built from source.
+
+*Note*: Useful prior reading: please see the pages
+[[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSBuild][VOSBuild]]
+and [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSMake][VOSMake]]
+in the VOS Wiki.
+
+---+++Dependencies
+
+Proceed to install the required build dependencies:
+<verbatim>
+[tim@centos ~]$ sudo yum install gcc gmake autoconf automake libtool flex \
+	bison gperf gawk m4 make openssl-devel readline-devel wget
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirror.as29550.net
+ * extras: mirror.as29550.net
+ * updates: mirror.as29550.net
+Setting up Install Process
+No package gmake available.
+Package gawk-3.1.5-14.el5.i386 already installed and latest version
+Package m4-1.4.5-3.el5.1.i386 already installed and latest version
+Package 1:make-3.81-3.el5.i386 already installed and latest version
+No package openssl-dev available.
+Resolving Dependencies
+--> Running transaction check
+---> Package autoconf.noarch 0:2.59-12 set to be updated
+--> Processing Dependency: imake for package: autoconf
+[...]
+
+Dependency Installed:
+  cpp.i386 0:4.1.2-50.el5                        glibc-devel.i386 0:2.5-58      
+  glibc-headers.i386 0:2.5-58                    imake.i386 0:1.0.2-3           
+  kernel-headers.i386 0:2.6.18-238.5.1.el5      
+
+Complete!
+[tim@centos ~]$ 
+</verbatim>
+
+---+++Unpacking
+
+Download the latest VOS archive (source tarball such as
+<code>virtuoso-opensource-6.1.3.tar.gz</code>) from
+[[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VOSDownload#Latest%20source%20code%20on%20Github][GitHub]] and unpack it:
+
+<verbatim>
+[tim@centos ~]$ tar xvpfz virtuoso-opensource-6.1.3.tar.gz 
+virtuoso-opensource-6.1.3/
+virtuoso-opensource-6.1.3/bin/
+virtuoso-opensource-6.1.3/bin/installer/
+virtuoso-opensource-6.1.3/bin/installer/virtuoso.ini
+virtuoso-opensource-6.1.3/bin/installer/demo.ini
+...
+</verbatim>
+
+---+++Configuring
+
+   1 For this demonstration, we use a simple configuration with no frills:
+<verbatim>
+[tim@centos virtuoso-opensource-6.1.3]$ ./configure --prefix=/usr/local/ \
+	--with-readline 
+</verbatim>
+   1 There are many other options that can be specified at this stage, to
+enable/disable the building of language-hosting plugins (Perl, Python, Ruby) or
+various VAD packages (sub-packages within Virtuoso); for more on these, read the
+relevant <code>README</code> files in the source distribution and run '<code>./configure
+--help</code>'.
+   1 Here we settle for asking for readline support, i.e., the ability to cursor-up/down
+and use typical readline key-combinations in the commandline <code>isql</code> tool
+once built.
+
+---++++VOS component locations
+
+   1 Virtuoso instances usually take the form of a designated directory somewhere in
+the filesystem, centered around a configuration file (nominally virtuoso.ini)
+which specifies operational parameters such as the filenames of database
+page-files to use, port-numbers to use, numbers of threads and buffers, etc.
+   1 In the above command, we specify a prefix of /usr/local to Virtuoso's
+<code>./configure</code> script. This forms a base directory under which Virtuoso
+will create/use the following structure:
+      * <code><nowiki>/usr/local/lib/</nowiki></code>
+         * various libraries for Sesame, JDBC, Jena, Hibernate, and hosting
+      * <code><nowiki>/usr/local/bin/</nowiki></code>
+         * where the main executables (virtuoso-t, isql) live
+      * <code><nowiki>/usr/local/share/virtuoso/vad/</nowiki></code>
+         * used to store VAD archives prior to installation in an instance
+      * <code><nowiki>/usr/local/share/virtuoso/doc/</nowiki></code>
+         * local offline documentation
+      * <code><nowiki>/usr/local/var/lib/virtuoso/db/</nowiki></code>
+         * the default location for a virtuoso instance 
+      * <code><nowiki>/usr/local/var/lib/virtuoso/vsp/</nowiki></code>
+         * various VSP scripts - the default homepage before the Conductor is installed
+   1 Other directory-structures are possible by specifying variously:
+      * individual configure options such as <code><nowiki>--bindir</nowiki></code>, <code><nowiki>--libdir</nowiki></code>, etc.
+      * <code><nowiki>--with-layout={GNU|Debian|Gentoo|RedHat|FreeBSD|opt|OpenLink}</nowiki></code>%BR%
+where each layout specifies a set of locations where the VADs,
+documentation (HTML and PDF), demo and default instance databases, and hosting
+libraries will be installed, each compatible with the packaging requirements of the
+named OS distribution ("<code>opt</code>" means a prefix of <code><nowiki>/opt</nowiki></code> and <nop>OpenLink is the
+default, detailed above).
+
+---+++Building and Installing
+
+   1 Having chosen some configure options, run make: 
+<verbatim>
+[tim@centos virtuoso-opensource-6.1.3]$ nice make
+</verbatim>
+   1 Optionally, you can run '<code>make check</code>' to run the test-suite (beware, it takes
+hours and multiple gigabytes of disk-space).
+<verbatim>
+[tim@centos virtuoso-opensource-6.1.3]$ nice make check
+</verbatim>
+   1 Install it to the directory-structure chosen above:
+<verbatim>
+[tim@centos virtuoso-opensource-6.1.3]$ sudo make install
+</verbatim>
+
+---++Getting Started
+
+   1 Take a copy of the default <code>virtuoso.ini</code> and store it safely in case of making
+erroneous changes.
+   1 Change into the default database directory:
+<verbatim>
+[tim@centos v-oss]$ cd /usr/local/var/lib/virtuoso/db/
+[tim@centos db]$ ls
+virtuoso.ini
+</verbatim>
+      * (At this point, if you wish to run virtuoso as a non-root user you should change
+the ownership on this directory (e.g., <code>sudo chown -R tim .</code>). Virtuoso
+only requires root if you wish to use it as a webserver listening on port 80 or other 
+privileged port; by default, it listens only on high ports.)
+   1 Start the server:
+<verbatim>
+[tim@centos db]$ virtuoso-t -df
+
+                Wed Apr 13 2011
+15:12:48 INFO: { Loading plugin 1: Type 'plain', file 'wikiv' in '/usr/local/lib/virtuoso/hosting'
+...
+15:13:10 INFO: Checkpoint finished, log reused
+15:13:10 INFO: PL LOG: Installing Virtuoso Conductor version 1.00.7890 (DAV)
+15:13:10 INFO: Checkpoint started
+15:13:14 INFO: Checkpoint finished, log reused
+15:13:14 INFO: HTTP/WebDAV server online at 8890
+15:13:14 INFO: Server online at 1111 (pid 4125)
+</verbatim>
+      * Here we see the server running in foreground mode with maximum debugging
+information. Because it's the first time this instance has been run, virtuoso
+has created a bunch of database files (<code>virtuoso.db</code>, <code>virtuoso.trx</code> (the
+transaction log), etc.) and installed the Conductor VAD package into the
+database.
+      * If you close your terminal while this command is running, Virtuoso will stop. To
+run it as a daemon instead, omit the "<code>-df</code>" flags. You can still see most of
+what's happening by running <code>tail -f virtuoso.log</code>.
+
+---+++Using Virtuoso
+
+---++++Web-based UI
+
+You can access the Conductor menu by pointing your web-browser at
+<code>[[http://localhost:8890/conductor/][http://localhost:8890/conductor/]]</code> 
+(substitute the hostname as appropriate).
+
+From the Conductor you can manage users and automated backups, install VAD
+packages, execute SQL commands in a web-based iSQL tool, configure the RDF
+Sponger, and much more.
+
+There are two system users of immediate importance: 
+   * <code>dba</code> -- the relational data administrative account
+   * <code>dav</code> -- the WebDAV administrative account 
+
+By default, both of these accounts have their passwords set to their respective
+usernames; it is highly advised that you change these as soon as possible, for
+security reasons.
+
+---++++Command-line
+
+Virtuoso provides a SQL/ODBC listener on port <code>1111/tcp</code> 
+by default (configurable in the <code>INI</code>). You can connect directly
+to this and execute SQL statements using the included <code>isql</code> tool:
+
+<verbatim>
+[tim@centos db]$ ../bin/isql localhost:1111 dba dba
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL> tables;
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+Showing SQLTables of tables like 'NULL.NULL.NULL', tabletype/colname like 'NULL'
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+[...]
+</verbatim>
+
+---++Resource Usage
+
+Virtuoso is highly configurable: the same executables and packages will service
+anything from a small "lite-mode" installation with a database of 10Mb up to a
+huge multi-user enterprise installation with terabytes of data.
+
+The defaults with Virtuoso Open-Source give a 160MB process size in memory,
+about 29MB database and total 237MB footprint on disk; this has 20 threads
+running for database and/or web-server use.
+
+The wiki document
+[[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSScale][VOSScale]]
+describes how to scale Virtuoso in some detail.
+
+---++Related
+
+   * [[VOSUbuntuNotes][Ubuntu]]
+   * [[VOSDebianNotes][Debian]]
+   * [[VOSFedoraNotes][Fedora]]
+

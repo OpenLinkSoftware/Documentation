@@ -1,0 +1,58 @@
+<html><body><div class="topic-text"><h1><a name="Pivot Collections (Part 7)"></a>Pivot Collections (Part 7)</h1>
+<h2><a name="Contents"></a>Contents</h2>
+<p>Part 1: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxml" class="wikiword">Introduction</a></p>
+<p>Part 2: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxml" class="wikiword">SparqlCxml</a></p>
+<p>Part 3: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxmlDzcs" class="wikiword">SparqlCxml Deep Zoom Collections</a></p>
+<p>Part 4: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxmlPivotViewer" class="wikiword">PivotViewer</a></p>
+<p>Part 5: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxmlImport" class="wikiword">Importing CXML</a></p>
+<p>Part 6: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxmlFacetPivotBridge" class="wikiword">Facet Pivot Bridge</a></p>
+<p>Part 7: DETs : Persisting SPARQL Query Results to DAV</p>
+<ul><li><a href="#AncSparqlCxmlDETs" style="anchorhere">DETs : Persisting SPARQL Query Results to DAV</a> <ul><li><a href="#AncSparqlCxmlDETsOverview" style="anchorhere">Overview</a> </li>
+<li><a href="#AncSparqlDETSupport" style="anchorhere">SPARQL Endpoint Support for DETs</a> </li>
+<li><a href="#AncEnablingSparqlDETs" style="anchorhere">Enabling /sparql DETs</a></li>
+</ul></li>
+</ul><p>Part 8: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxmlFAQs" class="wikiword">Frequently Asked Questions (FAQs)</a></p>
+<p>Part 9: <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSparqlCxmlGlossary" class="wikiword">Glossary</a></p>
+<hr><p> <a name="AncSparqlCxmlDETs">
+ </a></p>
+<h2><a name="DETs : Persisting SPARQL Query Results to DAV"></a>DETs : Persisting SPARQL Query Results to DAV</h2>
+<a name="AncSparqlCxmlDETsOverview">
+<p> </p>
+<h3><a name="Overview"></a>Overview</h3>
+<p>Virtuoso&#39;s Dynamic Extension Types (DETs) provide a powerful mechanism for generating dynamic hypermedia resources that are akin to materialized views from database queries.
+ DETs are useful in cases where clients do not support the requisite access mechanism for a specific data source but, because most modern operating systems are WebDAV compliant, are able to load a file from WebDAV.
+ In situations like this, Virtuoso allows you to create an HTTP accessible resource from a query that&#39;s then exposed as a file in a WebDAV folder.
+ WebDAV clients, for instance Windows Web Client, can connect to WebDAV storage and access this resource as if it was a plain local file.
+ These resources may be temporary or long lived.</p>
+<a name="AncSparqlDETSupport">
+<p> </p>
+<h3><a name="SPARQL Endpoint Support for DETs"></a>SPARQL Endpoint Support for DETs</h3>
+<p>By default, Virtuoso&#39;s /sparql endpoint can only send query results back to the client.
+ This can be inconvenient if the result needs to be accessible to programs like file managers and archivers.
+ The solution is to let the endpoint create &quot;dynamic&quot; resources in DAV storage.
+ To this end, Conductor&#39;s /sparql UI exposes Virtuoso&#39;s DET capability through options which allow you to save SPARQL query results to WebDAV and serve the results without needing to re-execute the query.
+ Any of the supported SPARQL result set serialization formats can be used to write the results to file.</p>
+<a name="AncEnablingSparqlDETs">
+<p> </p>
+<h3><a name="Enabling /sparql DETs"></a>Enabling /sparql DETs</h3>
+<p>The easiest way to enable this feature is through Conductor:</p>
+<p>Go to the &#39;System Admin&#39; &gt; &#39;User Accounts&#39; tab and choose the &#39;Edit&#39; option for Login name &#39;SPARQL&#39; </p>
+<ul><li>Set the &#39;DAV Home Path&#39; to /DAV/home/SPARQL/ (include the leading and trailing slashes) and click the &#39;create&#39; checkbox </li>
+<li>Set the &#39;Default Permissions&#39; on this folder to allow the required access, e.g.
+ set +r for public or a specific group </li>
+<li>Change the &#39;User type&#39; to &#39;SQL/ODBC and WebDAV&#39;</li>
+</ul><p>Open the newly created DAV/home/SPARQL folder using Conductor&#39;s WebDAV browser </p>
+<ul><li>Create a new folder named &#39;saved-sparql-results&#39;.
+ (Use the folder icon at the top of the dialog).
+</li>
+<li>Set the &#39;Owner&#39; to &#39;dav&#39; </li>
+<li>Set the &#39;Folder type&#39; to &#39;Dynamic Resources&#39; </li>
+<li>Set the folder permissions to allow public or group access</li>
+</ul><br><pre>The net effect of the above steps is:
+   1. The &quot;SPARQL&quot; account under which the /sparql service runs is granted access to DAV (by setting U_DAV_ENABLE=1 in table DB.DBA.SYS_USERS)
+   2. A DAV home directory /DAV/home/SPARQL/ is created for the SPARQL account and the path saved in the U_HOME field of table DB.DBA.SYS_USERS
+   3. A subdirectory named &quot;saved-sparql-results&quot; is created with DAV Extension Type &quot;DynaRes&quot;
+</pre><p> Once enabled, the /sparql UI will show additional options for saving query results, as depicted below:</p>
+<div> <img src="VirtSparqlCxmlDETs/sparql_save_as_det.jpg" style="wikiautogen"> </div><p>When a SPARQL result has been successfully saved to DAV, Conductor displays a confirmation dialog:</p>
+<div> <img src="VirtSparqlCxmlDETs/det_create_success.jpg" style="wikiautogen"> </div><p>and the generated dynamic resource can be seen in WebDAV:</p>
+<div> <img src="VirtSparqlCxmlDETs/sparql_det_webdav_view.jpg" style="wikiautogen"> </div> </a></a></a></div></body></html>

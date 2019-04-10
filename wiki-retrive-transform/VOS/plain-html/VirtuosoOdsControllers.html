@@ -1,0 +1,343 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Access%20point">Access point</a></li> <li><a href="#Authentication">Authentication</a></li>
+<ul><li><a href="#OAuth">OAuth</a></li> <li><a href="#Session%20based">Session based</a></li> <li><a href="#password%20hash">password hash</a></li> </ul><li><a href="#Response%20format">Response format</a></li><ul><li><a href="#IUD%20operations">IUD operations</a></li><ul><li><a href="#On%20success">On success</a></li> <li><a href="#On%20failure">On failure</a></li> </ul><li><a href="#Search%20%28get%29">Search (get)</a></li> </ul><li><a href="#API%20methods">API methods</a></li><ul><li><a href="#Framework">Framework</a></li> <li><a href="#Briefcase">Briefcase</a></li> <li><a href="#Weblog">Weblog</a></li> <li><a href="#Addressbook">Addressbook</a></li> <li><a href="#Bookmarks">Bookmarks</a></li> <li><a href="#Polls">Polls</a></li> <li><a href="#Calendar">Calendar</a></li> <li><a href="#Feed%20Manager">Feed Manager</a></li> <li><a href="#Webmail">Webmail</a></li> <li><a href="#Discussion">Discussion</a></li> <li><a href="#Gallery">Gallery</a></li> <li><a href="#Wiki">Wiki</a></li> <li><a href="#Messenger">Messenger</a></li> </ul><li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--></p>
+<h1><a name="ODS Controllers"></a> ODS Controllers</h1>
+<p>The ODS provide an controllers (API) to manipulate the user accounts as well as instances, and instances specific data.
+The controllers can be accessed via REST using authentication based on OAuth, sessions or password hash.
+ The details are presented bellow.</p>
+<h2><a name="Access point"></a> Access point</h2>
+<p>The API can be accessed via REST using <code>http://host:port/ods/api/[method]</code>.
+ Parameters specific to each method are given as URL parameters if using <code>GET</code>, as <code>www-url-encoded</code> or <code>multipart/form-data</code> if using <code>POST</code>.</p>
+<p>The API can be accessed via UI page using <code>http://host:port/ods/oauth_test.vsp</code>.</p>
+<h2><a name="Authentication"></a> Authentication</h2>
+<p>Most API calls which modify data, i.e., IUD operations, need authentication; thus the request should contain OAuth authentication, or session or password hash.
+ The user account used to authenticate in either case MUST have relevant access to the ODS object.
+ This is done by having owner or author membership to the given application.</p>
+<h3><a name="OAuth"></a> OAuth</h3>
+<p>The user account for authentication must have OAuth tokens generated via ODS -&gt; Settings -&gt; OAuth keys.
+ This UI provides a list of all applications to which the user has access (i.e., he is member or owner).
+ If an instance needs to be accessed with OAuth, user simply selects the instance from the list and clicks &#39;generate keys&#39;.
+The generated consumer key &amp; token will be associated to the active ODS user account and selected application instance.</p>
+<p>Once a consumer token is available, the sequence below must be done in order to establish an authorized session:</p>
+<ol><li>client uses <code>request_token</code> to get a token/secret pair for establishing session using consumer token </li>
+<li>client asks OAuth server to authorize the token from step 1 </li>
+<li>using authorized token from step 1, client asks OAuth server for authentication token </li>
+<li>with authentication token from step 3, clients can access instance data associated with the consumer token from step 1</li>
+</ol><p> To demonstrate the above, we supply a simple client written in VSP:</p>
+<br><pre>&lt;html&gt;
+&lt;?vsp
+    declare consumer_key, consumer_secret, oauth_token, oauth_secret, signature, timest, nonce varchar;
+    declare srv, res, signature_base, ret_url, url, tmp, sid varchar;
+    declare meth, pars any;
+    consumer_key := {?&#39;key&#39;};
+    srv := sprintf (&#39;http://localhost:%s/OAuth/&#39;, server_http_port ());
+    sid := null;
+    res := &#39;&#39;;
+
+    sid :=  {?&#39;sid&#39;};
+    if (sid = &#39;&#39;)
+      sid := null;  
+    else
+      {
+        -- if selected token is not same as one from the session we need to get new authentication token
+        if (consumer_key &lt;&gt; OAUTH..get_consumer_key (sid))
+     {
+       OAUTH..session_terminate (sid);
+            sid := null;
+     }
+      }
+
+    meth := get_keyword (&#39;meth&#39;, params, &#39;weblog.post.new&#39;);;
+    pars := get_keyword (&#39;pars&#39;, params, &#39;inst_id=15&amp;title=testing&amp;description=Some test post&#39;);;
+
+    if ({?&#39;rt&#39;} is not null and sid is null) -- request new token for the session
+      {
+   url := srv||&#39;request_token&#39;;
+   url := OAUTH..sign_request (&#39;GET&#39;, url, &#39;&#39;, consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+   OAUTH..set_session_data (sid, params);
+   ret_url := sprintf (&#39;http://localhost:%s/oauth/oauth_client.vsp?ready=%U&#39;, server_http_port (), sid);
+   -- call authorize
+        url := sprintf (&#39;%sauthorize?oauth_token=%U&amp;oauth_callback=%U&#39;, srv, OAUTH..get_auth_token (sid), ret_url);
+   http_status_set (301);
+        http_header (sprintf (&#39;Location: %s\r\n&#39;, url));
+        return;
+      }
+    else if ({?&#39;ready&#39;} is not null) -- get access token
+      {
+   -- we go here when token above is authorized
+        sid := {?&#39;ready&#39;};
+   url := srv||&#39;access_token&#39;;
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request (&#39;GET&#39;, url, &#39;&#39;, consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+
+      }
+    if (sid is not null) -- access token is ready, and we can call API
+      {
+        -- here we are ready to call service
+   if ({?&#39;rt&#39;} is null)
+          {
+            tmp := OAUTH..get_session_data (sid);
+            pars := get_keyword (&#39;pars&#39;, tmp, pars);
+       meth := get_keyword (&#39;meth&#39;, tmp, meth);
+     }
+   url := sprintf (&#39;http://localhost:%s/ods/api/%s&#39;, server_http_port (), meth);
+   tmp := split_and_decode (pars);
+   params := &#39;&#39;;
+   for (declare i,l int, l:=length (tmp); i &lt; l; i := i + 2)
+      {
+        params := params || sprintf (&#39;%U=%U&amp;&#39;, tmp[i], tmp[i+1]);
+      }
+   --params := sprintf (&#39;inst_id=%d&amp;description=%U&amp;title=%U&#39;, 15, &#39;Some test post&#39;, &#39;testing&#39;);
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request (&#39;GET&#39;, url, params, consumer_key, sid);
+        res := http_get (url);
+        --dbg_obj_print (res);
+      }
+?&gt;
+    &lt;head&gt;&lt;title&gt;OAuth Client&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+   &lt;h1&gt;OAuth client for ODS Controllers&lt;/h1&gt;
+   &lt;form method=&quot;POST&quot; action=&quot;oauth_client.vsp&quot;&gt;
+   &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; value=&quot;&lt;?V sid ?&gt;&quot;/&gt;
+   APPLICATION : &lt;br/&gt; &lt;select name=&quot;key&quot;&gt;
+   &lt;?vsp for select a_name, a_key from OAUTH..APP_REG do { ?&gt;
+            &lt;option value=&quot;&lt;?V a_key ?&gt;&quot; &lt;?vsp if (consumer_key = a_key) http (&#39;selected&#39;); ?&gt;&gt;&lt;?V a_name ?&gt;&lt;/option&gt;
+   &lt;?vsp } ?&gt;
+              &lt;/select&gt;
+   &lt;?vsp
+   if (sid is not null) http (sprintf (&#39; TOKEN: %s&#39;, OAUTH..get_auth_token (sid)));
+   ?&gt;
+   &lt;br/&gt;
+   ODS API: &lt;br/&gt;&lt;input type=&quot;text&quot; name=&quot;meth&quot; value=&quot;&lt;?V meth ?&gt;&quot; size=50/&gt; &lt;br/&gt;
+   PARAMETERS: &lt;br/&gt; &lt;textarea name=&quot;pars&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;?V pars ?&gt;&lt;/textarea&gt; &lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Execute&quot; name=&quot;rt&quot;/&gt;&lt;br/&gt;
+   &lt;/form&gt;
+   RESULT:
+   &lt;hr/&gt;
+   &lt;pre&gt;&lt;?V res ?&gt;&lt;/pre&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre><p> The following is a sample session recorded with the client above :</p>
+<br><pre>GET /OAuth/request_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607ed
+c5f36&amp;oauth_nonce=b8f1089077cbce6e&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_times
+tamp=1211212829&amp;oauth_version=1.0&amp;oauth_signature=V1zmk757LBHcmqVJ6obMhNX5hKA%3
+D HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth_token_secret=M...
+</pre><br><pre>GET /OAuth/authorize?oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth
+_callback=http%3A//localhost%3A8890/oauth/oauth_client.vsp%3Fready%3D00c874b2fa
+b2f6424008b5064fe83e88 HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 301 Moved
+Location: /ods/oauth_authorize.vspx?....
+</pre><br><pre>GET /OAuth/access_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607edc
+5f36&amp;oauth_nonce=242cc4875a0059f6&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_timest
+amp=1211212831&amp;oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth_versi
+on=1.0&amp;oauth_signature=sqs/8nmNNnNJiZ/eBa688uNeg9o%3D HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+oauth_token=N..&amp;oauth_token_secret=M...
+</pre><p> </p>
+<br><pre>GET /ods/api/weblog.post.new?description=Some%20test%20post&amp;inst_id=15&amp;oauth_co
+nsumer_key=50082d0fb861b0e6e67d5d986b8333607edc5f36&amp;oauth_nonce=2f4765d20664e69
+6&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_timestamp=1211213321&amp;oauth_token=db83a
+37d74faf53edc8ed56d418ded3a70fcc0bc&amp;oauth_version=1.0&amp;title=testing&amp;oauth_signa
+ture=oocIyr6kgoEQkC3WVwzvl6w62W4%3D HTTP/1.1
+Host: localhost:8890
+
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+&lt;result&gt;&lt;code&gt;1&amp;lt/code&gt;&lt;/result&gt;
+</pre><p> </p>
+<h3><a name="Session based"></a> Session based</h3>
+<p>The request to the API in this type of authentication must have &#39;sid&#39; &amp; &#39;realm&#39; via &#39;user.authenticate&#39; method:</p>
+<p>To get session id: </p>
+<br><pre>curl -i &quot;http://localhost:8890/ods/api/user.authenticate?user_name=demo&amp;passwor
+d_hash=fe1774cfea9f7b402796751a4616c04a6f010ecb&quot;
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=&quot;UTF-8&quot;
+Content-Length: 32
+
+bfb2b13e4218a99f65b956eb6ba657cb &lt;&lt; SID
+
+</pre><p> Perform weblog.post.new  API call: </p>
+<br><pre>curl -i &quot;http://localhost:8890/ods/api/weblog.post.new?title=test&amp;description=S
+ome%20test%20post&amp;inst_id=15&amp;sid=bfb2b13e4218a99f65b956eb6ba657cb&amp;realm=wa&quot;
+HTTP/1.1 200 OK
+Connection: Keep-Alive
+Content-Type: text/xml; charset=&quot;UTF-8&quot;
+Content-Length: 53
+&lt;CR/LF&gt;
+&lt;result&gt;&lt;code&gt;1&amp;lt/code&gt;&lt;/result&gt;
+</pre><p> </p>
+<h3><a name="password hash"></a> password hash</h3>
+<p>This approach is similar to above, but instead of sid and realm we just pass as parameters to request the user_name &amp; password_hash .</p>
+<h2><a name="Response format"></a> Response format</h2>
+<h3><a name="IUD operations"></a> IUD operations</h3>
+<p>The IUD methods return an XML response with code &amp; message format follows:</p>
+<h4><a name="On success"></a> On success</h4>
+<p>&lt;result&gt;&lt;code&gt;NNN&lt;/code&gt;&lt;message&gt;human readable explanation if applicable&lt;/message&gt;&lt;/result&gt;</p>
+<h4><a name="On failure"></a> On failure</h4>
+<p>&lt;failed&gt;&lt;code&gt;NNN&lt;/code&gt;&lt;failed&gt;human readable explanation&lt;/message&gt;&lt;/failed&gt;</p>
+<h3><a name="Search (get)"></a> Search (get)</h3>
+<p>The search methods returns results in RDF format according to FOAF, SIOC and SIOC types module ontology.
+ See ODS RDF model.</p>
+<h2><a name="API methods"></a> API methods</h2>
+<p>All APIs are acting on behalf of the user who established authentication, i.e., the user which is authorized.
+ The APIs where user is subject of removal or freeze as well as registration the user name is passed as parameter.
+ Therefore user.register, user.delete would need user name as input parameter where user.update, instance.create will use the user from authentication information.</p>
+<h3><a name="Framework"></a> Framework</h3>
+<br><pre>user.register (
+    name varchar,
+    password varchar,
+    email varchar
+    )
+user.authenticate (
+    user_name varchar,
+    password_hash varchar
+    )
+user.update (user_info any)
+user.password_change (new_password varchar)
+user.delete (name varchar)
+user.enable (name varchar)
+user.disable (name varchar)
+user.get (name varchar)
+user.search (pattern varchar)
+user.invite (
+    friends_email varchar,
+    custom_message varchar default &#39;&#39;
+    )
+user.invitation (
+    invitation_id varchar,
+    approve int
+    )
+user.invitations.get ()
+user.relation_terminate (friend varchar)
+user.tagging_rules.add (
+    rulelist_name varchar,
+    rules any,
+    is_public int default 1
+    )
+user.tagging_rules.delete (rulelist_name varchar)
+user.tagging_rules.update (
+    rulelist_name varchar,
+    rules any
+    )
+user.hyperlinking_rules.add (rules any)
+user.hyperlinking_rules.update (rules any)
+user.hyperlinking_rules.delete (rules any)
+user.annotation.add (
+    claimIri varchar,
+    claimRelation varchar,
+    claimValue varchar
+    )
+user.annotation.delete (
+    claimIri varchar,
+    claimRelation varchar,
+    claimValue varchar
+    )
+
+instance.create (
+    type varchar,
+    name varchar,
+    description varchar,
+    model int,
+    public int
+    )
+instance.update (
+    inst_id int,
+    name varchar,
+    description varchar,
+    model int,
+    public int
+    )
+instance.delete (inst_id int)
+instance.freeze (name varchar)
+instance.unfreeze (name varchar)
+instance.join (inst_id int)
+instance.disjoin (inst_id int)
+instance.join_approve (
+    inst_id int,
+    uname varchar
+    )
+instance.notification.services ()
+instance.notification.set (
+    inst_id int,
+    services any
+    )
+instance.notification.cancel (
+    inst_id int,
+    services any
+    )
+instance.notification.log (inst_id int)
+instance.get (inst_id int)
+instance.get.id (name varchar)
+
+site.search (
+    pattern varchar,
+    options any
+    )
+</pre><p> </p>
+<h3><a name="Briefcase"></a> Briefcase</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersBriefcase" class="wikiword">Briefcase Controllers</a></li>
+</ul><h3><a name="Weblog"></a> Weblog</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersWeblog" class="wikiword">Weblog Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsWeblogProgrammersGuide" class="wikiword">Weblog&#39;s Programmers Guide</a></li>
+</ul><h3><a name="Addressbook"></a> Addressbook</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersAddressbook" class="wikiword">Addressbook Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsAddressbookProgrammersGuide" class="wikiword">Addressbook&#39;s Programmers Guide</a></li>
+</ul><h3><a name="Bookmarks"></a> Bookmarks</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersBookmarks" class="wikiword">Bookmarks Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsBookmarkManager" class="wikiword">Bookmarks Programmers Guide</a></li>
+</ul><h3><a name="Polls"></a> Polls</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersPolls" class="wikiword">Polls Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsPollsProgrammersGuide" class="wikiword">Poll&#39;s Programmers Guide</a></li>
+</ul><p> </p>
+<h3><a name="Calendar"></a> Calendar</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersCalendar" class="wikiword">Calendar Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsCalendarProgrammersGuide" class="wikiword">Calendar&#39;s Programmers Guide</a></li>
+</ul><h3><a name="Feed Manager"></a> Feed Manager</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersFeeds" class="wikiword">Feed Manager Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsFeedManagerProgrammersGuide" class="wikiword">Feed Manager&#39;s Programmers Guide</a></li>
+</ul><h3><a name="Webmail"></a> Webmail</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersWebmail" class="wikiword">Webmail Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsWebmailProgrammersGuide" class="wikiword">Webmail&#39;s Programmers Guide</a></li>
+</ul><h3><a name="Discussion"></a> Discussion</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersDiscussion" class="wikiword">Discussion Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsDiscussionsProgrammersGuide" class="wikiword">Discussions &#39;s Programmers Guide</a></li>
+</ul><h3><a name="Gallery"></a> Gallery</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersGallery" class="wikiword">Gallery Controllers</a></li>
+</ul><h3><a name="Wiki"></a> Wiki</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersWiki" class="wikiword">Wiki Controllers</a></li>
+</ul><h3><a name="Messenger"></a> Messenger</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsControllersMessenger" class="wikiword">Messenger Controllers</a></li>
+</ul><h2><a name="References"></a>References</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OAuth" class="wikiword">OpenLink&#39;s explanation of OAuth</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOAuthServer" class="wikiword">Virtuoso OAuth server</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthControllers" class="wikiword">Using OAuth with ODS</a> </li>
+<li>ODS Ubiquity Commands<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsUbiquity&parent=VirtuosoOdsControllers" class="wikiword">?</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuth" class="wikiword">Virtuoso OAuth Implementation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtODSOAuthQA" class="wikiword">Testing Virtuoso OAuth with 3rd Party OAuth Clients</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsUbiquityTutorialsOAuth" class="wikiword">OAuth Ubiquity Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthTestTool" class="wikiword">Virtuoso OAuth Test Tool for ODS Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">Virtuoso SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoOdsUbiquityTutorials" class="wikiword">ODS Ubiquity Tutorials</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthExamples" class="wikiword">OAuth Applications Authentication examples</a> </li>
+<li><a href="http://oauth.net/core/1.0/" class="absuri">OAuth API</a></li>
+</ul><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryODS" class="wikiword">CategoryODS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> </p>
+</div></body></html>

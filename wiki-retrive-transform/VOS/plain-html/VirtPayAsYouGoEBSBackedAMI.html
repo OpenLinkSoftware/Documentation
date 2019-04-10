@@ -1,0 +1,177 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtInstallationEC2"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtInstallationEC2"}%--><h1><a name="Deploying the Virtuoso Pay As You Go (PAGO) EBS-backed EC2 AMI"></a> Deploying the Virtuoso Pay As You Go (PAGO) EBS-backed EC2 AMI</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Instantiating%20%26%20Using%20Virtuoso%207.2%20PAGO%20Enterprise%20Edition%20via%20Web%20Interface">Instantiating &amp; Using Virtuoso 7.2 PAGO Enterprise Edition via Web Interface</a></li> <li><a href="#First-time%20Setup%20%26%20Usage%20Notes">First-time Setup &amp; Usage Notes</a></li> <li><a href="#Administering%20Virtuoso%20Instance%20via%20SSH">Administering Virtuoso Instance via SSH</a></li>
+<ul><li><a href="#License%20Manager">License Manager</a></li> <li><a href="#Virtuoso%20Server">Virtuoso Server</a></li> </ul><li><a href="#Virtuoso%20Database%20Instance%20Interaction">Virtuoso Database Instance Interaction</a></li> <li><a href="#Performance%20Notes">Performance Notes</a></li> <li><a href="#Troubleshooting">Troubleshooting</a></li> <li><a href="#Related%20Items">Related Items</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a>Introduction</h2>
+<p>In addition to the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtInstallationEC2" class="wikiword">Instance-backed EC2 AMI</a> that has been in existence since 2008, Virtuoso is now also available as an EBS-backed EC2 AMI based on your choice of License Model -- </p>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEBSBackedBYOLAMI" class="wikiword">Bring You Own License, or BYOL</a> </li>
+<li>Pay As You Go, or PAGO (documented here)</li>
+</ul><p>With either License Model, you will be starting with a preconfigured Virtuoso instance.
+ The fundamental benefits provided by this type of AMI include:</p>
+<ul><li>Virtuoso DBMS Server is preinstalled with basic tuning for the host operating system.
+</li>
+<li>You can start and stop this Virtuoso instance without having to terminate its host AMI.
+</li>
+<li>With the hourly model, you pay only for the time the AMI is used.</li>
+</ul><h2><a name="Prerequisites"></a> Prerequisites</h2>
+<ul><li>An <a href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html/103-7399647-0537426?" class="absuri">Amazon Web Services</a> (AWS) account.
+</li>
+<li>Recently created AWS accounts will have been automatically signed up for the <a href="http://www.amazon.com/b/ref=sc_fe_l_2?ie=UTF8&node=201590011&no=3435361&me=A36L942TSJ2AJA" class="absuri">Amazon S3 and EC2 Web Service</a>.
+ If you created your AWS account a long time ago, you may now need to manually sign up for these services.
+</li>
+<li>Ensure an AWS <b>security group</b> allowing access to ports 22 (SSH) and 80 (HTTP) is used.</li>
+</ul><p> </p>
+<h2><a name="Instantiating &amp; Using Virtuoso 7.2 PAGO Enterprise Edition via Web Interface"></a> Instantiating &amp; Using Virtuoso 7.2 PAGO Enterprise Edition via Web Interface</h2>
+<ol><li>Use one-click or aws-console (at <code><a href="https://console.aws.amazon.com/" class="absuri">https://console.aws.amazon.com/</a></code>) launch options to start the <b>Virtuoso Universal Server 7.2 (Enterprise-- Cloud PAGO Edition)</b> <br><br><a href="VirtPayAsYouGoEBSBackedAMI/Virt72AMI-PAGO.jpg"><img src="VirtPayAsYouGoEBSBackedAMI/Virt72AMI-PAGO.jpg" alt="EC2 instance launch dialog, PAGO" style="max-width: 600px ; min-width: 200px ; width: 50%"></a><br><br></li>
+</ol><h2><a name="First-time Setup &amp; Usage Notes"></a> First-time Setup &amp; Usage Notes</h2>
+<p>These steps are only necessary immediately after instantiating the AMI, when you start the Virtuoso Database for the first time.
+ This section may subsequently be ignored, as it is not necessary after AMI reboots.</p>
+<ol><li><code>ssh</code> into your instantiated AMI using a command of the form: <br><pre><br>ssh -i {secure-pem-file} ec2-user@{amazon-ec2-dns-name-or-ip-address}
+</pre><br></li>
+<li>Start the Virtuoso DBMS Server by issuing the following command: <br><pre><br>sudo /etc/rc.d/init.d/virtuoso restart
+</pre><br></li>
+<li>Retrieve the AMI <code>instance-id</code> from the AMI properties presented by the Amazon AWS console UI, or by executing the following command in the Linux shell: <br><pre><br>curl http://169.254.169.254/latest/meta-data/instance-id
+</pre><br></li>
+<li>Install the Virtuoso Conductor VAD application package by running the following commands: <br><pre><br>$ /opt/virtuoso/virtuoso-enterprise.sh
+$ isql 1111 -U dba -P instance-id
+Connected to OpenLink Virtuoso
+Driver: 07.10.3214 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt;  vad_install(&#39;/opt/virtuoso/vad/conductor_dav.vad&#39;,0);
+SQL_STATE     SQL_MESSAGE
+LONG VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000         No errors detected
+00000         Installation of &quot;Virtuoso Conductor&quot; is complete.
+00000         Now making a final checkpoint.
+00000         Final checkpoint is made.
+00000         SUCCESS
+BLOB 0 chars  
+
+6 Rows. -- 5773 msec.
+SQL&gt;
+</pre><br></li>
+<li>Go to <b><code>http://{amazon-ec2-ami-dns-name-or-ip-address}/conductor</code></b> -- to change the default password of this instance.
+</li>
+<li>At the authentication challenge, log in as the <b><code>dba</code></b> user, with the AMI <b><code>instance-id</code></b> as the password.
+</li>
+<li>Change the password for the <b><code>dba</code></b> user.</li>
+</ol><h2><a name="Administering Virtuoso Instance via SSH"></a> Administering Virtuoso Instance via SSH</h2>
+<p>All scripts for starting and stopping the Virtuoso instance are found in the following locations --</p>
+<ul><li><b><code>/etc/rc.d/init.d</code></b> -- scripts that enable automatic database server instantiation at operating system (AMI) boot or reboot time </li>
+<li><b><code>/opt/virtuoso</code></b> -- scripts for starting and stopping the database server within a running operating system (AMI)</li>
+</ul><h3><a name="License Manager"></a><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> License Manager</h3>
+<ul><li>Start the License Manager: <br><pre><br>/etc/rc.d/init.d/oplmgr start
+</pre><br> </li>
+<li>Stop the License Manager <br><pre><br>/etc/rc.d/init.d/oplmgr stop
+</pre><br> </li>
+<li>Restart the License Manager <br><pre><br>/etc/rc.d/init.d/oplmgr restart
+</pre><br> </li>
+</ul><h3><a name="Virtuoso Server"></a>Virtuoso Server</h3>
+<ul><li>Start the Virtuoso Server: <br><pre><br>/etc/rc.d/init.d/virtuoso start
+</pre><br> </li>
+<li>Stop the Virtuoso Server: <br><pre><br>/etc/rc.d/init.d/virtuoso stop
+</pre><br> </li>
+<li>Restart the Virtuoso Server: <br><pre><br>/etc/rc.d/init.d/virtuoso restart
+</pre><br> </li>
+</ul><h2><a name="Virtuoso Database Instance Interaction"></a>Virtuoso Database Instance Interaction</h2>
+<ol><li>Set the Virtuoso environment variables by running the following command (note that it must start dot-space-slash): <br><pre><br>. /opt/virtuoso/virtuoso-enterprise.sh
+</pre><br></li>
+<li>Run the Virtuoso &quot;<b><code>isql</code></b>&quot; command line tool to connect to the database.
+ Note: your EC2 AMI&#39;s <b>instance-id</b> will be the <code>dba</code> user&#39;s password, until you change it.
+<br><pre><br>$ isql 1111 -U dba -P i-123abc321
+Connected to OpenLink Virtuoso
+Driver: 07.10.3214 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt;
+</pre><br></li>
+<li>Run the &quot;<b><code>tables</code></b>&quot; command to obtain a list of tables in the default schema <br><pre><br>SQL&gt; tables;
+Showing SQLTables of tables like &#39;NULL.NULL.NULL&#39;, tabletype/colname like &#39;NULL&#39;
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+DB               DBA              ADM_XML_VIEWS    SYSTEM TABLE     NULL
+.
+.
+.
+DB               DBA              SYS_SQL_INVERSE  SYSTEM TABLE     NULL
+DB               DBA              SYS_TRIGGERS     SYSTEM TABLE     NULL
+DB               DBA              SYS_VIEWS        SYSTEM TABLE     NULL
+
+209 Rows. -- 1890 msec.
+SQL&gt;
+</pre><br></li>
+<li>You can stop the Virtuoso Database Server by running: <br><pre><br>virtuoso-stop.sh 
+</pre><br></li>
+<li>You can restart the Virtuoso Database Server by running: <br><pre><br>virtuoso-start.sh
+</pre><br> </li>
+</ol><h2><a name="Performance Notes"></a> Performance Notes</h2>
+<p>In regards to performance, please be aware of the following:</p>
+<ul><li>We currently bundle a 10 Database Sessions and 4 CPU Affinity license with this AMI -- Database &amp; CPU Affinity upgrade licenses are available as upgrade options.
+</li>
+<li>There are a range of AMIs choices covering system memory and CPU combination.</li>
+</ul><p>Collectively, the factors above affect the performance of your DBpedia instance.
+ Thus, use <code>EC2 Instance Type</code>s with more memory and CPU cores for best performance.</p>
+<b>Note:</b> This AMI is configured to run on an <code>m3.large</code> EC2 Instance Type.
+ If a larger EC2 Instance Type is chosen, the <code>NumberOfBuffer</code> and <code>MaxDirtyBuffers</code> parameters in the <code>/opt/virtuoso/dbpedia/dbpedia.ini</code> configuration file should be increased to the available memory, as detailed in the <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFPerformanceTuning#General%20Memory%20Usage%20Settings" class="absuri">Virtuoso Performance Tuning Guide</a> --
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtPayAsYouGoEBSBackedAMI?sort=0&col=1">EC2 Instance Type </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtPayAsYouGoEBSBackedAMI?sort=1&col=2">System RAM  </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtPayAsYouGoEBSBackedAMI?sort=2&col=3">Number Of Buffers  </a></th><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtPayAsYouGoEBSBackedAMI?sort=3&col=4">Max Dirty Buffers  </a></th></tr><tr><td align="center">  <code>m3.large</code>  </td><td align="center">  7 GB  </td><td align="center">   680000 </td><td align="center">   500000 </td></tr><tr><td align="center">  <code>r3.large</code>  </td><td align="center">  15 GB  </td><td align="center">   1360000 </td><td align="center">   1000000 </td></tr><tr><td align="center">  <code>r3.xlarge</code>  </td><td align="center">  30.5 GB  </td><td align="center">   2720000 </td><td align="center">   2000000 </td></tr><tr><td align="center">  <code>r3.2xlarge</code>  </td><td align="center">  61 GB  </td><td align="center">   5450000 </td><td align="center">   4000000 </td></tr></table>
+<p>-- and the Virtuoso server restarted as detailed above.</p>
+<h2><a name="Troubleshooting"></a> Troubleshooting</h2>
+<p>If you are unable to start your Virtuoso instance as described in the installation and usage steps above, please execute the following commands to get your instance running:</p>
+<ol><li><b><code>cd /opt/virtuoso</code></b> </li>
+<li><b><code>. ./*ent*.sh</code></b> <i>(note that this command starts dot-space-dot-slash)</i> </li>
+<li><b><code>cd /opt/virtuoso/database</code></b> </li>
+<li><b><code>virtuoso -c virtuoso -f</code></b></li>
+</ol><p>If that successfully starts the instance, you can try an AMI reboot or various other commands, such as:</p>
+<ul><li><b><code>/etc/init.d/virtuoso restart</code></b> </li>
+<li><b><code>/etc/init.d/virtuoso start</code></b></li>
+</ul><p>Sometimes the output and <code>virtuoso.log</code> will show an error like --</p>
+<br><pre>The transaction log file has been produced by different 
+server instance.
+</pre><p> A transaction log file (e.g., <code>virtuoso.trx</code>) is associated with a specific configuration file (e.g., <code>virtuoso.ini</code>) and a specific database file (e.g., <code>virtuoso.db</code>).
+ This association is not tied to filenames, but on the content of these files.
+ You cannot run a transaction log file that was produced with one database file, against a different database file.</p>
+<p>When launching a new Virtuoso AMI for the first time, there should be a pre-existing, pre-configured <code>/opt/virtuoso/database/virtuoso.ini</code> present before AMI launch, which should trigger creation of a new <code>virtuoso.db</code>.
+ There should be no <code>virtuoso.trx</code> until after user interaction with the AMI and the running Virtuoso instance.</p>
+<p>However, sometimes production errors leave a <code>virtuoso.trx</code> file in place on the image used to start your AMI, which result in the above error.
+ You will then find several files in <code>/opt/virtuoso/database/</code>, including some or all of these --</p>
+<br><pre>php.ini               virtuoso.lck
+virtuoso-temp.db      virtuoso.log
+virtuoso.db           virtuoso.pxa
+virtuoso.ini          virtuoso.trx
+</pre><p> Recovery from this state requires removal of all of these <b><i>except</i></b> the <code>virtuoso.ini</code> and <code>php.ini</code>.
+ After removing all the other files, reboot the AMI, and your experience should be as documented and intended.</p>
+<p>If you encounter this situation, please be sure to notify us, so we can publish an updated AMI.</p>
+<p> </p>
+<h2><a name="Related Items"></a> Related Items</h2>
+<ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSInstallationEC2" class="absuri">OpenLink Data Spaces Installation</a> </li>
+<li>EC2 &amp; AMI related information <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtPayAsYouGoEBSBackedAMIDBpedia2015" class="wikiword">Virtuoso DBpedia 2015 Pay As You Go (PAGO) EBS-backed EC2 AMI</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtInstallationEC2" class="wikiword">Instance-backed Virtuoso EC2 AMI</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAWSPublicDataSets" class="wikiword">Pre-configured &amp; Pre-loaded Virtuoso instances (DBpedia, BBC Music &amp; Programmes etc.)</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMINeuroCommonsInstall" class="wikiword">Creating Your Own Neurocommons Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMIBio2rdfInstall" class="wikiword">Creating Your Own Bio2RDF Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMIMusicBrainzInstall" class="wikiword">Creating Your Own MusicBrainz Instance</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEc2ExtensionUI" class="wikiword">Backup Your Virtuoso EC2 AMI to S3</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEC2AMIElasticBlockStorageConfig" class="wikiword">Configure your Virtuoso EC2 AMI for use with Amazon Elastic Block Storage (EBS)</a> </li>
+<li><a href="http://calculator.s3.amazonaws.com/calc5.html" class="absuri">Amazon-provided AWS Simple Monthly Cost Calculator</a> </li>
+</ul></li>
+<li>Protecting your Virtuoso-hosted SPARQL Endpoint <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLEndpointProtection" class="wikiword">Safeguarding your Virtuoso-hosted SPARQL Endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpointProtection" class="wikiword">SPARQL Endpoint Protection Methods Collection</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpoints" class="wikiword">Securing SPARQL endpoints</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSecurityWebID" class="wikiword">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">SPARQL OAuth Tutorial</a> </li>
+</ul></li>
+<li><a href="http://docs.openlinksw.com/virtuoso/" class="absuri">Virtuoso documentation</a> <ul><li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso&#39;s SPARQL support</a> </li>
+</ul></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks</a> <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLDET" class="wikiword">SPARQL Endpoint DET (DEV Extension Type) Configuration Guide</a></li>
+</ul></li>
+</ul><p> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryHowTo" class="wikiword">CategoryHowTo</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryODS" class="wikiword">CategoryODS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryDocumentation" class="wikiword">CategoryDocumentation</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryEC2" class="wikiword">CategoryEC2</a></p>
+<!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--><p> </p>
+</div></body></html>

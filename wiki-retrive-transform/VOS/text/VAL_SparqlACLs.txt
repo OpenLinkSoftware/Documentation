@@ -1,0 +1,383 @@
+%META:TOPICPARENT{name="ValQuickStartGuide"}%
+---+ SPARQL ACLs in Virtuoso
+
+%TOC%
+
+---++ Introduction
+
+Virtuoso uses the [[http://docs.openlinksw.com/val/val_acl.html][VAL ACL system]] 
+to control access to named graphs, and to SPARQL in general. When enabled, these rules are automatically enforced in 
+various Virtuoso interaction including the <code>/sparql</code> endpoints, and can also be used manually in any other 
+application as described below.
+
+SPARQL access is controlled in two ways:
+   * <b>General access ACLs</b> grant a person the basic right to perform SPARQL <code>SELECT</code>, <code>UPDATE</code>, 
+or <code>SPONGE</code> queries. These ACL rules always apply to the same specific resource URI, <code>urn:virtuoso:access:sparql</code>, 
+has a scope of <code>[[http://www.openlinksw.com/c/9D2L64WF][oplacl:Query]]</code>. For historical reasons, this ACL 
+is disabled by default, which grants everyone the right to <code>SELECT</code>, <code>UPDATE</code>, and <code>SPONGE</code>. 
+See below on how to enable the ACL scope, and thus, the evaluation of the rules.
+   * <b>Named graph ACLs grant</b> access to specific private graphs. (Public graphs are always fully accessible, or 
+they are not really public. See below for details.) These ACL rules grant access to one private graph at a time, and 
+have a scope of <code>[[http://www.openlinksw.com/c/9DPPK5PP][oplacl:PrivateGraphs]]</code>.
+
+
+---++ Private Graphs used for ACL storage
+
+The Rules can be controlled via two APIs -- 
+   * [[http://docs.openlinksw.com/val/group__val__acl__module__http__api.html][RESTful VAL ACL API]]
+   * [[http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html#ga89b2c77c10c82186ddc0e7b46093123c][Internal VAL API]]
+
+Alternatively, one can manually add rules to the private graph matching the realm in which the rules should apply. Such manual addition 
+means that two properties of each rule, <code>[[http://www.openlinksw.com/c/9BHM6464][oplacl:hasRealm]]</code> and 
+<code>[[http://www.openlinksw.com/c/9CZ4K3FH][foaf:maker]]</code>, which are invisibly and automatically managed by the APIs, must 
+also be manually managed.
+
+Given the default realm --
+<verbatim>
+http://www.openlinksw.com/ontology/acl#DefaultRealm
+</verbatim>
+-- and the default hostname --
+<verbatim>
+{HOST-CNAME}
+</verbatim>
+-- the graph IRI would be -- 
+<verbatim>
+http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm
+</verbatim>
+-- and the groups would be stored in named graph --
+<verbatim>
+http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm
+</verbatim>
+
+<i><b>Note:</b> [[http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs][these defaults can be customized]] for better readability.</i>
+
+
+---++ Enabling or Disabling ACL Rule Evalution
+
+Each set of ACL rules is defined as one ACL scope. 
+
+As implied above, there are two ACL scopes in VAL, each with a set of default access modes which are used if ACL rule evaluation has been disabled. The purpose and default configurations of these two scopes are --
+   * <code>[[http://www.openlinksw.com/c/9D2L64WF][oplacl:Query]]</code> for general SPARQL access
+<verbatim>
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+INSERT
+  INTO <urn:virtuoso:val:acl:schema> 
+    {
+      oplacl:PrivateGraphs                           a  oplacl:Scope  ;
+                                            rdfs:label  "Sparql"      ;
+                                          rdfs:comment  """Sparql ACL scopes which contains all ACL rules granting access to specific named graphs. 
+                                                           By default ACLs are disabled. System admins can enabled ACLs. There are no default access 
+                                                           modes since Virtuoso only applies ACLs to private graphs which should remain private.""" ;
+                            oplacl:hasApplicableAccess  oplacl:Read   , 
+                                                        oplacl:Write  , 
+                                                        oplacl:Sponge .
+    };
+</verbatim>
+   * <code>[[http://www.openlinksw.com/c/9DPPK5PP][oplacl:PrivateGraphs]]</code> for access to specific private graphs
+<verbatim>
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+INSERT
+  INTO <urn:virtuoso:val:acl:schema> 
+    {
+      oplacl:Query                                   a  oplacl:Scope  ;
+                                            rdfs:label  "SQL"         ;
+                                          rdfs:comment  """SQL ACL scopes which contains all ACL rules granting permission to perform SQL operations
+                                                        or SPARQL operations in general. The latter is complemented by the sparql scope which contains 
+                                                        rules for named graph access.""" ;
+                            oplacl:hasApplicableAccess  oplacl:Read   , 
+                                                        oplacl:Write  , 
+                                                        oplacl:Sponge ;
+                               oplacl:hasDefaultAccess  oplacl:Read   , 
+                                                        oplacl:Write  , 
+                                                        oplacl:Sponge .
+    };
+</verbatim>
+
+
+A scope can be explicitly enabled or disabled in any given realm. By default, they are neither, which means that it is up to the application to decide. 
+Given the default realm <code>[[http://www.openlinksw.com/ontology/acl#DefaultRealm][oplacl:DefaultRealm]]</code>, the evaluation of ACLs for private 
+graphs could be disabled as follows:
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+WITH <urn:virtuoso:val:config>
+  DELETE
+    {
+      oplacl:DefaultRealm  oplacl:hasEnabledAclScope  oplacl:PrivateGraphs .
+    }
+  INSERT 
+    {
+      oplacl:DefaultRealm  oplacl:hasDisabledAclScope  oplacl:PrivateGraphs .
+    };
+</verbatim>
+
+To enable the evalution of general SPARQL access rules in the default realm one would use:
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+WITH <urn:virtuoso:val:config>
+  DELETE
+    {
+      oplacl:DefaultRealm  oplacl:hasDisabledAclScope  oplacl:Query .
+    }
+  INSERT
+    {
+      oplacl:DefaultRealm  oplacl:hasEnabledAclScope  oplacl:Query .
+    };
+</verbatim>
+
+---++ Examples
+
+In the following examples --
+   * the default realm <b><code>[[http://www.openlinksw.com/ontology/acl#DefaultRealm][oplacl:DefaultRealm]]</code></b> is used for creating the ACL resources.
+   * <b><code><nowiki>{HOST-CNAME}</nowiki></code></b> is used as a placeholder for the default hostname of the system on which the ACL resource are created.
+
+<i><b>Note:</b> [[http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs][these defaults can be customized]] for better readability.</i>
+
+
+---+++ Example ACL Rules for General SPARQL Access
+
+---++++ Grant Everyone the Right To SPARQL Select
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{RULE-IRI}>                     a  acl:Authorization ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                    oplacl:hasAccessMode  oplacl:Read ;
+                            acl:accessTo  <urn:virtuoso:access:sparql> ;
+                          acl:agentClass  foaf:Agent ;
+                         oplacl:hasScope  oplacl:Query ;
+                         oplacl:hasRealm  oplacl:DefaultRealm .
+    };
+</verbatim>
+
+
+---++++ Grant an Individual the Right to Grant Sponge Permissions
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{RULE-IRI}>                     a  acl:Authorization ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                    oplacl:hasAccessMode  oplacl:GrantSponge ;
+                            acl:accessTo  <urn:virtuoso:access:sparql> ;
+                               acl:agent  <{AGENT-IRI}> ;
+                         oplacl:hasScope  oplacl:Query ;
+                         oplacl:hasRealm  oplacl:DefaultRealm .
+};
+</verbatim>
+
+
+---++++ Granting Permissions to a Group Of People
+
+---+++++ First, Create a Group 
+
+There are two types of groups:
+   * <b>static</b> defined by a simple list of individuals, as seen below
+   * <b>conditional</b> defined by a set of conditions which describe a dynamic group of individuals
+
+---++++++ A Static Group
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{GROUP-IRI}>            a  foaf:Group, 
+                                  oplacl:StaticGroup ;
+                       foaf:name  "Some people" ;
+                      foaf:maker  <{ADMIN-IRI}> ;
+                     foaf:member  <{AGENT-IRI-1}> ,
+                                  [...]
+                                  <{AGENT-IRI-N}> .
+    };
+</verbatim>
+
+---++++++ A Conditional Group of Anyone who has Authenticated
+
+The Required Group in a [[http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional][conditional group]] which includes every authenticated NetID:
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{GROUP-IRI}>                    a  oplacl:ConditionalGroup ;
+                               foaf:name  "Valid Identifiers" ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                     oplacl:hasCondition  [
+                                                               a  oplacl:GroupCondition, 
+                                                                  oplacl:GenericCondition ;
+                                              oplacl:hasCriteria  oplacl:NetID ;
+                                            oplacl:hasComparator  oplacl:IsNotNull ;
+                                                 oplacl:hasValue  1
+                                          ] .
+    };
+</verbatim>
+
+
+---++++++ A Conditional Group of Anyone who has a Verified <nowiki>WebID</nowiki>
+
+The Required Group in a [[http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional][conditional group]] which includes every authenticated NetID:
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{GROUP-IRI}>                    a  oplacl:ConditionalGroup ;
+                               foaf:name  "Valid WebIDs" ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                     oplacl:hasCondition  [
+                                                               a  oplacl:GroupCondition, 
+                                                                  oplacl:GenericCondition ;
+                                              oplacl:hasCriteria  oplacl:WebIDVerified ;
+                                            oplacl:hasComparator  oplacl:EqualTo ;
+                                                 oplacl:hasValue  1
+                                          ] .
+    };
+</verbatim>
+
+---++++++ A Conditional Group of Anyone who has presented a Valid X.509 Client Certificate
+
+The Required Group in a [[http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional][conditional group]] which includes every valid X.509 certificate:
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{GROUP-IRI}>                    a  oplacl:ConditionalGroup ;
+                               foaf:name  "Valid X.509 Certificates" ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                     oplacl:hasCondition  [
+                                                               a  oplacl:GroupCondition,
+                                                                  oplacl:GenericCondition ;
+                                              oplacl:hasCriteria  oplacl:CertVerified ;
+                                            oplacl:hasComparator  oplacl:EqualTo ;
+                                                 oplacl:hasValue  1
+                                          ] .
+    };
+</verbatim>
+
+---++++++ A Conditional Group of Any Verified <nowiki>WebID</nowiki> Which Claims to be a Person
+
+Query conditions consist of a query which supports two variables which are replaced with the profile graph and the personal URI respectively.
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{GROUP-IRI}>                    a  oplacl:ConditionalGroup ;
+                               foaf:name  "Valid WebIDs" ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                     oplacl:hasCondition  [
+                                                               a  oplacl:GroupCondition, 
+                                                                  oplacl:GenericCondition ;
+                                              oplacl:hasCriteria  oplacl:WebIDVerified ;
+                                            oplacl:hasComparator  oplacl:EqualTo ;
+                                                 oplacl:hasValue  1
+                                          ] ,
+                                          [
+                                                               a  oplacl:GroupCondition, 
+                                                                  oplacl:QueryCondition ;
+                                                 oplacl:hasQuery  """ASK WHERE { GRAPH ^{graph}^ { ^{uri}^ a foaf:Person } }"""
+                                          ]
+    };
+</verbatim>
+
+---+++++ Second, Create a Rule to Grant Privileges to the Group Members
+
+---++++++ An ACL Rule to grant Sponge Privileges to the Group Members
+
+Once the group has been created it can be referenced in a new Authorization that provides members with the ability to grant Sponge privileges to others so that they too can use the Sponger functionality via SPARQL based data access:
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{RULE-IRI}>                     a  acl:Authorization ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                    oplacl:hasAccessMode  oplacl:Sponge ;
+                            acl:accessTo  <urn:virtuoso:access:sparql> ;
+                               acl:agent  <{GROUP-IRI}> ;
+                         oplacl:hasScope  oplacl:Query ;
+                         oplacl:hasRealm  oplacl:DefaultRealm .
+};
+</verbatim>
+
+
+---++++++ An ACL Rule to grant Write Privileges to the Group Members
+
+Once the group has been created it can be referenced in a new Authorization that provides members with Write (Insert, Update, and Delete) privileges via SPARQL data access:
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+WITH  <http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{RULE-IRI}>                     a  acl:Authorization ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                    oplacl:hasAccessMode  oplacl:Write ;
+                            acl:accessTo  <urn:virtuoso:access:sparql> ;
+                               acl:agent  <{GROUP-IRI}> ;
+                         oplacl:hasScope  oplacl:Query ;
+                         oplacl:hasRealm  oplacl:DefaultRealm .
+};
+</verbatim>
+
+
+---+++ Example ACL Rules for Access To Private Graphs
+
+---++++ Grant Read Access on a Private Graph to an Individual
+
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#> 
+WITH  <http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+  INSERT
+    {
+      <{RULE-IRI}>                     a  acl:Authorization ;
+                              foaf:maker  <{ADMIN-IRI}> ;
+                    oplacl:hasAccessMode  oplacl:Read ;
+                            acl:accessTo  <{NAMED-GRAPH-IRI}> ;
+                               acl:agent  <{AGENT-IRI}> ;
+                         oplacl:hasScope  oplacl:PrivateGraphs ;
+                         oplacl:hasRealm  oplacl:DefaultRealm .
+};
+</verbatim>
+
+---++ See Also
+
+   * [[VAL_SpongerACLs][Sponger ACLs]]
+   * [[http://docs.openlinksw.com/val/val_acl.html][VAL ACL System]]
+   * [[VAL_SqlACLs][SQL ACLs - Control SPARQL Access in SQL Connections (ODBC)]]

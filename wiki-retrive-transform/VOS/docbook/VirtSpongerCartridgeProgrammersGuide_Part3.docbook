@@ -1,0 +1,470 @@
+<docbook><section><title>VirtSpongerCartridgeProgrammersGuide_Part3</title><title>Virtuoso Programmer&#39;s Guide - RDF Middleware (&quot;Sponger&quot;) (Part 3)</title>Virtuoso Programmer&#39;s Guide - RDF Middleware (&quot;Sponger&quot;) (Part 3)
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSpongerCartridgeProgrammersGuide">Part 1</ulink> </listitem>
+<listitem><ulink url="VirtuosoSpongerCartridgeProgrammersGuide_Part2">Part 2</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Contents (Part 3)</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem>Sponger Queue API <itemizedlist mark="bullet" spacing="compact"><listitem>Functions </listitem>
+<listitem>REST Web service </listitem>
+</itemizedlist></listitem>
+<listitem>Useful Virtuoso Functions <itemizedlist mark="bullet" spacing="compact"><listitem>String Functions <itemizedlist mark="bullet" spacing="compact"><listitem>sprintf_inverse </listitem>
+<listitem>split_and_decode </listitem>
+</itemizedlist></listitem>
+<listitem>Retrieving URLs <itemizedlist mark="bullet" spacing="compact"><listitem>http_get </listitem>
+<listitem>http_request_header </listitem>
+</itemizedlist></listitem>
+<listitem>Handling Non-XML Response Content <itemizedlist mark="bullet" spacing="compact"><listitem>json_parse </listitem>
+</itemizedlist></listitem>
+<listitem>Writing Arbitrarily Long Text <itemizedlist mark="bullet" spacing="compact"><listitem>http </listitem>
+<listitem>string_output </listitem>
+<listitem>string_output_string </listitem>
+</itemizedlist></listitem>
+<listitem>XML &amp; XSLT <itemizedlist mark="bullet" spacing="compact"><listitem>xtree_doc </listitem>
+<listitem>xpath_eval </listitem>
+<listitem>DB.DBA.RDF_MAPPER_XSLT </listitem>
+</itemizedlist></listitem>
+<listitem>Character Set Conversion <itemizedlist mark="bullet" spacing="compact"><listitem>serialize_to_UTF8_xml </listitem>
+</itemizedlist></listitem>
+<listitem>Loading Data Into the Quad Store <itemizedlist mark="bullet" spacing="compact"><listitem>DB.DBA.RDF_LOAD_RDFXML </listitem>
+<listitem>DB.DBA.TTLP </listitem>
+</itemizedlist></listitem>
+<listitem>Debug Output <itemizedlist mark="bullet" spacing="compact"><listitem>dbg_obj_print </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem>References </listitem>
+<listitem>Appendix A: <ulink url="PingTheSemanticWeb">PingTheSemanticWeb</ulink> RDF Notification Service </listitem>
+<listitem>Appendix B: Main Namespaces used by <ulink url="OpenLink">OpenLink</ulink> Cartridges </listitem>
+<listitem>Appendix C: Freebase Cartridge &amp; Stylesheet</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Sponger Queue API</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Functions</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>DB.DBA.RDF_SPONGER_QUEUE_ADD: This function is available when the cartridges vad is installed.
+<programlisting>DB.DBA.RDF_SPONGER_QUEUE_ADD  (url, options);
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>url</emphasis>: the Network Resource URI to be fetched; </listitem>
+<listitem><emphasis>options</emphasis>: an array usually typical sponger pragmas, for ex: <programlisting>vector (&#39;get:soft&#39;,  &#39;soft&#39;,  &#39;refresh_free_text&#39;,  1);
+</programlisting> </listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">REST Web service</bridgehead>
+<para> The Sponger REST Web service has the following characteristics: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>endpoint</emphasis>: http://cname/about/service </listitem>
+<listitem><emphasis>parameters</emphasis>: <orderedlist spacing="compact"><listitem>op=add: type of operation, for now addition to the queue is supported </listitem>
+<listitem>uris=[json array]: an array of URIs to be added to the sponger queue, the format is JSON array, for example: <programlisting> { &quot;uris&quot;:[&quot;http://www.amazon.co.uk/Hama-Stylus-Input-Apple-iPad/dp/B003O0OM0C&quot;, &quot;http://www.amazon.co.uk/Krusell-GAIA-Case-Apple-iPad/dp/B003QHXWWC&quot; ] }
+</programlisting></listitem>
+</orderedlist></listitem>
+</itemizedlist><para>The service will return a json encoded result of the number of items added, for example: </para>
+<programlisting> { &quot;result&quot;:2 }
+</programlisting><para>In case of error a JSON with error text will be returned and http status 500.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">cURL example</bridgehead>
+<orderedlist spacing="compact"><listitem>Assume file.txt which contains URL encoded JSON string: <programlisting>uris=%7B%20%22uris%22%3A%5B%22http%3A%2F%2Fwww.amazon.co.uk%2FHama-Stylus-Input-Apple-iPad%2Fdp%2FB003O0OM0C%22%2C%20%22http%3A%2F%2Fwww.amazon.co.uk%2FKrusell-GAIA-Case-Apple-iPad%2Fdp%2FB003QHXWWC%22%20%5D%20%7D
+</programlisting></listitem>
+<listitem>Execute the following command: <programlisting>curl -i -d@file.txt http://cname/about/service?op=add
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3129 (Darwin) i686-apple-darwin10.0.0  VDB
+Connection: Keep-Alive
+Date: Thu, 05 May 2011 12:06:24 GMT
+Accept-Ranges: bytes
+Content-Type: applcation/json; charset=&quot;UTF-8&quot;
+Content-Length: 14
+
+{ &quot;result&quot;:2 }
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Useful Virtuoso Functions</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">String Functions</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">sprintf_inverse</bridgehead>
+ sprintf_inverse takes a string to parse and a format string.
+ If the first argument matches the format string then it returns vector of the values matching the placeholders in the format string.
+ sprintf_inverse comes in useful for extracting fields from URLs.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_sprintf_inverse.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>tmp := sprintf_inverse (new_origin_uri, &#39;http://farm%s.static.flickr.com/%s/%s_%s.%s&#39;, 0);
+img_id := tmp[2];
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">split_and_decode</bridgehead>
+ Converts escaped key=value pairs in an input string into a vector of strings.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_split_and_decode.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ To split the HTTP request and response headers passed to the cartridge hook function.
+<programlisting>request_hdr := headers[0];
+response_hdr := headers[1];
+host := http_request_header (request, &#39;Host&#39;);
+tmp := split_and_decode (request_hdr[0], 0, &#39;\0\0 &#39;);
+
+http_method := tmp[0];
+url := tmp[1];
+protocol_version := substring (tmp[2], 6, 8);
+tmp := rtrim (response_hdr[0], &#39;\r\n&#39;);
+tmp := split_and_decode (response_hdr[0], 0, &#39;\0\0 &#39;);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Retrieving URLs</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">http_get</bridgehead>
+ Returns a string containing the body of the requested URL and optionally the request headers.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_http_get.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>url := sprintf(&#39;http://api.flickr.com/services/rest/??
+	method=flickr.photos.getInfo&amp;photo_id=%s&amp;api_key=%s&#39;, img_id, api_key);
+tmp := http_get (url, hdr);
+if (hdr[0] not like &#39;HTTP/1._ 200 %&#39;)
+  signal (&#39;22023&#39;, trim(hdr[0], &#39;\r\n&#39;), &#39;RDFXX&#39;);
+xd := xtree_doc (tmp);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">DB.DBA.RDF_HTTP_URL_GET</bridgehead>
+ A wrapper around http_get.
+Retrieves a URL using the specified HTTP method (defaults to GET).
+ The function can handle proxies, redirects (up to fifteen) and HTTPS.
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>uri := sprintf (&#39;http://musicbrainz.org/ws/1/%s/%s?type=xml&amp;inc=%U&#39;, 
+	kind, id, inc);
+cnt := RDF_HTTP_URL_GET (uri, &#39;&#39;, hdr, &#39;GET&#39;, &#39;Accept: */*&#39;);
+xt := xtree_doc (cnt);
+xd := DB.DBA.RDF_MAPPER_XSLT (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/mbz2rdf.xsl&#39;, xt, vector (&#39;baseUri&#39;, new_origin_uri));
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">http_request_header</bridgehead>
+ Returns an array containing the HTTP request header lines.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_http_request_header.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>content := RDF_HTTP_URL_GET (rdf_url, new_origin_uri, hdr, &#39;GET&#39;, 
+		&#39;Accept: application/rdf+xml, text/rdf+n3, */*&#39;);
+ret_content_type := http_request_header (hdr, &#39;Content-Type&#39;, null, null);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Handling Non-XML Response Content</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">json_parse</bridgehead>
+ Parses JSON content into a tree.
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>  url := sprintf (&#39;http://www.freebase.com/api/service/mqlread?queries=%U&#39;, qr);
+  content := http_get (url, hdr);
+  tree := json_parse (content);
+  tree := get_keyword (&#39;ROOT&#39;, tree);
+  tree := get_keyword (&#39;result&#39;, tree);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Writing Arbitrarily Long Text</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">http</bridgehead>
+ Writes to an http client or a string output stream.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_http.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ Writing N3 to a string output stream using function http(), parsing the N3 into a graph, then loading the graph into the quad store.
+<programlisting>ses := string_output ();
+http (&#39;@prefix opl: &lt;http://www.openlinksw.com/schema/attribution#&gt; .\n&#39;, ses);
+http (&#39;@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .\n&#39;, ses);
+...
+DB.DBA.TTLP (ses, base, graph);
+DB.DBA.RDF_LOAD_RDFXML (strg, base, graph);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">string_output</bridgehead>
+ Makes a string output stream, a special object that may be used to buffer arbitrarily long streams of data.
+ The HTTP output functions optionally take a string output stream handle as a parameter and then output to the string stream instead of the HTTP client.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_string_output.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>ses := string_output ();
+cnt := http_get (sprintf (&#39;http://download.finance.yahoo.com/d/quotes.csv?s=%U&amp;f=nsbavophg&amp;e=.csv&#39;,
+    symbol));
+arr := rdfm_yq_parse_csv (cnt);
+http (&#39;&lt;quote stock=&quot;NASDAQ&quot;&gt;&#39;, ses);
+foreach (any q in arr) do
+  {
+    http_value (q[0], &#39;company&#39;, ses);
+    http_value (q[1], &#39;symbol&#39;, ses);
+    ...
+  }
+  http (&#39;&lt;/quote&gt;&#39;, ses);
+  content := string_output_string (ses);
+  xt := xtree_doc (content);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">string_output_string</bridgehead>
+ Produces a string out of a string output stream.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_string_output_string.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ See string_output above.<bridgehead class="http://www.w3.org/1999/xhtml:h3">XML &amp; XSLT</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">xtree_doc</bridgehead>
+ Parses the input string, which is expected to be a well formed XML fragment and returns a parse tree as a special memory-resident object.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_xtree_doc.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>  content := RDF_HTTP_URL_GET (uri, &#39;&#39;, hdr, &#39;GET&#39;, &#39;Accept: */*&#39;);
+  xt := xtree_doc (content);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">xpath_eval</bridgehead>
+ Applies an XPATH expression to a context node and returns the result(s).<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_xpath_eval.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>  profile := cast (xpath_eval (&#39;/html/head/@profile&#39;, xt) as varchar);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">DB.DBA.RDF_MAPPER_XSLT</bridgehead>
+ A simple wrapper around the Virtuoso function xslt which sets the current user to dba before returning an XML document transformed by an XSLT stylesheet.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_xslt.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>tmp := http_get (url);
+xd := xtree_doc (tmp);
+xt := DB.DBA.RDF_MAPPER_XSLT (
+	registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/atom2rdf.xsl&#39;, 
+	xd, vector (&#39;baseUri&#39;, coalesce (dest, graph_iri)));
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Character Set Conversion</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">serialize_to_UTF8_xml</bridgehead>
+ Converts a value of arbitrary type to a UTF-8 string representation.<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_serialize_to_UTF8_xml.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>xt := DB.DBA.RDF_MAPPER_XSLT (
+	registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/crunchbase2rdf.xsl&#39;, 
+	xt, vector (&#39;baseUri&#39;, coalesce (dest, graph_iri), &#39;base&#39;, base, 
+	&#39;suffix&#39;, suffix));
+xd := serialize_to_UTF8_xml (xt);
+DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Loading Data Into the Quad Store</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">DB.DBA.RDF_LOAD_RDFXML</bridgehead>
+<para>Parses the content of RDF/XML text into a sequence of separate triples and loads the triples into the specified graph in the Virtuoso Quad Store.</para>
+<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_rdf_load_rdfxml.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>content := RDF_HTTP_URL_GET (uri, &#39;&#39;, hdr, &#39;GET&#39;, &#39;Accept: */*&#39;);
+xt := xtree_doc (content);
+xd := DB.DBA.RDF_MAPPER_XSLT (
+	registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/mbz2rdf.xsl&#39;, 
+	xt, vector (&#39;baseUri&#39;, new_origin_uri));
+xd := serialize_to_UTF8_xml (xd);
+DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">DB.DBA.TTLP</bridgehead>
+<para>Parses the content of TTL (TURTLE or N3) text and loads the triples into the specified graph in the Virtuoso Quad Store.</para>
+<para>Full description: <ulink url="http://docs.openlinksw.com/virtuoso/fn_ttlp.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>sess := string_output ();
+...
+http (sprintf (&#39;&lt;http://dbpedia.org/resource/%s&gt;
+	&lt;http://xbrlontology.com/ontology/finance/stock_market#hasCompetitor&gt;
+	&lt;http://dbpedia.org/resource/%s&gt; .\n&#39;,
+	symbol, x), sess);
+http (sprintf (&#39;&lt;http://dbpedia.org/resource/%s&gt;
+	&lt;http://www.w3.org/2000/01/rdf-schema#isDefinedBy&gt;
+	&lt;http://finance.yahoo.com/q?s=%s&gt; .\n&#39;,
+	 x, x), sess);
+content := string_output_string (sess);
+DB.DBA.TTLP (content, new_origin_uri, coalesce (dest, graph_iri));
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Debug Output</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">dbg_obj_print</bridgehead>
+ Prints to the Virtuoso system console.<para>Full description: <ulink url="http://demo.openlinksw.com/doc/html/fn_dbg_obj_print.html">Virtuoso Functions Guide entry</ulink></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Example</bridgehead>
+ <programlisting>dbg_obj_print (&#39;try all grddl mappings here&#39;);
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h1">References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>RDF Primer: <ulink url="http://www.w3.org/TR/2004/REC-rdf-primer-20040210/">http://www.w3.org/TR/2004/REC-rdf-primer-20040210/</ulink> </listitem>
+<listitem>RDF/XML Syntax Specification: <ulink url="http://www.w3.org/TR/rdf-syntax-grammar/">http://www.w3.org/TR/rdf-syntax-grammar/</ulink> </listitem>
+<listitem>GRDDL Primer: <ulink url="http://www.w3.org/TR/grddl-primer/">http://www.w3.org/TR/grddl-primer/</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h1">Appendix A: <ulink url="PingTheSemanticWeb">PingTheSemanticWeb</ulink> RDF Notification Service</bridgehead>
+<para><ulink url="http://www.pingthesemanticweb.com/">PingtheSemanticWeb</ulink> (PTSW) is a repository for RDF documents.
+ The PTSW web service archives the location of recently created or updated RDF documents on the Web.
+ It is intended for use by crawlers or other types of software agents which need to know when and where the latest updated RDF documents can be found.
+ They can request a list of recently updated documents as a starting location to crawl the Semantic Web.</para>
+<para>You may find this service useful for publicizing your own RDF content.
+ Content authors can notify PTSW that an RDF document has been created or updated by pinging the service with the URL of the document.
+ The Sponger supports this facility through the async_queue and ping_service parameters of the cartridge hook function, where the ping_service parameter contains the ping service URL as configured in the SPARQL section of the virtuoso.ini file: </para>
+<programlisting>[SPARQL]
+...
+PingService = http://rpc.pingthesemanticweb.com/
+...
+</programlisting><para>The configured ping service can be called using an asynchronous request and the RDF_SW_PING procedure as illustrated below.
+</para>
+<programlisting>create procedure DB.DBA.RDF_LOAD_HTML_RESPONSE (
+  in graph_iri varchar, in new_origin_uri varchar, in dest varchar,
+  inout ret_body any, inout async_queue any, inout ping_service any, 
+  inout _key any, inout opts any )
+{
+  ...
+  if ( ... and async_queue is not null)
+    aq_request (async_queue, &#39;DB.DBA.RDF_SW_PING&#39;, 
+                vector (ping_service, new_origin_uri));
+</programlisting><para>For more details, please refer to the section <ulink url="http://docs.openlinksw.com/virtuoso/ASYNCEXECMULTITHREAD.html">Asynchronous Execution and Multithreading in Virtuoso/PL</ulink> in the Virtuoso reference documentation.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h1">Appendix B: Main Namespaces used by <ulink url="OpenLink">OpenLink</ulink> Cartridges</bridgehead>
+<para>A list of the main namespaces / ontologies used by <ulink url="OpenLink">OpenLink</ulink>-provided Sponger cartridges is given below.
+ Some of these ontologies may prove useful when creating your own cartridges.
+</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>- <ulink url="http://www.openlinksw.com/virtuoso/xslt/">http://www.openlinksw.com/virtuoso/xslt/</ulink> </listitem>
+<listitem>- <ulink url="http://www.openlinksw.com/schemas/XHTML">http://www.openlinksw.com/schemas/XHTML</ulink># </listitem>
+<listitem>rdf: <ulink url="http://www.w3.org/1999/02/22-rdf-syntax-ns">http://www.w3.org/1999/02/22-rdf-syntax-ns</ulink># </listitem>
+<listitem>rdfs: <ulink url="http://www.w3.org/2000/01/rdf-schema">http://www.w3.org/2000/01/rdf-schema</ulink># </listitem>
+<listitem>dc: <ulink url="http://purl.org/dc/elements/1.1/">http://purl.org/dc/elements/1.1/</ulink> </listitem>
+<listitem>dcterms: <ulink url="http://purl.org/dc/terms/">http://purl.org/dc/terms/</ulink> </listitem>
+<listitem>foaf: <ulink url="http://xmlns.com/foaf/0.1/">http://xmlns.com/foaf/0.1/</ulink> </listitem>
+<listitem>sioc: <ulink url="http://rdfs.org/sioc/ns">http://rdfs.org/sioc/ns</ulink># </listitem>
+<listitem>sioct: <ulink url="http://rdfs.org/sioc/types">http://rdfs.org/sioc/types</ulink># </listitem>
+<listitem>skos: <ulink url="http://www.w3.org/2004/02/skos/core">http://www.w3.org/2004/02/skos/core</ulink># </listitem>
+<listitem>bibo: <ulink url="http://purl.org/ontology/bibo/">http://purl.org/ontology/bibo/</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h1">Appendix C: Freebase Cartridge &amp; Stylesheet</bridgehead>
+<para>Snapshots of the Freebase cartridge and stylesheet compatible with the meta-cartridge example presented earlier in this document can be found below.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">DB.DBA.RDF_LOAD_MQL:</bridgehead>
+ <programlisting>--no_c_escapes-
+create procedure DB.DBA.RDF_LOAD_MQL (in graph_iri varchar, in new_origin_uri varchar,  in dest varchar,
+    inout _ret_body any, inout aq any, inout ps any, inout _key any, inout opts any)
+{
+  declare qr, path, hdr any;
+  declare tree, xt, xd, types any;
+  declare k, cnt, url, sa varchar;
+
+  hdr := null;
+  sa := &#39;&#39;;
+  declare exit handler for sqlstate &#39;*&#39;
+    {
+      --dbg_printf (&#39;%s&#39;, __SQL_MESSAGE);
+      return 0;
+    };
+
+  path := split_and_decode (new_origin_uri, 0, &#39;%\0/&#39;);
+  if (length (path) &lt; 1)
+    return 0;
+  k := path [length(path) - 1];
+  if (path [length(path) - 2] = &#39;guid&#39;)
+    k := sprintf (&#39;&quot;id&quot;:&quot;/guid/%s&quot;&#39;, k);
+  else
+  {
+    if (k like &#39;#%&#39;)
+        k := sprintf (&#39;&quot;id&quot;:&quot;%s&quot;&#39;, k);
+    else
+      {
+	sa := DB.DBA.RDF_MQL_GET_WIKI_URI (k);
+    k := sprintf (&#39;&quot;key&quot;:&quot;%s&quot;&#39;, k);
+  }
+  }
+  qr := sprintf (&#39;{&quot;ROOT&quot;:{&quot;query&quot;:[{%s, &quot;type&quot;:[]}]}}&#39;, k);
+  url := sprintf (&#39;http://www.freebase.com/api/service/mqlread?queries=%U&#39;, qr);
+  cnt := http_get (url, hdr);
+  tree := json_parse (cnt);
+  xt := get_keyword (&#39;ROOT&#39;, tree);
+  if (not isarray (xt))
+    return 0;
+  xt := get_keyword (&#39;result&#39;, xt);
+  types := vector ();
+  foreach (any tp in xt) do
+    {
+      declare tmp any;
+      tmp := get_keyword (&#39;type&#39;, tp);
+      types := vector_concat (types, tmp);
+    }
+  --types := get_keyword (&#39;type&#39;, xt);
+  delete from DB.DBA.RDF_QUAD where g =  iri_to_id(new_origin_uri);
+  foreach (any tp in types) do
+    {
+      qr := sprintf (&#39;{&quot;ROOT&quot;:{&quot;query&quot;:{%s, &quot;type&quot;:&quot;%s&quot;, &quot;*&quot;:[]}}}&#39;, k, tp);
+      url := sprintf (&#39;http://www.freebase.com/api/service/mqlread?queries=%U&#39;, qr);
+      cnt := http_get (url, hdr);
+      --dbg_printf (&#39;%s&#39;, cnt);
+      tree := json_parse (cnt);
+      xt := get_keyword (&#39;ROOT&#39;, tree);
+      xt := DB.DBA.MQL_TREE_TO_XML (tree);
+      --dbg_obj_print (xt);
+      xt := DB.DBA.RDF_MAPPER_XSLT (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/mql2rdf.xsl&#39;, xt,
+      	vector (&#39;baseUri&#39;, coalesce (dest, graph_iri), &#39;wpUri&#39;, sa));
+      sa := &#39;&#39;;
+      xd := serialize_to_UTF8_xml (xt);
+--      dbg_printf (&#39;%s&#39;, xd);
+      DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
+    }
+  return 1;
+}
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3">mql2rdf.xsl:</bridgehead>
+ <programlisting>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!--
+ -
+ -  $Id: mql2rdf.xsl,v 1.10 2008/09/04 09:14:12 source Exp $
+ -
+ -  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+ -  project.
+ -
+ -  Copyright (C) 1998-2008 OpenLink Software
+ -
+ -  This project is free software; you can redistribute it and/or modify it
+ -  under the terms of the GNU General Public License as published by the
+ -  Free Software Foundation; only version 2 of the License, dated June 1991.
+ -
+ -  This program is distributed in the hope that it will be useful, but
+ -  WITHOUT ANY WARRANTY; without even the implied warranty of
+ -  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ -  General Public License for more details.
+ -
+ -  You should have received a copy of the GNU General Public License along
+ -  with this program; if not, write to the Free Software Foundation, Inc.,
+ -  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+--&gt;
+&lt;!DOCTYPE xsl:stylesheet [
+&lt;!ENTITY rdf &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+&lt;!ENTITY bibo &quot;http://purl.org/ontology/bibo/&quot;&gt;
+&lt;!ENTITY xsd  &quot;http://www.w3.org/2001/XMLSchema#&quot;&gt;
+&lt;!ENTITY foaf &quot;http://xmlns.com/foaf/0.1/&quot;&gt;
+&lt;!ENTITY sioc &quot;http://rdfs.org/sioc/ns#&quot;&gt;
+]&gt;
+&lt;xsl:stylesheet version=&quot;1.0&quot;
+    xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
+    xmlns:vi=&quot;http://www.openlinksw.com/virtuoso/xslt/&quot;
+    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+    xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-schema#&quot;
+    xmlns:sioc=&quot;&quot;
+    xmlns:bibo=&quot;&quot;
+    xmlns:foaf=&quot;&quot;
+    xmlns:skos=&quot;http://www.w3.org/2004/02/skos/core#&quot;
+    xmlns:dcterms= &quot;http://purl.org/dc/terms/&quot;
+    xmlns:mql=&quot;http://www.freebase.com/&quot;&gt;
+
+    &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+
+    &lt;xsl:param name=&quot;baseUri&quot; /&gt;
+    &lt;xsl:param name=&quot;wpUri&quot; /&gt;
+
+    &lt;xsl:variable name=&quot;ns&quot;&gt;http://www.freebase.com/&lt;/xsl:variable&gt;
+
+    &lt;xsl:template match=&quot;/&quot;&gt;
+	&lt;rdf:RDF&gt;
+	    &lt;xsl:if test=&quot;/results/ROOT/result/*&quot;&gt;
+		&lt;rdf:Description rdf:about=&quot;{$baseUri}&quot;&gt;
+		    &lt;rdf:type rdf:resource=&quot;Document&quot;/&gt;
+		    &lt;rdf:type rdf:resource=&quot;Document&quot;/&gt;
+		    &lt;rdf:type rdf:resource=&quot;Container&quot;/&gt;
+		    &lt;sioc:container_of rdf:resource=&quot;{vi:proxyIRI($baseUri)}&quot;/&gt;
+		    &lt;foaf:primaryTopic rdf:resource=&quot;{vi:proxyIRI($baseUri)}&quot;/&gt;
+		    &lt;dcterms:subject rdf:resource=&quot;{vi:proxyIRI($baseUri)}&quot;/&gt;
+		&lt;/rdf:Description&gt;
+		&lt;rdf:Description rdf:about=&quot;{vi:proxyIRI($baseUri)}&quot;&gt;
+		    &lt;rdf:type rdf:resource=&quot;Item&quot;/&gt;
+		    &lt;sioc:has_container rdf:resource=&quot;{$baseUri}&quot;/&gt;
+		    &lt;xsl:apply-templates select=&quot;/results/ROOT/result/*&quot;/&gt;
+		    &lt;xsl:if test=&quot;$wpUri != &#39;&#39;&quot;&gt;
+			&lt;rdfs:seeAlso rdf:resource=&quot;{$wpUri}&quot;/&gt;
+		    &lt;/xsl:if&gt;
+		&lt;/rdf:Description&gt;
+	    &lt;/xsl:if&gt;
+	&lt;/rdf:RDF&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;*[starts-with(.,&#39;http://&#39;) or starts-with(.,&#39;urn:&#39;)]&quot;&gt;
+	&lt;xsl:element namespace=&quot;{$ns}&quot; name=&quot;{name()}&quot;&gt;
+	    &lt;xsl:attribute name=&quot;rdf:resource&quot;&gt;
+		&lt;xsl:value-of select=&quot;vi:proxyIRI (.)&quot;/&gt;
+	    &lt;/xsl:attribute&gt;
+	&lt;/xsl:element&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;*[starts-with(.,&#39;/&#39;)]&quot;&gt;
+	&lt;xsl:if test=&quot;local-name () = &#39;type&#39; and . like &#39;%/person&#39;&quot;&gt;
+	    &lt;rdf:type rdf:resource=&quot;Person&quot;/&gt;
+	&lt;/xsl:if&gt;
+	&lt;xsl:if test=&quot;local-name () = &#39;type&#39;&quot;&gt;
+	    &lt;sioc:topic&gt;
+		&lt;skos:Concept rdf:about=&quot;{vi:proxyIRI (concat ($ns, &#39;view&#39;, .))}&quot;/&gt;
+	    &lt;/sioc:topic&gt;
+	&lt;/xsl:if&gt;
+
+	&lt;xsl:element namespace=&quot;{$ns}&quot; name=&quot;{name()}&quot;&gt;
+	    &lt;xsl:attribute name=&quot;rdf:resource&quot;&gt;
+		&lt;xsl:value-of select=&quot;vi:proxyIRI(concat ($ns, &#39;view&#39;, .))&quot;/&gt;
+	    &lt;/xsl:attribute&gt;
+	&lt;/xsl:element&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;*[* and ../../*]&quot;&gt;
+	&lt;xsl:element namespace=&quot;{$ns}&quot; name=&quot;{name()}&quot;&gt;
+	    &lt;xsl:attribute name=&quot;rdf:parseType&quot;&gt;Resource&lt;/xsl:attribute&gt;
+	    &lt;xsl:apply-templates select=&quot;@*|node()&quot;/&gt;
+	&lt;/xsl:element&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;*&quot;&gt;
+	&lt;xsl:if test=&quot;* or . != &#39;&#39;&quot;&gt;
+		&lt;xsl:choose&gt;
+		    &lt;xsl:when test=&quot;name()=&#39;image&#39;&quot;&gt;
+			&lt;foaf:depiction rdf:resource=&quot;{vi:mql-image-by-name (.)}&quot;/&gt;
+		    &lt;/xsl:when&gt;
+		    &lt;xsl:otherwise&gt;
+			&lt;xsl:element namespace=&quot;{$ns}&quot; name=&quot;{name()}&quot;&gt;
+			    &lt;xsl:if test=&quot;name() like &#39;date_%&#39;&quot;&gt;
+				&lt;xsl:attribute name=&quot;rdf:datatype&quot;&gt;dateTime&lt;/xsl:attribute&gt;
+			    &lt;/xsl:if&gt;
+			    &lt;xsl:apply-templates select=&quot;@*|node()&quot;/&gt;
+			&lt;/xsl:element&gt;
+		    &lt;/xsl:otherwise&gt;
+		&lt;/xsl:choose&gt;
+	&lt;/xsl:if&gt;
+    &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</programlisting></section></docbook>

@@ -1,0 +1,96 @@
+---+Virtuoso JDBC Transaction Simulation Program
+
+---++ What
+
+Java program to simulate Virtuoso Transaction Handling
+
+---++ Why
+
+It is important to understand Virtuoso Transaction Handling in order to minimise locks and deadlocks in the database, which can adversely affect application performance and stability.
+
+---++ How
+
+The [[https://download3.openlinksw.com.s3.amazonaws.com/misc/MTSparqlTest2.java][MTSparqlTest2.java]] JDBC Transaction Simulation program can be compiled with the [[http://download3.openlinksw.com/index.html?prefix=uda/virtuoso/jdbc/][Virtuoso JDBC Driver]] (for the Java runtime in use) and run as follows:
+
+<verbatim>
+javac -cp "./virtjdbc4.jar:." MTSparqlTest2.java   // Compile program
+java -cp "./virtjdbc4.jar:." MTSparqlTest2 init    // Loads the test data into Virtuoso instance 
+java -cp "./virtjdbc4.jar:." MTSparqlTest2         // Run the test
+</verbatim>
+
+The program usage is the defined at the beginning of the source file which needs to be amended accordingly depending on what transaction mode or size of params (graphs, triples, threads etc) the test is to be run with:
+
+<verbatim>
+
+ static String url = "jdbc:virtuoso://localhost:1111/charset=UTF-8/log_enable=0";
+ static String uid = "dba";
+ static String pwd = "dba";
+
+ static int n_iterations = 100; //how many queries will be executed by thread
+ static int def_tx_isolation = Connection.TRANSACTION_READ_COMMITTED;
+ static int dml_tx_isolation = Connection.TRANSACTION_REPEATABLE_READ;
+ static int select_tx_isolation = Connection.TRANSACTION_READ_COMMITTED;
+ static int n_threads = 10;
+ static int commitAfterNCalls = 4;  // commit after N DML queries
+
+ static int n_graphs = 10;       // count of graphs
+ static int n_g_triples = 10000; // count of triples per graph
+ static int n_g_uniq_obj = 2;    // count of uniq objects per graph
+
+ static int n_top_for_select = 100;
+ static int BATCH_SIZE = 5000;
+
+ static String dml_query =
+                  "select * from (SPARQL define output:format 'JSON' \n"
+                 +"PREFIX owl:<http://www.w3.org/2002/07/owl#> \n"
+                 +"DELETE { GRAPH ?g { ?s ?p ?o } } \n"
+                 +"INSERT { GRAPH ?g { ?s ?p <%s> } } \n"
+                 +"WHERE \n"
+                 +"{ \n"
+                 +"    GRAPH ?g { \n"
+                 +"              ?s ?p <%s> . \n"
+                 +"              BIND(<%s> as ?o) . \n"
+                 +"              FILTER (?p != owl:sameAs) \n"
+                 +"            } \n"
+                 +"}) as rdfview FOR UPDATE";
+
+ static String select_query =
+          "SPARQL SELECT ?s ?p ?o "
+         +"WHERE { \n"
+         +"   GRAPH `iri(??)` {\n"
+         +"               ?s ?p ?o \n"
+         +"                   }\n"
+         +"      } ORDER BY ?s ?p ?o";
+
+</verbatim>
+
+Sample output from program run:
+
+<verbatim>
+
+[virtuoso@opllinux5 ~]$ java -cp "./virtjdbc4.jar:." MTSparqlTest2
+.
+.
+.
+Conn_16 >> iter[U]= 61   Time:3045 ms
+Conn_38 >> iter[S]= 94   Time:3097 ms
+Conn_0 >> iter[S]= 91   Time:1760 ms
+Conn_20 ###Deadlock happened for DML query
+Conn_20 Call rollback
+Conn_20 End rollback Time:1 ms
+Conn_20 >> iter[U]= 99   Time:1959 ms
+Conn_46 >> iter[U]= 97   Time:2 ms
+Conn_46 >> iter[U]= 98   Time:2 ms
+Conn_46 >> iter[U]= 99   Time:1 ms
+===================================
+Conn_47   Time:2506 ms
+Conn_48   Time:2654 ms
+Conn_49   Time:2607 ms
+
+    Exec Time:2870 ms
+   Total Time:3130 ms
+[virtuoso@opllinux5 ~]$
+
+</verbatim>
+
+Google Spreadsheet with [[https://docs.google.com/spreadsheets/d/1CV8K9aweKf8CSWSlLqDiEPgrouAxsrEPWZ6NlkNLE8U/edit#gid=0][MTSparqlTest2 - JDBC Transaction Simulation Program Results ...]]

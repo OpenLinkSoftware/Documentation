@@ -1,0 +1,66 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="Defining Linked Data Graphs via"></a>Defining Linked Data Graphs via <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> DET Folders</h1>
+<p>Virtuoso provides the ability for you to create a dynamically generated folder (collection) that&#39;s accessible to HTTP/WebDAV clients.
+ This functionality is delivered via the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> properties: virt:rdf_sponger and virt:rdf_graph .</p>
+<p> </p>
+<h2><a name="What?"></a>What?</h2>
+ This guide walks you through the process of creating a dynamically generated <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> folder that acts as a conduit to the Virtuoso Quad Store, with the option to associating the resource generation with the Sponger linked data middleware.
+ Note, by associating the sponger with this kind of resource you end up enriching the final Linked Data graph that&#39;s saved to the Quad Store due to the contributions from a variety of content transformation, natural language processor, and linked data lookup services.<p> </p>
+<h2><a name="Why?"></a>Why?</h2>
+ Simplifies the creation of Linked Data in the Virtuoso Quad store.
+ A dynamically generated <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> collection (folder) looks like conventional folder to HTTP and <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> clients.
+ Thus, you can use drag &amp; drop, cut and paste, and related patterns for getting Linked Data into your Virtuoso Quad Store.<p> </p>
+<h2><a name="How?"></a>How?</h2>
+ Using Virtuoso&#39;s Conductor perform the following steps:<ol><li>Create Virtuoso user using Conductor, for ex.
+ with name &quot;john&quot; and pwd 1.
+</li>
+<li>Create for the user a RDF Sink folder for ex.
+ with name &quot;MySinkFolder<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MySinkFolder&parent=VirtTipsAndTricksControlDefineGraphWithSpongeOption" class="wikiword">?</a>&quot; from type &quot;RDF Upload Folder&quot; or use the <code>rdf_sink</code> folder created automatically for your user.
+</li>
+<li>In the properties page of the RDF sink folder add in the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> section this property <b>virt:rdf_graph</b> with value: <br><pre><br>http://host:port/DAV/home/&lt;user-name&gt;/&lt;rdf-sink-folder&gt;/
+
+-- For our example it would be:
+http://localhost:8890/DAV/home/john/MySinkFolder/
+</pre><br></li>
+<li>Add another property <b>virt:rdf_sponger</b> with value &quot;on&quot;.
+<br><br><img src="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink1.png"><br><br> </li>
+<li>Upload RDF files to the RDF Sink folder <b>MySinkFolder<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MySinkFolder&parent=VirtTipsAndTricksControlDefineGraphWithSpongeOption" class="wikiword">?</a></b>, for ex.
+ upload a file with name &quot;data.rdf&quot;.
+<br><br><img src="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink2.png"><br><br> </li>
+<li>As a result the RDF data should be stored in graph depending on your folder name etc.: <br><pre><br>http:///local.virt/DAV/home/&lt;user-name&gt;/&lt;rdf-sink-folder&gt;/&lt;resource&gt;
+
+-- This would be as follows:
+http:///local.virt/DAV/home/john/MySinkFolder/data.rdf
+</pre><br><ol><li>Go to <a href="http://host:port/sparql" class="absuri">http://host:port/sparql</a> ; </li>
+<li>Execute simple query to view the graph triples: <br><pre><br>SELECT  * 
+FROM &lt;http://local.virt/DAV/home/john/MySinkFolder/data.rdf&gt;
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</pre><br><br><br><img src="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink3.png"><br><br> <br><br><img src="VirtTipsAndTricksControlDefineGraphWithSpongeOption/sink4.png"><br><br> </li>
+</ol></li>
+<li>In order to define any graph you want with the options from above, you should execute: <br><pre><br>SQL&gt; DAV_PROP_SET (&#39;/DAV/home/&lt;user-name&gt;/&lt;rdf-sink-folder&gt;/&#39;,  &#39;virt:rdf_graph&#39;, iri, &lt;user-name&gt;, &lt;password&gt;);
+
+-- In our example it would be:
+SQL&gt; DAV_PROP_SET (&#39;/DAV/home/john/MySinkFolder/&#39;,  &#39;virt:rdf_graph&#39;, &#39;http://mydata.com&#39;, &#39;john&#39;, &#39;1&#39;);
+</pre><br><ul><li>Note: calling this function uses the given IRI as the graph IRI when sponging stuff put in &lt;your-rdf-sink-folder&gt; <br><br> </li>
+</ul></li>
+<li>Finally you should execute the following command to get the RDF data from the new graph: <br><pre><br>SQL&gt; SELECT DAV_PROP_GET (&#39;/DAV/home/&lt;user-name&gt;/&lt;your-rdf-sink-folder&gt;/&#39;, &#39;virt:rdf_graph&#39;,&lt;user-name&gt;, &lt;password&gt;);
+
+-- At this point you should execute:
+SQL&gt; SELECT DAV_PROP_GET (&#39;/DAV/home/john/MySinkFolder/&#39;, &#39;virt:rdf_graph&#39;,&#39;john&#39;, &#39;1&#39;);
+
+Query result:
+DAV_PROP_GET
+http://localhost:8890/DAV/home/john/MySinkFolder/
+
+No. of rows in result: 1 
+</pre><br></li>
+</ol><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFInsert" class="wikiword">RDF Insert Methods in Virtuoso</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfandsparql.html" class="absuri">RDF Data Access and Data Management</a></li>
+</ul><p> </p>
+</div></body></html>

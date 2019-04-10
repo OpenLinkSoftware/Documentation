@@ -1,0 +1,66 @@
+%META:TOPICPARENT{name="VirtBulkRDFLoader"}%
+
+
+---++Example for Multiple RDF Source Files Upload
+
+The following example demonstrates how to upload multiple RDF source files using the Bulk Loading Sequence.
+
+   1 Assuming there is a folder with name "tmp" in your FS and it is under a directory specified in the <b><code>[[http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#fp_acliniallowed][DirsAllowed]]</code></b> param defined in your virtuoso ini file.
+   1 Also assume in the folder "tmp" you have the files: "file1.n3" and "file2.n3", that contain:
+<verbatim>
+-- file1.n3
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/ns#User> .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#name> 	"Kingsley Uyi Idehen" .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#has_function> 	<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/briefcase/My%20Web%20Drive#owner> .
+
+
+--file2.n3
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#id>  	"kidehen@openlinksw.com" .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#link> 	<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com> .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#account_of> 	<http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this> .
+</verbatim>
+   1 Make sure the [[VirtBulkRDFLoaderScript][Bulk Loading script]] is executed. 
+   1 Register the files file1.n3 and file2.n3 with graph IRI the triples to go to "http://kidehendata.com#":
+<verbatim>
+SQL>ld_dir ('tmp', '*.n3', 'http://kidehendata.com#');
+Done. -- 90 msec.
+</verbatim>
+      1 Note that if there are other *.n3 files in your folder (tmp), then their content also will go to the location specified by the above graph.
+      1. Also is recommended files with *. ext.graph to be deleted from the tmp folder.
+   1 Create in the "tmp" folder an empty file with name: <b>global.graph</b>
+   1 Edit the <b>global.graph</b> by adding the graph URI, so the content of the file to be: 
+<verbatim>
+http://kidehendata.com#
+</verbatim>
+   1 Finally execute: 
+<verbatim>
+SQL>rdf_loader_run ();
+Done. -- 100 msec.
+</verbatim>
+   1 As result in the Virtuoso log should be notification of the loading having completed: 
+<verbatim>
+10:21:50 PL LOG: Loader started
+10:21:50 PL LOG: No more files to load. Loader has finished
+</verbatim>
+   1 To check the inserted triples for the given graph, execute: 
+<verbatim>
+SQL>SPARQL
+SELECT * 
+FROM <http://kidehendata.com#>
+WHERE 
+  {
+    ?s ?p ?o
+  }
+;
+s                                                                p                                                 o
+VARCHAR                                                          VARCHAR                                           VARCHAR
+_______________________________________________________________________________
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this  http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://rdfs.org/sioc/ns#User
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this  http://rdfs.org/sioc/ns#name                      Kingsley Uyi Idehen
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this  http://rdfs.org/sioc/ns#has_function              http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/briefcase/My%20Web%20Drive#owner
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this  http://rdfs.org/sioc/ns#id                        kidehen@openlinksw.com
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this  http://rdfs.org/sioc/ns#link                      http://www.openlinksw.com/dataspace/kidehen@openlinksw.com
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this  http://rdfs.org/sioc/ns#account_of                http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+
+6 Rows. -- 20 msec.
+</verbatim>

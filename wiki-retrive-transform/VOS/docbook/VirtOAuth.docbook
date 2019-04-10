@@ -1,0 +1,181 @@
+<docbook><section><title>VirtOAuth</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> OAuth Implementation in <ulink url="OpenLink">OpenLink</ulink> Data Spaces</bridgehead>
+<para>OAuth tokens must be generated for each user account, for each ODS application, via ODS -&gt; Settings -&gt; OAuth Keys.
+ This UI provides a list of all applications to which the logged-in user has access, i.e., of which the user is a member or owner.
+ To enable access with OAuth, the user simply selects the desired application instance from the list, and clicks the &#39;generate keys&#39; button.
+ The generated Consumer Key and Secret will be associated with the given ODS user account &amp; application instance.</para>
+<para>Once a consumer token is available, the sequence below must be executed in order to establish an authorized session:</para>
+<orderedlist spacing="compact"><listitem>client uses request_token to get a token/secret pair for establishing session using consumer token </listitem>
+<listitem>client asks OAuth server to authorize the token from step-1 </listitem>
+<listitem>using authorized token from step-1 client asks OAuth server for authentication token.
+</listitem>
+<listitem>with authentication token from step-3, clients can access instance data associated with the consumer token from step-1.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Sample OAuth Client</bridgehead>
+<para>To demonstrate the Virtuoso implementation of OAuth, we have written this sample client, in Virtuoso/PL.</para>
+<programlisting>&lt;html&gt;
+&lt;?vsp
+    declare consumer_key, consumer_secret, oauth_token, oauth_secret, signature, timest, nonce varchar;
+    declare srv, res, signature_base, ret_url, url, tmp, sid varchar;
+    declare meth, pars any;
+    consumer_key := {?&#39;key&#39;};
+    srv := sprintf (&#39;http://localhost:%s/OAuth/&#39;, server_http_port ());
+    sid := null;
+    res := &#39;&#39;;
+
+    sid :=  {?&#39;sid&#39;};
+    if (sid = &#39;&#39;) 
+      sid := null;    
+    else
+      {
+        -- if selected token is not same as one from the session we need to get new authentication token
+        if (consumer_key &lt;&gt; OAUTH..get_consumer_key (sid))
+      {
+        OAUTH..session_terminate (sid);
+            sid := null;
+      }
+      }
+
+    meth := get_keyword (&#39;meth&#39;, params, &#39;weblog.post.new&#39;);;
+    pars := get_keyword (&#39;pars&#39;, params, &#39;inst_id=15&amp;title=testing&amp;description=Some test post&#39;);;
+
+    if ({?&#39;rt&#39;} is not null and sid is null) -- request new token for the session
+      {
+    url := srv||&#39;request_token&#39;; 
+    url := OAUTH..sign_request (&#39;GET&#39;, url, &#39;&#39;, consumer_key, sid);
+        res := http_get (url);
+    sid := OAUTH..parse_response (sid, consumer_key, res);
+    OAUTH..set_session_data (sid, params);
+    ret_url := sprintf (&#39;http://localhost:%s/oauth/oauth_client.vsp?ready=%U&#39;, server_http_port (), sid);
+    -- call authorize 
+        url := sprintf (&#39;%sauthorize?oauth_token=%U&amp;oauth_callback=%U&#39;, srv, OAUTH..get_auth_token (sid), ret_url); 
+    http_status_set (301);
+        http_header (sprintf (&#39;Location: %s\r\n&#39;, url));
+        return;
+      }
+    else if ({?&#39;ready&#39;} is not null) -- get access token
+      {
+    -- we go here when token above is authorized
+        sid := {?&#39;ready&#39;};
+    url := srv||&#39;access_token&#39;; 
+    consumer_key := OAUTH..get_consumer_key (sid);
+    url := OAUTH..sign_request (&#39;GET&#39;, url, &#39;&#39;, consumer_key, sid);
+        res := http_get (url);
+    sid := OAUTH..parse_response (sid, consumer_key, res);
+
+      }   
+    if (sid is not null) -- access token is ready, and we can call API
+      {
+        -- here we are ready to call service
+    if ({?&#39;rt&#39;} is null)
+          {
+            tmp := OAUTH..get_session_data (sid);
+            pars := get_keyword (&#39;pars&#39;, tmp, pars);
+        meth := get_keyword (&#39;meth&#39;, tmp, meth);
+      }
+    url := sprintf (&#39;http://localhost:%s/ods/api/%s&#39;, server_http_port (), meth);
+    tmp := split_and_decode (pars);
+    params := &#39;&#39;;
+    for (declare i,l int, l:=length (tmp); i &lt; l; i := i + 2)
+       {
+         params := params || sprintf (&#39;%U=%U&amp;&#39;, tmp[i], tmp[i+1]);      
+       }
+    --params := sprintf (&#39;inst_id=%d&amp;description=%U&amp;title=%U&#39;, 15, &#39;Some test post&#39;, &#39;testing&#39;);
+    consumer_key := OAUTH..get_consumer_key (sid);
+    url := OAUTH..sign_request (&#39;GET&#39;, url, params, consumer_key, sid);
+        res := http_get (url);
+        --dbg_obj_print (res); 
+      }
+?&gt;
+    &lt;head&gt;&lt;title&gt;OAuth Client&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1&gt;OAuth client for ODS Controllers&lt;/h1&gt;
+    &lt;form method=&quot;POST&quot; action=&quot;oauth_client.vsp&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; value=&quot;&lt;?V sid ?&gt;&quot;/&gt;
+    APPLICATION : &lt;br /&gt; &lt;select name=&quot;key&quot;&gt;
+    &lt;?vsp for select a_name, a_key from OAUTH..APP_REG do { ?&gt;
+        &lt;option value=&quot;&lt;?V a_key ?&gt;&quot; &lt;?vsp if (consumer_key = a_key) http (&#39;selected&#39;); ?&gt;&gt;&lt;?V a_name ?&gt;&lt;/option&gt;
+    &lt;?vsp } ?&gt;
+        &lt;/select&gt; 
+    &lt;?vsp 
+    if (sid is not null) http (sprintf (&#39; TOKEN: %s&#39;, OAUTH..get_auth_token (sid)));    
+    ?&gt;
+    &lt;br /&gt;
+    ODS API: &lt;br /&gt;&lt;input type=&quot;text&quot; name=&quot;meth&quot; value=&quot;&lt;?V meth ?&gt;&quot; size=50/&gt; &lt;br /&gt;
+    PARAMETERS: &lt;br /&gt; &lt;textarea name=&quot;pars&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;?V pars ?&gt;&lt;/textarea&gt; &lt;br /&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Execute&quot; name=&quot;rt&quot;/&gt;&lt;br /&gt;  
+    &lt;/form&gt;
+    RESULT:
+    &lt;hr/&gt;
+    &lt;pre&gt;&lt;?V res ?&gt;&lt;/pre&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Sample OAuth Session</bridgehead>
+<para>The following shows a sample session, using the above Virtuoso/PL OAuth client.
+</para>
+<programlisting>GET /OAuth/request_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8
+333607edc5f36&amp;oauth_nonce=b8f1089077cbce6e&amp;oauth_signature_method=HMAC-
+SHA1&amp;oauth_timestamp=1211212829&amp;oauth_version=1.0&amp;oauth_signature=V1zmk
+757LBHcmqVJ6obMhNX5hKA%3D HTTP/1.1
+Host: localhost:6666
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth_token_secret
+=M...
+</programlisting><programlisting>GET /OAuth/authorize?oauth_token=86da75079d3aee0fab57a36fcffbf900768e4d
+e3&amp;oauth_callback=http%3A//localhost%3A6666/oauth/oauth_client.vsp%3Fre
+ady%3D00c874b2fab2f6424008b5064fe83e88 HTTP/1.1
+Host: localhost:6666
+
+HTTP/1.1 301 Moved
+Location: /ods/oauth_authorize.vspx?....
+</programlisting><programlisting>GET /OAuth/access_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b83
+33607edc5f36&amp;oauth_nonce=242cc4875a0059f6&amp;oauth_signature_method=HMAC-S
+HA1&amp;oauth_timestamp=1211212831&amp;oauth_token=86da75079d3aee0fab57a36fcffb
+f900768e4de3&amp;oauth_version=1.0&amp;oauth_signature=sqs/8nmNNnNJiZ/eBa688uNe
+g9o%3D HTTP/1.1
+Host: localhost:6666
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+oauth_token=N..&amp;oauth_token_secret=M...
+</programlisting><programlisting>GET /ods/api/weblog.post.new?description=Some%20test%20post&amp;inst_id=15&amp;
+oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607edc5f36&amp;oauth_nonce
+=2f4765d20664e696&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_timestamp=1211
+213321&amp;oauth_token=db83a37d74faf53edc8ed56d418ded3a70fcc0bc&amp;oauth_versi
+on=1.0&amp;title=testing&amp;oauth_signature=oocIyr6kgoEQkC3WVwzvl6w62W4%3D HTT
+P/1.1
+Host: localhost:6666
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+&lt;result&gt;&lt;code&gt;1&amp;lt/code&gt;&lt;/result&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Additional Information</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> General OAuth Information</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.hueniverse.com/hueniverse/2007/09/explaining-oaut.html">Explaining OAuth</ulink> </listitem>
+<listitem><ulink url="http://www.hueniverse.com/hueniverse/2007/10/beginners-gui-1.html">Visual OAuth Usage Example</ulink> </listitem>
+<listitem><ulink url="http://www.hueniverse.com/hueniverse/2008/10/beginners-guide.html">OAuth Beginners Guide - Part 3</ulink> </listitem>
+<listitem><ulink url="http://oauth.net/core/1.0">OAuth specification</ulink> </listitem>
+<listitem><ulink url="http://oauth.net/documentation/getting-started">Getting Started with OAuth</ulink> </listitem>
+<listitem><ulink url="http://xml.coverpages.org/draft-dehora-farrell-oauth-accesstoken-creds-00.txt">OAuth Access Tokens Using Credentials specification</ulink> </listitem>
+<listitem><ulink url="http://xml.coverpages.org/draft-hammer-oauth-00.txt">OAuth: HTTP Authorization Delegation Protocol specification</ulink> </listitem>
+<listitem><ulink url="http://groups.google.com/group/oauth">Google OAuth Group</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Virtuoso- and <ulink url="OpenLink">OpenLink</ulink>-specific OAuth Information</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="OAuth">OpenLink&#39;s explanation of OAuth</ulink> </listitem>
+<listitem><ulink url="VirtuosoOAuthServer">Virtuoso OAuth server</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthControllers">Using OAuth with ODS</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquity">ODS Ubiquity Commands</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsControllers">ODS Controllers</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtODSOAuthQA">Testing Virtuoso OAuth with 3rd Party OAuth Clients</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquityTutorialsOAuth">OAuth Ubiquity Tutorial</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthTestTool">Virtuoso OAuth Test Tool for ODS Controllers</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">Virtuoso SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquityTutorials">ODS Ubiquity Tutorials</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthExamples">OAuth Applications Authentication examples</ulink> </listitem>
+<listitem><ulink url="http://oauth.net/core/1.0/">OAuth API</ulink> </listitem>
+</itemizedlist></section></docbook>

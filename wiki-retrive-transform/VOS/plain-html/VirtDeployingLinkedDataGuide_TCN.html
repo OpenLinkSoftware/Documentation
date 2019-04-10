@@ -1,0 +1,618 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtDeployingLinkedDataGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtDeployingLinkedDataGuide"}%--><p> </p>
+<h1><a name="Deploying Linked Data Guide - Part 2c: Transparent Content Negotiation"></a> Deploying Linked Data Guide - Part 2c: Transparent Content Negotiation</h1>
+ <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDeployingLinkedDataGuide" class="wikiword">Deploying Linked Data Guide - TOC</a><h2><a name="Section Contents"></a>Section Contents</h2>
+<ul><li><a href="#AncmozTocId906710" style="anchorhere">Transparent Content Negotiation</a> <ul><li><a href="#AncmozTocId230865" style="anchorhere">HTTP/1.1 Content Negotiation</a> </li>
+<li><a href="#AncmozTocId347228" style="anchorhere">Transparent Content Negotiation</a> <ul><li><a href="#AncmozTocId891233" style="anchorhere">Deficiencies of HTTP/1.1 Server-Driven Negotiation</a> </li>
+<li><a href="#AncmozTocId524441" style="anchorhere">Variant Selection By User Agent</a> </li>
+<li><a href="#AncmozTocId744498" style="anchorhere">Variant Selection By Server</a> </li>
+<li><a href="#AncmozTocId543161" style="anchorhere">Variant Selection By End-User</a> </li>
+</ul></li>
+</ul></li>
+<li><a href="#AncmozTocId920675" style="anchorhere">Transparent Content Negotiation in Virtuoso HTTP Server</a> <ul><li><a href="#AncmozTocId408882" style="anchorhere">Describing Resource Variants</a> <ul><li><a href="#AncmozTocId907437" style="anchorhere">HTTP_VARIANT_MAP Table</a> </li>
+<li><a href="#AncmozTocId907699" style="anchorhere">Configuration using Virtuoso/PL</a> </li>
+<li><a href="#AncmozTocId693269" style="anchorhere">Configuration using Conductor UI</a> </li>
+</ul></li>
+<li><a href="#AncmozTocId256401" style="anchorhere">Variant Selection Algorithm</a> </li>
+</ul></li>
+<li><a href="#AncmozTocId362677" style="anchorhere">Transparent Content Negotiation Examples</a> <ul><li><a href="#AncStwsc" style="anchorhere">Simple TCN with Static Content</a> </li>
+<li><a href="#AncNrv" style="anchorhere">Northwind Linked Data View</a> </li>
+<li><a href="#AncDbpedia" style="anchorhere">DBpedia</a> </li>
+</ul></li>
+<li><a href="#SimpDeplWithRdfa" style="anchorhere">Simplifying Deployment with RDFa</a> <ul><li><a href="#NoConNegOrRed" style="anchorhere">No Content Negotiation or 303 Redirects</a> </li>
+<li><a href="#GenRdfDynUsiDes" style="anchorhere">Generating RDFa Dynamically Using Description.vsp</a> </li>
+<li><a href="#RdfOutFroNonRdfDatSou" style="anchorhere">RDFa Output From Non-RDF Data Sources</a> </li>
+<li><a href="#SamRdfOutFroDes" style="anchorhere">Sample RDFa Output from Description.vsp</a></li>
+</ul></li>
+</ul><a name="AncmozTocId906710">
+<p> </p>
+<h2><a name="Transparent Content Negotiation"></a> Transparent Content Negotiation</h2>
+<p> So as not to overload our preceding description of Linked Data deployment with excessive detail, the description of content negotiation presented thus far was kept deliberately brief.
+ This section discusses content negotiation in more detail.</p>
+<p> <a name="AncmozTocId230865">
+ </a></p>
+<h3><a name="HTTP/1.1 Content Negotiation"></a> HTTP/1.1 Content Negotiation</h3>
+<p> Recall that a resource (conceptual entity) identified by a URI may be associated with more than one representation (e.g.
+ multiple languages, data formats, sizes, resolutions).
+ If multiple representations are available, the resource is referred to as negotiable and each of its representations is termed a variant.
+ For instance, a Web document resource, named &#39;ALFKI&#39; may have three variants: alfki.xml, alfki.html and alfki.txt all representing the same data.
+ Content negotiation provides a mechanism for selecting the best variant.</p>
+<p> As outlined in the earlier brief discussion of content negotiation, when a user agent requests a resource, it can include with the request Accept headers (Accept, Accept-Language, Accept-Charset, Accept-Encoding etc.) which express the user preferences and user agent capabilities.
+ The server then chooses and returns the best variant based on the Accept headers.
+ Because the selection of the best resource representation is made by the server, this scheme is classed as server-driven negotiation.</p>
+<p> <a name="AncmozTocId347228">
+ </a></p>
+<h3><a name="Transparent Content Negotiation"></a> Transparent Content Negotiation</h3>
+<p> An alternative content negotiation mechanism is Transparent Content Negotiation (TCN), a protocol defined by <a href="http://rfc.net/rfc2295.html" class="absuri">RFC2295</a> . TCN offers a number of benefits over standard HTTP/1.1 negotiation, for suitably enabled user agents.</p>
+<p> RFC2295 introduces a number of new HTTP headers including the Negotiate request header, and the TCN and Alternates response headers.
+ ( <a href="http://www.research.att.com/%7Ebala/papers/h0vh1.html" class="absuri">Krishnamurthy et al.</a> note that although the HTTP/1.1 specification reserved the Alternates header for use in agent driven negotiation, it was not fully specified.
+ Consequently under a pure HTTP/1.1 implementation as defined by <a href="http://rfc.net/rfc2616.html" class="absuri">RFC2616</a> , server-driven content negotiation is the only option.
+ RFC2295 addresses this issue.)</p>
+<p> <a name="AncmozTocId891233">
+ </a></p>
+<h4><a name="Deficiencies of HTTP/1.1 Server-Driven Negotiation"></a> Deficiencies of HTTP/1.1 Server-Driven Negotiation</h4>
+<p> Weaknesses of server-driven negotiation highlighted by RFCs 2295 and 2616 include:</p>
+<ul><li><b>Inefficiency</b> - Sending details of a user agent&#39;s capabilities and preferences with every request is very inefficient, not least because very few Web resources have multiple variants, and expensive in terms of the number of Accept headers required to fully describe all but the most simple browser&#39;s capabilities.
+</li>
+<li><b>Server doesn&#39;t always know &#39;best&#39;</b> - Having the server decide on the &#39;best&#39; variant may not always result in the most suitable resource representation being returned to the client.
+ The user agent might often be better placed to decide what is best for its needs.</li>
+</ul><a name="AncmozTocId524441">
+<p> </p>
+<h4><a name="Variant Selection By User Agent"></a> Variant Selection By User Agent</h4>
+<p> Rather than rely on server-driven negotiation and variant selection by the server, a user agent can take full control over deciding the best variant by explicitly requesting transparent content negotiation through the Negotiate request header.
+ The negotiation is &#39;transparent&#39; because it makes all the variants on the server visible to the agent.</p>
+<p> Under this scheme, the server sends the user agent a list, represented in an Alternates header, containing the available variants and their properties.
+ The user agent can then choose the best variant itself.
+ Consequently, the agent no longer needs to send large Accept headers describing in detail its capabilities and preferences.
+ (However, unless caching is used, user-agent driven negotiation does suffer from the disadvantage of needing a second request to obtain the best representation.
+ By sending its best guess as the first response, server driven negotiation avoids this second request if the initial best guess is acceptable.)</p>
+<p> <a name="AncmozTocId744498">
+ </a></p>
+<h4><a name="Variant Selection By Server"></a> Variant Selection By Server</h4>
+<p> As well as variant selection by the user agent, TCN allows the server to choose on behalf of the user agent if the user agent explicitly allows it through the Negotiate request header.
+ This option allows the user agent to send smaller Accept headers containing enough information to allow the server to choose the best variant and return it directly.
+ The server&#39;s choice is controlled by a &#39;remote variant selection algorithm&#39; as defined in <a href="http://rfc.net/rfc2296.html" class="absuri">RFC2296</a> .</p>
+<p> <a name="AncmozTocId543161">
+ </a></p>
+<h4><a name="Variant Selection By End-User"></a> Variant Selection By End-User</h4>
+<p> A further option is to allow the end-user to select a variant, in case the choice made by negotiation process is not optimal.
+ For instance, the user agent could display an HTML-based &#39;pick list&#39; of variants constructed from the variant list returned by the server.
+ Alternatively the server could generate this pick list itself and include it in the response to a user agent&#39;s request for a variant list.
+ (Virtuoso currently responds this way.)</p>
+<p> <a name="AncmozTocId920675">
+ </a></p>
+<h2><a name="Transparent Content Negotiation in Virtuoso HTTP Server"></a> Transparent Content Negotiation in Virtuoso HTTP Server</h2>
+<p> The following section describes the Virtuoso HTTP server&#39;s TCN implementation which is based on RFC2295, but without &quot;Feature&quot; negotiation.
+ OpenLink&#39;s RDF rich clients, iSparql and the OpenLink RDF Browser, both support TCN.
+ User agents which do not support transparent content negotiation continue to be handled using HTTP/1.1 style content negotiation (whereby server-side selection is the only option - the server selects the best variant and returns a list of variants in an Alternates response header).</p>
+<p> <a name="AncmozTocId408882">
+ </a></p>
+<h3><a name="Describing Resource Variants"></a> Describing Resource Variants</h3>
+<p> In order to negotiate a resource, the server needs to be given information about each of the variants.
+ Variant descriptions are held in SQL table HTTP_VARIANT_MAP.
+ The descriptions themselves can be created, updated or deleted using Virtuoso/PL or through the Conductor UI.</p>
+<p> <a name="AncmozTocId907437">
+ </a></p>
+<h4><a name="HTTP_VARIANT_MAP Table"></a> HTTP_VARIANT_MAP Table</h4>
+<p> The table definition is as follows: </p>
+<br><pre>create table DB.DBA.HTTP_VARIANT_MAP ( 
+VM_ID integer identity,   	-- unique ID
+VM_RULELIST varchar,      	-- HTTP rule list name 
+VM_URI varchar,           	-- name of requested resource e.g. &#39;page&#39;
+VM_VARIANT_URI varchar,         -- name of variant e.g. &#39;page.xml&#39;, &#39;page.de.html&#39; etc. 
+VM_QS float,                    -- Source quality, a number in the range 0.001-1.000, with 3 digit precision
+VM_TYPE varchar,             	-- Content type of the variant e.g. text/xml 
+VM_LANG varchar,            	-- Content language e.g. &#39;en&#39;, &#39;de&#39; etc. 
+VM_ENC varchar,                 -- Content encoding e.g. &#39;utf-8&#39;, &#39;ISO-8892&#39; etc.
+VM_DESCRIPTION long varchar,    -- a human readable description about the variant e.g. &#39;Profile in RDF format&#39; 
+VM_ALGO int default 0,          -- reserved for future use 
+primary key (VM_RULELIST, VM_URI, VM_VARIANT_URI)
+); 
+create unique index HTTP_VARIANT_MAP_ID on DB.DBA.HTTP_VARIANT_MAP (VM_ID);
+</pre><p> <a name="AncmozTocId907699">
+ </a></p>
+<h4><a name="Configuration using Virtuoso/PL"></a> Configuration using Virtuoso/PL</h4>
+<p> Two functions are provided for adding or updating, or removing variant descriptions using Virtuoso/PL:</p>
+<b>Adding or Updating a Resource Variant</b> <br><pre>DB.DBA.HTTP_VARIANT_ADD ( 
+in rulelist_uri varchar,       	-- HTTP rule list name 
+in uri varchar,           	-- Requested resource name e.g. &#39;page&#39;
+in variant_uri varchar,    	-- Variant name e.g. &#39;page.xml&#39;, &#39;page.de.html&#39; etc. 
+in mime varchar,            	-- Content type of the variant e.g. text/xml
+in qs float := 1.0,          	-- Source quality, a floating point number with 3 digit precision in 0.001-1.000 range 
+in description varchar := null, -- a human readable description of the variant e.g. &#39;Profile in RDF format&#39; 
+in lang varchar := null,       	-- Content language e.g. &#39;en&#39;, &#39;bg&#39;. &#39;de&#39; etc. 
+in enc varchar := null          -- Content encoding e.g. &#39;utf-8&#39;, &#39;ISO-8892&#39; etc. 
+)
+</pre><p> <b>Removing a Resource Variant</b> </p>
+<br><pre>DB.DBA.HTTP_VARIANT_REMOVE ( 
+in rulelist_uri varchar,    	-- HTTP rule list name 
+in uri varchar,           	-- Name of requested resource e.g. &#39;page&#39; 
+in variant_uri varchar := &#39;%&#39;  	-- Variant name filter 
+)
+</pre><p> <a name="AncmozTocId693269">
+ </a></p>
+<h4><a name="Configuration using Conductor UI"></a> Configuration using Conductor UI</h4>
+<p>The Conductor &#39;Content negotiation&#39; panel for describing resource variants and configuring content negotiation is depicted below.
+ It can be reached by selecting the &#39;Virtual Domains &amp; Directories&#39; tab under the &#39;Web Application Server&#39; menu item, then selecting the &#39;URL rewrite&#39; option for a logical path listed amongst those for the relevant HTTP host, e.g.
+ &#39;{Default Web Site}&#39;.</p>
+<p> The screen snapshot shows the variant descriptions created by issuing the HTTP_VARIANT_ADD and VHOST_DEFINE Virtuoso/PL calls detailed in the examples at the end of this section.
+ Obviously these definitions could instead have been created entirely &#39;from scratch&#39; through the Conductor UI.</p>
+<p> The input fields reflect the supported &#39;dimensions&#39; of negotiation which include content type, language and encoding.
+ Quality values corresponding to the options for &#39;Source Quality&#39; are as follows: </p><table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;"><b>Source Quality</b></td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;"><b>Quality Value</b></td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">perfect representation</td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">1.000</td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">threshold of noticeable loss of quality</td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">0.900</td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">noticeable, but acceptable quality reduction</td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">0.800</td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">barely acceptable quality</td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">0.500</td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">severely degraded quality</td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">0.300</td></tr><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">completely degraded quality</td><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">0.000</td></tr></table> <div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtDeployingLinkedDataGuide_TCN/tcn_rules_in_conductor.png" alt="Content negotiation rules in Conductor"> <br><i>Content negotiation rules in Conductor</i> </div>
+<a name="AncmozTocId256401">
+<p> </p>
+<h3><a name="Variant Selection Algorithm"></a> Variant Selection Algorithm</h3>
+<p> When a user agent instructs the server to select the best variant, Virtuoso does so using the selection algorithm below:</p>
+<p> If a virtual directory has URL rewriting enabled (has the &#39;url_rewrite&#39; option set), the web server:</p>
+<ol><li>Looks in DB.DBA.HTTP_VARIANT_MAP for a VM_RULELIST matching the one specified in the &#39;url_rewrite&#39; option </li>
+<li>If present, it loops over all variants for which VM_URI is equal to the resource requested </li>
+<li>For every variant it calculates the source quality based on the value of VM_QS and the source quality given by the user agent </li>
+<li>If the best variant is found, it adds TCN HTTP headers to the response and passes the VM_VARIANT_URI to the URL rewriter </li>
+<li>If the user agent has asked for a variant list, it composes such a list and returns an &#39;Alternates&#39; HTTP header with response code 300 </li>
+<li>If no URL rewriter rules exist for the target URL, the web server returns the content of the dereferenced VM_VARIANT_URI.</li>
+</ol><p>The server may return the best-choice resource representation or a list of available resource variants.
+ When a user agent requests transparent negotiation, the web server returns the TCN header &quot;choice&quot;.
+ When a user agent asks for a variant list, the server returns the TCN header &quot;list&quot;.</p>
+<p> <a name="AncmozTocId362677">
+ </a></p>
+<h2><a name="Transparent Content Negotiation Examples"></a>Transparent Content Negotiation Examples</h2>
+<a name="AncStwsc">
+<p> </p>
+<h3><a name="Simple TCN with Static Content"></a>Simple TCN with Static Content</h3>
+<p>In this example we assume the following files have been uploaded to the Virtuoso WebDAV server, with each containing the same information but in different formats:</p>
+<ul><li>/DAV/TCN/page.xml - a XML variant </li>
+<li>/DAV/TCN/page.html - a HTML variant </li>
+<li>/DAV/TCN/page.txt - a text variant</li>
+</ul><p>We add TCN rules and define a virtual directory: </p>
+<br><pre>DB.DBA.HTTP_VARIANT_ADD (&#39;http_rule_list_1&#39;, &#39;page&#39;, &#39;page.html&#39;, &#39;text/html&#39;, 0.900000, &#39;HTML variant&#39;); 
+DB.DBA.HTTP_VARIANT_ADD (&#39;http_rule_list_1&#39;, &#39;page&#39;, &#39;page.txt&#39;, &#39;text/plain&#39;, 0.500000, &#39;Text document&#39;); 
+DB.DBA.HTTP_VARIANT_ADD (&#39;http_rule_list_1&#39;, &#39;page&#39;, &#39;page.xml&#39;, &#39;text/xml&#39;, 1.000000, &#39;XML variant&#39;); 
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/DAV/TCN/&#39;, ppath=&gt;&#39;/DAV/TCN/&#39;, is_dav=&gt;1, vsp_user=&gt;&#39;dba&#39;,
+    opts=&gt;vector (&#39;url_rewrite&#39;, &#39;http_rule_list_1&#39;)); 
+</pre><p> Having done this we can now test the setup with a suitable HTTP client, in this case the curl command line utility.
+ In the following examples, the curl client supplies Negotiate request headers containing content negotiation directives which include:</p>
+<ul><li><b>&quot;trans&quot;</b> - The user agent supports transparent content negotiation for the current request.
+</li>
+<li><b>&quot;vlist&quot;</b> - The user agent requests that any transparently negotiated response for the current request includes an Alternates header with the variant list bound to the negotiable resource.
+ Implies &quot;trans&quot;.
+</li>
+<li><b>&quot;*&quot;</b> - The user agent allows servers and proxies to run any remote variant selection algorithm.</li>
+</ul><p>The server returns a TCN response header signalling that the resource is transparently negotiated and either a choice or a list response as appropriate.</p>
+<p> In the first curl exchange, the user agent indicates to the server that, of the formats it recognizes, HTML is preferred and it instructs the server to perform transparent content negotiation.
+ In the response, the Vary header field expresses the parameters the server used to select a representation, i.e.
+ only the Negotiate and Accept header fields are considered.
+</p>
+<br><pre>$ curl -i -H &quot;Accept: text/xml;q=0.3,text/html;q=1.0,text/plain;q=0.5,*/*;q=0.3&quot; 
+          -H &quot;Negotiate: *&quot; http://localhost:8890/DAV/TCN/page 
+HTTP/1.1 200 OK 
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB 
+Connection: Keep-Alive
+Date: Wed, 31 Oct 2007 15:43:18 GMT 
+Accept-Ranges: bytes 
+TCN: choice 
+Vary: negotiate,accept
+Content-Location: page.html 
+Content-Type: text/html 
+ETag: &quot;14056a25c066a6e0a6e65889754a0602&quot; 
+Content-Length: 49 
+&lt;html&gt; 
+&lt;body&gt;
+some html 
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p> Next, the source quality values are adjusted so that the user agent indicates that XML is its preferred format.
+</p>
+<br><pre>$ curl -i -H &quot;Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3&quot; 
+          -H &quot;Negotiate: *&quot; http://localhost:8890/DAV/TCN/page 
+HTTP/1.1 200 OK Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB
+Connection: Keep-Alive 
+Date: Wed, 31 Oct 2007 15:44:07 GMT
+Accept-Ranges: bytes 
+TCN: choice 
+Vary: negotiate,accept
+Content-Location: page.xml 
+Content-Type: text/xml 
+ETag: &quot;8b09f4b8e358fcb7fd1f0f8fa918973a&quot;
+Content-Length: 39 
+&lt;?xml version=&quot;1.0&quot; ?&gt; 
+&lt;a&gt;some xml&lt;/a&gt;
+</pre><p> In the final example, the user agent wants to decide itself which is the most suitable representation, so it asks for a list of variants.
+ The server provides the list, in the form of an Alternates response header, and, in addition, sends an HTML representation of the list so that the end user can decide on the preferred variant himself if the user agent is unable to.
+</p>
+<br><pre>$ curl -i -H &quot;Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3&quot; 
+          -H &quot;Negotiate: vlist&quot; http://localhost:8890/DAV/TCN/page
+HTTP/1.1 300 Multiple Choices 
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB 
+Connection: close 
+Content-Type: text/html; charset=ISO-8859-1
+Date: Wed, 31 Oct 2007 15:44:35 GMT 
+Accept-Ranges: bytes
+TCN: list
+Vary: negotiate,accept
+Alternates: {&quot;page.html&quot; 0.900000 {type text/html}}, {&quot;page.txt&quot; 0.500000 {type text/plain}}, 
+    {&quot;page.xml&quot; 1.000000 {type text/xml}}
+Content-Length: 368
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt; 
+&lt;html&gt;
+&lt;head&gt; 
+&lt;title&gt;300 Multiple Choices&lt;/title&gt; 
+&lt;/head&gt;
+&lt;body&gt; 
+&lt;h1&gt;Multiple Choices&lt;/h1&gt;
+Available variants:
+&lt;ul&gt; 
+&lt;li&gt;&lt;a href=&quot;page.html&quot;&gt;HTML variant&lt;/a&gt;, type text/html&lt;/li&gt; 
+&lt;li&gt;&lt;a href=&quot;page.txt&quot;&gt;Text document&lt;/a&gt;, type text/plain&lt;/li&gt; 
+&lt;li&gt;&lt;a href=&quot;page.xml&quot;&gt;XML variant&lt;/a&gt;, type text/xml&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p> <a name="AncNrv">
+ </a></p>
+<h3><a name="Northwind Linked Data View"></a>Northwind Linked Data View</h3>
+<p>Our next example illustrates the use of a slash URI scheme in an Linked Data View, and shows how to combine URL rewriting and transparent content negotiation.
+ The example is taken from the <a href="http://demo.openlinksw.com/tutorial/rdfview/" class="absuri">Linked Data View tutorial</a> , one of many <a href="http://demo.openlinksw.com/tutorial/" class="absuri">Virtuoso on-line tutorials</a>.</p>
+<p> The view generates an RDF rendering of Virtuoso&#39;s Northwind &#39;Demo&#39; database.
+ (Note: The &#39;tutorial&#39; Linked Data View described here is distinct from the hash-URI-based &#39;demo&#39; Linked Data View created by the Demonstration VAD.) If you intend trying the example locally, both the Demonstration and Tutorial VADs must be installed on the local machine.</p>
+<p> To generate the Linked Data View and setup the URL rewriting rules, the tutorial runs the script rd_v_1.sql (see the &#39;View Source&#39; tab of the Linked Data View tutorial, or WebDAV folder DAV/VAD/tutorial/rdfview/rd_v_1).
+ The view creates two RDF graphs:</p>
+<ul><li><code>http://&lt;URIQADefaultHost&gt;/tutorial/Northwind </code>- containing the base RDF data </li>
+<li><code>http://&lt;URIQADefaultHost&gt;/tutorial/Northwind/ontology </code>- containing the OWL class definitions</li>
+</ul><p>A slash URI scheme is adhered to throughout.
+ Each entity exposed by the view is identified by the URI prefix <code>http://&lt;URIQADefaultHost&gt;/tutorial/Northwind/resource/</code>.
+ For example:</p>
+<ul><li><code><a href="http://demo.openlinksw.com/tutorial/Northwind/resource/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/tutorial/Northwind/resource/Customer/ALFKI</a> </code> </li>
+<li><code><a href="http://demo.openlinksw.com/tutorial/Northwind/resource/Order/10692" class="absuri">http://demo.openlinksw.com/tutorial/Northwind/resource/Order/10692</a> </code></li>
+</ul><p>RDF and HTML representation documents describing Northwind entities are identified by URIs with prefixes <code>http://&lt;URIQADefaultHost&gt;/tutorial/Northwind/data/</code> and <code>http://&lt;URIQADefaultHost&gt;/tutorial/Northwind/page/</code>, e.g.</p>
+<ul><li><code> <a href="http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.xml" class="absuri">http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.xml</a> </code> </li>
+<li><code> <a href="http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.n3" class="absuri">http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.n3</a> </code> </li>
+<li><code> <a href="http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.ttl" class="absuri">http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.ttl</a> </code> </li>
+<li><code> <a href="http://demo.openlinksw.com/tutorial/Northwind/page/Customer/ALFKI.html" class="absuri">http://demo.openlinksw.com/tutorial/Northwind/page/Customer/ALFKI.html</a> </code></li>
+</ul><p>Transparent content negotiation is enabled to allow entity representations to be rendered in several formats.
+ The available variants can be seen using curl.
+ e.g.
+</p>
+<br><pre>curl -I -L -H &quot;Negotiate: vlist&quot; &quot;http://demo.openlinksw.com/tutorial/Northwind/resource/Customer/ALFKI&quot;
+</pre><p>returns </p>
+<br><pre>HTTP/1.1 303 See Other
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Fri, 15 May 2009 11:11:19 GMT
+Accept-Ranges: bytes
+TCN: list
+Vary: negotiate,accept
+Alternates: {&quot;ALFKI.html&quot; 0.600000 {type text/html}}, {&quot;ALFKI.n3&quot; 0.800000 {type text/rdf+n3}}, 
+    {&quot;ALFKI.ttl&quot; 0.700000 {type application/x-turtle}}, {&quot;ALFKI.xml&quot; 0.950000 {type application/rdf+xml}}
+Location: http://demo.openlinksw.com/tutorial/Northwind/page/Customer/ALFKI
+Content-Length: 443
+</pre><p>Requesting RDF/XML as the preferred representation of a resource (and requesting only the HTTP headers be displayed) </p>
+<br><pre>curl -I -L -H &quot;Accept: application/rdf+xml;q=0.95,text/rdf+n3;q=0.80&quot; 
+           -H &quot;Negotiate: *&quot; &quot;http://demo.openlinksw.com/tutorial/Northwind/resource/Customer/ALFKI&quot;
+</pre><p>returns </p>
+<br><pre>HTTP/1.1 303 See Other
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Date: Fri, 15 May 2009 16:17:11 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: ALFKI.xml
+Content-Type: application/rdf+xml; qs=0.9025
+Location: http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.xml
+Content-Length: 0
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Fri, 15 May 2009 16:17:11 GMT
+Accept-Ranges: bytes
+Location: http://demo.openlinksw.com/sparql?default-graph-uri=http%3A//demo.openlinksw.com/tutorial/Northwind&amp;
+    query=DESCRIBE+%3Chttp%3A//demo.openlinksw.com/tutorial/Northwind%2Fresource%2FCustomer%2FALFKI%3E&amp;format=rdf
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: Keep-Alive
+Date: Fri, 15 May 2009 16:17:11 GMT
+Accept-Ranges: bytes
+Content-Type: application/rdf+xml; charset=UTF-8
+Content-Length: 6358
+</pre><p>Likewise, specifying N3 as the preferred format </p>
+<br><pre>curl -I -L -H &quot;Accept: text/rdf+n3;q=1.0,application/rdf+xml;q=0.5&quot; 
+           -H &quot;Negotiate: *&quot; &quot;http://demo.openlinksw.com/tutorial/Northwind/resource/Customer/ALFKI&quot;
+</pre><p>generates </p>
+<br><pre>HTTP/1.1 303 See Other
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Date: Fri, 15 May 2009 16:30:27 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: ALFKI.n3
+Content-Type: text/rdf+n3; qs=0.8
+Location: http://demo.openlinksw.com/tutorial/Northwind/data/Customer/ALFKI.n3
+Content-Length: 0
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Fri, 15 May 2009 16:30:28 GMT
+Accept-Ranges: bytes
+Location: http://demo.openlinksw.com/sparql?default-graph-uri=http%3A//demo.openlinksw.com/tutorial/Northwind&amp;
+    query=DESCRIBE+%3Chttp%3A//demo.openlinksw.com/tutorial/Northwind%2Fresource%2FCustomer%2FALFKI%3E&amp;format=n3
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/05.10.3038 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: Keep-Alive
+Date: Fri, 15 May 2009 16:30:28 GMT
+Accept-Ranges: bytes
+Content-Type: text/rdf+n3; charset=UTF-8
+Content-Length: 2018
+</pre><p>To explain how this TCN configuration is set up, the salient portions of the rd_v_1.sql setup script are described below.</p>
+<p> A URL rewriting rule list, nwtut_rule_list_1, is associated with logical path <code>/tutorial/Northwind/resource</code>.
+ Two rules, resource_rule_1 and resource_rule_2 are added to the rule list.
+ Each rewrites request paths containing &#39;<code>/tutorial/Northwind/resource/</code>&#39;.
+</p>
+<br><pre>DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/tutorial/Northwind/resource&#39;,
+ppath=&gt;&#39;/DAV/VAD/tutorial/rdfview/rd_v_1/&#39;, is_dav=&gt;1, is_brws=&gt;1, vsp_user=&gt;&#39;dba&#39;,
+opts=&gt;vector (&#39;url_rewrite&#39;, &#39;nwtut_rule_list_1&#39;));
+ ...
+DB.DBA.URLREWRITE_CREATE_RULELIST (&#39;nwtut_rule_list_1&#39;, 1, vector (&#39;resource_rule_1&#39;, &#39;resource_rule_2&#39;));
+</pre><p>The first rule, resource_rule_1, acts as a &#39;catch all&#39;, handling requests for content types not handled by the second rule.
+ The latter handles requests for different RDF serialization formats: RDF/XML, N3, TTL, redirecting them to path <code>/tutorial/Northwind/data/...
+ </code>.
+ resource_rule_1 forces requests for any other content types to &#39;text/html&#39;, redirecting the request to path <code>/tutorial/Northwind/page/...
+ </code>.
+</p>
+<br><pre>DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;resource_rule_1&#39;, 1, &#39;/resource/([^.]*)&#39;, 
+  vector (&#39;par_1&#39;), 1,&#39;/tutorial/Northwind/page/%s&#39;, 
+  vector (&#39;par_1&#39;), NULL, NULL, 2, 303, NULL);
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;resource_rule_2&#39;, 1, &#39;/resource/(.*)\x24&#39;, 
+  vector (&#39;par_1&#39;), 1,&#39;/tutorial/Northwind/data/%s&#39;, 
+  vector (&#39;par_1&#39;), NULL, &#39;(application/rdf.xml)|(text/rdf.n3)|(application/x-turtle)&#39;, 2, 303);
+</pre><p>So, requests for /tutorial/Northwind/resource/$1 are routed to:</p>
+<ul><li>/tutorial/Northwind/data/$1.xml - if content type application/rdf+xml was requested </li>
+<li>/tutorial/Northwind/data/$1.n3 - if content type text/rdf+n3 was requested </li>
+<li>/tutorial/Northwind/data/$1.ttl - if content type application/x-turtle was requested </li>
+<li>/tutorial/Northwind/page/$1.html - if content type text/html, or any other content type, was requested</li>
+</ul><p>where $1 signifies the remainder portion of the input path.
+ The Customer entity ALFKI has four description document variants, ALFKI.xml, ALFKI.n3, ALFKI.ttl and ALFKI.html.
+ Each variant is described using function HTTP_VARIANT_ADD.
+ (Here, the &#39;$&#39; character is coded using its hex value, \x24.) </p>
+<br><pre>DB.DBA.HTTP_VARIANT_ADD (&#39;nwtut_rule_list_1&#39;, &#39;(.*)&#39;, &#39;\x241.xml&#39;, &#39;application/rdf+xml&#39;, 0.95, location_hook=&gt;null);
+DB.DBA.HTTP_VARIANT_ADD (&#39;nwtut_rule_list_1&#39;, &#39;(.*)&#39;, &#39;\x241.n3&#39;, &#39;text/rdf+n3&#39;, 0.80, location_hook=&gt;null);
+DB.DBA.HTTP_VARIANT_ADD (&#39;nwtut_rule_list_1&#39;, &#39;(.*)&#39;, &#39;\x241.ttl&#39;, &#39;application/x-turtle&#39;, 0.70, location_hook=&gt;null);
+DB.DBA.HTTP_VARIANT_ADD (&#39;nwtut_rule_list_1&#39;, &#39;(.*)&#39;, &#39;\x241.html&#39;, &#39;text/html&#39;, 0.60, location_hook=&gt;null);
+</pre><p>Finally, the paths <code>/tutorial/Northwind/data </code>and <code>/tutorial/Northwind/page </code>have their own rewrite rules, attached to rule lists nwtut_rule_list2 and nwtut_rule_list3 respectively.
+</p>
+<br><pre>DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/tutorial/Northwind/data&#39;,
+ppath=&gt;&#39;/DAV/VAD/tutorial/rdfview/rd_v_1/&#39;,
+is_dav=&gt;1, is_brws=&gt;1, vsp_user=&gt;&#39;dba&#39;,
+opts=&gt;vector (&#39;url_rewrite&#39;, &#39;nwtut_rule_list_2&#39;));
+
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/tutorial/Northwind/page&#39;,
+ppath=&gt;&#39;/DAV/VAD/tutorial/rdfview/rd_v_1/&#39;,
+is_dav=&gt;1, is_brws=&gt;1, vsp_user=&gt;&#39;dba&#39;,
+opts=&gt;vector (&#39;url_rewrite&#39;, &#39;nwtut_rule_list_3&#39;));
+</pre><p> nwtut_rule_list2 contains three rewrite rules (data_rule_1/2/3), one for each RDF description document variant.
+ Each rewrites the resource request as a SPARQL DESCRIBE query, the only difference between the queries being the request response serialization format.
+ nwtut_rule_list3 contains one rule (page_rule_1) to re-route requests for text/html through the /about/html Sponger proxy, and so generate an HTML rendering.
+ Each rule strips off any file suffix identifying the variant; e.g.
+ only the &#39;Customer/ALKI&#39; portion of &#39;Customer/ALFKI.n3&#39; or &#39;Customer/ALFKI.html&#39; is inserted into the rewritten request.</p>
+<br><pre>DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;data_rule_1&#39;, 1, &#39;/data/(.*)\\.(xml)&#39;, vector (&#39;par_1&#39;, &#39;f&#39;), 1,
+&#39;/sparql?default-graph-uri=http%%3A//^{URIQADefaultHost}^/tutorial/Northwind&amp;
+    query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/tutorial/Northwind%%2Fresource%%2F%U%%3E&amp;format=rdf&#39;,
+vector (&#39;par_1&#39;), NULL, NULL, 2, 303, &#39;&#39;);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;data_rule_2&#39;, 1, &#39;/data/(.*)\\.(ttl)&#39;, vector (&#39;par_1&#39;, &#39;f&#39;), 1,
+&#39;/sparql?default-graph-uri=http%%3A//^{URIQADefaultHost}^/tutorial/Northwind&amp;
+    query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/tutorial/Northwind%%2Fresource%%2F%U%%3E&amp;format=n3&#39;,
+vector (&#39;par_1&#39;), NULL, NULL, 2, 303, &#39;&#39;);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;data_rule_3&#39;, 1, &#39;/data/(.*)\\.(n3|rdf)&#39;, vector (&#39;par_1&#39;, &#39;f&#39;), 1,
+&#39;/sparql?default-graph-uri=http%%3A//^{URIQADefaultHost}^/tutorial/Northwind&amp;
+    query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/tutorial/Northwind%%2Fresource%%2F%U%%3E&amp;format=%U&#39;,
+vector (&#39;par_1&#39;, &#39;f&#39;), NULL, NULL, 2, 303, &#39;&#39;);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;page_rule_1&#39;, 1, &#39;/page/([^.]*)&#39;, vector (&#39;par_1&#39;), 1,
+&#39;/about/html/http://^{URIQADefaultHost}^/tutorial/Northwind/resource/%s&#39;, vector (&#39;par_1&#39;), NULL, &#39;(text/html)&#39;, 2, 303);
+</pre><p> <a name="AncDbpedia">
+ </a></p>
+<h3><a name="DBpedia"></a>DBpedia</h3>
+<p>Under the umbrella of the <a href="http://esw.w3.org/topic/SweoIG/TaskForces/CommunityProjects/LinkingOpenData" class="absuri">W3C Linking Open Data (LOD) Community Project</a> , <a href="http://dbpedia.org/About" class="absuri">DBpedia</a> is a well known initiative to extract structured information from Wikipedia and make this information available on the Web.
+ The DBpedia knowledge base is accessible through a SPARQL endpoint or through a Linked Data interface.
+ As DBpedia defines Linked Data URIs for millions of concepts, it forms one of the central interlinking hubs in the <a href="http://www4.wiwiss.fu-berlin.de/bizer/pub/lod-datasets_2009-03-05.html" class="absuri">LOD Cloud</a> and the emerging Web of Data.</p>
+<p>When serving the DBpedia dataset as Linked Data, DBpedia supports transparent content negotiation in a similar manner to that already described for the Northwind Tutorial Linked Data Views.
+ Indeed, the Northwind Linked Data View&#39;s TCN configuration was modelled as a simplifed version of DBpedia&#39;s.</p>
+<p>DBpedia uses a slash URI scheme when distinguishing between resource and description document URIs.
+ Depending on the content type preferences of the consuming client expressed in any &#39;Accept&#39; request headers and the &#39;best&#39; variant as selected by the server, a request for resource <code><a href="http://dbpedia.org/resource/The_Beatles" class="absuri">http://dbpedia.org/resource/The_Beatles</a> </code>is redirected to one of:</p>
+<ul><li><code><a href="http://dbpedia.org/page/The_Beatles" class="absuri">http://dbpedia.org/page/The_Beatles</a> </code>(default, or if text/html requested) </li>
+<li><code><a href="http://dbpedia.org/data/The_Beatles.xml" class="absuri">http://dbpedia.org/data/The_Beatles.xml</a> </code>(if &#39;best&#39; RDF variant is application/rdf+xml) </li>
+<li><code><a href="http://dbpedia.org/data/The_Beatles.n3" class="absuri">http://dbpedia.org/data/The_Beatles.n3</a> </code>(if &#39;best&#39; RDF variant is text/rdf+n3) </li>
+<li><code><a href="http://dbpedia.org/data/The_Beatles.ttl" class="absuri">http://dbpedia.org/data/The_Beatles.ttl</a> </code>(if &#39;best&#39; RDF variant is text/turtle)</li>
+</ul><p>As with the Northwind Linked Data View, the URI prefixes <code>http://dbpedia.org/resource/...</code>, <code>http/dbpedia.org/page/...</code> and <code>http://dbpedia.org/data/...</code> distinguish between a resource and its HTML or RDF description documents.</p>
+<p>The available RDF description document variants can be listed using curl.
+ The command: </p>
+<br><pre>curl -I -L -H &quot;Negotiate: vlist&quot; 
+           -H &quot;Accept: application/rdf+xml&quot; &quot;http://dbpedia.org/resource/The_Beatles&quot;
+</pre><p>yields: </p>
+<br><pre>HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3039 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Content-Type: text/html; charset=UTF-8
+Date: Mon, 18 May 2009 14:47:31 GMT
+Accept-Ranges: bytes
+TCN: list
+Vary: negotiate,accept
+Alternates: {&quot;The_Beatles.n3&quot; 0.800000 {type text/rdf+n3}}, {&quot;The_Beatles.ttl&quot; 0.700000 {type application/x-turtle}}, 
+    {&quot;The_Beatles.xml&quot; 0.950000 {type application/rdf+xml}}
+Location: http://dbpedia.org/data/__The_Beatles
+Content-Length: 418
+</pre><p>Requesting resource &quot;The_Beatles&quot; with RDF/XML as the preferred description format, using: </p>
+<br><pre>curl -I -L -H &quot;Negotiate: *&quot; 
+           -H &quot;Accept: application/rdf+xml;q=0.95,text/rdf+n3;q=0.80,text/html;q=0.60&quot; &quot;http://dbpedia.org/resource/The_Beatles&quot;
+</pre><p>returns: </p>
+<br><pre>HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3039 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Date: Mon, 18 May 2009 14:56:39 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: The_Beatles.xml
+Content-Type: application/rdf+xml; qs=0.9025
+Location: http://dbpedia.org/data/The_Beatles.xml
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/05.11.3039 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: Keep-Alive
+Date: Mon, 18 May 2009 14:56:40 GMT
+Accept-Ranges: bytes
+Content-Type: application/rdf+xml; charset=UTF-8
+Content-Length: 55844
+</pre><p>Changing the preferred description format to N3: </p>
+<br><pre>curl -I -L -H &quot;Negotiate: *&quot; -H &quot;Accept: application/rdf+xml;q=0.70,text/rdf+n3;q=0.95,text/html;q=0.60&quot; 
+     &quot;http://dbpedia.org/resource/The_Beatles&quot;
+</pre><p>results in the response: </p>
+<br><pre>HTTP/1.1 303 See Other
+Server: Virtuoso/05.11.3039 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Date: Mon, 18 May 2009 15:00:16 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: The_Beatles.n3
+Content-Type: text/rdf+n3; qs=0.76
+Location: http://dbpedia.org/data/The_Beatles.n3
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/05.11.3039 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: Keep-Alive
+Date: Mon, 18 May 2009 15:00:20 GMT
+Accept-Ranges: bytes
+Content-Type: text/rdf+n3; charset=UTF-8
+Content-Length: 29259
+</pre><p>DBpedia&#39;s URL rewriting rules and TCN support are configured using script dbpedia_init.sql, portions of which are listed below.
+ For completeness, dbpedia_init.sql is available <a href="VirtDeployingLinkedDataGuide_TCN/dbpedia_init.sql" style="wikiautogen">here</a>.</p>
+<p>Using VHOST_DEFINE, the logical paths http://dbpedia.org/resource, http://dbpedia.org/page and http://dbpedia.org/data are each associated with URL rewriting rule lists.
+ Requests to <code>/resource</code> are redirected to <code>/page/%s</code> or <code>/data/__%s</code> accordingly depending on whether an HTML or RDF description is being requested, and where %s is the portion of the request path after <code>/resource/</code>.
+ Resource descriptions provided by path <code>/data/__%s</code> are available in three variants RDF/XML, N3 and TTL - each variant is described using HTTP_VARIANT_ADD.
+</p>
+<br><pre>DB.DBA.VHOST_DEFINE ( lhost=&gt;&#39;:80&#39;, vhost=&gt;&#39;dbpedia.org&#39;, lpath=&gt;&#39;/resource&#39;,
+ppath=&gt;&#39;/&#39;, is_dav=&gt;0, def_page=&gt;&#39;&#39;,
+opts=&gt;vector (&#39;url_rewrite&#39;, &#39;dbp_rule_list_2&#39;));
+
+ ...
+
+DB.DBA.VHOST_DEFINE ( lhost=&gt;&#39;:80&#39;, vhost=&gt;&#39;dbpedia.org&#39;, lpath=&gt;&#39;/page&#39;,
+ppath=&gt;registry_get(&#39;_dbpedia_path_&#39;),
+is_dav=&gt;atoi (registry_get(&#39;_dbpedia_dav_&#39;)),
+opts=&gt;vector (&#39;url_rewrite&#39;, &#39;dbp_rule_list_7&#39;));
+
+ ...
+
+DB.DBA.VHOST_DEFINE ( lhost=&gt;&#39;:80&#39;, vhost=&gt;&#39;dbpedia.org&#39;, lpath=&gt;&#39;/data&#39;,
+ppath=&gt;registry_get(&#39;_dbpedia_path_&#39;),
+is_dav=&gt;atoi (registry_get(&#39;_dbpedia_dav_&#39;)), vsp_user=&gt;&#39;dba&#39;,
+opts=&gt;vector (&#39;url_rewrite&#39;, &#39;pvsp_rule_list2&#39;));
+
+DB.DBA.URLREWRITE_CREATE_RULELIST ( &#39;dbp_rule_list_2&#39;, 1, vector (&#39;dbp_rule_14&#39;, &#39;dbp_rule_12&#39;));
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;dbp_rule_14&#39;, 1, &#39;/resource/(.*)\x24&#39;, vector (&#39;par_1&#39;), 1,
+&#39;/page/%s&#39;, vector (&#39;par_1&#39;), NULL, NULL, 2, 303, NULL);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;dbp_rule_12&#39;, 1, &#39;/resource/(.*)\x24&#39;, vector (&#39;par_1&#39;), 1,
+&#39;/data/__%s&#39;, vector (&#39;par_1&#39;), NULL, &#39;(application/rdf.xml)|(text/rdf.n3)|(application/x-turtle)&#39;, 2, 303);
+
+delete from DB.DBA.HTTP_VARIANT_MAP where VM_RULELIST = &#39;dbp_rule_list_2&#39;;
+
+DB.DBA.HTTP_VARIANT_ADD (&#39;dbp_rule_list_2&#39;, &#39;__(.*)&#39;, &#39;\x241.xml&#39;, &#39;application/rdf+xml&#39;, 0.95, location_hook=&gt;null);
+
+DB.DBA.HTTP_VARIANT_ADD (&#39;dbp_rule_list_2&#39;, &#39;__(.*)&#39;, &#39;\x241.n3&#39;, &#39;text/rdf+n3&#39;, 0.80, location_hook=&gt;null);
+
+DB.DBA.HTTP_VARIANT_ADD (&#39;dbp_rule_list_2&#39;, &#39;__(.*)&#39;, &#39;\x241.ttl&#39;, &#39;application/x-turtle&#39;, 0.70, location_hook=&gt;null);
+
+ ...
+
+DB.DBA.URLREWRITE_CREATE_RULELIST ( &#39;dbp_rule_list_7&#39;, 1, vector (&#39;dbp_rule_13&#39;));
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;dbp_rule_13&#39;, 1, &#39;(/[^#]*)&#39;, vector (&#39;par_1&#39;), 1,
+
+registry_get(&#39;_dbpedia_path_&#39;)||&#39;description.vsp?res=%U&#39;, vector (&#39;par_1&#39;), NULL, NULL, 0, 0, &#39;&#39;);
+
+ ...
+
+DB.DBA.URLREWRITE_CREATE_RULELIST ( &#39;pvsp_rule_list2&#39;, 1, vector (&#39;pvsp_data_rule2&#39;, &#39;pvsp_data_rule3&#39;, &#39;pvsp_data_rule4&#39;));
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;pvsp_data_rule2&#39;, 1, &#39;/data/(.*)\\.(xml)&#39;, vector (&#39;par_1&#39;, &#39;f&#39;), 1,
+&#39;/sparql?default-graph-uri=http%%3A%%2F%%2Fdbpedia.org&amp;
+    query=DESCRIBE+%%3Chttp%%3A%%2F%%2Fdbpedia.org%%2Fresource%%2F%U%%3E&amp;format=rdf&#39;,
+vector (&#39;par_1&#39;), NULL, NULL, 2, null, &#39;&#39;);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;pvsp_data_rule3&#39;, 1, &#39;/data/(.*)\\.(ttl)&#39;, vector (&#39;par_1&#39;, &#39;f&#39;), 1,
+&#39;/sparql?default-graph-uri=http%%3A%%2F%%2Fdbpedia.org&amp;
+    query=DESCRIBE+%%3Chttp%%3A%%2F%%2Fdbpedia.org%%2Fresource%%2F%U%%3E&amp;format=n3&#39;,
+vector (&#39;par_1&#39;), NULL, NULL, 2, null, &#39;&#39;);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( &#39;pvsp_data_rule4&#39;, 1, &#39;/data/(.*)\\.(n3|rdf)&#39;, vector (&#39;par_1&#39;, &#39;f&#39;), 1,
+&#39;/sparql?default-graph-uri=http%%3A%%2F%%2Fdbpedia.org&amp;
+    query=DESCRIBE+%%3Chttp%%3A%%2F%%2Fdbpedia.org%%2Fresource%%2F%U%%3E&amp;format=%U&#39;,
+vector (&#39;par_1&#39;, &#39;f&#39;), NULL, NULL, 2, null, &#39;&#39;);
+</pre><p>Requests redirected to <code>/data/__%s</code> are redirected to <code>/data/%s.xml</code>, <code>/data/%s.ttl</code> or <code>/data/%s.(n3|rdf)</code> depending on the content type of the chosen variant.
+ The data for these RDF variants is furnished by similar SPARQL DESCRIBE queries which differ only in the <code>format=</code> query string parameter used to specify the result set representation format.</p>
+<p>Requests redirected to <code>/page/%s</code> are in turn redirected to the page description template description.vsp which provides the HTML rendering.
+ In effect, this is equivalent to the external 303 redirect to the <code>/about/html</code> proxy used by the Northwind tutorial Linked Data View - the proxy uses description.vsp internally.</p>
+<a name="SimpDeplWithRdfa">
+<p> </p>
+<h2><a name="Simplifying Deployment with RDFa"></a>Simplifying Deployment with RDFa</h2>
+<p>With Yahoo and Google both having announced support for <a href="http://www.w3.org/TR/rdfa-syntax/" class="absuri">RDFa</a>, this format has arguably become the most important of the RDF syntaxes.
+ From the perspective of content providers, RDFa brings other benefits beyond the obvious attraction of increasing your content&#39;s page rank by providing more accurate, semantically richer metadata to RDFa aware crawlers.
+ Key amongst these is that RDFa provides the simplest route to deploying Linked Data.</p>
+<a name="NoConNegOrRed">
+<p> </p>
+<h3><a name="No Content Negotiation or 303 Redirects"></a>No Content Negotiation or 303 Redirects</h3>
+<p>In this guide we have emphasized the distinction between a real world concept or entity and its, possibly many, descriptions, where each description is associated with a different media-type.
+ Earlier examples have shown how to serve multiple representation formats: HTML, RDF/XML, N3, TTL etc.
+ In essence these formats boil down to a choice between either an HTML representation or some variant of RDF.
+ What RDFa gives you is both representations combined in a single entity description document.
+ Consequently the need for content negotiation or 303 redirects to different representation documents is removed.
+This fundamental difference is depicted in the following three diagrams contrasting the differences between serving content using HTML+RDFa and serving separate HTML and RDF description documents through a hash or slash URI scheme.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtDeployingLinkedDataGuide_TCN/hash_uri_content_negotiation.png" alt="Content negotiation with a hash URI scheme"> <br><i>Content negotiation with a hash URI scheme</i> </div><div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtDeployingLinkedDataGuide_TCN/slash_uri_content_negotiation.png" alt="Content negotiation and 303 redirect with a slash URI scheme"> <br><i>Content negotiation and 303 redirect with a slash URI scheme</i> </div><div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtDeployingLinkedDataGuide_TCN/hash_uri_rdfa_no_content_neg.png" alt="RDFa can remove the need for content negotiation and HTTP redirects"> <br><i>HTML+RDFa potentially removes the need for content negotiation and HTTP redirects</i> </div><a name="GenRdfDynUsiDes">
+<p> </p>
+<h3><a name="Generating RDFa Dynamically Using Description.vsp"></a>Generating RDFa Dynamically Using Description.vsp</h3>
+<p>While authors of small sites might opt to serve static content and mark up their HTML with RDFa manually, for large datasets this becomes unattractive.
+ In cases where the HTML representation itself is being generated from an RDF quad store, it makes sense to generate any embedded RDFa alongside the HTML.
+Virtuoso provides this option through description.vsp, a Virtuoso Server Page which provides an HTML description of RDF Linked Data.
+<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDeployingLinkedDataGuide_description_vsp" class="wikiword">Appendix A</a> provides a brief overview.</p>
+<p>When dereferencing an entity URI, the description returned is determined by the media-type(s) specified in any Accept headers expressing the client&#39;s preferred representation formats.
+ A client can request an XHTML+RDFa description by supplying an Accept header with a media-type of application/xhtml+xml or text/html.
+ In the absence of Accept headers, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a>&#39;s rewriting rules are normally configured to return HTML+RDFa by default.
+ (Rewriting rules configured by the cartridges_dav VAD typically use this convention.)</p>
+<p>As our earlier coverage of Virtuoso&#39;s proxy service URIs explained, requests for an HTML rendering of an entity description are normally redirected internally to the /about/html proxy.
+ This proxy in turn uses description.vsp to generate an HTML rendering with embedded RDFa.
+ So, by exploiting the default URL rewriting rules, internal redirects (as opposed to much slower external 303 redirects) and the /about/html proxy service, it is possible to combine description.vsp&#39;s HTML+RDFa generation capabilities with the deployment benefits of RDFa.</p>
+<a name="RdfOutFroNonRdfDatSou">
+<p> </p>
+<h3><a name="RDFa Output From Non-RDF Data Sources"></a>RDFa Output From Non-RDF Data Sources</h3>
+<p>If viewing Virtuoso purely as an RDF publishing service, RDFa simply constitutes another supported syntax for encoding RDF metadata, alongside RDF/XML, N3, Turtle, NTriples and JSON.
+ However, RDF metadata drawn from the Virtuoso quad store and rendered in one of these formats can itself have been extracted directly or synthesised from a multitude of non-RDF data sources using Virtuoso&#39;s Sponger.
+ (Obviously raw RDF data can also be imported directly.)</p>
+<p>When sponging an XHTML resource, the Sponger will, via the xHTML cartridge, automatically ingest any RDFa found and cache the extracted RDF in the quad store.
+ But, the Sponger can also generate RDF metadata describing non-RDF data sources.
+ The net result is that the Sponger in combination with description.vsp can generate RDFa for data sources containing neither RDF nor RDFa.</p>
+<a name="SamRdfOutFroDes">
+<p> </p>
+<h3><a name="Sample RDFa Output From Description.vsp"></a>Sample RDFa Output From Description.vsp</h3>
+<p>As well as being invoked by the /about/html proxy, description.vsp also underpins the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Explorer&#39;s &quot;View Page Metadata&quot; option.
+ ODE provides a simple means to examine the RDFa generated by description.vsp.</p>
+<p>The screenshot below shows ODE&#39;s &quot;View Page Metadata&quot; output when <a href="http://www.crunchbase.com/company/twitter" class="absuri">http://www.crunchbase.com/company/twitter</a> is fetched by the public Sponger at <a href="http://linkeddata.uriburner.com" class="absuri">http://linkeddata.uriburner.com</a>.
+ The subsequent screenshot highlights some of the RDFa markup in a heavily cutdown extract from the description.vsp generated page source.</p>
+<div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtDeployingLinkedDataGuide_TCN/twitter_desc_vsp.png" alt="Retrieved Twitter company profile"> <br><i>Retrieved Twitter company profile</i> </div><div style="margin: 30px auto; text-align: center; width: 80%;"> <img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="VirtDeployingLinkedDataGuide_TCN/rdfa_extract.png" alt="Page source extract highlighting snippets of generated RDFa"> <br><i>Page source extract highlighting snippets of generated RDFa</i> </div><p>Essentially, in the description.vsp output page, values listed under the &quot;Has Attributes &amp; Values&quot; tab are described using RDFa attributes @rel and @resource, if the object part of the triple is a URI, or using @property if the object part is a literal.
+ Entities listed under the &quot;Is Attribute Value Of&quot; tab are described using RDFa attributes @rev and @resource.</p>
+<b><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDeployingLinkedDataGuide" class="wikiword">Back</a></b> to Deploying Linked Data Guide | <b><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView" class="wikiword">Previous:</a></b> Browsing &amp; Exploring the Northwind Linked Data View | <b><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDeployingLinkedDataGuide_description_vsp" class="wikiword">Next:</a></b> Appendix A: <code>Description.vsp</code> - Rendering RDF as HTML </a></a></a></a></a></a></a></a></a></div></body></html>

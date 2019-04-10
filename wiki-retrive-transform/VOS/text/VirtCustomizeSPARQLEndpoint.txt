@@ -1,0 +1,76 @@
+---+ Customizing the Virtuoso SPARQL Endpoint 
+
+This page will guide you through changing the SPARQL endpoint web page. You can create different variants of the page for different IRIs:
+
+   1. The default SPARQL endpoint page is found in the procedure named <b><code>WS.WS."/!sparql/"</code></b>, which is built from source code found in <b><code>libsrc/Wi/sparql_io.sql</code></b>.
+   1. Copy the code from the above procedure, and load it to a different name, e.g., <b><code>WS.WS."/!sparql_new/"</code></b>, through iSQL --
+<verbatim>
+SQL> CREATE PROCEDURE WS.WS."/!sparql_new/"
+  ( INOUT path VARCHAR, 
+    INOUT params ANY, 
+    INOUT lines ANY
+  )
+  {...
+    http('  <p>TEST This query page is designed to help you test OpenLink Virtuoso</p>
+  ...
+  };
+Done. -- 60 msec.
+SQL>
+</verbatim>
+   1. Remove the VHost definition targeting the original page --
+<verbatim>
+SQL> DB.DBA.VHOST_REMOVE (lpath=>'/sparql');
+</verbatim>
+   1. Add a VHost definition targeting your new page.  The command follows this form --
+<verbatim>
+SQL> DB.DBA.VHOST_DEFINE 
+       ( lpath=>'/sparql/', 
+         ppath => '/your-function-name/', 
+         is_dav => 1, 
+         vsp_user => 'dba', 
+         opts => vector('noinherit', 1)
+       );
+</verbatim>
+-- so, for this example --
+<verbatim>
+SQL> DB.DBA.VHOST_DEFINE 
+       ( lpath=>'/sparql/', 
+         ppath => '/!sparql_new/', 
+         is_dav => 1, 
+         vsp_user => 'dba', 
+         opts => vector('noinherit', 1)
+       );
+</verbatim>
+   1. Give the SPARQL user permission to execute your new page, following this form --
+<verbatim>
+SQL> GRANT EXECUTE 
+       ON WS.WS."your-function" 
+       TO "SPARQL"
+     ;
+</verbatim>
+-- so, for this example --
+<verbatim>
+SQL> GRANT EXECUTE
+       ON WS.WS."/!sparql_new/"
+       TO "SPARQL"
+     ;
+</verbatim>
+<i><b>Note:</b> you should use double quotes around name of "SPARQL" user and the upper case, to avoid confusion with the <code>SPARQL</code> keyword, you should always use double-quote wrappers *and* upper-case to refer to the <code>"SPARQL"</code> user.</i>%BR%%BR%
+   1. Set attributes on your new page, such that Virtuoso's HTTP server component will not treat it as a physical path (DAV or filesystem) to be read and compiled as a procedure, following the command form --
+<verbatim>
+SQL> registry_set 
+       ( '/your-function-name/', 
+         'no_vsp_recompile'
+       );
+</verbatim>
+-- so, for this example --
+<verbatim>
+SQL> registry_set
+       ( '/!sparql_new/', 
+         'no_vsp_recompile'
+       );
+</verbatim>
+   1. Access the new SPARQL endpoint, which should show your changes --
+%BR%%BR%<img src="%ATTACHURLPATH%/s1.png" style="wikiautogen"/>%BR%%BR%
+
+CategorySPARQL CategoryVirtuoso

@@ -1,0 +1,70 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtDeployMediaWiki"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtDeployMediaWiki"}%--><p> </p>
+<h1><a name="Installing The LinkedWiki Extension Version 2.0.1 Alpha"></a>Installing The LinkedWiki Extension Version 2.0.1 Alpha </h1>
+<p>The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> extension allows you to embed a SPARQL query and display the results in your wiki page.</p>
+<h2><a name="Prerequisites"></a>Prerequisites</h2>
+<ul><li>A working copy of MediaWiki hosted on Virtuoso.
+ (See <a href="http://wiki.usnet.private/dataspace/dav/wiki/Main/MediaWikiInstalltionGuide" class="absuri">the installation guide for MediaWiki on Virtuoso</a>).</li>
+</ul><h3><a name="Step 1.&#10; Download the Extension."></a>Step 1.
+ Download the Extension.</h3>
+<p>Go to the <a href="http://www.mediawiki.org/wiki/Extension:LinkedWiki" class="absuri">LinkedWik Extension page</a>.
+ Using the links in the box on the right hand side, download the v2.0.1Alpha1 <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> extension.</p>
+<h3><a name="Step 2.&#10; Extract."></a>Step 2.
+ Extract.</h3>
+<p>Move the downloaded zip file into your MediaWiki extensions folder.
+ You will find this folder in <i>your Virtuoso installation directory</i>/vsp/vad/vsp/MediaWiki/extension.
+ Extract the extension.</p>
+<h3><a name="Step 3.&#10; Enable and Configure."></a>Step 3.
+ Enable and Configure.</h3>
+<p>The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> extension is enabled by adding the following line to the <i>your Virtuoso installation directory</i>/vsp/vad/vsp/MediaWiki/LocalSettings.php file </p>
+<br><pre>require_once( &quot;{$IP}/extensions/LinkedWiki/LinkedWiki.php&quot; );
+$wgLinkedWikiGraphWiki = &#39;http://example.org/mydefaultgraphname&#39;; 
+</pre><p> </p>
+<h2><a name="Using"></a>Using <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a></h2>
+ <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> lets you embed a SPARQL query in a wiki page and display the results as a table.
+ If you have the Widgets extension installed you can also display the results using one of the widgets.<h3><a name="Simple Query Examples"></a>Simple Query Examples</h3>
+ A simple query to get all the triples in all the graphs on a specified endpoint looks like this: <br><pre>{{#sparql:select * where { ?x ?y ?z . } LIMIT 5 | endpoint=http://localhost:8890/sparql}}
+</pre><p>This displays the first 5 triples from the specified endpoint.
+ The results will look something like this:</p>
+<img src="VirtDeployLinkedWikiV2/result1.png" style="wikiautogen"><p>The properties of the current page can be queried using either of the following: </p>
+<br><pre>{{#sparql:PREFIX a:&lt;http://localhost:8890/MediaWiki/index.php?title=Special:URIResolver/&gt;  select * where { a:{{PAGENAMEE}} ?y ?z . } | endpoint = http://localhost:8890/sparql }}
+</pre><p>or </p>
+<br><pre>{{#sparql:select * where { &lt;http://localhost:8890/MediaWiki/index.php?title=Special:URIResolver/{{PAGENAMEE}}&gt; ?y ?z . }  | endpoint = http://localhost:8890/sparql }}
+</pre><p>The results will look something like:</p>
+<img src="VirtDeployLinkedWikiV2/result2.png" style="wikiautogen"><p>You can specify which endpoint you want to query so, this example queries the sparql endpoint on dbpedia to find the number of nations participating in each Olympic games: </p>
+<br><pre>{{#sparql:select distinct ?Games ?Olympiad ?NumberOfNations {?s a &lt;http://dbpedia.org/ontology/Olympics&gt; .
+?s &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; ?Games .
+?s &lt;http://dbpedia.org/property/years&gt; ?Olympiad .
+?s &lt;http://dbpedia.org/ontology/numberOfParticipatingNations&gt; ?NumberOfNations
+FILTER (lang(?Games) = &quot;en&quot;)}
+order by ?Games | endpoint = http://dbpedia.org/sparql }}
+</pre><p>and returns results something like this:</p>
+<img src="VirtDeployLinkedWikiV2/results3.png" style="wikiautogen"><h2><a name="Using"></a>Using <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> with the Widget Extension</h2>
+ First ensure you have the Widget Extension installed and configured.
+ You will have to add any widgets that you want to use to display the results.
+ The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> extension parses the result set from the sparql query so it becomes a set of key value pairs that are then included as parameters to the widget.
+ So, for example, a query that selects location information as a point would result in a set of parameters something like this.
+<br><pre>rows.0.point=43.30, 5.38 | rows.1.point=48.83, 2.3 | rows.2.point=49.93, 2.3
+</pre><p>The widget must be able to handle parameters of this form.</p>
+<p>One example is a Google maps widget developed specifically for displaying <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LinkedWiki" class="wikiword">LinkedWiki</a> results.
+ This widget can be found <a href="https://0x20.be/Widget:Google_Static_Maps" class="absuri">here</a>.</p>
+<p>To use the widget to display the results from a sparql query on a map you would do something like this </p>
+<br><pre>{{#wsparql:Google_Static_Maps
+|query=SELECT ?s ?point ?label
+WHERE {
+?s &lt;http://www.georss.org/georss/point&gt; ?point .
+?s a &lt;http://schema.org/StadiumOrArena&gt; .
+?s &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; ?label .
+FILTER bif:contains(?label, &quot;Olympic and Stadium&quot;) .
+FILTER (lang(?label) =&#39;en&#39;)
+}
+limit 20
+|endpoint = http://dbpedia.org/sparql 
+|defaultcolor=blue
+|zoom=2
+|size=512x512
+|maptype=roadmap}}
+</pre><p> The result will be a map embedded in the wiki page that show the location of Olympic stadia around the world.
+</p>
+<ul><li><img src="VirtDeployLinkedWikiV2/map1.png" style="wikiautogen"> </li>
+</ul></div></body></html>

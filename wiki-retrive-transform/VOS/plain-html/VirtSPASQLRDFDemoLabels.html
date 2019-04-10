@@ -1,0 +1,61 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="RDFDemoExternalDereferencing"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="RDFDemoExternalDereferencing"}%--><p> </p>
+<h1><a name="Extending RDFDemo to Display More Compact Labels"></a>Extending RDFDemo to Display More Compact Labels</h1>
+ This document will guide you through extending the application created in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLRDFDemoExternalDereferencing" class="wikiword">Extending RDFDemo to Allow Dereferencing of External IRIs.</a>  so that the data is displayed in a more readable form.<h3><a name="Pre-requisites"></a>Pre-requisites</h3>
+ <ol><li>A working copy of the RDFDemo application created in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLRDFDemoExternalDereferencing" class="wikiword">Extending RDFDemo to Allow Dereferencing of External IRIs</a>.</li>
+</ol><h2><a name="Extending the Application."></a>Extending the Application.</h2>
+<p>The RDF demo application presents the user with a list of Customers from the Northwind database in the form of dereferenceable IRIs.
+  When a customer is selected from the list the application uses a sparql query to describe that customer and the results are displayed in a form as rows of labels and data.
+ The labels correspond to RDF predicates and the data corresponds to RDF objects while the subject is the customer initially selected.
+  In many cases the objects are dereferencable IRIs which are then used as the subject when the &#39;drilling down&#39; into the data.
+ However, the predicates are also IRIs so it is possible to gain more information about these as well.</p>
+<p>The RDF Schema defines a property http://www.w3.org/2000/01/rdf-schema#label that may be used to provide a human-readable version of a resource&#39;s name.
+ We can obtain further details of each of the predicates in a resultset and check to see if one of the properties is an http://www.w3.org/2000/01/rdf-schema#label.
+ If it is we can use the associated text as the label in our form instead of the the predicate IRI.
+ The benefit should be a more human readable form.</p>
+<h3><a name="Step 1- Add a New Method to Get the Label Text"></a>Step 1- Add a New Method to Get the Label Text</h3>
+<p>This method takes the predicate IRI and issues a sparql query to get its description.
+ It then cycles through the returned dataset to find a <a href="http://www.w3.org/2000/01/rdf-schema#label." class="absuri">http://www.w3.org/2000/01/rdf-schema#label.</a>  If there is one then the associated text is returned by the method.
+ Otherwise the method returns the IRI string.</p>
+<ul><li>Add the following method to the ExtendedStringHandlerClass <br><pre><br>        private string getLabelText(Object label)
+        {
+            string labelText = label.ToString();
+            if (label is SqlExtendedString)
+            {
+                SqlExtendedString se = (SqlExtendedString)label;
+                StringBuilder getLabelCommandText = new StringBuilder(&quot;sparql define get:soft \&quot;soft\&quot; select * from &lt;&quot; + se.ToString() + &quot;&gt; where {&lt;&quot; + se.ToString() + &quot;&gt; ?p ?o}&quot;);
+                VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+                VirtuosoDataAdapter getLabelAdapter = new VirtuosoDataAdapter();
+                getLabelAdapter.SelectCommand = getLabelCommand;
+                DataSet getLabelDataSet = new DataSet();
+                try
+                {
+                    getLabelAdapter.Fill(getLabelDataSet);
+                    foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                    {
+                        if (getLabelRow[0].ToString() == &quot;http://www.w3.org/2000/01/rdf-schema#label&quot;)
+                        {
+                            labelText = getLabelRow[1].ToString();
+                            break;
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+            return labelText;
+        }
+</pre><br></li>
+<li>Change the line in displayData from <br><pre><br>                        propertyLabel.Text = row[0].ToString();
+</pre><br>to <br><pre><br>                        propertyLabel.Text = getLabelText(row[0]);
+</pre><br></li>
+</ul><h3><a name="Step 2 - Build and Run the Application"></a> Step 2 - Build and Run the Application</h3>
+ When you run the application you will see that the initial form is the same.
+ In fact, when you select the Customer you will also see that the customer details are also the same.
+ It is only when you start exploring data outside the Northwind graph that you will see the labels in the form change.<p>  <img src="VirtSPASQLRDFDemoLabels/MadridDetails.png" style="wikiautogen"></p>
+<h2><a name="Next Steps"></a> Next Steps</h2>
+ It is clear from running the application that the Northwind ontology does not define an <a href="http://www.w3.org/2000/01/rdf-schema#label" class="absuri">http://www.w3.org/2000/01/rdf-schema#label</a> for its members.
+ In order to benefit from this modified version of RDFDemo we need to update our Northwind ontology so that <a href="http://www.w3.org/2000/01/rdf-schema#label" class="absuri">http://www.w3.org/2000/01/rdf-schema#label</a> is defined for each resource.
+ The next step will be to modify our Northwind ontology.<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLRDFDemoModifyNorthwind" class="wikiword">Modifying the Northwind Ontology to Add Labels</a></p>
+</div></body></html>

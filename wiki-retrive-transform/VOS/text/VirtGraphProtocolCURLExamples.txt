@@ -1,0 +1,227 @@
+%META:TOPICPARENT{name="VirtGraphUpdateProtocol"}%
+
+
+---+SPARQL 1.1. Graph Store HTTP Protocol cURL Examples Collection
+
+
+%TOC%
+
+---++What?
+How to use the SPARQL Graph Store protocol to Create, Read, Update, and Delete RDF documents on a compliant server.
+
+
+---++Why?
+
+This protocol enables creation of local RDF documents that are deposited to remote servers, over the HTTP protocol. It is important to note that the payload can take any of the following forms:
+
+   1. RDF content constructed using any RDF concrete syntax (or notation e.g., N-Triples, Turtle, JSON-LD, RDF/XML) -- via PUT method
+   1. RDF content constructed using SPARQL 1.1 Insert, Delete -- via POST method
+   1. RDF content constructed using SPARQL 1.1 Update -- via POST or PATCH methods.
+
+
+---++How?
+
+Here are the steps for creating RDF documents on a remote server, using this protocol, via curl and the /sparql-graph-crud endpoint's HTML form:
+
+---+++ Prerequisites
+
+Assume the following Raw Data Representation in Turtle that we are going to use in the examples from below: 
+<verbatim>
+@prefix:     <http://example.org/book/> .
+@prefix ns:  <http://example.org/ns#> .
+
+:book1  <http://purl.org/dc/elements/1.1/title>     "SPARQL Tutorial" .
+:book1  ns:price     42 .
+:book1  ns:discount  0.2 .
+
+:book2  <http://purl.org/dc/elements/1.1/title>     "The Semantic Web" .
+:book2  ns:price     23 .
+:book2  ns:discount  0.25 .
+</verbatim>
+
+---+++ cURL Examples
+
+---++++ HTTP PUT Example
+
+   1 Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:put&gt;: 
+<verbatim>
+curl --digest --user dba:dba --verbose --url "http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:put" -T books.ttl 
+
+> PUT /sparql-graph-crud-auth?graph-uri=urn:example:put HTTP/1.1
+> Authorization: Digest username="dba", realm="SPARQL", nonce="6e1df3edb51389debbe9648a9edd9baa", uri="/sparql-graph-crud-auth?graph-uri=urn:example:i
+nsert", cnonce="ICAgICAgICAgICAgICAgICAgICAgICAgICA5OTcyOTc=", nc=00000001, qop=auth, response="83de54bda064de2d59bdd5845eac4f8c", opaque="5ebe2294ecd
+0e0f08eab7690d2a6ee69", algorithm="MD5"
+> User-Agent: curl/7.29.0
+> Host: example.com
+> Accept: */*
+> Content-Length: 337
+> Expect: 100-continue
+
+> HTTP/1.1 100 Continue
+> We are completely uploaded and fine
+> HTTP/1.1 201 Created
+> Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+> Connection: Keep-Alive
+> Content-Type: text/html; charset=UTF-8
+> Date: Tue, 30 Jul 2013 08:19:52 GMT
+> Accept-Ranges: bytes
+> Content-Length: 0
+</verbatim>
+   1 Query the graph data: 
+<verbatim>
+SELECT * 
+FROM <urn:graph:update:test:put> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+
+
+---++++ HTTP GET Example
+
+   1 Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:get&gt:
+<verbatim>
+curl --digest --user dba:dba --verbose --url "http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:get" -T books.ttl 
+</verbatim>
+   1 Query the graph data: 
+<verbatim> 
+curl --verbose --url "http://example.com/sparql-graph-crud?graph-uri=urn:graph:update:test:get"
+
+> GET /sparql-graph-crud?graph-uri=urn:graph:update:test:get HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: example.com
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+< Connection: Keep-Alive
+< Date: Tue, 30 Jul 2013 09:09:18 GMT
+< Accept-Ranges: bytes
+< Content-Type: text/turtle; charset=UTF-8
+< Content-Length: 291
+<
+@prefix ns0:    <http://example.org/ns#> .
+@prefix ns1:    <http://example.org/book/> .
+ns1:book1       ns0:price       42 ;
+                ns0:discount    0.2 .
+@prefix dc:     <http://purl.org/dc/elements/1.1/> .
+ns1:book1       dc:title        "SPARQL Tutorial" .
+ns1:book2       ns0:price       23 ;
+                ns0:discount    0.25 ;
+                dc:title        "The Semantic Web" . 
+</verbatim>
+  
+
+
+---++++ HTTP DELETE Example
+
+   1 Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:delete&gt:
+<verbatim>
+curl --digest --user dba:dba --verbose --url "http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:delete" -T books.ttl 
+</verbatim>
+   1 Delete the graph data: 
+<verbatim> 
+curl --digest --user dba:dba --verbose --url "http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:delete" -X DELETE
+
+* Server auth using Digest with user 'dba'
+> DELETE /sparql-graph-crud-auth?graph-uri=urn:graph:update:test:delete HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: example.com
+> Accept: */*
+
+< HTTP/1.1 200 OK
+< Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+< Connection: Keep-Alive
+< Content-Type: text/html; charset=UTF-8
+< Date: Tue, 30 Jul 2013 09:13:52 GMT
+< Accept-Ranges: bytes
+< Content-Length: 0
+</verbatim>
+   1 Query the graph to ensure there are no triples after the deletion: 
+<verbatim> 
+curl --verbose --url "http://example.com/sparql-graph-crud?graph-uri=urn:graph:update:test:delete"
+
+> GET /sparql-graph-crud?graph-uri=urn:graph:update:test:delete HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: example.com
+> Accept: */*
+>
+< HTTP/1.1 404 Not Found
+< Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+< Connection: Keep-Alive
+< Content-Type: text/html; charset=UTF-8
+< Date: Tue, 30 Jul 2013 09:17:38 GMT
+< Accept-Ranges: bytes
+< Content-Length: 0
+</verbatim>
+   1 Alternatively you can query the graph data with the following SPARQL Query: 
+<verbatim>
+SELECT * 
+FROM <urn:graph:update:test:delete> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+
+
+
+---++++ HTTP POST Example
+
+   1 Load the sample data to a named graph identified by the IRI &lt;urn:graph:update:test:post&gt:
+<verbatim>
+curl --digest --user dba:dba --verbose --url "http://example.com/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:post" -X POST -T books.ttl
+
+> POST /sparql-graph-crud-auth?graph-uri=urn:graph:update:test:post HTTP/1.1
+> Authorization: Digest username="dba", realm="SPARQL", nonce="5ea29244cf548f6acd927573fc4bace0", uri="/sparql-graph-crud-auth?graph-uri=urn:graph:update:test:post", cnonce="ICAgICAgICAgICAgICAgICAgICAgICAgICAxODgwNjY=", nc=00000001, qop=auth, response="cd5fcd139247a4023441598945ba024b", opaque="5ebe2294ecd0e0f08eab7690d2a6ee69", algorithm="MD5"
+> User-Agent: curl/7.29.0
+> Host: example.com
+
+< HTTP/1.1 201 Created
+< Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+< Connection: Keep-Alive
+< Content-Type: text/html; charset=UTF-8
+< Date: Tue, 30 Jul 2013 09:39:20 GMT
+< Accept-Ranges: bytes
+</verbatim>
+   1 Query the graph data: 
+<verbatim> 
+curl --verbose --url "http://example.com/sparql-graph-crud?graph-uri=urn:graph:update:test:post"
+> GET /sparql-graph-crud?graph-uri=urn:graph:update:test:post HTTP/1.1
+> User-Agent: curl/7.29.0
+> Host: localhost:8890
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: Virtuoso/07.00.3203 (Win64) x86_64-generic-win-64  VDB
+< Connection: Keep-Alive
+< Date: Tue, 30 Jul 2013 09:46:12 GMT
+< Accept-Ranges: bytes
+< Content-Type: text/turtle; charset=UTF-8
+< Content-Length: 291
+<
+@prefix ns0:    <http://example.org/ns#> .
+@prefix ns1:    <http://example.org/book/> .
+...
+</verbatim>
+   1 Alternatively you can query the graph data with the following SPARQL Query: 
+<verbatim>
+SELECT * 
+FROM <urn:graph:update:test:post> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+
+
+
+
+---++Related
+
+   * [[http://www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321/][SPARQL 1.1 Graph Store HTTP Protocol Specification]]
+   * [[VirtGraphUpdateProtocol][Virtuoso SPARQL 1.1 Graph Store HTTP Protocol Support]]
+   * [[VirtGraphUpdateProtocolUI][sparql-graph-crud-auth Endpoint UI Usage Example]]   
+   * [[VirtLDP][Using Virtuoso as LDP Client and Server Guide]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqloauthendpointauth][Virtuoso SPARQL Authentication]]

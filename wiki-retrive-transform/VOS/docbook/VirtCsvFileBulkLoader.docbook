@@ -1,0 +1,483 @@
+<docbook><section><title>VirtCsvFileBulkLoader</title><title> Virtuoso CSV File Bulk Loader</title> Virtuoso CSV File Bulk Loader
+<para>The Virtuoso CSV File Bulk loader enables the bulk loading of CSV files into Virtuoso, to be stored as tables.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> CSV Bulk Load Functions</bridgehead>
+<para>The functions listed here are used for performing the CSV file bulk load operations.
+The full source of these functions are <ulink url="#CSV%20Bulk%20Loader%20scripts">included below</ulink>, for users whose Virtuoso instances do not have them pre-loaded.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>csv_register (path, mask)</emphasis> Takes a single directory <emphasis>path</emphasis> containing the gzipped, zipped or uncompressed CSV files to be loaded.
+ All files matching the <emphasis>mask</emphasis> pattern will be registered for loading.
+</listitem>
+<listitem><emphasis>csv_register_all (path, mask)</emphasis> Same as above but recursive over the directory specified in <emphasis>path</emphasis>.
+</listitem>
+<listitem><emphasis>csv_loader_run (max_files, log_enable := 2)</emphasis> Run the CSV bulk loader to load the data into the database.
+ The maximum number of files to be loaded can be specified as <emphasis>max_file</emphasis>, and <emphasis>log_enable=2</emphasis> can be set to minimize locks during load.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Configuration and Usage</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>All directories (or their parents) containing CSV files to be loaded must be included in the <emphasis>DirsAllowed</emphasis> parameter of the active Virtuoso INI file.
+</listitem>
+<listitem>Each CSV file or compressed archive of CSV files may have its own configuration options.
+ If no options are given, the structure will be guessed from the content of the CSV file.
+ If a CSV file contains no headers to indicate the column names, then a table corresponding to this file must be created manually before importing.
+</listitem>
+<listitem>To load a CSV file into an existing table, create a file corresponding to the name of the CSV file with a <emphasis>.tb</emphasis> filename extension.
+Place a single entry in the new file with the fully qualified name of the desired target table in the database.
+</listitem>
+<listitem>By default, CSV files are loaded in the <emphasis>csv.DBA.</emphasis> schema of the database, with a table name matching the CSV filename.
+ If a <emphasis>.tb</emphasis> file of the same name is found, the schema location and table name contained there will be used instead.
+</listitem>
+<listitem>The <emphasis>csv_register()</emphasis> function creates or appends to the table <emphasis>DB.DBA.csv_load_list</emphasis> which maintains a list of CSV files and the tables into which they are loaded.
+<emphasis><emphasis>Note</emphasis>: Before reloading a CSV file, its entry must be removed from the DB.DBA.csv_load_list table and its table must be dropped from the csv.DBA. schema of the database (or wherever it has been and will be loaded).
+ </emphasis> </listitem>
+<listitem>If a CSV file structure differs from the default CSV file settings, the loader will look for a configuration file of the same name as the CSV file with a <emphasis>.cfg</emphasis> filename extension.
+ This file should contain parameters similar to those below, indicating the CSV file&#39;s structure: <programlisting>[csv]
+csv-delimiter=&lt;delimiter char&gt;
+csv-quote=&lt;quote char&gt;
+header=&lt;zero based header offset&gt;
+offset=&lt;zero based data offset&gt;
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>Invisible &quot;tab&quot; and &quot;space&quot; delimiters should be specified by those names, without the quotation marks.
+</listitem>
+<listitem>Other delimiter characters (comma, period, etc.) should simply be typed in.
+</listitem>
+<listitem>&quot;Smart&quot; quotation marks which differ at start and end (including but not limited to « », ‹ ›, “ ”, and ‘ ’) are not currently supported.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Example</bridgehead>
+<para>Consider loading a gzipped CSV file, csv-example.csv.gz, with the non-default CSV structure below: </para>
+<programlisting>&#39;Southern North Island wood availability forecast for the period 2008-2040&#39;		
+&#39;Table 14: Wood availability and average clearfell age for other species in Eastern Southern North Island&#39;		
+&#39;Year ending&#39;	&#39;Recoverable volume&#39;	&#39;Average age&#39;
+&#39;December&#39;	&#39;(000 m3 i.b.)&#39;	&#39;(years)&#39;
+2006	0	0
+2007	0	0
+2008	48	49
+2009	45	46
+...
+</programlisting><para>In this example </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>the header is on the third line, #2 with a zero-base </listitem>
+<listitem>the data starts from the fifth line, #4 with a zero-base </listitem>
+<listitem>the delimiter is tab </listitem>
+<listitem>the quote char is the single-quote, or apostrophe</listitem>
+</itemizedlist><para>Loading this file requires the creation of a configuration file, csv-example.cfg, containing the entries: </para>
+<programlisting>[csv]
+csv-delimiter=tab
+csv-quote=&#39;
+header=2
+offset=4
+</programlisting><para> Assuming all files are located in a directory called <emphasis>CSV</emphasis>, found within the Virtuoso server&#39;s working (i.e., database) directory, and that this directory is included in the <emphasis>DirsAllowed</emphasis> Virtuoso configuration parameter, the commands to register and load the CSV data files are: </para>
+<programlisting>csv_register (&#39;./CSV&#39;, &#39;*.gz&#39;);
+csv_loader_run ();
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> CSV Bulk Loader scripts</bridgehead>
+<para>The following scripts need to be run through Virtuoso&#39;s <emphasis>iSQL</emphasis> tool (either command-line or HTTP-based), to create the procedure for performing CSV file bulk load operations.
+ (This may be pre-loaded in more recent Virtuoso instances.) </para>
+<programlisting>--	DROP TABLE csv_load_list;
+
+CREATE TABLE csv_load_list (
+    cl_file         VARCHAR, 
+    cl_file_in_zip  VARCHAR,
+    cl_state        INT DEFAULT 0, 
+    cl_error        LONG VARCHAR, 
+    cl_table        VARCHAR, 
+    cl_options      ANY,
+    cl_started      DATETIME, 
+    cl_done         DATETIME,
+    PRIMARY KEY (cl_file, cl_file_in_zip))
+CREATE INDEX cl_state ON csv_load_list (cl_state)
+;
+
+CREATE PROCEDURE csv_cols_cb (
+    INOUT  r    ANY, 
+    IN     inx  INT, 
+    INOUT  cbd  ANY)
+{
+  IF (cbd IS NULL)
+    cbd := VECTOR ();
+  cbd := vector_concat (cbd, VECTOR (r));   
+}
+;
+
+CREATE PROCEDURE  csv_get_cols_array (
+    INOUT  ss    ANY, 
+    IN     hr    INT, 
+    IN     offs  INT, 
+    IN     opts  ANY)
+{
+  DECLARE h, res ANY;
+  DECLARE inx, j, ncols, no_head INT;
+  
+  h := NULL;
+  no_head := 0;
+  IF (hr &lt; 0)
+    {
+      no_head := 1;
+      hr := 0;
+    }
+  IF (offs &lt; 0)
+    offs := 0;
+  res := VECTOR ();
+  csv_parse (ss, &#39;DB.DBA.csv_cols_cb&#39;, h, 0, offs + 10, opts);
+  IF (h IS NOT NULL AND LENGTH (h) &gt; offs)
+    {
+      DECLARE _row ANY;
+      _row := h[hr];
+      FOR (j := 0; j &lt; LENGTH (_row); j := j + 1)           
+        {
+	  res := vector_concat (res, VECTOR (VECTOR (SYS_ALFANUM_NAME (CAST (_row[j] AS VARCHAR)), NULL)));
+        }
+      FOR (inx := offs; inx &lt; LENGTH (h); inx := inx + 1)
+       { 
+	 _row := h[inx];
+         FOR (j := 0; j &lt; LENGTH (_row); j := j + 1)           
+	   {
+	     IF (res[j][1] IS NULL AND NOT (ISSTRING (_row[j]) AND _row[j] = &#39;&#39;) AND _row[j] IS NOT NULL)
+               res[j][1] := __tag (_row[j]);
+             ELSE IF (__tag (_row[j]) &lt;&gt; res[j][1] AND 189 = res[j][1] AND (ISDOUBLE (_row[j]) OR isfloat (_row[j])))
+	       res[j][1] := __tag (_row[j]);
+             ELSE IF (__tag (_row[j]) &lt;&gt; res[j][1] AND ISINTEGER (_row[j]) AND (res[j][1] = 219 OR 190 = res[j][1]))
+	       ;  
+             ELSE IF (__tag (_row[j]) &lt;&gt; res[j][1])
+               res[j][1] := -1;
+	   }
+       } 
+    }
+  FOR (inx := 0; inx &lt; LENGTH (res); inx := inx + 1)
+    { 
+       IF (NOT ISSTRING (res[inx][0]) AND NOT ISNULL (res[inx][0]))
+         no_head := 1;	
+       ELSE IF (trim (res[inx][0]) = &#39;&#39; OR ISNULL (res[inx][0]))
+         res[inx][0] := sprintf (&#39;COL%d&#39;, inx);	 
+    }  
+  FOR (inx := 0; inx &lt; LENGTH (res); inx := inx + 1)
+    { 
+       IF (res[inx][1] = -1 OR res[inx][1] IS NULL)
+         res[inx][1] := &#39;VARCHAR&#39;;	 
+       ELSE
+         res[inx][1] := dv_type_title (res[inx][1]);	 
+    }  
+  IF (no_head)
+    {
+      FOR (inx := 0; inx &lt; LENGTH (res); inx := inx + 1)
+	{ 
+	   res[inx][0] := sprintf (&#39;COL%d&#39;, inx);
+	}
+    }
+  RETURN res;
+}
+;
+
+CREATE PROCEDURE csv_get_table_def (IN fn VARCHAR, IN f VARCHAR, IN opts ANY)
+{
+  DECLARE arr ANY;
+  DECLARE s, r, ss ANY;
+  DECLARE i, offs, st INT;
+
+  IF (__tag (f) = 185)
+    s := f;
+  ELSE IF (f LIKE &#39;%.gz&#39;)
+    s := gz_file_open (f);
+  ELSE
+    s := file_open (f);
+  st := 0; offs := 1; 
+  IF (ISVECTOR (opts) AND MOD (LENGTH (opts), 2) = 0)
+    {
+      st := atoi (get_keyword (&#39;header&#39;, opts, &#39;0&#39;));
+      offs := atoi (get_keyword (&#39;offset&#39;, opts, &#39;1&#39;));
+    }  
+  arr := csv_get_cols_array (s, st, offs, opts);   
+  ss := string_output ();
+  http (sprintf (&#39;CREATE TABLE %s ( \n&#39;, fn), ss); 
+  FOR (i := 0; i &lt; LENGTH (arr); i := i + 1)
+    {
+       http (sprintf (&#39;\t&quot;%I&quot; %s&#39;, arr[i][0], arr[i][1]), ss);
+       IF (i &lt; LENGTH (arr) - 1)
+         http (&#39;, \n&#39;, ss);
+    }
+  http (&#39;)&#39;, ss);
+  RETURN string_output_string (ss);  
+}
+;
+
+CREATE PROCEDURE csv_register (IN path VARCHAR, IN mask VARCHAR)
+{
+  DECLARE ls ANY;
+  DECLARE inx INT;
+  ls := sys_dirlist (path, 1);
+  FOR (inx := 0; inx &lt; LENGTH (ls); inx := inx + 1)
+    {
+      IF (ls[inx] LIKE mask)
+	{
+	  IF (NOT (EXISTS (SELECT 1 FROM DB.DBA.CSV_LOAD_LIST WHERE CL_FILE = path || &#39;/&#39; || ls[inx] FOR UPDATE)))
+	    {
+	      DECLARE tbfile, ofile, tb, f, tbname VARCHAR;
+	      DECLARE opts ANY;
+	      tb := NULL; 
+	      f := ls[inx];
+	      tbfile := path || &#39;/&#39; || regexp_replace (f, &#39;(\\.csv(\\.gz)?)|(\\.zip)&#39;, &#39;&#39;) || &#39;.tb&#39;;
+	      ofile :=  path || &#39;/&#39; || regexp_replace (f, &#39;(\\.csv(\\.gz)?)|(\\.zip)&#39;, &#39;&#39;) || &#39;.cfg&#39;;
+
+	      opts := NULL;
+	      IF (file_stat (ofile) &lt;&gt; 0)
+		{
+		  DECLARE delim, quot, header, offs, enc VARCHAR;
+		  delim  := cfg_item_value (ofile, &#39;csv&#39;, &#39;csv-delimiter&#39;); 
+		  quot   := cfg_item_value (ofile, &#39;csv&#39;, &#39;csv-quote&#39;); 
+		  enc    := cfg_item_value (ofile, &#39;csv&#39;, &#39;encoding&#39;); 
+		  header := cfg_item_value (ofile, &#39;csv&#39;, &#39;header&#39;); 
+		  offs   := cfg_item_value (ofile, &#39;csv&#39;, &#39;offset&#39;); 
+
+		  IF (delim  IS NOT NULL) 
+		    {
+		      delim := REPLACE (delim, &#39;tab&#39;, &#39;\t&#39;); 
+		      delim := REPLACE (delim, &#39;space&#39;, &#39; &#39;); 
+		      opts := vector_concat (opts, VECTOR (&#39;csv-delimiter&#39;, delim));
+		    }
+		  IF (quot   IS NOT NULL) opts := vector_concat (opts, VECTOR (&#39;csv-quote&#39;, quot));
+		  IF (enc    IS NOT NULL) opts := vector_concat (opts, VECTOR (&#39;encoding&#39;, enc));
+		  IF (header IS NOT NULL) opts := vector_concat (opts, VECTOR (&#39;header&#39;, header));
+		  IF (offs   IS NOT NULL) opts := vector_concat (opts, VECTOR (&#39;offset&#39;, offs));
+		}
+
+	      IF (file_stat (tbfile) &lt;&gt; 0)
+		tbname := TRIM (file_to_string (tbfile), &#39; \r\n&#39;);
+	      ELSE
+		tbname := complete_table_name (&#39;CSV.DBA.&#39;||SYS_ALFANUM_NAME (f), 1);
+
+              IF (EXISTS (SELECT 1 FROM SYS_KEYS WHERE KEY_TABLE = tbname))
+		{
+		  tb := tbname;
+		}
+	      ELSE
+		{
+		  IF (f LIKE &#39;%.csv&#39; OR f LIKE &#39;%.csv.gz&#39;)
+		    {
+		      DECLARE stat, msg ANY;
+		      stat := &#39;00000&#39;;
+		      DECLARE CONTINUE HANDLER FOR SQLSTATE &#39;*&#39; {
+	                log_message (sprintf (&#39;Cannot guess table name FOR file %s&#39;, f)); 		
+		      };
+		      {
+		        EXEC (csv_get_table_def (tbname, path||&#39;/&#39;||f, opts), stat, msg);
+			IF (stat = &#39;00000&#39;)
+		          tb := tbname;
+			ELSE
+		          log_message (sprintf (&#39;Cannot guess table name FOR file %s&#39;, f));
+	              } 		
+		    }
+		  ELSE IF (f LIKE &#39;%.zip&#39;)
+		    {
+		      DECLARE ff, ss ANY;
+		      ff := unzip_list (path || &#39;/&#39; || f);
+		      FOREACH (ANY zf IN ff) DO
+			{
+			  IF (zf[1] &gt; 0 AND zf[0] LIKE &#39;%.csv&#39;)
+			    {
+			      ss := unzip_file (path || &#39;/&#39; || f, zf[0]);
+			      tbname := complete_table_name (&#39;CSV.DBA.&#39;||SYS_ALFANUM_NAME (zf[0]), 1);
+			      DECLARE stat, msg ANY;
+			      tb := NULL;
+			      stat := &#39;00000&#39;;
+			      DECLARE CONTINUE HANDLER FOR SQLSTATE &#39;*&#39; {
+				log_message (sprintf (&#39;Cannot guess table name FOR zipped file %s&#39;, zf[0])); 		
+			      };
+			      {
+				EXEC (csv_get_table_def (tbname, ss, opts), stat, msg);
+				IF (stat = &#39;00000&#39;)
+				  tb := tbname;
+				ELSE
+				  log_message (sprintf (&#39;Cannot guess table name FOR zipped file %s&#39;, zf[0]));
+				IF (tb IS NOT NULL)
+				  INSERT INTO DB.DBA.CSV_LOAD_LIST (cl_file, cl_file_in_zip, cl_table, cl_options) 
+				      VALUES (path || &#39;/&#39; || f, zf[0], tb, opts);
+			      } 		
+			    }
+			}
+		      tb := NULL;
+		    }
+		  ELSE   
+		    log_message (sprintf (&#39;Cannot guess table name FOR file %s&#39;, f));
+		}
+              IF (tb IS NOT NULL)
+                {		
+		  INSERT INTO DB.DBA.CSV_LOAD_LIST (cl_file, cl_file_in_zip, cl_table, cl_options) 
+		      VALUES (path || &#39;/&#39; || f, &#39;&#39;, tb, opts);
+		}
+	    }
+	  COMMIT WORK;
+	}
+    }
+}
+;
+
+CREATE PROCEDURE 
+csv_register_all (IN path VARCHAR, IN mask VARCHAR)
+{
+  DECLARE ls ANY;
+  DECLARE inx INT;
+  ls := sys_dirlist (path, 0);
+  csv_register (path, mask);
+  FOR (inx := 0; inx &lt; LENGTH (ls); inx := inx + 1)
+    {
+      IF (ls[inx] &lt;&gt; &#39;.&#39; AND ls[inx] &lt;&gt; &#39;..&#39;)
+	{
+	  csv_register_all (path||&#39;/&#39;||ls[inx], mask);
+	}
+    }
+}
+;
+
+CREATE PROCEDURE
+csv_ld_file (IN f VARCHAR, IN zf VARCHAR, IN tb VARCHAR, IN ld_mode INT, IN opts ANY)
+{
+  DECLARE ss ANY;
+  DECLARE offs, st INT;
+  st := 0; offs := 1; 
+  DECLARE EXIT HANDLER FOR SQLSTATE &#39;*&#39; {
+    ROLLBACK WORK;
+    UPDATE DB.DBA.CSV_LOAD_LIST SET CL_STATE = 2, CL_DONE = NOW (), CL_ERROR = __sql_state || &#39; &#39; || __sql_message 
+		WHERE CL_FILE = f AND CL_FILE_IN_ZIP = zf;
+    COMMIT WORK;
+    log_message (sprintf (&#39; File %s error %s %s&#39;, f, __sql_state, __sql_message));
+    RETURN;
+  };
+  IF (ISVECTOR (opts) AND MOD (LENGTH (opts), 2) = 0)
+    {
+      st := atoi (get_keyword (&#39;header&#39;, opts, &#39;0&#39;));
+      offs := atoi (get_keyword (&#39;offset&#39;, opts, &#39;1&#39;));
+    }  
+  IF (f LIKE &#39;%.zip&#39; AND LENGTH (zf) = 0)
+    {
+      DECLARE ff ANY;
+      ff := unzip_list (f);
+      FOREACH (ANY zzf IN ff) DO
+	{
+	  IF (zzf[1] &gt; 0 AND zzf[0] LIKE &#39;%.csv&#39;)
+	    {
+	      ss := unzip_file (f, zzf[0]);
+	      csv_load (ss, offs, NULL, tb, ld_mode, opts);
+	    }
+	}
+    }
+  ELSE IF (f LIKE &#39;%.zip&#39; AND LENGTH (zf) &gt; 0)
+    {
+      ss := unzip_file (f, zf);
+      csv_load (ss, offs, NULL, tb, ld_mode, opts);
+    }
+  ELSE IF (f LIKE &#39;%.gz&#39;)
+    {
+      ss := gz_file_open (f);
+      csv_load (ss, offs, NULL, tb, ld_mode, opts);
+    }
+  ELSE
+    csv_load_file (f, offs, NULL, tb, ld_mode, opts);
+}
+;
+
+CREATE PROCEDURE csv_ld_array ()
+{
+  DECLARE first, last, zfirst, zlast, arr, len, local, opt, zf ANY;
+  DECLARE cr CURSOR FOR
+      SELECT TOP 100 CL_FILE, CL_TABLE, CL_OPTIONS, CL_FILE_IN_ZIP 
+        FROM DB.DBA.CSV_LOAD_LIST TABLE OPTION (INDEX cl_state) 
+        WHERE CL_STATE = 0
+	FOR UPDATE;
+  DECLARE fill INT;
+  DECLARE f, g VARCHAR;
+  DECLARE r ANY;
+  WHENEVER NOT FOUND GOTO done;
+  first := 0;
+  last := 0;
+  arr := make_array (100, &#39;any&#39;);
+  fill := 0;
+  OPEN cr;
+  len := 0;
+  FOR (;;)
+    {
+      FETCH cr INTO f, g, opt, zf;
+      IF (0 = first) { first := f; zfirst := zf; }
+      last := f; zlast := zf;
+      arr[fill] := VECTOR (f, g, opt, zf);
+      len := len + CAST (file_stat (f, 1) as INT);
+      fill := fill + 1;
+      IF (len &gt; 2000000)
+	GOTO done;
+    }
+ done:
+  IF (0 = first)
+    RETURN 0;
+  UPDATE CSV_LOAD_LIST SET cl_state = 1, cl_started = NOW () 
+    WHERE cl_file &gt;= first 
+      AND cl_file &lt;= last 
+      AND CL_FILE_IN_ZIP &gt;= zfirst 
+      AND CL_FILE_IN_ZIP &lt;= zlast;
+  RETURN arr;
+}
+;
+
+
+CREATE PROCEDURE csv_loader_run (IN max_files integer := NULL, IN log_enable INT := 2)
+{
+  DECLARE sec_delay float;
+  DECLARE _f, _graph VARCHAR;
+  DECLARE arr ANY;
+  DECLARE xx, inx, tx_mode, ld_mode INT;
+  ld_mode := log_enable;
+  WHILE (1)
+    {
+      SET ISOLATION = &#39;repeatable&#39;;
+      DECLARE EXIT HANDLER FOR SQLSTATE &#39;40001&#39; {
+	ROLLBACK WORK;
+        sec_delay := RND(1000)*0.001;
+	log_message(sprintf(&#39;deadlock in loader, waiting %d milliseconds&#39;, CAST (sec_delay * 1000 AS INTEGER)));
+	DELAY(sec_delay);
+	GOTO again;
+      };
+
+     again:;
+
+      IF (EXISTS (SELECT 1 FROM DB.DBA.CSV_LOAD_LIST WHERE CL_FILE = &#39;##stop&#39;))
+	{
+	  log_message (&#39;File load stopped by rdf_load_stop.&#39;);
+	  RETURN;
+	}
+
+      log_enable (tx_mode, 1);
+
+      IF (max_files IS NOT NULL AND max_files &lt;= 0)
+        {
+	  COMMIT WORK;
+	  log_message (&#39;Max_files reached. Finishing.&#39;);
+          RETURN;
+	}
+
+      WHENEVER NOT FOUND GOTO looks_empty;
+
+      --      log_message (&#39;Getting next file.&#39;);
+      SET ISOLATION = &#39;serializable&#39;;
+      arr := csv_ld_array ();
+      COMMIT WORK;
+      IF (0 = arr)
+	GOTO looks_empty;
+      log_enable (ld_mode, 1);
+
+      FOR (inx := 0; inx &lt; 100; inx := inx + 1)
+	{
+	  IF (0 = arr[inx])
+	    GOTO arr_done;
+	  csv_ld_file (arr[inx][0], arr[inx][3], arr[inx][1], ld_mode, arr[inx][2]);
+	  UPDATE DB.DBA.CSV_LOAD_LIST 
+	      SET CL_STATE = 2, CL_DONE = CURDATETIME () 
+	    WHERE CL_FILE = arr[inx][0] 
+	      AND CL_FILE_IN_ZIP = arr[inx][3];
+	}
+    arr_done:
+      log_enable (tx_mode, 1);
+
+      IF (max_files IS NOT NULL) max_files := max_files - 100;
+
+      COMMIT WORK;
+    }
+
+ looks_empty:
+  COMMIT WORK;
+  log_message (&#39;No more files to load. Loader has finished,&#39;);
+  RETURN;
+}
+;
+</programlisting></section></docbook>

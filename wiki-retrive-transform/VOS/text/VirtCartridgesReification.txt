@@ -1,0 +1,95 @@
+---+ Reification in the Virtuoso Sponger
+
+%TOC%
+
+*Note*: some of the underlying implementation of reification is in flux
+
+
+---++What is Reification?
+
+Reification is one level of useful abstraction, in which raw triples are 
+modelled as resources in their own right, allowing description and annotation 
+of those triples.
+
+A typical use is provenance: given a particular resource to sponge, the 
+Virtuoso Sponger has many components that can contribute triples so it can be 
+useful to trace which cartridge is responsible.
+
+---+++Data Islands
+
+In addition to the datasource-specific cartridges, the HTML+Variants extractor 
+cartridge identifies several ways of embedding RDF data in HTML, which we term 
+_data islands_.
+
+   * HTML5 Microdata (itemscope, itemtype, itemprop attributes)
+   * RDFa microdata (about, property, resource attributes)
+   * JSON-LD using &lt;script type="application/ld+json"> ... </script>
+   * Turtle and N3 using &lt;script type="text/turtle"> ... </script>
+   * GRDDL (hRecipe, hCard, hCalendar, hProduct, xFolk, eRDF, etc)
+
+Additionally, if installed, 
+   * the Turtle Meta-cartridge (identifies Turtle in any "content" triple, e.g. titles, descriptions, social media post bodies, etc)
+
+---++Configuration
+
+The HTML+Variants extractor cartridge takes a handful of options by which one 
+can configure which data-islands contribute:
+
+   * rdfa=yes	- controls whether the RDFa extractor runs
+   * reify_rdfa=1	- determines whether extracted RDFa is reified
+   * reify_html5md=1	- determines whether extracted HTML5 Microdata is reified
+   * reify_jsonld=1	- determines whether extracted JSON-LD is reified
+   * <nowiki>reify_all_grddl</nowiki>=0	- determines whether all other GRDDL data is reified
+
+---++Sample Input
+
+Let us assume a very simple input HTML document, as follows:
+
+<verbatim>
+&lt;html 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  &lt;head>
+    &lt;title property="dc:title" content="Turtle test">Turtle-in-script test&lt;/title>
+    &lt;script type="text/turtle">
+    &lt;![CDATA[
+    &lt;http://example.org/person/Mark_Twain>
+	&lt;http://example.org/relation/author> 
+	&lt;http://example.org/books/Huckleberry_Finn> ;
+	&lt;http://xmlns.com/foaf/0.1/#name> "Mark Twain" .
+    ]]>
+    &lt;/script>
+    &lt;/head>
+  &lt;body>
+    &lt;h1>Testing Turtle in scripts&lt;/h1>
+    Stuff
+    &lt;hr />
+  &lt;/body>
+&lt;/html>
+</verbatim>
+
+As we can see, this contains one RDFa statement in the &lt;title> element and a 
+small pool of Turtle data in a script element.
+
+---++Sample Output
+
+When sponging with the default settings for HTML+Variants extractor cartridge 
+enabled, we see:
+
+| type | Document |
+| sameAs | #this |
+| container of | Embedded RDFa Statement 1 |
+| | Embedded TTL-script Statement 1 |
+| | Embedded TTL-script Statement 2 |
+| Title | Turtle-in-script test |
+
+Expanding the Embedded RDFa Statement 1, we see:
+
+| type | Statement |
+| label | Embedded RDFa Statement 1 |
+| described by | Turtle test |
+| | &lt;> |
+| subject | Turtle test |
+| predicate | Title |
+| object | Turtle test |
+| Sponge Time | 2014-06-11 14:42:40.200348 (xsd:date) |

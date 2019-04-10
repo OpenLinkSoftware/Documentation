@@ -1,0 +1,103 @@
+<html><body><div class="topic-text"><h1><a name="Using Git With Virtuoso Open-source"></a> Using Git With Virtuoso Open-source</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Repository%20Setup">Repository Setup</a></li> <li><a href="#Branches">Branches</a></li>
+<ul><li><a href="#The%20main%20branches">The main branches</a></li> <li><a href="#Feature%20branches">Feature branches</a></li> </ul><li><a href="#Tagging%20a%20release">Tagging a release</a></li><ul><li><a href="#Hotfix%20Releases">Hotfix Releases</a></li> </ul><li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>Due to the nature of its development cycle which includes several active development versions we apply a slightly more involved git usage paradigm as compared to smaller <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> projects.</p>
+<p>The main difference is that instead of a single <code>devel</code> branch we have more than one which means a slightly more complicated management of releases and hot fixes.</p>
+<h2><a name="Repository Setup"></a> Repository Setup</h2>
+<p>We use a moderated development model where there is one &quot;official&quot; repository that is private.
+ Only the administrator can push changes to this repository.
+Developers work in their own clones of the repository and send merge requests to the administrator (details of this procedure are not clear yet.
+ We might want to setup or use a web frontend.)</p>
+<h2><a name="Branches"></a> Branches</h2>
+<p>Our development model is based on the <a href="http://nvie.com/posts/a-successful-git-branching-model/" class="absuri">git workflow</a> originally presented by <a href="http://nvie.com/" class="absuri">Vincent Driessen</a>.
+ We have a master branch which always reflects the current release, development branches for each version of VOS, stable branches for each major release of VOS, feature branches and release branches.
+ The only difference to the mentioned git flow system is that we have more than one stable branch - where git flow (and other smaller <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> projects) uses branch <code>master</code> for tracking the current stable state, we use branches prefixed <code>stable</code>.</p>
+<p>Let us look at the branches in detail.</p>
+<h3><a name="The main branches"></a> The main branches</h3>
+<p>We have a set of main branches with an infinite lifetime, its number depends on the number of currently developed versions of VOS.
+ Here we assume that we work on VOS6 and VOS7 in parallel, VOS6 being the production version.
+ This results in two main development branches:</p>
+<ul><li><tt>develop/5</tt> </li>
+<li><tt>develop/6</tt> </li>
+<li><tt>develop/7</tt></li>
+</ul><p>The branch <tt>develop/6</tt> always reflects the latest state in active development of the VOS6 series.
+ New features are integrated here.</p>
+<p>In addition we have one branch for each major release of VOS:</p>
+<ul><li><tt>stable/5</tt> </li>
+<li><tt>stable/6</tt> </li>
+<li><tt>stable/7</tt></li>
+</ul><p>These are branched off their respective <code>develop</code> branches whenever a new major release is about to be created.</p>
+<p>The <code>master</code> branch always matches the latest stable release; release tags are only created on the <code>master</code> branch.</p>
+<h3><a name="Feature branches"></a> Feature branches</h3>
+<p>New features are developed in feature-branches (sometimes called topic branches).
+ Feature branches typically have the prefix <tt>feature/</tt> and should always be branched off a development branch:</p>
+<br><pre>$ git checkout -b feature/myFeature develop/6
+</pre><p> Once the feature is done it should be merged back into the originating branch:</p>
+<br><pre>$ git checkout develop/6
+$ git merge --no-ff feature/myFeature
+$ git branch -d feature/myFeature
+</pre><p> The <tt>--no-ff</tt> flag causes the merge to always create a new commit object, even if the merge could be performed with a fast-forward.
+ This avoids losing information about the historical existence of a feature branch and groups together all commits that together added the feature.</p>
+<p>For the time being we also allow features to be branched offs table major release branches for convenience.
+ This, however, results in a slightly more complicated procedure.
+ First we have to branch off the stable branch:</p>
+<br><pre>$ git checkout -b feature/myFeature stable/6
+</pre><p> Once the feature is done it is merged back into the stable branch: </p>
+<br><pre>$ git checkout stable/6
+$ git merge --no-ff feature/myFeature
+</pre><p> But the feature also has to be merged into the devel branch before being deleted: </p>
+<br><pre>$ git checkout develop/6
+$ git merge --no-ff feature/myFeature
+$ git branch -d feature/myFeature
+</pre><h2><a name="Tagging a release"></a> Tagging a release</h2>
+<p>A release is always tagged from a stable branch.
+ Since <code>master</code> should always reflect the current recommended stable version of VOS it does not need to be updated on every release.
+ Imagine for example a bugfix release of VOS6 when VOS7 has already been released.</p>
+<p>As soon as a <code>develop</code> branch has reached a stable state fit for a release a release branch is created in which the rest of the release preparation like version bump, ChangeLog<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ChangeLog&parent=VOSGitUsage" class="wikiword">?</a> updates, and so on are done: </p>
+<br><pre>$ git branch -b release/6.2.2 develop/6
+</pre><p> Once the branch is done it is merged back into the originating branch and the corresponding <code>stable</code> branch: </p>
+<br><pre>$ git checkout branch develop/6
+$ git merge --no-ff release/6.2.2
+$ git checkout stable/6
+$ git merge --no-ff release/6.2.2
+</pre><p> Then the release is tagged from the <code>stable</code> branch: </p>
+<br><pre>$ git checkout stable/6
+$ git tag -s v/6.2.2
+</pre><p> In case this new release is the latest recommended version the release branch also has to be merged into <code>master</code>.
+</p>
+<br><pre>$ git checkout master
+$ git merge --no-ff release/6.2.2
+</pre><p> Due to the nature of VOS development two develop branches may diverge a lot making it virtually impossible to merge one into the other.
+ Thus, if the release introduces a new major VOS version, master needs to be updated in a special way, essentially throwing away all the changes from the old major version.
+ This can be achieved by specifying a special merge method:</p>
+<br><pre>$ git checkout master
+$ git merge -Xtheirs --no-ff release/6.2.2
+</pre><p> And finally the release branch can be removed:</p>
+<br><pre>$ git branch -d release/6.2.2
+</pre><p> </p>
+<h3><a name="Hotfix Releases"></a> Hotfix Releases</h3>
+<p>Sometimes there is the need to release a hotfix.
+ A hotfix is a small bugfix release which does not necessarily be based on the latest stable release.
+ If version 6.2.0 was the latest stable release some people might still use 6.1.3 because they fear the maintenance hassle with updating to another major version.
+Thus, if a bug is found in 6.1.3 a hotfix release 6.1.4 needs to be released.
+This is done by branching off a tag:</p>
+<br><pre>$ git checkout -b hotfix/myFix v6.1.3
+</pre><p> Once the fix is done it might require merging back into the stable and/or the develop branch, depending on whether the fix still applies in the newer versions:</p>
+<br><pre>$ git checkout stable/6
+$ git merge --no-ff hotfix/myFix
+$ git checkout develop/6
+$ git merge --no-ff hotfix/myFix
+</pre><p> Tagging a hotfix release is a little different from normal release tagging as described above.
+ Since master is not touched we tag the release directly in the hotfix branch and then delete it:</p>
+<br><pre>$ git checkout hotfix/myFix
+$ git tag -s v/6.1.3
+$ git branch -d hotfix/myFix
+</pre><p> </p>
+<h2><a name="References"></a>References</h2>
+<p>See also: </p>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/GitQuickstartTips" class="wikiword">Git Quickstart and Tips</a> </li>
+<li><a href="http://progit.org/book/" class="absuri">ProGit - Online-Book on Git Usage</a> </li>
+<li><a href="http://help.github.com/" class="absuri">GitHub Help</a></li>
+</ul><p> </p>
+</div></body></html>

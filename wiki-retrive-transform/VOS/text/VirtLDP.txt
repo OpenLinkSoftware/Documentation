@@ -1,0 +1,257 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+---+ Using Virtuoso as LDP Client and Server
+
+%TOC%
+
+---++ What is the Linked Data Platform (LDP)?
+
+Use of HTTP to Create, Read, Update, and Delete Linked Data Resources (Documents) that are part of a collection (folder). Naturally, this kind of task posses the following questions and associated challenges:
+
+   * Document Resource Issues
+      * What resource content notations and across-the-wire content serialization formats should be used?
+      * How is collision detection for updates handled with maximum concurrent (i.e. optimistically)?
+      * How do client handle changes to associated resources, such as content type changes?
+      * How servers ease the burden of constraints associated with resource creation?
+   * Container/Folder Resource Issues
+      * To which address/location (URL) on an HTTP network can I <code>POST</code> my resource member or container creation requests?
+      * How do I <code>GET</code> (retrieve) a list of existing member resources associated with a container?
+      * How is container ordering of member resources expressed and represented?
+      * How do I obtain metadata about the resources that are members of a container, and the container resource itself?
+      * How do I <code>GET</code> retrieve resources that are members of a large container, using paging?  
+      * How do I deal with metadata querying scoped to member resources and container resources?
+
+The [[http://www.w3.org/TR/ldp/][Linked Data Platform (LDP)]] was developed by W3C members to answer many of these questions.
+
+---++ Why is the LDP important?
+
+It formalizes Linked Data deployment and use by standardizing the representation and behavior of, and the generation 
+and processing of HTTP requests regarding, [[http://www.w3.org/TR/ldp/#linked-data-platform-resources][Linked Data Platform Resources]] 
+(LDPRs) and [[http://www.w3.org/TR/ldp/#linked-data-platform-containers][Linked Data Platform Containers]] (LDPCs).  Using the Linked 
+Data Platform thereby increases availability and accessibility of Linked Data on the Web.
+
+--++ How to use Virtuoso's LDP features
+
+Virtuoso's LDP functionality is a built-in, integral part of the product. 
+
+Virtuoso operates as an LDP Client, generating HTTP requests and processing HTTP responses that conform to the rules defined for 
+LDPRs and LDPCs, when it is operating against LDP Servers.
+
+Virtuoso also operates as an LDP Server, by processing HTTP requests and generating HTTP responses that conform to the rules 
+defined for LDPRs and LDPCs.  The following examples use the commandline utility <code>curl</code> to demonstrate Virtuoso's 
+LDP Server implementation.
+
+---+++ Example 1: How to enable LDP on a folder/collection
+
+One could use the following options to enable LDP on a given folder/collection of resources:
+
+   1 Via Conductor as a property 'LDP' on the given folder designated as root for LDP:
+      1 Log in at <code>http://host:port/conductor </code> and go to "Web Application Server" -> "Content Management":
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp1.png" target="_blank"><img src="%ATTACHURLPATH%/ldp1.png" width="600px" /></a>%BR%%BR%
+      1 Provide location path for the destination folder/collection to be LDP enabled, in our example we will enable user's "demo" "Public" folder:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp2.png" target="_blank"><img src="%ATTACHURLPATH%/ldp2.png" width="600px" /></a>%BR%%BR%
+      1 Click in "Action" column the "Updated properties" button:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp3.png" target="_blank"><img src="%ATTACHURLPATH%/ldp3.png" width="600px" /></a>%BR%%BR%     
+      1 In the presented form click "Add" button in the "WebDAV" section and enter respectively:
+         * for "Property": <code>LDP</code> ;
+         * for "Value": <code>ldp:BasicContainer</code> ;  
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp4.png" target="_blank"><img src="%ATTACHURLPATH%/ldp4.png" width="600px" /></a>%BR%%BR%     
+      1 Finally click "Update".
+   1 Via [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsBriefcase][ODS-Briefcase]] UI:
+      1 Go to <code>http://host:port/ods </code> and after providing your user credentials, go to Briefcase:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp5.png" target="_blank"><img src="%ATTACHURLPATH%/ldp5.png" width="600px" /></a>%BR%%BR%     
+      1  For the folder/collection to be LDP enabled, click in its "Action" column the "Updated properties" button:    
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp6.png" target="_blank"><img src="%ATTACHURLPATH%/ldp6.png" width="600px" /></a>%BR%%BR%     
+      1 In the presented form click "Add" button in the "WebDAV" section and enter respectively:
+         * for "Property": <code>LDP</code> ;
+         * for "Value": <code>ldp:BasicContainer</code> ;  
+%BR%%BR%<a href="%ATTACHURLPATH%/ldp7.png" target="_blank"><img src="%ATTACHURLPATH%/ldp7.png" width="600px" /></a>%BR%%BR%     
+      1 Finally click "Update".
+   1 Via command line e.g.:
+<verbatim>
+DB.DBA.DAV_PROP_SET ('/DAV/ldp/', 'LDP', 'ldp:BasicContainer', 'dav','dav', 1);
+</verbatim> 
+
+
+
+---+++ Example 2: Create and verify a simple LDPR
+
+   1 Write a bit of text ("<code>This content is not Turtle.</code>" in this example) to a text file ("<code>test2.txt</code>") in DAV.
+<verbatim>
+% curl --verbose -iX PUT -H "Content-Type: text/plain" -u dav:dav -d 'This content is not Turtle.' "http://example.com/DAV/test2.txt"  > ldp/ldp1.log
+</verbatim>
+   1 The server's response should resemble this --
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/06.04.3137 (Linux) x86_64-unknown-linux-gnu  VDB
+Connection: close
+Date: Fri, 26 Jul 2013 11:59:52 GMT
+Accept-Ranges: bytes
+Content-Type: text/plain
+Link: <>;rel=<http://www.w3.org/ns/ldp/Resource>
+Content-Length: 172
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+  <HTML>
+    <HEAD>
+      <TITLE>201 Created</TITLE>
+    </HEAD>
+    <BODY>
+      <H1>Created</H1>Resource /DAV/test2.txt has been created.
+    </BODY>
+  </HTML>
+</verbatim>
+   1 Confirm that the server took the submission as LDP data --
+<verbatim>
+% curl --verbose -iH "Accept: text/turtle, */*;q=0.1" -u dav:dav http://example.com/DAV/test2.txt > ldp/ldp2.log
+</verbatim>
+   1 The server should return a "text/turtle" LDP response similar to this --
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/06.04.3136 (Win64) x86_64-generic-win-64  VDB
+Connection: Keep-Alive
+Date: Sun, 16 Jun 2013 21:04:04 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle; charset=UTF-8
+Content-Length: 472
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ldp:     <http://www.w3.org/ns/ldp#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/DAV/test2.txt>
+  a                dcterms:PhysicalResource ;
+  dcterms:title    "test2.txt" ;
+  dcterms:creator  "dav" ;
+  dcterms:created  "2013-06-17 03:04:04" ;
+  dcterms:modified "2013-06-17 03:04:04" ;
+  rdfs:label       "test2.txt" .
+</verbatim>
+
+
+---+++ Example 3: Access Resources in an LDPC (e.g., a DAV folder)
+
+   1 Request all LDP data for an LDPC, such as the DAV root folder, to be returned as Turtle --
+<verbatim>
+% curl --verbose -iH "Accept: text/turtle, */*;q=0.1" -u dav:dav http://example.com/DAV/ > ldp/ldp3.log
+</verbatim>
+   1 The server should return <code>text/turtle</code> of LDP data describing all Resources (both LDPRs and non LDPRs) 
+inside the container, similar to this --
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/06.04.3136 (Win64) x86_64-generic-win-64  VDB
+Connection: Keep-Alive
+Date: Sun, 16 Jun 2013 21:04:04 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle; chartset=UTF-8
+Content-Length: 621
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ldp:     <http://www.w3.org/ns/ldp#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/DAV/>
+  a                       ldp:Container ;
+  dcterms:title           "DAV" ;
+  dcterms:creator         "dav" ;
+  dcterms:created         "2013-06-17 01:18:23" ;
+  dcterms:modified        "2013-06-17 01:18:23" ;
+  ldp:membershipPredicate rdfs:member ;
+  rdfs:member             <http://example.com/DAV/VAD/> ;
+  rdfs:member             <http://example.com/DAV/home/> ;
+  rdfs:member             <http://example.com/DAV/test2.txt> ;
+  rdfs:label              "DAV" .
+</verbatim>
+
+
+---+++ Example 4: Access non-LDP Resources in an LDPC (e.g., DAV folder)
+
+   1 Request that all <code>non-member-properties</code> LDP data for an LDPC, such as the DAV root folder, be returned 
+as Turtle --
+<verbatim>
+% curl --verbose -iH "Accept: text/turtle, */*;q=0.1" -u dav:dav http://example.com/DAV/?non-member-properties > ldp/ldp4.log
+</verbatim>
+   1 The server should return <code>text/turtle</code> containing LDP data that describes any non-LDP Resources (that is, 
+any Resources which are not LDPRs) inside the container:
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/06.04.3136 (Win64) x86_64-generic-win-64  VDB
+Connection: Keep-Alive
+Date: Sun, 16 Jun 2013 21:04:04 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle; chartset=UTF-8
+Content-Length: 477
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ldp:     <http://www.w3.org/ns/ldp#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/DAV/>
+  a                       ldp:Container ;
+  dcterms:title           "DAV" ;
+  dcterms:creator         "dav" ;
+  dcterms:created         "2013-06-17 01:18:23" ;
+  dcterms:modified        "2013-06-17 01:18:23" ;
+  ldp:membershipPredicate rdfs:member ;
+  rdfs:label              "DAV" .
+</verbatim>
+
+---+++ Example 5: Create an LDPR from an existing text file containing Turtle data
+
+   1 Suppose you have a file named <code>ldp-books.ttl<code>, in a folder named <code>temp</code>, with the following 
+Turtle content --
+<verbatim>
+@prefix    :  <http://example.org/book/> .
+@prefix  ns:  <http://example.org/ns#>   .
+
+:book1  <http://purl.org/dc/elements/1.1/title>  "LDP Tutorial"
+   ;                                   ns:price  42
+   ;                                ns:discount  0.2
+   .
+
+:book2  <http://purl.org/dc/elements/1.1/title>  "The Semantic Web"
+   ;                                   ns:price  23
+   ;                                ns:discount  0.25 
+   .
+</verbatim>
+   1 Upload the file to DAV --
+<verbatim>
+% curl --verbose -iX PUT -d @temp/ldp-books.ttl -u dav:dav -H 'Content-Type: text/turtle' http://example.com/DAV/test4.ttl   > ldp/ldp5.log
+</verbatim>
+   1 The server's response should resemble the following --
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/06.04.3136 (Win64) x86_64-generic-win-64  VDB
+Connection: close
+Date: Sun, 16 Jun 2013 21:04:05 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle
+Link: <>;rel=<http://www.w3.org/ns/ldp/Resource>
+Content-Length: 172
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+  <HTML>
+    <HEAD>
+      <TITLE>201 Created</TITLE>
+    </HEAD>
+    <BODY>
+      <H1>Created</H1>Resource /DAV/test4.ttl has been created.
+    </BODY>
+  </HTML>
+</verbatim>
+
+
+
+---++ Related 
+
+   * [[http://www.w3.org/TR/ldp/][Linked Data Platform 1.0]]
+   * [[VirtGraphProtocolCURLExamples][SPARQL 1.1. Graph Store HTTP Protocol cURL Examples Collection]]
+   * [[VirtGraphUpdateProtocol][Manage RDF data by using SPARQL 1.1. Graph Store HTTP Protocol]]
+   * [[VirtRWWInteractionACLcURL][RWW Interaction & ACL Testing using cURL]]
+   * [[VirtuosoLDPSimpleCurlExamples][LDP in Virtuoso - Simple Curl Examples]]

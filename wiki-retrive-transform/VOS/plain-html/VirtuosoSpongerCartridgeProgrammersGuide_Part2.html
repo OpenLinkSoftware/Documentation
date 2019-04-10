@@ -1,0 +1,1120 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> </p>
+<h1><a name="Virtuoso Programmer's Guide - RDF Middleware (&quot;Sponger&quot;) (Part 2)"></a>Virtuoso Programmer&#39;s Guide - RDF Middleware (&quot;Sponger&quot;) (Part 2)</h1>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeProgrammersGuide" class="wikiword">Part 1</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeProgrammersGuide_Part3" class="wikiword">Part 3</a></li>
+</ul><h3><a name="Contents (Part 2)"></a>Contents (Part 2)</h3>
+ <ul><li><a href="#AncCreatingCustomCartridges" style="anchorhere">Creating Custom Cartridges</a> <ul><li>The Anatomy of a Cartridge <ul><li>Cartridge Hook Function <ul><li>Return Value </li>
+<li>Specifying the Target Graph </li>
+<li>Specifying &amp; Retrieving Cartridge Specific Options </li>
+<li>API Keys </li>
+</ul></li>
+<li>XSLT - The Fulchrum <ul><li>Virtuoso&#39;s XML Infrastructure &amp; Tools </li>
+</ul></li>
+<li>General Cartridge Pipeline </li>
+<li>Error Handling with Exit handlers </li>
+<li>Loading RDF into the Quad Store <ul><li>RDF_LOAD_RDFXML &amp; TTLP </li>
+<li>Attribution </li>
+<li>Deleting Existing Graphs </li>
+<li>Proxy Service Data Expiration </li>
+</ul></li>
+</ul></li>
+<li>Ontology Mapping <ul><li>Passing Parameters to the XSLT Processor </li>
+<li>An RDF Description Template <ul><li>Defining A Generic Resource Description Wrapper </li>
+<li>Using SIOC as a Generic Container Model </li>
+<li>Naming Conventions for Sponger Generated Descriptions </li>
+</ul></li>
+</ul></li>
+<li>Registering &amp; Configuring Cartridges <ul><li>Using SQL </li>
+<li>Using Conductor </li>
+<li>Installing Stylesheets </li>
+</ul></li>
+<li>Example - MusicBrainz: A Music Metadatabase <ul><li>MusicBrainz XML Web Service </li>
+<li>RDF Output </li>
+<li>Cartridge Hook Function </li>
+<li>XSLT Stylesheet </li>
+</ul></li>
+<li>Meta-Cartridges <ul><li>Registration </li>
+<li>Invocation </li>
+</ul></li>
+<li>Example - A Campaign Finance Meta-Cartridge for Freebase <ul><li>New York Times Campaign Finance (NYTCF) API </li>
+<li>Sponging Freebase <ul><li>Using <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Explorer </li>
+<li>Using the Command Line </li>
+</ul></li>
+<li>Installing the Meta-Cartridge </li>
+<li>NYTCF Meta-Cartridge Functions </li>
+<li>NYTCF Meta-Cartridge Stylesheet </li>
+<li>Testing the Meta-Cartridge </li>
+<li>How The Meta-Cartridge Works</li>
+</ul></li>
+</ul></li>
+</ul><a name="AncCreatingCustomCartridges">
+<p> </p>
+<h1><a name="Creating Custom Cartridges"></a>Creating Custom Cartridges</h1>
+<p>The Sponger is fully extensible by virtue of its pluggable cartridge architecture.
+ New data formats can be retrieved by creating new cartridges.
+ While <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> is active in adding cartridges for new data sources, you are free to develop your own custom cartridges.
+ Entity extractors can be built using Virtuoso PL, C/C++, Java or any other external language supported by Virtuoso&#39;s Server Extension API.
+Of course, Virtuoso&#39;s own entity extractors are written in Virtuoso PL.</p>
+<h2><a name="The Anatomy of a Cartridge"></a>The Anatomy of a Cartridge</h2>
+<h3><a name="Cartridge Hook Function"></a>Cartridge Hook Function</h3>
+<p>Every Virtuoso PL hook function used to plug a custom Sponger cartridge into the Virtuoso SPARQL engine must have a parameter list with the following parameters (the names of the parameters are not important, but their order and presence are) :</p>
+<ul><li><b>in graph_iri varchar:</b> the IRI of the graph being retrieved/crawled</li>
+</ul><ul><li><b>in new_origin_uri varchar:</b> the URL of the document being retrieved</li>
+</ul><ul><li><b>in dest varchar:</b> the destination/target graph IRI</li>
+</ul><ul><li><b>inout content any:</b> the content of the retrieved document</li>
+</ul><ul><li><b>inout async_queue any:</b> if the PingService<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/PingService&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> initialization parameter has been configured in the [SPARQL] section of the virtuoso.ini file, this is a pre-allocated asynchronous queue to be used to call the ping service</li>
+</ul><ul><li><b>inout ping_service any:</b> the URL of a ping service, as assigned to the PingService<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/PingService&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> parameter in the [SPARQL] section of the virtuoso.ini configuration file.
+ PingTheSemanticWeb<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/PingTheSemanticWeb&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> is an example of a such a service.
+ See Appendix A for more details.</li>
+</ul><ul><li><b>inout api_key any:</b> a string value specific to a given cartridge, contained in the RC_KEY column of the DB.DBA.SYS_RDF_CARTRIDGES table.
+ The value can be a single string or a serialized array of strings providing cartridge specific data.</li>
+</ul><ul><li><b>inout opts any:</b> cartridge specific options held in a Virtuoso/PL vector which acts as an array of key-value pairs.</li>
+</ul><h4><a name="Return Value"></a>Return Value</h4>
+<p>If the hook procedure returns zero the next cartridge will be tried.
+ If the result is negative the sponging process stops, instructing the SPARQL engine that nothing was retrieved.
+ If the result is positive the process stops, this time instructing the SPARQL engine that RDF data was successfully retrieved.</p>
+<p>If your cartridge should need to test whether other cartridges are configured to handle a particular data source, the following extract taken from the RDF_LOAD_CALAIS hook procedure illustrates how you might do this:</p>
+<br><pre>if (xd is not null)
+{
+  -- Sponging successful. Load Network Resource Data being fetched in Virtuoso quad store
+  DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
+  flag := 1;
+}
+
+declare ord any;
+ord := (select RM_ID from DB.DBA.SYS_RDF_MAPPERS where 
+	  RM_HOOK = &#39;DB.DBA.RDF_LOAD_CALAIS&#39;);
+for select RM_PATTERN from DB.DBA.SYS_RDF_MAPPERS where 
+  RM_ID &gt; ord and RM_TYPE = &#39;URL&#39; and RM_ENABLED = 1 order by RM_ID do
+{
+  if (regexp_match (RM_PATTERN, new_origin_uri) is not null)
+    -- try next candidate cartridge
+    flag := 0;
+}
+return flag;
+</pre><p> </p>
+<h4><a name="Specifying the Target Graph"></a>Specifying the Target Graph</h4>
+<p>Two cartridge hook function parameters contain graph IRIs, graph_iri and dest.
+ graph_iri identifies an input graph being crawled.
+ dest holds the IRI specified in any input:grab-destination pragma defined to control the SPARQL processor&#39;s IRI dereferencing.
+ The pragma overrides the default behaviour and forces all retrieved triples to be stored in a single graph, irrespective of their graph of origin.</p>
+<p>So, under some circumstances depending on how the Sponger has been invoked and whether it is being used to crawl an existing RDF graph, or derive RDF data from a non-RDF data source, dest may be null.</p>
+<p>Consequently, when loading Network Resource being fetched into the quad store, cartridges typically specify the graph to receive the data using the coalesce function which returns the first non-null parameter.
+ e.g.</p>
+<code>DB.DBA.RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));</code><p>Here xd is an RDF/XML string holding the fetched RDF.</p>
+<h4><a name="Specifying &amp; Retrieving Cartridge Specific Options"></a>Specifying &amp; Retrieving Cartridge Specific Options</h4>
+<p>The hook function prototype allows cartridge specific data to be passed to a cartridge through the RM_OPTIONS parameter, a Virtuoso/PL vector which acts as a heterogeneous array.</p>
+<p>In the following example, two options are passed, &#39;add-html-meta&#39; and &#39;get-feeds&#39; with both values set to &#39;no&#39;.
+</p>
+<br><pre>insert soft DB.DBA.SYS_RDF_MAPPERS (
+  RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DESCRIPTION, RM_OPTIONS
+)
+values (
+  &#39;(text/html)|(text/xml)|(application/xml)|(application/rdf.xml)&#39;,
+  &#39;MIME&#39;, &#39;DB.DBA.RDF_LOAD_HTML_RESPONSE&#39;, null, &#39;xHTML&#39;, 
+  vector (&#39;add-html-meta&#39;, &#39;no&#39;, &#39;get-feeds&#39;, &#39;no&#39;)
+);
+</pre><p>The RM_OPTIONS vector can be handled as an array of key-value pairs using the get_keyword function.
+ get_keyword performs a case sensitive search for the given keyword at every even index of the given array.
+ It returns the element following the keyword, i.e.
+ the keyword value.</p>
+<p>Using get_keyword, any options passed to the cartridge can be retrieved using an approach similar to that below:</p>
+<br><pre>create procedure DB.DBA.RDF_LOAD_HTML_RESPONSE (
+  in graph_iri varchar, in new_origin_uri varchar, in dest varchar,
+  inout ret_body any, inout aq any, inout ps any, inout _key any,
+  inout opts any )
+{
+  declare get_feeds, add_html_meta;
+  ...
+  get_feeds := add_html_meta := 0;
+  if (isarray (opts) and 0 = mod (length(opts), 2))
+  {
+    if (get_keyword (&#39;get-feeds&#39;, opts) = &#39;yes&#39;)
+      get_feeds := 1;
+    if (get_keyword (&#39;add-html-meta&#39;, opts) = &#39;yes&#39;)
+      add_html_meta := 1;
+  }
+  ...
+</pre><p> </p>
+<h4><a name="API Keys"></a>API Keys</h4>
+<p>Certain web services require applications to provide an API key to use the service.
+ <a href="http://www.flickr.com" class="absuri">Flickr</a> is one such service.
+ Developers must register to obtain a key.
+ See for instance <a href="http://developer.yahoo.com/flickr/." class="absuri">http://developer.yahoo.com/flickr/.</a> In order to cater for services which require an application key, the Cartridge Registry SYS_RDF_MAPPERS table includes an RM_KEY column to store any key required for a particular service.
+ This value is passed to the service&#39;s cartridge through the _key parameter of the cartridge hook function.</p>
+<p>Alternatively a cartridge can store a key value in the virtuoso.ini configuration file and retrieve it in the hook function.</p>
+<p>The next example shows an extract from the Flickr cartridge hook function DB.DBA.RDF_LOAD_FLICKR_IMG and the use of an API key.
+ Also, commented out, is a call to cfg_item_value() which illustrates how the API key could instead be stored and retrieved from the SPARQL section of the virtuoso.ini file.
+</p>
+<br><pre>create procedure DB.DBA.RDF_LOAD_FLICKR_IMG (
+in graph_iri varchar, in new_origin_uri varchar, in dest varchar,
+inout _ret_body any, inout aq any, inout ps any, inout _key any, 
+inout opts any )
+{
+declare xd, xt, url, tmp, api_key, img_id, hdr, exif any;
+declare exit handler for sqlstate &#39;*&#39;
+{
+ return 0;
+};
+tmp := sprintf_inverse (new_origin_uri,
+  &#39;http://farm%s.static.flickr.com/%s/%s_%s.%s&#39;, 0);
+img_id := tmp[2];
+api_key := _key; 
+--cfg_item_value (virtuoso_ini_path (), &#39;SPARQL&#39;, &#39;FlickrAPIkey&#39;);
+if (tmp is null or length (tmp) &lt;&gt; 5 or not isstring (api_key))
+  return 0;
+url :=  sprintf(&#39;http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&amp;photo_id=%s&amp;api_key=%s&#39;,img_id, api_key);
+tmp := http_get (url, hdr);
+</pre><p> </p>
+<h3><a name="XSLT - The Fulchrum"></a>XSLT - The Fulchrum</h3>
+<p><a href="http://en.wikipedia.org/wiki/XSLT" class="absuri">XSLT</a> is the fulchrum of all <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> supplied cartridges.
+ It provides the most convenient means of converting structured data extracted from web content by a cartridge&#39;s Entity Extractor into RDF.</p>
+<h4><a name="Virtuoso's XML Infrastructure &amp; Tools"></a>Virtuoso&#39;s XML Infrastructure &amp; Tools</h4>
+<p>Virtuoso&#39;s <a href="http://docs.openlinksw.com/virtuoso/webandxml.html" class="absuri">XML support</a> and <a href="http://docs.openlinksw.com/virtuoso/xslttrans.html" class="absuri">XSLT</a> support are covered in detail in the on-line documentation.
+ Virtuoso includes a highly capable XML parser and supports XPath, XQuery, XSLT and XML Schema validation.</p>
+<p>Virtuoso supports extraction of XML documents from SQL datasets.
+ A SQL long varchar, long xml or xmltype column in a database table can contain XML data as text or in a binary serialized format.
+ A string representing a well-formed XML entity can be converted into an entity object representing the root node.</p>
+<p>While Sponger cartridges will not normally concern themselves with handling XML extracted from SQL data, the ability to convert a string into an in-memory XML document is used extensively.
+The function xtree_doc(string) converts a string into such a document and returns a reference to the document&#39;s root.
+ This document together with an appropriate stylesheet forms the input for the transformation of the extracted entities to RDF using XSLT.
+ The input string to xtree_doc generally contains structured content derived from a web service.</p>
+<h5><a name="Virtuoso XSLT Support"></a>Virtuoso XSLT Support</h5>
+<p>Virtuoso implements XSLT 1.0 transformations as SQL callable functions.
+ The xslt() Virtuoso/PL function applies a given stylesheet to a given source XML document and returns the transformed document.
+Virtuoso provides a way to extend the abilities of the XSLT processor by creating user defined XPath functions.
+ The functions xpf_extension() and xpf_extension_remove() allow addition and removal of XPath extension functions.</p>
+<h3><a name="General Cartridge Pipeline"></a>General Cartridge Pipeline</h3>
+<p>The broad pipeline outlined here reflects the steps common to most cartridges: </p>
+<ul><li>Redirect from the requested URL to a Web service which returns XML </li>
+<li>Stream the content into an in-memory XML document </li>
+<li>Convert it to the required RDF/XML, expressed in the chosen ontology, using XSLT </li>
+<li>Encode the RDF/XML as UTF-8 </li>
+<li>Load the RDF/XML into the quad store</li>
+</ul><p>The <a href="http://musicbrainz.org/" class="absuri">MusicBrainz</a> cartridge typifies this approach.
+ MusicBrainz is a community music metadatabase which captures information about artists, their recorded works, and the relationships between them.
+ Artists always have a unique ID,  so the URL <a href="http://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9.html" class="absuri">http://musicbrainz.org/artist/4d5447d7-c61c-4120-ba1b-d7f471d385b9.html</a> takes you directly to entries for John Lennon.</p>
+<p>If you were to look at this page in your browser, you would see that the information about the artist contains no RDF data.
+ However, the cartridge is configured to intercept requests to URLs of the form http://musicbrainz.org/([^/]*)/([^.]*) and redirect to the cartridge to fetch all the available information on the given artist, release, track or label.</p>
+<p>The cartridge extracts entities by redirecting to the MusicBrainz XML Web Service using as the basis for the initial query the item ID, e.g.
+ an artist or label ID, extracted from the original URL.
+ Stripped to its essentials, the core of the cartridge is:</p>
+<br><pre>webservice_uri := sprintf (&#39;http://musicbrainz.org/ws/1/%s/%s?type=xml&amp;inc=%U&#39;,
+					kind, id, inc);
+content := RDF_HTTP_URL_GET (webservice_uri, &#39;&#39;, hdr, &#39;GET&#39;, &#39;Accept: */*&#39;);
+xt := xtree_doc (content);
+...
+xd := DB.DBA.RDF_MAPPER_XSLT (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/mbz2rdf.xsl&#39;, xt);
+...
+xd := serialize_to_UTF8_xml (xd);
+DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
+</pre><p>In the above outline, RDF_HTTP_URL_GET sends a query to the MusicBrainz web service, using query parameters appropriate for the original request, and retrieves the response using HTTP GET.</p>
+<p>The returned XML is parsed into an in-memory parse tree by xtree_doc.
+ Virtuoso/PL function RDF_MAPPER_XSLT is a simple wrapper around the function xslt which sets the current user to dba before returning an XML document transformed by an XSLT stylesheet, in this case mbz2rdf.xsl.
+ Function serialize_to_UTF8_xml changes the character set of the in-memory XML document to UTF8.
+Finally, RM_RDF_LOAD_RDFXML is a wrapper around RDF_LOAD_RDFXML which parses the content of an RDF/XML string into a sequence of RDF triples and loads them into the quad store.
+XSLT stylesheets are usually held in the DAV/VAD/cartridges/xslt/main folder of Virtuoso&#39;s <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> store.
+ registry_get(&#39;cartridges_path&#39;) returns the Cartridges VAD path, &#39;DAV/VAD/cartridges&#39;, from the Virtuoso registry.</p>
+<p>More detailed descriptions of these Virtuoso functions can be found in the section &#39;Useful Virtuoso Functions&#39; later in this document, or in the on-line Virtuoso Functions Guide.</p>
+<p>The MusicBrainz cartridge is explored in more depth in the Examples section presented later.</p>
+<h3><a name="Error Handling with Exit Handlers"></a>Error Handling with Exit Handlers</h3>
+<p>Virtuoso condition handlers determine the behaviour of a Virtuoso/PL procedure when a condition occurs.
+ You can declare one or more condition handlers in a Virtuoso/PL procedure for general SQL conditions or specific SQLSTATE values.
+ If a statement in your procedure raises an SQLEXCEPTION condition and you declared a handler for the specific SQLSTATE or SQLEXCEPTION condition the server passes control to that handler.
+ If a statement in your Virtuoso/PL procedure raises an SQLEXCEPTION condition, and you have not declared a handler for the specific SQLSTATE or the SQLEXCEPTION condition, the server passes the exception to the calling procedure (if any).
+ If the procedure call is at the top-level, then the exception is signaled to the calling client.</p>
+<p>A number of different condition handler types can be declared (see the <a href="http://docs.openlinksw.com/virtuoso/handlingplcondit.html" class="absuri">Virtuoso reference documentation</a> for more details.) Of these, exit handlers are probably all you will need.
+ An example is shown below which handles any SQLSTATE.
+ Commented out is a debug statement which outputs the message describing the SQLSTATE.
+</p>
+<br><pre>create procedure DB.DBA.RDF_LOAD_SOCIALGRAPH (in graph_iri varchar, ...)
+{
+  declare qr, path, hdr any;
+  ...
+  declare exit handler for sqlstate &#39;*&#39;
+  {
+    -- dbg_printf (&#39;%s&#39;, __SQL_MESSAGE);
+    return 0;
+  };
+  ...
+  -- data extraction and mapping successful
+  return 1;
+}
+</pre><p>Exit handlers are used extensively in the Virtuoso supplied cartridges.
+ They are useful for ensuring graceful failure when trying to convert content which may not conform to your expectations.
+ The RDF_LOAD_FEED_SIOC procedure (which is used internally by several cartridges) shown below uses this approach:</p>
+<br><pre>-- /* convert the feed in rss 1.0 format to sioc */
+create procedure DB.DBA.RDF_LOAD_FEED_SIOC (in content any, in iri varchar, in graph_iri varchar, in is_disc int := &#39;&#39;)
+{
+  declare xt, xd any;
+  declare exit handler for sqlstate &#39;*&#39;
+    {
+      goto no_sioc;
+    };
+  xt := xtree_doc (content);
+  xd := DB.DBA.RDF_MAPPER_XSLT (
+      registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/feed2sioc.xsl&#39;, xt, 
+      vector (&#39;base&#39;, graph_iri, &#39;isDiscussion&#39;, is_disc));
+  xd := serialize_to_UTF8_xml (xd);
+  DB.DBA.RM_RDF_LOAD_RDFXML (xd, iri, graph_iri);
+  return 1;
+no_sioc:
+  return 0;
+}
+</pre><p> </p>
+<h3><a name="Loading RDF into the Quad Store"></a>Loading RDF into the Quad Store</h3>
+<h4><a name="RDF_LOAD_RDFXML &amp; TTLP"></a>RDF_LOAD_RDFXML &amp; TTLP</h4>
+<p>The two main Virtuoso/PL functions used by the cartridges for loading RDF data into the Virtuoso quad store are DB.DBA.TTLP and DB.DBA.RDF_LOAD_RDFXML.
+ Multithreaded versions of these functions, DB.DBA.TTLP_MT and DB.DBA.RDF_LOAD_RDFXML_MT, are also available.</p>
+RDF_LOAD_RDFXML parses the content of an RDF/XML string as a sequence of RDF triples and loads then into the quad store.
+ TTLP parses TTL (Turtle or N3) and places its triples into quad storage.
+Ordinarily, cartridges use RDF_LOAD_RDFXML.
+ However there may be occasions where you want to insert statements written as TTL, rather than RDF/XML, in which case you should use TTLP.<h4><a name="Attribution"></a>Attribution</h4>
+<p>Many of the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> supplied cartridges actually use RM_RDF_LOAD_RDFXML to load data into the quad store.
+ This is a thin wrapper around RDF_LOAD_RDFXML which includes in the generated graph an indication of the external ontologies being used.
+The attribution takes the form: </p>
+<br><pre>&lt;ontologyURI&gt; a opl:DataSource .
+&lt;spongedResourceURI&gt; rdfs:isDefinedBy &lt;ontologyURI&gt; .
+&lt;ontologyURI&gt; opl:hasNamespacePrefix &quot;&lt;ontologyPrefix&gt;&quot; .
+</pre><p>where prefix opl: denotes the ontology http://www.openlinksw.com/schema/attribution#.</p>
+<h4><a name="Deleting Existing Graphs"></a>Deleting Existing Graphs</h4>
+<p>Before loading Network Resource being fetched into a graph, you may want to delete any existing graph with the same URI.
+ To do so, select the &#39;RDF&#39; &gt; &#39;Graphs&#39; menu commands in Conductor, then use the &#39;Delete&#39; command for the appropriate graph.
+ Alternatively, you can use one of the following SQL commands:<br> <code>sparql clear graph <graph-iri>;<br> or<br> <code>delete from DB.DBA.RDF_QUAD where G = DB.DBA.RDF_MAKE_IID_OF_QNAME (graph_iri);</code></graph-iri></code></p>
+<h4><a name="Proxy Service Data Expiration"></a>Proxy Service Data Expiration</h4>
+<p> When the Proxy Service is invoked by a user agent, the Sponger records the expiry date of the imported data in the table DB.DBA.SYS_HTTP_SPONGE.
+The data invalidation rules conform to those of traditional HTTP clients (Web browsers).
+ The data expiration time is determined based on subsequent data fetches of the same resource.
+ The first data retrieval records the &#39;expires&#39; header.
+ On subsequent fetches, the current time is compared to the expiration time stored in the local cache.
+ If HTTP &#39;expires&#39; header data isn&#39;t returned by the source data server, the Sponger will derive its own expiration time by evaluating the &#39;date&#39; header and &#39;last-modified&#39; HTTP headers.</p>
+<h2><a name="Ontology Mapping"></a>Ontology Mapping</h2>
+<p>After extracting entities from a web resource and converting them to an in-memory XML document, the entities must be transformed to the target ontology using XSLT and an appropriate stylesheet.
+ A typical call sequence would be: </p>
+<br><pre>xt := xtree_doc (content);
+...
+xd := DB.DBA.RDF_MAPPER_XSLT (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/mbz2rdf.xsl&#39;, xt);
+</pre><p>Because of the wide variation in the data mapped by cartridges, it is not possible to present a typical XSL stylesheet outline.
+ The Examples section presented later includes detailed extracts from the MusicBrainz cartridge&#39;s stylesheet which provide a good example of how to map to an ontology.
+Rather than attempting to be an XSLT tutorial, the material which follows offers some general guidelines.</p>
+<h3><a name="Passing Parameters to the XSLT Processor"></a>Passing Parameters to the XSLT Processor</h3>
+<p>Virtuoso&#39;s XSLT processor will accept default values for global parameters from the optional third argument of the xslt() function.
+ This argument, if specified, must be a vector of parameter names and values of the form vector(name1, value1,...
+ nameN, valueN), where name1 ...
+ nameN must be of type varchar, and value1 ...
+ valueN may be of any Virtuoso datatype, but may not be null.</p>
+<p>This extract from the Crunchbase cartridge shows how parameters may be passed to the XSLT processor.
+ The function RDF_MAPPER_XSLT (in xslt varchar, inout xt any, in params any := null) passes the parameters vector directly to xslt().
+</p>
+<br><pre>xt := DB.DBA.RDF_MAPPER_XSLT (
+registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/crunchbase2rdf.xsl&#39;, xt, 
+vector (&#39;baseUri&#39;, coalesce (dest, graph_iri), &#39;base&#39;, base, &#39;suffix&#39;, suffix)
+);
+</pre><p>The corresponding stylesheet crunchbase2rdf.xsl retrieves the parameters baseUri, base and suffix as follows: </p>
+<br><pre>...
+&lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+  &lt;xsl:variable name=&quot;ns&quot;&gt;http://www.crunchbase.com/&lt;/xsl:variable&gt;
+  &lt;xsl:param name=&quot;baseUri&quot; /&gt;
+  &lt;xsl:param name=&quot;base&quot;/&gt;
+  &lt;xsl:param name=&quot;suffix&quot;/&gt;
+  &lt;xsl:template name=&quot;space-name&quot;&gt;
+...
+</pre><p> </p>
+<h3><a name="An RDF Description Template"></a>An RDF Description Template</h3>
+<h4><a name="Defining A Generic Resource Description Wrapper"></a>Defining A Generic Resource Description Wrapper</h4>
+<p>Many of the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> cartridges create a resource description formed to a common &quot;wrapper&quot; template which describes the relationship between the (usually) non-RDF source resource being fetched and the RDF description generated by the Sponger.
+ The wrapper is appropriate for resources which can broadly be conceived as documents.
+ It provides a generic minimal description of the source document, but also links to the much more detailed description provided by the Sponger.
+ So, instead of just emitting a resource description, the Sponger factors the container into the generated graph constituting the RDF description.</p>
+<p>The template is depicted below:</p>
+<div align="center"> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/resource_desc_template1.png" style="wikiautogen"> </div><p>To generate an RDF description corresponding to the wrapper template, a stylesheet containing the following block of instructions is used.
+ This extract is taken from the eBay cartridge&#39;s stylesheet, ebay2rdf.xsl.
+ Many of the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> cartridges follow a similar pattern.
+</p>
+<br><pre>    &lt;xsl:param name=&quot;baseUri&quot;/&gt;
+    ...
+    &lt;xsl:variable name=&quot;resourceURL&quot;&gt;
+	&lt;xsl:value-of select=&quot;$baseUri&quot;/&gt;
+    &lt;/xsl:variable&gt;
+    ...
+    &lt;xsl:template match=&quot;/&quot;&gt;
+	&lt;rdf:RDF&gt;
+	    &lt;rdf:Description rdf:about=&quot;{$resourceURL}&quot;&gt;
+		&lt;rdf:type rdf:resource=&quot;Document&quot;/&gt;
+		&lt;rdf:type rdf:resource=&quot;Document&quot;/&gt;
+		&lt;rdf:type rdf:resource=&quot;Container&quot;/&gt;
+		&lt;sioc:container_of rdf:resource=&quot;{vi:proxyIRI ($resourceURL)}&quot;/&gt;
+		&lt;foaf:primaryTopic rdf:resource=&quot;{vi:proxyIRI ($resourceURL)}&quot;/&gt;
+		&lt;dcterms:subject rdf:resource=&quot;{vi:proxyIRI ($resourceURL)}&quot;/&gt;
+	    &lt;/rdf:Description&gt;
+	    &lt;rdf:Description rdf:about=&quot;{vi:proxyIRI ($resourceURL)}&quot;&gt;
+		&lt;rdf:type rdf:resource=&quot;Item&quot;/&gt;
+		&lt;sioc:has_container rdf:resource=&quot;{$resourceURL}&quot;/&gt;
+		&lt;xsl:apply-templates/&gt;
+	    &lt;/rdf:Description&gt;
+	&lt;/rdf:RDF&gt;
+    &lt;/xsl:template&gt;
+    ...
+</pre><p> </p>
+<h4><a name="Using SIOC as a Generic Container Model"></a>Using SIOC as a Generic Container Model</h4>
+<p>The generic resource description wrapper just described uses SIOC to establish the container/contained relationship between the source resource and the generated graph.
+ Although the most important classes for the generic wrapper are obviously Container and Item, SIOC provides a generic data model of containers, items, item types, and associations between items which can be combined with other vocabularies such as FOAF and Dublin Core.</p>
+<p>SIOC defines a number of other classes, such as User, UserGroup<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/UserGroup&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a>, Role, Site, Forum and Post.
+ A separate SIOC types module (T-SIOC) extends the SIOC Core ontology by defining subclasses and subproperties of SIOC terms.
+ Subclasses include: AddressBook<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AddressBook&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a>, BookmarkFolder<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/BookmarkFolder&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a>, Briefcase, EventCalendar<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/EventCalendar&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a>, ImageGallery<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ImageGallery&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a>, Wiki, Weblog, BlogPost<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/BlogPost&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a>, Wiki plus many others.</p>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Spaces (ODS) uses SIOC extensively as a data space &quot;glue&quot; ontology to describe the base data and containment hierarchy of all the items managed by ODS applications (Data Spaces).
+ For example, ODS-Weblog is an application of type sioc:Forum.
+ Each ODS-Weblog application instance contains blogs of type sioct:Weblog.
+ Each blog is a sioc:container_of posts of type sioc:Post.</p>
+<p>Generally, when deciding how to describe resources handled by your own custom cartridge, SIOC provides a useful framework for the description which complements the SIOC-based container model adopted throughout the ODS framework.</p>
+<p>For full details of ODS, the Virtuoso Wiki topic Ods provides a useful starting point.
+ For details of the SIOC mappings used by ODS, please refer to the ODS SIOC Reference.</p>
+<h4><a name="Naming Conventions for Sponger Generated Descriptions"></a>Naming Conventions for Sponger Generated Descriptions</h4>
+<p>As can be seen from the stylesheet extract just shown, the URI of the resource description generated by the Sponger to describe the Network Resource being fetched is given by the function {vi:proxyIRI ($resourceURL)} where resourceURL is the URL of the original Network resource being fetched.
+ proxyIRI is an XPath extension function defined in rdf_mappers.sql as<br> <code>xpf_extension (&#39;http://www.openlinksw.com/virtuoso/xslt/:proxyIRI&#39;, 	&#39;DB.DBA.RDF_SPONGE_PROXY_IRI&#39;);</code><br> which maps to the Virtuoso/PL procedure DB.DBA.RDF_SPONGE_PROXY_IRI.
+ This procedure in turn generates a resource description URI which typically takes the form:<br> http://&lt;hostName:port&gt;/about/rdf/&lt;resourceURL&gt;#this</p>
+<h2><a name="Registering &amp; Configuring Cartridges"></a>Registering &amp; Configuring Cartridges</h2>
+<p>Once you have developed a cartridge, you must register it in the Cartridge Registry to have the SPARQL processor recognise and use it.
+ You should have compiled your cartridge hook function first by issuing a <code>&quot;create procedure DB.DBA.RDF_LOAD_xxx ...&quot;</code> command through one of Virtuoso&#39;s SQL interfaces.
+You can create the required Cartridge Registry entry either by adding a row to the SYS_REF_MAPPERS table directly using SQL, or by using the Conductor UI.</p>
+<h3><a name="Using SQL"></a>Using SQL</h3>
+<p>If you choose register your cartridge using SQL, possibly as part of a Virtuoso/PL script, the required SQL will typically mirror one of the following INSERT commands.</p>
+<p>Below, a cartridge for OpenCalais<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenCalais&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> is being installed which will be tried when the MIME type of the data being fetched is one of text/plain, text/xml or text/html.
+(The definition of the SYS_RDF_MAPPERS table was introduced earlier in section &#39;Cartridge Registry&#39;.) </p>
+<br><pre>insert soft DB.DBA.SYS_RDF_MAPPERS (
+  RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DESCRIPTION, RM_ENABLED)
+values (
+  &#39;(text/plain)|(text/xml)|(text/html)&#39;, &#39;MIME&#39;, &#39;DB.DBA.RDF_LOAD_CALAIS&#39;, 
+  null, &#39;Opencalais&#39;, 1);
+</pre><p>As an alternative to matching on the content&#39;s MIME type, candidate cartridges to be tried in the conversion pipeline can be identified by matching the data source URL against a URL pattern stored in the cartridge&#39;s entry in the Cartridge Registry.
+</p>
+<br><pre>insert soft DB.DBA.SYS_RDF_MAPPERS (
+  RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DESCRIPTION, RM_OPTIONS) 
+values (
+  &#39;(http://api.crunchbase.com/v/1/.*)|(http://www.crunchbase.com/.*)&#39;, &#39;URL&#39;,
+  &#39;DB.DBA.RDF_LOAD_CRUNCHBASE&#39;, null, &#39;CrunchBase&#39;, null);
+</pre><p>The value of RM_ID to set depends on where in the cartridge invocation order you want to position a particular cartridge.
+ RM_ID should be set lower than 10028 to ensure the cartridge is tried before the ODS-Briefcase (<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a>) metadata extractor, which is always the last mapper to be tried if no preceding cartridge has been successful.
+</p>
+<br><pre>update DB.DBA.SYS_RDF_MAPPERS set RM_ID = 1000 where RM_HOOK = &#39;DB.DBA.RDF_LOAD_BIN_DOCUMENT&#39;;
+</pre><p> </p>
+<h3><a name="Using Conductor"></a>Using Conductor</h3>
+<p>Cartridges can be added manually using the &#39;Add&#39; panel of the &#39;Cartridges&#39; screen.</p>
+<div align="center"> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/cartridge_conductor_config1.png" style="wikiautogen"> <p></p> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/cartridge_conductor_config2.png" style="wikiautogen"> </div><h3><a name="Installing Stylesheets"></a>Installing Stylesheets</h3>
+<p>Although you could place your cartridge stylesheet in any folder configured to be accessible by Virtuoso, the simplest option is to upload them to the DAV/VAD/cartridges/xslt/main folder using the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> browser accessible from the Conductor UI.</p>
+<div align="center"> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/xsl_listing.jpg" style="wikiautogen"> </div><p>Should you wish to locate your stylesheets elsewhere, ensure that the DirsAllowed<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DirsAllowed&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> setting in the virtuoso.ini file is configured appropriately.</p>
+<h2><a name="Example - MusicBrainz: A Music Metadatabase"></a>Example - MusicBrainz: A Music Metadatabase</h2>
+<p>To illustrate some of the material presented so far, we&#39;ll delve deeper into the <a href="http://musicbrainz.org" class="absuri">MusicBrainz</a> cartridge mentioned earlier.</p>
+<h3><a name="MusicBrainz XML Web Service"></a>MusicBrainz XML Web Service</h3>
+<p>The cartridge extracts data through the <a href="http://musicbrainz.org/doc/XMLWebService" class="absuri">MusicBrainz XML Web Service</a> using, as the basis for the initial query, an item type and MBID (MusicBrainz ID) extracted from the original URI submitted to the RDF proxy.
+ A range of item types are supported including artist, release and track.</p>
+<p>Using the album &quot;Imagine&quot; by John Lennon as an example,  a standard HTML description of the album (which has an MBID of f237e6a0-4b0e-4722-8172-66f4930198bc) can be retrieved direct from MusicBrainz using the URL:</p>
+<p><a href="http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html" class="absuri">http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html</a></p>
+<p>Alternatively, information can be extracted in XML form through the web service.
+ A description of the tracks on the album can be obtained with the query: </p>
+<br><pre>http://musicbrainz.org/ws/1/release/f237e6a0-4b0e-4722-8172-66f4930198bc?type=xml&amp;inc=tracks
+</pre><p>The XML returned by the web service is shown below (only the first two tracks are shown for brevity): </p>
+<br><pre>  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+  &lt;metadata xmlns=&quot;http://musicbrainz.org/ns/mmd-1.0#&quot; 
+   xmlns:ext=&quot;http://musicbrainz.org/ns/ext-1.0#&quot;&gt;
+    &lt;release id=&quot;f237e6a0-4b0e-4722-8172-66f4930198bc&quot; type=&quot;Album Official&quot; &gt;
+      &lt;title&gt;Imagine&lt;/title&gt;
+        &lt;text-representation language=&quot;ENG&quot; script=&quot;Latn&quot;/&gt;
+        &lt;asin&gt;B0000457L2&lt;/asin&gt;
+        &lt;track-list&gt;
+          &lt;track id=&quot;b88bdafd-e675-4c6a-9681-5ea85ab99446&quot;&gt;
+            &lt;title&gt;Imagine&lt;/title&gt;
+            &lt;duration&gt;182933&lt;/duration&gt;
+          &lt;/track&gt;
+          &lt;track id=&quot;b38ce90d-3c47-4ccd-bea2-4718c4d34b0d&quot;&gt;
+            &lt;title&gt;Crippled Inside&lt;/title&gt;
+            &lt;duration&gt;227906&lt;/duration&gt;
+          &lt;/track&gt;
+	  . . .
+        &lt;/track-list&gt;
+      &lt;/release&gt;
+  &lt;/metadata&gt;
+</pre><p>Although, as shown above, MusicBrainz defines its own <a href="http://musicbrainz.org/doc/MusicBrainzXMLMetaData" class="absuri">XML Metadata Format</a> to represent music metadata, the MusicBrainz sponger converts the raw data to a subset of the <a href="http://musicontology.com/" class="absuri">Music Ontology</a>, an RDF vocabulary which aims to provide a set of core classes and properties for describing music on the Semantic Web.
+ Part of the subset used is depicted in the following RDF graph (representing in this case a John Cale album).</p>
+<div align="center"> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/linqtordf1.png" style="wikiautogen"> </div><p>With the prefix mo: denoting the Music Ontology at <a href="http://purl.org/ontology/mo/," class="absuri">http://purl.org/ontology/mo/,</a> it can be seen that artists are represented by instances of class mo:Artist, their albums, records etc.
+ by instances of class mo:Release and tracks on these releases by class mo:Track.
+ The property foaf:made links an artist and his/her releases.
+ Property mo:track links a release with the tracks it contains.</p>
+<h3><a name="RDF Output"></a>RDF Output</h3>
+<p>An RDF description of the album can be obtained by sponging the same URL, i.e.
+ by submitting it to the Sponger&#39;s proxy interface using the URL:</p>
+<p><a href="http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html" class="absuri">http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html</a></p>
+<p>The extract below shows part of the (reorganized) RDF output returned by the Sponger for &quot;Imagine&quot;.
+ Only the album&#39;s title track is included.
+</p>
+<br><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+ xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-schema#&quot;&gt;
+
+&lt;rdf:Description 
+ rdf:about=&quot;http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html&quot;&gt;
+  &lt;rdf:type rdf:resource=&quot;http://xmlns.com/foaf/0.1/Document&quot;/&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html&quot;&gt;
+  &lt;foaf:primaryTopic xmlns:foaf=&quot;http://xmlns.com/foaf/0.1/&quot;
+   rdf:resource=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html#this&quot;/&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description rdf:about=&quot;http://purl.org/ontology/mo/&quot;&gt;
+  &lt;rdf:type rdf:resource=&quot;http://www.openlinksw.com/schema/attribution#DataSource&quot;/&gt;
+&lt;/rdf:Description&gt;
+...
+&lt;rdf:Description
+ rdf:about=&quot;http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html&quot;&gt;
+  &lt;rdfs:isDefinedBy rdf:resource=&quot;http://purl.org/ontology/mo/&quot;/&gt;
+
+&lt;/rdf:Description&gt;
+...
+&lt;!-- Record description --&gt;
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html#this&quot;&gt;
+  &lt;rdf:type rdf:resource=&quot;http://purl.org/ontology/mo/Record&quot;/&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html#this&quot;&gt;
+  &lt;dc:title xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;&gt;Imagine&lt;/dc:title&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html#this&quot;&gt;
+  &lt;mo:release_status xmlns:mo=&quot;http://purl.org/ontology/mo/&quot; rdf:resource=&quot;http://purl.org/ontology/mo/official&quot;/&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html#this&quot;&gt;
+  &lt;mo:release_type xmlns:mo=&quot;http://purl.org/ontology/mo/&quot;
+   rdf:resource=&quot;http://purl.org/ontology/mo/album&quot;/&gt;
+&lt;/rdf:Description&gt;
+&lt;!-- Title track description --&gt;
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/release/f237e6a0-4b0e-4722-8172-66f4930198bc.html#this&quot;&gt;
+  &lt;mo:track xmlns:mo=&quot;http://purl.org/ontology/mo/&quot;
+   rdf:resource=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/track/b88bdafd-e675-4c6a-9681-5ea85ab99446.html#this&quot;/&gt;
+&lt;/rdf:Description&gt;
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/track/b88bdafd-e675-4c6a-9681-5ea85ab99446.html#this&quot;&gt;
+  &lt;rdf:type rdf:resource=&quot;http://purl.org/ontology/mo/Track&quot;/&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/track/b88bdafd-e675-4c6a-9681-5ea85ab99446.html#this&quot;&gt;
+  &lt;dc:title xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;&gt;Imagine&lt;/dc:title&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/track/b88bdafd-e675-4c6a-9681-5ea85ab99446.html#this&quot;&gt;
+  &lt;mo:track_number xmlns:mo=&quot;http://purl.org/ontology/mo/&quot;&gt;1&lt;/mo:track_number&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description
+ rdf:about=&quot;http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/track/b88bdafd-e675-4c6a-9681-5ea85ab99446.html#this&quot;&gt;
+  &lt;mo:duration xmlns:mo=&quot;http://purl.org/ontology/mo/&quot; rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;&gt;182933&lt;/mo:duration&gt;
+&lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+</pre><p> </p>
+<h3><a name="Cartridge Hook Function"></a>Cartridge Hook Function</h3>
+<p>The cartridge&#39;s hook function is listed below.
+ It is important to note that MusicBrainz supports a variety of query types, each of which returns a different set of information, depending on the item type being queried.
+ Full details can be found on the MusicBrainz<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MusicBrainz&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> site.
+ The sponger cartridge is capable of handling all the query types supported by MusicBrainz<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MusicBrainz&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> and is intended to be used in a drill-down scenario, as would be the case when using an RDF browser such as the <a href="http://ode.openlinksw.com/" class="absuri">OpenLink Data Explorer (ODE)</a>.
+ This example focuses primarily on the types release and track.</p>
+<br><pre>create procedure DB.DBA.RDF_LOAD_MBZ (
+  in graph_iri varchar, in new_origin_uri varchar, in dest varchar,
+  inout _ret_body any, inout aq any, inout ps any, inout _key any, 
+  inout opts any)
+{
+  declare kind, id varchar;
+  declare tmp, incs any;
+  declare uri, cnt, hdr, inc, xd, xt varchar;
+  tmp := regexp_parse (&#39;http://musicbrainz.org/([^/]*)/([^\.]+)&#39;, new_origin_uri, 0);
+  declare exit handler for sqlstate &#39;*&#39;
+  {
+    -- dbg_printf (&#39;%s&#39;, __SQL_MESSAGE);
+    return 0;
+  };
+  if (length (tmp) &lt; 6)
+    return 0;
+
+  kind := subseq (new_origin_uri, tmp[2], tmp[3]);
+  id :=   subseq (new_origin_uri, tmp[4], tmp[5]);
+  incs := vector ();
+  if (kind = &#39;artist&#39;)
+    {
+      inc := &#39;aliases artist-rels label-rels release-rels track-rels url-rels&#39;;
+      incs :=
+      	vector (
+	&#39;sa-Album&#39;, &#39;sa-Single&#39;, &#39;sa-EP&#39;, &#39;sa-Compilation&#39;, &#39;sa-Soundtrack&#39;,
+	&#39;sa-Spokenword&#39;, &#39;sa-Interview&#39;, &#39;sa-Audiobook&#39;, &#39;sa-Live&#39;, &#39;sa-Remix&#39;, &#39;sa-Other&#39;
+	, &#39;va-Album&#39;, &#39;va-Single&#39;, &#39;va-EP&#39;, &#39;va-Compilation&#39;, &#39;va-Soundtrack&#39;,
+
+	&#39;va-Spokenword&#39;, &#39;va-Interview&#39;, &#39;va-Audiobook&#39;, &#39;va-Live&#39;, &#39;va-Remix&#39;, &#39;va-Other&#39;
+	);
+    }
+  else if (kind = &#39;release&#39;)
+    inc := &#39;artist counts release-events discs tracks artist-rels label-rels release-rels track-rels url-rels track-level-rels labels&#39;;
+  else if (kind = &#39;track&#39;)
+    inc := &#39;artist releases puids artist-rels label-rels release-rels track-rels url-rels&#39;;
+  else if (kind = &#39;label&#39;)
+    inc := &#39;aliases artist-rels label-rels release-rels track-rels url-rels&#39;;
+  else
+    return 0;
+  if (dest is null)
+    delete from DB.DBA.RDF_QUAD where G = DB.DBA.RDF_MAKE_IID_OF_QNAME (graph_iri);
+  DB.DBA.RDF_LOAD_MBZ_1 (graph_iri, new_origin_uri, dest, kind, id, inc);
+  DB.DBA.TTLP (sprintf (&#39;&lt;%S&gt; &lt;http://xmlns.com/foaf/0.1/primaryTopic&gt; &lt;%S&gt; .\n&lt;%S&gt; a &lt;http://xmlns.com/foaf/0.1/Document&gt; .&#39;,
+  	new_origin_uri, DB.DBA.RDF_SPONGE_PROXY_IRI (new_origin_uri), new_origin_uri),
+  	&#39;&#39;, graph_iri);
+  foreach (any inc1 in incs) do
+    {
+      DB.DBA.RDF_LOAD_MBZ_1 (graph_iri, new_origin_uri, dest, kind, id, inc1);
+    }
+  return 1;
+};
+</pre><p> The hook function uses a subordinate procedure RDF_LOAD_MBZ_1:</p>
+<br><pre>create procedure DB.DBA.RDF_LOAD_MBZ_1 (in graph_iri varchar, in new_origin_uri varchar, 
+   in dest varchar, in kind varchar, in id varchar, in inc varchar)
+{
+  declare uri, cnt, xt, xd, hdr any;
+  uri := sprintf (&#39;http://musicbrainz.org/ws/1/%s/%s?type=xml&amp;inc=%U&#39;, kind, id, inc);
+  cnt := RDF_HTTP_URL_GET (uri, &#39;&#39;, hdr, &#39;GET&#39;, &#39;Accept: */*&#39;);
+  xt := xtree_doc (cnt);
+  xd := DB.DBA.RDF_MAPPER_XSLT (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/main/mbz2rdf.xsl&#39;, xt,
+        vector (&#39;baseUri&#39;, new_origin_uri));
+  xd := serialize_to_UTF8_xml (xd);
+  DB.DBA.RM_RDF_LOAD_RDFXML (xd, new_origin_uri, coalesce (dest, graph_iri));
+};
+</pre><p> </p>
+<h3><a name="XSLT Stylesheet"></a>XSLT Stylesheet</h3>
+<p>The key sections of the MusicBrainz<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MusicBrainz&parent=VirtuosoSpongerCartridgeProgrammersGuide_Part2" class="wikiword">?</a> XSLT template relevant to this example are listed below.
+ Only the sections relating to an artist, his releases, or the tracks on those releases, are shown.
+</p>
+<br><pre>&lt;!DOCTYPE xsl:stylesheet [
+&lt;!ENTITY xsd &quot;http://www.w3.org/2001/XMLSchema#&quot;&gt;
+&lt;!ENTITY rdf &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+&lt;!ENTITY rdfs &quot;http://www.w3.org/2000/01/rdf-schema#&quot;&gt;
+&lt;!ENTITY mo &quot;http://purl.org/ontology/mo/&quot;&gt;
+&lt;!ENTITY foaf &quot;http://xmlns.com/foaf/0.1/&quot;&gt;
+&lt;!ENTITY mmd &quot;http://musicbrainz.org/ns/mmd-1.0#&quot;&gt;
+&lt;!ENTITY dc &quot;http://purl.org/dc/elements/1.1/&quot;&gt;
+]&gt;
+&lt;xsl:stylesheet version=&quot;1.0&quot;
+    xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
+    xmlns:vi=&quot;http://www.openlinksw.com/virtuoso/xslt/&quot;
+    xmlns:rdf=&quot;&quot;
+    xmlns:rdfs=&quot;&quot;
+    xmlns:foaf=&quot;&quot;
+    xmlns:mo=&quot;&quot;
+    xmlns:mmd=&quot;&quot;
+    xmlns:dc=&quot;&quot;
+    &gt;
+
+    &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+    &lt;xsl:variable name=&quot;base&quot; select=&quot;&#39;http://musicbrainz.org/&#39;&quot;/&gt;
+    &lt;xsl:variable name=&quot;uc&quot;&gt;ABCDEFGHIJKLMNOPQRSTUVWXYZ&lt;/xsl:variable&gt;
+    &lt;xsl:variable name=&quot;lc&quot;&gt;abcdefghijklmnopqrstuvwxyz&lt;/xsl:variable&gt;
+    &lt;xsl:template match=&quot;/mmd:metadata&quot;&gt;
+	&lt;rdf:RDF&gt;
+	    &lt;xsl:apply-templates /&gt;
+	&lt;/rdf:RDF&gt;
+    &lt;/xsl:template&gt;
+
+    ...
+
+    &lt;xsl:template match=&quot;mmd:artist[@type=&#39;Person&#39;]&quot;&gt;
+	&lt;mo:MusicArtist rdf:about=&quot;{vi:proxyIRI (concat($base,&#39;artist/&#39;,@id,&#39;.html&#39;))}&quot;&gt;
+	    &lt;foaf:name&gt;&lt;xsl:value-of select=&quot;mmd:name&quot;/&gt;&lt;/foaf:name&gt;
+	    &lt;xsl:for-each select=&quot;mmd:release-list/mmd:release|mmd:relation-list[@target-type=&#39;Release&#39;]/mmd:relation/mmd:release&quot;&gt;
+		&lt;foaf:made rdf:resource=&quot;{vi:proxyIRI (concat($base,&#39;release/&#39;,@id,&#39;.html&#39;))}&quot;/&gt;
+	    &lt;/xsl:for-each&gt;
+	&lt;/mo:MusicArtist&gt;
+	&lt;xsl:apply-templates /&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;mmd:release&quot;&gt;
+	&lt;mo:Record rdf:about=&quot;{vi:proxyIRI (concat($base,&#39;release/&#39;,@id,&#39;.html&#39;))}&quot;&gt;
+	    &lt;dc:title&gt;&lt;xsl:value-of select=&quot;mmd:title&quot;/&gt;&lt;/dc:title&gt;
+	    &lt;mo:release_type rdf:resource=&quot;{translate (substring-before (@type, &#39; &#39;), 
+                                                          $uc, $lc)}&quot;/&gt;
+	    &lt;mo:release_status rdf:resource=&quot;{translate (substring-after (@type, &#39; &#39;), $uc,
+                                                  $lc)}&quot;/&gt;
+	    &lt;xsl:for-each select=&quot;mmd:track-list/mmd:track&quot;&gt;
+		&lt;mo:track rdf:resource=&quot;{vi:proxyIRI (concat($base,&#39;track/&#39;,@id,&#39;.html&#39;))}&quot;/&gt;
+
+	    &lt;/xsl:for-each&gt;
+	&lt;/mo:Record&gt;
+	&lt;xsl:apply-templates select=&quot;mmd:track-list/mmd:track&quot;/&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;mmd:track&quot;&gt;
+	&lt;mo:Track rdf:about=&quot;{vi:proxyIRI (concat($base,&#39;track/&#39;,@id,&#39;.html&#39;))}&quot;&gt;
+	    &lt;dc:title&gt;&lt;xsl:value-of select=&quot;mmd:title&quot;/&gt;&lt;/dc:title&gt;
+	    &lt;mo:track_number&gt;&lt;xsl:value-of select=&quot;position()&quot;/&gt;&lt;/mo:track_number&gt;
+	    &lt;mo:duration rdf:datatype=&quot;integer&quot;&gt;
+             &lt;xsl:value-of select=&quot;mmd:duration&quot;/&gt;
+           &lt;/mo:duration&gt;
+	    &lt;xsl:if test=&quot;artist[@id]&quot;&gt;
+		&lt;foaf:maker rdf:resource=&quot;{vi:proxyIRI (concat ($base, &#39;artist/&#39;, 
+                                          artist/@id, &#39;.html&#39;))}&quot;/&gt;
+	    &lt;/xsl:if&gt;
+	    &lt;mo:musicbrainz rdf:resource=&quot;{vi:proxyIRI (concat ($base, &#39;track/&#39;, @id, &#39;.html&#39;))}&quot;/&gt;
+	&lt;/mo:Track&gt;
+    &lt;/xsl:template&gt;
+
+    ...
+
+    &lt;xsl:template match=&quot;text()&quot;/&gt;
+&lt;/xsl:stylesheet&gt;
+</pre><p> </p>
+<h2><a name="Meta-Cartridges"></a>Meta-Cartridges</h2>
+<p>So far the discussion has centred on &#39;primary&#39; cartridges.
+ However, Virtuoso supports an alternative type of cartridge, a &#39;meta-cartridge&#39;.
+ The way a meta-cartridge operates is essentially the same as a primary cartridge, that is it has a cartridge hook function with the same signature and its inserts data into the quad store through entity extraction and ontology mapping as before.
+ Where meta-cartridges differ from primary cartridges is in their intent and their position in the cartridge invocation pipeline.</p>
+<p>The purpose of meta-cartridges is to enrich graphs produced by other (primary) cartridges.
+ They serve as general post-processors to add additional information about selected entities in an RDF graph.
+For instance, a particular meta-cartridge might be designed to search for entities of type &#39;umbel:Country&#39; in a given graph, and then add additional statements about each country it finds, where the information contained in these statements is retrieved from the web service targetted by the meta-cartridge.
+ One such example might be a &#39;World Bank&#39; meta-cartridge which adds information relating to a country&#39;s GDP, its exports of goods and services as a percentage of GDP etc; retrieved using the <a href="http://developer.worldbank.org/docs/" class="absuri">World Bank web service API</a>.
+ In order to benefit from the World Bank meta-cartridge, any primary cartridge which might generate instance data relating to countries should ensure that each country instance it handles is also described as being of rdf:type &#39;umbel:Country&#39;.
+ Here, the <a href="http://wiki.umbel.org/index.php/Welcome" class="absuri">UMBEL</a> (Upper Mapping and Binding Exchange Layer) ontology is used as a data-source-agnostic classification system.
+It provides a core set of  20,000+ subject concepts which act as &quot;a fixed set of reference points in a global knowledge space&quot;.
+ The use of UMBEL in this way serves to decouple meta-cartridges from primary cartridges and data source specific ontologies.</p>
+<p>Virtuoso includes numerous meta-cartridges for augmenting source graphs using data retrieved from lookup services, examples being UMBEL and <a href="http://www.opencalais.com/" class="absuri">OpenCalais</a>.</p>
+<b>Note: Meta-cartridges are only available in the closed source version of Virtuoso.</b> The meta-cartridge feature is disabled in Virtuoso Open Source edition (VOS).
+ Meta-cartridge stylesheets reside in DAV/VAD/cartridges/xslt/meta.
+ In VOS, this directory is empty.<h3><a name="Registration"></a>Registration</h3>
+<p>Meta-cartridges can be registered through the Conductor UI.</p>
+<div align="center"> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/conductor_metacart_reg1.png" style="wikiautogen"> <p></p> <img src="VirtuosoSpongerCartridgeProgrammersGuide_Part2/conductor_metacart_reg2.png" style="wikiautogen"> </div><p>Alternatively, a meta-cartridge can be registered programmatically by adding an entry to the RDF_META_CARTRIDGES table, which fulfills a role similar to the SYS_RDF_MAPPERS table used by primary cartridges.
+ The structure of the table, and the meaning and use of its columns, are similar to SYS_RDF_MAPPERS.
+ The meta-cartridge hook function signature is identical to that for primary cartridges.</p>
+<p>The RDF_META_CARTRIDGES table definition is as follows: </p>
+<br><pre>create table DB.DBA.RDF_META_CARTRIDGES (
+MC_ID INTEGER IDENTITY,		-- meta-cartridge ID. Determines the order of the
+                           	   meta-cartridge&#39;s invocation in the Sponger
+                                 processing chain
+MC_SEQ INTEGER IDENTITY,
+MC_HOOK VARCHAR,			-- fully qualified Virtuoso/PL function name
+MC_TYPE VARCHAR,
+MC_PATTERN VARCHAR, 		-- a REGEX pattern to match resource URL or
+					   MIME type
+MC_KEY VARCHAR,			-- API specific key to use
+MC_OPTIONS ANY,			-- meta-cartridge specific options
+MC_DESC LONG VARCHAR, 		-- meta-cartridge description (free text)
+MC_ENABLED INTEGER		-- a 0 or 1 integer flag to exclude or include 
+					   meta-cartridge from Sponger processing chain
+);
+</pre><p> </p>
+<h3><a name="Invocation"></a>Invocation</h3>
+<p>Meta-cartridges are invoked through the post-processing hook procedure RDF_LOAD_POST_PROCESS which is called, for every document retrieved, after RDF_LOAD_RDFXML loads fetched data into the quad store.</p>
+<p>Cartridges in the meta-cartridge registry (RDF_META_CARTRIDGES)  are configured to match a given MIME type or URI pattern.
+ Matching meta-cartridges are invoked in order of their MC_SEQ value.
+ Ordinarily a meta-cartridge should return 0, in which case the next meta-cartridge in the post-processing chain will be invoked.
+ If it returns 1 or -1, the post-processing stops and no further meta-cartridges are invoked.</p>
+<p>The order of processing by the Sponger cartridge pipeline is thus:</p>
+<ol><li>Try to get RDF in the form of TTL or RDF/XML.
+ If RDF is retrieved if go to step 3 </li>
+<li>Try generating RDF through the Sponger primary cartridges as before (see Figure 3).
+</li>
+<li>Post-process the RDF using meta-cartridges in order of their MC_SEQ value.
+ If a meta-cartridge returns 1 or -1,  stop the post-processing chain.</li>
+</ol><p>Notice that meta-cartridges may be invoked even if primary cartridges are not.</p>
+<h2><a name="Example - A Campaign Finance Meta-Cartridge for Freebase"></a>Example - A Campaign Finance Meta-Cartridge for Freebase</h2>
+<h4><a name="Note"></a>Note</h4>
+ <i>The example which follows builds on a Freebase Sponger cartridge developed prior to the announcement of Freebase&#39;s support for generating Linked Data through the endpoint <a href="http://rdf.freebase.com/" class="absuri">http://rdf.freebase.com/</a> . The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> cartridge has since evolved to reflect these changes.
+ A snapshot of the Freebase cartridge and stylesheet compatible with this example can be found in Appendix C.</i><p><a href="http://www.freebase.com/" class="absuri">Freebase</a> is an open community database of the world&#39;s information which serves facts and statistics rather than articles.
+ Its designers see this difference in emphasis from  article-oriented databases as beneficial for developers wanting to use Freebase facts in other websites and applications.</p>
+<p>Virtuoso includes a Freebase cartridge in the cartridges VAD.
+ The aim of the example  cartridge presented here is to provide a lightweight meta-cartridge that is used to conditionally add triples to graphs generated by the Freebase cartridge, if Freebase is describing a U.S.
+ senator.</p>
+<h3><a name="New York Times Campaign Finance (NYTCF) API"></a>New York Times Campaign Finance (NYTCF) API</h3>
+<p>The <a href="http://developer.nytimes.com/docs/campaign_finance_api?authChecked=1" class="absuri">New York Times Campaign Finance (NYTCF) API</a> allows you to retrieve contribution and expenditure data based on United States Federal Election Commission filings.
+ You can retrieve totals for a particular presidential candidate, see aggregates by ZIP code or state, or get details on a particular donor.</p>
+<p>The API supports a number of query types.
+ To keep this example from being overly long, the meta-cartridge supports just one of these - a query for the candidate details.
+ An example query and the resulting output follow:</p>
+<h4><a name="Query:"></a>Query:</h4>
+ <code> <a href="http://api.nytimes.com/svc/elections/us/v2/president/2008/finances/candidates/obama,barack.xml?api-key=xxxx" class="absuri">http://api.nytimes.com/svc/elections/us/v2/president/2008/finances/candidates/obama,barack.xml?api-key=xxxx</a> </code><h4><a name="Result:"></a>Result:</h4>
+ <br><pre>&lt;result_set&gt;
+ &lt;status&gt;OK&lt;/status&gt;
+ &lt;copyright&gt;
+  Copyright (c) 2008 The New York Times Company.  All Rights Reserved.
+ &lt;/copyright&gt;
+ &lt;results&gt;
+  &lt;candidate&gt;
+    &lt;candidate_name&gt;Obama, Barack&lt;/candidate_name&gt;
+    &lt;committee_id&gt;C00431445&lt;/committee_id&gt;
+    &lt;party&gt;D&lt;/party&gt;
+    &lt;total_receipts&gt;468841844&lt;/total_receipts&gt;
+    &lt;total_disbursements&gt;391437723.5&lt;/total_disbursements&gt;
+    &lt;cash_on_hand&gt;77404120&lt;/cash_on_hand&gt;
+    &lt;net_individual_contributions&gt;426902994&lt;/net_individual_contributions&gt;
+    &lt;net_party_contributions&gt;150&lt;/net_party_contributions&gt;
+    &lt;net_pac_contributions&gt;450&lt;/net_pac_contributions&gt;
+    &lt;net_candidate_contributions&gt;0&lt;/net_candidate_contributions&gt;
+    &lt;federal_funds&gt;0&lt;/federal_funds&gt;
+    &lt;total_contributions_less_than_200&gt;222694981.5&lt;/total_contributions_less_than_200&gt;
+    &lt;total_contributions_2300&gt;76623262&lt;/total_contributions_2300&gt;
+    &lt;net_primary_contributions&gt;46444638.81&lt;/net_primary_contributions&gt;
+    &lt;net_general_contributions&gt;30959481.19&lt;/net_general_contributions&gt;
+    &lt;total_refunds&gt;2058240.92&lt;/total_refunds&gt;
+    &lt;date_coverage_from&gt;2007-01-01&lt;/date_coverage_from&gt;
+    &lt;date_coverage_to&gt;2008-08-31&lt;/date_coverage_to&gt;
+  &lt;/candidate&gt;
+ &lt;/results&gt;
+&lt;/result_set&gt;
+</pre><p> </p>
+<h3><a name="Sponging Freebase"></a>Sponging Freebase</h3>
+<h4><a name="Using"></a>Using <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Explorer</h4>
+<p>The following instructions assume you have the <a href="http://ode.openlinksw.com/" class="absuri">OpenLink Data Explorer</a> (ODE) browser extension installed in your browser.</p>
+<p>An HTML description of Barack Obama can be obtained directly from Freebase by pasting the following URL into your browser: <a href="http://www.freebase.com/view/en/barack_obama" class="absuri">http://www.freebase.com/view/en/barack_obama</a></p>
+<p>To view Network Resource Data being fetched from this page, select &#39;Linked Data Sources&#39; from the browser&#39;s &#39;View&#39; menu.
+ An <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Explorer interface will load in a new tab.</p>
+<p>Clicking on the &#39;Barack Obama&#39; link under the &#39;Person&#39; category displayed by ODE retrieves RDF data using the Freebase cartridge.
+ Click the &#39;down arrow&#39; adjacent to the &#39;Barack Obama&#39; link to explore the retrieved data.</p>
+<p>Assuming your Virtuoso instance is running on port 8890 on localhost, the list of data caches displayed by ODE should include: <a href="http://localhost:8890/about/rdf/http://www.freebase.com/view/en/barack_obama#this" class="absuri">http://localhost:8890/about/rdf/http://www.freebase.com/view/en/barack_obama#this</a></p>
+<p>The information displayed in the rest of the page relates to the entity instance identified by this URI.
+ The prefix <a href="http://localhost:8890/about/rdf" class="absuri">http://localhost:8890/about/rdf</a> prepended to the original URI indicates that the Sponger Proxy Service has been invoked.
+ The Sponger creates an associated entity instance (identified by the above URI with the #this suffix) which holds fetched information about the original entity.</p>
+<h4><a name="Using the Command Line"></a>Using the Command Line</h4>
+<p>As an alternative to ODE, you can perform Network Resource Fetch from the command line with the command: </p>
+<br><pre>curl -H &quot;Accept: text/xml&quot; &quot;http://localhost:8890/about/rdf/http://www.freebase.com/view/en/barack_obama&quot;
+</pre><p>To view the results, you can use Conductor&#39;s browser-based SPARQL interface (e.g.
+ <a href="http://localhost:8890/sparql)" class="absuri">http://localhost:8890/sparql)</a> to query the resulting graph generated by the Sponger, http://www.freebase.com/view/en/barack_obama.</p>
+<h3><a name="Installing the Meta-Cartridge"></a>Installing the Meta-Cartridge</h3>
+<p>To register the meta-cartridge, a procedure similar to the following can be used: </p>
+<br><pre>create procedure INSTALL_RDF_LOAD_NYTCF ()
+{
+  -- delete any previous NYTCF cartridge installed as a primary cartridge
+  delete from SYS_RDF_MAPPERS where RM_HOOK = &#39;DB.DBA.RDF_LOAD_NYTCF&#39;;
+  -- register in the meta-cartridge post-processing chain
+  insert soft DB.DBA.RDF_META_CARTRIDGES (MC_PATTERN, MC_TYPE, MC_HOOK, 
+    MC_KEY, MC_DESC, MC_OPTIONS)
+    values (
+    &#39;http://www.freebase.com/view/.*&#39;,
+    &#39;URL&#39;, &#39;DB.DBA.RDF_LOAD_NYTCF&#39;, &#39;2c1d95a62e5fxxxxx&#39;, &#39;Freebase NYTCF&#39;,
+    vector ());
+};
+</pre><p>Looking at the list of cartridges in Conductor&#39;s &#39;Cartridges&#39; screen, you will see that the Freebase cartridge is configured by default to perform Network Resource Fetch of URIs which match the pattern &quot;<a href="http://www.freebase.com/view/.*" class="absuri">http://www.freebase.com/view/.*</a>&quot; The meta-cartridge is configured to match on the same URI pattern.</p>
+<p>To use the Campaign Finance API, you must register and request an API key.
+ The script above shows an invalid key.
+ Replace it with your own key before executing the procedure.</p>
+<h3><a name="NYTCF Meta-Cartridge Functions"></a>NYTCF Meta-Cartridge Functions</h3>
+<p>The meta-cartridge function definitions are listed below.
+ They can be executed by pasting them into Conductor&#39;s iSQL interface.
+</p>
+<br><pre>--no_c_escapes-
+create procedure DB.DBA.RDF_NYTCF_LOOKUP(
+  in candidate_id any,  -- id of candidate
+  in graph_iri varchar, -- graph into which the campaign finance triples should be loaded
+  in api_key varchar	-- NYT finance API key
+)
+{
+  declare version, campaign_type, year any;
+  declare nyt_url, hdr, tmp any;
+  declare xt, xd any;
+
+  -- Common parameters - The NYT API only supports the following values at present:
+  version := &#39;v2&#39;;
+  campaign_type := &#39;president&#39;;
+  year := &#39;2008&#39;;
+
+  -- Candidate details
+  nyt_url := sprintf(
+    &#39;http://api.nytimes.com/svc/elections/us/%s/%s/%s/finances/candidates/%s.xml?api-key=%s&#39;,
+     version, campaign_type, year, candidate_id, api_key);
+  tmp := http_get (nyt_url, hdr);
+  if (hdr[0] not like &#39;HTTP/1._ 200 %&#39;)
+    signal (&#39;22023&#39;, trim(hdr[0], &#39;\r\n&#39;), &#39;RDF_LOAD_NYTCF_LOOKUP&#39;);
+  xd := xtree_doc (tmp);
+
+  -- baseUri specifies what the generated RDF description is about
+  -- &lt;rdf:Description rdf:about=&quot;{baseUri}&quot;&gt;
+  -- Example baseUri&#39;s:
+  -- http://localhost:8890/about/rdf/http://www.freebase.com/view/en/barack_obama#this
+  -- http://localhost:8890/about/rdf/http://www.freebase.com/view/en/hillary_rodham_clinton#this
+  xt := DB.DBA.RDF_MAPPER_XSLT (registry_get (&#39;_cartridges_path_&#39;) || &#39;xslt/nytcf2rdf.xsl&#39;, xd,
+      	vector (&#39;baseUri&#39;, graph_iri));
+  xd := serialize_to_UTF8_xml (xt);
+  DB.DBA.RDF_LOAD_RDFXML (xd, &#39;&#39;, graph_iri);
+};
+
+create procedure DB.DBA.RDF_MQL_RESOURCE_IS_SENATOR (
+  in fb_graph_uri varchar	-- URI of graph containing Freebase resource
+)
+{
+  -- Check if the resource described by Freebase is a U.S. senator. 
+  -- Only then does it make sense to query for campaign finance data from the NYT data space.
+  -- To test for senators, we start by looking for two statements in the Freebase cartridge 
+  -- output, similar to:
+  -- &lt;rdf:Description
+  -- rdf:about=&quot;http://.../about/rdf/http://www.freebase.com/view/en/hillary_rodham_clinton#this&quot;&gt;
+  --   &lt;rdf:type rdf:resource=&quot;http://xmlns.com/foaf/0.1/Person&quot;/&gt;
+  --   &lt;rdfs:seeAlso rdf:resource=&quot;http://en.wikipedia.org/wiki/Hillary_Rodham_Clinton&quot;/&gt;
+  --   ...
+  -- where the graph generated by the Sponger will be
+  -- &lt;http://www.freebase.com/view/en/hillary_rodham_clinton&gt;
+  -- 
+  -- To test whether a resource is a senator:
+  -- 1) Check whether the Freebase resource is of rdf:type foaf:Person
+  -- 2) Extract the person_name from the Wikipedia URI referenced by rdfs:seeAlso
+  -- 3) Use the extracted person_name to build a URI to DBpedia&#39;s description of the person.
+  -- 4) Query the DBpedia description to see if the person is of rdf:type yago:Senator110578471
+  declare xp, xt, tmp any;
+  declare sparql_ep varchar; 		-- SPARQL endpoint
+  declare qry varchar;			-- SPARQL query
+  declare qry_uri varchar;		-- query URI
+  declare qry_res varchar;		-- query result
+  declare default_host varchar;	-- host executing this procedure
+  declare dbp_resource_name varchar;	-- Equivalent resource name in DBpedia
+  declare fb_resource_uri varchar; 	-- Freebase resource URI
+  declare exit handler for sqlstate &#39;*&#39; {
+    dbg_printf (&#39;%s&#39;, __SQL_MESSAGE);
+    return 0;
+  };
+
+  default_host := cfg_item_value (virtuoso_ini_path(), &#39;URIQA&#39;, &#39;DefaultHost&#39;);
+  if (default_host is null)
+  {
+    default_host := sys_stat (&#39;st_host_name&#39;);
+    if (server_http_port () &lt;&gt; &#39;80&#39;)
+      default_host := default_host ||&#39;:&#39;|| server_http_port ();
+  }
+
+  fb_resource_uri := sprintf(&#39;http://%s/about/rdf/%s#this&#39;, default_host, fb_graph_uri);
+
+  -- 1) Check whether the Freebase resource is of rdf:type foaf:Person
+  sparql_ep := &#39;http://&#39; || default_host || &#39;/sparql&#39;;
+  {
+    declare stat, msg varchar;
+    declare mdata, rset any;
+
+    qry := sprintf (
+    		&#39;sparql ask from &lt;%s&gt; where { &lt;%s&gt; rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt; }&#39;,
+		 fb_graph_uri, fb_resource_uri);
+    exec (qry, stat, msg, vector(), 1, mdata, rset);
+    if (length(rset) = 0 or rset[0][0] &lt;&gt; 1)
+      return 0;
+  }
+
+  -- 2) Extract the person_name from the Wikipedia URI referenced by rdfs:seeAlso
+  {
+    declare stat, msg varchar;
+    declare mdata, rset any;
+
+    qry := &#39;sparql prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; \n&#39;;
+    qry := qry || sprintf (&#39;select ?o from &lt;%s&gt; where { &lt;%s&gt; rdfs:seeAlso ?o }&#39;, 
+    			   fb_graph_uri, fb_resource_uri);
+    exec (qry, stat, msg, vector(), 1, mdata, rset);
+    if (length (rset) = 0)
+      return 0;
+    tmp := cast (rset[0][0] as varchar);
+    tmp := sprintf_inverse (tmp, &#39;http://en.wikipedia.org/wiki/%s&#39;, 0);
+  }
+
+  if (length (tmp) &lt;&gt; 1)
+    return 0;
+  dbp_resource_name := tmp[0];
+
+  -- 3) Use the extracted person_name to build a URI to DBpedia&#39;s description of the person.
+  -- 4) Query the DBpedia description to see if the person is of rdf:type yago:Senator110578471
+  qry := &#39;prefix yago: &lt;http://dbpedia.org/class/yago/&gt; \n&#39;;
+  qry := qry || &#39;prefix dbp: &lt;http://dbpedia.org/resource/&gt; \n&#39;;
+  qry := qry || sprintf (&#39;ask from &lt;http://dbpedia.org&gt; where {dbp:%s a yago:Senator110578471}&#39;,
+ 			    dbp_resource_name);
+  qry_res := http_client (url=&gt;sprintf(&#39;%s?query=%U&#39;, &#39;http://dbpedia.org/sparql&#39;, qry),
+ 			    timeout=&gt;30);
+  xt := xtree_doc (qry_res);
+  xp := cast (xpath_eval(&#39;/sparql/boolean/text()&#39;, xt) as varchar);
+  if (xp = &#39;false&#39;)
+    return 0;
+  return 1;
+};
+
+create procedure DB.DBA.RDF_LOAD_NYTCF (
+  in graph_iri varchar, in new_origin_uri varchar, in dest varchar,
+  inout _ret_body any, inout aq any, inout ps any, inout api_key any, inout opts any )
+{
+  declare candidate_id, candidate_name any;
+  declare indx, tmp any;
+  declare exit handler for sqlstate &#39;*&#39;
+  {
+    --dbg_printf(&#39;%s&#39;, __SQL_MESSAGE);
+    return 0;
+  };
+
+  if (not DB.DBA.RDF_MQL_RESOURCE_IS_SENATOR (new_origin_uri))
+    return 0;
+
+  -- NYT API supports a candidate_id in one of two forms:
+  -- candidate_id ::= {candidate_ID} | {last_name [,first_name]}
+  -- first_name is optional. If included, there should be no space after the comma.
+  --
+  -- Because this meta cartridge supplies additional triples for the Freebase
+  -- cartridges, only the second form of candidate_id is supported. 
+  -- i.e. We extract the candidate name, rather than a numeric 
+  -- candidate_ID (FEC committee ID) from the Freebase URL.
+  --
+  -- It&#39;s assumed that the source URI includes the candidate&#39;s first name. 
+  -- If it is omitted, the NYT API will return information about *all* candidates
+  -- with that last name - something we don&#39;t want.
+
+  indx := strstr(graph_iri, &#39;www.freebase.com/view/en/&#39;);
+  if (indx is not null)
+  {
+    -- extract candidate_id from Freebase URI
+    tmp := sprintf_inverse(subseq(graph_iri, indx), &#39;www.freebase.com/view/en/%s&#39;, 0);
+    if (length(tmp) &lt;&gt; 1)
+      return 0;
+    candidate_name := tmp[0];
+  }
+  else
+  {
+    return 0;
+  }
+
+
+  -- split candidate_name into its component parts
+  --   candidate_name is assumed to be firstname_[middlename_]*lastname
+  --   e.g. hillary_rodham_clinton (Freebase), Hillary_clinton (Wikipedia)
+  {
+    declare i, _end, len int;
+    declare names, tmp_name varchar;
+
+    names := vector ();
+    tmp_name := candidate_name;
+    len := length (tmp_name);
+    while (1)
+    {
+      _end := strchr(tmp_name, &#39;_&#39;);
+      if (_end is not null)
+      {
+        names := vector_concat (names, vector(subseq(tmp_name, 0, _end)));
+        tmp_name := subseq(tmp_name, _end + 1);
+      }
+      else
+      {
+        names := vector_concat(names, vector(tmp_name));
+        goto done;
+      }
+    }
+done:
+    if (length(names) &lt; 2)
+      return 0;
+    -- candidate_id ::= lastname,firstname
+    candidate_id := sprintf(&#39;%s,%s&#39;, names[length(names)-1], names[0]);
+  }
+
+  DB.DBA.RDF_NYTCF_LOOKUP(candidate_id, coalesce (dest, graph_iri), api_key);
+  return 0;
+}
+</pre><p> </p>
+<h3><a name="NYTCF Meta-Cartridge Stylesheet"></a>NYTCF Meta-Cartridge Stylesheet</h3>
+<p>The XSLT stylesheet, nyctf2rdf.xsl, used by the meta-cartridge to transform the base Campaign Finance web service output to RDF is shown below.
+ RDF_NYCTF_LOOKUP() assumes the stylesheet is located alongside the other stylesheets provided by the cartridges VAD in the Virtuoso <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> folder DAV/VAD/cartridges/xslt/meta.
+ You should create nyctf2rdf.xsl here from the following listing.
+ The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> Browser interface in Conductor provides the easiest means to upload the stylesheet.
+</p>
+<br><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE xsl:stylesheet [
+&lt;!ENTITY rdf &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+&lt;!ENTITY nyt &quot;http://www.nytimes.com/&quot;&gt;
+]&gt;
+&lt;xsl:stylesheet version=&quot;1.0&quot;
+    xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
+    xmlns:vi=&quot;http://www.openlinksw.com/virtuoso/xslt/&quot;
+    xmlns:rdf=&quot;&quot;
+    xmlns:nyt=&quot;&quot;
+    &gt;
+    &lt;xsl:output method=&quot;xml&quot; indent=&quot;yes&quot; /&gt;
+    &lt;xsl:template match=&quot;/result_set/status&quot;&gt;
+      &lt;xsl:if test=&quot;text() = &#39;OK&#39;&quot;&gt;
+        &lt;xsl:apply-templates mode=&quot;ok&quot; select=&quot;/result_set/results/candidate&quot;/&gt;
+      &lt;/xsl:if&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match=&quot;candidate&quot; mode=&quot;ok&quot;&gt;
+      &lt;rdf:Description rdf:about=&quot;{vi:proxyIRI($baseUri)}&quot;&gt;
+	  &lt;nyt:candidate_name&gt;&lt;xsl:value-of select=&quot;candidate_name&quot;/&gt;&lt;/nyt:candidate_name&gt;
+	  &lt;nyt:committee_id&gt;&lt;xsl:value-of select=&quot;committee_id&quot;/&gt;&lt;/nyt:committee_id&gt;
+	  &lt;nyt:party&gt;&lt;xsl:value-of select=&quot;party&quot;/&gt;&lt;/nyt:party&gt;
+	  &lt;nyt:total_receipts&gt;&lt;xsl:value-of select=&quot;total_receipts&quot;/&gt;&lt;/nyt:total_receipts&gt;
+	  &lt;nyt:total_disbursements&gt;
+	    &lt;xsl:value-of select=&quot;total_disbursements&quot;/&gt;
+	  &lt;/nyt:total_disbursements&gt;
+	  &lt;nyt:cash_on_hand&gt;&lt;xsl:value-of select=&quot;cash_on_hand&quot;/&gt;&lt;/nyt:cash_on_hand&gt;
+	  &lt;nyt:net_individual_contributions&gt;
+	    &lt;xsl:value-of select=&quot;net_individual_contributions&quot;/&gt;
+         &lt;/nyt:net_individual_contributions&gt;
+	  &lt;nyt:net_party_contributions&gt;
+	    &lt;xsl:value-of select=&quot;net_party_contributions&quot;/&gt;
+	  &lt;/nyt:net_party_contributions&gt;
+	  &lt;nyt:net_pac_contributions&gt;
+	    &lt;xsl:value-of select=&quot;net_pac_contributions&quot;/&gt;
+	  &lt;/nyt:net_pac_contributions&gt;
+	  &lt;nyt:net_candidate_contributions&gt;
+	    &lt;xsl:value-of select=&quot;net_candidate_contributions&quot;/&gt;
+	  &lt;/nyt:net_candidate_contributions&gt;
+	  &lt;nyt:federal_funds&gt;&lt;xsl:value-of select=&quot;federal_funds&quot;/&gt;&lt;/nyt:federal_funds&gt;
+	  &lt;nyt:total_contributions_less_than_200&gt;
+	    &lt;xsl:value-of select=&quot;total_contributions_less_than_200&quot;/&gt;
+	  &lt;/nyt:total_contributions_less_than_200&gt;
+	  &lt;nyt:total_contributions_2300&gt;
+	    &lt;xsl:value-of select=&quot;total_contributions_2300&quot;/&gt;
+	  &lt;/nyt:total_contributions_2300&gt;
+	  &lt;nyt:net_primary_contributions&gt;
+	    &lt;xsl:value-of select=&quot;net_primary_contributions&quot;/&gt;
+	  &lt;/nyt:net_primary_contributions&gt;
+	  &lt;nyt:net_general_contributions&gt;
+	    &lt;xsl:value-of select=&quot;net_general_contributions&quot;/&gt;
+	  &lt;/nyt:net_general_contributions&gt;
+	  &lt;nyt:total_refunds&gt;&lt;xsl:value-of select=&quot;total_refunds&quot;/&gt;&lt;/nyt:total_refunds&gt;
+	  &lt;nyt:date_coverage_from rdf:datatype=&quot;date&quot;&gt;
+	    &lt;xsl:value-of select=&quot;date_coverage_from&quot;/&gt;
+	  &lt;/nyt:date_coverage_from&gt;
+	  &lt;nyt:date_coverage_to rdf:datatype=&quot;date&quot;&gt;
+           &lt;xsl:value-of select=&quot;date_coverage_to&quot;/&gt;
+          &lt;/nyt:date_coverage_to&gt;
+      &lt;/rdf:Description&gt;
+    &lt;/xsl:template&gt;
+    &lt;xsl:template match=&quot;text()|@*&quot;/&gt;
+&lt;/xsl:stylesheet&gt;
+</pre><p>The stylesheet uses the prefix nyt: (<a href="http://www.nytimes.com" class="absuri">http://www.nytimes.com</a>) for the predicates of the augmenting triples.
+ This has been used purely for illustration - you may prefer to define your own ontology for RDF data derived from New York Times APIs.</p>
+<h3><a name="Testing the Meta-Cartridge"></a>Testing the Meta-Cartridge</h3>
+<p>After creating the required Virtuoso/PL functions and installing the stylesheet, you should be able to test the meta-cartridge by sponging a Freebase page as described earlier using ODE or the command line.
+ For instance: </p>
+<ul><li><a href="http://www.freebase.com/view/en/barack_obama" class="absuri">http://www.freebase.com/view/en/barack_obama</a> , or </li>
+<li><a href="http://www.freebase.com/view/en/hillary_rodham_clinton" class="absuri">http://www.freebase.com/view/en/hillary_rodham_clinton</a></li>
+</ul><p>You should see campaign finance data added to the graph created by the Sponger in the form of triples with predicates starting <a href="http://www.nytimes.com/xxx," class="absuri">http://www.nytimes.com/xxx,</a> e.g.
+ <a href="http://www.nytimes.com/net_primary_contribution." class="absuri">http://www.nytimes.com/net_primary_contribution.</a></p>
+<h3><a name="How The Meta-Cartridge Works"></a>How The Meta-Cartridge Works</h3>
+<p>The comments in the meta-cartridge code detail how the cartridge works.
+ In brief:</p>
+<p>Given the URI of the graph being created by the Freebase cartridge, RDF_MQL_RESOURCE_IS_SENATOR checks if the resource described by Freebase is a U.S.
+ senator.
+ Only then does it make sense to query for campaign finance data from the NYTCF data space.</p>
+<p>To test for senators, the procedure starts by looking for two statements in the Freebase cartridge output similar to: </p>
+<br><pre>&lt;rdf:Description rdf:about=&quot;http://localhost:8890/about/rdf/http://www.freebase.com/view/en/barack_obama#this&quot;&gt;
+  &lt;rdf:type rdf:resource=&quot;http://xmlns.com/foaf/0.1/Person&quot;/&gt;
+  &lt;rdfs:seeAlso rdf:resource=&quot;http://en.wikipedia.org/wiki/Barack_Obama&quot;/&gt;
+   ...
+</pre><p>where the graph generated by the Sponger will be </p>
+<br><pre>&lt;http://www.freebase.com/view/en/barack_obama&gt;
+</pre><p> To test whether a resource is a senator, RDF_MQL_RESOURCE_IS_SENATOR </p>
+<ul><li>Checks whether the Freebase resource is of rdf:type foaf:Person </li>
+<li>Extracts the person&#39;s name from the Wikipedia URI referenced by rdfs:seeAlso </li>
+<li>Uses the extracted name to build a URI to DBpedia&#39;s description of the person.
+</li>
+<li>Queries the DBpedia description to see if the person is of rdf:type yago:Senator110578471 (<a href="http://www.mpi-inf.mpg.de/~suchanek/downloads/yago/" class="absuri">YAGO</a> is a semantic knowledge base which provides a core set of concepts which in turn are used by DBpedia.)</li>
+</ul><p>Only if this is the case is the RDF_NYTCF_LOOKUP routine called to query for and return campaign finance data for the candidate.
+ The form of the query and the resulting XML output from the Campaign Finance service were presented earlier.</p>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeProgrammersGuide_Part3" class="wikiword">Continued - Part 3</a> </p>
+</a></div></body></html>

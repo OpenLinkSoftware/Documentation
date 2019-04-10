@@ -1,0 +1,83 @@
+<docbook><section><title>VirtRDFDumpNQuad</title><title>Producing NQuad dumps of Virtuoso Quad-store hosted RDF model data</title>Producing NQuad dumps of Virtuoso Quad-store hosted RDF model data
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+<para>How to export RDF model data from Virtuoso&#39;s Quad Store in NQuad format.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+<para>When exporting RDF model data from Virtuoso&#39;s Quad Store, having the ability to retain and reflect Named Graph IRI based data partitioning provides significant value to a variety of application profiles.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para>We have created stored procedures for the task.
+ The dump procedure dump_nquads leverages SPARQL to facilitate data dump(s) for all graphs excluding the internal predefined &quot;virtrdf:&quot;.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Procedure Parameters</bridgehead>
+<para>The procedure dump_nquads has the following parameters:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>IN <emphasis>dir</emphasis> VARCHAR -- folder where the dumps will be stored.
+<emphasis><emphasis>Note:</emphasis> The dump directory must be included in the DirsAllowed parameter of the Virtuoso configuration file (e.g., virtuoso.ini), or the Virtuoso server will not be able to create or access the data files.</emphasis> </listitem>
+<listitem>IN <emphasis>outstart_fromfile</emphasis> INTEGER -- output start from number n </listitem>
+<listitem>IN <emphasis>file_length_limit </emphasis> INTEGER -- maximum length of dump files </listitem>
+<listitem>IN <emphasis>comp  </emphasis> INTEGER -- when set to 0, then no gzip will be done.
+ By default is set to 1.</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Procedure Source</bridgehead>
+<para>The procedure dump_nquads has the following source:</para>
+<programlisting>CREATE PROCEDURE dump_nquads 
+  ( IN  dir                VARCHAR := &#39;dumps&#39;
+  , IN  start_from             INT := 1
+  , IN  file_length_limit  INTEGER := 100000000
+  , IN  comp                   INT := 1
+  )
+  {
+    DECLARE  inx, ses_len  INT
+  ; DECLARE  file_name     VARCHAR
+  ; DECLARE  env, ses      ANY
+  ;
+
+  inx := start_from;
+  SET isolation = &#39;uncommitted&#39;;
+  env := vector (0,0,0);
+  ses := string_output (10000000);
+  FOR (SELECT * FROM (sparql define input:storage &quot;&quot; SELECT ?s ?p ?o ?g { GRAPH ?g { ?s ?p ?o } . FILTER ( ?g != virtrdf: ) } ) AS sub OPTION (loop)) DO
+    {
+      DECLARE EXIT HANDLER FOR SQLSTATE &#39;22023&#39; 
+	{
+	  GOTO next;
+	};
+      http_nquad (env, &quot;s&quot;, &quot;p&quot;, &quot;o&quot;, &quot;g&quot;, ses);
+      ses_len := LENGTH (ses);
+      IF (ses_len &gt;= file_length_limit)
+	{
+	  file_name := sprintf (&#39;%s/output%06d.nq&#39;, dir, inx);
+	  string_to_file (file_name, ses, -2);
+	  IF (comp)
+	    {
+	      gz_compress_file (file_name, file_name||&#39;.gz&#39;);
+	      file_delete (file_name);
+	    }
+	  inx := inx + 1;
+	  env := vector (0,0,0);
+	  ses := string_output (10000000);
+	}
+      next:;
+    }
+  IF (length (ses))
+    {
+      file_name := sprintf (&#39;%s/output%06d.nq&#39;, dir, inx);
+      string_to_file (file_name, ses, -2);
+      IF (comp)
+	{
+	  gz_compress_file (file_name, file_name||&#39;.gz&#39;);
+	  file_delete (file_name);
+	}
+      inx := inx + 1;
+      env := vector (0,0,0);
+    }
+}
+;
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3">Example</bridgehead>
+<para>This example demonstrates calling the dump_nquads procedure to dump all graphs to a series of compressed NQuad dumps, each with uncompressed length of 10Mb (./dumps/output000001.nq.gz): </para>
+<programlisting>SQL&gt; dump_nquads (&#39;dumps&#39;, 1, 10000000, 1);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="VirtRDFDatasetDump">RDF dumps from Virtuoso Quad store hosted data</ulink> </listitem>
+<listitem><ulink url="VirtBulkRDFLoader">Virtuoso RDF Bulk Loader</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdfperfdumpintonquads">Virtuoso Documentation</ulink></listitem>
+</itemizedlist><para> </para>
+</section></docbook>

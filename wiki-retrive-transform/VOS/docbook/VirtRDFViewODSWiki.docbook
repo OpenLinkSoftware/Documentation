@@ -1,0 +1,69 @@
+<docbook><section><title>VirtRDFViewODSWiki</title><bridgehead class="http://www.w3.org/1999/xhtml:h3">RDF View for ODS Wiki</bridgehead>
+<emphasis>IMPORTANT!</emphasis> The following code is part of the ODS global VIEW regarding the Wiki part, it is not a separate VIEW and is strongly recommended NOT to be executed directly.
+ Instead, you should use the code from <ulink url="VirtRDFViewODSGlobal">ODS RDF Views Deployment and Demo Scripts</ulink>.<programlisting>sparql prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+        # Wiki
+	create iri class ods:wiki_post &quot;http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U&quot;
+		(in uname varchar not null, in inst_name varchar not null, in topic_id varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U&quot;) .
+	create iri class ods:wiki_post_text &quot;http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U/text&quot;
+		(in uname varchar not null, in inst_name varchar not null, in topic_id varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U/text&quot; ) .
+	create iri class ods:wiki_forum &quot;http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U&quot;
+		( in uname varchar not null, in forum_name varchar not null)
+		option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U&quot; ) .
+
+</programlisting><para> </para>
+<programlisting>sparql
+    prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+    prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+    prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+    prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+    prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+    prefix dct: &lt;http://purl.org/dc/terms/&gt;
+    prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+    prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+    prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+    prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+    prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+    prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+    prefix calendar: &lt;http://www.w3.org/2002/12/cal#&gt;
+    prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_ODRIVE_POSTS as odrv_posts
+      where (^{odrv_posts.}^.U_MEMBER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_ODRIVE_TAGS as odrv_tags
+      where (^{odrv_tags.}^.U_OWNER = ^{users.}^.U_NAME)
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+
+            # Wiki
+            ods:wiki_post (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME, wiki_posts.LOCALNAME) a wikiont:Article ;
+	    dc:title wiki_posts.LOCALNAME ;
+	    dct:created wiki_posts.RES_CREATED ;
+	    dct:modified wiki_posts.RES_MODIFIED ;
+	    sioc:content wiki_posts.RES_CONTENT ;
+	    sioc:has_creator ods:user (wiki_posts.U_NAME) ;
+	    foaf:maker ods:person (wiki_posts.U_NAME) ;
+	    sioc:has_container ods:wiki_forum (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME) .
+
+	    ods:wiki_forum (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME)
+	    sioc:container_of
+	    ods:wiki_post (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME, wiki_posts.LOCALNAME) .
+
+	    ods:user (wiki_posts.U_NAME)
+	    sioc:creator_of
+	    ods:wiki_post (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME, wiki_posts.LOCALNAME) .
+	    # end Wiki
+            #---
+	  } .
+    } .
+;
+</programlisting><para><ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategoryWiki">CategoryWiki</ulink></para>
+</section></docbook>

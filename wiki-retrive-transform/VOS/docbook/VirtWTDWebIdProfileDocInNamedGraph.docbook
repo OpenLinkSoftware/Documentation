@@ -1,0 +1,75 @@
+<docbook><section><title>VirtWTDWebIdProfileDocInNamedGraph</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Using Named Graph for hosting <ulink url="WebID">WebID</ulink> Profile Document Data</bridgehead>
+<para>This document details how a RDF Named Graph can be used for storing the WebID Profile Document data directly in the RDF Quad Store rather than in a TTL file.</para>
+<orderedlist spacing="compact"><listitem>Generate  a Software Agent X509 Certificate  using <ulink url="http://ods.openlinksw.com/dataspace/doc/dav/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore">OpenLink Data Spaces (ODS) X509 certificate generator</ulink>.
+ The <ulink url="OpenLink">OpenLink</ulink> public ODS instance <ulink url="http://id.myopenlink.net/ods">http://id.myopenlink.net/ods</ulink> , could be used for example or a local ODS instance can be setup.
+</listitem>
+<listitem>The generated certificate will have a WebID of http://{cname}/dataspace/person/{userid} i.e.
+ <ulink url="http://id.myopenlink.net/dataspace/person/u2990">http://id.myopenlink.net/dataspace/person/u2990</ulink> using the <ulink url="OpenLink">OpenLink</ulink> public ODS instance for a created userid of u2990.
+ The generated X509 certificate p12 file can be saved to disk or loaded into target OS or Browser Key store as appropriate.
+</listitem>
+<listitem>The :onBehalfOf relations can then be added as triples to the http://{cname}/dataspace named graph for the ODS instance to force the generation of the required RDF statements for the ODS user i.e.
+ <ulink url="http://id.myopenlink.net/dataspace">http://id.myopenlink.net/dataspace</ulink> for the <ulink url="OpenLink">OpenLink</ulink> public ODS instance for example.
+ <emphasis>Note this named graph is not the <ulink url="WebID">WebID</ulink> of the  created ODS user</emphasis> </listitem>
+<listitem>For example, with a X509 generated ODS certificate with WebID of  <ulink url="http://id.myopenlink.net/dataspace/person/u2990#this">http://id.myopenlink.net/dataspace/person/u2990#this</ulink> and a single delegation user of wtd, its  required TTL profile document entries would be: <programlisting>## Profile Document combining credentials of Software Agent and Registered Users ##
+
+## This document leverages the portability of relative hash-based HTTP URIs as Entity Identifiers ##
+
+@prefix foaf:	&lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix oplcert: &lt;http://www.openlinksw.com/schemas/cert#&gt; .
+@prefix cert: &lt;http://www.w3.org/ns/auth/cert#&gt;. 
+@prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt; . 
+@prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+
+## Software Agent Credentials ##
+
+&lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; 
+foaf:name &quot;A Software Agent&quot; ;
+oplcert:onBehalfOf &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; ;
+cert:key [
+                 cert:exponent &quot;65537&quot;^^xsd:integer ;
+                 cert:modulus   
+&quot;d515694af35ab5e39219c23271d46746c9c0ccb2e2ddef11f003a3cceb563038da2fb76c2851b86eac83800130bb5b98664fe1b1909535707111bf2f25104b9152b05ea47d750f9ceecae4f625aa0c0bea69ec3771c6fe8ae9a23965e58282f7c5b041dfb640c7562af8cad1a77ee099eabd2dab339ad9f8ed3871b6214e513cc9f8d6a70ecab42d54e9b79f0dc31aa28999af3924bda802e51f7e98dff5f9208e06151b6c6d78bd9af4580011bcfe7743969f418ee5f89c36f7f9a212afc450c36e32a431aa1590c69b720512cc25abb603ad31ed43929cc100a3271319ea9a5a54d926a8013b6b031f2c6909fbb4e7a3d18b536acff10709946e7a2047562&quot;^^xsd:hexBinary
+] .
+
+## User Credentials (OnBehalfOf relation participants) ##
+
+&lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt;  oplacl:hasIdentityDelegate &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; .
+</programlisting> Requiring the following equivalent triple entries be inserted into the <ulink url="http://id.myopenlink.net/dataspace">http://id.myopenlink.net/dataspace</ulink> ODS instance named graph:  <programlisting>insert into &lt;http://id.myopenlink.net/dataspace&gt; { &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; &lt;http://www.openlinksw.com/schemas/cert#onBehalfOf&gt; &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; }
+
+insert into &lt;http://id.myopenlink.net/dataspace&gt; { [] &lt;http://www.w3.org/ns/auth/cert#exponent&gt; 65537 }
+
+insert into &lt;http://id.myopenlink.net/dataspace&gt; { [] &lt;http://www.w3.org/ns/auth/cert#modulus&gt; &quot;d515694af35ab5e39219c23271d46746c9c0ccb2e2ddef11f003a3cceb563038da2fb76c2851b86eac83800130bb5b98664fe1b1909535707111bf2f25104b9152b05ea47d750f9ceecae4f625aa0c0bea69ec3771c6fe8ae9a23965e58282f7c5b041dfb640c7562af8cad1a77ee099eabd2dab339ad9f8ed3871b6214e513cc9f8d6a70ecab42d54e9b79f0dc31aa28999af3924bda802e51f7e98dff5f9208e06151b6c6d78bd9af4580011bcfe7743969f418ee5f89c36f7f9a212afc450c36e32a431aa1590c69b720512cc25abb603ad31ed43929cc100a3271319ea9a5a54d926a8013b6b031f2c6909fbb4e7a3d18b536acff10709946e7a20475621&quot;^^&lt;http://www.w3.org/2001/XMLSchema#hexBinary&gt; }
+
+insert into &lt;http://id.myopenlink.net/dataspace&gt; {&lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; &lt;http://www.openlinksw.com/ontology/acl#hasIdentityDelegate&gt; &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; }
+</programlisting></listitem>
+<listitem>Then  assuming the p12 file was downloaded to a name of u2990_ods_cert.p12 with a password of 1, a WebID+TLS+Delegation connection with isql can be made onBehalfOf the wtd designated delation user, with the command: <programlisting>$ ./isql opllinux6.usnet.private:1113 &quot;&quot; 1 -X u2990_ods_cert.p12 -T ca_list_shop_2016.pem -W http://id.myopenlink.net/dataspace/person/u2990#wtd
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; sparql SELECT * FROM &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; WHERE {?s ?p ?o};
+s                                                                                 p                                                                                 o
+LONG VARCHAR                                                                      LONG VARCHAR                                                                      LONG VARCHAR
+_______________________________________________________________________________
+
+#this                                                                             #relatedTo                                                                        #that
+#kingsley                                                                         #knows                                                                            #hugh
+
+2 Rows. -- 95 msec.
+SQL&gt;
+</programlisting></listitem>
+<listitem>The VAL debug trace output of the delegation connection request is as follows: <programlisting>DB.DBA.USER_CERT_LOGIN: Checking VAL ACLs for Query scope in SQL realm
+DB.DBA.WEBID_CHECK_DELEGATE: Looking for existence of: &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; cert:onBehalfOf &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; in &lt;http:2A8D08FED2F735F4B178D7789DF26A16&gt;
+DB.DBA.WEBID_CHECK_DELEGATE: Found onBehalfOf relation. Loading profile document http://id.myopenlink.net/dataspace/person/u2990
+DB.DBA.WEBID_CHECK_DELEGATE: Found public key of software agent in delegating user&#39;s profile document
+DB.DBA.USER_CERT_LOGIN: Agent/WebID &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt;
+			has SPARQL permissions: read: 1, write: 0, sponge: 0
+DB.DBA.USER_CERT_LOGIN: Setting graph security callback
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtWTDServerSetup">Virtuoso Server WebID+TLS+Delegation Setup</ulink> </listitem>
+<listitem><ulink url="VirtWTDSoftwareAgentDocCreation">Software Agent &amp; WebID Profile Document Creation</ulink> </listitem>
+<listitem><ulink url="VirtWTDVALACLCreation">WebID+TLS+Delegation VAL ACL Creation</ulink> </listitem>
+<listitem><ulink url="VirtWTDACLTesting">WebID+TLS+Delegation ACL Testing</ulink> </listitem>
+</itemizedlist></section></docbook>

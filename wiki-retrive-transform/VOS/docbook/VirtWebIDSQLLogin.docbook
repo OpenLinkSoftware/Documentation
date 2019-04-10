@@ -1,0 +1,238 @@
+<docbook><section><title>VirtWebIDSQLLogin</title><title> Enhancing Virtuoso SQL Data Access with the WebID Protocol</title> Enhancing Virtuoso SQL Data Access with the WebID Protocol
+<para>SQL-oriented connectivity to back-end databases is increasingly challenged by matters of identity fidelity, which arise from the combination of user roles and privileges, data access tools, and connection origins.
+ Basically, it&#39;s no longer adequate to frame user profiles solely by local data.</para>
+<para>To address this problem, it&#39;s imperative that database access may be constrained by an identity mechanism that blends web-of-trust logic and existing transport protocols into a policy-based data-access matrix.
+ This is what the <ulink url="http://dbpedia.org/resource/WebID">WebID Protocol</ulink> delivers; hence, the deep integration of this capability in Virtuoso.</para>
+<para>Virtuoso&#39;s SQL-channel connection security, over all data access mechanisms (ODBC, JDBC, ADO.NET, OLE DB, and XMLA), has been significantly enhanced by implementation of the WebID Protocol, supporting TLS-based SQL session logins.
+ WebIDs (verifiable identities) can be associated with database user accounts in the SQL/RDB realm, en route to creating powerful identity-oriented trust graphs, that can then drive sophisticated data access policies.</para>
+<para>Exploiting the combined powers of Virtuoso and the WebID Protocol simply requires configuring Virtuoso&#39;s SQL listener to only accept SSL/TLS connections.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How It&#39;s Done</bridgehead>
+<para>A Virtuoso instance is configured to operate in SSL/TLS mode (either client-only or mutual authentication) by setting the <emphasis>X509ClientVerify</emphasis> value in the database server configuration (INI) file:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>0</emphasis> - Do not require SSL/TLS (default).
+</listitem>
+<listitem><emphasis>1</emphasis> - Require trusted certificate.
+</listitem>
+<listitem><emphasis>2</emphasis> - Request certificate; if provided, accept only if verified/trusted; traditional login is also acceptable.
+</listitem>
+<listitem><emphasis>3</emphasis> - Request certificate; if provided, accept any certificate, including self-signed; traditional login is also acceptable.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Virtuoso INI Configuration</bridgehead>
+<para>A typical INI file would contain either — </para>
+<programlisting>[Parameters]
+...
+SSLServerPort     = 1113
+;PEM file holding a Public Key:
+SSLCertificate    = keys/server.crt 
+;PEM file holding Private Key associated with Public Key above:
+SSLPrivateKey     = keys/server.key 
+X509ClientVerify  = 3
+...
+</programlisting><para>— or — </para>
+<programlisting>;Public Key imported into Virtuoso&#39;s Native Key Store via PKCS#12 file import:
+SSLCertificate    = db:server_key
+;Private Key imported into Virtuoso&#39;s Native Key Store via PKCS#12 file import:
+SSLPrivateKey     = db:server_key
+</programlisting><para> Also note that on Windows, Virtuoso can be associated with the operating systems native keystore with regards to Public and Private Key access.</para>
+<para>Presuming this instance were running on demo.example.com, a basic iSQL client could connect with this command: </para>
+<programlisting>isql demo.example.com:1113 &quot;&quot; -X client.p12 -T server.crt
+</programlisting><para> Note: The client certificate file, client.p12, contains a WebID which has been associated with a SQL-realm user account.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Step-By-Step Example</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Prerequisites</bridgehead>
+<orderedlist spacing="compact"><listitem>Server version: Virtuoso server must be version 06.03.3131 or higher.
+</listitem>
+<listitem>Packages: The following VAD packages (<ulink url="https://virtuoso.openlinksw.com/download/">downloadable here</ulink>) should be installed: <itemizedlist mark="bullet" spacing="compact"><listitem>Virtuoso Conductor (conductor_dav.vad) </listitem>
+<listitem>ODS-Framework (ods_framework_dav.vad) </listitem>
+<listitem>Linked Open Data Transformation Middleware (&quot;Sponger&quot;) (rdf_mappers_dav.vad or cartridges_dav.vad) </listitem>
+<listitem>HTML based Identity Card (X.509 Certificate) Generator (certgen_html_dav.vad) <itemizedlist mark="bullet" spacing="compact"><listitem>Note: You can also use our <ulink url="http://id.myopenlink.net/certgen/">online Certificate Generator</ulink> </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem>Personal WebID: you can create such following <ulink url="http://ods.openlinksw.com/wiki/ODS/GetAPersonalURIIn5MinutesOrLess">these steps</ulink>.
+<itemizedlist mark="bullet" spacing="compact"><listitem>Note: In the example we will use the following WebID for user &quot;demo&quot;, as registered on the <ulink url="http://id.myopenlink.net/ods">ID.MyOpenLink</ulink> Dataspace instance: <programlisting>http://id.myopenlink.net/dataspace/person/demo#this
+</programlisting> </listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Basic Steps</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 1 - Set up local CA certificate</bridgehead>
+<para>Make sure using your local Virtuoso instance Conductor (at http://{virtuoso-host-FQDN[:{listen-port}]}/conductor, e.g., <ulink url="http://my-host.example.com:8890/conductor)">http://my-host.example.com:8890/conductor)</ulink> you had set up a local CA certificate with name &quot;id_rsa&quot;.
+ <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetupSSLVirtuoso#Generating%20CA-Authority%20Certificate%20%28%20.p12%20or%20.pfx%20%29">See example scenario</ulink> <figure><graphic fileref="VirtWebIDSQLLogin/wod0.png" /></figure></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 2 - Export the id_rsa certificate pem content</bridgehead>
+<orderedlist spacing="compact"><listitem>Execute from isql: <programlisting>SQL&gt; SELECT xenc_pem_export (&#39;id_rsa&#39;);
+</programlisting><figure><graphic fileref="VirtWebIDSQLLogin/wod00.png" /></figure> </listitem>
+<listitem>Copy the extracted content to a file for ex.
+ with name &quot;<emphasis>rca.pem</emphasis>&quot;.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 3 - Create Certificate from type Server/TLS</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to <ulink url="http://cname/certgen/">http://cname/certgen/</ulink> <figure><graphic fileref="VirtWebIDSQLLogin/wod1.png" /></figure> </listitem>
+<listitem>Enter &quot;E-mail&quot; for ex.
+ &quot;dba@example.com: <figure><graphic fileref="VirtWebIDSQLLogin/wod2.png" /></figure> </listitem>
+<listitem>Click &quot;Skip lookup&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod3.png" /></figure> </listitem>
+<listitem>In the presented &quot;Certificate details&quot; form: <itemizedlist mark="bullet" spacing="compact"><listitem>Enter &quot;Name&quot; for ex.
+ &quot;ODBC&quot;; </listitem>
+<listitem>Enter &quot;Organization&quot; for ex.
+ &quot;Example Inc.&quot;; </listitem>
+<listitem>Select &quot;HTTP/TLS Server Identity&quot; radio-box: <figure><graphic fileref="VirtWebIDSQLLogin/wod4.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click &quot;Next&quot; <figure><graphic fileref="VirtWebIDSQLLogin/wod5.png" /></figure> </listitem>
+<listitem>In the presented &quot;Signer Certificate&quot; form leave the &quot;Issuer&quot; default value &quot;Local CA&quot; and click &quot;Generate&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod6.png" /></figure> </listitem>
+<listitem>Next in the &quot;Format and Store&quot; form enter password for the certificate and click &quot;Download&quot;.
+</listitem>
+<listitem>The &quot;ODBC.p12&quot; file should be stored in your local file system.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 4 - Load the generated &quot;ODBC.p12&quot; for &quot;dba&quot; account</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to Conductor → System Admin → User Accounts → &quot;dba&quot; → Action &quot;Edit&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod6a.png" /></figure> <figure><graphic fileref="VirtWebIDSQLLogin/wod6b.png" /></figure> </listitem>
+<listitem>Enter &quot;Key Name&quot;: dbms, the key password and click &quot;Choose File&quot; to select the &quot;ODBC.p12&quot; certificate <figure><graphic fileref="VirtWebIDSQLLogin/wod6c.png" /></figure> </listitem>
+<listitem>Click &quot;Import Key&quot;.
+</listitem>
+<listitem>On a successful import the dbms key should be presented in the &quot;Cryptographic Keys&quot; list: <figure><graphic fileref="VirtWebIDSQLLogin/wod6d.png" /></figure> </listitem>
+<listitem>Click &quot;Save&quot;.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 5 - Virtuoso INI Configuration</bridgehead>
+<orderedlist spacing="compact"><listitem>Configure your Virtuoso ini by editing the following lines to the Parameters section: <itemizedlist mark="bullet" spacing="compact"><listitem>Note: <emphasis>Alternatively you can save the public and private keys to PKCS#12 (.p12) file and then use this file from your file system via an INI file reference.
+ However, in this mode, you will have to deal with a password challenge thus you have to start with -f option in order to provide a password to open the key.</emphasis> <programlisting>...
+[Parameters]
+SSLServerPort          = 1113
+SSLCertificate         = db:dbms
+SSLPrivateKey          = db:dbms
+X509ClientVerify        = 3
+X509ClientVerifyDepth   = 15
+...
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Restart the Virtuoso server.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 6 - Generate X.509 Certificate hosted Web ID</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to <ulink url="http://cname/certgen/">http://cname/certgen/</ulink> <figure><graphic fileref="VirtWebIDSQLLogin/wod1.png" /></figure> </listitem>
+<listitem>In the presented form: <itemizedlist mark="bullet" spacing="compact"><listitem>Enter &quot;E-mail&quot; for ex.: &quot;demo@example.com&quot; </listitem>
+<listitem>Enter &quot;WebID&quot; for ex.: &quot;<ulink url="http://id.myopenlink.net/dataspace/person/demo#this">http://id.myopenlink.net/dataspace/person/demo#this</ulink>&quot; <figure><graphic fileref="VirtWebIDSQLLogin/wod7.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click &quot;Skip lookup&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod8.png" /></figure> </listitem>
+<listitem>In the &quot;Certificate details&quot; form: <itemizedlist mark="bullet" spacing="compact"><listitem>Enter &quot;Name&quot; for ex.
+ &quot;Demo&quot;; </listitem>
+<listitem>Enter &quot;Organization&quot; for ex.
+ &quot;Example Inc.&quot;; </listitem>
+<listitem>Leave the select &quot;WebID &amp; S/MIME (email) Identity&quot; radio-box.
+ Another variant is also valid to select the &quot;WebID Identity&quot; radio-box.
+<figure><graphic fileref="VirtWebIDSQLLogin/wod9.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click &quot;Next&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod10.png" /></figure> </listitem>
+<listitem>In the presented &quot;Signer Certificate&quot; form leave the &quot;Issuer&quot; default value &quot;Local CA&quot; and click &quot;Generate&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod11.png" /></figure> </listitem>
+<listitem>Next in the &quot;Format and Store&quot; form enter password for the certificate and leave selected the option &quot;PKCS#12 file bundle&quot;.
+</listitem>
+<listitem>Click &quot;Download&quot;.
+</listitem>
+<listitem>The &quot;Demo.p12&quot; file should be stored in your local file system → the folder where <emphasis>isql</emphasis> is located.
+</listitem>
+<listitem>Next select the option &quot;PEM file&quot; and click &quot;Download&quot;.
+</listitem>
+<listitem>The &quot;Demo.pem&quot; file should be stored in your local file system → the folder where <emphasis>isql</emphasis> is located.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 7 - Adding the &quot;Demo.pem&quot; certificate to the Web ID owner FOAF file</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to the instance where your user is registered.
+ As in this example we have used user &quot;demo&quot; from the <ulink url="http://id.myopenlink.net/ods">http://id.myopenlink.net/ods</ulink> as next step we go to it: <figure><graphic fileref="VirtWebIDSQLLogin/wod12.png" /></figure> </listitem>
+<listitem>Click &quot;Sign In&quot; and enter user demo credentials: <figure><graphic fileref="VirtWebIDSQLLogin/wod13.png" /></figure> </listitem>
+<listitem>Go to Profile Edit → Security → X.509 Certificates <figure><graphic fileref="VirtWebIDSQLLogin/wod14.png" /></figure> </listitem>
+<listitem>Enter in the &quot;X.509 Certificate&quot; text-area the content of the generated from above &quot;Demo.pem&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod15.png" /></figure> <figure><graphic fileref="VirtWebIDSQLLogin/wod16.png" /></figure> </listitem>
+<listitem>Click &quot;Save Certificate&quot;.
+</listitem>
+<listitem>The created certificate should appear in the list of available for this user certificates: <figure><graphic fileref="VirtWebIDSQLLogin/wod17.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 8 - Setting Web ID to local user from type &quot;SQL/ODBC&quot;</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to your local Virtuoso instance Conductor (at http://{virtuoso-host-FQDN[:{listen-port}]}/conductor, e.g., <ulink url="http://my-host.example.com:8890/conductor):">http://my-host.example.com:8890/conductor):</ulink> <figure><graphic fileref="VirtWebIDSQLLogin/wod18.png" /></figure> </listitem>
+<listitem>Enter &quot;dba&quot; user credentials and click &quot;Login&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod19.png" /></figure> </listitem>
+<listitem>Go to System Admin → User Accounts <figure><graphic fileref="VirtWebIDSQLLogin/wod20.png" /></figure> </listitem>
+<listitem>For existing user from type &quot;SQL/ODBC&quot; ( or &quot;SQL/ODBC and <ulink url="WebDAV">WebDAV</ulink>&quot; ) or for a new created user from the same type, edit the user&#39;s properties by clicking the &quot;Edit&quot; link.
+ In this example we will use user &quot;demo&quot;: <figure><graphic fileref="VirtWebIDSQLLogin/wod21.png" /></figure> <figure><graphic fileref="VirtWebIDSQLLogin/wod22.png" /></figure> </listitem>
+<listitem>Enter in the &quot;WebID for ODBC/SQL authentication&quot; field the WebID from above, i.e.: <programlisting>http://id.myopenlink.net/dataspace/person/demo#this
+</programlisting><figure><graphic fileref="VirtWebIDSQLLogin/wod23.png" /></figure> </listitem>
+<listitem>Click &quot;Save&quot;.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 9 - Creating sample table and granting access to it from the &quot;SQL/ODBC&quot; type user</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to Conductor → Database → Interactive SQL <figure><graphic fileref="VirtWebIDSQLLogin/wod24.png" /></figure> </listitem>
+<listitem>Execute the following statements: <programlisting>DROP TABLE EXAMPLE_DATA;
+CREATE TABLE EXAMPLE_DATA
+(
+  &quot;id&quot;   INTEGER,
+  &quot;name&quot; VARCHAR(100),
+  PRIMARY KEY (&quot;id&quot;)
+);
+
+INSERT 
+  INTO EXAMPLE_DATA (&quot;id&quot;, &quot;name&quot;) 
+  VALUES (1, &#39;John&#39;);                                  
+INSERT 
+  INTO EXAMPLE_DATA (&quot;id&quot;, &quot;name&quot;) 
+  VALUES (2, &#39;Kate&#39;);                                  
+INSERT 
+  INTO EXAMPLE_DATA (&quot;id&quot;, &quot;name&quot;) 
+  VALUES (3, &#39;Simon&#39;);                                  
+INSERT 
+  INTO EXAMPLE_DATA (&quot;id&quot;, &quot;name&quot;) 
+  VALUES (4, &#39;Ann&#39;);
+
+SELECT * FROM EXAMPLE_DATA;
+</programlisting><figure><graphic fileref="VirtWebIDSQLLogin/wod25.png" /></figure> <figure><graphic fileref="VirtWebIDSQLLogin/wod26.png" /></figure> </listitem>
+<listitem>Grant select rights for user &quot;demo&quot;: <programlisting>GRANT SELECT 
+  ON EXAMPLE_DATA 
+  TO demo;
+</programlisting><figure><graphic fileref="VirtWebIDSQLLogin/wod27.png" /></figure> <figure><graphic fileref="VirtWebIDSQLLogin/wod28.png" /></figure></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 10 - Perform SQL login with certificate that contains the Web ID from above</bridgehead>
+<orderedlist spacing="compact"><listitem>Execute from Command Prompt: <programlisting>isql 1113 &quot;&quot; &quot;&lt;Demo.p12&#39;s password&gt;&quot;  -X Demo.p12 -T rca.pem 
+</programlisting>For example: <programlisting>isql 1113 &quot;&quot; &quot;1&quot; -X Demo.p12 -T rca.pem
+</programlisting><figure><graphic fileref="VirtWebIDSQLLogin/wod29.png" /></figure> </listitem>
+<listitem>Execute the following SELECT statement: <programlisting>SPARQL SELECT * 
+  FROM &lt;http://example.com/demo/private&gt; 
+  WHERE { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>The table&#39;s data should be displayed.
+<figure><graphic fileref="VirtWebIDSQLLogin/wod30.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLEndpointProtection">Safeguarding your Virtuoso-hosted SPARQL Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpointProtection">SPARQL Endpoint Protection Methods Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/">Virtuoso documentation</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint">SPARQL Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri">Service Endpoint Security</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl">Managing a SPARQL Web Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">SPARQL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLDET">SPARQL Endpoint DET Configuration Guide</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSecurityWebID">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpoints">Securing SPARQL endpoints</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</ulink> </listitem>
+<listitem><ulink url="VirtAuthServerUI">Virtuoso Authentication Server UI</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSSL">Manage a SPARQL-WebID based Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtSetupSSL">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID">WebID Protocol Support in OpenLink Data Spaces</ulink> </listitem>
+<listitem>Manage ODS Datadspaces Objects WebID Access Control Lists (ACLs): <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID">ODS Briefcase WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson">Person Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup">Group Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic">Public WebID based ACL Guide</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL">ODS Feed Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL">ODS Calendar WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL">ODS Bookmark Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL">ODS Address Book WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub">Setting up PubSubHub in ODS</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub">PubSubHubbub Demo Client Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub">Feed subscription via PubSubHub protocol Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL">Setting Up PubSubHub to use WebID Protocol or IP based control lists</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport">CA Keys Import using Conductor</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate">Generate an X.509 Certificate hosted WebID Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile">ODS Briefcase WebID Protocol Share File Guide</ulink> </listitem>
+<listitem><ulink url="http://esw.w3.org/topic/foaf+ssl">WebID Protocol Specification</ulink> </listitem>
+<listitem><ulink url="https://foaf.me/simpleLogin.php">Test WebID Protocol Certificate page</ulink> </listitem>
+<listitem><ulink url="http://test.foafssl.org/cert/">WebID Protocol Certificate Generation page</ulink> </listitem>
+</itemizedlist></section></docbook>

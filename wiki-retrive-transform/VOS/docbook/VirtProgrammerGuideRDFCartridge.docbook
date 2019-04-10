@@ -1,0 +1,125 @@
+<docbook><section><title>VirtProgrammerGuideRDFCartridge</title><para> </para>
+<title> Sponger Cartridges (RDF Mappers or RDFizers) for Virtuoso</title> Sponger Cartridges (RDF Mappers or RDFizers) for Virtuoso
+<para>This article explains how to develop and test a custom Sponger Cartridge.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Concept</bridgehead>
+<para>Sponger Cartridges provide a modular approach to RDF-oriented entity extraction and ontology mapping as part of a Linked Data production pipeline.
+ Typical sources include (X)HTML pages, images, Office documents, and PDFs, among others.</para>
+<para>Cartridges expose their functionality to service consumers via the Virtuoso Sponger (&quot;Sponger&quot;), a middleware layer that extracts and delivers RDF to other Virtuoso components such as the Web Crawler and the SPARQL Query Processor.
+ In addition, it is directly exposed as a REST-style Web Service for exploitation by external applications and services.</para>
+<para>A Cartridge is comprised of an initialization PL procedure (hook) and an entity extractor and mapper.
+ The entity extractor and mapping component can be developed using PL, C, or any external language supported by Virtuoso via the Virtuoso Server Extensions APIs.</para>
+<para>Once the cartridge has been developed, it is plugged into the Virtuoso Sponger by adding a record to the DB.DBA.SYS_RDF_MAPPERS table.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How Cartridges Work</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> SPARQL Query Processing</bridgehead>
+<para>When a SPARQL query is dispatched to Virtuoso, it invokes the Sponger during the act of URI dereferencing; i.e., it actually crawls the Web, locates a resource via it&#39;s URI/IRI (using a variety of RDF discovery heuristics), and then processes the data that the URI exposes.
+ If RDF is discovered, the cartridges play no role.
+ On the other hand, if RDF isn&#39;t discovered the Sponger will look in the DB.DBA.SYS_RDF_MAPPERS table (in RM_ID order), and for every matching URI or MIME type pattern (depending on RM_TYPE column value), it will invoke the associated cartridge via the hook procedure.
+ If the hook returns zero, the next cartridge will be tried.
+ If the result is negative, the process stops, informing the SPARQL engine that nothing was retrieved.
+ If the result is positive, the process stops, this time informing the SPARQL engine that RDF data was successfully retrieved.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Sponger Cartridge RDF Extractor PL hook Requirements</bridgehead>
+<para>Every PL function used to plug a cartridge into the SPARQL engine must have the following parameter signature:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> <emphasis>IN graph_iri VARCHAR</emphasis> </entry><entry> the IRI of the local storage graph   </entry></row>
+<row><entry> <emphasis>IN new_origin_uri VARCHAR</emphasis> </entry><entry> the URI of the target information resource   </entry></row>
+<row><entry> <emphasis>IN destination VARCHAR</emphasis> </entry><entry> the IRI of the target graph   </entry></row>
+<row><entry> <emphasis>INOUT content ANY</emphasis> </entry><entry> the content of the information resource retrieved for dispatch to the Sponger  </entry></row>
+<row><entry> <emphasis>INOUT async_queue ANY</emphasis> </entry><entry> an asynchronous queue; can be used for background processing (if required)  </entry></row>
+<row><entry> <emphasis>INOUT ping_service ANY</emphasis> </entry><entry> the value in the [SPARQL] section of a Virtuoso instance (i.e., PingService INI parameter) which enables RDF triple propagation and notification to pinger services such as <ulink url="http://pingthesemanticweb.com/">http://pingthesemanticweb.com/</ulink>  </entry></row>
+<row><entry> <emphasis>INOUT api_key ANY</emphasis> </entry><entry> a plain text ID, either a single key value or serialized vector of keys (basically the value of RM_KEY column of the DB.DBA.SYS_RDF_MAPPERS table), which is used for handling of API keys for 3rd party Web Services  </entry></row>
+</tbody></tgroup></table>
+<para>Note: the names of the parameters are not important, but their order and presence are vital.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Implementation</bridgehead>
+<para>In the example script we implement a basic cartridge which maps a text/plain MIME type to an imaginary ontology, which extends the class Document from FOAF with properties &#39;txt:<ulink url="UniqueWords">UniqueWords</ulink>&#39; and &#39;txt:Chars&#39;, where we specity the prefix &#39;txt:&#39; as &#39;urn:txt:v0.0:&#39;.</para>
+<programlisting>USE DB;
+
+CREATE PROCEDURE DB.DBA.RDF_LOAD_TXT_META
+  (
+       IN  graph_iri       VARCHAR,
+       IN  new_origin_uri  VARCHAR,
+       IN  dest            VARCHAR,
+    INOUT  ret_body        ANY,
+    INOUT  aq              ANY,
+    INOUT  ps              ANY,
+    INOUT  ser_key         ANY
+  )
+  {
+    DECLARE  words, 
+             chars   INT;
+    DECLARE  vtb, 
+             arr, 
+             subj, 
+             ses, 
+             str     ANY;
+    DECLARE  ses     ANY;
+    -- if any error, we just say nothing can be done
+    DECLARE EXIT HANDLER FOR SQLSTATE &#39;*&#39;
+      {
+        return 0;
+      };
+    subj  := COALESCE (dest, new_origin_uri);
+    vtb   := vt_batch ();
+    chars := LENGTH (ret_body);
+
+    -- using the text index procedures, we get a list of words
+    vt_batch_feed (vtb, ret_body, 1);
+    arr := vt_batch_strings_array (vtb);
+  
+    -- the list has &#39;word&#39; and positions array, so we must divide by 2
+    words := LENGTH (arr) / 2;
+    ses := string_output ();
+
+    -- we compose a N3 literal
+    http (sprintf (&#39;&lt;%s&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://xmlns.com/foaf/0.1/Document&gt; .\n&#39;, subj), ses);
+    http (sprintf (&#39;&lt;%s&gt; &lt;urn:txt:v0.0:UniqueWords&gt; &quot;%d&quot; .\n&#39;, subj, words), ses);
+    http (sprintf (&#39;&lt;%s&gt; &lt;urn:txt:v0.0:Chars&gt; &quot;%d&quot; .\n&#39;, subj, chars), ses);
+    str := string_output_string (ses);
+
+    -- we push the N3 text into the local store
+    DB.DBA.TTLP (str, new_origin_uri, subj);
+    RETURN 1;
+  }
+;
+
+DELETE FROM DB.DBA.SYS_RDF_MAPPERS 
+   WHERE RM_HOOK = &#39;DB.DBA.RDF_LOAD_TXT_META&#39;;
+
+INSERT SOFT DB.DBA.SYS_RDF_MAPPERS 
+  ( RM_PATTERN, 
+    RM_TYPE, 
+    RM_HOOK, 
+    RM_KEY, 
+    RM_DESCRIPTION
+  )
+  VALUES 
+    ( &#39;(text/plain)&#39;, 
+      &#39;MIME&#39;, 
+      &#39;DB.DBA.RDF_LOAD_TXT_META&#39;, 
+      NULL, 
+      &#39;Text Files (demo)&#39;
+    )
+;
+
+-- here we set order to some large number so don&#39;t break existing mappers
+UPDATE DB.DBA.SYS_RDF_MAPPERS 
+  SET   RM_ID = 2000 
+  WHERE RM_HOOK = &#39;DB.DBA.RDF_LOAD_TXT_META&#39;;
+</programlisting><para> To test the cartridge, we just use the /sparql endpoint with option &#39;Retrieve remote RDF data for all missing source graphs&#39; to execute: </para>
+<programlisting>SELECT * 
+  FROM &lt;URL-of-a-txt-file&gt; 
+  WHERE { ?s ?p ?o }
+</programlisting><para> Note that the SPARQL_SPONGE role must be granted to any user account (by default, the &quot;SPARQL&quot; user) which will be issuing SPARQL queries that invoke Sponger cartridges, to enable persistence to local storage.</para>
+<para>If the above is set correctly, then you can just hit <ulink url="http://demo.openlinksw.com/sparql?default-graph-uri=http%3A%2F%2Fdemo.openlinksw.com%2Ftutorial%2Fhosting%2Fho_s_30%2FWebCalendar%2Ftools%2Fsummary.txt&amp;should-sponge=&amp;query=select+*+%0D%0Awhere+%7B+%3Fs+%3Fp+%3Fo+%7D&amp;format=text%2Fhtml&amp;debug=on">this link</ulink>.</para>
+<para> More complex examples can be found in the cartridges package implementation.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Authentication in the Sponger</bridgehead>
+<para>To enable user-defined authentication, there are additional parameters for the <emphasis>/proxy</emphasis> and <emphasis>/sparql</emphasis> endpoints, which should be sent by RDF browser or iSPARQL users --</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>for <emphasis>/proxy</emphasis> endpoint: <programlisting>&#39;login=&lt;account name&gt;&#39;
+</programlisting></listitem>
+<listitem>for <emphasis>/sparql</emphasis> endpoint: <programlisting>get-login=&lt;account name&gt;
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSpongerCartridgeRDFExtractor">RDF Cartridge Extractor Component</ulink> </listitem>
+<listitem><ulink url="RDFMappers">SPARQL Processor and RDFizer Cartridges</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink></para>
+</section></docbook>

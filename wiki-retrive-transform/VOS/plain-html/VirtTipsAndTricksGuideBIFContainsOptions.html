@@ -1,0 +1,82 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="What  free-text options can I use with"></a> What  free-text options can I use with <code>bif:contains</code>?</h1>
+<p>Virtuoso supports use of several free-text options with <code>bif:contains</code>.
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#OFFBAND">OFFBAND</a></li> <li><a href="#SCORE">SCORE</a></li> <li><a href="#SCORE_LIMIT">SCORE_LIMIT</a></li> <li><a href="#Related">Related</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--></p>
+<h2><a name="OFFBAND"></a> OFFBAND</h2>
+<p>See description for <code>OFFBAND</code> in <a href="http://docs.openlinksw.com/virtuoso/creatingtxtidxs.html#offbanddata" class="absuri">this document</a>.</p>
+<i><b>Note</b>: <code>OFFBAND</code> is useful only if data comes via an Linked Data View and the source relational table uses this trick.</i><p> </p>
+<h2><a name="SCORE"></a> SCORE</h2>
+<code>SCORE</code> is calculated as described in <a href="http://docs.openlinksw.com/virtuoso/creatingtxtidxs.html#hitscores" class="absuri">this document</a>.
+<br><pre>SQL&gt; SPARQL 
+     SELECT ?s1 AS ?c1   , 
+                   ?sc   , 
+                   ?rank 
+     WHERE 
+       {
+         {
+           {
+             SELECT                                             ?s1   , 
+                                                (?sc * 3e-1) AS ?sc   , 
+                                                                ?o1   , 
+                    (sql:rnk_scale (&lt;LONG::IRI_RANK&gt; (?s1))) AS ?rank  
+             WHERE 
+               { 
+                 ?s1  ?s1textp      ?o1        . 
+                 ?o1  bif:contains  &#39;&quot;CNET&quot;&#39;  
+                      OPTION ( SCORE ?sc )
+               } 
+             ORDER BY DESC (?sc * 3e-1 + sql:rnk_scale (&lt;LONG::IRI_RANK&gt; (?s1)))  
+             LIMIT 20  
+             OFFSET 0 
+           }
+         }
+       };
+
+c1                                                sc      rank
+_________________________________________________________________________
+http://www.mixx.com/stories/45003360/justi...     3 	  5.881291583872891e-14
+http://www.mixx.com/stories/45099313/bing_...     2.7     5.881291583872891e-14
+http://dbpedia.org/resource/CBS_Interactive 	  1.5 	  5.881291583872891e-14
+http://dbpedia.org/resource/CBS_Interactive 	  1.5 	  5.881291583872891e-14
+
+
+4 Rows. -- 1 msec.
+</pre><p><a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Fs1+AS+%3Fc1+++%2C+%0D%0A+++++++++++++++++++%3Fsc+++%2C+%0D%0A+++++++++++++++++++%3Frank+%0D%0A+++++WHERE+%0D%0A+++++++%7B%0D%0A+++++++++%7B%0D%0A+++++++++++%7B%0D%0A+++++++++++++SELECT+++++++++++++++++++++++++++++++++++++++++++++%3Fs1+++%2C+%0D%0A++++++++++++++++++++++++++++++++++++++++++++++++%28%3Fsc+*+3e-1%29+AS+%3Fsc+++%2C+%0D%0A++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++%3Fo1+++%2C+%0D%0A++++++++++++++++++++%28sql%3Arnk_scale+%28%3CLONG%3A%3AIRI_RANK%3E+%28%3Fs1%29%29%29+AS+%3Frank++%0D%0A+++++++++++++WHERE+%0D%0A+++++++++++++++%7B+%0D%0A+++++++++++++++++%3Fs1++%3Fs1textp++++++%3Fo1++++++++.+%0D%0A+++++++++++++++++%3Fo1++bif%3Acontains++%27%22CNET%22%27++%0D%0A++++++++++++++++++++++OPTION+%28+SCORE+%3Fsc+%29%0D%0A+++++++++++++++%7D+%0D%0A+++++++++++++ORDER+BY+DESC+%28%3Fsc+*+3e-1+%2B+sql%3Arnk_scale+%28%3CLONG%3A%3AIRI_RANK%3E+%28%3Fs1%29%29%29++%0D%0A+++++++++++++LIMIT+20++%0D%0A+++++++++++++OFFSET+0+%0D%0A+++++++++++%7D%0D%0A+++++++++%7D%0D%0A+++++++%7D&amp;should-sponge=&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=15000&debug=on" class="absuri">View the results</a> of the query execution on the <a href="http://lod.openlinksw.com" class="absuri">LOD</a> instance.</p>
+<p> </p>
+<h2><a name="SCORE_LIMIT"></a> SCORE_LIMIT</h2>
+ <code>SCORE_LIMIT</code> works as it does in plain SQL free-text.
+ <a href="http://docs.openlinksw.com/virtuoso/queryingftcols.html" class="absuri">See more details</a>.
+<br><pre>SQL&gt; SPARQL 
+     SELECT  ?s   ,
+             ?sc 
+     WHERE 
+       { 
+         ?s  ?p            ?o . 
+         ?o  bif:contains  &quot;tree&quot; 
+             OPTION ( SCORE        ?sc , 
+                      SCORE_LIMIT  20
+                    )
+       };
+  
+s                                                                      sc
+VARCHAR                                                                INTEGER
+________________________________________________________________________________   
+
+                                                                      
+http://www.openlinksw.com/virtrdf-data-formats#default                 24
+http://www.openlinksw.com/virtrdf-data-formats#default                 24
+http://www.openlinksw.com/virtrdf-data-formats#sql-longvarbinary       21
+http://www.openlinksw.com/virtrdf-data-formats#sql-varchar-dt          20
+http://www.openlinksw.com/virtrdf-data-formats#sql-nvarchar-dt         20
+http://www.openlinksw.com/virtrdf-data-formats#sql-varchar-lang        20
+http://www.openlinksw.com/virtrdf-data-formats#sql-nvarchar-lang       20
+
+7 Rows. -- 2 msec.
+</pre><p><a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT++%3Fs+++%2C%0D%0A+++++++++++++%3Fsc+%0D%0A+++++WHERE+%0D%0A+++++++%7B+%0D%0A+++++++++%3Fs++%3Fp++++++++++++%3Fo+.+%0D%0A+++++++++%3Fo++bif%3Acontains++%22tree%22+%0D%0A+++++++++++++OPTION+%28+SCORE++++++++%3Fsc+%2C+%0D%0A++++++++++++++++++++++SCORE_LIMIT++20%0D%0A++++++++++++++++++++%29%0D%0A+++++++%7D&amp;should-sponge=&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=15000&debug=on" class="absuri">View the results</a> of the query execution on the <a href="http://lod.openlinksw.com" class="absuri">LOD</a> instance.</p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfpredicatessparql" class="absuri">Query Constructs</a> </li>
+</ul></div></body></html>

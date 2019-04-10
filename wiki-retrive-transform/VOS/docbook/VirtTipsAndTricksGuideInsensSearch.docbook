@@ -1,0 +1,51 @@
+<docbook><section><title>VirtTipsAndTricksGuideInsensSearch</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">How Can I Perform Case Insensitive Search across multiple Literal values with Virtuoso?</bridgehead>
+<para>If you use  <emphasis>contains</emphasis>, it will make an approximate filtering of results, its is therefore best to use <emphasis>FILTER</emphasis> with <emphasis>bif:lower</emphasis>.</para>
+<para>For example with the following RDF triples loaded in Virtuoso: </para>
+<programlisting>&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;An?lisis&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Aut?nomas&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Autonom?a de gobierno&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Autonom?a&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Auton?mica&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Com?n&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Comunidades&quot; .
+&lt;http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D&gt;&lt;http://rdfs.org/sioc/types#Tag&gt;&quot;Cr?tico&quot; .
+</programlisting><para> The following query is case sensitive, thus no data is returned as is expected: </para>
+<programlisting>SQL&gt; SPARQL
+PREFIX sioc_t:&lt;http://rdfs.org/sioc/types#&gt;
+SELECT DISTINCT ?s
+FROM &lt;http://j.com&gt;
+WHERE 
+  { 
+    ?s sioc_t:Tag ?Tag.  FILTER ( ?Tag in (&#39;analisi&#39;, &#39;autonomas&#39;, 
+                                           &#39;autonomia de gobierno&#39;, 
+                                           &#39;autonomia&#39;, &#39;autonomica&#39;, 
+                                           &#39;comun&#39;, &#39;comunidades&#39;, &#39;critico&#39; ) )
+  }
+
+-- Query result:
+s
+ANY
+No. of rows in result: 0 
+</programlisting><para> Changing the query to use the Virtuoso <emphasis>bif:lower</emphasis> function a case insensitive filter is performed returning one distinct row:</para>
+<programlisting>SQL&gt;SPARQL 
+PREFIX sioc_t:&lt;http://rdfs.org/sioc/types#&gt;
+SELECT DISTINCT ?s
+FROM &lt;http://j.com&gt;
+WHERE 
+  { 
+    ?s sioc_t:Tag ?Tag.  FILTER ( bif:lower(str(?Tag)) in (&#39;analisi&#39;, &#39;autonomas&#39;, 
+                                                           &#39;autonomia de gobierno&#39;, 
+                                                           &#39;autonomia&#39;, &#39;autonomica&#39;, 
+                                                           &#39;comun&#39;, &#39;comunidades&#39;, &#39;critico&#39; ) )
+  }
+
+-- Query result:
+s
+ANY
+ http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D
+No. of rows in result: 1 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext">Using Full Text Search in SPARQL</ulink> </listitem>
+</itemizedlist></section></docbook>

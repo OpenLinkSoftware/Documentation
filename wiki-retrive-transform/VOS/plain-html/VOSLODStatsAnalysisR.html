@@ -1,0 +1,183 @@
+<html><body><div class="topic-text"><h1><a name="Analyzing Linked Open Data with R"></a> Analyzing Linked Open Data with R</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Background">Background</a></li> <li><a href="#Linked%20Data">Linked Data</a></li> <li><a href="#Worked%20Example">Worked Example</a></li>
+<ul><li><a href="#Collating%20the%20Data">Collating the Data</a></li> <li><a href="#Constructing%20the%20SPARQL%20Query">Constructing the SPARQL Query</a></li> <li><a href="#Data%20Sanitization">Data Sanitization</a></li> </ul><li><a href="#Map">Map</a></li> <li><a href="#R">R</a></li><ul><li><a href="#The%20Script">The Script</a></li> </ul><li><a href="#Next%20Steps">Next Steps</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Background"></a> Background</h2>
+<p>The idea of statistical data analysis has never been more popular, from Nate Silver&#39;s book <i>The Signal and the Noise: The Art and Science of Prediction</i> to industry trends such as <i>Big Data.</i></p>
+<p>Data itself comes in a vast variety of models, formats, and sources.
+ Users of the R language are familiar with CSV and HDF5 files, ODBC databases, and more.</p>
+<h2><a name="Linked Data"></a> Linked Data</h2>
+<p>Against this sits <a href="http://en.wikipedia.org/wiki/Linked_data" class="absuri">Linked Data</a>, based on a graph structure: simple triple statements (entity-attribute-value or EAV) using HTTP URIs to denote and dereference entities, linking pools of data by means of shared data and vocabularies (ontologies).</p>
+<p>For example, a photography website might use an entity for each photo it hosts, which, when dereferenced, displays a page-impression showcasing the photograph with other metadata surrounding it.
+ This metadata is a blend of the WGS84 geo ontology (for expressing a photo&#39;s latitude and longitude) and the EXIF ontology (for expressing its ISO sensitivity).
+ By standardizing on well-known ontologies for expressing these predicates, relationships can be built between diverse fields.
+ For example, UK crime report data can be tied to Ordnance Survey map/gazetteer data; or a BBC service can share the same understanding of a musical genre as Last.FM by standardizing on a term from the MusicBrainz<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MusicBrainz&parent=VOSLODStatsAnalysisR" class="wikiword">?</a> ontology.</p>
+<p>The <i>lingua franca</i> of Linked Data is RDF, to express and store the triples, and SPARQL, to query over them.</p>
+<h2><a name="Worked Example"></a> Worked Example</h2>
+<p>The challenge: to explore the United Kingdom&#39;s population density using data from DBpedia.</p>
+<h3><a name="Collating the Data"></a> Collating the Data</h3>
+<p>We start by inspecting a well-known data-point, the city of Edinburgh.</p>
+<p>The following URLs and URI patterns will come in handy: </p>
+<ul><li><a href="http://dbpedia.org/sparql" class="absuri">http://dbpedia.org/sparql</a> - the DBpedia SPARQL endpoint against which queries are executed </li>
+<li><a href="http://en.wikipedia.org/wiki/Edinburgh" class="absuri">http://en.wikipedia.org/wiki/Edinburgh</a> - a page in Wikipedia about Edinburgh </li>
+<li><b><tt>dbpprop:title</tt></b> - a CURIE, identifying the <i>title</i> attribute within the <i>dbpprod</i> namespace (<a href="http://dbpedia.org/property/" class="absuri">http://dbpedia.org/property/</a>), thereby assigning a title (&quot;The City of Edinburgh&quot;).
+</li>
+<li><a href="http://dbpedia.org/resource/Edinburgh" class="absuri">http://dbpedia.org/resource/Edinburgh</a> - an identifier for a DBpedia resource, comprised of data automatically extracted from the corresponding Wikipedia page; if you view it in a Web browser, it redirects to: </li>
+<li><a href="http://dbpedia.org/page/Edinburgh" class="absuri">http://dbpedia.org/page/Edinburgh</a> - a human-readable view of the DBpedia resource, showing its attributes and values</li>
+</ul><p>On examining the last of these, we see useful properties such as </p>
+<br><pre>dbpedia-owl:populationTotal  495360  (xsd:integer)
+</pre><p> This tells us that <b><tt>dbpedia-owl:populationTotal</tt></b> is a useful predicate by which to identify a settlement&#39;s population.
+ (Note: we do not need to search for entities of some kind of &quot;settlement&quot; type; merely having a <tt>populationTotal</tt> implies that the entity is a settlement and choosing the wrong kind of settlement - stipulating &quot;it has to be a town or a city&quot; would risk losing data such as villages and hamlets.)</p>
+<p>Looking further down the page, we see the two properties: </p>
+<br><pre>geo:lat   55.953056  (xsd:float)
+geo:long  -3.188889  (xsd:float)
+</pre><p> Again, we do not need to know the type of the entity; that it has a <tt>latitude</tt> and <tt>longitude</tt> is sufficient.</p>
+<p>So far, we have some rudimentary filters we can apply to <tt>dbpedia:</tt> to make a table of latitude, longitude, and corresponding population.</p>
+<p>Finally, we can filter it down to places in the UK, as we see the property: </p>
+<br><pre>dbpedia-owl:country  dbpedia:United_Kingdom
+</pre><p> </p>
+<h3><a name="Constructing the SPARQL Query"></a>Constructing the SPARQL Query</h3>
+<p>We can build a SPARQL query using the above constraints, thus:</p>
+<br><pre>prefix      dbpedia: &lt;http://dbpedia.org/resource/&gt; 
+prefix  dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt; 
+
+SELECT DISTINCT  ?place 
+                 ?latitude 
+                 ?longitude 
+                 ?population 
+  WHERE 
+    {
+      ?place          dbpedia-owl:country  &lt;http://dbpedia.org/resource/United_Kingdom&gt; .
+      ?place  dbpedia-owl:populationTotal  ?population                                  .
+      ?place                      geo:lat  ?latitude                                    .
+      ?place                     geo:long  ?longitude                                   .
+    } 
+  ORDER BY ?place 
+  LIMIT 100
+</pre><p> and the resultset looks like:</p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSLODStatsAnalysisR?sort=0&col=1">place </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSLODStatsAnalysisR?sort=1&col=2">latitude </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSLODStatsAnalysisR?sort=2&col=3">longitude </a></th><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSLODStatsAnalysisR?sort=3&col=4">population </a></th></tr><tr><td> <a href="http://dbpedia.org/resource/Aberporth" class="absuri">http://dbpedia.org/resource/Aberporth</a> </td><td> 52.1333 </td><td> -4.55 </td><td> 2485 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Accrington" class="absuri">http://dbpedia.org/resource/Accrington</a> </td><td> 53.7534 </td><td> -2.36384 </td><td> 35203 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Acomb,_North_Yorkshire" class="absuri">http://dbpedia.org/resource/Acomb,_North_Yorkshire</a> </td><td> 53.955 </td><td> -1.126 </td><td> 22215 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Adamstown,_Pitcairn_Islands" class="absuri">http://dbpedia.org/resource/Adamstown,_Pitcairn_Islands</a> </td><td> -25.0667 </td><td> -130.1 </td><td> 48 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Aldeburgh" class="absuri">http://dbpedia.org/resource/Aldeburgh</a> </td><td> 52.15 </td><td> 1.6 </td><td> 2793 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Aldershot" class="absuri">http://dbpedia.org/resource/Aldershot</a> </td><td> 51.247 </td><td> -0.7598 </td><td> 33840 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Alkborough" class="absuri">http://dbpedia.org/resource/Alkborough</a> </td><td> 53.6835 </td><td> -0.667179 </td><td> 455 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Alkborough" class="absuri">http://dbpedia.org/resource/Alkborough</a> </td><td> 53.6856 </td><td> -0.667179 </td><td> 455 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Alkborough" class="absuri">http://dbpedia.org/resource/Alkborough</a> </td><td> 53.6835 </td><td> -0.6658 </td><td> 455 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Alkborough" class="absuri">http://dbpedia.org/resource/Alkborough</a> </td><td> 53.6856 </td><td> -0.6658 </td><td> 455 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Ambleside" class="absuri">http://dbpedia.org/resource/Ambleside</a> </td><td> 54.4251 </td><td> -2.9626 </td><td> 2600 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Applecross" class="absuri">http://dbpedia.org/resource/Applecross</a> </td><td> 57.433 </td><td> -5.80958 </td><td> 544 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Arthington" class="absuri">http://dbpedia.org/resource/Arthington</a> </td><td> 53.9 </td><td> -1.58 </td><td> 561 </td></tr><tr><td> <a href="http://dbpedia.org/resource/Ashington" class="absuri">http://dbpedia.org/resource/Ashington</a> </td><td> 55.181 </td><td> -1.568 </td><td> 27335 </td></tr></table>
+<p> </p>
+<h3><a name="Data Sanitization"></a> Data Sanitization</h3>
+<p>However, on executing this against the DBpedia SPARQL endpoint, we see some strange &quot;noise&quot; points.
+ Some of these might be erroneous (Wikipedia being human-curated), but some of them arise from political arrangements such as the remains of the British Empire ? for example, Adamstown in the Pitcairn Islands (a British Overseas Territory, way out in the Pacific Ocean).
+ Hence, to make plotting the map easier, the data is further filtered by latitude and longitude to points within a crude rectangle surrounding all the UK mainland.</p>
+<br><pre>prefix      dbpedia: &lt;http://dbpedia.org/resource/&gt; 
+prefix  dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt; 
+
+SELECT DISTINCT ?place 
+                ?latitude 
+                ?longitude 
+                ?population 
+  WHERE 
+    {
+      ?place          dbpedia-owl:country  &lt;http://dbpedia.org/resource/United_Kingdom&gt; .
+      ?place  dbpedia-owl:populationTotal  ?population                                  .
+      ?place                      geo:lat  ?latitude                                    .
+      ?place                     geo:long  ?longitude                                   .
+      FILTER (      ?latitude &gt; 50 
+               AND  ?latitude &lt; 60 
+               AND ?longitude &lt; 2
+               AND ?longitude &gt; -7 
+             )
+    }
+</pre><p> </p>
+<h2><a name="Map"></a> Map</h2>
+<p>The <a href="http://gadm.org/" class="absuri">GADM database of Global Administrative Areas</a> site has free maps of country outlines available for download as Shapefiles, ESRI, KMZ, or R native.
+ In this case, we download a Shapefile, unpack the zip archive, and move the file <tt>GBR_adm0.shp</tt> into the working directory.</p>
+<h2><a name="R"></a>R</h2>
+<p>There is an R module for executing SPARQL queries against an endpoint.
+ We install some dependencies as follows:</p>
+<br><pre>&gt; install.packages(&quot;maptools&quot;)
+&gt; install.packages(&quot;akima&quot;)
+&gt; install.packages(&quot;SPARQL&quot;)
+</pre><p> The <i>maptools</i> library allows us to load a Shapefile into an R data frame; <i>akima</i> provides an interpolation function; and <i>SPARQL</i> provides the interface for executing queries.</p>
+<h3><a name="The Script"></a> The Script</h3>
+<br><pre>#!/usr/bin/env Rscript
+
+library(&quot;maptools&quot;)
+library(&quot;akima&quot;)
+library(&quot;SPARQL&quot;)
+
+query&lt;-&quot;prefix      dbpedia: &lt;http://dbpedia.org/resource/&gt; 
+prefix  dbpedia-owl: &lt;http://dbpedia.org/ontology/&gt; 
+
+SELECT DISTINCT ?place 
+                ?latitude 
+                ?longitude 
+                ?population 
+  WHERE 
+    {
+      ?place          dbpedia-owl:country  &lt;http://dbpedia.org/resource/United_Kingdom&gt; .
+      ?place  dbpedia-owl:populationTotal  ?population                                  .
+      ?place                      geo:lat  ?latitude                                    .
+      ?place                     geo:long  ?longitude                                   .
+      FILTER (      ?latitude &gt; 50 
+               AND  ?latitude &lt; 60 
+               AND ?longitude &lt; 2
+               AND ?longitude &gt; -7 
+             )
+    }&quot;
+
+plotmap&lt;-function(map, pops, im) {
+  image(im, col=terrain.colors(50))
+  points(pops$results$longitude, pops$results$latitude, cex=0.25, col=&quot;#ff30000a&quot;) 
+  contour(im, add=TRUE, col=&quot;brown&quot;)
+  lines(map, xlim=c(-8,3), ylim=c(54,56), col=&quot;black&quot;)
+}
+
+q100&lt;-paste(query, &quot; limit 100&quot;)
+
+map&lt;-readShapeLines(&quot;GBR_adm0.shp&quot;)
+
+if(!(exists(&quot;pops&quot;))) {
+  pops&lt;-SPARQL(&quot;http://dbpedia.org/sparql/&quot;, query=query)
+}
+
+data &lt;- pops$results[with(pops$results, order(longitude,latitude)), ]
+data &lt;- data[with(data, order(latitude,longitude)), ]
+im &lt;- with(data, interp(longitude, latitude, population**.25, duplicate=&quot;mean&quot;), xo=seq(-7,1.25, length=200), yo=seq(50,58,200), linear=FALSE)
+
+plotmap(map, pops, im)
+
+fit&lt;-lm(population ~ latitude*longitude, data)
+print(summary(fit))
+
+subd&lt;-data[c(&quot;latitude&quot;,&quot;longitude&quot;,&quot;population&quot;)]
+print(cor(subd))
+</pre><p> Run this interactively from R:</p>
+<br><pre>bash$ R
+...
+&gt; source(&quot;dbpedia-uk-map.R&quot;)
+...
+</pre><p> After a few seconds to load and execute the query, you should see a map showing the outline of the UK (including a bit of Northern Ireland) with green/yellow heat-map and contour lines of the population density.
+ Individual data-points are plotted using small blue dots.</p>
+<img src="VOSLODStatsAnalysisR/Rplot001.png" style="wikiautogen" width="512" height="512"><p>This is a rather na?ve plot: interpolation is not aware of water, so interpolates between Stranraer and Belfast regardless of the Irish Sea in the way; however, it looks reasonable on land, with higher values over large centers of population such as London, the Midlands, and the central belt in Scotland (from Edinburgh to Stirling to Glasgow).</p>
+<p>The script runs two statistical analyses:</p>
+<ul><li>a simple linear regression of population with latitude and longitude: <br><pre><br>Call:
+lm(formula = population ~ latitude * longitude, data = data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+  -37155   -17695   -12856    -8212 62278176 
+
+Coefficients:
+                    Estimate   Std. Error   t value   Pr(&gt;|t|)
+(Intercept)        -273340.2     478917.6    -0.571      0.568
+latitude              5489.0       9139.8     0.601      0.548
+longitude           -41694.5     146956.3    -0.284      0.777
+latitude:longitude     776.8       2788.6     0.279      0.781
+
+Residual standard error: 660500 on 9206 degrees of freedom
+Multiple R-squared: 7.733e-05,  Adjusted R-squared: -0.0002485 
+F-statistic: 0.2373 on 3 and 9206 DF,  p-value: 0.8704 
+</pre><br> </li>
+<li>correlation between latitude, longitude and population, shown as a matrix: <br><pre><br>                 latitude      longitude    population
+latitude      1.000000000   -0.291285847   0.008083111
+longitude    -0.291285847    1.000000000  -0.004161835
+population    0.008083111   -0.004161835   1.000000000
+</pre><br> This shows a very slight correlation of population-density with longitude, and about twice as much correlation with latitude, but neither is statistically significant in the given data (as the <i>p</i> value should be less than 0.01, not up around 0.5-0.8).</li>
+</ul><h2><a name="Next Steps"></a> Next Steps</h2>
+<p>SPARQL has a <tt>SERVICE</tt> keyword that allows federation, i.e., the execution of queries against multiple SPARQL endpoints, joining disparate data by common variables (a/k/a SPARQL-FED).
+ For example, it should be possible to enrich the data by blending Geonames and the Ordnance Survey gazetteer in the query.</p>
+<p>Over to you to explore the data some more! </p>
+</div></body></html>

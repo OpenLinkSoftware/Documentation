@@ -1,0 +1,121 @@
+<docbook><section><title>VAL_HttpRestrictions</title><title> HTTP Restrictions</title> HTTP Restrictions
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Virtuoso Restriction Hook</bridgehead>
+<para>Virtuoso provides a hook procedure called DB.DBA.DBEV_RESTRICTIONS which, given a map of restriction names to their requested value (&quot;min&quot; or &quot;max&quot;), will return a set of mappings from restriction name to a vector containing the restriction type (&quot;min&quot; or &quot;max&quot;), the restriction value, and the optional service ID which triggered the restriction.
+ If the latter is null then the restriction was triggered by the client IP address.</para>
+<para>Since March 19th, 2014 Virtuoso provides a second restrictions hook DB.DBA.DBEV_GET_CONNECTION_RESTRICTION which supports restriction parameters.
+ Restriction parameters simply allow to divide one restricted resource into several restrictions.
+ This is very useful in terms of HTTP as it allows to define different restrictions for different urls or virtual dirs.</para>
+<para>This hook is implemented in VAL and uses the ACL restriction system by prefixing every restriction name with urn:virtuoso:restrictions:.</para>
+<para>VAL&#39;s implementation will always choose the least restrictive value.
+ That means given two max values, one via the IP address and one via the authenticated user, VAL will choose the higher value.</para>
+<para>The Restrictions can be controlled via the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__http__api.html">VAL ACL RESTful API</ulink> or the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html#ga89b2c77c10c82186ddc0e7b46093123c">Internal VAL API</ulink>.
+ Alternatively one can directly add the restrictions to the private graph matching the realm in which the restrictions should apply.
+ Given the default realm http://www.openlinksw.com/ontology/acl#DefaultRealm and default hostname &quot;HOST&quot; the graph IRI would be http://HOST/acl/graph/restrictions/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm and the groups will be stored in named graph http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm.
+ Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">these graphs can be customized</ulink> for better readability.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> HTTP Restriction Names</bridgehead>
+<para>Virtuoso uses two restrictions which can be controlled on an IP address level or via service IDs.
+ These restrictions define &quot;global&quot; limits on all virtual dirs.
+</para>
+<orderedlist spacing="compact"><listitem>urn:virtuoso:restrictions:http-request-rate restricts the maximum request rate per second.
+</listitem>
+<listitem>urn:virtuoso:restrictions:http-content-size restricts the maximum content size for requests</listitem>
+</orderedlist><para>If one wants to define restrictions only for a specific virtual dir or a specific URL then the above URNs need to be used as restriction parameters in restrictions on the url in question.
+ See below for examples.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> HTTP Restriction Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Global Http Restrictions</bridgehead>
+ <bridgehead class="http://www.w3.org/1999/xhtml:h5"> Restrict the requests per second to 10 for everyone for every http request</bridgehead>
+ <programlisting>SPARQL
+
+PREFIX oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+
+INSERT {
+  &lt;{REST-IRI}&gt; a oplres:Restriction ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    foaf:name &quot;Base line is 10 requests per second&quot; ;
+    oplres:hasMaxValue &quot;10&quot;^^xsd:decimal ;
+    oplres:hasRestrictedResource &lt;urn:virtuoso:restrictions:http-request-rate&gt; ;
+    oplres:hasAgentClass foaf:Agent ;
+    oplres:hasRealm oplacl:DefaultRealm .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h5"> Restrict the requests per second to 1000 for the intranet for every http request</bridgehead>
+ IP Address ranges are defined via conditional groups.
+ Thus, we first define the conditional group which includes all IP addresses with a certain pattern: <programlisting>SPARQL
+
+PREFIX oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+
+INSERT {
+  &lt;{GROUP-IRI}&gt; a oplacl:ConditionalGroup ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    foaf:name &quot;Internal Network&quot; ;
+    oplacl:hasCondition [
+      a oplacl:IPAddressCondition ;
+      oplacl:hasIPAddressPattern &quot;198.168..*&quot;
+    ] .
+};
+</programlisting><para> And then we use this group in our restriction:</para>
+<programlisting>SPARQL
+
+PREFIX oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+
+INSERT {
+  &lt;{REST-IRI}&gt; a oplres:Restriction ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    foaf:name &quot;Intranet HTTP requests per second&quot; ;
+    oplres:hasMaxValue &quot;1000&quot;^^xsd:decimal ;
+    oplres:hasRestrictedResource &lt;urn:virtuoso:restrictions:http-request-rate&gt; ;
+    oplres:hasAgent &lt;{GROUP-IRI}&gt; ;
+    oplres:hasRealm oplacl:DefaultRealm .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Virtual-Dir or URL-specific Http Restrictions</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Restrict the requests per second to 10 for everyone on one virtual dir</bridgehead>
+ The following restriction is scoped to all http requests on one virtual dir, i.e.
+ /sparql.
+ This means any request to pages in that virtual dir will be subject to the same restriction.
+ This means that one client can make 10 requests in total on that virtual dir.<programlisting>SPARQL
+
+PREFIX oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+
+INSERT {
+  &lt;{REST-IRI}&gt; a oplres:Restriction ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    foaf:name &quot;Base line is 10 requests per second&quot; ;
+    oplres:hasMaxValue &quot;10&quot;^^xsd:decimal ;
+    oplres:hasRestrictedResource &lt;http://linkeddata.uriburner.com/sparql&gt; ;
+    oplres:hasRestrictedParameter &lt;urn:virtuoso:restrictions:http-request-rate&gt; ;
+    oplres:hasAgentClass foaf:Agent ;
+    oplres:hasRealm oplacl:DefaultRealm .
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Restrict the requests per second on one specific URL</bridgehead>
+ The following restriction allows 1000 requests per second on one specific URL (given that there is no virtual dir which matches that URL).
+ It uses the same conditional group as above.
+ So in practice this restriction limits the rate on one specific ODS API call:<programlisting>SPARQL
+
+PREFIX oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+
+INSERT {
+  &lt;{REST-IRI}&gt; a oplres:Restriction ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    foaf:name &quot;Intranet HTTP requests per second&quot; ;
+    oplres:hasMaxValue &quot;1000&quot;^^xsd:decimal ;
+    oplres:hasRestrictedResource &lt;http://web.ods.openlinksw.com/ods/api/user.info&gt; ;
+    oplres:hasRestrictedParameter &lt;urn:virtuoso:restrictions:http-request-rate&gt; ;
+    oplres:hasAgent &lt;{GROUP-IRI}&gt; ;
+    oplres:hasRealm oplacl:DefaultRealm .
+};
+</programlisting></section></docbook>

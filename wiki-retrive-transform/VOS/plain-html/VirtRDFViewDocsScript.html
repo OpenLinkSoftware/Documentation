@@ -1,0 +1,433 @@
+<html><body><div class="topic-text"><h2><a name="Virtuoso Documentation Linked Data Views Script to set up your own instance"></a>Virtuoso Documentation Linked Data Views Script to set up your own instance</h2>
+<br><pre>use DB;
+
+--GRANT SPARQL_UPDATE TO &quot;SPARQL&quot;;
+GRANT SELECT ON &quot;WS&quot;.&quot;WS&quot;.&quot;SYS_DAV_RES&quot; TO &quot;SPARQL&quot;;
+GRANT SELECT ON &quot;WS&quot;.&quot;WS&quot;.&quot;SYS_DAV_COL&quot; TO &quot;SPARQL&quot;;
+GRANT SELECT ON &quot;WS&quot;.&quot;WS&quot;.&quot;SYS_DAV_PROP&quot; TO &quot;SPARQL&quot;;
+GRANT SELECT ON &quot;DB&quot;.&quot;DBA&quot;.&quot;SYS_USERS&quot; TO &quot;SPARQL&quot;;
+GRANT SELECT ON &quot;DB&quot;.&quot;DBA&quot;.&quot;document_search&quot; TO &quot;SPARQL&quot;;
+
+create function DB.DBA.DOC_ID_TO_IRI(in _prefix varchar,in _id varchar)
+{
+  declare iri, uriqa_host any;
+  uriqa_host := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  iri := &#39;http://&#39; || uriqa_host || &#39;/Doc/&#39; || _prefix || &#39;/&#39; || _id || &#39;#this&#39;;
+  return sprintf (&#39;http://%s/DAV/home/doc/RDFData/All/iid%%20(%d).rdf&#39;, uriqa_host, iri_id_num (iri_to_id (iri)));
+}
+;
+
+create function DB.DBA.DOC_IRI_TO_ID(in _iri varchar)
+{
+    declare parts any;
+    parts := sprintf_inverse (_iri, &#39;http://%s/DAV/home/doc/RDFData/All/iid (%d).rdf&#39;, 1 );
+    if (parts is not null)
+    {
+        declare uriqa_host, iri any;
+        uriqa_host := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+        if (parts[0] = uriqa_host)
+        {
+            iri := id_to_iri(iri_id_from_num(parts[1]));
+            parts := sprintf_inverse (iri, &#39;http://%s/Doc/%s/%s#this&#39;, 1 );
+            if (parts[0] = uriqa_host)
+            {
+                return parts[2];
+            }
+        }
+    }
+    return NULL;
+}
+;
+
+create function DB.DBA.FILE_IRI (in _id integer) returns varchar
+{
+    return DOC_ID_TO_IRI(&#39;File&#39;, cast(_id as varchar));
+}
+;
+
+create function DB.DBA.FILE_IRI_INVERSE (in _iri varchar) returns integer
+{
+    return atoi(DB.DBA.DOC_IRI_TO_ID(_iri));
+};
+
+create function DB.DBA.TOPIC_IRI (in _id integer) returns varchar
+{
+    return DOC_ID_TO_IRI(&#39;File&#39;, cast(_id as varchar));
+}
+;
+
+create function DB.DBA.TOPIC_IRI_INVERSE (in _iri varchar) returns integer
+{
+    return atoi(DB.DBA.DOC_IRI_TO_ID(_iri));
+};
+
+create function DB.DBA.COL_IRI (in _id integer) returns varchar
+{
+    return DOC_ID_TO_IRI(&#39;Collection&#39;, cast(_id as varchar));
+}
+;
+
+create function DB.DBA.PROP_IRI_INVERSE (in _iri varchar) returns integer
+{
+    return atoi(DB.DBA.DOC_IRI_TO_ID(_iri));
+};
+
+create function DB.DBA.PROP_IRI (in _id integer) returns varchar
+{
+    return DOC_ID_TO_IRI(&#39;Property&#39;, cast(_id as varchar));
+}
+;
+
+create function DB.DBA.SUPPLIER_IRI_INVERSE (in _iri varchar) returns integer
+{
+    return atoi(DB.DBA.DOC_IRI_TO_ID(_iri));
+};
+
+grant execute on DB.DBA.FILE_IRI to &quot;SPARQL&quot;;
+grant execute on DB.DBA.FILE_IRI_INVERSE to &quot;SPARQL&quot;;
+grant execute on DB.DBA.COL_IRI to &quot;SPARQL&quot;;
+grant execute on DB.DBA.COL_IRI_INVERSE to &quot;SPARQL&quot;;
+grant execute on DB.DBA.PROP_IRI to &quot;SPARQL&quot;;
+grant execute on DB.DBA.PROP_IRI_INVERSE to &quot;SPARQL&quot;;
+
+SPARQL
+prefix doc: &lt;http://demo.openlinksw.com/schemas/doc#&gt;
+drop silent quad map virtrdf:Doc .
+;
+
+SPARQL
+prefix doc: &lt;http://demo.openlinksw.com/schemas/doc#&gt;
+create iri class doc:File &quot;http://^{URIQADefaultHost}^/Doc/File/%d/%U#this&quot; (in file_id integer not null, in file_name varchar not null) .
+create iri class doc:Collection &quot;http://^{URIQADefaultHost}^/Doc/Collection/%d/%U#this&quot; (in col_id integer not null, in col_name varchar not null) .
+create iri class doc:Property &quot;http://^{URIQADefaultHost}^/Doc/Property/%U/%d#this&quot; (in prop_name varchar not null, in prop_id integer not null) .
+create iri class doc:Search &quot;http://^{URIQADefaultHost}^/Doc/Search/%U/%d#this&quot; (in prop_name varchar not null, in prop_id integer not null) .
+create iri class doc:DocPath &quot;http://^{URIQADefaultHost}^%U#this&quot; (in prop_name varchar not null) .
+;
+
+SPARQL
+prefix doc: &lt;http://demo.openlinksw.com/schemas/doc#&gt;
+prefix bibo: &lt;http://purl.org/ontology/bibo/&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+create iri class doc:file_iri using
+    function DB.DBA.FILE_IRI (in customer_id integer) returns varchar,
+    function DB.DBA.FILE_IRI_INVERSE (in customer_iri varchar) returns integer.
+create iri class doc:collection_iri using
+    function DB.DBA.COL_IRI (in customer_id integer) returns varchar,
+    function DB.DBA.COL_IRI_INVERSE (in customer_iri varchar) returns integer.
+create iri class doc:property_iri using
+    function DB.DBA.PROP_IRI (in customer_id varchar) returns varchar,
+    function DB.DBA.PROP_IRI_INVERSE (in customer_iri varchar) returns varchar.
+create iri class doc:topic_iri using
+    function DB.DBA.TOPIC_IRI (in topic_id varchar) returns varchar,
+    function DB.DBA.TOPIC_IRI_INVERSE (in topic_iri varchar) returns varchar.
+;
+
+DB.DBA.exec_no_error(&#39;create view WS.WS.SYS_DAV_RES_VIEW(
+RES_ID, RES_NAME, RES_OWNER, RES_GROUP, RES_COL, RES_CONTENT,
+RES_TYPE, RES_CR_TIME, RES_MOD_TIME, RES_PERMS, RES_FULL_PATH,
+ROWGUID, RES_ACL, RES_IID, RES_STATUS, RES_VCR_ID, RES_VCR_CO_VERSION, RES_VCR_STATE
+)
+as select
+RES_ID, RES_NAME, RES_OWNER, RES_GROUP, RES_COL, RES_CONTENT,
+RES_TYPE, cast(RES_CR_TIME as varchar), RES_MOD_TIME, RES_PERMS, RES_FULL_PATH,
+ROWGUID, RES_ACL, RES_IID, RES_STATUS, RES_VCR_ID, RES_VCR_CO_VERSION, RES_VCR_STATE
+from WS.WS.SYS_DAV_RES&#39;);
+
+GRANT SELECT ON &quot;WS&quot;.&quot;WS&quot;.&quot;SYS_DAV_RES_VIEW&quot; TO &quot;SPARQL&quot;;
+
+SPARQL
+prefix doc: &lt;http://demo.openlinksw.com/schemas/doc#&gt;
+prefix bibo: &lt;http://purl.org/ontology/bibo/&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+alter quad storage virtrdf:DefaultQuadStorage
+from WS.WS.SYS_DAV_RES_VIEW as resources text literal RES_CONTENT
+from WS.WS.SYS_DAV_COL as collections
+from WS.WS.SYS_DAV_PROP as properties
+from DB.DBA.SYS_USERS as users
+from DB.DBA.document_search as docs
+where (^{collections.}^.COL_ID = ^{resources.}^.RES_COL)
+where (^{resources.}^.RES_FULL_PATH LIKE  &#39;/DAV/VAD/doc/html/%&#39;)
+where ((^{properties.}^.PROP_PARENT_ID = ^{resources.}^.RES_ID) or (^{properties.}^.PROP_PARENT_ID = ^{collections.}^.COL_ID))
+where (DB.DBA.DAV_SEARCH_PATH(^{collections.}^.COL_ID, &#39;c&#39;) LIKE &#39;/DAV/VAD/doc/html/%&#39;)
+{
+        create virtrdf:Doc as graph iri (&quot;http://^{URIQADefaultHost}^/Doc&quot;) option (exclusive)
+        {
+                doc:File (resources.RES_ID, resources.RES_NAME)
+                        a doc:File
+                                as virtrdf:File-RES_ID ;
+                        a foaf:Document
+                                as virtrdf:siocFile-RES_ID;
+                        a bibo:Article
+                                as virtrdf:BiboFile-RES_ID ;
+                        bibo:identifier resources.RES_NAME
+                                as virtrdf:File-RES_NAME ;
+                        foaf:primaryTopic doc:File (resources.RES_ID, resources.RES_NAME) ;
+                        bibo:author users.U_NAME
+                                where (^{resources.}^.RES_OWNER = ^{users.}^.U_ID)
+                                as virtrdf:File-RES_OWNER ;
+                        doc:belongs_to_collection doc:Collection(resources.RES_COL, collections.COL_NAME)
+                                where (^{resources.}^.RES_COL = ^{collections.}^.COL_ID)
+                                as virtrdf:File-RES_COL ;
+                        sioc:content resources.RES_CONTENT
+                                as virtrdf:siocFile-RES_CONTENT ;
+                        sioc:description resources.RES_NAME
+                                as virtrdf:siocFile-RES_NAME ;
+                        doc:type resources.RES_TYPE
+                                as virtrdf:File-RES_TYPE ;
+                        bibo:presentedAt resources.RES_CR_TIME
+                                as virtrdf:File-RES_CR_TIME ;
+                        bibo:url doc:DocPath(resources.RES_FULL_PATH)
+                                as virtrdf:File-RES_FULL_PATH ;
+                        rdfs:isDefinedBy doc:file_iri (resources.RES_ID) ;
+                        rdfs:isDefinedBy doc:File (resources.RES_ID, resources.RES_NAME) ;
+                        rdfs:seeAlso doc:Collection(resources.RES_COL, collections.COL_NAME)
+                                where (^{resources.}^.RES_COL = ^{collections.}^.COL_ID)
+                                as virtrdf:File-RES_COL2 .
+
+
+                doc:DocPath(resources.RES_FULL_PATH)
+                        a doc:DocPath
+                                as virtrdf:DocPath2-RES_FULL_PATH .
+
+                doc:Collection (collections.COL_ID, collections.COL_NAME)
+                        a doc:Collection
+                                as virtrdf:Collection-COL_ID ;
+                        a bibo:Collection
+                                as virtrdf:BiboCollection-COL_ID ;
+                        a sioc:Container
+                                as virtrdf:siocColection-COL_ID ;
+                        bibo:identifier collections.COL_NAME
+                                as virtrdf:Collection-COL_NAME ;
+                        bibo:author users.U_NAME
+                                where (^{collections.}^.COL_OWNER = ^{users.}^.U_ID)
+                                as virtrdf:Collection-COL_OWNER ;
+                        rdfs:isDefinedBy doc:collection_iri (collections.COL_ID) ;
+                        rdfs:isDefinedBy doc:Collection (collections.COL_ID, collections.COL_NAME) .
+
+                doc:Collection (collections.COL_ID, collections.COL_NAME)
+                        sioc:is_collection_of
+                        doc:File(resources.RES_ID, resources.RES_NAME)
+                        where (^{resources.}^.RES_COL = ^{collections.}^.COL_ID)
+                        as virtrdf:siocCollection-COL_ID2 .
+
+                doc:Property (properties.PROP_NAME, properties.PROP_ID)
+                        a doc:Property
+                                as virtrdf:Property-PROP_ID ;
+                        doc:name properties.PROP_NAME
+                                as virtrdf:Property-PROP_NAME ;
+                        doc:type properties.PROP_TYPE
+                                as virtrdf:Property-PROP_TYPE ;
+                        doc:value properties.PROP_VALUE
+                                as virtrdf:Property-PROP_VALUE ;
+                        doc:belongs_to_collection doc:Collection(properties.PROP_PARENT_ID, collections.COL_NAME)
+                                where (^{properties.}^.PROP_PARENT_ID = ^{collections.}^.COL_ID)
+                                as virtrdf:Property-PROP_PARENT_ID ;
+                        doc:belongs_to_file doc:File(properties.PROP_PARENT_ID, resources.RES_NAME)
+                                where (^{properties.}^.PROP_PARENT_ID = ^{resources.}^.RES_ID)
+                                as virtrdf:Property-PROP_PARENT_ID2 ;
+                        rdfs:isDefinedBy doc:property_iri (properties.PROP_ID) ;
+                        rdfs:isDefinedBy doc:Property (properties.PROP_NAME, properties.PROP_ID) .
+
+                doc:Search (docs.d_anch, docs.d_id)
+                        a doc:Search
+                                as virtrdf:Search-d_id ;
+                        doc:anch docs.d_anch
+                                as virtrdf:Search-d_anch ;
+                        doc:text docs.d_txt
+                                as virtrdf:Search-d_txt ;
+                        doc:belongs_to_file doc:File(docs.d_res_id, resources.RES_NAME)
+                                where (^{docs.}^.d_res_id = ^{resources.}^.RES_ID)
+                                as virtrdf:Search-d_res_id .
+        } .
+} .
+;
+
+delete from db.dba.url_rewrite_rule_list where urrl_list like &#39;doc_%&#39;;
+delete from db.dba.url_rewrite_rule where urr_rule like &#39;doc_%&#39;;
+
+create procedure doc_rdf_doc (in path varchar)
+{
+  declare r any;
+  r := regexp_match (&#39;[^/]*\x24&#39;, path);
+  return r||&#39;#this&#39;;
+};
+
+create procedure doc_html_doc (in path varchar)
+{
+  declare r any;
+  r := regexp_match (&#39;[^/]*#&#39;, path);
+  return subseq (r, 0, length (r)-1);
+};
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;doc_rule2&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/Doc%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&amp;format=%U&#39;,
+    vector(&#39;path&#39;, &#39;path&#39;, &#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;doc_rule1&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/about/html/http/^{URIQADefaultHost}^%s%%23this&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;doc_rule3&#39;,
+    1,
+    &#39;(/[^#]*)/\x24&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;%s&#39;,
+    vector(&#39;path&#39;),
+    null,
+    null,
+    0,
+    null
+    );
+
+create procedure DB.DBA.REMOVE_DOC_RDF_DET()
+{
+  declare colid int;
+  colid := DAV_SEARCH_ID(&#39;/DAV/home/doc/&#39;, &#39;C&#39;);
+  if (colid &lt; 0)
+    return;
+  update WS.WS.SYS_DAV_COL set COL_DET=null where COL_ID = colid;
+}
+;
+
+DB.DBA.REMOVE_DOC_RDF_DET();
+
+drop procedure DB.DBA.REMOVE_DOC_RDF_DET;
+
+create procedure DB.DBA.DOC_MAKE_RDF_DET()
+{
+    declare uriqa_str varchar;
+    uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+    uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/Doc&#39;;
+    DB.DBA.&quot;RDFData_MAKE_DET_COL&quot; (&#39;/DAV/home/doc/RDFData/&#39;, uriqa_str, NULL);
+    VHOST_REMOVE (lpath=&gt;&#39;/Doc/data/rdf&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/Doc/data/rdf&#39;, ppath=&gt;&#39;/DAV/home/doc/RDFData/All/&#39;, is_dav=&gt;1, vsp_user=&gt;&#39;dba&#39;);
+}
+;
+
+DB.DBA.DOC_MAKE_RDF_DET();
+
+drop procedure DB.DBA.DOC_MAKE_RDF_DET;
+
+-- procedure to convert path to DET resource name
+create procedure DB.DBA.DOC_DET_REF (in par varchar, in fmt varchar, in val varchar)
+{
+  declare res, iri any;
+  declare uriqa_str varchar;
+  uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/Doc&#39;;
+  iri := uriqa_str || val;
+  res := sprintf (&#39;iid (%d).rdf&#39;, iri_id_num (iri_to_id (iri)));
+  return sprintf (fmt, res);
+}
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;doc_rdf&#39;, 1,
+    &#39;/Doc/(.*)&#39;, vector(&#39;path&#39;), 1,
+    &#39;/Doc/data/rdf/%U&#39;, vector(&#39;path&#39;),
+    &#39;DB.DBA.DOC_DET_REF&#39;,
+    &#39;application/rdf.xml&#39;,
+    2,
+    303);
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;doc_rule4&#39;,
+    1,
+    &#39;/schemas/doc#(.*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=DESCRIBE%20%3Chttp%3A//demo.openlinksw.com/schemas/doc%23%U%3E%20FROM%20%3Chttp%3A//demo.openlinksw.com/schemas/DocOntology/1.0/%3E&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;doc_rule_list1&#39;,
+    1,
+    vector (
+                &#39;doc_rule1&#39;,
+                &#39;doc_rule2&#39;,
+                &#39;doc_rule3&#39;,
+                &#39;doc_rule4&#39;,
+                &#39;doc_rdf&#39;
+          ));
+
+
+VHOST_REMOVE (lpath=&gt;&#39;/Doc&#39;);
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/Doc&#39;, ppath=&gt;&#39;/DAV/home/doc/&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, def_page=&gt;&#39;sfront.vspx&#39;,
+          is_brws=&gt;0, opts=&gt;vector (&#39;url_rewrite&#39;, &#39;doc_rule_list1&#39;));
+
+create procedure DB.DBA.LOAD_DOC_ONTOLOGY_FROM_DAV()
+{
+  declare content1, urihost varchar;
+  select cast (RES_CONTENT as varchar) into content1 from WS.WS.SYS_DAV_RES where RES_FULL_PATH = &#39;/DAV/VAD/doc/sql/doc.owl&#39;;
+  DB.DBA.RDF_LOAD_RDFXML (content1, &#39;http://demo.openlinksw.com/schemas/doc#&#39;, &#39;http://demo.openlinksw.com/schemas/DocOntology/1.0/&#39;);
+  urihost := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  if (urihost = &#39;demo.openlinksw.com&#39;)
+  {
+    DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/schemas/doc&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/schemas/doc&#39;, ppath=&gt;&#39;/DAV/VAD/demo/sql/doc.owl&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, is_brws=&gt;0);
+    DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/schemas/doc#&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/schemas/doc#&#39;, ppath=&gt;&#39;/DAV/VAD/demo/sql/doc.owl&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, is_brws=&gt;0);
+  }
+};
+
+--DB.DBA.LOAD_DOC_ONTOLOGY_FROM_DAV();
+
+drop procedure DB.DBA.LOAD_DOC_ONTOLOGY_FROM_DAV;
+
+create procedure DB.DBA.LOAD_DOC_ONTOLOGY_FROM_DAV2()
+{
+  declare urihost varchar;
+  sparql base &lt;http://demo.openlinksw.com/schemas/doc#&gt; load bif:concat (&quot;http://&quot;, bif:registry_get(&quot;URIQADefaultHost&quot;), &quot;/DAV/VAD/doc/sql/doc.owl&quot;)
+   into graph &lt;http://demo.openlinksw.com/schemas/DocOntology/1.0/&gt;;
+  urihost := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  if (urihost = &#39;demo.openlinksw.com&#39;)
+  {
+    DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/schemas/doc&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/schemas/doc&#39;, ppath=&gt;&#39;/DAV/VAD/demo/sql/doc.owl&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, is_brws=&gt;0);
+    DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/schemas/doc#&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/schemas/doc#&#39;, ppath=&gt;&#39;/DAV/VAD/demo/sql/doc.owl&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, is_brws=&gt;0);
+  }
+};
+
+--DB.DBA.LOAD_DOC_ONTOLOGY_FROM_DAV2();
+
+drop procedure DB.DBA.LOAD_DOC_ONTOLOGY_FROM_DAV2;
+
+</pre><p> </p>
+<h3><a name="References"></a>References</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/SIOCRefDocs" class="wikiword">Virtuoso Documentation SIOC Reference</a> </li>
+</ul></div></body></html>

@@ -1,0 +1,266 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection"}%
+
+---+Virtuoso SPARQL 1.1. DELETE Usage Examples 
+
+%TOC%
+
+---++What?
+This guide contains Virtuoso SPARQL 1.1. DELETE Usage examples queries which you can run against 
+any SPARQL endpoint that supports SPARQL 1.1 and the ability to allow a verified user perform 
+INSERT/DELETE operations. 
+
+%BR%%BR%<i>Note</i>: There should be either DELETE WHERE OR DELETE DATA but not both DATA and WHERE in same sequence.%BR%
+
+
+---++Why?
+Using DELETE to manage graphs data.
+
+---++How?
+
+Here are some examples showcasing Virtuoso's support for this functionality:
+
+
+---+++DELETE DATA Examples 
+
+---++++Removing Triples from a Graph Example
+
+This example request describes 2 triples to be removed from the named graph identified by the IRI &lt;urn:sparql:tests:delete:data&gt;
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<#book2> <http://example.org/ns#price> 42 .
+<#book2> <http://purl.org/dc/elements/1.1/title> "David Copperfield" .
+<#book2> <http://purl.org/dc/elements/1.1/creator> "Edmund Wells" .
+</verbatim>
+   1 Load the sample data:
+<verbatim>
+INSERT DATA
+  { 
+    GRAPH <urn:sparql:tests:delete:data> 
+      { 
+        <#book2> <http://example.org/ns#price> 42 .
+        <#book2> <http://purl.org/dc/elements/1.1/title> "David Copperfield" .
+        <#book2> <http://purl.org/dc/elements/1.1/creator> "Edmund Wells" .
+      } 
+  }
+</verbatim>
+   1 Delete 2 triples from the graph:
+<verbatim>
+DELETE DATA FROM <urn:sparql:tests:delete:data> 
+  {
+    <#book2> <http://purl.org/dc/elements/1.1/title>   "David Copperfield" ; 
+             <http://purl.org/dc/elements/1.1/creator> "Edmund Wells"      .
+  }
+</verbatim>
+   1 Query the graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:delete:data> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/VAfJGX][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/WGmFxa][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---+++DELETE WHERE Examples 
+
+---++++Removing Triples from a Graph Example
+
+This example request removes all statements about anything with a given name of "Fred" from the named graph identified by the IRI &lt;urn:sparql:tests:delete:where&gt; :
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<#william> a <http://xmlns.com/foaf/0.1/Person> .
+<#william> <http://xmlns.com/foaf/0.1/givenName> "William" .
+<#william> <http://xmlns.com/foaf/0.1/foaf/mbox> <mailto:bill@example> .
+
+<#fred> a <http://xmlns.com/foaf/0.1/Person> .
+<#fred> <http://xmlns.com/foaf/0.1/givenName> "Fred" .
+<#fred> <http://xmlns.com/foaf/0.1/mbox> <mailto:fred@example> .
+
+</verbatim>
+   1 Load the sample data:
+<verbatim> 
+INSERT DATA
+  { 
+    GRAPH <urn:sparql:tests:delete:where> 
+      { 
+        <#william> a <http://xmlns.com/foaf/0.1/Person> .
+        <#william> <http://xmlns.com/foaf/0.1/givenName> "William" .
+        <#william> <http://xmlns.com/foaf/0.1/foaf/mbox> <mailto:bill@example> .
+
+        <#fred> a <http://xmlns.com/foaf/0.1/Person> .
+        <#fred> <http://xmlns.com/foaf/0.1/givenName> "Fred" .
+        <#fred> <http://xmlns.com/foaf/0.1/mbox> <mailto:fred@example> .
+      } 
+  }
+</verbatim>
+   1 Delete all statements about anything with a given name of "Fred" from the graph. A WITH clause is present, meaning that graph &lt;urn:sparql:tests:delete:where&gt; is both the one from which triples are being removed and the one which the WHERE clause is matched against:
+<verbatim>
+WITH <urn:sparql:tests:delete:where>
+DELETE { ?person ?property ?value } 
+WHERE 
+  { ?person ?property ?value ; <http://xmlns.com/foaf/0.1/givenName> "Fred" } 
+</verbatim>
+   1 Query the graph data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:delete:where> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/11qwNRq][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/WE3erM][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---++++Removing Triples in 2 graphs that have corresponding triples Example
+
+This example request removes both statements naming some resource "Fred" in the graph &lt;urn:sparql:tests:delete:where1&gt; , and also statements about that resource from the graph &lt;urn:sparql:tests:delete:where2&gt; (assuming that some of the resources in the graph &lt;urn:sparql:tests:delete:where1&gt; have corresponding triples in the graph &lt;urn:sparql:tests:delete:where2&gt;).
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<#william> a <http://xmlns.com/foaf/0.1/Person> .
+<#william> <http://xmlns.com/foaf/0.1/givenName> "William" .
+
+<#fred> a <http://xmlns.com/foaf/0.1/Person> .
+<#fred> <http://xmlns.com/foaf/0.1/givenName> "Fred" .
+</verbatim>
+   1 Load the sample data:
+<verbatim>
+INSERT DATA
+  { 
+    GRAPH <urn:sparql:tests:delete:where1> 
+      { 
+        <#william> a <http://xmlns.com/foaf/0.1/Person> . 
+        <#william> <http://xmlns.com/foaf/0.1/givenName> "William" . 
+ 
+        <#fred> a <http://xmlns.com/foaf/0.1/Person> . 
+        <#fred> <http://xmlns.com/foaf/0.1/givenName> "Fred" . 
+      } 
+  }
+</verbatim>
+   1 Assume another Raw Data Representation in Turtle:
+<verbatim>
+<#william> <http://xmlns.com/foaf/0.1/mbox>  <mailto:bill@example> .
+<#fred>    <http://xmlns.com/foaf/0.1/mbox>  <mailto:fred@example> .
+</verbatim>
+   1 Load the sample data:
+<verbatim> 
+INSERT DATA
+  { 
+    GRAPH <urn:sparql:tests:delete:where2> 
+      { 
+        <#william> <http://xmlns.com/foaf/0.1/mbox>  <mailto:bill@example> .
+        <#fred>    <http://xmlns.com/foaf/0.1/mbox>  <mailto:fred@example> .
+      } 
+  }
+</verbatim>
+   1 Remove statements naming some resource "Fred" in the graph &lt;urn:sparql:tests:delete:where1&gt; , and also statements about that resource from the graph &lt;urn:sparql:tests:delete:where2&gt; :
+<verbatim> 
+DELETE WHERE 
+  {
+    GRAPH <urn:sparql:tests:delete:where1> 
+      {
+        ?person <http://xmlns.com/foaf/0.1/givenName> 'Fred'  ; 
+                                           ?property1 ?value1 . 
+      }
+    GRAPH <urn:sparql:tests:delete:where2> 
+      {
+        ?person ?property2 ?value2 . 
+      }
+  }
+</verbatim>
+   1 Query the graph &lt;urn:sparql:tests:delete:where1&gt; data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:delete:where1> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/VC4H0k][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/YpTukb][View the SPARQL Query Results via SPARQL Protocol URL]]
+   1 Query the graph &lt;urn:sparql:tests:delete:where2&gt; data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:delete:where2> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/UL4qcl][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/WE3irG][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---+++DELETE (Informative) Examples
+
+---++++Remove Triples from graph about anything with given name "Fred"
+
+
+This example request removes all statements about anything with a given name of "Fred" from the 
+graph &lt;urn:sparql:tests:delete:informative&gt; . A WITH clause is present, meaning that graph &lt;urn:sparql:tests:delete:informative&gt;  is 
+both the one from which triples are being removed and the one which the WHERE clause is matched against:
+
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<#william> a <http://xmlns.com/foaf/0.1/Person> . 
+<#william> <http://xmlns.com/foaf/0.1/givenName> "William" . 
+<#william> <http://xmlns.com/foaf/0.1/mbox> <mailto:bill@example> . 
+
+<#fred> a <http://xmlns.com/foaf/0.1/Person> . 
+<#fred> <http://xmlns.com/foaf/0.1/givenName> "Fred" . 
+<#fred> <http://xmlns.com/foaf/0.1/mbox> <mailto:fred@example> . 
+</verbatim>
+   1 Load the sample data:
+<verbatim> 
+INSERT DATA
+  { 
+    GRAPH <urn:sparql:tests:delete:informative> 
+      { 
+        <#william> a <http://xmlns.com/foaf/0.1/Person> . 
+        <#william> <http://xmlns.com/foaf/0.1/givenName> "William" . 
+        <#william> <http://xmlns.com/foaf/0.1/mbox> <mailto:bill@example> . 
+
+        <#fred> a <http://xmlns.com/foaf/0.1/Person> . 
+        <#fred> <http://xmlns.com/foaf/0.1/givenName> "Fred" . 
+        <#fred> <http://xmlns.com/foaf/0.1/mbox> <mailto:fred@example> . 
+      } 
+  }
+</verbatim>
+   1 Remove all statements about anything with a given name of "Fred":
+<verbatim> 
+WITH <urn:sparql:tests:delete:informative>
+DELETE { ?person ?property ?value } 
+WHERE { ?person ?property ?value ; <http://xmlns.com/foaf/0.1/givenName> 'Fred' } 
+</verbatim>
+   1 Query the graph &lt;urn:sparql:tests:delete:informative&gt; data:
+<verbatim>
+SELECT * 
+FROM <urn:sparql:tests:delete:informative> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+   1 [[http://bit.ly/W6XKV3][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/Vsq4zl][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---++Related
+
+   * [[http://www.w3.org/TR/2012/PR-sparql11-update-20121108/#deleteData][SPARQL 1.1 DELETE DATA]]
+   * [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol (HTTP based Query Service)]]  
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtTipsAndTricksSPARQL11FeaturesExamplesCollection][Virtuoso SPARQL 1.1 Usage Examples Collection]]
+   * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_9/SPARQL_Tutorials_Part_9.html][Virtuoso SPARQL 1.1 Syntax Tutorial]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]

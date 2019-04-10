@@ -1,0 +1,59 @@
+<docbook><section><title>VirtTipsAndTricksGuideSampleGroupConcatGroupDigest</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">What is the difference between the functions SAMPLE, GROUP_CONCAT and GROUP_DIGEST?</bridgehead>
+<para>This example demonstrates the differences between the functions <ulink url="http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html">SAMPLE</ulink>, <ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_CONCAT</span></ulink> and <ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_DIGEST</span></ulink>.</para>
+<para>Assume the following query that should get all ?assets as a list with delimiters:</para>
+<programlisting>SPARQL SELECT ?view ?path (sql:GROUP_CONCAT (?asset, &#39; &#39;)) as ?asset_list
+FROM &lt;http://mygraph.com&gt; 
+WHERE
+ { 
+   ?view &lt;viewPath&gt; ?path ; 
+     &lt;viewContent&gt; ?asset ; 
+     &lt;viewType&gt;  &#39;phyview&#39;. 
+ }
+;
+</programlisting><para>This method is not universal, because conversion to strings will eliminate the difference between strings and IRIs and there should be some delimiter that never appears in values of ?asset.
+ In addition, the query may fail with &quot;row too long&quot; error if values of ?asset are lengthy and/or numerous enough.
+ It is also possible the query not work completely free from duplicates if more than one list is desired.
+ E.g.:</para>
+<programlisting>SPARQL 
+SELECT ?view (sql:GROUP_CONCAT (?path, &#39; &#39;)) as ?path_list
+  (sql:GROUP_CONCAT (?asset, &#39; &#39;)) as ?asset_list
+FROM &lt;http://mygraph.com&gt;
+WHERE 
+  { 
+    ?view &lt;viewPath&gt; ?path ; 
+      &lt;viewContent&gt; ?asset ; 
+      &lt;viewType&gt; &#39;phyview&#39; . 
+  }
+</programlisting><para> will not contain duplicates in lists only if either ?path or ?asset is unique for every found ?view; but if it&#39;s so unique then there&#39;s no need in the corresponding sql:<ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_CONCAT</span></ulink>() .</para>
+<para>If there are many values per property but it&#39;s enough to return any single value and ignore the rest then use sql:<ulink url="http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html">SAMPLE</ulink>() function instead of sql:<ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_CONCAT</span></ulink>() .</para>
+<para>If there are many values per property and it&#39;s better to show more than one value but &quot;row too long&quot; error happens, then the sql:<ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_DIGEST</span></ulink> function can be used:</para>
+<programlisting>SPARQL 
+SELECT ?view (sql:GROUP_DIGEST (?path, &#39; &#39;, 1000, 1)) as ?path_list 
+  (sql:GROUP_DIGEST (?asset, &#39; &#39;, 1000, 1)) as ?asset_list
+FROM &lt;http://mygraph.com&gt; 
+WHERE
+  { 
+    ?view &lt;viewPath&gt; ?path ; 
+      &lt;viewContent&gt; ?asset ; 
+      &lt;viewType&gt; &#39;phyview&#39; . 
+  }
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html">SAMPLE</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_CONCAT</span></ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:nowikiGROUP_DIGEST</span></ulink> </listitem>
+</itemizedlist></section></docbook>

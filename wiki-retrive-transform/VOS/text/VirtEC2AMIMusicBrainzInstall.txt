@@ -1,0 +1,126 @@
+%META:TOPICPARENT{name="VirtInstallationEC2"}%
+
+---+  Prepopulated Virtuoso hosting of MusicBrainz on EC2 AMI
+
+---++What is the <nowiki>MusicBrainz</nowiki> Project?
+
+[[http://www.MusicBrainz.org/][MusicBrainz]]  is a community music metadatabase that attempts to create a comprehensive music information site. You can use the MusicBrainz data either by browsing this web site, or you can access the data from a client program for example, a CD player program can use <nowiki>MusicBrainz</nowiki> to identify CDs and provide information about the CD, about the artist or about related information. You can also use the MusicBrainz Tagger to automatically identify and clean up the metadata tags in your digital music collections.
+
+---++<nowiki>MusicBrainz</nowiki> Installation on Virtuoso EC2 AMI instance
+
+OpenLink Software provides a backup up of the current <nowiki>MusicBrainz</nowiki> Database as hosted on the live service at 
+<code><nowiki>http://dbtune.org/musicbrainz/sparql</nowiki></code>, that users can restore into a Virtuoso EC2 AMI instance in the 
+cloud, providing them with an instance of <nowiki>MusicBrainz</nowiki> for their own use. 
+
+---+++Installation
+
+   1 Start a [[VirtInstallationEC2][Virtuoso EC2 AMI instance]]. Note a Virtuoso Release 5 AMI instance ( ami-ids ami-59628630 or ami-c46084ad ) *must* be used with this backup. We recommended a 64-bit large image AMI instance with 8GB of memory be used, which is a <code>m1.large</code> EC2 instance type. 
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_AWS_Console_M1Large_Instance.png" style="wikiautogen"/>%BR%%BR%
+   1 Note for best performance particularly under extensive usage it is recommended the 16GB <code>m1.xlarge</code> EC2 instance type be used.
+   1 Load the Virtuoso Conductor Administration interface of the running EC2 AMI instance with a URL of the form 
+<code><nowiki>http://your-ec2-instance-cname/conductor</nowiki></code>.
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_Conductor.png" style="wikiautogen"/>%BR%%BR%
+   1 From the Virtuoso Conductor, navigate to the "System Admin" -> "Packages" tab to obtain a list of available 
+Virtuoso packages (VADs) to install.
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_VADPackages.png" style="wikiautogen"/>%BR%%BR%
+   1 Click the "Install" button to initiate installation of the "EC2 Extensions" VAD package for use in performing backup 
+and restore tasks.
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_VADEc2Exts.png" style="wikiautogen"/>%BR%%BR% 
+   1 Click the "Proceed" button to install the "EC2 Extensions" VAD package.
+   1 Go to the URL <code><nowiki>http://your-ec2-instance-cname/ec2exts</nowiki></code> to load the Virtuoso 
+Extensions for Amazon EC2 Images login page and log in as the "dba" user.
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_ExtLogin.png" style="wikiautogen"/>%BR%%BR%
+   1 From the Virtuoso Extensions for Amazon EC2 Images main page, click the "Restore a Remote Backup" link.
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_MainPage.png" style="wikiautogen"/>%BR%%BR%
+   1 On the "Restore a Remote Backup" page, set the follow options.
+<verbatim>
+Protocol: WebDAV/HTTP
+Host: s3.amazonaws.com
+Path or Bucket: mbz-virtuoso-bundle
+Backup File Prefix: musicbrainz-backup
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_RestoreMusicBrainz.png" style="wikiautogen"/>
+   1 Click the "Restore" button to begin the restoration of the <nowiki>MusicBrainz</nowiki> database from backup.
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_RestoreMusicBrainzProgress.png" style="wikiautogen"/>%BR%
+.
+%BR%
+.
+%BR%
+.
+%BR%<img src="%ATTACHURLPATH%/EC2_RestoreMusicBrainzProgressDone.png" style="wikiautogen"/>%BR%%BR%
+   1 Click on the "Continue" button to begin the re-assembly of the database from the restored backup files. Output 
+similar to the following will be displayed when the re-assembly of the database is complete.
+%BR%<img src="%ATTACHURLPATH%/EC2_ReassembleMusicBrainz.png" style="wikiautogen"/>%BR%
+
+Once complete the server will have been restarted automatically with the restored <nowiki>MusicBrainz</nowiki> database and is ready for use.
+
+---+++ Usage Examples
+The URI scheme used in the EC2 rendition of [[http://musicbrainz.org][MusicBrainz]] is based on a simple mapping:
+<code><nowiki>http://your-ec2-instance-cname/music/artist/3c79e3ff-f41b-45d8-af26-40151798056b</nowiki></code> maps to original <nowiki>MusicBrainz</nowiki> entity: 
+<code><nowiki>http://musicbrainz.org/artist/3c79e3ff-f41b-45d8-af26-40151798056b</nowiki></code> described in the Web page: <nowiki><code>http://musicbrainz.org/artist/3c79e3ff-f41b-45d8-af26-40151798056b.html</code></nowiki>
+
+For example, the  (X)HTML representation of the description of the Track: Roots Natty Congo, by Artist: Johnny Clarke is as follows; 
+
+   * <code><nowiki>http://your-ec2-instance-cname/music/track/ced52b51-f607-4fde-a3e0-6c6ca9a3f200</nowiki></code>
+%BR%%BR%<img src="%ATTACHURLPATH%/EC2_MusicBrainzXHTML.png" style="wikiautogen"/>%BR%%BR% 
+
+---+++Results
+
+   * The <nowiki>MusicBrainz</nowiki> SPARQL endpoint can be accessed on <nowiki>http://your-ec2-instance-cname/sparql</nowiki>
+   * The OpenLink [[http://wikis.openlinksw.com/dataspace/owiki/wiki/OATWikiWeb/InteractiveSparqlQueryBuilder][Interactive SPARQL Query Builder]] can be accessed on <nowiki>http://your-ec2-instance-cname/isparql</nowiki>, enabling the visual construction of queries (Graph Patterns).
+
+---++ Related
+
+   * [[VirtSPARQLEndpointProtection][Safeguarding your Virtuoso-hosted SPARQL Endpoint]]
+   * [[VirtEBSBackedBYOLAMI][EBS-backed BYOL ("Bring Your Own License") Virtuoso EC2 AMI]]
+   * [[VirtTipsAndTricksGuideSPARQLEndpointProtection][SPARQL Endpoint Protection Methods Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/][Virtuoso documentation]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint][SPARQL Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri][Service Endpoint Security]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl][Managing a SPARQL Web Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][SPARQL]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+      * [[VirtSPARQLDET][SPARQL Endpoint DET Configuration Guide]]       
+      * [[VirtSPARQLSecurityWebID][WebID Protocol & SPARQL Endpoint ACLs Tutorial]]
+      * [[VirtOAuthSPARQL][SPARQL OAuth Tutorial]]
+      * [[VirtTipsAndTricksGuideSPARQLEndpoints][Securing SPARQL endpoints]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth][SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint]]
+   * [[VirtAuthServerUI][Virtuoso Authentication Server UI]]
+   * [[VirtSPARQLSSL][Manage a SPARQL-WebID based Endpoint]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID][WebID Protocol Support in OpenLink Data Spaces]].
+   * Manage ODS Datadspaces Objects WebID Access Control Lists (ACLs):
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID][ODS Briefcase WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson][Person Entity WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup][Group Entity WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic][Public WebID based ACL Guide]]      
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL][ODS Feed Manager WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL][ODS Calendar WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL][ODS Bookmark Manager WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL][ODS Addressbook  WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup][Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub][Setting up PubSubHub in ODS]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub][PubSubHubBub Demo Client Example]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub][Feed subscription via PubSubHub protocol Example ]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL][Setting Up PubSubHub to use WebID Protocol or IP based control lists]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsKeyImport][CA Keys Import using Conductor]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID Guide]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP][Using Virtuoso's WebID Verification Proxy Service with a WebID-bearing X.509 certificate]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy][Using Virtuoso's WebID Identity Provider (IdP) Proxy Service with an X.509 certificate]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile][ODS Briefcase WebID Protocol Share File Guide]]
+   * [[http://esw.w3.org/topic/foaf+ssl][WebID Protocol Specification]]
+   * [[https://foaf.me/simpleLogin.php][Test WebID Protocol Certificate page]]
+   * [[http://test.foafssl.org/cert/][WebID Protocol Certificate Generation page]]

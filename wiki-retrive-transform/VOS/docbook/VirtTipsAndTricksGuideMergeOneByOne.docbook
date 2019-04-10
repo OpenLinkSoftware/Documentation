@@ -1,0 +1,36 @@
+<docbook><section><title>VirtTipsAndTricksGuideMergeOneByOne</title><title> What is the difference between a &quot;merge&quot; and a &quot;one by one&quot; execution of SPARQL queries across named graphs?</title> What is the difference between a &quot;merge&quot; and a &quot;one by one&quot; execution of SPARQL queries across named graphs?
+<para>By wrapping one or more triple patterns in a <emphasis>GRAPH ?g { ...
+ }</emphasis> pattern, the triple patterns inside this &quot;graph group pattern&quot; will be restricted to the specified named graph, <emphasis>?g</emphasis>.
+ Lacking the <emphasis>GRAPH ?g { ...
+ }</emphasis>, the triples may be found in different named graphs.
+ Using graph group patterns can thus dramatically reduce the amount of data to be processed for all triple patterns after the first in join order, so it&#39;s typically faster.</para>
+<emphasis><emphasis>Note</emphasis> -- The &quot;default graph&quot; in Virtuoso is not a union of all graphs; it is a sum.
+ This means that Virtuoso&#39;s behavior differs slightly from the SPARQL spec, in that some duplicate result rows may appear if the same values appear as { ?s ?p ?o } in two or more different graphs).
+ (Results perfectly conforming to the SPARQL spec would leave out these duplicate rows.)</emphasis><para>This query will deliver matching triples from any and all named graphs in the Virtuoso store -- </para>
+<programlisting>[PREFIXes here]
+  SELECT ?serial ?sr ?ct1 ?ct2 
+  WHERE 
+    {
+      ?sr      a                    dm:SessionRecord 
+    . ?sr      dm:hasDataSnapshot   ?snap 
+    . ?device  dm:hasSessionRecord  ?sr 
+    . ?device  dm:hasSerialNumber   ?serial 
+    . [etc.] 
+    }
+</programlisting><para> With the added <emphasis>GRAPH ?g { ...
+ }</emphasis> patterns below, only matching triples from the specified named graph(s) will be returned.
+</para>
+<programlisting>[PREFIXes here]
+SELECT ?serial ?sr ?ct1 ?ct2 
+WHERE 
+  {
+    GRAPH ?g1 { ?sr      a                    dm:SessionRecord }
+    GRAPH ?g2 { ?sr      dm:hasDataSnapshot   ?snap            }
+    GRAPH ?g3 { ?device  dm:hasSessionRecord  ?sr              }
+    GRAPH ?g4 { ?device  dm:hasSerialNumber   ?serial          }
+    [etc.] 
+  }
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</ulink></listitem>
+</itemizedlist></section></docbook>

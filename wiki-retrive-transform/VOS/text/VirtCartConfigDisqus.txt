@@ -1,0 +1,84 @@
+%META:TOPICPARENT{name="VirtConfigureCartridges"}%
+
+---+Disqus Cartridge - Configuration Guidelines and Implementation Notes
+
+Virtuoso's Sponger cartridge for Disqus allows you to fetch a Disqus user's profile, their posts, and data from discussion threads and forums they have participated in. These notes, intended for a 'Sponger Administrator', provide brief configuration guidelines for the cartridge.
+
+<b>Contents</b>
+%TOC% 
+
+---++Obtaining a Disqus API Key
+
+The cartridge is written to the [[http://disqus.com/api/docs/][Disqus Web API]]. The API supports three methods for making authenticated API requests:
+   * OAuth 2
+   * Admin / API key authentication
+   * Single sign-on
+
+At the current time (May 2012) the cartridge uses an API key. To obtain an API key, you must [[http://disqus.com/api/applications/][register your Sponger instance as a Disqus application]] via the Applications panel on the Disqus "API Resources" page. Follow these steps to obtain an API key:
+
+   * Go to the  [[http://disqus.com/api/applications/][Application panel on the "API Resources" page]]
+   * After logging into Disqus, click on the 'Register new application' button.
+
+<img src="%ATTACHURLPATH%/disqus_api_key_1.png" style="wikiautogen"/>
+
+   * Enter a label / name for your Virtuoso instance, a description of the Sponger application, your company name and the URI of the Sponger host (which must be dereferenceable).
+   * Click on the 'Register my application' button.
+
+<img src="%ATTACHURLPATH%/disqus_api_key_2.png" style="wikiautogen"/>
+
+   * You should then be taken to the next screen, 'Application Details', where you should see a confirmation message confirming that 'Your application has been registered!'
+   * Under the 'Settings' section, set the domain as 'disqus.com'
+   * Set the 'Authentication' radio button to 'Inherit permissions from {<i>your Disqus username</i>}'
+   * Save the changes
+
+<img src="%ATTACHURLPATH%/disqus_api_key_3.png" style="wikiautogen"/>
+
+   * The confirmation message at the top of the screen will change to 'Your application has been updated'.
+   * Under the 'Application Details' heading, click on the 'Details' menu option. There you will see your public and secret API keys.
+   * Make a note of the public API key before logging out of Disqus.
+
+<img src="%ATTACHURLPATH%/disqus_api_key_4.png" style="wikiautogen"/>
+
+   * Log into the Conductor UI of your Virtuoso instance.
+   * Navigate to the Linked Data &gt; Sponger &gt; Extractor Cartridges tab.
+   * Click on the entry for the 'Disqus V2' cartridge and, in the cartridge configuration panel at the bottom of the screen,
+enter your Disqus API public key.
+   * The Disqus V2 cartridge should now be ready to use.
+
+<img src="%ATTACHURLPATH%/disqus_api_key_5.png" style="wikiautogen"/>
+
+---++Supported URI Patterns
+
+The cartridge is configured to trigger on the URI pattern <nowiki>http://disqus.com/.* </nowiki>. The expected starting point for sponging a Disqus user's profile is a URL of the form <nowiki>http://disqus.com/{<i>username</i>}</nowiki>. For example: http://disqus.com/kidehen 
+
+<img src="%ATTACHURLPATH%/disqus_api_key_6.png" style="wikiautogen"/>
+
+---++Disqus Pseudo URIs
+
+With the exception of Disqus users, the Disqus API does not return RESTful URIs to the objects in their data space. All other objects are identified by a numeric ID, with no associated URI. Consequently, Disqus user profile URIs, of the form <nowiki>http://disqus.com/{username}</nowiki>,  are the only entry points which can be used to initiate sponging. When a user's Disqus profile is first sponged, the cartridge initially materializes only the user's posts and partial descriptions of the threads they have been active in.
+
+Each active thread is identified by a <b>pseudo-URI</b> of the form <nowiki>http://disqus.com/?@dsq_id@=thread:{thread_id}</nowiki>. These pseudo-URIs are Sponger constructs which allow the descriptions of Disqus discussion threads to reside in their own graphs and to allow incremental sponging. To be spongeable, the pseudo-URI must be dereferenceable. Disqus conveniently ignores the pseudo-URI query string which gets passed through to the Disqus cartridge.
+
+By following these active thread pseudo-URIs, exposed in a user's sponged Disqus profile as <nowiki>oplbase:threads_participated_in</nowiki> property values, all the posts belonging to a thread can be retrieved. The full discussion thread and all the posts it contains are materialized in a separate sponge of <nowiki>http://disqus.com/?@dsq_id@=thread:{thread_id}</nowiki>. Forums are identified and sponged in a similar way, using pseudo-URIs like <nowiki>http://disqus.com/?@dsq_id@=forum:{forum_id}</nowiki>. Each thread and forum is contained in its own graph rather than being contained in the starting user's graph. 
+
+---++Paging Options
+
+Because some Disqus collections can include hundreds of items (e.g. threads in a forum, or posts in a thread), the following cartridge options are available to set configurable limits on the number of items returned. 
+
+<nowiki>max_batches:</nowiki>
+   * Limits the number of pages of items returned for a particular collection. (Default: 20 pages)
+      * The maximum number of items per page is 100 - the maximum allowed by the Disqus API
+   * A value of 0 indicates no limit; all available Disqus items will be returned.
+
+---++Related
+
+   * [[VirtSponger][Virtuoso Sponger]]
+   * [[VirtConfigureCartridges][Configure Sponger Cartridges Guide]]
+   * [[http://ode.openlinksw.com/][The OpenLink Data Explorer Extension]]
+   * [[http://delicious.com/kidehen/goodrelations][Meshups (links and lookups across Web 2.0 Services and LOD Cloud]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF][Complete list of supported Vendor-specific Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesNonRDF][Complete list of supported Standard Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesMeta][Complete list of supported Meta Cartridges]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridge Usage via REST Request]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parametrized Examples of Meta Cartridge Usage via REST Request]]

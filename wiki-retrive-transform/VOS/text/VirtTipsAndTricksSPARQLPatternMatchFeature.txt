@@ -1,0 +1,233 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+How Can I Use the SPARQL Pattern Matching Feature?
+
+---++What?
+The core feature of SPARQL logic of pattern matching: the same name in two different places of a 
+pattern which means that two fields of two matching triples should have same value. 
+
+
+---++Why?
+Use the core feature of SPARQL logic of pattern matching in order to optimize your SPARQL queries for ex. by not 
+using the same variable inside and outside <code>UNION</code>.
+
+---++How?
+   
+A sample scenario demonstrating the usage of the core feature of SPARQL logic of pattern matching:
+   
+   1 Assume the query:
+<verbatim>
+SPARQL
+
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms:     <http://purl.org/dc/terms/>
+PREFIX dgtwc:       <http://data-gov.tw.rpi.edu/2009/data-gov-twc.rdf#>
+PREFIX foaf:        <http://xmlns.com/foaf/0.1/>
+PREFIX dbpedia:     <http://dbpedia.org/resource/>
+PREFIX conversion:  <http://purl.org/twc/vocab/conversion/>
+PREFIX upstream:    <http://logd.tw.rpi.edu/source/twc-rpi-edu/dataset/iogds-upstream/vocab/enhancement/1/>
+
+SELECT ( count(DISTINCT ?dataset) as ?numresult )
+WHERE 
+  {
+     GRAPH <http://purl.org/twc/vocab/conversion/MetaDataset> 
+       {
+         ?dataset a conversion:CatalogedDataset .
+         ?dataset dcterms:title ?title .
+         ?abstract void:inDataset <http://logd.tw.rpi.edu/source/twc-rpi-edu/dataset/iogds-upstream/version/2012-Apr-14> .
+         ?abstract upstream:most_recent_scrape ?versioned .
+         ?dataset void:inDataset ?versioned .
+           {
+             { 
+               ?dataset dcterms:title ?title .  
+               ?title bif:contains '"healthcare"' . 
+             }
+             UNION
+             { 
+               ?dataset dcterms:description ?description .  
+               ?description bif:contains '"healthcare"' . 
+             }
+             UNION
+             { 
+               ?dataset dgtwc:keywords ?keywords .  
+               ?keywords bif:contains '"healthcare"' . 
+             }
+           }
+
+       }
+  }
+;
+</verbatim>
+   1 Using the core feature of SPARQL logic of pattern matching for "?title", the query will look like this:
+<verbatim>
+SPARQL 
+
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms:     <http://purl.org/dc/terms/>
+PREFIX dgtwc:       <http://data-gov.tw.rpi.edu/2009/data-gov-twc.rdf#>
+PREFIX foaf:        <http://xmlns.com/foaf/0.1/>
+PREFIX dbpedia:     <http://dbpedia.org/resource/>
+PREFIX conversion:  <http://purl.org/twc/vocab/conversion/>
+PREFIX upstream:    <http://logd.tw.rpi.edu/source/twc-rpi-edu/dataset/iogds-upstream/vocab/enhancement/1/>
+
+SELECT *
+WHERE 
+  {
+    GRAPH <http://purl.org/twc/vocab/conversion/MetaDataset> 
+      {
+        {
+          { 
+            ?dataset dcterms:title ?t .  
+            ?t bif:contains '"healthcare"' . 
+          }
+          UNION
+          { 
+            ?dataset dcterms:description ?description .  
+            ?description bif:contains '"healthcare"' . 
+          }
+          UNION
+          { 
+            ?dataset dgtwc:keywords ?keywords .  
+            ?keywords bif:contains '"healthcare"' . 
+          }
+        }
+        ?dataset a conversion:CatalogedDataset .
+        ?dataset dcterms:title ?title .
+        ?dataset void:inDataset ?versioned .
+        ?abstract void:inDataset <http://logd.tw.rpi.edu/source/twc-rpi-edu/dataset/iogds-upstream/version/2012-Apr-14> .
+        ?abstract upstream:most_recent_scrape ?versioned .
+      }
+  }
+</verbatim>
+      * Note: The only "partial" exception is "OPTIONAL": the same name used outside and inside OPTIONAL means that 
+two fields of two matching triples should have same value if OPTIONAL triple exists at all, but it may 
+not exist and no matching will be required in that case.
+   1 The both queries from above are not semantically equivalent as if a <code>?dataset</code> had multiple 
+   titles, the <code>bif:contains</code> in the second query may match a <code>?t</code> value that 
+   contains <code>"healthcare"</code> while <code>?title</code> is bound to other values (potentially 
+   not containing "healthcare"). However, consider two cases:
+      1. The <code>?dataset</code> has some <code>dcterms:title</code> for which <code>?t bif:contains '"healthcare"'</code>. 
+      In this case two other branches of UNION are not needed, <code>?dataset</code> is found anyway, 
+      and additional <code>?dataset dcterms:title ?title</code> is needed only if you want to enumerate all 
+      titles of the <code>?dataset</code>, otherwise <code>?t</code> is the most adequate because <code>?t bif:contains '"healthcare"'</code>  already.
+      1. The <code>?dataset</code> does not have any <code>dcterms:title</code> with the '"healthcare"' word, 
+      but it contains some appropriate description or comment. In this case the original query gets 
+      <code>?title</code> not bound and thus the whole match for <code>?dataset</code> fails.
+   1 If you want to find all datasets that have '"healthcare"' in any of three fields but prefer to return title 
+that contains '"healthcare"' rather than some other title then the query should look like: 
+<verbatim>
+SELECT ( COALESCE (?good_title, ?some_title))
+...
+WHERE 
+  {
+    { 
+      ?dataset dcterms:title ?good_title .  
+      ?good_title bif:contains '"healthcare"' . 
+    }
+    UNION
+    { 
+      ?dataset dcterms:description ?description .  
+      ?description bif:contains '"healthcare"' . 
+    }
+    UNION
+    { 
+      ?dataset dgtwc:keywords ?keywords .  
+      ?keywords bif:contains '"healthcare"' . 
+    }
+  }
+...
+  ?dataset dcterms:title ?some_title
+...
+   1 Another variant is also:
+<verbatim>
+SELECT (COALESCE (?good_title, 
+  ( 
+    SELECT ?some_title ... 
+    WHERE 
+      {
+        ?dataset dcterms:title ?some_title 
+      } 
+  ) ) )
+...
+WHERE 
+  {
+    { 
+      ?dataset dcterms:title ?good_title .  
+      ?good_title bif:contains '"healthcare"' . 
+    } 
+    UNION
+    { 
+      ?dataset dcterms:description ?description .  
+      ?description bif:contains '"healthcare"' . 
+    }
+    UNION
+    { 
+      ?dataset dgtwc:keywords ?keywords .  
+      ?keywords bif:contains '"healthcare"' . 
+    }
+  }
+...
+</verbatim>
+      * In this case . two independent variables are passed to either SPARQL 1.1. 
+      <code>COALESCE()</code> or <code>SPARQL-BI &lt;bif:coalesce&gt;()</code> built-in function, 
+      depending on features supported by the server. That's the simplest way to "prioritize" values.
+   1 In addition, the query can be accelerated by the following trick: make <code>?catalog_title</code> and 
+   <code>?catalog_subtitle</code> OPTIONAL and thus postponed to the end even if grouping is required for 
+   these two specific properties. So the fixed query will look like:
+<verbatim>
+SPARQL
+PREFIX rdfs:       <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms:    <http://purl.org/dc/terms/>
+PREFIX dgtwc:      <http://data-gov.tw.rpi.edu/2009/data-gov-twc.rdf#>
+PREFIX foaf:       <http://xmlns.com/foaf/0.1/>
+PREFIX dbpedia:    <http://dbpedia.org/resource/>
+PREFIX conversion: <http://purl.org/twc/vocab/conversion/>
+PREFIX upstream:   <http://logd.tw.rpi.edu/source/twc-rpi-edu/dataset/iogds-upstream/vocab/enhancement/1/>
+PREFIX void:       <http://rdfs.org/ns/void#>
+PREFIX xsd:        <http://www.w3.org/2001/XMLSchema#>
+
+SELECT (?catalog_title AS ?id) (?catalog_subtitle AS ?label)
+  (COUNT(DISTINCT ?dataset) AS ?count)
+WHERE 
+  {
+    GRAPH <http://purl.org/twc/vocab/conversion/MetaDataset> 
+      {
+        {
+          { 
+            ?dataset dcterms:title ?title .  
+            ?title bif:contains '"health"' . 
+          }
+          UNION
+          { 
+            ?dataset dcterms:description ?description .  
+            ?description bif:contains '"health"' . 
+          } 
+          UNION
+          { 
+            ?dataset dgtwc:keywords ?keywords  .  
+            ?keywords bif:contains '"health"' . 
+          }
+        }
+        [ void:subset ?versioned ] void:inDataset <http://logd.tw.rpi.edu/source/twc-rpi-edu/dataset/iogds-upstream/version/2012-Apr-14> .
+        ?dataset void:inDataset ?versioned .
+        ?dataset a conversion:CatalogedDataset .
+        OPTIONAL {
+          ?dataset dgtwc:catalog_title ?catalog_title .
+          ?dataset dgtwc:catalog_subtitle ?catalog_subtitle . 
+        }
+        FILTER(bound (?catalog_title)) .
+        FILTER(bound (?catalog_subtitle)) .
+    }
+  }
+GROUP BY ?catalog_title ?catalog_subtitle
+;
+</verbatim>
+
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]

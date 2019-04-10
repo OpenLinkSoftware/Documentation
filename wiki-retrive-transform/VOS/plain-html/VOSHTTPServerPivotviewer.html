@@ -1,0 +1,130 @@
+<html><body><div class="topic-text"><h1><a name="Simple Example Showing How To Browse a Collection Generated From Virtuoso Data Using PivotViewer."></a> Simple Example Showing How To Browse a Collection Generated From Virtuoso Data Using PivotViewer.</h1>
+<p><a href="http://www.silverlight.net/learn/pivotviewer/" class="absuri">PivotViewer</a> is a new <a href="http://www.silverlight.net/" class="absuri">Silverlight</a> control for visualizing and interacting with collections of data.
+ The data collection must be a group of entities of the same type, described using the <a href="http://www.silverlight.net/learn/pivotviewer/collection-xml-schema/" class="absuri">Collection XML schema</a>, CXML.
+ Virtuoso data will soon be easily exposed as a pivot collection using the upcoming FacetServiceToPivotBridge<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/FacetServiceToPivotBridge&parent=VOSHTTPServerPivotviewer" class="wikiword">?</a>.</p>
+<p>This document shows how to set up a very simple Silverlight application that makes such collections available on the Web.
+ You can also play with <a href="http://ods-qa.openlinksw.com/pivotviewer/pivot/" class="absuri">an existing sample instance</a>.</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Steps">Steps</a></li>
+<ul><li><a href="#Step%201%3A%20Create%20the%20application.">Step 1: Create the application.</a></li> <li><a href="#Step%202%3A%20Add%20controls.">Step 2: Add controls.</a></li> <li><a href="#Step%203%3A%20Add%20the%20event%20handler.">Step 3: Add the event handler.</a></li> <li><a href="#Step%204%3A%20Save%20the%20application.">Step 4: Save the application.</a></li> <li><a href="#Step%205%3A%20Set%20up%20hosting%20on%20Virtuoso.">Step 5: Set up hosting on Virtuoso.</a></li><ul><li><a href="#You%20can%20host%20the%20project%20directly%20from%20the%20filesystem%20...">You can host the project directly from the filesystem ...</a></li> <li><a href="#or%20from%20Virtuoso%27s%20DAV%20repository">or from Virtuoso&#39;s DAV repository</a></li> </ul></ul><li><a href="#Live%20Demo%20Links">Live Demo Links</a></li> <li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Prerequisites"></a> Prerequisites</h2>
+<ul><li>VisualStudio 2010 and Silverlight 4 </li>
+<li>The address of the collections </li>
+<li>Virtuoso server to host the Silverlight web app</li>
+</ul><h2><a name="Steps"></a> Steps</h2>
+<h3><a name="Step 1: Create the application."></a> Step 1: Create the application.</h3>
+<p>In <nop></nop>VisualStudio, reate a new <b>Silverlight Application</b> called <b>PivotTest</b>.</p>
+<ol><li>In the <b>New Silverlight Application</b> dialog box check the <b>Host the Silverlight application in a new Web site</b> box and ensure that the <b>Silverlight Version</b> is <b>4</b> or higher.
+<br><br><img src="VOSHTTPServerPivotviewer/NewApp.png" style="wikiautogen"><br><br> </li>
+<li>Click <b>OK</b>.</li>
+</ol><h3><a name="Step 2: Add controls."></a> Step 2: Add controls.</h3>
+<p>This step adds a text box and a PivotViewer to the application.</p>
+<ol><li>In <code><nop></nop>MainPage.xaml</code> add the pivot namespace, <br><pre><br>xmlns:pivot=&quot;clr-namespace:System.Windows.Pivot;assembly=System.Windows.Pivot&quot;
+</pre><br></li>
+<li>In the same file, replace — <br><pre><br>&lt;Grid x:Name=&quot;LayoutRoot&quot; Background=&quot;White&quot;&gt;
+
+&lt;/Grid&gt;
+</pre><br>— with — <br><pre><br>&lt;Grid x:Name=&quot;LayoutRoot&quot;&gt;
+    &lt;Grid.RowDefinitions&gt;
+        &lt;RowDefinition Height=&quot;40&quot;/&gt;
+        &lt;RowDefinition Height=&quot;40&quot;/&gt;
+        &lt;RowDefinition Height=&quot;*&quot;/&gt;
+    &lt;/Grid.RowDefinitions&gt;
+
+    &lt;Grid.ColumnDefinitions&gt;
+        &lt;ColumnDefinition Width=&quot;600&quot;/&gt;
+        &lt;ColumnDefinition Width=&quot;*&quot;/&gt;
+    &lt;/Grid.ColumnDefinitions&gt;
+    &lt;TextBlock Text=&quot;Pivot Collection Viewer&quot; Visibility=&quot;Visible&quot; FontSize=&quot;20&quot; Grid.Row=&quot;0&quot; Grid.Column=&quot;0&quot; HorizontalAlignment=&quot;Left&quot; VerticalAlignment=&quot;Center&quot;/&gt;
+    &lt;TextBox Name=&quot;urlBox&quot; Grid.Row=&quot;1&quot; Width=&quot;500&quot; Height=&quot;30&quot; Text=&quot;{Binding Mode=OneWay}&quot; KeyDown=&quot;urlBox_KeyDown&quot; Grid.Column=&quot;0&quot; &gt;&lt;/TextBox&gt;
+    &lt;TextBlock Text=&quot;Type in a collection URL&quot; Grid.Row=&quot;1&quot; Grid.Column=&quot;1&quot; VerticalAlignment=&quot;Bottom&quot;&gt;&lt;/TextBlock&gt;
+    &lt;Border x:Name=&quot;ContentBorder&quot;
+            Grid.Row=&quot;2&quot;
+            Grid.Column=&quot;0&quot;
+            Grid.ColumnSpan=&quot;2&quot;&gt;
+        &lt;!-- The PivotViewer control --&gt;
+        &lt;pivot:PivotViewer x:Name=&quot;PivotViewer&quot; Visibility=&quot;Collapsed&quot; /&gt;
+    &lt;/Border&gt;
+
+&lt;/Grid&gt;
+</pre><br> </li>
+</ol><h3><a name="Step 3: Add the event handler."></a> Step 3: Add the event handler.</h3>
+<p>Once the URL of a collection has been typed into the text box, the PivotViewer opens the collection and is made visible.
+ This is done using the <code>urlBox_KeyDown</code> event handler.
+ We need to add this to the file, <code><nop></nop>MainPage.xaml.cs</code>.</p>
+<ol><li>Open <code><nop></nop>MainPage.xaml.cs</code> and add references to: <ul><li><code>System.Windows.Pivot</code> </li>
+<li><code>System.Windows.Pivot.Model</code> </li>
+<li><code>System.Windows.Pivot.SharedUI</code> </li>
+<li><code>System.Windows.Pivot.StringResources</code> </li>
+<li><code>System.Windows.Pivot.Utilities</code> </li>
+</ul></li>
+<li>Add <code>using System.Windows.Pivot;</code> to the &quot;using&quot; block.
+</li>
+<li>Add the event handler: <br><pre><br>private void urlBox_KeyDown(object sender, KeyEventArgs e)
+{
+    if (e.Key == Key.Enter)
+        PivotViewer.LoadCollection(urlBox.Text, string.Empty);
+    PivotViewer.Visibility = Visibility.Visible;
+}
+</pre><br></li>
+<li>Build and run the code using the development server.
+ You should see a web page that looks like this: <br><br><img src="VOSHTTPServerPivotviewer/Page1.png" style="wikiautogen"><br><br> </li>
+<li>Type the URL of a collection, e.g., <code><a href="http://content.getpivot.com/Collections/dogbreeds/dogbreeds.cxml" class="absuri">http://content.getpivot.com/Collections/dogbreeds/dogbreeds.cxml</a></code> into the text box.
+</li>
+<li>The collection will be opened in the PivotViewer control.
+<br><br><img src="VOSHTTPServerPivotviewer/Page2.png" style="wikiautogen"><br><br></li>
+</ol><h3><a name="Step 4: Save the application."></a> Step 4: Save the application.</h3>
+<p>Publish the project from <nop></nop>VisualStudio to your local filesystem —</p>
+<ol><li>Right click on <code><nop></nop>PivotTest.Web</code> in the <b>Solution Explorer</b>.
+</li>
+<li>Select <b>Publish</b> </li>
+<li>Select <b>File System</b> for the Publish Method, and set the <b>Target Location</b>.
+</li>
+<li>Click <b>OK</b>.</li>
+</ol><h3><a name="Step 5: Set up hosting on Virtuoso."></a> Step 5: Set up hosting on Virtuoso.</h3>
+<h4><a name="You can host the project directly from the filesystem ..."></a> You can host the project directly from the filesystem ...</h4>
+<ol><li>Copy the content of the Target Location (Step #4, above) to a new folder called PivotTest in the <b><code>$VIRTUOSO_DIR/vsp/</code></b> folder of your Virtuoso Server instance.
+</li>
+<li>Open the Virtuoso Conductor and click to the <b>Web Application Server</b> tab, and then the <b>Virtuoso Domains and Directories</b> sub-tab.
+</li>
+<li>Add a new directory to the default web site.
+</li>
+<li>Select <b>None</b> on the first page of the wizard.
+</li>
+<li>On the second page set <b>Path</b> to <b><code>/pivottest</code></b> and <b>Physical Path</b> to the new folder you have just created under <b><code>$VIRTUOSO_DIR/vsp/</code></b>.
+</li>
+<li>Set <b>Default Page</b> to <b><code><nop></nop>PivotTestTestPage.html</code></b>.
+</li>
+<li>Click <b>Save changes</b>.</li>
+</ol><h4><a name="or from Virtuoso's DAV repository"></a> or from Virtuoso&#39;s DAV repository</h4>
+<ol><li>Open the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> browser on your Virtuoso server.
+</li>
+<li>Create a new <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> folder and upload the content of the Target Location (Step #4, above) into it.
+</li>
+<li>Open the conductor and select the <b>Web Application Server</b> followed by the <b>Virtuoso Domains and Directories</b> tab.
+</li>
+<li>Add a new directory to the default web site.
+</li>
+<li>Select <b>None</b> on the first page of the wizard.
+</li>
+<li>On the second page set <b>Path</b> to the name of the new <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> folder and check the <b>Physical path is a <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> repository</b> check box.
+</li>
+<li>Set the <b>Physical Path</b> to <b><code>/DAV/<i>&lt;new <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> folder name&gt;</i></code></b>.
+</li>
+<li>Set <b>Default Page</b> to <b><code><nop></nop>PivotTestTestPage.html</code></b>.
+</li>
+<li>Check the <b>Override exec permissions in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a></b> checkbox.
+</li>
+<li>Click <b>Save changes</b>.</li>
+</ol><p>Now load <code>http://<i>&lt;your server instance&gt;</i>/pivottest</code> in your Web browser, and you should see the page you have just created.</p>
+<i><b>A note on <code>CrossDomainPolicy.xml</code></b></i><br> <i>The <a href="http://msdn.microsoft.com/en-us/library/cc645032%28VS.95%29.aspx" class="absuri">Silverlight security model</a> only allows a Silverlight application to make HTTP web requests to the domain that originally served the application.
+ Cross domain access to collections on another server would require either a <code>clientaccesspolicy.xml</code> or <code>crossdomain.xml</code> file allowing access from the site serving the Silverlight application.</i><h2><a name="Live Demo Links"></a> Live Demo Links</h2>
+<ul><li><a href="http://ods-qa.openlinksw.com/pivotviewer/pivot/" class="absuri">Live Edition of This Pivotviewer Application</a> </li>
+<li><a href="http://ods-qa.openlinksw.com/pivotviewer/pivot/?=http://content.getpivot.com/Collections/worldleaders/worldleaders.cxml#$facet0$=Age&amp;$view$=2">World Leaders By Age</a> -- demonstrates Pivotviewer URL using this example </li>
+<li><a href="http://www.getpivot.com/collections/" class="absuri">Microsoft&#39;s Pivot Collection Gallery</a> -- cut and paste links into this example </li>
+<li><a href="http://delicious.com/kidehen/pivot_collection" class="absuri">Kingsley Idehen&#39;s Pivot Collection Gallery</a> -- cut and paste links into this example</li>
+</ul><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://www.silverlight.net/learn/pivotviewer/" class="absuri">PivotViewer documentation</a> </li>
+<li><a href="http://getpivot.com/developer-info/api/html/N_System_Windows_Pivot.htm" class="absuri">System.Windows.Pivot namespace documentation</a> </li>
+<li><a href="http://pauthor.codeplex.com/" class="absuri">Pauthor</a> - a command line tool for converting Pivot collections between a variety of formats and a C# library that allows you to build and modify collections in memory, as well as read and write them in a variety of formats.
+</li>
+</ul></div></body></html>

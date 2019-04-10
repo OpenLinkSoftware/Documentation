@@ -1,0 +1,217 @@
+<html><body><div class="topic-text"><h2><a name="URL Rewrite Rules for eCRM"></a>URL Rewrite Rules for eCRM</h2>
+<p>This article contains the script for defining the URL Rewrite Rules for eCRM:</p>
+<br><pre>DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;ecrm_rule2&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/ecrm%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&amp;format=%U&#39;,
+    vector(&#39;path&#39;, &#39;path&#39;, &#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;ecrm_rule1&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/about/html/http://^{URIQADefaultHost}^%s%%23this&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;ecrm_rule3&#39;,
+    1,
+    &#39;(/[^#]*)/\x24&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;%U&#39;,
+    vector(&#39;path&#39;),
+    null,
+    null,
+    0,
+    null
+    );
+
+create procedure DB.DBA.ECRM_MAKE_RDF_DET()
+{
+    declare uriqa_str varchar;
+    uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+    uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/ecrm&#39;;
+    DB.DBA.&quot;RDFData_MAKE_DET_COL&quot; (&#39;/DAV/VAD/eCRM/RDFData/&#39;, uriqa_str, NULL);
+    VHOST_REMOVE (lpath=&gt;&#39;/ecrm/data/rdf&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/ecrm/data/rdf&#39;, ppath=&gt;&#39;/DAV/VAD/eCRM/RDFData/All/&#39;, is_dav=&gt;1, vsp_user=&gt;&#39;dba&#39;);
+}
+;
+
+DB.DBA.ECRM_MAKE_RDF_DET();
+
+drop procedure DB.DBA.ECRM_MAKE_RDF_DET;
+
+-- procedure to convert path to DET resource name
+create procedure DB.DBA.ECRM_DET_REF (in par varchar, in fmt varchar, in val varchar)
+{
+  declare res, iri any;
+  declare uriqa_str varchar;
+  uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/ecrm&#39;;
+  iri := uriqa_str || val;
+  res := sprintf (&#39;iid (%d).rdf&#39;, iri_id_num (iri_to_id (iri)));
+  return sprintf (fmt, res);
+}
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;ecrm_rdf&#39;, 1,
+    &#39;/ecrm/(.*)&#39;, vector(&#39;path&#39;), 1,
+    &#39;/ecrm/data/rdf/%U&#39;, vector(&#39;path&#39;),
+    &#39;DB.DBA.ECRM_DET_REF&#39;,
+    &#39;application/rdf.xml&#39;,
+    2,
+    303);
+
+create procedure DB.DBA.ECRM_DET_REF2 (in par varchar, in fmt varchar, in val varchar)
+{
+	declare tmp, stream any;
+	declare oid, inst, class, sid, url varchar;
+	declare pos, org_id_ integer;
+	--val := val || &#39;&amp;oid=301000000001&#39;;
+	val := replace(val, &#39;%27&#39;, &#39;\&#39;&#39;);
+	val := replace(val, &#39;%20&#39;, &#39; &#39;);
+	if (val like &#39;%/%/view.vsp?sid=%&amp;oid=%&#39;)
+	{
+		tmp := sprintf_inverse (val, &#39;%s/%s/view.vsp?sid=%s&amp;oid=%s&#39;, 0);
+		inst := tmp[0];
+		class := tmp[1];
+		sid := tmp[2];
+		oid := tmp[3];
+		pos := strchr(oid, &#39;&amp;&#39;);
+		if (pos is not NULL)
+		{
+			oid := left(oid, pos);
+		}
+		org_id_ := (select WAI_ID from DB.DBA.WA_INSTANCE where WAI_NAME = inst);
+		if (class = &#39;company&#39;)
+		{
+			for (select COMPANY_NAME, COMPANY_ID from eCRM.DBA.SFA_COMPANIES where cast(COMPANY_ID as varchar) = oid and ORG_ID = org_id_) do
+			{
+				url := sprintf(&#39;Company/%U/%U/%d#this&#39;, COMPANY_NAME, COMPANY_ID, org_id_);
+			}
+		}
+		if (class = &#39;lead&#39;)
+		{
+			for (select SUBJECT, LEAD_ID from eCRM.DBA.SFA_LEADS where cast(LEAD_ID as varchar) = oid and ORG_ID = org_id_) do
+			{
+				url := sprintf(&#39;Lead/%U/%d/%/U#this&#39;, SUBJECT, org_id_, LEAD_ID);
+			}
+		}
+		if (class = &#39;opportunity&#39;)
+		{
+			url := sprintf(&#39;Lead/%d/%/U#this&#39;, org_id_, oid);
+		}
+		if (class = &#39;contact&#39;)
+		{
+			for (select NAME_FIRST, NAME_MIDDLE, NAME_LAST, CONTACT_ID from eCRM.DBA.SFA_CONTACTS where cast(CONTACT_ID as varchar) = oid and ORG_ID = org_id_) do
+			{
+				url := sprintf(&#39;Contact/%U/%U/%U/%U/%d#this&#39;, NAME_FIRST, NAME_MIDDLE, NAME_LAST, CONTACT_ID, org_id_);
+			}
+		}
+		if (class = &#39;order&#39;)
+		{
+			url := sprintf(&#39;Order/%d/%U#this&#39;, org_id_, oid);
+		}
+
+	}
+	else if (val like &#39;%/%/view.vsp?sid=%&#39;)
+	{
+		tmp := sprintf_inverse (val, &#39;%s/%s/view.vsp?sid=%s&#39;, 0);
+		inst := tmp[0];
+		class := tmp[1];
+		sid := tmp[2];
+		org_id_ := (select WAI_ID from DB.DBA.WA_INSTANCE where WAI_NAME = inst);
+		if (class = &#39;organization&#39;)
+		{
+			for (select DNS_ZONE from eCRM.DBA.XSYS_ORGANIZATIONS_DATA where ORG_ID = org_id_) do
+			{
+				url := sprintf(&#39;OrganizationsData/%d/%U#this&#39;, org_id_, DNS_ZONE);
+			}
+		}	
+	}
+	return url;
+}
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;ods_ecrm_rdf&#39;,
+	1,
+    &#39;/dataspace/([^/]*)/eCRM/(.*)&#39;,
+    vector(&#39;uname&#39;, &#39;path&#39;),
+    1,
+    &#39;/ecrm/%U&#39;,
+    vector(&#39;path&#39;),
+    &#39;DB.DBA.ECRM_DET_REF2&#39;,
+    &#39;application/rdf.xml&#39;,
+    2,
+    303);
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;ecrm_rule_list1&#39;,
+    1,
+    vector (
+                &#39;ecrm_rule1&#39;,
+                &#39;ecrm_rule2&#39;,
+                &#39;ecrm_rule3&#39;,
+                &#39;ecrm_rdf&#39;
+          ));
+
+
+VHOST_REMOVE (lpath=&gt;&#39;/ecrm&#39;);
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/ecrm&#39;, ppath=&gt;&#39;/DAV/VAD/eCRM/&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, def_page=&gt;&#39;sfront.vspx&#39;,
+          is_brws=&gt;0, opts=&gt;vector (&#39;url_rewrite&#39;, &#39;ecrm_rule_list1&#39;));
+
+create procedure DB.DBA.LOAD_ECRM_ONTOLOGY_FROM_DAV()
+{
+  declare content, urihost varchar;
+  select cast (RES_CONTENT as varchar) into content from WS.WS.SYS_DAV_RES where RES_FULL_PATH = &#39;/DAV/VAD/eCRM/ecrm.owl&#39;;
+  DB.DBA.RDF_LOAD_RDFXML (content, &#39;http://www.openlinksw.com/schemas/ecrm#&#39;, &#39;http://www.openlinksw.com/schemas/eCRMOntology/1.0/&#39;);
+  urihost := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  if (urihost = &#39;demo.openlinksw.com&#39;)
+  {
+    DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/schemas/ecrm#&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/schemas/ecrm#&#39;, ppath=&gt;&#39;/DAV/VAD/eCRM/ecrm.owl&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, is_brws=&gt;0);
+  }
+}
+;
+
+DB.DBA.LOAD_ECRM_ONTOLOGY_FROM_DAV()
+;
+
+drop procedure DB.DBA.LOAD_ECRM_ONTOLOGY_FROM_DAV
+;
+
+create procedure DB.DBA.LOAD_ECRM_ONTOLOGY_FROM_DAV2()
+{
+  declare urihost varchar;
+  sparql base &lt;http://www.openlinksw.com/schemas/ecrm#&gt; load bif:concat (&quot;http://&quot;, bif:registry_get(&quot;URIQADefaultHost&quot;), &quot;/DAV/VAD/eCRM/ecrm.owl&quot;)
+   into graph &lt;http://www.openlinksw.com/schemas/eCRMOntology/1.0/&gt;;
+  urihost := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  if (urihost = &#39;demo.openlinksw.com&#39;)
+  {
+    DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/schemas/ecrm#&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/schemas/ecrm#&#39;, ppath=&gt;&#39;/DAV/VAD/eCRM/ecrm.owl&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1, is_brws=&gt;0);
+  }
+}
+;
+
+--DB.DBA.LOAD_ECRM_ONTOLOGY_FROM_DAV2();
+
+drop procedure DB.DBA.LOAD_ECRM_ONTOLOGY_FROM_DAV2
+;
+</pre></div></body></html>

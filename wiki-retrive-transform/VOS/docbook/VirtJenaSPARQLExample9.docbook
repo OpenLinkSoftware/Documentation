@@ -1,0 +1,93 @@
+<docbook><section><title>VirtJenaSPARQLExample9</title><para> </para>
+<title> Virtuoso Jena Provider - SPARQL Example 9</title> Virtuoso Jena Provider - SPARQL Example 9
+<programlisting>import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.rdf.model.*;
+import java.util.Iterator;
+
+import virtuoso.jena.driver.*;
+
+public class VirtuosoSPARQLExample9 {
+
+	/**
+	 * Executes a SPARQL query against a virtuoso url and prints results.
+	 */
+	public static void main(String[] args) {
+
+		String url;
+		if(args.length == 0)
+		    url = &quot;jdbc:virtuoso://localhost:1111&quot;;
+		else
+		    url = args[0];
+
+/*			STEP 1			*/
+		VirtGraph set = new VirtGraph (url, &quot;dba&quot;, &quot;dba&quot;);
+
+/*			STEP 2			*/
+                String str = &quot;CLEAR GRAPH &lt;http://test1&gt;&quot;;
+                VirtuosoUpdateRequest vur = VirtuosoUpdateFactory.create(str, set);
+                vur.exec();                  
+
+                str = &quot;INSERT INTO GRAPH &lt;http://test1&gt; { &lt;http://aa&gt; &lt;http://bb&gt; &#39;cc&#39; . &lt;http://aa1&gt; &lt;http://bb&gt; 123. }&quot;;
+                vur = VirtuosoUpdateFactory.create(str, set);
+                vur.exec();                  
+
+
+/*		Select all data in virtuoso	*/
+		Query sparql = QueryFactory.create(&quot;SELECT * FROM &lt;http://test1&gt; WHERE { ?s ?p ?o }&quot;);
+		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create (sparql, set);
+		ResultSet results = vqe.execSelect();
+                System.out.println(&quot;\nSELECT results:&quot;);
+		while (results.hasNext()) {
+			QuerySolution rs = results.nextSolution();
+		    RDFNode s = rs.get(&quot;s&quot;);
+		    RDFNode p = rs.get(&quot;p&quot;);
+		    RDFNode o = rs.get(&quot;o&quot;);
+		    System.out.println(&quot; { &quot; + s + &quot; &quot; + p + &quot; &quot; + o + &quot; . }&quot;);
+		}
+
+		sparql = QueryFactory.create(&quot;DESCRIBE &lt;http://aa&gt; FROM &lt;http://test1&gt;&quot;);
+		vqe = VirtuosoQueryExecutionFactory.create (sparql, set);
+
+		Model model = vqe.execDescribe();
+ 	        Graph g = model.getGraph();
+                System.out.println(&quot;\nDESCRIBE results:&quot;);
+	        for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) 
+	           {
+	              Triple t = (Triple)i.next();
+		      System.out.println(&quot; { &quot; + t.getSubject() + &quot; &quot; + 
+		      				 t.getPredicate() + &quot; &quot; + 
+		      				 t.getObject() + &quot; . }&quot;);
+	        }
+
+
+
+		sparql = QueryFactory.create(&quot;CONSTRUCT { ?x &lt;http://test&gt; ?y } FROM &lt;http://test1&gt; WHERE { ?x &lt;http://bb&gt; ?y }&quot;);
+		vqe = VirtuosoQueryExecutionFactory.create (sparql, set);
+
+		model = vqe.execConstruct();
+ 	        g = model.getGraph();
+                System.out.println(&quot;\nCONSTRUCT results:&quot;);
+	        for (Iterator i = g.find(Node.ANY, Node.ANY, Node.ANY); i.hasNext();) 
+	           {
+	              Triple t = (Triple)i.next();
+		      System.out.println(&quot; { &quot; + t.getSubject() + &quot; &quot; + 
+		      				 t.getPredicate() + &quot; &quot; + 
+		      				 t.getObject() + &quot; . }&quot;);
+	        }
+
+
+		sparql = QueryFactory.create(&quot;ASK FROM &lt;http://test1&gt; WHERE { &lt;http://aa&gt; &lt;http://bb&gt; ?y }&quot;);
+		vqe = VirtuosoQueryExecutionFactory.create (sparql, set);
+
+		boolean res = vqe.execAsk();
+                System.out.println(&quot;\nASK results: &quot;+res);
+
+
+	}
+}
+</programlisting><para> </para>
+</section></docbook>

@@ -1,0 +1,63 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h2><a name="How to achieve best performance executing a query against SPARQL Endpoint?"></a>How to achieve best performance executing a query against SPARQL Endpoint?</h2>
+<p>Assume the query from below is to be executed against the <a href="http://dbpedia.org/sparql" class="absuri">dbpedia sparql endpoint</a>: </p>
+<br><pre>PREFIX dbo: &lt;http://dbpedia.org/ontology/&gt;
+PREFIX prop: &lt;http://dbpedia.org/property/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?thumbnail ?abstract
+WHERE 
+  {
+    ?location rdfs:label ?label;
+          a dbo:PopulatedPlace . 
+    OPTIONAL { ?location dbo:thumbnail ?thumbnail . }
+    OPTIONAL { ?location dbo:abstract ?abstract . 
+      FILTER langMatches(lang(?abstract), &#39;en&#39;) }
+    FILTER REGEX(?label, &#39;Swanage&#39;, &#39;i&#39;)
+  } 
+LIMIT 1
+</pre><p> What should we do if the endpoint either times out or does not return any data at all? - There are a number of reasons why the dbpedia endpoint can give timeouts such as:</p>
+<ol><li>You send too many requests in very short amount of time; </li>
+<li>You send very time-consuming queries and you receive a timeout </li>
+<li>Someone else is doing some very expensive queries</li>
+</ol><p>We have several ACLs in place to deal with the above scenarios but  that does not mean that some users write crawlers that ignore the HTTP status codes and properly act upon them.
+ We are looking into the best way to deal with such.</p>
+<p>Back to the query from above, the performance killer in it is the use of:</p>
+<br><pre>FILTER regex(?label, &#39;Swanage&#39;, &#39;i&#39;)
+</pre><p> which is basically will need to check every individual place triple to see if it matches which is not a very efficient way to quickly get the results.</p>
+<p> We suggest the FILTER line to be replaced it with:</p>
+<br><pre>?label bif:contains &#39;\&#39;D?sseldorf\&#39;&#39;
+</pre><p> or</p>
+<br><pre>?label bif:contains &quot; &#39;Antwerpen&#39; &quot;
+</pre><p>which takes into account the fact there can be special characters in names.
+ If you are dealing only with Latin1 characters, you can leave out the inner quotes.
+Also note the spaces between the double and single quote are not needed, but enhance readability.</p>
+<p>The CONTAINS function has the same advantage as the REGEX (x, &#39;i&#39;)  option of finding both antwerpen, Antwerpen or any other case mixes but using an index which is much faster.</p>
+<p>Finally the query should like this: </p>
+<br><pre>PREFIX dbo: &lt;http://dbpedia.org/ontology/&gt;
+PREFIX prop: &lt;http://dbpedia.org/property/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?thumbnail ?abstract
+WHERE 
+  {
+    ?location rdfs:label ?label;
+         a dbo:PopulatedPlace.
+     ?label bif:contains &quot; &#39;Antwerpen&#39; &quot;.
+     OPTIONAL { ?location dbo:thumbnail ?thumbnail . }
+     OPTIONAL { ?location dbo:abstract ?abstract . 
+       FILTER  langMatches(lang(?abstract), &#39;en&#39;) }
+  }
+LIMIT 1
+</pre><p> which is much faster.</p>
+<p> Another trick you can use is to turn a SPARQL request into an ANYTIME query.
+ This is done by adding:</p>
+<br><pre>&amp;timeout=5000
+</pre><p> to the end of the /sparql/?query=XXXX request which instructs the Virtuoso SPARQL endpoint to only return results that it can find in  approximate 5000msec.
+ There are special HTTP result header flags that  indicate if the resultset is a partial or full result.</p>
+<p> <a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=PREFIX+dbo%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2F%3E%0D%0APREFIX+prop%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0ASELECT+%3Fthumbnail+%3Fabstract%0D%0AWHERE+%0D%0A++%7B%0D%0A++++%3Flocation+rdfs%3Alabel+%3Flabel%3B%0D%0A+++++++++a+dbo%3APopulatedPlace.%0D%0A+++++%3Flabel+bif%3Acontains+%22+%27Antwerpen%27+%22.%0D%0A+++++OPTIONAL+%7B+%3Flocation+dbo%3Athumbnail+%3Fthumbnail+.+%7D%0D%0A+++++OPTIONAL+%7B+%3Flocation+dbo%3Aabstract+%3Fabstract+.+%0D%0A+++++++FILTER++langMatches%28lang%28%3Fabstract%29%2C+%27en%27%29+%7D%0D%0A++%7D%0D%0ALIMIT+1&amp;should-sponge=&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=15000&debug=on&timeout=5000" class="absuri">View the results</a> of the query execution on the <a href="http://lod.openlinksw.com" class="absuri">LOD</a> instance.</p>
+<p> </p>
+<h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://docs.openlinksw.com/virtuoso/anytimequeries.html" class="absuri">Anytime Queries</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+</ul></div></body></html>

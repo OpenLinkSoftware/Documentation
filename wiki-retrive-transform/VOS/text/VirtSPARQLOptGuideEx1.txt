@@ -1,0 +1,103 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+Optimizing query performance using bif functions Example
+
+The following example describes how to optimize query performance using bif functions.
+
+   1 Suppose there is the following query, which performs very well on Virtuoso db with default indexes::
+<verbatim>
+SELECT DISTINCT
+    ?r
+    (bif:concat(bif:search_excerpt(bif:vector('lego'), ?v2))) as ?_n_f_t_m_ex_
+WHERE 
+  {
+    { ?r ?v1 ?v2 .
+      ?v2 bif:contains 'lego' .
+    }
+    UNION
+    { ?r ?v1 ?v3 .
+      ?v3 ?v4 ?v2 .
+      ?v4 rdfs:subPropertyOf rdfs:label .
+      ?v2 bif:contains 'lego' .
+    } .
+  } 
+LIMIT 10
+</verbatim>
+   1. Suppose also there should be hidden certain types from the user. For the purposes of this, to the end of the query is added <b>nao:userVisible</b> property:
+<verbatim>
+SELECT DISTINCT
+    ?r
+    (bif:concat(bif:search_excerpt(bif:vector('lego'), ?v2))) as ?_n_f_t_m_ex_
+WHERE 
+  {
+    { ?r ?v1 ?v2 .
+      ?v2 bif:contains 'lego' .
+    }
+    UNION
+    { ?r ?v1 ?v3 .
+      ?v3 ?v4 ?v2 .
+      ?v4 rdfs:subPropertyOf rdfs:label .
+      ?v2 bif:contains 'lego' .
+    } .
+    ?r nao:userVisible "1"^^xsd:int .
+  } 
+LIMIT 10
+</verbatim>
+   1. <b>The optimization:</b>
+      1. Replacing <b> "?r nao:userVisible 1"</b> with a <b>bif:exists</b> filter makes the query performance significant fast.
+      1. Add <b>Limit</b> to each UNION, because in this case no one side of union will needlessly generate data that does not fit LIMIT 10.
+      1. Some triples should reside in one graph, if this is applicable to the task in question. E.g. if both <b>?r ?v1 ?v2 .</b> and <b>?r nao:userVisible "1"^^xsd:int .</b> are supposed to be in same graph, then:
+<verbatim>
+?r ?v1 ?v2 .
+?v2 bif:contains 'lego' .
+-- can be replaced with:
+graph ?g 
+  { 
+    ?r ?v1 ?v2 .
+    ?r nao:userVisible "1"^^xsd:int .
+    ?v2 bif:contains 'lego' . 
+  }
+</verbatim>
+   1 Finally, here is the optimized query:
+<verbatim>
+PREFIX nao: <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#>
+SELECT DISTINCT
+    ?r
+    (bif:concat(bif:search_excerpt(bif:vector('lego'), ?v2))) as
+        ?_n_f_t_m_ex_
+WHERE 
+  {
+    {
+      {
+        SELECT DISTINCT ?r ?v2 
+        WHERE
+          { 
+            ?r ?v1 ?v2 .
+            ?v2 bif:contains 'lego' .
+            ?r nao:userVisible "1"^^xsd:int .
+          } 
+        LIMIT 10 
+      } 
+    }
+    UNION
+    {
+      {
+        SELECT DISTINCT ?r ?v2 
+        WHERE
+          { 
+            ?r ?v1 ?v3 .
+            ?v3 ?v4 ?v2 .
+            ?v4 rdfs:subPropertyOf rdfs:label .
+            ?v2 bif:contains 'lego' .
+            ?r nao:userVisible "1"^^xsd:int .
+          } 
+        LIMIT 10 
+      } 
+    }
+  } 
+LIMIT 10
+</verbatim>
+
+---++Related
+
+   * [[VirtSPARQLOptGuide][Virtuoso SPARQL Optimization Guide]]

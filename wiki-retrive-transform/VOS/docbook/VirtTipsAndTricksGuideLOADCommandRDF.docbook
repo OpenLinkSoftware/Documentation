@@ -1,0 +1,74 @@
+<docbook><section><title>VirtTipsAndTricksGuideLOADCommandRDF</title><title> How can I use the LOAD command to import RDF data?</title> How can I use the LOAD command to import RDF data?
+<para>SPARQL INSERT can be done using the LOAD command:</para>
+<programlisting>SPARQL INSERT INTO &lt;..&gt; { .... } [[FROM ...] { ... }]
+
+SPARQL LOAD &lt;x&gt; [INTO &lt;y&gt;]
+
+-- &lt;ResourceURL&gt; will be the Graph IRI of the loaded data:
+SPARQL LOAD &lt;ResourceURL&gt; 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Load from Resource URL</bridgehead>
+<para>In order to load data from resource URL for ex: <ulink url="http://www.w3.org/People/Berners-Lee/card#i">http://www.w3.org/People/Berners-Lee/card#i</ulink> , execute  the following command with isql:</para>
+<programlisting>SQL&gt; SPARQL LOAD &lt;http://www.w3.org/People/Berners-Lee/card#i&gt;;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; into graph &lt;http://www.w3.org/People/Berners-Lee/card#i&gt; -- done
+
+1 Rows. -- 703 msec.
+SQL&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Load from file</bridgehead>
+<orderedlist spacing="compact"><listitem>Create DAV collection which is visible to the public, for ex: <ulink url="http://localhost:8890/DAV/tmp">http://localhost:8890/DAV/tmp</ulink> </listitem>
+<listitem>Upload to the DAV collection a file, for example with name listall.rq and with the following content: <programlisting>SPARQL
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+SELECT ?x ?p ?o
+FROM &lt;http://mygraph.com&gt;
+WHERE
+  {
+    ?x rdf:type sioc:User .
+    ?x ?p ?o.
+    ?x sioc:id ?id .
+    FILTER REGEX(str(?id), &quot;^King&quot;)
+  }
+ORDER BY ?x
+</programlisting></listitem>
+<listitem>Execute  the following command from isql: <programlisting>SQL&gt;SPARQL LOAD bif:concat (&quot;http://&quot;, bif:registry_get(&quot;URIQADefaultHost&quot;), &quot;/DAV/tmp/listall.rq&quot;) into graph &lt;http://myNewGraph.com&gt;;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load &lt;http://localhost:8890/DAV/tmp/listall.rq&gt; into graph &lt;http://myNewGraph.com&gt; -- done
+
+1 Rows. -- 321 msec.
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Directly LOAD triples using iSQL</bridgehead>
+<para>Triples can be directly loaded into Virtuoso specifying the literal values to inserted, by executing a command of the following form from isql:</para>
+<programlisting>SQL&gt;SPARQL INSERT INTO graph &lt;http://mygraph.com&gt;
+{
+  &lt;http://myopenlink.net/dataspace/Kingsley#this&gt;
+  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+  &lt;http://rdfs.org/sioc/ns#User&gt; .
+
+  &lt;http://myopenlink.net/dataspace/Kingsley#this&gt;
+  &lt;http://rdfs.org/sioc/ns#id&gt;
+  &lt;Kingsley&gt; .
+
+  &lt;http://myopenlink.net/dataspace/Caroline#this&gt;
+  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;
+  &lt;http://rdfs.org/sioc/ns#User&gt; .
+
+  &lt;http://myopenlink.net/dataspace/Caroline#this&gt;
+  &lt;http://rdfs.org/sioc/ns#id&gt;
+  &lt;Caroline&gt; .
+};
+
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html">RDF Insert Methods in Virtuoso</ulink> </listitem>
+</itemizedlist></section></docbook>

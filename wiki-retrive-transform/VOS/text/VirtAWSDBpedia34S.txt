@@ -1,0 +1,83 @@
+%META:TOPICPARENT{name="VirtAWSPublicDataSets"}%
+
+---++DBpedia 3.4 Single Server Edition
+
+|<strong>Description:</strong>| DBpedia 3.4 (a Virtuoso based Linked Open Data Space) |
+|<strong>Virtuoso Server Type:</strong>  | Single Edition |
+|<strong>Snapshot ID (Linux/Unix):</strong>  | snap-0f158066 |
+|<strong>Size:</strong> | 75GB |
+|<strong>Creation Date:</strong> | 2009-11-14 |
+|<strong>Last Updated:</strong>  | 2009-11-14 |
+|<strong>License:</strong> | Creative Commons: Attribution Share Alike  |
+|<strong>Submitted By:<strong>| OpenLink Software |
+|<strong>Source:</strong> | http://www.openlinksw.com |
+
+   1 If not already running, instantiate a [[VirtInstallationEC2][Virtuoso EC2 AMI instance]]. Note that we recommend a minimum 64-bit extra large image Virtuoso Release 6 AMI instance (ami-23d0334a) with 15GB of memory be used, which is an "Extra Large(m1.xlarge, 15GB)" AMI instance type. 
+   1 From the [[https://console.aws.amazon.com/ec2/home][AWS Management Console]] a list of available Virtuoso public snapshots can be obtain by select the "Snapshot" link in the AWS console, selecting "Public Snapshots" from the viewing drop down list box and search for "Virtuoso". An EBS volume can be created for any of these snapshots and attached to a Virtuoso EC2 AMI instance.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets06.png" style="wikiautogen"/>%BR%%BR%
+   1 Select the "Volumes" link under the "Elastic Block Storage" section
+ %BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets01.png" style="wikiautogen"/>%BR%%BR%
+   1 Click on the "Create Volume" button and set "Size" to 75GB, "Availability Zone" to match the zone of your running Virtuoso EC2 AMI instance and "Snaphot" to the required DBpedia 3.4 AWS snapshot.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets02.png" style="wikiautogen"/>%BR%%BR%
+   1 Select the newly created volume and click on the "Attach Volume" button to attach the volume to the required Virtuoso EC2 AMI instance
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets03.png" style="wikiautogen"/>%BR%%BR%
+   1 Select the "Instance"  and "Device" the volume should be attached to and click "Attach" 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets04.png" style="wikiautogen"/>%BR%%BR%
+   1 The volume will now be listed as "attached" to the specified Virtuoso EC2 AMI instance id.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets05.png" style="wikiautogen"/>%BR%%BR%
+   1 "ssh" into the Virtuoso EC2 AMI instance
+<verbatim>
+$ ssh -i MyKeyPair.pem root@<ec2-ami-public-dns-cname>
+[root@domU-12-31-39-02-21-D1 ~]# cd /opt/virtuoso
+[root@domU-12-31-39-02-21-D1 virtuoso]# ls
+bin       hosting  lib  virtuoso-environment.csh  vsp
+database  install  vad  virtuoso-environment.sh
+[root@domU-12-31-39-02-21-D1 virtuoso]# mkdir dbpedia
+[root@domU-12-31-39-02-21-D1 virtuoso]# mount /dev/sdf /opt/virtuoso/dbpedia
+[root@domU-12-31-39-02-21-D1 virtuoso]# ls -ltr dbpedia
+total 20
+drwx------ 2 root root 16384 Nov 13 21:56 lost+found
+lrwxrwxrwx 1 root root    17 Nov 13 22:00 bin -> /opt/virtuoso/bin
+lrwxrwxrwx 1 root root    17 Nov 13 22:29 vad -> /opt/virtuoso/vad
+lrwxrwxrwx 1 root root    21 Nov 13 22:29 install -> /opt/virtuoso/install
+drwxr-xr-x 3 root root  4096 Nov 14 11:12 database
+[root@domU-12-31-39-02-21-D1 virtuoso]# ls -ltr dbpedia/database
+total 48488720
+-rw-r--r-- 1 root root           0 Nov 13 22:24 virtuoso.pxa
+drwxr-xr-x 2 root root        4096 Nov 13 22:24 backup
+-rw-r--r-- 1 root root        3412 Nov 14 10:51 virtuoso.ini
+lrwxrwxrwx 1 root root          34 Nov 14 11:00 virtuoso -> /opt/virtuoso/bin/virtuoso-iodbc-t
+-rw-r--r-- 1 root root     6291456 Nov 14 11:00 dbpedia.tdb
+-rw-r--r-- 1 root root           0 Nov 14 11:12 dbpedia.trx
+-rw-r--r-- 1 root root 49597644800 Nov 14 11:12 dbpedia.db
+-rw-r--r-- 1 root root        1155 Nov 14 11:12 virtuoso.log
+[root@domU-12-31-39-02-21-D1 virtuoso]#
+</verbatim>
+   1 To run the newly attached data set, first setup your Virtuoso environment
+<verbatim>
+[root@domU-12-31-39-02-21-D1 ~]# cd /opt/virtuoso
+[root@domU-12-31-39-02-21-D1 virtuoso]# . ./virtuoso-environment.sh
+</verbatim>
+   1 Change directory to the mounted data set and set the VIRTUOSO_HOME environment variable to this location
+<verbatim>
+[root@domU-12-31-39-02-21-D1 virtuoso]# cd /opt/virtuoso/dbpedia
+[root@domU-12-31-39-02-21-D1 dbpedia# export VIRTUOSO_HOME=`pwd`
+</verbatim>
+   1 Note as stated in step 1 above it is recommended the Dbpedia 3.4 snaphot  be used with a minimum 64-bit extra large image Virtuoso Release 6 AMI instance (ami-23d0334a) with 15GB of memory. Should you choose to use the "large image" with only 7.5GB memory then the Virtuoso configuration file (virtuoso.ini) needs to be edited and the "<nop>NumberOfBuffers" parameter reduced from 1000000 to 500000 before attempting to start the Virtuoso server instance, otherwise it will fail to start due to lack of memory. For more details please refer to the [[http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html][Virtuoso RDF Performance Tuning Guide]] online documentation.
+   1 Run the "virtuoso-start.sh" script to start the Virtuoso server containing the attached data set
+<verbatim>
+[root@domU-12-31-39-02-21-D1 dbpedia]# virtuoso-start.sh
+Starting Virtuoso instance in [database]
+[root@domU-12-31-39-02-21-D1 dbpedia]#
+</verbatim>
+   1 Note the Virtuoso Server "dba" user's password is set to the default of "dba" for the dataset, it is recommended this be changed to a suitably secure password using the "System Admin -> User Accounts" tab of the Virtuoso Conductor (http://ec2-ami-public-dns-cname/conductor).
+%BR%%BR%
+   1 The Virtuoso hosted data set can now be explored using a HTML browser or queried from the SPARQL or Facet Browser web service endpoints.  For example in the case of the DBpedia 3.4 datasets
+   * A description of the resource Bob Marley can be viewed as:  http://ec2-ami-public-dns-cname/resource/Bob_Marley 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets07.png" style="wikiautogen"/>%BR%%BR%
+   *  A Faceted Search can be performed on a resource at http://ec2-ami-public-dns-cname/fct
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets08.png" style="wikiautogen"/>%BR%
+%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets09.png" style="wikiautogen"/>%BR%%BR%
+%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets10.png" style="wikiautogen"/>%BR%%BR%
+   *  A SPARQL query can be run to obtain information on a resource at http://ec2-ami-public-dns-cname/sparql
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAWSPublicDataSets11.png" style="wikiautogen"/>%BR%

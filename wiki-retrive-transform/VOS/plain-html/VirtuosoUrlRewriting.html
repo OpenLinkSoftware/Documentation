@@ -1,0 +1,291 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICINFO{author="IvAn" date="1165068780" format="1.1" version="1.1"}%--><p> </p>
+<!--End of %META:TOPICINFO{author="IvAn" date="1165068780" format="1.1" version="1.1"}%--> </p>
+<h1><a name="URL Rewriting in Virtuoso"></a> URL Rewriting in Virtuoso</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Why%20rewrite%20URLs%3F">Why rewrite URLs?</a></li> <li><a href="#Rewriting%20Rules">Rewriting Rules</a></li> <li><a href="#Configuration%20API">Configuration API</a></li> <li><a href="#Accepting%20Requests">Accepting Requests</a></li> <li><a href="#HTTP%20Handlers">HTTP Handlers</a></li> <li><a href="#Composing%20Nice%20URLs">Composing Nice URLs</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Why rewrite URLs?"></a> Why rewrite URLs?</h2>
+<p>Some applications should support obsolete syntaxes of URLs of pages that were presumably bookmarked by users of old versions.
+Some applications generate long URLs with many parameters, so the URL does not fit into a standard e-mail line length or is otherwise inconvenient.</p>
+<p>But even more importantly, many web crawlers have difficulty crawling web pages with parameters, and others will simply ignore them or value them less because they are considered highly dynamic.</p>
+<p>So the purpose is <a href="http://en.wikipedia.org/wiki/Search_engine_optimization" class="absuri">Search Engine Optimization (SEO)</a> and eventually to help humans to easily recognize the URL.
+(This is a portion of the user experience with a web page, so a &quot;nice URL&quot; could ultimately be considered a User Interface feature.)</p>
+<p>In the rest of the document, &#39;long&#39; URLs are those with named parameters after &#39;?&#39;, while &#39;nice&#39; URLs have data encoded in some other format.</p>
+<p>It is possible to have pages that are called via &#39;nice&#39; URLs using plain VHOST functionality and redirects to pages with long URLs, but this result in an extra HTTP loop and invalidates &#39;back&#39; button browser navigation.</p>
+<p>A more accurate solution is to provide an intermediate URL rewriter that can be enabled for some sorts of URLs and which transparently alters the parsed parameters: </p>
+<ul><li>The <code>http_physical_path()</code> function returns the path to the actually-called page.
+</li>
+<li>The &#39;<code>path</code>&#39; parameter remains the same, even if the actually-called page has different location.
+</li>
+<li>The &#39;<code>params</code>&#39; parameter is not what&#39;s parsed from &#39;nice&#39; URL, but is the result of that parsing.
+</li>
+<li>The &#39;<code>lines</code>&#39; parameters are extended by 1 parameter line, called &#39;<code>X-VirtuosoRewrite</code>&#39;, for handlers that should know about both the source and the destination.</li>
+</ul><p>The implementation should be able to handle ill-formed URLs in an understandable way.
+ Possible scenarios are: </p>
+<ul><li>Ignore rewriting rules, so if the URL looks like a &#39;nice&#39; URL but is not valid &#39;nice&#39;, then no rewriting takes place.
+</li>
+<li>Make a &#39;default&#39; rewriting that actually change nothing.
+</li>
+<li>Report a detailed error message.</li>
+</ul><p>The default rewriting is a rewriting rule, too.
+ So Virtuoso has a list (or even a tree) of rewriting rules to apply to requested URLs.
+If none of these rules match, but the default rewriting rule is set, then Virtuoso will try to process it as is.
+If none of these rules match and the default rewriting rule is not set, then Virtuoso reports an error.</p>
+<h2><a name="Rewriting Rules"></a> Rewriting Rules</h2>
+<p>A &#39;rewriting rule&#39; describes how to parse a single &#39;nice&#39; syntax and how to compose a name of the page that should be actually called.
+Every rewriting rule has an IRI that is used to refer to the rule.
+ Rule IRI is passed as an argument to functions that </p>
+<ul><li>compose a nice URL, </li>
+<li>add the rule to a rule set (ditto remove), </li>
+<li>drop the rule (after removal from all rule sets).
+Rewriting rules are of two types, <code>sprintf</code>-based and regex-based.
+For purposes of &#39;nice&#39; to &#39;long&#39; conversion, the only difference between them is the syntax of format strings.
+But &#39;long&#39; to &#39;nice&#39; conversion works only for <code>sprintf</code>-based rules, whereas regex-based rules are &#39;unidirectional&#39;.</li>
+</ul><p>A <code>sprintf</code>-based rule contains following data: </p>
+<ul><li><code>rule_iri</code> - Rule name </li>
+<li>Rule type </li>
+<li><code>nice_format</code> - A format string used by <code>sprintf_inverse</code> to parse the URL into the vector of parts </li>
+<li><code>nice_params</code> - A vector of names of parsed parameter; the length of the vector should be equal to number of &#39;<code>%</code>&#39; specifiers in the format string </li>
+<li><code>nice_min_params</code> - Minimum allowed number of parameters that should be parsed by <code>sprintf_inverse</code> to treat the parsing as successful </li>
+<li><code>target_format</code> - A format string used by <code>sprintf</code> to compose the URL of the destination page </li>
+<li><code>target_params</code> - A vector of names of parameters that should be passed to <code>sprintf</code>, in order of their use in format string </li>
+<li><code>target_expn</code> - (Optional) SQL text that should be executed instead of an <code>sprintf()</code> call</li>
+</ul><p>A regex-based rule contains following data: </p>
+<ul><li><code>rule_iri</code> - Rule name </li>
+<li>Rule type </li>
+<li><code>nice_match</code> - A regex match expression to parse the URL into the vector of occurrences </li>
+<li><code>nice_params</code> - A vector of names of parsed parameter; the length of the vector should be equal to number of &#39;<code>(...)</code>&#39; specifiers in the format string </li>
+<li><code>target_compose</code> - A regex &#39;<code>compose</code>&#39; expression for the URL of the destination page </li>
+<li><code>target_params</code> - A vector of names of parameters that should be passed to &#39;<code>compose</code>&#39; expression as <code>$1, $2,</code> and so on </li>
+<li><code>target_expn</code> - (Optional) SQL text that should be executed instead of an regex compose call</li>
+</ul><p>Some rewriting rules are preset; their IRIs start from &#39;<code>sys:</code>&#39;.
+ Rule called &#39;<code>sys:default</code>&#39; makes no changes in the source: its <code>parse</code> and <code>sprintf</code> formats are both &#39;<code>%s</code>&#39;, both vectors of parsed parameter names are <code>vector(&#39;path&#39;)</code>.</p>
+<p>A &#39;rewriting rule list&#39; is a named ordered list of rewriting rules or rule lists.
+Rules of the list are tried from top to bottom, the first rule that matches is applied.
+When an IRI in a rule list belong to other rule list, all rules and rule lists from &#39;included&#39; list are matched, except rules and rule lists that were matched before, during the recursion.
+Rule lists and rules may include each other with &#39;loops&#39; and &#39;diamonds&#39;; this is not a data inconsistency, but allowed use case.
+It is also legal for a rule list to be empty.
+Nevertheless, rule list can not directly include itself; this is an explicit idiocy.
+If no rule matches, a detailed error message is reported.</p>
+<p>It is essential to have both &quot;rewriting rules&quot; and &quot;rewriting conditions&quot;.
+ Sometimes a URL matches more than one rule.
+ This is the case when there are &quot;optional&quot; parameters in the URL.
+ So with the &quot;rewriting condition&quot;, we check if a special pattern is present in a URL.
+ If so, then you execute the next rewriting rule; otherwise you continue in the rewriting rule set.
+ This is the same as the &quot;<code>RewriteCond</code>&quot; in the mod_rewrite Apache module.</p>
+<p>Special care should be taken around URL encoding and URL decoding.
+ The <code>mod_rewrite</code> Apache module <a href="http://fgiasson.com/blog/index.php/2006/07/19/hack_for_the_encoding_of_url_into_url_pr/" class="absuri">required a hack to handle a special case</a></p>
+<h2><a name="Configuration API"></a> Configuration API</h2>
+<br><pre>DB.DBA.URLREWRITE_DROP_RULE 
+   ( rule_iri, 
+     force
+   );
+</pre><p> </p>
+<ul><li>If <code>rule_iri</code> is in use as rulelist IRI, an error is signaled.
+</li>
+<li>If <code>rule_iri</code> is unknown, an error is signaled.
+</li>
+<li>If <code>rule_iri</code> starts from &#39;<code>sys:</code>&#39;, an error is signaled.
+</li>
+<li>If rule identified by <code>rule_iri</code> is still in use in some rule lists, then either error is signaled or it is removed from all rule lists, according to the value of &#39;force&#39; flag.</li>
+</ul><br><pre>DB.DBA.URLREWRITE_CREATE_SPRINTF_RULE 
+   ( rule_iri, 
+     allow_update, 
+     nice_format, 
+     nice_params, 
+     nice_min_params, 
+     target_format, 
+     target_params, 
+     target_expn := NULL
+   );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE 
+   ( rule_iri, 
+     allow_update, 
+     nice_match, 
+     nice_params, 
+     target_compose, 
+     target_params, 
+     target_expn := NULL
+   );
+</pre><ul><li>If <code>rule_iri</code> is already in use as rulelist IRI, an error is signaled.
+</li>
+<li>If <code>rule_iri</code> is already in use as rule IRI and <code>allow_update</code> is zero, an error is signaled.
+</li>
+<li>If <code>rule_iri</code> is already in use as rule IRI and <code>allow_update</code> is non-zero, the existing rule is updated.</li>
+</ul><i><b>Note:</b> if <code>rule_iri</code> starts with &#39;<code>sys:</code>&#39; then an error is not signaled, unlike <code>DB.DBA.URLREWRITE_DROP_RULE</code>, but this should not be used in vain.</i><p> </p>
+<br><pre>DB.DBA.URLREWRITE_DROP_RULELIST 
+   ( rulelist_iri, 
+     force
+   );
+</pre><ul><li>If <code>rulelist_iri</code> is already in use as rule IRI, an error is signaled.
+</li>
+<li>If <code>rulelist_iri</code> is unknown, an error is signaled.
+</li>
+<li>If <code>rulelist_iri</code> starts with &#39;sys:&#39;, no error is signaled.
+</li>
+<li>If rulelist identified by <code>rulelist_iri</code> is still in use in &#39;<code>opts</code>&#39; of <code>HTTP_PATH</code> or in rule lists then either error is signaled or it is removed from all rule lists and &#39;<code>opts</code>&#39;, according to the value of &#39;<code>force</code>&#39; flag.</li>
+</ul><br><pre>DB.DBA.URLREWRITE_CREATE_RULELIST
+   ( rulelist_iri, 
+     allow_update, 
+     vector_of_rule_iris
+   );
+</pre><p> </p>
+<ul><li>If <code>rulelist_iri</code> is already in use as rule IRI, an error is signaled.
+</li>
+<li>If <code>vector_of_rule_iris</code> contains <code>rulelist_iri</code>, an error is signaled.
+</li>
+<li>If <code>rulelist_iri</code> is already in use as rulelist IRI and <code>allow_update</code> is zero, an error is signaled.
+</li>
+<li>If <code>rulelist_iri</code> is already in use as rulelist IRI and <code>allow_update</code> is non-zero, the existing rule list is updated.</li>
+</ul><i><b>Note:</b> Unlike rules, rule lists can be used either in other rule lists or in &#39;<code>opts</code>&#39; of <code>HTTP_PATH</code>.
+If <code>rulelist_iri</code> starts with &#39;<code>sys:</code>&#39;, an error is not signaled, but this should not be used in vain.</i><br><pre>DB.DBA.URLREWRITE_ENUMERATE_RULES
+   ( like_pattern_for_rule_iris, 
+     dump_details
+   );
+</pre><p> This function lists all rules whose IRIs match the specified &#39;SQL like&#39; pattern.
+</p>
+<ul><li>If dump_details is 0, the returned value is an array of matched IRIs.
+</li>
+<li>If dump_details is 1, the returned value is a vector of descriptions: <ul><li>rule IRI, </li>
+<li>vector of fields of the rule (varchar, vector, varchar, vector, <code>varchar_or_null</code>), </li>
+<li>vector of IRIs of rule lists where the rule occurs.</li>
+</ul></li>
+</ul><br><pre>DB.DBA.URLREWRITE_ENUMERATE_RULELISTS
+   ( like_pattern_for_rulelist_iris, 
+     dump_details
+   );
+</pre><p> This function lists all rule lists whose IRIs match the specified &#39;SQL like&#39; pattern.
+</p>
+<ul><li>If dump_details is 0, the returned value is an array of matched IRIs.
+</li>
+<li>If dump_details is 1, the returned value is a vector of descriptions: <ul><li>rulelist IRI, </li>
+<li>vector of IRIs of members of the rulelist.
+</li>
+<li>vector of vectors of primary key fields of HTTP_PATH for all rows where rule list is used in &#39;opts&#39;.</li>
+</ul></li>
+</ul><h2><a name="Accepting Requests"></a> Accepting Requests</h2>
+<p>The URL rewriting is enabled by application by providing &#39;url_rewrite&#39; parameter in &#39;opts&#39; list of vhost_define() call.
+The parameter value is the IRI of a rule list.
+If no matching rule found in the list (during the recursive traversal), a detailed 404 error report is returned.
+If a matching rule is found, the &#39;physical&#39; path is substituted, and the search is made for virtual host definition whose host and port are equal to original values, and physical path matches.
+If more than one record matches, one with longest physical path prefix is chosen.
+If more than one record reaches the longest physical path length, and one of them is the record found for the original logical path, it is chosen.
+Otherwise, a detailed 500 error report is returned.</p>
+<p>Thus the order of actions that may affect the search for destination page and its properties/permissions is: </p>
+<ol><li>HTTP_PATH table may substitute the URL by <ul><li>a mapping with &#39;url_rewrite&#39; via rulelist (and change properties via search in same table for appropriate physical path) OR </li>
+<li>a &#39;plain&#39; virtual host (and set properties) OR </li>
+<li>no change at all, hence the file is in filesystem as it is the default, hence no &#39;special&#39; permissions or redirects.
+</li>
+</ul></li>
+<li>According to &#39;noinherit&#39; in &#39;opts&#39; of the vhost, the URL used to find a resource may become as short as &#39;ppath&#39;.
+</li>
+<li>According to &#39;redirectref&#39; property (PROP_NAME) of a resource, the path part of the URL can be replaced.
+Either of these three steps may change or not change the path independently from others.</li>
+</ol><p>The path translation function should be available for public: </p>
+<br><pre>DB.DBA.URLREWRITE_APPLY 
+   ( IN   nice_url           VARCHAR, 
+     IN   post_params        ANY,
+     OUT  long_url           VARCHAR, 
+     out  params             ANY,
+     OUT  nice_vhost_pkey    ANY,
+     OUT  top_rulelist_iri   VARCHAR, 
+     OUT  rule_iri           VARCHAR, 
+     OUT  target_vhost_pkey  ANY
+   );
+</pre><p> The function gets <code>nice_url</code> and tries to find the appropriate <code>HTTP_PATH</code>.
+ If found then it performs a recursive traversal of the specified rulelist.
+ For every rule in the tree the function implements almost the same logic, no matter what&#39;s the type of the rule, sprintf- or regex- based.
+</p>
+<ul><li>The input of the rule is resource URL as received from the first line of HTTP header, without named parameters (after &#39;?&#39;) and without the fragment.
+ (i.e.
+ from the first &#39;/&#39; after host:port to the first &#39;?&#39; or &#39;#&#39; or end of string, whatever is found first.) </li>
+<li>The input is normalized, so it becomes uniform: redundant &#39;%NN&#39; are replaced with chars, &#39;%20&#39; are replaced with &#39;+&#39;, chars that violate the URL syntax, like whitespace, are escaped.
+ This is a security thing, to avoid dependency between HTTP request syntax and the system response.
+</li>
+<li>The input is matched against sprintf or regex-match.
+ The result is vector of values.
+</li>
+<li>If regex-based and the match fails then the rule is not applied.
+ Try next rule.
+</li>
+<li>If sprintf-based and the number of parsed parameters is less than threshold then the rule is failed.
+</li>
+<li>If regex-based then values of parsed parameters should be decoded by <code>split_and_decode()</code>.
+</li>
+<li>If sprintf-based then the values of parsed parameters should <i>temporarily</i> stay as is.
+</li>
+<li>Names and values of all named parameters are decoded via sprintf_decode(); decoded values are cached to be reused on next math operations.
+</li>
+<li>Names and values of all parameters from request body are also decoded via sprintf_decode(); decoded values are also cached.
+</li>
+<li>The destination IRI is composed.
+ The value of each parameter is chosen as a coalesce of value of parameter from the match result, value of named parameter after &#39;?&#39; of &#39;nice&#39; URL, value of named parameter from body of POST request (from &#39;post_params&#39;).
+ NULL value after the coalesce result in failed rule, try next rule.
+</li>
+<li>If regex-based then the destination IRI is parsed to get list of named parameters and fragment, names and values of these parameters are decoded by <code>split_and_decode()</code>.
+ The final list of parameters that is visible to application as &#39;params&#39; is a concatenation of <ul><li>parameters from destination URL, </li>
+<li>parsed parameters from &#39;nice&#39; URL whose names does not start with &#39;&amp;&#39; char, </li>
+<li>named parameters from source URL, as cached, </li>
+<li>named parameters from request body, as in post_params.
+</li>
+</ul></li>
+<li>If sprintf-based then all non-string values of parsed parameters are casted to varchar (e.g.
+ &#39;%i&#39; inputs were integers).
+ The final list of parameters that is visible to application as &#39;params&#39; is a concatenation of <ul><li>parsed parameters from &#39;nice&#39; URL whose names does not start with &#39;&amp;&#39; char, </li>
+<li>named parameters from source URL, as cached, </li>
+<li>named parameters from request body, as in post_params.
+</li>
+</ul></li>
+<li>Search for target HTTP_PATH entry is made, according to rules described above (same host/port, longest ppath beginning etc.) </li>
+<li>The primary key of target HTTP_PATH is remembered for future references (<code>HP_LISTEN_HIST</code>, PH_HOST, HP_LPATH).</li>
+</ul><p>The function returns 1 if there was an actual non-default rewriting and stores its results via &#39;out&#39; parameters: </p>
+<ul><li><code>long_url</code> is the URL for destination page, </li>
+<li><code>params</code> is the final vector of parameters, </li>
+<li><code>nice_vhost_pkey</code> is a vector of pk col of HTTP_PATH row that matches &#39;nice url&#39;, </li>
+<li><code>top_rulelist_iri</code> is the rulelist IRI found in HTTP_PATH, </li>
+<li><code>rule_iri</code> is one that actually made the successful parsing, </li>
+<li><code>target_vhost_pkey</code> is the vector of pk col of HTTP_PATH row whose physical path matched &#39;long url&#39;.</li>
+</ul><p>The function may fill some outputs with NULLs, if the execution did not reach some part of processing.</p>
+<h2><a name="HTTP Handlers"></a> HTTP Handlers</h2>
+<p>The URL rewrite result in an effect that is somewhat similar to <code>IS_REDIRECT_REF()</code>: the data returned relate to a resource that is not equal to the requested resource.
+The logical consequence of URL rewriting is quite similar to a redirect stored in DAV.
+URL rewriting has smarter processing but almost the same final effect.</p>
+<p>There&#39;s an non-obvious debugging problem.
+ Changes in URL rewriting and/or <code>VHOST_DEFINE</code> table may result in frequent changes in the returned content, even if destination pages return constant data when called via their &#39;long&#39; URLs.
+To make cache live shorter, the standard HTTP response on &#39;nice&#39; URL should return &#39;<code>Last-Modified</code>&#39; that is equal not to resource creation date, but to the most recent of: </p>
+<ul><li>resource creation date (as it is returned for request with &#39;long&#39; URL) </li>
+<li>the date of last modification of any rewriting rule/ruleset or any virtual host definition.
+Thus there&#39;s a need in registry variable that will be updated on every change in HTTP configuration.</li>
+</ul><p>Note that this change does not affect the calculation of ETag value! ETag relates to the content of the resource regardless of its location or retrieval URL!</p>
+<h2><a name="Composing Nice URLs"></a> Composing Nice URLs</h2>
+<p>Two functions are responsible for composing &#39;nice&#39; URLs.
+ One gets a ready-to-send path part of &#39;long&#39; URL and a rule or rulelist IRI; the other gets a rule IRI, an array of named parameters, optional protocol, host, port, and fragment parts.
+Both either return a &#39;nice&#39; URL or signal an error, indicating that there&#39;s no way of composing the URL by source data.
+Both of them use a third (internal) function that returns diagnostics instead of signaling an error: </p>
+<br><pre>DB.DBA.URLREWRITE_TRY_INVERSE
+   (
+     IN     rule_iri                  VARCHAR,
+     IN     long_path                 VARCHAR, 
+     IN     known_params              ANY,
+     IN     param_retrieval_callback  VARCHAR, 
+     IN     param_retrieval_env       ANY,
+     INOUT  param_retrieval_cache     ANY,
+     OUT    nice_path                 VARCHAR, 
+     OUT    nice_params               ANY,
+     OUT    error_report              VARCHAR
+   );
+</pre><p> The function tries to rewrite <code>long_path</code> using given rule.
+If failed, then <code>nice_path</code> is NULL and <code>error_report</code> contains diagnostics as readable text.
+If OK, then <code>nice_path</code> is string and <code>error_report</code> is NULL.
+The rule should exist (check needed) and should be <code>sprintf</code>-based; otherwise, the function will fail.</p>
+<p>The call of <code>sprintf_inverse</code> applied to <code>long_path</code> may produce values of some parameters.
+Other parameters may be passed via <code>known_params</code> variable.
+Even after that, the vector of nice parameters may contain more names than the union of these two lists.
+To get additional values, function will execute the text of <code>param_retrieval_callback</code> (if it is not null) and pass two values to the <code>exec()</code>: parameter name, and the value of <code>param_retrieval_env</code>.
+To avoid extra <code>exec()</code> invocations, every retrieved value is cached in <code>param_retrieval_cache</code> dictionary, so any given additional parameter is retrieved only once per rulelist.</p>
+<p>The value of <code>nice_path</code> may contain less parameter values than it was specified by <code>known_params</code> vector.
+On success, <code>nice_params</code> is filled with values from <code>known_params</code> that whose names did not appear in the list of &#39;nice&#39; <code>sprintf</code> parameters.
+The order is important: parameters in <code>nice_params</code> should be in same relative order as they were in <code>known_params</code>.</p>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategorySpec" class="wikiword">CategorySpec</a></p>
+</div></body></html>

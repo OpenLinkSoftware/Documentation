@@ -1,0 +1,157 @@
+%META:TOPICPARENT{name="VirtAdoNet35Provider"}%
+
+---+ Creating a .Net RIA Services Application That Will Update Virtuoso Data
+
+%TOC%
+
+---++ Introduction
+
+This example demonstrates how data in Virtuoso can be updated from a Microsoft .NET RIA Services application.  The example is a continuation of the first example in [[RIAServicesHowTo][Creating a Simple .Net RIA Services Application to Display Data From Virtuoso]].
+
+---++ Pre-requisites
+
+   * A working copy of the application created in [[RIAServicesHowTo][Creating a Simple .Net RIA Services Application to Display Data From Virtuoso]].
+
+---++ Creating the Application.
+
+---+++ Add A New Domain Service Class
+
+The <nowiki>EmployeeService</nowiki> Domain Service Class was only used to display data so was created read only.  In this example we need to be able to update the data so we need to remove the read only Domain Service Class and create a new on.
+
+   1. In the <b>Server Explorer</b> right click <nowiki>EmployeeService</nowiki> and select <b>Delete</b>
+   1. Right click the server project and <b>Add New Item</b>. In the dialog box choose Domain Service Class from the Templates pane and again call it <nowiki>EmployeeService.cs</nowiki>. Click Add. 
+   1. Select the Employees entity and tick <b>Enable editing</b>.  Also tick <b>Generated associated classes for metadata</b>.
+%BR%%BR%<img src="%ATTACHURLPATH%/newdomainserviceclass.png" style="wikiautogen"/>%BR%%BR%
+   1. Update <nowiki>MainPage.xaml.cs to use EmployeeService2 the new domain service rather than EmployeeContext.</nowiki>
+
+We want to create a master detail style page.  To do this we will use the <nowiki>DomainDataSourceComponent</nowiki> from the Silverlight Components.
+But first we will add a pager so only 5 records are displayed at a time.  
+
+---+++ Add a <nowiki>DataPager</nowiki>
+
+   1. Add two new namespaces to <nowiki>MainPage.xaml</nowiki>
+<verbatim>
+    xmlns:riaControls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Ria.Controls"  
+    xmlns:ds="clr-namespace:DemoApplication.Web"
+</verbatim>
+   1. Use a <nowiki>DomainDataSource</nowiki> to provide the data to fill the grid.  Add the following to <nowiki>MainPage.xaml before the DataGrid.</nowiki>
+<verbatim>
+        <riaControls:DomainDataSource x:Name="EmployeeDataSource"
+                                      QueryName="GetEmployeesQuery"
+                                      LoadSize="10"
+                                      AutoLoad="True">
+            <riaControls:DomainDataSource.DomainContext>
+                <ds:EmployeeService2/>
+            </riaControls:DomainDataSource.DomainContext>
+        </riaControls:DomainDataSource>
+</verbatim>
+   1. Update the <nowiki>MainPage.xaml.cs code behind file.  Using the DomainDataSource means you no longer need to instantiate the context and load the grid in MainPage.xaml.cs so it becomes:</nowiki>
+<verbatim>
+    public partial class MainPage : UserControl
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+    }
+</verbatim>
+   1. Set the binding source of the <nowiki>DataGrid to the DomainDataSource</nowiki>
+<verbatim>
+<data:DataGrid MinHeight="100"  IsReadOnly="True" ItemsSource="{Binding Data, ElementName=EmployeeDataSource}" x:Name="DataGrid1"></data:DataGrid> />
+</verbatim>
+   1. Drag a <nowiki>DataPager form the tool box onto MainPage.xaml just after the DataGrid.</nowiki>
+   1. Add a page size and binding element to the <nowiki>DataPager</nowiki>.
+<verbatim>
+<data:DataPager PageSize="5" Source="{Binding Data, ElementName=employeeDataSource}"
+                      Margin="0,-1,0,0"></data:DataPager>
+</verbatim>
+   1. Build and run the application.  The data should be displayed 5 rows at a time.
+%BR%%BR%<img src="%ATTACHURLPATH%/demoapp.png" style="wikiautogen"/>%BR%%BR%
+We now need to add a <nowiki>DataForm</nowiki> to display the details.
+
+---+++ Add a <nowiki>DataForm</nowiki>
+
+   1. Add the following namespace to MainPage.xaml
+<verbatim>
+xmlns:dataForm="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit"
+</verbatim>
+   1. Add the form to MainPage.xaml
+<verbatim>
+        <dataForm:DataForm x:Name="dataForm1" Header="Employee Information"  AutoGenerateFields="False" AutoEdit="False" AutoCommit="False" CurrentItem="{Binding SelectedItem, ElementName=DataGrid1}" Margin="0,12,0,0">            
+            <dataForm:DataForm.EditTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <dataForm:DataField Label="Employee ID">
+                            <TextBox Text="{Binding EmployeeID, Mode=TwoWay}" />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="First Name">
+                            <TextBox Text="{Binding FirstName, Mode=TwoWay}" />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Last Name">
+                            <TextBox Text="{Binding LastName, Mode=TwoWay}" />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Courtesy Title">
+                            <TextBox Text="{Binding TitleOfCourtesy, Mode=TwoWay}" />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Hire Date">
+                            <TextBox Text="{Binding HireDate, Mode=TwoWay}" />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Title">
+                            <TextBox Text="{Binding Title, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Reports To">
+                            <TextBox Text="{Binding ReportsTo, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Region">
+                            <TextBox Text="{Binding Region, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Address">
+                            <TextBox Text="{Binding Address, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="City">
+                            <TextBox Text="{Binding City, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Country Code">
+                            <TextBox Text="{Binding CountryCode, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                        <dataForm:DataField Label="Postal Code">
+                            <TextBox Text="{Binding PostalCode, Mode=TwoWay}"  />
+                        </dataForm:DataField>
+                            </StackPanel>
+                </DataTemplate>
+            </dataForm:DataForm.EditTemplate>
+        </dataForm:DataForm>
+</verbatim>
+   1. Surround the <nowiki>DomainDataSource, DataGrid and DataForm</nowiki> with
+<verbatim>
+        <ScrollViewer BorderThickness="0"  VerticalScrollBarVisibility="Auto" Padding="12,0,12,0" Margin="-2">
+            <StackPanel Margin="0,12,0,12" Orientation="Vertical" >
+.
+.
+.
+            </StackPanel>
+        </ScrollViewer>
+</verbatim>
+   1. Build and run the application.  As each employee is selected the data form fill with their details.  
+%BR%%BR%<img src="%ATTACHURLPATH%/masterdetail.png" style="wikiautogen"/>%BR%%BR%
+By clicking on the pencil symbol in the top right hand corner the data in the form can be edited but it is not propagated back to the database.
+
+---++ Propagate Updates to Virtuoso
+
+   1. Add a ?Submit? button just after the <nowiki>DataForm in MainPage.xaml</nowiki> by adding the following code.
+<verbatim>
+<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                <Button x:Name="submitButton" Width="75" Height="23"  Content="Submit"  Margin="4,0,0,0" Click="submitButton_Click"/>
+                
+            </StackPanel>
+</verbatim>
+   1. Handle the button click event in MainPage.xaml.cs by adding the following code:
+<verbatim>
+private void submitButton_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeDataSource.SubmitChanges();
+        }
+</verbatim>
+   1. Build and run the application.  If you now edit data in the form and click the submit button the data in Virtuoso will be updated.
+%BR%%BR%<img src="%ATTACHURLPATH%/edit.png" style="wikiautogen"/>%BR%%BR%
+

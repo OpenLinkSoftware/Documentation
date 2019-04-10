@@ -1,0 +1,136 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtRDFViews"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtRDFViews"}%--><p> </p>
+<h3><a name="Linked Data View for ODS Feed Manager"></a>Linked Data View for ODS Feed Manager</h3>
+<strong>IMPORTANT!</strong> The following code is part of the ODS global VIEW regarding the Feed Manager part, it is not a separate VIEW and is strongly recommended NOT to be executed directly.
+ Instead, you should use the code from <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFViewODSGlobal" class="wikiword">ODS Linked Data Views Deployment and Demo Scripts</a>.<br><pre>sparql prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+        #Feeds
+	create iri class ods:feed &quot;http://^{URIQADefaultHost}^/dataspace/feed/%d&quot; (in feed_id integer not null)
+          	option (returns &quot;http://^{URIQADefaultHost}^/dataspace/feed/%d&quot; ) .
+	create iri class ods:feed_item &quot;http://^{URIQADefaultHost}^/dataspace/feed/%d/%d&quot; (in feed_id integer not null, in item_id integer not null)
+	 	option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/feed/%d/%d&quot; ) .
+	create iri class ods:feed_item_text &quot;http://^{URIQADefaultHost}^/dataspace/feed/%d/%d/text&quot; (in feed_id integer not null, in item_id integer not null)
+		option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/feed/%d/%d/text&quot; ) .
+	create iri class ods:feed_mgr &quot;http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U&quot; (in uname varchar not null, in inst_name varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U&quot; ) .
+	create iri class ods:feed_comment &quot;http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U/%d/%d&quot;
+		(in uname varchar not null, in inst_name varchar not null, in item_id integer not null, in comment_id integer not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U/%d/%d&quot; ) .
+</pre><p> </p>
+<br><pre>sparql
+    prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+    prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+    prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+    prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+    prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+    prefix dct: &lt;http://purl.org/dc/terms/&gt;
+    prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+    prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+    prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+    prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+    prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+    prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+    prefix calendar: &lt;http://www.w3.org/2002/12/cal#&gt;
+    prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_FEED_FEED_DOMAIN as feed_domain
+      where (^{feed_domain.}^.U_NAME = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_FEED_POSTS as feed_posts
+      where (^{feed_posts.}^.EFI_FEED_ID = ^{feed_domain.}^.EF_ID)
+      from DB.DBA.ODS_FEED_COMMENTS as feed_comments
+      where (^{feed_comments.}^.U_NAME = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_FEED_TAGS as feed_tags
+      where (^{feed_tags.}^.U_NAME = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_FEED_LINKS as feed_links
+      where (^{feed_links.}^.EFI_FEED_ID = ^{feed_domain.}^.EF_ID)
+      from DB.DBA.ODS_FEED_ATTS as feed_atts
+      where (^{feed_atts.}^.EFI_FEED_ID = ^{feed_domain.}^.EF_ID)
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+
+            # Feeds
+	    ods:feed (feed_domain.EF_ID) a atom:Feed ;
+	    sioc:link ods:proxy (feed_domain.EF_URI) ;
+	    atom:link ods:proxy (feed_domain.EF_URI) ;
+	    atom:title feed_domain.EF_TITLE ;
+	    sioc:has_parent ods:feed_mgr (feed_domain.U_NAME, feed_domain.WAI_NAME) .
+
+	    ods:feed_mgr (feed_domain.U_NAME, feed_domain.WAI_NAME)
+	    sioc:parent_of ods:feed (feed_domain.EF_ID) .
+
+
+	    ods:feed_item (feed_tags.EFI_FEED_ID, feed_tags.EFID_ITEM_ID)
+	    sioc:topic
+	    ods:tag (feed_tags.U_NAME, feed_tags.EFID_TAG) .
+
+	    ods:tag (feed_tags.U_NAME, feed_tags.EFID_TAG) a skos:Concept ;
+	    skos:prefLabel feed_tags.EFID_TAG ;
+	    skos:isSubjectOf ods:feed_item (feed_tags.EFI_FEED_ID, feed_tags.EFID_ITEM_ID) .
+
+	    ods:feed_comment (feed_comments.U_NAME, feed_comments.WAI_NAME, feed_comments.EFIC_ITEM_ID, feed_comments.EFIC_ID)
+	    a sioct:Comment ;
+	    dc:title feed_comments.EFIC_TITLE ;
+	    sioc:content feed_comments.EFIC_COMMENT ;
+	    dct:modified feed_comments.LAST_UPDATE ;
+	    dct:created feed_comments.LAST_UPDATE ;
+	    sioc:link ods:proxy (feed_comments.LINK) ;
+	    sioc:has_container ods:feed (feed_comments.EFI_FEED_ID) ;
+	    sioc:reply_of ods:feed_item (feed_comments.EFI_FEED_ID, feed_comments.EFIC_ITEM_ID) ;
+	    foaf:maker ods:proxy (feed_comments.EFIC_U_URL) .
+
+	    ods:proxy (feed_comments.EFIC_U_URL) a foaf:Person ;
+	    foaf:name feed_comments.EFIC_U_NAME;
+	    foaf:mbox ods:mbox (feed_comments.EFIC_U_MAIL) .
+
+            ods:feed (feed_comments.EFI_FEED_ID)
+	    sioc:container_of
+            ods:feed_comment (feed_comments.U_NAME, feed_comments.WAI_NAME, feed_comments.EFIC_ITEM_ID, feed_comments.EFIC_ID) .
+
+            ods:feed_item (feed_comments.EFI_FEED_ID, feed_comments.EFIC_ITEM_ID)
+	    sioc:has_reply
+	    ods:feed_comment (feed_comments.U_NAME, feed_comments.WAI_NAME, feed_comments.EFIC_ITEM_ID, feed_comments.EFIC_ID) .
+
+            ods:feed_item (feed_links.EFI_FEED_ID, feed_links.EFI_ID)
+	    sioc:links_to
+	    ods:proxy (feed_links.EFIL_LINK) .
+
+	    ods:feed_item (feed_atts.EFI_FEED_ID, feed_atts.EFI_ID)
+	    sioc:attachment
+	    ods:proxy (feed_atts.EFIE_URL) .
+
+	    ods:feed_item (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) a atom:Entry ;
+	    sioc:has_container ods:feed (feed_posts.EFI_FEED_ID) ;
+	    dc:title feed_posts.EFI_TITLE ;
+	    dct:created feed_posts.PUBLISH_DATE ;
+	    dct:modified feed_posts.PUBLISH_DATE ;
+	    sioc:link ods:proxy (feed_posts.EFI_LINK) ;
+	    sioc:content feed_posts.EFI_DESCRIPTION ;
+	    atom:title feed_posts.EFI_TITLE ;
+	    atom:source ods:feed (feed_posts.EFI_FEED_ID) ;
+	    atom:published feed_posts.PUBLISH_DATE ;
+	    atom:updated feed_posts.PUBLISH_DATE ;
+	    atom:content ods:feed_item_text (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) .
+
+	    ods:feed (feed_posts.EFI_FEED_ID) sioc:container_of ods:feed_item (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) .
+
+	    ods:feed_item_text (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) a atom:Content ;
+	    atom:type &quot;text/xhtml&quot; ;
+	    atom:lang &quot;en-US&quot; ;
+	    atom:body feed_posts.EFI_DESCRIPTION .
+
+	    ods:feed (feed_posts.EFI_FEED_ID)
+	    atom:contains
+	    ods:feed_item (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) .
+            # end Feeds
+            #---
+	  } .
+    } .
+;
+</pre><p> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryFeedManager" class="wikiword">CategoryFeedManager</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryODS" class="wikiword">CategoryODS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryOdsFeedManager" class="wikiword">CategoryOdsFeedManager</a> </p>
+</div></body></html>

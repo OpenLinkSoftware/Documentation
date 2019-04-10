@@ -1,0 +1,73 @@
+<docbook><section><title>VirtAWSDBpedia34S</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">DBpedia 3.4 Single Server Edition</bridgehead>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry><emphasis>Description:</emphasis></entry><entry> DBpedia 3.4 (a Virtuoso based Linked Open Data Space) </entry></row>
+<row><entry><emphasis>Virtuoso Server Type:</emphasis>  </entry><entry> Single Edition </entry></row>
+<row><entry><emphasis>Snapshot ID (Linux/Unix):</emphasis>  </entry><entry> snap-0f158066 </entry></row>
+<row><entry><emphasis>Size:</emphasis> </entry><entry> 75GB </entry></row>
+<row><entry><emphasis>Creation Date:</emphasis> </entry><entry> 2009-11-14 </entry></row>
+<row><entry><emphasis>Last Updated:</emphasis>  </entry><entry> 2009-11-14 </entry></row>
+<row><entry><emphasis>License:</emphasis> </entry><entry> Creative Commons: Attribution Share Alike  </entry></row>
+<row><entry><emphasis>Submitted By:<emphasis /></emphasis></entry><entry> <ulink url="OpenLink">OpenLink</ulink> Software </entry></row>
+<row><entry><emphasis>Source:</emphasis> </entry><entry> <ulink url="http://www.openlinksw.com">http://www.openlinksw.com</ulink> </entry></row>
+</tbody></tgroup></table>
+<orderedlist spacing="compact"><listitem>If not already running, instantiate a <ulink url="VirtInstallationEC2">Virtuoso EC2 AMI instance</ulink>.
+ Note that we recommend a minimum 64-bit extra large image Virtuoso Release 6 AMI instance (ami-23d0334a) with 15GB of memory be used, which is an &quot;Extra Large(m1.xlarge, 15GB)&quot; AMI instance type.
+</listitem>
+<listitem>From the <ulink url="https://console.aws.amazon.com/ec2/home">AWS Management Console</ulink> a list of available Virtuoso public snapshots can be obtain by select the &quot;Snapshot&quot; link in the AWS console, selecting &quot;Public Snapshots&quot; from the viewing drop down list box and search for &quot;Virtuoso&quot;.
+ An EBS volume can be created for any of these snapshots and attached to a Virtuoso EC2 AMI instance.
+<figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets06.png" /></figure> </listitem>
+<listitem>Select the &quot;Volumes&quot; link under the &quot;Elastic Block Storage&quot; section  <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets01.png" /></figure> </listitem>
+<listitem>Click on the &quot;Create Volume&quot; button and set &quot;Size&quot; to 75GB, &quot;Availability Zone&quot; to match the zone of your running Virtuoso EC2 AMI instance and &quot;Snaphot&quot; to the required DBpedia 3.4 AWS snapshot.
+<figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets02.png" /></figure> </listitem>
+<listitem>Select the newly created volume and click on the &quot;Attach Volume&quot; button to attach the volume to the required Virtuoso EC2 AMI instance <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets03.png" /></figure> </listitem>
+<listitem>Select the &quot;Instance&quot;  and &quot;Device&quot; the volume should be attached to and click &quot;Attach&quot; <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets04.png" /></figure> </listitem>
+<listitem>The volume will now be listed as &quot;attached&quot; to the specified Virtuoso EC2 AMI instance id.
+<figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets05.png" /></figure> </listitem>
+<listitem>&quot;ssh&quot; into the Virtuoso EC2 AMI instance <programlisting>$ ssh -i MyKeyPair.pem root@&lt;ec2-ami-public-dns-cname&gt;
+[root@domU-12-31-39-02-21-D1 ~]# cd /opt/virtuoso
+[root@domU-12-31-39-02-21-D1 virtuoso]# ls
+bin       hosting  lib  virtuoso-environment.csh  vsp
+database  install  vad  virtuoso-environment.sh
+[root@domU-12-31-39-02-21-D1 virtuoso]# mkdir dbpedia
+[root@domU-12-31-39-02-21-D1 virtuoso]# mount /dev/sdf /opt/virtuoso/dbpedia
+[root@domU-12-31-39-02-21-D1 virtuoso]# ls -ltr dbpedia
+total 20
+drwx------ 2 root root 16384 Nov 13 21:56 lost+found
+lrwxrwxrwx 1 root root    17 Nov 13 22:00 bin -&gt; /opt/virtuoso/bin
+lrwxrwxrwx 1 root root    17 Nov 13 22:29 vad -&gt; /opt/virtuoso/vad
+lrwxrwxrwx 1 root root    21 Nov 13 22:29 install -&gt; /opt/virtuoso/install
+drwxr-xr-x 3 root root  4096 Nov 14 11:12 database
+[root@domU-12-31-39-02-21-D1 virtuoso]# ls -ltr dbpedia/database
+total 48488720
+-rw-r--r-- 1 root root           0 Nov 13 22:24 virtuoso.pxa
+drwxr-xr-x 2 root root        4096 Nov 13 22:24 backup
+-rw-r--r-- 1 root root        3412 Nov 14 10:51 virtuoso.ini
+lrwxrwxrwx 1 root root          34 Nov 14 11:00 virtuoso -&gt; /opt/virtuoso/bin/virtuoso-iodbc-t
+-rw-r--r-- 1 root root     6291456 Nov 14 11:00 dbpedia.tdb
+-rw-r--r-- 1 root root           0 Nov 14 11:12 dbpedia.trx
+-rw-r--r-- 1 root root 49597644800 Nov 14 11:12 dbpedia.db
+-rw-r--r-- 1 root root        1155 Nov 14 11:12 virtuoso.log
+[root@domU-12-31-39-02-21-D1 virtuoso]#
+</programlisting></listitem>
+<listitem>To run the newly attached data set, first setup your Virtuoso environment <programlisting>[root@domU-12-31-39-02-21-D1 ~]# cd /opt/virtuoso
+[root@domU-12-31-39-02-21-D1 virtuoso]# . ./virtuoso-environment.sh
+</programlisting></listitem>
+<listitem>Change directory to the mounted data set and set the VIRTUOSO_HOME environment variable to this location <programlisting>[root@domU-12-31-39-02-21-D1 virtuoso]# cd /opt/virtuoso/dbpedia
+[root@domU-12-31-39-02-21-D1 dbpedia# export VIRTUOSO_HOME=`pwd`
+</programlisting></listitem>
+<listitem>Note as stated in step 1 above it is recommended the Dbpedia 3.4 snaphot  be used with a minimum 64-bit extra large image Virtuoso Release 6 AMI instance (ami-23d0334a) with 15GB of memory.
+ Should you choose to use the &quot;large image&quot; with only 7.5GB memory then the Virtuoso configuration file (virtuoso.ini) needs to be edited and the &quot;NumberOfBuffers&quot; parameter reduced from 1000000 to 500000 before attempting to start the Virtuoso server instance, otherwise it will fail to start due to lack of memory.
+ For more details please refer to the <ulink url="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html">Virtuoso RDF Performance Tuning Guide</ulink> online documentation.
+</listitem>
+<listitem>Run the &quot;virtuoso-start.sh&quot; script to start the Virtuoso server containing the attached data set <programlisting>[root@domU-12-31-39-02-21-D1 dbpedia]# virtuoso-start.sh
+Starting Virtuoso instance in [database]
+[root@domU-12-31-39-02-21-D1 dbpedia]#
+</programlisting></listitem>
+<listitem>Note the Virtuoso Server &quot;dba&quot; user&#39;s password is set to the default of &quot;dba&quot; for the dataset, it is recommended this be changed to a suitably secure password using the &quot;System Admin -&gt; User Accounts&quot; tab of the Virtuoso Conductor (<ulink url="http://ec2-ami-public-dns-cname/conductor).">http://ec2-ami-public-dns-cname/conductor).</ulink>  </listitem>
+<listitem>The Virtuoso hosted data set can now be explored using a HTML browser or queried from the SPARQL or Facet Browser web service endpoints.
+ For example in the case of the DBpedia 3.4 datasets </listitem>
+</orderedlist><itemizedlist mark="bullet" spacing="compact"><listitem>A description of the resource Bob Marley can be viewed as:  <ulink url="http://ec2-ami-public-dns-cname/resource/Bob_Marley">http://ec2-ami-public-dns-cname/resource/Bob_Marley</ulink> <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets07.png" /></figure> </listitem>
+<listitem>A Faceted Search can be performed on a resource at <ulink url="http://ec2-ami-public-dns-cname/fct">http://ec2-ami-public-dns-cname/fct</ulink> <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets08.png" /></figure> <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets09.png" /></figure> <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets10.png" /></figure> </listitem>
+<listitem>A SPARQL query can be run to obtain information on a resource at <ulink url="http://ec2-ami-public-dns-cname/sparql">http://ec2-ami-public-dns-cname/sparql</ulink> <figure><graphic fileref="VirtAWSDBpedia34S/VirtAWSPublicDataSets11.png" /></figure> </listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,195 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VOSSPARQL"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VOSSPARQL"}%--><h1><a name="Virtuoso SPARQL Query Service"></a> Virtuoso SPARQL Query Service</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction%20to%20SPARQL%20in%20Virtuoso">Introduction to SPARQL in Virtuoso</a></li> <li><a href="#SPARQL%20Service%20Endpoint">SPARQL Service Endpoint</a></li> <li><a href="#HTTP%20Request%20Methods">HTTP Request Methods</a></li> <li><a href="#HTTP%20Request%20Parameters">HTTP Request Parameters</a></li> <li><a href="#HTTP%20Response%20Codes">HTTP Response Codes</a></li> <li><a href="#HTTP%20Response%20Formats">HTTP Response Formats</a></li>
+<ul><li><a href="#SPARQL%20Protocol%20Client%20Response%20Formats">SPARQL Protocol Client Response Formats</a></li> <li><a href="#SPARQL%20Protocol%20Server%20Response%20Formats">SPARQL Protocol Server Response Formats</a></li> <li><a href="#Additional%20HTTP%20Response%20Formats%20--%20SELECT">Additional HTTP Response Formats -- SELECT</a></li> <li><a href="#Additional%20HTTP%20Response%20Formats%20--%20DESCRIBE%20%26%20CONSTRUCT">Additional HTTP Response Formats -- DESCRIBE &amp; CONSTRUCT</a></li> </ul><li><a href="#Virtuoso%2FPL%20APIs">Virtuoso/PL APIs</a></li> <li><a href="#Examples">Examples</a></li> <li><a href="#Implementation%20Notes">Implementation Notes</a></li> <li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction to SPARQL in Virtuoso"></a> Introduction to SPARQL in Virtuoso</h2>
+<p>The Virtuoso SPARQL query service originally implemented the <a href="http://www.w3.org/TR/rdf-sparql-protocol/" class="absuri">SPARQL Protocol for RDF</a> (W3C Recommendation, 15 January 2008), and has been updated to support <a href="http://www.w3.org/TR/sparql11-overview/" class="absuri">SPARQL 1.1</a>, providing SPARQL query-processing for RDF data available on the open Internet.</p>
+<p>The query service implementation extends the standard protocol by providing multiple output-formats alongside the standard XML results serialization.
+ At present this uses additional query parameters, although content-negotiation will be supported soon.</p>
+<h2><a name="SPARQL Service Endpoint"></a> SPARQL Service Endpoint</h2>
+<p>Virtuoso reserves the path <code>&#39;/sparql/&#39;</code> and a synonym path <code>&#39;/SPARQL/&#39;</code> for SPARQL service.
+ In the current implementation, Virtuoso defines virtual directories for HTTP requests received on the port specified as <code>&#39;ServerPort&#39;</code> in the <code>&#39;[HTTPServer]&#39;</code> section of the Virtuoso configuration file which refer to one of these two path strings.</p>
+<p>If the Virtuoso installation on host example.com listens for HTTP requests on port 8080 then client applications should use the &#39;service endpoint&#39; string equal to <code>http://example.com:8080/sparql/</code>.
+ For example, the <a href="http://demo.openlinksw.com/" class="absuri">Live Virtuoso Demo instance</a> publishes a service at the following endpoint: <code>http://demo.openlinksw.com/sparql/</code>.</p>
+<p>Both <code>GET</code> and <code>POST</code> requests are supported by both server and client.
+ The server recognizes the &#39;Accept: ...&#39; line of the request header to find MIME types preferred by the connected client and adjust the output mode of the response.
+ The client chooses between <code>GET</code> and <code>POST</code> automatically, based on the length of the query text.</p>
+<h2><a name="HTTP Request Methods"></a> HTTP Request Methods</h2>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=0&col=1">Method </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=1&col=2">Supported </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=2&col=3">Notes </a></th></tr><tr><td> <code>GET</code> </td><td> Yes </td><td> Short queries are sent in <code>GET</code> mode </td></tr><tr><td> <code>POST</code> </td><td> Yes </td><td> Queries longer than 1900 bytes are <code>POST</code>-ed </td></tr><tr><td> <code>DELETE</code> </td><td> No </td><td align="center">   </td></tr><tr><td> <code>PUT</code> </td><td> No </td><td align="center">   </td></tr></table>
+<h2><a name="HTTP Request Parameters"></a> HTTP Request Parameters</h2>
+
+<table class="wikitable">
+<tr><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=3&col=1">Parameter </a></th><th id="4"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=4&col=2">Notes </a></th><th id="5"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=5&col=3">Required </a></th><th id="6"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=6&col=4">Occurrence </a></th></tr>
+<tr><td> <code>query</code> </td><td> SPARQL Query text </td><td> Yes </td><td align="center">   </td></tr>
+<tr><td> <code>query-uri</code> </td><td> Absolute URL for Query Template file that returns SPARQL Query Text </td><td> No </td><td align="center">   </td></tr>
+<tr><td> <code>default-graph-uri</code> </td><td> Absolute URL of default graph (string or NULL) </td><td> Yes </td><td align="center">   </td></tr>
+<tr><td> <code>named-graph-uri</code> </td><td> Vector of named graphs (or NULL to not override what&#39;s specified in the query </td><td> Yes </td><td align="center">   </td></tr>
+<tr><td> <code>req_hdr</code> </td><td> Additional HTTP header lines that should be passed to the service; &#39;Host: ...&#39; is most popular </td><td> No </td><td align="center">   </td></tr>
+<tr><td> <code>maxrows</code> </td><td> Maximum numbers of rows that should be returned (actual size of result set may differ) </td><td> No </td><td align="center">   </td></tr>
+<tr><td> <code>bnode_dict</code> </td><td> Dictionary of known blank node names, or NULL for usual loading </td><td> No </td><td align="center">   </td></tr>
+<tr><td> <code>xslt-uri</code> </td><td> Absolute URL of XSLT file to be applied to SPARQL Query results </td><td> No </td><td align="center">   </td></tr>
+</table>
+<p> </p>
+<h2><a name="HTTP Response Codes"></a> HTTP Response Codes</h2>
+<p>As specified in the <a href="http://www.w3.org/TR/rdf-sparql-protocol/#query-bindings-http" class="absuri">SPARQL protocol</a>, Virtuoso returns the following HTTP response codes:</p>
+
+<table class="wikitable">
+<tr><th id="7"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=7&col=1">Code </a></th><th id="8"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=8&col=2">Meaning </a></th></tr>
+<tr><td> <code>200</code> </td><td> successful query </td></tr>
+<tr><td> <code>400</code> </td><td> malformed query </td></tr>
+<tr><td> <code>500</code> </td><td> error processing query or fetching data </td></tr>
+</table>
+<h2><a name="HTTP Response Formats"></a> HTTP Response Formats</h2>
+<p>All standard MIME types of SPARQL Protocol are supported.</p>
+<h3><a name="SPARQL Protocol Client Response Formats"></a> SPARQL Protocol Client Response Formats</h3>
+
+<table class="wikitable">
+<tr><th id="9"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=9&col=1">Content-Type </a></th><th id="10"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=10&col=2">SPARQL query type </a></th><th id="11"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=11&col=3">Description </a></th></tr>
+<tr><td> <code>&#39;application/sparql-results+xml&#39;</code> </td><td> SELECT, ASK </td><td> Canonical XML presentation of SPARQL result set </td></tr>
+<tr><td> <code>&#39;text/rdf+n3&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/rdf+ttl&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/rdf+turtle&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/turtle&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/n3&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;application/turtle&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;application/x-turtle&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;application/rdf+xml&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> Canonical RDF/XML presentation </td></tr>
+</table>
+<p> </p>
+<h3><a name="SPARQL Protocol Server Response Formats"></a> SPARQL Protocol Server Response Formats</h3>
+
+<table class="wikitable">
+<tr><th id="12"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=12&col=1">Content-Type </a></th><th id="13"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=13&col=2">SPARQL query type </a></th><th id="14"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=14&col=3">Description </a></th></tr>
+<tr><td> <code>&#39;application/sparql-results+xml&#39;</code> </td><td> SELECT, ASK </td><td> Canonical XML presentation of SPARQL result set </td></tr>
+<tr><td> <code>&#39;text/rdf+n3&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/rdf+ttl&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/rdf+turtle&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/turtle&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;text/n3&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;application/turtle&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;application/x-turtle&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle </td></tr>
+<tr><td> <code>&#39;application/x-nice-turtle&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> Turtle, like above, but the server will try to use &quot;list&quot; and &quot;[...]&quot; notations to make the document easier to read. This formatting is a slow procedure so long results will be formatted as plain Turtle. </td></tr>
+<tr><td> <code>&#39;text/rdf+nt&#39;</code> </td><td> SELECT </td><td> Format for NT (each triple is printed separately without abbreviations) </td></tr>
+<tr><td> <code>&#39;text/plain&#39;</code> </td><td> SELECT </td><td> Format for NT (each triple is printed separately without abbreviations) </td></tr>
+<tr><td> <code>&#39;text/ntriples&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> Format for NT (each triple is printed separately without abbreviations) </td></tr>
+<tr><td> <code>&#39;application/x-trig&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> TriG<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/TriG&parent=VOSSparqlProtocol" class="wikiword">?</a> syntax for result sets, triples and quads (or sets of graphs with triples). While it is not used for quads, the output is same as for Turtle. </td></tr>
+<tr><td> <code>&#39;application/rdf+xml&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> Canonical RDF/XML presentation </td></tr>
+<tr><td> <code>&#39;application/soap+xml&#39;</code> </td><td> SELECT </td><td> SOAP XML </td></tr>
+<tr><td> <code>&#39;application/soap+xml;11&#39;</code> </td><td> SELECT </td><td> SOAP XML </td></tr>
+<tr><td> <code>&#39;text/html&#39;</code> </td><td> SELECT </td><td> HTML document for plain browsing; it&#39;s a TABLE for result set and HTML with micro-data for triples </td></tr>
+<tr><td> <code>&#39;text/md+html&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> HTML with microdata; for triples only </td></tr>
+<tr><td> <code>&#39;text/microdata+html&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> HTML with microdata; for triples only </td></tr>
+<tr><td> <code>&#39;text/x-html+ul&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> HTML with triples grouped into hierarchical list </td></tr>
+<tr><td> <code>&#39;text/x-html+tr&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> HTML with triples in form of a table </td></tr>
+<tr><td> <code>&#39;application/vnd.ms-excel&#39;</code> </td><td> SELECT </td><td> HTML table for loading data into stylesheets </td></tr>
+<tr><td> <code>&#39;text/csv&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> Comma-separated values </td></tr>
+<tr><td> <code>&#39;text/tab-separated-values&#39;</code> </td><td> SELECT </td><td> Tab-separated values </td></tr>
+<tr><td> <code>&#39;application/javascript&#39;</code> </td><td> SELECT </td><td> JavaScript<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/JavaScript&parent=VOSSparqlProtocol" class="wikiword">?</a> data fragment </td></tr>
+<tr><td> <code>&#39;application/json&#39;</code> </td><td> SELECT </td><td> JSON </td></tr>
+<tr><td> <code>&#39;application/sparql-results+json&#39;</code> </td><td> SELECT, ASK </td><td> JSON result set </td></tr>
+<tr><td> <code>&#39;application/odata+json&#39;</code> </td><td> SELECT, ASK, CONSTRUCT, DESCRIBE </td><td> JSON in ODATA style </td></tr>
+<tr><td> <code>&#39;application/microdata+json&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> Microdata as JSON; for triples only </td></tr>
+<tr><td> <code>&#39;application/rdf+json&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> JSON in TALIS style; for triples only </td></tr>
+<tr><td> <code>&#39;application/x-rdf+json&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> JSON in TALIS style; for triples only </td></tr>
+<tr><td> <code>&#39;application/x-json+ld&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> JSON in Linked Data style; for triples only </td></tr>
+<tr><td> <code>&#39;application/ld+json&#39;</code> </td><td> CONSTRUCT, DESCRIBE </td><td> JSON in Linked Data style; for triples only </td></tr>
+<tr><td> <code>&#39;text/cxml&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> CXML output for rendering in Pivot Viewer of MS SilverLight<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/SilverLight&parent=VOSSparqlProtocol" class="wikiword">?</a>. Result sets and triples are handled in different ways. </td></tr>
+<tr><td> <code>&#39;text/cxml+qrcode&#39;</code> </td><td> SELECT,CONSTRUCT, DESCRIBE </td><td> CXML output with QRcode imprinted into each picture; for result sets and triples </td></tr>
+<tr><td> <code>&#39;application/atom+xml&#39;</code> </td><td> SELECT, CONSTRUCT, DESCRIBE </td><td> Atom-style XML </td></tr>
+<tr><td> <code>&#39;application/xhtml+xml&#39;</code>  </td><td> SELECT </td><td> RDFa placed into XHTML; for triples only </td></tr>
+</table>
+<p>If the HTTP header returned by the remote server does not contain a <code>&#39;Content-Type&#39;</code> line, the MIME-type may be deduced from the text of the returned body.
+ Error messages returned from the service are returned as XML documents, using the mime-type <code>application/xml</code>.
+ The documents consist of a single element containing an error message.</p>
+<h3><a name="Additional HTTP Response Formats -- SELECT"></a> Additional HTTP Response Formats -- SELECT</h3>
+<p>Use the format parameter to select one of the following alternate output formats:</p>
+
+<table class="wikitable">
+<tr><th id="15"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=15&col=1">Format Value </a></th><th id="16"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=16&col=2">Description </a></th><th id="17"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=17&col=3">Content-Type </a></th></tr>
+<tr><td> HTML </td><td> HTML document containing query summary and tabular results </td><td> <code>text/html</code> </td></tr>
+<tr><td> JSON </td><td> JSON serialization of results. Conforms to the draft specification <a href="http://www.mindswap.org/~kendall/sparql-results-json/" class="absuri">Serializing SPARQL Query Results in JSON</a> </td><td> <code>application/sparql-results+json</code> </td></tr>
+<tr><td> Javascript </td><td> Javascript serialization of results. Generates an HTML table with the CSS class <code>sparql</code>. The table contains a column indicating row number and additional columns for each query variable. Each query solution contributes one row of the table. Unbound variables are indicated with a non-breaking space in the appropriate table cells. </td><td> <code>application/javascript</code> </td></tr>
+<tr><td> XML </td><td align="center">   </td><td> <code>application/sparql-results+xml</code> </td></tr>
+<tr><td> TURTLE </td><td align="center">   </td><td> <code>text/rdf+n3</code> </td></tr>
+</table>
+<p> </p>
+<h3><a name="Additional HTTP Response Formats -- DESCRIBE &amp; CONSTRUCT"></a> Additional HTTP Response Formats -- DESCRIBE &amp; CONSTRUCT</h3>
+
+<table class="wikitable">
+<tr><th id="18"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=18&col=1">Format Value </a></th><th id="19"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=19&col=2">Description </a></th><th id="20"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=20&col=3">Content-Type </a></th></tr>
+<tr><td> JSON </td><td align="center">   </td><td> <code>application/rdf+json</code> </td></tr>
+</table>
+<h2><a name="Virtuoso/PL APIs"></a> Virtuoso/PL APIs</h2>
+<p>Virtuoso also provides SPARQL Protocol client APIs in PL, so you can communicate with SPARQL Query Services from within SQL stored-procedures.
+ The APIs are as follows:</p>
+
+<table class="wikitable">
+<tr><th id="21"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=21&col=1">API </a></th><th id="22"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSSparqlProtocol?sort=22&col=2">Notes </a></th></tr>
+<tr><td> <code>DB.DBA.SPARQL_REXEC</code> </td><td> behaves like <code>DBA.SPARQL_EVAL</code>, but executes the query on the specified server. The procedure does not return anything. Instead, it creates a result set. </td></tr>
+<tr><td> <code>DB.DBA.SPARQL_REXEC_TO_ARRAY</code> </td><td> behaves like <code>DBA.SPARQL_EXEC_TO_ARRAY()</code>, but executes the query on the specified server. The function return a vector of rows, where every row is represented by a vector of values of fields. </td></tr>
+<tr><td> <code>DB.DBA.SPARQL_REXEC_WITH_META</code> </td><td> has no local <code>SPARQL_EVAL</code> analog. It produces not only an array of result rows but also array of metadata about result set in a format used by the <code>exec()</code> function. </td></tr>
+</table>
+<h2><a name="Examples"></a> Examples</h2>
+<p>There is a live <a href="http://demo.openlinksw.com/sparql_demo" class="absuri">Virtuoso Demo Server</a> instance available at all times for experimentation and demonstrations.
+ It includes a collection of saved queries demonstrating Virtuoso&#39;s implementation of the <a href="http://www.w3.org/TR/rdf-dawg-uc/" class="absuri">DAWG&#39;s SPARQL test-suite</a> -- a collection of SPARQL query language use-cases that enables interactive and simplified testing of a RDF triple-store&#39;s SPARQL implementation.</p>
+<p>Virtuoso also powers the publicly accessible endpoints housing datasets for <a href="http://dbpedia.org/sparql" class="absuri">DBpedia</a>, the <a href="http://lod.openlinksw.com/sparql" class="absuri">LOD Cloud Cache</a>, and <a href="http://linkeddata.uriburner.com/sparql/" class="absuri">URIBurner</a>.</p>
+<h2><a name="Implementation Notes"></a> Implementation Notes</h2>
+<p>This service has been implemented using <a href="http://docs.openlinksw.com/virtuoso" class="absuri">OpenLink Virtuoso</a>.</p>
+<p> </p>
+<h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLEndpointProtection" class="wikiword">Safeguarding your Virtuoso-hosted SPARQL Endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpointProtection" class="wikiword">SPARQL Endpoint Protection Methods Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/" class="absuri">Virtuoso documentation</a> <ul><li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint" class="absuri">SPARQL Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri" class="absuri">Service Endpoint Security</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl" class="absuri">Managing a SPARQL Web Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">SPARQL</a> </li>
+</ul></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLDET" class="wikiword">SPARQL Endpoint DET Configuration Guide</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSecurityWebID" class="wikiword">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpoints" class="wikiword">Securing SPARQL endpoints</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth" class="absuri">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Virtuoso Authentication Server UI</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSSL" class="wikiword">Manage a SPARQL-WebID based Endpoint</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID" class="absuri">WebID Protocol Support in OpenLink Data Spaces</a>.
+</li>
+<li>Manage ODS Datadspaces Objects WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VOSSparqlProtocol" class="wikiword">?</a> Access Control Lists (ACLs): <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID" class="absuri">ODS Briefcase WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson" class="absuri">Person Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup" class="absuri">Group Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic" class="absuri">Public WebID based ACL Guide</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL" class="absuri">ODS Feed Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL" class="absuri">ODS Calendar WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL" class="absuri">ODS Bookmark Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL" class="absuri">ODS Addressbook  WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup" class="absuri">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub" class="absuri">Setting up PubSubHub in ODS</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub" class="absuri">PubSubHubBub Demo Client Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub" class="absuri">Feed subscription via PubSubHub protocol Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL" class="absuri">Setting Up PubSubHub to use WebID Protocol or IP based control lists</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport" class="absuri">CA Keys Import using Conductor</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate" class="absuri">Generate an X.509 Certificate hosted WebID Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore" class="absuri">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore" class="absuri">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP" class="absuri">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy" class="absuri">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile" class="absuri">ODS Briefcase WebID Protocol Share File Guide</a> </li>
+<li><a href="http://esw.w3.org/topic/foaf+ssl" class="absuri">WebID Protocol Specification</a> </li>
+<li><a href="https://foaf.me/simpleLogin.php" class="absuri">Test WebID Protocol Certificate page</a> </li>
+<li><a href="http://test.foafssl.org/cert/" class="absuri">WebID Protocol Certificate Generation page</a></li>
+</ul><p> </p>
+</div></body></html>

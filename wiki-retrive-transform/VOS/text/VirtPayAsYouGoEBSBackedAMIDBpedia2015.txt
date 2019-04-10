@@ -1,0 +1,313 @@
+%META:TOPICPARENT{name="VirtInstallationEC2"}%
+
+---+ DBpedia Live (Virtuoso PAGO) EBS-backed EC2 AMI
+
+%TOC%
+
+---++ Introduction
+
+In addition to the [[VirtInstallationEC2][Instance-backed EC2 AMI]] that has been available since 2008, a standard unpopulated Virtuoso instance is available as an EBS-backed EC2 AMI based on either a <i>[[https://aws.amazon.com/marketplace/pp/B00ZWMSNOG][BYOL (Bring Your Own License)]]</i> or a <i>[[https://aws.amazon.com/marketplace/pp/B011VMCZ8K/][PAGO (Pay As You Go)]]</i> basis. In each case, the AMI delivers a preconfigured Virtuoso instance. 
+
+We also now offer two PAGO variants, each pre-loaded with a DBpedia dataset.  
+
+   * The <b>[[https://aws.amazon.com/marketplace/pp/B012DSCFEK][DBpedia Live (Virtuoso PAGO)]]</b> (documented on this page) starts as a static instance, preloaded with the DBpedia 2016-04 dataset, and includes an optional switch that enables data updates based on the Wikipedia firehose, effectively giving you a mirror of the public [[http://wiki.dbpedia.org/online-access/DBpediaLive][DBpedia-Live]] instance found at [[http://live.dbpedia.org/sparql][http://live.dbpedia.org/sparql]].
+%BR%%BR%
+   * The <b>DBpedia Snapshot (Virtuoso PAGO)</b> (documented on [[VirtDBpediaSnapshotPagoAmi][another page]]) starts as a static instance, preloaded with the DBpedia 2016-10 dataset, mirroring the public [[http://wiki.dbpedia.org/OnlineAccess][DBpedia]] instance found at [[http://dbpedia.org/sparql][http://dbpedia.org/sparql]].  You can make changes to this data, but it will not track changes made to Wikipedia nor DBpedia-Live.
+
+This type of AMI provides several fundamental benefits including &#8212;
+
+   * Virtuoso DBMS Server is preinstalled with basic tuning for the host operating system.  (That said, since we support many AMI machine types/sizes, you should still [[#Performance%20Notes][tune the configuration to suit the available RAM in your instance]].)
+   * DBpedia Dataset is preloaded and preconfigured (and may be configurable to auto-update).
+   * You can start and stop the DBpedia instance without having to terminate its host AMI.
+   * With the hourly model, you pay only for the time the AMI is used.
+
+---++ Prerequisites
+
+   * An [[https://aws-portal.amazon.com/gp/aws/developer/registration/index.html/103-7399647-0537426?][Amazon Web Services]] (AWS) account.
+   * Recently created AWS accounts will have been automatically signed up for the [[http://www.amazon.com/b/ref=sc_fe_l_2?ie=UTF8&node=201590011&no=3435361&me=A36L942TSJ2AJA][Amazon S3 and EC2 Web Service]]. If you created your AWS account a long time ago, you may now need to manually sign up for these services.
+   * Ensure an AWS <code>security group</code> allowing access to ports 22 (standard SSH), 80 (standard HTTP), and 8890 (Virtuoso HTTP-based Admin) is used.  (This is the setup of the AMI offerings.)
+
+---++ Instantiating DBpedia Live (Virtuoso PAGO) via Web Interface
+
+   1 Locate the [[https://aws.amazon.com/marketplace/pp/B012DSCFEK][DBpedia Live (Virtuoso PAGO)]] image in AWS Marketplace and click the <code>Continue</code> button.
+%BR%%BR%<a href="%ATTACHURLPATH%/VirtDBpedia2015PAGO01.png"><img src="%ATTACHURLPATH%/VirtDBpedia2015PAGO01.png" alt="AWS Marketplace DBpedia Live (Virtuoso PAGO)" style="max-width: 600px ; min-width: 200px ; width: 100%"></a>%BR%%BR%
+   1 Choose a suitable size <b>EC2 Instance Type</b> and <b>Key Pair</b>, then click on the button <b>Launch with 1-click</b> button.
+%BR%%BR%<a href="%ATTACHURLPATH%/VirtDBpedia2015PAGO02.png"><img src="%ATTACHURLPATH%/VirtDBpedia2015PAGO02.png" alt="AWS Marketplace DBpedia Live (Virtuoso PAGO) Launch on EC2" style="max-width: 600px ; min-width: 200px ; width: 100%"></a>%BR%%BR%
+   1 A confirmation dialog will be presented indicating the image has been deployed.
+%BR%%BR%<a href="%ATTACHURLPATH%/VirtDBpedia2015PAGO03.png"><img src="%ATTACHURLPATH%/VirtDBpedia2015PAGO03.png" alt="AWS Marketplace DBpedia Live (Virtuoso PAGO) now Deployed" style="max-width: 600px ; min-width: 200px ; width: 100%"></a>%BR%%BR%
+   1 Check the in the [[https://console.aws.amazon.com/][AWS Console]] EC2 images Web Interface that the image has been successfully instantiated.
+%BR%%BR%<a href="%ATTACHURLPATH%/VirtDBpedia2015PAGO04.png"><img src="%ATTACHURLPATH%/VirtDBpedia2015PAGO04.png" alt="AWS EC2 Launched Image" style="max-width: 600px ; min-width: 200px ; width: 100%"></a>%BR%%BR%
+
+---++ First-time Setup & Usage Notes 
+
+These steps in this section are only necessary when you start the DBpedia DB for the first time, immediately after instantiating the AMI.
+
+This section may be ignored thereafter, as it is not necessary after AMI reboots.
+
+   1 <code>ssh</code> into your instantiated AMI using: 
+<verbatim>
+ssh -i {secure-pem-file} ec2-user@{ec2-dns-name-or-ip-address}
+</verbatim>
+   1 Start the Virtuoso DBMS Server against the DBpedia Database by issuing the following command.  <i><b>Note:</b> At initial launch, it takes the Virtuoso DBMS Server approximately 20 minutes to bring the DBpedia database online, due to its size. </i>
+<verbatim>
+sudo /etc/rc.d/init.d/virtuoso restart
+</verbatim>
+   1 We strongly recommend you now use the Conductor to change the password for the '<code>dba</code>' user from the the AMI <b><code>instance-id</code></b>. 
+%BR%%BR%
+      1 Retrieve the AMI <code>instance-id</code> by either --
+         * checking the AMI properties presented by the Amazon AWS console UI -- 
+%BR%%BR%<a href="%ATTACHURLPATH%/VirtDBpedia2015PAGOAwsConsole.png"><img src="%ATTACHURLPATH%/VirtDBpedia2015PAGOAwsConsole.png" alt="AWS Console" style="max-width: 600px ; min-width: 200px ; width: 100%"></a>%BR%%BR%
+         * executing the following command in the Linux shell -- 
+<verbatim>
+curl http://169.254.169.254/latest/meta-data/instance-id
+</verbatim>
+      1 Load the Conductor interface
+<verbatim>
+http://{amazon-ec2-ami-dns-name-or-ip-address}/conductor
+</verbatim>
+      1 At the authentication challenge, log in as the <b><code>dba</code></b> user, with the AMI <b><code>instance-id</code></b> as the password.  <i><b>Note:</b> If unable to connect to the Virtuoso server using the  <b><code>instance-id</code></b> as password, please [[http://download.openlinksw.com:8080/download/register.vsp?hname=support][register with our Support Site]], and [[http://support.openlinksw.com/support/techadd.vsp][create a Support Case]] for fastest assistance.</i>
+      1 Drill down to <b>System Admin</b> &#8594; <b>User Accounts</b>.  
+      1 Locate the <b><code>dba</code></b> user, and click the associated <b><code>Edit</code></b> link.
+      1 The form allows many things to be changed.  For now, just input your desired password into both <b>Password</b> and <b>Confirm Password</b> boxes, and click the <b>Save</b> button.
+      1 You can now perform other administrative tasks through the Conductor interface, or return to basic DBpedia use.
+
+
+---++ DBpedia Live (Virtuoso PAGO) Database Interaction via Web Interface
+
+Once online, your DBpedia Live instance will be ready for use from &#8212;
+%BR%%BR%
+   * Basic Linked Data Exploration Page &#8212; an obvious starting point
+<verbatim>
+http://{amazon-ec2-ami-dns-name-or-ip-address}/resource/DBpedia
+</verbatim>
+   * Faceted Browsing Endpoint
+<verbatim>
+http://{amazon-ec2-ami-dns-name-or-ip-address}/fct
+</verbatim>
+   * Advanced Faceted Browsing Page
+<verbatim>
+http://{amazon-ec2-ami-dns-name-or-ip-address}/describe/?uri=http://dbpedia.org/resource/DBpedia
+</verbatim>
+   * SPARQL Query Service Endpoint
+<verbatim>
+http://{amazon-ec2-ami-dns-name-or-ip-address}/sparql
+</verbatim>
+   * Virtuoso Instance Administration Page (Virtuoso Conductor)
+<verbatim>
+http://{amazon-ec2-ami-dns-name-or-ip-address}/conductor
+</verbatim>
+
+
+---++ Administering the Virtuoso Instance via SSH
+
+All scripts for starting and stopping the Virtuoso instance are found in the following locations &#8212;
+
+   * <b><code><nowiki>/etc/rc.d/init.d</nowiki></code></b> &#8212; scripts that enable automatic database server instantiation at operating system (AMI) boot or reboot time
+%BR%%BR%
+   * <b><code><nowiki>/opt/virtuoso</nowiki></code></b> &#8212; scripts for starting and stopping the database server within a running operating system (AMI)
+
+---+++ License Manager 
+
+The <nop>OpenLink License Manager must be launched before you launch the Virtuoso instance, and must remain running at all times for Virtuoso to run.
+
+   * Start the License Manager
+<verbatim>
+/etc/rc.d/init.d/oplmgr start
+</verbatim>
+
+   * Stop the License Manager
+<verbatim>
+/etc/rc.d/init.d/oplmgr stop
+</verbatim>
+
+   * Restart the License Manager
+<verbatim>
+/etc/rc.d/init.d/oplmgr restart
+</verbatim>
+
+---+++ Virtuoso Server
+
+   * Start the Virtuoso Server
+<verbatim>
+/etc/rc.d/init.d/virtuoso start
+</verbatim>
+
+   * Stop the Virtuoso Server
+<verbatim>
+/etc/rc.d/init.d/virtuoso stop
+</verbatim>
+
+   * Restart the Virtuoso Server
+<verbatim>
+/etc/rc.d/init.d/virtuoso restart
+</verbatim>
+
+---++ Command-line Interaction with the Virtuoso Database Instance 
+
+   1 Set  the Virtuoso environment variables by running the command below.  <i><b>Note:</b> This does and must start with dot-space-slash.</i>
+<verbatim>
+. /opt/virtuoso/virtuoso-enterprise.sh
+</verbatim>
+   1 Run the Virtuoso "<b><code>isql</code></b>" command line tool to connect to the database. <i><b>Note:</b> your EC2 AMI's <b>instance-id</b> will be the <code>dba</code> user's password, until you change it (as recommended above). </i>
+<verbatim>
+$ isql 1111 -U dba -P {Password}
+Connected to OpenLink Virtuoso
+Driver: 07.10.3214 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL>
+</verbatim>
+   1 Run the "<b><code>tables</code></b>" command to obtain a list of tables in the default schema
+<verbatim>
+SQL> tables;
+Showing SQLTables of tables like 'NULL.NULL.NULL', tabletype/colname like 'NULL'
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+DB               DBA              ADM_XML_VIEWS    SYSTEM TABLE     NULL
+.
+.
+.
+DB               DBA              SYS_SQL_INVERSE  SYSTEM TABLE     NULL
+DB               DBA              SYS_TRIGGERS     SYSTEM TABLE     NULL
+DB               DBA              SYS_VIEWS        SYSTEM TABLE     NULL
+
+209 Rows. -- 1890 msec.
+SQL>
+</verbatim>
+   1 You can stop the Virtuoso Database Server by running &#8212; 
+<verbatim>
+virtuoso-stop.sh dbpedia
+</verbatim>
+   1 You can restart the Virtuoso Database Server by running &#8212; 
+<verbatim>
+virtuoso-start.sh dbpedia
+</verbatim>
+
+---++ Enabling DBpedia Live Updates
+
+The provided DBpedia Integrator utility program (<code>dbpintegrator</code>) downloads change-sets from the DBpedia live website, and processes them into the local Virtuoso instance on this AMI to keep your DBpedia datasets updated following changes to the Wikipedia.
+
+To enable the DBpedia Live updates &#8212;
+
+   1 Go to the <code>/dbpedia/dbpintegrator</code> directory.
+<verbatim>
+-bash-4.2$ cd /dbpedia/dbpintegrator
+</verbatim>
+   1 Run the command <code><nowiki>sudo sh update_ontology.sh</nowiki></code> once  to check the setup and attempt to update the
+database with the latest ontology fixes.
+<verbatim>
+-bash-4.2$ sudo sh update_ontology.sh 
+-bash-4.2$ 
+</verbatim>
+<i><b>Note 1:</b> The <code><nowiki>update_ontology.sh</nowiki></code> script is written to use the default <code>dba</code> password that is derived from the AMI <code>instance-id</code>. Thus, if you have changed that password as recommended, you will need to update the script with the same password.</i>
+%BR%%BR%
+<i><b>Note 2:</b> The first time these change-sets are applied to your instance, it may take several hours or even days, depending on server resources and bandwidth, for all the change-sets to be loaded, and so for the DBpedia instance to be brought up to date and subsequently to obtain realtime updates from Wikipedia. You can monitor the <code>Latest changes</code> and <code>Top 20 Most Recently Updated Entities</code> sections of the live update web page (<code>http://{amazon-ec2-ami-dns-name-or-ip-address}/live</code>) to see the current state of the live update process.</i>
+   1 Run the command <code><nowiki>sudo sh update_changesets.sh</nowiki></code> to start loading the available change-sets.
+<verbatim>
+-bash-4.2$ sudo sh update_changesets.sh
+ nohup: appending output to ?nohup.out?
+-bash-4.2$ 
+</verbatim>
+<i><b>Note 1:</b> The <code><nowiki>update_changesets.sh</nowiki></code> script is written to use the default <code>dba</code> password that is derived from the AMI <code>instance-id</code>. Thus, if you have changed that password as recommended, you will need to update the script with the same password.</i>
+%BR%%BR%
+<i><b>Note 2:</b> The first time these change-sets are applied to your instance, it may take several hours or even days, depending on server resources and bandwidth, for all the change-sets to be loaded, and so for the DBpedia instance to be brought up to date and subsequently to obtain realtime updates from Wikipedia. You can monitor the <code>Latest changes</code> and <code>Top 20 Most Recently Updated Entities</code> sections of the live update web page (<code>http://{amazon-ec2-ami-dns-name-or-ip-address}/live</code>) to see the current state of the live update process.</i>
+   1 A web page for viewing the live updates to the AMI instance is available at <code>http://{amazon-ec2-ami-dns-name-or-ip-address}/live</code> where the updates can be viewed as they occur.
+%BR%%BR%<a href="%ATTACHURLPATH%/VirtDBpedia2016PAGO05.png"><img src="%ATTACHURLPATH%/VirtDBpedia2016PAGO05.png" alt="AWS EC2 Launched Image" style="max-width: 800px ; min-width: 200px ; width: 100%"></a>
+
+If anything goes wrong it will logged in the associate log file <code>dbpedia&#95ddbms&#95eerrors.log</code> otherwise update progress is written to <code>dbp.log</code> .
+
+---+++ Setting up <code>cron</code> job
+
+The Linux <code>cron</code> utility can be used to automatically (re)start the scripts by adding a few lines to the cron setup for the <code>root</code> user.
+
+   1 Start the <code>cron</code> editor (based on <code>vi</code>) with &#8212;
+<verbatim>
+# crontab -e
+</verbatim>
+   1 Navigate to the bottom of the file with the single keystroke, capital-<code>G</code>.
+   1 Use the single keystroke, lowercase-<code>O</code>, to start a new line at the bottom, and add the following two lines (you can just copy-and-paste):
+<verbatim>
+@hourly     /dbpedia/dbpintegrator/update_changesets.sh
+@daily      /dbpedia/dbpintegrator/update_ontology.sh
+</verbatim>
+   1 Save the edited file with the single keystroke, <code>ESC</code>, followed by the four-character string below, and <code>ENTER</code>:
+<verbatim>
+:wq!
+</verbatim>
+
+
+---++ Performance Notes
+
+Please be aware of the following, which impact the performance and utility of your AMI:
+
+   * This AMI includes a bundled Virtuoso license which enables 10 Database Sessions and the use of 4 logical processors.  Licenses that upgrade these attributes are available as paid upgrade options. 
+%BR%%BR%
+   * Virtuoso always takes full advantage of the memory it's configured to use. This may be much less than is found in its host environment/AMI.  This AMI is pre-configured for an <code>m3.large</code> EC2 Instance Type, so will use 7GB or RAM.  If you choose a larger EC2 Instance Type, then the <code><nop>NumberOfBuffer</code> and <code><nop>MaxDirtyBuffers</code> parameters in the <code>/opt/virtuoso/dbpedia/dbpedia.ini</code> configuration file should be increased to correspond to the chosen Instance Type's available memory, as detailed in the [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFPerformanceTuning#General%20Memory%20Usage%20Settings][Virtuoso Performance Tuning Guide]].  A few examples are shown below.  After changing these or any other settings in the INI file, restart the Virtuoso server [[#Virtuoso%20Server][as described above]].
+%BR%%BR%
+| *EC2 Instance Type* |  *System RAM*  |  *NumberOfBuffers*  |  *MaxDirtyBuffers*  |
+| m3.large |  7 GB  |   680000 |   500000 |
+| r3.large |  15 GB  |   1360000 |   1000000 |
+| r3.xlarge |  30.5 GB  |   2720000 |   2000000 |
+| r3.2xlarge |  61 GB  |   5450000 |   4000000 |
+%BR%%BR%
+   * There are a wide range of AMI choices, offering various combinations of system memory and logical processors.  To improve performance, use an <b>EC2 Instance Type</b> with more memory and more logical processors.  To make use of additional processors, you will need to also acquire an upgraded Virtuoso license.
+
+
+---++ Troubleshooting
+
+If you encounter any problems resolving the sample DBpedia URIs listed in the steps above, please:
+
+   1. Determine whether Virtuoso is running, with this command
+<verbatim>
+ps -ef | grep "virt*" | grep -v grep
+</verbatim>
+   2. Check the log of Virtuoso's most recent activity, with this command
+<verbatim>
+tail /dbpedia/*.log
+</verbatim>
+
+
+The output of those commands will show you whether the initial Virtuoso DBpedia DB setup (which can take a while due to DB size) is still in progress, the setup encountered some error, or the setup has completed but Virtuoso awaits one of the following commands:
+
+   * Startup command
+<verbatim>
+/etc/init.d/virtuoso start
+</verbatim>
+   * Restart command
+<verbatim>
+/etc/init.d/virtuoso restart
+</verbatim>
+
+
+---++ Related Items
+
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSInstallationEC2][OpenLink Data Spaces Installation]]
+   * EC2 &amp; AMI related information
+      * [[VirtPayAsYouGoEBSBackedAMI][Virtuoso Pay As You Go (PAGO) EBS-backed EC2 AMI]]
+      * [[VirtInstallationEC2][Instance-backed Virtuoso EC2 AMI]]
+      * [[VirtAWSPublicDataSets][Pre-configured &amp; Pre-loaded Virtuoso instances (DBpedia 3.8, BBC Music &amp; Programmes, etc.)]]
+      * [[VirtEC2AMINeuroCommonsInstall][Creating Your Own Neurocommons Instance]]
+      * [[VirtEC2AMIBio2rdfInstall][Creating Your Own Bio2RDF Instance]]
+      * [[VirtEC2AMIMusicBrainzInstall][Creating Your Own MusicBrainz Instance]]
+      * [[VirtEc2ExtensionUI][Backup your Virtuoso EC2 AMI to S3]]
+      * [[VirtEC2AMIElasticBlockStorageConfig][Configure your Virtuoso EC2 AMI for use with Amazon Elastic Block Storage (EBS)]]
+      * [[http://calculator.s3.amazonaws.com/calc5.html][Amazon-provided AWS Simple Monthly Cost Calculator]]
+   * Protecting your Virtuoso-hosted SPARQL Endpoint
+      * [[VirtSPARQLEndpointProtection][Safeguarding your Virtuoso-hosted SPARQL Endpoint]]
+      * [[VirtTipsAndTricksGuideSPARQLEndpointProtection][SPARQL Endpoint Protection Methods Collection]]
+      * [[VirtTipsAndTricksGuideSPARQLEndpoints][Securing SPARQL endpoints]]
+      * [[VirtSPARQLSecurityWebID][WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial]]
+      * [[VirtOAuthSPARQL][SPARQL OAuth Tutorial]]
+   * [[http://docs.openlinksw.com/virtuoso/][Virtuoso documentation]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso's SPARQL support]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks]]
+      * [[VirtSPARQLDET][SPARQL Endpoint DET (DEV Extension Type) Configuration Guide]]
+
+
+CategoryHowTo CategoryODS CategoryVirtuoso CategoryDocumentation CategoryEC2
+
+%VOSCOPY%

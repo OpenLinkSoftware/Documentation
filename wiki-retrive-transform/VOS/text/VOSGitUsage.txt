@@ -1,0 +1,200 @@
+---+ Using Git With Virtuoso Open-source
+
+%TOC%
+
+---++ Introduction
+
+Due to the nature of its development cycle which includes several active
+development versions we apply a slightly more involved git usage paradigm as
+compared to smaller OpenLink projects.
+
+The main difference is that instead of a single =devel= branch we have more than
+one which means a slightly more complicated management of releases and hot
+fixes.
+
+---++ Repository Setup
+
+We use a moderated development model where there is one "official" repository
+that is private. Only the administrator can push changes to this repository.
+Developers work in their own clones of the repository and send merge requests to
+the administrator (details of this procedure are not clear yet. We might want to
+setup or use a web frontend.)
+
+---++ Branches
+
+Our development model is based on the
+[[http://nvie.com/posts/a-successful-git-branching-model/][git workflow]]
+originally presented by [[http://nvie.com/][Vincent Driessen]]. We have a master
+branch which always reflects the current release, development branches for each
+version of VOS, stable branches for each major release of VOS, feature branches
+and release branches. The only difference to the mentioned git flow system is
+that we have more than one stable branch - where git flow (and other smaller
+OpenLink projects) uses branch =master= for tracking the current stable state,
+we use branches prefixed =stable=.
+
+Let us look at the branches in detail.
+
+---+++ The main branches
+
+We have a set of main branches with an infinite lifetime, its number depends on
+the number of currently developed versions of VOS. Here we assume that we work
+on VOS6 and VOS7 in parallel, VOS6 being the production version. This results in
+two main development branches:
+
+   * <tt>develop/5</tt>
+   * <tt>develop/6</tt>
+   * <tt>develop/7</tt>
+
+The branch <tt>develop/6</tt> always reflects the latest state in active
+development of the VOS6 series. New features are integrated here.
+
+In addition we have one branch for each major release of VOS:
+
+   * <tt>stable/5</tt>
+   * <tt>stable/6</tt>
+   * <tt>stable/7</tt>
+
+These are branched off their respective =develop= branches whenever a new major
+release is about to be created.
+
+The =master= branch always matches the latest stable release; release tags are
+only created on the =master= branch.
+
+---+++ Feature branches
+
+New features are developed in feature-branches (sometimes called topic
+branches). Feature branches typically have the prefix <tt>feature/</tt> and should
+always be branched off a development branch:
+
+<verbatim>
+$ git checkout -b feature/myFeature develop/6
+</verbatim>
+
+Once the feature is done it should be merged back into the originating branch:
+
+<verbatim>
+$ git checkout develop/6
+$ git merge --no-ff feature/myFeature
+$ git branch -d feature/myFeature
+</verbatim>
+
+The <tt>--no-ff</tt> flag causes the merge to always create a new commit object,
+even if the merge could be performed with a fast-forward. This avoids losing
+information about the historical existence of a feature branch and groups
+together all commits that together added the feature.
+
+For the time being we also allow features to be branched offs table major
+release branches for convenience. This, however, results in a slightly more
+complicated procedure. First we have to branch off the stable branch:
+
+<verbatim>
+$ git checkout -b feature/myFeature stable/6
+</verbatim>
+
+Once the feature is done it is merged back into the stable branch:
+<verbatim>
+$ git checkout stable/6
+$ git merge --no-ff feature/myFeature
+</verbatim>
+
+But the feature also has to be merged into the devel branch before being deleted:
+<verbatim>
+$ git checkout develop/6
+$ git merge --no-ff feature/myFeature
+$ git branch -d feature/myFeature
+</verbatim>
+
+
+---++ Tagging a release
+
+A release is always tagged from a stable branch. Since =master= should always
+reflect the current recommended stable version of VOS it does not need to be
+updated on every release. Imagine for example a bugfix release of VOS6 when VOS7
+has already been released.
+
+As soon as a =develop= branch has reached a stable state fit for a release a
+release branch is created in which the rest of the release preparation like
+version bump, ChangeLog updates, and so on are done:
+<verbatim>
+$ git branch -b release/6.2.2 develop/6
+</verbatim>
+
+Once the branch is done it is merged back into the originating branch and the
+corresponding =stable= branch:
+<verbatim>
+$ git checkout branch develop/6
+$ git merge --no-ff release/6.2.2
+$ git checkout stable/6
+$ git merge --no-ff release/6.2.2
+</verbatim>
+
+Then the release is tagged from the =stable= branch:
+<verbatim>
+$ git checkout stable/6
+$ git tag -s v/6.2.2
+</verbatim>
+
+In case this new release is the latest recommended version the release branch also has to be merged into =master=.
+<verbatim>
+$ git checkout master
+$ git merge --no-ff release/6.2.2
+</verbatim>
+
+Due to the nature of VOS development two develop branches may diverge a lot
+making it virtually impossible to merge one into the other. Thus, if the release
+introduces a new major VOS version, master needs to be updated in a special way,
+essentially throwing away all the changes from the old major version. This can
+be achieved by specifying a special merge method:
+
+<verbatim>
+$ git checkout master
+$ git merge -Xtheirs --no-ff release/6.2.2
+</verbatim>
+
+And finally the release branch can be removed:
+
+<verbatim>
+$ git branch -d release/6.2.2
+</verbatim>
+
+---+++ Hotfix Releases
+
+Sometimes there is the need to release a hotfix. A hotfix is a small bugfix
+release which does not necessarily be based on the latest stable release. If
+version 6.2.0 was the latest stable release some people might still use 6.1.3
+because they fear the maintenance hassle with updating to another major version.
+Thus, if a bug is found in 6.1.3 a hotfix release 6.1.4 needs to be released.
+This is done by branching off a tag:
+
+<verbatim>
+$ git checkout -b hotfix/myFix v6.1.3
+</verbatim>
+
+Once the fix is done it might require merging back into the stable and/or the
+develop branch, depending on whether the fix still applies in the newer
+versions:
+
+<verbatim>
+$ git checkout stable/6
+$ git merge --no-ff hotfix/myFix
+$ git checkout develop/6
+$ git merge --no-ff hotfix/myFix
+</verbatim>
+
+Tagging a hotfix release is a little different from normal release tagging as
+described above. Since master is not touched we tag the release directly in the
+hotfix branch and then delete it:
+
+<verbatim>
+$ git checkout hotfix/myFix
+$ git tag -s v/6.1.3
+$ git branch -d hotfix/myFix
+</verbatim>
+
+---++References
+
+See also:
+   * [[GitQuickstartTips][Git Quickstart and Tips]]
+   * [[http://progit.org/book/][ProGit - Online-Book on Git Usage]]
+   * [[http://help.github.com/][GitHub Help]]
+

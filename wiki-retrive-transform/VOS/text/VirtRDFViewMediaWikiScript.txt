@@ -1,0 +1,166 @@
+---++MediaWiki Linked Data Views Script to set up your own instance
+
+<verbatim>
+use mediawiki;
+
+drop view mw_users_rdf;
+drop view mw_posts_rdf;
+drop table mw_site_rdf;
+
+
+sparql
+prefix v: <http://www.openlinksw.com/schemas/mw#>
+drop quad map virtrdf:MediaWiki .
+drop iri class v:user_iri .
+drop iri class v:iri .
+drop iri class v:post_iri .
+drop iri class v:site_iri .
+drop iri class v:forum_iri .
+drop iri class v:mbox .
+;
+
+use mediawiki;
+
+create table mw_site_rdf (url varchar primary key, name varchar, description long varchar);
+insert soft mw_site_rdf values ('http://'||cfg_item_value (virtuoso_ini_path (), 'URIQA', 'DefaultHost')||'/mediawiki', 'DemoWiki', '');
+
+create procedure w3c_date (in x decimal)
+{
+  declare r any;
+  r := sprintf ('%fZ', x/1000000);
+  return replace (r, '.', 'T');
+};
+
+
+create view mw_users_rdf as select user_id, user_name, user_email as user_email, sha1_digest (user_email) as user_email_sha1
+from mediawiki.."user";
+
+create view mw_posts_rdf as select
+        page_title as post_title,
+        page_id as post_id,
+        old_text as post_content,
+        mediawiki..w3c_date (rev_timestamp) as post_date_gmt,
+        mediawiki..w3c_date (page_touched) as post_modified_gmt,
+        user_name,
+        url,
+        concat (url, '/', page_title) as post_url,
+        name
+        from
+        mediawiki..page, mediawiki..revision, mediawiki.."text", mediawiki.."user", mediawiki..mw_site_rdf
+        where page_latest = rev_id and rev_text_id = old_id and rev_user = user_id;
+
+
+grant select on mw_users_rdf to "SPARQL";
+grant select on mw_posts_rdf to "SPARQL";
+grant select on mw_site_rdf to "SPARQL";
+grant execute on mediawiki..w3c_date to "SPARQL";
+
+sparql
+prefix sioc: <http://rdfs.org/sioc/ns#>
+prefix sioct: <http://rdfs.org/sioc/types#>
+prefix atom: <http://atomowl.org/ontologies/atomrdf#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix dc: <http://purl.org/dc/elements/1.1/>
+prefix dct: <http://purl.org/dc/terms/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+prefix wikiont: <http://sw.deri.org/2005/04/wikipedia/wikiont.owl#>
+prefix v: <http://www.openlinksw.com/schemas/mw#>
+
+create iri class v:user_iri "http://^{URIQADefaultHost}^/mediawiki/user/%U#this" (in user_name  varchar not null) .
+create iri class v:iri "http://^{URIQADefaultHost}^/mediawiki/proxy/%s#this" (in opluri varchar not null).
+create iri class v:post_iri "http://^{URIQADefaultHost}^/mediawiki/post/%U#this" (in post_title
+ varchar not null) .
+create iri class v:site_iri  "http://^{URIQADefaultHost}^/mediawiki/site/%U#this" (in title varchar not null) .
+create iri class v:forum_iri "http://^{URIQADefaultHost}^/mediawiki/wiki/%U#this" (in title varchar not null) .
+create iri class v:mbox "mailto:%s" (in mail varchar not null) . 
+
+alter quad storage virtrdf:DefaultQuadStorage
+  {
+    create virtrdf:MediaWiki as graph iri ("http://^{URIQADefaultHost}^/mw_v")
+      {
+        v:site_iri (mediawiki.DBA.mw_site_rdf.name) a sioc:Space ;
+        dc:title name ;
+        sioc:link v:iri (url) ;
+        sioc:host_of v:forum_iri (name) .
+
+        v:forum_iri (mediawiki.DBA.mw_site_rdf.name) a sioc:Container ;
+        a sioct:Wiki ;
+        dc:title name ;
+        sioc:description description ;
+        sioc:link v:iri (url) ;
+        sioc:has_host v:site_iri (name) .
+
+        v:user_iri (mediawiki.DBA.mw_users_rdf.user_name) a sioc:User ;
+        sioc:id user_name ;
+        sioc:name user_name ;
+        sioc:email v:mbox (user_email) ;
+        sioc:email_sha1 user_email_sha1 .
+
+        v:post_iri (mediawiki.DBA.mw_posts_rdf.post_title) a sioc:Item ;
+        a sioc:Post ;
+        a wikiont:Article ;
+        dc:title post_title ;
+        dct:created post_date_gmt ;
+        dct:modified post_modified_gmt ;
+        sioc:has_creator v:user_iri (user_name) ;
+        sioc:has_container v:forum_iri (name) ;
+        sioc:content post_content ;
+        sioc:link v:iri (post_url) ;
+        sioc:id post_id .
+
+       v:forum_iri (mediawiki.DBA.mw_posts_rdf.name) sioc:container_of v:post_iri (post_title) .
+       v:user_iri (mediawiki.DBA.mw_posts_rdf.user_name) sioc:creator_of v:post_iri (post_title) .
+
+      }
+  } .
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'mw_rule2',
+    1,
+    '/mediawiki/([^#]*)',
+    vector('path'),
+    1,
+    '/sparql?query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/mediawiki/%U%%23this%%3E+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/mw_v%%3E&format=%U',
+    vector('path', '*accept*'),
+    null,
+    '(text/rdf.n3)|(application/rdf.xml)',
+    2,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'mw_rule3',
+    1,
+    '/mediawiki/(user|post|site|proxy|wiki)/([^#]*)',
+    vector('obj', 'path'),
+    1,
+    '/ode/index.html?uri=http%%3A//^{URIQADefaultHost}^/mediawiki/%U/%U%%23this',
+    vector('obj', 'path'),
+    null,
+    '(text/html)|(\\*/\\*)',
+    0,
+    303
+    );
+
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    'mw_rule_list1',
+    1,
+    vector (
+                'mw_rule3',
+                'mw_rule2'
+          ));
+
+DB.DBA.VHOST_REMOVE (lpath=>'/mediawiki');
+DB.DBA.VHOST_DEFINE (lpath=>'/mediawiki', ppath=>'/vad/vsp/mediawiki/', is_dav=>0, vsp_user=>'dba', is_brws=>1, def_page=>'index.php',
+    opts=>vector ('url_rewrite', 'mw_rule_list1'));
+
+</verbatim>
+
+---+++References
+
+   * [[MediaWikiSIOCRef][MediaWiki SIOC Reference]]
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsIntegrationMediaWiki][MediaWiki Installation Guide]]

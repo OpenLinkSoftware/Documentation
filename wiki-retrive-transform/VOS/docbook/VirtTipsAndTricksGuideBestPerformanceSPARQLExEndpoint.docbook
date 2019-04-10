@@ -1,0 +1,62 @@
+<docbook><section><title>VirtTipsAndTricksGuideBestPerformanceSPARQLExEndpoint</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">How to achieve best performance executing a query against SPARQL Endpoint?</bridgehead>
+<para>Assume the query from below is to be executed against the <ulink url="http://dbpedia.org/sparql">dbpedia sparql endpoint</ulink>: </para>
+<programlisting>PREFIX dbo: &lt;http://dbpedia.org/ontology/&gt;
+PREFIX prop: &lt;http://dbpedia.org/property/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?thumbnail ?abstract
+WHERE 
+  {
+    ?location rdfs:label ?label;
+          a dbo:PopulatedPlace . 
+    OPTIONAL { ?location dbo:thumbnail ?thumbnail . }
+    OPTIONAL { ?location dbo:abstract ?abstract . 
+      FILTER langMatches(lang(?abstract), &#39;en&#39;) }
+    FILTER REGEX(?label, &#39;Swanage&#39;, &#39;i&#39;)
+  } 
+LIMIT 1
+</programlisting><para> What should we do if the endpoint either times out or does not return any data at all? - There are a number of reasons why the dbpedia endpoint can give timeouts such as:</para>
+<orderedlist spacing="compact"><listitem>You send too many requests in very short amount of time; </listitem>
+<listitem>You send very time-consuming queries and you receive a timeout </listitem>
+<listitem>Someone else is doing some very expensive queries</listitem>
+</orderedlist><para>We have several ACLs in place to deal with the above scenarios but  that does not mean that some users write crawlers that ignore the HTTP status codes and properly act upon them.
+ We are looking into the best way to deal with such.</para>
+<para>Back to the query from above, the performance killer in it is the use of:</para>
+<programlisting>FILTER regex(?label, &#39;Swanage&#39;, &#39;i&#39;)
+</programlisting><para> which is basically will need to check every individual place triple to see if it matches which is not a very efficient way to quickly get the results.</para>
+<para> We suggest the FILTER line to be replaced it with:</para>
+<programlisting>?label bif:contains &#39;\&#39;D?sseldorf\&#39;&#39;
+</programlisting><para> or</para>
+<programlisting>?label bif:contains &quot; &#39;Antwerpen&#39; &quot;
+</programlisting><para>which takes into account the fact there can be special characters in names.
+ If you are dealing only with Latin1 characters, you can leave out the inner quotes.
+Also note the spaces between the double and single quote are not needed, but enhance readability.</para>
+<para>The CONTAINS function has the same advantage as the REGEX (x, &#39;i&#39;)  option of finding both antwerpen, Antwerpen or any other case mixes but using an index which is much faster.</para>
+<para>Finally the query should like this: </para>
+<programlisting>PREFIX dbo: &lt;http://dbpedia.org/ontology/&gt;
+PREFIX prop: &lt;http://dbpedia.org/property/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?thumbnail ?abstract
+WHERE 
+  {
+    ?location rdfs:label ?label;
+         a dbo:PopulatedPlace.
+     ?label bif:contains &quot; &#39;Antwerpen&#39; &quot;.
+     OPTIONAL { ?location dbo:thumbnail ?thumbnail . }
+     OPTIONAL { ?location dbo:abstract ?abstract . 
+       FILTER  langMatches(lang(?abstract), &#39;en&#39;) }
+  }
+LIMIT 1
+</programlisting><para> which is much faster.</para>
+<para> Another trick you can use is to turn a SPARQL request into an ANYTIME query.
+ This is done by adding:</para>
+<programlisting>&amp;timeout=5000
+</programlisting><para> to the end of the /sparql/?query=XXXX request which instructs the Virtuoso SPARQL endpoint to only return results that it can find in  approximate 5000msec.
+ There are special HTTP result header flags that  indicate if the resultset is a partial or full result.</para>
+<para> <ulink url="http://lod.openlinksw.com/sparql?default-graph-uri=&amp;query=PREFIX+dbo%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2F%3E%0D%0APREFIX+prop%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0ASELECT+%3Fthumbnail+%3Fabstract%0D%0AWHERE+%0D%0A++%7B%0D%0A++++%3Flocation+rdfs%3Alabel+%3Flabel%3B%0D%0A+++++++++a+dbo%3APopulatedPlace.%0D%0A+++++%3Flabel+bif%3Acontains+%22+%27Antwerpen%27+%22.%0D%0A+++++OPTIONAL+%7B+%3Flocation+dbo%3Athumbnail+%3Fthumbnail+.+%7D%0D%0A+++++OPTIONAL+%7B+%3Flocation+dbo%3Aabstract+%3Fabstract+.+%0D%0A+++++++FILTER++langMatches%28lang%28%3Fabstract%29%2C+%27en%27%29+%7D%0D%0A++%7D%0D%0ALIMIT+1&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=15000&amp;debug=on&amp;timeout=5000">View the results</ulink> of the query execution on the <ulink url="http://lod.openlinksw.com">LOD</ulink> instance.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/anytimequeries.html">Anytime Queries</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+</itemizedlist></section></docbook>

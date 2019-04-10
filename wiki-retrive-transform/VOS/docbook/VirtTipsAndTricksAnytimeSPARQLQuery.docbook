@@ -1,0 +1,193 @@
+<docbook><section><title>VirtTipsAndTricksAnytimeSPARQLQuery</title><title>Exploiting Virtuoso&#39;s Anytime Query Feature</title>Exploiting Virtuoso&#39;s Anytime Query Feature
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ Virtuoso has a native mechanism for providing query results within a configurable time-frame.<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+ This feature is called &quot;Anytime Query&quot; and its vital to any practical DBMS related offering (especially on the World Wide Web) that supports query access from an unpredictable number of clients performing a variety of queries.<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+ This functionality is available via the default HTML based SPARQL Query Editor page that accompanies all Virtuoso instances.
+ It is also available via a URI parameter (&amp;timeout={time in milliseconds}) as part of Virtuoso&#39;s SPARQL Protocol implementation.<bridgehead class="http://www.w3.org/1999/xhtml:h2">Sample Scenario</bridgehead>
+<para>The following scenario demonstrates how to manage anytime SPARQL query execution using the timeout parameter at a Virtuoso SPARQL Endpoint.</para>
+<para>Suppose a simple query: </para>
+<programlisting>SELECT DISTINCT ?p
+WHERE
+  {
+    ?s ?p ?o
+  }
+LIMIT 100
+</programlisting><para> Suppose the query execution fails against Virtuoso endpoint due to running out of execution time as set in virtuoso.ini configuration file.
+ This is basically a table scan, since it has to go through each quad and create a HASH of unique P it sees.
+ After that is done, it will return the first 100 values of P from this hash.</para>
+<para>Next we will use SQL translation and explain() of the query: </para>
+<programlisting> SQL&gt; SET sparql_translate ON;
+ SQL&gt; SELECT DISTINCT ?p WHERE { ?s ?p ?o } LIMIT 100;
+
+ SPARQL_TO_SQL_TEXT
+ VARCHAR
+ _______________________________________________________________________________ 
+
+
+  SELECT  __ro2sq (&quot;s_2_0_rbc&quot;.&quot;p&quot;) AS &quot;p&quot; FROM (SELECT DISTINCT TOP 
+ 100 __id2i ( &quot;s_2_1-t0&quot;.&quot;P&quot; ) AS &quot;p&quot;
+   FROM DB.DBA.RDF_QUAD AS &quot;s_2_1-t0&quot;
+ OPTION (QUIETCAST)) AS &quot;s_2_0_rbc&quot;
+
+ 1 Rows. -- 1 msec.
+ SQL&gt; set sparql_translate off;
+
+ SQL&gt; set explain on;
+ SQL&gt; SELECT  __ro2sq (&quot;s_2_0_rbc&quot;.&quot;p&quot;) AS &quot;p&quot; FROM (SELECT DISTINCT 
+ TOP 100 __id2i ( &quot;s_2_1-t0&quot;.&quot;P&quot; ) AS &quot;p&quot;   FROM DB.DBA.RDF_QUAD AS 
+ &quot;s_2_1-t0&quot; OPTION (QUIETCAST)) AS &quot;s_2_0_rbc&quot;
+ SQL&gt; SELECT  __ro2sq (&quot;s_2_0_rbc&quot;.&quot;p&quot;) AS &quot;p&quot; FROM (SELECT DISTINCT 
+ TOP 100 __id2i ( &quot;s_2_1-t0&quot;.&quot;P&quot; ) AS &quot;p&quot;   FROM DB.DBA.RDF_QUAD AS 
+ &quot;s_2_1-t0&quot; OPTION (QUIETCAST)) AS &quot;s_2_0_rbc&quot; ;
+ REPORT
+ VARCHAR
+ _______________________________________________________________________________ 
+
+
+ {
+   local save: ($22 &quot;set_no&quot;, $23 &quot;set_no_save&quot;)
+ Subquery 20
+ {
+ from DB.DBA.RDF_QUAD by RDF_QUAD_POGS    8.9e+07 rows
+ Key RDF_QUAD_POGS  ASC ($25 &quot;s_2_1-t0.P&quot;)
+
+
+
+ After code:
+       0: $28 &quot;__id2i&quot; := Call __id2i ($25 &quot;s_2_1-t0.P&quot;)
+       5: BReturn 0
+ Distinct (HASH) ($25 &quot;s_2_1-t0.P&quot;)
+
+ After code:
+       0: $21 &quot;p&quot; :=  := artm $28 &quot;__id2i&quot;
+       4: BReturn 0
+ Subquery Select(TOP  100 ) ($21 &quot;p&quot;, &lt;$27 &quot;&lt;DB.DBA.RDF_QUAD s_2_1-t0&gt;&quot; 
+ spec 5&gt;)
+ }
+
+
+ After code:
+       0: $44 &quot;p&quot; := Call __ro2sq ($21 &quot;p&quot;)
+       5: BReturn 0
+ Select ($44 &quot;p&quot;)
+ }
+
+ 26 Rows. -- 1 msec.
+
+ SQL&gt; set explain off;
+</programlisting><para> As we can see, it is going to use the RDF_QUAD_POGS index which offers the best query plan construction basis.
+ It would be marginally faster if there was an index that started with GP, but the current 2+3 index scheme does not have such.</para>
+<para>So it is almost a full table scan, which might not complete on most of our systems due to limits set in the INI file for Web accessible instances</para>
+<para>Set the Execution timeout on the /sparql form to enable the <emphasis>Anytime paradigm</emphasis>:</para>
+<orderedlist spacing="compact"><listitem>Go to a Virtuoso SPARQL Endpoint, e.g., the <ulink url="http://dbpedia.org/sparql/">DBPpedia SPARQL Endpoint</ulink>: <ulink url="VirtTipsAndTricksAnytimeSPARQLQuery/db1.png"><figure><graphic fileref="VirtTipsAndTricksAnytimeSPARQLQuery/db1.png" /></figure></ulink> </listitem>
+<listitem>Enter the query: <programlisting>SELECT distinct ?p
+WHERE
+  {
+    ?s ?p ?o
+  }
+LIMIT 100
+</programlisting></listitem>
+<listitem>For &quot;<emphasis>Execution timeout</emphasis>&quot;, enter 60000.
+<ulink url="VirtTipsAndTricksAnytimeSPARQLQuery/db2.png"><figure><graphic fileref="VirtTipsAndTricksAnytimeSPARQLQuery/db2.png" /></figure></ulink> </listitem>
+<listitem>Click &quot;<emphasis>Run Query</emphasis>&quot;.
+</listitem>
+<listitem>You will be redirected to the following URL (containing parameter timeout=60000), that presents the found results: <programlisting>http://dbpedia.org/sparql/?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;query=select+distinct+%3Fp%0D%0AWHERE%0D%0A{%0D%0A+%3Fs+%3Fp+%3Fo%0D%0A}%0D%0ALIMIT+100%0D%0A&amp;format=text%2Fhtml&amp;timeout=60000&amp;debug=on
+</programlisting><ulink url="VirtTipsAndTricksAnytimeSPARQLQuery/db3.png"><figure><graphic fileref="VirtTipsAndTricksAnytimeSPARQLQuery/db3.png" /></figure></ulink></listitem>
+</orderedlist><emphasis>Conclusions:</emphasis> When using the timeout value of 10000 (10 sec), you get only one unique ?p value back.
+ Using a timeout value of 60000 (60 sec) would still only show a few different values for ?p, which is logical considering that the index is sorted by Predicate (the P slot in the RDF triple pattern).
+ This means that once it gets the first unique ?p, it has to skip all the triples that have the same value of ?p, to get to the next one.<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Using cURL</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">cURL Variant without the timeout parameter</bridgehead>
+<programlisting>$ curl -F &quot;query=SELECT DISTINCT ?p WHERE  { ?s ?p ?o } LIMIT 100&quot; http://dbpedia.org/sparql
+Virtuoso S1T00 Error SR171: Transaction timed out
+
+SPARQL query:
+define sql:big-data-const 0 SELECT DISTINCT ?p WHERE  { ?s ?p ?o} LIMIT 100
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">cURL Variant using the timeout parameter</bridgehead>
+<programlisting>$ curl &quot;http://dbpedia.org/sparql/?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;query=SELECT+DISTINCT+%3Fp%0D%0AWHERE%0D%0A%7B%0D%0A+%3Fs+%3Fp+%3Fo%0D%0A%7D%0D%0ALIMIT+100%0D%0A&amp;format=text%2Fhtml&amp;timeout=60000&amp;debug=on&quot;
+&lt;table class=&quot;sparql&quot; border=&quot;1&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;p&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2002/07/owl#equivalentClass&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2002/07/owl#sameAs&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2002/07/owl#equivalentProperty&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2000/01/rdf-schema#subClassOf&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2004/02/skos/core#broader&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2000/01/rdf-schema#comment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2000/01/rdf-schema#label&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://xmlns.com/foaf/0.1/name&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://xmlns.com/foaf/0.1/nick&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2004/02/skos/core#prefLabel&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2003/01/geo/wgs84_pos#lat&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2003/01/geo/wgs84_pos#long&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2000/01/rdf-schema#domain&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2000/01/rdf-schema#range&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://www.w3.org/2002/07/owl#versionInfo&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://dbpedia.org/ontology/purpose&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://dbpedia.org/ontology/supplementalDraftRound&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://dbpedia.org/ontology/podiums&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;http://dbpedia.org/ontology/buildingStartDate&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4">cURL Variant using the timeout parameter with additional response header</bridgehead>
+<para>In this example, the Response header contains X-SPARQL-<ulink url="MaxRows">MaxRows</ulink>: 10000, which is used to indicate the maximum result set size of the instance, configured via [SPARQL] INI section entry.</para>
+<para>For Anytime Query, it means that determining timeout that triggers response with additional headers (due to partial results) is based on the combination of MaxRows and QueryTimeout; i.e., only when Virtuoso cannot produce the ResultSet that matches MaxRows within QueryTimeout setting, will there be a timeout condition accompanied by addition response headers.</para>
+<programlisting>curl -I &quot;http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&amp;query=SELECT+*+WHERE+%7B+%3Fs+%3Fp+%3Fo+.+%7D&amp;format=text%2Fhtml&amp;timeout=2000&amp;debug=on&quot;
+HTTP/1.1 200 OK
+Date: Fri, 12 Dec 2014 20:51:29 GMT
+Content-Type: text/html; charset=UTF-8
+Content-Length: 3804866
+Connection: keep-alive
+Vary: Accept-Encoding
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+X-SPARQL-default-graph: http://dbpedia.org
+*X-SPARQL-MaxRows: 10000*
+Expires: Fri, 19 Dec 2014 20:51:29 GMT
+Cache-Control: max-age=604800
+Accept-Ranges: bytes
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/anytimequeries.html">Product Documentation Section on Anytime Query Feature</ulink></listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,56 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--></p>
+<h1><a name="An Introduction to the Virtuoso Sponger"></a> An Introduction to the Virtuoso Sponger</h1>
+ <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%20is%20the%20Virtuoso%20Sponger%3F">What is the Virtuoso Sponger?</a></li> <li><a href="#Why%20Is%20It%20Important%3F">Why Is It Important?</a></li> <li><a href="#How%20Does%20It%20Work%3F">How Does It Work?</a></li>
+<ul><li><a href="#Sponger%20Architecture">Sponger Architecture</a></li><ul><li><a href="#Sponger%20Components">Sponger Components</a></li> <li><a href="#Web%20Service%20Interface">Web Service Interface</a></li> <li><a href="#Packaging%20%26%20Deliverables">Packaging &amp; Deliverables</a></li> </ul><li><a href="#Simple%20Usage%20Examples">Simple Usage Examples</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p> </p>
+<h2><a name="What is the Virtuoso Sponger?"></a> What is the Virtuoso Sponger?</h2>
+<p>The Sponger is a piece of built-in Virtuoso SPARQL Processor middleware, for extracting RDF &quot;on the fly&quot; from non-RDF Web Data Sources.</p>
+<h2><a name="Why Is It Important?"></a> Why Is It Important?</h2>
+<p>A majority of the world&#39;s data naturally resides in non-RDF form at the current time.
+ The &quot;Sponger&quot; is middleware that accelerates the bootstrap of the Semantic Data Web by unobtrusively generating RDF from non-RDF data sources.</p>
+<h2><a name="How Does It Work?"></a> How Does It Work?</h2>
+<p>When an RDF-aware client requests data from a network-accessible resource via the Sponger, the following events occur: </p>
+<ol><li>A request is made for data in RDF form, and if RDF is returned, no further transformation happens -- the RDF Entities are returned to the client </li>
+<li>If RDF isn&#39;t returned, then the Sponger passes the data through a Metadata Extraction Pipeline process (using Metadata Extractors) </li>
+<li>The extracted data is transformed to RDF via a Mapping Pipeline process (RDF is extracted by ontology matching and mapping) that generates RDF Entities (instance data) </li>
+<li>RDF Entities are returned to the client</li>
+</ol><p>The imported data forms a local cache with invalidation rules conforming to those of traditional HTTP clients (Web Browsers).
+ That is to say, expiration time is determined based on subsequent data fetches of the same resource (note: the first data load will record the &#39;<code>expires</code>&#39; header) with current time compared to expiration time stored in the local cache.
+ If  HTTP &#39;<code>expires</code>&#39; header data isn&#39;t returned by the source data server, then the Sponger will derive it&#39;s own invalidation time frame by evaluating the &#39;<code>date</code>&#39; header and &#39;<code>last-modified</code>&#39; HTTP headers.
+ Irrespective of path taken, local cache invalidation is driven by an assessment of  current time relative to recorded expiration time.</p>
+<h3><a name="Sponger Architecture"></a> Sponger Architecture</h3>
+<p>Architecturally, the Sponger is comprised of Cartridges which are themselves comprised of RDF Extractors (RDFizers) and Ontology (Schema) Mappers.</p>
+<p>The Schema Mappers are typically written with XSLT (e.g., GRDDL and other <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Mapping Schemes) or Virtuoso PL.
+ The Metadata Extractors may be developed in Virtuoso PL, C/C++, Java, or any other language that can be integrated into Virtuoso via its server extension APIs.</p>
+<h4><a name="Sponger Components"></a> Sponger Components</h4>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridge" class="wikiword">Cartridge</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeExtractor" class="wikiword">Ontology Mapper</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeOntologyMapper" class="wikiword">Target Ontology</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeRDFExtractor" class="wikiword">Data Extractor</a>, e.g., <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtProgrammerGuideRDFCartridge" class="wikiword">RDF Cartridge Programmer Guide</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerProxyWebServiceRest" class="wikiword">Proxy</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeSupportedDataSources" class="wikiword">OpenLink Cartridge-Supported Data Sources</a></li>
+</ul><h4><a name="Web Service Interface"></a> Web Service Interface</h4>
+<p>The Sponger can be used also via a Virtuoso built-in REST style Web Service, through the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerProxyWebServiceRest" class="wikiword">Proxy</a> endpoint of any Virtuoso installation.</p>
+<i> <b>Note</b>: The <code>cartridges_filesystem.vad</code> must be installed for the actual extraction and mapping to occur.
+ </i><p>The Sponger is very much like an implementation of cURL, exposed as a built-in Virtuoso Web Service (so you can interact with it as you do with Triples).</p>
+<h4><a name="Packaging &amp; Deliverables"></a> Packaging &amp; Deliverables</h4>
+<p>The RDF Cartridges (mappers and extractors) are packaged as Virtuoso VAD packages, easily installed via Virtuoso&#39;s ISQL interface or the browser-based Virtuoso Conductor.</p>
+<p> </p>
+<h3><a name="Simple Usage Examples"></a> Simple Usage Examples</h3>
+<p>Enter the following URIs into 3rd Party RDF Client Application or Service:</p>
+<ul><li><a href="http://demo.openlinksw.com/proxy?url=http://fgiasson.com&force=rdf" class="absuri">Virtuoso Demo Server Proxy</a> - same as using <code><a href="http://fgiasson.com" class="absuri">http://fgiasson.com</a></code> as a URI in the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Browser (which has built-in support for /proxy) </li>
+<li>A Googlebase Query Service URI for Job vacancies - <code><a href="http://www.google.com/base/feeds/snippets?bq=%20%5Bemployer:%20Hewlett-Packard%5D%20%20%5Bjob%20type:full-time%5D" class="absuri">http://www.google.com/base/feeds/snippets?bq=%20%5Bemployer:%20Hewlett-Packard%5D%20%20%5Bjob%20type:full-time%5D</a></code> </li>
+<li><a href="http://flickr.com/search/?w=all&q=semanticweb&m=tags" class="absuri">Non-RDF URI</a> to demonstrate the Sponger via: <ul><li><code><a href="http://dpedia.openlinksw.com:8890/proxy" class="absuri">http://dpedia.openlinksw.com:8890/proxy</a></code> </li>
+<li><code><a href="http://dbpedia.openlinksw.com:8890/DAV/JS/rdfbrowser/index.html" class="absuri">http://dbpedia.openlinksw.com:8890/DAV/JS/rdfbrowser/index.html</a></code> -- click on the <b>Images</b> tab</li>
+</ul></li>
+</ul><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://www.openlinksw.com/blog/~kidehen/?id=1172" class="absuri">Kingsley Idehen Weblog Post about RDF Middleware</a> </li>
+<li><a href="http://fgiasson.com/blog/index.php/2007/03/28/making-the-bridge-between-the-web-and-the-semantic-web" class="absuri">Frederick Giasson Weblog Post about RDF Middleware and including examples of &quot;/proxy&quot; usage</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparqlprotocolendpoint.html#rdfproxyservice" class="absuri">Sponger Proxy Service Documentation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/RDFMappers" class="wikiword">RDF Mappers Programmers Guide</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfiridereferencing.html" class="absuri">Documentation - Dereferencing URIs &amp; Linked Data</a></li>
+</ul><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a></p>
+<!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--></div></body></html>

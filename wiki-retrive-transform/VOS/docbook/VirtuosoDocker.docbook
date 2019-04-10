@@ -1,0 +1,82 @@
+<docbook><section><title>VirtuosoDocker</title><title> How to Deploy Virtuoso in a Docker Container</title> How to Deploy Virtuoso in a Docker Container
+<para>To simplify deployment, Virtuoso Open Source Edition can be run in a <ulink url="https://www.docker.com">Docker</ulink> container.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Building a VOS Base Image</bridgehead>
+<para>The Dockerfiles below provide two VOS images: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A base image which provides a compiled, installed VOS binary.
+</listitem>
+<listitem>A deployment image, built from the base image, which starts a VOS instance on the specified ports using the given VOS virtuoso.ini configuration file and, optionally, an existing Virtuoso database.</listitem>
+</itemizedlist><para>To build the base image: </para>
+<programlisting>docker build -f Dockerfile.vos_base -t openlink/vos_base:v0 .
+</programlisting><para> <ulink url="VirtuosoDocker/Dockerfile.vos_base">Dockerfile.vos_base</ulink> builds VOS from the VOS GitHub sources, as described in the <ulink url="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VOSUbuntuNotes#Building%20from%20Upstream%20Source">VOS Wiki</ulink>, and installs VOS in /opt/virtuoso-opensource.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Dockerfile.vos_base</bridgehead>
+<programlisting>FROM ubuntu:trusty
+
+ENV VIRT_HOME /opt/virtuoso-opensource
+
+ENV VIRT_BUILD_OPTS --with-readline
+
+ENV VIRT_DB /var/lib/virtuoso/db
+
+RUN apt-get -y update &amp;&amp; \
+  apt-get -y clean &amp;&amp; \
+  apt-get -y install dpkg-dev build-essential &amp;&amp; \
+  apt-get -y install autoconf automake libtool flex bison git gperf gawk m4 make libxml2-dev libssl-dev libreadline-dev wget &amp;&amp; \
+  rm -rf /var/lib/apt/lists/* &amp;&amp; \
+  rm -rf /tmp/*
+
+WORKDIR /opt
+RUN git clone git://github.com/openlink/virtuoso-opensource.git virtuoso-opensource.src
+WORKDIR /opt/virtuoso-opensource.src
+RUN git checkout develop/7
+RUN ./autogen.sh &amp;&amp; ./configure --prefix=$VIRT_HOME $VIRT_BUILD_OPTS &amp;&amp; make &amp;&amp; make install
+
+WORKDIR /opt/virtuoso-opensource/share/virtuoso/vad
+RUN wget http://download3.openlinksw.com/uda/vad-packages/7.2/cartridges_dav.vad 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Building a VOS Deployment Image</bridgehead>
+<para>To build the deployment image: </para>
+<programlisting>docker build -f Dockerfile.vos -t openlink/vos:v0 .
+</programlisting><para> The image created by <ulink url="VirtuosoDocker/Dockerfile.vos">Dockerfile.vos</ulink> runs Virtuoso in the foreground and assumes Virtuoso listens for HTTP connections on port 8890 and SQL connections on port 1111.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Dockerfile.vos</bridgehead>
+<programlisting>FROM openlink/vos_base:v0
+
+ENV VIRT_HOME /opt/virtuoso-opensource
+ENV VIRT_DB /opt/virtuoso-opensource/var/lib/virtuoso/db
+
+RUN export PATH=$PATH:/opt/virtuoso-opensource/bin
+
+EXPOSE 1111
+EXPOSE 8890
+
+WORKDIR $VIRT_DB
+CMD /opt/virtuoso-opensource/bin/virtuoso-t -f
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Running VOS within Docker</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Initializing a new database</bridgehead>
+<para>In order to retain changes to the Virtuoso database, the database should be held in the host file system.
+ The database location on the host should reflect the installation directory used by the base image.
+ Create directory /opt/virtuoso-opensource/var/lib/virtuoso/db in the host file system and provide a virtuoso.ini configuration file.
+</para>
+<programlisting>sudo mkdir -p /opt/virtuoso-opensource/var/lib/virtuoso/db
+
+sudo cp ./virtuoso.ini.template /opt/virtuoso-opensource/var/lib/virtuoso/db/virtuoso.ini
+</programlisting><para> The <ulink url="VirtuosoDocker/virtuoso.ini.template">virtuoso.ini.template</ulink> assumes the installation directory is /opt/virtuoso-opensource, with the Virtuoso HTTP server listening on port 8890 and SQL client connections made through port 1111.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Starting the VOS Container</bridgehead>
+<para>Start a VOS container by running: </para>
+<programlisting>sudo docker run -v /opt/virtuoso-opensource/var/lib/virtuoso/db:/opt/virtuoso-opensource/var/lib/virtuoso/db -t -p 1111:1111 -p 8890:8890 -i openlink/vos:v0
+</programlisting><para> If the db directory contains only a virtuoso.ini file, a new database will be created when the container is started for the first time.
+ All subsequent changes to the database will be persisted to the host file system.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Using an existing database</bridgehead>
+<para>If the db directory in the host file system contains an existing Virtuoso database, that database will be used by the container.
+ Again, all subsequent changes to the database will be persisted to the host file system.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Installing the Cartridges VAD</bridgehead>
+<para>The Virtuoso Sponger and its associated transformers are distributed as a VAD (Virtuoso Application Distribution).
+When a new database instance is created, VOS will automatically install the Virtuoso Conductor UI.
+ However it will not automatically install the Cartridges nor any other VAD.</para>
+<para>The latest Cartridges VAD is available for download from the <ulink url="http://virtuoso.openlinksw.com/download/">Virtuoso download page</ulink>, via the &quot;Linked Open Data Transformation Middleware (&quot;Sponger&quot;) link.
+ This VAD is automatically downloaded as part of the VOS base image build and included in the image at /opt/virtuoso-opensource/share/virtuoso/vad.</para>
+<para>Once a VOS instance has been initialized and the Cartridges or other VAD downloaded, the desired VAD can be installed by logging into the Virtuoso Conductor (http://{container_host}:8890/conductor), navigating to the <emphasis>System Admin</emphasis> --&gt; <emphasis>Packages</emphasis> tab, and clicking on the <emphasis>Install</emphasis> link.
+ Alternatively, iSQL may be used, with a command of this form: </para>
+<programlisting>DB.DBA.VAD_INSTALL(&#39;{vad-name}.vad&#39;,0);
+</programlisting><para> Once installed, enable the desired cartridges through the <emphasis>Linked Data</emphasis> --&gt; <emphasis>Sponger</emphasis> panel.</para>
+</section></docbook>

@@ -1,0 +1,84 @@
+<html><body><div class="topic-text"><h1><a name="How to Deploy Virtuoso in a Docker Container"></a> How to Deploy Virtuoso in a Docker Container</h1>
+<p>To simplify deployment, Virtuoso Open Source Edition can be run in a <a href="https://www.docker.com" class="absuri">Docker</a> container.</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Building%20a%20VOS%20Base%20Image">Building a VOS Base Image</a></li>
+<ul><li><a href="#Dockerfile.vos_base">Dockerfile.vos_base</a></li> </ul><li><a href="#Building%20a%20VOS%20Deployment%20Image">Building a VOS Deployment Image</a></li><ul><li><a href="#Dockerfile.vos">Dockerfile.vos</a></li> </ul><li><a href="#Running%20VOS%20within%20Docker">Running VOS within Docker</a></li><ul><li><a href="#Initializing%20a%20new%20database">Initializing a new database</a></li> <li><a href="#Starting%20the%20VOS%20Container">Starting the VOS Container</a></li> <li><a href="#Using%20an%20existing%20database">Using an existing database</a></li> <li><a href="#Installing%20the%20Cartridges%20VAD">Installing the Cartridges VAD</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Building a VOS Base Image"></a> Building a VOS Base Image</h2>
+<p>The Dockerfiles below provide two VOS images: </p>
+<ul><li>A base image which provides a compiled, installed VOS binary.
+</li>
+<li>A deployment image, built from the base image, which starts a VOS instance on the specified ports using the given VOS <code>virtuoso.ini</code> configuration file and, optionally, an existing Virtuoso database.</li>
+</ul><p>To build the base image: </p>
+<br><pre>docker build -f Dockerfile.vos_base -t openlink/vos_base:v0 .
+</pre><p> <code><a href="VirtuosoDocker/Dockerfile.vos_base" style="wikiautogen">Dockerfile.vos_base</a></code> builds VOS from the VOS GitHub sources, as described in the <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VOSUbuntuNotes#Building%20from%20Upstream%20Source" class="absuri">VOS Wiki</a>, and installs VOS in <code>/opt/virtuoso-opensource</code>.</p>
+<h3><a name="Dockerfile.vos_base"></a> Dockerfile.vos_base</h3>
+<br><pre>FROM ubuntu:trusty
+
+ENV VIRT_HOME /opt/virtuoso-opensource
+
+ENV VIRT_BUILD_OPTS --with-readline
+
+ENV VIRT_DB /var/lib/virtuoso/db
+
+RUN apt-get -y update &amp;&amp; \
+  apt-get -y clean &amp;&amp; \
+  apt-get -y install dpkg-dev build-essential &amp;&amp; \
+  apt-get -y install autoconf automake libtool flex bison git gperf gawk m4 make libxml2-dev libssl-dev libreadline-dev wget &amp;&amp; \
+  rm -rf /var/lib/apt/lists/* &amp;&amp; \
+  rm -rf /tmp/*
+
+WORKDIR /opt
+RUN git clone git://github.com/openlink/virtuoso-opensource.git virtuoso-opensource.src
+WORKDIR /opt/virtuoso-opensource.src
+RUN git checkout develop/7
+RUN ./autogen.sh &amp;&amp; ./configure --prefix=$VIRT_HOME $VIRT_BUILD_OPTS &amp;&amp; make &amp;&amp; make install
+
+WORKDIR /opt/virtuoso-opensource/share/virtuoso/vad
+RUN wget http://download3.openlinksw.com/uda/vad-packages/7.2/cartridges_dav.vad 
+</pre><p> </p>
+<h2><a name="Building a VOS Deployment Image"></a> Building a VOS Deployment Image</h2>
+<p>To build the deployment image: </p>
+<br><pre>docker build -f Dockerfile.vos -t openlink/vos:v0 .
+</pre><p> The image created by <code><a href="VirtuosoDocker/Dockerfile.vos" style="wikiautogen">Dockerfile.vos</a></code> runs Virtuoso in the foreground and assumes Virtuoso listens for HTTP connections on port <code>8890</code> and SQL connections on port <code>1111</code>.</p>
+<h3><a name="Dockerfile.vos"></a> Dockerfile.vos</h3>
+<br><pre>FROM openlink/vos_base:v0
+
+ENV VIRT_HOME /opt/virtuoso-opensource
+ENV VIRT_DB /opt/virtuoso-opensource/var/lib/virtuoso/db
+
+RUN export PATH=$PATH:/opt/virtuoso-opensource/bin
+
+EXPOSE 1111
+EXPOSE 8890
+
+WORKDIR $VIRT_DB
+CMD /opt/virtuoso-opensource/bin/virtuoso-t -f
+</pre><p> </p>
+<h2><a name="Running VOS within Docker"></a> Running VOS within Docker</h2>
+<h3><a name="Initializing a new database"></a> Initializing a new database</h3>
+<p>In order to retain changes to the Virtuoso database, the database should be held in the host file system.
+ The database location on the host should reflect the installation directory used by the base image.
+ Create directory <code>/opt/virtuoso-opensource/var/lib/virtuoso/db</code> in the host file system and provide a <code>virtuoso.ini</code> configuration file.
+</p>
+<br><pre>sudo mkdir -p /opt/virtuoso-opensource/var/lib/virtuoso/db
+
+sudo cp ./virtuoso.ini.template /opt/virtuoso-opensource/var/lib/virtuoso/db/virtuoso.ini
+</pre><p> The <code><a href="VirtuosoDocker/virtuoso.ini.template" style="wikiautogen">virtuoso.ini.template</a></code> assumes the installation directory is <code>/opt/virtuoso-opensource</code>, with the Virtuoso HTTP server listening on port <code>8890</code> and SQL client connections made through port <code>1111</code>.</p>
+<h3><a name="Starting the VOS Container"></a> Starting the VOS Container</h3>
+<p>Start a VOS container by running: </p>
+<br><pre>sudo docker run -v /opt/virtuoso-opensource/var/lib/virtuoso/db:/opt/virtuoso-opensource/var/lib/virtuoso/db -t -p 1111:1111 -p 8890:8890 -i openlink/vos:v0
+</pre><p> If the <code>db</code> directory contains only a <code>virtuoso.ini</code> file, a new database will be created when the container is started for the first time.
+ All subsequent changes to the database will be persisted to the host file system.</p>
+<h3><a name="Using an existing database"></a> Using an existing database</h3>
+<p>If the <code>db</code> directory in the host file system contains an existing Virtuoso database, that database will be used by the container.
+ Again, all subsequent changes to the database will be persisted to the host file system.</p>
+<h3><a name="Installing the Cartridges VAD"></a> Installing the Cartridges VAD</h3>
+<p>The Virtuoso Sponger and its associated transformers are distributed as a VAD (Virtuoso Application Distribution).
+When a new database instance is created, VOS will automatically install the Virtuoso Conductor UI.
+ However it will not automatically install the Cartridges nor any other VAD.</p>
+<p>The latest Cartridges VAD is available for download from the <a href="http://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso download page</a>, via the &quot;Linked Open Data Transformation Middleware (&quot;Sponger&quot;) link.
+ This VAD is automatically downloaded as part of the VOS base image build and included in the image at <code>/opt/virtuoso-opensource/share/virtuoso/vad</code>.</p>
+<p>Once a VOS instance has been initialized and the Cartridges or other VAD downloaded, the desired VAD can be installed by logging into the Virtuoso Conductor (<code>http://{container_host}:8890/conductor</code>), navigating to the <b>System Admin</b> --&gt; <b>Packages</b> tab, and clicking on the <b>Install</b> link.
+ Alternatively, <code>iSQL</code> may be used, with a command of this form: </p>
+<br><pre>DB.DBA.VAD_INSTALL(&#39;{vad-name}.vad&#39;,0);
+</pre><p> Once installed, enable the desired cartridges through the <b>Linked Data</b> --&gt; <b>Sponger</b> panel.</p>
+</div></body></html>

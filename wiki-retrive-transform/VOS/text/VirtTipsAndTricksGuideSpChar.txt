@@ -1,0 +1,59 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++How Can I execute SPARQL queries containing '$' character using ISQL?
+
+Assuming a SPARQL query should filter on the length of labels:
+
+<verbatim>
+SELECT ?label
+FROM <http://mygraph.com>
+WHERE 
+  { 
+    ?s ?p ?label
+    FILTER(regex(str(?label), "^.{1,256}$") )
+  } 
+</verbatim>
+
+[[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Flabel%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Flabel%0D%0A++++FILTER%28regex%28str%28%3Flabel%29%2C+%22%5E.%7B1%2C256%7D%24%22%29+%29%0D%0A++%7D+&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on][View the results]] of the query execution on the [[http://lod.openlinksw.com][LOD]] instance.
+
+ISQL uses '$' character as a prefix for macro names of its preprocessor. When '<b>$</b>' character is used in SPARQL query to be executed in ISQL, 
+the character should be replaced with '<b>$$</b>' notation or an escape char + numeric code:
+
+<verbatim>
+SQL> SPARQL 
+SELECT ?label
+FROM <http://mygraph.com>
+WHERE 
+  { 
+    ?s ?p ?label
+    FILTER(REGEX(str(?label), "^.{1,256}$$") )
+  } 
+</verbatim>
+
+[[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Flabel%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Flabel%0D%0A++++FILTER%28REGEX%28str%28%3Flabel%29%2C+%22%5E.%7B1%2C256%7D%24%24%22%29+%29%0D%0A++%7D+&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on][View the results]] of the query execution on the [[http://lod.openlinksw.com][LOD]] instance.
+
+
+Note also that the FILTER written in this way, finds <b>?label-s</b> with length less than 256.
+
+To achieve fast results, <b>REGEX</b> should be replaced with the <b>bif:length</b> function:
+
+<verbatim>
+SQL> SPARQL 
+SELECT ?label
+FROM <http://mygraph.com>
+WHERE 
+  { 
+    ?s ?p ?label
+    FILTER (bif:length(str(?label))<= 256)
+  } 
+</verbatim>
+
+In this way the SPARQL query execution can work much faster if the interoperability is not 
+required and <b>?label-s</b> are numerous.
+
+[[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Flabel%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Flabel%0D%0A++++FILTER+%28bif%3Alength%28str%28%3Flabel%29%29%3C%3D+256%29%0D%0A++%7D+&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on][View the results]] of the query execution on the [[http://lod.openlinksw.com][LOD]] instance.
+
+---+++Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfandsparql.html][RDF Data Access and Data Management]]

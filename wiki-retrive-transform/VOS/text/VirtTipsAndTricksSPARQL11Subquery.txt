@@ -1,0 +1,93 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection"}%
+
+---+Virtuoso SPARQL 1.1. Subqueries Usage Examples 
+
+
+---++What?
+This guide contains Virtuoso SPARQL 1.1. Subqueries  Usage example queries which you can run against 
+any SPARQL endpoint that supports SPARQL 1.1 and the ability to allow a verified user perform 
+INSERT operations. 
+
+---++Why?
+Using subqueries provides good readability. Certain types of problems can be stated more concisely, and 
+more efficiently, with subqueries.
+
+---++How?
+
+Here are some examples showcasing Virtuoso's support for this functionality:
+
+
+   1 Assume the following Raw Data Representation in Turtle:
+<verbatim>
+<http://people.example/alice> <http://people.example/name> "Alice", 
+                                                           "Alice Foo", 
+                                                           "A. Foo" . 
+<http://people.example/alice> <http://people.example/knows> <http://people.example/bob> ,  
+                                                            <http://people.example/carol> . 
+<http://people.example/bob>   <http://people.example/name> "Bob", 
+                                                           "Bob Bar",  
+                                                           "B. Bar" .  
+<http://people.example/carol> <http://people.example/name> "Carol",  
+                                                           "Carol Baz",  
+                                                           "C. Baz" . 
+</verbatim>
+   1 Beautified Raw Data Representation in Turtle (from above) using Namespace Prefix:
+<verbatim>
+<#alice> <#name> "Alice" . 
+<#alice> <#name> "Alice Foo" . 
+<#alice> <#name> "A. Foo" . 
+<#alice> <http://xmlns.com/foaf/0.1/knows> <#bob>, <#carol> . 
+<#bob>   <#name> "Bob" . 
+<#bob>   <#name> "Bob Bar" . 
+<#bob>   <#name> "B. Bar" . 
+<#carol> <#name> "Carol" . 
+<#carol> <#name> "Carol Baz" . 
+<#carol> <#name> "C. Baz" . 
+</verbatim>
+   1 Load the sample data:
+<verbatim>
+INSERT { 
+         GRAPH <urn:sparql:tests:subquery> 
+           { 
+             <#alice> <#name> "Alice" . 
+             <#alice> <#name> "Alice Foo" . 
+             <#alice> <#name>  "A. Foo" . 
+             <#alice> <http://xmlns.com/foaf/0.1/knows> <#bob>, <#carol> . 
+             <#bob>   <#name> "Bob" . 
+             <#bob>   <#name> "Bob Bar" . 
+             <#bob>   <#name> "B. Bar" . 
+             <#carol> <#name> "Carol" . 
+             <#carol> <#name> "Carol Baz" . 
+             <#carol> <#name> "C. Baz" . 
+           } 
+       }
+</verbatim>
+   1 Query the graph data by using a sub-query in the SPARQL query statement:
+<verbatim>
+SELECT ?y ?minName
+WHERE 
+  {
+    <#alice> <http://xmlns.com/foaf/0.1/knows> ?y .
+    {
+      SELECT ?y (MIN(?name) AS ?minName)
+      WHERE 
+        {
+          ?y <#name> ?name .
+        } 
+      GROUP BY ?y
+    }
+  }
+</verbatim>
+   1 [[http://bit.ly/YohiXp][View the SPARQL Query Definition via SPARQL Protocol URL]];
+   1 [[http://bit.ly/11eCdM5][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+
+---++Related
+
+   * [[http://www.w3.org/TR/2010/WD-sparql11-query-20100126/#subqueries][SPARQL 1.1 Subqueries]]
+   * [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol (HTTP based Query Service)]]  
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtTipsAndTricksSPARQL11FeaturesExamplesCollection][Virtuoso SPARQL 1.1 Usage Examples Collection]]
+   * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_9/SPARQL_Tutorials_Part_9.html][Virtuoso SPARQL 1.1 Syntax Tutorial]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]

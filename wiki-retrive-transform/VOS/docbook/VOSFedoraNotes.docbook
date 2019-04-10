@@ -1,0 +1,302 @@
+<docbook><section><title>VOSFedoraNotes</title><title>How to Install Virtuoso Open Source (VOS) on Fedora Core Linux</title>How to Install Virtuoso Open Source (VOS) on Fedora Core Linux
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Starting Point</bridgehead>
+<para>We start from a fresh Fedora Core Linux (14) installation.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Configuring the OS</bridgehead>
+<orderedlist spacing="compact"><listitem>As a baseline, we favor using <computeroutput>sudo</computeroutput> to run certain commands as the privileged root user, set up the instance for access via ssh and configure the firewall to permit remote access to ssh and Virtuoso: <programlisting>bash$ su
+bash# yum update
+bash# yum install openssh-server sudo
+bash# visudo
+bash# /etc/init.d/sshd start
+bash# chkconfig sshd on
+bash# setup
+</programlisting></listitem>
+<listitem>If you wish to access Virtuoso remotely, you need to open ports: <itemizedlist mark="bullet" spacing="compact"><listitem>8890/tcp - the web interface </listitem>
+<listitem>1111/tcp (optional) - the iSQL/ODBC port </listitem>
+</itemizedlist></listitem>
+<listitem>To this end, we run <computeroutput>setup</computeroutput> from a terminal command line.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Installing Virtuoso</bridgehead>
+<para>Fedora carries pre-built binary packages of Virtuoso, although they only give a minimalist server installation; you have the option of installing Virtuoso using these packages, or if a newer version is available upstream or you want to experience more of Virtuoso, you can build from source directly.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Installing Virtuoso with Fedora Packages</bridgehead>
+<orderedlist spacing="compact"><listitem>Fedora ship three packages for Virtuoso, tailored for minimalist usage patterns: <programlisting>[tim@fedora ~]$ yum search virtuoso
+Loaded plugins: langpacks, presto, refresh-packagekit
+[...]
+============================== Matched: virtuoso ===============================
+redland-virtuoso.i686 : Virtuoso storage support for Redland
+virtuoso-opensource.i686 : A high-performance object-relational SQL database
+virtuoso-opensource-utils.i686 : Utilities
+</programlisting></listitem>
+<listitem>The packages contain: <itemizedlist mark="bullet" spacing="compact"><listitem>virtuoso-opensource -- the bare minimum to run the Virtuoso server with a default config file </listitem>
+<listitem>virtuoso-opensource-utils -- the <computeroutput>isql</computeroutput> command for commandline interaction and the virt_mail SMTP handler </listitem>
+<listitem>redland-virtuoso -- a backend to use Virtuoso for storage behind the Redland RDF libraries </listitem>
+</itemizedlist></listitem>
+<listitem>For the purposes at hand, we install the first two packages: <programlisting>[tim@fedora ~]$ sudo yum install redland-virtuoso virtuoso-opensource{,-utils}
+[sudo] password for tim: 
+Loaded plugins: langpacks, presto, refresh-packagekit
+Adding en_GB to language list
+Setting up Install Process
+Resolving Dependencies
+[...]
+Dependencies Resolved
+
+================================================================================
+ Package                        Arch      Version            Repository    Size
+================================================================================
+Installing:
+ redland-virtuoso               i686      1.0.12-1.fc14      updates       26 k
+ virtuoso-opensource            i686      6.1.2-1.fc14       fedora       3.8 M
+ virtuoso-opensource-utils      i686      6.1.2-1.fc14       fedora        99 k
+Installing for dependencies:
+ libiodbc                       i686      3.52.7-1.fc12      fedora       163 k
+
+Transaction Summary
+================================================================================
+Install       4 Package(s)
+
+Total download size: 4.0 M
+Installed size: 13 M
+[tim@fedora ~]$ 
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Starting an Instance</bridgehead>
+<orderedlist spacing="compact"><listitem>Virtuoso instances center around a configuration file, nominally called virtuoso.ini, so typically you copy this file into a directory of its own and the first time Virtuoso runs against it, it creates the empty database (virtuoso.db) and other support files alongside.
+</listitem>
+<listitem>Fedora have packaged virtuoso.ini in two locations; one, in /etc/virtuoso/, for future reference; and a symbolic link in /var/lib/virtuoso/db/virtuoso.ini so the instance can be run under /var/lib/ where it belongs.
+</listitem>
+<listitem>If you wish to run virtuoso as a non-root user (for security reasons), you should change the ownership on /var/lib/virtuoso/db/ accordingly: <programlisting>[tim@fedora db]$ cd /var/lib/virtuoso/db
+[tim@fedora db]$ sudo chown tim .
+[sudo] password for tim: 
+[tim@fedora db]$ ls -la
+total 8
+drwxr-xr-x. 2 tim  root 4096 May 18 12:55 .
+drwxr-xr-x. 3 root root 4096 May 18 12:55 ..
+lrwxrwxrwx. 1 root root   37 May 18 12:55 virtuoso.ini -&gt; ../../../../etc/virtuoso/virtuoso.ini
+</programlisting></listitem>
+<listitem>To start the instance using the default config file: <programlisting>[tim@fedora db]$ cd /var/lib/virtuoso/db
+[tim@fedora db]$ virtuoso-t -df
+
+                Wed May 18 2011
+16:33:22 INFO: { Loading plugin 1: Type `plain&#39;, file `wikiv&#39; in `/usr/lib/virtuoso/hosting&#39;
+16:33:22 ERROR:   FAILED  plugin 1: Unable to locate file }
+16:33:22 INFO: { Loading plugin 2: Type `plain&#39;, file `mediawiki&#39; in `/usr/lib/virtuoso/hosting&#39;
+16:33:22 ERROR:   FAILED  plugin 2: Unable to locate file }
+16:33:22 INFO: { Loading plugin 3: Type `plain&#39;, file `creolewiki&#39; in `/usr/lib/virtuoso/hosting&#39;
+16:33:22 ERROR:   FAILED  plugin 3: Unable to locate file }
+16:33:22 INFO: OpenLink Virtuoso Universal Server
+16:33:22 INFO: Version 06.01.3127-pthreads for Linux as of Jul 22 2010
+16:33:22 INFO: uses parts of OpenSSL, PCRE, Html Tidy
+16:33:22 INFO: SQL Optimizer enabled (max 1000 layouts)
+16:33:23 INFO: Compiler unit is timed at 0.003372 msec
+16:33:26 INFO: Checkpoint started
+16:33:26 INFO: Roll forward started
+16:33:26 INFO: Roll forward complete
+16:33:26 INFO: Checkpoint started
+16:33:26 INFO: Checkpoint finished, log reused
+16:33:27 INFO: Checkpoint started
+16:33:27 INFO: Checkpoint finished, log reused
+16:33:27 INFO: Checkpoint started
+16:33:27 INFO: Checkpoint finished, log reused
+16:33:27 INFO: Checkpoint started
+16:33:27 INFO: Checkpoint finished, log reused
+16:33:27 INFO: HTTP/WebDAV server online at 8890
+16:33:27 INFO: Server online at 1111 (pid 2260)
+</programlisting></listitem>
+<listitem>From here, you can access the web-server by pointing your browser at http://hostname:8890/.
+</listitem>
+<listitem>To access the server using the command-line isql tool, first you need to create an ODBC datasource; given this is a system-wide installation, edit /etc/odbc.ini to contain the following configuration: <programlisting>[Local Virtuoso]
+Driver=/usr/lib/virtodbc_r.so
+Address=127.0.0.1
+Port=1111
+UID=dba
+</programlisting></listitem>
+<listitem>Then you can run isql with an ODBC connect string on the command line: <programlisting>[tim@fedora ~]$ /usr/libexec/virtuoso/isql &quot;DSN=Local Virtuoso;UID=dba;PWD=dba&quot;
+OpenLink Interactive SQL (ODBC), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; tables;
+connected with connection string &quot;DSN=Local Virtuoso;UID=dba;PWD=dba&quot;. 
+Completed as: &quot;DSN=Local Virtuoso;UID=dba;PWD=dba;HOST=127.0.0.1&quot;, length=49.
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+Showing SQLTables of tables like &#39;NULL.NULL.NULL&#39;, tabletype/colname like &#39;NULL&#39;
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+DB               DBA              ADM_XML_VIEWS    SYSTEM TABLE     NULL
+DB               DBA              ALL_COL_HIST     SYSTEM TABLE     NULL
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Building Virtuoso from Source</bridgehead>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Building from Upstream Source</bridgehead>
+ <para><emphasis>Note</emphasis>: Useful prior reading: please see the pages <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSBuild">VOSBuild</ulink> and <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSMake">VOSMake</ulink> in the VOS Wiki.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Dependencies</bridgehead>
+<para>Proceed to install the required build dependencies: </para>
+<programlisting>[tim@fedora C]$ sudo yum install autoconf automake libtool flex bison gperf \
+	gawk m4 make openssl-devel readline-devel
+[sudo] password for tim: 
+Loaded plugins: langpacks, presto, refresh-packagekit
+Adding en_GB to language list
+Setting up Install Process
+Package gawk-3.1.8-3.fc14.i686 already installed and latest version
+Package m4-1.4.14-1.fc14.i686 already installed and latest version
+Package 1:make-3.82-3.fc14.i686 already installed and latest version
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package autoconf.noarch 0:2.66-2.fc14 set to be installed
+...
+  Installing     : autoconf-2.66-2.fc14.noarch                            28/31 
+  Installing     : automake-1.11.1-5.fc14.noarch                          29/31 
+  Installing     : libtool-2.2.10-3.fc14.i686                             30/31 
+  Installing     : openssl-devel-1.0.0d-1.fc14.i686                       31/31 
+
+Installed:
+  autoconf.noarch 0:2.66-2.fc14            automake.noarch 0:1.11.1-5.fc14      
+  bison.i686 0:2.4.3-1.fc14                flex.i686 0:2.5.35-11.fc14           
+  gperf.i686 0:3.0.4-2.fc14                libtool.i686 0:2.2.10-3.fc14         
+  openssl-devel.i686 0:1.0.0d-1.fc14      
+...
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Unpacking</bridgehead>
+<para>Download the latest VOS archive (source tarball such as virtuoso-opensource-6.1.3.tar.gz) from <ulink url="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VOSDownload#Latest%20source%20code%20on%20Github">GitHub</ulink> and unpack it:</para>
+<programlisting>
+[tim@fedora C]$ tar xvpfz virtuoso-opensource-6.1.3.tar.gz 
+virtuoso-opensource-6.1.3/
+virtuoso-opensource-6.1.3/bin/
+virtuoso-opensource-6.1.3/bin/installer/
+virtuoso-opensource-6.1.3/bin/installer/virtuoso.ini
+...
+[tim@fedora C]$ cd virtuoso-opensource-6.1.3
+[tim@fedora virtuoso-opensource-6.1.3]$ 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Configuring</bridgehead>
+<orderedlist spacing="compact"><listitem>For the purposes of this demonstration, we use a simple configuration with no frills: <programlisting>[tim@fedora virtuoso-opensource-6.1.3]$ ./configure --prefix=/usr/local/ \
+&gt;  --with-readline --program-transform-name=&quot;s/isql/isql-v/&quot;
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+...
+</programlisting></listitem>
+<listitem>There are many other options that can be specified at this stage, to enable/disable the building of language-hosting plugins (Perl, Python, Ruby) or various VAD packages (sub-packages within Virtuoso); for more on these, read the relevant README files in the source distribution and run `<computeroutput>./configure --help</computeroutput>&#39;.
+</listitem>
+<listitem>Here we settle for asking for readline support, ie the ability to cursor-up/down and use typical readline key-combinations in the commandline <computeroutput>isql</computeroutput> tool once built.</listitem>
+</orderedlist><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:h6Aside: VOS component locations</span>
+<orderedlist spacing="compact"><listitem>Virtuoso instances usually take the form of a designated directory somewhere in the filesystem, centred around a configuration file (nominally virtuoso.ini) which specifies operational parameters such as the filenames of database page-files to use, port-numbers to use, numbers of threads and buffers, etc.
+</listitem>
+<listitem>In the above command, we specify a prefix of /usr/local to Virtuoso&#39;s <computeroutput>./configure</computeroutput> script.
+ This forms a base directory under which Virtuoso will create/use the following structure: <itemizedlist mark="bullet" spacing="compact"><listitem>/usr/local/lib/ <itemizedlist mark="bullet" spacing="compact"><listitem>various libraries for Sesame, JDBC, Jena, Hibernate, and hosting </listitem>
+</itemizedlist></listitem>
+<listitem>/usr/local/bin <itemizedlist mark="bullet" spacing="compact"><listitem>where the main executables (virtuoso-t, isql) live </listitem>
+</itemizedlist></listitem>
+<listitem>/usr/local/share/virtuoso/vad <itemizedlist mark="bullet" spacing="compact"><listitem>used to store VAD archives prior to installation in an instance </listitem>
+</itemizedlist></listitem>
+<listitem>/usr/local/share/virtuoso/doc <itemizedlist mark="bullet" spacing="compact"><listitem>local offline documentation </listitem>
+</itemizedlist></listitem>
+<listitem>/usr/local/var/lib/virtuoso/db <itemizedlist mark="bullet" spacing="compact"><listitem>the default location for a virtuoso instance </listitem>
+</itemizedlist></listitem>
+<listitem>/usr/local/var/lib/virtuoso/vsp <itemizedlist mark="bullet" spacing="compact"><listitem>various VSP scripts - the default homepage before the Conductor is installed </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem>Other directory-structures are possible by specifying variously: <itemizedlist mark="bullet" spacing="compact"><listitem>individual configure options such as --bindir, --libdir, etc.
+</listitem>
+<listitem>--with-layout={GNU|Debian|Gentoo|RedHat|FreeBSD|opt|OpenLink} where each layout specifies a set of locations where the VADs, documentation (HTML and PDF), demo and default instance databases, and hosting libraries will be installed, each compatible with the packaging requirements of the named OS distribution (&quot;opt&quot; means a prefix of /opt and OpenLink is the default, detailed above).</listitem>
+</itemizedlist></listitem>
+</orderedlist><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:h6Aside: isql name conflict</span>
+<para>Unfortunately, both unixODBC and Virtutoso provide a command `<computeroutput>isql</computeroutput>&#39;, used to access data-sources from the command-line (in unixODBC, an ODBC datasource; in Virtuoso, the SQL interface).</para>
+<para>In order to allow both packages to coexist, it is reasonable to rename Virutoso&#39;s isql command to <computeroutput>isql-v</computeroutput>.</para>
+<para>Given that we are installing Virtuoso from source to a different prefix (/usr/local), it is not absolutely necessary to do the same here, but to avoid having to specify different PATH considerations and make life easier, the <computeroutput>configure</computeroutput> command above reflects this as well.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Building and Installing</bridgehead>
+<orderedlist spacing="compact"><listitem>Having chosen some configure options, run make: <programlisting>[tim@fedora virtuoso-opensource-6.1.3]$ nice make
+Making all in .
+make[1]: Entering directory `/home/tim/C/virtuoso-opensource-6.1.3&#39;
+make[1]: Nothing to be done for `all-am&#39;.
+make[1]: Leaving directory `/home/tim/C/virtuoso-opensource-6.1.3&#39;
+Making all in docsrc
+make[1]: Entering directory `/home/tim/C/virtuoso-opensource-6.1.3/docsrc&#39;
+...
+
+make[2]: Nothing to be done for `all-am&#39;.
+make[2]: Leaving directory `/home/tim/C/virtuoso-opensource-6.1.3/appsrc&#39;
+make[1]: Leaving directory `/home/tim/C/virtuoso-opensource-6.1.3/appsrc&#39;
+[tim@fedora virtuoso-opensource-6.1.3]$ 
+</programlisting></listitem>
+<listitem>Optionally, you can run `make check&#39; to run the test-suite (beware, it takes some hours and multiple gigabytes of disk-space).
+<programlisting>[tim@fedora virtuoso-opensource-6.1.3]$ nice make check
+</programlisting></listitem>
+<listitem>Install it to the directory-structure chosen above: <programlisting>[tim@fedora virtuoso-opensource-6.1.3]$ sudo make install
+[sudo] password for tim: 
+Making install in .
+make[1]: Entering directory `/home/tim/C/virtuoso-opensource-6.1.3&#39;
+make[2]: Entering directory `/home/tim/C/virtuoso-opensource-6.1.3&#39;
+make[2]: Nothing to be done for `install-exec-am&#39;.
+test -z &quot;/usr/local/share/virtuoso/doc&quot; || /bin/mkdir -p &quot;/usr/local/share/virtuoso/doc&quot;
+/usr/bin/install -c -m 644 AUTHORS COPYING CREDITS INSTALL 
+...
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Getting Started</bridgehead>
+<orderedlist spacing="compact"><listitem>Take a copy of the default virtuoso.ini and store it safely in case of making erroneous changes.
+</listitem>
+<listitem>Change into the default database directory: <programlisting>[tim@fedora virtuoso-opensource-6.1.3]$ cd /usr/local/var/lib/virtuoso/db/
+[tim@fedora db]$ ls
+virtuoso.ini  virtuoso.ini.sample
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>(At this point, if you wish to run virtuoso as a non-root user you should change the ownership on this directory, e.g.
+ <computeroutput>sudo chown -R tim .</computeroutput> . Virtuoso only requires root if you wish to use it as a webserver listening on port 80; by default it listens only on high ports.) </listitem>
+</itemizedlist></listitem>
+<listitem>Start the server: <programlisting>[tim@fedora db]$ virtuoso-t  -df
+
+                Thu May 19 2011
+01:33:03 INFO: { Loading plugin 1: Type `plain&#39;, file `wikiv&#39; in `/usr/local/lib/virtuoso/hosting&#39;
+01:33:03 INFO:   WikiV version 0.6 from OpenLink Software
+01:33:03 INFO:   Support functions for WikiV collaboration tool
+01:33:03 INFO:   SUCCESS plugin 1: loaded from /usr/local/lib/virtuoso/hosting/wikiv.so }
+01:33:03 INFO: { Loading plugin 2: Type `plain&#39;, file `mediawiki&#39; in `/usr/local/lib/virtuoso/hosting&#39;
+...
+01:33:17 INFO: Checkpoint finished, log reused
+01:33:17 INFO: Checkpoint started
+01:33:18 INFO: Checkpoint finished, log reused
+01:33:18 INFO: HTTP/WebDAV server online at 8890
+01:33:18 INFO: Server online at 1111 (pid 27873)
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>Here we see the server running in foreground mode with maximum debugging information.
+ Because it&#39;s the first time this instance has been run, Virtuoso has created a bunch of database files (virtuoso.db, virtuoso.trx (the transaction log), etc) and installed the Conductor VAD package into the database.
+</listitem>
+<listitem>If you close your terminal while this command is running, Virtuoso will stop.
+ To run it as a daemon instead, omit the &quot;-df&quot; options.
+ You can still see most of what&#39;s happening by running <computeroutput>tail -f virtuoso.log</computeroutput>.</listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Using Virtuoso</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Web-based UI</bridgehead>
+<para>You can access the Conductor menu by pointing your web-browser at <ulink url="http://localhost:8890/conductor/">http://localhost:8890/conductor/</ulink> (substitute hostname as appropriate).</para>
+<para>From the Conductor you can manage users and automated backups, install VAD packages, execute SQL commands in a web-based iSQL tool, configure the RDF Sponger and loads more.</para>
+<para>There are two system users of immediate importance: dba (the relational data administrative account) and dav (the <ulink url="WebDAV">WebDAV</ulink> adminstrative account).
+ By default both these accounts have their passwords set the same as the respective usernames; it is highly advised that you change these as soon as possible for security reasons.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Command-line</bridgehead>
+<para>Virtuoso provides a SQL/ODBC listener on port 1111/tcp.
+ You can connect directly to this and execute SQL statements using the isql tool:</para>
+<programlisting>[tim@fedora ~]$ /usr/local/bin/isql-v
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; tables;
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+Showing SQLTables of tables like &#39;NULL.NULL.NULL&#39;, tabletype/colname like &#39;NULL&#39;
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+[...]
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Resource Usage</bridgehead>
+<para>Virtuoso is highly configurable: the same executables and packages will service anything from a small &quot;lite-mode&quot; installation with a database of 10Mb up to a huge multi-user enterprise installation with terabytes of data.</para>
+<para>The defaults with Virtuoso Open-Source give a 160MB process size in memory, about 29MB database and total 237MB footprint on disk; this has 20 threads running for database and/or web-server use.</para>
+<para>The wiki document <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSScale">VOSScale</ulink> describes how to scale Virtuoso in some detail.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VOSUbuntuNotes">Ubuntu</ulink> </listitem>
+<listitem><ulink url="VOSDebianNotes">Debian</ulink> </listitem>
+<listitem><ulink url="VOSCentosNotes">CentOS</ulink></listitem>
+</itemizedlist></section></docbook>

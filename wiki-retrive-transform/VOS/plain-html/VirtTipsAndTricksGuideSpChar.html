@@ -1,0 +1,38 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h2><a name="How Can I execute SPARQL queries containing '$' character using ISQL?"></a>How Can I execute SPARQL queries containing &#39;$&#39; character using ISQL?</h2>
+<p>Assuming a SPARQL query should filter on the length of labels:</p>
+<br><pre>SELECT ?label
+FROM &lt;http://mygraph.com&gt;
+WHERE 
+  { 
+    ?s ?p ?label
+    FILTER(regex(str(?label), &quot;^.{1,256}$&quot;) )
+  } 
+</pre><p> <a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Flabel%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Flabel%0D%0A++++FILTER%28regex%28str%28%3Flabel%29%2C+%22%5E.%7B1%2C256%7D%24%22%29+%29%0D%0A++%7D+&amp;should-sponge=&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=15000&debug=on" class="absuri">View the results</a> of the query execution on the <a href="http://lod.openlinksw.com" class="absuri">LOD</a> instance.</p>
+<p>ISQL uses &#39;$&#39; character as a prefix for macro names of its preprocessor.
+ When &#39;<b>$</b>&#39; character is used in SPARQL query to be executed in ISQL, the character should be replaced with &#39;<b>$$</b>&#39; notation or an escape char + numeric code:</p>
+<br><pre>SQL&gt; SPARQL 
+SELECT ?label
+FROM &lt;http://mygraph.com&gt;
+WHERE 
+  { 
+    ?s ?p ?label
+    FILTER(REGEX(str(?label), &quot;^.{1,256}$$&quot;) )
+  } 
+</pre><p> <a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Flabel%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Flabel%0D%0A++++FILTER%28REGEX%28str%28%3Flabel%29%2C+%22%5E.%7B1%2C256%7D%24%24%22%29+%29%0D%0A++%7D+&amp;should-sponge=&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=15000&debug=on" class="absuri">View the results</a> of the query execution on the <a href="http://lod.openlinksw.com" class="absuri">LOD</a> instance.</p>
+<p> Note also that the FILTER written in this way, finds <b>?label-s</b> with length less than 256.</p>
+<p>To achieve fast results, <b>REGEX</b> should be replaced with the <b>bif:length</b> function:</p>
+<br><pre>SQL&gt; SPARQL 
+SELECT ?label
+FROM &lt;http://mygraph.com&gt;
+WHERE 
+  { 
+    ?s ?p ?label
+    FILTER (bif:length(str(?label))&lt;= 256)
+  } 
+</pre><p> In this way the SPARQL query execution can work much faster if the interoperability is not required and <b>?label-s</b> are numerous.</p>
+<p><a href="http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Flabel%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Flabel%0D%0A++++FILTER+%28bif%3Alength%28str%28%3Flabel%29%29%3C%3D+256%29%0D%0A++%7D+&amp;should-sponge=&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=15000&debug=on" class="absuri">View the results</a> of the query execution on the <a href="http://lod.openlinksw.com" class="absuri">LOD</a> instance.</p>
+<h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfandsparql.html" class="absuri">RDF Data Access and Data Management</a> </li>
+</ul></div></body></html>

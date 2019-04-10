@@ -1,0 +1,45 @@
+<docbook><section><title>VirtTipsAndTricksManageSSLProtocols</title><title> Managing SSL Protocols and Ciphers used with Virtuoso</title> Managing SSL Protocols and Ciphers used with Virtuoso
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What</bridgehead>
+<para>As of Virtuoso 7.2, SSL protocol and cipher support is now configurable for connections from all HTTP, ODBC, JDBC, ADO.NET, and OLE-DB clients.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Why</bridgehead>
+<para>Default binding to OpenSSL can expose Virtuoso instances to version- and cipher-specific SSL vulnerabilities (e.g., recent <ulink url="http://security.stackexchange.com/questions/70719/ssl3-poodle-vulnerability">Poodle exploit</ulink>).
+ Being able to scope Virtuoso&#39;s use of SSL to one or more specific versions provides instance administrators better protection against a moving target.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Basic SSL Protocol Configuration</bridgehead>
+<para>Basic configuration is through the <emphasis>SSL_Protocols</emphasis> values in the [Parameters] and [HTTP] sections of the Virtuoso INI file.
+ These are comma+space-separated (&quot;, &quot;) value lists.
+ Including a protocol name explicitly enables it; preceding the protocol name with an exclamation point (&quot;!&quot;) explicitly disables it.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Supported SSL Protocols and INI keyword values</bridgehead>
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry>  SSLv2               </entry><entry>   <emphasis>—</emphasis>          </entry><entry> Permanently disabled.                                                                  </entry></row>
+<row><entry>  SSLv3               </entry><entry>   SSLv3      </entry><entry> Disabled by default.  To our knowledge, only required by IE6/Windows XP clients.       </entry></row>
+<row><entry>  TLSv1               </entry><entry>   TLSv1      </entry><entry> Enabled by default.                                                                    </entry></row>
+<row><entry>  TLSv1.1             </entry><entry>   TLSv1.1    </entry><entry> Enabled by default, supported if available in local openssl library.      </entry></row>
+<row><entry>  TLSv1.2             </entry><entry>   TLSv1.2    </entry><entry> Enabled by default, supported if available in local openssl library.      </entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Advanced SSL Cipher List Configuration</bridgehead>
+<para>The <emphasis>SSL_Cipher_List</emphasis> values in the [Parameters] and [HTTP] stanzas of the Virtuoso INI file may also be adjusted, to disable particular ciphers when there are security reports about some new attack that breaks them.
+ These are colon-separated (&quot;:&quot;) value lists.</para>
+<para>Including a protocol name or groupname explicitly enables it; preceding the protocol name with an exclamation point (&quot;!&quot;) explicitly disables it.
+ You can review the ciphers supported by your local OpenSSL library with the command </para>
+<programlisting>openssl ciphers -v ALL
+</programlisting><para> For instance, we recommend explicitly forbidding anonymous cipher suites (i.e., ones that don?t use certificates, and are therefore susceptible to man-in-the-middle attacks) using <emphasis>!aNULL</emphasis>.</para>
+<para>We also recommend including <emphasis>@STRENGTH</emphasis> at the end of the list, so that OpenSSL will prioritize the enabled ciphers by key length, regardless of the list order.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Recommended Settings</bridgehead>
+<para>The sample settings below provide a reasonable tradeoff of security versus flexibility.
+ As shown, we have enabled SSLv3 on the HTTPS ports for IE6 users, but left this disabled on the SQL data port.
+</para>
+<programlisting>[Parameters]
+SSL_Protocols	= TLSv1, TLSv1.1, TLSv1.2
+SSL_Cipher_List = HIGH:!aNULL:!eNULL:!RC4:!DES:!MD5:!PSK:!SRP:!KRB5:!SSLv2:!EXP:!MEDIUM:!LOW:!DES-CBC-SHA:@STRENGTH
+
+[HTTP]
+SSL_Protocols	= SSLv3, TLSv1, TLSv1.1, TLSv1.2
+SSL_Cipher_List = HIGH:!aNULL:!eNULL:!RC4:!DES:!MD5:!PSK:!SRP:!KRB5:!SSLv2:!EXP:!MEDIUM:!LOW:!DES-CBC-SHA:@STRENGTH
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://security.stackexchange.com/questions/70719/ssl3-poodle-vulnerability">SSL 3.0 and Poodle Vulnerability</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink></listitem>
+</itemizedlist></section></docbook>

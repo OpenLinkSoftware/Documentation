@@ -1,0 +1,132 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtSetCrawlerJobsGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtSetCrawlerJobsGuide"}%--><h1><a name="Example of Store and Extract functions for Setting up Crawler Jobs for Semantic Sitemaps -- a variation of standard sitemap"></a>Example of Store and Extract functions for Setting up Crawler Jobs for Semantic Sitemaps -- a variation of standard sitemap</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Example%20of%20Extract%20Function">Example of Extract Function</a></li> <li><a href="#Example%20of%20Store%20Function">Example of Store Function</a></li> <li><a href="#Related">Related</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Example of Extract Function"></a>Example of Extract Function</h2>
+<p> </p>
+<br><pre>use WS;
+
+create procedure WS.WS.SITEMAP_BB_PARSE (
+  in _host varchar, 
+  in _url varchar, 
+  in _root varchar, 
+  inout _content varchar,  
+  in _c_type varchar := null, 
+  in lev int := 0))
+{
+  --pl_debug+
+  declare xt, xp, graph any;
+  declare inx int;
+
+--  dbg_obj_print (&#39;WS.WS.GET_URLS_SITEMAP&#39;, _url);
+
+  declare exit handler for sqlstate &#39;*&#39;
+    {
+--      dbg_obj_print (__SQL_MESSAGE);
+      return;
+    };
+
+  if (_url like &#39;%.xml.gz&#39;)
+    {
+      _content := gzip_uncompress (_content); 
+    }
+
+  if (_url like &#39;%.xml&#39; or _url like &#39;%.xml.gz&#39; or _url like &#39;%.rdf&#39;)
+    {
+      xt := xtree_doc (_content);
+      if (xpath_eval (&#39;/urlset/dataset&#39;, xt) is not null)
+	{
+	  xp := xpath_eval (&#39;/urlset/dataset/dataDumpLocation/text()&#39;, xt, 0);
+	  graph := cast (xpath_eval (&#39;/urlset/dataset/datasetURI/text()&#39;, xt) as varchar);
+	  if (length (graph))
+	    update VFS_SITE set VS_UDATA = serialize (vector (&#39;graph&#39;, graph)) where VS_HOST = _host and VS_ROOT = _root;
+	  inx := 0;
+	  foreach (any u in xp) do
+	    {
+	      declare hf, host, url varchar;
+
+	      u := cast (u as varchar);
+	      hf := WS.WS.PARSE_URI (u);
+	      host := hf[1];
+	      --dbg_obj_print (&#39;WS.WS.GET_URLS_SITEMAP PARSE&#39;, u);
+	      url := hf[2];
+	      insert soft VFS_QUEUE (VQ_HOST, VQ_TS, VQ_URL, VQ_STAT, VQ_ROOT, VQ_OTHER) 
+		  values (host, now (), url, &#39;waiting&#39;, _root, NULL); 
+	      if (row_count () = 0)
+		update VFS_QUEUE set VQ_STAT = &#39;waiting&#39;, VQ_TS = now () where VQ_HOST = host and VQ_ROOT = _root and VQ_URL = url;
+	      inx := inx + 1;
+	    }
+	}
+      if (xpath_eval (&#39;/sitemapindex/sitemap/loc&#39;, xt) is not null)
+	{
+	  xp := xpath_eval (&#39;/sitemapindex/sitemap/loc/text()&#39;, xt, 0);
+	  inx := 0;
+	  foreach (any u in xp) do
+	    {
+	      declare hf, host, url varchar;
+
+	      u := trim (cast (u as varchar));
+	      hf := WS.WS.PARSE_URI (u);
+	      host := hf[1];
+--	      dbg_obj_print (&#39;WS.WS.GET_URLS_SITEMAP&#39;, host, _host);
+	      url := hf[2];
+	      if (url &lt;&gt; &#39;&#39;)
+		{
+		  insert soft VFS_QUEUE (VQ_HOST, VQ_TS, VQ_URL, VQ_STAT, VQ_ROOT, VQ_OTHER) 
+		      values (host, now (), url, &#39;waiting&#39;, _root, NULL); 
+		  if (row_count () = 0)
+		    update VFS_QUEUE set VQ_STAT = &#39;waiting&#39;, VQ_TS = now () where VQ_HOST = host and VQ_ROOT = _root and VQ_URL = url;
+		  inx := inx + 1;
+		}
+	    }
+	}
+    }
+  commit work;
+}
+;
+
+</pre><h2><a name="Example of Store Function"></a>Example of Store Function</h2>
+<p> </p>
+<br><pre>use WS;
+
+create procedure WS.WS.SITEMAP_BB_STORE (
+  in _host varchar, 
+  in _url varchar, 
+  in _root varchar,
+  inout _content varchar, 
+  in _s_etag varchar, 
+  in _c_type varchar,
+  in store_flag int := 1, 
+  in udata any := null,
+  in lev int := 0)
+{
+  --pl_debug+
+  declare graph varchar;
+
+--  dbg_obj_print (&#39;WS.WS.SITEMAP_BB_STORE&#39;, _url, udata);
+  if (isarray (udata))
+    graph := get_keyword (&#39;graph&#39;, udata);
+  else  
+    graph := null;
+
+  if (graph is not null and _url like &#39;%.rdf&#39;)
+    {
+      DB.DBA.RDF_LOAD_RDFXML (_content, graph, graph);
+      DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+    }
+  insert soft VFS_URL (VU_HOST, VU_URL, VU_CHKSUM, VU_CPTIME, VU_ETAG, VU_ROOT)
+      values (_host, _url, md5 (_content), now (), _s_etag, _root);
+  if (row_count () = 0)
+    update VFS_URL set VU_CHKSUM = md5 (_content), VU_CPTIME = now (), VU_ETAG = _s_etag where
+	VU_HOST = _host and VU_URL = _url and VU_ROOT = _root;
+  commit work;
+}
+;
+</pre><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodvirtuosocrawler" class="absuri">Setting up a Content Crawler Job to Import Linked Data into the Virtuoso Quad Store</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSetCrawlerJobsGuideSitemaps" class="wikiword">Setting up a Content Crawler Job to Retrieve Sitemaps</a> (when the source includes RDFa) </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSetCrawlerJobsGuideSemanticSitemaps" class="wikiword">Setting up a Content Crawler Job to Retrieve Semantic Sitemaps</a> (a variation of the standard sitemap) </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSetCrawlerJobsGuideDirectories" class="wikiword">Setting up a Content Crawler Job to Retrieve Content from Specific Directories</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCrawlerGuideAtom" class="wikiword">Setting up a Content Crawler Job to Retrieve Content from ATOM feed</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtCrawlerSPARQLEndpoints" class="wikiword">Setting up a Content Crawler Job to Retrieve Content from SPARQL endpoint</a> </li>
+</ul></div></body></html>

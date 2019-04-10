@@ -1,0 +1,43 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtConfigureCartridges"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtConfigureCartridges"}%--><h1><a name="Google Knowledge Graph Meta Cartridge"></a>Google Knowledge Graph Meta Cartridge</h1>
+<h2><a name="Overview"></a>Overview</h2>
+ Given the name of an entity, the GKG meta cartridge (MC) uses the Google Knowledge Graph Search API to search the Google Knowledge Graph for matching entities.
+ Matching entities&#39; descriptions are returned as Linked Data.<p>The GKG MC relies on the committed output of &#39;content&#39; MCs which precede it in the Sponger&#39;s meta cartridge queue.
+ The content MCs perform NER on the input content, identifying people, places, organizations etc, all expressed as virtrdfmec: &#39;meta entity&#39; classes (see graph &lt;<a href="http://www.openlinksw.com/schemas/virtrdf-meta-entity-class>)," class="absuri">http://www.openlinksw.com/schemas/virtrdf-meta-entity-class&gt;),</a> and which also act as inference base classes for collecting similar classes emitted by extractor cartridges (e.g.
+ foaf:Person, dbpedia-owl:Person).</p>
+<p>The GKG MC gathers named entities identified by NER/NLP content MCs, and performs entity linking against the GKG, using the label of the virtrdfmec entity for the <a href="https://developers.google.com/knowledge-graph/" class="absuri">GKG Search API</a> query string.</p>
+<p>The GKG meta cartridge is a &#39;preprocess&#39; MC.
+ The output of the preprocessing MCs is committed before the remaining MCs in the meta cartridge queue are invoked.
+ The latter may make use of the output emitted by the &#39;content&#39; or &#39;preprocess&#39; MCs.</p>
+<h3><a name="API Key"></a>API Key</h3>
+<p>The cartridge requires a Google API key, as describe in <a href="https://developers.google.com/knowledge-graph/prereqs" class="absuri">Knowledge Graph Search API - Prerequisites</a>.
+ The Knowledge Graph Search API must be enabled in the <a href="https://console.developers.google.com" class="absuri">Google Developers Console</a> and the API key created through the <a href="https://console.developers.google.com/apis/credentials" class="absuri">API Manager&#39;s Credentials</a> page.</p>
+<p>Enter the Google API key in the &#39;API Key&#39; field of the cartridge&#39;s options, displayed by selecting the cartridge from the list under Conductor&#39;s Meta Cartridges tab (reachable by navigating via the Conductor UI&#39;s links &#39;Linked Data&#39; &gt; &#39;Sponger&#39; &gt; &#39;Meta Cartridges&#39;).</p>
+<h3><a name="Cartridge options"></a>Cartridge options</h3>
+<h4><a name="max-entities:"></a>max-entities:</h4>
+ Limits the number of entities returned by the GKG search API.
+ The default value of 1 returns the closest GKG match.<h4><a name="min-score:"></a>min-score:</h4>
+ Only return matching GKG entities with a resultScore greater than or equal to min-score.<h4><a name="match-entity-type:"></a>match-entity-type:</h4>
+ Only return entities with a type of <code>http://schema.org/{match-entity-type}</code> e.g.
+ Person, Organization, Country etc.
+ A match-entity-type of &#39;*&#39; returns all matching entities, irrespective of their type.<p> </p>
+<h3><a name="Output"></a>Output</h3>
+<p>GKG entities have a corresponding Wikipedia entry.
+ These are exposed directly from the cartridge&#39;s topic entity through schema:mentions.</p>
+<p>GKG entities returned by the cartridge are exposed via skos:related.
+ These annotations are described in terms of the <a href="https://github.com/fusepoolP3/overall-architecture/blob/master/wp3/fp-anno-model/fp-anno-model.md" class="absuri">Fusepool Annotation Model</a> (FAM).
+ Each annotation has only a body, not a target.
+ A target cannot be provided as this is not an NER meta cartridge.
+ It relies on preceding NER/NLP meta cartridges, higher in the meta cartridge chain, to identify named entities from the source content.
+ The locations of the entity mentions in the source content are unknown to this meta cartridge, so an annotation target isn&#39;t created.
+ c.f.
+ the Babelfy meta cartridge, which <u>is</u> an NER meta cartridge and which creates an annotation target.</p>
+<p>GKG entities are assigned two types, a schema.org type and a mirroring virtrdfmec type.
+ Mirroring schema.org types as virtrdfmec types allows meta cartridges further down the meta cartridge chain to consume the identified named entities.
+ i.e.
+ to ensure they are included in searches of the data source graph by the &#39;URL&#39; or &#39;keyword&#39; MCs, in the next stage of the meta cartridge queue.
+ These URL or keyword meta cartridges search the source graph for specific virtrdfmec types on which to perform further processing.
+ e.g.
+ The LinkedIn meta cartridge searches for virtrdfmec:Person, virtrdfmec:Company and virtrdfmec:Organization instances for lookups.
+ The OpenCorporates meta cartridge searches for virtrdfmec:Organization instances.</p>
+</div></body></html>

@@ -1,0 +1,110 @@
+<docbook><section><title>VirtTipsAndTricksControlUnicode3</title><para> </para>
+<title> Normalization of UNICODE3 accented characters for Virtuoso free-text indexing</title> Normalization of UNICODE3 accented characters for Virtuoso free-text indexing
+<para>Normalization of UNICODE3 accented characters in a free-text index can be controlled by setting the <emphasis>XAnyNormalization</emphasis> configuration parameter in the <emphasis>[I18N]</emphasis> section of the Virtuoso configuration file, virtuoso.ini.
+This parameter controls whether accented UNICODE characters should be converted to their non-accented base variants when creating a free-text index or when parsing a free-text query string.
+ The parameter&#39;s value is a bitmask integer, currently with only 2 bits in use:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry>  0  </entry><entry>  00  </entry><entry> Default. Nothing is normalized, so &quot;Jose&quot; and &quot;Jos?&quot; are two distinct words.  </entry></row>
+<row><entry>  1  </entry><entry>  01  </entry><entry>  <emphasis><ulink url="ToBeDone">ToBeDone</ulink></emphasis>  </entry></row>
+<row><entry>  2  </entry><entry>  10  </entry><entry> Any &quot;combining character sequence&quot; (a combination of a base character and one or more combining characters) is converted to its (smallest known) base. For example, &quot;?&quot; will lose its accent, and become a plain ASCII &quot;e&quot;.  </entry></row>
+<row><entry>  3  </entry><entry>  11  </entry><entry> This combines 1 and 2, and so causes both conversions. Any pair of base character and combining character loses the second character, and characters with accents lose their accents.  </entry></row>
+</tbody></tgroup></table>
+<para>So the fragment of virtuoso.ini would look like: </para>
+<programlisting>...
+
+[I18N]
+XAnyNormalization = 3
+
+...
+</programlisting><para> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>XAnyNormalization = 3 is recommended for most scenarios requiring such normalization.
+ In some rare cases, XAnyNormalization = 1 may be more appropriate.</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem>The parameter should generally be set before creating a database, and must be set identically for all instances in a cluster configuration.
+ If changed on an existing database, you should rebuild all free-text indexes that may contain non-ASCII data by running the following procedure from isql -- <programlisting>VT_INDEX_DB_DBA_RDF_OBJ(0)
+</programlisting> </listitem>
+<listitem>On a typical system, the parameter affects all text columns, XML columns, RDF literals, and queries.
+ (Strictly speaking, it only affects items that use default &quot;x-any&quot; language, or a language derived from x-any such as &quot;en&quot; or &quot;en-US&quot;.
+ If you haven&#39;t tried writing new C plug-ins for custom languages, you need not look so deep.)</listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem><emphasis><emphasis>Note:</emphasis> We have had requests for a database function that normalizes characters in strings, as the free-text engine does with XAnyNormalization=3.
+ This function will be provided as a separate patch/update, and will depend on XAnyNormalization.</emphasis></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Example</bridgehead>
+<para>With <emphasis>XAnyNormalization=3</emphasis>, one can get the following:</para>
+<programlisting>SQL&gt; SPARQL 
+     INSERT 
+       IN &lt;http://InternationalNSMs/&gt;
+         {
+           &lt;s&gt;  &lt;sp&gt;  &quot;?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?&quot;  ; 
+                &lt;ru&gt;  &quot;?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????&quot;   
+         }
+       ;
+
+INSERT INTO &lt;http://InternationalNSMs/&gt;, 2 (or less) triples -- done
+
+
+SQL&gt; DB.DBA.RDF_OBJ_FT_RULE_ADD (NULL, NULL, &#39;InternationalNSMs.wb&#39;);
+
+Done. -- 0 msec.
+
+SQL&gt; VT_INDEX_DB_DBA_RDF_OBJ(0);
+
+Done. -- 26 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE 
+         {
+           ?s  ?p  ?o 
+         }
+       ORDER BY ASC (str(?o))
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+s  ru  ?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????
+
+2 Rows. -- 2 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE 
+         { 
+           ?s  ?p            ?o                                                    . 
+           ?o  bif:contains  &quot;&#39;?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?&#39;&quot;  
+         }
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+
+1 Rows. -- 2 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE
+         { 
+           ?s  ?p            ?o                                                    . 
+           ?o  bif:contains  &quot;&#39;Indio Joao Macapa Junior Torres Luis Araujo Jose&#39;&quot; 
+         }
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+
+1 Rows. -- 1 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE 
+         { 
+           ?s  ?p            ?o                         . 
+           ?o  bif:contains  &quot;&#39;???????? ???????? ?? ?????&#39;&quot; 
+         }
+       ;
+
+s  ru  ?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_I18N">Virtuoso ini I18N section</ulink> </listitem>
+</itemizedlist></section></docbook>

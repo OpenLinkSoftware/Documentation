@@ -1,0 +1,191 @@
+<docbook><section><title>VirtRDFODataExample</title><title> Accessing RDF Triples as an OData Service</title> Accessing RDF Triples as an OData Service
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>RDF data stored in Virtuoso can be exposed as an OData service using the Virtuoso ADO.NET Provider.
+ This document describes first how to create the service, and then how to consume the service with a simple browser that allows you to access and explore the RDF data by clicking on dereferenceable <ulink url="http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype">IRIs</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A network-accessible <emphasis>Virtuoso server</emphasis> with the following VAD packages installed: <orderedlist spacing="compact"><listitem>The <emphasis><ulink url="https://virtuoso.openlinksw.com/download/">Northwind demo database</ulink> (demo_dav.vad)</emphasis> </listitem>
+<listitem>The <emphasis><ulink url="https://virtuoso.openlinksw.com/download/">Cartridges</ulink> (cartridges_dav.vad)</emphasis> </listitem>
+</orderedlist></listitem>
+<listitem>A Windows host with the following installed: <orderedlist spacing="compact"><listitem><emphasis>Microsoft Visual Studio 2010</emphasis>; </listitem>
+<listitem>the <emphasis>Virtuoso ADO.NET Provider for .NET 3.5</emphasis>; and </listitem>
+<listitem>the <emphasis>Entity Framework</emphasis>.</listitem>
+</orderedlist></listitem>
+</itemizedlist><para>This example assumes that your accessible Virtuoso server is on the same machine as all other components (i.e., localhost), but it may be on any network-accessible host.
+ If the Northwind demo database has not already been installed on your Virtuoso server, then download the  and install it.
+ The VAD package will create a new database in Virtuoso called <emphasis>demo</emphasis> containing the familiar Northwind tables.
+ It will also creates <ulink url="http://docs.openlinksw.com/virtuoso/rdfsparqlintegrationmiddleware.html#rdfviews">RDF views</ulink> of the Northwind tables.</para>
+<para>In this example, we assume the database is accessible on a hostname of &quot;demo.openlinksw.com&quot; on the default port 80, where a live instance of the Virtuoso Demo database is actually hosted.
+ Users should use the appropriate hostname and port number of their Virtuoso installation to create the sample application, which would be <emphasis>localhost:8890</emphasis> for a default installation or whatever the URIQA DefaultHost Virtuoso configuration parameter (in the virtuoso.ini file) is set to when the demo database VAD package is installed.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Creating the OData Service</bridgehead>
+<para>Virtuoso supports an extension to SQL called SPASQL that allows SPARQL queries to be executed as if they were SQL queries.
+ The SPARQL query is indicated using the SPARQL keyword.
+ The simplest way to expose the results of a SPARQL query as OData is to create a view that is the result of a SPARQL query then expose the view as an OData service.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 1 - Create a view of the RDF data.</bridgehead>
+<para>To create a view of the customers in the Northwind first open the Virtuoso Conductor and log in as dba.
+ Then open iSQL from the menu on the left and execute the following statement.
+</para>
+<programlisting>CREATE VIEW Demo.demo.sparqlview as 
+SPARQL
+PREFIX nwind: &lt;http://demo.openlinksw.com/schemas/northwind#&gt;
+SELECT DISTINCT  ?s  
+FROM &lt;http://demo.openlinksw.com/Northwind&gt;
+WHERE {?s a nwind:Customer}
+</programlisting><para>  <emphasis>Note</emphasis>:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>If the view is added to the Visual Studio project as user &quot;demo&quot; (or any other than &quot;dba&#39;), then it must be ensured that the &quot;SPARQL_SELECT&quot; and &quot;SPARQL_SPONGE&quot; roles are assigned to this user, which can be done via the Virtuoso Conductor in the &quot;System Admin&quot; -&gt; &quot;User Accounts&quot; tab.
+</listitem>
+<listitem>Execute permissions will also need to be granted to the following procedure: <programlisting>grant execute on DB.DBA.RDF_MAKE_LONG_OF_SQLVAL to &quot;demo&quot;
+</programlisting> <figure><graphic fileref="VirtRDFODataExample/createview.png" /></figure></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 2 - Create the Visual Studio Project and Add the Model.</bridgehead>
+<orderedlist spacing="compact"><listitem>Open <emphasis>Visual Studio</emphasis> and create a new <emphasis>Project</emphasis>.
+ From the Installed Templates choose <emphasis>Visual C#</emphasis> then <emphasis>Web</emphasis> and select <emphasis>ASP .NET Web Application</emphasis> from the right hand pane.
+ Call the project RDFWebDemo.
+<figure><graphic fileref="VirtRDFODataExample/newproject.png" /></figure> </listitem>
+<listitem>Right click RDFWebDemo in the <emphasis>Solution</emphasis> <emphasis>Explorer</emphasis> and add a new item.
+ Choose <emphasis>Data</emphasis> from the <emphasis>Installed Templates</emphasis> and select the <emphasis>ADO.NET Entity Data Model</emphasis> from the right hand pane.
+ Call the model Model1.edmx.
+ Click <emphasis>Add</emphasis> to open the Entity Data Model Wizard.
+</listitem>
+<listitem>Choose <emphasis>Generate From Database</emphasis> and click <emphasis>Next</emphasis>.
+</listitem>
+<listitem>Set up a connection to the Demo database on your local Virtuoso Server, select <emphasis>Yes</emphasis>, <emphasis>include</emphasis> <emphasis>the</emphasis> <emphasis>sensitive</emphasis> <emphasis>data</emphasis> <emphasis>in</emphasis> <emphasis>the</emphasis> <emphasis>connection</emphasis> <emphasis>string</emphasis> and set the name of the entities to DemoEntities.
+ Click <emphasis>Next</emphasis>.
+</listitem>
+<listitem>On the <emphasis>Choose</emphasis> <emphasis>Your</emphasis> <emphasis>Database</emphasis> <emphasis>Objects</emphasis> page expand <emphasis>Views</emphasis> and select sparqlview.
+ Check that the Model Namespace is DemoModel and click <emphasis>Finish</emphasis>.
+<figure><graphic fileref="VirtRDFODataExample/selectview.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 3 - Add the OData Service</bridgehead>
+<orderedlist spacing="compact"><listitem>Right click RDFWebDemo in the <emphasis>Solution</emphasis> <emphasis>Explorer</emphasis> and add a new item.
+ Select <emphasis>Web</emphasis> from the installed templates then choose the <emphasis>WCF Data Service</emphasis> from the right hand pane.
+ Call the service WcfDataService1.svc.
+ Click <emphasis>Add</emphasis>.
+</listitem>
+<listitem>In the class definition of WebDataService1 in the newly created file WebDataService1.svc.cs replace /* TODO: put your data source class name here */ with the name of our model, DemoEntities.
+<programlisting>   public class WcfDataService1 : DataService&lt;DemoEntities&gt;
+</programlisting></listitem>
+<listitem>In the InitializeService method add the lines: <programlisting>            config.SetEntitySetAccessRule(&quot;*&quot;, EntitySetRights.All);
+            config.DataServiceBehavior.MaxProtocolVersion = DataServiceProtocolVersion.V2;
+</programlisting>The method should look like this <programlisting>       public static void InitializeService(DataServiceConfiguration config)
+        {
+            // TODO: set rules to indicate which entity sets and service operations are visible, updatable, etc.
+            // Examples:
+            // config.SetEntitySetAccessRule(&quot;MyEntityset&quot;, EntitySetRights.AllRead);
+            // config.SetServiceOperationAccessRule(&quot;MyServiceOperation&quot;, ServiceOperationRights.All);
+            config.SetEntitySetAccessRule(&quot;*&quot;, EntitySetRights.All);
+            config.DataServiceBehavior.MaxProtocolVersion = DataServiceProtocolVersion.V2;
+        }
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 4 - Compile and Run</bridgehead>
+ Hit <emphasis>F5</emphasis> to compile and run the service.
+ Select <emphasis>OK</emphasis> when prompted to enable debugging.
+ The default browser will be launched showing a page like <programlisting>  &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt; 
+- &lt;service xml:base=&quot;http://localhost:2344/WcfDataService1.svc/&quot; xmlns:atom=&quot;http://www.w3.org/2005/Atom&quot; xmlns:app=&quot;http://www.w3.org/2007/app&quot; xmlns=&quot;http://www.w3.org/2007/app&quot;&gt;
+- &lt;workspace&gt;
+  &lt;atom:title&gt;Default&lt;/atom:title&gt; 
+- &lt;collection href=&quot;sparqlviews&quot;&gt;
+  &lt;atom:title&gt;sparqlviews&lt;/atom:title&gt; 
+  &lt;/collection&gt;
+  &lt;/workspace&gt;
+  &lt;/service&gt;
+</programlisting><para>The service is now running.</para>
+<emphasis>Note the address on which the service is made available.
+ You will need to know this when creating the app to consume the service.
+ Look in the Address Bar of the browser.
+ It will be something like:</emphasis> http://localhost:2344/WcfDataService1.svc/.<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Creating the Browser Application</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 1 - Create the Visual Studio Project.</bridgehead>
+<orderedlist spacing="compact"><listitem>Open <emphasis>Visual</emphasis> <emphasis>Studio</emphasis> and create a new <emphasis>Project.</emphasis>  From the Installed Templates choose <emphasis>Visual C#</emphasis> then <emphasis>Web</emphasis> and select <emphasis>ASP .NET</emphasis> <emphasis>Web</emphasis> <emphasis>Application</emphasis> from the right hand pane.
+ Call the project RDFWebApp.
+<figure><graphic fileref="VirtRDFODataExample/NewProject2.png" /></figure> </listitem>
+<listitem>Create client side entities with datasvcutil.exe <itemizedlist mark="bullet" spacing="compact"><listitem>Open a command prompt.
+</listitem>
+<listitem>Navigate to <emphasis>C:\WINDOWS\Microsoft.NET\Framework\v4.0.30128</emphasis>.
+</listitem>
+<listitem>Generate the client classes using the following command: <programlisting>datasvcutil.exe /uri:http://localhost:2344/WcfDataService1.svc /out:DemoEntities.cs
+</programlisting><emphasis>Note the address of the service - you may need to change the port number to match the one seen in the address at the end of Step 4 in Creating the Web Service</emphasis>.
+</listitem>
+</itemizedlist></listitem>
+<listitem>Add the classes to RDFWebApp.
+<itemizedlist mark="bullet" spacing="compact"><listitem>Right click RDFWebApp </listitem>
+<listitem>Choose to add an existing item and add c:\WINDOWS\Microsoft.NET\Framework\v4.0.30128\DemoEntities.cs. </listitem>
+</itemizedlist></listitem>
+<listitem>Add a reference to System.Data.Services.Client to the project.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 2 - Display the contents of sparqlview as a table on the page</bridgehead>
+<para>To display the RDF data on the web page we create a table with a row for each item in sparqlview.
+ We then use each IRI from sparqlview to create a hyperlink.
+ The hyperlinks are displayed in the table cells.
+To do this, first add a new table, iriTable to Defalt.aspx.
+</para>
+<programlisting>&lt;%@ Page Title=&quot;Home Page&quot; Language=&quot;C#&quot; MasterPageFile=&quot;~/Site.master&quot; AutoEventWireup=&quot;true&quot;
+    CodeBehind=&quot;Default.aspx.cs&quot; Inherits=&quot;RDFWebApp2._Default&quot; %&gt;
+
+&lt;asp:Content ID=&quot;HeaderContent&quot; runat=&quot;server&quot; ContentPlaceHolderID=&quot;HeadContent&quot;&gt;
+&lt;/asp:Content&gt;
+&lt;asp:Content ID=&quot;BodyContent&quot; runat=&quot;server&quot; ContentPlaceHolderID=&quot;MainContent&quot;&gt;
+    &lt;h2&gt;
+        RDFWebApp
+    &lt;/h2&gt;
+    &lt;p&gt;
+        &lt;asp:Table ID=&quot;iriTable&quot; runat=&quot;server&quot;&gt;&lt;/asp:Table&gt;
+    &lt;/p&gt;
+&lt;/asp:Content&gt;
+</programlisting><para>Then  add the following block of code to the page_load method in Default.aspx.cs.
+</para>
+<programlisting>            DemoModel.DemoEntities svc = new DemoModel.DemoEntities(new Uri(&quot;http://localhost:2344/WcfDataService1.svc&quot;));
+
+            var query = svc.sparqlviews;
+
+            foreach (DemoModel.sparqlview sv in query)
+            {
+                TableRow tRow = new TableRow();
+                iriTable.Rows.Add(tRow);
+                TableCell tCell = new TableCell();
+                tRow.Cells.Add(tCell);
+                HyperLink h = new HyperLink();
+                h.Text = sv.s;
+                h.NavigateUrl = sv.s;
+                tCell.Controls.Add(h);
+            }
+</programlisting><emphasis>Note the address of the service in the first line - you may need to change the port number to match the one seen in the address at the end of Step 4 in Creating the Web Service</emphasis>.<para>Compile and run RDFWebApp (ensuring that the service created above is still running).
+ This will launch a browser and display the IRIs from sparqlview as a list of hyperlinks.</para>
+<figure><graphic fileref="VirtRDFODataExample/RunApp.png" /></figure><para>With the <ulink url="https://virtuoso.openlinksw.com/download/">Cartridges VAD package</ulink> installed in Virtuoso, clicking on these links will take you to a description page of the referenced resource.
+ The description page is created using <ulink url="http://virtuoso.openlinksw.com/Whitepapers/html/vdld_html/VirtDeployingLinkedDataGuide_Glossary.html#mozTocId13075">description.vsp</ulink>.</para>
+<figure><graphic fileref="VirtRDFODataExample/Description.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Deploy With IIS</bridgehead>
+<para>To create and test this simple Web Service we have used the Visual Studio Development Server.
+ This section describes how to deploy the service using IIS.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Web Service</bridgehead>
+<para>To deploy the service using IIS: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Open the RDFWebDemo project in Visual Studio, go to the <emphasis>Project</emphasis> menu and select RDFWebDemo <emphasis>Properties.</emphasis> </listitem>
+<listitem>Select the <emphasis>Web</emphasis> tab and scroll down to the <emphasis>Servers</emphasis> section.
+ Select <emphasis>Use local IIS Server</emphasis>.
+ The project URL defaults to using localhost.
+</listitem>
+<listitem>Click the <emphasis>Create Virtual Directory</emphasis> button then check that the Service works on localhost.
+</listitem>
+<listitem>Build the project then start without debugging (ctrl F5).</listitem>
+</itemizedlist><para>The start page that you see when you test the service will look the same as before but the address in the browser bar will be something like http://localhost/RDFWebDemo/WcfDataService1.svc/.
+ You can now access your service remotely using the hostname or IP address of your server.</para>
+<para>If at this point you get an Access is denied error, 401.3, then you will need to add the Internet Guest Account (IUSR_XXX where XXX is your computer name) to the users allowed to access the folder containing the RDFWebDemo project.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Web Application</bridgehead>
+<para>You will now need to modify RDFWebApp to access the service at the new address.
+ At the same time we will also change RDFWebApp so that it too is deployed using IIS </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Open The RDFWebApp project in Visual Studio.
+</listitem>
+<listitem>Go to the <emphasis>Project</emphasis> menu and select RDFWebApp <emphasis>Properties.</emphasis> </listitem>
+<listitem>Select the <emphasis>Web</emphasis> tab and scroll down to the <emphasis>Servers</emphasis> section.
+ Select <emphasis>Use local IIS Server</emphasis>.
+ The project URL defaults to using localhost.
+</listitem>
+<listitem>Click the <emphasis>Create Virtual Directory</emphasis> button.
+ The web application will then run on the local IIS.
+</listitem>
+<listitem>To reference the web service running on IIS you will need to edit Default.aspx.cs.
+ Change <programlisting>           DemoModel.DemoEntities svc = new DemoModel.DemoEntities(new Uri(&quot;http://localhost:2344/WcfDataService1.svc&quot;));
+</programlisting>to <programlisting>           DemoModel.DemoEntities svc = new DemoModel.DemoEntities(new Uri(&quot;http://localhost/RDFWebDemo/WcfDataService1.svc&quot;));
+</programlisting></listitem>
+<listitem>Build the project then start without debugging (ctrl-F5).</listitem>
+</itemizedlist><para>The web application is accessible on http://localhost/RDFWebApp/Default.aspx and can also be accessed using the hostname or IP address of your server, e.g., http://192.168.7.129/RDFWebApp/Default.aspx.</para>
+<figure><graphic fileref="VirtRDFODataExample/Safari.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODataServiceExample">Creating an OData Publishing Endpoint using Virtuoso&#39;s ADO.NET Data Provider</ulink> </listitem>
+<listitem><ulink url="VirtAdoNet35Provider">Virtuoso ADO.Net 3.5 Provider</ulink> </listitem>
+<listitem><ulink url="http://www.odata.org/">Open Data Protocol</ulink> </listitem>
+<listitem><ulink url="http://msdn.microsoft.com/en-us/library/dd831853.aspx">Visual Studio 2010</ulink></listitem>
+</itemizedlist></section></docbook>

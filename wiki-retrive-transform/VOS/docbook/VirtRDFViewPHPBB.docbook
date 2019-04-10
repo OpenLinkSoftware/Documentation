@@ -1,0 +1,758 @@
+<docbook><section><title>VirtRDFViewPHPBB</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">RDF View for phpBB 2</bridgehead>
+<programlisting>use phpBB;
+
+
+create procedure phpBB2.DBA.phpBB2_foaf_iri (in s varchar)
+{
+  return concat (&#39;http://xmlns.com/foaf/0.1/&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_sioc_iri (in s varchar)
+{
+  return concat (&#39;http://rdfs.org/sioc/ns#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_rdf_iri (in s varchar)
+{
+  return concat (&#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_rdfs_iri (in s varchar)
+{
+  return concat (&#39;http://www.w3.org/2000/01/rdf-schema#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_geo_iri (in s varchar)
+{
+  return concat (&#39;http://www.w3.org/2003/01/geo/wgs84_pos#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_atom_iri (in s varchar)
+{
+  return concat (&#39;http://atomowl.org/ontologies/atomrdf#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_dc_iri (in s varchar)
+{
+  return concat (&#39;http://purl.org/dc/elements/1.1/&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_dcterms_iri (in s varchar)
+{
+  return concat (&#39;http://purl.org/dc/terms/&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_skos_iri (in s varchar)
+{
+  return concat (&#39;http://www.w3.org/2004/02/skos/core#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_ext_iri (in s varchar)
+{
+  return concat (&#39;http://rdfs.org/sioc/types#&#39;, s);
+};
+
+create procedure phpBB2.DBA.phpBB2_get_opt (in opt varchar)
+{
+  return (select config_value from phpbb_config where config_name = opt);
+};
+
+create procedure phpBB2.DBA.phpBB2_get_graph ()
+{
+  declare script_name,server_name,server_protocol,server_port varchar;
+  script_name := trim(trim(phpBB2.DBA.phpBB2_get_opt(&#39;script_path&#39;)),&#39;/&#39;);
+  server_name := trim(phpBB2.DBA.phpBB2_get_opt(&#39;server_name&#39;));
+  if (cast(phpBB2.DBA.phpBB2_get_opt(&#39;cookie_secure&#39;) as integer))
+    server_protocol := &#39;https://&#39;;
+  else
+    server_protocol := &#39;http://&#39;;
+  if (cast(phpBB2.DBA.phpBB2_get_opt(&#39;server_port&#39;) as integer) &lt;&gt; 80)
+    server_port := &#39;:&#39; || cast(phpBB2.DBA.phpBB2_get_opt(&#39;server_port&#39;) as varchar) || &#39;/&#39;;
+  else
+    server_port := &#39;/&#39;;
+
+  return server_protocol || server_name || server_port || script_name || &#39;/&#39;;
+};
+
+create procedure phpBB2.DBA.phpBB2_user_iri (in id int)
+{
+  return phpBB2.DBA.phpBB2_get_graph () || sprintf(&#39;profile.php?mode=viewprofile&amp;u=%d&#39;,id);
+};
+
+create procedure phpBB2.DBA.phpBB2_usergroup_iri (in id int)
+{
+  return phpBB2.DBA.phpBB2_get_graph () || sprintf(&#39;groupcp.php?g=%d&#39;,id);
+};
+
+create procedure phpBB2.DBA.phpBB2_forum_iri (in id int)
+{
+  return phpBB2.DBA.phpBB2_get_graph () || sprintf(&#39;viewforum.php?f=%d&#39;,id);
+};
+
+create procedure phpBB2.DBA.phpBB2_post_iri (in id int)
+{
+  return phpBB2.DBA.phpBB2_get_graph () || sprintf(&#39;viewtopic.php?p=%d#%d&#39;,id,id);
+};
+
+
+create procedure phpBB2.DBA.phpBB2_rdf_init ()
+{
+  declare iri, site_iri, graph_iri, forum_iri varchar;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  site_iri  := graph_iri;
+  delete from DB.DBA.RDF_QUAD where G = DB.DBA.RDF_IID_OF_QNAME (graph_iri);
+
+  -- Site
+  DB.DBA.RDF_QUAD_URI (graph_iri, site_iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;Site&#39;));
+  DB.DBA.RDF_QUAD_URI (graph_iri, site_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;link&#39;), site_iri);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, site_iri, phpBB2.DBA.phpBB2_dc_iri (&#39;title&#39;), phpBB2.DBA.phpBB2_get_opt (&#39;sitename&#39;));
+
+  for (select user_id, username,
+	  case when length (user_email) then &#39;mailto:&#39;||user_email else &#39;&#39; end as E_MAIL,
+	  case when length (user_email) then sha1_digest (user_email) else &#39;&#39; end as E_MAIL_SHA1
+	  from phpbb_users
+	  where user_active = 1)do
+	{
+	  phpBB2.DBA.phpBB2_user_rdf(user_id,username,E_MAIL,E_MAIL_SHA1);
+	};
+	
+	for (select group_id, group_name from phpbb_groups
+    where group_type &lt; 2 and group_single_user = 0) do
+  {
+	  phpBB2.DBA.phpBB2_usergroups_rdf(group_id, group_name);
+  };
+  
+  for (select group_id, user_id from phpbb_user_group
+    where user_pending = 0) do
+  {
+	  phpBB2.DBA.phpBB2_user_usergroups_rdf(group_id, user_id);
+  };
+  
+  for (select forum_id, forum_name, forum_desc from phpbb_forums )do
+  {
+	  phpBB2.DBA.phpBB2_forum_rdf(forum_id, forum_name,forum_desc);
+  };
+  
+  for (select forum_id, user_id from phpbb_user_group ug
+    INNER JOIN phpbb_auth_access aa on ug.group_id = aa.group_id 
+    where ug.user_pending = 0) do
+  {
+	  phpBB2.DBA.phpBB2_forum_moderators_rdf(forum_id, user_id);
+  };
+  
+  for (select pp.post_id, pp.forum_id, pp.poster_id, pt.post_subject, pt.post_text 
+    from phpbb_posts pp
+    INNER JOIN phpbb_posts_text pt on pp.post_id = pt.post_id) do
+  {
+	  phpBB2.DBA.phpBB2_post_rdf(post_id, forum_id,poster_id);
+	  phpBB2.DBA.phpBB2_post_text_rdf(post_id, post_subject,post_text);
+  };
+
+};
+
+create procedure phpBB2.DBA.phpBB2_post_text_rdf (in post_id int,in post_subject varchar, in post_text varchar)
+{
+  declare graph_iri,post_iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  post_iri := phpBB2.DBA.phpBB2_post_iri (post_id);
+  
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, post_iri, phpBB2.DBA.phpBB2_dc_iri (&#39;title&#39;), post_subject);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;content&#39;), post_text);
+};
+
+create procedure phpBB2.DBA.phpBB2_post_rdf (in post_id int,in forum_id int, in user_id int)
+{
+  declare graph_iri,post_iri,forum_iri,user_iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  post_iri := phpBB2.DBA.phpBB2_post_iri (post_id);
+  forum_iri := phpBB2.DBA.phpBB2_forum_iri (forum_id);
+  user_iri := phpBB2.DBA.phpBB2_user_iri (user_id);
+  
+  DB.DBA.RDF_QUAD_URI (graph_iri, post_iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;Post&#39;));
+  DB.DBA.RDF_QUAD_URI (graph_iri, post_iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;Item&#39;));
+
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;id&#39;), post_id);
+  DB.DBA.RDF_QUAD_URI (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_creator&#39;), user_iri);
+  DB.DBA.RDF_QUAD_URI (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_container&#39;), forum_iri);
+  DB.DBA.RDF_QUAD_URI (graph_iri, forum_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;container_of&#39;), post_iri);
+
+};
+
+create procedure phpBB2.DBA.phpBB2_forum_moderators_rdf (in forum_id int, in user_id int)
+{
+  declare graph_iri, forum_iri, user_iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  forum_iri := phpBB2.DBA.phpBB2_forum_iri (forum_id);
+  user_iri := phpBB2.DBA.phpBB2_user_iri (user_id);
+  
+  DB.DBA.RDF_QUAD_URI (graph_iri, forum_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_moderator&#39;), user_iri);
+  DB.DBA.RDF_QUAD_URI (graph_iri, user_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;moderator_of&#39;), forum_iri);
+};
+
+create procedure phpBB2.DBA.phpBB2_forum_rdf (in forum_id int, in forum_name varchar,in forum_desc varchar)
+{
+  declare graph_iri, iri, site_iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  site_iri := graph_iri;
+  iri := phpBB2.DBA.phpBB2_forum_iri (forum_id);
+  
+  DB.DBA.RDF_QUAD_URI (graph_iri, iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;Forum&#39;));
+  DB.DBA.RDF_QUAD_URI (graph_iri, iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;Container&#39;));
+
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;id&#39;), forum_id);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;name&#39;), forum_name);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;description&#39;), forum_desc);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_dc_iri (&#39;title&#39;), forum_name);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_dc_iri (&#39;description&#39;), forum_desc);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;type&#39;), &#39;Forum&#39;);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_host&#39;), site_iri);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, site_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;host_of&#39;), iri);
+
+};
+
+create procedure phpBB2.DBA.phpBB2_user_usergroups_rdf (in group_id int, in user_id int)
+{
+  declare graph_iri, group_iri, user_iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  group_iri := phpBB2.DBA.phpBB2_usergroup_iri (group_id);
+  user_iri := phpBB2.DBA.phpBB2_user_iri (user_id);
+  
+  DB.DBA.RDF_QUAD_URI (graph_iri, group_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_member&#39;), user_iri);
+  DB.DBA.RDF_QUAD_URI (graph_iri, user_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;member_of&#39;), group_iri);
+};
+
+create procedure phpBB2.DBA.phpBB2_usergroups_rdf (in ID int, in group_name varchar)
+{
+  declare graph_iri,iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  iri := phpBB2.DBA.phpBB2_usergroup_iri (ID);
+  
+  DB.DBA.RDF_QUAD_URI (graph_iri, iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;Usergroup&#39;));
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;id&#39;), ID);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;name&#39;), group_name);
+};
+
+create procedure phpBB2.DBA.phpBB2_user_rdf (in ID int, in username varchar, in user_email varchar, in sha1_digest varchar)
+{
+  declare graph_iri,iri any;
+  graph_iri := phpBB2.DBA.phpBB2_get_graph ();
+  iri := phpBB2.DBA.phpBB2_user_iri (ID);
+
+  DB.DBA.RDF_QUAD_URI (graph_iri, iri, phpBB2.DBA.phpBB2_rdf_iri (&#39;type&#39;), phpBB2.DBA.phpBB2_sioc_iri (&#39;User&#39;));
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;id&#39;), ID);
+
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;name&#39;), username);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;email&#39;), user_email);
+  DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;email_sha1&#39;), sha1_digest);
+
+};
+
+create procedure phpBB2.DBA.phpBB2_delete_rdf_obj (in iri any)
+{
+  declare graph_iri any;
+  graph_iri := DB.DBA.RDF_IID_OF_QNAME (phpBB2.DBA.phpBB2_get_graph ());
+  iri := DB.DBA.RDF_IID_OF_QNAME (iri);
+  delete from DB.DBA.RDF_QUAD where G = graph_iri and S = iri;
+  delete from DB.DBA.RDF_QUAD where G = graph_iri and O = iri;
+};
+
+create procedure phpBB2.DBA.phpBB2_delete_rdf_obj_link (in iri1 any,in iri2 any)
+{
+  declare graph_iri any;
+  graph_iri := DB.DBA.RDF_IID_OF_QNAME (phpBB2.DBA.phpBB2_get_graph ());
+  iri1 := DB.DBA.RDF_IID_OF_QNAME (iri1);
+  iri2 := DB.DBA.RDF_IID_OF_QNAME (iri2);
+  delete from DB.DBA.RDF_QUAD where G = graph_iri and S = iri1 and O = iri2;
+  delete from DB.DBA.RDF_QUAD where G = graph_iri and S = iri2 and O = iri1;
+};
+
+create trigger phpbb_posts_text_i after insert on phpbb_posts_text referencing new as N
+{
+	  phpBB2.DBA.phpBB2_post_text_rdf(N.post_id, N.post_subject, N.post_text);
+};
+
+create trigger phpbb_posts_text_u after update on phpbb_posts_text referencing old as O, new as N
+{
+  declare graph_iri, post_iri any;
+  graph_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_get_graph ());
+  post_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_post_iri (O.post_id));
+  
+  if (O.post_subject &lt;&gt; N.post_subject)
+  {
+    declare o_short any;
+    o_short := DB.DBA.RDF_OBJ_OF_SQLVAL(O.post_subject);
+    delete from DB.DBA.RDF_QUAD where G = graph_iri and S = post_iri and O = o_short;
+    DB.DBA.RDF_QUAD_URI_L (graph_iri, post_iri, phpBB2.DBA.phpBB2_dc_iri (&#39;title&#39;), N.post_subject);
+
+  }
+
+  if (O.post_text &lt;&gt; N.post_text)
+  {
+    declare o_short any;
+    o_short := DB.DBA.RDF_OBJ_OF_SQLVAL(O.post_text);
+    delete from DB.DBA.RDF_QUAD where G = graph_iri and S = post_iri and O = o_short;
+    DB.DBA.RDF_QUAD_URI_L (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;content&#39;), N.post_text);
+  }
+  
+};
+
+create trigger phpbb_posts_text_d after delete on phpbb_posts_text referencing old as O
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_post_iri (O.post_id));
+};
+
+
+create trigger phpbb_posts_i after insert on phpbb_posts referencing new as N
+{
+  if (isinteger(N.post_id))
+	  phpBB2.DBA.phpBB2_post_rdf(N.post_id, N.forum_id,N.poster_id);
+};
+
+create trigger phpbb_posts_u after update on phpbb_posts referencing old as O, new as N
+{
+  declare graph_iri, post_iri any;
+  graph_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_get_graph ());
+  post_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_post_iri (O.post_id));
+  
+  if (O.forum_id &lt;&gt; N.forum_id)
+  {
+    declare forum_iri any;
+    forum_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_forum_iri (O.forum_id));
+    delete from DB.DBA.RDF_QUAD where G = graph_iri and S = post_iri and O = forum_iri;
+    forum_iri := phpBB2.DBA.phpBB2_forum_iri (N.forum_id);
+    DB.DBA.RDF_QUAD_URI (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_container&#39;), forum_iri);
+    DB.DBA.RDF_QUAD_URI (graph_iri, forum_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;container_of&#39;), post_iri);
+  }
+
+  if (O.poster_id &lt;&gt; N.poster_id)
+  {
+    declare user_iri any;
+    user_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_user_iri (O.poster_id));
+    delete from DB.DBA.RDF_QUAD where G = graph_iri and S = post_iri and O = user_iri;
+    user_iri := phpBB2.DBA.phpBB2_user_iri (N.poster_id);
+    DB.DBA.RDF_QUAD_URI (graph_iri, post_iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;has_creator&#39;), user_iri);
+  }
+
+  
+};
+
+create trigger phpbb_posts_d after delete on phpbb_posts referencing old as O
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_post_iri (O.post_id));
+};
+
+
+create trigger phpbb_user_forum_i after insert on phpbb_forums referencing new as N
+{
+	  phpBB2.DBA.phpBB2_forum_rdf(N.forum_id, N.forum_name,N.forum_desc);
+};
+
+create trigger phpbb_forums_u after update on phpbb_forums referencing old as O, new as N
+{
+  --phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_forum_iri (O.forum_id));
+  --phpBB2.DBA.phpBB2_forum_rdf(N.forum_id, N.forum_name,N.forum_desc);
+
+  declare graph_iri, iri any;
+  graph_iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_get_graph ());
+  iri := DB.DBA.RDF_IID_OF_QNAME(phpBB2.DBA.phpBB2_forum_iri (O.forum_id));
+  
+  if (O.forum_name &lt;&gt; N.forum_name)
+  {
+    declare o_short any;
+    o_short := DB.DBA.RDF_OBJ_OF_SQLVAL(O.forum_name);
+    delete from DB.DBA.RDF_QUAD where G = graph_iri and S = iri and O = o_short;
+    DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;name&#39;), N.forum_name);
+    DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_dc_iri (&#39;title&#39;), N.forum_name);
+  }
+
+  if (O.forum_desc &lt;&gt; N.forum_desc)
+  {
+    declare o_short any;
+    o_short := DB.DBA.RDF_OBJ_OF_SQLVAL(O.forum_desc);
+    delete from DB.DBA.RDF_QUAD where G = graph_iri and S = iri and O = o_short;
+    DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_sioc_iri (&#39;description&#39;), N.forum_desc);
+    DB.DBA.RDF_QUAD_URI_L (graph_iri, iri, phpBB2.DBA.phpBB2_dc_iri (&#39;description&#39;), N.forum_desc);
+  }
+
+  
+};
+
+create trigger phpbb_forums_d after delete on phpbb_forums referencing old as O
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_forum_iri (O.forum_id));
+};
+
+
+create trigger phpbb_user_group_i after insert on phpbb_user_group referencing new as N
+{
+  if (N.user_pending = 0)
+  {
+	  phpBB2.DBA.phpBB2_user_usergroups_rdf(N.group_id, N.user_id);
+	};
+	
+	for (select forum_id from phpbb_auth_access aa where N.group_id = aa.group_id)do
+	{
+	  phpBB2.DBA.phpBB2_forum_moderators_rdf(forum_id, N.user_id);
+	};
+};
+
+create trigger phpbb_user_group_u after update on phpbb_user_group referencing old as O, new as N
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj_link(phpBB2.DBA.phpBB2_usergroup_iri (O.group_id), phpBB2.DBA.phpBB2_user_iri (O.user_id));
+  if (N.user_pending = 0)
+	  phpBB2.DBA.phpBB2_user_usergroups_rdf(N.group_id, N.user_id);
+
+	for (select forum_id from phpbb_auth_access aa where O.group_id = aa.group_id)do
+	{
+    phpBB2.DBA.phpBB2_delete_rdf_obj_link(phpBB2.DBA.phpBB2_forum_iri (forum_id), phpBB2.DBA.phpBB2_user_iri (O.user_id));
+  }
+	for (select forum_id from phpbb_auth_access aa where N.group_id = aa.group_id)do
+	{
+	  phpBB2.DBA.phpBB2_forum_moderators_rdf(forum_id, N.user_id);
+	};
+};
+
+create trigger phpbb_user_group_d after delete on phpbb_user_group referencing old as O
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj_link(phpBB2.DBA.phpBB2_usergroup_iri (O.group_id), phpBB2.DBA.phpBB2_user_iri (O.user_id));
+	for (select forum_id from phpbb_auth_access aa where O.group_id = aa.group_id)do
+	{
+    phpBB2.DBA.phpBB2_delete_rdf_obj_link(phpBB2.DBA.phpBB2_forum_iri (forum_id), phpBB2.DBA.phpBB2_user_iri (O.user_id));
+  }
+};
+
+
+create trigger phpbb_auth_access_i after insert on phpbb_auth_access referencing new as N
+{
+	for (select user_id from phpbb_user_group ug where ug.group_id = N.group_id)do
+	{
+	  phpBB2.DBA.phpBB2_forum_moderators_rdf(N.forum_id, user_id);
+	};
+};
+
+create trigger phpbb_auth_access_u after update on phpbb_auth_access referencing old as O, new as N
+{
+
+	for (select user_id from phpbb_user_group ug where ug.group_id = O.group_id)do
+	{
+    phpBB2.DBA.phpBB2_delete_rdf_obj_link(phpBB2.DBA.phpBB2_forum_iri (O.forum_id), phpBB2.DBA.phpBB2_user_iri (user_id));
+  }
+	for (select user_id from phpbb_user_group ug where ug.group_id = N.group_id)do
+	{
+	  phpBB2.DBA.phpBB2_forum_moderators_rdf(N.forum_id, user_id);
+	};
+};
+
+create trigger phpbb_auth_access_d after delete on phpbb_auth_access referencing old as O
+{
+	for (select user_id from phpbb_user_group ug where ug.group_id = O.group_id)do
+	{
+    phpBB2.DBA.phpBB2_delete_rdf_obj_link(phpBB2.DBA.phpBB2_forum_iri (O.forum_id), phpBB2.DBA.phpBB2_user_iri (user_id));
+  }
+};
+
+
+create trigger phpbb_groups_i after insert on phpbb_groups referencing new as N
+{
+  if (N.group_type &lt; 2 and N.group_single_user = 0)
+	  phpBB2.DBA.phpBB2_usergroups_rdf(N.group_id, N.group_name);
+};
+
+create trigger phpbb_groups_u after update on phpbb_groups referencing old as O, new as N
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_usergroup_iri (O.group_id));
+  if (N.group_type &lt; 2 and N.group_single_user = 0)
+	  phpBB2.DBA.phpBB2_usergroups_rdf(N.group_id, N.group_name);
+
+  for (select group_id, user_id from phpbb_user_group
+    where user_pending = 0 and group_id = N.group_id) do
+  {
+	  phpBB2.DBA.phpBB2_user_usergroups_rdf(group_id, user_id);
+  };
+};
+
+create trigger phpbb_groups_d after delete on phpbb_groups referencing old as O
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_usergroup_iri (O.group_id));
+};
+
+
+create trigger phpbb_users_i after insert on phpbb_users referencing new as N
+{
+  if (N.user_active = 1)
+	  phpBB2.DBA.phpBB2_user_rdf(N.user_id,N.username,
+	    (case when length (N.user_email) then &#39;mailto:&#39;||N.user_email else &#39;&#39; end),
+	    (case when length (N.user_email) then sha1_digest (N.user_email) else &#39;&#39; end)
+	  );
+};
+
+create trigger phpbb_users_u after update on phpbb_users referencing old as O, new as N
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_user_iri (O.user_id));
+  if (N.user_active = 1)
+	  phpBB2.DBA.phpBB2_user_rdf(N.user_id,N.username,
+	    (case when length (N.user_email) then &#39;mailto:&#39;||N.user_email else &#39;&#39; end),
+	    (case when length (N.user_email) then sha1_digest (N.user_email) else &#39;&#39; end)
+	  );
+};
+
+create trigger phpbb_users_d after delete on phpbb_users referencing old as O
+{
+  phpBB2.DBA.phpBB2_delete_rdf_obj (phpBB2.DBA.phpBB2_user_iri (O.user_id));
+};
+
+
+create trigger phpbb_config_u after update on phpbb_config referencing old as O, new as N
+{
+  if (O.config_value = N.config_value)
+    return;
+  if (O.config_name = &#39;script_path&#39; or
+      O.config_name = &#39;server_name&#39; or 
+      O.config_name = &#39;cookie_secure&#39; or
+      O.config_name = &#39;server_port&#39; )
+    {
+      declare script_name,server_name,server_protocol,server_port varchar;
+
+      if (O.config_name = &#39;script_path&#39;)
+        script_name := trim(trim(O.config_value),&#39;/&#39;);
+      else
+        script_name := trim(trim(phpBB2.DBA.phpBB2_get_opt(&#39;script_path&#39;)),&#39;/&#39;);
+      
+      if (O.config_name = &#39;server_name&#39;)
+        server_name := trim(O.config_value);
+      else 
+        server_name := trim(phpBB2.DBA.phpBB2_get_opt(&#39;server_name&#39;));
+      
+      if (O.config_name = &#39;cookie_secure&#39;)
+      {
+        if (cast(O.config_value as integer)) 
+          server_protocol := &#39;https://&#39;; 
+        else 
+          server_protocol := &#39;http://&#39;;
+      } else { 
+        if (cast(phpBB2.DBA.phpBB2_get_opt(&#39;cookie_secure&#39;) as integer)) 
+          server_protocol := &#39;https://&#39;; 
+        else 
+          server_protocol := &#39;http://&#39;;
+      };
+      
+      if (O.config_name = &#39;server_port&#39;)
+      {
+        if (cast(O.config_value as integer) &lt;&gt; 80)
+          server_port := &#39;:&#39; || cast(O.config_value as varchar) || &#39;/&#39;;
+        else
+          server_port := &#39;/&#39;;
+      } else {
+        if (cast(phpBB2.DBA.phpBB2_get_opt(&#39;server_port&#39;) as integer) &lt;&gt; 80)
+          server_port := &#39;:&#39; || cast(phpBB2.DBA.phpBB2_get_opt(&#39;server_port&#39;) as varchar) || &#39;/&#39;;
+        else
+          server_port := &#39;/&#39;;
+      };
+    
+      declare oiri, niri any;
+      oiri := DB.DBA.RDF_IID_OF_QNAME (server_protocol || server_name || server_port || script_name || &#39;/&#39;);
+      niri := DB.DBA.RDF_MAKE_IID_OF_QNAME (phpBB2.DBA.phpBB2_get_graph ());
+      update DB.DBA.RDF_QUAD set G = niri where G = oiri;
+      update DB.DBA.RDF_QUAD set S = niri where G = niri and S = oiri;
+      update DB.DBA.RDF_QUAD set O = niri where G = niri and O = oiri;
+    }
+  else if (O.config_name = &#39;sitename&#39;)
+    {
+      declare iri, graph_iri, pred any;
+      graph_iri := DB.DBA.RDF_IID_OF_QNAME (phpBB2.DBA.phpBB2_get_graph ());
+      iri := graph_iri;
+      pred := DB.DBA.RDF_IID_OF_QNAME (phpBB2.DBA.phpBB2_dc_iri (&#39;title&#39;));
+      update DB.DBA.RDF_QUAD set O = DB.DBA.RDF_MAKE_OBJ_OF_SQLVAL (N.config_value)
+	  where G = graph_iri and S = iri and P = pred and O = DB.DBA.RDF_MAKE_OBJ_OF_SQLVAL (O.config_value);
+    }
+};
+
+phpBB2.DBA.phpBB2_rdf_init ();
+
+-- RDF Views definition
+
+drop view phpBB2.DBA.phpBB2_site_rdf;
+drop view phpBB2.DBA.phpBB2_users_rdf;
+drop view phpBB2.DBA.phpBB2_forums_rdf;
+drop view phpBB2.DBA.phpBB2_usergroups_rdf;
+drop view phpBB2.DBA.phpBB2_user_usergroups_rdf;
+drop view phpBB2.DBA.phpBB2_forum_moderators_rdf;
+drop view phpBB2.DBA.phpBB2_posts_rdf;
+drop view phpBB2.DBA.phpBB2_forum_posts_rdf;
+
+create view phpBB2.DBA.phpBB2_site_rdf as select top 1
+	config_value as WEB_TITLE,
+	&#39;&#39; as WEB_LINK,
+	&#39;&#39; as WS_DUMMY
+	from phpbb_config
+	where config_name = &#39;sitename&#39;;
+
+create view phpBB2.DBA.phpBB2_users_rdf as select user_id, username,
+	case when length (user_email) then &#39;mailto:&#39;||user_email else null end as E_MAIL,
+	case when length (user_email) then sha1_digest (user_email) else null end as E_MAIL_SHA1
+	from phpbb_users
+	where user_active = 1;
+
+create view phpBB2.DBA.phpBB2_usergroups_rdf as select group_id, group_name from phpbb_groups
+  where group_type &lt; 2 and group_single_user = 0;
+
+create view phpBB2.DBA.phpBB2_user_usergroups_rdf as select group_id, user_id from phpbb_user_group
+  where user_pending = 0;
+
+create view phpBB2.DBA.phpBB2_forums_rdf as select
+	forum_id,
+	forum_name,
+	forum_desc,
+	&#39;Forum&#39; as forum_type,
+	&#39;&#39; as WS_DUMMY
+	from phpbb_forums ;
+
+create view phpBB2.DBA.phpBB2_forum_moderators_rdf as 
+  select forum_id, user_id 
+  from phpbb_user_group ug
+  INNER JOIN phpbb_auth_access aa on ug.group_id = aa.group_id 
+  where ug.user_pending = 0;
+
+create view phpBB2.DBA.phpBB2_posts_rdf as 
+  select pp.post_id,
+         pp.forum_id,
+         pp.poster_id,
+         pt.post_subject,
+         pt.post_text 
+  from phpbb_posts pp
+  INNER JOIN phpbb_posts_text pt on pp.post_id = pt.post_id;
+
+create view phpBB2.DBA.phpBB2_forum_posts_rdf as 
+  select post_id,
+         forum_id
+  from phpbb_posts;
+
+exec (
+    string_output_string (sparql_to_sql_text (
+&#39;drop quad map graph iri(&quot;http://^{URIQADefaultHost}^/phpBB2_v/&quot;) .&#39;)));
+
+--exec (
+--    string_output_string (sparql_to_sql_text (
+--&#39;drop quad map virtrdf:phpBB2 .&#39;)));
+
+--exec (
+--    string_output_string (sparql_to_sql_text (
+--&#39;
+--drop quad storage virtrdf:phpBB2 .
+--&#39;)));
+
+exec (
+    string_output_string (sparql_to_sql_text (
+&#39;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+prefix dct: &lt;http://purl.org/dc/terms/&gt;
+prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+prefix phpbbsioc: &lt;http://openlinksw.com/phpBB/sioc/&gt;
+
+#create quad storage virtrdf:phpBB2 {
+#    create virtrdf:DefaultQuadMap using storage virtrdf:DefaultQuadStorage .
+#  } .
+
+
+create iri class phpbbsioc:site &quot;http://^{URIQADefaultHost}^/phpBB2/%U&quot; (in dummy varchar not null) .
+create iri class phpbbsioc:user_iri &quot;http://^{URIQADefaultHost}^/phpBB2/profile.php?mode=viewprofile&amp;u=%d&quot; (in user_id integer not null) .
+create iri class phpbbsioc:usergroup_iri &quot;http://^{URIQADefaultHost}^/phpBB2/groupcp.php?g=%d&quot; (in group_id integer not null) .
+create iri class phpbbsioc:forum_iri &quot;http://^{URIQADefaultHost}^/phpBB2/viewforum.php?f=%d&quot; (in forum_id integer not null) .
+create iri class phpbbsioc:post_iri &quot;http://^{URIQADefaultHost}^/phpBB2/viewtopic.php?p=%d#%d&quot; (in forum_id integer not null,in forum_id integer not null) .
+
+#alter quad storage virtrdf:phpBB2
+alter quad storage virtrdf:DefaultQuadStorage
+  {
+    create virtrdf:phpBB2 as graph iri (&quot;http://^{URIQADefaultHost}^/phpBB2_v/&quot;)
+      {
+
+  # Default phpBB Site
+  phpbbsioc:site (phpBB2.DBA.phpBB2_site_rdf.WS_DUMMY) a sioc:Site ;
+  dc:title WEB_TITLE .
+
+  # User
+  phpbbsioc:user_iri (phpBB2.DBA.phpBB2_users_rdf.user_id)
+  a sioc:User option (EXCLUSIVE);
+  sioc:id user_id ;
+  sioc:name username ;
+  sioc:email E_MAIL ;
+  sioc:email_sha1 E_MAIL_SHA1 .
+
+  # Usergroup
+  phpbbsioc:usergroup_iri (phpBB2.DBA.phpBB2_usergroups_rdf.group_id) 
+  a sioc:Usergroup option (EXCLUSIVE);
+  sioc:id group_id ;
+  sioc:name group_name .
+      
+  # Usergroup - USER ralationship
+  phpbbsioc:usergroup_iri (phpBB2.DBA.phpBB2_user_usergroups_rdf.group_id) 
+  sioc:has_member phpbbsioc:user_iri (user_id) .
+
+  # USER - Usergroup ralationship
+  phpbbsioc:user_iri (phpBB2.DBA.phpBB2_user_usergroups_rdf.user_id) 
+  sioc:member_of phpbbsioc:usergroup_iri(group_id) .
+
+  # Forum
+  phpbbsioc:forum_iri (phpBB2.DBA.phpBB2_forums_rdf.forum_id)
+  a sioc:Forum option (EXCLUSIVE);
+  a sioc:Container option (EXCLUSIVE);
+  sioc:id forum_id ;
+  sioc:name forum_name ;
+  sioc:description forum_desc ;
+  dc:title forum_name ;
+  dc:description forum_desc ;
+  sioc:type forum_type ;
+  sioc:has_host phpbbsioc:site(WS_DUMMY) .
+       
+  # Forum - moderators ralationship
+  phpbbsioc:user_iri (phpBB2.DBA.phpBB2_forum_moderators_rdf.user_id) 
+  sioc:moderator_of phpbbsioc:forum_iri(forum_id) .
+
+  # Site - Forum ralationship
+  phpbbsioc:site (phpBB2.DBA.phpBB2_forums_rdf.WS_DUMMY) 
+  sioc:host_of phpbbsioc:forum_iri(forum_id) .
+
+  # Moderators - Forum ralationship
+  phpbbsioc:forum_iri (phpBB2.DBA.phpBB2_forum_moderators_rdf.forum_id) 
+  sioc:has_moderator phpbbsioc:user_iri(user_id) .
+
+  # Post
+  phpbbsioc:post_iri (phpBB2.DBA.phpBB2_posts_rdf.post_id,phpBB2.DBA.phpBB2_posts_rdf.post_id)
+  a sioc:Post option (EXCLUSIVE);
+  a sioc:Item option (EXCLUSIVE);
+  sioc:id post_id ;
+  sioc:has_container phpbbsioc:forum_iri(forum_id) ;
+  dc:title post_subject ;
+  sioc:has_creator phpbbsioc:user_iri (poster_id) ;
+  sioc:content post_text .
+
+  # Forum - post
+  phpbbsioc:forum_iri (phpBB2.DBA.phpBB2_forum_posts_rdf.forum_id) 
+  sioc:container_of phpbbsioc:post_iri(post_id,post_id) .
+
+      }
+  } .
+&#39;)));
+
+grant select on phpBB2.DBA.phpBB2_site_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_users_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_usergroups_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_user_usergroups_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_forums_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_forum_moderators_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_posts_rdf to &quot;SPARQL&quot;;
+grant select on phpBB2.DBA.phpBB2_forum_posts_rdf to &quot;SPARQL&quot;;
+
+DB.DBA.XML_SET_NS_DECL (&#39;phpbbsioc&#39;, &#39;http://openlinksw.com/phpBB/sioc/&#39;, 2);
+</programlisting><para> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryRDF">CategoryRDF</ulink> </para>
+</section></docbook>

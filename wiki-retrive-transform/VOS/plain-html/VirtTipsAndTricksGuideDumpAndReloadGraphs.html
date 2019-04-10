@@ -1,0 +1,144 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="RDF dumps from Virtuoso Quad store hosted data"></a> RDF dumps from Virtuoso Quad store hosted data</h1>
+<p>Every DBMS needs to offer a mechanism for bulk export and import of data.</p>
+<p>Virtuoso supports dumping and reloading graph model data (e.g., RDF), as well as relational data (e.g., SQL) (discussed elsewhere).</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#How%20is%20it%20done%3F">How is it done?</a></li>
+<ul><li><a href="#Dump%20One%20Graph">Dump One Graph</a></li> <li><a href="#Dump%20Multiple%20Graphs">Dump Multiple Graphs</a></li> <li><a href="#Load%20Graphs">Load Graphs</a></li> </ul><li><a href="#Example">Example</a></li> <li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p> </p>
+<h2><a name="How is it done?"></a> How is it done?</h2>
+<p>We have created stored procedures for the task.
+ The dump procedures leverage SPARQL to facilitate selective data dump(s) from one or more Named Graphs, each denoted by an IRI.</p>
+<h3><a name="Dump One Graph"></a> Dump One Graph</h3>
+<br><pre>CREATE PROCEDURE dump_one_graph 
+  ( IN  srcgraph           VARCHAR  , 
+    IN  out_file           VARCHAR  , 
+    IN  file_length_limit  INTEGER  := 1000000000
+  )
+  {
+    DECLARE  file_name     VARCHAR;
+    DECLARE  env, 
+             ses           ANY;
+    DECLARE  ses_len, 
+             max_ses_len, 
+             file_len, 
+             file_idx      INTEGER;
+    SET ISOLATION = &#39;uncommitted&#39;;
+    max_ses_len  := 10000000;
+    file_len     := 0;
+    file_idx     := 1;
+    file_name    := sprintf (&#39;%s%06d.ttl&#39;, out_file, file_idx);
+    string_to_file ( file_name || &#39;.graph&#39;, 
+                     srcgraph, 
+                     -2
+                   );
+    string_to_file ( file_name, 
+                     sprintf ( &#39;# Dump of graph &lt;%s&gt;, as of %s\n&#39;, 
+                               srcgraph, 
+                               CAST (NOW() AS VARCHAR)
+                             ), 
+                     -2
+                   );
+    env := vector (dict_new (16000), 0, &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 0, 0, 0);
+    ses := string_output ();
+    FOR (SELECT * FROM ( SPARQL DEFINE input:storage &quot;&quot; 
+                         SELECT ?s ?p ?o { GRAPH `iri(?:srcgraph)` { ?s ?p ?o } } 
+                       ) AS sub OPTION (LOOP)) DO
+      {
+        http_ttl_triple (env, &quot;s&quot;, &quot;p&quot;, &quot;o&quot;, ses);
+        ses_len := length (ses);
+        IF (ses_len &gt; max_ses_len)
+          {
+            file_len := file_len + ses_len;
+            IF (file_len &gt; file_length_limit)
+              {
+                http (&#39; .\n&#39;, ses);
+                string_to_file (file_name, ses, -1);
+                file_len := 0;
+                file_idx := file_idx + 1;
+                file_name := sprintf (&#39;%s%06d.ttl&#39;, out_file, file_idx);
+                string_to_file ( file_name, 
+                                 sprintf ( &#39;# Dump of graph &lt;%s&gt;, as of %s (part %d)\n&#39;, 
+                                           srcgraph, 
+                                           CAST (NOW() AS VARCHAR), 
+                                           file_idx), 
+                                 -2
+                               );
+                 env := VECTOR (dict_new (16000), 0, &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 0, 0, 0);
+              }
+            ELSE
+              string_to_file (file_name, ses, -1);
+            ses := string_output ();
+          }
+      }
+    IF (LENGTH (ses))
+      {
+        http (&#39; .\n&#39;, ses);
+        string_to_file (file_name, ses, -1);
+      }
+  }
+;
+</pre><h3><a name="Dump Multiple Graphs"></a> Dump Multiple Graphs</h3>
+<br><pre>CREATE PROCEDURE dump_graphs 
+  ( IN  dir               VARCHAR  :=  &#39;dumps&#39;   , 
+    IN  file_length_limit INTEGER  :=  1000000000
+  )
+  {
+    DECLARE inx INT;
+    inx := 1;
+    SET ISOLATION = &#39;uncommitted&#39;;
+    FOR ( SELECT * 
+            FROM ( SPARQL DEFINE input:storage &quot;&quot; 
+                   SELECT DISTINCT ?g { GRAPH ?g { ?s ?p ?o } . 
+                                        FILTER ( ?g != virtrdf: ) 
+                                      } 
+                 ) AS sub OPTION ( LOOP )) DO
+      {
+        dump_one_graph ( &quot;g&quot;, 
+                         sprintf (&#39;%s/graph%06d_&#39;, dir, inx), 
+                         file_length_limit
+                       );
+        inx := inx + 1;
+      }
+  }
+;
+</pre><p> </p>
+<h3><a name="Load Graphs"></a> Load Graphs</h3>
+<p>This stored procedure performs a bulk load from a file.</p>
+<br><pre>CREATE PROCEDURE load_graphs 
+  ( IN  dir  VARCHAR  := &#39;dumps/&#39; )
+  {
+    DECLARE  arr  ANY;
+    DECLARE  g    VARCHAR;
+
+    arr := sys_dirlist (dir, 1);
+    log_enable (2, 1);
+    FOREACH (VARCHAR f IN arr) DO
+      {
+        IF (f LIKE &#39;*.ttl&#39;)
+          {
+            DECLARE CONTINUE HANDLER FOR SQLSTATE &#39;*&#39;
+              {
+                log_message (sprintf (&#39;Error in %s&#39;, f));
+              };
+            g := file_to_string (dir || &#39;/&#39; || f || &#39;.graph&#39;);
+            DB.DBA.TTLP_MT (file_open (dir || &#39;/&#39; || f), g, g, 255);      
+          }
+      }
+    EXEC (&#39;checkpoint&#39;);
+  };
+</pre><p> </p>
+<h2><a name="Example"></a> Example</h2>
+<ol><li>Call the <code>dump_one_graph</code> procedure, for ex.
+ with the following values: <br><pre><br>SQL&gt; dump_one_graph (&#39;http://daas.openlinksw.com/data#&#39;, &#39;./data_&#39;, 1000000000); 
+Done. -- 1438 msec.
+</pre><br></li>
+<li>As a result, a dump of the graph <n0: xmlns:n0="http" daas.openlinksw.com="daas.openlinksw.com" data="data"> will be found in the files <code>data_XX</code> (located in your Virtuoso db folder): <br><pre><br>data_000001.ttl
+data_000002.ttl
+....
+data_000001.ttl.graph
+</pre><br></n0:></li>
+</ol><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDumpLoadRdfGraphs" class="wikiword">Virtuoso Scripts to Dump and Reload RDF Graphs - more examples</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdfperfdumpandreloadgraphs" class="absuri">Virtuoso Documentation</a> </li>
+</ul></div></body></html>

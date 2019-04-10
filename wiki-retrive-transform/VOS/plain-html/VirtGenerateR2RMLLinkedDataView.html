@@ -1,0 +1,158 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtR2RML"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtR2RML"}%--><h1><a name="Generate Linked Data Views via R2RML from iSQL"></a>Generate Linked Data Views via R2RML from iSQL</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Function%20Description">Function Description</a></li>
+<ul><li><a href="#Parameters%20Description">Parameters Description</a></li> </ul><li><a href="#Usage%20Example">Usage Example</a></li><ul><li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Steps">Steps</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p>Using Virtuoso you can programmatically generate Linked Data Views atop Relational Data Sources, using R2RML via the built-in function: <code>R2RML_GENERATE_LINKED_VIEW</code> function.
+ In order to use this function, you need to have the <code><a href="https://virtuoso.openlinksw.com/download/" class="absuri">rdb2rdf_dav.vad</a></code> package installed.</p>
+<h2><a name="Function Description"></a>Function Description</h2>
+<br><pre>R2RML_GENERATE_LINKED_VIEW 
+  (
+    in source varchar, 
+    in destination_graph varchar, 
+    in graph_type int default 0, 
+    in clear_source_graph int default 1
+  )
+</pre><p> </p>
+<h3><a name="Parameters Description"></a>Parameters Description</h3>
+<ul><li><b>source</b>: The source R2RMLdocument URI.
+ Acceptable schemes include: <code>file:</code>, <code>dav:</code>, <code>http:</code> and <code>https:</code>.
+ These are also acceptable as source graph URI.; </li>
+<li><b>destination graph</b>: This is a default graph name (an IRI) applicable to either virtual or physical graph.
+</li>
+<li><b>graph_type</b>: 0 - virtual; 1 - physical graph which sets the actual graph type; </li>
+<li><b>clear_source_graph</b>: Determines if existing R2RML source graphs (those holding view declarations) are replaced as part of processing pipeline.</li>
+</ul><b>Note</b>: The R2RML mapping script may have a triples like <code> [] rr:graph &lt;graph_name&gt; </code> and in this case they take precedence and virtual graph would be defined as in the R2RML.
+ If so, then if destination graph is specified as physical, all virtual graphs found in the R2RML would go in the destination_graph.<h2><a name="Usage Example"></a>Usage Example</h2>
+<h3><a name="Prerequisites"></a>Prerequisites</h3>
+<p>Ensure the R2RML VAD package <a href="https://virtuoso.openlinksw.com/download/" class="absuri">rdb2rdf_dav.vad</a> is installed.</p>
+<h3><a name="Steps"></a>Steps</h3>
+<ol><li>To clear out existing mappings execute: <br><pre><br>
+SQL&gt; SELECT RDF_VIEW_DROP_STMT_BY_GRAPH (&#39;http://example.com&#39;);
+VARCHAR
+_______________________________________________________________________________
+
+SPARQL drop silent quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; .;
+
+
+1 Rows. -- 16 msec.
+
+SQL&gt; SPARQL DROP SILENT QUAD MAP &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; ;
+
+STATE    MESSAGE
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000    Quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; is no longer used in storage &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage
+&gt;
+00000    Quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; is deleted
+00000    Transaction committed, SPARQL compiler re-configured
+00000    2 RDF metadata manipulation operations done
+
+4 Rows. -- 406 msec.
+
+
+SQL&gt; SPARQL CLEAR &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt;;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Clear &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; -- done
+
+1 Rows. -- 15 msec.
+
+
+SQL&gt; DROP TABLE &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot; ;
+
+Done. -- 0 msec.
+
+SQL&gt; CREATE TABLE &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot;
+(
+  &quot;id&quot; INTEGER,
+  &quot;name&quot; VARCHAR(100),
+  PRIMARY KEY (&quot;id&quot;)
+);
+Done. -- 16 msec.
+</pre><br></li>
+<li>Insert sample data into a Table by executing: <br><pre><br>SQL&gt; INSERT SOFT &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot; VALUES(1, &#39;Virtuoso&#39;);
+Done. -- 0 msec.
+</pre><br></li>
+<li>Locate or create your R2RML mapping document, for example: <a href="http://demo.openlinksw.com/r2rmldemo.n3" class="absuri">.n3 file</a> with the following content: <br><pre><br>@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
+@prefix exa: &lt;http://example.com/ns#&gt; .
+@prefix product: &lt;http://example.com/product#&gt; .
+
+&lt;http://example.com/ns#TriplesMap1&gt;
+    a rr:TriplesMap;
+
+    rr:logicalTable 
+    [ 
+      rr:tableSchema &quot;R2RML&quot;; 
+      rr:tableOwner &quot;TEST&quot;; 
+      rr:tableName  &quot;PRODUCT&quot; 
+    ];
+
+    rr:subjectMap 
+    [ 
+      rr:template &quot;http://example.com/product/{id}&quot;;
+      rr:class exa:product;
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:id;
+      rr:objectMap [ rr:column &quot;id&quot; ];
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:name;
+      rr:objectMap [ rr:column &quot;name&quot; ];
+    ];
+.
+
+</pre><br></li>
+<li>Generate a Linked Data View from the R2RML document that applies to the sample data (created earlier) by executing the statement: <br><pre><br>SQL&gt; DB.DBA.R2RML_GENERATE_LINKED_VIEW(&#39;http://demo.openlinksw.com/r2rmldemo.n3&#39;, &#39;http://example.com&#39;, 0);
+STATE    MESSAGE
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000    IRI class &lt;r2rml:virt02-8513ca7e0ce41d2e38f0c750fd552139&gt; has been defined (inherited from rdfdf:sql-integer-uri-nullable)
+00000    Literal class &lt;r2rml:virt02-daca9ceddea29d53dbbdb6bd0f3dee68&gt; has been defined (inherited from rdfdf:sql-integer-literal-nullable)
+00000    Quad storage &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage&gt; is flagged as being edited
+00000    Quad map &lt;http://demo.openlinksw.com/r2rmldemo.n3&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad map &lt;sys:qm-1be5dbd931459cf9e2df2338428f418d&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad map &lt;sys:qm-c5f81d7126efa3e7a93f7e903fd5fa93&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad map &lt;sys:qm-25c4599111b9f07fbd8fc60ce0b42eaf&gt; has been created and added to the &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
+orage&gt;
+00000    Quad storage &lt;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage&gt; is unflagged and can be edited by other transactions
+00000    Transaction committed, SPARQL compiler re-configured
+00000    9 RDF metadata manipulation operations done
+
+10 Rows. -- 1109 msec.
+SQL&gt;
+
+</pre><br></li>
+<li>Verify successful creation of the Linked Data View by executing the following SPARQL query via iSQL or Conductor interfaces: <br><pre><br>SQL&gt; SPARQL 
+SELECT * 
+FROM &lt;http://example.com&gt; 
+WHERE {?s ?p ?o} ;
+
+s                                p                                                   o
+VARCHAR                          VARCHAR                                             VARCHAR
+_______________________________________________________________________________
+
+http://example.com/product/1     http://example.com/product#id                       1
+http://example.com/product/1     http://example.com/product#name                     Virtuoso
+http://example.com/product/1     http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://example.com/ns#product
+
+3 Rows. -- 15 msec.
+</pre><br></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtR2RML" class="wikiword">Virtuoso R2RML Support</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtConductorR2RMLImport" class="wikiword">Virtuoso Conductor R2RML Import Wizard</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideConductorR2RML" class="wikiword">Generating Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources Using Conductor</a> </li>
+<li>W3C page for <a href="http://www.w3.org/TR/r2rml/" class="absuri">R2RML: RDB to RDF Mapping Language</a></li>
+</ul></div></body></html>

@@ -1,0 +1,41 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="Managing SSL Protocols and Ciphers used with Virtuoso"></a> Managing SSL Protocols and Ciphers used with Virtuoso</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What">What</a></li> <li><a href="#Why">Why</a></li> <li><a href="#How">How</a></li>
+<ul><li><a href="#Basic%20SSL%20Protocol%20Configuration">Basic SSL Protocol Configuration</a></li><ul><li><a href="#Supported%20SSL%20Protocols%20and%20INI%20keyword%20values">Supported SSL Protocols and INI keyword values</a></li> </ul><li><a href="#Advanced%20SSL%20Cipher%20List%20Configuration">Advanced SSL Cipher List Configuration</a></li> <li><a href="#Recommended%20Settings">Recommended Settings</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What"></a> What</h2>
+<p>As of Virtuoso 7.2, SSL protocol and cipher support is now configurable for connections from all HTTP, ODBC, JDBC, ADO.NET, and OLE-DB clients.</p>
+<h2><a name="Why"></a> Why</h2>
+<p>Default binding to <nop></nop>OpenSSL can expose Virtuoso instances to version- and cipher-specific SSL vulnerabilities (e.g., recent <a href="http://security.stackexchange.com/questions/70719/ssl3-poodle-vulnerability" class="absuri">Poodle exploit</a>).
+ Being able to scope Virtuoso&#39;s use of SSL to one or more specific versions provides instance administrators better protection against a moving target.</p>
+<h2><a name="How"></a> How</h2>
+<h3><a name="Basic SSL Protocol Configuration"></a> Basic SSL Protocol Configuration</h3>
+<p>Basic configuration is through the <b><code>SSL_Protocols</code></b> values in the <code>[Parameters]</code> and <code>[HTTP]</code> sections of the Virtuoso INI file.
+ These are comma+space-separated (&quot;<code>, </code>&quot;) value lists.
+ Including a protocol name explicitly enables it; preceding the protocol name with an exclamation point (&quot;<code>!</code>&quot;) explicitly disables it.</p>
+<h4><a name="Supported SSL Protocols and INI keyword values"></a> Supported SSL Protocols and INI keyword values</h4>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksManageSSLProtocols?sort=0&col=1">SSL/TLS Version   </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksManageSSLProtocols?sort=1&col=2">Value for INI file     </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksManageSSLProtocols?sort=2&col=3">Notes                                                                                 </a></th></tr><tr><td align="center">  SSLv2               </td><td align="center">   <i>—</i>          </td><td> Permanently disabled.                                                                  </td></tr><tr><td align="center">  SSLv3               </td><td align="center">   <code>SSLv3</code>      </td><td> Disabled by default.  To our knowledge, only required by IE6/Windows XP clients.       </td></tr><tr><td align="center">  TLSv1               </td><td align="center">   <code>TLSv1</code>      </td><td> Enabled by default.                                                                    </td></tr><tr><td align="center">  TLSv1.1             </td><td align="center">   <code>TLSv1.1</code>    </td><td> Enabled by default, supported if available in local <code>openssl</code> library.      </td></tr><tr><td align="center">  TLSv1.2             </td><td align="center">   <code>TLSv1.2</code>    </td><td> Enabled by default, supported if available in local <code>openssl</code> library.      </td></tr></table>
+<h3><a name="Advanced SSL Cipher List Configuration"></a> Advanced SSL Cipher List Configuration</h3>
+<p>The <b><code>SSL_Cipher_List</code></b> values in the <code>[Parameters]</code> and <code>[HTTP]</code> stanzas of the Virtuoso INI file may also be adjusted, to disable particular ciphers when there are security reports about some new attack that breaks them.
+ These are colon-separated (&quot;<code>:</code>&quot;) value lists.</p>
+<p>Including a protocol name or groupname explicitly enables it; preceding the protocol name with an exclamation point (&quot;<code>!</code>&quot;) explicitly disables it.
+ You can review the ciphers supported by your local <code>OpenSSL</code> library with the command </p>
+<br><pre>openssl ciphers -v ALL
+</pre><p> For instance, we recommend explicitly forbidding anonymous cipher suites (i.e., ones that don?t use certificates, and are therefore susceptible to man-in-the-middle attacks) using <b><code>!aNULL</code></b>.</p>
+<p>We also recommend including <b><code>@STRENGTH</code></b> at the end of the list, so that <nop></nop>OpenSSL will prioritize the enabled ciphers by key length, regardless of the list order.</p>
+<h3><a name="Recommended Settings"></a> Recommended Settings</h3>
+<p>The sample settings below provide a reasonable tradeoff of security versus flexibility.
+ As shown, we have enabled SSLv3 on the HTTPS ports for IE6 users, but left this disabled on the SQL data port.
+</p>
+<br><pre>[Parameters]
+SSL_Protocols	= TLSv1, TLSv1.1, TLSv1.2
+SSL_Cipher_List = HIGH:!aNULL:!eNULL:!RC4:!DES:!MD5:!PSK:!SRP:!KRB5:!SSLv2:!EXP:!MEDIUM:!LOW:!DES-CBC-SHA:@STRENGTH
+
+[HTTP]
+SSL_Protocols	= SSLv3, TLSv1, TLSv1.1, TLSv1.2
+SSL_Cipher_List = HIGH:!aNULL:!eNULL:!RC4:!DES:!MD5:!PSK:!SRP:!KRB5:!SSLv2:!EXP:!MEDIUM:!LOW:!DES-CBC-SHA:@STRENGTH
+</pre><p> </p>
+<h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://security.stackexchange.com/questions/70719/ssl3-poodle-vulnerability" class="absuri">SSL 3.0 and Poodle Vulnerability</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a></li>
+</ul></div></body></html>

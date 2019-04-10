@@ -1,0 +1,1123 @@
+%VOSWARNING%
+
+---+ Evaluator's Guide to Linked Data Deployment
+
+%TOC%
+
+This guide will shows how to deploy Linked Data for Objects in an RDF Resource File (physical) or Linked Data Views (Virtual)
+   * To include both from references with specific examples for Physical and Virtual Resources
+   * to include Mapping Rules
+   * the list to consist of:
+      1. 11 ways to get RDF into Virtuoso
+      2. SPARQL Optimization 
+      3. Linked Data Deployment
+
+---++ 11 ways to get RDF into Virtuoso
+
+---+++ HTTP Post using Content-Type: application/sparql-query
+
+With POST can be accomplished SPARQL Insert/Update etc.
+
+The result is in the rdf_quad.
+
+With GET Methods you can get the triples which are saved.
+
+---++++ Examples
+
+---+++++ Example 1
+
+   1. Create a DAV collection xx for user demo with password demo.
+   1. Execute the following command:
+<verbatim>
+curl -i -d "INSERT {<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this>
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/ns#User>}" -u "demo:demo"
+-H "Content-Type: application/sparql-query" http://localhost:8890/DAV/xx/yy
+</verbatim>
+   1. The response should be:
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/05.00.3023 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Fri, 28 Dec 2007 12:50:12 GMT
+Accept-Ranges: bytes
+MS-Author-Via: SPARQL
+Content-Length: 0
+</verbatim>
+   1. The result in the DAV/xx location will be a new WebDAV resource with name "yy" containing the following:
+      * if opened with Conductor:
+<verbatim>
+CONSTRUCT { ?s ?p ?o } FROM <http://localhost:8890/DAV/xx/yy> WHERE { ?s ?p ?o }
+</verbatim>
+      * if opened with GET, then the content will be RDF representation of what was inserted into the graph, i.e.
+<verbatim>
+      <?xml version="1.0" encoding="utf-8" ?>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+      <rdf:Description
+      rdf:about="http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this">
+      <ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      rdf:resource="http://rdfs.org/sioc/ns#User"/>
+      </rdf:Description>
+      </rdf:RDF>
+</verbatim>
+
+---+++++ Example 2
+
+   1. Create a DAV collection, for ex. with name "test" for user ( for ex. demo).
+   1. Execute the following command:
+<verbatim>
+curl -i -d "INSERT IN GRAPH <http://mygraph.com>
+{ <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+  <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this>
+  <http://www.w3.org/2000/01/rdf-schema#label>
+  <Kingsley Uyi Idehen> .
+  <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this>
+  <http://rdfs.org/sioc/ns#creator_of>
+
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300>
+  } " -u "demo:demo" -H "Content-Type: application/sparql-query" http://localhost:8890/DAV/home/demo/test/myrq
+</verbatim>
+   1. As result the response will be:
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/05.00.3023 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Thu, 20 Dec 2007 16:25:25 GMT
+Accept-Ranges: bytes
+MS-Author-Via: SPARQL
+Content-Length: 0
+</verbatim>
+   1. Now let's check the inserted triples. Go to the sparql endpoint, i.e. http://localhost:8890/sparql and:
+      * Enter for Default Graph URI:
+<verbatim>
+http://mygraph.com
+</verbatim>
+      * Enter in the Query area:
+<verbatim>
+      SELECT * WHERE {?s ?p ?o}
+</verbatim>
+      * Click the button "Run Query"
+      * As result will be shown the inserted triples:
+<verbatim>
+      s  	                                                          p                                                 o
+      http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://rdfs.org/sioc/ns#User
+      http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://www.w3.org/2000/01/rdf-schema#label 	    Kingsley
+      http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://rdfs.org/sioc/ns#creator_of                http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300
+</verbatim>
+
+
+
+---+++ HTTP PUT using Content-Type: application/rdf+xml
+
+The URI in a PUT request identifies the entity enclosed with the request. Therefore using HTTP PUT is a more useful and meaningful command than using POST (which is more about submitting data to a script).
+
+---++++ Example
+
+   1. Suppose there is myfoaf.rdf file with the following content:
+<verbatim>
+<rdf:RDF xmlns="http://www.example/jose/foaf.rdf#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:log="http://www.w3.org/2000/10/swap/log#"
+    xmlns:myfoaf="http://www.example/jose/foaf.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#jose">
+        <foaf:homepage rdf:resource="http://www.example/jose/"/>
+        <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#juan"/>
+        <foaf:name>Jose Jimen~ez</foaf:name>
+        <foaf:nick>Jo</foaf:nick>
+        <foaf:workplaceHomepage rdf:resource="http://www.corp.example/"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#juan">
+        <foaf:mbox rdf:resource="mailto:juan@mail.example"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#julia">
+        <foaf:mbox rdf:resource="mailto:julia@mail.example"/>
+    </foaf:Person>
+
+    <rdf:Description rdf:about="http://www.example/jose/foaf.rdf#kendall">
+        <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#edd"/>
+    </rdf:Description>
+</rdf:RDF>
+</verbatim>
+   1. Now let's upload the myfoaf.rdf file to destination server demo.openlinksw.com for user demo:
+<verbatim>
+curl -T myfoaf.rdf http://demo.openlinksw.com/DAV/home/demo/rdf_sink/myfoaf.rdf -u demo:demo
+</verbatim>
+   1. As result the response should be:
+<verbatim>
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+  <TITLE>201 Created</TITLE>
+</HEAD>
+<BODY>
+  <H1>Created</H1>
+  Resource /DAV/home/demo/rdf_sink/ myfoaf.rdf has been created.
+</BODY>
+</HTML>
+</verbatim>
+
+---+++ SPARQL Insert using LOAD
+
+SPARQL INSERT operation can be done using the LOAD feature.
+
+<strong>Example</strong>:
+
+   1. Execute from ISQL:
+<verbatim>
+sparql insert in graph <http://mygraph.com>
+{
+  <http://myopenlink.net/dataspace/Kingsley#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Kingsley#this>
+  <http://rdfs.org/sioc/ns#id>
+  <Kingsley> .
+
+  <http://myopenlink.net/dataspace/Caroline#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+
+ <http://myopenlink.net/dataspace/Caroline#this>
+  <http://rdfs.org/sioc/ns#id>
+  <Caroline> .
+
+   <http://myopenlink.net/dataspace/Matt#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Matt#this>
+  <http://rdfs.org/sioc/ns#id>
+  <Matt> .
+
+   <http://myopenlink.net/dataspace/demo#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/demo#this>
+  <http://rdfs.org/sioc/ns#id>
+  <demo> .};
+</verbatim>
+   1. Create DAV collection which is visible to public, for ex: http://localhost:8890/DAV/tmp
+   1. Upload to the DAV collection the following file for ex. with name listall.rq and with the following content:
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+SELECT ?x ?p ?o
+FROM <http://mygraph.com>
+WHERE
+  {
+    ?x rdf:type sioc:User .
+    ?x ?p ?o.
+    ?x sioc:id ?id .
+    FILTER REGEX(str(?id), "^King")
+  }
+ORDER BY ?x
+</verbatim>
+   1. Now from ISQL execute the following command:
+<verbatim>
+sparql
+load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/tmp/listall.rq") into graph <http://myNewGraph.com>;
+</verbatim>
+   1. As result should be shown:
+<verbatim>
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load <http://localhost:8890/DAV/tmp/listall.rq> into graph <http://myNewGraph.com> -- done
+
+1 Rows. -- 321 msec.
+</verbatim>
+
+---+++ SPARQL Insert via /sparql endpoint
+
+SPARQL INSERT operation can be sent to a web service endpoint as a single statement and executed in sequence.
+
+
+---++++ Example
+
+Using the Virtuoso ISQL tool or using the /sparql UI at http://host:port/sparql, execute the following:
+
+   * Insert into graph http://example/bookStore 3 triples:
+<verbatim>
+      sparql insert in graph <http://BookStore.com>
+      { <http://www.dajobe.org/foaf.rdf#i> <http://purl.org/dc/elements/1.1/date> <1999-04-01T00:00:00> .
+        <http://www.w3.org/People/Berners-Lee/card#i> <http://purl.org/dc/elements/1.1/date> <1998-05-03T00:00:00> .
+        <http://www.w3.org/People/Connolly/#me> <http://purl.org/dc/elements/1.1/date> <2001-02-08T00:00:00> };
+</verbatim>
+   * As result will be shown the message:
+<verbatim>
+      Insert into <http://BookStore.com>, 3 triples -- done
+</verbatim>
+   * Next we will select all triples from the graph http://example/bookStore:
+<verbatim>
+      sparql select * from <http://BookStore.com> where {?s ?p ?o};
+</verbatim>
+   * As result will be shown:
+<verbatim>
+      s                                              p                                       o
+      VARCHAR                                        VARCHAR                                 VARCHAR
+      _______________________________________________________________________________
+
+      http://www.w3.org/People/Berners-Lee/card#i    http://purl.org/dc/elements/1.1/date    1998-05-03T00:00:00
+      http://www.w3.org/People/Connolly/#me          http://purl.org/dc/elements/1.1/date    2001-02-08T00:00:00
+      http://www.dajobe.org/foaf.rdf#i               http://purl.org/dc/elements/1.1/date    1999-04-01T00:00:00
+
+      3 Rows. -- 0 msec.
+</verbatim>
+   * Now let's insert into graph another http://NewBookStore.com graph's values:
+<verbatim>
+      sparql
+      PREFIX dc:  <http://purl.org/dc/elements/1.1/>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      INSERT INTO GRAPH <http://NewBookStore.com> { ?book ?p ?v }
+      WHERE
+        { GRAPH  <http://BookStore.com>
+         { ?book dc:date ?date
+           FILTER ( xsd:dateTime(?date) < xsd:dateTime("2000-01-01T00:00:00")).
+           ?book ?p ?v.
+         }
+        };
+</verbatim>
+   * As result will be shown:
+<verbatim>
+      callret-0
+      VARCHAR
+      _______________________________________________________________________________
+
+      Insert into <http://NewBookStore.com>, 2 triples -- done
+</verbatim>
+   * Finally we will check the triples from the graph NewBookStore.com:
+<verbatim>
+      SQL> sparql select * from <http://NewBookStore.com> where {?s ?p ?o};
+</verbatim>
+   * As result will be shown:
+<verbatim>
+      s                                             p                                      o
+      VARCHAR                                       VARCHAR                                VARCHAR
+      _______________________________________________________________________________
+
+      http://www.w3.org/People/Berners-Lee/card#i   http://purl.org/dc/elements/1.1/date   1998-05-03T00:00:00
+      http://www.dajobe.org/foaf.rdf#i              http://purl.org/dc/elements/1.1/date   1999-04-01T00:00:00
+
+      2 Rows. -- 10 msec.
+</verbatim>
+
+---+++ SPARQL Insert via HTTP Post using Content-Type: application/sparql-query and ODS wiki
+
+With HTTP Post and ODS wiki can be written an rdf document and respectively to be performed over it INSERT/UPDATE action.
+
+You can write to a file using SIOC terms for ODS-Wiki.
+
+You can check with sparql the inserted / updated triples in the Quad Store.
+
+---++++ Example
+
+   1. Suppose there is ODS user test3 with ODS password 1, which has testWiki wiki instance.
+   1. Execute the following:
+<verbatim>
+curl -i -d "INSERT {<http://localhost:8890/dataspace/test3/wiki/testWiki> <http://atomowl.org/ontologies/atomrdf#contains> <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#has_container> <http://localhost:8890/dataspace/test3/wiki/testWiki> . <http://localhost:8890/dataspace/test3/wiki/testWiki> <http://atomowl.org/ontologies/atomrdf#entry> <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> . <http://localhost:8890/dataspace/test3/wiki/testWiki> <http://rdfs.org/sioc/ns#container_of> <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#topic>  <http://localhost:8890/dataspace/test3/wiki/testWiki> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://atomowl.org/ontologies/atomrdf#source> <http://localhost:8890/dataspace/test3/wiki/testWiki> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/types#Comment> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://atomowl.org/ontologies/atomrdf#Entry> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/2000/01/rdf-schema#label> 'MyTest' . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://atomowl.org/ontologies/atomrdf#Link> . <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#content> <test>}" -u "test3:1" -H "Content-Type: application/sparql-query" http://localhost:8890/DAV/home/test3/wiki/testWiki/MyTest
+</verbatim>
+   1. As result we should have 2 files created:
+      * In the user DAV folder "DAV/home/test3/wiki/testWiki/" will be created a file "MyTest" with type "application/sparql-query". You can view the content of this file from from the Conductor UI or from the user's Briefcase UI, path "DAV/home/test3/wiki/testWiki". Its content will be:
+<verbatim>
+      <?xml version="1.0" encoding="utf-8" ?>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki"><ns0pred:entry xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:label xmlns:ns0pred="http://www.w3.org/2000/01/rdf-schema#">MyTest</ns0pred:label></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://atomowl.org/ontologies/atomrdf#Link"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://rdfs.org/sioc/types#Comment"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://atomowl.org/ontologies/atomrdf#Entry"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:has_container xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki"><ns0pred:container_of xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki"><ns0pred:contains xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:content xmlns:ns0pred="http://rdfs.org/sioc/ns#">test</ns0pred:content></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:topic xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki"/></rdf:Description>
+      <rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:source xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki"/></rdf:Description>
+      </rdf:RDF>
+</verbatim>
+      * To the user's wiki instance will be added a new WikiWord "MyTest" with content the value of the SIOC term attribute "content":
+<verbatim>
+      <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#content> <test>
+      i.e. the content will be "test".
+</verbatim>
+   1. Now let's check what data was inserted in the Quad Store:
+      * Go to the sparql endpoint, i.e. for ex. to http://localhost:8890/sparql
+      * Enter for Default Graph URI:
+<verbatim>
+      http://localhost:8890/DAV/home/test3/wiki/testWiki/MyTest
+</verbatim>
+      * Enter for Query text:
+<verbatim>
+      SELECT * WHERE {?s ?p ?o}
+</verbatim>
+      * Click the "Run Query" button.
+      * As result will be shown the inserted triples:
+<verbatim>
+      s  	                                                    p  	                                             o
+      http://localhost:8890/dataspace/test3/wiki/testWiki 	    http://rdfs.org/sioc/ns#container_of 	     http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest
+      http://localhost:8890/dataspace/test3/wiki/testWiki 	    http://atomowl.org/ontologies/atomrdf#entry      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest
+      http://localhost:8890/dataspace/test3/wiki/testWiki 	    http://atomowl.org/ontologies/atomrdf#contains   http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  http://rdfs.org/sioc/types#Comment
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  http://atomowl.org/ontologies/atomrdf#Entry
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  http://atomowl.org/ontologies/atomrdf#Link
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/2000/01/rdf-schema#label 	     MyTest
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://rdfs.org/sioc/ns#has_container 	     http://localhost:8890/dataspace/test3/wiki/testWiki
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://rdfs.org/sioc/ns#content 	             test
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://rdfs.org/sioc/ns#topic 	             http://localhost:8890/dataspace/test3/wiki/testWiki
+      http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest  http://atomowl.org/ontologies/atomrdf#source     http://localhost:8890/dataspace/test3/wiki/testWiki
+</verbatim>
+
+
+---+++ Using Web DAV
+
+Example using WebDAV (mount folder to DAV and dump; if this is the rdf_sink the Quad Store is updated automatically, or you can load from DAV manually to quad store)
+
+---++++ Examples
+
+---+++++ Example 1: Using ODS Briefcase
+
+   1. Go to your ods location, for ex. http://localhost:8890/ods
+   1. Register user, for ex. user test1
+   1. Login if not already in ods
+   1. Go to ODS ->Briefcase
+   1. Create new instance
+   1. Go to the briefcase instance by clicking its name link
+   1. Upload file in a new created folder mytest or in the rdf_sink folder with:
+      * checked option "RDF Store"
+      * set RDF Graph Name, for ex. http://localhost:8890/DAV/home/test1/ of the current folder>/ for ex. http://localhost:8890/DAV/home/test1/mytest/ or http://localhost:8890/DAV/home/test1/rdf_sink/
+      * For ex. upload the following file with name jose.rdf.
+<verbatim>
+      <rdf:RDF xmlns="http://www.example/jose/foaf.rdf#"
+          xmlns:foaf="http://xmlns.com/foaf/0.1/"
+          xmlns:log="http://www.w3.org/2000/10/swap/log#"
+          xmlns:myfoaf="http://www.example/jose/foaf.rdf#"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+          <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#jose">
+              <foaf:homepage rdf:resource="http://www.example/jose/"/>
+              <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#juan"/>
+              <foaf:name>Jose Jimen~ez</foaf:name>
+              <foaf:nick>Jo</foaf:nick>
+              <foaf:workplaceHomepage rdf:resource="http://www.corp.example/"/>
+          </foaf:Person>
+
+          <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#juan">
+              <foaf:mbox rdf:resource="mailto:juan@mail.example"/>
+          </foaf:Person>
+
+          <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#julia">
+              <foaf:mbox rdf:resource="mailto:julia@mail.example"/>
+          </foaf:Person>
+
+          <rdf:Description rdf:about="http://www.example/jose/foaf.rdf#kendall">
+
+              <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#edd"/>
+          </rdf:Description>
+      </rdf:RDF>
+</verbatim>
+   1. Execute the following query:
+<verbatim>
+select * from <>
+where {?s ?p ?o}
+</verbatim>
+   1. As result should be shown:
+<verbatim>
+s  	                                  p  	                                            o
+http://www.example/jose/foaf.rdf#jose 	  http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://xmlns.com/foaf/0.1/Person
+http://www.example/jose/foaf.rdf#jose 	  http://xmlns.com/foaf/0.1/nick 	            Jo
+http://www.example/jose/foaf.rdf#jose 	  http://xmlns.com/foaf/0.1/name 	            Jose Jimen~ez
+http://www.example/jose/foaf.rdf#jose 	  http://xmlns.com/foaf/0.1/knows 	            http://www.example/jose/foaf.rdf#juan
+http://www.example/jose/foaf.rdf#jose 	  http://xmlns.com/foaf/0.1/homepage 	            http://www.example/jose/
+http://www.example/jose/foaf.rdf#jose 	  http://xmlns.com/foaf/0.1/workplaceHomepage 	    http://www.corp.example/
+http://www.example/jose/foaf.rdf#kendall  http://xmlns.com/foaf/0.1/knows 	            http://www.example/jose/foaf.rdf#edd
+http://www.example/jose/foaf.rdf#julia 	  http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://xmlns.com/foaf/0.1/Person
+http://www.example/jose/foaf.rdf#julia 	  http://xmlns.com/foaf/0.1/mbox 	            mailto:julia@mail.example
+http://www.example/jose/foaf.rdf#juan 	  http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://xmlns.com/foaf/0.1/Person
+http://www.example/jose/foaf.rdf#juan 	  http://xmlns.com/foaf/0.1/mbox 	            mailto:juan@mail.example
+</verbatim>
+
+
+---+++++ Example 2: Using Conductor UI
+
+   1. Go to Conductor UI, for ex. at http://localhost:8890/conductor
+   1. Login as dba user
+   1. Go to WebDAV&HTTP and create new folder, for ex. test
+   1. Upload in the folder test a file, for ex. the file jose.rdf from above with options:
+      * Destination: RDF Store
+      * Set the RDF IRI
+
+---+++ Using Virtuoso Crawler
+
+Using Virtuoso Crawler (which includes the Sponger options so you crawl non-RDF but get RDF and this can go to the Quad Store)
+
+---++++ Example
+
+   1. Go to Conductor UI. For ex. at http://localhost:8890/conductor
+   1. Login as dba user
+   1. Go to tab WebDAV&HTTP
+   1. Go to tab Content Imports
+   1. Click the "New Target" button
+   1. In the shown form:
+      * Enter for "Target description": Tim Berners-Lee's electronic Business Card
+      * Enter for "Target URL": http://www.w3.org/People/Berners-Lee
+      * Enter for "Copy to local DAV collection" for ex.: /DAV/home/demo/rdf_sink/
+      * Choose from the list "Local resources owner": demo
+      * Check the check.box with label "Store metadata".
+      * Check all the check-boxes shown below the check-box "Store metadata".
+      * Click the button "Create".
+         * <img src="%ATTACHURLPATH%/rdfinsert1.png" style="wikiautogen"/>
+      * Click the button "Import Queues".
+      * For "Robot target" with label "Tim Berners-Lee's electronic Business Card" click the start link.
+      * As result should be shown t he number of the pages retrieved.
+         * <img src="%ATTACHURLPATH%/rdfinsert2.png" style="wikiautogen"/>
+   1. Now using the sparql endpoint with sponger option "Use only local data" enter for Default Graph URI: http://www.w3.org/People/Berners-Lee and execute the following query:
+<verbatim>
+select *
+where {?s ?p ?o}
+</verbatim>
+   1. As result should be shown the following triples:
+<verbatim>
+s                                       p  	                                            o
+http://www.w3.org/People/Berners-Lee 	http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://xmlns.com/foaf/0.1/Document
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Answers for young people - Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Berners-Lee: Weaving the Web
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Declaration by Tim BL 28 Feb 1996 w.r.t. CDA challenge
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Errata - Berners-Lee: Weaving the Web
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Frequently asked questions by the Press - Tim BL
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Glossary - Weaving the Web - Berners-Lee
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Longer Bio for Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Michael Dertouzos has left us
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            The Future of the Web and Europe
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            The World Wide Web: Past, Present and Future
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            The World Wide Web: A very short personal history
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Tim Berners-Lee - 3Com Founders chair
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Tim Berners-Lee: Disclosures
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Tim Berners-Lee: WWW and UU and I
+http://www.w3.org/People/Berners-Lee 	http://purl.org/dc/elements/1.1/title 	            Tim Berners-Lee: WorldWideWeb, the first Web client
+</verbatim>
+
+---+++ Using SPARQL Query and Sponger 
+
+(i.e. we Fetch the Network Resources in the FROM Clause or values for the graph-uri parameter in SPARQL protocol URLs)
+
+---++++ Example
+
+   1. Execute the following query:
+<verbatim>
+sparql
+SELECT ?id
+FROM NAMED <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl>
+ OPTION (get:soft "soft", get:method "GET")
+WHERE { GRAPH ?g { ?id a ?o } }
+limit 10;
+</verbatim>
+   1. As result will be shown the retrieved triples:
+<verbatim>
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/612
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/612
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/610
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/610
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/856
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/856
+
+10 Rows. -- 20 msec.
+</verbatim>
+
+---+++ Using Virtuoso PL APIs
+
+---++++ Example
+
+In the example script we implement a basic mapper which maps a text/plain mime type to an imaginary ontology, which extends the class Document from FOAF with properties 'txt:UniqueWords' and 'txt:Chars', where the prefix 'txt:' we specify as 'urn:txt:v0.0:'.
+
+<verbatim>
+use DB;
+
+create procedure DB.DBA.RDF_LOAD_TXT_META
+	(
+	 in graph_iri varchar,
+	 in new_origin_uri varchar,
+	 in dest varchar,
+         inout ret_body any,
+	 inout aq any,
+	 inout ps any,
+	 inout ser_key any
+	 )
+{
+  declare words, chars int;
+  declare vtb, arr, subj, ses, str any;
+  declare ses any;
+  -- if any error we just say nothing can be done
+  declare exit handler for sqlstate '*'
+    {
+      return 0;
+    };
+  subj := coalesce (dest, new_origin_uri);
+  vtb := vt_batch ();
+  chars := length (ret_body);
+  -- using the text index procedures we get a list of words
+  vt_batch_feed (vtb, ret_body, 1);
+  arr := vt_batch_strings_array (vtb);
+  -- the list has 'word' and positions array , so we must divide by 2
+  words := length (arr) / 2;
+  ses := string_output ();
+  -- we compose a N3 literal
+  http (sprintf ('<%s> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Document> .\n', subj), ses);
+  http (sprintf ('<%s> <urn:txt:v0.0:UniqueWords> "%d" .\n', subj, words), ses);
+  http (sprintf ('<%s> <urn:txt:v0.0:Chars> "%d" .\n', subj, chars), ses);
+  str := string_output_string (ses);
+  -- we push the N3 text into the local store
+  DB.DBA.TTLP (str, new_origin_uri, subj);
+  return 1;
+}
+;
+
+--
+delete from DB.DBA.SYS_RDF_MAPPERS where RM_HOOK = 'DB.DBA.RDF_LOAD_TXT_META';
+
+insert soft DB.DBA.SYS_RDF_MAPPERS (RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DESCRIPTION)
+    values ('(text/plain)', 'MIME', 'DB.DBA.RDF_LOAD_TXT_META', null, 'Text Files (demo)');
+
+-- here we set order to some large number so don't break existing mappers
+update DB.DBA.SYS_RDF_MAPPERS set RM_ID = 2000 where RM_HOOK = 'DB.DBA.RDF_LOAD_TXT_META';
+</verbatim>
+   1. To test the mapper we just use /sparql endpoint with option 'Retrieve remote RDF data for all missing source graphs' to execute:
+<verbatim>
+select * from <http://demo.openlinksw.com:8890/tutorial/hosting/ho_s_30/WebCalendar/tools/summary.txt>
+where { ?s ?p ?o }
+</verbatim>
+   1. To check the results:
+      * Make sure the initial state of tutorial RD_S_1 is set.
+      * Go to http://demo.openlinksw.com/sparql
+      * Enter for Default Graph URI this value:
+<verbatim>
+      http://localhost:80/tutorial/hosting/ho_s_30/WebCalendar/tools/summary.txt
+</verbatim>
+      * Enter for Query text:
+<verbatim>
+      select *
+      where {?s ?p ?o}
+</verbatim>
+      * Click the "Run Query" button.
+      * As result should be shown the following triples:
+<verbatim>
+      s  	                                                                    p  	                                            o
+      http://localhost:80/tutorial/hosting/ho_s_30/WebCalendar/tools/summary.txt  http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://xmlns.com/foaf/0.1/Document
+      http://localhost:80/tutorial/hosting/ho_s_30/WebCalendar/tools/summary.txt  urn:txt:v0.0:UniqueWords 	                    47
+      http://localhost:80/tutorial/hosting/ho_s_30/WebCalendar/tools/summary.txt  urn:txt:v0.0:Chars 	                            625
+</verbatim>
+
+<strong>Important:</strong> Setting Sponger Permissions:
+
+In order to allow the Sponger to update the local RDF quad store with triples constituting the Network Resource structured data being fetched, the role "SPARQL_UPDATE" must be granted to the account "SPARQL". This should normally be the case. If not, you must manually grant this permission. As with most Virtuoso DBA tasks, the Conductor provides the simplest means of doing this.
+
+---+++ Using SIMILE RDF Bank API
+
+Virtuoso implements the HTTP-based Semantic Bank API that enables client applications to post to its RDF Triple Store. This method offers an alternative to using Virtuoso/PL functions or WebDAV uploads as the triples-insertion mechanism.
+
+---++++ Example
+
+   1. From your machine go to Firefox->Tools->PiggyBank->My Semantic Bank Accounts
+   1. Add in the shown form:
+      * For bank: address: http://demo.openlinksw.com/bank
+      * For account id: demo
+      * For password: demo
+   1. Go to http://demo.openlinksw.com/ods
+   1. Log in as user demo, password: demo
+   1. Go to the Weblog tab from the main ODS Navigation
+   1. Click on weblog instance name, for ex. "demo's Weblog".
+   1. When the weblog home page is loaded, click Alt + P.
+   1. As result is shown the "My PiggyBank" page with all the collected information presented in items.
+   1. For several of the items add Tags from the form "Tag" shown for each of them.
+   1. As result should be shown the message "Last updated: [here goes the date value].
+   1. You can also click "Save" and "Publish" for these items.
+   1. Go to http://demo.openlinksw.com/sparql
+   1. Enter for the "Default Graph URI" field: http://simile.org/piggybank/demo
+   1. Enter for the "Query text" text-area:
+<verbatim>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix sioc: <http://rdfs.org/sioc/ns#>
+select *
+from <http://simile.org/piggybank/demo>
+where {?s ?p  ?o}
+</verbatim>
+   1. Click "Run Query".
+   1. As results are shown the found results.
+
+---+++ Using RDF NET
+
+---++++ Example
+
+   1. Execute the following query:
+<verbatim>
+SQL> select DB.DBA.HTTP_RDF_NET ('sparql load
+"http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com"
+into graph <http://www.openlinksw.com/>');
+</verbatim>
+   1. As result should be shown:
+<verbatim>
+callret
+VARCHAR
+_______________________________________________________
+
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#"
+xmlns="http://example.org/book/" xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:ns="http://example.org/ns#">
+<rdf:Description>
+<callret-0>Load <http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com>
+into graph <http://www.openlinksw.com/> -- done</callret-0>
+</rdf:Description>
+</rdf:RDF>
+
+1 Rows. -- 1982 msec.
+</verbatim>
+
+---++ Virtuoso Deploying Linked Data
+
+   1. Linked data: Describes recommended best practice for exposing & connecting data on the Semantic Web
+      * Use the RDF data model
+      * Identify real or abstract things (resources) in your ?universe of discourse? (Data Spaces), using URIs as unique IDs
+      * Make URIs accessible via HTTP so people can discover and explore these Data Spaces
+      * Allow these URIs to be dereferenced and return information
+      * Include links to provide ?discovery paths? to entities in other Data Spaces
+   1. Document Web Resources: In the traditional Document Web:
+      * All resources are document-orientated
+      * URI dereferencing returns a document
+      * Rendered representation is nearly always a document
+      * No real distinction between a resource and its representation
+      * Such resources have been referred to as ?information resources?
+   1. Semantic Web Resources: In the Semantic Web:
+      * A URI identifies a thing (piece of data) in a data space
+      * The identity of a thing is distinct from its address and representation
+         * things may have several possible representations 
+         * the most desirable representation of a thing may change, depending on the consumer (human or software-agent)
+         * things may be associated with data at different addresses within a data space
+      * Unfortunately, URIs identifying things are generally referred to as ?non-information resources? in AWWW parlance
+         * Entity or Object IDs, or Data Source Names, are preferable terms
+   1. Deployment Challenges: We?ve established that the Semantic Web and Linked Data require:
+      * Data access with unambiguous naming
+      * Data (de)reference with ambiguous association
+      * Or put another way, we need mechanisms for an HTTP server to:
+         * Answer the question ?Does this URI identify a (physical) document resource or an (RDF based) abstract entity/thing??
+         * Provide alternative representations of an entity/thing
+   1. Deployment Challenge Resolution: Two solutions proposed by the SemWeb Community:
+      * Distinguish resource type through URL formats 
+         * ?Hash? vs ?slash? URLs
+      * Content negotiation with URL rewriting
+   1. ?Hash? vs ?Slash? URLs:
+      * A solution using the syntax of the URL to differentiate ?abstract? resources from ?information? resources
+      * Slash URIs
+         * Don?t contain a fragment identifier (#)?
+         * Identify document resources in traditional Web
+         * E.g. http://demo.openlinksw.com/Northwind/Customer/ALFKI
+            * Identifies a physical (X)HTML document
+      * Hash URIs
+         * Contain a fragment identifier
+         * Identify data resources (entities) in Semantic Web
+         * E.g. http://demo.openlinksw.com/Northwind/Customer/ALFKI#this
+            * Identifies the entity ALFKI, distinct from its representation
+   1. Content Negotiation - Example:
+      1. HTTP Request: 
+         * HTML browser requests a HTML/XHTML document in English or French
+<verbatim>
+GET /whitepapers/data_mngmnt HTTP/1.1
+Host: www.openlinksw.com
+Accept: text/html, application/xhtml+xml
+Accept-Language: en, fr
+</verbatim>
+            * Accept header indicates preferred MIME types
+            * RDF browser might instead stipulate a MIME type of application/rdf+xml or application/rdf+n3
+      1. HTTP Response:
+         * Server redirects to a URL where the appropriate version can be found
+<verbatim>
+HTTP/1.1 302 Found
+Location: http://www.openlinksw.com/whitepapers/data_mngmnt.en.html
+</verbatim>
+      * Redirect is indicated by HTTP status code 302 (Found)?
+      * Client then sends another HTTP request to the new URL
+      * HTTP defines several 3xx status codes for redirection
+   1. Deploying Linked Data Using Virtuoso:
+      * Virtuoso?s approach is to implement the generic solution outlined so far, using
+         * Content negotiation
+         * URL rewriting
+      * Virtuoso includes a Rules-based URL Rewriter
+      * Can be used to inject Semantic Web data into the Document Web
+   1. URL Rewriting Example:
+      * URI dereferenced by RDF browser client
+<verbatim>
+<http://demo.openlinksw.com/Northwind/Customer/ALFKI> or
+<http://demo.openlinksw.com/Northwind/Customer/ALFKI#this>
+</verbatim>
+      * becomes after rewriting (omitting URL encoding)?
+<verbatim>
+/sparql?query =
+CONSTRUCT
+{ <http://demo.openlinksw.com/Northwind/Customer/ALFKI#this> ?p ?o }
+FROM 
+<http://demo.openlinksw.com/Northwind/>
+WHERE 
+{ <http://demo.openlinksw.com/Northwind/Customer/ALFKI#this> ?p ?o }
+</verbatim>
+   1. URL Rewriting for iSparql:
+      * iSparql Query Builder: e.g.Browsing Linked Data View: 
+<verbatim>
+<http://demo.openlinksw.com/Northwind>	
+</verbatim>
+      * Dereferencing: 	
+<verbatim>
+<http://demo.openlinksw.com/Northwind/Customer/ALFKI#this> or
+<http://demo.openlinksw.com/Northwind/Customer/ALFKI>
+</verbatim>
+      * UI supports two commands for dereferencing a URI:
+         * ?Explore?  (i.e. Get all links to & from)?
+<verbatim>
+SELECT ?property ?hasValue ?isValueOf WHERE {{ <http://demo.openlinksw.com/Northwind/Customer/ALFKI#this>	 ?property ?hasValue } UNION { ?isValueOf ?property  <http://demo.openlinksw.com/Northwind/Customer/ALFKI#this> }} 
+?Get Dataset? (i.e. Treat URI as a subgraph)?
+SELECT * FROM <http://demo.openlinksw.com/Northwind/Customer/ALFKI#this>WHERE { ?s ?p ?o }
+</verbatim>
+   1. URL Rewriting for iSparql: Issues:
+      * ?Get Dataset? Option ? Issues with URI being dereferenced:
+<verbatim>
+<http://demo.openlinksw.com/Northwind/Customer/ALFKI#this>
+</verbatim>
+      * Assumes URI is a named graph ? It isn?t!
+         * It?s a unique node ID (object ID / entity instance ID)?
+         * The only graph defined by our Linked Data View is:
+<verbatim>
+<http://demo.openlinksw.com/Northwind>
+</verbatim>
+   1. Northwind URL Rewriting: The Aim:
+      * Aim of URL rewriting for the Northwind Linked Data View:
+      * Create a rule for RDF browsers which will map an IRI
+<verbatim>
+<http://demo.openlinksw.com/Northwind/Customer/something> 
+</verbatim>
+      * to a SPARQL query
+<verbatim>
+CONSTRUCT <iri> ?p ?o FROM <http://demo.openlinksw.com/Northwind/>
+WHERE { <iri> ?p ?o }
+</verbatim>
+      * and rewrite the request as 
+<verbatim>
+/sparql?query=CONSTRUCT ...
+</verbatim>
+   1. Virtuoso - URL Rewriter Key Elements:
+      1. Rewriting Rule
+         * Describes how to parse a ?nice? URL and compose the actual ?long? URL of the resource to be returned
+         * Two types: sprintf-based and regex-based
+      1. Rewriting Rule List
+         * Named, ordered list of rewriting rules or rule lists
+         * Tried from top to bottom, first matching rule is applied
+      1. Conductor UI for rewriting rule configuration
+      1. Configuration API ? alternative to Conductor UI, for scripts
+         * Functions for creating, dropping, enumerating rules & rule lists
+   1. URL Rewriter API: Enabling Rewriting:
+      * Enabled through vhost_define( ) function
+      * vhost_define( ) defines a virtual host or virtual path
+      * opts parameter is a vector of field-value pairs
+      * Field url_rewrite controls / enables URL rewriting
+      * Field value is the IRI of the rule list to apply e.g. 
+<verbatim>
+VHOST_DEFINE (lpath=>'/Northwind, ppath=>'/DAV/Northwind/',
+vhost=>?demo.openlinksw.com', lhost=>'192.168.11.2:80', is_dav=>1,
+vsp_user=>'dba', is_brws=>0, opts=>vector ('url_rewrite', 'oplweb_rule_list1'));
+</verbatim>
+   1. URL Rewriter API: Summary: Functions in DB.DBA schema:
+<verbatim>
+URLREWRITE_CREATE_SPRINTF_RULE
+URLREWRITE_CREATE_REGEX_RULE
+URLREWRITE_CREATE_RULELIST
+URLREWRITE_DROP_RULE
+URLREWRITE_DROP_RULELIST
+URLREWRITE_ENUMERATE_RULES
+URLREWRITE_ENUMERATE_RULELISTS
+</verbatim>
+   1. <nowiki>URLREWRITE_CREATE_REGEX_RULE</nowiki>:
+<verbatim>
+URLREWRITE_CREATE_REGEX_RULE (rule_iri, allow_update, nice_match, nice_params, nice_min_params, target_compose, target_params, target_expn := null, accept_pattern := null, do_not_continue := 0, http_redirect_code := null ) ;
+
+rule_iri: rule?s name / identifier
+nice_match: regex to parse URL into a vector of ?occurrences?
+nice_params: vector of names of the parsed parameters.Length of vector equals # of ?(?)? specifiers in the regex
+target_compose: ?compose? regex for the destination URL
+target_params: vector of names of parameters to pass to the ?compose? expression as $1, $2 etc
+target_expn: optional SQL text to execute instead of a regex compose
+accept_pattern: regex expression to match the HTTP Accept header
+do_not_continue: on a match, try / don?t try next rule in rule list
+http_redirect_code: null, 301, 302 or 303. 30x => HTTP redirect
+</verbatim>
+   1. URL Rewriter API ? Northwind Example:
+<verbatim>
+--Rewriting rule: 
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+'oplweb_rule1?, 1, '([^#]*)?, vector('path'), 1,
+'/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//demo.openlinksw.com%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//demo.openlinksw.com/Northwind/%%3E+WHERE+{+%%3Chttp%%3A//demo.openlinksw.com%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U?,
+vector('path', 'path', '*accept*'),
+null, '(text/rdf.n3)|(application/rdf.xml)', 0, 303);
+
+--In effect (omitting URL encoding):
+/sparql?query = CONSTRUCT { %U ?p ?o } FROM <http://demo.openlinksw.com/Northwind/> WHERE { %U ?p ?o }
+--where %U is a placeholder for the original URI
+</verbatim>
+   * Arguments in previous rule defined by <nowiki>URLREWRITE_CREATE_REGEX_RULE:</nowiki>
+<verbatim>
+--nice_match arg: 
+([^#]*)?
+----regex matches input IRI up to fragment delimiter
+--nice_params arg: 
+vector('path')?
+----?path? is name of first match group in nice_match regex
+--accept_pattern arg: 
+(text/rdf.n3)|(application/rdf.xml)?
+----regex to match HTTP Accept header
+--target_params arg: 
+vector('path', 'path', '*accept*')?
+--names of params whose values will replace %U placeholders in the target URL pattern
+---*accept* passes matched part of Accept headerfor substitution into &format=%U  portion of query stringe.g. application/rdf.xml
+</verbatim>
+   * Enabling Rewriting: 
+<verbatim>
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+'oplweb_rule_list1',
+1,
+vector (
+'oplweb_rule1'
+));
+
+-- ensure a Virtual Directory /oplweb exists
+VHOST_REMOVE (lpath=>'/Northwind', vhost=>?demo.openlinksw.com',
+lhost=>'192.168.11.2:80');
+VHOST_DEFINE (lpath=>'/Northwind', ppath=>'/DAV/Northwind/',
+vhost=>?demo.openlinksw.com', lhost=>'192.168.11.2:80', is_dav=>1,
+vsp_user=>'dba', is_brws=>0, opts=>vector ('url_rewrite', 'oplweb_rule_list1'));
+</verbatim>
+   1. URL Rewriter - Verification with curl: 
+      * curl utility provides a useful tool for verifying HTTP server responses and rewriting rules
+<verbatim>
+$ curl -I -H "Accept: application/rdf+xml"
+http://demo.openlinksw.com/Northwind/Customer/ALFKI
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 14 Aug 2007 13:30:22 GMT
+Accept-Ranges: bytes
+Location:
+/sparql?query=CONSTRUCT+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%
+23this%3E+%3Fp+%3Fo+}+FROM+%3Chttp%3A//demo.openlinksw.com/Northwind%3E+WHERE+{+%3C
+http%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}&format=
+application/rdf%2Bxml
+Content-Length: 0
+</verbatim>
+   1. URL Rewriter ? URIQADefaultHost Macro:
+      * Makes rewriting rules (& Linked Data View definitions) more portable
+      * Each occurrence is substituted with the value of the DefaultHost parameter in URIQA section of virtuoso.ini configuration file
+      * DefaultHost ::= server name. e.g. www.example.com:8890
+<verbatim>
+'/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/Northwind/%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U'
+</verbatim>
+   1. Content Negotiation Revisited - TCN: Virtuoso supports two flavours of content negotiation:
+      * HTTP/1.1 style content negotiation (introduced earlier)
+         * Server-driven negotiation only
+      * Transparent Content Negotiation (TCN)
+         * Server-driven or agent-driven negotiation
+      * Suitably enabled user agents / browsers can take advantage of TCN
+      * Non-TCN capable user agents continue to be handled using HTTP/1.1 content negotiation
+   1. Transparent Content Negotiation:
+      * Supports variant selection by user agent or by server
+      * Transparent - all variants on server are visible to the agent
+      * Variant Selection by User Agent:
+         * User agent chooses best variant itself from variant list sent by server
+         * Requires sending fewer/smaller Accept headers
+      * Variant Selection by Server:
+         * User agent can instruct server to select best variant on its behalf 
+         * Server uses ?remote variant selection algorithm? (RFC2296)
+   1. Example ? Preferred format: XML: 
+      * Assumes Virtuoso WebDAV server contains 3 variants of resource named ?page?:
+         * /DAV/TCN/page.xml
+         * /DAV/TCN/page.html
+         * /DAV/TCN/page.txt
+      * User agent indicates preference for XML
+<verbatim>
+$ curl -i -H "Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3"
+			-H "Negotiate: *" http://demo.openlinksw.com/DAV/TCN/page
+HTTP/1.1 200 OK Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB
+Connection: Keep-Alive
+Date: Wed, 31 Oct 2007 15:44:07 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: page.xml
+Content-Type: text/xml
+ETag: "8b09f4b8e358fcb7fd1f0f8fa918973a"
+Content-Length: 39
+<?xml version="1.0" ?>
+<a>some xml</a>
+</verbatim>
+   1. Example ? Preferred format: HTML:
+      * User agent indicates preference for HTML
+<verbatim>
+$ curl -i -H "Accept: text/xml;q=0.3,text/html;q=1.0,text/plain;q=0.5,*/*;q=0.3"
+			-H "Negotiate: *" http://demo.openlinksw.com/DAV/TCN/page
+HTTP/1.1 200 OK
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB
+Connection: Keep-Alive
+Date: Wed, 31 Oct 2007 15:43:18 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: page.html
+Content-Type: text/html
+ETag: "14056a25c066a6e0a6e65889754a0602"
+Content-Length: 49
+<html>
+	<body>
+		some html
+	</body>
+</html>
+</verbatim>
+   1. Example ? Variant list request:
+      * User agent asks for a list of variants
+<verbatim>
+$ curl -i -H "Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3"
+	-H "Negotiate: vlist" http://localhost:8890/DAV/TCN/page
+HTTP/1.1 300 Multiple Choices
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Wed, 31 Oct 2007 15:44:35 GMT
+Accept-Ranges: bytes
+TCN: list
+Vary: negotiate,accept
+Alternates: {"page.html" 0.900000 {type text/html}}, {"page.txt" 0.500000 {type
+text/plain}}, {"page.xml" 1.000000 {type text/xml}}
+Content-Length: 368
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head><title>300 Multiple Choices</title></head>
+<body><h1>Multiple Choices</h1>Available variants:<ul>
+<li><a href="page.html">HTML variant</a>, type text/html</li>
+<li><a href="page.txt">Text document</a>, type text/plain</li>
+<li><a href="page.xml">XML variant</a>, type text/xml</li>
+</ul></body></html>
+</verbatim>
+   1. TCN Configuration ? Variant Description
+      * Variant descriptions held in SQL table HTTP_VARIANT_MAP
+      * Added/updated/removed through Virtuoso/PL or Conductor UI
+<verbatim>
+create table DB.DBA.HTTP_VARIANT_MAP (
+	VM_ID integer identity, -- unique ID
+	VM_RULELIST varchar, -- HTTP rule list name
+	VM_URI varchar, -- name of requested resource e.g. 'page'
+	VM_VARIANT_URI varchar, -- name of variant e.g. 'page.xml','page.de.html' etc.
+	VM_QS float, -- Source quality, number in the range 0.001-1.000, with 3 digit precision
+	VM_TYPE varchar, -- Content type of the variant e.g. text/xml
+	VM_LANG varchar, -- Content language e.g. 'en', 'de' etc.
+	VM_ENC varchar, -- Content encoding e.g. 'utf-8', 'ISO-8892? etc.
+	VM_DESCRIPTION long varchar, -- human readable variant description
+								  e.g. 'Profile in RDF format'
+	VM_ALGO int default 0, -- reserved for future use
+	primary key (VM_RULELIST, VM_URI, VM_VARIANT_URI)
+)
+create unique index HTTP_VARIANT_MAP_ID on DB.DBA.HTTP_VARIANT_MAP (VM_ID)
+</verbatim>
+   1. TCN Configuration - via Virtuoso/PL:
+      * Adding or Updating a Resource Variant
+<verbatim>
+DB.DBA.HTTP_VARIANT_ADD (
+	in rulelist_uri varchar, -- HTTP rule list name
+	in uri varchar, -- Requested resource name e.g. 'page'
+	in variant_uri varchar, 	-- Variant name e.g. 'page.xml', 'page.de.html' etc.
+	in mime varchar, -- Content type of the variant e.g. text/xml
+	in qs float := 1.0, -- Source quality, a floating point number with 3
+						  digit precision in 0.001-1.000 range
+	in description varchar := null, -- a human readable description of the
+									variant e.g. 'Profile in RDF format'
+	in lang varchar := null, -- Content language e.g. 'en', 'bg'. 'de' etc.
+	in enc varchar := null -- Content encoding e.g. 'utf-8', 'ISO-8892' etc.
+	)
+</verbatim>
+      * Removing a Resource Variant
+<verbatim>
+DB.DBA.HTTP_VARIANT_REMOVE (
+	in rulelist_uri varchar, -- HTTP rule list name
+	in uri varchar, -- Name of requested resource e.g. 'page'
+	in variant_uri varchar := '%' -- Variant name filter	
+	)
+</verbatim>
+      * Adding resource variant descriptions
+         * Define variant descriptions & associate them with a rule list
+<verbatim>
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.html', 'text/html',
+	0.900000, 'HTML variant');
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.txt', 'text/plain',
+	0.500000, 'Text document');
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.xml', 'text/xml',
+	1.000000, 'XML variant');
+</verbatim>
+         * Define a virtual directory & associate the  rule list with it
+<verbatim>
+DB.DBA.VHOST_DEFINE (lpath=>'/DAV/TCN/', ppath=>'/DAV/TCN/', is_dav=>1,
+	vsp_user=>'dba', opts=>vector ('url_rewrite', 'http_rule_list_1'));
+</verbatim>
+
+
+---++ RDF sink folder support
+
+   * [[VirtuosoRDFSinkFolder][Virtuoso RDF Sink Folder]]
+   * [[ODSRDFSinkFolder][ODS RDF Sink Folder]]
+
+---++ Making Rule Sets
+
+Since RDF Schema and OWL schemas are RDF graphs, these can be loaded into the triple store. Thus, in order to use such a schema as query context, one first loads the corresponding document into the triple store using <code>ttlp</code> or <code><nowiki>rdf_load_rdfxml</nowiki></code> or related functions. After the schema document is loaded, one can add the assertions therein into an inference context with the <code><nowiki>rdfs_rule_set</nowiki></code> function. This function specifies a logical name for the rule set plus a graph URI. It is possible to combine multiple schema graphs into a single rule set. A single schema graph may also independently participate in multiple rule sets.
+
+<verbatim>
+rdfs_rule_set (in name varchar, in uri varchar, in remove int := 0)
+</verbatim>
+
+This function adds the applicable facts of the graph into a rule set. The graph URI must correspond to the graph IRI of a graph stored in the triple store of the Virtuoso instance. If the remove argument is true, the specified graph is removed from the rule set instead. 
+
+
+---++ Changing Rule Sets
+
+Changing a rule set affects queries made after the change. Some queries may have been previously compiled and will not be changed as a result of modifying the rule set. When a rule set is changed, i.e. when <code><nowiki>rdfs_rule_set</nowiki></code> is called with the first argument set to a pre-existing rule set's name, all the graphs associated with this name are read and the relevant facts are added to a new empty rule set. Thus, if triples are deleted from or added to the graphs comprising the rule set, calling <code><nowiki>rdfs_rule_set</nowiki></code> will refresh the rule set to correspond to the state of the stored graphs. 
+
+---++ See Also
+
+   * [[VirtLinkedDataDeploymentTutorialDOAP][Linked Data Deployment DOAP Tutorial]]
+
+---++ References
+
+   * [[http://sites.wiwiss.fu-berlin.de/suhl/bizer/pub/LinkedDataTutorial/][Linked Data Tutorial]]
+   * [[VirtLinkedDataDeployment][ Deploying Linked Data in Virtuoso]]
+   * Deploying RDF Linked Data via Virtuoso Universal Server
+      * [[http://virtuoso.openlinksw.com/presentations/Virtuoso_Deploying_Linked_Data.ppt][PowerPoint Presentation]]
+      * [[http://virtuoso.openlinksw.com/presentations/Virtuoso_Deploying_Linked_Data/Virtuoso_Deploying_Linked_Data.html][Slidy(XHTML) ]]
+      * [[http://www.slideshare.net/rumito/deploying-rdf-linked-data-via-virtuoso-universal-server-329375/][Slideshare]]
+      * [[http://www.authorstream.com/Presentation/rumito-66915-deploying-rdf-linked-data-via-virtuoso-universal-openlink-sql-sparql-semanticweb-semweb-web-linkeddata-web30-web20-science-technology-ppt-powerpoint/][Flash]]
+      * [[http://docs.google.com/Present?docid=dc7jvc6m_996fw3pfdcz&skipauth=true][Google Doc]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfandsparql.html][RDF Database and SPARQL]]
+
+ 
+
+CategoryRDF CategoryVirtuoso

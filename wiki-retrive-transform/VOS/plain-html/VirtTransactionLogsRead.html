@@ -1,0 +1,78 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h2><a name="Reading Virtuoso Transaction Logs"></a>Reading Virtuoso Transaction Logs</h2>
+<h2><a name="What?"></a>What?</h2>
+ A Stored Procedure that uses the in-built <a href="http://docs.openlinksw.com/virtuoso/fn_read_log.html" class="absuri">read_log()</a> function to read the Transaction log of a Virtuoso Instance, in regards to Quad Store activity.<h2><a name="Why?"></a>Why?</h2>
+ There are times when you application functionality benefits from being able to read Virtuoso Transaction logs.
+ In particular, the database triggers on the <code>RDF_QUAD</code> table are not meant to be supported in Virtuoso 7+, thus reading transaction logs as indicated below is the recommended method for tracking changes to the <code>RDF_QUAD</code> table.<h2><a name="How?"></a>How?</h2>
+<p>To read the changes made to the <code>RDF_QUAD</code> table i.e RDF data, one can use the following Virtuoso Stored procedure that uses the in-built <a href="http://docs.openlinksw.com/virtuoso/fn_read_log.html" class="absuri">read_log()</a>:</p>
+<h3><a name="Sample Scenario"></a>Sample Scenario</h3>
+<ol><li>Insert sample data so to change the rdf_quad index: <br><pre><br>SQL&gt; SPARQL INSERT INTO &lt;g&gt; { &lt;s&gt; &lt;p&gt; &lt;o&gt; };
+</pre><br></li>
+<li>Create the following example procedure: <br><pre><br>create procedure rlt (in f any, in inpos int := 0) 
+{   
+  declare h, op, g, s, p, o any;
+  declare pos int;
+  result_names (op, g, s, p, o);
+  h := file_open (f, inpos);
+  declare r, rr any;
+  while ((rr := read_log (h, pos)) is not null)
+    {
+      declare rw, k any;
+      declare i int;
+      rw := null;
+      k := null;
+      for (i := 1; i &lt; length (rr); i := i + 1)
+        {
+	  r := rr[i];
+	  if (r[0] = 13) -- key insert
+	    {
+	      rw := r[2];
+	      op := &#39;I&#39;;
+	    }
+	  else if (r[0] in (1,8,9)) -- insert,soft,replacing
+	    {
+	      rw := r[1];
+	      op := &#39;I&#39;;
+	    }
+	  else if (r[0] in (3,14)) -- delete
+	    {
+	      rw := r[1];
+	      op := &#39;D&#39;;
+	    }
+	  if (rw is not null)
+	    {
+	      k := rw[0];
+	      if (k = 273) -- RDF_QUAD, should check with SYS_KEYS
+		{
+		  result (op, __ro2sq (rw[1]), __ro2sq (rw[2]), __ro2sq (rw[3]), __ro2sq (rw[4]));
+		}
+	    }
+	}
+    } 
+  result (pos + inpos, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;);
+}
+;
+</pre><br></li>
+<li>Call the procedure: <ul><li>In case of no changes to the <code>RDF_QUAD Index</code> are done, it will return: <br><pre><br>SQL&gt; rlt(&#39;tmp/Virtuoso.trx&#39;);
+Query result:
+op    g   s   p    o
+ANY   ANY ANY ANY  ANY
+8403
+No. of rows in result: 1
+</pre><br></li>
+<li>In case of changes to the <code>RDF_QUAD Index</code> are done ( example with the short INSERT we did above), it will return for example: <br><pre><br>SQL&gt; rlt(&#39;tmp/Virtuoso.trx&#39;);
+Query result:
+op     g   s   p    o
+ANY    ANY ANY ANY  ANY
+I      g   s   p    o
+71446
+No. of rows in result: 2
+</pre><br></li>
+</ul></li>
+</ol><p>To read the transaction log in general, one should use the Virtuoso <a href="http://docs.openlinksw.com/virtuoso/fn_read_log.html" class="absuri">read_log()</a> function.</p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://docs.openlinksw.com/virtuoso/vsp1.html#longhttptrans" class="absuri">Long HTTP Transactions.</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/clusteroperation.html#clusteroperationtransc" class="absuri">Cluster Operations transactions.</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/fn_log_text.html" class="absuri">Insert a SQL statement into the roll forward log.</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/fn_log_enable.html" class="absuri">Enable logs.</a> </li>
+</ul></div></body></html>

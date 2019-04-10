@@ -1,0 +1,113 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+---+Producing NQuad dumps of Virtuoso Quad-store hosted RDF model data
+
+%TOC%
+
+---++What?
+
+How to export RDF model data from Virtuoso's Quad Store in NQuad format.
+
+---++Why?
+
+When exporting RDF model data from Virtuoso's Quad Store, having the 
+ability to retain and reflect Named Graph IRI based data partitioning 
+provides significant value to a variety of application profiles.
+
+---++How?
+
+We have created stored procedures for the task. The dump procedure <code>dump_nquads</code> 
+leverages SPARQL to facilitate data dump(s) for all graphs excluding the internal 
+predefined "<code>virtrdf:</code>".
+
+---+++ Procedure Parameters
+
+The procedure <code><nowiki>dump_nquads</nowiki></code> has the following parameters: 
+
+   * <code>IN <b>dir</b> VARCHAR</code> -- folder where the dumps will be stored.  
+<i><b>Note:</b> The dump directory must be included in the <code><nowiki>DirsAllowed</nowiki></code> 
+parameter of the Virtuoso configuration file (e.g., <code>virtuoso.ini</code>), or the Virtuoso 
+server will not be able to create or access the data files.</i>
+   * <code>IN <b>outstart_fromfile</b> INTEGER</code> -- output start from number n
+   * <code>IN <b>file&#95;length&#95;limit </b> INTEGER</code> -- maximum length of dump files 
+   * <code>IN <b>comp  </b> INTEGER</code> -- when set to 0, then no gzip will be done. By default is set to 1.
+
+
+---+++ Procedure Source
+
+The procedure <code><nowiki>dump_nquads</nowiki></code> has the following source:
+
+<verbatim>
+CREATE PROCEDURE dump_nquads 
+  ( IN  dir                VARCHAR := 'dumps'
+  , IN  start_from             INT := 1
+  , IN  file_length_limit  INTEGER := 100000000
+  , IN  comp                   INT := 1
+  )
+  {
+    DECLARE  inx, ses_len  INT
+  ; DECLARE  file_name     VARCHAR
+  ; DECLARE  env, ses      ANY
+  ;
+
+  inx := start_from;
+  SET isolation = 'uncommitted';
+  env := vector (0,0,0);
+  ses := string_output (10000000);
+  FOR (SELECT * FROM (sparql define input:storage "" SELECT ?s ?p ?o ?g { GRAPH ?g { ?s ?p ?o } . FILTER ( ?g != virtrdf: ) } ) AS sub OPTION (loop)) DO
+    {
+      DECLARE EXIT HANDLER FOR SQLSTATE '22023' 
+	{
+	  GOTO next;
+	};
+      http_nquad (env, "s", "p", "o", "g", ses);
+      ses_len := LENGTH (ses);
+      IF (ses_len >= file_length_limit)
+	{
+	  file_name := sprintf ('%s/output%06d.nq', dir, inx);
+	  string_to_file (file_name, ses, -2);
+	  IF (comp)
+	    {
+	      gz_compress_file (file_name, file_name||'.gz');
+	      file_delete (file_name);
+	    }
+	  inx := inx + 1;
+	  env := vector (0,0,0);
+	  ses := string_output (10000000);
+	}
+      next:;
+    }
+  IF (length (ses))
+    {
+      file_name := sprintf ('%s/output%06d.nq', dir, inx);
+      string_to_file (file_name, ses, -2);
+      IF (comp)
+	{
+	  gz_compress_file (file_name, file_name||'.gz');
+	  file_delete (file_name);
+	}
+      inx := inx + 1;
+      env := vector (0,0,0);
+    }
+}
+;
+</verbatim>
+
+
+---+++Example
+
+This example demonstrates calling the <code>dump_nquads</code> procedure to dump all graphs to 
+a series of compressed NQuad dumps, each with uncompressed length of 10Mb (<code>./dumps/output000001.nq.gz</code>):
+<verbatim>
+SQL> dump_nquads ('dumps', 1, 10000000, 1);
+</verbatim>
+
+
+
+---++ Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtRDFDatasetDump][RDF dumps from Virtuoso Quad store hosted data]]
+   * [[VirtBulkRDFLoader][Virtuoso RDF Bulk Loader]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdfperfdumpintonquads][Virtuoso Documentation]]
+

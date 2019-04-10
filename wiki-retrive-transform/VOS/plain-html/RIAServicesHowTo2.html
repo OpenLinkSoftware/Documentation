@@ -1,0 +1,133 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><h1><a name="Creating a .Net RIA Services Application That Will Update Virtuoso Data"></a> Creating a .Net RIA Services Application That Will Update Virtuoso Data</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Pre-requisites">Pre-requisites</a></li> <li><a href="#Creating%20the%20Application.">Creating the Application.</a></li>
+<ul><li><a href="#Add%20A%20New%20Domain%20Service%20Class">Add A New Domain Service Class</a></li> <li><a href="#Add%20a%20DataPager">Add a DataPager<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DataPager&parent=RIAServicesHowTo2" class="wikiword">?</a></a></li> <li><a href="#Add%20a%20DataForm">Add a DataForm<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DataForm&parent=RIAServicesHowTo2" class="wikiword">?</a></a></li> </ul><li><a href="#Propagate%20Updates%20to%20Virtuoso">Propagate Updates to Virtuoso</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>This example demonstrates how data in Virtuoso can be updated from a Microsoft .NET RIA Services application.
+ The example is a continuation of the first example in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/RIAServicesHowTo" class="wikiword">Creating a Simple .Net RIA Services Application to Display Data From Virtuoso</a>.</p>
+<h2><a name="Pre-requisites"></a> Pre-requisites</h2>
+<ul><li>A working copy of the application created in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/RIAServicesHowTo" class="wikiword">Creating a Simple .Net RIA Services Application to Display Data From Virtuoso</a>.</li>
+</ul><h2><a name="Creating the Application."></a> Creating the Application.</h2>
+<h3><a name="Add A New Domain Service Class"></a> Add A New Domain Service Class</h3>
+<p>The EmployeeService Domain Service Class was only used to display data so was created read only.
+ In this example we need to be able to update the data so we need to remove the read only Domain Service Class and create a new on.</p>
+<ol><li>In the <b>Server Explorer</b> right click EmployeeService and select <b>Delete</b> </li>
+<li>Right click the server project and <b>Add New Item</b>.
+ In the dialog box choose Domain Service Class from the Templates pane and again call it EmployeeService.cs.
+ Click Add.
+</li>
+<li>Select the Employees entity and tick <b>Enable editing</b>.
+ Also tick <b>Generated associated classes for metadata</b>.
+<br><br><img src="RIAServicesHowTo2/newdomainserviceclass.png" style="wikiautogen"><br><br> </li>
+<li>Update MainPage.xaml.cs to use EmployeeService2 the new domain service rather than EmployeeContext.</li>
+</ol><p>We want to create a master detail style page.
+ To do this we will use the DomainDataSourceComponent from the Silverlight Components.
+But first we will add a pager so only 5 records are displayed at a time.</p>
+<h3><a name="Add a DataPager"></a> Add a DataPager</h3>
+<ol><li>Add two new namespaces to MainPage.xaml <br><pre><br>    xmlns:riaControls=&quot;clr-namespace:System.Windows.Controls;assembly=System.Windows.Ria.Controls&quot;  
+    xmlns:ds=&quot;clr-namespace:DemoApplication.Web&quot;
+</pre><br></li>
+<li>Use a DomainDataSource to provide the data to fill the grid.
+ Add the following to MainPage.xaml before the DataGrid. <br><pre><br>        &lt;riaControls:DomainDataSource x:Name=&quot;EmployeeDataSource&quot;
+                                      QueryName=&quot;GetEmployeesQuery&quot;
+                                      LoadSize=&quot;10&quot;
+                                      AutoLoad=&quot;True&quot;&gt;
+            &lt;riaControls:DomainDataSource.DomainContext&gt;
+                &lt;ds:EmployeeService2/&gt;
+            &lt;/riaControls:DomainDataSource.DomainContext&gt;
+        &lt;/riaControls:DomainDataSource&gt;
+</pre><br></li>
+<li>Update the MainPage.xaml.cs code behind file.  Using the DomainDataSource means you no longer need to instantiate the context and load the grid in MainPage.xaml.cs so it becomes: <br><pre><br>    public partial class MainPage : UserControl
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+    }
+</pre><br></li>
+<li>Set the binding source of the DataGrid to the DomainDataSource <br><pre><br>&lt;data:DataGrid MinHeight=&quot;100&quot;  IsReadOnly=&quot;True&quot; ItemsSource=&quot;{Binding Data, ElementName=EmployeeDataSource}&quot; x:Name=&quot;DataGrid1&quot;&gt;&lt;/data:DataGrid&gt; /&gt;
+</pre><br></li>
+<li>Drag a DataPager form the tool box onto MainPage.xaml just after the DataGrid. </li>
+<li>Add a page size and binding element to the DataPager.
+<br><pre><br>&lt;data:DataPager PageSize=&quot;5&quot; Source=&quot;{Binding Data, ElementName=employeeDataSource}&quot;
+                      Margin=&quot;0,-1,0,0&quot;&gt;&lt;/data:DataPager&gt;
+</pre><br></li>
+<li>Build and run the application.
+ The data should be displayed 5 rows at a time.
+<br><br><img src="RIAServicesHowTo2/demoapp.png" style="wikiautogen"><br><br> We now need to add a DataForm to display the details.</li>
+</ol><h3><a name="Add a DataForm"></a> Add a DataForm</h3>
+<ol><li>Add the following namespace to MainPage.xaml <br><pre><br>xmlns:dataForm=&quot;clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit&quot;
+</pre><br></li>
+<li>Add the form to MainPage.xaml <br><pre><br>        &lt;dataForm:DataForm x:Name=&quot;dataForm1&quot; Header=&quot;Employee Information&quot;  AutoGenerateFields=&quot;False&quot; AutoEdit=&quot;False&quot; AutoCommit=&quot;False&quot; CurrentItem=&quot;{Binding SelectedItem, ElementName=DataGrid1}&quot; Margin=&quot;0,12,0,0&quot;&gt;            
+            &lt;dataForm:DataForm.EditTemplate&gt;
+                &lt;DataTemplate&gt;
+                    &lt;StackPanel&gt;
+                        &lt;dataForm:DataField Label=&quot;Employee ID&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding EmployeeID, Mode=TwoWay}&quot; /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;First Name&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding FirstName, Mode=TwoWay}&quot; /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Last Name&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding LastName, Mode=TwoWay}&quot; /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Courtesy Title&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding TitleOfCourtesy, Mode=TwoWay}&quot; /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Hire Date&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding HireDate, Mode=TwoWay}&quot; /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Title&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding Title, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Reports To&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding ReportsTo, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Region&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding Region, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Address&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding Address, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;City&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding City, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Country Code&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding CountryCode, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                        &lt;dataForm:DataField Label=&quot;Postal Code&quot;&gt;
+                            &lt;TextBox Text=&quot;{Binding PostalCode, Mode=TwoWay}&quot;  /&gt;
+                        &lt;/dataForm:DataField&gt;
+                            &lt;/StackPanel&gt;
+                &lt;/DataTemplate&gt;
+            &lt;/dataForm:DataForm.EditTemplate&gt;
+        &lt;/dataForm:DataForm&gt;
+</pre><br></li>
+<li>Surround the DomainDataSource, DataGrid and DataForm with <br><pre><br>        &lt;ScrollViewer BorderThickness=&quot;0&quot;  VerticalScrollBarVisibility=&quot;Auto&quot; Padding=&quot;12,0,12,0&quot; Margin=&quot;-2&quot;&gt;
+            &lt;StackPanel Margin=&quot;0,12,0,12&quot; Orientation=&quot;Vertical&quot; &gt;
+.
+.
+.
+            &lt;/StackPanel&gt;
+        &lt;/ScrollViewer&gt;
+</pre><br></li>
+<li>Build and run the application.
+ As each employee is selected the data form fill with their details.
+<br><br><img src="RIAServicesHowTo2/masterdetail.png" style="wikiautogen"><br><br> By clicking on the pencil symbol in the top right hand corner the data in the form can be edited but it is not propagated back to the database.</li>
+</ol><h2><a name="Propagate Updates to Virtuoso"></a> Propagate Updates to Virtuoso</h2>
+<ol><li>Add a ?Submit? button just after the DataForm in MainPage.xaml by adding the following code.
+<br><pre><br>&lt;StackPanel Orientation=&quot;Horizontal&quot; HorizontalAlignment=&quot;Right&quot; Margin=&quot;0,12,0,0&quot;&gt;
+                &lt;Button x:Name=&quot;submitButton&quot; Width=&quot;75&quot; Height=&quot;23&quot;  Content=&quot;Submit&quot;  Margin=&quot;4,0,0,0&quot; Click=&quot;submitButton_Click&quot;/&gt;
+                
+            &lt;/StackPanel&gt;
+</pre><br></li>
+<li>Handle the button click event in MainPage.xaml.cs by adding the following code: <br><pre><br>private void submitButton_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeDataSource.SubmitChanges();
+        }
+</pre><br></li>
+<li>Build and run the application.
+ If you now edit data in the form and click the submit button the data in Virtuoso will be updated.
+<br><br><img src="RIAServicesHowTo2/edit.png" style="wikiautogen"><br><br></li>
+</ol><p> </p>
+</div></body></html>

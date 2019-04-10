@@ -1,0 +1,115 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Virtuoso "<nop>AnalyzeFixQuadStore" parameter for fixing RDF Quad Store Index corruption
+
+Prior to Virtuoso version 6.3, some RDF data in the quad store could be 
+stored in a way that could break the sequence of an index, causing wrong 
+results to be passed back.
+
+To fix this, we have added an automated check to detect whether
+this condition is present, and to fix the index when needed.
+
+When a DBA uses a Virtuoso 6.3 or later binary to start a database which 
+was previously used only with Virtuoso 6.2 or earlier, the
+following text will appear in the virtuoso session log:
+
+<verbatim>
+21:05:36 PL LOG: This database may contain RDF data that could cause indexing problems on previous versions of the server.
+21:05:36 PL LOG: The content of the DB.DBA.RDF_QUAD table will be checked and an update may automatically be performed if
+21:05:36 PL LOG: such data is found.
+21:05:36 PL LOG: This check will take some time but is made only once.
+</verbatim>
+
+As noted, this check may take some time, depending on the number of stored
+quads.  
+
+If the check finds no issues, the following message is entered in the log, 
+and Virtuoso will flag the check as "done," so it will not affect 
+subsequent restarts of the database server. 
+
+<verbatim>  
+21:05:36 PL LOG: No need to update DB.DBA.RDF_QUAD
+</verbatim>
+
+The database will continue to perform the usual startup routines and go
+into an online state.
+
+
+If the problematic condition is detected, however, the following message will
+appear in the log, and the Virtuoso server will refuse to start until its 
+instructions are followed --
+
+<verbatim>
+21:05:36 PL LOG: An update is required.
+21:05:36 PL LOG:
+21:05:36 PL LOG: NOTICE: Before Virtuoso can continue fixing the DB.DBA.RDF_QUAD table and its indexes
+21:05:36 PL LOG:         the DB Administrator should check make sure that:
+21:05:36 PL LOG:
+21:05:36 PL LOG:          * there is a recent backup of the database
+21:05:36 PL LOG:          * there is enough free disk space available to complete this conversion
+21:05:36 PL LOG:          * the database can be offline for the duration of this conversion
+21:05:36 PL LOG:
+21:05:36 PL LOG:         Since the update can take a considerable amount of time on large databases
+21:05:36 PL LOG:         it is advisable to schedule this at an appropriate time.
+21:05:36 PL LOG:
+21:05:36 PL LOG: To continue the DBA must change the virtuoso.ini file and add the following flag:
+21:05:36 PL LOG:
+21:05:36 PL LOG:     [Parameters]
+21:05:36 PL LOG:     AnalyzeFixQuadStore = 1
+21:05:36 PL LOG:
+21:05:36 PL LOG: For additional information please contact OpenLink Support <support@openlinksw.com>
+21:05:36 PL LOG: This process will now exit.
+</verbatim>
+
+Since the update may take a substantial amount of time and additional
+disk space (depending on the size of the quad store), we have
+decided not to automatically start the update process.  Instead, 
+we hand control back to the DBA and let them decide when to perform this
+update. If the DBA wants to delay the update until a more
+appropriate time, they should restart with the older binary as
+the newer binary will never start the database.
+
+Once the DBA has checked the backups and disk space, and found an
+appropriate time-slot to run this update, they should edit the
+<code>virtuoso.ini</code> file and add the following flag:
+<verbatim>
+[Parameters]
+AnalyzeFixQuadStore = 1
+</verbatim>
+
+Upon starting the Virtuoso server with this parameter setting, the 
+following messages will appear in the <code>virtuoso.log</code> file:
+<verbatim>
+21:05:57 PL LOG: This database may contain RDF data that could cause indexing problems on previous versions of the server.
+21:05:57 PL LOG: The content of the DB.DBA.RDF_QUAD table will be checked and an update may automatically be performed if
+21:05:57 PL LOG: such data is found.
+21:05:57 PL LOG: This check will take some time but is made only once.
+21:05:57 PL LOG:
+21:05:57 PL LOG: An update is required.
+21:05:57 PL LOG: Please be patient.
+21:05:57 PL LOG: The table DB.DBA.RDF_QUAD and two of its additional indexes will now be patched.
+21:05:57 PL LOG: In case of an error during the operation, delete the transaction log before restarting the server.
+21:05:57 Checkpoint started
+21:05:57 Checkpoint finished, log off
+21:05:57 PL LOG: Phase 1 of 9: Gathering statistics ...
+21:05:58 PL LOG:  * Index sizes before the processing: 002565531 RDF_QUAD, 002565531 POGS, 001171100 OP
+21:05:58 PL LOG: Phase 2 of 9: Copying all quads to a temporary table ...
+21:07:26 PL LOG: * Index sizes of temporary table: 001171100 OP
+21:07:26 PL LOG: Phase 3 of 9: Cleaning the quad storage ...
+21:07:51 PL LOG: Phase 4 of 9: Refilling the quad storage from the temporary table...
+21:09:17 PL LOG: Phase 5 of 9: Cleaning the temporary table ...
+21:09:41 PL LOG: Phase 6 of 9: Gathering statistics again ...
+21:09:41 PL LOG: * Index sizes after the processing: 002565531 RDF_QUAD, 002565531 POGS, 001171100 OP
+21:09:41 PL LOG: Phase 7 of 9: integrity check (completeness of index RDF_QUAD_POGS of DB.DBA.RDF_QUAD) ...
+21:10:00 PL LOG: Phase 8 of 9: integrity check (completeness of primary key of DB.DBA.RDF_QUAD) ...
+21:10:17 PL LOG: Phase 9 of 9: final checkpoint...
+21:10:20 Checkpoint started
+21:10:22 Checkpoint finished, log off
+21:10:22 PL LOG: Update complete.
+</verbatim>
+
+If the update process detects any problem, it will put some debug
+output into the <code>virtuoso.log</code> and exit. At this point, the DBA is
+advised to remove the <code>virtuoso.trx</code> file and contact [[http://support.openlinksw.com/][OpenLink Support]].
+
+After the update process has completed, the database will be left in an online state, as after a normal launch.

@@ -1,0 +1,62 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++What is the difference between the functions SAMPLE, <nowiki>GROUP_CONCAT</nowiki> and <nowiki>GROUP_DIGEST</nowiki>?
+
+This example demonstrates the differences between the functions <code>[[http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html][SAMPLE]]</code>, <code>[[http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html][<nowiki>GROUP_CONCAT</nowiki>]]</code> and <code>[[http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html][<nowiki>GROUP_DIGEST</nowiki>]]</code>.
+
+Assume the following query that should get all <code>?assets</code> as a list with delimiters:
+
+<verbatim>
+SPARQL SELECT ?view ?path (sql:GROUP_CONCAT (?asset, ' ')) as ?asset_list
+FROM <http://mygraph.com> 
+WHERE
+ { 
+   ?view <viewPath> ?path ; 
+     <viewContent> ?asset ; 
+     <viewType>  'phyview'. 
+ }
+;
+</verbatim>
+
+
+This method is not universal, because conversion to strings will eliminate the difference between strings and IRIs and there should be some delimiter that never appears in values of <code>?asset</code>. In addition, the query may fail with "row too long" error if values of <code>?asset</code> are lengthy and/or numerous enough. It is also possible the query not work completely free from duplicates if more than one list is desired. E.g.:
+
+<verbatim>
+SPARQL 
+SELECT ?view (sql:GROUP_CONCAT (?path, ' ')) as ?path_list
+  (sql:GROUP_CONCAT (?asset, ' ')) as ?asset_list
+FROM <http://mygraph.com>
+WHERE 
+  { 
+    ?view <viewPath> ?path ; 
+      <viewContent> ?asset ; 
+      <viewType> 'phyview' . 
+  }
+</verbatim>
+
+will not contain duplicates in lists only if either <code>?path</code> or <code>?asset</code> is unique for every found <code>?view</code>; but if it's so unique then there's no need in the corresponding <code>sql:[[http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html][<nowiki>GROUP_CONCAT</nowiki>]]()</code> .
+
+If there are many values per property but it's enough to return any single value and ignore the rest then use <code>sql:[[http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html][SAMPLE]]()</code> function instead of <code>sql:[[http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html][<nowiki>GROUP_CONCAT</nowiki>]]() </code>.
+
+If there are many values per property and it's better to show more than one value but "row too long" error happens, then the <code>sql:[[http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html][<nowiki>GROUP_DIGEST</nowiki>]]</code> function can be used:
+
+<verbatim>
+SPARQL 
+SELECT ?view (sql:GROUP_DIGEST (?path, ' ', 1000, 1)) as ?path_list 
+  (sql:GROUP_DIGEST (?asset, ' ', 1000, 1)) as ?asset_list
+FROM <http://mygraph.com> 
+WHERE
+  { 
+    ?view <viewPath> ?path ; 
+      <viewContent> ?asset ; 
+      <viewType> 'phyview' . 
+  }
+</verbatim>
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html][SAMPLE]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html][<nowiki>GROUP_CONCAT</nowiki>]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html][<nowiki>GROUP_DIGEST</nowiki>]]

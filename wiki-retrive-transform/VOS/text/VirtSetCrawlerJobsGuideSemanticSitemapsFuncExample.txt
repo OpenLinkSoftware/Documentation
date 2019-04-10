@@ -1,0 +1,144 @@
+%META:TOPICPARENT{name="VirtSetCrawlerJobsGuide"}%
+
+---+Example of Store and Extract functions for Setting up Crawler Jobs for Semantic Sitemaps -- a variation of standard sitemap
+
+%TOC%
+
+---++Example of Extract Function
+
+
+<verbatim>
+use WS;
+
+create procedure WS.WS.SITEMAP_BB_PARSE (
+  in _host varchar, 
+  in _url varchar, 
+  in _root varchar, 
+  inout _content varchar,  
+  in _c_type varchar := null, 
+  in lev int := 0))
+{
+  --pl_debug+
+  declare xt, xp, graph any;
+  declare inx int;
+
+--  dbg_obj_print ('WS.WS.GET_URLS_SITEMAP', _url);
+
+  declare exit handler for sqlstate '*'
+    {
+--      dbg_obj_print (__SQL_MESSAGE);
+      return;
+    };
+
+  if (_url like '%.xml.gz')
+    {
+      _content := gzip_uncompress (_content); 
+    }
+
+  if (_url like '%.xml' or _url like '%.xml.gz' or _url like '%.rdf')
+    {
+      xt := xtree_doc (_content);
+      if (xpath_eval ('/urlset/dataset', xt) is not null)
+	{
+	  xp := xpath_eval ('/urlset/dataset/dataDumpLocation/text()', xt, 0);
+	  graph := cast (xpath_eval ('/urlset/dataset/datasetURI/text()', xt) as varchar);
+	  if (length (graph))
+	    update VFS_SITE set VS_UDATA = serialize (vector ('graph', graph)) where VS_HOST = _host and VS_ROOT = _root;
+	  inx := 0;
+	  foreach (any u in xp) do
+	    {
+	      declare hf, host, url varchar;
+
+	      u := cast (u as varchar);
+	      hf := WS.WS.PARSE_URI (u);
+	      host := hf[1];
+	      --dbg_obj_print ('WS.WS.GET_URLS_SITEMAP PARSE', u);
+	      url := hf[2];
+	      insert soft VFS_QUEUE (VQ_HOST, VQ_TS, VQ_URL, VQ_STAT, VQ_ROOT, VQ_OTHER) 
+		  values (host, now (), url, 'waiting', _root, NULL); 
+	      if (row_count () = 0)
+		update VFS_QUEUE set VQ_STAT = 'waiting', VQ_TS = now () where VQ_HOST = host and VQ_ROOT = _root and VQ_URL = url;
+	      inx := inx + 1;
+	    }
+	}
+      if (xpath_eval ('/sitemapindex/sitemap/loc', xt) is not null)
+	{
+	  xp := xpath_eval ('/sitemapindex/sitemap/loc/text()', xt, 0);
+	  inx := 0;
+	  foreach (any u in xp) do
+	    {
+	      declare hf, host, url varchar;
+
+	      u := trim (cast (u as varchar));
+	      hf := WS.WS.PARSE_URI (u);
+	      host := hf[1];
+--	      dbg_obj_print ('WS.WS.GET_URLS_SITEMAP', host, _host);
+	      url := hf[2];
+	      if (url <> '')
+		{
+		  insert soft VFS_QUEUE (VQ_HOST, VQ_TS, VQ_URL, VQ_STAT, VQ_ROOT, VQ_OTHER) 
+		      values (host, now (), url, 'waiting', _root, NULL); 
+		  if (row_count () = 0)
+		    update VFS_QUEUE set VQ_STAT = 'waiting', VQ_TS = now () where VQ_HOST = host and VQ_ROOT = _root and VQ_URL = url;
+		  inx := inx + 1;
+		}
+	    }
+	}
+    }
+  commit work;
+}
+;
+
+</verbatim>
+
+
+---++Example of Store Function
+
+
+<verbatim>
+use WS;
+
+create procedure WS.WS.SITEMAP_BB_STORE (
+  in _host varchar, 
+  in _url varchar, 
+  in _root varchar,
+  inout _content varchar, 
+  in _s_etag varchar, 
+  in _c_type varchar,
+  in store_flag int := 1, 
+  in udata any := null,
+  in lev int := 0)
+{
+  --pl_debug+
+  declare graph varchar;
+
+--  dbg_obj_print ('WS.WS.SITEMAP_BB_STORE', _url, udata);
+  if (isarray (udata))
+    graph := get_keyword ('graph', udata);
+  else  
+    graph := null;
+
+  if (graph is not null and _url like '%.rdf')
+    {
+      DB.DBA.RDF_LOAD_RDFXML (_content, graph, graph);
+      DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+    }
+  insert soft VFS_URL (VU_HOST, VU_URL, VU_CHKSUM, VU_CPTIME, VU_ETAG, VU_ROOT)
+      values (_host, _url, md5 (_content), now (), _s_etag, _root);
+  if (row_count () = 0)
+    update VFS_URL set VU_CHKSUM = md5 (_content), VU_CPTIME = now (), VU_ETAG = _s_etag where
+	VU_HOST = _host and VU_URL = _url and VU_ROOT = _root;
+  commit work;
+}
+;
+</verbatim>
+
+
+---++Related
+
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodvirtuosocrawler][Setting up a Content Crawler Job to Import Linked Data into the Virtuoso Quad Store]]
+   * [[VirtSetCrawlerJobsGuideSitemaps][Setting up a Content Crawler Job to Retrieve Sitemaps]] (when the source includes RDFa)
+   * [[VirtSetCrawlerJobsGuideSemanticSitemaps][Setting up a Content Crawler Job to Retrieve Semantic Sitemaps]] (a variation of the standard sitemap)
+   * [[VirtSetCrawlerJobsGuideDirectories][Setting up a Content Crawler Job to Retrieve Content from Specific Directories]]
+   * [[VirtCrawlerGuideAtom][Setting up a Content Crawler Job to Retrieve Content from ATOM feed]]
+   * [[VirtCrawlerSPARQLEndpoints][Setting up a Content Crawler Job to Retrieve Content from SPARQL endpoint]]

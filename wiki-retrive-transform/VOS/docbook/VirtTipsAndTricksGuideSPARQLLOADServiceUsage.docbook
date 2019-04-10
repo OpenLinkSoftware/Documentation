@@ -1,0 +1,105 @@
+<docbook><section><title>VirtTipsAndTricksGuideSPARQLLOADServiceUsage</title><para> </para>
+<title>Virtuoso SPARQL LOAD Service</title>Virtuoso SPARQL LOAD Service
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+<para>Using SPARQL LOAD service to get remote endpoint&#39;s description.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+<para>Provides additional data that might be useful such as: if a local server knows what syntax extensions are supported by the remote SPARQL endpoint for ex.:  <ulink url="http://example.com/sparql">http://example.com/sparql</ulink>  then it can improve the compilation of SPARQL queries that contain clauses like: </para>
+<programlisting>SERVICE &lt;http://example.com/sparql&gt; {...} .
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para>To get the description of remote endpoint, one should run the following statement at its local server:</para>
+<programlisting>SPARQL LOAD SERVICE &lt;http://example.com/sparql&gt; DATA;
+</programlisting><para> The retrieved description will be stored in local RDF storage as a part of &quot; System Metadata&quot; graph , so the user calling this statement should have appropriate write permissions.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Example</bridgehead>
+<orderedlist spacing="compact"><listitem>Suppose the following query: <programlisting>INSERT INTO &lt;http://voc.wkd.de&gt; 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE 
+  {
+    GRAPH &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} 
+    SERVICE &lt;http://de.dbpedia.org/sparql&gt; 
+      {
+        SELECT ?o 
+        WHERE 
+          { 
+            ?s &lt;http://www.w3.org/2002/07/owl#sameAs&gt; ?o . 
+            FILTER REGEX(str(?o), &quot;^http://dbpedia.org&quot;) .
+          } 
+        LIMIT 10
+      }
+  }
+</programlisting></listitem>
+<listitem>Next we will bound the ?s in the graph part and the ?s in the scope of the service part: For every concept ?s in the graph &lt;<ulink url="http://voc.wkd.de">http://voc.wkd.de</ulink>&gt; we want to retrieve the  owl:sameAs  elements in the service  &lt;<ulink url="http://de.dbpedia.org/sparql&gt;">http://de.dbpedia.org/sparql&gt;</ulink>  , so for ex: <itemizedlist mark="bullet" spacing="compact"><listitem>Locally there is the following triple: <programlisting>  {
+    dbpedia:A a skos:Concept
+  }
+</programlisting></listitem>
+<listitem>In dbpedia there are the following triples: <programlisting>  {
+    dbpedia:B owl:sameAs dbpedia:C.
+    dbpedia:A owl:sameAs dbpedia:D.
+  }
+</programlisting></listitem>
+<listitem>The expected result we want to be: <programlisting>  {
+    dbpedia:A owl:sameAs dbpedia D.
+  }
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>The simplest way to make ?s interrelated is to alter the select statement and to add  ?s  into its result set: <programlisting>INSERT INTO &lt;http://voc.wkd.de&gt; 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE 
+  {
+    GRAPH &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} 
+    SERVICE &lt;http://de.dbpedia.org/sparql&gt; 
+    {
+      SELECT ?s ?o 
+      WHERE 
+        { 
+          ?s &lt;http://www.w3.org/2002/07/owl#sameAs&gt; ?o . 
+          FILTER REGEX(str(?o), &quot;^http://dbpedia.org&quot;) .
+        } 
+      LIMIT 10
+    }
+  }
+</programlisting></listitem>
+<listitem>The change will affect to the following: <orderedlist spacing="compact"><listitem> ?s from service  and  ?s from graph &lt;&gt; {}  will both appear at the same scope and the equality between them will be required by the semantics.
+</listitem>
+<listitem>The optimizer will understand that it&#39;s better to pass the  ?s  as parameter to the service instead of selecting all pairs of  ?s  and  ?o  and filter them at the main query server.
+</listitem>
+<listitem>The code generator will try to write a code for sending a query to  <ulink url="http://de.dbpedia.org/sparql">http://de.dbpedia.org/sparql</ulink>  but it may fail if it are not known the capabilities of SPARQL compiler at  <ulink url="http://de.dbpedia.org/sparql">http://de.dbpedia.org/sparql</ulink>  , so before the first compilation, one should execute the following statement: <programlisting>SPARQL LOAD SERVICE &lt;http://de.dbpedia.org/sparql&gt; DATA;
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>The effect of executing the  SPARQL LOAD SERVICE  statement will be: <orderedlist spacing="compact"><listitem>Recognize what syntax extensions are supported by the compiler inside  <ulink url="http://de.dbpedia.org/sparql">http://de.dbpedia.org/sparql</ulink>  service endpoint.
+ E.g., whether that endpoint can deal with external parameters.
+</listitem>
+<listitem>Will write small description of the endpoint to local metadata but will not try to copy any data stored remotely to the local storage.
+</listitem>
+</orderedlist></listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+<listitem><emphasis>Important Note</emphasis>: that if the graph  &lt;<ulink url="http://voc.wkd.de">http://voc.wkd.de</ulink>&gt; { ?s rdf:type skos:Concept.}  will produce many values for ?s, there will be many requests to dbpedia, and the sum of round-trip latencies will be high.
+ In some cases it may be faster to get one big list of  ?s ?o pairs  from <emphasis>dbpedia</emphasis> and then search in local graph.
+To change the order of execution to &quot;remote first&quot; variant, the order of clauses should be changed to: <programlisting>INSERT INTO &lt;http://voc.wkd.de&gt; 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE
+  {
+    SERVICE &lt;http://de.dbpedia.org/sparql&gt; 
+      {
+        SELECT ?s ?o 
+        WHERE 
+          { 
+            ?s &lt;http://www.w3.org/2002/07/owl#sameAs&gt; ?o . 
+            FILTER REGEX(str(?o), &quot;^http://dbpedia.org&quot;) .
+          } 
+        LIMIT 10
+      }
+    GRAPH &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} 
+  }
+</programlisting></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">Virtuoso Documentation</ulink></listitem>
+</itemizedlist><para> </para>
+</section></docbook>

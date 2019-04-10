@@ -1,0 +1,140 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtLDP"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtLDP"}%--><h1><a name="RWW Interaction &amp; ACL Testing using cURL"></a> RWW Interaction &amp; ACL Testing using cURL</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%3F">What?</a></li> <li><a href="#Why%3F">Why?</a></li> <li><a href="#How%3F">How?</a></li>
+<ul><li><a href="#Different%20File%20Usage">Different File Usage</a></li><ul><li><a href="#1%3A%20PKCS%2012%20File%20Usage">1: PKCS 12 File Usage</a></li> <li><a href="#2%3A%20Secure%20PEM%20File%20Usage">2: Secure PEM File Usage</a></li> </ul><li><a href="#LDP%20QA">LDP QA</a></li><ul><li><a href="#1%3A%20Basic%20Metadata%20Interrogation">1: Basic Metadata Interrogation</a></li> <li><a href="#2%3A%20Basic%20Metadata%20and%20Content%20Interrogation">2: Basic Metadata and Content Interrogation</a></li> <li><a href="#3%3A%20INSERT%20via%20POST%20with%20Slug%20header">3: INSERT via POST with Slug header</a></li> <li><a href="#4%3A%20INSERT%20via%20POST%20without%20Slug%20header">4: INSERT via POST without Slug header</a></li> <li><a href="#5%3A%20INSERT%20via%20Inline%20Data%20without%20Slug%20header">5: INSERT via Inline Data without Slug header</a></li> <li><a href="#6%3A%20Collection%20%28Folder%29%20Creation">6: Collection (Folder) Creation</a></li> <li><a href="#7%3A%20Without%20Slug">7: Without Slug</a></li> </ul><li><a href="#Methods">Methods</a></li><ul><li><a href="#PUT%20Method">PUT Method</a></li> <li><a href="#PUT%20Method%20for%20creating%20a%20remote%20document%20from%20a%20local%20document">PUT Method for creating a remote document from a local document</a></li> <li><a href="#MKCOL%20Method">MKCOL Method</a></li> <li><a href="#HTTP%20PATCH%20method%20for%20SPARQL%201.1%20INSERT">HTTP PATCH method for SPARQL 1.1 INSERT</a></li> <li><a href="#HTTP%20POST%20method%20for%20SPARQL%20SELECT">HTTP POST method for SPARQL SELECT</a></li> </ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p> </p>
+<h2><a name="What?"></a> What?</h2>
+<p>The <a href="http://www.w3.org/TR/ldp/" class="absuri">Linked Data Platform (LDP) specification</a> from the W3C outlines how HTTP interaction patterns can be used to facilitate loosely coupled Create, Read, Update (Write), and Delete (&quot;CRUD&quot;) operations, at World Wide Web scale.</p>
+<h2><a name="Why?"></a> Why?</h2>
+<p>The &quot;Write&quot; dimension of the World Wide Web has been underutilized since the Web&#39;s inception.
+ This has lead to a proliferation of Web Applications and Services that confusingly conflate otherwise distinct functionality realms in the way they work with entities, both &quot;real world&quot; and digital, and their --</p>
+<ul><li>Identity (Denotation) </li>
+<li>Identification (Connotation) </li>
+<li>Verification of Identity Claims (Authentication) </li>
+<li>Identity-Driven Access Control &amp; Privileges over Protected Resources </li>
+<li>Identity-Driven Webs of Trust</li>
+</ul><p> </p>
+<h2><a name="How?"></a> How?</h2>
+<h3><a name="Different File Usage"></a> Different File Usage</h3>
+<h4><a name="1: PKCS 12 File Usage"></a> 1: PKCS 12 File Usage</h4>
+<br><pre>curl --cert {pkcs#12-file-name}:{pwd} --cert-type P12 -k -I {resource-url}
+</pre><p> </p>
+<h4><a name="2: Secure PEM File Usage"></a> 2: Secure PEM File Usage</h4>
+<br><pre>curl --cert {cert-pem-file-name} --key {private-key-pem-file-name} -k -I {resource-url}
+</pre><h3><a name="LDP QA"></a> LDP QA</h3>
+<h4><a name="1: Basic Metadata Interrogation"></a> 1: Basic Metadata Interrogation</h4>
+<br><pre>curl -X OPTIONS -IH &quot;Accept: text/turtle&quot; http://example.com/DAV/home/demo/Public/
+</pre><p> </p>
+<h4><a name="2: Basic Metadata and Content Interrogation"></a> 2: Basic Metadata and Content Interrogation</h4>
+<br><pre>curl -iH &quot;Accept: text/turtle&quot; http://example.com/DAV/home/demo/Public/
+</pre><p> </p>
+<h4><a name="3: INSERT via POST with Slug header"></a> 3: INSERT via POST with Slug header</h4>
+<br><pre>curl -X POST -ik -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary @profile2.ttl -H &quot;Slug: profile2.ttl&quot; https://example.com/DAV/home/demo/Public/
+</pre><p> </p>
+<h4><a name="4: INSERT via POST without Slug header"></a> 4: INSERT via POST without Slug header</h4>
+<br><pre>curl -X POST -ik -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary @profile2.ttl https://example.com/DAV/home/demo/Public/
+</pre><p> </p>
+<h4><a name="5: INSERT via Inline Data without Slug header"></a> 5: INSERT via Inline Data without Slug header</h4>
+<br><pre>curl -X POST -ik -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary &quot;&lt;&gt; a foaf:Document&quot; https://example.com/DAV/home/demo/Public/
+</pre><p> </p>
+<h4><a name="6: Collection (Folder) Creation"></a> 6: Collection (Folder) Creation</h4>
+<ul><li>Local data in <code>ldp_container.ttl</code> <br><pre><br>@prefix      ldp:  &lt;http://www.w3.org/ns/ldp#&gt; .
+@prefix  dcterms:  &lt;http://purl.org/dc/terms/&gt; .
+
+&lt;&gt;                   a  ldp:Container
+                     ,  ldp:BasicContainer
+ ;       dcterms:title  &quot;Sample Folder&quot; 
+ ; dcterms:description  &quot;Sample Folder created using LDP.&quot; 
+.
+</pre><br> </li>
+<li><b>Request:</b> <br><pre><br>curl -k -i -E MyCertificate-ODS-QA.pem:1234 https://example.com/DAV/home/demo/Public/ -H &quot;Content-Type: text/turtle&quot; -X POST  -H &quot;Slug: ldp_container&quot; --data-binary @ldp_container.ttl
+</pre><br> </li>
+<li><b>Response:</b> <br><pre><br>HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Mon, 07 Jul 2014 12:54:32 GMT
+Accept-Ranges: bytes
+Location: https://example.com/DAV/home/demo/Public/ldp_container
+Link: &lt;http://www.w3.org/ns/ldp#Resource&gt;; rel=&quot;type&quot;
+Content-Type: text/turtle
+Content-Length: 196
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+  &lt;HTML&gt;
+    &lt;HEAD&gt;
+      &lt;TITLE&gt;201 Created&lt;/TITLE&gt;
+    &lt;/HEAD&gt;
+    &lt;BODY&gt;
+      &lt;H1&gt;Created&lt;/H1&gt;Resource /DAV/home/demo/Public/ldp_container has been created.
+    &lt;/BODY&gt;
+  &lt;/HTML&gt;
+</pre><br> </li>
+</ul><h4><a name="7: Without Slug"></a> 7: Without Slug</h4>
+<br><pre>curl -k -i -E MyCertificate-ODS-QA.pem:king6c/ -H &quot;Content-Type: text/turtle&quot; -X POST  --data-binary @ldp_container.ttl
+</pre><h3><a name="Methods"></a> Methods</h3>
+<h4><a name="PUT Method"></a> PUT Method</h4>
+<p>To replace the content of the Document at <code>&lt;https://example.com/DAV/home/demo/Public/example.ttl&gt;</code> with <code>&quot;&lt;#this&gt; &lt;#relation&gt; &lt;#that&gt; .&quot;</code></p>
+<ul><li><b>Request:</b> <br><pre><br>curl -X PUT -kv -i -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary  &quot;&lt;#this&gt; &lt;#relation&gt; &lt;#that&gt; .&quot; https://example.com/DAV/home/demo/Public/example.ttl
+&lt;verbatim&gt;
+
+   * &lt;b&gt;Response:&lt;/b&gt;
+&lt;verbatim&gt;
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: close
+Date: Thu, 03 Jul 2014 19:56:45 GMT
+Accept-Ranges: bytes
+Link: &lt;http://www.w3.org/ns/ldp#Resource&gt;; rel=&quot;type&quot;
+Content-Type: text/turtle
+Content-Length: 194
+</pre><br> </li>
+</ul><h4><a name="PUT Method for creating a remote document from a local document"></a> PUT Method for creating a remote document from a local document</h4>
+<br><pre>curl -X PUT -k -i -E MyCertificate-ODS-QA.pem:1234 -H &quot;Content-Type: text/turtle&quot; -data-binary @test.ttl https://example.com/DAV/home/demo/Public/
+</pre><h4><a name="MKCOL Method"></a> MKCOL Method</h4>
+<br><pre>curl -X MKCOL -k -i -E MyCertificate-ODS-QA.pem:1234 https://example.com/DAV/home/demo/Public/container2/
+</pre><h4><a name="HTTP PATCH method for SPARQL 1.1 INSERT"></a> HTTP PATCH method for SPARQL 1.1 INSERT</h4>
+<ul><li><b>Request: </b> <br><pre><br>curl -E MyCertificate-ODS-QA.pem:1234  -X PATCH -k -i --data-binary &quot;INSERT {GRAPH &lt;urn:rww:demo:data&gt; {&lt;http://example.com/dataspace/person/demo#this&gt; a &lt;http://xmlns.com/foaf/0.1/Person&gt; . } }&quot; -H &quot;Content-Type: application/sparql-update; utf-8&quot; https://example.com/DAV/home/demo/Public/example2.ttl
+</pre><br> </li>
+<li><b>Response: </b> <br><pre><br>HTTP/1.1 204 No Content
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Fri, 04 Jul 2014 17:18:16 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://example.com/DAV/home/demo/Public/example2.ttl
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 444
+</pre><br> </li>
+</ul><h4><a name="HTTP POST method for SPARQL SELECT"></a> HTTP POST method for SPARQL SELECT</h4>
+<ul><li><b>Request: </b> <br><pre><br>curl -E MyCertificate-ODS-QA.pem:1234 -X POST -ik --data-binary &quot;SELECT * FROM &lt;urn:rww:demo:data&gt; WHERE {?s ?p ?o}&quot; -H &quot;Content-Type: application/sparql-query&quot; &quot;https://example.com/sparql&quot;
+</pre><br> </li>
+<li><b>Response: </b> <br><pre><br>HTTP/1.1 200 OK
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Fri, 04 Jul 2014 17:31:38 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://example.com/DAV/VAD/val/sparql/
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 792
+
+&lt;sparql xmlns=&quot;http://www.w3.org/2005/sparql-results#&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd&quot;&gt;
+ &lt;head&gt;
+  &lt;variable name=&quot;s&quot;/&gt;
+  &lt;variable name=&quot;p&quot;/&gt;
+  &lt;variable name=&quot;o&quot;/&gt;
+ &lt;/head&gt;
+ &lt;results distinct=&quot;false&quot; ordered=&quot;true&quot;&gt;
+  &lt;result&gt;
+   &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;http://example.com/dataspace/person/demo#this&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;o&quot;&gt;&lt;uri&gt;http://xmlns.com/foaf/0.1/Person&lt;/uri&gt;&lt;/binding&gt;
+  &lt;/result&gt;
+  &lt;result&gt;
+   &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;#this&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;#relation&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;o&quot;&gt;&lt;uri&gt;#that&lt;/uri&gt;&lt;/binding&gt;
+  &lt;/result&gt;
+ &lt;/results&gt; 
+</pre><br></li>
+</ul><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoLDPSimpleCurlExamples" class="wikiword">Virtuoso LDP Simple Curl Examples Collection</a></li>
+</ul></div></body></html>

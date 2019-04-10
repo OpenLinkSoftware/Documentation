@@ -1,0 +1,94 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtSPASQLWebDataServiceApp"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtSPASQLWebDataServiceApp"}%--><p> </p>
+<h1><a name="Creating a Silverlight Application to consume the service"></a> Creating a Silverlight Application to consume the service</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Creating%20the%20Application%20for%20Silverlight">Creating the Application for Silverlight</a></li> <li><a href="#Related">Related</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>This document will guide you through creating an application for Silverlight that will consume the ADO.NET Data Service created in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLWebDataServiceApp" class="wikiword">Creating a Web Browser Application to Access RDF Data using the Virtuoso ADO.NET Provider</a>.</p>
+<h2><a name="Prerequisites"></a> Prerequisites</h2>
+ <ol><li>The <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=c22d6a7b-546f-4407-8ef6-d60c8ee221ed&displaylang=en" class="absuri">Microsoft Silverlight 2 Tools for Visual Studio 2008 SP1</a> </li>
+<li>The ADO.NET Data Service created in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLWebDataServiceApp" class="wikiword">Creating a Web Browser Application to Access RDF Data Using The Virtuoso ADO.NET Provider</a> </li>
+<li>The Visual Studio project used to create the ADO.NET Data Service</li>
+</ol><h2><a name="Creating the Application for Silverlight"></a> Creating the Application for Silverlight</h2>
+<ol><li>Open the ADO.NET Data Service project in <b>Visual Studio</b>.
+</li>
+<li>In the <b>Solution Explorer</b> right click on the RDFWebDemo solution and add a new Project.
+</li>
+<li>In the <b>Add New Project</b> dialog select <b>Silverlight Application</b> and click <b>OK</b>.
+This will open the <b>Add Silverlight Application</b> dialog.
+<br><br><img src="VirtSPASQLSilverLightApp/SilverlightApp.png" style="wikiautogen"><br><br> </li>
+<li>Select <b>Link this Silverlight Control into an existing Web Site</b> and make sure the Web Site selected is RDFWebDemo.
+ Select <b>Add a test page that references the application</b> and <b>Make it the start page</b>.
+<br><br><img src="VirtSPASQLSilverLightApp/AddSilverlightApp.png" style="wikiautogen"><br><br> </li>
+<li>In <b>Solution Explorer</b>, select <b>RDFWebDemo</b>, open the <b>Project</b> menu and select <b>Properties</b>.
+</li>
+<li>Select the <b>Web</b> tab, and select <b>Specific Page</b> in the <b>Start Action</b> section.
+Click on the ellipsis (&quot;<b>?</b>&quot;) and select <b>SilverlightApplication1TestPage.html</b> as the start page.
+</li>
+<li>Add a reference to the data service.
+ In the <b>Solution Explorer</b> right click on <b>SilverlightApplication1</b> and select <b>Add Service Reference</b>.
+</li>
+<li>In the <b>Add Service Reference</b> dialog click the <b>Discover</b> button.
+ Your ADO.NET Data Service should appear in the Address box and the Services box.
+</li>
+<li>Select the service and click <b>OK</b>.
+ <b>ServiceReference1</b> will now be added to the <b>ServiceReferences</b>.
+</li>
+<li>Open <b>page.xaml.cs</b> and add references to the service and to the <b>System.Data.Services.Client</b> assembly by adding the following using statements at the top of the file: <br><pre><br>using System.Data.Services.Client;
+using SilverlightApplication1.ServiceReference1;
+</pre><br></li>
+<li>We need to create a data service context to reference the data from the service and to load data from the view, <code>sparqlview</code>, exposed by the service.
+ Add the following lines to the page constructor after <b>InitializeComponent()</b> — <br><pre><br>DataServiceContext svcCtx = new DataServiceContext(new Uri(&quot;WebDataService1.svc&quot;, UriKind.Relative));
+svcCtx.BeginExecute&lt;sparqlview&gt;(new Uri(&quot;sparqlview&quot;, UriKind.Relative), loadSCallback, svcCtx);
+</pre><br></li>
+<li>Add the <b>loadSCallback</b> method to the page class.
+ The method loads the data from sparqlview and puts it in a List.
+ This List populates a list box on the page.
+<br><pre><br>private void loadSCallback(IAsyncResult asyncResult)
+{            List&lt;Uri&gt; uList = new List&lt;Uri&gt;();
+    DataServiceContext ctx = asyncResult.AsyncState as DataServiceContext;
+    foreach (sparqlview sv in ctx.EndExecute&lt;sparqlview&gt;(asyncResult))
+        uList.Add(new Uri(sv.s));
+    listBox1.DataContext = uList;
+}
+</pre><br></li>
+<li>Add the list box to the page.
+ In the <b>Solution Explorer</b> double click on <b>page.xaml</b> to open it in the editor.
+ Add the following code between the &lt;grid&gt; and &lt;/grid&gt; tags.
+<br><pre><br>&lt;ListBox x:Name=&quot;listBox1&quot;
+    HorizontalAlignment=&quot;Stretch&quot; 
+    Margin=&quot;25,8,26,-78&quot; Grid.RowSpan=&quot;1&quot; 
+    Grid.Row=&quot;0&quot; VerticalAlignment=&quot;Stretch&quot;
+    ItemsSource=&quot;{Binding Mode=OneWay}&quot; &gt;
+    &lt;ListBox.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;StackPanel x:Name=&quot;DisplayListData&quot;
+             Orientation=&quot;Horizontal&quot;
+             VerticalAlignment=&quot;Bottom&quot;
+             Margin=&quot;5&quot; &gt;
+                &lt;HyperlinkButton
+                 Content =&quot;{Binding}&quot;
+                 NavigateUri=&quot;{Binding}&quot;
+                 Margin=&quot;5,0,0,0&quot; 
+                 VerticalAlignment=&quot;Bottom&quot;
+                 HorizontalAlignment=&quot;Left&quot;
+                 FontSize=&quot;12&quot;&gt;
+                &lt;/HyperlinkButton&gt;
+            &lt;/StackPanel&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListBox.ItemTemplate&gt;
+&lt;/ListBox&gt;
+</pre><br></li>
+<li>Build the Silverlight application and launch without debugging using <b>Ctrl-F5</b>.
+ This will launch the browser and open <code>SilverlightApplication1TestPage.aspx</code>.
+<br><br><img src="VirtSPASQLSilverLightApp/browser.png" style="wikiautogen"><br><br> Clicking on one of the IRIs will open the page using <code>description.vsp</code>.
+<br><br><img src="VirtSPASQLSilverLightApp/Description.png" style="wikiautogen"><br><br></li>
+</ol><p> </p>
+<h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAdoNetDataGridApp" class="wikiword">Using Visual Studio 2008 to Build a Data Grid Form Application</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEntityFrameworkSchoolDbWinFormApp" class="wikiword">Using Visual Studio 2008 to Build an Entity Frameworks-based Windows Form Application</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtUsingMsAdoNetDataServicesWithVirtuoso" class="wikiword">Using Visual Studio 2008 to Build an ADO.NET Data Services-based Application</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLWinFormApp" class="wikiword">Windows Form Application for accessing Virtuoso RDF data via SPASQL using the Virtuoso ADO.NET Provider</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLWebDataServiceApp" class="wikiword">Web Data Service Application for accessing Virtuoso RDF data via SPASQL using the Virtuoso ADO.NET Provider</a></li>
+</ul><p> </p>
+</div></body></html>

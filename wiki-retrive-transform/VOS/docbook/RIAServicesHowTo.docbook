@@ -1,0 +1,204 @@
+<docbook><section><title>RIAServicesHowTo</title><title> Simple .NET RIA Services Application using Virtuoso as the Data Server</title> Simple .NET RIA Services Application using Virtuoso as the Data Server
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>.NET RIA Services is a new framework from Microsoft that simplifies the development of N-Tier web applications.
+ A typical application will consist of a presentation layer, application logic and a data access layer.
+ In the examples that follow, we will be using a combination of Silverlight 3.0 and .NET RIA Services for the presentation and application layers, while using Virtuoso as the data server via its native ADO.NET provider.
+ The first example demonstrates how to display data from the Employee table in the Demo database using web page hosted grid control.
+ The second example shows the navigational power behind hyperlinked data (de-referenceable HTTP scheme IRIs) exposed by Linked Data Views built stop Virtuoso&#39;s demonstration relational database schema (which is very similar to SQL Server&#39;s Northwind Database).</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Prerequisites</bridgehead>
+<orderedlist spacing="compact"><listitem>The example assumes that you have a local Virtuoso server with the Northwind demo database installed.
+ If the demo database is not already installed then download the <ulink url="http://virtuoso.openlinksw.com/download/">demo database VAD package</ulink> (demo_dav.vad) and install it.
+ The VAD package will create a new database in Virtuoso called demo containing the familiar Northwind tables.
+ It will also creates <ulink url="http://docs.openlinksw.com/virtuoso/rdfsparqlintegrationmiddleware.html#rdfviews">Linked Data Views</ulink> of the Northwind tables.
+ In the example we assume the database is accessible on a hostname of &quot;demo.openlinksw.com&quot; on the default port 80, where an actually live instance of the Virtuoso Demo database is hosted.
+ Users would use the appropriate hostname and port number of their Virtuoso installation to create the sample application, and would be would be localhost:8890 for a default installation or whatever the <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_URIQA">URIQA DefaultHost</ulink> Virtuoso configuration parameter is set to when the demo database VAD package is installed.
+</listitem>
+<listitem>The Virtuoso ADO.Net provider for .Net 3.5 and the Entity Framework </listitem>
+<listitem>Microsoft Visual Studio 2008 </listitem>
+<listitem>The Virtuoso <ulink url="http://virtuoso.openlinksw.com/download/">Cartridges</ulink> VAD package </listitem>
+<listitem><ulink url="http://www.microsoft.com/downloads/details.aspx?familyid=9442b0f2-7465-417a-88f3-5e7b5409e9dd&amp;displaylang=en">Silverlight 3 Tools for Visual Studio 2008 SP1</ulink> </listitem>
+<listitem><ulink url="http://www.microsoft.com/downloads/details.aspx?FamilyID=76bb3a07-3846-4564-b0c3-27972bcaabce&amp;displaylang=en">Microsoft .NET RIA Services July 2009 Preview</ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Creating the Application</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 1 - Create the Visual Studio Projects</bridgehead>
+<orderedlist spacing="compact"><listitem>Open <emphasis>Visual Studio</emphasis> and create a new <emphasis>Silverlight Application</emphasis> project.
+ Call the project DemoApplication.
+</listitem>
+<listitem>In the New Silverlight Application dialog ensure that <emphasis>Enable .NET RIA Services</emphasis> is checked.
+ Click the <emphasis>OK</emphasis> button.
+<figure><graphic fileref="RIAServicesHowTo/SilverlightApp.png" /></figure> </listitem>
+<listitem>At this point a skeleton solution is created that consists of a client project called DemoApplication and a server project called DemoApplication.Web.
+ This application will use data from the Virtuoso database.
+ We add the data and its schema to the application by adding an ADO.NET entity data model to the server project.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 2 - Add the Data Model</bridgehead>
+<orderedlist spacing="compact"><listitem>Right click the server project in the <emphasis>Solution Explorer</emphasis> and <emphasis>Add New Item</emphasis>.
+ In the dialog box select <emphasis>ADO.NET Entity Data Model</emphasis> and call it demo.edmx.
+ Click the <emphasis>Add</emphasis> button.
+ This will open the <emphasis>Entity Data Model Wizard</emphasis>.
+</listitem>
+<listitem>Choose <emphasis>Generate From Database</emphasis> and click <emphasis>Next</emphasis>.
+</listitem>
+<listitem>Set up a connection to the Demo database on your local Virtuoso Server, select <emphasis>Yes, include the sensitive data in the connection string</emphasis> and set the name of the entities to DemoEntities.
+ Click <emphasis>Next</emphasis>.
+</listitem>
+<listitem>On the <emphasis>Choose Your Database Objects</emphasis> page expand <emphasis>Tables</emphasis> and select Employees.
+ Check that the Model Namespace is DemoModel and click <emphasis>Finish</emphasis>.
+<figure><graphic fileref="RIAServicesHowTo/EntityModel.png" /></figure>  </listitem>
+<listitem>We want to make the entities in the model available to both the client and server parts of the solution.
+ To do this we need to add a DomainService to the solution.
+ However, to make the entities from the data model available to the domain service we must first build the solution.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 3 - Add a Domain Service</bridgehead>
+<orderedlist spacing="compact"><listitem>First build the solution.
+</listitem>
+<listitem>Right click the server project in the <emphasis>Solution Explorer</emphasis> and <emphasis>Add New Item</emphasis>.
+ In the dialog box choose <emphasis>Domain Service Class</emphasis> from the Templates pane and call it EmployeeService.cs.
+ Click <emphasis>Add</emphasis>.
+ This will open the <emphasis>Add New Domain Service Class</emphasis> dialog.
+</listitem>
+<listitem>The entities from the model we have just added to the project are listed under <emphasis>Entities</emphasis>.
+ Tick the box next to Employees.
+ and click OK.
+<figure><graphic fileref="RIAServicesHowTo/DomainService.png" /></figure> </listitem>
+<listitem>This will create the DomainService class and generated code in both the client and server parts of the application.
+ The Silverlight client can now interact with the data through the DomainContext class in the client project.
+ At this point you need to build the solution again.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 4 - Display The Data</bridgehead>
+<orderedlist spacing="compact"><listitem>From the <emphasis>Silverlight XAML Controls</emphasis> in the <emphasis>Toolbox</emphasis> drag a <emphasis>DataGrid</emphasis> between the &lt;Grid&gt; &lt;/Grid&gt; tags on MainPage.xaml in the client.
+ Call the grid EmployeeGrid.
+<programlisting>&lt;data:DataGrid Name=&quot;EmployeeGrid&quot;&gt;&lt;/data:DataGrid&gt;
+</programlisting></listitem>
+<listitem>Instantiate the DomainContext to get the list of employees and add them to the grid by adding code to MainPage.xaml.cs so it looks like this: <programlisting>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+using DemoApplication.Web;
+using System.Windows.Ria.Data;
+
+namespace DemoApplication
+{
+    public partial class MainPage : UserControl
+    {
+        private EmployeeContext _employeeContext = new EmployeeContext();
+        public MainPage()
+        {
+            InitializeComponent();
+            LoadOperation&lt;Employees&gt; LoadOp =
+                this._employeeContext.Load(this._employeeContext.GetEmployeesQuery());
+            this.EmployeeGrid.ItemsSource = LoadOp.Entities;
+        }
+    }
+}
+
+</programlisting></listitem>
+<listitem>Build and run the application.
+ Internet Explorer will be launched and you will see the data displayed on the page as a grid.
+<figure><graphic fileref="RIAServicesHowTo/DemoApp.png" /></figure></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Displaying RDF Data</bridgehead>
+<para>One advantage of using Virtuoso as the data server is the seamless way in which we can use this use this application to expose dereferenceable HTTP IRIs which make the record level relationships explorable across many dimensions.</para>
+<para>Virtuoso&#39;s hybrid SPASQL (SPARQL inside SQL) query language enables RDF model data -- hosted within the Virtuoso Quad store -- to be queried using SPARQL from any of its SQL interfaces (ODBC, JDBC, ADO.NET, OLE-DB, XMLA); all you do is prefix your queries with the keyword SPARQL.
+ In the example that follows we will use SPASQL to create a SQL view that exposes IRIs for records in the Employee table.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 1 - Create the View in Virtuoso</bridgehead>
+<orderedlist spacing="compact"><listitem>Open the Virtuoso Conductor.
+</listitem>
+<listitem>In iSQL, execute the following statement.
+ Remember to use the appropriate hostname and port number of your Virtuoso installation, typically  localhost:8890 for a default installation or whatever the <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_URIQA">URIQA DefaultHost</ulink> Virtuoso configuration parameter was set to when the demo database VAD package was installed.
+<programlisting>CREATE VIEW Demo.demo.sparqlview as
+SPARQL
+PREFIX nwind: &lt;http://demo.openlinksw.com/schemas/northwind#&gt;
+SELECT DISTINCT  ?s
+FROM &lt;http://demo.openlinksw.com/Northwind&gt;
+WHERE {?s a nwind:Employee}
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 2 - Modify the Solution To use the View</bridgehead>
+<orderedlist spacing="compact"><listitem>Delete the existing Employee model and add a new one that comprises this new view.
+<figure><graphic fileref="RIAServicesHowTo/SparqlviewModel.png" /></figure> </listitem>
+<listitem>Delete the DomainService.
+ Build the solution and add a new DomainService called EmployeeService.
+ Select the sparqlview entity.
+ Build the solution.
+<figure><graphic fileref="RIAServicesHowTo/SparqlviewService.png" /></figure> </listitem>
+<listitem>Modify the code in mainpage.xaml.cs so it uses the sparqview entity.
+ It should look like this: <programlisting>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+using DemoApplication.Web;
+using System.Windows.Ria.Data;
+
+namespace DemoApplication
+{
+    public partial class MainPage : UserControl
+    {
+        private EmployeeContext _employeeContext = new EmployeeContext();
+        public MainPage()
+        {
+            InitializeComponent();
+            LoadOperation&lt;sparqlview&gt; LoadOp =
+                this._employeeContext.Load(this._employeeContext.GetSparqlviewQuery());
+            this.EmployeeGrid.ItemsSource = LoadOp.Entities;
+        }
+    }
+}
+</programlisting></listitem>
+<listitem>Build and run the application.
+ You will see a list of IRIs that identify the Northwind employees.
+<figure><graphic fileref="RIAServicesHowTo/IriList.png" /></figure> </listitem>
+<listitem>To realize the power of linked data we would now liked to begin exploring this data by clicking on these IRIs.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 3 - Make Hyperlinks From IRIs</bridgehead>
+<orderedlist spacing="compact"><listitem>Modify the DataGrid in MainPage.xaml to bind the IRI in each cell of the grid to a Hyperlink button.
+</listitem>
+<listitem>We set the AutoGenerateColumns property of the DataGrid to False then add our own Template for the column.
+ MainPage.xaml should look like this: <programlisting>&lt;UserControl xmlns:data=&quot;clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data&quot;  x:Class=&quot;DemoApplication.MainPage&quot;
+    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot; 
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+    xmlns:d=&quot;http://schemas.microsoft.com/expression/blend/2008&quot; xmlns:mc=&quot;http://schemas.openxmlformats.org/markup-compatibility/2006&quot; 
+    mc:Ignorable=&quot;d&quot; d:DesignWidth=&quot;640&quot; d:DesignHeight=&quot;480&quot;&gt;
+  &lt;Grid x:Name=&quot;LayoutRoot&quot;&gt;
+      &lt;data:DataGrid Name=&quot;EmployeeGrid&quot; AutoGenerateColumns=&quot;False&quot;&gt;
+            &lt;data:DataGrid.Columns&gt;
+                &lt;data:DataGridTemplateColumn Header=&quot;Employee&quot;&gt;
+                    &lt;data:DataGridTemplateColumn.CellTemplate&gt;
+                        &lt;DataTemplate&gt;
+                            &lt;StackPanel x:Name=&quot;DisplayEmployeeData&quot; 
+                                        Orientation=&quot;Horizontal&quot; 
+                                        VerticalAlignment=&quot;Bottom&quot; 
+                                        Margin=&quot;5&quot; &gt;
+                                &lt;HyperlinkButton Content =&quot;{Binding s}&quot; 
+                                                 NavigateUri=&quot;{Binding s}&quot; 
+                                                 Margin=&quot;5,0,0,0&quot;
+                                                 VerticalAlignment=&quot;Bottom&quot;
+                                                 HorizontalAlignment=&quot;Left&quot;
+                                                 FontSize=&quot;12&quot;&gt;
+                                &lt;/HyperlinkButton&gt;
+                            &lt;/StackPanel&gt;
+                        &lt;/DataTemplate&gt;
+                    &lt;/data:DataGridTemplateColumn.CellTemplate&gt;
+                &lt;/data:DataGridTemplateColumn&gt;
+            &lt;/data:DataGrid.Columns&gt;
+        &lt;/data:DataGrid&gt;
+    &lt;/Grid&gt;
+&lt;/UserControl&gt;
+</programlisting></listitem>
+<listitem>If we build and run the project now each IRI in the list appears as a hyperlink.
+<figure><graphic fileref="RIAServicesHowTo/HyperlinkList.png" /></figure> </listitem>
+<listitem>Clicking on each of the links exposes new Employee relations where each Attribute and Value (optionally) pair also exist in link form.
+ Each of these links creates a powerful linked data graph exposing data level relationships, all devoid of traditional join overhead associated with relational queries.
+<figure><graphic fileref="RIAServicesHowTo/EmployeeDoc.png" /></figure> <figure><graphic fileref="RIAServicesHowTo/EmployeeDesc.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Next Steps</bridgehead>
+<para>The examples in this document show you how to simply display data in a browser using Silverlight 3 and .NET RIA Services.
+ See  an <ulink url="RIAServicesHowTo2">example</ulink> of a more complicated application.</para>
+</section></docbook>

@@ -1,0 +1,103 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How can I move a Virtuoso database from one hardware and/or software platform to another?
+
+Sometimes your preferred Virtuoso-hosting hardware (e.g., Alpha, IA_64, PowerPC, SPARC, x86, 
+x86_64) or operating system (e.g., AIX, HP-UX, Linux, Mac OS X, Solaris, Windows) changes.
+
+Different OS and processor architectures may use incompatible database file formats -- so your 
+Virtuoso database cannot simply be copied from one machine to the other, but requires some 
+structural changes.
+
+Virtuoso offers some powerful, but still easy to use, features for such migrations. More details 
+on these features are in the [[http://docs.openlinksw.com/virtuoso/backup.html][main product manual]].
+
+%TOC%
+
+---++ General procedure
+
+Simply put, the current Virtuoso instance must be told to produce a "dump" file (basically, a special 
+form of transaction log) from the current database. This file may be created on, subsequently moved 
+to, or made accessible from, the new Virtuoso host. The new Virtuoso instance must then be told to 
+restore the dump file (through a special form of transaction replay).
+
+Adding an extra command argument (<code>+log6</code>) enables the upgrade and migration 
+from Virtuoso 5 to Virtuoso 6 or Virtuoso 7. This argument must be added to both the "dump" 
+and the "restore" commands.
+
+There are two Virtuoso command arguments which will produce a "dump" file. Both of these write 
+to the INI-file (e.g., <code>virtuoso.ini</code>) specified transaction log (e.g., <code>virtuoso.trx</code>), 
+so you may need to edit your INI file before proceeding further.
+
+The first dump-producing command argument, <code>+backup-dump</code>, will only work 
+when your database is in good health.
+
+The second dump-producing command argument, <code>+crash-dump</code>, may be used 
+when your database is in good health, but is intended for use when recovering from many forms 
+of database corruption. 
+
+If you're starting with a Virtuoso 5 server, and migrating to a Virtuoso 6 or later server, append 
+<code>+log6</code> after <code>+backup-dump</code> or <code>+crash-dump</code>.  
+<i><b>Note:</b> The extra <code>+log6</code> argument is <b>not</b> needed, and may have unexpected effect, 
+so please leave it off if starting with a Virtuoso 6 server and moving to Virtuoso 6 or later.</i>
+ 
+In the following examples, we demonstrate moving a Virtuoso database from Solaris running on 
+SPARC, to Solaris running on x86_64. The Virtuoso commands will follow the same form on any 
+platform. The methods and commands used to mount, write to, and/or read from remote filesystems 
+may vary with the operating system and filesharing tools. NFS (used here) should work in most cases.
+
+---++ Sample execution
+
+   1 Stop db;
+   1 (Optional) mount remote filesystem;
+   1 Edit INI;
+   1 Create the dump file with one of these commands --
+<verbatim>
+virtuoso-iodbc-t [+backup-dump] [+log6]
+virtuoso-iodbc-t [+crash-dump] [+crash-dump-data-ini arg] [+log6]
+</verbatim>
+   1 (Optional) copy dump file to remote filesystem;
+   1 (Optional) mount dump host filesystem from restoration host;
+   1 Replay dump file with the command 
+<verbatim>
++restore-crash-dump
+</verbatim>
+<i><b>Important note:</b> You MUST use the <code>+restore-crash-dump</code> argument, NOT the <code>+restore-backup</code> argument, or the restoration will not succeed. <code>+restore-backup</code> applies only to [[http://docs.openlinksw.com/virtuoso/backup.html#onlinebackups][online backups]].
+
+
+---++NFS Notes
+
+This is based on Solaris hosts on both ends. There will be some variation across platforms.
+
+---+++ On NFS Server (where the files really will be)
+
+<verbatim>
+svcadm -v enable -r network/nfs/server
+
+/etc/init.d/nfs.server start
+
+share -F nfs -o rw <path_to_shared_directory>
+
+share
+</verbatim>
+
+In at least one case, the above sequence had to be repeated after a server-side reboot, before the client-side would work.
+
+
+---+++ On NFS Client (where the applications/users are)
+
+<verbatim>
+mkdir <local_mount_point>
+
+chmod 777 <local_mount_point>
+
+mount -F nfs <server_FQDN>:<path_to_shared_directory> <local_mount_point>
+</verbatim>
+
+
+---++ Related 
+
+   * [[http://www.sunhelp.org/faq/nfs.html][NFS FAQ on SunHelp]]
+   * [[http://unix-middleware.com/pages/solaris/nfs-tb.htm][Troubleshooting NFS in Solaris]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/backup.html][Virtuoso documentation on Backup and Restore]].

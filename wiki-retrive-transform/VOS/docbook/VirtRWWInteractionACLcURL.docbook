@@ -1,0 +1,137 @@
+<docbook><section><title>VirtRWWInteractionACLcURL</title><title> RWW Interaction &amp; ACL Testing using cURL</title> RWW Interaction &amp; ACL Testing using cURL
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What?</bridgehead>
+<para>The <ulink url="http://www.w3.org/TR/ldp/">Linked Data Platform (LDP) specification</ulink> from the W3C outlines how HTTP interaction patterns can be used to facilitate loosely coupled Create, Read, Update (Write), and Delete (&quot;CRUD&quot;) operations, at World Wide Web scale.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Why?</bridgehead>
+<para>The &quot;Write&quot; dimension of the World Wide Web has been underutilized since the Web&#39;s inception.
+ This has lead to a proliferation of Web Applications and Services that confusingly conflate otherwise distinct functionality realms in the way they work with entities, both &quot;real world&quot; and digital, and their --</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Identity (Denotation) </listitem>
+<listitem>Identification (Connotation) </listitem>
+<listitem>Verification of Identity Claims (Authentication) </listitem>
+<listitem>Identity-Driven Access Control &amp; Privileges over Protected Resources </listitem>
+<listitem>Identity-Driven Webs of Trust</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How?</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Different File Usage</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 1: PKCS 12 File Usage</bridgehead>
+<programlisting>curl --cert {pkcs#12-file-name}:{pwd} --cert-type P12 -k -I {resource-url}
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 2: Secure PEM File Usage</bridgehead>
+<programlisting>curl --cert {cert-pem-file-name} --key {private-key-pem-file-name} -k -I {resource-url}
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3"> LDP QA</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 1: Basic Metadata Interrogation</bridgehead>
+<programlisting>curl -X OPTIONS -IH &quot;Accept: text/turtle&quot; http://example.com/DAV/home/demo/Public/
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 2: Basic Metadata and Content Interrogation</bridgehead>
+<programlisting>curl -iH &quot;Accept: text/turtle&quot; http://example.com/DAV/home/demo/Public/
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 3: INSERT via POST with Slug header</bridgehead>
+<programlisting>curl -X POST -ik -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary @profile2.ttl -H &quot;Slug: profile2.ttl&quot; https://example.com/DAV/home/demo/Public/
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 4: INSERT via POST without Slug header</bridgehead>
+<programlisting>curl -X POST -ik -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary @profile2.ttl https://example.com/DAV/home/demo/Public/
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 5: INSERT via Inline Data without Slug header</bridgehead>
+<programlisting>curl -X POST -ik -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary &quot;&lt;&gt; a foaf:Document&quot; https://example.com/DAV/home/demo/Public/
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 6: Collection (Folder) Creation</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Local data in ldp_container.ttl <programlisting>@prefix      ldp:  &lt;http://www.w3.org/ns/ldp#&gt; .
+@prefix  dcterms:  &lt;http://purl.org/dc/terms/&gt; .
+
+&lt;&gt;                   a  ldp:Container
+                     ,  ldp:BasicContainer
+ ;       dcterms:title  &quot;Sample Folder&quot; 
+ ; dcterms:description  &quot;Sample Folder created using LDP.&quot; 
+.
+</programlisting> </listitem>
+<listitem><emphasis>Request:</emphasis> <programlisting>curl -k -i -E MyCertificate-ODS-QA.pem:1234 https://example.com/DAV/home/demo/Public/ -H &quot;Content-Type: text/turtle&quot; -X POST  -H &quot;Slug: ldp_container&quot; --data-binary @ldp_container.ttl
+</programlisting> </listitem>
+<listitem><emphasis>Response:</emphasis> <programlisting>HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Mon, 07 Jul 2014 12:54:32 GMT
+Accept-Ranges: bytes
+Location: https://example.com/DAV/home/demo/Public/ldp_container
+Link: &lt;http://www.w3.org/ns/ldp#Resource&gt;; rel=&quot;type&quot;
+Content-Type: text/turtle
+Content-Length: 196
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+  &lt;HTML&gt;
+    &lt;HEAD&gt;
+      &lt;TITLE&gt;201 Created&lt;/TITLE&gt;
+    &lt;/HEAD&gt;
+    &lt;BODY&gt;
+      &lt;H1&gt;Created&lt;/H1&gt;Resource /DAV/home/demo/Public/ldp_container has been created.
+    &lt;/BODY&gt;
+  &lt;/HTML&gt;
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> 7: Without Slug</bridgehead>
+<programlisting>curl -k -i -E MyCertificate-ODS-QA.pem:king6c/ -H &quot;Content-Type: text/turtle&quot; -X POST  --data-binary @ldp_container.ttl
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Methods</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> PUT Method</bridgehead>
+<para>To replace the content of the Document at &lt;https://example.com/DAV/home/demo/Public/example.ttl&gt; with &quot;&lt;#this&gt; &lt;#relation&gt; &lt;#that&gt; .&quot;</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Request:</emphasis> <programlisting>curl -X PUT -kv -i -H &quot;Content-Type:text/turtle&quot;  -E MyCertificate-ODS-QA.pem:1234  --data-binary  &quot;&lt;#this&gt; &lt;#relation&gt; &lt;#that&gt; .&quot; https://example.com/DAV/home/demo/Public/example.ttl
+&lt;verbatim&gt;
+
+   * &lt;b&gt;Response:&lt;/b&gt;
+&lt;verbatim&gt;
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: close
+Date: Thu, 03 Jul 2014 19:56:45 GMT
+Accept-Ranges: bytes
+Link: &lt;http://www.w3.org/ns/ldp#Resource&gt;; rel=&quot;type&quot;
+Content-Type: text/turtle
+Content-Length: 194
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> PUT Method for creating a remote document from a local document</bridgehead>
+<programlisting>curl -X PUT -k -i -E MyCertificate-ODS-QA.pem:1234 -H &quot;Content-Type: text/turtle&quot; -data-binary @test.ttl https://example.com/DAV/home/demo/Public/
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4"> MKCOL Method</bridgehead>
+<programlisting>curl -X MKCOL -k -i -E MyCertificate-ODS-QA.pem:1234 https://example.com/DAV/home/demo/Public/container2/
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4"> HTTP PATCH method for SPARQL 1.1 INSERT</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Request: </emphasis> <programlisting>curl -E MyCertificate-ODS-QA.pem:1234  -X PATCH -k -i --data-binary &quot;INSERT {GRAPH &lt;urn:rww:demo:data&gt; {&lt;http://example.com/dataspace/person/demo#this&gt; a &lt;http://xmlns.com/foaf/0.1/Person&gt; . } }&quot; -H &quot;Content-Type: application/sparql-update; utf-8&quot; https://example.com/DAV/home/demo/Public/example2.ttl
+</programlisting> </listitem>
+<listitem><emphasis>Response: </emphasis> <programlisting>HTTP/1.1 204 No Content
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Fri, 04 Jul 2014 17:18:16 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://example.com/DAV/home/demo/Public/example2.ttl
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 444
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> HTTP POST method for SPARQL SELECT</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Request: </emphasis> <programlisting>curl -E MyCertificate-ODS-QA.pem:1234 -X POST -ik --data-binary &quot;SELECT * FROM &lt;urn:rww:demo:data&gt; WHERE {?s ?p ?o}&quot; -H &quot;Content-Type: application/sparql-query&quot; &quot;https://example.com/sparql&quot;
+</programlisting> </listitem>
+<listitem><emphasis>Response: </emphasis> <programlisting>HTTP/1.1 200 OK
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Fri, 04 Jul 2014 17:31:38 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://example.com/DAV/VAD/val/sparql/
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 792
+
+&lt;sparql xmlns=&quot;http://www.w3.org/2005/sparql-results#&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd&quot;&gt;
+ &lt;head&gt;
+  &lt;variable name=&quot;s&quot;/&gt;
+  &lt;variable name=&quot;p&quot;/&gt;
+  &lt;variable name=&quot;o&quot;/&gt;
+ &lt;/head&gt;
+ &lt;results distinct=&quot;false&quot; ordered=&quot;true&quot;&gt;
+  &lt;result&gt;
+   &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;http://example.com/dataspace/person/demo#this&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;o&quot;&gt;&lt;uri&gt;http://xmlns.com/foaf/0.1/Person&lt;/uri&gt;&lt;/binding&gt;
+  &lt;/result&gt;
+  &lt;result&gt;
+   &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;#this&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;#relation&lt;/uri&gt;&lt;/binding&gt;
+   &lt;binding name=&quot;o&quot;&gt;&lt;uri&gt;#that&lt;/uri&gt;&lt;/binding&gt;
+  &lt;/result&gt;
+ &lt;/results&gt; 
+</programlisting></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoLDPSimpleCurlExamples">Virtuoso LDP Simple Curl Examples Collection</ulink></listitem>
+</itemizedlist></section></docbook>

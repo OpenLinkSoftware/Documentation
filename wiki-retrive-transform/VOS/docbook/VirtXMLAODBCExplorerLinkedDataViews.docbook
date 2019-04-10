@@ -1,0 +1,63 @@
+<docbook><section><title>VirtXMLAODBCExplorerLinkedDataViews</title><title>Exposing Linked Data View URIs associated with &quot;SQL References&quot; on a given Table using a simple function</title>Exposing Linked Data View URIs associated with &quot;SQL References&quot; on a given Table using a simple function
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ A function that exposes Linked Data View URIs associated with &quot;SQL References&quot; on a given Table.
+ Note, &quot;SQL References&quot; expose local columns that are part of Foreign Keys associated with other tables.
+ Thus, given two tables &#39;Orders&#39; and &#39;Customers&#39; where the &#39;Orders&#39; table has a foreign key &quot;<ulink url="CustKey">CustKey</ulink>&quot; comprised of the &#39;<ulink url="CustomerID">CustomerID</ulink>&#39; field in the &#39;Customer&#39; table, the following data dictionary objects would exist in a typical RDBMS schema:<itemizedlist mark="bullet" spacing="compact"><listitem>&#39;Orders&#39; table -- foreign key &quot;<ulink url="CustKey">CustKey</ulink>&quot; comprised of the column &#39;<ulink url="CustomerID">CustomerID</ulink>&#39; </listitem>
+<listitem>&#39;Customers&#39; table -- a reference that identifies the foreign key &quot;<ulink url="CustKey">CustKey</ulink>&quot; its&#39;<ulink url="CustomerID">CustomerID</ulink>&#39; component and the table (&#39;Orders&#39; in this case) on which the foreign key was created.</listitem>
+</itemizedlist><para>Foreign Keys and References are mirrors that provide powerful mechanisms for referential integrity and smart data navigation.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+ Linked Data Views over SQL data provides a powerful mechanism for exercising the virtues of Intensional database definition and data access.
+ Basically, this means that rather that being confined to a representation of data where identifiers such as Primary and Foreign Keys are part of the data (as Extensions) you can explore the use of Identifiers in a manner distinct from actual records.
+ The net effect of this is that each record becomes explicit proposition (or claim) associated with an Identifier that&#39;s verifiable via the host DBMS in course of query execution and fulfillment.<para>The links_dump function enables you to quickly establish a bridge that connects the Intensional and Extensional aspects of the Virtuoso (hybrid model) DBMS:</para>
+<programlisting>CREATE PROCEDURE links_dump (in tb varchar)
+{
+  declare res, tb_name any;
+  
+  result_names (res);
+  
+  tb_name := sprintf (&#39;&quot;%S&quot;.&quot;%S&quot;.&quot;%S&quot;&#39;, name_part (tb, 0), name_part (tb, 1), name_part (tb, 2));
+  
+  FOR SELECT &quot;o&quot; FROM 
+    (
+      SPARQL SELECT DISTINCT ?o 
+             WHERE 
+               { 
+                 ?s virtrdf:qmTableName ?:tb_name ; 
+                 virtrdf:qmPredicateRange-rvrFixedValue ?ref . 
+                 ?ref &lt;http://www.w3.org/2000/01/rdf-schema#domain&gt; ?o . 
+               }
+    ) x DO
+    result (&quot;o&quot;);
+    
+  end_result ();
+  
+}
+;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+ Bearing in mind that a SQL scheme Reference is the inverse of a Foreign Key i.e., given a qualified &#39;Table Name&#39; you can use References information from a data dictionary (schema) to determine where the fields of said  &#39;Table&#39; are the Referents in Foreign Keys created by other Tables.<bridgehead class="http://www.w3.org/1999/xhtml:h3">Sample Scenario</bridgehead>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Prerequisites</bridgehead>
+<para>Make sure the <ulink url="http://wikis.openlinksw.com/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigXMLAHTML5Bridge#Install%20the%20HTML5">HTML5 WebDB-to-XMLA Bridge Extension</ulink> is installed.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Basic Steps</bridgehead>
+<para> </para>
+<orderedlist spacing="compact"><listitem>Go to <ulink url="http://demo.openlinksw.com/XMLAexplorer/XMLAexplorer.html">http://demo.openlinksw.com/XMLAexplorer/XMLAexplorer.html</ulink> <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld1.png" /></figure> </listitem>
+<listitem>Enter user &quot;vdb&quot; and password &quot;vdb&quot;: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld2.png" /></figure> </listitem>
+<listitem>Click &quot;Connect&quot;: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld3.png" /></figure> <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld4.png" /></figure> </listitem>
+<listitem>Expand for ex.
+ the &quot;Demo&quot; Catalog: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld5.png" /></figure> </listitem>
+<listitem>Double click on a table, for ex.
+ &quot;Customers&quot;: </listitem>
+<listitem>Should be presented the &quot;Structure&quot; tab showing the table&#39;s catalog name, schema, name, columns, etc.
+<figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld6.png" /></figure> </listitem>
+<listitem>Go to &quot;Primary Keys&quot; tab to view the list of the &quot;Customer&quot; table primary keys: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld7.png" /></figure> </listitem>
+<listitem>Go to &quot;Foreign Keys&quot; tab to view the list of the &quot;Customer&quot; table foreign keys: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld8.png" /></figure> </listitem>
+<listitem>Using the function links_dump&quot; we are locating TBox URIs derived from the selected table that are used in one of more Linked Data Views (Quad Maps).
+ The list of these URIs is presented in the &quot;<emphasis>References</emphasis>&quot; tab: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld9.png" /></figure> </listitem>
+<listitem>For executing queries one can use the &quot;Execute SQL&quot; tab, which in our example shows default query selecting all columns from the table &quot;Demo&quot;.&quot;demo&quot;.&quot;Customers&quot;: <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld10.png" /></figure> <figure><graphic fileref="VirtXMLAODBCExplorerLinkedDataViews/ld11.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://queue.acm.org/detail.cfm?id=1961297">A co-Relational Model of Data for Large Shared Data Banks</ulink> </listitem>
+<listitem><ulink url="http://en.wikipedia.org/wiki/Intensional_definition">Intensional Definition</ulink> </listitem>
+</itemizedlist></section></docbook>

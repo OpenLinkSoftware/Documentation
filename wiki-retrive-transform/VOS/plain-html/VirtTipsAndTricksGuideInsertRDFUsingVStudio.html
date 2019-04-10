@@ -1,0 +1,158 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I insert RDF data from Visual Studio to Virtuoso?"></a>How can I insert RDF data from Visual Studio to Virtuoso?</h1>
+<p>The following example shows how to insert RDF Data from Visual Studio to Virtuoso:</p>
+<br><pre>
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Data;
+using OpenLink.Data.Virtuoso;
+
+#if ODBC_CLIENT
+namespace OpenLink.Data.VirtuosoOdbcClient
+#elif CLIENT
+namespace OpenLink.Data.VirtuosoClient
+#else
+namespace OpenLink.Data.VirtuosoTest
+#endif
+{
+    class Test_Insert
+    {
+        [STAThread]
+        static void Main(string[] args)
+        {
+            IDataReader myread = null;
+            IDbConnection c;
+
+            c = new VirtuosoConnection(&quot;HOST=localhost:1111;UID=dba;PWD=dba;Charset=UTF-8&quot;);
+
+            IDbCommand cmd = c.CreateCommand();
+            int ros;
+
+            try
+            {
+                c.Open();
+
+                cmd.CommandText = &quot;sparql clear graph &lt;ado.net&gt;&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P01&gt; \&quot;131\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#short&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P02&gt; \&quot;1234\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#integer&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P03&gt; \&quot;12345.12\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#float&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P04&gt; \&quot;123456.12\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#double&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P05&gt; \&quot;123456.12\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#decimal&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P06&gt; \&quot;01020304\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#hexBinary&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P07&gt; \&quot;01.20.1980T04:51:13\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#dateTime&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P08&gt; \&quot;01.20.1980\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P09&gt; \&quot;01:20:19\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#time&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.net&gt; { &lt;a&gt; &lt;P10&gt; \&quot;test\&quot; }&quot;;
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = &quot;sparql define output:format &#39;_JAVA_&#39; insert into graph &lt;ado.net&gt; { &lt;b&gt; `iri($?)` `bif:__rdf_long_from_batch_params($?,$?,$?)` }&quot;;
+
+//add Object URI
+                add_triple(cmd, &quot;S01&quot;, 1, &quot;test1&quot;, null);
+
+//add Object BNode
+                add_triple(cmd, &quot;S02&quot;, 1, &quot;_:test2&quot;, null);
+
+
+//add Literal
+                add_triple(cmd, &quot;S03&quot;, 3, &quot;test3&quot;, null);
+
+//add Literal with Datatype
+                add_triple(cmd, &quot;S04&quot;, 4, &quot;1234&quot;, &quot;http://www.w3.org/2001/XMLSchema#integer&quot;);
+
+//add Literal with Lang
+                add_triple(cmd, &quot;S05&quot;, 5, &quot;test5&quot;, &quot;en&quot;);
+
+
+                add_triple(cmd, &quot;S06&quot;, 3, (short)123, null);
+                add_triple(cmd, &quot;S07&quot;, 3, 1234, null);
+                add_triple(cmd, &quot;S08&quot;, 3, (float)12345.12, null);
+                add_triple(cmd, &quot;S09&quot;, 3, 123456.12, null);
+                add_triple(cmd, &quot;S10&quot;, 3, new DateTime(2001, 02, 23, 13, 44, 51, 234), null);
+                add_triple(cmd, &quot;S11&quot;, 3, new DateTime(2001, 02, 24), null);
+                add_triple(cmd, &quot;S12&quot;, 3, new TimeSpan(19, 41, 23), null);
+ 
+
+                add_triple(cmd, &quot;S13&quot;, 4, &quot;GpM7&quot;, &quot;http://www.w3.org/2001/XMLSchema#base64Binary&quot;);
+                add_triple(cmd, &quot;S14&quot;, 4, &quot;0FB7&quot;, &quot;http://www.w3.org/2001/XMLSchema#hexBinary&quot;);
+                byte[] bin_val = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+                add_triple(cmd, &quot;S15&quot;, 3, bin_val, null);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(&quot;{0} Exception caught.&quot;, e);
+            }
+            finally
+            {
+
+                if (c.State == ConnectionState.Open)
+                    c.Close();
+
+            }
+
+        }
+
+
+        static void add_triple(IDbCommand cmd, string sub, int ptype, object val, string val_add)
+        {
+                cmd.Parameters.Clear();
+
+                IDbDataParameter param = cmd.CreateParameter();
+                param.ParameterName = &quot;p1&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = sub;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p2&quot;;
+                param.DbType = DbType.Int32;
+                param.Value = ptype;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p3&quot;;
+                if (val != null &amp;&amp; val.GetType() == typeof (System.String))
+                    param.DbType = DbType.AnsiString;
+                param.Value = val;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p4&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = val_add;
+                cmd.Parameters.Add(param);
+
+                cmd.ExecuteNonQuery();
+        }
+
+
+
+    }
+}
+</pre><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFInsert" class="wikiword">Insert RDF Data into Virtuoso</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideADONETInsertBynary" class="wikiword">Insert binary data to Virtuoso RDF storage in plain queries and with parameter binding via ADO.NET calls</a> </li>
+</ul></div></body></html>

@@ -1,0 +1,465 @@
+%META:TOPICPARENT{name=""}%
+---+ WebID+TLS+Delegation Usage Guide
+
+%TOC%
+
+---++ What is it?
+
+WebID+TLS+Delegation is an open standards based multi-protocol authentication 
+layer that provides fine-grained attributed-based access controls (ABAC) to
+protected resources (HTTP-accessible documents, folders, services [via
+their endpoints], and SPARQL named graphs). In a nutshell, this solution
+uses logic expressed in the nature of entity relationships to address
+issues such as identity, authorization, and restriction.
+
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtWebIdTlsDelegationArchDiag.png" style="wikiautogen"/>%BR%%BR%
+
+---+++ Key Components
+
+The key components of this solution are:
+
+   * HTTP URI (Hyperlink) based Entity Identifiers (Names)
+   * TLS based data transmission
+   * RDF Language based Statements representing Entity Relationships and
+     Entity Relationship Types
+   * Ontology of terms from shared vocabularies such as
+      * <code>&lt;[[http://www.w3.org/ns/auth/acl#Authorization][http://www.w3.org/ns/auth/acl#Authorization]]&gt;</code>
+      * <code>&lt;[[http://www.openlinksw.com/ontology/acl#][http://www.openlinksw.com/ontology/acl#]]&gt;</code>
+      * <code>&lt;[[http://www.openlinksw.com/ontology/restrictions#][http://www.openlinksw.com/ontology/restrictions#]]&gt;</code>
+      * <code>&lt;[[http://www.openlinksw.com/schemas/cert#][http://www.openlinksw.com/schemas/cert#]]&gt;</code>
+      * and others
+   * Entity Relationship Type Semantics &mdash; including the nature of
+     relationships that exist between Software Applications and their Users
+     via <code>&lt;[[http://www.openlinksw.com/schemas/cert#onBehalfOf][http://www.openlinksw.com/schemas/cert#onBehalfOf]]&gt;</code>
+
+
+---+++ Primary Features
+
+Collectively, the components above enable:
+
+   * Unambiguous Naming for Software Applications (Agents or Bots) and
+     their Users
+   * Identity Claims Construction
+   * Identity Claims Verification
+   * Resource Access Rules (Authorizations) Creation & Evaluation
+   * Resource Access Rate Rules (Restrictions) Creation & Evaluation .
+
+---++ Why is it important?
+
+Explicitly distinguishing the identity of an user and an application is
+a fundamental requirement for practical attribute-based access controls
+that leverage open standards such as:
+
+   * URIs &mdash; Entity Denotation
+   * HTTP &mdash; Data Access Protocol
+   * HTTP URIs &mdash; Entity Identification (Denotation & Connotation via
+     in-built interpretation using Denotation->Connotation redirection)
+   * RDF Language Statements &mdash; enabling construction of Profile
+     Documents using machine- and human-comprehensible sentences/statements
+   * X.509 &mdash; Identity Cards (Certificates) that include references to
+     Profile Documents via Subject Alternative Name field
+   * TLS &mdash; Data Encryption and Basic Identity Verification that scales
+     to the Internet and Web.
+
+---++ How do I use it?
+
+---+++ Server Setup
+
+   A Virtuoso Server instance with the WebID+TLS+Delegation feature available needs to be installed on any OS it is available for. Once installed the Virtuoso server needs to be configured to Listen on Secure SSL HTTP (i.e. https) and SQL ports using your own  as detailed at:
+
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSetupSSL][Configuring Virtuoso Server HTTPS Listener Endpoint]]
+   * [[http://docs.openlinksw.com/virtuoso/odbcimplementation.html#secureodbcclisrvsetup][Configuring Virtuoso Server SQL TLS/SSL Listener Port]]
+
+---++++ Additional Virtuoso Components to be installed
+
+The following Virtuoso application should be installed from the <b>System Admin -> Packages</b> tab of the Conductor:
+
+   * Sponger Cartridge VAD - To enable querying of remote resource URIs
+   * Faceted Browser VAD - To provide human readable form of Web ID Profile documents and ACLs
+   * Virtuoso Authentication Layer (VAL) VAD - To enable ACLs for be setup and enforced
+      * URIQA <code><nop>DefaultHost</code> in INI file must be set to valid hostname to be used by VAL
+
+---+++ Software Agent Certificate Generation
+
+A Software agent server certificate needs to be generated or provided and associated with a suitable WebID as its <code>SAN</code> (Subject Alternate Name). The OpenLink [[http://id.myopenlink.net/youid/][YouID Certificate Generation]] service can be used for the create of such certificates, or any other suitable external service can be used.
+
+---+++ Software Agent PKCS#12 generation
+
+A PKCS#12 binary format certificate needs to to generated storing the server certificate, any intermediate certificates, and the private key into a single encrypt able password protected file. If intermediary file to complete the chain of trust are not included in the PKCS#12 file then them must either be registered in the Operating System Key store/chain or public keys passed with the -T param during connection.
+
+---+++ Software Agents and Users Web IDs generation and uploading
+
+WebID profile documents need to be generate for the software agent and user connections are to be delegated on behalf of and accessible from suitably accessible URI.
+
+---++++ <nowiki>Web ID Profile Document Entries</nowiki>
+
+   * Add <code><nowiki>oplcert:onBehalfOf</nowiki></code> relations to the Agent's WebID-Profile Document that associates it with authorized Users
+   * Add an entry in the WebID-Profile doc of each User that associates them with the Agent
+   * Load WebID-Profile Documents into Virtuoso's Quad Store (using the variout options it supports: Sponger, SPARQL Load, ODS-Briefcase etc..) .
+
+<b>Note:</b> In situations where there are massive numbers of users and a single agent, a single Turtle document can hold data from points 1&2 above.
+
+---++++ Examples documents:
+
+   * http://kingsley.idehen.net/DAV/home/kidehen/agent-profile-document.ttl -- WebID-Profile Document .
+   * http://kingsley.idehen.net/DAV/home/kidehen/profile.ttl -- User WebID-Profile . 
+   * Sample WebID-Profile Document TTL snippet &mdash;
+<verbatim>
+@prefix oplacl: <http://www.openlinksw.com/ontology/acl#>
+
+## User Credentials (OnBehalfOf relation participants)
+
+<{your-webid}> oplacl:hasIdentityDelegate <http://kingsley.idehen.net/DAV/home/kidehen/agent-profile-document.ttl#i>
+.
+
+<http://kingsley.idehen.net/DAV/home/kidehen/agent-profile-document.ttl#i>
+
+cert:key [
+                 cert:exponent "65537"^^xsd:integer ;
+                 cert:modulus   
+"b1d61bb0e90d226f60c428f59ddee81159017adbb64f82436834bec1177ee1a2ef45002a14d04473eb14784d054416333156c124c9363c38553437c570e047703cf1bb5ed37ff662b31ff52dc3ef3f0de88b36780214f59304d51587b9c7350be7f29451a9f2ecb0df8409244c1513f68ac2bc40751ffdb5bb67981bc16c619dc0b753f1f73e3fa0190a44166463258c1d505d4db913dd69f0a32ee9102ce6713a31764ed907a5eb82f19fe4d3ce560a571c4bd64519a3a0e24dba90bc6684f447af0224efccefbdc6aef73eabb6b41bc26240ac6571739c570c9aa3345c4210da0b4151148c17d451753cd0a44572007059ef209f636ed116f61e3febc76809"^^xsd:hexBinary
+] .
+</verbatim>
+ 
+---+++ Virtuoso Authentication Layer (VAL) ACL Setup
+
+VAL, the [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ValWhatWhyHow][Virtuoso Authentication Layer]], is an open-standards-based, multi-protocol authentication layer, that provides fine-grained, attributed-based access controls ([[http://csrc.nist.gov/projects/abac/][ABAC]]) to protected resources (HTTP-accessible documents, folders, services [via their endpoints], and SPARQL named graphs).
+
+Virtuoso provides access to data across two distinct (but interlinked) functionality realms: HTTP and SQL. Thus, configuring VAL requires creation of Authorization and Restrictions rules that target each of the aforementioned realms, individually.
+
+VAL Authorizations apply to HTTP and/or SQL realms distinctly. Basically, you have an ACL Scope by Virtuoso Realms matrix per basic unit of ABAC functionality.
+
+ABAC ACLs are created by writing a collection of RDF language statements to a special VAL system named graph. These statements describe an instance of an authorization, and where additional restrictions apply they are also used to describe resource usage rate restrictions.
+
+The [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ValWhatWhyHow][VAL]] documentation details how the ABAC ACLs in the various functional Realms can be created. Typically these are created in the following forms:
+
+   * HTTP Realm ACLs
+   * HTTP Realm Restrictions 
+   * SQL Realm ACLS
+   * SQL Realm Restrictions 
+
+Examples of such ACLs are detailed in the [[#ExamplACLScript][Sample ACL Script]] used for the live QA demo below.
+
+---+++ Client Application Setup 
+
+To use the generated software agent certificate the CA certificate need to be registered with Operating System Keystore or use of PEM file based CA Root Cert bundle passed as part of the client application connection string.
+
+---++++ ODBC Connection
+
+An ODBC WebID+TLS+Delegation DSN can be configured as detailed below. In this test scenario the WebID of the user (identified by value of <code><nowiki>AppUser</nowiki></code> parameter) is the only identity to which protected resource access has been granted. 
+
+   1 Open the ODBC Administrator and create an ODBC DSN for the <code><nowiki>OpenLink</nowiki> Virtuoso</code> Driver.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-01.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+   1 Chose and name for the ODBC DSN , enter the hostname & SSL SQL port the Virtuoso server is running on and select the <b>This server requires secure connection (SSL)</b> check box option
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-02.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+   1 Select the <b>Public key authentication protocol</b> of the Authentication Method drop down list box; set the name of the <b>p12</b> certificate of the software agent to be used and <b>password</b>; set the <code><nowiki>AppUser</nowiki></code> to the name of the WebID profile document of the used the connection delegation is to be on behalf of.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-03.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+   1 For SPARQL request the option in the dialog below can be left blank, or can be set if making SQL requests. Click the <b>Finish</b> button to complete the DSN creation.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-04.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+
+---+++ Sample Client Application Usage 
+
+WebID+TLS+Delegation connections can be tested with various client application to verify the ACLs applied are being enforced. 
+
+---++++ Virtuoso Interactive SQL (isql) 
+
+In this scenario the identity of the software user and the software (application/agent/bot) are distinct i.e., you have a WebID for the software and a WebID for the software user. In this test scenario the WebID of the user (identified by value of -W parameter) is the only identity to which protected resource access has been granted.
+<verbatim>
+./isql {virtuoso-hostname}:{SSL-SQL-Port#} "" {app-or-agent-pkcs-file-access-pwd} -X {app-or-agent-pkcs-file} -T {ca-cert-bundle} -W {user-webid}
+</verbatim>
+
+For example:
+<verbatim>
+$ ./isql uriburner.com:1113 "" 1234 -X software_agent.p12 -T ca_list_shop_2016.pem -W http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL> sparql SELECT COUNT (*) FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> WHERE {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+5454
+
+1 Rows. -- 819 msec.
+SQL>
+</verbatim>
+
+---++++ ODBC CPPDemo Interactive SQL Application
+
+The CPPDemo application bundle the the Virtuoso Client Connectivity Kit can be used for testing and ODBC connection using the DSN created previously:
+
+   1 Start the CPPDemo application.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-00.png" style="wikiautogen" height="80" width="400"/> %BR%%BR% 
+   1 The <b>CPPDemo</b> sample ODBC interactive SQL application can be used for testing the ODBC connection. Select the <b>Open Connection</b> item under the <b>Environment</b> menu.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-05.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+   1 Choose the DSN created previously from the list presented.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-06.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+   1 Enter the password of the <b>p12</b> certificate for the software agent in the login dialog present and click the <b>OK</b> button to connect.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-07.png" style="wikiautogen" height="100" width="300"/> %BR%%BR%
+   1 Select the <b>Execute SQL</b> item of the SQL menu to load text windows to enter query to run.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-08.png" style="wikiautogen" height="150" width="450"/> %BR%%BR%
+   1 Enter the query to be executed and click on the <b>OK</b> button; example:
+<verbatim>
+sparql SELECT COUNT (*) FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> WHERE {?s ?p ?o}
+</verbatim>
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-09.png" style="wikiautogen" height="300" width="450"/> %BR%%BR%
+   1 The query result set will be returned.
+   %BR%%BR% <img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-10.png" style="wikiautogen" height="80" width="400"/> %BR%%BR%
+
+
+---++++ HTTP connection using cURL
+
+In this usage scenario we make use of the "OnBehalfOf:" custom HTTP request header. The value of this header takes the form of a WebID that identifies the user of an application/agent/bot accessing a protected resource via the HTTP protocol.
+<verbatim>
+curl -iLk --cert-type P12 --cert {app-or-agent-pkcs-file}:{pkcs-file-access-pwd} --cacert {ca-cert-bundle} -H "OnBehalfOf: {user-webid}" "{uri-for-accessing-protected-resource}"
+</verbatim>
+
+For example:
+<verbatim>
+curl -iLk --cert-type P12 --cert VirtuosoLODConnectivity.p12:1234 --cacert ca_list_shop_2016.pem -H "On-Behalf-Of: http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i" "https://linkeddata.uriburner.com/sparql/?default-graph-uri=&query=select+distinct+*+from+%3COpenPermID-bulk-industry-20151111_095806.ttl.gz%3E++where+%7B%5B%5D+a+%3FEntityType%7D+limit+50&should-sponge=&format=text%2Fcsv%2Btr&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000000"
+</verbatim>
+
+Note, to protect the certificate password from possible [[https://attack.mitre.org/techniques/T1139/][Bash History Exploit Vulnerability]], the P12 certificate can be converted to a password protected PEM file with the command:
+<verbatim>
+openssl app-or-agent-pkcs-file -out app-or-agent-pem-file
+</verbatim>
+
+and the PEM file (app-or-agent-pem-file) specified instead instead of the P12 file with the {pkcs-file-access-pwd} removed, in which case curl will prompt for the password, which would then not be part of the users bash history.
+
+---++ Sample Use case against Virtuoso Live URIBurner service
+
+The OpenLink [[http://linkeddata.uriburner.com][URIBurner]] services has been setup with WebID+TLS+Delegation support enabled, with a number of ACLs in place to control access to resources by software agents and there associated delegated users.
+
+Assuming the following scenario:
+
+A publisher of a document seeks to constrain its access to a specific user or group of users. As part of this effort, the following are desired with regards to user experience:
+
+   * An X.509 Certificate is only created for the software agent (e.g., cURL, Web Browser, ODBC compliant app etc.) used to access the protected document
+   * Document access controls are scoped to the application user, as opposed to software being used.
+
+---+++ Sample Resources
+
+   * <code><nowiki>&lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;</nowiki></code> &mdash; Protected
+     Named Graph accessible to any <nop>NetID (which includes <nop>WebIDs) via HTTP Realm scoped ACLs
+   * <code><nowiki>&lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt;</nowiki></code> &mdash; Protected Named
+     Graph accessible to a specific WebID list via SQL or HTTP Realm scoped ACLs
+
+---+++ Certificates and their Subjects
+
+   * LODConnectivity Cert &mdash; required for WebID+TLS testing using our
+     setup on [[http://linkeddata.uriburner.com/][URIBurner]]
+      * Sample LODConnectivity Cert &mdash; https://download3.openlinksw.com/certificates/software_agent.p12
+   * CA Certificate Bundle for verifying Certs issued by [[http://youid.openlinksw.com/][YouID]] and [[http://linkeddata.uriburner.com/][URIBurner]]
+     (requested via Shop Agent re. LOD Connectivity Certs)
+      * Sample CA Certificate Bundle &mdash; https://download3.openlinksw.com/certificates/ca_list_shop_2016.pem
+   * WebID for which access has been granted to the resource identified
+     by <code><nowiki>&lt;OpenPermID-bulk-industry-20151111_095806.ttl.gz&gt;</nowiki></code>
+
+
+
+---+++ ACL Definitions Example Script
+
+[[#ExamplACLScript][See sample, below]].
+
+---+++ <nowiki>Web ID</nowiki>+TLS ISQL/ODBC using TLS Connection Tests
+
+---++++ Template ACL for <nowiki>Web ID</nowiki>+TLS ISQL/ODBC using TLS
+
+<verbatim>
+./isql linkeddata.uriburner.com:1113 "" {app-or-agent-pkcs-file-access-pwd} -X {app-or-agent-pkcs-file} -T {ca-cert-bundle}
+</verbatim>
+
+---++++ Sample ACLs for <nowiki>Web ID</nowiki>+TLS ISQL/ODBC using TLS
+
+   1 
+<verbatim>
+isql linkeddata.uriburner.com:1113 "" 1234 -X VirtuosoLODConnectivity.p12 -T ca_list_shop_2016.pem
+</verbatim>
+   1 
+<verbatim>
+isql linkeddata.uriburner.com:1113 "" 1234 -X kidehen_dot_net.p12 -T ca_list_shop_2016.pem
+</verbatim>
+
+---++++ ACL Test Queries for <nowiki>Web ID</nowiki>+TLS ISQL/ODBC using TLS
+
+   1 
+<verbatim>
+SPARQL 
+SELECT COUNT (*) 
+FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> 
+WHERE {?s ?p ?o};
+</verbatim>
+   1 
+<verbatim>
+SPARQL 
+SELECT COUNT (*) 
+FROM <OpenPermID-bulk-industry-20151111_095806.ttl.gz> 
+WHERE {?s ?p ?o};
+</verbatim>
+
+---++++ Results
+
+You will have count of "0" as the solution for queries performed by
+identities that fail protected resource ACL test.
+
+
+
+---+++ <nowiki>Web ID</nowiki>+TLS via HTTP (using cURL) Connection Tests
+
+---++++ ACL Template for <nowiki>Web ID</nowiki>+TLS via HTTP (using cURL)
+
+<verbatim>
+curl -iLk --cert-type P12 --cert {app-or-agent-pkcs-file}:{app-or-agent-pkcs-file-access-pwd} "https://linkeddata.uriburner.com/sparql/?default-graph-uri=&query=select+distinct+*+from+%3COpenPermID-bulk-assetClass-20151111_095807.ttl.gz%3E++where+%7B%5B%5D+a+%3FEntityType%7D+limit+50&should-sponge=&format=text%2Fcsv%2Btr&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000000"
+</verbatim>
+
+---++++ Sample ACLs for <nowiki>Web ID</nowiki>+TLS via HTTP (using cURL)
+
+   1 
+<verbatim>
+curl -iLk --cert-type P12 --cert VirtuosoLODConnectivity.p12:1234 "https://linkeddata.uriburner.com/sparql/?default-graph-uri=&query=select+distinct+*+from+%3COpenPermID-bulk-assetClass-20151111_095807.ttl.gz%3E++where+%7B%5B%5D+a+%3FEntityType%7D+limit+50&should-sponge=&format=text%2Fcsv%2Btr&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000000"
+</verbatim>
+   1 
+<verbatim>
+curl -iLk --cert-type P12 --cert VirtuosoLODConnectivity.p12:1234 "https://linkeddata.uriburner.com/sparql/?default-graph-uri=&query=select+distinct+*+from+%3COpenPermID-bulk-industry-20151111_095806.ttl.gz%3E++where+%7B%5B%5D+a+%3FEntityType%7D+limit+50&should-sponge=&format=text%2Fcsv%2Btr&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000000"
+</verbatim>
+
+---++++ Results
+
+You will have empty solutions for queries performed by identities that
+fail protected resource ACL tests.
+
+---+++ <nowiki>Web ID</nowiki>+TLS+Delegation ISQL/ODBC/JDBC using TLS Connection Tests
+
+In this scenario the identity of the software user and the software
+(application/agent/bot) are distinct i.e., you have a WebID for the
+software and a WebID for the software user. In this test scenario the
+WebID of the user (identified by value of -W parameter) is the only
+identity to which protected resource access has been granted.
+
+---++++ ACL Template for <nowiki>Web ID</nowiki>+TLS+Delegation ISQL/ODBC/JDBC using TLS
+
+<verbatim>
+./isql linkeddata.uriburner.com:1113 "" {app-or-agent-pkcs-file-access-pwd} -X {app-or-agent-pkcs-file} -T {ca-cert-bundle} -W {user-webid}
+</verbatim>
+
+<verbatim>
+iodbctest "Driver={OpenLink Virtuoso ODBC Driver};HOST=linkeddata.uriburner.com:1113;UID=;PWD={app-or-agent-pkcs-file-access-pwd};ENCRYPT={app-or-agent-pkcs-file};SERVERCERT={ca-cert-bundle};Delegate={user-webid}"
+</verbatim>
+
+<verbatim>
+ConnectString url = "jdbc:virtuoso://linkeddata.uriburner.com:1113/charset=UTF-8/SSL/kpass={app-or-agent-pkcs-file-access-pwd}/kpath={app-or-agent-pkcs-file}/ts={ca-cert-bundle}/delegate='{user-webid}'"
+</verbatim>
+
+---++++ Sample ACLs for <nowiki>Web ID</nowiki>+TLS+Delegation ISQL/ODBC/JDBC using TLS
+
+    1 .
+<verbatim>
+isql linkeddata.uriburner.com:1113 "" 1234 -X VirtuosoLODConnectivity.p12 -T ca_list_shop_2016.pem -W http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i
+</verbatim>
+    2.
+<verbatim>
+iodbctest "Driver={OpenLink Virtuoso ODBC Driver};HOST=linkeddata.uriburner.com:1113;UID=;PWD=1234;ENCRYPT=VirtuosoLODConnectivity.p12;SERVERCERT=ca_list_shop_2016.pem;Delegate=http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i"
+</verbatim>
+    3.
+<verbatim>
+ConnectString url = "jdbc:virtuoso://linkeddata.uriburner.com:1113/charset=UTF-8/SSL/kpass=1234/kpath=VirtuosoLODConnectivity.p12/ts=ca_list_shop_2016.pem/delegate='http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i'"
+</verbatim>
+
+---++++ ACL Test Queries
+
+   1 
+<verbatim>
+SPARQL 
+SELECT COUNT (*) 
+FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> 
+WHRE {?s ?p ?o};
+</verbatim>
+   1 
+<verbatim>
+SPARQL 
+SELECT COUNT (*) 
+FROM <OpenPermID-bulk-industry-20151111_095806.ttl.gz> 
+WHERE {?s ?p ?o};
+</verbatim>
+
+---++++ Results
+
+You will have count of "0" as the solution for queries performed by
+identities that fail protected resource ACL test.
+
+
+---+++ <nowiki>Web ID</nowiki>+TLS+Delegate via HTTPS (using cURL) Connection Tests
+
+In this usage scenario we make use of the "<code><nowiki>OnBehalfOf:</nowiki></code>" custom HTTP
+request header. The value of this header takes the form of a WebID that
+identifies the user of an application/agent/bot accessing a protected
+resource via the HTTP protocol.
+
+---++++ ACL Template for <nowiki>Web ID</nowiki>+TLS+Delegate via HTTPS (using cURL)
+
+<verbatim>
+curl -iLk --cert-type P12 --cert {app-or-agent-pkcs-file}:{pkcs-file-access-pwd} --cacert {ca-cert-bundle} -H "OnBehalfOf: {user-webid}" "{uri-for-accessing-protected-resource}"
+</verbatim>
+
+---++++ Sample ACLs for <nowiki>Web ID</nowiki>+TLS+Delegate via HTTPS (using cURL)
+
+   1 
+<verbatim>
+curl -iLk --cert-type P12 --cert VirtuosoLODConnectivity.p12:1234 --cacert ca_list_shop_2016.pem -H "On-Behalf-Of: http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i" "https://linkeddata.uriburner.com/sparql/?default-graph-uri=&query=select+distinct+*+from+%3COpenPermID-bulk-industry-20151111_095806.ttl.gz%3E++where+%7B%5B%5D+a+%3FEntityType%7D+limit+50&should-sponge=&format=text%2Fcsv%2Btr&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000000"
+</verbatim>
+   1  
+<verbatim>
+curl -iLk --cert-type P12 --cert VirtuosoLODConnectivity.p12:1234 --cacert ca_list_shop_2016.pem -H "On-Behalf-Of: http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i" "https://linkeddata.uriburner.com/sparql/?default-graph-uri=&query=select+distinct+*+from+%3COpenPermID-bulk-assetClass-20151111_095807.ttl.gz%3E++where+%7B%5B%5D+a+%3FEntityType%7D+limit+50&should-sponge=&format=text%2Fcsv%2Btr&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000000"
+</verbatim>
+
+
+---++++ Results
+
+You will have empty solutions for queries performed by identities that
+fail protected resource ACL tests.
+
+---+++ <nowiki>Web ID</nowiki>+TLS+Delegate to SPARQL Endpoint and Faceted Browser UI's using OSDS Connection Tests
+
+The [[http://osds.openlinksw.com][OpenLink Structured Data Sniffer]] (OSDS) version 2.10.8+ can be used as a vehicle for injecting <code>On-Behalf-Of:</code> request header with the value from the configured and selected WebID into HTTP requests. The is passed by setting the <b>Preferred User ID</b> value in the <b>Options</b> configuration dialog of OSDS as indicated in the following dialog:
+
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-11.png" style="wikiautogen" height="450" width="350"/>%BR%%BR%
+
+In this example the <b>Preferred User ID</b> is set to <code>[[http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i][http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i]]</code>. 
+
+Import the Software Agent certificate (p12 file) into the Chrome or FireFox Browser, supported by OSDS, that is to be used.
+
+---++++ <nowiki>Web ID</nowiki>+TLS+Delegate to SPARQL Endpoint UI
+
+   1 Go to the <code>[[http://linkeddata.uriburner.com/sparql][http://linkeddata.uriburner.com/sparql]]</code> SPARQL Endpoint and click on the <b>Login</b> link.
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-12.png" style="wikiautogen" height="200" width="450"/>%BR%%BR%
+   1 From the presented VAL Login Dialog select the <code>WebID-TLS</code> icon to make a WebID login. 
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-13.png" style="wikiautogen" height="200" width="350"/>%BR%%BR%
+   1 From the presented certificates select the software agent certificate for the connection
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-14.png" style="wikiautogen" height="200" width="350"/>%BR%%BR%
+   1 When logged in the <code>[[http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i][http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i]]</code> delegated user is presented as the logged in user. At this point, a query can be executed, depending on the ACLs in place.
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-15.png" style="wikiautogen" height="250" width="450"/>%BR%%BR%
+      * [[http://tinyurl.com/hpphdq8][SPARQL Query Results page]] where the query targets entity relationships in a protected database (a/k/a Named Graph or Document) that's only accessible to specific Users authenticated via any of the presented protocols, i.e., NetIDs Condition Group ACL for <code>&lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;</code>. Returns the following based on the ACLs in place:
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-16.png" style="wikiautogen" height="450" width="350"/>%BR%%BR%
+      * [[http://tinyurl.com/zbcqvfz][SPARQL Query Results page]] where the query targets entity relationships in a protected database (a/k/a Named Graph or Document) that's only accessible to specific Users identified by a WebID (HTTP URI or Hyperlink that identifies a Person, Organization, or Software Agent), i.e., specific WebID ACL for <code>&lt;OpenPermID-bulk-assetClass-20151111_095806.ttl.gz&gt;</code>. Returns no results as the ACLs do not allow it.
+
+---++++ <nowiki>Web ID</nowiki>+TLS+Delegate to Faceted Browser UI
+
+   1 Go to the Faceted Browser, <code>[[http://linkeddata.uriburner.com/fct][http://linkeddata.uriburner.com/fct]]</code>,  and click on the <code>Login</code> link.
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-17.png" style="wikiautogen" height="200" width="450"/>%BR%%BR%
+   1 From the presented VAL Login Dialog, select the <code>WebID-TLS</code> icon to make a WebID login. 
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-13.png" style="wikiautogen" height="200" width="350"/>%BR%%BR%
+   1 From the presented certificates select the software agent certificate for the connection
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-14.png" style="wikiautogen" height="200" width="350"/>%BR%%BR%
+   1 When logged in, the delegated user, <code><nowiki>http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i</nowiki></code>, is presented as the logged in user. At which point a query can be executed and depending on the ACLs in place.
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-18.png" style="wikiautogen" height="250" width="450"/>%BR%%BR%
+      1 [[http://tinyurl.com/hss58dw][SPARQL Query Results page]] where the query targets entity relationships in a protected database (a/k/a Named Graph or Document) that's only accessible to specific Users authenticated via any of the presented protocols, i.e., NetIDs Condition Group ACL for <code>&lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt;</code>. Returns the following based on the ACLs in place:
+%BR%%BR%<img src="%ATTACHURLPATH%/WebisTlsDelegationOdbcConfig-19.png" style="wikiautogen" height="300" width="450"/>%BR%%BR%
+      1 [[http://tinyurl.com/hj9rjeq][SPARQL Query Results page]] where the query targets entity relationships in a protected database (a/k/a Named Graph or Document) that's only accessible to specific Users identified by a WebID (HTTP URI or Hyperlink that identifies a Person, Organization, or Software Agent), i.e., specific WebID ACL for <code>&lt;OpenPermID-bulk-assetClass-20151111_095806.ttl.gz&gt;</code>. Returns no results, as the ACLs do not allow it.
+
+---++ Related
+   * [[VirtWTDStepByStepConfigGuide][Virtuoso WebID+TLS+Delegation Step by Step Configuration Guide]]
+   * [[ValWhatWhyHow][Virtuoso Authentication Layer (VAL) - What, Why and How]]
+   * [[ValQuickStartGuide][Virtuoso Authentication Layer - ACL System QuickStart Guide]]
+   * [[http://docs.openlinksw.com/virtuoso/odbcimplementation.html#secureodbcx509][Using X509 Certificates With ODBC Connection]]

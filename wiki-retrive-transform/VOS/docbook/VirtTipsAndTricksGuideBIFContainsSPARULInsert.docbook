@@ -1,0 +1,60 @@
+<docbook><section><title>VirtTipsAndTricksGuideBIFContainsSPARULInsert</title><title> How can I adjust the frequency of RDF text indexing?</title> How can I adjust the frequency of RDF text indexing?
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What</bridgehead>
+<para>You may want to change the frequency of Virtuoso&#39;s RDF text index updates.</para>
+<para>You can decrease the frequency, if your queries are usually made some time after data inserts/updates.</para>
+<para>You can also increase the frequency to real-time, if you need inserts/updates to be immediately available for queries.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Why</bridgehead>
+<para>Virtuoso&#39;s RDF text indexes (that is, the indexes on literal object values, which are distinct from the indexes of URIs in any position) are updated periodically as a batch operation; by default, the interval is one (1) minute.</para>
+<para>This means that typed literals (xsd:strings, XML, BLOBs/CLOBs, etc.) which are inserted or changed by SPARUL or other methods may not be immediately available to <ulink url="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext">bif:contains</ulink>, <ulink url="http://docs.openlinksw.com/virtuoso/queryingxmldata.html#xcontainspredicate">bif:xcontains</ulink>, or other functions that depend on the text index.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How</bridgehead>
+<orderedlist spacing="compact"><listitem>First, force a synchronization of the RDF text index: <programlisting>SQL&gt; DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+</programlisting></listitem>
+<listitem>Next, set the text index to your desired frequency, using the <ulink url="http://docs.openlinksw.com/virtuoso/fn_vt_batch_update.html">VT_BATCH_UPDATE()</ulink> function.
+<itemizedlist mark="bullet" spacing="compact"><listitem>To update the index in real time, immediately after every change, use -- <programlisting>SQL&gt; DB.DBA.VT_BATCH_UPDATE ( &#39;DB.DBA.RDF_OBJ&#39;, &#39;OFF&#39;, NULL );
+</programlisting></listitem>
+<listitem>To decrease the frequency, use this form (changing the &quot;1&quot; below to your preferred interval, in minutes) -- <programlisting>SQL&gt; DB.DBA.VT_BATCH_UPDATE ( &#39;DB.DBA.RDF_OBJ&#39;, &#39;ON&#39;, 1 );
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Insert some example data: <programlisting>SQL&gt; SPARQL 
+INSERT INTO &lt;http://example.com&gt; 
+  { 
+    &lt;http://www.worldcat.org/Book_11&gt;  &lt;http://schema.org/name&gt;  &quot;Kalimero&quot;  .
+  };
+  
+Query result:
+callret-0
+ANY
+Insert into &lt;http://example.com&gt;, 1 (or less) triples -- done
+No. of rows in result: 1 
+</programlisting></listitem>
+<listitem>Check the inserted triples: <programlisting>SQL&gt; SELECT *
+FROM  &lt;http://example.com&gt; 
+WHERE 
+  {
+    &lt;http://www.worldcat.org/Book_11&gt;  ?p  ?o
+  };
+
+Query result:
+p                        o
+ANY                      ANY
+http://schema.org/name	 Kalimero
+No. of rows in result: 1 
+</programlisting></listitem>
+<listitem>Check the inserted triples using bif:contains: <programlisting>SQL&gt; SELECT * 
+WHERE 
+  { &lt;http://www.worldcat.org/Book_11&gt;  ?p            ?o 
+  . ?o                                 bif:contains  &quot;Kalimero&quot; 
+  };
+
+Query result:
+p                        o
+ANY                      ANY
+http://schema.org/name	 Kalimero
+No. of rows in result: 1 	
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext">bif:contains</ulink> documentation </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/queryingxmldata.html#xcontainspredicate">bif:xcontains</ulink> documentation </listitem>
+<listitem>Virtuoso <ulink url="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext">DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ()</ulink> function usage example </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideBIFContainsOptions">What free-text options can I use with bif:contains?</ulink> </listitem>
+</itemizedlist></section></docbook>

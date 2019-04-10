@@ -1,0 +1,43 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="Backing Up Individual Table(s) or Index(es) and Restoring Them to a Fresh DB"></a> Backing Up Individual Table(s) or Index(es) and Restoring Them to a Fresh DB</h1>
+<h2><a name="What?"></a> What?</h2>
+<p>Selectively dumping a database table or its schema, for reload into a separate instance, or for recovery in the original instance.</p>
+<i><b>Note</b>: This is only possible with Virtuoso 6.0 and later.</i><p> </p>
+<h2><a name="Why?"></a> Why?</h2>
+<p>There are many reasons, ranging from system corruption to migration, why you might want to reconstitute data across database management system instances.</p>
+<p> </p>
+<h2><a name="How to Dump and Recover one or more SQL Table(s)"></a> How to Dump and Recover one or more SQL Table(s)</h2>
+<ol><li>Create a function for dumping the key: <br><pre><br>SQL&gt; CREATE PROCEDURE bkp_key 
+  ( IN  f         ANY
+  , IN  tb_name   VARCHAR
+  , IN  key_name  VARCHAR
+  )
+  {
+    backup_prepare ( f ) ;
+    backup_index ( tb_name
+                 , key_name
+                 );
+    backup_flush ();
+    backup_close ();
+  };
+</pre><br><i><b>Note:</b> You can dump multiple tables by adding more calls to the <code>backup_index</code> function.
+</i></li>
+<li>On the source DB, dump the <code>T1</code> table&#39;s primary key to a file named &quot;<code>mylog.txn</code>&quot;, by executing: <br><pre><br>SQL&gt; bkp_key 
+  ( &#39;mylog.txn&#39;
+  , &#39;DB.DBA.T1&#39;
+  , &#39;T1&#39;
+  );
+</pre><br></li>
+<li>On the source DB host, stop the Virtuoso server, and dump only the schema tables (no data) into the <code>trx</code> file, by executing: <br><pre><br>% virtuoso +crash-dump +foreground +mode l   ## ( lower case L )
+</pre><br></li>
+<li>On the target DB host, make sure there is no existing <code>.db</code> file, and place the <code>.trx</code> file produced by previous step.
+ Create a new DB with the schema from the source DB, by executing: <br><pre><br>% virtuoso +restore-crash-dump +foreground ;
+</pre><br></li>
+<li>Insert the PK data from the source DB dump into the new table in the new DB, by starting the new DB as normal, and executing: <br><pre><br>SQL&gt; replay (&#39;mylog.txn&#39;) ;	
+</pre><br><i><b>Note:</b> that this has only restored the Primary Key index.
+ If there are multiple indexes on the table(s), the other indexes must be dropped and re-created, as they will be empty at this point.</i></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#backup" class="absuri">Virtuoso Data Backup &amp; Recovery</a></li>
+</ul><p> </p>
+</div></body></html>

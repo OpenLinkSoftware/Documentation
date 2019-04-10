@@ -1,0 +1,77 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtR2RML"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtR2RML"}%--><h1><a name="Virtuoso Conductor R2RML Import Wizard"></a>Virtuoso Conductor R2RML Import Wizard</h1>
+<p>The Virtuoso Conductor can be used for importing existing R2RML scripts into Virtuoso and generate the necessary RDF Linked Data Views for Virtuoso hosting and deployment.</p>
+<h2><a name="Usage Example"></a>Usage Example</h2>
+<h3><a name="Prerequisites"></a>Prerequisites</h3>
+<p>Ensure the following VAD packages are installed:</p>
+<ul><li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">rdb2rdf_dav.vad</a> R2RML package; </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">conductor_dav.vad</a> Conductor package.</li>
+</ul><h3><a name="Steps"></a>Steps</h3>
+<ol><li>Create a test table with sample data: <br><pre><br>SQL&gt; CREATE TABLE &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot;
+(
+  &quot;id&quot; INTEGER,
+  &quot;name&quot; VARCHAR(100),
+  PRIMARY KEY (&quot;id&quot;)
+);
+Done. -- 16 msec.
+SQL&gt; INSERT SOFT &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot; VALUES(1, &#39;Virtuoso&#39;);
+Done. -- 0 msec.
+SQL&gt; INSERT SOFT &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot; VALUES(2, &#39;UDA&#39;);
+Done. -- 0 msec.
+SQL&gt;
+</pre><br></li>
+<li>Grant select privileges on the &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot; table to the SPARQL user to enable execution via SPARQL endpoint: <br><pre><br>SQL&gt; GRANT SELECT ON R2RML.TEST.PRODUCT  TO &quot;SPARQL&quot;,?&quot;SPARQL_UPDATE&quot;
+Done. -- 1 msec.
+SQL&gt;
+</pre><br></li>
+<li>Create the following R2RML mapping script for the &quot;R2RML&quot;.&quot;TEST&quot;.&quot;PRODUCT&quot; table: <br><pre><br>$ cat demo.n3
+@prefix rr: &lt;http://www.w3.org/ns/r2rml#&gt; .
+@prefix exa: &lt;http://example.com/ns#&gt; .
+@prefix product: &lt;http://example.com/product#&gt; .
+
+&lt;http://example.com/ns#TriplesMap1&gt;
+    a rr:TriplesMap;
+
+    rr:logicalTable 
+    [ 
+      rr:tableSchema &quot;R2RML&quot;; 
+      rr:tableOwner &quot;TEST&quot;; 
+      rr:tableName  &quot;PRODUCT&quot; 
+    ];
+
+    rr:subjectMap 
+    [ 
+      rr:template &quot;http://example.com/product/{id}&quot;;
+      rr:class exa:product;
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:id;
+      rr:objectMap [ rr:column &quot;id&quot; ];
+    ];
+
+    rr:predicateObjectMap
+    [
+      rr:predicate product:name;
+      rr:objectMap [ rr:column &quot;name&quot; ];
+    ];
+.
+$
+</pre><br></li>
+<li>Go to the <code>Linked Data -&gt; R2RML</code> of the Virtuoso Conductor: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport01.png" style="wikiautogen"> <br><br> </li>
+<li>Select the <code>Choose File</code> button and select the R2RML file to load: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport02.png" style="wikiautogen"> <br><br> </li>
+<li>Select the <code>Validate</code> button to verify the R2RML mapping script: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport03.png" style="wikiautogen"> <br><br> </li>
+<li>Select the <code>Generate</code> button to generate the RDF Linked Data Views mappings for the R2RML mapping script: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport04.png" style="wikiautogen"> <br><br> </li>
+<li>Select the <code>Execute</code> button to create the RDF Linked Data Views mapping the the Quad Store: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport05.png" style="wikiautogen"> <br><br> </li>
+<li>The RDF Linked Data View creation is complete and status is displayed: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport06.png" style="wikiautogen"> <br><br> </li>
+<li>The <code>Default Graph Name</code> (transient) specified <code>http://demo.openlinksw.com/r2rml#</code> can now be used to run a SPARQL query against the created Linked Data View.
+ If the <code>Generate <a href="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdb2rdftriggers" class="absuri">RDB2RDF triggers</a></code> and <code>Enable Data Syncs with Physical Quad Store</code> check boxes are selected the <code>Physical Graph Name</code> (persistent) specified <code>urn:demo.openlinksw.com/r2rml#</code> can be used to run a SPARQL query against the materialized triples in the Quad Store.
+<br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport07.png" style="wikiautogen"> <br><br> </li>
+<li>The results set for the Linked Data View graph are displayed: <br><br>    <img src="VirtConductorR2RMLImport/VirtConductorR2RMLImport08.png" style="wikiautogen"> <br><br></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtR2RML" class="wikiword">Virtuoso R2RML Support</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGenerateR2RMLLinkedDataView" class="wikiword">Generate Linked Data Views via R2RML from iSQL</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideConductorR2RML" class="wikiword">Generate Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources</a> </li>
+<li>W3C page for <a href="http://www.w3.org/TR/r2rml/" class="absuri">R2RML: RDB to RDF Mapping Language</a></li>
+</ul></div></body></html>

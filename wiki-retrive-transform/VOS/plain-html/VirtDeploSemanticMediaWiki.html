@@ -1,0 +1,47 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VOSIndex"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VOSIndex"}%--><p> </p>
+<h1><a name="Setting up"></a> Setting up <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki" class="absuri">SemanticMediaWiki</a> using Virtuoso.</h1>
+<p>General instructions for setting up SMW can be found <a href="http://semantic-mediawiki.org/wiki/Help:Installation" class="absuri">here.</a> This page gives specific instructions for using the <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki" class="absuri">SemanticMediaWiki</a> extension with Virtuoso.</p>
+<h2><a name="Prerequisites"></a>Prerequisites</h2>
+ Virtuoso Server with the Mediawiki VAD installed.<h3><a name="Note on Installing MediaWiki"></a>Note on Installing MediaWiki</h3>
+ Install MediaWiki on your server following this guide: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtDeployMediaWiki" class="wikiword">Deploy MediaWiki using Virtuoso</a></li>
+</ul><p>The MediWiki VAD includes everything that you need to run SemanticMediaWiki.  The SMW and Validator extensions are installed during the VAD install.  When you run the MediaWiki installer will see on the Options Page, in the Extensions section, that you can select to enable the Validator and SemanticMediaWiki extensions.
+ <b>Do not</b> select SemanticMediaWiki at this point.
+ There is a bug<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MediawikiExtensionLoading&parent=VirtDeploSemanticMediaWiki" class="wikiword">?</a> in the automatic installation of SemanticMediawiki and it will cause your installation of MediaWiki to fail.
+ You will need the Validator extension for SemanticMediaWiki so you can either choose to enable it during the MediaWiki setup or enable it manually later.</p>
+<h2><a name="Enable the SemanticMediawiki Extension."></a>Enable the SemanticMediawiki Extension.</h2>
+<p>Once you have successfully installed MediaWiki, go to the root of the installation and edit LocalSettings.php.
+ Enable the extensions by putting the following lines in LocalSettings.php.
+ If you enabled Validator while setting up MediaWiki<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/MediaWiki&parent=VirtDeploSemanticMediaWiki" class="wikiword">?</a> then the validator line will already be in LocalSettings.php.
+</p>
+<br><pre>require_once( &quot;$IP/extensions/Validator/Validator.php&quot; );
+include_once( &quot;$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php&quot; );
+enableSemantics(&#39;localhost:8890&#39;);
+</pre><p> </p>
+<h2><a name="Set Up the Database Tables"></a>Set Up the Database Tables</h2>
+ Next you will need to set up some extra database tables that are used by SMW.
+ If you enable the extension but do not do this step you will find you get an error message every time you save a page.
+ The message you will see is:<br><pre>Error in doQuery(): [OpenLink][Virtuoso iODBC Driver][Virtuoso Server]SQ200: No table smw_ids .
+</pre><p> To set up the database tables, log in as a MediaWiki administrator and go to the <b>Special Pages</b>.
+ Select the <b>Admin Functions for Semantic MediaWiki</b> page.</p>
+<img src="VirtDeploSemanticMediaWiki/Special.png" style="wikiautogen"><p>On the Admin Functions For Semantic MediaWiki Page click the <b>Initialise or upgrade tables</b> button.
+ This will set up the tables.</p>
+<img src="VirtDeploSemanticMediaWiki/InitTables.png" style="wikiautogen"><p>If it is successful you will see a page showing each table that has been created and at the bottom you will see the message <b>The storage engine was set up successfully.</b></p>
+<img src="VirtDeploSemanticMediaWiki/success.png" style="wikiautogen"><h2><a name="Testing the Installation"></a>Testing the Installation</h2>
+ At this point you can quickly check that SMW has been correctly installed by creating a new page and entering the following text.
+<br><pre>Property test:  [[testproperty::Dummypage]]
+</pre><p>If you preview the page before saving you will see a Factbox containing the new property.
+ Once the page is saved the property should be displayed when you select the <b>Browse Properties</b> link in the left hand menu.</p>
+<p>At this point you can use SMW.
+ However, you may wish to set up Virtuoso as an SMWSparqlStore.</p>
+<h2><a name="Using Virtuoso as SMWSparqlStore"></a>Using Virtuoso as SMWSparqlStore</h2>
+ The default storage backend for SemanticMediaWiki is called SQLStore2 and it stores the semantic information in the same relational database used by the base MediaWiki installation.  However, a relational database is not the best way to store semantic information.  SMW allows you to set up a RDF data store that can be queried using the sparql protocol as a more efficient means of storing semantic data.
+ See the SMW help document: <a href="http://semantic-mediawiki.org/wiki/Help:Using_SPARQL_and_RDF_stores" class="absuri">Help:Using SPARQL and RDF stores.</a><p>The following must be added to LocalSettings.php to use Virtuoso as a sparql store.</p>
+<br><pre>$smwgDefaultStore = &#39;SMWSparqlStore&#39;;
+$smwgSparqlDatabase = &#39;SMWSparqlDatabaseVirtuoso&#39;;                   # using Virtuoso as connector
+$smwgSparqlQueryEndpoint = &#39;http://localhost:8890/sparql/&#39;;          # location of query service
+$smwgSparqlUpdateEndpoint = &#39;http://localhost:8890/sparql/&#39;;         # location of update service
+$smwgSparqlDataEndpoint = &#39;&#39;;                                        # location of SPARQL over HTTP service
+                                                                     # optional value; leave as is in case of problems
+$smwgSparqlDefaultGraph = &#39;http://example.org/mydefaultgraphname&#39;;   # name of default graph
+</pre></div></body></html>

@@ -1,0 +1,24 @@
+<html><body><div class="topic-text"><p>DE3A857A5FFB11DA923AF0924C194AED Cluster Main -- Sample code used in the Text Indexing and Filtering article</p>
+<p> create table news (n_id int identity (start with 1), n_date datetime, n_text xmltype,   n_source varchar, n_title varchar,   primary key (n_id));</p>
+<p> create text xml index on news (n_text) with key n_id clustered with (n_date, n_source, n_title);</p>
+<p>create text trigger on news (n_text);</p>
+<p>create procedure news_download (in url varchar) {   declare cnt any;   declare xt, xp any;   declare l int;</p>
+<p>  cnt := http_client (url);   xt := xml <u>tree_doc (cnt);</u></p>
+<p>  xp := xpath_eval (&#39;[xmlns:atom=&quot;<a href="http://www.w3.org/2005/Atom" class="absuri">http://www.w3.org/2005/Atom</a>&quot;]  //entry&#39;, xt, 0);   l := length (xp);</p>
+<p>  for (declare i int, i := 0; i &lt; l; i := i + 1)     {       declare title, link, dt varchar;       title := xpath_eval (&#39;[xmlns:atom=&quot;<a href="http://www.w3.org/2005/Atom" class="absuri">http://www.w3.org/2005/Atom</a>&quot;] ./atom:title/text()&#39;, xp[i]);       dt := cast (xpath_eval (&#39;[xmlns:atom=&quot;<a href="http://www.w3.org/2005/Atom" class="absuri">http://www.w3.org/2005/Atom</a>&quot;] ./atom:published/text()&#39;, xp[i]) as varchar);       link := xpath_eval (&#39;[xmlns:atom=&quot;<a href="http://www.w3.org/2005/Atom" class="absuri">http://www.w3.org/2005/Atom</a>&quot;] ./atom:id/text()&#39;, xp[i]);       if (not exists (select 1 from news where n_source = link)) 	insert into news (n_date, n_text, n_source, n_title)         values (dt, xml_cut (xp[i]), link, title);       commit work;     } }</p>
+<p>news_download (&#39;<a href="http://virtuoso.openlinksw.com/blog/gems/atom.xml&quot;);" class="absuri">http://virtuoso.openlinksw.com/blog/gems/atom.xml&#39;);</a></p>
+<p>select * from news where contains (n_text, &#39;database&#39;);</p>
+<p>select search_excerpt (vector (&#39;database&#39;), cast (n_text as varchar), 10000, 500, 80) from news where contains (n_text, &#39;database&#39;);</p>
+<p>create procedure  vt <u>words_1 (in tree any, inout res any) {   if (isstring (tree))     {       res := vector_concat (res, vector (tree));     }   else if (isarray (tree))     {       foreach (any elt in tree) do 	vt_words_1 (elt, res);     } }</u></p>
+<p>create function vt_words (in q varchar) returns varchar array {   declare v any;   v := vector ();   vt <u>words_1 (vt_parse (q), v);   return v; }</u></p>
+<p> select search_excerpt (vt_words(&#39;&quot;open source&quot;&#39;), cast (n_text as varchar), 10000, 500, 80) from  news where contains (n_text, &#39;&quot;open source&quot;&#39;);</p>
+<p>Select n_id, n_title, n_source from news where contains (n_text, &#39;openlink&#39;, offband, n_title, offband, n_source);</p>
+<p>select n_title from news where xcontains (n_text, &#39;[xmlns:atom=&quot;<a href="http://www.w3.org/2005/Atom" class="absuri">http://www.w3.org/2005/Atom</a>&quot;] //atom:title[text-contains (., &quot;virtuoso&quot;)]&#39;);</p>
+<p>select search_excerpt (vt_words (&#39;&quot;open source&quot;&#39;), cast (n_text as varchar), 10000, 500, 90) from (select top 5 n_id from news where contains (n_text, &#39;&quot;open source&quot;&#39;, offband, n_date) order by n_date desc) f, news n where f.n_id = n.n_id option (order);</p>
+<p>select search_excerpt (vt_words (&#39;&quot;open source&quot;&#39;), cast (n_text as varchar), 10000, 500, 90) from (select top 1, 5 n_id from news where contains (n_text, &#39;&quot;open source&quot;&#39;, offband, n_date) order by n_date desc) f, news n where f.n_id = n.n_id option (order);</p>
+<p> tt <u>query_news (&#39;&quot;open source&quot;&#39;, 0, &#39;Article on open source software&#39;, &#39;john@example.com&#39;); tt_query_news (&#39;virtuoso&#39;, 1, &#39;Article on Virtuoso software&#39;, &#39;mary@example.com&#39;);</u></p>
+<p>delete from news;</p>
+<p>news_download (&#39;<a href="http://virtuoso.openlinksw.com/blog/gems/atom.xml&quot;);" class="absuri">http://virtuoso.openlinksw.com/blog/gems/atom.xml&#39;);</a></p>
+<p>select * from news <u>n_text_hit;</u></p>
+<p>select search_excerpt (vt_words (tt_query), cast (n_text as varchar), 10000, 400, 80), tt_query, tt_comment, tth_notify from news, news <u>n_text_hit, news_n_text_query    where n_id = tth_d_id and tt_id = tth_t_id;</u></p>
+</div></body></html>

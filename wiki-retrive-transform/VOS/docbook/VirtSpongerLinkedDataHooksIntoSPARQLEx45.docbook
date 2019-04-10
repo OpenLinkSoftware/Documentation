@@ -1,0 +1,298 @@
+<docbook><section><title>VirtSpongerLinkedDataHooksIntoSPARQLEx45</title><para> </para>
+<title>Example Performing Sponging on a entirely confidential database using get:private pragma</title>Example Performing Sponging on a entirely confidential database using get:private pragma
+<para>The following example demonstrates how private sponging using get:private pragma works for entirely confidential database.</para>
+<para>Note: Please take in mind that the steps from below will change the security of any existing database, thus the example scenario should be performed on a empty db.</para>
+<orderedlist spacing="compact"><listitem>Create few users in alphabetical order: <programlisting>DB.DBA.USER_CREATE (&#39;Anna&#39;, &#39;Anna&#39;);
+DB.DBA.USER_CREATE (&#39;Brad&#39;, &#39;Brad&#39;);
+DB.DBA.USER_CREATE (&#39;Carl&#39;, &#39;Carl&#39;);
+</programlisting></listitem>
+<listitem>Set to Anna, Brad and Carl SPARQL SELECT, UPDATE and SPONGE permissions: <programlisting>grant SPARQL_SELECT to &quot;Anna&quot;;
+grant SPARQL_SELECT to &quot;Brad&quot;;
+grant SPARQL_SELECT to &quot;Carl&quot;;
+
+grant SPARQL_UPDATE to &quot;Anna&quot;;
+grant SPARQL_UPDATE to &quot;Brad&quot;;
+grant SPARQL_UPDATE to &quot;Carl&quot;;
+
+grant SPARQL_SPONGE to &quot;Anna&quot;;
+grant SPARQL_SPONGE to &quot;Brad&quot;;
+grant SPARQL_SPONGE to &quot;Carl&quot;;
+
+</programlisting></listitem>
+<listitem>Set specific privileges to given graphs for specifics users: Catering for the fact that some datasets are supposed to be confidential, thus the whole quad storage is set to confidential.
+ Then specific privileges can be assigned to specific graphs for specific users: <programlisting>DB.DBA.RDF_DEFAULT_USER_PERMS_SET (&#39;nobody&#39;, 0);
+</programlisting></listitem>
+<listitem>Set specific privileges: assuming for users Anna, Brad and Carl none of these individual has any kind of global access to graphs: <programlisting>DB.DBA.RDF_DEFAULT_USER_PERMS_SET (&#39;Anna&#39;, 0);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET (&#39;Brad&#39;, 0);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET (&#39;Carl&#39;, 0);
+</programlisting></listitem>
+<listitem>Assuming the following four sorts of access that are specified by four bits of an integer &quot;permission bit-mask&quot;, following plain old UNIX style: <itemizedlist mark="bullet" spacing="compact"><listitem>Bit 1 permits read access.
+</listitem>
+<listitem>Bit 2 permits write access via SPARUL and is basically useless without bit 1 set.
+</listitem>
+<listitem>Bit 4 permits write access via &quot;RDF Network Resource Fetch&quot; methods and is basically useless without bits 1 and 2 set.
+</listitem>
+<listitem>Bit 8 allows retrieval of the list of members of a graph group.
+ An IRI can be used as a graph IRI and as a graph group IRI at the same time, so bit 8 can be freely combined with any of bits 1, 2 or 4.
+</listitem>
+<listitem>In the statements from below should be considered: <itemizedlist mark="bullet" spacing="compact"><listitem>&quot;15 = 8+4+2+1 &quot; -- i.e.
+ combining all the four sorts of access FROM above </listitem>
+<listitem>&quot;9 = 8 + 1&quot; -- i.e.
+ read access + access to retrieve the list of members for a given graph group <programlisting>-- Create Graph Group for Anna and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE (&#39;urn:Anna:Sponged:Data&#39;, 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Anna:Sponged:Data&#39;, &#39;Anna&#39;, 15);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Anna:Sponged:Data&#39;, &#39;Brad&#39;, 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Anna:Sponged:Data&#39;, &#39;Carl&#39;, 9);
+
+-- Create Graph Group for Brad and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE (&#39;urn:Brad:Sponged:Data&#39;, 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Brad:Sponged:Data&#39;, &#39;Anna&#39;, 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Brad:Sponged:Data&#39;, &#39;Brad&#39;, 15);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Brad:Sponged:Data&#39;, &#39;Carl&#39;, 9);
+
+-- Create Graph Group for Carl and set privileges:
+DB.DBA.RDF_GRAPH_GROUP_CREATE (&#39;urn:Carl:Sponged:Data&#39;, 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Carl:Sponged:Data&#39;, &#39;Anna&#39;, 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Carl:Sponged:Data&#39;, &#39;Brad&#39;, 9);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET (&#39;urn:Carl:Sponged:Data&#39;, &#39;Carl&#39;, 15);
+
+</programlisting></listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem>Examples with invalid  graph group names: <orderedlist spacing="compact"><listitem>Example with Non-existing Graph Group: <programlisting>-- An error for non-existing Graph group &lt;http://nosuch/&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;http://nosuch/&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example with &quot;virtrdf:<ulink url="PrivateGraphs">PrivateGraphs</ulink>&quot; graph group which is reserved for system usage: <programlisting>-- An error for attempt to add a graph to special graph group &lt;http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private virtrdf:PrivateGraphs
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example with &quot;virtrdf:rdf_repl_graph_group&quot; graph group which is reserved for system usage: <programlisting>-- An error for attempt to add a graph to special graph group &lt;http://www.openlinksw.com/schemas/virtrdf#rdf_repl_graph_group&gt; will be raised.
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private virtrdf:rdf_repl_graph_group
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+</orderedlist></listitem>
+<listitem>Examples to check Anna&#39;s sponging permissions on different graph groups: <orderedlist spacing="compact"><listitem>Example for adding graph to Anna&#39;s graph group &lt;urn:Anna:Sponged:Data&gt;: <programlisting>-- No error will be raised as Anna has the efficient rights for graph group &lt;urn:Anna:Sponged:Data&gt;
+
+reconnect &quot;Anna&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://anna-example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example for adding graph to Brad&#39;s graph group &lt;urn:Brad:Sponged:Data&gt;: <programlisting>-- An error will be raised because &quot;Anna&quot; has not enough rights on that group
+
+reconnect &quot;Anna&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT * FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example for adding graph to Carl&#39;s graph group &lt;urn:Carl:Sponged:Data&gt;: <programlisting>-- An error will be raised because &quot;Anna&quot; has not enough rights on that group
+
+reconnect &quot;Anna&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+</orderedlist></listitem>
+<listitem>Examples check Brad&#39;s sponging permissions on different graph groups: <orderedlist spacing="compact"><listitem>Example for adding graph to Anna&#39;s graph group &lt;urn:Anna:Sponged:Data&gt;: <programlisting>-- An error will be raised because &quot;Brad&quot; has not enough rights on that group
+
+reconnect &quot;Brad&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example for adding graph to Brad&#39;s graph group &lt;urn:Brad:Sponged:Data&gt;: <programlisting>-- No error will be raised as Brad has the efficient rights for graph group &lt;urn:Brad:Sponged:Data&gt;
+
+reconnect &quot;Brad&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://brad-example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example for adding graph to Carl&#39;s graph group &lt;urn:Carl:Sponged:Data&gt;: <programlisting>-- An error will be raised because &quot;Brad&quot; has not enough rights on that group
+
+reconnect &quot;Brad&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+</orderedlist></listitem>
+<listitem>Examples check Carl&#39;s sponging permissions on different graph groups: <orderedlist spacing="compact"><listitem>Example for adding graph to Anna&#39;s graph group &lt;urn:Anna:Sponged:Data&gt;: <programlisting>-- An error will be raised because &quot;Carl&quot; has not enough rights on that group
+
+reconnect &quot;Carl&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Anna:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example for adding graph to Brad&#39;s graph group &lt;urn:Brad:Sponged:Data&gt;: <programlisting>-- An error will be rased because &quot;Carl&quot; has not enough rights on that group
+
+reconnect &quot;Carl&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Brad:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+<listitem>Example for adding graph to Carl&#39;s graph group &lt;urn:Carl:Sponged:Data&gt;: <programlisting>-- No error will be raised as Carl has the efficient rights for graph group &lt;urn:Brad:Sponged:Data&gt;
+
+reconnect &quot;Carl&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://carl-example.com/&gt;
+  WHERE
+    { ?s ?p ?o };
+</programlisting></listitem>
+</orderedlist></listitem>
+<listitem>User Carl performs private sponging: <programlisting>
+reconnect &quot;Carl&quot;;
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+-- Should return for ex. 365 rows.
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT COUNT(*)
+  FROM &lt;http://www.openlinksw.com/data/turtle/products.ttl&gt;
+  WHERE
+    { ?s ?p ?o };
+
+
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT *
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/software.ttl&gt;
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/licenses.ttl&gt;
+  WHERE
+    {
+      graph ?g
+        { ?s ?p ?o
+      }
+    };
+
+
+-- Should return for ex. 1317 rows.
+SPARQL
+  DEFINE get:soft &quot;replacing&quot;
+  DEFINE get:private &lt;urn:Carl:Sponged:Data&gt;
+  SELECT COUNT(*)
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/software.ttl&gt;
+  FROM NAMED &lt;http://www.openlinksw.com/data/turtle/licenses.ttl&gt;
+  WHERE
+    {
+      graph ?g
+        { ?s ?p ?o
+      }
+    };
+</programlisting></listitem>
+<listitem>Viewing Graph Groups shows Carl&#39;s graph group &lt;urn:Carl:Sponged:Data&gt; contains total 4 graphs: <programlisting>SQL&gt; SELECT id_to_iri (RGGM_GROUP_IID), id_to_iri(RGGM_MEMBER_IID)
+     FROM DB.DBA.RDF_GRAPH_GROUP_MEMBER
+     ORDER BY 1,2;
+
+
+id_to_iri                id_to_iri__1
+VARCHAR                  VARCHAR
+__________________________________________________________
+
+....
+urn:Anna:Sponged:Data    http://anna-example.com/
+urn:Brad:Sponged:Data    http://brad-example.com/
+urn:Carl:Sponged:Data    http://carl-example.com/
+urn:Carl:Sponged:Data    http://www.openlinksw.com/data/turtle/licenses.ttl
+urn:Carl:Sponged:Data    http://www.openlinksw.com/data/turtle/products.ttl
+urn:Carl:Sponged:Data    http://www.openlinksw.com/data/turtle/software.ttl
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Sponger Usage Examples</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusageprocessorex">SPARQL Processor Usage Example</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusageproxyex2">RDF Proxy Service Example</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView#AncMozToc2">Browsing &amp; Exploring RDF View Example Using ODE</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView#AncMozToc3">Browsing &amp; Exploring RDF View Example Using iSPARQL</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodplapissimpleexample">Basic Sponger Cartridge Example</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusagebriefex">HTTP Example for Extracting Metadata using CURL</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercartridgetypesmetarestexamples">RESTFul Interaction Examples</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/sect5_virtuosospongercreatecustcartrrgstflickr.html">Flickr Cartridge Example</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercreatecustcartrexmp">MusicBrainz Metadatabase Example</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideAddTriplesNamedGraph">SPARQL Tutorial -- Magic of  SPARUL and Sponger</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSpongerLinkedDataHooksIntoSPARQLEx46">Example Performing Sponging with Private Graphs Using get:private pragma</ulink> </listitem>
+<listitem><ulink url="VirtSpongerLinkedDataHooksIntoSPARQL">Sponger&#39;s Linked Data Middleware Hooks into SPARQL</ulink> </listitem>
+<listitem><ulink url="VirtSponger">Virtuoso Sponger</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/Whitepapers/html/VirtSpongerWhitePaper.html">Technical White Paper</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSources">Supported Virtuoso Sponger Cartridges</ulink> </listitem>
+<listitem><ulink url="SPARQLSponger">SPARQL Sponger</ulink> </listitem>
+<listitem><ulink url="VirtInteractSpongerMiddlewareRESTPatterns">Interacting with Sponger Middleware via RESTful Patterns</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples">Interacting with Sponger Meta Cartridge via RESTful Patterns</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeRDFExtractor">Sponger Cartridge RDF Extractor</ulink> </listitem>
+<listitem><ulink url="RDFMappers">Extending SPARQL IRI Dereferencing with RDF Mappers</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeProgrammersGuide">Programmer Guide for Virtuoso Linked Data Middleware (&quot;Sponger&quot;)</ulink> </listitem>
+<listitem><ulink url="VirtProgrammerGuideRDFCartridge">Create RDF Custom Cartridge Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSources">OpenLink-supplied Virtuoso Sponger Cartridges</ulink> </listitem>
+<listitem><ulink url="VirtAuthServerUI">Virtuoso Authentication Server</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">Virtuoso SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtSpongerACL">Virtuoso Sponger Access Control List (ACL) Setup</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSecurityWebID">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/virtuososponger.html">Virtuoso Documentation</ulink></listitem>
+</itemizedlist><para> </para>
+</section></docbook>

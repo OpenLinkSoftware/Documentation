@@ -1,0 +1,155 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+---+ Guide to using SPARQL inside XSLT
+
+This guide demonstrates how Virtuoso allows SPARQL queries to be embedded into 
+an XSLT style sheet, and executed against a remote SPARQL endpoint (here, we use 
+the [[http://lod.openlinksw.com/sparql/][LOD Cloud Cache]]) to retrieve data for 
+use in HTML output. 
+
+---++Implementation
+
+   * The key component of this feature is the <code>&lt;xsl:for-each-row&gt;</code> 
+control element. This element has one attribute, named either <code>"sparql"</code> 
+or <code>"sql"</code>; the value of the attribute is an XPath expression that 
+returns the text of the query to executed, e.g.,
+<verbatim>
+<xsl:for-each-row sparql="string(\044query)">
+</verbatim>
+   * The XPath expression can be a plain string constant, but because the query can 
+be quite long, it is usually more convenient to store the text in a variable and 
+refer to that variable.
+   * The SPARQL query may contain parameters (written in the form <code>?:name</code>). 
+A parameter of this sort will get its value from the XSLT variable <code>$name</code>. 
+(If there is any nesting or recursion, the value(s) will come from the innermost 
+variables.)
+   * The query execution in turn creates new XSLT variables that exist inside the 
+body of <code>&lt;xsl:for-each-row&gt;</code>. Each result column of a query becomes 
+one XSLT variable. 
+   * The body of <code>&lt;xsl:for-each-row&gt;</code> is instantiated once for each 
+row of the query result set, with new values for the variables in each instantiation.
+
+
+---++Example 
+
+   1 Execute from iSQL:
+<verbatim>
+SQL>  xslt_sheet ('local://friends.xsl', 
+                  xtree_doc ('<xsl:stylesheet xmlns:xsl = "http://www.w3.org/1999/XSL/Transform" version = "1.0" xmlns:sample="http://xslt/" >
+                              <xsl:output method = "html" version="1.0" doctype-public="http://public" doctype-system="http://system" />
+                              <xsl:param name="fname" select="''Kingsley''" />
+                              <xsl:param name="lname" select="''Idehen''" />
+                              <xsl:param name="fullname" select="''Kingsley Idehen''" />
+                              <xsl:variable name = "query">
+<![CDATA[
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT DISTINCT ?maxlinkg 
+                ?fnick 
+                ?ffullname 
+                ?ffname 
+                ?flname 
+                ?fimg 
+WHERE
+  {
+    SERVICE <http://lod.openlinksw.com/sparql/> (DEFINE lang:dialect 65535)
+      {
+        { SELECT DISTINCT                                                     ?maxlinkg 
+                                                                              ?fg 
+                                                                              ?fnick
+                                                                              ?ffullname 
+                          ?ffname (bif:__max_notnull (?flname1, ?flname2)) AS ?flname 
+                                                                              ?fimg
+          WHERE
+            {
+              { SELECT (MAX(?linkg)) AS ?maxlinkg 
+                                        ?f 
+                 WHERE
+                   {
+                     { SELECT DISTINCT ?k 
+                        WHERE
+                          { GRAPH ?kg 
+                              {
+                                { ?k  foaf:firstName   ?:fname  
+                                   ;  foaf:familyName  ?:lname 
+                                }
+                                UNION
+                                { ?k  foaf:firstName    ?:fname
+                                   ;  foaf:family_name  ?:lname 
+                                }
+                                UNION
+                                { ?k  foaf:name       ?:fullname } 
+                          } 
+                     } 
+                   }
+                 GRAPH ?linkg { ?k foaf:knows ?f } 
+            } }
+            GRAPH ?fg 
+              {               ?f  a                 <http://xmlns.com/foaf/0.1/Person>
+                .  OPTIONAL { ?f  foaf:firstName    ?ffname     }
+                   OPTIONAL { ?f  foaf:nickname     ?fnick      }
+                   OPTIONAL { ?f  foaf:name         ?ffullname  }
+                   OPTIONAL { ?f  foaf:familyName   ?flname1    }
+                   OPTIONAL { ?f  foaf:family_name  ?flname2    }
+                   OPTIONAL { ?f  foaf:img          ?fimg       }
+              }
+            FILTER ( bound ( ?ffullname ) 
+                     || ( bound ( ?ffname ) 
+                          &amp;&amp; ( bound ( ?flname1 ) 
+                                  || bound ( ?flname2 ) 
+                           ) ) )
+          } 
+          ORDER BY ?fullname 
+                   ?ffname 
+        } 
+      } 
+  }
+]]></xsl:variable>
+<xsl:template match = "/">
+  <html><head>Simple demo for SPARQL inside XSLT</head>
+    <body>
+    <p>Known friends of <xsl:choose>
+         <xsl:when test="\044fullname"><xsl:value-of select="\044fullname" /></xsl:when>
+         <xsl:otherwise><xsl:value-of select="\044fname" />&nbsp;<xsl:value-of select="\044lname" /></xsl:otherwise>
+       </xsl:choose></p>
+    <table>
+    <xsl:for-each-row sparql="string(\044query)">
+      <tr><td><xsl:if test="\044fimg"><a href="{\044fimg}" ><img src="{\044fimg}" width="64" height="64" /></a></xsl:if></td>
+      <td><a href=".?fname={\044ffname}&lname={\044flname}&fullname={\044ffullname}">
+      <b><xsl:choose>
+         <xsl:when test="\044ffullname"><xsl:value-of select="\044ffullname" /></xsl:when>
+         <xsl:otherwise><xsl:value-of select="\044ffname" />&nbsp;<xsl:value-of select="\044flname" /></xsl:otherwise>
+       </xsl:choose></b></a><br />
+       <xsl:if test="\044fnick">Nick: <xsl:value-of select="\044fnick" /><br /></xsl:if>
+       (data from <a href="{\044maxlinkg}" ><xsl:value-of select="\044maxlinkg" /></a> <!-- and <a href="{\044maxfg}" ><xsl:value-of select="\044maxfg" /></a>-->)
+       </td></tr>
+    </xsl:for-each-row>
+    </table>
+    </body>
+  </html>
+</xsl:template>
+</xsl:stylesheet>'));
+
+DB.DBA.VHOST_DEFINE 
+  ( lpath=>'/friends/', 
+    ppath => '/!friends/', 
+    is_dav => 1, 
+    vsp_user => 'dba', 
+    opts => vector('noinherit', 1)
+  );
+
+CREATE PROCEDURE WS.WS."/!friends/" 
+  ( INOUT  path    VARCHAR, 
+    INOUT  params  ANY, 
+    INOUT  lines   ANY
+  )
+{
+  http_value (xslt ('local://friends.xsl', xtree_doc ('<fake />'), params));
+}
+;
+
+registry_set ('/!friends/', 'no_vsp_recompile')
+;
+</verbatim>
+   1 Go to [[http://cname/friends/][http://cname/friends/]], where results should look something like this:
+%BR%%BR%<img src="%ATTACHURLPATH%/xslt1.png" style="wikiautogen"/>%BR%%BR%
+%BR%%BR%<img src="%ATTACHURLPATH%/xslt2.png" style="wikiautogen"/>%BR%%BR%

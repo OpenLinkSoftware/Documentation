@@ -1,0 +1,171 @@
+%VOSWARNING%
+
+
+%META:TOPICINFO{author="RumiTsekova" date="1166028652" format="1.1" version="1.1"}%
+%VOSNAV%
+
+---++ Semantic Bank Services 
+
+Virtuoso implements the HTTP-based
+[[http://simile.mit.edu/semantic-bank/][Semantic Bank]] API that enables
+client applications to post to its RDF Triple Store. This method offers an
+alternative to using Virtuoso/PL functions or WebDAV uploads as the
+triples-insertion mechanism.
+
+_Semantic Bank_ was developed by MIT's SIMILE project as a back-end for its
+RDF content-scraper, [[http://simile.mit.edu/piggy-bank/][PiggyBank]].
+
+---+++ What is PiggyBank?
+
+PiggyBank is a FireFox plug-in which enables end-users to discover RDF
+content embedded within Web pages. Discovered content can then be
+deposited, through the Semantic Bank API, into local or remote RDF data
+servers known as "Semantic Banks".
+
+---+++ Semantic Bank Service Configuration and Usage 
+
+Virtuoso's Semantic Bank Service is exposed via the endpoint /bank/ .
+
+For example, the server at http://demo.openlinksw.com/ exposes its Semantic
+Bank services at http://demo.openlinksw.com/bank/ .
+
+---++++ Setting-Up the PiggyBank FireFox plug-in 
+
+To set up the plug-in, follow the steps below.
+   1 Install the [[http://simile.mit.edu/piggy-bank/install.html][Piggybank plugin]]
+   1 restart FireFox
+   1 open _Tools_ >> _PiggyBank_ >> _My Semantic Bank Accounts_
+   1 The presented form should initially be empty.  Click the _Add_ button, and enter http://&lt;cname&gt;/bank/ for the Virtuoso's PiggyBank service endpoint, with a valid Virtuoso or ODS  account username and password, where &lt;cname&gt; is the host:port of your Virtuoso server.
+   1 Confirm the changes. _Note that on some Linux version of FireFox have skewed locations for the *confirmation* button which is often out of sight without resizing the dialog_.
+
+---++++ Working with PiggyBank plug-in
+
+Using the plug-in is simple.
+
+   1 Open a web page and then do one of the following: 
+      * press Alt-P, 
+      * go to _Tools_,  _PiggyBank_, _Browse tidbits_ on this page, or click on the RDF icon in the bottom-right part of your browser status bar.
+   1 Once the RDF data is discovered and retrieved, you are then presented with a visually intuitive insight into the extracted RDF data. At this point, you can either:
+      * Save - to the local RDF repository (plug-in), or
+      * Publish - to a Semantic Bank
+
+---++++ Exploiting Semantic Bank Data
+
+As stated above, a Semantic Bank is either an RDF data-store in its own
+right, or a gateway to such an RDF Data Store. In the case of
+Virtuoso-based Semantic Banks, you access your <nop>PiggyBank-generated RDF
+data via Virtuoso's built-in support for SPARQL.
+
+When querying your Semantic Bank's RDF Data via SPARQL, it is important to
+note that the RDF Data Set (Graph) Name for PiggyBank generated data is 
+: http://simile.org/piggybank/(user_name). 
+This is especially important since a Virtuoso RDF data-store would typically host numerous RDF
+Graphs.
+
+---++++ Sample SPARQL queries 
+
+In the following examples, PiggyBank is used to discover RDF data available
+from the [[http://www.openlinksw.com/weblogs/virtuoso/][Virtuoso Weblog]].
+
+1. Retrieve the titles of the posts based on the SIOC ontology
+
+<verbatim>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix sioc: <http://rdfs.org/sioc/ns#> 
+select ?title 
+where { 
+  graph <http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]> 
+  { ?s rdf:type sioc:Post . ?s sioc:title ?title }
+};
+</verbatim>
+
+2. Retrieve posts ordered by date of publishing, newest first
+
+<verbatim>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix sioc: <http://rdfs.org/sioc/ns#> 
+select ?title, ?created 
+where { 
+  graph <http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]> 
+  { ?s rdf:type sioc:Post . ?s sioc:title ?title . ?s sioc:created_at ?created } 
+} 
+order by desc (?created);
+</verbatim>
+
+3. Retrieve forum names (Weblog instance names) to which collected posts belong:
+
+<verbatim>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix sioc: <http://rdfs.org/sioc/ns#> 
+select distinct ?title 
+where { 
+  graph <http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]> 
+  { ?s rdf:type sioc:Post . ?s sioc:has_container ?container . ?container sioc:name ?title }
+};
+</verbatim>
+
+4. Retrieve all Persons (name and e-mail address where specified) which are mentioned, using the FOAF ontology:
+
+<verbatim>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix foaf: <http://xmlns.com/foaf/0.1/> 
+select ?name ?mbox 
+where { 
+  graph <http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]> 
+  { ?s rdf:type foaf:Person . ?s foaf:name ?name optional { ?s foaf:mbox ?mbox } }
+};
+</verbatim>
+
+---+++Sample Example
+
+
+1. From your machine go to FireFox->Tools->PiggyBank->My Semantic Bank Accounts
+
+2. Add in the shown form:
+
+   1. For bank: address: http://demo.openlinksw.com/bank
+   2. For account id: demo
+   3. For password: demo
+
+3. Go to demo.openlinksw.com/ods 
+
+4. Log in as user demo, password: demo
+
+5. Go to the Weblog tab from the main ODS Navigation
+
+6. Click the "MyBlog" instance name.
+
+7. When the weblog home page is loaded, click Alt + P.
+
+8. As result is shown the "My PiggyBank" page with all the collected information presented in items. 
+
+9. For several of the items add Tags from the form "Tag" shown for each of them. 
+
+10. As result should be shown the message "Last updated: [here goes the date value].
+
+11. You can also click "Save" and "Publish" for these items.
+
+12. Go to http://demo.openlinksw.com/sparql
+
+13. Enter for the "Default Graph URI" field: http://simile.org/piggybank/demo
+
+14. Enter for the "Query text" text-area:
+
+<verbatim>
+   prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+   prefix sioc: <http://rdfs.org/sioc/ns#>
+   select *
+   from <http://simile.org/piggybank/demo>
+   where {?s ?p  ?o}
+</verbatim>
+
+15. Click "Run Query".
+
+16. As results are shown the found results.
+
+
+
+%VOSCOPY%
+
+CategoryWebSite CategoryVirtuoso CategoryOpenSource
+%META:TOPICMOVED{by="TimHaynes" date="1154595850" from="Main.VOSPiggy" to="Main.VOSSemanticBank"}%

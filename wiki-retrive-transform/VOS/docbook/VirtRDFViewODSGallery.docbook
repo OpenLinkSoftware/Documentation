@@ -1,0 +1,94 @@
+<docbook><section><title>VirtRDFViewODSGallery</title><bridgehead class="http://www.w3.org/1999/xhtml:h3">RDF View for ODS Gallery</bridgehead>
+<emphasis>IMPORTANT!</emphasis> The following code is part of the ODS global VIEW regarding the Gallery part, it is not a separate VIEW and is strongly recommended NOT to be executed directly.
+ Instead, you should use the code from <ulink url="VirtRDFViewODSGlobal">ODS RDF Views Deployment and Demo Scripts</ulink>.<programlisting>sparql prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+        #Photo
+	create iri class ods:photo_forum &quot;http://^{URIQADefaultHost}^/dataspace/%U/photos/%U&quot;
+		(in uname varchar not null, in inst_name varchar not null)
+		option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/%U/photos/%U&quot;) .
+	create iri class ods:photo_post &quot;http://^{URIQADefaultHost}^%s&quot;
+		(in path varchar not null) option (returns &quot;http://^{URIQADefaultHost}^/DAV/%s&quot;) .
+	create iri class ods:photo_post_text &quot;http://^{URIQADefaultHost}^%s/text&quot;
+		(in path varchar not null) option (returns &quot;http://^{URIQADefaultHost}^/DAV/%s/text&quot;) .
+	create iri class ods:photo_comment &quot;http://^{URIQADefaultHost}^%s:comment_%d&quot;
+		(in path varchar not null, in comment_id int not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/DAV/%s:comment_%d&quot;) .
+
+</programlisting><para> </para>
+<programlisting>sparql
+    prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+    prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+    prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+    prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+    prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+    prefix dct: &lt;http://purl.org/dc/terms/&gt;
+    prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+    prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+    prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+    prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+    prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+    prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+    prefix calendar: &lt;http://www.w3.org/2002/12/cal#&gt;
+    prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_PHOTO_POSTS as photo_posts
+      where (^{photo_posts.}^.U_MEMBER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_PHOTO_COMMENTS as photo_comments
+      where (^{photo_comments.}^.U_MEMBER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_PHOTO_TAGS as photo_tags
+      where (^{photo_tags.}^.U_MEMBER = ^{users.}^.U_NAME)
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+
+            # Photo
+	    ods:photo_post (photo_posts.RES_FULL_PATH) a exif:IFD ;
+	    dc:title photo_posts.RES_NAME ;
+	    dct:created photo_posts.RES_CREATED ;
+	    dct:modified photo_posts.RES_MODIFIED ;
+	    sioc:content photo_posts.RES_DESCRIPTION ;
+	    sioc:has_creator ods:user (photo_posts.U_OWNER) ;
+	    foaf:maker ods:person (photo_posts.U_OWNER) ;
+	    sioc:link ods:proxy (photo_posts.RES_LINK) ;
+	    sioc:has_container ods:photo_forum (photo_posts.U_MEMBER, photo_posts.WAI_NAME) .
+
+	    ods:photo_forum (photo_posts.U_MEMBER, photo_posts.WAI_NAME)
+	    sioc:container_of
+	    ods:photo_post (photo_posts.RES_FULL_PATH) .
+
+	    ods:user (photo_posts.U_OWNER)
+	    sioc:creator_of
+	    ods:photo_post (photo_posts.RES_FULL_PATH) .
+
+	    ods:photo_post (photo_tags.RES_FULL_PATH)
+	    sioc:topic
+	    ods:tag (photo_tags.U_MEMBER, photo_tags.RES_TAG) .
+
+	    ods:tag (photo_tags.U_MEMBER, photo_tags.RES_TAG) a skos:Concept ;
+	    skos:prefLabel photo_tags.RES_TAG ;
+	    skos:isSubjectOf ods:photo_post (photo_tags.RES_FULL_PATH) .
+
+	    ods:photo_comment (photo_comments.RES_FULL_PATH, photo_comments.COMMENT_ID) a sioct:Comment ;
+	    sioc:reply_of ods:photo_post (photo_comments.RES_FULL_PATH) ;
+	    sioc:has_container ods:photo_forum (photo_comments.U_MEMBER, photo_comments.WAI_NAME) ;
+	    dc:title photo_comments.RES_NAME ;
+	    dct:created photo_comments.CREATE_DATE ;
+	    dct:modified photo_comments.MODIFY_DATE ;
+	    sioc:content photo_comments.TEXT ;
+	    foaf:maker ods:person (photo_comments.U_MAKER) .
+
+	    ods:photo_post (photo_comments.RES_FULL_PATH)
+	    sioc:has_reply
+	    ods:photo_comment (photo_comments.RES_FULL_PATH, photo_comments.COMMENT_ID) .
+	    # end Photo
+            #---
+	  } .
+    } .
+;
+</programlisting><para><ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategoryGallery">CategoryGallery</ulink></para>
+</section></docbook>

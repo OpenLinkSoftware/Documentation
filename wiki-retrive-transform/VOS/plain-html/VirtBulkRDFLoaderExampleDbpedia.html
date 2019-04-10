@@ -1,0 +1,48 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtBulkRDFLoader"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtBulkRDFLoader"}%--><p> </p>
+<h1><a name="Virtuoso Bulk Load Example: DBpedia data sets"></a> Virtuoso Bulk Load Example: DBpedia data sets</h1>
+<p>The following example demonstrates how to upload the DBpedia data sets into Virtuoso using the Bulk Loading Sequence.</p>
+<ol><li>Assuming there is a folder named &quot;<code>tmp</code>&quot; in your filesystem, and it is within a directory specified in the <b><code><a href="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#fp_acliniallowed" class="absuri">DirsAllowed</a></code></b> param defined in your <code>virtuoso.ini</code> file.
+</li>
+<li>Load the required DBpedia data sets into the &quot;<code>tmp</code>&quot; folder <ul><li>The latest data sets can be downloaded from the <a href="http://wiki.dbpedia.org/Downloads" class="absuri">DBpedia Download</a> page.
+ Note the compressed bzip&#39;ed &quot;<code>.bz2</code>&quot; data set files need to be uncompressed first as the bulk loader scripts only supports the auto extraction of gzip&#39;ed &quot;<code>.gz</code>&quot; files.
+</li>
+</ul></li>
+<li>If it hasn&#39;t already been, execute the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtBulkRDFLoaderScript" class="wikiword">Bulk Loading script</a>.
+</li>
+<li>Register the graph IRI under which the triples are to be loaded, e.g., &quot;<code>http://dbpedia.org</code>&quot;: <br><pre><br>SQL&gt; ld_dir (&#39;tmp&#39;, &#39;*.*&#39;, &#39;http://dbpedia.org&#39;);
+Done. -- 90 msec.
+</pre><br><ul><li>Note that while this procedure will also work with gzip&#39;ed files, it is important to keep the pattern: <code>&lt;name&gt;.&lt;ext&gt;.gz</code>, e.g., &#39;<code>ontology.owl.gz</code>&#39;  or <code>ontology.nt.gz</code> </li>
+<li>Note that if there are other data files in your folder (<code>tmp</code>), then their content will also be loaded into the specified graph.
+<br><br> </li>
+</ul></li>
+<li>Create a file named <b><code>global.graph</code></b> in the &quot;<code>tmp</code>&quot; folder, with its entire content being the URI of the desired target graph, e.g., <br><pre><br>http://dbpedia.org
+</pre><br></li>
+<li>Finally, execute the <code>rdf_loader_run</code> procedure.
+ This may take some time, depending on the size of the data sets.
+<br><pre><br>SQL&gt; rdf_loader_run ();
+Done. -- 100 msec.
+</pre><br></li>
+<li>As a result, the Virtuoso log should contain notification that the loading has completed: <br><pre><br>10:21:50 PL LOG: Loader started
+10:21:50 PL LOG: No more files to load. Loader has finished
+</pre><br></li>
+<li>Run a <code>checkpoint</code> to commit all transactions to the database.
+<br><pre><br>SQL&gt; checkpoint;
+Done. -- 53 msec.
+</pre><br></li>
+<li>To check the inserted triples for the given graph, execute a query similar to -- <br><pre><br>SQL&gt; SPARQL
+SELECT COUNT(*) 
+  FROM &lt;http://dbpedia.org&gt;
+  WHERE 
+    {
+      ?s ?p ?o
+    } ;
+</pre><br></li>
+<li>Install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">DBpedia</a> and <a href="https://virtuoso.openlinksw.com/download/" class="absuri">RDF Mappers</a> VAD packages, using either the Virtuoso Conductor or the following manual commands: <br><pre><br>SQL&gt; vad_install (&#39;dbpedia_dav.vad&#39;, 0);
+SQL&gt; vad_install (&#39;rdf_mappers_dav.vad&#39;, 0);
+</pre><br></li>
+<li>The Virtuoso-hosted data set can now be explored using a HTML browser, or queried from the SPARQL or Faceted Browser web service endpoints.
+ For example, with the DBpedia 3.5.1 data sets, a description of the resource Bob Marley can be viewed as: <code>http://&lt;your-cname&gt;:&lt;your-port&gt;/resource/Bob_Marley </code>  <br><br><img src="VirtBulkRDFLoaderExampleDbpedia/VirtAWSPublicDataSets07.png" style="wikiautogen"> <br><br></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtBulkRDFLoader" class="wikiword">Virtuoso Bulk data set loader</a></li>
+</ul></div></body></html>

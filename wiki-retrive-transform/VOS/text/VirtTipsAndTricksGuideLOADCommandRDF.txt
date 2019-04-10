@@ -1,0 +1,95 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How can I use the LOAD command to import RDF data?
+
+SPARQL INSERT can be done using the LOAD command:
+
+<verbatim>
+SPARQL INSERT INTO <..> { .... } [[FROM ...] { ... }]
+
+SPARQL LOAD <x> [INTO <y>]
+
+-- <ResourceURL> will be the Graph IRI of the loaded data:
+SPARQL LOAD <ResourceURL> 
+</verbatim>
+
+---++Examples
+
+---+++Load from Resource URL
+
+In order to load data from resource URL for ex: http://www.w3.org/People/Berners-Lee/card#i , execute  the following command with isql:
+
+<verbatim>
+SQL> SPARQL LOAD <http://www.w3.org/People/Berners-Lee/card#i>;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load <http://www.w3.org/People/Berners-Lee/card#i> into graph <http://www.w3.org/People/Berners-Lee/card#i> -- done
+
+1 Rows. -- 703 msec.
+SQL>
+</verbatim>
+
+---+++Load from file
+
+   1 Create DAV collection which is visible to the public, for ex: http://localhost:8890/DAV/tmp
+   1 Upload to the DAV collection a file, for example with name listall.rq and with the following content:
+<verbatim>
+SPARQL
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+SELECT ?x ?p ?o
+FROM <http://mygraph.com>
+WHERE
+  {
+    ?x rdf:type sioc:User .
+    ?x ?p ?o.
+    ?x sioc:id ?id .
+    FILTER REGEX(str(?id), "^King")
+  }
+ORDER BY ?x
+</verbatim>
+   1 Execute  the following command from isql:
+<verbatim>
+SQL>SPARQL LOAD bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/tmp/listall.rq") into graph <http://myNewGraph.com>;
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load <http://localhost:8890/DAV/tmp/listall.rq> into graph <http://myNewGraph.com> -- done
+
+1 Rows. -- 321 msec.
+</verbatim>
+
+---+++Directly LOAD triples using iSQL
+
+Triples can be directly loaded into Virtuoso specifying the literal values to inserted, by executing a command of the following form from isql:
+
+<verbatim>
+SQL>SPARQL INSERT INTO graph <http://mygraph.com>
+{
+  <http://myopenlink.net/dataspace/Kingsley#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Kingsley#this>
+  <http://rdfs.org/sioc/ns#id>
+  <Kingsley> .
+
+  <http://myopenlink.net/dataspace/Caroline#this>
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Caroline#this>
+  <http://rdfs.org/sioc/ns#id>
+  <Caroline> .
+};
+
+</verbatim>
+
+---++Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html][RDF Insert Methods in Virtuoso]]

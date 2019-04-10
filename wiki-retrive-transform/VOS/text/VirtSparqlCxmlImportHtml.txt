@@ -1,0 +1,162 @@
+%META:TOPICPARENT{name="VirtSparqlCxmlFacetPivotBridgeHtml"}%
+---+Pivot Collections (Part 5)
+
+---++Contents
+
+Part 1: [[VirtSparqlCxmlHtml][Introduction]]
+
+Part 2: [[VirtSparqlCxmlHtml][SparqlCxml]]
+
+Part 3: [[VirtSparqlCxmlDzcsHtml][SparqlCxml Deep Zoom Collections]]
+
+Part 4: [[VirtSparqlCxmlHtmlPivotViewer][HtmlPivotViewer]]
+
+Part 5: Importing CXML
+
+   * [[#AncImportingCxml][Importing CXML]]
+      * [[#AncCxmlToRdfImport][DB.DBA.CXML_TO_RDF_IMPORT_URL()]]
+      * [[#AncGeneratedSubjectUris][Generated Subject URIs]]
+      * [[#AncGeneratedPredicates][Generated Predicates]]
+         * [[#AncPredsForCollectionAndItemAttributes][Predicates for Collection and Item Attributes]]
+         * [[#AncPredsForItemFacets][Predicates for Item Facets]]
+         * [[#AncConvertToCommonPreds][Converting Generated Predicates to Common Predicates]]
+
+Part 6: [[VirtSparqlCxmlFacetPivotBridgeHtml][Facet Pivot Bridge]]
+
+Part 7: [[VirtSparqlCxmlDETsHtml][DETs : Persisting SPARQL Query Results to DAV]]
+
+Part 8: [[VirtSparqlCxmlFAQsHtml][Frequently Asked Questions (FAQs)]]
+
+Part 9: [[VirtSparqlCxmlGlossaryHtml][Glossary]]
+
+---
+#AncImportingCxml
+---++Importing CXML
+
+As well as being able to generate CXML from RDF, Virtuoso provides the facility to do the reverse and generate RDF from imported CXML. The sparql_cxml VAD includes the procedure:
+
+#AncCxmlToRdfImport
+---+++<nowiki>DB.DBA.CXML_TO_RDF_IMPORT_URL (in url varchar)</nowiki><br/>
+*Parameters*:
+   * *url* : the URL of the CXML file to import
+
+*Usage examples*:
+   * <nowiki>DB.DBA.CXML_TO_RDF_IMPORT_URL ('http://content.getpivot.com/Collections/uspresidents/uspresidents.cxml');</nowiki>
+   * <nowiki>DB.DBA.CXML_TO_RDF_IMPORT_URL ('http://www.bluesware.ch/parlament/collection/Parlament.cxml');</nowiki>
+   * <nowiki>DB.DBA.CXML_TO_RDF_IMPORT_URL ('http://pivot.lobsterpot.com.au/Collections/WindowsPhone7Pivot.cxml');</nowiki>
+   * <nowiki>DB.DBA.CXML_TO_RDF_IMPORT_URL ('http://pivot.lobsterpot.com.au/collections/PASSChapters.cxml');</nowiki>
+   * <nowiki>DB.DBA.CXML_TO_RDF_IMPORT_URL ('http://www.wssdemo.com/livepivot/collections/sharepoint/sharepoint.cxml');</nowiki>
+
+The given CXML file is imported into a graph of the same name and can be queried like any other. e.g.
+<verbatim>
+DESCRIBE ?s FROM <http://content.getpivot.com/Collections/uspresidents/uspresidents.cxml> where { ?s ?p ?o }
+
+SELECT * FROM  <http://content.getpivot.com/Collections/uspresidents/uspresidents.cxml> WHERE {?s ?p ?o . ?s virtcxml:FacetImage ?image . }
+
+define input:inference "virtrdf-label"
+DESCRIBE  ?s from <http://pivot.lobsterpot.com.au/collections/PASSChapters.cxml> where { ?s ?p ?o }
+</verbatim>
+Deep Zoom images associated with the collection are also imported into the DZC_xxx tables used to serve DZIs when generating CXML (see VirtSparqlCxmlDzcs). Imported images are assigned to the <nowiki>virtcxml:FacetImage</nowiki> predicate. This can be used directly with the ?image reserved query variable in SELECT statements used for CXML generation. The second DESCRIBE example above exploits inferencing to use the imported images as images for a new dynamic collection. The virtrdf-label inference context includes an entry:
+<verbatim>
+virtcxml:FacetImage owl:equivalentProperty foaf:depiction
+</verbatim>
+Graph virtcxml: in turn includes an entry:
+<verbatim>
+foaf:depiction
+  a virtcxml:FacetCategoryPattern ;
+  virtcxml:FacetType "Item/@virt:Image" ;
+  virtcxml:FacetDescription "A facet for absolute URI of depiction of a collection item" .
+</verbatim>
+with the result that imported images associated with <nowiki>virtcxml:FacetImage</nowiki> automatically have a <nowiki>virtcxml:FacetType</nowiki> of "Item/@virt:Image" and are seen by DESCRIBE as candidate images for the dynamic collection.
+
+#AncGeneratedSubjectUris
+---+++Generated Subject URIs
+
+Each item in the collection receives its own subject URI. The subject URI takes the form: &lt;{collection-URI}#{item-ID}&gt;. 
+
+e.g. Item #2565 in collection <nowiki>http://www.bluesware.ch/parlament/collection/Parlament.cxml</nowiki>
+<verbatim>
+<Collection Name="Das Schweizer Parlament 2010 (aktualisiert am 6. Dez.2010)" SchemaVersion="1.0">
+    <FacetCategories>
+        <FacetCategory Name="Funktion" Type="String" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="true"/>
+        . . .
+    </FacetCategories>
+    <Items ImgBase="p_deepzoom\p1.dzc">
+        <Item Id="2565" Name="Abate Fabio" Img="#0" Href="http://www.parlament.ch/d/suche/Seiten/biografie.aspx?biografie_id=801">
+        . . .
+</verbatim>
+ is assigned subject URI <nowiki>&lt;http://www.bluesware.ch/parlament/collection/Parlament.cxml#2565&gt;</nowiki>
+
+#AncGeneratedPredicates
+---+++Generated Predicates
+
+#AncPredsForCollectionAndItemAttributes
+---++++Predicates for Collection and Item Attributes
+
+Item attributes Href, Description etc are mapped to predicates named virtcxml:Facet{attribute-name}, where:
+<verbatim>
+prefix virtcxml: &lt;http://www.openlinksw.com/schemas/virtcxml#&gt;
+</verbatim>
+
+| *CXML Entity* | *Attribute* | *Mapped to predicate* |
+| Item | Href | <nowiki>virtcxml:FacetHref</nowiki> |
+| Item | Description | <nowiki>virtcxml:FacetDescription</nowiki> |
+| Item | Image | <nowiki>virtcxml:FacetImage</nowiki> |
+| Item | Related | <nowiki>virtcxml:FacetRelated</nowiki> |
+| Collection | Copyright | <nowiki>virtcxml:FacetCopyright</nowiki> |
+
+Rather than just holding an image number, predicate <nowiki>virtcxml:FacetImage</nowiki> holds the full path of the corresponding Deep Zoom image, for example <nowiki>http://www.bluesware.ch/parlament/collection/p_deepzoom/2023.dzi</nowiki>. The image number in the .cxml file is dereferenced through the collection's .dzc file, identified by the <nowiki>Items/@ImgBase</nowiki> attribute, to obtain the DZI path.
+
+#AncPredsForItemFacets
+---++++Predicates for Item Facets
+
+A predicate is generated for each facet category. The predicate URI takes the form virtcxml:Custom-{facet-category-name}
+e.g. A collection containing the following facet categories:
+<verbatim>
+<Collection Name="Das Schweizer Parlament 2010 (aktualisiert am 6. Dez.2010)" SchemaVersion="1.0">
+<FacetCategories>
+<FacetCategory Name="Alter" Type="Number" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="false"/>
+<FacetCategory Name="Amtsjahre" Type="Number" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="false"/>
+<FacetCategory Name="Funktion" Type="String" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="true"/>
+<FacetCategory Name="Geburtsdatum" Type="DateTime" Format="dd. MMM. yyyy" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="false"/>
+<FacetCategory Name="Geschlecht" Type="String" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="true"/>
+<FacetCategory Name="Kanton" Type="String" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="true"/>
+<FacetCategory Name="Kinder" Type="Number" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="false"/>
+<FacetCategory Name="Parlamentsmandate" Type="Number" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="false"/>
+<FacetCategory Name="Partei" Type="String" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="true"/>
+<FacetCategory Name="Vorname" Type="String" p:IsFilterVisible="true" p:IsMetaDataVisible="true" p:IsWordWheelVisible="true"/>
+</FacetCategories>
+...
+</verbatim>
+when imported, generates the predicates:
+<verbatim>
+http://www.openlinksw.com/schemas/virtcxml#Custom-Alter
+http://www.openlinksw.com/schemas/virtcxml#Custom-Amtsjahre
+http://www.openlinksw.com/schemas/virtcxml#Custom-Funktion
+http://www.openlinksw.com/schemas/virtcxml#Custom-Geburtsdatum
+http://www.openlinksw.com/schemas/virtcxml#Custom-Geschlecht
+http://www.openlinksw.com/schemas/virtcxml#Custom-Kanton
+http://www.openlinksw.com/schemas/virtcxml#Custom-Kinder
+http://www.openlinksw.com/schemas/virtcxml#Custom-Parlamentsmandate
+http://www.openlinksw.com/schemas/virtcxml#Custom-Partei
+http://www.openlinksw.com/schemas/virtcxml#Custom-Vorname
+</verbatim>
+
+#AncConvertToCommonPreds
+---++++Converting Generated Predicates to Common Predicates
+
+Following a CXML import, some of the generated predicates can be converted to more popular predicates using the Virtuoso/PL procedure <nowiki>DB.DBA.CXML_FACETS_TO_COMMON_PREDS</nowiki>. The affected predicates are detailed below:
+| *Generated Predicate* | *Converted To* |
+| <nowiki>virtcxml:FacetName</nowiki> | rdfs:label |
+| <nowiki>virtcxml:FacetDescription</nowiki> | dc:description |
+| <nowiki>virtcxml:FacetHref</nowiki> | <nowiki>sioc:links_to</nowiki> |
+| <nowiki>virtcxml:FacetImage</nowiki> | foaf:depiction |
+
+---+++++Usage Example:
+<verbatim>
+sparql clear graph <http://qq/1>;
+sparql insert in <http://qq/1> { ?s ?p ?o } from <http://content.getpivot.com/Collections/uspresidents/uspresidents.cxml> where {?s ?p ?o};
+DB.DBA.CXML_FACETS_TO_COMMON_PREDS ('http://qq/1');
+</verbatim>
+
+

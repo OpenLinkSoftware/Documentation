@@ -1,0 +1,159 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I make Multi Thread Virtuoso connection using JDBC?"></a>How can I make Multi Thread Virtuoso connection using JDBC?</h1>
+<p>This sample demonstrates simple java code for performing Multi Thread Virtuoso connection using JDBC.
+It starts 3 threads: one thread executes SPARQL select and two threads execute SPARQL inserts:</p>
+<br><pre>import java.util.*;
+import java.sql.*;
+import java.math.*;
+
+public class MTtest extends Thread {
+
+  int mode = 0;
+  int startId = 0;
+
+  static  String urlDB = &quot;jdbc:virtuoso://localhost:1111&quot;;
+
+ 
+ public MTtest(int _mode, int _init) {
+   mode = _mode;
+   startId = _init;
+ }
+
+
+
+ void prnRs(ResultSet rs)
+ {
+   try {
+     ResultSetMetaData rsmd;
+
+     System.out.println(&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;);
+     rsmd = rs.getMetaData();
+     int cnt = rsmd.getColumnCount();
+
+       while(rs.next()) {
+         Object o;
+
+         System.out.print(&quot;Thread:&quot;+Thread.currentThread().getId()+&quot;  &quot;);
+         for (int i = 1; i &lt;= cnt; i++) {
+           o = rs.getObject(i);
+           if (rs.wasNull())
+             System.out.print(&quot;&lt;NULL&gt; &quot;);
+           else
+             System.out.print(&quot;[&quot;+ o + &quot;] &quot;);
+         }
+         System.out.println();
+       }
+
+   } catch (Exception e) {
+     System.out.println(e);
+     e.printStackTrace();
+   }
+   System.out.println(&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;);
+ }
+
+
+
+
+ public static void main(String argv[])
+ {
+  try {
+
+    Class.forName(&quot;virtuoso.jdbc3.Driver&quot;);
+
+    Connection conn = DriverManager.getConnection(urlDB,&quot;dba&quot;,&quot;dba&quot;);
+    Statement st = conn.createStatement();
+
+    st.execute(&quot;sparql clear graph &lt;mttest&gt;&quot;);
+    st.execute(&quot;sparql insert into graph &lt;mttest&gt; { &lt;xxx&gt; &lt;P01&gt; \&quot;test1\&quot; }&quot;);
+    st.execute(&quot;sparql insert into graph &lt;mttest&gt; { &lt;xxx&gt; &lt;P01&gt; \&quot;test2\&quot; }&quot;);
+    st.execute(&quot;sparql insert into graph &lt;mttest&gt; { &lt;xxx&gt; &lt;P01&gt; \&quot;test3\&quot; }&quot;);
+    st.execute(&quot;sparql insert into graph &lt;mttest&gt; { &lt;xxx&gt; &lt;P01&gt; \&quot;test4\&quot; }&quot;);
+    st.execute(&quot;sparql insert into graph &lt;mttest&gt; { &lt;xxx&gt; &lt;P01&gt; \&quot;test5\&quot; }&quot;);
+    conn.close();
+
+
+    int init = 0;
+
+    for(int i=0; i &lt; 2; i++) {
+      MTtest thr1 = new MTtest(1, init);
+      init+=10;
+
+      MTtest thr2 = new MTtest(0, init);
+      init+=10;
+
+      MTtest thr3 = new MTtest(0, init);
+      init+=10;
+
+      thr1.start();
+      thr2.start();
+      thr3.start();
+
+      thr1.join();
+      thr2.join();
+      thr3.join();
+    }
+
+    System.out.println(&quot;===End===&quot;);
+
+  } catch (Exception e) {
+    System.out.print(e);
+    e.printStackTrace();
+  }
+ }
+
+
+ public void run( ) 
+ {
+  try {
+
+    Connection conn = DriverManager.getConnection(urlDB,&quot;dba&quot;,&quot;dba&quot;);
+    Statement st;
+
+    st = conn.createStatement();
+
+    if (mode == 1) 
+    {
+      String query = &quot;sparql SELECT * from &lt;mttest&gt; WHERE {?s ?p ?o}&quot;;
+      ResultSet rs = st.executeQuery(query);
+      prnRs(rs);
+    }
+    else
+    {
+      long id = Thread.currentThread().getId();
+      for (int i =0; i &lt; 5; i++)
+        st.execute(&quot;sparql insert into graph &lt;mttest&gt; { &lt;xxx&quot;+startId+&quot;&gt; &lt;P&quot;+id+&quot;&gt; \&quot;test&quot;+i+&quot;\&quot; }&quot;);
+
+      System.out.println(&quot;\nThread:&quot;+Thread.currentThread().getId()+&quot;  ===Rows Inserted===&quot;);
+    }
+
+
+    conn.close();
+  
+  } catch (SQLException e) {
+        System.out.println(&quot;===========================================================&quot;);
+        System.out.println(&quot;&gt;&gt;[&quot;+e.getMessage()+&quot;]&quot;);
+        System.out.println(&quot;&gt;&gt;[&quot;+e.getErrorCode()+&quot;]&quot;);
+        System.out.println(&quot;&gt;&gt;[&quot;+e.getSQLState()+&quot;]&quot;);
+        System.out.println(e);
+        System.out.println(&quot;===========================================================&quot;);
+        e.printStackTrace();
+        System.exit(-1);
+  } catch (Exception e) {
+        System.out.println(&quot;===========================================================&quot;);
+        System.out.println(e);
+        System.out.println(&quot;===========================================================&quot;);
+        e.printStackTrace();
+        System.exit(-1);
+  }
+ } // run( )
+
+
+
+
+
+}
+</pre><p> </p>
+<h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/VirtuosoDriverJDBC.html" class="absuri">Virtuoso Driver for JDBC</a> </li>
+</ul></div></body></html>

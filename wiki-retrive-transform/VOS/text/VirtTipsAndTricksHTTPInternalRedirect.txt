@@ -1,0 +1,54 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+Performing Internal HTTP redirects
+
+
+---++What?
+
+Virtuoso as opposed to HTTP based redirection. 
+
+---++Why? 
+
+Handling situations where HTTP level redirection is inadequate. For example, <code>303</code> redirection offered when implementing hashless Linked Data URIs. Instead of sending a 303 Virtuoso will redirect to the URL in "Location:"  and return <code>200 OK</code>.
+
+Basically, this is like <code>curl -iL</code> instead of <code>curl -i</code>, but implemented inside Virtuoso.
+
+---++How? 
+
+Directly or via URI template syntax used to construct rewrite rules for Virtuoso virtual directories / web service endpoints for the purposes of which Virtuoso offers the [[http://http://docs.openlinksw.com/virtuoso/fn_http_internal_redirect.html][http_internal_redirect function]]:
+
+<verbatim> 
+http_internal_redirect 
+  ( 
+    in full_path varchar,            -- Set new logical path to be redirected to 
+    [ in p_full_path varchar ] ,     -- Set physical path to be redirected to 
+    [ in long_url varchar ],         -- Reserved for internal usage 
+    [ in keep_lpath integer ]        -- Reserved for internal usage 
+  )  
+</verbatim>
+
+
+---+++Example
+
+<verbatim>
+create procedure my_redirect()
+{
+  declare full_path varchar;
+      ...
+      full_path := '/DAV/VAD/test/';
+      http_internal_redirect (full_path);
+      set_user_id ('demo');
+      set http_charset='utf-8';
+      http_header ('Content-Type: text/xml; charset=UTF-8\r\n');
+      WS.WS.GET (path, pars, lines);
+      return null;
+    }
+}
+</verbatim>
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/functions.html][Virtuoso Documentation]]

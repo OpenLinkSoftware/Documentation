@@ -1,0 +1,1517 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICINFO{author="KingsleyIdehen" date="1161195828" format="1.1" version="1.1"}%--><p> </p>
+<!--End of %META:TOPICINFO{author="KingsleyIdehen" date="1161195828" format="1.1" version="1.1"}%--> <!--Begin of %META:TOPICPARENT{name="VOSRDF"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VOSRDF"}%--> <!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--> </p>
+<h1><a name="Mapping Relational Data to RDF in Virtuoso"></a> Mapping Relational Data to RDF in Virtuoso</h1>
+<p>Orri Erling (Program Manager, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso), Ivan Mikhailov (Lead Developer, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso).</p>
+<h2><a name="Abstract"></a> Abstract</h2>
+<p>This paper discusses Virtuoso&#39;s new declarative Meta Schema Language for mapping SQL Data to RDF Ontologies.
+ This functionality, commonly referred to as &quot;Linked Data Views&quot;, enables the exposure of pre-existing ODBC or JDBC accessible relational data as Virtual RDF Graphs thereby exposing said data to SPARQL query access directly or via Virtuoso&#39;s in-built support for SPARQL within SQL (SPASQL).
+ The entire process results in RDF Data sets and optimized data access without physical regeneration of RDF Data Sets from SQL Data.</p>
+<p>Considering that almost all of the present generation of Web 2.0 and Enterprise applications run atop relational databases, the need for efficiently exposing existing data to the burgeoning Semantic Web is obvious.
+ For instance, it now possible to dynamically generate RDF Data Sets for popular ontologies such as SIOC, SKOS, FOAF, and ATOM/OWL without disruption to the existing database infrastructure that drives existing Web 1.0 or Web 2.0 solutions.
+ The same applies to Enterprises seeking to exploit many of the collaborative prowess of the Web 2.0 application profiles.
+ As part of this paper we provide a simple example of how the Weblog Data Space within the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Spaces collective is mapped to the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> Ontology en route to making the Weblog Data Space data accessible to SPARQL.</p>
+<p> </p>
+<h2><a name="Introduction"></a> Introduction</h2>
+<p>The Virtuoso RDF meta schema is a built-in feature of Virtuoso&#39;s SPARQL to SQL translator.
+ It recognizes triple patterns that refer to graphs for which an alternate representation is declared and translates these into SQL accordingly.
+ The main purpose of this is mapping SPARQL queries onto existing relational databases.</p>
+<p>There exists previous work from many parties for rendering relational data as RDF and opening it to SPARQL access.
+ We can mention D2RQ, SPASQL, Squirrel RDF and others.
+ The Virtuoso effort differs from these mainly in the following:</p>
+<ul><li>Integration with a triple store.
+ Virtuoso can process a query for which some triple patterns will go to local or remote relational data and some to local physical RDF triples.
+</li>
+<li>Integration with SQL.
+ Since SPARQL and SQL share the same run time and query optimizer, the query compilation decisions are always made with the best knowledge of the data and its location.
+ This is especially important when mixing triples and relational data or when dealing with relational data distributed across many outside databases.
+</li>
+<li>No limits on SPARQL.
+ It remains possible to make queries with unspecified graph or predicate against mapped relational data, even though these may sometimes be inefficient.
+</li>
+<li>Coverage of the whole relational model.
+ Multi-part keys, etc., are supported in all places.</li>
+</ul><h2><a name="Rationale"></a> Rationale</h2>
+<p>Since most of the data that is of likely use for the emerging semantic web is stored in relational databases, the argument for exposing this to SPARQL access is clear.
+ We note that historically, SQL access to relational data has essentially never been given to the public outside of the organization.
+ If programmatic access to corporate IS has been available to the public, it has been through dynamic web pages or more recently web services.
+ There are reasons of performance, security, maintainability and so forth for this.</p>
+<p>The culture of the emerging semantic web is however taking a different turn.
+ Since RDF and OWL offer a merge-able and query-able model for heterogeneous data, it is more meaningful and maintainable to expose selected data for outside query than it would be with SQL.
+ Advances in hardware make this also less of a performance issue than it would have been in the client-server database era.</p>
+<p>In the context of Virtuoso, since Virtuoso is originally a virtual/federated database, incorporating SPARQL to relational mapping is an evident extension of the product&#39;s mission as a multi-protocol, multi-platform connector between information systems.</p>
+<h2><a name="Graph Patterns, Value and IRI Classes"></a> Graph Patterns, Value and IRI Classes</h2>
+<p>In the simplest sense, any relational schema can be rendered into RDF by converting all primary keys and foreign keys into IRI&#39;s, assigning a predicate IRI to each column, and an rdf:type predicate for each row linking it to a RDF class IRI corresponding to the table.
+ Then a triple with the primary key IRI as subject, the column IRI as predicate and the column&#39;s value as object is considered to exist for each column that is neither part of a primary or foreign key.</p>
+<p>Strictly equating a subject value to a row and each column to a predicate is often good but is too restrictive for the general case.
+ For example, multiple triples with the same object and predicate can exist.
+ Or a single subject can get single-valued properties from multiple tables or in some cases stored procedures.</p>
+<a name="BasicLanguageElements">
+<p> The basic elements of the Virtuoso RDF meta schema are: <a name="IriClass">
+ </a></p>
+<ul><li>IRI Class - This declares that a key column or set of key columns gets converted into a URI in a certain way.
+ When declaring that a table&#39;s primary key is converted into a URI according to one IRI class, one usually declares that all foreign keys referring to this class also get converted into an IRI as per this same class.
+<a name="ValueClass">
+ </a></li>
+<li>Value Class - This is a mechanism for unit conversions, for converting enumerations into IRI&#39;s or any other scalar to scalar conversion.
+ The difference between a value class and an IRI class is that a value resulting from converting a relational column according to a value class is not necessarily an IRI joinable to the subject or predicate of a triple.
+<a name="QuadPattern">
+ </a></li>
+<li>Quad pattern - This declares that a quad with any combination of specified or unspecified G, S, P or O is stored in a non-default way.
+ The patterns are grouped together in Linked Data Views.
+ A quad pattern consists of the following: <ul><li>Subject - This can be an IRI class followed by one of more columns of a table.
+ The IRI class specifies how the column values are combined into an IRI string and how an IRI string is decomposed back into the key value.
+ Alternately, this can be a constant IRI.
+</li>
+<li>Predicate - This is most often a constant IRI but can also be an IRI class as with the subject.
+</li>
+<li>Object - This can be an IRI class applied to columns, a value class applied to a column or a literal IRI or scalar.
+</li>
+<li>Condition - This is an optional SQL search condition.
+ If the search condition is true when applied to a row of the table designated in the subject, predicate and object patterns, then the triple is considered to exist, otherwise not.
+</li>
+<li>Optional RDF type of the subject.
+ If the subject is known to be of a type disjoint from this type, then the quad pattern will not apply.
+ We note that when S, P, or O refers to columns of a table, all of these should be to the same table.
+ For complex joins, the table in question can also be a SQL view joining multiple tables.
+Thus the search condition of the quad pattern does not have to be used as a join condition between different tables.
+</li>
+<li>Graph - This is most often a constant IRI but can also be an IRI class as with the subject.
+ It is very common for many quad patterns of one SQL schema to share one constant graph, but one meta schema may consist of quad patterns with any number of different graph declarations.
+</li>
+</ul></li>
+<li>Quad Storage -- This is a named set of quad patterns.
+ This is used for compartmentalizing the RDF to SQL mapping.
+ This allows specifying that a SPARQL query will be executed using only quad patterns of the given quad storage.
+Declarations of IRI classes, value classes and quad patterns are shared between all quad storages of an RDF meta schema but every quad storage contains only a subset of all available quad patterns.
+ Two quad storages are always defined: a &#39;virtrdf:default&#39; one usually consists of everything (all relational mappings plus a table of physical quads) and an &#39;virtrdf:empty&#39; storage that refers to single table of physical quads).</li>
+</ul><p>A special case of IRI or value class is the identity class, which is simply marked by table.column.
+ For this to occur as S or P, the column must be of the IRI ID type.
+ For an O, the column may be of any type.</p>
+<a name="SiocMappingExample1">
+<p> </p>
+<h3><a name="Example - Mapping Virtuoso Database Users and Roles to Accounts in the SIOC Ontology"></a> Example - Mapping Virtuoso Database Users and Roles to Accounts in the SIOC Ontology</h3>
+<p>Here we map the Virtuoso sys_users and sys_role_grant tables to the SIOC ontology.
+ The tables are in part declared as follows, some columns are omitted for brevity:</p>
+<br><pre>create table sys_users (u_id int primary key, u_name varchar, u_is_role int, u_e_mail, u_home varchar, u_dav_enable int...)
+create table sys_role_grants (gi_super int, gi_sub int, gi_direct, primary key (gi_super, gi_sub, gi_direct));
+</pre><p> The column gi_super is the role and gi_sub is the principal to which the role is granted.
+ Both refer to u_id in sys_users.
+ A row of sys_users is either a role or an account, as indicated by u_is_role.
+ All role memberships, including indirect ones are listed in sys_role_grants, the gi_direct flag shows whether this is a directly granted role.</p>
+<p>We can map this into the sioc:User and sioc:Usergroup RDF classes.
+ These are then related by the mutually inverse predicates sioc:member_of and sioc:has_member.
+Additionally, a group can have other groups as members, although not circularly.</p>
+<p>To define this mapping, we need the following group of declarations that form one big statement:</p>
+<br><pre>sparql
+pragma prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+pragma prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+
+</pre><p> -- We put all the SIOC names in the original SIOC namespace.
+ The names that pertain to the mapping go into the oplsioc namespace.</p>
+<br><pre>drop graph iri(&quot;^{URIQADefaultHost}^/dataspace&quot;) .
+</pre><p> -- We have the notation ^{URIQADefaultGraph<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/URIQADefaultGraph&parent=VOSSQLRDF" class="wikiword">?</a>}^ to refer to the default host declared for the server on which the mapping is being loaded.
+ This allows IRI&#39;s to be dereferenceable on the host itself.
+ For example, the IRI&#39;s declared for the various keys can go to dynamic web pages giving information on the entities being described.
+In addition, the URIQA protocol server uses this host name to convert relative URIs of local web pages into absolute URIs that can be used by browsers.</p>
+<br><pre>create iri class oplsioc:user_iri
+  &quot;http://^{URIQADefaultHost}^/sys/user?id=%d&quot; (in uid integer not null) .
+
+create iri class oplsioc:group_iri
+  &quot;http://^{URIQADefaultHost}^/sys/group?id=%d&quot; (in gid integer not null) .
+create iri class oplsioc:membership_iri
+  &quot;http://^{URIQADefaultHost}^/sys/membersip?super=%d&amp;sub=%d&quot;
+  (in super integer not null, in sub integer not null) .
+
+create iri class oplsioc:dav_iri &quot;http://^{URIQADefaultHost}^%s&quot; (in path varchar) .
+
+create iri class oplsioc:grantee_iri using
+  function DB.DBA.RDF_DF_GRANTEE_ID_URI (in id integer) returns varchar ,
+  function DB.DBA.RDF_DF_GRANTEE_ID_URI_INVERSE (in id_iri varchar) returns integer .
+
+make oplsioc:user_iri subclass of oplsioc:grantee_iri .
+make oplsioc:group_iri subclass of oplsioc:grantee_iri .
+
+</pre><p> -- Here we declare the entities that we will see in RDF.
+ These are the user and usergroup and their abstract superclass called grantee.
+ Note that the GI_SUB column of sys_role_grants can refer to either a user or a group and we have decided to give them different IRI&#39;s.
+ This is not absolutely necessary since we can tell from the id whether something is a user or group but this may be good for readability and serves to illustrate features of the mapping.</p>
+<p>We can map the group membership simply as a many to many without attributes.
+ For some queries, though, we will need to see this relationship as an entity with its own attributes, for example whether the grant is direct and whether it is re-grantable.
+(the sql with admin option).</p>
+<p>For the case where we are interested in the attributes of the relationship, we define the iri class for membership, although this is not part of SIOC, hence the oplsioc namespace.</p>
+<br><pre>alter quad storage virtrdf:DefaultQuadStorage
+  {
+    create virtrdf:SysUsers as graph iri (&quot;http://^{URIQADefaultHost}^/dataspace&quot;) option (exclusive)
+      {
+        oplsioc:user_iri (DB.DBA.SYS_USERS.U_ID)
+            a sioc:user where (^{alias}^.U_IS_ROLE = 0) ;
+            sioc:email U_E_MAIL ;
+            sioc:login U_NAME ;
+            oplsioc:home oplsioc:dav_iri (U_HOME) where (^{alias}^.U_DAV_ENABLE = 1) ;
+            oplsioc:name U_FULL_NAME where (^{alias}^.U_IS_ROLE = 0) .
+        oplsioc:group_iri (DB.DBA.SYS_USERS.U_ID)
+            a sioc:role where (^{alias}^.U_IS_ROLE = 1) .
+        oplsioc:group_iri (DB.DBA.SYS_ROLE_GRANTS.GI_SUPER)
+            sioc:has_member oplsioc:grantee_iri (GI_SUB) ;
+            oplsioc:group_of_membership
+                oplsioc:membership_iri (GI_SUPER, GI_SUB) .
+        oplsioc:grantee_iri (DB.DBA.SYS_ROLE_GRANTS.GI_SUB)
+            sioc:has_function oplsioc:group_iri (GI_SUPER) ;
+            oplsioc:member_of
+                oplsioc:membership_iri (GI_SUPER, GI_SUB) .
+        oplsioc:membership_iri (DB.DBA.SYS_ROLE_GRANTS.GI_SUPER, GI_SUB)
+            oplsioc:is_direct GI_DIRECT ;
+            rdf:type oplsioc:grant .
+      }
+  }
+;
+</pre><p> -- Now we declare the actual mapping.
+ In the graph /dataspace of the default host of the server, the above rules will apply.</p>
+<p>The first rule declare that <code>?s rdf:type sioc:User</code> is true of any IRI matching the user_iri (sys_users.u_id) pattern.
+ This means that: </p>
+<ul><li>the constant part of the IRI is as defined for the user_iri IRI class.
+</li>
+<li>there is a row of DB.DBA.SYS_USERS with U_ID equal to the number extracted form the IRI as per the format string in the create iri class statement, i.e.
+ <code>^{URIQADefaultHost<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/URIQADefaultHost&parent=VOSSQLRDF" class="wikiword">?</a>}^/user?id=%d</code>.
+</li>
+<li>The rule is applicable U_IS_ROLE column of the row should be equal to zero.</li>
+</ul><p>After this, we map some scalar properties, for example email.
+ In defining repeating predicates for the same subject, the subject does not have to be repeated if the semicolon is used as delimiter, just as with the SPARQL syntax for triple patterns.
+Since U_E_MAIL is just a string, no special mapping is needed.
+ If we wanted it as a mailto:// IRI, we could define an IRI class that would convert the string between the SPARQL and SQL values.</p>
+<p>The rule with <code>group_iri (SYS_USERS.U_ID) subject</code> is almost identical to the first rule with <code>user_iri (SYS_USERS.U_ID)</code> subject.</p>
+<p>Then we declare the many-to-many between roles and users.
+ The predicates are the SIOC has_function and has_member.
+ They are identical, except that the subject and object are reversed.
+ The group is always a group, the member is either a group or user, hence the use of the grantee_iri IRI class.
+ The mapping functions of this IRI class will have to consult the SYS_USERS table to decide which kind of IRI to make:</p>
+<br><pre>create function DB.DBA.RDF_DF_GRANTEE_ID_URI (in id integer)
+{
+  declare is_role integer;
+  is_role := coalesce ((select top 1 U_IS_ROLE from DB.DBA.SYS_USERS where U_ID = id));
+  if (is_role is null)
+    return NULL;
+  else if (is_role)
+    return sprintf (&#39;http://%s:/sys/group?id=%d&#39;, get_uriqa_default_host(), id);
+  else
+    return sprintf (&#39;http://%s:/sys/user?id=%d&#39;, get_uriqa_default_host(), id);
+}
+;
+
+create function DB.DBA.RDF_DF_GRANTEE_ID_URI_INVERSE (in id_iri varchar)
+{
+  declare parts any;
+  parts := sprintf_inverse (id_iri, concat (&#39;http://&#39;, get_uriqa_default_host(), &#39;/sys/user?id=%d&#39;, 0);
+  if (parts is not null)
+    { -- The syntax of given IRI matches to the format pattern for IRIs of user accounts
+      if (not exists (select top 1 1 from DB.DBA.SYS_USERS where U_ID = parts[0] and not U_IS_ROLE))
+        return NULL; -- The ID specified is not valid user ID
+      return parts[0]; -- Both syntax and the ID value are OK
+    }
+  parts := sprintf_inverse (id_iri, concat (&#39;http://&#39;, get_uriqa_default_host(), &#39;/sys/group?id=%d&#39;, 0);
+  if (parts is not null)
+    {
+      if (not exists (select top 1 1 from DB.DBA.SYS_USERS where U_ID = parts[0] and U_IS_ROLE))
+        return NULL;
+      return parts[0];
+    }
+  return NULL;
+}
+;
+</pre><p> The clause <code>options (exclusive)</code> instructs the SPARQL compiler that all quads of the graph <code>&#39;http://^{URIQADefaultHost<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/URIQADefaultHost&parent=VOSSQLRDF" class="wikiword">?</a>}^/dataspace&#39;</code> are described by this set of declared quad patterns.
+ Even if the table of physical quads contains quads with graph <code>&#39;http://^{URIQADefaultHost<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/URIQADefaultHost&parent=VOSSQLRDF" class="wikiword">?</a>}^/dataspace&#39;</code> they may be ignored by the SPARQL query.
+ Any group of quad patterns or a single quad pattern can be declared exclusive.
+ Exclusive clauses may conflict.
+ Consider an exclusive group of patterns for <code>.../dataspace</code> graph and an single exclusive quad pattern for <code>sioc:email</code> predicate (say, one might have a table DB.DBA.E_MAILS with G, S and O columns of triples and a <code>sioc:email</code> predicate is assumed for all quads stored there).
+ Consider a query </p>
+<br><pre>&lt;code&gt;sparql select * where { graph &lt;http://localhost/dataspace&gt; { ?s sioc:email ?o } }&lt;/code&gt;
+</pre><p>that contains a triple pattern that matches both <code>.../dataspace</code> and <code>sioc:email</code> mapping rules.
+ Each rule prevents the compiler from using another rule.
+ To resolve ambiguities, a quad storage may specify the order of quad patterns so that the compiler will use the first suitable quad pattern and ignore the rest.</p>
+<h2><a name="Sample Queries"></a> Sample Queries</h2>
+<h3><a name="Two Triple Patterns As A Single Table Lookup"></a> Two Triple Patterns As A Single Table Lookup</h3>
+<p>Select all accounts that have both full names and home DAV collections.
+</p>
+<br><pre>sparql
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+select ?fullname ?home
+where {
+  graph &lt;http://localhost/dataspace&gt; {
+    ?uid sioc:name ?fullname .
+    ?uid oplsioc:home ?home } }
+
+fullname         home
+VARCHAR          VARCHAR
+_____________________________________________________
+
+Ivan Mikhailov   http://localhost/DAV/home/iv_an_ru/
+Orri Erling      http://localhost/DAV/home/oerling/
+</pre><p> The generated SQL code contains only one table in FROM clause and its WHERE clause contains texts of all WHERE clauses of relevant quad patterns; duplicate conditions are removed.
+</p>
+<br><pre>SELECT &quot;t0&quot;.&quot;U_FULL_NAME&quot; AS &quot;fullname&quot;,
+  case (isnull (&quot;t0&quot;.&quot;U_HOME&quot;)) when 0 then sprintf (&#39;http://localhost%s&#39;, &quot;t0&quot;.&quot;U_HOME&quot;) else NULL end AS &quot;home&quot;
+FROM DB.DBA.SYS_USERS AS &quot;t0&quot;
+WHERE (&quot;t0&quot;.&quot;U_FULL_NAME&quot; is not null)
+  AND (&quot;t0&quot;.U_HOME is not null) and (&quot;t0&quot;.U_DAV_ENABLE = 1)
+  AND (&quot;t0&quot;.U_IS_ROLE = 0)
+OPTION (QUIETCAST)
+</pre><p> </p>
+<h3><a name="Simple Join of Three Tables"></a> Simple Join of Three Tables</h3>
+<p>Select all pairs of grantees and their roles, return names instead of integer IDs: </p>
+<br><pre>sparql
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+select ?super ?sub
+where {
+  graph &lt;http://localhost/dataspace&gt; {
+    ?superid sioc:has_member ?subid .
+    ?superid sioc:id ?super .
+    ?subid sioc:id ?sub .
+     } }
+
+super               sub
+VARCHAR NOT NULL    VARCHAR NOT NULL
+____________________________________
+
+SPARQL_UPDATE       SPARQL_SELECT
+</pre><p> The query is translated into the following SQL: </p>
+<br><pre>SELECT &quot;t1&quot;.&quot;U_NAME&quot; AS &quot;super&quot;,
+    &quot;t2&quot;.&quot;U_NAME&quot; AS &quot;sub&quot;
+FROM DB.DBA.SYS_ROLE_GRANTS AS &quot;t0&quot;,
+    DB.DBA.SYS_USERS AS &quot;t1&quot;,
+    DB.DBA.SYS_USERS AS &quot;t2&quot;
+WHERE &quot;t0&quot;.&quot;GI_SUPER&quot; = &quot;t1&quot;.&quot;U_ID&quot; /* superid */
+    AND &quot;t0&quot;.&quot;GI_SUB&quot; = &quot;t2&quot;.&quot;U_ID&quot; /* subid */
+OPTION (QUIETCAST)
+</pre><p> </p>
+<h3><a name="Optional Clause and Filtering of Table Rows"></a> Optional Clause and Filtering of Table Rows</h3>
+<br><pre>prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+select ?uid ?login ?fullname ?home
+where
+  {
+    graph &lt;http://localhost/dataspace&gt;
+      {
+        ?uid sioc:id ?login .
+        ?uid sioc:name ?fullname .
+        optional { ?uid oplsioc:home ?home }
+      }
+  }
+
+uid                                login              fullname                      home
+VARCHAR                            VARCHAR NOT NULL   VARCHAR                       VARCHAR
+_______________________________________________________________________________________________________________________
+
+http://localhost/sys/user?id=2     dav                WebDAV System Administrator   NULL
+http://localhost/sys/user?id=106   iv_an_ru           Ivan Mikhailov                http://localhost/DAV/home/iv_an_ru/
+http://localhost/sys/user?id=5     nobody             Special account               NULL
+http://localhost/sys/user?id=107   oerling            Orri Erling                   http://localhost/DAV/home/oerling/
+</pre><p> The query is translated into the following SQL: </p>
+<br><pre>SELECT sprintf ( &#39;http://localhost/sys/user?id=%d&#39; , &quot;t0&quot;.&quot;uid&quot; ) AS &quot;uid&quot;,
+    &quot;t0&quot;.&quot;login&quot;,
+    &quot;t0&quot;.&quot;fullname&quot;,
+    case (isnull ( &quot;t1&quot;.&quot;home&quot; )) when 0 then sprintf ( &#39;http://localhost%s&#39; , &quot;t1&quot;.&quot;home&quot; ) else NULL end AS &quot;home&quot;
+FROM (
+    SELECT &quot;t00&quot;.&quot;U_ID&quot; AS &quot;uid&quot;,
+        &quot;t00&quot;.&quot;U_NAME&quot; AS &quot;login&quot;,
+        &quot;t01&quot;.&quot;U_FULL_NAME&quot; AS &quot;fullname&quot;
+    FROM DB.DBA.SYS_USERS AS &quot;t00&quot;,
+        (SELECT &quot;t01-int&quot;.&quot;U_ID&quot;, &quot;t01-int&quot;.&quot;U_FULL_NAME&quot;
+         FROM DB.DBA.SYS_USERS AS &quot;t01-int&quot;
+         WHERE (&quot;t01-int&quot;.&quot;U_FULL_NAME&quot; is not null)
+           AND (&quot;t01-int&quot;.U_IS_ROLE = 0)
+         ) AS &quot;t01&quot;
+    WHERE &quot;t00&quot;.&quot;U_ID&quot; = &quot;t01&quot;.&quot;U_ID&quot;
+    ) AS &quot;t0&quot;
+  LEFT OUTER JOIN (
+      SELECT &quot;t10&quot;.&quot;U_ID&quot; AS &quot;uid&quot;, &quot;t10&quot;.&quot;U_HOME&quot; AS &quot;home&quot;
+      FROM (
+          SELECT &quot;t10-int&quot;.&quot;U_ID&quot;, &quot;t10-int&quot;.&quot;U_HOME&quot; FROM DB.DBA.SYS_USERS AS &quot;t10-int&quot;
+          WHERE (&quot;t10-int&quot;.&quot;U_HOME&quot; is not null)
+            AND (&quot;t10-int&quot;.U_DAV_ENABLE = 1)
+          ) AS &quot;t10&quot;) AS &quot;t1&quot;
+  ON ( &quot;t0&quot;.&quot;uid&quot; = &quot;t1&quot;.&quot;uid&quot; )
+OPTION (QUIETCAST)
+</pre><p> </p>
+<h3><a name="Mix Of Relational Data and Plain RDF Quads"></a> Mix Of Relational Data and Plain RDF Quads</h3>
+<br><pre>sparql
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+select ?home ?id ?login
+where {
+    graph ?g { ?id oplsioc:home ?home } .
+    optional {
+        graph &lt;http://localhost/dataspace&gt; {
+            ?id sioc:id ?login }
+      } }
+
+home                                 id                                login
+VARCHAR                              VARCHAR                           VARCHAR NOT NULL
+_______________________________________________________________________________
+
+http://localhost/DAV/home/iv_an_ru/  http://localhost/sys/user?id=106  iv_an_ru
+http://localhost/DAV/home/oerling/   http://localhost/sys/user?id=107  oerling
+</pre><p> The context of the first triple pattern does not specify graph, so triples with oplsioc:home predicate may be retrieved from both the default storage of RDF quads (table RDF_QUADS) and mapping of relational data (table SYS_USERS).
+ The graph of the second triple pattern matches &#39;exclusive&#39; group of quad patterns so the compiled query will not try to locate sioc:id predicates in RDF_QUADS table and will make no second union.
+ Thus the intermediate result of the compilation is like this: </p>
+<br><pre>(sys_users as t00 union all rdf_quad as t10) left outer join sys_users as t1)
+</pre><p>The optimizer will convert a join of unions into a union of joins so the final query is like </p>
+<br><pre>(sys_users as t00 left outer join sys_users as t01) union all (rdf_quad as t10 left outer join sys_users as t11)
+</pre><p>and can be executed efficiently:</p>
+<br><pre>SELECT DB.DBA.RDF_SQLVAL_OF_LONG (&quot;t00&quot;.&quot;home&quot;) AS &quot;home&quot;,
+    sprintf (&#39;http://localhost/sys/user?id=%d&#39;, &quot;t00&quot;.&quot;id&quot;) AS &quot;id&quot;,
+    &quot;t01&quot;.&quot;login&quot;
+FROM (
+    SELECT &quot;t00a&quot;.&quot;U_ID&quot; AS &quot;id&quot;,
+         case (isnull (&quot;t00a&quot;.&quot;U_HOME&quot;)) when 0 then DB.DBA.RDF_MAKE_IID_OF_QNAME (sprintf (&#39;http://localhost%s&#39;, &quot;t00a&quot;.&quot;U_HOME&quot;)) else NULL end AS &quot;home&quot;
+    FROM DB.DBA.SYS_USERS AS &quot;t00a&quot;
+    WHERE (&quot;t00a&quot;.&quot;U_HOME&quot; is not null) AND (&quot;t00a&quot;.U_DAV_ENABLE = 1)
+    ) AS &quot;t00&quot;
+  LEFT OUTER JOIN (
+      SELECT &quot;t01-t1&quot;.&quot;U_ID&quot; AS &quot;id&quot;, &quot;t01-t1&quot;.&quot;U_NAME&quot; AS &quot;login&quot;
+      FROM DB.DBA.SYS_USERS AS &quot;t01-t1&quot;) AS &quot;t01&quot;
+  ON ( &quot;t00&quot;.&quot;id&quot; = &quot;t01&quot;.&quot;id&quot;)
+UNION ALL
+SELECT DB.DBA.RDF_SQLVAL_OF_LONG (&quot;t10&quot;.&quot;home&quot;),
+    DB.DBA.RDF_SQLVAL_OF_LONG (&quot;t10&quot;.&quot;id&quot;),
+    &quot;t11&quot;.&quot;login&quot;
+FROM (
+        SELECT &quot;t10a&quot;.&quot;S&quot; AS &quot;id&quot;,
+             DB.DBA.RDF_LONG_OF_OBJ (&quot;t10a&quot;.&quot;O&quot;) AS &quot;home&quot;
+        FROM DB.DBA.RDF_QUAD AS &quot;t10a&quot;
+        WHERE 
+            &quot;t10a&quot;.&quot;P&quot; = DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE (UNAME&#39;http://www.openlinksw.com/schemas/oplsioc#home&#39;)) AS &quot;t10&quot;
+  LEFT OUTER JOIN (
+      SELECT &quot;t11a&quot;.&quot;U_ID&quot; AS &quot;id&quot;, &quot;t11a&quot;.&quot;U_NAME&quot; AS &quot;login&quot;
+      FROM DB.DBA.SYS_USERS AS &quot;t11a&quot;) AS &quot;t11&quot;
+  ON ( &quot;t10&quot;.&quot;id&quot; = DB.DBA.RDF_MAKE_IID_OF_QNAME (DB.DBA.RDF_DF_GRANTEE_ID_URI (&quot;t11&quot;.&quot;id&quot;)))
+OPTION (QUIETCAST)
+</pre><h2><a name="Simplifying Queries"></a> Simplifying Queries</h2>
+<p>In principle, we take each triple pattern from a SPARQL query and expand it into a union of all the quad mapping rule expansions that apply to it.
+ If we have an unspecified graph and unspecified ?s ?p ?o, we indeed get the union of everything.</p>
+<p>In practice, the graph and the predicates are most often given.
+ This will considerably limit the number of applicable quad patterns.
+ We further assume all IRI classes to be disjoint, unless exceptions are declared with the <code>create ...
+ subclass ...
+ statement</code> shown in the example with user_iri and grantee_iri.
+ Thus many joins can be known to be empty at compile time.</p>
+<p>In the simplest case, when we have two triple patterns with the same subject and the subject is mapped to a relational table, we get a join of the table with itself, with pk = pk.
+ This self-join can however be optimized away.
+ After this, there will be condition on multiple columns and normal SQL index and join type selection will apply.</p>
+<p>As a last step, after pruning the union terms that are known not to be relevant, the unions are taken to the top, so that we have a union of joins and not a join of unions.
+ This is easier for the SQL compiler to optimize.</p>
+<p>We note that throughout this process, some expansions of triple patterns can refer to relational tables and some to the default RDF_QUAD table or other native RDF storage tables.
+ This is not a problem at any stage.
+ Thus a mixed representation where some things are obtained from local or remote relational stores and some things are stored locally as physical triple is entirely feasible.</p>
+<h2><a name="SQL Optimizer Support for Meta Schema"></a> SQL Optimizer Support for Meta Schema</h2>
+<p>An equality of two IRI&#39;s can become an AND of key column equalities.
+ When this takes place between SPARQL triple patterns mapped to the relational tables, the columns that make up the URI are simply compared pair-wise, as in any regular relational join.
+ However, it is also possible that a URI composed from relational columns is compared with an IRI_ID stored in a physical triple.
+ In this case, we have a comparison between and S, P or O of a triple and a function over one or more columns of a relational table.</p>
+<p>If the relational table is first in join order, there is no problem.
+ The function is evaluated and the result is used to retrieve the triple.
+ However, if the triple is first in join order, we must be able to decompose the IRI into its constituent parts, that is, if the IRI is such that it can be returned by the key to IRI function corresponding to the columns.</p>
+<p>The Virtuoso SQL compiler has a notion of inverse functions.
+ This allows both join orders to be tried, in one case converting the key part(s) into an IRI ID and in the other case the IRI_ID into the key part(s).</p>
+<p>Also, when a relational key is mapped into an IRI, making an IRI_ID for the text of the IRI is actually necessary only when there actually is a triple in the triple store that references this IRI.
+ Thus, if joining a relational key to triples, the key to IRI_ID function can return NULL if no IRI_ID exists.
+ The IRI_ID will be made only when an actual triple is created.
+When clients consume IRI&#39;s anyway as strings, the existence or non-existence of a physical IRI ID is entirely transparent.
+ To facilitate this situation, the compiler recognizes the comparison of an IRI column to a string-valued function or variable.
+It will automatically insert a &#39;get IRI_ID for string if exists&#39; function into the compilation.</p>
+<p>We note that when we cast primary keys to IRI&#39;s and pass them back and forth, we may often get situations where key_to_iri (t1.k1, t1.k2) = key_to_iri (t2.k1, t2.k2) where t1 and t2 are different correlation names for a pk and fk tables and k1, k2 are the parts of a 2 part key.
+ This is noticed by the SQL compiler and optimized into t1.k1 = t2.k1 and t1.k2 = t2.k2.
+ Thus no function indices or the like are needed.
+ It suffices that the key to iri functions are declared as having inverses and as being bijective with the sinv_create_inverse function.
+ See the documentation for this.</p>
+<p>Also, when joining native RDF triples and relational data, we get situations like rdf_quad.S = key_to_iri (t1.k1, t1.k2).
+ We note that there may not be an IRI ID corresponding to the key_to_iri function&#39;s result.
+ The key_to_iri function returns a string, whereas the S,P,O,G of the RDF_QUAD table are IRI ID&#39;s referenced RDF_URL.
+ The SQL compiler recognizes this and puts a cast there, one that will convert the string returned by the key_to_iri function into an IRI ID if there indeed is such an ID and NULL otherwise.
+ Furthermore, because all key_to_iri functions have inverses, the condition can be rewritten as</p>
+<br><pre>iri_to_key_1 (rdf_iri_id_qname (rdf_quad.S)) = t1.k1 and iri_to_key_2 (rdf_iri_id_qname (rdf_quad.S)) = t1.k2.
+</pre><p> This allows both join orders to be used with all index usage options, again without requiring function indices or the like.</p>
+<p>We note that all these optimizations will serve equally well whether the relational tables are local to Virtuoso or not.
+ The native RDF tables will have to be local due to their use of the native IRI_ID data type.</p>
+<h2><a name="Using Meta Schema for Triple Storage Optimization"></a> Using Meta Schema for Triple Storage Optimization</h2>
+<p>If we know that some predicates are always single-valued within a certain graph, we can use a relational-like table with the subject as primary key and the objects of single-valued predicates as columns.
+ Then we can make a single-column index on each of the columns.</p>
+<p>Oracle has used SQL materialized views for creating such data structures on the fly.
+Their name for this is SPMJV for Subject-Predicate Matrix Join View.
+ We can use the meta schema graph patterns for implementing a similar thing at the RDF to SQL transformation and RDF storage level.</p>
+<h2><a name="Using Table Valued Functions for RDF on Demand"></a> Using Table Valued Functions for RDF on Demand</h2>
+<p>Data that we wish to make SPARQL query-able are not always in relational tables.
+ For example, some data can come from web services.
+ Caching all possible outputs of a web service in a relational table in the anticipation of SPARQL access does not make sense in the general case.</p>
+<p>Also, data is sometimes de-normalized into non-first normal form columns, for example, the tags of an article can be all stored in a single text column with a text index on it.
+ Still, for purposes of RDF rendition, we wish to consider each tag as a separate sioc:topic triple.</p>
+<p>For these cases, Virtuoso offers table valued functions, also known as procedure views.
+A piece of procedure code can thus be invoked from the FROM clause of a SQL select and its result set will be considered as that of a derived table.</p>
+<p>A graph pattern can refer to columns of procedure views just as it can refer to columns of actual tables.
+ The SQL compiler will choose a reasonable join order based on cost information associated with the procedure view.</p>
+<p>For example, consider</p>
+<br><pre>create procedure TV_PROC (in blog_id int, in post_uid int, in tag varchar)
+{
+  __cost (20, 1, 1000, 100, 5);
+   /* this means that the procedure costs 20 units to invoke
+    * and returns 1 row if all parameters have a non-NULL value.
+    * If the 1st is not given, multiply these by 1000.
+    * If the 2nd is not given, by 100, if the 3rd is not given, by 5. */
+ ...
+   /* if blog id is given, loop over all posts and tags.
+    * If blog id and post id are given, loop over all tags of the post.
+    * If all are given, give a result row if the post has the tag
+    * and so on, for all the 8 combinations of null or non-null value of the three parameters */ 
+}
+
+create procedure view  BLOG_TAG_VIEW
+as TV_PROC (in TV_BLOG_ID int, in TV_POST_ID int, in TV_TAG varchar)
+(TV_BLOG_ID int, TV_POST_ID int,  TV_TAG varchar);
+
+sparql
+graph .... 
+{
+post_iri (BLOG_TAG.TV_BLOG_ID, BLOG_TAG.TV_POST_ID) sioc:topic TV_TAG .
+}
+</pre><p> Now we can do a query like:</p>
+<br><pre>select * from &lt;ods&gt; where { ?me sioc:name &quot;Orri&quot; . ?me author_of ?post . ?post sioc:topic ?tag}
+</pre><p> The join order will be left to right because the compiler knows that the tag procedure has a very high cost factor for not specifying the two first arguments, so it will place the procedure call at the end, where the post id is known, instead of iterating over all posts and tags and then seeing which of these has &quot;Orri&quot; as name of author.</p>
+<a name="MappingOdsBlogToAtomOwl">
+<p> </p>
+<h2><a name="Example: Mapping ODS Weblog Post Data to the"></a> Example: Mapping ODS Weblog Post Data to the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> Ontology</h2>
+<p>Consider a weblog application from <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Data Spaces (ODS).</p>
+<p>A blog consists of blog posts.</p>
+<p>Every post may have comments.</p>
+<p>Every blog is owned by a user.</p>
+<p>A blog owner is a &#39;database user&#39; registered in DB.DBA.SYS_USERS even if SQL access is disabled for him.
+ A user may create as many blogs as he wishes.</p>
+<p>The application uses a database schema that is not very convenient for the mapping to <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a>.</p>
+<p>It is easy to form some set of subjects and predicates, because relational data are all in 3rd normal form.</p>
+<p>It&#39;s not easy to form predicates exactly as described in an independent <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> standard and to form all IRIs to match names of existing resources.</p>
+<p>This example demonstrates the urgent need in extending basic data mapping functionality to map arbitrary joins of relational tables as opposed to VIEWs only.</p>
+<p>When four tables form a group (e.g.
+ user, blog, post and comment) come from different tables we need additional relational views.</p>
+<br><pre>create view BLOG.DBA.SYS_BLOG_INFO_FULL as
+select
+  bi.BI_WAI_NAME, -- Blog application instance name
+  u.U_ID, u.U_NAME, u.U_E_MAIL, u.U_HOME
+from
+  BLOG.DBA.SYS_BLOG_INFO as bi
+  left outer join DB.DBA.SYS_USERS as u on (U_ID = BI_OWNER)
+;
+
+create view BLOG.DBA.SYS_BLOG_FULL as
+select
+  b.B_POST_ID,	-- ID of a post
+  b.B_BLOG_ID,	-- ID of a blog where the post appears
+  b.B_TITLE,	-- Post title
+  b.B_CONTENT,	-- Content of a post
+  b.B_TS,	-- Creation time
+  b.B_USER_ID,	-- Post author
+  b.B_MODIFIED,	-- Last modified
+  bi.BI_WAI_NAME,
+  u.U_ID, u.U_NAME, u.U_E_MAIL, u.U_HOME
+from
+  BLOG.DBA.SYS_BLOGS as b
+  left outer join BLOG.DBA.SYS_BLOG_INFO as bi on (BI_BLOG_ID = B_BLOG_ID)
+  left outer join DB.DBA.SYS_USERS as u on (U_ID = BI_OWNER)
+;
+
+create view BLOG.DBA.SYS_BLOG_COMMENT_FULL as
+select
+  BM_ID,	-- Id of a comment
+  BM_TITLE,	-- Comment title
+  BM_COMMENT,	-- Text of the comment
+  BM_NAME,	-- Author name
+  BM_E_MAIL,	-- Author e-mail
+  BM_TS,	-- Creation time
+  BM_IS_PUB,	-- Whether the comment message is public or private
+  B_BLOG_ID, B_CONTENT, B_TITLE, B_POST_ID, B_TS, B_MODIFIED,
+  BI_WAI_NAME,
+  U_ID, U_NAME, U_E_MAIL, U_HOME
+from
+  BLOG.DBA.BLOG_COMMENTS bm
+  left outer join BLOG.DBA.SYS_BLOGS as b on (BM_BLOG_ID = B_BLOG_ID and BM_POST_ID = B_POST_ID)
+  left outer join BLOG.DBA.SYS_BLOG_INFO as bi on (BI_BLOG_ID = B_BLOG_ID)
+  left outer join DB.DBA.SYS_USERS as u on (U_ID = BI_OWNER)
+;  
+
+create view BLOG.DBA.SYS_BLOG_CATEGORY_FULL as
+select
+  MTC_ID,	-- ID if a category
+  MTC_BLOG_ID,	-- Id of a blog
+  MTC_NAME,	-- Category name
+  BI_WAI_NAME,	-- Blog application instance name
+  U_ID, U_NAME, U_E_MAIL, U_HOME
+from
+  BLOG.DBA.MTYPE_CATEGORIES as mtc
+  left outer join BLOG.DBA.SYS_BLOG_INFO as bi on (MTC_BLOG_ID = BI_BLOG_ID)
+  left outer join DB.DBA.SYS_USERS as u on (U_ID = BI_OWNER)
+;
+
+create view BLOG.DBA.SYS_BLOG_POST_CATEGORY_FULL as
+select
+  B_BLOG_ID, B_CONTENT, B_TITLE, B_POST_ID, B_TS, B_USER_ID, B_MODIFIED,
+  MTC_ID, MTC_BLOG_ID, MTC_NAME,
+  BI_WAI_NAME,
+  U_ID, U_NAME, U_E_MAIL, U_HOME
+from
+  BLOG.DBA.MTYPE_CATEGORIES as mtc
+  join BLOG.DBA.SYS_BLOGS as b on (B_BLOG_ID = MTC_BLOG_ID)
+  left outer join BLOG.DBA.SYS_BLOG_INFO as bi on (B_BLOG_ID = BI_BLOG_ID)
+  left outer join DB.DBA.SYS_USERS as u on (U_ID = BI_OWNER)
+;
+</pre><p> Now for any combination of tables we have a view that consists of tables with proper join conditions.
+ Virtuoso has a good chance to create good execution plans for joins of such views because a &#39;view&#39; in Virtuoso is expanded like a macro before any join order decisions are made.
+ When a FROM clause of a SQL SELECT statement contains a view, the occurrence of a view in FROM clause is replaced with the full SELECT statement of the view body.
+ So when a view P is a join of tables of P1 and P2, view Q is a join of Q1 and Q2 and the query is a join of P and Q then the compilation &#39;flattens&#39; it and runs same way as if the query were a plain join of P1, P2, Q1 and Q2.</p>
+<p>The created views use demonstrate an optimization technique where LEFT OUTER JOINS are used instead of INNER JOINS as a way of eliminating the generation of redundant table joins.
+ Thus, If we define a VIEW as: Table A left OUTER JOIN Table B and the JOIN condition has equalities for all columns matching the unique key of Table B (e.g., primary key columns), and only columns of Table A are queried from the VIEW, then the join with B will neither alter returned columns nor change the number of resulting rows, implying that they can be omitted.
+ This let us declare a single VIEW using: &quot;COMMENTS left join BLOGS left join BLOG_INFO left join SYS_USERS&quot; avoiding the creation of redundant: &quot;COMMENTS left join BLOGS&quot; and &quot;COMMENTS left join BLOGS left join BLOG_INFO&quot;.</p>
+<br><pre>sparql
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+prefix odsWeblog: &lt;http://www.openlinksw.com/dataspace-weblog#&gt;
+create iri class odsWeblog:feed_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U&quot; (
+  in memb varchar not null, in inst varchar not null) .
+create iri class odsWeblog:feed_inst_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog-inst/%U&quot; (
+  in memb varchar not null, in inst varchar not null) .
+create iri class odsWeblog:post_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U&quot; (
+  in memb varchar not null, in inst varchar not null, in post varchar not null) .
+create iri class odsWeblog:post_inst_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog-post-inst/%U/%U&quot; (
+  in memb varchar not null, in inst varchar not null, in post varchar not null) .
+create iri class odsWeblog:text_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog-text/%U/%U&quot; (
+  in memb varchar not null, in inst varchar not null, in post varchar not null) .
+create iri class odsWeblog:cmt_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U/%d&quot; (
+  in memb varchar not null, in inst varchar not null, in post varchar not null, in cmtid integer) .
+create iri class odsWeblog:cat_iri  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog-cat/%U/%U&quot; (
+  in memb varchar not null, in inst varchar not null, in catid varchar not null) .
+;
+</pre><p> Note that the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> mapping for blogs will use IRI classes oplsioc:user_iri, oplsioc:group_iri as they are already declared in the example above.
+ As soon as views are prepared and IRI classes are tested to ensure that composed IRIs match to IRIs of actual web pages the rest of quad map declaration is quite straightforward and every single mapping is as simple as in previous &#39;users and groups&#39; use case.</p>
+<a name="MappingOdsBlogToAtomOwlExample">
+<br><pre>sparql
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+prefix odsWeblog: &lt;http://www.openlinksw.com/dataspace-weblog#&gt;
+create quad storage virtrdf:ODS
+  {
+    create virtrdf:Weblog2 as graph iri (&quot;http://^{URIQADefaultHost}^/dataspace/weblog2&quot;) option (exclusive)
+      {
+        # Feed
+        odsWeblog:feed_iri (BLOG.DBA.SYS_BLOG_INFO_FULL.U_NAME, BI_WAI_NAME)
+            a atom:Feed ;
+            atom:feedInstance odsWeblog:feed_inst_iri (BLOG.DBA.SYS_BLOG_INFO_FULL.U_NAME, BI_WAI_NAME) .
+        
+        # Feed Instance
+        odsWeblog:feed_inst_iri (BLOG.DBA.SYS_BLOG_INFO_FULL.U_NAME, BI_WAI_NAME)
+            a atom:FeedInstance ;
+            atom:title BI_WAI_NAME .
+        odsWeblog:feed_inst_iri (BLOG.DBA.SYS_BLOG_CATEGORY_FULL.U_NAME, BI_WAI_NAME)
+            atom:category odsWeblog:cat_iri (BLOG.DBA.SYS_BLOG_CATEGORY_FULL.U_NAME, BI_WAI_NAME, MTC_ID) .
+            # The following mappings are excluded from the example: atom:contributor, atom:extension, atom:generator,
+            # atom:icon, atom:link, atom:logo, atom:rights, atom:subtitle, atom:updated.
+
+        # Post
+        odsWeblog:post_iri (BLOG.DBA.SYS_BLOG_FULL.U_NAME, BI_WAI_NAME, B_POST_ID)
+            a atom:Entry ;
+            atom:entryInstance odsWeblog:post_inst_iri (BLOG.DBA.SYS_BLOG_FULL.U_NAME, BI_WAI_NAME, B_POST_ID) .
+            
+        # Post Instance
+        odsWeblog:post_inst_iri (BLOG.DBA.SYS_BLOG_FULL.U_NAME, BI_WAI_NAME, B_POST_ID)
+            a atom:EntryInstance ;
+            atom:author oplsioc:user_iri (U_ID) ;
+            atom:containingFeed odsWeblog:feed_inst_iri (BLOG.DBA.SYS_BLOG_FULL.U_NAME, BI_WAI_NAME) ;
+            atom:content odsWeblog:text_iri (U_NAME, BI_WAI_NAME, B_POST_ID) ;
+            atom:contributor oplsioc:user_iri (B_USER_ID) ;
+            atom:published B_TS ;
+            atom:title B_TITLE ;
+            atom:updated B_MODIFIED .
+        odsWeblog:post_inst_iri (BLOG.DBA.SYS_BLOG_POST_CATEGORY_FULL.U_NAME, BI_WAI_NAME, B_POST_ID)
+            atom:category
+              odsWeblog:cat_iri (BLOG.DBA.SYS_BLOG_POST_CATEGORY_FULL.U_NAME, BI_WAI_NAME, MTC_ID) .
+            # The following mappings are excluded from the example: atom:extension, atom:link, atom:rights
+            # atom:sourceFeed atom:summary.
+
+        # Text
+        odsWeblog:text_iri (BLOG.DBA.SYS_BLOG_FULL.U_NAME, BI_WAI_NAME, B_POST_ID)
+            a atom:Text ;
+            rdf:value B_CONTENT .
+            # The following mappings are excluded from the example: atom:contentBase, atom:contentLang,
+            # atom:contentSource, atom:contentType, atom:mimeType
+
+        # Comment
+        odsWeblog:cmt_iri (BLOG.DBA.SYS_BLOG_COMMENT_FULL.U_NAME, BI_WAI_NAME, B_POST_ID, BM_ID)
+            a atom:EntryInstance where (^{alias}^.BM_IS_PUB = 1) .
+
+        odsWeblog:cat_iri (BLOG.DBA.SYS_BLOG_CATEGORY_FULL.U_NAME, BI_WAI_NAME, MTC_ID)
+            a atom:Category ;
+            atom:categoryLabel MTC_NAME .
+            # atom:categoryScheme and atom:categoryTerm are excluded from the example, as well as
+            # a view that is specific for them.
+      }
+  }
+;
+</pre><p> The disadvantage of current SPARQL implementation is that it can create enormous intermediate SQL queries.
+ A relatively simple SPARQL query like five triple patterns where every IRI reference comes from a join of four tables results in a query with tens of joins and the full optimization before the first run takes seconds of CPU time.
+Additional problem is a risk of running out of optimization time limit so the server will stop optimization before it reached the optimal plan.</p>
+<p>We are presently developing a rich syntax of quad map declarations, that allows the application developer to describe join rules in quad mapping.</p>
+<ul><li>There will be no need in explicit CREATE VIEW statements.
+</li>
+<li>The SPARQL optimizer will never create redundant joins.
+</li>
+<li>The SPARQL optimizer will be able to prove more about ranges of SPARQL variables and better eliminate joins of triple patterns that can not produce any bindings.
+</li>
+<li>The generator of an intermediate SQL code will create the smallest possible query and minimize the SQL optimization time.</li>
+</ul><a name="MappingDemoToCustomOwlExample">
+<p> </p>
+<h2><a name="Mapping Virtuoso Demo Database to a Custom Ontology for the Northwind Data Model"></a>Mapping Virtuoso Demo Database to a Custom Ontology for the Northwind Data Model</h2>
+<p>Consider a Virtuoso Demo Database.</p>
+<p>This example uses the following tables from the Virtuoso Demo Database SQL Schema: Customers, Orders, Order Details, Products, Product Categories, Employee, Region, Country, Province.</p>
+<p>Bearing in mind the similarities between the SQL schemas of Virtuoso&#39;s Demo database and Microsoft&#39;s Northwind Database (used by ACCESS and Microsoft SQL Server), we have chosen to broaden the scope of this example by deriving an OWL ontology from a Conceptual Data Schema Language (CSDL) file that uses XML Schema to conceptually model the Northwind Schema.
+ The aforementioned Ontology is then used as the basis for declaring mappings between the SQL Database and the OWL Ontology.</p>
+<h3><a name="XML Schema for Northwind (CSDL File)"></a>XML Schema for Northwind (CSDL File)</h3>
+ <br><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;Mapping xmlns:cs=&quot;urn:schemas-microsoft-com:windows:storage:mapping:CS&quot; cs:Space=&quot;C-S&quot; xmlns=&quot;urn:schemas-microsoft-com:windows:storage:mapping:CS&quot;&gt;
+  &lt;cs:EntityContainerMapping cs:StorageEntityContainer=&quot;dbo&quot; cs:CdmEntityContainer=&quot;NorthwindEntities&quot;&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Categories&quot; cs:TableName=&quot;Categories&quot; cs:TypeName=&quot;NorthwindModel.Category&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;CategoryID&quot; cs:ColumnName=&quot;CategoryID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;CategoryName&quot; cs:ColumnName=&quot;CategoryName&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Customers&quot; cs:TableName=&quot;Customers&quot; cs:TypeName=&quot;NorthwindModel.Customer&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;CustomerID&quot; cs:ColumnName=&quot;CustomerID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;CompanyName&quot; cs:ColumnName=&quot;CompanyName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ContactName&quot; cs:ColumnName=&quot;ContactName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ContactTitle&quot; cs:ColumnName=&quot;ContactTitle&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Address&quot; cs:ColumnName=&quot;Address&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;City&quot; cs:ColumnName=&quot;City&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Region&quot; cs:ColumnName=&quot;Region&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;PostalCode&quot; cs:ColumnName=&quot;PostalCode&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Country&quot; cs:ColumnName=&quot;Country&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Phone&quot; cs:ColumnName=&quot;Phone&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Fax&quot; cs:ColumnName=&quot;Fax&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Employees&quot; cs:TableName=&quot;Employees&quot; cs:TypeName=&quot;NorthwindModel.Employee&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;EmployeeID&quot; cs:ColumnName=&quot;EmployeeID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;LastName&quot; cs:ColumnName=&quot;LastName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;FirstName&quot; cs:ColumnName=&quot;FirstName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Title&quot; cs:ColumnName=&quot;Title&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;TitleOfCourtesy&quot; cs:ColumnName=&quot;TitleOfCourtesy&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;BirthDate&quot; cs:ColumnName=&quot;BirthDate&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;HireDate&quot; cs:ColumnName=&quot;HireDate&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Address&quot; cs:ColumnName=&quot;Address&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;City&quot; cs:ColumnName=&quot;City&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Region&quot; cs:ColumnName=&quot;Region&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;PostalCode&quot; cs:ColumnName=&quot;PostalCode&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Country&quot; cs:ColumnName=&quot;Country&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;HomePhone&quot; cs:ColumnName=&quot;HomePhone&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Extension&quot; cs:ColumnName=&quot;Extension&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;PhotoPath&quot; cs:ColumnName=&quot;PhotoPath&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;OrderLines&quot; cs:TableName=&quot;Order Details&quot; cs:TypeName=&quot;NorthwindModel.OrderLine&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;OrderID&quot; cs:ColumnName=&quot;OrderID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ProductID&quot; cs:ColumnName=&quot;ProductID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;UnitPrice&quot; cs:ColumnName=&quot;UnitPrice&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Quantity&quot; cs:ColumnName=&quot;Quantity&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Discount&quot; cs:ColumnName=&quot;Discount&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Orders&quot; cs:TableName=&quot;Orders&quot; cs:TypeName=&quot;NorthwindModel.Order&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;OrderID&quot; cs:ColumnName=&quot;OrderID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;OrderDate&quot; cs:ColumnName=&quot;OrderDate&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;RequiredDate&quot; cs:ColumnName=&quot;RequiredDate&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShippedDate&quot; cs:ColumnName=&quot;ShippedDate&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Freight&quot; cs:ColumnName=&quot;Freight&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipName&quot; cs:ColumnName=&quot;ShipName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipAddress&quot; cs:ColumnName=&quot;ShipAddress&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipCity&quot; cs:ColumnName=&quot;ShipCity&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipRegion&quot; cs:ColumnName=&quot;ShipRegion&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipPostalCode&quot; cs:ColumnName=&quot;ShipPostalCode&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipCountry&quot; cs:ColumnName=&quot;ShipCountry&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Products&quot; cs:TableName=&quot;Products&quot; cs:TypeName=&quot;NorthwindModel.Product&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ProductID&quot; cs:ColumnName=&quot;ProductID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ProductName&quot; cs:ColumnName=&quot;ProductName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;QuantityPerUnit&quot; cs:ColumnName=&quot;QuantityPerUnit&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;UnitPrice&quot; cs:ColumnName=&quot;UnitPrice&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;UnitsInStock&quot; cs:ColumnName=&quot;UnitsInStock&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;UnitsOnOrder&quot; cs:ColumnName=&quot;UnitsOnOrder&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ReorderLevel&quot; cs:ColumnName=&quot;ReorderLevel&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Discontinued&quot; cs:ColumnName=&quot;Discontinued&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Regions&quot; cs:TableName=&quot;Region&quot; cs:TypeName=&quot;NorthwindModel.Region&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;RegionID&quot; cs:ColumnName=&quot;RegionID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;RegionDescription&quot; cs:ColumnName=&quot;RegionDescription&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Shippers&quot; cs:TableName=&quot;Shippers&quot; cs:TypeName=&quot;NorthwindModel.Shipper&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ShipperID&quot; cs:ColumnName=&quot;ShipperID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;CompanyName&quot; cs:ColumnName=&quot;CompanyName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Phone&quot; cs:ColumnName=&quot;Phone&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Suppliers&quot; cs:TableName=&quot;Suppliers&quot; cs:TypeName=&quot;NorthwindModel.Supplier&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;SupplierID&quot; cs:ColumnName=&quot;SupplierID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;CompanyName&quot; cs:ColumnName=&quot;CompanyName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ContactName&quot; cs:ColumnName=&quot;ContactName&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;ContactTitle&quot; cs:ColumnName=&quot;ContactTitle&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Address&quot; cs:ColumnName=&quot;Address&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;City&quot; cs:ColumnName=&quot;City&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Region&quot; cs:ColumnName=&quot;Region&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;PostalCode&quot; cs:ColumnName=&quot;PostalCode&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Country&quot; cs:ColumnName=&quot;Country&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Phone&quot; cs:ColumnName=&quot;Phone&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;Fax&quot; cs:ColumnName=&quot;Fax&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:EntitySetMapping cs:Name=&quot;Territories&quot; cs:TableName=&quot;Territories&quot; cs:TypeName=&quot;NorthwindModel.Territory&quot;&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;TerritoryID&quot; cs:ColumnName=&quot;TerritoryID&quot; /&gt;
+      &lt;cs:ScalarProperty cs:Name=&quot;TerritoryDescription&quot; cs:ColumnName=&quot;TerritoryDescription&quot; /&gt;
+    &lt;/cs:EntitySetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;EmployeeTerritories&quot; cs:TypeName=&quot;NorthwindModel.EmployeeTerritories&quot; cs:TableName=&quot;EmployeeTerritories&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Employees&quot;&gt;
+        &lt;cs:ScalarProperty cs:ColumnName=&quot;EmployeeID&quot; cs:Name=&quot;EmployeeID&quot;/&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Territories&quot;&gt;
+        &lt;cs:ScalarProperty cs:ColumnName=&quot;TerritoryID&quot; cs:Name=&quot;TerritoryID&quot;/&gt;
+      &lt;/cs:EndProperty&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Employees_Employees&quot; cs:TypeName=&quot;NorthwindModel.FK_Employees_Employees&quot; cs:TableName=&quot;Employees&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Manager&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;EmployeeID&quot; cs:ColumnName=&quot;ReportsTo&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Employees&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;EmployeeID&quot; cs:ColumnName=&quot;EmployeeID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;ReportsTo&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Orders_Customers&quot; cs:TypeName=&quot;NorthwindModel.FK_Orders_Customers&quot; cs:TableName=&quot;Orders&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Customer&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;CustomerID&quot; cs:ColumnName=&quot;CustomerID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Orders&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;OrderID&quot; cs:ColumnName=&quot;OrderID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;CustomerID&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Orders_Employees&quot; cs:TypeName=&quot;NorthwindModel.FK_Orders_Employees&quot; cs:TableName=&quot;Orders&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Employee&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;EmployeeID&quot; cs:ColumnName=&quot;EmployeeID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Orders&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;OrderID&quot; cs:ColumnName=&quot;OrderID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;EmployeeID&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Orders_Shippers&quot; cs:TypeName=&quot;NorthwindModel.FK_Orders_Shippers&quot; cs:TableName=&quot;Orders&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Shipper&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;ShipperID&quot; cs:ColumnName=&quot;ShipVia&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Orders&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;OrderID&quot; cs:ColumnName=&quot;OrderID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;ShipVia&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Products_Categories&quot; cs:TypeName=&quot;NorthwindModel.FK_Products_Categories&quot; cs:TableName=&quot;Products&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Category&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;CategoryID&quot; cs:ColumnName=&quot;CategoryID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Products&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;ProductID&quot; cs:ColumnName=&quot;ProductID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;CategoryID&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Products_Suppliers&quot; cs:TypeName=&quot;NorthwindModel.FK_Products_Suppliers&quot; cs:TableName=&quot;Products&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Supplier&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;SupplierID&quot; cs:ColumnName=&quot;SupplierID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Products&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;ProductID&quot; cs:ColumnName=&quot;ProductID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;SupplierID&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+    &lt;cs:AssociationSetMapping cs:Name=&quot;FK_Territories_Region&quot; cs:TypeName=&quot;NorthwindModel.FK_Territories_Region&quot; cs:TableName=&quot;Territories&quot;&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Region&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;RegionID&quot; cs:ColumnName=&quot;RegionID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:EndProperty cs:Name=&quot;Territories&quot;&gt;
+        &lt;cs:ScalarProperty cs:Name=&quot;TerritoryID&quot; cs:ColumnName=&quot;TerritoryID&quot; /&gt;
+      &lt;/cs:EndProperty&gt;
+      &lt;cs:Condition cs:ColumnName=&quot;RegionID&quot; cs:IsNull=&quot;false&quot; /&gt;
+    &lt;/cs:AssociationSetMapping&gt;
+  &lt;/cs:EntityContainerMapping&gt;
+&lt;/Mapping&gt;
+</pre><p> </p>
+<h3><a name="OWL Ontology for Northwind (in N3)"></a>OWL Ontology for Northwind (in N3)</h3>
+ <br><pre>@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix virtrdf: &lt;http://www.openlinksw.com/schemas/virtrdf#&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix northwind: &lt;http://www.openlinksw.com/schemas/northwind#&gt; .
+
+northwind: rdf:type owl:Ontology ;
+	rdfs:label &quot;Northwind&quot; ;
+	rdfs:comment &quot;Northwind database classes and properties&quot; ;
+	virtrdf:catName &quot;Northwind&quot; ;
+	virtrdf:version &quot;1.00&quot; .
+northwind:Product rdf:type rdfs:Class ;
+	rdfs:label &quot;Product&quot; .
+northwind:has_category rdf:type rdf:Property ;
+	rdfs:range northwind:Category ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Category&quot; .
+northwind:has_supplier rdf:type rdf:Property ;
+	rdfs:range northwind:Supplier ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Supplier&quot; .
+northwind:ProductName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ProductName&quot; .
+northwind:QuantityPerUnit rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;QuantityPerUnit&quot; .
+northwind:UnitPrice rdf:type rdf:Property ;
+	rdfs:range xsd:double ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;UnitPrice&quot; .
+northwind:UnitsInStock rdf:type rdf:Property ;
+	rdfs:range xsd:integer ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;UnitsInStock&quot; .
+northwind:UnitsOnOrder rdf:type rdf:Property ;
+	rdfs:range xsd:integer ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;UnitsOnOrder&quot; .
+northwind:ReorderLevel rdf:type rdf:Property ;
+	rdfs:range xsd:integer ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ReorderLevel&quot; .
+northwind:Discontinued rdf:type rdf:Property ;
+	rdfs:range xsd:integer ;
+	rdfs:domain northwind:Product ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Discontinued&quot; .
+northwind:Supplier rdf:type rdfs:Class ;
+	rdfs:label &quot;Supplier&quot; .
+northwind:CompanyName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;CompanyName&quot; .
+northwind:ContactName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ContactName&quot; .
+northwind:ContactTitle rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ContactTitle&quot; .
+northwind:Address rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Address&quot; .
+northwind:City rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;City&quot; .
+northwind:Region rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Region&quot; .
+northwind:PostalCode rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;PostalCode&quot; .
+northwind:Country rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Country&quot; .
+northwind:Phone rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Phone&quot; .
+northwind:Fax rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Fax&quot; .
+northwind:HomePage rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Supplier ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;HomePage&quot; .
+northwind:Category rdf:type rdfs:Class ;
+	rdfs:label &quot;Category&quot; .
+northwind:CategoryName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Category ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;CategoryName&quot; .
+northwind:Description rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Category ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Description&quot; .
+northwind:Shipper rdf:type rdfs:Class ;
+	rdfs:label &quot;Shipper&quot; .
+northwind:CompanyName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Shipper ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;CompanyName&quot; .
+northwind:Phone rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Shipper ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Phone&quot; .
+northwind:Customer rdf:type rdfs:Class ;
+	rdfs:label &quot;Customer&quot; .
+northwind:CompanyName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;CompanyName&quot; .
+northwind:ContactName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ContactName&quot; .
+northwind:ContactTitle rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:donorthwind:main northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ContactTitle&quot; .
+northwind:Address rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Address&quot; .
+northwind:City rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;City&quot; .
+northwind:Region rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Region&quot; .
+northwind:PostalCode rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;PostalCode&quot; .
+northwind:Country rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Country&quot; .
+northwind:Phone rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Phone&quot; .
+northwind:Fax rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Customer ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Fax&quot; .
+northwind:Employee rdf:type rdfs:Class ;
+	rdfs:label &quot;Employee&quot; .
+northwind:LastName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;LastName&quot; .
+northwind:FirstName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;FirstName&quot; .
+northwind:Title rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Title&quot; .
+northwind:TitleOfCourtesy rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;TitleOfCourtesy&quot; .
+northwind:BirthDate rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;BirthDate&quot; .
+northwind:HireDate rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;HireDate&quot; .
+northwind:Address rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Address&quot; .
+northwind:City rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;City&quot; .
+northwind:Region rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Region&quot; .
+northwind:PostalCode rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;PostalCode&quot; .
+northwind:Country rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Country&quot; .
+northwind:HomePhone rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;HomePhone&quot; .
+northwind:Extension rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Extension&quot; .
+northwind:Notes rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Notes&quot; .
+northwind:ReportsTo rdf:type rdf:Property ;
+	rdfs:range xsd:integer ;
+	rdfs:domain northwind:Employee ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ReportsTo&quot; .
+northwind:Order rdf:type rdfs:Class ;
+	rdfs:label &quot;Order&quot; .
+northwind:has_customer rdf:type rdf:Property ;
+	rdfs:range northwind:Customer ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Customer&quot; .
+northwind:has_employee rdf:type rdf:Property ;
+	rdfs:range northwind:Employee ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Employee&quot; .
+northwind:OrderDate rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;OrderDate&quot; .
+northwind:RequiredDate rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;RequiredDate&quot; .
+northwind:ShippedDate rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShippedDate&quot; .
+northwind:order_ship_via rdf:type rdf:Property ;
+	rdfs:range northwind:Shipper ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Shipper&quot; .
+northwind:Freight rdf:type rdf:Property ;
+	rdfs:range xsd:double ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Freight&quot; .
+northwind:ShipName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShipName&quot; .
+northwind:ShipAddress rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShipAddress&quot; .
+northwind:ShipCity rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShipCity&quot; .
+northwind:ShipRegion rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShipRegion&quot; .
+northwind:ShipPostalCode rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShipPostalCode&quot; .
+northwind:ShipCountry rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Order ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ShipCountry&quot; .
+northwind:OrderLine rdf:type rdfs:Class ;
+	rdfs:label &quot;OrderLine&quot; .
+northwind:has_order_id rdf:type rdf:Property ;
+	rdfs:range northwind:Order ;
+	rdfs:domain northwind:OrderLine;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Order&quot; .
+northwind:has_product_id rdf:type rdf:Property ;
+	rdfs:range northwind:Product ;
+	rdfs:domain northwind:OrderLine;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Product&quot; .
+northwind:UnitPrice rdf:type rdf:Property ;
+	rdfs:range xsd:double ;
+	rdfs:domain northwind:OrderLine;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;UnitPrice&quot; .
+northwind:Quantity rdf:type rdf:Property ;
+	rdfs:range xsd:integer ;
+	rdfs:domain northwind:OrderLine;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Quantity&quot; .
+northwind:Discount rdf:type rdf:Property ;
+	rdfs:range xsd:double ;
+	rdfs:domain northwind:OrderLine;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Discount&quot; .
+northwind:Country rdf:type rdfs:Class ;
+	rdfs:label &quot;Country&quot; .
+northwind:Name rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Name&quot; .
+northwind:Code rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Code&quot; .
+northwind:SmallFlagDAVResourceName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;SmallFlagDAVResourceName&quot; .
+northwind:LargeFlagDAVResourceName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;LargeFlagDAVResourceName&quot; .
+northwind:SmallFlagDAVResourceURI rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;SmallFlagDAVResourceURI&quot; .
+northwind:LargeFlagDAVResourceURI rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;LargeFlagDAVResourceURI&quot; .
+northwind:Lat rdf:type rdf:Property ;
+	rdfs:range xsd:double ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Lat&quot; .
+northwind:Lng rdf:type rdf:Property ;
+	rdfs:range xsd:double ;
+	rdfs:domain northwind:Country ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Lng&quot; .
+northwind:Province rdf:type rdfs:Class ;
+	rdfs:label &quot;Province&quot; .
+northwind:has_country_code rdf:type rdf:Property ;
+	rdfs:range northwind:Country ;
+	rdfs:domain northwind:Provinces ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;Country Code&quot; .
+northwind:ProvinceName rdf:type rdf:Property ;
+	rdfs:range xsd:string ;
+	rdfs:domain northwind:Province ;
+	rdfs:cardinality &quot;1&quot; ;
+	rdfs:label &quot;ProvinceName&quot; .
+</pre><p> </p>
+<h3><a name="IRI Generator (Entity ID Constructor) Declarations"></a> IRI Generator (Entity ID Constructor) Declarations</h3>
+<br><pre>sparql
+prefix demo: &lt;http://www.openlinksw.com/schemas/demo#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+create iri class demo:Category &quot;http://^{URIQADefaultHost}^/demo/Category?id=%d&quot; (in category_id integer not null) .
+create iri class demo:Shipper &quot;http://^{URIQADefaultHost}^/demo/Shipper?id=%d&quot; (in shipper_id integer not null) .
+create iri class demo:Supplier &quot;http://^{URIQADefaultHost}^/demo/Supplier?id=%d&quot; (in supplier_id integer not null) .
+create iri class demo:Product   &quot;http://^{URIQADefaultHost}^/demo/Product?id=%d&quot; (in product_id integer not null) .
+create iri class demo:Customer &quot;http://^{URIQADefaultHost}^/demo/Customer?id=%d&quot; (in customer_id integer not null) .
+create iri class demo:Employee &quot;http://^{URIQADefaultHost}^/demo/Employee?id=%d&quot; (in employee_id integer not null) .
+create iri class demo:Order &quot;http://^{URIQADefaultHost}^/demo/Order?id=%d&quot; (in order_id integer not null) .
+create iri class demo:OrderLine &quot;http://^{URIQADefaultHost}^/demo/OrderLine?id=%d&amp;prod_id=%d&quot; (in order_id integer not null, in product_id integer not null) .
+create iri class demo:Province &quot;http://^{URIQADefaultHost}^/demo/Province?country=%s&amp;province=%s&quot; (in country_name varchar not null, in province_name varchar not null) .
+create iri class demo:Country &quot;http://^{URIQADefaultHost}^/demo/Country?country=%s&quot; (in country_name varchar not null) .
+;
+</pre><p> </p>
+<h3><a name="SQL to RDF Mapping (Quad Patterns)"></a> SQL to RDF Mapping (Quad Patterns)</h3>
+ <br><pre>sparql
+
+prefix demo: &lt;http://www.openlinksw.com/schemas/demo#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+
+create quad storage virtrdf:Northwind
+from Demo.demo.Products as products
+from Demo.demo.Suppliers as suppliers
+from Demo.demo.Shippers as shippers
+from Demo.demo.Categories as categories
+from Demo.demo.Customers as customers
+from Demo.demo.Employees as employees
+from Demo.demo.Orders as orders
+from Demo.demo.Order_Details as order_lines
+from Demo.demo.Countries as countries
+from Demo.demo.Provinces as provinces
+{
+        create virtrdf:Demo as graph iri (&quot;http://^{URIQADefaultHost}^/demo&quot;) option (exclusive)
+        {
+                demo:Product (products.ProductID)
+                        a demo:Product
+                                as virtrdf:Product-ProductID ;
+                        demo:has_category demo:Category (products.CategoryID)
+                                as virtrdf:Product-product_has_category ;
+                        demo:has_supplier demo:Supplier (products.SupplierID)
+                                as virtrdf:Product-product_has_supplier ;
+                        demo:ProductName products.ProductName
+                                as virtrdf:Product-name_of_product ;
+                        demo:QuantityPerUnit products.QuantityPerUnit
+                                as virtrdf:Product-quantity_per_unit ;
+                        demo:UnitPrice products.UnitPrice
+                                as virtrdf:Product-unit_price ;
+                        demo:UnitsInStock products.UnitsInStock
+                                as virtrdf:Product-units_in_stock ;
+                        demo:UnitsOnOrder products.UnitsOnOrder
+                                as virtrdf:Product-units_on_order ;
+                        demo:ReorderLevel products.ReorderLevel
+                                as virtrdf:Product-reorder_level ;
+                        demo:Discontinued products.Discontinued
+                                as virtrdf:Product-discontinued .
+                demo:Supplier (suppliers.SupplierID)
+                        a demo:Supplier
+                                as virtrdf:Supplier-SupplierID ;
+                        demo:CompanyName suppliers.CompanyName
+                                as virtrdf:Supplier-company_name ;
+                        demo:ContactName suppliers.ContactName
+                                as virtrdf:Supplier-contact_name ;
+                        demo:ContactTitle suppliers.ContactTitle
+                                as virtrdf:Supplier-contact_title ;
+                        demo:Address suppliers.Address
+                                as virtrdf:Supplier-address ;
+                        demo:City suppliers.City
+                                as virtrdf:Supplier-city ;
+                        demo:Region suppliers.Region
+                                as virtrdf:Supplier-region ;
+                        demo:PostalCode suppliers.PostalCode
+                                as virtrdf:Supplier-postal_code ;
+                        demo:Country suppliers.Country
+                                as virtrdf:Supplier-country ;
+                        demo:Phone suppliers.Phone
+                                as virtrdf:Supplier-phone ;
+                        demo:Fax suppliers.Fax
+                                as virtrdf:Supplier-fax ;
+                        demo:HomePage suppliers.HomePage
+                                as virtrdf:Supplier-home_page .
+                demo:Category (categories.CategoryID)
+                        a demo:Category
+                                as virtrdf:Category-CategoryID ;
+                        demo:CategoryName categories.CategoryName
+                                as virtrdf:Category-home_page ;
+                        demo:Description categories.Description
+                                as virtrdf:Category-description ;
+                        demo:Picture categories.Picture
+                                as virtrdf:Category-picture .
+                demo:Shipper (shippers.ShipperID)
+                        a demo:Shipper
+                                as virtrdf:Shipper-ShipperID ;
+                        demo:CompanyName shippers.CompanyName
+                                as virtrdf:Shipper-company_name ;
+                        demo:Phone shippers.Phone
+                                as virtrdf:Shipper-phone .
+                demo:Customer (customers.CustomerID)
+                        a demo:Customer
+                                as virtrdf:Customer-CustomerID ;
+                        demo:CompanyName customers.CompanyName
+                                as virtrdf:Customer-company_name ;
+                        demo:ContactName customers.ContactName
+                                as virtrdf:Customer-contact_name ;
+                        demo:ContactTitle customers.ContactTitle
+                                as virtrdf:Customer-contact_title ;
+                        demo:Address customers.Address
+                                as virtrdf:Customer-address ;
+                        demo:City customers.City
+                                as virtrdf:Customer-city ;
+                        demo:Region customers.Region
+                                as virtrdf:Customer-region ;
+                        demo:PostalCode customers.PostalCode
+                                as virtrdf:Customer-postal_code ;
+                        demo:Country customers.Country
+                                as virtrdf:Customer-country ;
+                        demo:Phone customers.Phone
+                                as virtrdf:Customer-phone ;
+                        demo:Fax customers.Fax
+                                as virtrdf:Customer-fax .
+                demo:Employee (employees.EmployeeID)
+                        a demo:Employee
+                                as virtrdf:Employee-EmployeeID ;
+                        demo:LastName employees.LastName
+                                as virtrdf:Employee-last_name ;
+                        demo:FirstName employees.FirstName
+                                as virtrdf:Employee-first_name ;
+                        demo:Title employees.Title
+                                as virtrdf:title ;
+                        demo:TitleOfCourtesy employees.TitleOfCourtesy
+                                as virtrdf:Employee-title_of_courtesy ;
+                        demo:BirthDate employees.BirthDate
+                                as virtrdf:Employee-birth_date ;
+                        demo:HireDate employees.HireDate
+                                as virtrdf:Employee-hire_date ;
+                        demo:Address employees.Address
+                                as virtrdf:Employee-address ;
+                        demo:City employees.City
+                                as virtrdf:Employee-city ;
+                        demo:Region employees.Region
+                                as virtrdf:Employee-region ;
+                        demo:PostalCode employees.PostalCode
+                                as virtrdf:Employee-postal_code ;
+                        demo:Country employees.Country
+                                as virtrdf:Employee-country ;
+                        demo:HomePhone employees.HomePhone
+                                as virtrdf:Employee-home_phone ;
+                        demo:Extension employees.Extension
+                                as virtrdf:Employee-extension ;
+                        demo:Photo employees.Photo
+                                as virtrdf:Employee-photo ;
+                        demo:Notes employees.Notes
+                                as virtrdf:Employee-notes ;
+                        demo:ReportsTo employees.ReportsTo
+                                as virtrdf:Employee-reports_to .
+                demo:Order (orders.OrderID)
+                        a demo:Order
+                                as virtrdf:Order-Order ;
+                        demo:has_customer demo:Customer (orders.CustomerID)
+                                as virtrdf:Order-order_has_customer ;
+                        demo:has_employee demo:Employee (orders.EmployeeID)
+                                as virtrdf:Order-order_has_employee ;
+                        demo:OrderDate orders.OrderDate
+                                as virtrdf:Order-order_date ;
+                        demo:RequiredDate orders.RequiredDate
+                                as virtrdf:Order-required_date ;
+                        demo:ShippedDate orders.ShippedDate
+                                as virtrdf:Order-shipped_date ;
+                        demo:order_ship_via demo:Shipper (orders.ShipVia)
+                                as virtrdf:Order-order_ship_via ;
+                        demo:Freight orders.Freight
+                                as virtrdf:Order-freight ;
+                        demo:ShipName orders.ShipName
+                                as virtrdf:Order-ship_name ;
+                        demo:ShipAddress orders.ShipAddress
+                                as virtrdf:Order-ship_address ;
+                        demo:ShipCity orders.ShipCity
+                                as virtrdf:Order-ship_city ;
+                        demo:ShipRegion orders.ShipRegion
+                                as virtrdf:Order-ship_region ;
+                        demo:ShipPostal_code orders.ShipPostalCode
+                                as virtrdf:Order-ship_postal_code ;
+                        demo:ShipCountry orders.ShipCountry
+                                as virtrdf:ship_country .
+                demo:OrderLine (order_lines.OrderID, order_lines.ProductID)
+                        a demo:OrderLine
+                                as virtrdf:OrderLine-OrderLines ;
+                        demo:has_order_id demo:Order (order_lines.OrderID)
+                                as virtrdf:order_lines_has_order_id ;
+                        demo:has_product_id demo:Product (order_lines.ProductID)
+                                as virtrdf:order_lines_has_product_id ;
+                        demo:UnitPrice order_lines.UnitPrice
+                                as virtrdf:OrderLine-unit_price ;
+                        demo:Quantity order_lines.Quantity
+                                as virtrdf:OrderLine-quantity ;
+                        demo:Discount order_lines.Discount
+                                as virtrdf:OrderLine-discount .
+                demo:Country (countries.Name)
+                        a demo:Country
+                                as virtrdf:Country-Name ;
+                        demo:Code countries.Code
+                                as virtrdf:Country-Code ;
+                        demo:SmallFlagDAVResourceName countries.SmallFlagDAVResourceName
+                                as virtrdf:Country-SmallFlagDAVResourceName ;
+                        demo:LargeFlagDAVResourceName countries.LargeFlagDAVResourceName
+                                as virtrdf:Country-LargeFlagDAVResourceName ;
+                        demo:SmallFlagDAVResourceURI countries.SmallFlagDAVResourceURI
+                                as virtrdf:Country-SmallFlagDAVResourceURI ;
+                        demo:LargeFlagDAVResourceURI countries.LargeFlagDAVResourceURI
+                                as virtrdf:Country-LargeFlagDAVResourceURI ;
+                        demo:Lat countries.Lat
+                                as virtrdf:Country-Lat ;
+                        demo:Lng countries.Lng
+                                as virtrdf:Country-Lng .
+                demo:Province (provinces.CountryCode, provinces.Province)
+                        a demo:Province
+                                as virtrdf:Province-Provinces ;
+                        demo:has_country_code demo:Country (provinces.CountryCode)
+                                as virtrdf:has_country_code ;
+                        demo:Province provinces.Province
+                                as virtrdf:Province-Province .
+        }
+}
+;
+</pre><p> </p>
+<h2><a name="Conclusions"></a> Conclusions</h2>
+<p>We have described how we can arbitrarily map relational database schemas to RDF ontologies en route to generating virtual RDF Data Sets (Graphs) that are then accessible to SPARQL Queries from within SQL or via the SPARQL Query Protocol.
+ All of this is achieved without compromising the inherent flexibility of the RDF data model or the SPARQL Query Language.</p>
+<p>It should also be noted that all of the functionality demonstrated also applies Virtual DBMS functionality realm of Virtuoso.
+ Thus, you can now map of 3rd party ODBC or JDBC accessible SQL data to RDF on the fly.
+ Likewise, you can also use the same Virtual DBMS layer to map data exposed via local or 3rd party SOAP or REST based Web Services to RDF.</p>
+<p>In addition to providing immense power and flexibility at the data mapping level, we have also paid great attention to the low level optimization of Virtuoso&#39;s underlying RDF storage engine (Triple or Quad Store).</p>
+<h2><a name="Future Research &amp; Development"></a> Future Research &amp; Development</h2>
+ Future areas of research and development include:<ul><li>Supporting declaration of data representation conditioned by the inferred domain of the triple pattern subject.
+</li>
+<li>Optimized mapping of joins of relational tables without creating redundant views.
+</li>
+<li>Supporting disjunction.
+</li>
+<li>Federating SPARQL queries across multiple SPARQL endpoints.</li>
+</ul><h2><a name="Other SQL to RDF Mapping Projects"></a>Other SQL to RDF Mapping Projects</h2>
+<ul><li><a href="http://sites.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/" class="absuri">D2RQ Project</a> </li>
+<li><a href="http://jena.sourceforge.net/SquirrelRDF/" class="absuri">Squirrel Project</a> </li>
+<li><a href="http://www.w3.org/2005/05/22-SPARQL-MySQL/XTech" class="absuri">SPASQL Project</a></li>
+</ul><h2><a name="References"></a>References</h2>
+ <a href="http://www.w3.org/DesignIssues/RDB-RDF" class="absuri">Relational Databases &amp; The Semantic Web</a> - Tim Berners-Lee<p> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryAtomOWL" class="wikiword">CategoryAtomOWL</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryTutorial" class="wikiword">CategoryTutorial</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategorySQL" class="wikiword">CategorySQL</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryOntology" class="wikiword">CategoryOntology</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategorySIOC" class="wikiword">CategorySIOC</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVOS" class="wikiword">CategoryVOS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryODS" class="wikiword">CategoryODS</a></p>
+<!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--><p> </p>
+</a></a></a></a></a></div></body></html>

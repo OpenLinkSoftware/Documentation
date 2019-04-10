@@ -1,0 +1,226 @@
+%META:TOPICPARENT{name="VOSSPARQL"}%
+
+---+ Virtuoso SPARQL Query Service
+
+%TOC%
+
+---++ Introduction to SPARQL in Virtuoso
+
+The Virtuoso SPARQL query service originally implemented the [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol for RDF]] 
+(W3C Recommendation, 15 January 2008), and has been updated to support [[http://www.w3.org/TR/sparql11-overview/][SPARQL 1.1]], 
+providing SPARQL query-processing for RDF data available on the open Internet.
+
+The query service implementation extends the standard protocol by providing multiple output-formats alongside the standard 
+XML results serialization. At present this uses additional query parameters, although content-negotiation will be supported soon.
+
+---++ SPARQL Service Endpoint
+
+Virtuoso reserves the path <code>'/sparql/'</code> and a synonym path <code>'/SPARQL/'</code> for SPARQL service. In 
+the current implementation, Virtuoso defines virtual directories for HTTP requests received on the port specified as 
+<code><nowiki>'ServerPort'</nowiki></code> in the <code>'[HTTPServer]'</code> section of the Virtuoso configuration file 
+which refer to one of these two path strings. 
+
+If the Virtuoso installation on host example.com listens for HTTP requests on port 8080 then client applications should use the 
+'service endpoint' string equal to <code><nowiki>http://example.com:8080/sparql/</nowiki></code>. For example, the 
+[[http://demo.openlinksw.com/][Live Virtuoso Demo instance]] publishes a service at the following endpoint: 
+<code><nowiki>http://demo.openlinksw.com/sparql/</nowiki></code>.
+
+Both <code>GET</code> and <code>POST</code> requests are supported by both server and client. The server recognizes 
+the 'Accept: ...' line of the request header to find MIME types preferred by the connected client and adjust the output mode of 
+the response. The client chooses between <code>GET</code> and <code>POST</code> automatically, based on the length 
+of the query text. 
+
+---++ HTTP Request Methods
+
+| *Method* | *Supported* | *Notes* |
+| <code>GET</code> | Yes | Short queries are sent in <code>GET</code> mode |
+| <code>POST</code> | Yes | Queries longer than 1900 bytes are <code>POST</code>-ed |
+| <code>DELETE</code> | No |   |
+| <code>PUT</code> | No |   |
+
+---++ HTTP Request Parameters
+
+| *Parameter* | *Notes* | *Required* | *Occurrence* |
+| <code>query</code> | SPARQL Query text | Yes |   |
+| <code>query-uri</code> | Absolute URL for Query Template file that returns SPARQL Query Text | No |   |
+| <code>default-graph-uri</code> | Absolute URL of default graph (string or NULL) | Yes |   |
+| <code>named-graph-uri</code> | Vector of named graphs (or NULL to not override what's specified in the query | Yes |   |
+| <code>req_hdr</code> | Additional HTTP header lines that should be passed to the service; 'Host: ...' is most popular | No |   |
+| <code>maxrows</code> | Maximum numbers of rows that should be returned (actual size of result set may differ) | No |   |
+| <code>bnode_dict</code> | Dictionary of known blank node names, or NULL for usual loading | No |   |
+| <code>xslt-uri</code> | Absolute URL of XSLT file to be applied to SPARQL Query results | No |   |
+
+
+---++ HTTP Response Codes
+
+As specified in the [[http://www.w3.org/TR/rdf-sparql-protocol/#query-bindings-http][SPARQL protocol]], Virtuoso 
+returns the following HTTP response codes:
+
+| *Code* | *Meaning* |
+| <code>200</code> | successful query |
+| <code>400</code> | malformed query |
+| <code>500</code> | error processing query or fetching data |
+
+---++ HTTP Response Formats
+
+All standard MIME types of SPARQL Protocol are supported.
+
+---+++ SPARQL Protocol Client Response Formats
+
+| *Content-Type* | *SPARQL query type* | *Description* |
+| <code>'application/sparql-results+xml'</code> | SELECT, ASK | Canonical XML presentation of SPARQL result set |
+| <code>'text/rdf+n3'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/rdf+ttl'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/rdf+turtle'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/turtle'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/n3'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'application/turtle'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'application/x-turtle'</code> | CONSTRUCT, DESCRIBE | Turtle |
+| <code>'application/rdf+xml'</code> | CONSTRUCT, DESCRIBE | Canonical RDF/XML presentation |
+
+
+---+++ SPARQL Protocol Server Response Formats
+
+| *Content-Type* | *SPARQL query type* | *Description* |
+| <code>'application/sparql-results+xml'</code> | SELECT, ASK | Canonical XML presentation of SPARQL result set |
+| <code>'text/rdf+n3'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/rdf+ttl'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/rdf+turtle'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/turtle'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'text/n3'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'application/turtle'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'application/x-turtle'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle |
+| <code>'application/x-nice-turtle'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | Turtle, like above, but the server will try to use "list" and "[...]" notations to make the document easier to read. This formatting is a slow procedure so long results will be formatted as plain Turtle. |
+| <code>'text/rdf+nt'</code> | SELECT | Format for NT (each triple is printed separately without abbreviations) |
+| <code>'text/plain'</code> | SELECT | Format for NT (each triple is printed separately without abbreviations) |
+| <code>'text/ntriples'</code> | SELECT, CONSTRUCT, DESCRIBE | Format for NT (each triple is printed separately without abbreviations) |
+| <code>'application/x-trig'</code> | SELECT, CONSTRUCT, DESCRIBE | TriG syntax for result sets, triples and quads (or sets of graphs with triples). While it is not used for quads, the output is same as for Turtle. |
+| <code>'application/rdf+xml'</code> | SELECT, CONSTRUCT, DESCRIBE | Canonical RDF/XML presentation |
+| <code>'application/soap+xml'</code> | SELECT | SOAP XML |
+| <code>'application/soap+xml;11'</code> | SELECT | SOAP XML |
+| <code>'text/html'</code> | SELECT | HTML document for plain browsing; it's a TABLE for result set and HTML with micro-data for triples |
+| <code>'text/md+html'</code> | SELECT, CONSTRUCT, DESCRIBE | HTML with microdata; for triples only |
+| <code>'text/microdata+html'</code> | SELECT, CONSTRUCT, DESCRIBE | HTML with microdata; for triples only |
+| <code>'text/x-html+ul'</code> | SELECT, CONSTRUCT, DESCRIBE | HTML with triples grouped into hierarchical list |
+| <code>'text/x-html+tr'</code> | SELECT, CONSTRUCT, DESCRIBE | HTML with triples in form of a table |
+| <code>'application/vnd.ms-excel'</code> | SELECT | HTML table for loading data into stylesheets |
+| <code>'text/csv'</code> | SELECT, CONSTRUCT, DESCRIBE | Comma-separated values |
+| <code>'text/tab-separated-values'</code> | SELECT | Tab-separated values |
+| <code>'application/javascript'</code> | SELECT | JavaScript data fragment |
+| <code>'application/json'</code> | SELECT | JSON |
+| <code>'application/sparql-results+json'</code> | SELECT, ASK | JSON result set |
+| <code>'application/odata+json'</code> | SELECT, ASK, CONSTRUCT, DESCRIBE | JSON in ODATA style |
+| <code>'application/microdata+json'</code> | SELECT, CONSTRUCT, DESCRIBE | Microdata as JSON; for triples only |
+| <code>'application/rdf+json'</code> | CONSTRUCT, DESCRIBE | JSON in TALIS style; for triples only |
+| <code>'application/x-rdf+json'</code> | CONSTRUCT, DESCRIBE | JSON in TALIS style; for triples only |
+| <code>'application/x-json+ld'</code> | CONSTRUCT, DESCRIBE | JSON in Linked Data style; for triples only |
+| <code>'application/ld+json'</code> | CONSTRUCT, DESCRIBE | JSON in Linked Data style; for triples only |
+| <code>'text/cxml'</code> | SELECT, CONSTRUCT, DESCRIBE | CXML output for rendering in Pivot Viewer of MS SilverLight. Result sets and triples are handled in different ways. |
+| <code>'text/cxml+qrcode'</code> | SELECT,CONSTRUCT, DESCRIBE | CXML output with QRcode imprinted into each picture; for result sets and triples |
+| <code>'application/atom+xml'</code> | SELECT, CONSTRUCT, DESCRIBE | Atom-style XML |
+| <code>'application/xhtml+xml'</code>  | SELECT | RDFa placed into XHTML; for triples only |
+
+
+
+If the HTTP header returned by the remote server does not contain a <code>'Content-Type'</code> line, the MIME-type 
+may be deduced from the text of the returned body. Error messages returned from the service are returned as XML 
+documents, using the mime-type <code><nowiki>application/xml</nowiki></code>. The documents consist of a single element 
+containing an error message.
+
+---+++ Additional HTTP Response Formats -- SELECT
+
+Use the format parameter to select one of the following alternate output formats:
+
+| *Format Value* | *Description* | *Content-Type* |
+| HTML | HTML document containing query summary and tabular results | <code>text/html</code> |
+| JSON | JSON serialization of results. Conforms to the draft specification [[http://www.mindswap.org/~kendall/sparql-results-json/][Serializing SPARQL Query Results in JSON]] | <code>application/sparql-results+json</code> |
+| Javascript | Javascript serialization of results. Generates an HTML table with the CSS class <code>sparql</code>. The table contains a column indicating row number and additional columns for each query variable. Each query solution contributes one row of the table. Unbound variables are indicated with a non-breaking space in the appropriate table cells. | <code>application/javascript</code> |
+| XML |   | <code>application/sparql-results+xml</code> |
+| TURTLE |   | <code>text/rdf+n3</code> |
+
+
+---+++ Additional HTTP Response Formats -- DESCRIBE & CONSTRUCT 
+
+| *Format Value* | *Description* | *Content-Type* |
+| JSON |   | <code>application/rdf+json</code> |
+
+---++ Virtuoso/PL APIs
+
+Virtuoso also provides SPARQL Protocol client APIs in PL, so you can communicate with SPARQL Query Services 
+from within SQL stored-procedures. The APIs are as follows:
+
+| *API* | *Notes* |
+| <code><nowiki>DB.DBA.SPARQL_REXEC</nowiki></code> | behaves like <code><nowiki>DBA.SPARQL_EVAL</nowiki></code>, but executes the query on the specified server. The procedure does not return anything. Instead, it creates a result set. |
+| <code><nowiki>DB.DBA.SPARQL_REXEC_TO_ARRAY</nowiki></code> | behaves like <code><nowiki>DBA.SPARQL_EXEC_TO_ARRAY()</nowiki></code>, but executes the query on the specified server. The function return a vector of rows, where every row is represented by a vector of values of fields. |
+| <code><nowiki>DB.DBA.SPARQL_REXEC_WITH_META</nowiki></code> | has no local <code><nowiki>SPARQL_EVAL</nowiki></code> analog. It produces not only an array of result rows but also array of metadata about result set in a format used by the <code>exec()</code> function. |
+
+---++ Examples
+
+There is a live [[http://demo.openlinksw.com/sparql_demo][Virtuoso Demo Server]] instance available at all times 
+for experimentation and demonstrations. It includes a collection of saved queries demonstrating Virtuoso's implementation 
+of the [[http://www.w3.org/TR/rdf-dawg-uc/][DAWG's SPARQL test-suite]] -- a collection of SPARQL query language 
+use-cases that enables interactive and simplified testing of a RDF triple-store's SPARQL implementation.
+
+Virtuoso also powers the publicly accessible endpoints housing datasets for [[http://dbpedia.org/sparql][DBpedia]], 
+the [[http://lod.openlinksw.com/sparql][LOD Cloud Cache]], and [[http://linkeddata.uriburner.com/sparql/][URIBurner]].
+
+---++ Implementation Notes
+
+This service has been implemented using [[http://docs.openlinksw.com/virtuoso][OpenLink Virtuoso]].
+
+
+---++ Related
+
+   * [[VirtSPARQLEndpointProtection][Safeguarding your Virtuoso-hosted SPARQL Endpoint]]
+   * [[VirtTipsAndTricksGuideSPARQLEndpointProtection][SPARQL Endpoint Protection Methods Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/][Virtuoso documentation]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint][SPARQL Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri][Service Endpoint Security]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl][Managing a SPARQL Web Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][SPARQL]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+      * [[VirtSPARQLDET][SPARQL Endpoint DET Configuration Guide]]       
+      * [[VirtSPARQLSecurityWebID][WebID Protocol & SPARQL Endpoint ACLs Tutorial]]
+      * [[VirtOAuthSPARQL][SPARQL OAuth Tutorial]]
+      * [[VirtTipsAndTricksGuideSPARQLEndpoints][Securing SPARQL endpoints]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth][SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint]]
+   * [[VirtAuthServerUI][Virtuoso Authentication Server UI]]
+   * [[VirtSPARQLSSL][Manage a SPARQL-WebID based Endpoint]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID][WebID Protocol Support in OpenLink Data Spaces]].
+   * Manage ODS Datadspaces Objects WebID Access Control Lists (ACLs):
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID][ODS Briefcase WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson][Person Entity WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup][Group Entity WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic][Public WebID based ACL Guide]]      
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL][ODS Feed Manager WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL][ODS Calendar WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL][ODS Bookmark Manager WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL][ODS Addressbook  WebID based ACL Guide]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson][Person Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup][Group Entity Specific ACL]]
+         * [[http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup][Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub][Setting up PubSubHub in ODS]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub][PubSubHubBub Demo Client Example]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub][Feed subscription via PubSubHub protocol Example ]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL][Setting Up PubSubHub to use WebID Protocol or IP based control lists]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsKeyImport][CA Keys Import using Conductor]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID Guide]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP][Using Virtuoso's WebID Verification Proxy Service with a WebID-bearing X.509 certificate]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy][Using Virtuoso's WebID Identity Provider (IdP) Proxy Service with an X.509 certificate]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile][ODS Briefcase WebID Protocol Share File Guide]]
+   * [[http://esw.w3.org/topic/foaf+ssl][WebID Protocol Specification]]
+   * [[https://foaf.me/simpleLogin.php][Test WebID Protocol Certificate page]]
+   * [[http://test.foafssl.org/cert/][WebID Protocol Certificate Generation page]]
+

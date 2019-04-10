@@ -1,0 +1,32 @@
+<docbook><section><title>VirtTipsAndTricksGuideCustomExactDate</title><title>How Can I Get an exact mapping for a date?</title>How Can I Get an exact mapping for a date?
+<para>Assume a given attempts to get an exact mapping for the literal &quot;1950&quot; using <emphasis>bif:contains</emphasis>:</para>
+<programlisting>SPARQL
+SELECT DISTINCT ?s ?o 
+FROM &lt;http://dbpedia.org&gt; 
+WHERE 
+  {
+    ?s ?p ?o . 
+   FILTER( bif:contains (?o, &#39;&quot;1950&quot;&#39;) 
+           &amp;&amp; isLiteral(?o) 
+           &amp;&amp; ( str(?p) ! = rdfs:label  || str(?p) !=  foaf:name 
+           &amp;&amp; ( ?o=&#39;1950&#39;)
+         )
+  }
+</programlisting><para>As an <emphasis>integer</emphasis> 1950 or <emphasis>date</emphasis> 1950-01-01 are not texts, they are not in free-text index and thus invisible for CONTAINS free-text predicate.</para>
+<para>A possible way to make them visible that way is to introduce an additional RDF predicate that will contain objects of the triples in question, converted to strings via str() function.</para>
+<para>Thus better results will be approached: if searches about dates are frequent then a new predicate can have date/datetime values extracted from texts, eliminating the need for bif:contains.</para>
+<para>Therefor, the query from above should be changed to:</para>
+<programlisting>SPARQL
+SELECT DISTINCT ?s ?o 
+FROM &lt;http://dbpedia.org&gt; 
+WHERE 
+  {
+    ?s ?p ?o . 
+    FILTER (  isLiteral(?o) 
+              &amp;&amp; (  str(?p) != str(rdfs:label) || str(?p) !=  foaf:name ) 
+              &amp;&amp; str(?o) in (&quot;1950&quot;, &quot;1950-01-01&quot;))
+  }
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">SPARQL</ulink> </listitem>
+</itemizedlist></section></docbook>

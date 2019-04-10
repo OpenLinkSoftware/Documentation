@@ -1,0 +1,493 @@
+%META:TOPICPARENT{name="VOSBuild"}%
+
+---+How to Install Virtuoso Open Source (VOS) on Ubuntu Linux
+
+%TOC%
+
+---++ Starting Point
+
+We start from a freshly installed Ubuntu Linux server-edition installation
+(Maverick Meerkat distribution, 10.10) having chosen the "server" package set.
+
+Ubuntu creates a normal user as part of the installation, with the ability to
+use <tt>sudo</tt> where root is required.
+
+Be sure to update the index of available packages:
+<verbatim>
+sudo apt-get update
+</verbatim>
+
+
+---++Installing Virtuoso
+
+Ubuntu includes packages with pre-built Virtuoso binaries. You can
+install Virtuoso using these, or, if a newer version is available upstream or
+you want to specify your own configuration options, you can build directly from source.
+
+---+++Installing Virtuoso with Ubuntu Packages
+
+   1 Ubuntu have split Virtuoso into a handful of packages so you can install only
+the bits you require; further, the packages cater for both minimal installations
+and as a database in its own right:
+<verbatim>
+tim@ubuntu:~$ apt-cache search '^virtuoso'
+virtuoso-opensource - high-performance database
+virtuoso-server - high-performance database - server dependency package
+virtuoso-minimal - high-performance database - core dependency package
+virtuoso-opensource-6.1 - high-performance database - support files
+virtuoso-opensource-6.1-bin - high-performance database - binaries
+virtuoso-opensource-6.1-common - high-performance database - common files
+virtuoso-opensource-6.0 - transitional package for virtuoso-opensource-6.1
+virtuoso-vad-bpel - high-performance database - BPEL module
+virtuoso-vad-conductor - high-performance database - conductor module
+virtuoso-vad-demo - high-performance database - demo module
+virtuoso-vad-doc - high-performance database - documentation module
+virtuoso-vad-isparql - high-performance database - iSPARQL module
+virtuoso-vad-ods - high-performance database - Open Data Spaces module
+virtuoso-vad-cartridges - high-performance database - Cartridges module
+virtuoso-vad-sparqldemo - high-performance database - SPARQL demo module
+virtuoso-vad-syncml - high-performance database - SyncML module
+virtuoso-vad-tutorial - high-performance database - tutorial module
+virtuoso-vsp-startpage - high-performance database - web interface files
+virtuoso-nepomuk - transitional package for virtuoso-minimal
+virtuosoconverter - converts nepomuk database to Virtuoso 6.1.0
+</verbatim>
+(The above output has been manually reordered into logical groupings.)
+and additionally,
+<verbatim>
+libvirtodbc0 - high-performance database - ODBC libraries
+</verbatim>
+
+   1 The basic installation starts here --
+<verbatim>
+tim@ubuntu:~$ sudo aptitude install  virtuoso-opensource
+The following NEW packages will be installed:
+  ghostscript{a} gsfonts{a} libavahi-client3{a} libavahi-common-data{a} 
+  libavahi-common3{a} libcups2{a} libcupsimage2{a} libgomp1{a} libgs8{a} 
+  libice6{a} libjasper1{a} libjpeg62{a} liblcms1{a} liblqr-1-0{a} 
+  libltdl7{a} libmagickcore3{a} libmagickwand3{a} libpaper-utils{a} 
+  libpaper1{a} libreadline5{a} libsm6{a} libtiff4{a} libvirtodbc0{a} 
+  libxt6{a} odbcinst{a} odbcinst1debian2{a} virtuoso-opensource 
+  virtuoso-opensource-6.1{a} virtuoso-opensource-6.1-bin{a} 
+  virtuoso-opensource-6.1-common{a} virtuoso-server{a} 
+  virtuoso-vad-conductor{a} virtuoso-vsp-startpage{a} x11-common{a} 
+0 packages upgraded, 34 newly installed, 0 to remove and 0 not upgraded.
+Need to get 19.7MB of archives. After unpacking 61.3MB will be used.
+</verbatim>
+   1 As part of the installation, Ubuntu will ask you for passwords to use for the
+<code>dba</code> (main database administrative) and <code>dav</code> (WebDAV filesystem administrative)
+users. If you leave these blank, the Virtuoso service will not start after
+installation:
+%BR%%BR%<img src="%ATTACHURLPATH%/ubuntu-vos-questions.png" style="wikiautogen"/>%BR%%BR%
+<verbatim>
+Setting up libpaper-utils (1.1.24) ...
+Setting up libreadline5 (5.2-7build1) ...
+Setting up virtuoso-opensource-6.1-common (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-opensource-6.1-bin (6.1.2+dfsg1-1ubuntu4) ...
+Setting up odbcinst (2.2.14p2-1ubuntu1) ...
+Setting up odbcinst1debian2 (2.2.14p2-1ubuntu1) ...
+Setting up libvirtodbc0 (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-opensource-6.1 (6.1.2+dfsg1-1ubuntu4) ...
+ * Starting Virtuoso OpenSource Edition 6.1  virtuoso-opensource-6.1     [ OK ] 
+Setting up virtuoso-opensource (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-vad-conductor (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-vsp-startpage (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-server (6.1.2+dfsg1-1ubuntu4) ...
+Processing triggers for libc-bin ...
+ldconfig deferred processing now taking place
+                                         
+tim@ubuntu:~$ 
+</verbatim>
+   1 At this point Virtuoso is installed and an instance created and running.
+
+---++++Package Contents and Layout
+
+Ubuntu's packaging renames Virtuoso's included <tt>isql</tt> binary to avoid a
+conflict with unixODBC, so the executables provided (in the
+virtuoso-opensource-6.1-bin package) are:
+
+   * <code><nowiki>/usr/bin/isql-vt</nowiki></code> -- command-line database-access tool, iSQL
+   * <code><nowiki>/usr/bin/isqlw-vt</nowiki></code> -- Unicode-enabled iSQL
+   * <code><nowiki>/usr/bin/virt_mail</nowiki></code> -- SMTP delivery agent for incoming mail
+   * <code><nowiki>/usr/bin/virtuoso-t</nowiki></code> -- Main daemon executable
+
+In accordance with Debian policy that services should start immediately after
+they've been installed, Ubuntu have created a default instance based on
+a configuration file located at
+<code><nowiki>/etc/virtuoso-opensource-6.1/virtuoso.ini</nowiki></code>; the database itself lives in
+<code><nowiki>/var/lib/virtuoso-opensource-6.1/db/</nowiki></code> (a similar layout to
+<nop>MySQL, <nop>PostgreSQL, etc).
+
+At this stage you can start using Virtuoso through the Conductor
+web interface and the iSQL command line utility, or install more options.
+
+
+----++++Further VAD Packages
+
+Ubuntu have split some of the Virtuoso VAD packages into separate <code>apt</code>
+packages of their own. When you <code>apt-get install</code> these, all you get is the VAD package on
+disk ready to be installed into your database; Ubuntu does not install the VAD
+into any running instance for you (because by this time you might have created
+your own instances elsewhere on different ports).
+
+<verbatim>
+tim@ubuntu:~$ sudo apt-get install virtuoso-vad-{isparql,ods,cartridges,tutorial}
+[...]
+Fetched 8,388kB in 16s (517kB/s)                                               
+Selecting previously deselected package virtuoso-vad-isparql.
+(Reading database ... 46338 files and directories currently installed.)
+Unpacking virtuoso-vad-isparql (from .../virtuoso-vad-isparql_6.1.2+dfsg1-1ubuntu4_all.deb) ...
+Selecting previously deselected package virtuoso-vad-ods.
+Unpacking virtuoso-vad-ods (from .../virtuoso-vad-ods_6.1.2+dfsg1-1ubuntu4_all.deb) ...
+Selecting previously deselected package virtuoso-vad-cartridges.
+Unpacking virtuoso-vad-cartridges (from .../virtuoso-vad-cartridges_6.1.2+dfsg1-1ubuntu4_all.deb) ...
+Setting up virtuoso-vad-isparql (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-vad-ods (6.1.2+dfsg1-1ubuntu4) ...
+Setting up virtuoso-vad-cartridges (6.1.2+dfsg1-1ubuntu4) ...
+tim@ubuntu:~$ 
+</verbatim>
+
+In the Conductor (http://localhost:8890/conductor/), go to <b><nop>SysAdmin</b> --> <b>Packages</b>
+and the <i>iSPARQL</i>, <i>Cartridges and Tutorial</i>, and <i>ODS *</i> (of which there are several)
+packages will now be available.
+
+---+++Building Virtuoso from Source
+
+There are 2 ways to build Virtuoso from source: using Ubuntu packages or the
+generic source build that works everywhere.
+
+---++++Rebuilding using Ubuntu packages
+
+   1 First we install the minimum Ubuntu build environment - basic C compilers and
+development headers.
+<verbatim>
+tim@ubuntu:~$ sudo aptitude install dpkg-dev build-essential
+The following NEW packages will be installed:
+  binutils{a} build-essential dpkg-dev fakeroot{a} g++{a} g++-4.4{a} gcc{a} 
+  gcc-4.4{a} libalgorithm-diff-perl{a} libalgorithm-merge-perl{a} 
+  libc-dev-bin{a} libc6-dev{a} libdpkg-perl{a} libgomp1{a} 
+  libstdc++6-4.4-dev{a} linux-libc-dev{a} manpages-dev{a} patch{a} 
+0 packages upgraded, 18 newly installed, 0 to remove and 0 not upgraded.
+Need to get 19.7MB of archives. After unpacking 59.6MB will be used.
+Do you want to continue? [Y/n/?] 
+...
+</verbatim>
+   1 Then we download the Ubuntu source packages:
+<verbatim>
+tim@ubuntu:~$ mkdir C
+tim@ubuntu:~$ cd C
+tim@ubuntu:~/C$ apt-get source virtuoso-opensource
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+NOTICE: 'virtuoso-opensource' packaging is maintained in the 'Git' version control system at:
+git://scm.alioth.debian.org/git/pkg-virtuoso/pkg-virtuoso.git
+Need to get 69.4MB of source archives.
+Get:1 http://gb.archive.ubuntu.com/ubuntu/ maverick/main virtuoso-opensource 6.1.2+dfsg1-1ubuntu4 (dsc) [2,760B]
+Get:2 http://gb.archive.ubuntu.com/ubuntu/ maverick/main virtuoso-opensource 6.1.2+dfsg1-1ubuntu4 (tar) [69.3MB]
+...
+dfsg1-1ubuntu4.dsc
+dpkg-source: info: extracting virtuoso-opensource in virtuoso-opensource-6.1.2+dfsg1
+dpkg-source: info: unpacking virtuoso-opensource_6.1.2+dfsg1.orig.tar.gz
+dpkg-source: info: applying virtuoso-opensource_6.1.2+dfsg1-1ubuntu4.diff.gz
+tim@ubuntu:~/C$ cd virtuoso-opensource-6.1.2+dfsg1/
+tim@ubuntu:~/C/virtuoso-opensource-6.1.2+dfsg1$ 
+</verbatim>
+   1 Install the build-dependencies: because Ubuntu builds Virtuoso with all bells and
+whistles enabled (language hosting modules in particular), this brings in quite
+a lot more packages:
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.2+dfsg1$ sudo aptitude build-dep virtuoso-opensource
+[...]
+0 packages upgraded, 286 newly installed, 0 to remove and 0 not upgraded.
+Need to get 103MB of archives. After unpacking 346MB will be used.
+Do you want to continue? [Y/n/?]
+</verbatim>
+   1 Start the package build using dpkg-buildpackage:
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.2+dfsg1$ dpkg-buildpackage -rfakeroot
+dpkg-buildpackage: export CFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export CPPFLAGS from dpkg-buildflags (origin: vendor): 
+dpkg-buildpackage: export CXXFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export FFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export LDFLAGS from dpkg-buildflags (origin: vendor): -Wl,-Bsymbolic-functions
+...
+dh_md5sums -plibvirtuoso5.5-cil 
+dh_builddeb -plibvirtuoso5.5-cil 
+dpkg-deb: warning: 'debian/libvirtuoso5.5-cil/DEBIAN/control' contains user-defined field 'Original-Maintainer'
+dpkg-deb: building package `libvirtuoso5.5-cil' in `../libvirtuoso5.5-cil_6.1.2+dfsg1-1ubuntu4_amd64.deb'.
+dpkg-deb: warning: ignoring 1 warnings about the control file(s)
+
+ dpkg-genchanges  >../virtuoso-opensource_6.1.2+dfsg1-1ubuntu4_amd64.changes
+dpkg-genchanges: not including original source code in upload
+ dpkg-source --after-build virtuoso-opensource-6.1.2+dfsg1
+dpkg-buildpackage: binary and diff upload (original source NOT included)
+tim@ubuntu:~/C/virtuoso-opensource-6.1.2+dfsg1$ 
+</verbatim>
+   1 Some time later, the build will finish, and you will be able to see a lot of <code>*.deb</code> files
+created in the parent directory:
+<verbatim>
+tim@ubuntu:~/C$ ls
+libvirtodbc0_6.1.2+dfsg1-1ubuntu4_amd64.deb
+libvirtuoso5.5-cil_6.1.2+dfsg1-1ubuntu4_amd64.deb
+virtuoso-minimal_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-nepomuk_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-opensource-6.0_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-opensource-6.1.2+dfsg1
+virtuoso-opensource_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-opensource_6.1.2+dfsg1-1ubuntu4_amd64.changes
+virtuoso-opensource_6.1.2+dfsg1-1ubuntu4.diff.gz
+virtuoso-opensource_6.1.2+dfsg1-1ubuntu4.dsc
+virtuoso-opensource_6.1.2+dfsg1.orig.tar.gz
+virtuoso-opensource-6.1_6.1.2+dfsg1-1ubuntu4_amd64.deb
+virtuoso-opensource-6.1-bin_6.1.2+dfsg1-1ubuntu4_amd64.deb
+virtuoso-opensource-6.1-common_6.1.2+dfsg1-1ubuntu4_amd64.deb
+virtuoso-server_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-bpel_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-conductor_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-demo_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-doc_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-isparql_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-ods_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-cartridges_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-sparqldemo_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-syncml_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vad-tutorial_6.1.2+dfsg1-1ubuntu4_all.deb
+virtuoso-vsp-startpage_6.1.2+dfsg1-1ubuntu4_all.deb
+
+tim@ubuntu:~/C$ sudo dpkg -i *.deb
+[sudo] password for tim: 
+Selecting previously deselected package libvirtodbc0.
+(Reading database ... 63555 files and directories currently installed.)
+Unpacking libvirtodbc0 (from libvirtodbc0_6.1.2+dfsg1-1ubuntu4_amd64.deb) ...
+Selecting previously deselected package libvirtuoso5.5-cil.
+...
+</verbatim>
+
+---++++Building from Upstream Source
+
+*Note*: Useful prior reading: please see the 
+[[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSBuild][VOSBuild]]
+and [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSMake][VOSMake]] pages
+in the VOS Wiki.
+
+---+++++Dependencies
+
+Proceed to install the required build dependencies:
+
+<verbatim>
+tim@ubuntu:~/C$ sudo aptitude install dpkg-dev build-essential 
+...
+tim@ubuntu:~/C$ sudo apt-get install autoconf automake libtool flex bison gperf gawk m4 make odbcinst libxml2-dev libssl-dev libreadline-dev
+</verbatim>
+
+---+++++Unpacking
+
+Download the latest VOS archive (source tarball such as
+<code>virtuoso-opensource-6.1.3.tar.gz</code>) from
+[[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VOSDownload#Latest%20source%20code%20on%20Github][GitHub]] and unpack it:
+
+<verbatim>
+tim@ubuntu:~/C$ tar xvpfz virtuoso-opensource-6.1.3.tar.gz 
+virtuoso-opensource-6.1.3/
+virtuoso-opensource-6.1.3/bin/
+virtuoso-opensource-6.1.3/bin/installer/
+virtuoso-opensource-6.1.3/bin/installer/virtuoso.ini
+virtuoso-opensource-6.1.3/bin/installer/demo.ini
+...
+</verbatim>
+
+---+++++Configuring
+
+For the purposes of this demonstration, we use a simple configuration with no
+frills:
+
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.3$ ./configure --prefix=/usr/local/ \
+	 --with-readline --program-transform-name="s/isql/isql-v/" 
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... 
+</verbatim>
+
+There are many other options that can be specified at this stage, to
+enable/disable the building of language-hosting plugins (Perl, Python, Ruby) or
+various VAD packages (sub-packages within Virtuoso); for more on these, read the
+relevant README files in the source distribution and run `<code><nowiki>./configure
+--help</nowiki></code>'.
+
+Here we settle for asking for read-line support, i.e., the ability to cursor-up/down
+and use typical read-line key-combinations in the command-line <code>isql</code> tool
+(once built).
+
+---++++++Aside: VOS component locations
+
+Virtuoso instances usually take the form of a designated directory somewhere in
+the filesystem, centered around a configuration file (nominally <code>virtuoso.ini</code>)
+which specifies operational parameters such as the filenames of database
+page files, port numbers, numbers of threads and buffers, etc.
+
+In the above command, we specify a prefix of <code><nowiki>/usr/local</nowiki></code> to Virtuoso's
+<code>./configure</code> script. This specifies a base directory under which Virtuoso
+will create/use the following structure:
+
+   * <code><nowiki>/usr/local/lib/</nowiki></code> -- various libraries 
+for Sesame, JDBC, Jena, Hibernate, and hosting
+   * <code><nowiki>/usr/local/bin/</nowiki></code> -- where the main 
+executables (virtuoso-t, isql) live
+   * <code><nowiki>/usr/local/share/virtuoso/vad/</nowiki></code> -- used 
+to store VAD archives prior to installation in an instance
+   * <code><nowiki>/usr/local/share/virtuoso/doc/</nowiki></code> -- local 
+offline documentation
+   * <code><nowiki>/usr/local/var/lib/virtuoso/db/</nowiki></code> -- the 
+default location for a Virtuoso instance 
+   * <code><nowiki>/usr/local/var/lib/virtuoso/vsp/</nowiki></code> -- various 
+VSP scripts which comprise the default homepage until the Conductor is installed
+
+
+Other directory-structures are possible by specifying variously --
+
+   * individual configure options such as <code><nowiki>--bindir</nowiki></code>, <code><nowiki>--libdir</nowiki></code>, etc.
+   * <code><nowiki>--with-layout=[GNU|Debian|Gentoo|RedHat|FreeBSD|opt|OpenLink]</nowiki></code>
+
+-- where the latter options specify default locations into which the VADs,
+documentation (HTML and PDF), demo and default instance databases, and hosting
+libraries will be installed, compatible with the packaging requirements of the
+various named OS distributions ("opt" means a prefix of <code><nowiki>/opt</nowiki></code> and<code><nowiki> OpenLink</nowiki></code> is the
+default, detailed above).
+
+---++++++Aside: Ubuntu isql name conflict
+
+Unfortunately, both unixODBC and Virutoso provide a command `<tt>isql</tt>',
+used to access data sources from the commandline (in unixODBC, an ODBC
+DSN; in Virtuoso, the SQL interface).
+
+In order to allow both packages to coexist, Ubuntu rename Virutoso's isql
+command to <tt>isql-vt</tt>.
+
+Given that we are installing Virtuoso from source to a different prefix
+(/usr/local), it is not absolutely necessary to do the same here, but to avoid
+having to specify different PATH considerations and to otherwise make life easier, the
+<tt>configure</tt> command above reflects this change as well.
+
+---+++++Building and Installing
+
+   1 Having chosen some configure options, run <code>make</code>: 
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.3$ nice make
+Making all in .
+make[1]: Entering directory `/home/tim/C/virtuoso-opensource-6.1.3'
+</verbatim>
+   1 Optionally, you can run <code>make check</code> to run the test-suite (beware, it takes
+some hours and multiple gigabytes of disk-space).
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.3$ nice make check
+</verbatim>
+   1 Install it to the directory-structure chosen above:
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.3$ sudo make install
+</verbatim>
+
+---++Getting Started
+
+   1 Take a copy of the default <code>virtuoso.ini</code> and store it safely in case you make
+erroneous changes.
+   1 Navigate to the default database directory:
+<verbatim>
+tim@ubuntu:~/C/virtuoso-opensource-6.1.3$ cd /usr/local/var/lib/virtuoso/db/
+tim@ubuntu:/usr/local/var/lib/virtuoso/db$ 
+tim@ubuntu:/usr/local/var/lib/virtuoso/db$ ls
+virtuoso.ini
+</verbatim>
+      * (At this point, if you wish to run virtuoso as a non-root user you should change
+the ownership on this directory, e.g., <code>sudo chown -R tim .</code> . Virtuoso
+only requires root if you wish to use it as a webserver listening on port 80; by
+default it listens only on high ports (i.e., above 1024).)
+   1 Start the server:
+<verbatim>
+tim@ubuntu:/usr/local/var/lib/virtuoso/db$ virtuoso-t -fd
+
+                Tue Apr 19 2011
+16:47:52 INFO: { Loading plugin 1: Type `plain', file `wikiv' in `/usr/local/lib/virtuoso/hosting'
+16:47:52 INFO:   WikiV version 0.6 from OpenLink Software
+16:47:52 INFO:   Support functions for WikiV collaboration tool
+16:47:52 INFO:   SUCCESS plugin 1: loaded from /usr/local/lib/virtuoso/hosting/wikiv.so }
+...
+16:48:09 INFO: Checkpoint started
+16:48:09 INFO: Checkpoint finished, log reused
+16:48:10 INFO: Checkpoint started
+16:48:10 INFO: Checkpoint finished, log reused
+16:48:12 INFO: HTTP/WebDAV server online at 8890
+16:48:12 INFO: Server online at 1111 (pid 31949)
+</verbatim>
+   1 Here we see the server running in foreground mode with maximum debugging
+information. Because it's the first time this instance has been run, Virtuoso
+creates a bunch of files (<code>virtuoso.db</code>, <code>virtuoso.trx</code> (the
+transaction log), etc.), and installs the Conductor VAD package (and any other VAD packages now found in the, e.g., <code><nowiki>/usr/local/share/virtuoso/vad/</nowiki></code> directory) into the
+database.
+   1 If you close your terminal while this command is running, Virtuoso will stop. To
+run it as a daemon instead, omit the "-d" ("<code><nowiki>+debug</nowiki></code>") 
+option, or add "<code> &amp;</code>". The latter option will keep full debug information 
+flowing to both console and log.  
+   1 To keep full debug information flowing to the log, but keep the console clear, you can
+edit the CommandLine value in the <code>virtuoso.ini</code> file.  You can still see most of
+what's happening by running <tt>tail -f virtuoso.log</tt>.
+
+---+++Using Virtuoso
+
+---++++Web-based UI
+
+You can access the Conductor interface by pointing your web-browser at
+<code><nowiki>http://localhost:8890/conductor/</nowiki></code> (substitute hostname as appropriate).
+
+From the Conductor, you can manage users and automated backups, install VAD
+packages, execute SQL commands in a web-based iSQL tool, configure the Virtuoso
+Sponger, and loads more.
+
+There are two system users of immediate importance: 
+   * <code>dba</code> -- the relational data administrative account,) and 
+   * <code>dav</code> --the WebDAV adminstrative account. 
+
+By default each of these accounts has its password set the same as its 
+username.  It is strongly advised that you change these as soon as possible for
+obvious security reasons.
+
+---++++Command-line
+
+Virtuoso provides a SQL/ODBC listener on port <code>1111/tcp</code> (default). You can connect directly
+to this and execute SQL statements using the isql tool:
+
+<verbatim>
+tim@ubuntu:/usr/local/var/lib/virtuoso/db$ isql
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL> tables;
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+Showing SQLTables of tables like 'NULL.NULL.NULL', tabletype/colname like 'NULL'
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+[...]
+</verbatim>
+
+---++Resource Usage
+
+Virtuoso is highly configurable: the same executables and packages will service
+anything from a small "lite-mode" installation with a database of 10Mb up to a
+huge multi-user enterprise installation with terabytes of data.
+
+The default settings for Virtuoso Open-Source create about 29MB of database filesize, 
+with a 160MB process size in memory, and a total of about 237MB disk footprint; this 
+has 20 client-access threads running for database and/or web-server use.
+
+We also provide detailed documentation of 
+[[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSScale][how to scale Virtuoso]].
+
+---++Related
+
+   * [[VOSCentosNotes][CentOS]]
+   * [[VOSDebianNotes][Debian]]
+   * [[VOSFedoraNotes][Fedora]]

@@ -1,0 +1,238 @@
+%META:TOPICPARENT{name="ValWhatWhyHow"}%
+
+---+ Virtuoso Authentication Layer - ACL System Quickstart Guide
+
+*See also*: [[ValWhatWhyHow][Virtuoso Authentication Layer - What, Why and How]]
+
+These pages provide an overview of VAL for system administrators, with a focus on how to configure the VAL ACL system. 
+
+Developers wanting more in-depth coverage of how VAL integrates into Virtuoso, or how to integrate VAL into their own Virtuoso applications, should refer to the [[http://docs.openlinksw.com/val/index.html][VAL API documentation]].
+
+---
+%TOC%
+---
+
+---++ VAL In a Nutshell
+
+Virtuoso provides numerous options for access control, some specific to particular realms. For instance:
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpoints][Protected SPARQL endpoints]] are associated with specific authentication methods, e.g., <code>/sparql-auth</code>, <code>/sparql-oauth</code>, <code>/sparql-webid</code>.
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLAssignRoleToUser][SPARQL roles]] restrict the types of SPARQL commands a database user may perform.
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFGraphsSecurity][Graph level security]] allows the setting of permission bit masks to set the read/write (and sponge) permissions on specific RDF graphs to control public or specific user access.
+
+However, our recommended and preferred <i>generic</i> access control mechanism for Virtuoso is VAL, the Virtuoso Authentication Layer. VAL provides a *generic ACL layer* which can be used to protect many Virtuoso resources, including SPARQL endpoints or graphs, <nowiki>WebDAV</nowiki> resources, the Sponger, and even individual Sponger cartridges.
+
+VAL provides both *authentication* and *access control services* to Virtuoso through an internal Virtuoso API and two externally accessible HTTP APIs, one a "standard" HTTP API and the other a RESTful variant, which manage rules and groups via their URLs. Both are Turtle-based. Alternatively, admins can configure VAL ACLs by inserting Turtle directly into the appropriate VAL RDF graphs. All VAL authentication mechanisms are supported.
+
+Typically, users attempting to access a VAL-protected resource must authenticate themselves through a VAL-supplied authentication dialog. After establishing a VAL session, their access permissions on the resource are checked.
+
+<img style="display: block; margin-left: auto; margin-right: auto;" alt="VAL authentication dialog" src="%ATTACHURLPATH%/authenticate.vsp.png"/>
+<div style="text-align: center; width: 100%;"><b>VAL authentication dialog</b></div>
+
+The supported authentication methods are:
+   * HTTP authentication (for users with a Virtuoso SQL user account)
+   * Basic PKI
+   * <nowiki>BrowserID</nowiki>
+   * <nowiki>OpenID</nowiki>
+   * <nowiki>WebID</nowiki> + TLS
+   * Third-party OAuth services
+      * Numerous services including Facebook, Twitter, <nowiki>LinkedIn</nowiki>, and Google
+      * Note:
+         * Before a third-party OAuth service can be used by VAL, it must be registered with Virtuoso. See <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/SpongerOAuthSupport#Registering%20OAuth%20Application%20Keys%20In%20Virtuoso">Registering OAuth Application Keys In Virtuoso</a> for guidance.
+         * Not all OAuth services require a Virtuoso SSL endpoint.
+
+VAL's generic ACL layer is fully RDF-based, storing rules and groups in private graphs in the triple store, and describing rules using the [[http://www.w3.org/ns/auth/acl#][W3C ACL ontology]] and the [[http://www.openlinksw.com/ontology/acl#][<nowiki>OpenLink</nowiki> ACL ontology]]. The system also supports restriction of arbitrary values based on the authenticated user. These can be used to limit the number of query results, enforce quotas, etc.
+
+---++ The VAL ACL Rule System - Core Concepts
+
+The following section outlines some of the core concepts underpinning VAL ACLs. The intent is to provide a brief overview. More detailed discussions of the various topics introduced here are provided elsewhere in the VAL documentation.
+
+The ACL rule system allows any authenticated person (including any third-party <nowiki>ServiceIDs</nowiki> which have no corresponding Virtuoso SQL account) to create ACL rules for any resource they own or for which they have <code>GRANT</code> rights. 
+
+A <i>resource</i> is any entity identified by a URI. This could be a DAV folder, a SPARQL endpoint, or a Sponger extractor cartridge, among other things. VAL manages and reports the permissions on the resource, but the application logic supporting the resource access is responsible for enforcing those permissions.
+
+<i>Rules</i> and <i>groups</i> are stored in private named graphs within the triple store, as are resource ownership details. The rules may grant <code>READ</code>, <code>WRITE</code>, or <code>SPONGE</code> permission on a resource, or the ability to <code>GRANT</code> these permissions. Custom permissions can also be defined.
+
+---+++Service IDs
+
+VAL enforces data access policies on the basis of <i><nowiki>ServiceIDs</nowiki></i>. A <nowiki>ServiceID</nowiki> uniquely identifies the resource requestor. A user (aka agent) trying to access to a non-public VAL protected resource or service will usually need to authenticate themselves through a VAL authentication dialog. Authentication establishes their <nowiki>ServiceID</nowiki> for that session. 
+
+A <i><nowiki>ServiceID</nowiki></i> is a personal URI of some kind and may be one of two types: a <nowiki>NetID</nowiki>, or a <nowiki>WebID</nowiki>. A <nowiki>NetID</nowiki> is a URI returned by one of the numerous third-party authentication services supported by VAL; for instance, it may b a Google+ profile URI like <nowiki><code>https://plus.google.com/+JohnSmith</code></nowiki>. A <nowiki>WebID</nowiki> is a resolvable URI contained in the <nowiki>SubjectAlternativeName</nowiki> (SAN) slot of an X.509 certificate which resolves to an RDF document containing the user's profile.
+
+---+++Realms
+
+Each ACL rule and group is defined in a specific application realm which is stored with the rule or group using the <code>oplacl:hasRealm</code> property. Each application realm defines a distinct set of rules and groups. The default realm is <nowiki><code>oplacl:DefaultRealm</code></nowiki>. In most circumstances it is unlikely you will need to define another realm for SPARQL applications. 
+
+<nowiki><code>oplacl:DefaultRealm</code></nowiki> is for use in ACLs targeting SPARQL clients. VAL defines realm <nowiki><code>oplacl:Sql</code></nowiki> for ACLs controlling SQL clients, i.e. isql, ODBC, JDBC, ADO.NET, OLE DB clients etc. (SPARQL ACL rules defined in the default realm do not apply in SQL connections. Refer to [[VAL_SqlACLs][SQL ACLs - Control SPARQL Access in SQL Connections (ODBC)]] for more details.)
+
+---+++Rules
+
+ACL rules grant permissions to a <nowiki>ServiceID</nowiki> either directly or indirectly through an ACL group, both via the <code>acl:agent</code> property.
+
+Below is a basic example of an ACL rule granting <code>READ</code> access to a user authenticating through their Facebook account, <code><nowiki>&lt;http://www.facebook.com/jsmith&gt;</nowiki></code>, to resource <code><nowiki>&lt;http://www.fusepool.eu/p3/assets&gt;</nowiki></code>:
+<verbatim>
+@prefix  oplacl:  <http://www.openlinksw.com/ontology/acl#>   .
+@prefix     acl:  <http://www.w3.org/ns/auth/acl#>            .
+<#rule> 
+                      a  acl:Authorization                   ;
+   oplacl:hasAccessMode  oplacl:Read                         ;
+              acl:agent  <http://www.facebook.com/jsmith>    ;
+           acl:accessTo  <http://www.fusepool.eu/p3/assets>  ;
+        oplacl:hasScope  <urn:myscope>                        .
+</verbatim>
+
+Rules are stored in a private graph matching the realm the rules apply to, typically graph <nowiki><code>&lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;</code></nowiki>.
+
+Each permission granted through oplacl:hasAccessMode should be stated explicitly. A broader permission does not implicitly grant a more restrictive permission; so oplacl:Sponge does not also grant oplacl:Read, for example. To allow sponging to a graph, the access mode should be specified as <code>oplacl:hasAccessMode oplacl:Read, oplacl:Write, oplacl:Sponge</code>.
+
+---+++Groups
+
+In addition to simple ACLs granting access to an individual, rules can be written to grant access to a simple group, a conditional group, or everyone (i.e., make a resource public). 
+
+Groups are usually stored in graph <code><nowiki>&lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;</nowiki></code>.
+
+Simple groups are lists of members. Conditional groups remove the need to enumerate every member, and instead define a set of conditions. These conditions typically test attributes of the X.509 client certificate provided by the authenticated user's <nowiki>WebID</nowiki>, but can also be conditions evaluated as part of a SPARQL <code>ASK</code> query. Every authenticated person matching these conditions is seen as part of the group. VAL's Conditional Groups feature provides the basis for [[http://csrc.nist.gov/projects/abac/][Attribute Based Access Control (ABAC)]].
+
+<b>Example: Private graph access limited to a conditional group</b>
+<verbatim>
+
+<#groupBasicNetID> a <http://www.openlinksw.com/ontology/acl#ConditionalGroup> ;
+  <http://xmlns.com/foaf/0.1/name> "Identities Denoted using a NetID based Identifier" ;
+  <http://www.openlinksw.com/ontology/acl#hasCondition> [
+    a <http://www.openlinksw.com/ontology/acl#GroupCondition>, <http://www.openlinksw.com/ontology/acl#GenericCondition> ;
+    <http://www.openlinksw.com/ontology/acl#hasCriteria> <http://www.openlinksw.com/ontology/acl#NetID> ;
+    <http://www.openlinksw.com/ontology/acl#hasComparator> <http://www.openlinksw.com/ontology/acl#IsNotNull> ;
+    <http://www.openlinksw.com/ontology/acl#hasValue> 1
+    ] .
+
+<#PrivateNamedGraphRule1> a  acl:Authorization ;
+  foaf:maker <http://kingsley.idehen.net/dataspace/person/kidehen#this> ;
+  oplacl:hasAccessMode oplacl:Read ;
+  acl:accessTo <http://OpenPermID-bulk-organization-20151111_095807.ttl> ;
+  acl:agent <#groupBasicNetID> ;
+  oplacl:hasScope  oplacl:PrivateGraphs ;
+  oplacl:hasRealm  oplacl:DefaultRealm .
+
+</verbatim>
+
+Public access to a resource is granted using <code>acl:agentClass foaf:Agent</code>.
+
+---+++Scopes
+
+Each ACL rule has a scope property, for instance: <nowiki><code>oplacl:hasScope oplacl:PrivateGraphs</code></nowiki>. The scope identifies the type of resource being protected and allows setting of default permissions for that resource type.
+
+VAL defines some standard scopes for Virtuoso resources, including:
+
+   * Query scope: <nowiki><code>&lt;http://www.openlinksw.com/ontology/acl#Query&gt;</code></nowiki>
+      * contains all ACL rules granting permission to perform SQL or SPARQL operations
+   * Private graphs scope: <nowiki><code>&lt;http://www.openlinksw.com/ontology/acl#PrivateGraphs&gt;</code></nowiki>
+      * contains all ACL rules granting access to specific private named graphs.
+   * /describe service scope: <code>&lt;urn:virtuoso:val:scopes:sponger:describe&gt;</code>
+      * contains all ACL rules controlling access to the /describe entity description service supporting follow-your-nose exploration and inferencing.
+   * /about service scope: <code>&lt;urn:virtuoso:val:scopes:sponger:about&gt;</code>
+      * contains all ACL rules controlling access to the /about endpoint providing a basic entity description service.
+   * Sponger cartridges scope: <nowiki><code>&lt;http://www.openlinksw.com/ontology/acl#SpongerCartridges&gt;</code></nowiki>
+      * contains all ACL rules granting access to specific Sponger Cartridges
+
+These and other predefined Virtuoso scopes are defined by the [[http://www.openlinksw.com/ontology/acl][Virtuoso ACL ontology]]. Because scopes can be any arbitrary URI an application chooses to use, adding a scope for a new service is simple.
+
+Scopes can be in one of two states, enabled or disabled. This provides an easy means of enabling or disabling all ACL rules in that scope. Disabling a scope disables all ACL permissions checking on the corresponding resources, in effect making them publicly accessible in the absence of any other Virtuoso access control mechanisms. All scopes are disabled by default when VAL is first installed.
+
+Scopes can easily be enabled and disabled using the VAL Configuration UI in the Virtuoso Conductor, or by setting the corresponding value directly in the scope graph. For example: 
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+  WITH  <urn:virtuoso:val:config>
+    DELETE 
+      { oplacl:DefaultRealm  oplacl:hasDisabledAclScope  oplacl:Query }
+    INSERT
+      { oplacl:DefaultRealm  oplacl:hasEnabledAclScope   oplacl:Query }
+;
+</verbatim>
+
+Conductor's VAL Configuration UI can be accessed by navigating to the System Admin &gt; Packages panel, then clicking on the 'Configure' link for the VAL VAD.
+
+<img style="display: block; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/ACL_Configuration_UI.png"/>
+<div style="text-align: center; width: 100%;"><b>Conductor's VAL Configuration UI</b></div>
+
+---+++Resources
+
+While the scope identifies the <em>type</em> of the protected resource; the <em>specific resource</em> being protected is identified through the <code>acl:accessTo</code> property. Graphs, both public and private, are identified by their URL, as are individual Sponger cartridges. e.g. The Virtuoso CSV extractor cartridge is identified by URL <nowiki><code>&lt;http://sponger-hostname/ext/csv&gt;</code></nowiki>. 
+
+---++++/sparql, /about & /describe Services - Resource URIs
+In the case of the /describe and /about scopes, the corresponding resources are the service endpoints identified by URI <code>&lt;urn:virtuoso:access:sponger:describe&gt;</code> and <code>&lt;urn:virtuoso:access:sponger:about&gt;</code>. The /sparql endpoint resource URI is <code>&lt;urn:virtuoso:access:sparql&gt;</code>, and is used in conjunction with scope oplacl:Query.
+
+The diagrams below illustrate how VAL is capable of supporting layered fine-grained access control. In this illustration, different access policies could be enforced depending on the route taken to access the Sponger. Also shown is how disabling certain scopes bypasses ACL rule checking by these scopes. The second figure shows the effect of disabling scopes <code>&lt;urn:virtuoso:val:scopes:sponger:about&gt;</code>, <code>oplacl:Query</code> and <code><nowiki>oplacl:SpongerCartridges</nowiki></code>.
+
+<img style="display: block; border: 1px solid #dddddd; margin-left: auto; margin-right: auto; padding: 30px;" src="%ATTACHURLPATH%/acl_checking_layers.png"/>
+
+<br/>
+
+<img style="display: block; border: 1px solid #dddddd; margin-left: auto; margin-right: auto; padding: 30px;" src="%ATTACHURLPATH%/acl_checking_layers_with_disabled_scopes.png"/>
+
+---++++SQL Clients - Resource URI
+
+VAL defines resource <code>&lt;urn:virtuoso:access:sql&gt;</code> to allow users to perform SQL commands in addition to SPARQL, and to enforce request rate and result size limits on SQL clients. <code>&lt;urn:virtuoso:access:sql&gt;</code> is used in conjunction with scope <code>oplacl:Query</code> within the application realm <code><nowiki>oplacl:SqlRealm</nowiki></code>.
+
+---+++Permission Reporting, Not Enforcement
+
+VAL provides a framework for creating and managing access control lists. Its core function is to <em>report</em> a user's permissions when they attempt to access a resource. It does not <em>enforce</em> the reported permissions. The act of enforcing them falls to the application using VAL. The application must be written to enforce the reported permissions as necessary. The user interfaces for Virtuoso's /sparql, /describe and /about service endpoints provide examples of how to use the VAL API to determine and act on a user's permissions.
+
+---+++VAL vs RDF Graph Security
+
+In cases where the resource being protected by a VAL rule is an RDF graph, the permissions granted by the VAL rule must be consistent with the base permissions granted by the RDF graph security. Virtuoso's [[http://docs.openlinksw.com/virtuoso/rdfgraphsecurity.html][RDF Graphs Security]] system is the base layer upon which VAL-based graph access is layered. Consistency in this context means that if a VAL rule grants a user acl:Read permission on a graph, read access will be denied if the user does not have Read permission in the underlying RDF graph security system. Similar precedence rules apply to the acl:Sponge and acl:Write permissions. The graph security system will always take precedence. VAL can only restrict the base permissions, not broaden them. Consequently, the base graph permissions for a particular SQL user must be set to be at least as permissive as the permissions VAL rules seek to grant that same SQL user. SQL user in this context is the SQL account used by the service accessing the resource, which is distinct from the accessing user's <nowiki>NetID</nowiki> or <nowiki>WebID</nowiki>. (Most users accessing the system will not have a corresponding SQL account.). 
+
+Similar considerations apply when the resource being protected implicitly requires access to graphs. For instance the /describe service. A VAL rule for this service grants <code>acl:accessTo &lt;urn:virtuoso:access:sponger:describe&gt;</code> and does not specify access to a specific graph. However if unauthenticated users are to be able to view public graphs the SQL user 'nobody', corresponding to unauthenticated VAL users, must have Read permission on public graphs in the RDF graph security system. The appropriate base RDF graph permissions can be set using <nowiki>DB.DBA.RDF_DEFAULT_USER_PERMS_SET ()</nowiki> or <nowiki>DB.DBA.RDF_GRAPH_USER_PERMS_SET()</nowiki>, as described in [[http://docs.openlinksw.com/virtuoso/rdfgraphsecurity.html][RDF Graphs Security]].
+
+
+---++ Installing VAL
+
+VAL is shipped with the Virtuoso commercial installers. If not already installed as part of ODS, VAL is available as a [[http://docs.openlinksw.com/virtuoso/vaddistr/][VAD (Virtuoso Application Distribution)]] archive and can be installed via the Virtuoso Conductor (System Admin -> Packages tab) or it can be obtained from the [[http://virtuoso.openlinksw.com/download/][OpenLink Virtuoso Download Page]].
+
+Note once VAL is installed/enabled all graphs are protected by default and ACL rules need to be specifically created to allow access.
+
+---++ Using VAL
+
+---+++ Controlling Access to the Sponger with VAL
+
+The Virtuoso Sponger can be controlled via ACL rules, defining who is allowed to Sponge, and who is not. Additionally it is possible to define who is allowed to use which Sponger cartridges. VAL authentication also provides a mechanism by which users may grant access tokens to OAuth-enabled Sponger cartridges, enabling these cartridges to convert the user's profile data from social media and other sites to Linked Data in the Sponger host instance.
+
+For more information, see:
+   * [[VAL_SpongerACLs][ACL rules applicable to the Sponger]]
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/SpongerOAuthSupport][Sponger OAuth Support]] (including [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/SpongerOAuthSupport#Configuring%20Cartridges%20to%20use%20VAL%20OAuth][Configuring Cartridges to use VAL]])
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtConfigureCartridges][Sponger Cartridge Configuration and Implementation Notes]]
+
+---+++ Controlling Access to Named Graphs and the SPARQL Processor with VAL
+
+Virtuoso uses the VAL ACL system to control access to named graphs, and to SPARQL in general. These rules, when enabled, are enforced on <code>/sparql</code> endpoints as well as any other application which tries to access those named graphs directly or through SPARQL queries.
+
+For more information, see:
+   * [[VAL_SparqlACLs][ACL rules applicable to named graphs and SPARQL in general]]
+
+---+++ Protecting a Web Service with the VAL Authentication UI
+
+VAL provides an easy means by which to add authentication and ACL support to new or existing VSP-based applications. It provides authentication and log-out pages to support simple log-in and log-out links. The authentication page can be embedded in a custom log-in page, and supports customization of certain authentication dialog attributes such as the displayed error message and requested service label. It can be configured as a default redirect target for HTTP 401 (Unauthorized) errors to enforce authentication when different authentication is required to access a requested resource, or has not yet been provided.
+
+For more information, see:
+   * [[VAL_AuthenticateVspTutorial][VAL VSP Authentication Tutorial]]
+
+---++ Customizing VAL
+
+Limited customization of VAL is possible. Aspects of VAL which can be customized include:
+   * the logos displayed on the VAL authentication dialog
+   * whether the authentication dialog is displayed automatically when access is denied
+   * the named graphs used to store rules, groups, and restrictions
+
+VAL also supports the setting of a custom page footer for any VSP page.
+
+For more information, see:
+   * [[VAL_ValCustomization][VAL Customization]]
+
+---++ Additional VAL Tutorials
+
+You can find more VAL tutorials here:
+
+   * [[VAL_HttpRestrictions][ACL Restrictions for the Virtuoso HTTP engine]]
+   * [[VAL_SqlACLs][SQL ACLs - Control SPARQL Access in SQL Connections (ODBC)]]
+   * [[VAL_CuriACLs][ACLs for Access to the Compressed URI Support]]
+   * [[VAL_OAuthACLs][VAL OAuth Application ACLs]]

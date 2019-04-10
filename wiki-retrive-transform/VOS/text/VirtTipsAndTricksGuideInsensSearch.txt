@@ -1,0 +1,64 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++How Can I Perform Case Insensitive Search across multiple Literal values with Virtuoso?
+
+If you use  <b>contains</b>, it will make an approximate filtering of results, its is therefore best to use <b>FILTER</b> with <b>bif:lower</b>. 
+
+For example with the following RDF triples loaded in Virtuoso:
+<verbatim>
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"An?lisis" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Aut?nomas" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Autonom?a de gobierno" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Autonom?a" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Auton?mica" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Com?n" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Comunidades" .
+<http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D><http://rdfs.org/sioc/types#Tag>"Cr?tico" .
+</verbatim>
+
+The following query is case sensitive, thus no data is returned as is expected:
+<verbatim>
+SQL> SPARQL
+PREFIX sioc_t:<http://rdfs.org/sioc/types#>
+SELECT DISTINCT ?s
+FROM <http://j.com>
+WHERE 
+  { 
+    ?s sioc_t:Tag ?Tag.  FILTER ( ?Tag in ('analisi', 'autonomas', 
+                                           'autonomia de gobierno', 
+                                           'autonomia', 'autonomica', 
+                                           'comun', 'comunidades', 'critico' ) )
+  }
+
+-- Query result:
+s
+ANY
+No. of rows in result: 0 
+</verbatim>
+
+Changing the query to use the Virtuoso <b>bif:lower</b> function a case insensitive filter is performed returning one distinct row:
+
+<verbatim>
+SQL>SPARQL 
+PREFIX sioc_t:<http://rdfs.org/sioc/types#>
+SELECT DISTINCT ?s
+FROM <http://j.com>
+WHERE 
+  { 
+    ?s sioc_t:Tag ?Tag.  FILTER ( bif:lower(str(?Tag)) in ('analisi', 'autonomas', 
+                                                           'autonomia de gobierno', 
+                                                           'autonomia', 'autonomica', 
+                                                           'comun', 'comunidades', 'critico' ) )
+  }
+
+-- Query result:
+s
+ANY
+ http://gnoss/000066A5-E5C4-4317-AC9F-4A226E65AE4D
+No. of rows in result: 1 
+</verbatim>
+
+---+++Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext][Using Full Text Search in SPARQL]]

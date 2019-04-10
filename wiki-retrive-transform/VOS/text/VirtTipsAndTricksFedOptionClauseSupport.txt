@@ -1,0 +1,64 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++How to handle SPARQL-FED queries for SPARQL endpoints with no OPTION() clause supported?
+
+Suppose the following sample scenario:
+
+   1. Assume the following SPARQL-FED query:
+<verbatim>
+PREFIX wp:         <http://vocabularies.wikipathways.org/wp#> 
+PREFIX atlasterms: <http://rdf.ebi.ac.uk/terms/atlas/> 
+PREFIX efo:        <http://www.ebi.ac.uk/efo/> 
+
+SELECT DISTINCT ?wpTitle ?dbXref ?expressionValue 
+WHERE 
+  {
+    { 
+      GRAPH <http://wikipathways>
+        {
+          ?pwElement dcterms:isPartOf ?wpPathway .
+          ?wpPathway dc:identifier <http://identifiers.org/wikipathways/WP455> .
+          ?wpPathway dc:title ?wpTitle .
+          ?pwElement wp:bdbEnsembl ?dbXref .
+        } 
+      SERVICE <https://www.ebi.ac.uk/fgpt/atlasrdf/sparql> 
+       {
+        ?value atlasterms:hasFactorValue ?factor . 
+        ?value atlasterms:isMeasurementOf ?probe . 
+        ?value atlasterms:pValue ?pvalue . 
+        ?value rdfs:label ?expressionValue . 
+        ?probe atlasterms:dbXref ?dbXref .
+        ?disFactor rdfs:subClassOf+ efo:EFO_0000408 .
+        ?disease rdf:type ?disFactor .
+        ?disFactor rdfs:label ?label .
+    }
+  }
+}
+</verbatim>
+   1. Execute the query from Virtuoso sparql endpoint
+   1. As result you should get the following error:
+<verbatim>
+Virtuoso 37000 Error SP031: SPARQL compiler: 
+SERVICE <https://www.ebi.ac.uk/fgpt/atlasrdf/sparql> at line 18 does not 
+support OPTION (...) clause for triples so SPARQL query can not be composed
+</verbatim>
+
+
+The error message means that the <b> https://www.ebi.ac.uk/fgpt/atlasrdf/sparql </b>  sparql endpoint does not support OPTION clause.
+
+Basically, one should be able to use the following command to interrogate a target SPARQL endpoint (if initial SPARQL-FED fails):
+<verbatim>
+SPARQL
+LOAD SERVICE  <{SPARQL-END-POINT-URL}> DATA
+</verbatim>
+
+So in our example it would be:
+<verbatim>
+LOAD SERVICE  <https://www.ebi.ac.uk/fgpt/atlasrdf/sparql> DATA ;
+</verbatim>
+
+
+
+
+---+++Related
+   * [[VirtTipsAndTricksDiscoverSPARQFedCapabilities][How to discover the capabilities of a SPARQL endpoint en route to enhancing SPARQL-FED usage from Virtuoso instances?]]

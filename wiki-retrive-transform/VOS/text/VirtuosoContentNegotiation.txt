@@ -1,0 +1,159 @@
+%VOSWARNING%
+
+
+---+ Transparent Content Negotiation in HTTP server
+
+---++ Purpose
+
+The Transparent Content Negotiation (called TCN) is used is mehanism to provide best acceptable content by TCN cabaple user agents (UA).
+Consider a Web resource 'page' which has three variants: page.xml, page.html and page.txt all representing same data. The TCN capable UA can ask for 'page' content represented and indicate that XML format is preferred, then HTTP server then will transparently return page.xml. Most often UA understand different formats, e.g., XML, HTML, text etc., so in this case UA indicate order by specifying quality values for each type it understand. The server when receive request with multiple types acceptable will calculate quality for each variant and provide the best. In addition to returning content directly UA may ask server to provide a list of variants, then TCN capable client can choose the best for it. 
+In the above we give examples with MIME type of content, but this also apply to content language and content encoding negotiation.
+The Virtuoso HTTP server TCN  is based on experimental RFC2295, without "Feature" negotiation.
+
+---++ Table
+The TCN variants are kept in a following SQL table:
+
+<verbatim>
+create table DB.DBA.HTTP_VARIANT_MAP (
+    VM_ID               integer identity, -- unique ID 
+    VM_RULELIST         varchar,          -- HTTP rule list name
+    VM_URI              varchar,          -- The name of requested resource e.g. 'page'
+    VM_VARIANT_URI      varchar,          -- The name of variant e.g. 'page.xml', 'page.de.html' etc.
+    VM_QS               float,            -- Source quality, a float number 3 digit precision in 0.001-1.000 range
+    VM_TYPE             varchar,          -- Content type of the variant e.g. text/xml
+    VM_LANG             varchar,          -- Content language e.g. 'en', 'bg'. 'de' etc.
+    VM_ENC              varchar,          -- Content encoding e.g. 'utf-8', 'ISO-8892' etc.
+    VM_DESCRIPTION      long varchar,     -- a human readable description about variant e.g. 'Profile in RDF format'
+    VM_ALGO             int default 0,    -- for future use
+    primary key (VM_RULELIST, VM_URI, VM_VARIANT_URI))
+create unique index HTTP_VARIANT_MAP_ID on DB.DBA.HTTP_VARIANT_MAP (VM_ID)
+</verbatim>
+
+---++ Algorithm
+
+The algorithm works as follows:
+If a virtual directory (VD) has 'url_rewrite' option set then the Web server (WS) will  
+
+   1. look in <code><nowiki>DB.DBA.HTTP_VARIANT_MAP</nowiki></code> for <code><nowiki>VM_RULELIST</nowiki></code> matching the one specified in '<code><nowiki>url_rewrite</nowiki></code>' option
+   1. if present will loop over all variants for which <code><nowiki>VM_URI</nowiki></code> is equal to resource requested
+   1. for every variant it will calculate source quality based on <code><nowiki>VM_QS</nowiki></code> and source quality given by the UA
+   1. if best variant is found, it will add TCN HTTP headers and will pass the <code><nowiki>VM_VARIANT_URI</nowiki></code> to URL rewriter next
+   1. if UA asks for variant list, it will compose such and will return Alternates HTTP header with 300 response
+   1. if no URL rewrite rules exists, the WS will return content of expanded <code><nowiki>VM_VARIANT_URI</nowiki></code> 
+
+Note: when UA asks for list then server return TCN header "list", when UA want negotiation then WS returns TCN header "choice", i.e., server may return list of variants or it may return best choice.
+
+---++ API
+
+---+++ Adding or updating a variant 
+<verbatim>
+DB.DBA.HTTP_VARIANT_ADD (
+        in rulelist_uri varchar, -- HTTP rule list name
+        in uri varchar,          -- The name of requested resource e.g. 'page'
+        in variant_uri varchar,  -- The name of variant e.g. 'page.xml', 'page.de.html' etc.
+        in mime varchar,         -- Content type of the variant e.g. text/xml
+        in qs float := 1.0,      -- Source quality, a float number 3 digit precision in 0.001-1.000 range
+        in descrition varchar := null, -- a human readable description about variant e.g. 'Profile in RDF format'
+        in lang varchar := null, -- Content language e.g. 'en', 'bg'. 'de' etc.
+        in enc varchar := null   -- Content encoding e.g. 'utf-8', 'ISO-8892' etc.
+        )
+</verbatim>
+
+---+++ variant removal
+<verbatim>
+DB.DBA.HTTP_VARIANT_REMOVE (
+        in rulelist_uri varchar, -- HTTP rule list name
+        in uri varchar,          -- The name of requested resource e.g. 'page'
+        in variant_uri varchar := '%' -- Variant name filter 
+        )
+</verbatim>
+
+---++ Examples
+
+---+++ Prividing different content types
+
+In this example we assume following files are uploaded in WedDAV server : 
+   * /DAV/page.xml      - XML variant
+   * /DAV/page.html     - HTML variant
+   * /DAV/page.txt      - text variant
+The above files are considered as containing same information by in different formats. 
+We add TCN rules & add a virtual directory: 
+<verbatim>
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.html', 'text/html', 0.900000, 'HTML variant');
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.txt', 'text/plain', 0.500000, 'Text document');
+DB.DBA.HTTP_VARIANT_ADD ('http_rule_list_1', 'page', 'page.xml', 'text/xml', 1.000000, 'XML variant');
+
+DB.DBA.VHOST_DEFINE (lpath=>'/DAV', ppath=>'/DAV/', is_dav=>1, vsp_user=>'dba', opts=>vector ('url_rewrite', 'http_rule_list_1'));
+</verbatim>
+
+Now we can test the setup with an http client e.g. 'curl' program:
+
+Here UA tell server it better understand HTML and let server to perform TCN 
+<verbatim>
+$ curl -i -H "Accept: text/xml;q=0.3,text/html;q=1.0,text/plain;q=0.5,*/*;q=0.3" -H "Negotiate: *" http://localhost:8890/DAV/page
+HTTP/1.1 200 OK
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Wed, 31 Oct 2007 15:43:18 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: page.html
+Content-Type: text/html
+ETag: "14056a25c066a6e0a6e65889754a0602"
+Content-Length: 49
+
+<html>
+    <body>
+        some html
+    </body>
+</html>
+</verbatim>
+
+In this case we change source quality values so UA tells it better understand XML
+<verbatim>
+$ curl -i -H "Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3" -H "Negotiate: *" http://localhost:8890/DAV/page
+HTTP/1.1 200 OK
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Wed, 31 Oct 2007 15:44:07 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Content-Location: page.xml
+Content-Type: text/xml
+ETag: "8b09f4b8e358fcb7fd1f0f8fa918973a"
+Content-Length: 39
+
+<?xml version="1.0" ?>
+<a>some xml</a>
+</verbatim>
+
+And finally UA want to decide itslef, so he asks for list of variants, server will provide it and in addition will send an HTML body just in case so end user can decide himself if UA can't. 
+<verbatim>
+$ curl -i -H "Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3" -H "Negotiate: vlist" http://localhost:8890/DAV/page
+HTTP/1.1 300 Multiple Choices
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Wed, 31 Oct 2007 15:44:35 GMT
+Accept-Ranges: bytes
+TCN: list
+Vary: negotiate,accept
+Alternates: {"page.html" 0.900000 {type text/html}}, {"page.txt" 0.500000 {type text/plain}}, {"page.xml" 1.000000 {type text/xml}}
+Content-Length: 368
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>300 Multiple Choices</title>
+</head><body>
+<h1>Multiple Choices</h1>
+Available variants:<ul>
+<li><a href="page.html">HTML variant</a>, type text/html</li>
+<li><a href="page.txt">Text document</a>, type text/plain</li>
+<li><a href="page.xml">XML variant</a>, type text/xml</li>
+</ul>
+</body></html>
+</verbatim>
+
+CategoryVirtuoso CategorySpec

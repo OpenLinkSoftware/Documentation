@@ -1,0 +1,92 @@
+%META:TOPICPARENT{name="VirtDeployMediaWiki"}%
+---+Installing The <nowiki>LinkedWiki Extension Version 2.0.1 Alpha </nowiki>
+
+The LinkedWiki extension allows you to embed a SPARQL query and display the results in your wiki page.
+
+---++Prerequisites
+
+   * A working copy of <nowiki>MediaWiki</nowiki> hosted on Virtuoso.  (See [[http://wiki.usnet.private/dataspace/dav/wiki/Main/MediaWikiInstalltionGuide][the installation guide for MediaWiki on Virtuoso]]).
+
+---+++Step 1. Download the Extension. 
+
+Go to the [[http://www.mediawiki.org/wiki/Extension:LinkedWiki][LinkedWik Extension page]].  Using the links in the box on the right hand side, download the v2.0.1Alpha1 LinkedWiki extension.
+
+---+++Step 2. Extract.
+
+Move the downloaded zip file into your <nowiki>MediaWiki</nowiki> extensions folder.  You will find this folder in <i>your Virtuoso installation directory</i>/vsp/vad/vsp/MediaWiki/extension.  Extract the extension.
+
+---+++Step 3. Enable and Configure.
+
+The LinkedWiki extension is enabled by adding the following line to the <i>your Virtuoso installation directory</i>/vsp/vad/vsp/MediaWiki/LocalSettings.php file
+<verbatim>
+require_once( "{$IP}/extensions/LinkedWiki/LinkedWiki.php" );
+$wgLinkedWikiGraphWiki = 'http://example.org/mydefaultgraphname'; 
+</verbatim>
+
+---++Using LinkedWiki
+LinkedWiki lets you embed a SPARQL query in a wiki page and display the results as a table.  If you have the Widgets extension installed you can also display the results using one of the widgets.
+
+---+++Simple Query Examples
+A simple query to get all the triples in all the graphs on a specified endpoint looks like this:
+<verbatim>
+{{#sparql:select * where { ?x ?y ?z . } LIMIT 5 | endpoint=http://localhost:8890/sparql}}
+</verbatim>
+This displays the first 5 triples from the specified endpoint. The results will look something like this:
+
+<img src="%ATTACHURLPATH%/result1.png" style="wikiautogen"/>
+
+The properties of the current page can be queried using either of the following:
+<verbatim>
+{{#sparql:PREFIX a:<http://localhost:8890/MediaWiki/index.php?title=Special:URIResolver/>  select * where { a:{{PAGENAMEE}} ?y ?z . } | endpoint = http://localhost:8890/sparql }}
+</verbatim>
+or
+<verbatim>
+{{#sparql:select * where { <http://localhost:8890/MediaWiki/index.php?title=Special:URIResolver/{{PAGENAMEE}}> ?y ?z . }  | endpoint = http://localhost:8890/sparql }}
+</verbatim>
+The results will look something like:
+
+<img src="%ATTACHURLPATH%/result2.png" style="wikiautogen"/>
+
+You can specify which endpoint you want to query so, this example queries the sparql endpoint on dbpedia to find the number of nations participating in each Olympic games:
+<verbatim>
+{{#sparql:select distinct ?Games ?Olympiad ?NumberOfNations {?s a <http://dbpedia.org/ontology/Olympics> .
+?s <http://www.w3.org/2000/01/rdf-schema#label> ?Games .
+?s <http://dbpedia.org/property/years> ?Olympiad .
+?s <http://dbpedia.org/ontology/numberOfParticipatingNations> ?NumberOfNations
+FILTER (lang(?Games) = "en")}
+order by ?Games | endpoint = http://dbpedia.org/sparql }}
+</verbatim>
+and returns results something like this:
+
+<img src="%ATTACHURLPATH%/results3.png" style="wikiautogen"/>
+
+---++Using LinkedWiki with the Widget Extension
+First ensure you have the Widget Extension installed and configured.  You will have to add any widgets that you want to use to display the results.  The LinkedWiki extension parses the result set from the sparql query so it becomes a set of key value pairs that are then included as parameters to the widget.  So, for example, a query that selects location information as a point would result in a set of parameters something like this.
+<verbatim>
+rows.0.point=43.30, 5.38 | rows.1.point=48.83, 2.3 | rows.2.point=49.93, 2.3
+</verbatim>
+The widget must be able to handle parameters of this form.
+
+One example is a Google maps widget developed specifically for displaying LinkedWiki results.  This widget can be found [[https://0x20.be/Widget:Google_Static_Maps][here]].  
+
+To use the widget to display the results from a sparql query on a map you would do something like this
+<verbatim>
+{{#wsparql:Google_Static_Maps
+|query=SELECT ?s ?point ?label
+WHERE {
+?s <http://www.georss.org/georss/point> ?point .
+?s a <http://schema.org/StadiumOrArena> .
+?s <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+FILTER bif:contains(?label, "Olympic and Stadium") .
+FILTER (lang(?label) ='en')
+}
+limit 20
+|endpoint = http://dbpedia.org/sparql 
+|defaultcolor=blue
+|zoom=2
+|size=512x512
+|maptype=roadmap}}
+</verbatim>
+
+The result will be a map embedded in the wiki page that show the location of Olympic stadia around the world.
+   * <img src="%ATTACHURLPATH%/map1.png" style="wikiautogen"/>

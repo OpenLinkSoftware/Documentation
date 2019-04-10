@@ -1,0 +1,100 @@
+%VOSWARNING%
+
+
+%META:TOPICINFO{author="RumiTsekova" date="1154521482" format="1.1" version="1.1"}%
+%VOSNAV%
+
+---++!!Virtuoso SPARQL Query Service
+
+%TOC%
+
+---+++ Introduction
+
+The Virtuoso SPARQL query service implements the [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol for RDF]] (W3C Working Draft 25 January 2006) providing SPARQL query processing for RDF data available on the open internet.
+
+The query processor extends the standard protocol to provide support for multiple output formats. At present this uses additional query parameters.
+
+
+---+++ Service Endpoint
+
+Virtuoso reserves the path '/sparql/' and a synonym path '/SPARQL/' for SPARQL service. 
+
+In the current implementation, Virtuoso defines virtual directories for HTTP requests that come to the port specified as 'ServerPort' in the '[HTTPServer]' section of Virtuoso configuration file and refer to one of these two path strings. So if the Virtuoso installation on host example.com listens for HTTP requests on port 8080 then client applications should use the 'service endpoint' string equal to 'http://example.com:8080/sparql/'.
+
+Both GET and POST requests are supported by both server and client. The server recognizes the 'Accept: ...' line of request header to find MIME types preferred by the connected client and adjust the output mode of the response.
+The client chooses between GET and POST automatically, using the length of query text as a criterion.
+
+If the SPARQL endpoint is accessed without any url and query entered, will be shown a page with interactive query form.
+
+---+++ Request Methods
+
+|Method |Supported?| Notes |
+|GET |Yes | short queries are sent in GET mode |
+|POST |Yes | Queries longer than 1900 bytes are POST-ed |
+|DELETE|No||
+|PUT|No|
+
+---+++ Functions
+
+The SPARQL client can be invoked by three similar functions.
+
+|Function|Notes|
+|DB.DBA.SPARQL_REXEC|behaves like DBA.SPARQL_EVAL, but executes the query on the specified server. The procedure does not return anything. Instead, it creates a result set. |
+|DB.DBA.SPARQL_REXEC_TO_ARRAY|behaves like DBA.SPARQL_EXEC_TO_ARRAY (), but executes the query on the specified server. The function return a vector of rows, where every row is represented by a vector of values of fields.|
+|DB.DBA.SPARQL_REXEC_WITH_META| has no local 'SPARQL_EVAL' analog. It produces not only an array of result rows but also array of metadata about result set in a format used by the exec () function.|
+
+---+++ Request Parameters
+
+| Parameter | Notes | Required? | Occurrence |
+| service | service URI such as 'http://demo.openlinksw.com/sparql/' | Yes| |
+| query | text of the query | Yes| |
+| dflt_graph | default graph URI (string or NULL) | No | |
+| named_graphs | vector of named graphs (or NULL to not override what's specified in the query | No | |
+| req_hdr | additional HTTP header lines that should be passed to the service; 'Host: ...' is most popular | No | |
+| maxrows | limit on numbers of rows that should be returned (actual size of result set may differ) | No | |
+| bnode_dict | dictionary of known blank node names, or NULL for usual loading | No | |
+
+---+++ Response Codes
+
+---+++ Response Format
+
+All standard MIME types of SPARQL Protocol are supported.
+
+|Mimetype|Supported for result of Query|
+|'application/sparql-results+xml'|SELECT|
+|'application/sparql-results+xml'|ASK|
+|'application/rdf+xml'|CONSTRUCT|
+|'application/rdf+xml'|DESCRIBE|
+|'text/rdf+n3'|CONSTRUCT|
+|'text/rdf+n3'|DESCRIBE|
+
+
+
+If the HTTP header returned by the remote server does not contain 'Content-Type' line, the MIME type may be guessed from the text of the returned body.
+Error messages returned from the service are returned as XML documents, using the mime type application/xml. The documents consist of a single element containing an error message.
+
+---+++ Additional Response Formats -- SELECT
+
+Use the format parameter to select one of the following alternate output formats:
+
+|Format Value| Description| Mimetype|
+|HTML| HTML document containing query summary and tabular results | text/html|
+|JSON |JSON serialization of results. Conforms to the draft specification Serializing SPARQL Query Results in JSON  | application/sparql-results+json|
+|Javascript| Javascript serialization of results. Generates an HTML table with the CSS class sparql. The table contains a column indicating row number and additional columns for each query variable. Each query solution contributes one row of the table. Unbound variables are indicated with a non-breaking space in the appropriate table cells. | application/javascript|
+|XML| | application/sparql-results+xml |
+|TURTLE| | text/rdf+n3 |
+
+
+---+++ Examples
+
+There is also a live  [[http://demo.openlinksw.com/sparql_demo][Virtuoso Demo Server]] instance available at all times for experimentation and demonstrations. It includes a collection of saved queries demonstrating
+Virtuoso's implementation of the [[http://www.w3.org/TR/rdf-dawg-uc/][DAWG's SPARQL test-suite]]; a collection of SPARQL query language use-cases that enables interactive and simplified testing of a RDF Triple Store's SPARQL implementation.
+
+---+++ Implementation Notes
+
+This service has been implemented using [[http://docs.openlinksw.com/virtuoso][OpenLink Virtuoso]].
+
+%VOSCOPY%
+
+CategoryVirtuoso CategoryWebSite  CategoryOpenSource CategorySPARQL CategoryRDF
+

@@ -1,0 +1,97 @@
+%META:TOPICPARENT{name="VirtRDFViews"}%
+
+---+++RDF View for ODS Bookmark Manager
+
+<strong>IMPORTANT!</strong> The following code is part of the ODS global VIEW regarding the Bookmark Manager part, it is not a separate VIEW and is strongly recommended NOT to be executed directly. Instead, you should use the code from [[VirtRDFViewODSGlobal][ODS RDF Views Deployment and Demo Scripts]].
+
+<verbatim>
+sparql prefix ods: <http://www.openlinksw.com/virtuoso/ods/>
+
+        #Bookmark
+	create iri class ods:bmk_post "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d"
+		(in uname varchar not null, in inst_name varchar not null, in bmk_id integer not null)
+		option (returns "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d") .
+	create iri class ods:bmk_post_text "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d/text"
+		(in uname varchar not null, in inst_name varchar not null, in bmk_id integer not null)
+		option (returns "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d/text" ) .
+	create iri class ods:bmk_forum "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U"
+		( in uname varchar not null, in forum_name varchar not null)
+		option (returns "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U") .
+
+</verbatim>
+
+<verbatim>
+sparql
+    prefix sioc: <http://rdfs.org/sioc/ns#>
+    prefix sioct: <http://rdfs.org/sioc/types#>
+    prefix atom: <http://atomowl.org/ontologies/atomrdf#>
+    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    prefix foaf: <http://xmlns.com/foaf/0.1/>
+    prefix dc: <http://purl.org/dc/elements/1.1/>
+    prefix dct: <http://purl.org/dc/terms/>
+    prefix skos: <http://www.w3.org/2004/02/skos/core#>
+    prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+    prefix bm: <http://www.w3.org/2002/01/bookmark#>
+    prefix exif: <http://www.w3.org/2003/12/exif/ns/>
+    prefix ann: <http://www.w3.org/2000/10/annotation-ns#>
+    prefix wikiont: <http://sw.deri.org/2005/04/wikipedia/wikiont.owl#>
+    prefix calendar: <http://www.w3.org/2002/12/cal#>
+    prefix ods: <http://www.openlinksw.com/virtuoso/ods/>
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_BMK_POSTS as bmk_posts
+      where (^{bmk_posts.}^.U_NAME = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_BMK_TAGS as bmk_tags
+      where (^{bmk_tags.}^.U_NAME = ^{users.}^.U_NAME)
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+
+            # Bookmark
+	    ods:bmk_post (bmk_posts.U_NAME, bmk_posts.WAI_NAME, bmk_posts.BD_BOOKMARK_ID)
+            a bm:Bookmark ;
+	    dc:title bmk_posts.BD_NAME;
+	    dct:created bmk_posts.BD_CREATED ;
+	    dct:modified bmk_posts.BD_LAST_UPDATE ;
+	    dc:date bmk_posts.BD_LAST_UPDATE ;
+	    ann:created bmk_posts.BD_CREATED ;
+	    dc:creator bmk_posts.U_NAME ;
+	    bm:recalls ods:proxy (bmk_posts.B_URI) ;
+	    sioc:link ods:proxy (bmk_posts.B_URI) ;
+	    sioc:content bmk_posts.BD_DESCRIPTION ;
+	    sioc:has_creator ods:user (bmk_posts.U_NAME) ;
+	    foaf:maker ods:person (bmk_posts.U_NAME) ;
+	    sioc:has_container ods:bmk_forum (bmk_posts.U_NAME, bmk_posts.WAI_NAME) .
+
+            ods:bmk_forum (bmk_posts.U_NAME, bmk_posts.WAI_NAME)
+	    sioc:container_of
+	    ods:bmk_post (bmk_posts.U_NAME, bmk_posts.WAI_NAME, bmk_posts.BD_BOOKMARK_ID) .
+
+	    ods:user (bmk_posts.U_NAME)
+	    sioc:creator_of
+	    ods:bmk_post (bmk_posts.U_NAME, bmk_posts.WAI_NAME, bmk_posts.BD_BOOKMARK_ID) .
+
+	    ods:bmk_post (bmk_tags.U_NAME, bmk_tags.WAM_INST, bmk_tags.ITEM_ID)
+	    sioc:topic
+	    ods:tag (bmk_tags.U_NAME, bmk_tags.BD_TAG) .
+
+	    ods:tag (bmk_tags.U_NAME, bmk_tags.BD_TAG) a skos:Concept ;
+	    skos:prefLabel bmk_tags.BD_TAG ;
+	    skos:isSubjectOf ods:bmk_post (bmk_tags.U_NAME, bmk_tags.WAM_INST, bmk_tags.ITEM_ID) .
+	    # end Bookmark
+            #---
+	  } .
+    } .
+;
+</verbatim>
+CategoryVirtuoso CategoryRDF CategoryBookmark
+
+
+
+
+
+
+

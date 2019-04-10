@@ -1,0 +1,45 @@
+<docbook><section><title>VirtTipsAndTricksHowToHandleBandwidthLimitExceed</title><title> Working with SPARQL endpoint constraints via LIMIT &amp; OFFSET</title> Working with SPARQL endpoint constraints via LIMIT &amp; OFFSET
+<para>The DBpedia SPARQL endpoint is configured with the following Virtuoso INI setting:</para>
+<programlisting>MaxSortedTopRows = 40000
+</programlisting><para> This setting sets a threshold on sorted rows.
+ SPARQL queries that include OFFSET and LIMIT will feel the effect of the hard limit set in the INI.
+ For instance, this query --</para>
+<programlisting>  DEFINE  sql:big-data-const 0 
+  SELECT  DISTINCT  ?p 
+                    ?s
+    FROM &lt;http://dbpedia.org&gt;
+   WHERE
+     { 
+       ?s  ?p  &lt;http://dbpedia.org/resource/Germany&gt; 
+     }
+ORDER BY  ASC(?p)
+  OFFSET  40000
+   LIMIT  1000
+</programlisting><para> -- will return the following error on execution --</para>
+<programlisting>HttpException: 500 SPARQL Request Failed
+
+Virtuoso 22023 Error SR353: Sorted TOP clause specifies more then 41000 rows to sort. 
+Only 40000 are allowed. 
+Either decrease the offset and/or row count or use a scrollable cursor
+</programlisting><para>To prevent this error, you can leverage the use of subqueries which make better use of temporary storage.
+ For example --</para>
+<programlisting>SELECT  ?p 
+        ?s 
+ WHERE 
+   {
+     {
+         SELECT  DISTINCT  ?p 
+                           ?s 
+           FROM  &lt;http://dbpedia.org&gt; 
+          WHERE   
+             { 
+               ?s  ?p  &lt;http://dbpedia.org/resource/Germany&gt; 
+             } 
+       ORDER BY ASC(?p) 
+     }
+   } 
+OFFSET 50000 
+ LIMIT 1000
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink></listitem>
+</itemizedlist></section></docbook>

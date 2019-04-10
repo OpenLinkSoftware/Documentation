@@ -1,0 +1,59 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+How Do I Gecode Data?
+
+
+---++What?
+Automatic geocoding of data in quad store.
+
+---++Why?
+Enable exploitation of SPARQL-GEO for geospatial oriented queries.
+
+---++How?
+To gecode data one should call the <b>[[http://docs.openlinksw.com/virtuoso/fn_rdf_geo_fill.html][rdf_geo_fill]]</b> API from Conductor or iSQL:
+
+<verbatim>
+SQL> rdf_geo_fill ();
+
+Done. -- 282 msec.
+</verbatim>
+
+---+++SPARQL-GEO sample queries
+
+   * [[http://lod.openlinksw.com/b3s/search.vsp?q=20&sc=http%3A%2F%2Fdbpedia.org%2Fresource%2FOxford&sc2=5&sc3=http%3A%2F%2Fdbpedia.org%2Fproperty%2Festablished&sc4=en&fa=Execute][All Educational Institutions within 10km of Oxford, UK]]:
+<verbatim>
+SELECT DISTINCT ?thing AS ?uri ?thingLabel AS ?name ?date AS ?established ?lat ?long WHERE
+  {
+    <http://dbpedia.org/resource/Oxford> geo:geometry ?sourcegeo .
+    ?resource geo:geometry ?matchgeo .
+    ?resource geo:lat ?lat .
+    ?resource geo:long ?long .
+    FILTER ( bif:st_intersects ( ?matchgeo, ?sourcegeo, 5 ) ) .
+    ?thing ?somelink ?resource .
+    ?thing <http://dbpedia.org/property/established> ?date .
+    ?thing rdfs:label ?thingLabel .
+    FILTER ( lang ( ?thingLabel ) = "en" )
+  }
+</verbatim>
+   * [[http://lod.openlinksw.com/b3s/search.vsp?q=18&sc=http%3A%2F%2Fdbpedia.org%2Fresource%2FLondon&sc2=20&sc3=en&fa=Execute][Things within close proximity of London]]:
+<verbatim>
+SELECT DISTINCT ?resource ?label ?location WHERE
+  {
+    <http://dbpedia.org/resource/London> geo:geometry ?sourcegeo .
+    ?resource geo:geometry ?location ; rdfs:label ?label .
+    FILTER ( bif:st_intersects ( ?location, ?sourcegeo, 20 ) ) .
+    FILTER ( lang ( ?label ) = "en" )
+  }
+</verbatim>
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_rdf_geo_fill.html][<nowiki>rdf_geo_fill</nowiki> API]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_rdf_geo_add.html][<nowiki>rdf_geo_add</nowiki> API]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparqlgeospat.html#rdfsparqlgeospatcrg][Creating Geometries From RDF Data]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparqlgeospat.html#rdfsparqlgeospatprog][Programmatic Manipulation of Geometries in RDF]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparqlgeospat.html#rdfsparqlgeospatusg][Using Geometries With Existing Databases]]
+   * [[http://lod.openlinksw.com/b3s/][OpenLink Billion Triple Demo queries]]

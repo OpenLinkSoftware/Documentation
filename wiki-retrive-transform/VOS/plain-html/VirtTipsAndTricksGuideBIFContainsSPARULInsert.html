@@ -1,0 +1,61 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I adjust the frequency of RDF text indexing?"></a> How can I adjust the frequency of RDF text indexing?</h1>
+<h2><a name="What"></a> What</h2>
+<p>You may want to change the frequency of Virtuoso&#39;s RDF text index updates.</p>
+<p>You can decrease the frequency, if your queries are usually made some time after data inserts/updates.</p>
+<p>You can also increase the frequency to real-time, if you need inserts/updates to be immediately available for queries.</p>
+<h2><a name="Why"></a> Why</h2>
+<p>Virtuoso&#39;s RDF text indexes (that is, the indexes on literal object values, which are distinct from the indexes of URIs in any position) are updated periodically as a batch operation; by default, the interval is one (1) minute.</p>
+<p>This means that typed literals (<code>xsd:string</code>s, XML, <code>BLOB</code>s/<code>CLOB</code>s, etc.) which are inserted or changed by SPARUL or other methods may not be immediately available to <code><a href="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext" class="absuri">bif:contains</a></code>, <code><a href="http://docs.openlinksw.com/virtuoso/queryingxmldata.html#xcontainspredicate" class="absuri">bif:xcontains</a></code>, or other functions that depend on the text index.</p>
+<h2><a name="How"></a> How</h2>
+<ol><li>First, force a synchronization of the RDF text index: <br><pre><br>SQL&gt; DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+</pre><br></li>
+<li>Next, set the text index to your desired frequency, using the <code><a href="http://docs.openlinksw.com/virtuoso/fn_vt_batch_update.html" class="absuri">VT_BATCH_UPDATE()</a></code> function.
+<ul><li>To update the index in real time, immediately after every change, use -- <br><pre><br>SQL&gt; DB.DBA.VT_BATCH_UPDATE ( &#39;DB.DBA.RDF_OBJ&#39;, &#39;OFF&#39;, NULL );
+</pre><br></li>
+<li>To decrease the frequency, use this form (changing the &quot;1&quot; below to your preferred interval, in minutes) -- <br><pre><br>SQL&gt; DB.DBA.VT_BATCH_UPDATE ( &#39;DB.DBA.RDF_OBJ&#39;, &#39;ON&#39;, 1 );
+</pre><br></li>
+</ul></li>
+<li>Insert some example data: <br><pre><br>SQL&gt; SPARQL 
+INSERT INTO &lt;http://example.com&gt; 
+  { 
+    &lt;http://www.worldcat.org/Book_11&gt;  &lt;http://schema.org/name&gt;  &quot;Kalimero&quot;  .
+  };
+  
+Query result:
+callret-0
+ANY
+Insert into &lt;http://example.com&gt;, 1 (or less) triples -- done
+No. of rows in result: 1 
+</pre><br></li>
+<li>Check the inserted triples: <br><pre><br>SQL&gt; SELECT *
+FROM  &lt;http://example.com&gt; 
+WHERE 
+  {
+    &lt;http://www.worldcat.org/Book_11&gt;  ?p  ?o
+  };
+
+Query result:
+p                        o
+ANY                      ANY
+http://schema.org/name	 Kalimero
+No. of rows in result: 1 
+</pre><br></li>
+<li>Check the inserted triples using <code>bif:contains</code>: <br><pre><br>SQL&gt; SELECT * 
+WHERE 
+  { &lt;http://www.worldcat.org/Book_11&gt;  ?p            ?o 
+  . ?o                                 bif:contains  &quot;Kalimero&quot; 
+  };
+
+Query result:
+p                        o
+ANY                      ANY
+http://schema.org/name	 Kalimero
+No. of rows in result: 1 	
+</pre><br> </li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><code><a href="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext">bif:contains</a></code> documentation </li>
+<li><code><a href="http://docs.openlinksw.com/virtuoso/queryingxmldata.html#xcontainspredicate">bif:xcontains</a></code> documentation </li>
+<li>Virtuoso <code><a href="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext" class="absuri">DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ()</a></code> function usage example </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideBIFContainsOptions" class="wikiword">What free-text options can I use with <code>bif:contains</code>?</a> </li>
+</ul></div></body></html>

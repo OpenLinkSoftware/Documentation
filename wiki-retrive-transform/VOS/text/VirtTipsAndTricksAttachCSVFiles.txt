@@ -1,0 +1,283 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How to Attach a CSV document to Virtuoso Database Server Instance?
+
+
+%TOC%
+
+---++What?
+
+Configuring Virtuoso's Virtual Database (VDB) engine to treat selected CSV (comma-separated variable) files as DBMS <code>TABLEs</code>.
+
+---++Why?
+
+Attachment of CSV files broadens the range of external data sources which may be used to construct virtual views of heterogeneous data sources, which are ultimately available to the Federated SQL and Linked Data Views services of a given Virtuoso instance.
+
+---++How?
+
+
+---+++Using a Table as a Placeholder for CSV Attachment
+
+In this example a SQL <code>TABLE</code> is created and then associated with an external CSV file. This file is situated in a host operating system location that's accessible to the Virtuoso instance using relative (to instance .db file) or full path file name reference (constrained by <code><nowiki>DirsAllowed</nowiki></code> entry in Virtuoso INI).
+
+CSV filename: <code>contacts.csv</code> (which can also be referred to as file:contacts.csv) .
+
+File Content: 
+<verbatim>
+Id,Fname,Sname,Age
+0,John,Smith,48 
+1,Anna,Clarks,62 
+2,Rojer,Danrette,27 
+3,Kate,Sigton,56 
+4,Tim,Craft,41 
+</verbatim>
+
+CSV File to SQL Table association steps:
+
+   1 <code>CREATE</code> an empty <code>TABLE</code> , using the SQL command:
+<verbatim>
+
+CREATE TABLE csv.tutorials.contacts
+  (
+    Id INTEGER NOT NULL, 
+    Fname VARCHAR(20), 
+    Sname VARCHAR(20), 
+    Age INTEGER, 
+    CONSTRAINT demo_table_pk PRIMARY KEY (Id)
+  );
+</verbatim>
+      * Notes:  
+         * There is no special object type for File Tables corresponding to the tabular data structure represented by the CSV document content;
+         * To create a File Table, a user must have DBA group privileges. In addition, access to the referenced file is subject the same file system access functions (e.g., [[http://docs.openlinksw.com/virtuoso/fn_file_to_string.html][file_to_string]] and <code> <nowiki>DirsAllowed</nowiki></code> INI file settings) that govern the whole Virtuoso instance.
+   1 Use Virtuoso [[http://docs.openlinksw.com/virtuoso/fn_ft_set_file.html][ft_set_file]] procedure to associate the above newly created internal <code>TABLE</code> (first procedure argument) with the external CSV file (second procedure argument, in the form of a file name relative to the Virtuoso instance); optional arguments may be used to specify delimiter, newline, and escape characters, respectively:
+<verbatim>
+ft_set_file ('csv.tutorials.contacts', 'contacts.csv', ',', 1) ;
+</verbatim>
+      * Notes:
+         * The text in each field is parsed according to the data type declared for the column whose position in the <code>CREATE TABLE</code> statement corresponds to that field's position on the line. The parsing is as by the SQL <code>CAST</code> function from a <code>VARCHAR</code> value. 
+If the <code>CAST</code> fails, the line is silently ignored. 
+         * The newline and escape characters must be single character strings. A newline or escape character following the escape character will be added to the parsed input as a literal character, without its special interpretation.
+         * Each column in the CSV file is expected to end with the delimiter character. A field of zero length is considered a SQL <code>NULL</code> value; i.e., if two delimiters are adjacent, the field is considered <code>NULL</code>. Likewise, if a line begins with the delimiter, the first field is 
+considered <code>NULL</code>. 
+   1 Check the inserted data in the <code><nowiki>csv.tutorials.contacts</nowiki></code> table:
+<verbatim>
+SQL> SELECT * FROM csv.tutorials.contacts;
+Id                Fname    Sname      Age 
+INTEGER NOT NULL  VARCHAR  VARCHAR    INTEGER
+_________________________________________________
+
+0                 John     Smith      48
+1                 Anna     Clarks     62
+2                 Rojer    Danrette   27
+3                 Kate     Sigton     56
+4                 Tim      Craft      41
+
+5 Rows. -- 15 msec.
+</verbatim>
+
+
+
+---+++Simplified CSV File Attachment Variant I
+
+This example demonstrates how to directly attach external CSV file to Virtuoso that functions like any other internal <code>TABLE</code>. Unlike the prior example, you aren't required to create a SQL Table that functions as a placeholder, the entire process is automated:
+
+   1 Create CSV file named <code>contacts1.csv</code>:
+<verbatim>
+$ cat > contacts1.csv
+Id,Fname,Sname,Age
+0,John,Smith,48
+1,Anna,Clarks,62
+2,Rojer,Danrette,27
+3,Kate,Sigton,56
+4,Tim,Craft,41
+
+</verbatim>
+   1 Place the created <code><nowiki>contacts1.csv</nowiki></code> file within scope of <code><nowiki>DirsAllowed</nowiki> INI</code> setting.
+   1 Call the [[http://docs.openlinksw.com/virtuoso/fn_attach_from_csv.html][attach_from_csv]] procedure from iSQL or Virtuoso Conductor UI ( http://host:port/conductor ). <i><b>Note:</b> As the <code>pkey_columns</code> parameter value is not specified, by default the virtual table will have no Primary Key</i>:
+<verbatim>
+SQL> attach_from_csv ('csv.tutorials.contacts1', 'file:contacts1.csv', ',', '\n', null, 1);
+
+Done. -- 109 msec.
+</verbatim>
+   1 Check the inserted data in the <code><nowiki>csv.tutorials.contacts1</nowiki></code> table:
+<verbatim>
+SQL> SELECT * FROM csv.tutorials.contacts1 ;
+Id          Fname         Sname       Age
+INTEGER     VARCHAR       VARCHAR     INTEGER
+___________________________________________________________________________
+
+0           John          Smith       48
+1           Anna          Clarks      62
+2           Rojer         Danrette    27
+3           Kate          Sigton      56
+4           Tim           Craft       41
+
+5 Rows. -- 78 msec.
+</verbatim>
+   1 Check the Primary Key columns of the <code><nowiki>csv.tutorials.contacts1</nowiki></code> table:
+<verbatim>
+SQL> primarykeys csv.tutorials.contacts1;
+Showing SQLPrimaryKeys of tables like 'csv.tutorials.contacts1', tabletype/colname like 'NULL'
+TABLE_QUALIFIER  TABLE_OWNER  TABLE_NAME   COLUMN_NAME   KEY_SEQ   PK_NAME  ROOT_QUALIFIER  ROOT_OWNER  ROOT_NAME
+VARCHAR          VARCHAR      VARCHAR      VARCHAR       SMALLINT  VARCHAR  VARCHAR         VARCHAR     VARCHAR
+__________________________________________________________________________________________________________________
+
+
+0 Rows. -- 47 msec.
+</verbatim>
+
+
+---+++Simplified CSV File Attachment Variant II
+
+This example demonstrates how to directly attach external CSV file to Virtuoso by skipping the first 3 rows of the the CSV file:
+
+   1 Create CSV file named <code>contacts1.csv</code>:
+<verbatim>
+$ cat > contacts1.csv
+Id,Fname,Sname,Age
+0,John,Smith,48
+1,Anna,Clarks,62
+2,Rojer,Danrette,27
+3,Kate,Sigton,56
+4,Tim,Craft,41
+
+</verbatim>
+   1 Place the created <code><nowiki>contacts1.csv</nowiki></code> file within scope of <code><nowiki>DirsAllowed</nowiki> INI</code> setting.
+   1 Call the [[http://docs.openlinksw.com/virtuoso/fn_attach_from_csv.html][attach_from_csv]] procedure from iSQL or Virtuoso Conductor UI ( http://host:port/conductor ):
+<verbatim>
+SQL> attach_from_csv ('csv.tutorials.contacts1', 'file:contacts1.csv', ',', '\n', null, 3);
+
+Done. -- 109 msec.
+</verbatim>
+   1 Check the inserted data in the <code><nowiki>csv.tutorials.contacts1</nowiki></code> table:
+<verbatim>
+SQL> SELECT * FROM csv.tutorials.contacts1 ;
+Id          Fname         Sname       Age
+INTEGER     VARCHAR       VARCHAR     INTEGER
+___________________________________________________________________________
+
+2           Rojer         Danrette    27
+3           Kate          Sigton      56
+4           Tim           Craft       41
+
+3 Rows. -- 78 msec.
+</verbatim>
+
+
+---+++Simplified CSV File Attachment with Compound Key Generation
+
+In this example a CSV File System is not only attached to Virtuoso, but as part of the process a Primary Key is generated using the first and second ordinal columns from the CSV file content:
+
+   1 Create CSV file named <code>contacts2.csv</code> :
+<verbatim>
+$ cat > contacts2.csv
+Fname,Sname,Age
+John,Smith,48
+Anna,Clarks,62
+Rojer,Danrette,27
+Kate,Sigton,56
+Tim,Craft,41
+
+</verbatim>
+   1 Place the created <code><nowiki>contacts2.csv</nowiki></code> file within scope of <code><nowiki>DirsAllowed</nowiki> INI</code> setting.
+   1 Call the [[http://docs.openlinksw.com/virtuoso/fn_attach_from_csv.html][attach_from_csv]] procedure from iSQL or Virtuoso Conductor UI ( http://host:port/conductor ):   
+<verbatim>
+SQL> attach_from_csv ('csv.tutorials.contacts2', 'file:contacts2.csv', ',', '\n', null, 1,vector(1,2));
+
+Done. -- 109 msec.
+</verbatim>
+   1 Check the inserted data in the <code><nowiki>csv.tutorials.contacts2</nowiki></code> table:
+<verbatim>
+SQL> SELECT * FROM csv.tutorials.contacts2 ;
+Fname         Sname       Age
+VARCHAR       VARCHAR     INTEGER
+___________________________________________________________________________
+
+John          Smith       48
+Anna          Clarks      62
+Rojer         Danrette    27
+Kate          Sigton      56
+Tim           Craft       41
+
+5 Rows. -- 78 msec.
+</verbatim>
+   1 Check the Primary Key columns of the <code><nowiki>csv.tutorials.contacts2</nowiki></code> table:
+<verbatim>
+SQL> primarykeys csv.tutorials.contacts2;
+Showing SQLPrimaryKeys of tables like 'csv.tutorials.contacts2', tabletype/colname like 'NULL'
+TABLE_QUALIFIER  TABLE_OWNER  TABLE_NAME               COLUMN_NAME  KEY_SEQ   PK_NAME                 ROOT_QUALIFIER  ROOT_OWNER  ROOT_NAME
+VARCHAR          VARCHAR      VARCHAR                  VARCHAR      SMALLINT  VARCHAR                 VARCHAR         VARCHAR     VARCHAR
+____________________________________________________________________________________________________________________________________________
+
+DB               DBA          csv.tutorials.contacts2  Fname       1         csv.tutorials.contacts2  DB              DBA         csv.tutorials.contacts2
+DB               DBA          csv.tutorials.contacts2  Sname       2         csv.tutorials.contacts2  DB              DBA         csv.tutorials.contacts2
+
+2 Rows. -- 32 msec.
+</verbatim>
+
+
+---+++Simplified CSV File Attachment with Composite Key Generation
+
+In this example a CSV File System is not only attached to Virtuoso, but as part of the process a Primary Key is generated using the second (<code><nowiki>CompanyID</nowiki></code>), third (<code>Fname</code>) and forth (<code>Sname</code>) ordinal columns. In this example the <code><nowiki>CompanyID</nowiki></code> column (which uniquely identifies a company) is combined with the <code>Fname</code> and <code>Sname</code> columns to create a primary key for each contact:
+
+   1 Create CSV file named <code>contacts3.csv</code>:
+<verbatim>
+$ cat > contacts3.csv
+CompanyName,CompanyID,Fname,Sname,Age
+MLogistic,12,John,Smith,48
+ZiAirLines,13,Anna,Clarks,62
+MLogistic,12,Rojer,Danrette,27
+MLogistic,12,Kate,Sigton,56
+ZiAirLines,13,Tim,Craft,41
+
+</verbatim>
+   1 Place the created <code>contacts3.csv</code> file within scope of <code><nowiki>DirsAllowed</nowiki> INI</code> setting.
+   1 Call the [[http://docs.openlinksw.com/virtuoso/fn_attach_from_csv.html][attach_from_csv]] procedure from iSQL or Virtuoso Conductor UI ( http://host:port/conductor ):   
+<verbatim>
+SQL> attach_from_csv ('csv.tutorials.contacts3', 'file:contacts3.csv', ',', '\n', null, 1, vector (2,3,4));
+
+Done. -- 109 msec.
+</verbatim>
+   1 Check the inserted data in the <code><nowiki>csv.tutorials.contacts3</nowiki></code> table:
+<verbatim>
+SQL> SELECT * FROM csv.tutorials.contacts3 ;
+CompanyName      CompanyID   Fname     Sname       Age
+VARCHAR          INTEGER     VARCHAR   VARCHAR     INTEGER
+___________________________________________________________
+
+MLogistic        12          John      Smith       48
+ZiAirLines       13          Anna      Clarks      62
+MLogistic        12          Rojer     Danrette    27
+MLogistic        12          Kate      Sigton      56
+ZiAirLines       13          Tim       Craft       41
+</verbatim>
+   1 Check the Primary Key columns of the <code><nowiki>csv.tutorials.contacts3</nowiki></code> table:
+<verbatim>
+SQL> primarykeys csv.tutorials.contacts3;
+Showing SQLPrimaryKeys of tables like 'csv.tutorials.contacts3', tabletype/colname like 'NULL'
+TABLE_QUALIFIER TABLE_OWNER TABLE_NAME              COLUMN_NAME KEY_SEQ  PK_NAME                 ROOT_QUALIFIER ROOT_OWNER ROOT_NAME
+VARCHAR         VARCHAR     VARCHAR                 VARCHAR     SMALLINT VARCHAR                 VARCHAR        VARCHAR    VARCHAR
+___________________________________________________________________________________________________________________________________
+
+DB              DBA         csv.tutorials.contacts3 CompanyID   1        csv.tutorials.contacts3 DB             DBA        csv.tutorials.contacts3
+DB              DBA         csv.tutorials.contacts3 Fname       2        csv.tutorials.contacts3 DB             DBA        csv.tutorials.contacts3
+DB              DBA         csv.tutorials.contacts3 Sname       3        csv.tutorials.contacts3 DB             DBA        csv.tutorials.contacts3
+
+3 Rows. -- 47 msec.
+</verbatim>
+
+
+---++Related 
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtCsvFileBulkLoader][Perform Bulk Loading of CSV Files]]
+   * [[http://docs.openlinksw.com/virtuoso/sqlbulkloadoperations.html#sqlbulkloadoperations][Virtuoso File Tables Documentation]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtCsvFileBulkLoader][Virtuoso CSV File Bulk Loader]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_attach_from_csv.html][attach_from_csv]] 
+   * [[http://docs.openlinksw.com/virtuoso/fn_csv_load_file.html][csv_load_file]] 
+   * [[http://docs.openlinksw.com/virtuoso/fn_csv_parse.html][csv_parse]] 
+   * [[http://docs.openlinksw.com/virtuoso/fn_csv_cols_def.html][csv_cols_def]] 
+   * [[http://docs.openlinksw.com/virtuoso/fn_csv_table_def.html][csv_table_def]] 
+   * [[http://docs.openlinksw.com/virtuoso/fn_ft_set_file.html][ft_set_file]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_file_to_string.html][file_to_string]] 
+   * [[http://www.ietf.org/rfc/rfc4180.txt][RFC 4180 (Informational): Common Format and MIME Type for Comma-Separated Values (CSV) Files]]

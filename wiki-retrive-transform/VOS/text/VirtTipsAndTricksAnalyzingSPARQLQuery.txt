@@ -1,0 +1,127 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How can I get a full explain and profile plans for a simple SPARQL query?
+
+
+Starting with Virtuoso Commercial Release 6.4, and Virtuoso Open Source 6.1.5, <code>isql</code> offers 2 new modes for analyzing SPARQL queries: 
+
+   1 Translate a SPARQL query into the correspondent SQL: 
+<verbatim>
+SQL> SET SPARQL_TRANSLATE ON;
+SQL> SELECT * FROM <graph> WHERE {?S a ?O};
+       ---> Or execute query of your choice
+SQL> SET SPARQL_TRANSLATE OFF;
+</verbatim>
+   1 Generate compilation plan of an SQL query:
+<verbatim>   
+SQL> SET EXPLAIN ON;
+SQL> SELECT * FROM TABLE WHERE field = 'text';
+     ---> Or execute query of your choice
+SQL> SET EXPLAIN OFF;
+</verbatim>   
+      * The equivalent is <code>[[http://docs.openlinksw.com/virtuoso/fn_explain/][EXPLAIN()]]</code>, which is much more difficult to use; you cannot just copy-and-paste a query, as all quotes must be doubled within the <code>EXPLAIN(' ... ')</code>, as shown below:
+<verbatim>      
+SQL> explain('select * from table where field = ''text''');
+</verbatim>
+   1 Generate compilation and execution plan of an SQL query:
+<verbatim>   
+SQL> SET PROFILE ON;
+SQL> SELECT * FROM TABLE WHERE field = 'text';
+     ---> Or execute query of your choice
+SQL> SET PROFILE OFF;
+</verbatim>   
+      * The equivalent (available in Virtuoso 7 and later) is <code>[[http://docs.openlinksw.com/virtuoso/fn_profile/][PROFILE()]]</code>, which is much more difficult to use; you cannot just copy-and-paste a query, as all quotes must be doubled within the <code>PROFILE(' ... ')</code>, as shown below:
+<verbatim>      
+SQL> profile('select * from table where field = ''text''');
+</verbatim>
+   1 A more detailed query profile (compilation and execution) with cardinality can be obtained by executing the following following sequence
+<verbatim>
+SQL> __dbf_set('enable_qr_comment', 1);             
+SQL> __dbf_set('dbf_explain_level', 3);
+SQL> SET PROFILE ON;
+SQL> SET BLOBS ON;
+SQL> SELECT * FROM TABLE WHERE field = 'text';
+      ---> Or execute query of your choice
+SQL> SET PROFILE OFF;
+</verbatim>
+
+Provide the generated plans for analysis.
+
+
+Here is a simple example of how to combine the two options to get a full <code>explain()</code> plan for a simple SPARQL query: 
+
+
+   1 Assume the following query:
+<verbatim>
+SELECT * 
+FROM <http://dbpedia.org> 
+WHERE 
+  {
+    ?s a ?o
+  } 
+LIMIT 10
+</verbatim>
+   1. Use the <code>isql</code> command line tool to connect to your database, and execute:
+<verbatim>
+SQL> SET BLOBS ON;
+        -- in case output is very large
+SQL> SET SPARQL_TRANSLATE ON;
+SQL> SELECT * FROM <http://dbpedia.org> WHERE {?s a ?o} LIMIT 10;
+
+SPARQL_TO_SQL_TEXT
+VARCHAR
+_______________________________________________________________________________
+
+SELECT TOP 10 __id2i ( "s_1_0-t0"."S" ) AS "s",
+  __ro2sq ( "s_1_0-t0"."O" ) AS "o"
+FROM DB.DBA.RDF_QUAD AS "s_1_0-t0"
+WHERE "s_1_0-t0"."G" = __i2idn ( __bft( 'http://dbpedia.org' , 1))
+  AND  "s_1_0-t0"."P" = __i2idn ( __bft( 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' , 1))
+OPTION (QUIETCAST)
+
+1 Rows. -- 1 msec.
+
+SQL> SET SPARQL_TRANSLATE OFF;
+</verbatim>
+   1. Use your mouse to select the query output, and paste it after the <code>SET EXPLAIN ON;</code> 
+command.  Then hit the ENTER key.
+<verbatim>	
+SQL> SET EXPLAIN ON;
+SQL> SELECT TOP 10 __id2i ( "s_1_0-t0"."S" ) AS "s", __ro2sq ( "s_1_0-t0"."O" ) AS "o"
+ FROM DB.DBA.RDF_QUAD AS "s_1_0-t0"
+ WHERE "s_1_0-t0"."G" = __i2idn ( __bft( 'http://dbpedia.org' , 1))
+   AND  "s_1_0-t0"."P" = __i2idn ( __bft( 'http://www.w3.org/1999/02/22-rdf-syn tax-ns#type' , 1))
+ OPTION (QUIETCAST)
+;
+
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+{ 
+from DB.DBA.RDF_QUAD by RDF_QUAD_POGS    4.5e+05 rows   
+Key RDF_QUAD_POGS  ASC ($22 "s_1_0-t0.S", $21 "s_1_0-t0.O")
+ inlined <col=556 P =  #type >
+row specs: <col=554 G =  #http://dbpedia.org >
+ 
+ 
+After code:
+      0: $25 "s" := Call __id2i ($22 "s_1_0-t0.S")
+      5: $26 "o" := Call __ro2sq ($21 "s_1_0-t0.O")
+      10: BReturn 0
+Select (TOP  10 ) ($25 "s", $26 "o", <$24 "<DB.DBA.RDF_QUAD s_1_0-t0>" spec 5>)
+}
+
+13 Rows. -- 1 msec.
+
+SQL> SET EXPLAIN OFF;
+</verbatim>
+
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]
+

@@ -1,0 +1,51 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How do I bind named graph parameter in prepared statement?"></a>How do I bind named graph parameter in prepared statement?</h1>
+<p>Assume the following SPARQL query:</p>
+<br><pre>CONSTRUCT 
+  { 
+    ?s ?p ?o
+  } 
+FROM ?context 
+WHERE 
+  { 
+    ?s ?p ?o 
+  }
+</pre><p>To bind the named graph context of the query from above, the best solution due to performance implications, is to change the syntax of the query as:</p>
+<br><pre>CONSTRUCT 
+  { 
+    ?s ?p ?o
+  } 
+WHERE 
+  { 
+    graph `iri(??)` { ?s ?p ?o } 
+  }
+</pre><p> Note: In case of using &quot;FROM clause&quot;, it needs a constant in order to check at the compile time whether the IRI refers to a graph or a graph group: </p>
+<ul><li>Assume &quot;FROM clause&quot; is used as for ex: <br><pre><br>CONSTRUCT 
+  { 
+    ?s ?p ?o
+  } 
+FROM `iri(??)` 
+WHERE
+  { 
+    ?s ?p ?o
+  }
+</pre><br><ul><li>In this case can be made security checks at the compile time (i.e., once) and not waste time at the run time.
+</li>
+</ul></li>
+<li>Assume &quot;FROM clause&quot; is used as for ex: <br><pre><br>CONSTRUCT 
+  { 
+    ?s ?p ?o
+  }
+FROM iri(??) 
+WHERE 
+  { 
+    ?s ?p ?o 
+  }
+</pre><br><ul><li>In this case a compile-time check, a run-time check or 50/50 mix of them can be performed, depending on the security policies.
+</li>
+</ul></li>
+<li>FROM without constant would mean that security rules, if they present in the storage, are used at the run time, for every triple that matches every triple pattern in the default graph.
+ This issue can be reproduced if FROM is not specified at all: if security differs from default then the effect is noticeably bad.</li>
+</ul><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+</ul></div></body></html>

@@ -1,0 +1,70 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Backing Up Individual Table(s) or Index(es) and Restoring Them to a Fresh DB
+
+---++ What?
+
+Selectively dumping a database table or its schema, for reload into a separate instance, or for recovery in the original instance.
+
+<i><b>Note</b>: This is only possible with Virtuoso 6.0 and later.</i>
+
+
+---++ Why?
+
+There are many reasons, ranging from system corruption to migration, why you might want to reconstitute data across database management system instances.
+
+
+---++ How to Dump and Recover one or more SQL Table(s)
+
+   1 Create a function for dumping the key: 
+<verbatim>
+SQL> CREATE PROCEDURE bkp_key 
+  ( IN  f         ANY
+  , IN  tb_name   VARCHAR
+  , IN  key_name  VARCHAR
+  )
+  {
+    backup_prepare ( f ) ;
+    backup_index ( tb_name
+                 , key_name
+                 );
+    backup_flush ();
+    backup_close ();
+  };
+</verbatim>
+<i><b>Note:</b> You can dump multiple tables by adding more calls to the <code>backup_index</code> function.
+   1 On the source DB, dump the <code>T1</code> table's primary key to a file named 
+"<code>mylog.txn</code>", by executing: 
+<verbatim>
+SQL> bkp_key 
+  ( 'mylog.txn'
+  , 'DB.DBA.T1'
+  , 'T1'
+  );
+</verbatim>
+   1 On the source DB host, stop the Virtuoso server, and dump only the schema tables (no data) 
+into the <code>trx</code> file, by executing: 
+<verbatim>
+% virtuoso +crash-dump +foreground +mode l   ## ( lower case L )
+</verbatim>
+   1 On the target DB host, make sure there is no existing <code>.db</code> file, and 
+place the <code>.trx</code> file produced by previous step. Create a new DB with the
+schema from the source DB, by executing: 
+<verbatim>
+% virtuoso +restore-crash-dump +foreground ;
+</verbatim>
+   1 Insert the PK data from the source DB dump into the new table in the new DB, 
+by starting the new DB as normal, and executing: 
+<verbatim>
+SQL> replay ('mylog.txn') ;	
+</verbatim>
+<i><b>Note:</b> that this has only restored the Primary Key index.  If there are multiple indexes on the table(s), 
+the other indexes must be dropped and re-created, as they will be empty at this point.</i>
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#backup][Virtuoso Data Backup & Recovery]]
+

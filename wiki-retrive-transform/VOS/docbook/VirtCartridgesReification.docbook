@@ -1,0 +1,72 @@
+<docbook><section><title>VirtCartridgesReification</title><title> Reification in the Virtuoso Sponger</title> Reification in the Virtuoso Sponger
+ <para><emphasis>Note</emphasis>: some of the underlying implementation of reification is in flux</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What is Reification?</bridgehead>
+<para>Reification is one level of useful abstraction, in which raw triples are modelled as resources in their own right, allowing description and annotation of those triples.</para>
+<para>A typical use is provenance: given a particular resource to sponge, the Virtuoso Sponger has many components that can contribute triples so it can be useful to trace which cartridge is responsible.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Data Islands</bridgehead>
+<para>In addition to the datasource-specific cartridges, the HTML+Variants extractor cartridge identifies several ways of embedding RDF data in HTML, which we term  <emphasis>data islands</emphasis>.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>HTML5 Microdata (itemscope, itemtype, itemprop attributes) </listitem>
+<listitem>RDFa microdata (about, property, resource attributes) </listitem>
+<listitem>JSON-LD using &lt;script type=&quot;application/ld+json&quot;&gt; ...
+  </listitem>
+<listitem>Turtle and N3 using &lt;script type=&quot;text/turtle&quot;&gt; ...
+  </listitem>
+<listitem>GRDDL (hRecipe, hCard, hCalendar, hProduct, xFolk, eRDF, etc)</listitem>
+</itemizedlist><para>Additionally, if installed, </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>the Turtle Meta-cartridge (identifies Turtle in any &quot;content&quot; triple, e.g.
+ titles, descriptions, social media post bodies, etc)</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Configuration</bridgehead>
+<para>The HTML+Variants extractor cartridge takes a handful of options by which one can configure which data-islands contribute:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>rdfa=yes	- controls whether the RDFa extractor runs </listitem>
+<listitem>reify_rdfa=1	- determines whether extracted RDFa is reified </listitem>
+<listitem>reify_html5md=1	- determines whether extracted HTML5 Microdata is reified </listitem>
+<listitem>reify_jsonld=1	- determines whether extracted JSON-LD is reified </listitem>
+<listitem>reify_all_grddl=0	- determines whether all other GRDDL data is reified</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Sample Input</bridgehead>
+<para>Let us assume a very simple input HTML document, as follows:</para>
+<programlisting>&lt;html 
+  xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+  xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;&gt;
+  &lt;head&gt;
+    &lt;title property=&quot;dc:title&quot; content=&quot;Turtle test&quot;&gt;Turtle-in-script test&lt;/title&gt;
+    &lt;script type=&quot;text/turtle&quot;&gt;
+    &lt;![CDATA[
+    &lt;http://example.org/person/Mark_Twain&gt;
+	&lt;http://example.org/relation/author&gt; 
+	&lt;http://example.org/books/Huckleberry_Finn&gt; ;
+	&lt;http://xmlns.com/foaf/0.1/#name&gt; &quot;Mark Twain&quot; .
+    ]]&gt;
+    &lt;/script&gt;
+    &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Testing Turtle in scripts&lt;/h1&gt;
+    Stuff
+    &lt;hr /&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</programlisting><para> As we can see, this contains one RDFa statement in the &lt;title&gt; element and a small pool of Turtle data in a script element.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Sample Output</bridgehead>
+<para>When sponging with the default settings for HTML+Variants extractor cartridge enabled, we see:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> type </entry><entry> Document </entry></row>
+<row><entry> sameAs </entry><entry> #this </entry></row>
+<row><entry> container of </entry><entry> Embedded RDFa Statement 1 </entry></row>
+<row><entry> </entry><entry> Embedded TTL-script Statement 1 </entry></row>
+<row><entry> </entry><entry> Embedded TTL-script Statement 2 </entry></row>
+<row><entry> Title </entry><entry> Turtle-in-script test </entry></row>
+</tbody></tgroup></table>
+<para>Expanding the Embedded RDFa Statement 1, we see:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> type </entry><entry> Statement </entry></row>
+<row><entry> label </entry><entry> Embedded RDFa Statement 1 </entry></row>
+<row><entry> described by </entry><entry> Turtle test </entry></row>
+<row><entry> </entry><entry> &lt;&gt; </entry></row>
+<row><entry> subject </entry><entry> Turtle test </entry></row>
+<row><entry> predicate </entry><entry> Title </entry></row>
+<row><entry> object </entry><entry> Turtle test </entry></row>
+<row><entry> Sponge Time </entry><entry> 2014-06-11 14:42:40.200348 (xsd:date) </entry></row>
+</tbody></tgroup></table>
+</section></docbook>

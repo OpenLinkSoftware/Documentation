@@ -1,0 +1,98 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+---+ Generating a Unique ID via SPARQL HTTP
+
+Suppose you need unique IDs from within Virtuoso (unique only to a given Virtuoso instance/cluster 
+would suffice), and that this should be done via SPARQL HTTP prior to issuing a SPARQL insert.
+
+One solution would be to create a table and procedure that keeps track of an incremental ID and 
+returns each ID only once. Then you can access this procedure via SPARQL HTTP by using:
+<verbatim>
+( 
+  SELECT ( bif:foo() ) AS ?id 
+  WHERE 
+    { 
+      ?s ?p ?o 
+    } limit 1 
+)
+</verbatim>
+
+---++ An optimized solution
+
+Virtuoso's built-in functions (BIFs) <code>[[http://docs.openlinksw.com/virtuoso/fn_sequence_next.html][sequence_next()]]</code> 
+and <code>[[http://docs.openlinksw.com/virtuoso/sequenceobjects.html][sequence_set()]]</code>
+will streamline this task. 
+
+Like any other SQL functions without INOUT or OUT parameters, these can be called from SPARQL 
+simply as <b><code>bif:sequence_next()</code></b> or <b><code>bif:sequence_set()</code></b>,
+but an IN parameter may be used to get one sequence per graph, i.e., 
+<b><code><nowiki>bif:sequence_next("GRAPH_IDENTIFIER")</nowiki></code></b>, e.g., 
+<code><nowiki>bif:sequence_next("&lt;http://my.example.com/graph1&gt;")</nowiki></code>.
+
+
+<verbatim>
+SQL> SPARQL 
+  INSERT INTO GRAPH <http://mygraph.com> 
+    { 
+      <:a>  <:p>  `bif:sequence_next("<http://mygraph.com>")` 
+    } ;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into <http://mygraph.com>, 1 (or less) triples -- done
+
+1 Rows. -- 141 msec.
+SQL> SPARQL 
+  INSERT INTO GRAPH <http://mygraph.com>
+    {
+      <:a>  <:p>  `bif:sequence_next("<http://mygraph.com>")` 
+    } ;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into <http://mygraph.com>, 1 (or less) triples -- done
+
+1 Rows. -- 4 msec.
+SQL> SPARQL 
+  SELECT * 
+  FROM <http://mygraph.com> 
+  WHERE
+    { 
+      ?s  ?p  ?o 
+    }
+  ;
+
+s                  p                  o
+VARCHAR            VARCHAR            VARCHAR
+_______________________________________________________________________________
+
+:a                 :p                 0
+:a                 :p                 1
+
+2 Rows. -- 1 msec.
+SQL> 
+</verbatim>
+
+---++ Side-note -- bif: prefix vs. sql: prefix
+
+For user-defined functions, the <b><code>sql:</code></b> prefix is preferred over 
+the <b><code>bif:</code></b> prefix; e.g.,
+<verbatim>
+sql:foo(x) 
+</verbatim>
+-- will call --
+<verbatim>
+DB.DBA.foo(x)
+</verbatim>
+The difference is that <code>bif:foo</code> will make an unqualified call to <code>foo()</code>. 
+If no built-in function <code>foo()</code> exists, and the system contains many users and database 
+qualifiers, the search for exact name of <code>XXX.YYY.foo()</code> adds needless overhead.  
+Further issues may arise if multiple <code>XXX.YYY.foo()</code> procedures have been defined.
+
+   
+---++ Related
+
+   * [[VirtSPARQLOptGuide][Virtuoso SPARQL Optimization Guide]]

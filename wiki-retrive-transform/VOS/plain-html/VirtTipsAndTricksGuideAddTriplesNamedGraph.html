@@ -1,0 +1,107 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I use SPARUL to add missing triples to a Named Graph?"></a>How can I use SPARUL to add missing triples to a Named Graph?</h1>
+<h2><a name="What?"></a>What?</h2>
+ Use of SPARUL to add missing triples to a Named Graph.
+ For example, an ontology/vocabulary extension.<h2><a name="Why?"></a>Why?</h2>
+ A lot of ontologies and vocabularies started life prior to emergence of the Linked Data meme.
+ As a result, many do not include <code>rdfs:isDefinedBy</code> relations (via triples) that associate Classes and Properties in an ontology with the ontology itself, using de-referencable URIs.
+ The downside of this pattern is that Linked Data&#39;s follow-your-nose pattern isn&#39;t exploitable when viewing these ontologies e.g., when using contemporary Linked Data aware browsers, like the <a href="http://ode.openlinksw.com" class="absuri">OpenLink Data Explorer</a>, <a href="http://wikis.openlinksw.com/dataspace/owiki/wiki/OATWikiWeb/InteractiveSparqlQueryBuilderOverview" class="absuri">OpenLink iSPARQL Query Builder</a>, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtVisualizeWithPivotViewer" class="wikiword">Microsoft Pivot Viewer</a> and others.<h2><a name="How?"></a>How?</h2>
+<p>If SPARUL privileges are assigned to SPARQL or other accounts associated with SPARQL Endpoint.
+ Or via WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksGuideAddTriplesNamedGraph" class="wikiword">?</a> protected SPARQL endpoint with SPARUL is granted to SPARQL or specific accounts or WebIDs<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebIDs&parent=VirtTipsAndTricksGuideAddTriplesNamedGraph" class="wikiword">?</a> in a group.</p>
+<br><pre>SPARQL INSERT INTO &lt;LocalNamedGraphIRI&gt;
+  { ?s rdfs:DefinedBy &lt;LocalOntologyEntityURI&gt;.
+    ?o rdfs:isDefinedBy &lt;http://www.w3.org/ns/auth/acl&gt;. }
+FROM &lt;ExtSourceNamedGraphIRI&gt; 
+WHERE 
+  { 
+    ?s a ?o 
+  }
+</pre><p> </p>
+<h3><a name="Example"></a>Example</h3>
+<ol><li>Load Quad Named Graph via Sponger based query: <br><pre><br>DEFINE get:soft &quot;replace&quot;
+SELECT DISTINCT *
+FROM &lt;http://www.w3.org/ns/auth/acl#&gt;
+WHERE 
+  { 
+    ?s ?p ?o 
+  }
+</pre><br><br><br><img src="VirtTipsAndTricksGuideAddTriplesNamedGraph/t1.png" style="wikiautogen"><br><br> </li>
+<li>Added Triples via SPARUL to Ontology Named Graph: <br><pre><br>SPARQL INSERT INTO &lt;http://www.w3.org/ns/auth/acl#&gt;
+  {  ?s rdfs:DefinedBy &lt;http://www.w3.org/ns/auth/acl&gt;.
+     ?o rdfs:DefinedBy &lt;http://www.w3.org/ns/auth/acl&gt;. }
+FROM &lt;http://www.w3.org/ns/auth/acl#&gt; 
+WHERE 
+  {
+    ?s a ?o
+  }
+
+Query result:
+
+callret-0 VARCHAR
+
+Insert into &lt;http://www.w3.org/ns/auth/acl#&gt;, 110 (or less) triples -- done
+
+No. of rows in result: 1 
+
+</pre><br></li>
+<li>Via Conductor or Command-line iSQL courtesy of SPASQL execute the following statements: <ol><li>Remove an existing graph: <br><pre><br>SPARQL
+CLEAR GRAPH &lt;http://www.w3.org/ns/auth/acl/&gt; ;
+
+SPARQL
+CLEAR GRAPH &lt;http://www.w3.org/ns/auth/acl&gt; ;
+
+SPARQL
+CLEAR GRAPH &lt;http://www.w3.org/ns/auth/acl#&gt; ;
+
+
+Query result: callret-0
+ANY
+ Clear &lt;http://www.w3.org/ns/auth/acl/&gt; -- done
+No. of rows in result: 1
+
+Query result: callret-0
+ANY
+ Clear &lt;http://www.w3.org/ns/auth/acl&gt; -- done
+No. of rows in result: 1
+
+Query result: callret-0
+ANY
+ Clear &lt;http://www.w3.org/ns/auth/acl#&gt; -- done
+No. of rows in result: 1 
+</pre><br></li>
+<li>Load a new graph: <br><pre><br>SPARQL
+LOAD &lt;http://www.w3.org/ns/auth/acl&gt; ;
+
+Query result:
+callret-0
+VARCHAR
+ Load &lt;http://www.w3.org/ns/auth/acl&gt; into graph &lt;http://www.w3.org/ns/auth/acl&gt; -- done
+No. of rows in result: 1 
+
+</pre><br></li>
+<li>Add missing rdfs:isDefinedBy triples via SPARUL: <br><pre><br>SPARQL
+INSERT INTO &lt;http://www.w3.org/ns/auth/acl&gt;
+  {  ?s rdfs:DefinedBy &lt;http://www.w3.org/ns/auth/acl&gt;.
+     ?o rdfs:DefinedBy &lt;http://www.w3.org/ns/auth/acl&gt;. }
+FROM &lt;http://www.w3.org/ns/auth/acl&gt; 
+WHERE 
+  {
+    ?s a ?o
+  } ;
+
+Query result:
+callret-0
+ANY
+ Insert into &lt;http://www.w3.org/ns/auth/acl&gt;, 26 (or less) triples -- done
+No. of rows in result: 1 
+</pre><br></li>
+</ol></li>
+<li>Verification: Access the following url: <code>http://&lt;cname&gt;/describe/?uri=http://www.w3.org/ns/auth/acl</code> <br><br><img src="VirtTipsAndTricksGuideAddTriplesNamedGraph/t2.png" style="wikiautogen"><br><br></li>
+</ol><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparul" class="absuri">SPARUL -- an Update Language For RDF Graphs</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSponger" class="wikiword">Virtuoso Sponger</a> </li>
+<li><a href="http://ode.openlinksw.com" class="absuri">OpenLink Data Explorer</a> </li>
+<li><a href="http://wikis.openlinksw.com/dataspace/owiki/wiki/OATWikiWeb/InteractiveSparqlQueryBuilderOverview" class="absuri">OpenLink iSPARQL Query Builder</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtVisualizeWithPivotViewer" class="wikiword">Microsoft Pivot Viewer</a> </li>
+</ul></div></body></html>

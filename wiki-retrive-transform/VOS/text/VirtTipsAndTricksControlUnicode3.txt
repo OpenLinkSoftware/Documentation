@@ -1,0 +1,131 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+---+ Normalization of UNICODE3 accented characters for Virtuoso free-text indexing
+
+Normalization of UNICODE3 accented characters in a free-text index can be controlled by setting 
+the <b><code><nowiki>XAnyNormalization</nowiki></code></b> configuration parameter in the 
+<b><code>[I18N]</code></b> section of the Virtuoso configuration file, <code>virtuoso.ini</code>. 
+This parameter controls whether accented UNICODE characters should be converted to their non-accented 
+base variants when creating a free-text index or when parsing a free-text query string. The parameter's 
+value is a bitmask integer, currently with only 2 bits in use:
+
+| *XAnyNormalization value* | *bit equivalent* | *Description* |
+|  <code>0</code>  |  <code>00</code>  | Default. Nothing is normalized, so "Jose" and "Jos?" are two distinct words.  |
+|  <code>1</code>  |  <code>01</code>  |  <i>ToBeDone</i>  |
+|  <code>2</code>  |  <code>10</code>  | Any "combining character sequence" (a combination of a base character and one or more combining characters) is converted to its (smallest known) base. For example, "?" will lose its accent, and become a plain ASCII "e".  |
+|  <code>3</code>  |  <code>11</code>  | This combines <code>1</code> and <code>2</code>, and so causes both conversions. Any pair of base character and combining character loses the second character, and characters with accents lose their accents.  |
+
+So the fragment of <code>virtuoso.ini</code> would look like:
+<verbatim>
+...
+
+[I18N]
+XAnyNormalization = 3
+
+...
+</verbatim>
+
+   * <code><nowiki>XAnyNormalization = 3</nowiki></code> is recommended for most scenarios requiring 
+such normalization.  In some rare cases, <code><nowiki>XAnyNormalization = 1</nowiki></code> may be 
+more appropriate. 
+
+   * The parameter should generally be set before creating a database, and must be set identically 
+for all instances in a cluster configuration. If changed on an existing database, you should rebuild 
+all free-text indexes that may contain non-ASCII data by running the following procedure from isql --
+<verbatim>
+VT_INDEX_DB_DBA_RDF_OBJ(0)
+</verbatim> 
+
+   * On a typical system, the parameter affects all text columns, XML columns, RDF literals, and 
+queries.  (Strictly speaking, it only affects items that use default "<code>x-any</code>" language, 
+or a language derived from <code>x-any</code> such as "<code>en</code>" or "<code>en-US</code>". If 
+you haven't tried writing new C plug-ins for custom languages, you need not look so deep.)
+
+   * <i><b>Note:</b> We have had requests for a database function that normalizes characters in 
+strings, as the free-text engine does with <code><nowiki>XAnyNormalization=3</nowiki></code>. This function will be 
+provided as a separate patch/update, and will depend on <code><nowiki>XAnyNormalization</nowiki></code>.</i>
+
+---++ Example
+
+With <b><code><nowiki>XAnyNormalization=3</nowiki></code></b>, one can get the following:
+
+<verbatim>
+SQL> SPARQL 
+     INSERT 
+       IN <http://InternationalNSMs/>
+         {
+           <s>  <sp>  "?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?"  ; 
+                <ru>  "?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????"   
+         }
+       ;
+
+INSERT INTO <http://InternationalNSMs/>, 2 (or less) triples -- done
+
+
+SQL> DB.DBA.RDF_OBJ_FT_RULE_ADD (NULL, NULL, 'InternationalNSMs.wb');
+
+Done. -- 0 msec.
+
+SQL> VT_INDEX_DB_DBA_RDF_OBJ(0);
+
+Done. -- 26 msec.
+
+SQL> SPARQL 
+     SELECT * 
+       FROM <http://InternationalNSMs/> 
+       WHERE 
+         {
+           ?s  ?p  ?o 
+         }
+       ORDER BY ASC (str(?o))
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+s  ru  ?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????
+
+2 Rows. -- 2 msec.
+
+SQL> SPARQL 
+     SELECT * 
+       FROM <http://InternationalNSMs/> 
+       WHERE 
+         { 
+           ?s  ?p            ?o                                                    . 
+           ?o  bif:contains  "'?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?'"  
+         }
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+
+1 Rows. -- 2 msec.
+
+SQL> SPARQL 
+     SELECT * 
+       FROM <http://InternationalNSMs/> 
+       WHERE
+         { 
+           ?s  ?p            ?o                                                    . 
+           ?o  bif:contains  "'Indio Joao Macapa Junior Torres Luis Araujo Jose'" 
+         }
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+
+1 Rows. -- 1 msec.
+
+SQL> SPARQL 
+     SELECT * 
+       FROM <http://InternationalNSMs/> 
+       WHERE 
+         { 
+           ?s  ?p            ?o                         . 
+           ?o  bif:contains  "'???????? ???????? ?? ?????'" 
+         }
+       ;
+
+s  ru  ?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????
+</verbatim>
+
+
+---++ Related
+
+   * [[http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_I18N][Virtuoso ini I18N section]]
