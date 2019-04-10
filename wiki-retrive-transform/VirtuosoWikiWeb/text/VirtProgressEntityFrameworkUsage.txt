@@ -1,0 +1,74 @@
+%META:TOPICPARENT{name="VirtAdoNet35Provider"}%
+
+= Using Microsoft Entity Frameworks to Access Progress Schema Objects with Virtuoso =
+
+This document details the steps required to provide Microsoft Entity Framework access to Progress Schema Objects using the <nop>OpenLink Virtuoso Universal Server. This is achieved by Linking the required Progress Schema objects into Virtuoso using its built-in Virtual Database engine and then using the Virtuoso ADO.Net Entity Framework provider to query the remote Progress Schema objects linked into the Virtuoso Server.
+
+%TOC%
+
+
+== Prerequisites ==
+
+=== Progress/OE 9 or later DBMS ===
+
+A Progress <nop>OpenEdge DBMS (with their SQL-92 engine, so v9 or later) hosting the required Schema Objects needs to be available. In this document, the <b><code>isports</code></b> sample database will be used to demonstrate the process.
+
+=== ODBC Driver for Progress (SQL-92) ===
+
+A Progress ODBC Driver is required to link the Progress Schema Objects into the Virtuoso Server. The <b>[[http://uda.openlinksw.com/odbc-progress/| OpenLink ODBC Driver for Progress (SQL-92)]]</b> will be used in this document, for which a functional ODBC Data source name of <b><code>prs101c</code></b> will be assumed to exist on the machine hosting the Virtuoso Server.
+
+=== Virtuoso 5.10.x or later ===
+
+An <nop>OpenLink Virtuoso Universal Server installation including the Virtuoso Universal Server and ADO.NET Entity Framework Provider is required. The Virtuoso components must be Release 5.10.x or above, this being the minimum version containing support for Microsoft Entity Frameworks.  We recommend using [[http://virtuoso.openlinksw.com/download/| the latest Virtuoso component versions currently available]].
+
+=== Microsoft Visual Studio 2008 SP1 or later ===
+
+Microsoft Visual Studio 2008 with Service Pack 1 or later is required, this being the earliest version containing the necessary Entity Framework support.
+
+
+== Tasks ==
+
+=== 1 - Ensure Progress Primary Keys (PKs) are not NULLable ===
+
+The Visual Studio 2008 Entity Data Model (EDM) requires that all primary keys are <code>NOT NULLABLE</code>. Visual Studio 2008 will fail to generate an EDM, if any primary keys are nullable. Therefore, ensure that any applicable primary keys are defined as not nullable in the Progress database schema before attempting to generate an EDM. 
+
+By default, several Primary Keys (PKs) in the <code>isports</code> database allows <code>NULL</code> values. It seems somewhat nonsensical that a unique key whose sole purpose is to identify rows in tables can be allowed to be <code>NULL</code>.
+
+This issue is best addressed directly in the database schema, by redefining those PKs that allow <code>NULL</code> so as not to allow <code>NULL</code>. Progress documentation does not talk in terms of <code>NULL</code>; instead, it uses the term **Mandatory**.
+
+Our documentation provides more specific details about how to [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtProgressPKNull|ensure Progress PKs are not nullable]].
+
+
+=== 2 - Install and configure ODBC Driver for Progress (SQL-92) ===
+
+The Virtuoso Virtual Database engine uses ODBC as the connectivity mechanism for linking remote database objects into its local schema. Thus, a Progress ODBC Driver must be available with a suitably configured DSN for connecting to the target database. The <nop>OpenLink ODBC Drivers for Progress have been used in this document, although in theory any Progress ODBC Driver can be used. 
+
+Installation instructions for the <nop>OpenLink ODBC Driver for Progress are available from:
+
+* [[http://wikis.openlinksw.com/UdaWikiWeb/InstallConfigODBC|Product Installation & Basic Configuration (ODBC)]] 
+
+=== 3 - Install and configure Virtuoso ===
+
+* [[VirtADOClientServInstall|Install and configure OpenLink Virtuoso Universal Server]]
+
+=== 4 - Link Progress tables into Virtuoso ===
+
+* [[VirtProgressLinkingObjects|Linking Progress tables into OpenLink Virtuoso]]
+
+=== 5 - Create a Visual Studio Entity Data Model (EDM) ===
+
+* [[VirtProgressEDM|Creating EDM in Visual Studio 2008]]
+
+In the event that no entity-linking associations are automatically created (as is the case here with Progress), the [[VirtProgressAssociations|EDM Associations (FKs) will need to be created manually]].
+
+== Use the EDM to create Entity Framework applications ==
+
+Now that a Microsoft Entity Data Model has been created for the Progress <code>isports</code> database, Entity Framework applications can be created to make use of it.
+
+=== Entity Framework Data Service ===
+
+* [[VirtEntityFrameworkProgressDatService|Entity Framework Data Service]]
+
+=== Visual Studio Windows Form Application ===
+
+* [[VirtProgressVisualStudioDataGridFormsApp|Windows DataGrid Form Application]]

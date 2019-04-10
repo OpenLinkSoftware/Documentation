@@ -1,0 +1,49 @@
+%META:TOPICPARENT{name="VirtuosoRDFDataAccessManagement"}%
+
+==RDF Data Access & Management==
+===Load Geonames RDF dump into Virtuoso===
+
+The following Virtuoso procedure  may be used to load  the Geonames RDF dump, thus provided that the dump persists in its current format :
+
+{{{ 
+
+create procedure DB.DBA.import_geonames_dataset(in rdfdump_path  
+varchar, in graph_uri varchar)
+{
+   declare rdfdump_str, line, nb_processed, process_records, msg_str  
+any;
+     declare exit handler for sqlstate '2200*'
+   {
+       goto znext;
+   };        rdfdump_str := file_to_string_output(rdfdump_path);
+     nb_processed := 0;
+     line := ses_read_line(rdfdump_str); -- URL line
+
+   while(isstring(line))
+   {
+       nb_processed := nb_processed + 1;
+
+       if(mod(nb_processed, 1000) = 0)
+       {
+           result_names(line);
+           result(line);
+       }
+             if(mod(nb_processed, 50000) = 0)
+       {
+           result_names(msg_str);
+           msg_str := 'Checkpoint in progress...';
+           result(msg_str);
+                     exec('checkpoint');
+                     msg_str := 'Checkpoint in finished';
+           result_names(msg_str);
+           result(msg_str);
+       }
+             line := ses_read_line(rdfdump_str); -- RDF document line
+             DB.DBA.RDF_LOAD_RDFXML(line, graph_uri, graph_uri);
+	     znext:;
+             line := ses_read_line(rdfdump_str); -- skip: URL line
+   }
+};
+
+DB.DBA.import_geonames_dataset('/dbs/rdfdata/rdfdumps/geonames/all- 
+geonames-rdf.txt', 'http://geonames.org');

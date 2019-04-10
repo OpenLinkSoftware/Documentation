@@ -1,0 +1,44 @@
+<docbook><section><title>LoadGeonamesRDFDumpIntoVirtuoso</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">RDF Data Access &amp; Management</bridgehead>
+<para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Load Geonames RDF dump into Virtuoso</bridgehead>
+<para>The following Virtuoso procedure  may be used to load  the Geonames RDF dump, thus provided that the dump persists in its current format :</para><programlisting>
+create procedure DB.DBA.import_geonames_dataset(in rdfdump_path  
+varchar, in graph_uri varchar)
+{
+   declare rdfdump_str, line, nb_processed, process_records, msg_str  
+any;
+     declare exit handler for sqlstate &#39;2200*&#39;
+   {
+       goto znext;
+   };        rdfdump_str := file_to_string_output(rdfdump_path);
+     nb_processed := 0;
+     line := ses_read_line(rdfdump_str); -- URL line
+
+   while(isstring(line))
+   {
+       nb_processed := nb_processed + 1;
+
+       if(mod(nb_processed, 1000) = 0)
+       {
+           result_names(line);
+           result(line);
+       }
+             if(mod(nb_processed, 50000) = 0)
+       {
+           result_names(msg_str);
+           msg_str := &#39;Checkpoint in progress...&#39;;
+           result(msg_str);
+                     exec(&#39;checkpoint&#39;);
+                     msg_str := &#39;Checkpoint in finished&#39;;
+           result_names(msg_str);
+           result(msg_str);
+       }
+             line := ses_read_line(rdfdump_str); -- RDF document line
+             DB.DBA.RDF_LOAD_RDFXML(line, graph_uri, graph_uri);
+	     znext:;
+             line := ses_read_line(rdfdump_str); -- skip: URL line
+   }
+};
+
+DB.DBA.import_geonames_dataset(&#39;/dbs/rdfdata/rdfdumps/geonames/all- 
+geonames-rdf.txt&#39;, &#39;http://geonames.org&#39;);
+</programlisting></section></docbook>

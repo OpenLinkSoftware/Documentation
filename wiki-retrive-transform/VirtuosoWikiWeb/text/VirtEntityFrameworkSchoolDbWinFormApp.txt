@@ -1,0 +1,332 @@
+%META:TOPICPARENT{name="VirtAdoNet35Provider"}%
+
+==Virtuoso Entity Framework School DB Windows Form Application==
+
+This tutorial demonstrates how  Visual Studio 2008 can be used to generate mapping files for an Entity Data Model (EDM), based on a 1:1 mapping to tables in the School database. This will be done by creating a Windows Forms application in Visual Studio, create queries that access data in the School model, bind the query results to display controls to show the results of the queries, and then make updates to objects and persist the changes to the database.
+
+===Pre-requisites===
+
+In order to create an Entity Framework  Application in your own environment you will need:
+
+1. Microsoft Visual Studio 2008 SP1, the ADO.NET Entity Framework runtime and associated tools are included in Visual Studio 2008 SP1.
+
+2. A running Virtuoso Universal Server instance.
+
+===Create the School database and schema=== 
+
+1. Download the <a href="http://download.openlinksw.com/packages/5.0/virtuoso/schools_db_dav.vad" style="wikiautogen">Schools Database</a>  VAD ({{{schools_db_dav.vad}}}) package.%BR%%BR%
+
+2. Navigate to the **System Admin** -> **Packages** tab of the Virtuoso Conductor.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_1.png" style="wikiautogen"/>%BR%%BR%
+
+3. Scroll down to the **Install Package** section of the tab, use the **Upload Package** option **Browse** button to locate the <code><nowiki>schools_db_dav.vad</nowiki></code> package and click ****proceed****.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_2.png" style="wikiautogen"/>%BR%%BR%
+
+4. Click the **Proceed** button to begin the installation process.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_3.png" style="wikiautogen"/>%BR%%BR%
+
+5. Once complete return to the **Packages** tab and scroll down to confirm the **schools_db** package is listed as installed.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_4.png" style="wikiautogen"/>%BR%%BR%
+
+====Create the Course Manager application using Visual Studio==== 
+
+1. Launch the Visual Studio 2008 SP1 IDE. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_1.png" style="wikiautogen"/>%BR%%BR%
+   
+2. On the **File** menu click **New Project**.%BR%%BR%
+   
+3. Choose either **Visual Basic** or **Visual C#** in the **Project Types** pane.%BR%%BR%
+   
+4. Select **Windows Forms Application** in the **Templates** pane.%BR%%BR%
+   
+5. Enter **<nop>CourseManager**** for the project name, and then click **OK**.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_5.png" style="wikiautogen"/>%BR%%BR%
+
+====Create the Course Viewer form==== 
+
+1. In the **<nop>CourseManager** project, select the default form (Form1).%BR%%BR%
+   
+2. In the **File Properties** pane, change the File Name to **CourseViewer.vb** or **CourseViewer.cs**.%BR%%BR%
+   
+3. In **Solution Explorer**, double-click **CourseViewer.vb** or **CourseViewer.cs** to open the form.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_6.png" style="wikiautogen"/>%BR%%BR%
+   
+4. In the **Toolbox**, expand **Common Controls**, drag the **<nop>ComboBox** control to the form, and change the name of the control to **departmentList**.%BR%%BR%
+   
+5. In the **Toolbox**, drag the **Button** control to the form, change the **Name** of the control to **closeForm**, and change the **Text** value to **Close**.%BR%%BR%
+   
+6. In the **Toolbox**, expand **Data**, drag the **<nop>DataGridView** control to the form, and change the **Name** of the control to **courseGridView**.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_7.png" style="wikiautogen"/>%BR%%BR%
+   
+7. Double-click the **closeForm** button control. This opens the code page for the form and creates the <b>closeForm_Click</b> event handler method.%BR%%BR%
+   
+8. In the <b>closeForm_Click</b> event handler method, type the following code that closes the form:
+
+{{{
+Visual Basic
+
+' Close the form.
+Me.Close()
+
+C#
+
+// Close the form.
+this.Close();
+}}}
+
+===Generating the School Entity Data Mode===
+
+====Add the ADO.NET Entity Data Model item template==== 
+
+1. Select the **<nop>CourseManager** project in **Solution Explorer**, right-click, point to **Add**, and then click **New Item**.%BR%
+   
+2. Select **ADO.NET Entity Data Model** in the **Templates** pane.%BR%
+   
+3.  Type **School.edmx** for the model name and click **Add**. The opening page of the Entity Data Model Wizard is displayed.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_8.png" style="wikiautogen"/>%BR%%BR%
+
+====Generate the EDM==== 
+
+1. Select **Generate from database** in the **Choose Model Contents** dialog box. Then click **Next**.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_9.png" style="wikiautogen"/>%BR%%BR%
+   
+2. Click the **New Connection** button.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_10.png" style="wikiautogen"/>%BR%%BR%
+  
+3. Choose the **<nop>OpenLink Virtuoso Data Source** and click **Continue**.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_11.png" style="wikiautogen"/>%BR%%BR%
+   
+4.  In the **Connection Properties** dialog specify the **hostname**, **portno**, **username** and password for the target Virtuoso Server and click the **Advanced** button. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_12.png" style="wikiautogen"/>%BR%%BR%
+   
+5. In the **Advanced Properties** dialog set the **Database** paramter to **School** and click OK. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_13.png" style="wikiautogen"/>%BR%%BR%
+   
+6. Press the **Test Connection** dialog to verify the database is accessible. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_14.png" style="wikiautogen"/>%BR%%BR%
+   
+7. Set the **entity connect string** name to **<nop>SchoolEntities** and click **Next**. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_15.png" style="wikiautogen"/>%BR%%BR%
+   
+8. In the **Choose your Database Objects** page select the **Tables** check box to select all table in the **School** database for addition to the EDM, set the **Model Namespace** to **<nop>SchoolModel** and click **Finish**. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_16.png" style="wikiautogen"/>%BR%%BR%
+
+====View the EDM in the ADO.NET Entity Data Model Designer==== 
+
+1. In the **Solution Explorer**, double-click the **School.edmx** file. This displays the School model in the ADO.NET Entity Data Model Designer window.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_17.png" style="wikiautogen"/>%BR%%BR%
+   
+2. From the **View** menu, select **Other Windows**, and then click **Model Browser** to display the **Entity Model Browser** window.%BR%%BR%
+   
+3. Expand the **<nop>SchoolModel** and **SchoolModel.Store** nodes to view conceptual and store definitions, respectively.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_20.png" style="wikiautogen"/>%BR%%BR%
+   
+4. From the **View** menu, select **Other Windows**, click **Mapping Details**, and then click an entity (Person for example) or association in the Entity Designer.%BR%%BR%
+   
+5. This displays the Entity Mapping Details window with information about the object-relational mapping for the selected object.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_21.png" style="wikiautogen"/>%BR%%BR%
+
+===Querying Entities and Associations===
+
+This section creates strongly-typed queries against the CLR objects that represent entities and associations in the School model, and bind display controls to the object collections returned from these queries.
+
+====Query the departments in the School database==== 
+
+ 1. At the beginning of the code file for the **<nop>CourseViewer** form, add the following **using** (C#) or **Imports** (Visual Basic) statements to reference the model created from the School database and the entity namespace.
+
+{{{
+Visual Basic
+
+Imports System.Data.Objects
+Imports System.Data.Objects.DataClasses
+
+C#
+
+using System.Data.Objects;
+using System.Data.Objects.DataClasses;
+}}}
+   
+2.  At the top of the partial class definition for the **<nop>CourseViewer** form, add the following code that creates an **<nop>ObjectContext** instance.
+
+{{{
+Visual Basic
+
+' Create an ObjectContext instance based on SchoolEntity.
+Private schoolContext As SchoolEntities
+
+C#
+
+// Create an ObjectContext instance based on SchoolEntity.
+private SchoolEntities schoolContext;
+}}}
+
+3. In the **<nop>CourseViewer** form designer, double-click the **<nop>CourseViewer** form. This opens the code page for the form and creates the <b>courseViewer _Load</b> event handler method.%BR%%BR%
+   
+4. In the <b>courseViewer _Load</b> event handler method, copy and paste the following code that defines the **<nop>DataGridView**, executes a query that returns a collection of departments (ordered by **Name**), and binds the collection of **Department** objects to the departmentList control.
+
+{{{
+Visual Basic
+
+' Initialize the ObjectContext.
+schoolContext = New SchoolEntities()
+
+' Define a query that returns all Department objects and related
+' Course objects, ordered by name.
+Dim departmentQuery As ObjectQuery(Of Department) = _
+    schoolContext.Department.Include("Course").OrderBy("it.Name")
+
+Try
+    ' Bind the ComboBox control to the query, which is 
+    ' executed during data binding.
+    Me.departmentList.DisplayMember = "Name"
+    Me.departmentList.DataSource = departmentQuery
+Catch ex As Exception
+    MessageBox.Show(ex.Message)
+End Try
+
+C#
+
+// Initialize the ObjectContext.
+schoolContext = new SchoolEntities();
+
+// Define a query that returns all Department objects and related
+// Course objects, ordered by name.
+ObjectQuery<Department> departmentQuery =
+    schoolContext.Department.Include("Course").OrderBy("it.Name");
+
+try
+{
+    // Bind the ComboBox control to the query, which is
+    // executed during data binding.
+    this.departmentList.DisplayMember = "Name";
+    this.departmentList.DataSource = departmentQuery;
+}
+catch (Exception ex)
+{
+    MessageBox.Show(ex.Message);
+}
+}}}
+
+====Display courses for the selected department ====
+
+1. In the **<nop>CourseViewer** form designer, double-click the **departmentList** control. This creates the **departmentList_<nop>SelectedIndexChanged** event handler method.%BR%%BR%
+   
+2. Paste the following code that loads the courses that are related to the selected department.
+
+{{{
+Visual Basic
+
+Try
+    ' Get the object for the selected department.
+    Dim department As Department = _
+        CType(Me.departmentList.SelectedItem, Department)
+
+    ' Bind the grid view to the collection of Course objects 
+    ' that are related to the selected Department object.
+    courseGridView.DataSource = department.Course
+
+    ' Hide the columns that are bound to the navigation properties on Course.
+    courseGridView.Columns("Department").Visible = False
+    courseGridView.Columns("CourseGrade").Visible = False
+    courseGridView.Columns("OnlineCourse").Visible = False
+    courseGridView.Columns("OnsiteCourse").Visible = False
+    courseGridView.Columns("Person").Visible = False
+
+    courseGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells)
+Catch ex As Exception
+    MessageBox.Show(ex.Message)
+End Try
+
+C#
+
+try
+{
+    // Get the object for the selected department.
+    Department department = 
+        (Department)this.departmentList.SelectedItem;
+
+    // Bind the grid view to the collection of Course objects 
+    // that are related to the selected Department object.
+    courseGridView.DataSource = department.Course;
+
+    // Hide the columns that are bound to the navigation properties on Course.
+    courseGridView.Columns["Department"].Visible = false;
+    courseGridView.Columns["CourseGrade"].Visible = false;
+    courseGridView.Columns["OnlineCourse"].Visible = false;
+    courseGridView.Columns["OnsiteCourse"].Visible = false;
+    courseGridView.Columns["Person"].Visible = false;
+
+    courseGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+}
+catch (Exception ex)
+{
+    MessageBox.Show(ex.Message);
+}
+}}}
+
+===Inserting and Updating Data===
+
+In this section the changes made to Course objects bound are saved to the <nop>DataGridView control to the database and also run the completed Course Manager application.
+
+====Save changes made to objects==== 
+
+1. In the **Toolbox**, expand **Common Controls**, drag the **Button** control to the **<nop>CourseViewer** form designer, change the **name** of the control to **saveChanges**, and change the **Text** value to **Update**.%BR%%BR%
+   
+2. In the **<nop>CourseViewer** form designer, double-click the **saveChanges** control. This creates the <b>saveChanges_Click</b> event handler method.%BR%%BR%
+   
+3. Paste the following code that saves object changes to the database.
+
+{{{
+Visual Basic
+
+Try
+    ' Save object changes to the database, display a message, 
+    ' and refresh the form.
+    schoolContext.SaveChanges()
+    MessageBox.Show("Changes saved to the database.")
+    Me.Refresh()
+Catch ex As Exception
+    MessageBox.Show(ex.Message)
+End Try
+
+C#
+
+try
+{
+    // Save object changes to the database, display a message,
+    // and refresh the form.
+    schoolContext.SaveChanges();
+    MessageBox.Show("Changes saved to the database.");
+    this.Refresh();
+}
+catch (Exception ex)
+{
+    MessageBox.Show(ex.Message);
+}
+}}}
+
+4. In the <b>closeForm_Click</b> event handler method, type the following code. This code disposes of the object context before the form is closed.
+
+{{{
+Visual Basic
+
+   ' Dispose the object context.
+    schoolContext.Dispose()
+
+C#
+
+    // Dispose the object context.
+    schoolContext.Dispose();
+}}}
+
+====Build and run the Class Scheduling application====
+
+1. From the **Debug** menu, select **Start Debugging** or **Start Without Debugging**, to build and run the application.%BR%%BR%
+   
+2. When the form loads, select a department from the **<nop>ComboBox** control to display the courses that belong to that department.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_18.png" style="wikiautogen"/>%BR%%BR%
+   
+3. In the **<nop>DataGridView**, update course information or add a new course and then click **Update** to save changes to the database and displays a message box that declares the number of saved changes.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtuAdoNetEFApp_19.png" style="wikiautogen"/>%BR%%BR%
+
+The process is now complete.

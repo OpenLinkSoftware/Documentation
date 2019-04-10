@@ -1,0 +1,136 @@
+%META:TOPICPARENT{name="VirtAdoNet35Provider"}%
+
+==Using Microsoft ADO.Net Data Services with Virtuoso
+
+===Introduction:
+
+The goal of Microsoft® ADO.NET Data Services is to enable applications to expose data as a data service that can be consumed by web clients within corporate networks and across the internet. A data service is reachable via regular HTTP requests, using standard HTTP verbs such as GET, POST, PUT and DELETE to perform CRUD operations against the service. The payload format used by the service is controllable by the application, but all options are simple, open formats such as JSON and Atom/APP.
+
+The use of web-friendly technologies make ADO.NET Data Services ideal as a data back-end for AJAX-style applications, Rich Interactive Applications and other applications that need to operate against data that is stored across the web.
+
+===Getting Started: Creating Data Services
+
+====Pre-requisites
+
+In order to create a data service using ADO.NET Data Services  in your own environment you will need:
+
+1. Microsoft Visual Studio 2008 SP1, the ADO.NET Entity Framework runtime and associated tools are included in Visual Studio 2008 SP1.
+   
+2. A running Virtuoso Universal Server instance.
+
+====Selecting a Data Source
+
+The ADO.NET Data Service server framework is comprised of two halves. The top-half is the runtime itself; this part is “fixed”, and it implements URI translation, the Atom/JSON wire formats, the interaction protocol, etc. This is what makes an ADO.NET Data Service look like an ADO.NET Data Service. The bottom half is the data-access layer and is pluggable. Communication between layers happens in terms of the IQueryable interface plus a set of conventions to map CLR graphs into the URI/payload patterns of ADO.NET Data Services.
+
+The first step in creating an ADO.NET Data Service is to determine the data source that is to be exposed as a set of REST-based endpoints (ie. select or create a data access layer).  For relational data stored in Microsoft SQL Server or other 3rd Party databases, ADO.NET Data Services currently enables easily exposing a conceptual model created using the ADO.NET Entity Framework (EF).  For all other data sources (XML document, web service, application logic layer, etc) or to use additional database access technologies (ex. LINQ to SQL), a mechanism is provided which enables any data source, as per the plug-in model described above, to be exposed as an ADO.NET Data Service. 
+
+To create a data service which exposes a relational database through an Entity Framework conceptual model see “Creating a Data Service using the ADO.NET Entity Framework”. To create a data service which exposes another data source see “Creating a Data Service from any Data Source”.          
+
+===Creating a Data Service using the ADO.NET Entity Framework
+
+ADO.NET Data Services are a specialized form of Windows Communication Foundation services, and thus can be hosted in various environments. The below example will create an ADO.NET Data Service which is hosted inside an ASP.NET site. In order to create a data service, you must first create a web project; you will then need to establish a connection with the database that will be exposed by the service, and then create the data service itself within the web application. Below is a step-by-step description of this process.
+
+The following steps can be used for creating a Data Service using the Virtuoso ADO.Net Provider for accessing the sample Northwind Demo database:
+
+1. Launch the Visual Studio 2008 SP1 IDE.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_1.png" style="wikiautogen"/>%BR%%BR%
+   
+2. Create a <b>Web Application</b> project by going to the <b>File</b> menu in Visual Studio and choosing <b>New Project</b>. %BR%%BR%
+   
+3. When the New Project window appears, choose either <b>Visual Basic</b> or <b>Visual C#</b> as the programming language.%BR%%BR% 
+   
+4. Within the language category click on <b>Web</b>, and select <b>ASP.NET Web Application</b> from the right-hand panel. %BR%%BR%
+   
+5. Choose a name for the project, for example <b><nop>VirtuosoDataService</b>, and click <b>OK</b>.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_2.png" style="wikiautogen"/>%BR%%BR%
+   
+6. This will create a new project called <b><nop>VirtuosoDataService</b>.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_3.png" style="wikiautogen"/>%BR%%BR%
+   
+7. Right click on the <b><nop>VirtuosoDataService</b> project name of the <b>Solution Explorer</b> pane, then select the <b>Add</b> -> <b>New Item</b> menu options.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_4.png" style="wikiautogen"/>%BR%%BR%
+   
+8. The <b>Add New Item</b> dialog will appear, choose the <b>ADO.NET Entity Data Model</b> template, give it the name <b>Virtuoso.edmx</b> and click <b>Add</b> to start the creation of the ADO.Net Entity Data Model.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_5.png" style="wikiautogen"/>%BR%%BR%
+   
+9. In the <b>Entity Data Model Wizard</b> dialog <b>Choose Model Contents</b> page select the <b>Generate from Database</b> model type and click <b>Next</b>.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_6.png" style="wikiautogen"/>%BR%%BR%
+   
+10. In the <b>Entity Data Model Wizard</b> dialog <b>Choose your Data Connection</b> page select the <b>New Connection</b> button.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_7.png" style="wikiautogen"/>%BR%%BR%
+   
+11. In the <b>Choose Data Source</b> dialog, select the <b><nop>OpenLink Virtuoso Data Source</b> from the list displayed and click <b>Continue</b>.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_8.png" style="wikiautogen"/>%BR%%BR%
+   
+12. In the <b>Connection Properties</b> dialog specify the <b>hostname</b>, <b>portno</b>, <b>username</b> and password for the target Virtuoso Server and click the <b>Advanced</b> button.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_9.png" style="wikiautogen"/>%BR%%BR%
+   
+13. In the <b>Advanced Properties</b> dialog set the <b>Database</b> paramter to <b>Demo</b> and click **OK**.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_10.png" style="wikiautogen"/>%BR%%BR%
+   
+14. Press the <b>Test Connection</b> dialog to verify the database is accessible.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_11.png" style="wikiautogen"/>%BR%%BR%
+   
+15. Set the <b>entity connect string</b> name to <b><nop>VirtuosoDemoEntities</b> (note this name as it is required in step 17 below) and click <b>Next</b>. 
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_12.png" style="wikiautogen"/>%BR%%BR%
+   
+16. In the <b>Choose your Database Objects</b> page select the <b>Tables</b> check box to select all tables in the Demo database for addition to the Enity Data Model, set the <b>Model Namespace</b> to <b><nop>VirtuosoDemoModel</b> and click <b>Finish</b>.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_13.png" style="wikiautogen"/>%BR%%BR%
+   
+17. The <b>Virtuoso.edmx</b> EDM will be created with the tables and relationships displayed in the Visual Studio IDE
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_14.png" style="wikiautogen"/>%BR%%BR%
+   
+18. Right click on the <b><nop>VirtuosoDataService</b> project name of the <b>Solution Explorer</b> pane, then select the <b>Add</b> -> <b>New Item</b> menu options.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_4.png" style="wikiautogen"/>%BR%%BR%
+   
+19. The <b>Add New Item</b> dialog will appear, choose the <b>ADO.NET Data Service</b> template, give it the name <b>Virtuoso.svc</b> and click <b>Add</b> to create the ADO.Net Data Service.
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_15.png" style="wikiautogen"/>%BR%%BR%
+   
+20. In the <b>Virtuoso.svc.cs</b> Data Service file created add the data source class name of <b><nop>VirtuosoDemoEntities</b> (note this is the name set in step 12) as the <b><nop>DataService</b> name and enable the access to the Data Service by adding the entry config.SetEntitySetAccessRule("{{{**}}}", EntitySetRights.All); in the <b><nop>InitializeService</b> method. 
+
+{{{
+// C#
+
+using System;
+using System.Web;
+using System.Collections.Generic;
+using System.ServiceModel.Web;
+using System.Linq;
+using System.Data.Services;
+
+namespace SimpleDataService
+{
+    public class Northwind : DataService<VirtuosoDemoEntities>
+    {
+        public static void InitializeService(IDataServiceConfiguration  config)
+        {
+            config.SetEntitySetAccessRule("**", EntitySetRights.All);
+        }
+    }
+}
+
+}}}
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_16.png" style="wikiautogen"/>%BR%%BR%
+   
+21. To test the Data Service, simply hit <b>Ctrl+F5</b> within Visual Studio, which will start the development web server, run the Data Services server inside and load a Web browser page displaying the list of available tables/entities of the Demo database.  
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_17.png" style="wikiautogen"/>%BR%%BR%
+   
+22. To access a specific entity instance like the <b>Customers</b> table <b>ALFKI</b> record, this would be specified as <b>http://host/vdir/Virtuoso.svc/Customers('ALFKI') </b> .
+%BR%%BR%<img src="%ATTACHURLPATH%/VirtAdoNetDataServices_18.png" style="wikiautogen"/>%BR%%BR%
+
+===NOTES
+
+1.  <b>Important</b> - To view <b>Atom</b> (the default format returned by an ADO.NET Data Service) in Internet Explorer, you must first ensure that <b>Feed Reading View</b> is turned <b>off</b> . This can be done on the <b>Content tab</b> of <b>Tools<b> in <b>Internet Options</b>.%BR%%BR%
+
+2. If a Data Services entity instance URI page fails to load you can turn <b>Verbose</b> errors on by adding <b>config.UseVerboseErrors = true;</b> in the <b>virtuoso.svc.cs <nop>InitializeService </b> method to obtain more detailed information from the server as to why the page failed to load:
+{{{
+public static void InitializeService(IDataServiceConfiguration config)
+
+{
+
+config.UseVerboseErrors = true;
+
+config.SetEntitySetAccessRule("**", EntitySetRights.All);
+
+}
+}}}
