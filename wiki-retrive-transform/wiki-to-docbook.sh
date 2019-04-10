@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #
-# sudo apt install xmlstarlet xsltproc cadaver parallel tidy
-# brew install xmlstarlet libxslt cadaver parallel tidy-html5
+# sudo apt install xmlstarlet xsltproc cadaver parallel tidy pandoc
+# brew install xmlstarlet libxslt cadaver parallel tidy-html5 pandoc
 #
 
 #
