@@ -1,0 +1,148 @@
+%META:TOPICPARENT{name="Ods"}%
+
+---+ ODS Integration of Drupal
+
+%TOC%
+
+---++What is Drupal?
+
+Drupal is a popular open-source content-management system (CMS) written in PHP. The steps below allow you to run it in Virtuoso.
+
+---+++Install VAD
+
+   1. Start virtuoso db using the hosting_php.so ( .dll for win users). In oder to use this plugin, it needs to be included in your virtuoso ini file as follows:
+<verbatim>
+...
+[Plugins]
+# for ex. here the location of the plugins is the plugin folder
+LoadPath = ./plugin
+...
+Load6    = Hosting,hosting_php.so
+...
+</verbatim>
+   1. Setup "Local Virtuoso" DSN (note the empty space in the name!) in order to access any of the application URLs.
+      * For windows users, please perform the following steps:
+         1.  Go to Start >> Settings >> Control Panel >> Administrative Tools >> Data Sources (ODBC)
+         1. Go to tab "User DSN" and click "Add"
+         1. Select the "OpenLink Virtuoso (version)" driver and click "Finish"
+         1. Enter "Name": <nowiki><code>Local Virtuoso</code</nowiki>
+         1. Enter "Description": <nowiki><code>My Local Virtuoso</code</nowiki>
+         1. For "Server", enter your Virtuoso's hostname and ISQL port, e.g., <nowiki><code>localhost:1116</code</nowiki>
+         1. Click "Next"
+         1. Enter a username for "Login ID", e.g., <nowiki><code>dba</code</nowiki>
+         1. Enter the user's "Password". For dba, the default password is <nowiki><code>dba</code</nowiki>.
+         1. Click "Next"
+         1. Click "Finish".
+   1. From ISQL execute:
+<verbatim>
+SQL> DB.DBA.VAD_INSTALL('tmp/drupal_fs.vad',0);
+</verbatim>
+
+---+++Linked Data View Scripts
+
+   1. After you have installed the Drupal drupal_fs.vad package, before running the <a href="%ATTACHURLPATH%/Drupal_rdf_views_script.sql" style="wikiautogen"><nowiki>Drupal_rdf_views_script</nowiki>.sql</a> file, which contains the Linked Data Views scripts for Drupal, you need to configure Drupal to have blog, feeds, polls, aggregator:
+      1. Access the drupal home page at http://host:port/drupal   
+%BR%%BR%<img src="%ATTACHURLPATH%/dp1.png" style="wikiautogen"/>%BR%%BR%
+      1. Follow the steps shown: 
+         1. Create the first account: Click the link "Create the first account" and fill in the form fields. Finally click the "Create new account" button.
+%BR%%BR%<img src="%ATTACHURLPATH%/dp2.png" style="wikiautogen"/>%BR%%BR%
+         1. As result your account will be created. 
+%BR%%BR%<img src="%ATTACHURLPATH%/dp3.png" style="wikiautogen"/>%BR%%BR%
+         1. Go to Administer->Site building->Modules and check the check-box for the following modules: Aggregator,Blog, Blog API, Book, Forum, Poll
+%BR%%BR%<img src="%ATTACHURLPATH%/dp4.png" style="wikiautogen"/>%BR%%BR%
+         1. Click the "Save configuration" button.
+         1. Next step is to set the Virtuoso section in the php.ini file:
+<verbatim>
+[Virtuoso]
+virtuoso.logging = On
+virtuoso.server_name = demo.openlinksw.com
+virtuoso.allow_dba = 1
+</verbatim>
+         1. Next step is to setup the base by editing the Drupal's config file (sites/default/settings.php):
+<verbatim>
+ $base_url = 'http://demo.openlinksw.com/drupal';
+</verbatim>
+   1. Having configured Drupal to have blog, feeds, polls, aggregator, setting the base and the Virtuoso settings as per above, now you can execute now from ISQL the Linked Data Views script:
+<verbatim>
+isql localhost:1116 dba dba Drupal_rdf_views_script.sql
+</verbatim>
+      * You can find the <nowiki>Drupal</nowiki> Linked Data Views scripts also  [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtRDFViewDrupal][here]].
+
+---+++Configuration
+
+   1. In case you want to change the dba password, you need to locate the file below in your FS and change the <b>$db_url</b> value:
+<verbatim>
+vad\vsp\drupal\sites\default\settings.php
+</verbatim>
+   1. Once you have already created your administrator and configured the modules needed the Linked Data Views script to be executed correctly, log in and from the Welcome page click the "create content" link from the "Start posting content" section.
+%BR%%BR%<img src="%ATTACHURLPATH%/dp5.png" style="wikiautogen"/>%BR%%BR%
+   1. As result will be shown the Content page page:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp6.png" style="wikiautogen"/>%BR%%BR%
+   1. Click "Blog entry".
+   1. In the shown form enter your data and click "Submit"
+%BR%%BR%<img src="%ATTACHURLPATH%/dp7.png" style="wikiautogen"/>%BR%%BR%
+   1. As result your blog will be created:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp8.png" style="wikiautogen"/>%BR%%BR%
+   1. Go to "Create content"->Poll
+   1. Enter in the shown form your new Poll question and choices of answers and click the "Submit" button.
+%BR%%BR%<img src="%ATTACHURLPATH%/dp9.png" style="wikiautogen"/>%BR%%BR%
+   1. As result your Poll will be created
+%BR%%BR%<img src="%ATTACHURLPATH%/dp10.png" style="wikiautogen"/>%BR%%BR%
+   1. Go to Administer->Content management -> News aggregator and click the button "Add Feed".
+%BR%%BR%<img src="%ATTACHURLPATH%/dp11.png" style="wikiautogen"/>%BR%%BR%
+   1. Enter in the shown form:
+      1. for Title: <nowiki><code>Kingsley's Blog</code</nowiki>
+      1. for URL: <nowiki><code>http://www.openlinksw.com/blog/~kidehen/gems/rss.xml</code</nowiki>
+      1. Click the button "Submit".
+%BR%%BR%<img src="%ATTACHURLPATH%/dp12.png" style="wikiautogen"/>%BR%%BR%
+   1. As result the feed will be added:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp13.png" style="wikiautogen"/>%BR%%BR%
+   1. You can view your Feeds sources going to News aggregator->Sources:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp14.png" style="wikiautogen"/>%BR%%BR%
+   1. Go to Administer->Content management -> Forums
+%BR%%BR%<img src="%ATTACHURLPATH%/dp15.png" style="wikiautogen"/>%BR%%BR%
+   1. Click the "Add container" button.
+   1. In the shown form:
+      1. Enter for Container name: Food
+      1. Enter for Description: all about food
+      1. Click the "Submit" button.
+%BR%%BR%<img src="%ATTACHURLPATH%/dp16.png" style="wikiautogen"/>%BR%%BR%
+   1. As result your new forum will be created:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp17.png" style="wikiautogen"/>%BR%%BR%
+   1. Click the "Add forum" button.
+   1. In the shown form:
+      1. Enter for Forum name: Pizza
+      1. Enter for Description: Italian pizza
+      1. Choose for Parent: Food
+      1. Click the "Submit" button.
+%BR%%BR%<img src="%ATTACHURLPATH%/dp18.png" style="wikiautogen"/>%BR%%BR%
+   1. As result your new forum will be created:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp19.png" style="wikiautogen"/>%BR%%BR%
+   1. Go to Create content->Forum topic
+   1. In the shown form:
+      1. Enter for Subject: My favorite menu
+      1. For Forums select: Pizza
+      1. Enter for Body: Italian pizza is my favorite menu.     
+      1. Click the "Submit" button.
+%BR%%BR%<img src="%ATTACHURLPATH%/dp20.png" style="wikiautogen"/>%BR%%BR%
+   1. As result your new forum topic will be created:
+%BR%%BR%<img src="%ATTACHURLPATH%/dp21.png" style="wikiautogen"/>%BR%%BR%
+       
+---+++URI Schemes
+<verbatim>
+http://<your-instance-cname>/drupal/user/<ods-user-id>
+</verbatim>
+
+---++Download
+
+   * You can download the <nowiki>Drupal</nowiki> VAD package from [[https://virtuoso.openlinksw.com/download/][here]].
+
+---++References
+
+   * [[http://drupal.org/about][Drupal]]
+
+---+++See Also
+
+   * [[http://virtuoso.openlinksw.com/wiki/main/Main/DrupalSIOCRef][Drupal SIOC Reference]]
+
+CategoryRDF CategoryVirtuoso CategorySIOC CategoryODS CategoryWebSite

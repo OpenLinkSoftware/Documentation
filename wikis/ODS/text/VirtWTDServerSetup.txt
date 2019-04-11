@@ -1,0 +1,58 @@
+%META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%
+---++ Virtuoso Server WebID+TLS+Delegation Setup
+
+The following steps can be used to Setup a Virtuoso Server ready for WebID+TLS+Delegation connections.
+
+   1 Create Self Signed Certificate in the Virtuoso from the <code>System Admin -> Security -> Public Key Infrastructure</code> tab:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-01.png" style="wikiautogen" height="480" width="640"/> %BR%%BR% 
+   1 Complete the CA Root Certificate details and click <code>generate</code> button, note the <code>Name</code> value must be the hostname for the HTTPS listener to be created in a later step:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-02.png" style="wikiautogen" height="480" width="640"/> %BR%%BR% 
+   1 The certificate is now create, click on the ?Configure HTTPS Listeners? button to config the server for secure HTTP access:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-03.png" style="wikiautogen" height="480" width="640"/> %BR%%BR% 
+   1 Enter the required parameters for the HTTPS Listener and click the <code>Generate New</code> button to generate a new self signed certificate for use by the server and then click the <code>Save</code> button to save the HTTPS Listener which will be automatically started. Note if running on default 443 https port then Virtuoso must have been started with Admin or root level privileges for the port usage to be allowed by the OS:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-04.png" style="wikiautogen" height="480" width="640"/> %BR%%BR% 
+   1 The new HTTPS Listener should now be listed as and available as a <code>started</code> interface.
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-05.png" style="wikiautogen" height="200" width="640"/> %BR%%BR% 
+   1 Use the Virtuoso generated self signed cer/tificate stored in the Virtuoso database to setup the SQL SSL port, by referencing the certificate by name proceeded by the <code>db:<code> prefix, in the ?[Parameters]? section of the virtuoso.ini file as below:
+<verbatim>
+SSLServerPort            = 1113
+SSLCertificate           = db:https_key_opluswin7qa_usnet_private
+SSLPrivateKey            = db:https_key_opluswin7qa_usnet_private
+X509ClientVerify         = 3
+X509ClientVerifyDepth    = 15
+X509ClientVerifyCAFile   = db:db:https_key_opluswin7qa_usnet_private
+</verbatim>
+   1 Restart the Virtuoso Server to active the SQL SSL listener and check the virtuoso.log file to ensure it has successfully started:
+<verbatim>
+11:21:44 OpenLink Virtuoso Universal Server
+11:21:44 Version 07.20.3217-threads for Win64 as of Apr 19 2016
+11:21:44 uses parts of OpenSSL, PCRE, Html Tidy
+11:21:44 Registered to Virtuoso
+11:21:44 Personal Edition license for 50 connections
+11:21:44 Issued by OpenLink Software
+11:21:44 This license will expire on Tue Sep 27 06:20:12 2016 GMT
+11:21:44 Enabled Cluster Extension
+11:21:44 Enabled Column Store Extension
+11:21:44 Database version 3126
+11:21:44 SQL Optimizer enabled (max 1000 layouts)
+11:21:45 Compiler unit is timed at 0.000354 msec
+11:21:47 Roll forward started
+11:21:47 Roll forward complete
+11:21:48 Checkpoint started
+11:21:48 Checkpoint finished, log reused
+11:21:48 SSL server online at 1113
+11:21:48 HTTP/WebDAV server online at 8890
+11:21:48 Server online at 1111 (pid 3420)
+11:21:49 ZeroConfig registration Virtuoso
+</verbatim>
+   1 The following Virtuoso applications should be installed from the <code>System Admin -> Packages</code> tab of the Conductor:
+   * Sponger Cartridge VAD - To enable querying of remote resource URIs
+   * Faceted Browser VAD - To provide human readable form of Web ID Profile documents and ACLs
+   * Virtuoso Authentication Layer (VAL) VAD - To enable ACLs for be setup and enforced
+   * URIQA DefaultHost in INI file (virtuoso.ini) must be set to valid hostname to be used by VAL
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-06.png" style="wikiautogen" height="300" width="640"/> %BR%%BR%
+   1 From the <code>System Admin -> Packages</code> tab (or click the <code>back to packages</code> button) of the Conductor.and for the newly installed <code>VAL</code> package select the <code>configure</code> option on the right, and enable the <code>Default</code> and <code>SQL</code> Realms for the following ACL scopes and click the <code>save</code> button:
+   * Enable Query ACL Scope ACLs
+   * Enable Private Named Graphs ACL Scope ACLs
+   * Enable Restrictions ACL Scope ACLs
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDServerSetup-07.png" style="wikiautogen" height="480" width="640"/> %BR%%BR% 

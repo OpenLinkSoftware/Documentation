@@ -1,0 +1,106 @@
+<html><body><div class="topic-text"><h3><a name="RDF View for ODS Weblog"></a>RDF View for ODS Weblog</h3>
+<strong>IMPORTANT!</strong> The following code is part of the ODS global VIEW regarding the Weblog part, it is not a separate VIEW and is strongly recommended NOT to be executed directly.
+ Instead, you should use the code from <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFViewODSGlobal" class="wikiword">ODS RDF Views Deployment and Demo Scripts</a>.<br><pre>sparql prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+create iri class ods:blog_forum &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U&quot;
+		(in uname varchar not null, in forum_name varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U&quot;) .
+	create iri class ods:blog_post &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U&quot;
+		(in uname varchar not null, in forum_name varchar not null, in postid varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U&quot; ) .
+	create iri class ods:blog_comment &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U/%d&quot;
+		(in uname varchar not null, in forum_name varchar not null, in postid varchar not null, in comment_id int not null)
+ 	        option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U/%d&quot; ) .
+	create iri class ods:tag &quot;http://^{URIQADefaultHost}^/dataspace/%U/concept#%U&quot;
+		(in uname varchar not null, in tag varchar not null)
+                option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/%U/concept#%U&quot;) .
+	create iri class ods:blog_post_text &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog-text/%U/%U&quot;
+		(in uname varchar not null, in forum_name varchar not null, in postid varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/%U/weblog-text/%U/%U&quot; ) .
+</pre><p> </p>
+<br><pre>sparql
+    prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+    prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+    prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+    prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+    prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+    prefix dct: &lt;http://purl.org/dc/terms/&gt;
+    prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+    prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+    prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+    prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+    prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+    prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+    prefix calendar: &lt;http://www.w3.org/2002/12/cal#&gt;
+    prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+   alter quad storage virtrdf:DefaultQuadStorage
+      from DB.DBA.ODS_BLOG_POSTS as blog_posts
+      where (^{blog_posts.}^.B_OWNER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_BLOG_POST_LINKS as blog_links
+      where (^{blog_links.}^.B_OWNER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_BLOG_POST_ATTS as blog_atts
+      where (^{blog_atts.}^.B_OWNER = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_BLOG_POST_TAGS as blog_tags
+      where (^{blog_tags.}^.U_NAME = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_BLOG_COMMENTS as blog_comms
+      where (^{blog_comms.}^.U_NAME = ^{users.}^.U_NAME) 
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    ods:user (users.U_NAME) a sioc:User ;
+            sioc:id users.U_NAME ;
+            sioc:name users.U_FULL_NAME ;
+            sioc:email ods:mbox (users.E_MAIL) ;
+            sioc:email_sha1 users.E_MAIL_SHA1 ;
+            sioc:account_of ods:person (users.U_NAME) .
+
+	    ods:person (person.U_NAME) a foaf:Person ;
+            foaf:nick person.U_NAME ;
+	    foaf:name person.U_FULL_NAME ;
+	    foaf:mbox ods:mbox (person.E_MAIL) ;
+            foaf:mbox_sha1sum person.E_MAIL_SHA1 ;
+            foaf:holdsAccount ods:user (person.U_NAME) ;
+            foaf:firstName person.FIRST_NAME ;
+            foaf:family_name person.LAST_NAME ;
+            foaf:gender person.GENDER ;
+            foaf:icqChatID person.ICQ ;
+            foaf:msnChatID person.MSN ;
+            foaf:aimChatID person.AIM ;
+            foaf:yahooChatID person.YAHOO ;
+            foaf:birthday person.BIRTHDAY ;
+            foaf:organization person.ORG ;
+            foaf:phone ods:phone (person.PHONE) ;
+	    foaf:based_near ods:geo_point (person.U_NAME)
+	    .
+
+            # Weblog
+	    ods:blog_post (blog_posts.B_OWNER, blog_posts.B_INST, blog_posts.B_POST_ID) a sioct:BlogPost ;
+	    sioc:link ods:proxy (blog_posts.B_LINK) ;
+	    sioc:has_creator ods:user (blog_posts.B_CREATOR) ;
+	    foaf:maker ods:person (blog_posts.B_CREATOR) ;
+	    sioc:has_container ods:blog_forum (blog_posts.B_OWNER, blog_posts.B_INST) ;
+	    dc:title blog_posts.B_TITLE ;
+	    dct:created blog_posts.B_CREATED ;
+	    dct:modified blog_posts.B_MODIFIED ;
+	    sioc:content blog_posts.B_CONTENT .
+
+	    ods:blog_forum (blog_posts.B_OWNER, blog_posts.B_INST)
+	    sioc:container_of
+	    ods:blog_post (blog_posts.B_OWNER, blog_posts.B_INST, blog_posts.B_POST_ID) .
+
+	    ods:user (blog_posts.B_CREATOR)
+	    sioc:creator_of
+	    ods:blog_post (blog_posts.B_OWNER, blog_posts.B_INST, blog_posts.B_POST_ID) .
+
+	    ods:blog_post (blog_links.B_OWNER, blog_links.B_INST, blog_links.B_POST_ID)
+	    sioc:links_to
+	    ods:proxy (blog_links.PL_LINK) .
+	    # end Weblog
+	  } .
+    } .
+;
+</pre><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryBlog" class="wikiword">CategoryBlog</a></p>
+</div></body></html>

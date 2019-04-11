@@ -1,0 +1,49 @@
+<docbook><section><title>VirtWTDServerSetup</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Virtuoso Server <ulink url="WebID">WebID</ulink>+TLS+Delegation Setup</bridgehead>
+<para>The following steps guide you through the process of configuring a Virtuoso instance to accept SQL or HTTP connections over TLS, where the server in question is identified using a Self-Signed Certificate:</para>
+<orderedlist spacing="compact"><listitem>Create a Self-Signed Certificate using the System Admin -&gt; Security -&gt; Public Key Infrastructure tab of the Virtuoso Conductor:   <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-01.png" /></figure>  </listitem>
+<listitem>Complete the CA Root Certificate details and click generate button, note the Name value must be the hostname for the HTTPS listener to be created in a later step:   <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-02.png" /></figure>  </listitem>
+<listitem>The certificate is now created, click on the ?Configure HTTPS Listeners? button to configure the server for secure HTTP access:   <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-03.png" /></figure>  </listitem>
+<listitem>Enter the required parameters for the HTTPS Listener and click the Generate New button to generate a new self signed certificate for use by the server and then click the Save button to save the HTTPS Listener which will be automatically started.
+ Note if running on the default 443 https port then Virtuoso must have been started with Admin or root level privileges for the port usage to be allowed by the OS:   <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-04.png" /></figure>  </listitem>
+<listitem>The new HTTPS Listener should now be listed as and available as a started interface.
+  <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-05.png" /></figure>  </listitem>
+<listitem>Use the Virtuoso generated self signed cer/tificate stored in the Virtuoso database to setup the SQL SSL port, by referencing the certificate by name (i.e.
+ https_key_opluswin7qa_usnet_private in the example) proceeded by the db: prefix, in the [Parameters] section of the virtuoso.ini file as below: <programlisting>SSLServerPort            = 1113
+SSLCertificate           = db:https_key_opluswin7qa_usnet_private
+SSLPrivateKey            = db:https_key_opluswin7qa_usnet_private
+X509ClientVerify         = 3
+X509ClientVerifyDepth    = 15
+X509ClientVerifyCAFile   = db:https_key_opluswin7qa_usnet_private
+</programlisting></listitem>
+<listitem>Restart the Virtuoso Server to active the SQL SSL server listener and check the virtuoso.log file to ensure it has successfully started: <programlisting>11:21:44 OpenLink Virtuoso Universal Server
+11:21:44 Version 07.20.3217-threads for Win64 as of Apr 19 2016
+11:21:44 uses parts of OpenSSL, PCRE, Html Tidy
+11:21:44 Registered to Virtuoso
+11:21:44 Personal Edition license for 50 connections
+11:21:44 Issued by OpenLink Software
+11:21:44 This license will expire on Tue Sep 27 06:20:12 2016 GMT
+11:21:44 Enabled Cluster Extension
+11:21:44 Enabled Column Store Extension
+11:21:44 Database version 3126
+11:21:44 SQL Optimizer enabled (max 1000 layouts)
+11:21:45 Compiler unit is timed at 0.000354 msec
+11:21:47 Roll forward started
+11:21:47 Roll forward complete
+11:21:48 Checkpoint started
+11:21:48 Checkpoint finished, log reused
+11:21:48 SSL server online at 1113
+11:21:48 HTTP/WebDAV server online at 8890
+11:21:48 Server online at 1111 (pid 3420)
+11:21:49 ZeroConfig registration Virtuoso
+</programlisting></listitem>
+<listitem>The following Virtuoso applications should be installed from the System Admin -&gt; Packages tab of the Conductor: </listitem>
+</orderedlist><itemizedlist mark="bullet" spacing="compact"><listitem>Sponger Cartridge VAD - To enable querying of remote resource URIs </listitem>
+<listitem>Faceted Browser VAD - To provide human readable form of Web ID Profile documents and ACLs </listitem>
+<listitem>Virtuoso Authentication Layer (VAL) VAD - To enable ACLs for be setup and enforced </listitem>
+<listitem>Note the [URIQA] <ulink url="DefaultHost">DefaultHost</ulink> param in INI file (virtuoso.ini) must be set to valid hostname to be used by VAL   <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-06.png" /></figure> </listitem>
+</itemizedlist>9.
+ From the System Admin -&gt; Packages tab (or click the back to packages button) of the Conductor, for the newly installed VAL package select the configure option on the right, and enable the Default and SQL Realms for the following ACL scopes and click the save button: <itemizedlist mark="bullet" spacing="compact"><listitem>Enable Query ACL Scope ACLs </listitem>
+<listitem>Enable Private Named Graphs ACL Scope ACLs </listitem>
+<listitem>Enable Restrictions ACL Scope ACLs   <figure><graphic fileref="VirtWTDServerSetup/VirtWTDServerSetup-07.png" /></figure>  </listitem>
+</itemizedlist></section></docbook>

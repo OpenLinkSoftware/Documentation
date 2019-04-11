@@ -1,0 +1,215 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--><h2><a name="PHP SAPI module for Virtuoso"></a>PHP SAPI module for Virtuoso</h2>
+<p>This is a SAPI module for PHP 5.x, implemented as a Virtuoso loadable module.</p>
+<h3><a name="Building php"></a>Building php</h3>
+<p>  To build the plugin, you first need to build a libphp5.so,  configured with ZTS (Zend Thread Safety), thus download  a copy of the <a href="http://www.php.net/downloads/" class="absuri">PHP sources</a>.
+ The version tested against was 5.2.10.</p>
+<ol><li>In the php source directory, execute something similar to: <br><pre><br>
+	./configure \
+		--prefix=/usr/local/php-5.2.10 \
+		--enable-maintainer-zts \
+		--enable-embed=shared \
+		--with-config-file-path=. \
+		--with-tsrm-pthreads \
+		--disable-static \
+		--disable-cgi \
+		--disable-ipv6 \
+		--without-mysql \
+		--without-pear \
+		--enable-bcmath=shared \
+		--enable-calendar \
+		--enable-dbase=shared \
+		--enable-dba=shared \
+		--enable-dom=shared \
+		--enable-exif=shared \
+		--enable-ftp=shared \
+		--enable-gd-native-ttf \
+		--enable-mbstring=shared \
+		--enable-pdo \
+		--enable-shmop=shared \
+		--enable-soap=shared \
+		--enable-sockets=shared \
+		--enable-sysvmsg=shared \
+		--enable-sysvsem=shared \
+		--enable-sysvshm=shared \
+		--enable-wddx=shared \
+		--enable-xmlreader=shared \
+		--enable-xmlwriter=shared \
+		--with-bz2=shared \
+		--with-curl=shared \
+		--with-gd=shared \
+		--with-iodbc=/usr/local/iODBC \
+		--with-ldap=shared \
+		--with-mime-magic=shared \
+		--with-openssl=shared \
+		--with-pdo-odbc=&quot;generic,/usr/local/iODBC,iodbc,-L/usr/local/iODBC/lib,-I/usr/local/iODBC/include&quot; \
+		--with-sqlite=shared \
+		--with-xmlrpc=shared \
+		--with-xsl=shared \
+		--with-xsl=shared \
+		--with-zlib \
+		...	
+
+  NOTE: The options above require a number of other libraries to be
+	installed prior to building PHP. On systems where these external
+	libraries are not available as system libraries you may need
+	additional configure options to point where certain libraries
+	are installed.
+</pre><br></li>
+<li>Next build and install the php packages.
+<br><pre><br>	make
+
+	make install
+</pre><br></li>
+<li>In the Virtuoso Open Source directory, execute the following command: <br><pre><br>	./configure .... --enable-php5=/usr/local/php-5.2.10 ...... 
+
+  or if you configured Virtuoso before in this directory:
+
+	./config.nice --enable-php5=/usr/local/php-5.2.10
+
+  so the build process knows where to find the necessary PHP header files.
+</pre><br> At the end of the configure step, the summary screen should indicate that the BUILD_OPTS includes &quot;php5&quot;.
+ If this is not the case the config.log file should contain information why configure was unable to locate your php5 installation.</li>
+</ol><p> </p>
+<h3><a name="Installation"></a>Installation</h3>
+<ol><li>Copy the libphp5.so into same directory where virtuoso installs the hosting_php5.so plugin e.g.
+<br><pre><br>	PREFIX/hosting/libphp5.so. 
+</pre><br></li>
+<li>If you have built PHP with shared extensions, you can copy them in <br><pre><br>	PREFIX/hosting/php
+</pre><br></li>
+<li>Copy the php.ini-recommended from the php distro to the same directory as your virtuoso.ini e.g.
+<br><pre><br>	PREFIX/database/php.ini.
+</pre><br></li>
+<li>Edit your php.ini to change the extensions_dir setting to the directory where you put your extensions, e.g.
+<br><pre><br>	extensions_dir = PREFIX/hosting/php
+</pre><br></li>
+<li>Register the plugin in your virtuoso.ini: <br><pre><br>    [Plugins]
+    ..
+    Load7 = attach, libphp5.so
+    Load8 = Hosting, hosting_php.so
+</pre><br> This will enable the hosting_php plugin to dynamically hook into the PHP library.</li>
+</ol><h3><a name="Virtuoso PHP Extensions"></a> Virtuoso PHP Extensions</h3>
+<h4><a name="Settings"></a>Settings</h4>
+<p>The Virtuoso php hosting plugin adds the following default settings to the php.ini file: </p>
+<br><pre>	[Virtuoso]
+	virtuoso.logging = On
+	virtuoso.local_dsn = Local Virtuoso
+	virtuoso.allow_dba = 0
+</pre><p> If <code>virtuoso.logging<code> is On, all php messages are passed back to the virtuoso logwriter.</code></code></p>
+<p>The <code>virtuoso.local_dsn</code> is by default set to &quot;Local Virtuoso&quot; which is the DSN in your odbc.ini file normally associated with your local virtuoso database.</p>
+<p>The <code>virtuoso.allow_dba</code> option rejects the use of the dba uid when using the <code>__virt_internal_dsn()</code> function detailed below.</p>
+<h4><a name="Functions"></a>Functions</h4>
+<p> <b> __virt_internal_dsn([optional dsn])</b></p>
+<p>Normally when programming a PHP application you have to store datasource, username and password credentials for making ODBC connections back into the database.
+ This can be a security risk and requires the administrator to fix scripts manually when he wants to run a hosted application under its own sql account.</p>
+<p>The __virt_internal_dsn() function returns an ODBC connect string based on the VSP user that owns the Virtual Directory.</p>
+<p>It starts by verifying that the Virtual Directory has been properly setup and that there is a valid user that has not been disabled and is allowed to make SQL connections, else it will log a message and return FALSE.</p>
+<p>If the user is a system privileged user like dba or dav and the virtuoso.allow.dba setting is disabled, the function will log a message and return FALSE.</p>
+<p>The function will return an ODBC <nop></nop>SQLDriverConnect string using either the supplied optional dsn or the virtuoso.local_dsn and the uid/pwd credentials of the virtual directory in the form: </p>
+<br><pre>	DSN=use_dsn;UID=uid;PWD=pwd
+</pre><p> This string can be used directly with the odbc_connect function in your script.
+ If you want your PHP application also outside of the virtuoso hosting environment, you can use it like this:</p>
+<br><pre>  &lt;?php
+	//
+	// ODBC Connection Variables
+	//
+	$o_DSN = &#39;ChangeMe&#39;;
+	$o_UID = &#39;ChangeMe&#39;;
+	$o_PWD = &#39;ChangeMe&#39;;
+
+	if (function_exists (&#39;__virt_internal_dsn&#39;)) {
+		$db = odbc_connect (__virt_internal_dsn(), null, null);
+	} else {
+		$db = odbc_connect ($o_DSN, $o_UID, $o_PWD);
+	}
+
+	if (!$db)
+		error_log (&#39;odbc_connect failed&#39;);
+
+	// .....
+
+	odbc_disconnect ($db);
+  ?&gt;
+</pre><p> Here is an example of a Virtuoso SQL script that creates a database schema and a table, a user that owns the schema and a vhost entry that can be used for a PHP application.
+</p>
+<br><pre>myapp.sql:
+
+    --
+    --  Sample script
+    --
+
+    --
+    --  Create the MYAPP schema
+    --
+    use MYAPP
+    ;
+
+    --
+    --  Create a user MYADMIN who owns the table in this schema
+    --
+    db.dba.user_create (
+	&#39;MYADMIN&#39;,				-- Account name
+	uuid (),				-- Random UUID as password
+        vector (&#39;LOGIN_QUALIFIER&#39;, &#39;MYAPP&#39;,
+                &#39;SQL_ENABLE&#39;, 1,
+                &#39;DAV_ENABLE&#39;, 0,
+                &#39;FULL_NAME&#39;, &#39;MYAPP Administrator&#39;))
+    ;
+
+    --
+    --  Create the tables in this schema
+    --
+    create table MYTABLE (
+	mt_id INTEGER NOT NULL PRIMARY KEY,
+        mt_value VARCHAR (32)
+    )
+    ;
+
+    --
+    --  Insert some sample data
+    --
+    insert into MYAPP.DBA.MYTABLE VALUES (1, &#39;Apple&#39;);
+    insert into MYAPP.DBA.MYTABLE VALUES (2, &#39;Pear&#39;);
+    insert into MYAPP.DBA.MYTABLE VALUES (3, &#39;Banana&#39;);
+    insert into MYAPP.DBA.MYTABLE VALUES (4, &#39;Pineapple&#39;);
+  
+    --
+    --  Add permissions
+    --
+    grant all privileges on MYAPP.DBA.MYTABLE to MYADMIN
+    ;
+
+    --
+    --  Create a new virtual path in Virtuoso
+    --
+    --  Point to $VIRTUOSO/vsp/testapp on filesystem
+    --
+    db.dba.vhost_remove (lpath=&gt;&#39;/myapp&#39;);
+    db.dba.vhost_define (
+	lpath=&gt;&#39;/myapp&#39;, 
+	ppath=&gt;&#39;/testapp&#39;, 
+	is_dav=&gt;0, 
+	is_brws=&gt;0, 
+	vsp_user=&gt;&#39;MYADMIN&#39;, 
+	def_page=&gt;&#39;myapp.php&#39;)
+    ;
+
+    --
+    --  End of sample
+    --
+</pre><p> And the $VIRTUOSO/vsp/testapp/myapp.php: </p>
+<br><pre>    &lt;?php
+	$db = odbc_connect (__virt_internal_dsn(), null, null);
+	if (!$db)
+		error_log (&#39;odbc_connect failed&#39;);
+
+        $rs = odbc_exec ($db, &#39;select * from MYAPP.DBA.MYTEST&#39;);
+
+	odbc_result_all ($rs);
+
+	odbc_close ($db);
+    ?&gt;
+</pre><p> <!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--> </p>
+</div></body></html>

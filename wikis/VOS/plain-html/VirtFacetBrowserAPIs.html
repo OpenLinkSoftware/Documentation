@@ -1,0 +1,255 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtFacetBrowserInstallConfig"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtFacetBrowserInstallConfig"}%--><h1><a name="Virtuoso APIs for FCT REST services"></a> Virtuoso APIs for FCT REST services</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Why">Why</a></li> <li><a href="#What">What</a></li> <li><a href="#How">How</a></li>
+<ul><li><a href="#Examples%3A">Examples:</a></li> <li><a href="#API%20Definition">API Definition</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Why"></a>Why</h2>
+ Enables the use Virtuoso&#39;s VSP/VSPX technology to produce (X)HTML-based Linked Data explorer pages that are endowed with high-performance (in-process) faceted browsing capability.<h2><a name="What"></a>What</h2>
+ A Virtuoso Stored Procedure that enables faceted browsing over Linked Data hosted in the RDF Quad Store.
+ This also includes Linked Data that is progressively added to the Quad Store via URI de-referencing.<h2><a name="How"></a>How</h2>
+ You can use this API with Virtuoso SQL calls that provide data to your VSP/VSPX, ASP.NET, PHP, etc., -based interfaces using ODBC, JDBC, ADO.NET, or XMLA connectivity (SPASQL) to Virtuoso.<h3><a name="Examples:"></a>Examples:</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIsFCTEXEC" class="wikiword">Typical Usage Example</a>.</li>
+</ul><p> </p>
+<h3><a name="API Definition"></a>API Definition</h3>
+ <br><pre>CREATE PROCEDURE
+fct_exec 
+  ( 
+    IN  tree     ANY , 
+    IN  timeout  INT
+  )
+{
+  DECLARE  start_time, 
+           view3, 
+           inx, 
+           n_rows      INT     ;
+  DECLARE  sqls, 
+           msg, 
+           qr,
+           qr2,
+           act,
+           query       VARCHAR ;
+  DECLARE  md, 
+           res, 
+           results, 
+           more        ANY     ;
+  DECLARE  tmp         ANY     ;
+  DECLARE  offs, 
+           lim         INT     ;
+
+  SET result_timeout = _min 
+                         ( 
+                           timeout, 
+                           ATOI 
+                             (
+                               registry_get (&#39;fct_timeout_max&#39;)
+                             )
+                         )
+  ;
+
+  offs := xpath_eval (&#39;//query/view/@offset&#39;, tree);
+  lim := xpath_eval (&#39;//query/view/@limit&#39;, tree);
+
+  -- db_activity ();
+
+  results := vector (null, null, null);
+  more := vector ();
+
+  IF 
+    ( 
+      xpath_eval 
+        (
+          &#39;//query[@view3=&quot;yes&quot;]//view[@type=&quot;text&quot;]&#39;, 
+          tree
+        ) 
+      IS NOT NULL
+    )
+    {
+      more := VECTOR (&#39;classes&#39;, &#39;properties&#39;);
+    }
+
+  sqls := &#39;00000&#39;;
+  qr := fct_query 
+          (
+            xpath_eval (&#39;//query&#39;, tree, 1)
+          )
+  ;
+  query := qr;
+--  dbg_obj_print (qr);
+  qr2 := fct_xml_wrap (tree, qr);
+  start_time := msec_time ();
+
+  dbg_printf(&#39;query: %s&#39;, qr2);
+
+  EXEC 
+    (
+      qr2, 
+      sqls, 
+      msg,
+      vector (),
+      0,
+      md,
+      res
+    )
+  ;
+  n_rows := row_count ();
+  act := db_activity ();
+  SET result_timeout = 0;
+  IF (
+       sqls &lt;&gt; &#39;00000&#39;
+       AND
+       sqls &lt;&gt; &#39;S1TAT&#39;
+     )
+    SIGNAL (sqls, msg);
+  IF (
+       NOT ISARRAY (res) 
+       OR 
+       0 = length (res) 
+       OR 
+       NOT ISARRAY (res[0]) 
+       OR 
+       0 = length (res[0])
+     )
+    results[0] := xtree_doc (&#39;&lt;result/&gt;&#39;);
+  ELSE
+    results[0] := res[0][0];
+
+  inx := 1;
+
+  FOREACH (VARCHAR tp IN more) DO
+    {
+      tree := XMLUpdate (
+                          tree, 
+                          &#39;/query/view/@type&#39;, 
+                          tp,
+                          &#39;/query/view/@limit&#39;,
+                          &#39;40&#39;,
+                          &#39;/query/view/@offset&#39;,
+                          &#39;0&#39;
+                        )
+      ;
+      qr := fct_query (xpath_eval (&#39;//query&#39;, tree, 1));
+      qr2 := fct_xml_wrap (tree, qr);
+      sqls := &#39;00000&#39;;
+      SET result_timeout = _min (
+                                  timeout, 
+                                  ATOI 
+                                    ( 
+                                      registry_get (&#39;fct_timeout_max&#39;)
+                                    )
+                                )
+      ;
+      EXEC ( 
+             qr2, 
+             sqls, 
+             msg,
+             vector (), 
+             0,
+             md,
+             res
+           );
+      n_rows := row_count ();
+      act := db_activity ();
+      SET result_timeout = 0;
+      IF ( sqls &lt;&gt; &#39;00000&#39; 
+           AND 
+           sqls &lt;&gt; &#39;S1TAT&#39;
+         )
+    SIGNAL (sqls, msg);
+      IF ( 
+           ISARRAY (res) 
+           AND 
+           LENGTH (res) 
+           AND 
+           ISARRAY (res[0]) 
+           AND
+           LENGTH (res[0])
+         )
+    {
+      tmp := res[0][0];
+      tmp := XMLUpdate (tmp, &#39;/result/@type&#39;, tp);
+      results[inx] := tmp;
+    }
+      inx := inx + 1;
+    }
+
+
+
+  res := XMLELEMENT 
+           (
+             &quot;facets&quot;, 
+             XMLELEMENT 
+               ( &quot;sparql&quot;, query ), 
+             XMLELEMENT 
+               ( &quot;time&quot;, msec_time () - start_time ),
+             XMLELEMENT 
+               ( 
+                 &quot;complete&quot;, 
+                 CASE WHEN sqls = &#39;S1TAT&#39; 
+                      THEN &#39;no&#39; 
+                      ELSE &#39;yes&#39; 
+                  END
+                ),
+             XMLELEMENT 
+               (
+                 &quot;timeout&quot;,
+                 _min 
+                   (
+                     timeout * 2, 
+                     ATOI 
+                       (
+                         registry_get 
+                           ( &#39;fct_timeout_max&#39; )
+                       )
+                   )
+               ),
+             XMLELEMENT 
+               (&quot;db-activity&quot;, act),
+             XMLELEMENT
+               (&quot;processed&quot;, n_rows), 
+             XMLELEMENT
+               (
+                 &quot;view&quot;, 
+                 XMLATTRIBUTES 
+                   ( 
+                     offs AS &quot;offset&quot;, 
+                     lim AS &quot;limit&quot;
+                   )
+               ),
+             results[0], 
+             results[1], 
+             results[2]
+           );
+
+---- for debugging:
+--string_to_file (&#39;ret.xml&#39;, serialize_to_UTF8_xml (res), -2);
+--  dbg_obj_print (res);
+
+  RETURN res;
+}
+;
+</pre><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li>Facets Web Service: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService" class="wikiword">Virtuoso Facets Web Service</a> </li>
+</ul></li>
+<li>Linked Data: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsViewsLinkedData" class="wikiword">Faceted Views over Large-Scale Linked Data</a> </li>
+</ul></li>
+<li>Facet Browser Installation and configuration: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfig" class="wikiword">Virtuoso Facet Browser Installation and configuration</a> </li>
+</ul></li>
+<li>Facet APIs: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIsFCTEXEC" class="wikiword"><code><nowiki>fct_exec</nowiki></code> API Example</a> </li>
+</ul></li>
+<li>Pivot Viewer and CXML: <ul><li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxmlFacetPivotBridge#AncSparqlCxmlFacetPivotBridge" class="absuri">Facet Pivot Bridge -  A bridge to PivotViewer from Virtuoso&#39;s Faceted query service for RDF</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxml#AncFacetTypeAutoDetection" class="absuri">Auto-Detection of Facet Type</a> </li>
+</ul></li>
+<li>Tutorials: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoLODSampleTutorial" class="wikiword">Faceted Browsing Sample using LOD Cloud Cache data space</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceSOAPExample" class="wikiword">SOAP Facets Example</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfigQueried" class="wikiword">Querying The Facet Browser Web Service endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFCTFeatureQueries" class="wikiword">Virtuoso Facet Browser Featured Queries</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtVisualizeWithPivotViewer#GenFCT" class="absuri">Visualizing Your Data With PivotViewer Using The Facet Browser</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksCustomControlLabelsURI" class="wikiword">Custom Controlling Virtuoso Labels for URI functionality Example</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceCustmExamples" class="wikiword">Facets Web Service: Examples for customizing different types</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceChoiceExample" class="wikiword">Facets Web Service: Choice of Labels Example</a> </li>
+</ul></li>
+<li>Downloads: <ul><li><a href="http://shop.openlinksw.com/license_generator/virtuoso-download/" class="absuri">Latest Virtuoso</a> </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso Facet Browser VAD package</a></li>
+</ul></li>
+</ul><p> </p>
+</div></body></html>

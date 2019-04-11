@@ -1,0 +1,73 @@
+%META:TOPICPARENT{name="ErrorMessagesD"}%
+= Data is Truncated when Retrieved from Progress Databases =
+
+%TOC%
+
+== Background ==
+
+Counterintuitively, the Progress 4GL database engine permits storage of character strings which exceed the field width ({{{SQL_WIDTH}}}) declared in the Progress Data Dictionary (by default, Progress sets {{{SQL_WIDTH}}} to twice the character-width of a field). For instance, given a table with a {{{CHAR(16)}}} column, Progress will allow insertion of any number of characters into that column. In a related but different issue, the Progress 4GL engine returns a fixed width of 8 for all character expressions in SQL queries, regardless of how long their actual value may be. 
+
+These two behaviors create problems with client applications that use {{{SQLDescribeCol()}}} (as they should) to determine the maximum amount of data in a field. Applications are only told about, and may only receive, the Data Dictionary-defined length of data (e.g., 16 characters in the {{{CHAR(16)}}} field), even though the actual data might be 20 (or 200, or more!) characters long, leading to data truncation, buffer overruns, and other issues.
+
+This condition is often revealed by the error message --
+{{{
+Column <column_name> in table <table_name> has value exceeding its max length or precision.
+}}}
+
+Various errors related to buffer overruns -- signal 11, <code>SIGSEGV</code>, segmentation fault -- may also be caused by this condition.
+
+== Optimal Solution (mandatory for SQL-92 connections) ==
+
+The best way to work around the first behavior is to set the **Data Dictionary** definitions appropriately for the actual content of the fields, <b><i>and this is mandatory for SQL-92 connections</i></b> (i.e., all connections to Progress <nop>OpenEdge 10.x, and many connections to Progress 9.1x).  Progress <nop>OpenEdge 10.x and later include native reporting utilities (As quoted in this [[http://www.progresstalk.com/threads/newbie-question.105767/|Progress Community forum post]], [[http://knowledgebase.progress.com/articles/Article/P7640|Progress KB P7640]] indicated that "Since 9.1D06, DBTool can be used to identify and fix {{{SQL_WIDTH}}} problems.") which can provide the actual maximum data width, and you can then use the **Options** >> **SQL Properties** >> **Adjust Field Width** utility [[http://knowledgebase.progress.com/articles/Article/P26984|to change the field definition to match]].  Older versions of Progress may have corresponding features which you can use with the help of a Progress DBA, Progress Support, or the Progress Knowledgebase.  
+
+== Workaround Options (only possible with SQL-89 connections) ==
+
+However, if you cannot change your Data Dictionary for any reason, <nop>OpenLink drivers offer work-around settings which may serve your needs for SQL-89 connections (available to any Progress 7.x through 9.x instance).  (These work-arounds are not appropriate for all situations, so please test your own environment carefully!)
+
+* When **{{{MIN_FIELD_LEN}}}**, or **Field Size Minimum**, is set, it will over-ride any lower value for any column in the Data Dictionary, including the value of 8 for character expressions in SQL queries.  This value will be returned for {{{SQLDescribeCol()}}} calls, and any data values which are shorter than this length will be space-padded to reach it.  //**Note:** This space-padding can radically increase network traffic, and thus this work-around should only be used when the Data Dictionary absolutely cannot be modified.//
+
+* When **{{{MAX_FIELD_LEN}}}**, or **Field Size Maximum**, is set, this value will over-ride the 4GL's default of 8 for all character expressions in SQL queries.  //**Note:** Field Size Minimum ({{{MIN_FIELD_LEN}}}) over-rides Field Size Maximum ({{{MAX_FIELD_LEN}}}), if both are set, and Field Size Minimum is greater.//
+
+//**Be advised:** The Progress Data Dictionary may still affect display size and precision. Data will always be returned, but some applications will still only display the amount of data accounted for in the Dictionary. Moreover, **all** fields will return the amount of data specified by {{{MIN_FIELD_LEN}}} or Field Size Minimum. Values which are shorter than the specified length will be space-padded.//
+
+To use these work-arounds, follow the instructions for your driver type:
+
+=== Multi-Tier Enterprise Edition ===
+
+# Access your <nop>OpenLink server components installation.
+# Use a text editor to open your Broker Rulebook (e.g., {{{oplrqb.ini}}}), found by default in the {{{/bin/}}} sub-directory of your <nop>OpenLink installation.
+# Locate the {{{[Environment PROGRESSXXX]}}} section corresponding to the active Databse Agent for Progress. For example:
+{{{
+[Environment PROGRESS82A]
+;TABLEVIEW =
+;TABLEVIEW_QUALIFIER = Y
+;DEADLOCK_TIMEOUT = 60 ; Seconds to wait for lock to release
+;INSERT_LOGICAL = Y
+;UPDATE_LOGICAL = Y
+;MIN_FIELD_LEN =
+;MAX_FIELD_LEN =
+CURSOR_SENSITIVITY = LOW
+DLC = D:\DBS\Progress\Pro82a
+Path = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+}}}
+# Remove the leading semicolon "{{{;}}}" from the {{{MIN_FIELD_LEN}}} entry, and set the value to the actual maximum length of your field contents.
+{{{
+MIN_FIELD_LEN = 143
+}}}
+# Remove the leading semicolon "{{{;}}}" from the {{{MAX_FIELD_LEN}}} entry, and set the value to the actual expected length of your SQL query character expressions, if longer than {{{MIN_FIELD_LEN}}}.
+{{{
+MAX_FIELD_LEN = 200
+}}}
+# Save your changes and exit the file.
+# Restart or reinitialize the Broker to make your change take effect.
+
+=== Single-Tier Lite Edition ===
+
+# Launch the **Data Sources (ODBC)** control panel (typically, Start >> Control Panel >> Administrative Tools)
+# Locate and highlight your Progress DSN.
+# Click **Configure**.
+# Click the **Progress Options** tab.
+# Set **Field Size Minimum** to the //maximum// size of the problem field(s).
+# Set **Field Size Maximum** to the //maximum// expected length of any SQL query character expressions, if longer than //Field Size Minimum//.
+# Save your DSN.
+# Test.

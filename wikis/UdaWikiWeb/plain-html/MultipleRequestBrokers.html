@@ -1,0 +1,70 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="MTRequestBrokerAdministration"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="MTRequestBrokerAdministration"}%--><h3><a name="Multiple Request Brokers"></a>Multiple Request Brokers</h3>
+<p>There are now three different behaviors for running the broker under Windows that are affected by the type of Windows operating system, and the +foreground and +debug flags.</p><h4><a name="METHOD 1 - As a service"></a>METHOD 1 - As a service</h4>
+<p>When:</p><ul><li> Under NT/XP/2000, when no +foreground or +debug has been specified.
+ The oplrqb service will start, but only if it has been registered.
+ When no +instance is specified, it will use the default instance.
+ If this fails, it will run as method 2 or 3.</li>
+</ul><ul><li> Under NT/2000, with a +service start [+instance identifier] If this fails, it will exit with an error.</li>
+</ul><br><pre>Note 1:
+
+When starting oplrqb without options, it will attempt to auto start an existing service. if that fails, it will attempt methods 2 and 3 (see below)
+</pre><p> <br><br></p><pre>Note 2:
+
+You&#39;ll need to do +service create first, the broker doesn&#39;t do this by itself.
+</pre><p> <br></p><h4><a name="METHOD 2 - With debugging console"></a>METHOD 2 - With debugging console</h4>
+<p>When:</p><ul><li> with +foreground or +debug, started from explorer/dos box</li>
+</ul><ul><li> without +foreground or +debug option, started from a dos box.</li>
+</ul><br><pre>Note:
+
+Start up mode is different when launched from a dos box. If there are no command line options specified, the broker will now default to +debug when started in a dos box.
+
+the +foreground and +debug options take precedence over method 1 (starting the service)
+</pre><p> <br></p><h4><a name="METHOD 3 - User Specific Service (characterized by a Services Tray Icon)"></a>METHOD 3 - User Specific Service (characterized by a Services Tray Icon)</h4>
+<p>When:</p><ul><li> started from explorer, without +foreground/+debug <br>(NT/XP/2000: Method 1 is tried first)</li>
+</ul><br><pre>Note:
+
+It will attempt to locate oplrqb.ini in the current directory, unless +config file has been specified.
+</pre><p> <br></p><h4><a name="Startup Mode Summary"></a>Startup Mode Summary</h4>
+<p>To summarize, here is some pseudo code:<br></p><pre>if OS = NT or OS = Win2000 or OS = XP then
+  if no +foreground or +debug options then
+    if there is a service installed then
+      silently attempt to start the service
+      if this succeeds then exit
+    endif
+endif
+
+if +foreground or +debug options then
+  allocate a debugging console
+  run in the foreground
+
+else if started from a dos box then
+  set +foreground and +debug
+  allocate a debugging console
+  run in the foreground
+
+else
+  create the splash window and assume tray behavior
+endif
+
+Note: it is possible to make the oplrqb service allocate a debugging
+console. To do this, specify +debug while creating the service
+(example: oplrqb +service create +debug)
+</pre><p> <br></p><h4><a name="Multiple Service Instances"></a>Multiple Service Instances</h4>
+<p>Multiple instances of the broker work only for NT/XP/2000 when running as a service.</p><p>There is one default instance (unnamed) which is used when no +instance command line flag has been specified.</p><p>examples:<br></p><pre>oplrqb +service create
+</pre><p> <br>Registers the default service instance.
+ This service will use the oplrqb.ini rulebook in the current directory<br></p><pre>oplrqb +service create +instance 1 +config f:\openlink
+</pre><p> <br>Registers the oplrqb_1 service instance This service will use the oplrqb.ini rulebook in f:\openlink<br></p><pre>oplrqb +service create +config f:\openlink\test\debug.ini +debug
+</pre><p> <br>Registers the default service instance.
+ This service will use the debug.ini rulebook in f:\openlink\test This service will produce debug output in a console.
+ This service will not auto start, use oplrqb +service start</p><p>Other service commands:<br></p><pre>  +service auto [+instance id]    Set start up type to Automatic
+  +service manual [+instance id]  Set start up type to Manual
+  +service start [+instance id]   Start up the service
+  +service stop [+instance id]    Stops up the service
+  +service delete [+instance id]  Unregisters up the service
+</pre><p> <br>+service list has been extended to show the rulebook that the instance uses as well as other status information.</p><p>To configure another Broker instance manually:</p><ul><li> create a new directory</li>
+</ul><ul><li> create a new rulebook in this directory</li>
+</ul><ul><li> set <nop></nop>BinaryDirectory in this new rulebook to the installation directory of oplrqb.exe (need to share binaries &amp; licensing)</li>
+</ul><ul><li> Specify a different Listen port</li>
+</ul><ul><li> Either disable www_sv in the rulebook or create a new www_sv.ini with &#39;<nop></nop>HttpPort&#39; key value set to a unique value other than the default 8000.</li>
+</ul><ul><li> create another entry using +instance <id> +config <the_new_rulebook_ini> <br></the_new_rulebook_ini></id></li>
+</ul></div></body></html>

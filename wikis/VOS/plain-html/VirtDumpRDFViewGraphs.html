@@ -1,0 +1,285 @@
+<html><body><div class="topic-text"><h1><a name="Virtuoso Dump RDFView Graph Scripts"></a> Virtuoso Dump RDFView Graph Scripts</h1>
+<p>The <code>RDF_QM_TREE_DUMP</code> procedure and its associated procedures below are used for dumping one or more RDFView Graphs in a Virtuoso server to a set of turtle <code>ttl</code> dataset files in the specified dump directory.
+ The dump generation is made as fast as possible by grouping mappings by underlying tables so many properties from neighbor database columns can be extracted in one table scan.
+ The size of the generated files is limited to 5MB.
+ The dump process creates internal stored procedures; their texts are saved in file <code>.dump_procedures.sql</code> in the directory of dump files for debugging purposes.</p>
+<p>Note that the dump directory must be included in the <code><nop></nop>DirsAllowed</code> parameter of the Virtuoso configuration file (e.g., <code>virtuoso.ini</code>), or the server will not be allowed to create nor access the dataset file(s).</p>
+<p>The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtBulkRDFLoader" class="wikiword">Virtuoso RDF bulk loader</a> scripts can then be used to load the dumped datasets for the RDFView graphs directly into a Virtuoso RDF QUAD store.</p>
+<h2><a name="Parameters"></a> Parameters</h2>
+<ul><li><code>in <b>dest_dir</b> VARCHAR</code> - dump directory </li>
+<li><code>in <b>graph_iri</b> VARCHAR</code> - IRI of the graph to be dumped; triples from other graphs will be excluded.
+ If <code>NULL</code>, then there&#39;s no restriction by graph.
+</li>
+<li><code>in <b>storage</b> VARCHAR</code> - IRI of the quad map storage to use.
+ <code>NULL</code> means use default storage.
+</li>
+<li><code>in <b>root</b> VARCHAR</code> - IRI of the quad map to use, e.g., an IRI of an RDF View (or its part).
+ <code>NULL</code> means use all RDF Views of the storage (and the default mapping as well).</li>
+</ul><h2><a name="Procedure Code"></a> Procedure Code</h2>
+<br><pre>CREATE PROCEDURE DB.DBA.RDF_QM_TREE_DUMP 
+  ( in  dest_dir  VARCHAR, 
+    in  graph_iri VARCHAR := NULL, 
+    in  storage   VARCHAR := NULL, 
+    in  root      VARCHAR := NULL
+  )
+{
+ DECLARE all_qms, 
+         grouped_qmvs, 
+         launcher_text  ANY;
+ DECLARE grp_ctr, 
+         qm_ctr, 
+         qm_count       INTEGER;
+ DECLARE sql_file, 
+         launcher_name  VARCHAR;
+ IF (NOT (dest_dir LIKE &#39;%/&#39;))
+   dest_dir := dest_dir || &#39;/&#39;;
+ sql_file := dest_dir || &#39;.dump_procedures.sql&#39;;
+ IF (storage IS NULL)
+   storage := &#39;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage&#39;;
+ string_to_file (
+   sql_file, 
+   &#39;-- This file contains procedure created by DB.DBA.RDF_QM_TREE_DUMP() for storage &#39; 
+      || COALESCE (storage, &#39;NULL&#39;) 
+      || &#39; and root quad map &#39; 
+      || COALESCE (root, &#39;NULL&#39;) 
+      || &#39;\n\n&#39;, 
+   -2);
+ all_qms := dict_list_keys (DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (graph_iri, storage, root), 2);
+ grouped_qmvs := DB.DBA.RDF_QM_GROUP_BY_SOURCE_TABLES (all_qms);
+ launcher_name := &#39;RDF_QM_TREE_DUMP_BATCH_&#39; || md5 (serialize (graph_iri) || storage || serialize (root));
+ launcher_text := string_output ();
+ http (&#39;CREATE PROCEDURE DB.DBA.&quot;&#39; || launcher_name || &#39;&quot; (in dest_dir VARCHAR)\n{\n&#39;, launcher_text);
+ FOR (grp_ctr := length (grouped_qmvs); grp_ctr &gt; 0; grp_ctr := grp_ctr-2)
+   {
+     DECLARE tables, qms, proc_text ANY;
+     DECLARE group_key, proc_name, dump_prefix, cmt VARCHAR;
+     tables := grouped_qmvs [grp_ctr-2];
+     qms := grouped_qmvs [grp_ctr-1];
+     qm_count := length (qms);
+     group_key := md5 (serialize (graph_iri) || storage || serialize (root) || serialize (tables));
+     proc_name := &#39;RDF_QM_TREE_DUMP_GRP_&#39; || group_key;
+     proc_text := string_output ();
+     cmt := sprintf (&#39;%d quad maps on join of&#39;, qm_count);
+     FOREACH (VARCHAR t IN tables) DO cmt := cmt || &#39; &#39; || t;
+     http (&#39;  --  &#39; || cmt || &#39;\n&#39;, launcher_text);
+     http (&#39;  DB.DBA.&quot;&#39; || proc_name || &#39;&quot; (dest_dir);\n&#39;, launcher_text);
+     http (&#39;CREATE PROCEDURE DB.DBA.&quot;&#39; || proc_name || &#39;&quot; (in dest_dir VARCHAR)\n&#39;, proc_text);
+     http (&#39;{\n&#39;, proc_text);
+     http (&#39;  -- &#39; || cmt || &#39;\n&#39;, proc_text);
+     http (&#39;  DECLARE ses, env ANY;\n&#39;, proc_text);
+     http (&#39;  DECLARE file_ctr, cmt_len INTEGER;\n&#39;, proc_text);
+     http (&#39;  file_ctr := 0;\n&#39;, proc_text);
+     http (&#39;  dbg_obj_princ (&#39; || WS.WS.STR_SQL_APOS (cmt) || &#39;, &#39;&#39;, file &#39;&#39;, file_ctr);\n&#39;, proc_text);
+     http (&#39;  ses := string_output ();\n&#39;, proc_text);
+     http (&#39;  http (&#39; || WS.WS.STR_SQL_APOS (&#39;#&#39; || cmt || &#39;\n&#39;) || &#39;, ses);\n&#39;, proc_text);
+     http (&#39;  env := VECTOR (dict_new (16000), 0, &#39;&#39;&#39;&#39;, &#39;&#39;&#39;&#39;, &#39;&#39;&#39;&#39;, 0, 0, 0, 0);\n&#39;, proc_text);
+     http (&#39;  cmt_len := LENGTH (ses);\n&#39;, proc_text);
+     http (&#39;  FOR (SPARQL DEFINE input:storage &lt;&#39; || storage || &#39;&gt;\n&#39;, proc_text);
+     http (&#39;    SELECT ?s1, ?p1, ?o1\n&#39;, proc_text);
+     IF (graph_iri IS NOT NULL)
+       {
+         http (&#39;    WHERE { GRAPH &lt;&#39;, proc_text); http_escape (graph_iri, 12, proc_text, 1, 1); http (&#39;&gt; {\n&#39;, proc_text);
+       }
+     ELSE
+       http (&#39;    WHERE { GRAPH ?g1 {\n&#39;, proc_text);
+     FOR (qm_ctr := 0; qm_ctr &lt; qm_count; qm_ctr := qm_ctr + 1)
+       {
+         IF (qm_ctr &gt; 0) http (&#39;            UNION\n&#39;, proc_text);
+         http (&#39;            { quad map &lt;&#39; || qms[qm_ctr] || &#39;&gt; { ?s1 ?p1 ?o1 } }\n&#39;, proc_text);
+       }
+     http (&#39;          } } ) DO {\n&#39;, proc_text);
+     http (&#39;      http_ttl_triple (env, &quot;s1&quot;, &quot;p1&quot;, &quot;o1&quot;, ses);\n&#39;, proc_text);
+     http (&#39;      IF (LENGTH (ses) &gt; 5000000)\n&#39;, proc_text);
+     http (&#39;        {\n&#39;, proc_text);
+     http (&#39;          http (&#39;&#39; .\\n&#39;&#39;, ses);\n&#39;, proc_text);
+     http (&#39;          string_to_file (sprintf (&#39;&#39;%s&#39; || group_key || &#39;_%05d.ttl&#39;&#39;, dest_dir, file_ctr), ses, -2);\n&#39;, proc_text);
+     http (&#39;          file_ctr := file_ctr + 1;\n&#39;, proc_text);
+     http (&#39;          dbg_obj_princ (&#39; || WS.WS.STR_SQL_APOS (cmt) || &#39;, &#39;&#39;, file &#39;&#39;, file_ctr);\n&#39;, proc_text);
+     http (&#39;          ses := string_output ();\n&#39;, proc_text);
+     http (&#39;          http (&#39; || WS.WS.STR_SQL_APOS (&#39;#&#39; || cmt || &#39;\n&#39;) || &#39;, ses);\n&#39;, proc_text);
+     http (&#39;          env := VECTOR (dict_new (16000), 0, &#39;&#39;&#39;&#39;, &#39;&#39;&#39;&#39;, &#39;&#39;&#39;&#39;, 0, 0, 0, 0);\n&#39;, proc_text);
+     http (&#39;        }\n&#39;, proc_text);
+     http (&#39;    }\n&#39;, proc_text);
+     http (&#39;  IF (LENGTH (ses) &gt; cmt_len)\n&#39;, proc_text);
+     http (&#39;    {\n&#39;, proc_text);
+     http (&#39;      http (&#39;&#39; .\\n&#39;&#39;, ses);\n&#39;, proc_text);
+     http (&#39;      string_to_file (sprintf (&#39;&#39;%s&#39; || group_key || &#39;_%05d.ttl&#39;&#39;, dest_dir, file_ctr), ses, -2);\n&#39;, proc_text);
+     http (&#39;    }\n&#39;, proc_text);
+     http (&#39;}\n&#39;, proc_text);
+     proc_text := string_output_string (proc_text);
+     string_to_file (sql_file, proc_text || &#39;;\n\n&#39; , -1);
+     EXEC (proc_text);
+   }
+ http (&#39;}\n&#39;, launcher_text);
+ launcher_text := string_output_string (launcher_text);
+ string_to_file (sql_file, launcher_text || &#39;;\n\n&#39; , -1);
+ EXEC (launcher_text);
+ CALL (&#39;DB.DBA.&#39; || launcher_name)(dest_dir);
+}
+;
+
+CREATE FUNCTION DB.DBA.RDF_QM_CONTENT_OF_QM_TREE 
+  ( in  graph_iri  VARCHAR := NULL,
+    in  storage    VARCHAR := NULL, 
+    in  root       VARCHAR := NULL, 
+    in  dict       ANY := NULL
+  ) returns ANY
+{
+ DECLARE res, subqms any;
+ DECLARE graphiri varchar;
+ graphiri := DB.DBA.JSO_SYS_GRAPH();
+ IF (storage IS NULL)
+   storage := &#39;http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage&#39;;
+ DB.DBA.RDF_QM_ASSERT_STORAGE_FLAG (storage, 0);
+ IF (dict IS NULL)
+   dict := dict_new ();
+ IF (root IS NULL)
+   {
+     subqms := ((SELECT DB.DBA.VECTOR_AGG (sub.&quot;qmiri&quot;)
+         FROM (
+           SPARQL DEFINE input:storage &quot;&quot;
+           SELECT DISTINCT (str(?qm)) AS ?qmiri
+           WHERE { GRAPH `iri(?:graphiri)` {
+                     { `iri(?:storage)` virtrdf:qsUserMaps ?lst .
+                       ?lst ?p ?qm .
+                       FILTER (0 = bif:strstr (str(?p), str(rdf:_)))
+                     } UNION {
+                       `iri(?:storage)` virtrdf:qsDefaultMap ?qm .
+                     } } } ) AS sub ) );
+     FOREACH (varchar qmid IN subqms) DO
+       DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (graph_iri, storage, qmid, dict);
+     RETURN dict;
+   }
+ DB.DBA.RDF_QM_ASSERT_JSO_TYPE (root, &#39;http://www.openlinksw.com/schemas/virtrdf#QuadMap&#39;);
+ IF (graph_iri IS NOT NULL AND
+   EXISTS ((SPARQL DEFINE input:storage &quot;&quot;
+       SELECT (1) WHERE {
+           GRAPH `iri(?:graphiri)` {
+               `iri(?:root)` virtrdf:qmGraphRange-rvrFixedValue ?g .
+               FILTER (str (?g) != str(?:graph_iri))
+             } } ) ) )
+   RETURN dict;
+ IF (NOT EXISTS ((SPARQL DEFINE input:storage &quot;&quot;
+       SELECT (1) WHERE {
+           GRAPH `iri(?:graphiri)` {
+               `iri(?:root)` virtrdf:qmMatchingFlags virtrdf:SPART_QM_EMPTY .
+             } } ) ) )
+   dict_put (dict, root, 1);
+ subqms := ((SELECT DB.DBA.VECTOR_AGG (sub.&quot;qmiri&quot;)
+     FROM (
+       SPARQL DEFINE input:storage &quot;&quot;
+       SELECT DISTINCT (str(?qm)) as ?qmiri
+       WHERE { GRAPH `iri(?:graphiri)` {
+   		`iri(?:root)` virtrdf:qmUserSubMaps ?lst .
+               ?lst ?p ?qm .
+               FILTER (0 = bif:strstr (str(?p), str(rdf:_)))
+             } } ) AS sub ) );
+ FOREACH (VARCHAR qmid IN subqms) DO
+   DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (graph_iri, storage, qmid, dict);
+ RETURN dict;
+}
+;
+
+CREATE FUNCTION DB.DBA.RDF_QM_GROUP_BY_SOURCE_TABLES (in qms ANY) returns ANY
+{
+ DECLARE res ANY;
+ DECLARE ctr INTEGER;
+ DECLARE graphiri VARCHAR;
+ graphiri := DB.DBA.JSO_SYS_GRAPH();
+ res := dict_new (LENGTH (qms) / 20);
+ FOREACH (VARCHAR qmiri IN qms) DO
+   {
+     DECLARE tbls, acc ANY;
+     tbls := ((SELECT DB.DBA.VECTOR_AGG (sub.&quot;tbl&quot;)
+         FROM (SELECT subsub.&quot;tbl&quot;
+           FROM (
+             SPARQL DEFINE input:storage &quot;&quot;
+             SELECT DISTINCT ?tbl
+             WHERE { GRAPH `iri(?:graphiri)` {
+                       { `iri(?:qmiri)` virtrdf:qmTableName ?tbl .
+                       } UNION {
+                         `iri(?:qmiri)` virtrdf:qmATables ?atbls .
+                         ?atbls ?p ?atbl .
+                         ?atbl virtrdf:qmvaTableName ?tbl
+                       } UNION {
+                         `iri(?:qmiri)` ?fldmap ?qmv .
+                         ?qmv virtrdf:qmvATables ?atbls .
+                         ?atbls ?p ?atbl .
+                         ?atbl virtrdf:qmvaTableName ?tbl .
+                       } } } ) subsub
+           ORDER BY 1 ) AS sub ) );
+     acc := dict_get (res, tbls);
+     IF (acc IS NULL)
+       vectorbld_init (acc);
+     vectorbld_acc (acc, qmiri);
+     dict_put (res, tbls, acc);
+   }
+ res := dict_to_vector (res, 2);
+ FOR (ctr := LENGTH (res); ctr &gt; 0; ctr := ctr-2)
+   {
+     DECLARE acc ANY;
+     acc := aref_set_0 (res, ctr-1);
+     vectorbld_final (acc);
+     aset_zap_arg (res, ctr-1, acc);
+   }
+ RETURN res;
+}
+;
+
+--test dbg_obj_princ (DB.DBA.RDF_QM_GROUP_BY_SOURCE_TABLES (dict_list_keys (DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (null), 2)));
+--test dbg_obj_princ (dict_list_keys (DB.DBA.RDF_QM_CONTENT_OF_QM_TREE (null), 2));
+--test DB.DBA.RDF_QM_TREE_DUMP (&#39;dump/demo&#39;, null, null, null);
+--test DB.DBA.RDF_QM_TREE_DUMP (&#39;dump/tpch&#39;, &#39;http://localhost:8600/tpch&#39;, null, null);
+
+</pre><p> </p>
+<h2><a name="Example"></a> Example</h2>
+ <br><pre>$ pwd
+/Applications/OpenLink Virtuoso/Virtuoso 6.1/database
+$ grep DirsAllowed virtuoso.iniDirsAllowed              = ., ../vad, ./graphs
+$ /opt/virtuoso/bin/isql 1111
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; DB.DBA.RDF_QM_TREE_DUMP(&#39;./graphs&#39;, &#39;http://opllinux5.usnet.private:8890/HR#&#39;, NULL, NULL);
+
+Done. -- 3297 msec.
+SQL&gt; quit;
+$ ls -a graphs
+.
+..
+0501399cf19a391edea424b49f8fddec_00000.ttl
+0e92baa118032b03d45b671f8102d49b_00000.ttl
+1517d16a92affbb0918234caa9ee4506_00000.ttl
+1803645533d6b04b4ee1ba1d2b2ba517_00000.ttl
+21794e4c25ee4d3958cc7b92ea1ab2af_00000.ttl
+25e61545a84174e4f0e95b9dbd8400f1_00000.ttl
+2b3c3263a3ac32408124e3cf3119edb2_00000.ttl
+3d9bf6c213d70375e601125446a2e4b1_00000.ttl
+451ab264eb7b8ba653fab05ddb2fbb8f_00000.ttl
+47ac12f3099a1093359b91ffc141a4de_00000.ttl
+491406fea677f4663b68dd1c27d404bd_00000.ttl
+4f8d21f21e4ad7380f7da51b8b4750ba_00000.ttl
+5c6f12b92bb3b2f3601826ce7c66b4fa_00000.ttl
+7ad9ed11ef3557b3d11197037b672fce_00000.ttl
+7ae906be3dd4dd7198bf7bb9ebeb75c7_00000.ttl
+847132e12c95df9326b0f0c183c789cc_00000.ttl
+85da7768db9d91356ad56a4b2296ffeb_00000.ttl
+86ec197853e6e243b657593daadba07b_00000.ttl
+99227cc049c9b2cdf5f3c20278e85eb4_00000.ttl
+a9d1085b8966bcbdbb3c1fc167e0bbe4_00000.ttl
+aaef0bbd9f1172e795d41b9ee63575d4_00000.ttl
+afbb87dc2897a63491fe95d834e9bd3e_00000.ttl
+b5d8d72cab725914bff265c5766cc8e9_00000.ttl
+b7f574e8394e0408245a02c603618afe_00000.ttl
+c74baad55e1277b26fa002d070960b85_00000.ttl
+ccd6ab4e49b6b3ac5b0e676e8b402639_00000.ttl
+d0e3534ac8ffa67e7e221ef6eec422ab_00000.ttl
+d1c409acf4379aa4e1d3e40b8bd1b059_00000.ttl
+de55244ca7b18e6a9ea7693b6275fb6c_00000.ttl
+.dump_procedures.sql
+e00e827d43678857097f706f66e050e4_00000.ttl
+ebe38a29534ec94fbd5098014064b4d1_00000.ttl
+ee7ff61ceb22dae7ae22b32cd99ace03_00000.ttl
+f87218215ec64026d7313e91f4c1ccbf_00000.ttl
+</pre></div></body></html>

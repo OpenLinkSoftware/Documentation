@@ -1,0 +1,142 @@
+---+ Simple Example Showing How To Browse a Collection Generated From Virtuoso Data Using <nowiki>PivotViewer</nowiki>.
+
+[[http://www.silverlight.net/learn/pivotviewer/][PivotViewer]] is a new [[http://www.silverlight.net/][Silverlight]] control for visualizing and interacting with collections of data.  The data collection must be a group of entities of the same type, described using the [[http://www.silverlight.net/learn/pivotviewer/collection-xml-schema/][Collection XML schema]], CXML.  Virtuoso data will soon be easily exposed as a pivot collection using the upcoming FacetServiceToPivotBridge.  
+
+This document shows how to set up a very simple Silverlight application that makes such collections available on the Web.  You can also play with [[http://ods-qa.openlinksw.com/pivotviewer/pivot/][an existing sample instance]].
+
+%TOC%
+
+---++ Prerequisites
+
+   * <nowiki>VisualStudio</nowiki> 2010 and Silverlight 4
+   * The address of the collections
+   * Virtuoso server to host the Silverlight web app
+
+---++ Steps
+
+---+++ Step 1: Create the application.
+
+In <nop>VisualStudio, reate a new <b>Silverlight Application</b> called <b><nowiki>PivotTest</nowiki></b>.
+
+   1 In the <b>New Silverlight Application</b> dialog box check the <b>Host the Silverlight application in a new Web site</b> box and ensure that the <b>Silverlight Version</b> is <b>4</b> or higher.  
+%BR%%BR%<img src="%ATTACHURLPATH%/NewApp.png" style="wikiautogen"/>%BR%%BR%
+   1 Click <b>OK</b>. 
+
+---+++ Step 2: Add controls.
+
+This step adds a text box and a <nowiki>PivotViewer</nowiki> to the application. 
+
+   1 In <code><nop>MainPage.xaml</code> add the pivot namespace, 
+<verbatim>
+xmlns:pivot="clr-namespace:System.Windows.Pivot;assembly=System.Windows.Pivot"
+</verbatim>
+   1 In the same file, replace &mdash;
+<verbatim>   
+<Grid x:Name="LayoutRoot" Background="White">
+
+</Grid>
+</verbatim>
+&mdash; with &mdash;
+<verbatim>    
+<Grid x:Name="LayoutRoot">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="40"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="600"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <TextBlock Text="Pivot Collection Viewer" Visibility="Visible" FontSize="20" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+    <TextBox Name="urlBox" Grid.Row="1" Width="500" Height="30" Text="{Binding Mode=OneWay}" KeyDown="urlBox_KeyDown" Grid.Column="0" ></TextBox>
+    <TextBlock Text="Type in a collection URL" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom"></TextBlock>
+    <Border x:Name="ContentBorder"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+        <!-- The PivotViewer control -->
+        <pivot:PivotViewer x:Name="PivotViewer" Visibility="Collapsed" />
+    </Border>
+
+</Grid>
+</verbatim>
+
+---+++ Step 3: Add the event handler.
+
+Once the URL of a collection has been typed into the text box, the <nowiki>PivotViewer</nowiki> opens the collection and is made visible.  This is done using the <code><nowiki>urlBox_KeyDown</nowiki></code> event handler.  We need to add this to the file, <code><nop>MainPage.xaml.cs</code>.
+
+   1 Open <code><nop>MainPage.xaml.cs</code> and add references to:
+      * <code>System.Windows.Pivot</code>
+      * <code>System.Windows.Pivot.Model</code>
+      * <code>System.Windows.Pivot.SharedUI</code>
+      * <code>System.Windows.Pivot.StringResources</code>
+      * <code>System.Windows.Pivot.Utilities</code>
+   1 Add <code>using System.Windows.Pivot;</code> to the "using" block.
+   1 Add the event handler:
+<verbatim>
+private void urlBox_KeyDown(object sender, KeyEventArgs e)
+{
+    if (e.Key == Key.Enter)
+        PivotViewer.LoadCollection(urlBox.Text, string.Empty);
+    PivotViewer.Visibility = Visibility.Visible;
+}
+</verbatim>
+   1 Build and run the code using the development server.  You should see a web page that looks like this:
+%BR%%BR%<img src="%ATTACHURLPATH%/Page1.png" style="wikiautogen"/>%BR%%BR%
+   1 Type the URL of a collection, e.g., <code>[[http://content.getpivot.com/Collections/dogbreeds/dogbreeds.cxml][http://content.getpivot.com/Collections/dogbreeds/dogbreeds.cxml]]</code> into the text box.
+   1 The collection will be opened in the <nowiki>PivotViewer</nowiki> control.
+%BR%%BR%<img src="%ATTACHURLPATH%/Page2.png" style="wikiautogen"/>%BR%%BR%
+
+---+++ Step 4: Save the application.
+
+Publish the project from <nop>VisualStudio to your local filesystem &mdash;
+
+   1. Right click on <code><nop>PivotTest.Web</code> in the <b>Solution Explorer</b>.
+   1. Select <b>Publish</b>
+   1. Select <b>File System</b> for the Publish Method, and set the <b>Target Location</b>.
+   1. Click <b>OK</b>.
+
+---+++ Step 5: Set up hosting on Virtuoso.
+
+---++++ You can host the project directly from the filesystem ...
+
+   1. Copy the content of the Target Location (Step #4, above) to a new folder called <nowiki>PivotTest</nowiki> in the <b><code>$VIRTUOSO_DIR/vsp/</code></b> folder of your Virtuoso Server instance.
+   1. Open the Virtuoso Conductor and click to the <b>Web Application Server</b> tab, and then the <b>Virtuoso Domains and Directories</b> sub-tab.
+   1. Add a new directory to the default web site.
+   1. Select <b>None</b> on the first page of the wizard.
+   1. On the second page set <b>Path</b> to <b><code>/pivottest</code></b> and <b>Physical Path</b> to the new folder you have just created under <b><code>$VIRTUOSO_DIR/vsp/</code></b>.
+   1. Set <b>Default Page</b> to <b><code><nop>PivotTestTestPage.html</code></b>.
+   1. Click <b>Save changes</b>.
+
+---++++ or from Virtuoso's DAV repository
+
+   1. Open the WebDAV browser on your Virtuoso server.
+   1. Create a new WebDAV folder and upload the content of the Target Location (Step #4, above) into it.
+   1. Open the conductor and select the <b>Web Application Server</b> followed by the <b>Virtuoso Domains and Directories</b> tab.
+   1. Add a new directory to the default web site.
+   1. Select <b>None</b> on the first page of the wizard.
+   1. On the second page set <b>Path</b> to the name of the new WebDAV folder and check the <b>Physical path is a WebDAV repository</b> check box.
+   1. Set the <b>Physical Path</b> to <b><code>/DAV/<i>&lt;new WebDAV folder name&gt;</i></code></b>.
+   1. Set <b>Default Page</b> to <b><code><nop>PivotTestTestPage.html</code></b>.
+   1. Check the <b>Override exec permissions in WebDAV</b> checkbox.
+   1. Click <b>Save changes</b>.
+
+Now load <code><nowiki>http://<i>&lt;your server instance&gt;</i>/pivottest</nowiki></code> in your Web browser, and you should see the page you have just created.  
+
+<i><b>A note on <code>CrossDomainPolicy.xml</code></b></i><br />
+<i>The [[http://msdn.microsoft.com/en-us/library/cc645032%28VS.95%29.aspx][Silverlight security model]] only allows a Silverlight application to make HTTP web requests to the domain that originally served the application. Cross domain access to collections on another server would require either a <code>clientaccesspolicy.xml</code> or <code>crossdomain.xml</code> file allowing access from the site serving the Silverlight application.</i>
+
+---++ Live Demo Links
+
+   * [[http://ods-qa.openlinksw.com/pivotviewer/pivot/][Live Edition of This Pivotviewer Application]]
+   * <a href="http://ods-qa.openlinksw.com/pivotviewer/pivot/?=http://content.getpivot.com/Collections/worldleaders/worldleaders.cxml#$facet0$=Age&$view$=2">World Leaders By Age</a> -- demonstrates Pivotviewer URL using this example 
+   * [[http://www.getpivot.com/collections/][Microsoft's Pivot Collection Gallery]] -- cut and paste links into this example
+   * [[http://delicious.com/kidehen/pivot_collection][Kingsley Idehen's Pivot Collection Gallery]] -- cut and paste links into this example
+
+---++ Related
+
+   * [[http://www.silverlight.net/learn/pivotviewer/][PivotViewer documentation]]
+   * [[http://getpivot.com/developer-info/api/html/N_System_Windows_Pivot.htm][System.Windows.Pivot namespace documentation]]
+   * [[http://pauthor.codeplex.com/][Pauthor]] - a command line tool for converting Pivot collections between a variety of formats and a C# library that allows you to build and modify collections in memory, as well as read and write them in a variety of formats.

@@ -1,0 +1,33 @@
+<html><body><div class="topic-text"><h1><a name="Guide for Setting Up the Virtuoso HTTPS Listener using File System to host Certificate and Public Key"></a> Guide for Setting Up the Virtuoso HTTPS Listener using File System to host Certificate and Public Key</h1>
+<p>To enable the HTTPS listener, you will need a certificate.
+ Existing certificates may not have Subject Alternate Name, so you may want to acquire (or <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGenerateX509Cert" class="wikiword">generate</a>) a new one.</p>
+<ol><li>Move <code>newcert.pem</code>, <code>newkey.pem</code>, and <code>cacert.pem</code> into the server&#39;s working directory.
+ In our test case, we put the keys in a &#39;<code>keys</code>&#39; sub-directory, and added the following lines to the <code>[HTTPServer]</code> section of the Virtuoso INI file (default, <code>virtuoso.ini</code>): <br><pre><br>SSLPort                     = 4443
+SSLCertificate              = ./keys/newcert.pem
+SSLPrivateKey               = ./keys/newkey.pem
+X509ClientVerifyCAFile      = ./keys/cacert.pem
+X509ClientVerify            = 1
+X509ClientVerifyDepth       = 15
+</pre><br></li>
+<li>Also in the Virtuoso INI file, in the <code>[URIQA]</code> section, <code>DefaultHost</code> (set to <code>localhost:8890</code> below) must be edited to correspond to the DNS-resolvable host name (&quot;CNAME&quot;) of the Virtuoso host, combined with the <code>ServerPort</code> as set in the <code>[HTTPServer]</code> section of the same INI file.
+ Default settings are seen here: <br><pre><br>[URIQA]
+DynamicLocal = 1
+DefaultHost  = localhost:8890
+</pre><br>For instance, if the CNAME of the host is <code>virtuoso.example.com</code>, and the <code>ServerPort</code> is <code>4321</code>, the <code>DefaultHost</code> should be set to <code>virtuoso.example.com:4321</code> <br><pre><br>[URIQA]
+DynamicLocal = 1
+DefaultHost  = virtuoso.example.com:4321
+</pre><br></li>
+<li>Start the Virtuoso server, and look at the log file.
+ Once HTTPS is up, you should see something like — <br><pre><br>HTTPS Using X509 Client CA ....
+HTTPS/X509 server online at 4443
+</pre><br> </li>
+</ol><h2><a name="Setting Up Firefox"></a> Setting Up Firefox</h2>
+<ol><li>In the <b>Preferences</b> dialog, open the <b>Advanced</b> tab, and the <b>Encryption</b> subtab; then, click the <b>View certificates</b> button.
+<br><br><img src="VirtSetupSSLFileSystem/Picture_1.png" style="wikiautogen"><br><br> </li>
+<li>Click the <b>Add exception</b> button, and enter the address of the HTTPS server you&#39;ve just configured, i.e.
+ — <br><pre><br>https://virtuoso.example.com:4443/
+</pre><br></li>
+<li>Click OK, and confirm the exception.
+<br><br><img src="VirtSetupSSLFileSystem/Picture_2.png" style="wikiautogen"><br><br> </li>
+<li>Click to the <b>Your Certificates</b> tab, and import <code>mycert.p12</code>.</li>
+</ol></div></body></html>

@@ -1,0 +1,111 @@
+<docbook><section><title>VirtEc2ExtensionUI</title><title> Virtuoso EC2 Extension User Interface</title> Virtuoso EC2 Extension User Interface
+<para>The Virtuoso EC2 Extension User Interface can be used for backing up and restoring a Virtuoso Database to or from an Amazon S3 bucket.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Prerequisites</bridgehead>
+<para>The following must be done before you proceed, as all are necessary for accessing your Amazon S3 bucket.</para>
+<orderedlist spacing="compact"><listitem>Obtain an <ulink url="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html/103-7399647-0537426?">Amazon Web Services</ulink> (AWS) account.
+</listitem>
+<listitem>Sign up for <ulink url="http://www.amazon.com/b/ref=sc_fe_l_2?ie=UTF8&amp;node=201590011&amp;no=3435361&amp;me=A36L942TSJ2AJA">Amazon S3 and EC2 Web Service</ulink>.
+</listitem>
+<listitem>Obtain your <ulink url="https://aws-portal.amazon.com/gp/aws/developer/account/index.html/105-0738895-1085265?ie=UTF8&amp;action=access-key">AWS Access Identifiers</ulink>, Access Key ID, and Secret Access Key.
+</listitem>
+<listitem>Download and install the <ulink url="https://addons.mozilla.org/en-US/firefox/addon/3247">Firefox Amazon S3 Organiser</ulink>.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Note: If not using a pre-configured Virtuoso EC2 AMI</bridgehead>
+<para>The ec2ext VAD was originally written for use with the Virtuoso pre-packaged and pre-configured EC2 AMIs, and thus makes certain assumptions about the configuration.
+ To make this work with an open source or commercial Virtuoso installation on a different AMI, please ensure the following has been done:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A &quot;virtuoso&quot; symlink to the Virtuoso binary executable (virtuoso-t or virtuoso-iodbc-t) must exist in the directory the database is run/started from.
+</listitem>
+<listitem>The entries &quot;SafeExecutables=0&quot; and &quot;DbaExecutables=/bin/tar,/bin/sh&quot; must to be added to the &quot;Parameters&quot; section of the Virtuoso Configuration file (virtuoso.ini).
+<programlisting>...
+[Parameters]
+...
+SafeExecutables=0
+DbaExecutables=/bin/tar,/bin/sh
+...
+</programlisting></listitem>
+<listitem>Open Source users must manually restart the Virtuoso server after a restore, as the &quot;restart.sh&quot; script is only included with the commercial installers.
+</listitem>
+<listitem>On Windows, cygwin or similar must be installed, such that the required &quot;sh&quot; shell is available.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Backup and Restore Procedure</bridgehead>
+<orderedlist spacing="compact"><listitem>Select the EC2 Extension VAD from the &quot;System Admin&quot; -&gt; &quot;Packages&quot;  Tab of the Virtuoso Conductor and Click the &quot;Install&quot; button.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2ExtsVad.png" /></figure> </listitem>
+<listitem>Click the &quot;proceed&quot; button to begin the installation <figure><graphic fileref="VirtEc2ExtensionUI/EC2ExtsVad1.png" /></figure> </listitem>
+<listitem>Select &quot;System Admin&quot; -&gt; &quot;Backup&quot; Tab of the Virtuoso Conductor, set the &quot;Backup File Prefix&quot; to the name each backup file name should be prefixed with and click the &quot;Run Full Backup&quot; button to create an initial backup set.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts1.png" /></figure> </listitem>
+<listitem>Once complete a full backup of the Database will exist, after which an &quot;incremental backup&quot; can be performed to create additional backup segments (scheduled or manual) as the database changes.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts2.png" /></figure> </listitem>
+<listitem>Create an Amazon S3 bucket for storing your online backup.
+ <figure><graphic fileref="VirtEc2ExtensionUI/EC2ExtsS3Plugin.png" /></figure> </listitem>
+<listitem>Go to the URL http://your-ec2-instance-cname/ec2exts to load the Virtuoso Extensions for Amazon EC2 Images login page and log in as the &quot;dba&quot; user.
+ <figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts3.png" /></figure> </listitem>
+<listitem>Select the &quot;Automatic Backup Transfer&quot; link to start the backup.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts4.png" /></figure> </listitem>
+<listitem>Select the &quot;New&quot; link to create a new  S3 backup location.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts5.png" /></figure> </listitem>
+<listitem>Enter the <emphasis>aws access key id</emphasis>, <emphasis>aws secret access key</emphasis> and <emphasis>S3 bucket name</emphasis> where the backups are to be placed and click the &quot;Save&quot; button.
+ <emphasis>Note</emphasis> backup and restore operations can be performed using the <emphasis>S3</emphasis>, <emphasis><ulink url="WebDAV">WebDAV</ulink></emphasis> / <emphasis>HTTP</emphasis>  or <emphasis>FTP</emphasis> protocols which are selectable from the <emphasis>Protocol</emphasis> drop-down list.
+ <emphasis>Note</emphasis> also that the AWS access key id and AWS secret access key are the actual <emphasis>Access Identifiers</emphasis> associated with your AWS account and <emphasis>not</emphasis> the email/password combination used to login to your AWS account.
+ A link to the Access identifiers is available when logged in to your <ulink url="http://aws.amazon.com/account/">AWS account</ulink>.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts6.png" /></figure> </listitem>
+<listitem>Click on the &quot;Synchronize now&quot; link to commence the backup to the S3 bucket.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts7.png" /></figure> </listitem>
+<listitem>The &quot;Status&quot; column changes from &quot;READY&quot; to &quot;RUNNING&quot; will the backup is in progress <figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts8.png" /></figure> </listitem>
+<listitem>Once complete the &quot;Uploaded&quot; column will indicate &quot;1&quot; backup file has been uploaded.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts9.png" /></figure> </listitem>
+<listitem>Subsequent incremental backups can be made from the &quot;System Admin&quot; -&gt; &quot;Backup&quot; Tab of the Virtuoso Conductor by clicking on the &quot;Run Incremental Backup&quot; button.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts10.png" /></figure> </listitem>
+<listitem>Going back to the &quot;Automatic Backup Transfer&quot; link of the Virtuoso Extensions for Amazon EC2 UI (http://your-ec2-instance-cname/ec2exts) click on the &quot;Synchronize now&quot; button to upload the new backup segment.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts11.png" /></figure> </listitem>
+<listitem>Once complete there will then be 2 online backup segments uploaded.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts12.png" /></figure> </listitem>
+<listitem>Checking the S3 bucket created using the Firefox S3 Organiser will display the online backup files uploaded.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2ExtsS3.png" /></figure>  <emphasis>Note</emphasis>: Setting the incremental backup in the Conductor to be performed as a &quot;scheduled&quot; backup, will result in the backup set being automatically uploaded to S3.
+</listitem>
+<listitem>To Restore an EC2 S3 online backup go back to the Virtuoso Extensions for Amazon EC2 (http://your-ec2-instance-cname/ec2exts), login and click on the &quot;Restore a Remote Backup&quot; link.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts13.png" /></figure> </listitem>
+<listitem>Enter the AWS access key, secret key and S3 bucket name and Backup File Prefix name of the online backup to be restore and click on the &quot;Restore&quot; button to commence the process.
+ <emphasis>Note</emphasis>: backup and restore operations can be performed using the <emphasis>S3</emphasis>, <emphasis><ulink url="WebDAV">WebDAV</ulink></emphasis> / <emphasis>HTTP</emphasis>  or <emphasis>FTP</emphasis> protocols which are selectable from the <emphasis>Protocol</emphasis> drop-down list.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts14.png" /></figure> </listitem>
+<listitem>The backup files available from the S3 storage location will be downloaded, click on the &quot;Continue&quot; button to re-assemble the database from the backups.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts15.png" /></figure> </listitem>
+<listitem>Once complete the server will be restarted with the restored database.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts16.png" /></figure> </listitem>
+<listitem>The Virtuoso Conductor will then be accessible again.
+<figure><graphic fileref="VirtEc2ExtensionUI/EC2Exts17.png" /></figure> </listitem>
+<listitem>Output similar to the following will typically be written to the Virtuoso Server log, detailing the backup and restore processes.
+<programlisting>12:46:41 Checkpoint made, log reused
+12:46:41 Starting online backup from page 1 to 8875
+13:00:04 PL LOG: S3 upload /backup-my-virtuoso/virt-backup1.bp
+13:04:06 PL LOG: S3 upload /backup-my-virtuoso/virt-backup-descriptor.ini
+13:08:23 Checkpoint made, log reused
+13:08:23 Checkpoint made, log reused
+13:08:23 Starting online backup from page 1 to 8875
+13:20:01 PL LOG: S3 upload /backup-my-virtuoso/virt-backup2.bp
+13:20:05 PL LOG: S3 upload /backup-my-virtuoso/virt-backup-descriptor.ini
+14:03:33 PL LOG: Starting restore operation.
+14:03:33 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup-descriptor.ini
+14:03:33 PL LOG: Downloading set 0x7CA7-0xD3-0x3C in ./, 2 files
+14:03:33 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup1.bp
+14:03:56 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup2.bp
+14:03:56 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup-extra.tgz
+14:03:56 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup-descriptor.ini
+14:03:57 PL LOG: Download complete.
+14:35:59 PL LOG: Starting restore operation.
+14:35:59 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup-descriptor.ini
+14:36:00 PL LOG: Downloading set 0x7CA7-0xD3-0x3C in ./, 2 files
+14:36:00 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup1.bp
+14:36:29 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup2.bp
+14:36:30 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup-extra.tgz
+14:36:30 PL LOG: Downloading s3://backup-my-virtuoso/virt-backup-descriptor.ini
+14:36:30 PL LOG: Download complete.
+14:36:39 PL LOG: Reassembling new database from backup files.
+14:36:43 PL LOG: Reassembly complete - saved as restore-tmp.db
+14:36:43 Server received signal 20. Continuing with the default action for that signal.
+14:36:43 PL LOG: Executing checkpoint.
+14:36:43 Checkpoint made, log reused
+14:36:43 PL LOG: The server is now restarting using the restored database.
+14:36:48 Checkpoint made, log reused
+14:36:48 Server shutdown complete
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtEBSBackedBYOLAMI">EBS-backed BYOL (&quot;Bring Your Own License&quot;) Virtuoso EC2 AMI</ulink> </listitem>
+</itemizedlist></section></docbook>

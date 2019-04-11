@@ -1,0 +1,278 @@
+<docbook><section><title>VirtTipsAndTricksVOSvsCommercialEdition</title><title>VOS vs Commercial Edition Features</title>VOS vs Commercial Edition Features
+<para>The following Guide presents collection of Virtuoso VOS/Commercial Edition Supported Features examples usage and hints.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Simple SPARQL based Data Integration Example</bridgehead>
+<para> The following example showcase the combined effects of:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>SPARQL Named Graphs (think: Table Names in SQL).
+</listitem>
+<listitem>SPARQL 1.1 Property Paths . </listitem>
+<listitem>Reasoning .</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">The vCard Address Book Dataset</bridgehead>
+<para>Assume the following Address Book data constructed using terms from the vCard vocabulary:</para>
+<programlisting>&lt;#vcardRick&gt; 
+&lt;http://www.w3.org/2006/vcard/ns#given-name&gt; &quot;Richard&quot; ;
+&lt;http://www.w3.org/2006/vcard/ns#family-name&gt; &quot;Mutt&quot; ; 
+&lt;http://www.w3.org/2006/vcard/ns#email&gt; &lt;mailto:rick@selavy.org&gt;. 
+
+&lt;#vcardAl&gt;   
+&lt;http://www.w3.org/2006/vcard/ns#given-name&gt; &quot;Alan&quot; ;
+&lt;http://www.w3.org/2006/vcard/ns#family-name&gt; &quot;Smithee&quot; ; 
+&lt;http://www.w3.org/2006/vcard/ns#email&gt; &lt;mailto:alan@paramount.com&gt;. 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">The FOAF Address Book Dataset</bridgehead>
+<para>Assume the following Address Book data constructed using terms from the FOAF vocabulary:</para>
+<programlisting>&lt;#foafBill&gt;   
+&lt;http://xmlns.com/foaf/0.1/givenName&gt; &quot;Billy&quot; ;
+&lt;http://xmlns.com/foaf/0.1/familyName&gt; &quot;Shears&quot; ; 
+&lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;mailto:bill@northernsongs.org&gt;. 
+
+&lt;#foafNate&gt; 
+&lt;http://xmlns.com/foaf/0.1/givenName&gt; &quot;Nanker&quot; ;
+&lt;http://xmlns.com/foaf/0.1/familyName&gt; &quot;Phelge&quot; ;
+&lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;mailto:nate@abkco.com&gt;. 
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Define the Problem</bridgehead>
+<para>In the data management realm, data definition eternally varies across designers, applications, and systems in general.
+In this simple example we have two Address Books containing the same data, but modeled using two different vocabularies (i.e., vCard and FOAF).
+ This kind of &quot;data definition-induced disparity&quot; makes accurate data access, integration, and dissemination unnecessarily difficult, and serves as a powerful (albeit often unintentional) generator of data silos.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">The Solution</bridgehead>
+<para>We can work around this by using the expressive power of SPARQL to declaratively exploit entity relationship model-based data structure and machine-readable entity relationship semantics, as delivered by RDF.
+ Basically, our query expressions will deliver identical query results, using properties from either ontology.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">How It&#39;s Done</bridgehead>
+<para>Simply, we create an additional dataset, that holds mappings between the properties defined by the two vocabularies, vCard and FOAF.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Step 1.: vCard to FOAF Mapping Dataset</bridgehead>
+<para> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A mapping oriented Data Object constructed using terms from the OWL Ontology to describe entity relationship semantics.
+</listitem>
+<listitem>This data object is comprised of statments (triples) that map certain properties across the vCard and FOAF vocabularies.
+</listitem>
+<listitem>These mappings express machine readable entity relationship semantics usable by a Reasoner to produce (by inference) smart query results: <programlisting>&lt;http://xmlns.com/foaf/0.1/givenName&gt;  &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; . 
+&lt;http://xmlns.com/foaf/0.1/familyName&gt; &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; . 
+&lt;http://xmlns.com/foaf/0.1/mbox&gt;       &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#email&gt;. 
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Step 2 Load Data</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5">Step 2.1: Loading Data from Turtle Files using SPARQL 1.1 LOAD Command</bridgehead>
+<para>SPARQL 1.1 offers a LOAD command that provides an alternative to SPARQL 1.1 INSERT with regards to data load operations.
+ For this guide, the steps would be as follows:</para>
+<orderedlist spacing="compact"><listitem>Copy and paste the Turtle content for each data source above into its own file, and save with an obvious name to a network accessible directory/folder, e.g., vcard_addressbook.ttl, foaf_addressbook.ttl, and vcard_foaf_mappings.ttl.
+</listitem>
+<listitem>Open a Virtuoso SPARQL interface using /sparql-auth or /sparql-oauth or /sparql-webid -- each of which will provide authenticated access to Virtuoso&#39;s RDF store using an identity associated with DBMS operation privileges . </listitem>
+<listitem>Execute the SPARQL 1.1 LOAD command for each file using the pattern: <programlisting>LOAD &lt;turtle-document-URL&gt; INTO &lt;named-graph-IRI&gt;
+</programlisting></listitem>
+<listitem>Example of these hyperlinks (URLs) denote the Turtle documents created in Kingsley&#39;s personal data space: <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://kingsley.idehen.net/DAV/home/kidehen/Public/Linked%20Data%20Documents/vcard_addressbook.ttl">vcard_addressbook.ttl</ulink> </listitem>
+<listitem><ulink url="http://kingsley.idehen.net/DAV/home/kidehen/Public/Linked%20Data%20Documents/foaf_addressbook.ttl">foaf_addressbook.ttl</ulink> </listitem>
+<listitem><ulink url="http://kingsley.idehen.net/DAV/home/kidehen/Public/Linked%20Data%20Documents/vcard_foaf_mapping.ttl">vcard_foaf_mapping.ttl</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>The actual LOAD commands are: <programlisting>LOAD &lt;http://../vcard_addressbook.ttl&gt; INTO &lt;urn:sparql:fed:demo:vcard:addressbook&gt;
+LOAD &lt;http://../foaf_addressbook.ttl&gt; INTO &lt;urn:sparql:fed:demo:foaf:addressbook&gt;
+LOAD &lt;http://../vcard_foaf_mapping.ttl&gt; INTO &lt;urn:sparql:fed:demo:terms:mapping&gt;
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h5">Step 2.2: Loading Data into a Virtuoso RDF Store/DBMS via INSERT commands</bridgehead>
+<para>Example usage of Virtuoso&#39;s SPASQL (SQL+SPARQL hybrid language) and SPARQL 1.1&#39;s INSERT Language:</para>
+<orderedlist spacing="compact"><listitem>SPASQL <itemizedlist mark="bullet" spacing="compact"><listitem>Load data to create the vCard-based Address Book Data Object: <programlisting>SPASQL
+
+INSERT INTO GRAPH &lt;urn:sparql:fed:demo:vcard:addressbook&gt;
+  {
+    &lt;#vcardRick&gt; 
+    &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; &quot;Richard&quot; ;
+    &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; &quot;Mutt&quot; ; 
+    &lt;http://www.w3.org/2006/vcard/ns#email&gt; &lt;mailto:rick@selavy.org&gt;. 
+    
+    &lt;#vcardAl&gt;   
+    &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; &quot;Alan&quot; ;
+    &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; &quot;Smithee&quot; ; 
+    &lt;http://www.w3.org/2006/vcard/ns#email&gt; &lt;mailto:alan@paramount.com&gt;. 
+  } 
+</programlisting></listitem>
+<listitem>Load data to create the FOAF-based Address Book Data Object: <programlisting>INSERT INTO GRAPH &lt;urn:sparql:fed:demo:foaf:addressbook&gt;
+  {
+    &lt;#foafBill&gt;   
+    &lt;http://xmlns.com/foaf/0.1/givenName&gt; &quot;Billy&quot; ;
+    &lt;http://xmlns.com/foaf/0.1/familyName&gt; &quot;Shears&quot; ; 
+    &lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;mailto:bill@northernsongs.org&gt;. 
+    
+    &lt;#foafNate&gt; 
+    &lt;http://xmlns.com/foaf/0.1/givenName&gt; &quot;Nanker&quot; ;
+    &lt;http://xmlns.com/foaf/0.1/familyName&gt; &quot;Phelge&quot; ; 
+    &lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;mailto:nate@abkco.com&gt;.    
+  }
+</programlisting></listitem>
+<listitem>Load data to create the OWL-based vCard-to-FOAF mapping Data Object: <programlisting>INSERT INTO GRAPH &lt;urn:sparql:fed:demo:terms:mapping&gt; 
+  {
+    &lt;http://xmlns.com/foaf/0.1/givenName&gt;  &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; . 
+    &lt;http://xmlns.com/foaf/0.1/familyName&gt; &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; . 
+    &lt;http://xmlns.com/foaf/0.1/mbox&gt;       &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#email&gt;. 
+  }
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>SPARQL 1.1 <itemizedlist mark="bullet" spacing="compact"><listitem>Load data to create the vCard-based Address Book Data Object: <programlisting>INSERT 
+  { 
+    GRAPH &lt;urn:sparql:fed:demo:vcard:addressbook&gt;
+      {
+        &lt;#vcardRick&gt; 
+        &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; &quot;Richard&quot; ;
+        &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; &quot;Mutt&quot; ; 
+        &lt;http://www.w3.org/2006/vcard/ns#email&gt; &lt;mailto:rick@selavy.org&gt;. 
+        
+        &lt;#vcardAl&gt;   
+        &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; &quot;Alan&quot; ;
+        &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; &quot;Smithee&quot; ; 
+        &lt;http://www.w3.org/2006/vcard/ns#email&gt; &lt;mailto:alan@paramount.com&gt;. 
+     } 
+  }
+</programlisting></listitem>
+<listitem>Load data to create the FOAF-based Address Book Data Object: <programlisting>INSERT 
+  {
+    GRAPH &lt;urn:sparql:fed:demo:foaf:addressbook&gt;
+      {
+        &lt;#foafBill&gt;   
+        &lt;http://xmlns.com/foaf/0.1/givenName&gt; &quot;Billy&quot; ;
+        &lt;http://xmlns.com/foaf/0.1/familyName&gt; &quot;Shears&quot; ; 
+        &lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;mailto:bill@northernsongs.org&gt;. 
+        
+        &lt;#foafNate&gt; 
+        &lt;http://xmlns.com/foaf/0.1/givenName&gt; &quot;Nanker&quot; ;
+        &lt;http://xmlns.com/foaf/0.1/familyName&gt; &quot;Phelge&quot; ; 
+        &lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;mailto:nate@abkco.com&gt;.    
+      }
+  }
+</programlisting></listitem>
+<listitem>Load data to create the OWL-based vCard-to-FOAF mapping Data Object: <programlisting>INSERT 
+  {
+     GRAPH &lt;urn:sparql:fed:demo:terms:mapping&gt; 
+       {
+         &lt;http://xmlns.com/foaf/0.1/givenName&gt;  &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; . 
+         &lt;http://xmlns.com/foaf/0.1/familyName&gt; &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; . 
+         &lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; &lt;http://www.w3.org/2006/vcard/ns#email&gt;. 
+       }
+  }
+</programlisting> </listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Step 3.: Verify Data</bridgehead>
+<para>Irrespective of the method used to load data into your Virtuoso (or any other SPARQL compliant RDF store/database), you should verify the load was successful using the following commands:</para>
+<orderedlist spacing="compact"><listitem>vCard-based Address Book: <programlisting>SELECT * 
+FROM &lt;urn:sparql:fed:demo:vcard:addressbook&gt; 
+WHERE {?s ?p ?o} 
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/14Wz9Gt">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/YjM2Gu">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>FOAF-based Address Book: <programlisting>SELECT * 
+FROM &lt;urn:sparql:fed:demo:foaf:addressbook&gt; 
+WHERE {?s ?p ?o} 
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/XSzia2">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/XboTXq">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>vCard-to-FOAF mappings: <programlisting>SELECT * 
+FROM &lt;urn:sparql:fed:demo:terms:mapping&gt; 
+WHERE {?s ?p ?o} 
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/YvAWgr">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/14WzeKz">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Step 3.:Setting Up Inference Context</bridgehead>
+<para>Virtuoso requires the use of a SQL command to associate an Ontology with an Inference Rule.
+ Once this association is in place, you simply use the Virtuoso SPARQL processor&#39;s pragma feature to conditionally invoke reasoning based on the rules you want.</para>
+<para>For this exercise, we&#39;ll create the rule &quot;vcardTofoaf&quot; by executing the following command using Virtuoso&#39;s SQL processor via command-line or HTML variants of iSQL:</para>
+<programlisting>rdfs_rule_set (&#39;vcardTofoaf&#39;,&#39;urn:sparql:fed:demo:terms:mapping&#39;)
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Step 4.: SPARQL Queries Demonstrating Problem Solution</bridgehead>
+<orderedlist spacing="compact"><listitem>Reasoning Disabled: <programlisting>PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+
+SELECT ?email ?fn ?ln 
+FROM &lt;urn:sparql:fed:demo:foaf:addressbook&gt;
+FROM &lt;urn:sparql:fed:demo:vcard:addressbook&gt;
+WHERE 
+  { 
+    ?s foaf:firstName ?fn ;
+        foaf:lastName ?ln ;
+        foaf:email ?email . 
+  }
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/11KxyWs">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/VkER20">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Inference Context Enabled: <programlisting>## Reasoning Enabled ##
+DEFINE input:inference &quot;vcardTofoaf&quot;
+PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+
+SELECT ?s ?ln ?fn ?email
+FROM &lt;urn:sparql:fed:demo:foaf:addressbook&gt;
+FROM &lt;urn:sparql:fed:demo:vcard:addressbook&gt;
+WHERE 
+  { 
+    ?s foaf:familyName ?ln ;
+        foaf:givenName ?fn ;
+          foaf:mbox ?email . 
+  }
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/VYWRwj">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/XbpbO2">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Inline Inference using Property Paths: As an alternative to using the Virtuoso reasoner, and more cross SPARQL 1.1 compliant RDF store/dbms compatible, you can apply the vCard to FOAF ontology mappings inline -- courtesy SPARQL 1.1 property paths based query patterns: <programlisting>## Property Paths Query based mapping between vCard and FOAF ##
+## where &quot;*&quot; operator is used to deliver a magic predicate for inline mapping of ##
+## key FOAF ontology properties (givenName, familyName, and mbox) to vCard ontology properties. ##
+
+SELECT ?email ?fn ?ln
+WHERE 
+  { 
+    &lt;http://xmlns.com/foaf/0.1/givenName&gt; &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt;* ?given_nameProp .
+    &lt;http://xmlns.com/foaf/0.1/familyName&gt; &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt;* ?last_nameProp .
+    &lt;http://xmlns.com/foaf/0.1/mbox&gt;   &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt;* ?emailProp .
+    ?s ?given_nameProp ?fn ;
+        ?last_nameProp ?ln ;
+         ?emailProp ?email .
+  }
+
+LIMIT 10
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/WuB7ue">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/Xbpjgq">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Import an existing ontology (OWL/RDF)?</bridgehead>
+<para> Use one of these:</para>
+<orderedlist spacing="compact"><listitem><ulink url="virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger">Virtuoso Sponger</ulink> </listitem>
+<listitem>SPARQL LOAD -- via Conductor, iSQL, or /sparql-auth (which authenticates against SQL accounts) or /sparql-webid (on ssl port) for <ulink url="WebID">WebID</ulink> ACL based authentication</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Links</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://wiki.usnet.private/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksN3IsPropertyOfSyntaxInTurtle">Using {is property of} for inverse relations in Turtle</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Connect two or more databases (Oracle, Informix, Postgres)?</bridgehead>
+<para>Using the VDB layer via Conductor or ATTACH statement via SQL.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Links</bridgehead>
+<orderedlist spacing="compact"><listitem><ulink url="AttachingRemoteODBCAccessibleDataSources">http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtLinkRemoteTables</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSSQL2RDF">Linked Data Views</ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Create merged/unified classes?</bridgehead>
+<para>So for example, Person object from Oracle database A, and Person object from Informix database B should be able to be unified.</para>
+<para>Based on the above, you simply add triples to a TBox triples oriented named graph.
+ Example:</para>
+<programlisting>&lt;PersonEntityFromOracleURI&gt;   a foaf:Person .
+&lt;PersonEntityFromInformixURI&gt; a foaf:Person .
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Map the ontology classes to DB classes?</bridgehead>
+<para>Just more TBox triples, for example:</para>
+<programlisting>&lt;ClassGeneratedFromDBMSURI&gt;    owl:equivalentClass    &lt;SomeClassFromAnOntologyURI&gt; .
+&lt;ClassGeneratedFromDBMSURI&gt;    rdfs:subClassOf        &lt;SomeClassFromAnOntologyURI&gt; .
+&lt;PropertyGeneratedFromDBMSURI&gt; owl:equivalentProperty &lt;SomePropertyFromAnOntologyURI&gt; .
+&lt;PropertyGeneratedFromDBMSURI&gt; rdfs:subPropertyOf     &lt;SomePropertyFromAnOntologyURI&gt; .
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Add conditions mapping?</bridgehead>
+<para>For example, in a table, if a column is 1, the row represents a student, but if it&#39;s 2, the row represents a faculty member.
+ As this part of the R2RML or Native Linked Data Views declarations and it is in SPASQL, you can leverage CASE WHEN etc..</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Get data from web services and apply the same mapping to these services?</bridgehead>
+<para>This requires the Sponger Middleware component.
+ If we don&#39;t have a cartridge in place, then a custom cartridge can be developed.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Links</bridgehead>
+<orderedlist spacing="compact"><listitem><ulink url="http://uriburner.com">Virtuoso Public instance of the Sponger</ulink> </listitem>
+<listitem><ulink url="http://uriburner.com/sponger_architecture.vsp#how_it_works">How the sponger middleware runs</ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Provide RDF&#39;s to external systems?</bridgehead>
+<para>You have the following options:</para>
+<orderedlist spacing="compact"><listitem>SPARQL endpoint -- for systems that support SPARQL-FED or capable of de-referencing a SPARQL Protocol URL </listitem>
+<listitem>Saving Query output to a local or network drive -- you can even leverage the ability to save SPARQL Query Results to an HTTP accessible <ulink url="WebDAV">WebDAV</ulink> folder (once enabled via the conductor).</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<para> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLReasoningTutorial">Tutorial Demonstrating Reasoning via SPARQL</ulink> </listitem>
+<listitem><ulink url="http://www.snee.com/bobdc.blog/2012/04/simple-federated-queries-with.html">Bob DuCharme&#39;s original SPARQL demo/tutorial</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/TR/vcard-rdf/">vCard Vocabulary</ulink> </listitem>
+<listitem><ulink url="http://xmlns.com/foaf/0.1/">FOAF Vocabulary</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/2002/07/owl#">OWL Vocabulary (specifically defines entity relationship semantics e.g., equivalence)</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/Xk333m">An Introductory Turtle Notation Tutorial</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/VaX0zx">Other Turtle Notation Tutorials</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/Wk19i4">DBpedia Inference based Data Cleansing</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/W3iQoE">Exploiting the Power of OWL Entity Relationship Semantics via Linked Vocabularies</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/TR/sparql11-query/#propertypath-syntaxforms">SPARQL 1.1 Property Paths</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink></listitem>
+</itemizedlist></section></docbook>

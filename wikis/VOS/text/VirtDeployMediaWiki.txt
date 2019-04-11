@@ -1,0 +1,159 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+---+ Deploying MediaWiki on Virtuoso
+
+%TOC%
+
+---++What is <nowiki>MediaWiki</nowiki>?
+
+<nowiki>MediaWiki</nowiki> is a popular open-source wiki engine written in PHP. The guide below shows how to run it in Virtuoso.
+
+---+++Install VAD
+
+   1. Start virtuoso db using the hosting_php.so ( .dll for win users). To use this plugin, it must be included in your virtuoso ini file as follows:
+<verbatim>
+...
+[Plugins]
+# for ex. here the location of the plugins is the plugin folder
+LoadPath = ./plugin
+...
+Load6    = Hosting,hosting_php.so
+...
+</verbatim>
+   1. Setup "Local Virtuoso" DSN (note the empty space in the name!) in order to access any of the application URLs.
+      * For windows users, please perform the following steps:
+         1.  Go to Start >> Settings >> Control Panel >> Administrative Tools >> Data Sources (ODBC)
+         1. Go to tab "User DSN" and click "Add"
+         1. Select the "OpenLink Virtuoso (version)" driver and click "Finish"
+         1. Enter "Name": <nowiki><code>Local Virtuoso</code</nowiki>
+         1. Enter "Description": <nowiki><code>My Local Virtuoso</code</nowiki>
+         1. For "Server", enter your Virtuoso's hostname and ISQL port, e.g., <nowiki><code>localhost:1116</code</nowiki>
+         1. Click "Next"
+         1. Enter a username for "Login ID", e.g., <nowiki><code>dba</code</nowiki>
+         1. Enter the user's "Password". For dba, the default password is <nowiki><code>dba</code</nowiki>.
+         1. Click "Next"
+         1. Click "Finish".
+   1. From ISQL, execute:
+<verbatim>
+SQL> DB.DBA.VAD_INSTALL('tmp/mediawiki_fs.vad',0);
+</verbatim>
+This will install <nowiki>MediaWiki version 1.18.4 and Semantic MediaWiki version 1.8 </nowiki>.
+   1. Go to http://<em>yourvirtuosohost:port</em>/MediaWiki This will show the start page of the <nowiki>MediaWiki</nowiki> installer and will look like this: 
+<img src="%ATTACHURLPATH%/mw.png" style="wikiautogen"/>
+   1. Click the *complete the installation* link.  This will open a Language selection page.  
+<em>Tip:</em> If you have run the mediawiki installer before it may remember you settings and not start the installation from the beginning.  In this case you should click the *restart installation* link in the menu on the right hand side.
+<img src="%ATTACHURLPATH%/Install.png" style="wikiautogen"/>
+   1. Select your language and click the *Continue* button.  This will open the Welcome to <nowiki>MediaWiki</nowiki> page.  
+   1. About half way down the page there should be a green message saying *The environment has been checked. You can install MediaWiki.*  Click the *Continue* button at the bottom of the page.  This will take you to the Connect to Database page.
+   1. Virtuoso should be selected for you.  When using Virtuoso there are no further settings required so just click the *Continue* button.  
+   1. Setup the name of your wiki the and Administrator account.  Select *Ask me more questions* before clicking *Continue* to enable *VirtuosoAuth*.
+   1. On the Options page in the Extensions section select <nowiki>VirtuosoAuth</nowiki>.  Click *Continue*.
+   1. Once the tables have been created you will be propmpted to download LocalSetting.php. 
+<img src="%ATTACHURLPATH%/mediawiki.png" style="wikiautogen"/>
+   1. Move the downloaded LocalSettings.php  into <em>virtuoso</em> <em>installation</em> <em>folder</em>/vsp/vad/vsp/MediaWiki.
+   1. To enable <nowiki>VirtuosoAuth</nowiki> edit <nowiki>LocalSettings.php</nowiki> and add the following 
+<verbatim>
+enableVirtuosoAuth();
+</verbatim>
+after 
+<verbatim>
+require_once( "$IP/extensions/VirtuosoAuth/VirtuosoAuth.php" );
+</verbatim>
+   1. Click on the *enter your wiki* link or go to http://<em>yourvirtuosohost:port</em>/MediaWiki you should see something like this:
+<img src="%ATTACHURLPATH%/complete.png" style="wikiautogen"/>
+  
+
+
+---+++<nowiki>User Authentication with the VirtuosoAuth Extension</nowiki>
+
+<nowiki>The VirtuosoAuth extension extends the way users can be authenticated in MediaWiki.  
+
+With the extension enabled, usernames and passwords are authenticated by Virtuoso as well as MediaWiki.  What this means is that an existing Virtuoso user does not have to specifically set up a MediaWiki account, just use her Virtuoso username and password in the MediaWiki login dialog.  
+
+In addition, the extension allows users to authenticate themselves using an OpenId or WebID.  In either case a matching MediaWiki user is silently created the first time the user logins in.  In order to use a WebID you will need to have the ODS-Framework installed and your Virtuoso Server configured as an HTTPS listener.  
+
+In the case where authentication is via an OpenId or WebId and the username from the OpenId or WebId matches an existing MediaWiki username then the user is prompted for the mediawiki password.  The OpenId or WebId is then associated with that MediaWiki user.  
+
+If your instance of Virtuoso has the ODS-Framework installed then the VirtuosoAuth extension will attempt to authenticate users as ODS users.  Additionally, when a new mediawiki user is created an ODS account will also be created for that user.  New MediaWiki/ODS users can be created from a username and password or from an existing OpenId or WebId.</nowiki>
+
+---++++<nowiki>Using the VirtuosoAuth extension with a Private Wiki</nowiki>
+<nowiki>MediaWiki</nowiki> can be configured as a private wiki which means that users must be logged in to read any pages.  If you are using the VirtuosoAuth extension with a private wiki then the <nowiki>VirtuosoAuth</nowiki> login page must be added to the white list of pages that can be read before logging in.  This is done by adding the following line to LocalSettings.php
+<verbatim>
+$wgWhitelistRead = array( "Special:VOILogin" );
+</verbatim>
+
+---+++<nowiki>Installing Extensions on a Virtuoso Hosted MediaWiki</nowiki>
+
+Extensions let you customize how <nowiki>MediaWiki</nowiki> looks and works.  There are many extensions available to [[http://www.mediawiki.org/wiki/Special:ExtensionDistributor][download]]  from the <nowiki>MediaWiki</nowiki> web site.  For general instructions on installing extensions see the [[http://www.mediawiki.org/wiki/Manual:Extensions][Extensions manual page]].
+
+---++++Download the Extension. 
+ 
+Extensions can be downloaded using the the [[http://www.mediawiki.org/wiki/Special:ExtensionDistributor][Extensions Distributor]] or from the extensions page on the <nowiki>MediaWiki</nowiki> web site.
+
+<img src="%ATTACHURLPATH%/download1.png" style="wikiautogen"/>
+
+Select the required extension from the drop down list. Click the *Continue* button.  
+
+<img src="%ATTACHURLPATH%/download2.png" style="wikiautogen"/>
+
+If there are different versions of the extension available you can choose the one that matches your version of <nowiki>MediaWiki.  If you have installed the Virtuoso VAD then you have MediaWiki version 1.18</nowiki>.  Once you have selected the version click the *Continue* button.  You will then see a confirmation screen with some instructions for unpacking the download.  Your download should start automatically.
+
+<img src="%ATTACHURLPATH%/download3.png" style="wikiautogen"/>
+
+---++++Unpack the Extension
+
+Move the downloaded file to the extensions folder of your <nowiki>MediaWiki</nowiki> installation.  This will be in <i>your Virtuoso installation folder</i>/vsp/vad/vsp/MediaWiki/extensions. Unzip the extension.
+
+---++++Enable the Extension
+
+Extensions are enabled in the LocalSettings.php file in the root of your <nowiki>MediaWiki</nowiki> installation. Typically, this will mean adding a line similar to the following at the end of LocalSettings.php.
+<verbatim>
+require_once( "$IP/extensions/extension_name/extension_name.php" );
+</verbatim>
+Some extensions will have additional settings that can be modified by adding them to LocalSettings.php.  See the documentation for the particular extension that you are installing.
+
+For example, if you are installing the Widgets extension then you would add the following line to LocalSettings.php to enable it:
+<verbatim>
+require_once("$IP/extensions/Widgets/Widgets.php");
+</verbatim>
+
+The Widgets extension also needs the following to be set in LocalSettings.php:
+<verbatim>
+$wgGroupPermissions['sysop']['editwidgets'] = true;
+</verbatim>
+
+
+---+++Linked Data View Scripts
+
+After you have installed the <nowiki>MediaWiki</nowiki> mediawiki_fs.vad package you may want to set up Linked Data Views of the MediaWiki database tables.  The benefits of doing so are described in [[http://virtuoso.openlinksw.com/wiki/main/Main/MediaWikiSIOCRef][MediaWiki SIOC Reference]].
+
+Setting up the views is simply a matter of executing a script in ISQL.  The script is included in the MediaWiki VAD and can be found in <i>your Virtuoso installation folder</i>/vsp/vad/vsp/MediaWiki/maintenance/virtuoso/MediaWiki_rdf_views_script.sql 
+
+<verbatim>
+isql localhost:1116 dba dba MediaWiki_rdf_views_script.sql
+</verbatim>
+      * The <nowiki>MediaWiki</nowiki> Linked Data Views script can also be found [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtRDFViewMediaWiki][here]].
+
+
+---+++URI Schemes
+<verbatim>
+http://<your-instance-cname>/MediaWiki/user/<ods-user-id>
+</verbatim>
+
+---++Download
+
+   * Download the <nowiki>MediaWiki</nowiki> VAD package from [[https://virtuoso.openlinksw.com/download/][here]].
+
+---++References
+
+   * [[http://www.mediawiki.org/][MediaWiki]]
+
+---+++See Also
+
+   * [[http://virtuoso.openlinksw.com/wiki/main/Main/MediaWikiSIOCRef][MediaWiki SIOC Reference]]
+   * [[VirtDeploSemanticMediaWiki][Installing and Configuring SemanticMediaWiki using Virtuoso]]
+   * [[VirtDeployLinkedWikiV2][Installing and Configuring the LinkedWiki v2.0.1 Extension]]
+   * [[VirtDeployLinkedWikiV1][Installing and Configuring the LinkedWiki v1.0.1.2 Extension]]
+
+
+CategoryRDF CategorySIOC CategorySPARQL CategoryWiki  CategoryVirtuoso

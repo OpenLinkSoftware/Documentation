@@ -1,0 +1,14 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtuosoErrorMessageI"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="VirtuosoErrorMessageI"}%--><h1><a name="How do I recover from &quot;Invalid log entry in replay&quot; when transaction log is being replayed during server start?"></a> How do I recover from &quot;Invalid log entry in replay&quot; when transaction log is being replayed during server start? </h1>
+<p>A Virtuoso transaction log file may fail to replay, with an error of the form: <br><br></p><pre>11:42:57 Invalid log entry in replay. Delete transaction log virtuoso.trx or truncate at point of error. 
+Valid data may exist after this record. A log record begins with bytes 193 188 5 188 0. Error at offset 13205546
+11:42:57 Searching for the next valid header signature starting at 13205547
+11:42:57 No valid looking header found.
+11:42:57 Server exiting
+</pre><p> <br>This can be recovered by truncating to the transaction log to the reported error offset.</p><p>Users of Unix-like OS can use the built-in <code>dd</code> command; Windows users must first install <a href="http://sourceforge.net/projects/windd/" class="absuri">WinDD</a> or <a href="http://www.cygwin.com/" class="absuri">cygwin</a> to get the same functionality.</p><p>Given the error above, the recovery steps on a Unix-like OS would look like -- <br><br></p><pre># mv virtuoso.trx old.trx
+# dd if=old.trx of=new.trx bs=1 count=13205546
+13205546+0 records in
+13205546+0 records out
+# mv new.trx virtuoso.trx
+# virtuoso-iodbc-t -f
+</pre><p> <br>Restarting Virtuoso should now succeed.
+<br></p></div></body></html>

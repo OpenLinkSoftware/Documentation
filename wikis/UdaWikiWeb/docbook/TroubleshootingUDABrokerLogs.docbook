@@ -1,0 +1,66 @@
+<docbook><section><title>TroubleshootingUDABrokerLogs</title><para> </para><title> Interpreting Request Broker Logs </title> Interpreting Request Broker Logs 
+<para>Use the following guidelines to interpret Request Broker Log files.</para><programlisting>					 Tue Oct 15 2002
+</programlisting><para>Make sure the log date corresponds to the occurrence of the problem.</para><programlisting>12:25:46 using rulebook /home/openlink/32bit/v42/bin/oplrqb.ini
+</programlisting><para> Check the path to <computeroutput>oplrqb.ini</computeroutput>.
+ If you have multiple, <ulink url="MultiTier">MultiTier</ulink> installations, you need to ensure that the correct agents are spawned and the correct environment variables are employed.</para><programlisting>12:25:46 bound UDP protocol to 0.0.0.0.60001
+</programlisting><para> Check for UDP and &quot;address in use&quot; errors.
+ Use <computeroutput>netstat -a</computeroutput> and the <computeroutput>/etc/services</computeroutput> file to debug any problems that occur with the UDP port.
+ Likewise, insure that UDP is enabled on the client and server machines that produce UDP broadcast errors.</para><programlisting>12:25:46 bound TCP protocol to 0.0.0.0.5000
+</programlisting><para> Check for &quot;address already in use&quot; and other TCP port problems.
+ Use <computeroutput>netstat -a</computeroutput> and the <computeroutput>/etc/services</computeroutput> file to debug any problems that may occur.
+ In the event of a port conflict, you may change the Broker&#39;s <computeroutput>Listen</computeroutput> port.
+ You will find the <computeroutput>Listen</computeroutput> parameter in the <computeroutput>[Protocol TCP]</computeroutput> section of <computeroutput>oplrqb.ini</computeroutput>.
+ (Use <computeroutput>PortLow</computeroutput> in place of <computeroutput>Listen</computeroutput> in if running Multi-Tier Release 1.x or 3.x components; <computeroutput>Listen</computeroutput> did not exist in these versions.)</para><programlisting>12:25:46 using UDP address 192.168.11.116.0 for IPC
+</programlisting><para> Check for UDP and &quot;address in use&quot; errors.
+ Use <computeroutput>netstat -a</computeroutput> and the <computeroutput>/etc/services</computeroutput> file to debug any problems that occur with the UDP port.
+ Likewise, insure that UDP is enabled on the client and server machines that produce UDP broadcast errors.</para><programlisting>12:25:46 request broker started by openlink
+</programlisting><para> Brokers started by <computeroutput>root</computeroutput> may cause resource problems or Progress <computeroutput>login by batch</computeroutput> errors.
+ Search for &quot;batch&quot; and resource related problems later in the file.</para><programlisting>12:25:46 spawning /home/openlink/32bit/v42/bin/w3config/www_sv www_sv
+</programlisting><para> <computeroutput>www_sv</computeroutput> powers the Admin Assistant.
+ It uses the <computeroutput>HttpPort</computeroutput> set in the <computeroutput>www_sv.ini</computeroutput> file.
+ If &quot;address&quot; or other TCP port usage problems occur, run <computeroutput>netstat -a</computeroutput> and <computeroutput>/etc/services</computeroutput> to debug port conflicts.</para><para>If necessary, change the <computeroutput>HttpPort</computeroutput> in <computeroutput>~/openlink/bin/w3config/www_sv.ini</computeroutput> file.</para><programlisting>12:25:46 started persistent www_sv (pid=12219)
+12:25:53 oplushp2.usnet.private called (192.168.11.116.57431)
+12:25:53 request: domain=Progress 91C database=demo.db serveropts=
+12:25:53 connectopts=-S pro91c -N tcp -H oplushp2 user= opsys=unix readonly=0
+</programlisting><para> These parameters are read from the Data Source Name.
+ Check for inappropriate values.
+ Additionally, watch for &quot;<computeroutput>Broker cannot resolve your request</computeroutput>&quot; errors.
+ &quot;Request&quot; errors occur when the Domain name passed in this parameter list does not appear in the <computeroutput>[Domain Aliases]</computeroutput> section of <computeroutput>oplrqb.ini</computeroutput>.
+ You must create the appropriate alias in <computeroutput>oplrqb.ini</computeroutput>, or choose an existing alias.</para><programlisting>12:25:53 application=odbctest processid=12220
+12:25:53 solve mapping: pro91c:demo:blank:other:oplushp2.usnet.private:odbctest:rw
+12:25:53 using mapping: pro91c:*:*:*:*:*:*
+</programlisting><para> The Broker takes the abbreviated form of the domain alias and searches for matches in the <computeroutput>[Mapping Rules]</computeroutput> section of <computeroutput>oplrqb.ini</computeroutput>.
+ The Broker will use the appropriate rule to prohibit or permit access to the database.
+ You may encounter &quot;<computeroutput>Mapping not found</computeroutput>&quot; errors, if your alias does not have an associated rule.
+ Additionally, you may inadvertently create complex rules, which restrict your ability to connect.</para><programlisting>12:25:53 using [generic_pro91c] ServerProgram=pro91c_sv
+</programlisting><para> Most mapping rules will point the Broker to a <computeroutput>[generic_...]</computeroutput> agent configuration section.
+ This section passes the name of the database agent that is written to use the database&#39;s CLI.
+ It passes the location of database-specific environment variables, and it passes hard-coded connection parameters.
+ Problems may occur on this line, if the agent configuration section does not exist in <computeroutput>oplrqb.ini</computeroutput>.</para><programlisting>12:25:53 connect params: domain=Progress 91C db=demo.db serveropts=-T /tmp -d mdy -TB 31 -TM 31 -q -NL readonly=0
+12:25:53 connectopts=-S pro91c -N tcp -H oplushp2 user= opsys=unix machine=oplushp2.usnet.private application=odbctest
+</programlisting><para> This line shows the final list of parameters that will be used to establish the connection.
+ In essence, the Broker tosses out specific Data Source Name parameters if corresponding parameters are hard-coded in <computeroutput>oplrqb.ini</computeroutput>.
+ These hard-coded parameters can result in problems, if you forget they exist.
+ Typically, you will discover that you are connected to the wrong database, you are authenticated as the wrong user, or you are restricted to read-only access.
+ You may also experience authentication problems, which arise when <computeroutput>OpsysLogin</computeroutput> is enabled.
+ <computeroutput>OpsysLogin</computeroutput> uses operating system parameters to authenticate.
+ It does not recognize the typical database username and password.</para><programlisting>12:25:53 spawning /home/openlink/32bit/v42/bin/pro91c_sv generic_pro91c
+</programlisting><para> This line shows the agent that is spawned for the connection.
+ Problems occur if permissions prohibit spawning.
+ Problems also occur when the agent is not compatible with the operating system or the agent cannot be found.</para><programlisting>12:25:53 setting Environment PROGRESS91C
+12:25:53 change environment &#39;CURSOR_SENSITIVITY&#39; -&gt; &#39;LOW&#39;
+12:25:53 change environment &#39;DLC&#39; -&gt; &#39;/dbs2/progress/v91c&#39;
+12:25:53 change environment &#39;PROCFG&#39; -&gt; &#39;/dbs2/progress/v91c/progress.cfg&#39;
+</programlisting><para> The <computeroutput>[generic_...]</computeroutput> agent configuration section contains an <computeroutput>Environment</computeroutput> parameter.
+ This parameter passes the location of an <computeroutput>[Environment ...]</computeroutput> section.
+ This <computeroutput>[Environment ...]</computeroutput> section passes database-specific environment variables that are needed to establish the connection.
+ Problems arise when the <computeroutput>[Environment ...]</computeroutput> section does not exist in <computeroutput>oplrqb.ini</computeroutput>.</para><programlisting>12:25:53 asking agent for server handle
+</programlisting><para> &quot;<computeroutput>Server handle</computeroutput>&quot; errors occur when the preceding environment variables are incorrect.
+ If environment variables are correct, consult the knowledgebase for additional information.</para><programlisting>12:25:53 got it!
+12:25:53 asking agent for connection handle
+</programlisting><para> &quot;<computeroutput>Connection handle</computeroutput>&quot; errors occur when connection parameters are incorrect.
+ If the parameters are correct, consult the knowledgebase for additional information.</para><programlisting>12:25:53 got it!
+12:25:53 accepted blank@oplushp2.usnet.private.odbctest
+</programlisting><para> At this point, you are connected to the database.
+ However, a wide array of produce and database errors may occur at this point.
+ Consult the knowledgebase for the nature and description of these errors.</para><para> </para></section></docbook>

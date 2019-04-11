@@ -1,0 +1,153 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--></p>
+<!--Begin of %META:TOPICPARENT{name="SPARQLSponger"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="SPARQLSponger"}%--><h1><a name="Extending SPARQL IRI Dereferencing with Virtuoso Sponger Middleware"></a> Extending SPARQL IRI Dereferencing with Virtuoso Sponger Middleware</h1>
+<p>The Virtuoso SPARQL engine (called for brevity just SPARQL below) supports IRI Dereferencing, however it understands only RDF data; that is, it can retrieve only files containing RDF/XML-, Turtle-, or N3-serialized RDF data.
+ If the format is unknown, it will try mapping with the built-in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> metadata extractor.
+ In order to extend this feature for dereferencing web or file resources which naturally don&#39;t have RDF data (like PDF or JPEG files, for example), a special mechanism is provided in the SPARQL engine.
+ This mechanism is called RDF Mappers (Sponger Middleware) for translation of non-RDF data files to RDF.</p>
+<p>To instruct the SPARQL engine to call an RDF Mapper, the Mapper must be registered and set to be called for a given URL or MIME-type pattern.
+ In other words, when an unknown data format is received during the URL dereferencing process, the engine will look into a special registry (a table) to match either the MIME type or IRI using a regular expression; if a match is found, the mapper function will be called.</p>
+<h2><a name="Registry"></a> Registry</h2>
+<p>The table <code>DB.DBA.SYS_RDF_MAPPERS</code> is used for registering RDF Mappers.</p>
+<br><pre>CREATE TABLE DB.DBA.SYS_RDF_MAPPERS
+  (
+             RM_ID  INTEGER IDENTITY       ,  -- mapper ID, designate order of execution
+        RM_PATTERN  VARCHAR                ,  -- a REGEX pattern to match URL or MIME type
+           RM_TYPE  VARCHAR DEFAULT &#39;MIME&#39; ,  -- what property of the current resource to match: MIME or URL are supported at present
+           RM_HOOK  VARCHAR                ,  -- fully qualified PL function name, e.g., DB.DBA.MY_MAPPER_FUNCTION
+            RM_KEY  LONG VARCHAR           ,  -- API specific key to use
+    RM_DESCRIPTION  LONG VARCHAR           ,  -- Mapper description, free text
+        RM_ENABLED  INTEGER DEFAULT 1      ,  -- a flag integer, 0 or 1, to respectively include or exclude the given mapper from processing chain
+       PRIMARY KEY  (RM_TYPE, RM_PATTERN)
+  )
+;
+</pre><p> The current way to register/update/unregister a mapper is just a DML statement, e.g., <code>INSERT/UPDATE/DELETE</code>.</p>
+<h2><a name="Execution order and processing"></a> Execution order and processing</h2>
+<p>As said above, when SPARQL retrieves a resource with unknown content, it will look in the Mappers registry, and loop over every record having the <code>RM_ENABLED</code> flag set to true.
+ The sequence of look-up is based on ordering by the <code>RM_ID</code> column.
+ For every record, it will try matching the MIME type and/or URL against the <code>RM_PATTERN</code> value; if there is a match, the function specified in the <code>RM_HOOK</code> column will be called.
+ If the function doesn&#39;t exist or signals an error, the SPARQL engine will look at the next record.</p>
+<p>When does it stop looking? It will stop if the value returned by the mapper function is a positive or negative number.
+ If the return is negative, processing stops meaning no RDF was supplied; if the return is positive, the meaning is that RDF data was extracted; if a zero integer is returned, then SPARQL will look for next mapper.
+The mapper function may also return zero if it is expected that the next mapper in the chain will get more RDF data.</p>
+<p>If none of the mappers matches the signature (MIME type nor URL), the built-in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> metadata extractor will be called.</p>
+<h2><a name="Extension function"></a> Extension function</h2>
+<p>The mapper function is a Virtuoso PL stored procedure with the following signature:</p>
+<br><pre>THE_MAPPER_FUNCTION_NAME
+  (
+        IN  graph_iri                 VARCHAR,
+        IN  origin_uri                VARCHAR,
+        IN  destination_uri           VARCHAR,
+     INOUT  content                   VARCHAR,
+     INOUT  async_notification_queue  ANY,
+     INOUT  ping_service              ANY,
+     INOUT  keys                      ANY
+  )
+  {
+    -- do processing here
+    -- return -1, 0 or 1 (as explained above in Execution order and processing section)
+  }
+;
+</pre><p> </p>
+<h3><a name="Parameters"></a> Parameters</h3>
+<ul><li><b><code>graph_iri</code></b> - the target graph IRI </li>
+<li><b><code>origin_uri</code></b> - the current URI of processing </li>
+<li><b><code>destination_uri</code></b> - <code>get:destination</code> value </li>
+<li><b><code>content</code></b> - the resource content </li>
+<li><b><code>async_notification_queue</code></b> - if parameter <code>PingService</code> is specified in SPARQL section of the INI file, this is a pre-allocated asynchronous queue to be used to call ping service </li>
+<li><b><code>ping_service</code></b> - the URL of the ping service configured in parameter <code>PingService</code> is specified in SPARQL section of the INI file </li>
+<li><b><code>keys</code></b> - a string value contained in the <code>RM_KEY</code> column for given mapper, can be single string or serialized array, generally can be used as mapper specific data.</li>
+</ul><h3><a name="Return value"></a> Return value</h3>
+<ul><li><b><code>0</code></b> - no data was retrieved or some next matching mapper must extract more data </li>
+<li><b><code>+1</code></b> - data is retrieved; stop looking for other mappers </li>
+<li><b><code>-1</code></b> - no data is retrieved; stop looking for more data</li>
+</ul><h2><a name="Cartridges package content"></a> Cartridges package content</h2>
+<p>Virtuoso supplies the <code>cartridges_dav</code> VAD package as a cartridge for extracting RDF data from many popular Web resources and file types.
+ It can be installed (if not already) using <code>VAD_INSTALL</code> function or the Virtuoso Conductor; see <a href="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#vaddistr" class="absuri">the VAD chapter in the documentation</a> for details on how this can be done.</p>
+<h3><a name="HTTP-in-RDF"></a> HTTP-in-RDF</h3>
+<p>Maps the HTTP request response to <a href="http://www.w3.org/2006/http#" class="absuri">HTTP Vocabulary in RDF</a>.</p>
+<p>This mapper is disabled by default.
+ If enabled, it must be first in the order of execution.</p>
+<p>Also it will always return 0, which means any other mapper should push more data.</p>
+<h3><a name="HTML"></a> HTML</h3>
+<p>This mapper is composite and looks for metadata which can specified in HTML pages as follows:</p>
+<ul><li>Embedded/linked RDF <ul><li>scan for meta in RDF <code>&lt;link rel=&quot;meta&quot; type=&quot;application/rdf+xml&quot;&gt;</code> </li>
+<li>RDF embedded in xHTML (as markup or inside XML comments)</li>
+</ul></li>
+</ul><ul><li>Micro-formats <ul><li>GRDDL - GRDDL Data Views: RDF expressed in XHTML and XML - <a href="http://www.w3.org/2003/g/data-view#" class="absuri">http://www.w3.org/2003/g/data-view#</a> </li>
+<li>eRDF - <a href="http://purl.org/NET/erdf/profile" class="absuri">http://purl.org/NET/erdf/profile</a> </li>
+<li>RDFa </li>
+<li>hCard - <a href="http://www.w3.org/2006/03/hcard" class="absuri">http://www.w3.org/2006/03/hcard</a> </li>
+<li>hCalendar - <a href="http://dannyayers.com/microformats/hcalendar-profile" class="absuri">http://dannyayers.com/microformats/hcalendar-profile</a> </li>
+<li>hReview - <a href="http://dannyayers.com/micromodels/profiles/hreview" class="absuri">http://dannyayers.com/micromodels/profiles/hreview</a> </li>
+<li>relLicense - CC license: <a href="http://web.resource.org/cc/schema.rdf" class="absuri">http://web.resource.org/cc/schema.rdf</a> </li>
+<li>Dublin Core (DCMI) - <a href="http://purl.org/dc/elements/1.1/" class="absuri">http://purl.org/dc/elements/1.1/</a> </li>
+<li>geoURL - <a href="http://www.w3.org/2003/01/geo/wgs84_pos#" class="absuri">http://www.w3.org/2003/01/geo/wgs84_pos#</a> </li>
+<li>Google Base - <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso specific mapping </li>
+<li>Ning Metadata -</li>
+</ul></li>
+</ul><ul><li>Feeds extraction <ul><li>RSS/RDF - SIOC &amp; <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> </li>
+<li>RSS 1.0 - RSS/RDF, SIOC, &amp; <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a> </li>
+<li>Atom 1.0 - RSS/RDF, SIOC, &amp; <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a></li>
+</ul></li>
+</ul><ul><li>RSS/RDF: <a href="http://purl.org/rss/1.0/" class="absuri">http://purl.org/rss/1.0/</a></li>
+</ul><ul><li>SIOC: <a href="http://rdfs.org/sioc/ns#" class="absuri">http://rdfs.org/sioc/ns#</a></li>
+</ul><ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/AtomOWL" class="wikiword">AtomOWL</a>: <a href="http://atomowl.org/ontologies/atomrdf#" class="absuri">http://atomowl.org/ontologies/atomrdf#</a></li>
+</ul><ul><li>xHTML metadata transformation using FOAF (<code>foaf:Document</code>) and Dublin Core properties (<code>dc:title</code>, <code>dc:subject</code>, etc.)</li>
+</ul><ul><li>FOAF: <a href="http://xmlns.com/foaf/0.1/" class="absuri">http://xmlns.com/foaf/0.1/</a></li>
+</ul><p>The HTML page mapper will look for RDF data in the order listed above.
+ It will try to extract metadata at each step, and will return a positive flag if any step returns RDF data.
+ In cases where the page URL matches some of the other RDF mappers listed in the registry, it will return <code>0</code> so the next mapper can attempt to extract more data.
+ In order to function properly, this mapper must be executed before any other specific mappers.</p>
+<p> </p>
+<h3><a name="Flickr URLs"></a> Flickr URLs</h3>
+<p>This mapper extracts metadata of the Flickr images, using Flickr REST API.
+ To function properly it must have a configured key.
+The Flickr mapper extracts metadata using: CC license, Dublin Core, Dublin Core Metadata Terms, GeoURL, FOAF, <a href="http://www.w3.org/2003/12/exif/ns/" class="absuri">EXIF ontology</a>.</p>
+<h3><a name="Amazon URLs"></a> Amazon URLs</h3>
+<p>This mapper extracts metadata from Amazon articles, using Amazon REST API.
+ It needs a Amazon API key in order to function.</p>
+<h3><a name="eBay URLs"></a> eBay URLs</h3>
+<p>Implements eBay REST API for extracting metadata from eBay articles, it needs a key and user name to be configured in order to work.</p>
+<h3><a name="Open Office (OO) documents"></a> Open Office (OO) documents</h3>
+<p>The OO documents contains metadata which can be extracted using UNZIP, so this extractor needs Virtuoso&#39;s unzip plugin to be configured on the server.</p>
+<h3><a name="Yahoo traffic data URLs"></a> Yahoo traffic data URLs</h3>
+<p>Implements transformation of the result of Yahoo traffic data to RDF.</p>
+<h3><a name="iCal files"></a> iCal files</h3>
+<p>Transform iCal files to RDF as per &lt;<a href="http://www.w3.org/2002/12/cal/ical#" class="absuri">http://www.w3.org/2002/12/cal/ical#</a>&gt;.</p>
+<h3><a name="Binary content, PDF, PowerPoint"></a> Binary content, PDF, PowerPoint</h3>
+<p>Unknown binary content, PDF, and Microsoft PowerPoint files can be transformed to RDF using <a href="http://aperture.sourceforge.net/" class="absuri">the Aperture framework</a>.
+ This mapper needs Virtuoso with Java hosting support, Aperture framework, and the <code>MetaExtractor.class</code> installed on the host system in order to work.</p>
+<p>The Aperture framework and the <code>MetaExtractor.class</code> must be installed on the system before the RDF mappers package is installed.
+ If the RDF Mappers package was previously installed, then to activate this mapper, you can just re-install the VAD.</p>
+<h4><a name="Setting-up Virtuoso with Java hosting to run Aperture framework"></a> Setting-up Virtuoso with Java hosting to run Aperture framework</h4>
+<ol><li>Install Virtuoso with Java hosting.
+</li>
+<li>Download the Aperture framework from <a href="http://aperture.sourceforge.net" class="absuri">http://aperture.sourceforge.net</a>.
+</li>
+<li>Unpack in the Virtuoso working directory, e.g., where the database file is, and make a symbolic link &#39;<code>lib</code>&#39; to it </li>
+<li>Configure in the INI <code>[Parameters]</code> section <br><pre><br>JavaClasspath = lib/sesame-2.0-alpha-3.jar:lib/openrdf-util-crazy-debug.jar:lib/htmlparser-1.6.jar:lib/activation-1.0.2-upd2.jar:lib/bcmail-jdk14-132.jar:lib/poi-scratchpad-3.0-alpha2-20060616.jar:lib/openrdf-model-2.0-alpha-3.jar:lib/jacob-1.10-pre4.jar:lib/bcprov-jdk14-132.jar:lib/demork-2.0.jar:lib/commons-codec.jar:lib/fontbox-0.1.0-dev.jar:lib/pdfbox-0.7.3.jar:lib/applewrapper-0.1.jar:lib/junit-3.8.1.jar:lib/winlaf-0.5.1.jar:lib/aperture-test-2006.1-alpha-3.jar:lib/openrdf-util-fixed-locking.jar:lib/commons-logging-1.1.jar:lib/mail-1.4.jar:lib/aperture-2006.1-alpha-3.jar:lib/poi-3.0-alpha2-20060616.jar:lib/ical4j-cvs20061019.jar:lib/openrdf-util-2.0-alpha-3.jar:lib/rio-2.0-alpha-3.jar:lib/poi-contrib-3.0-alpha2-20060616.jar:lib/aperture-examples-2006.1-alpha-3.jar:.
+</pre><br></li>
+<li>Make sure the <code>MetaExtractor.class</code> is in the Virtuoso working directory </li>
+<li>Start the Virtuoso server with Java hosting support </li>
+<li>Connect with the ISQL tool to check if the installation is complete: <br><pre><br>SQL&gt; DB.DBA.import_jar (NULL, &#39;MetaExtractor&#39;, 1);
+
+Done. -- 466 msec.
+SQL&gt; select &quot;MetaExtractor&quot;().getMetaFromFile (&#39;some_pdf_in_server_working_dir.pdf&#39;, 5);
+... some RDF must be returned ...
+</pre><br> <i><b>Important:</b> The above is verified to work with <code>aperture-2006.1-alpha-3</code> on a Linux system.
+ For different versions of Aperture and/or operating system, this may need some adjustments, e.g., to re-build MetaExtractor.class, change <code>CLASSPATH</code>, etc.
+ </i></li>
+</ol><h3><a name="Examples &amp; tutorials"></a> Examples &amp; tutorials</h3>
+<p>How to write your own RDF mapper? Look at the Virtuoso tutorial <a href="http://demo.openlinksw.com/tutorial/rdf/rd_s_1/rd_s_1.vsp" class="absuri">RDF Cartridges (RDF Mappers or RDFizers)</a>.</p>
+<p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/SPARQLSponger" class="wikiword">Virtuoso SPARQLSponger</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSpongerCartridgeRDFExtractor" class="wikiword">Sponger Cartridge RDF Extractor</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtProgrammerGuideRDFCartridge" class="wikiword">RDF Cartridge Programmer Guide</a></li>
+</ul><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a></p>
+<!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--><p> </p>
+</div></body></html>

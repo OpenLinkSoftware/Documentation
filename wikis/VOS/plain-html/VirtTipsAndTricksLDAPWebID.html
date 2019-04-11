@@ -1,0 +1,144 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I use LDAP based"></a>How can I use LDAP based WebIDs<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebIDs&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a>?</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%3F">What?</a></li> <li><a href="#Why%3F">Why?</a></li> <li><a href="#How%3F">How?</a></li>
+<ul><li><a href="#Basic%20steps%20for%20setting%20up%20LDAP%20Server%2C%20generating%20and%20importing%20certificate%20with">Basic steps for setting up LDAP Server, generating and importing certificate with</a></li> <li><a href="#Verification%20Tests">Verification Tests</a></li> <li><a href="#Other%20Examples">Other Examples</a></li><ul><li><a href="#cURL%20Examples">cURL Examples</a></li> </ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What?"></a>What?</h2>
+<p>Use of LDAP scheme  (ldap:) URIs as bona fide WebIDs<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebIDs&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> that are verifiable using the WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> protocol.</p>
+<h2><a name="Why?"></a>Why?</h2>
+<p>As a protocol, WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> is about verifying Identity via de-referencable URIs for Agents (people, organizations, programs).
+ Thus, bearing in mind the multi scheme essence of URIs, and the fact that many existing systems already leverage X.500 names as part of LDAP setups, its vital that WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> usage extends naturally to these setups; especially, when introducing WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> to organizations, unobtrusively.</p>
+<h2><a name="How?"></a>How?</h2>
+<p> The steps that follow walk you through the process of generating an X.509 Certificate that has an ldap: URI value in the Subject Alternate Name (SAN) and then using this Certificate to verify Identity using the WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> protocol.</p>
+<p> </p>
+<h3><a name="Basic steps for setting up LDAP Server, generating and importing certificate with"></a>Basic steps for setting up LDAP Server, generating and importing certificate with WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> in the LDAP server</h3>
+<ol><li><a href="http://docs.openlinksw.com/virtuoso/htmlconductorbar.html#dbusersandgroupsldap" class="absuri">Setup LDAP to Virtuoso instance binding via Conductor UI</a>.
+</li>
+<li>As LDAP query works based on the attribute=value from profile, perform LDAP lookup test: <ol><li>Access the following URL: <br><pre><br>https://mail.openlinksw.com/ldapinfo.php?dn=uid=john,ou=Accounts,o=OpenLink%20Software,c=US
+</pre><br><br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid1.png"><br><br> </li>
+<li>Post successful authentication should show the user details: <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid2.png"><br><br> </li>
+</ol></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup" class="absuri">Set up of an X.509 certificate issuer and HTTPS listener</a> </li>
+<li>Generate certificate with LDAP based WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> <a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate" class="absuri">via ODS</a> or another method, by placing LDAP: scheme URI in SAN of the Certificate to be generate, for ex: <br><pre><br>ldap://mail.openlinksw.com/cn=John%20Smith%2Cou=Accounts%2Co=OpenLink%20Software%2Cc=US
+</pre><br><br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid3.png"><br><br> <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid4.png"><br><br> </li>
+<li>Convert from p12 to DER format: Suppose the certificate generated from the previous step is exported as p12 format . To convert it to DER format, one should perform the following commands: <br><pre><br>openssl pkcs12 -in mykey.p12 -nokeys &gt; mykey.pem
+
+openssl x509 -in mykey.pem -outform DER &gt; mykey.crt
+
+</pre><br></li>
+<li>LDAP Setup: <ol><li>Start LDAP manager UI e.g.
+ <a href="http://mail.openlinksw.com" class="absuri">http://mail.openlinksw.com</a> </li>
+<li>Post successful authentication click on Profile </li>
+<li>Update the &quot;Country&quot; and &quot;Company&quot; (Organization) fields if empty <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid5.png"><br><br> </li>
+<li>Go to security section as import X.509 Cert so that DN is now associated with a Public Key.
+<br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid6.png"><br><br> </li>
+</ol></li>
+<li>The LDAP based WebId<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebId&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> is ready to be used.</li>
+</ol><h3><a name="Verification Tests"></a>Verification Tests</h3>
+<ol><li>Make sure the steps from above are performed.
+</li>
+<li>If you generated Cert.
+ using ODS and enabled WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> login, attempt a WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> login: <ol><li>Access <a href="https://id.myopenlink.net/ods" class="absuri">https://id.myopenlink.net/ods</a> </li>
+<li>Select when prompted from your browser, the certificate generated from above.
+<br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid7.png"><br><br> </li>
+<li>As result should be presented the ODS Log in form.
+ Click the &quot;WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> Login&quot; <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid10.png"><br><br> </li>
+<li>Post successful authentication should show ODS home page for the logged in user </li>
+</ol></li>
+<li>Access <a href="https://id.myopenlink.net/ods/webid_demo.html" class="absuri">https://id.myopenlink.net/ods/webid_demo.html</a> <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid7.png"><br><br> <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid8.png"><br><br> </li>
+<li>Click &quot;Check&quot; </li>
+<li>The verification result message should be shown: <br><br><img src="VirtTipsAndTricksLDAPWebID/ldapwebid9.png"><br><br></li>
+</ol><h3><a name="Other Examples"></a>Other Examples</h3>
+<h4><a name="cURL Examples"></a>cURL Examples</h4>
+<b>Example with No Certificate using the  WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> Testing Service endpoint at <code> <a href="https://host/ods/webid_check.vsp" class="absuri">https://host/ods/webid_check.vsp</a> </code></b><br><br> <br><pre>$ curl -i -k   https://localhost:4433/ods/webid_check.vsp?callback=http://localhost:8894/myapp/
+HTTP/1.1 302 Found
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 24 May 2011 11:15:09 GMT
+Accept-Ranges: bytes
+Location: http://localhost:8894/myapp/?error=noCert&amp;ts=2011-05-24T13%3A15%3A09%2B02%3A00&amp;signature=rT1gooyUcPjWo3yhIdx7y8j05oM%3
+Content-Length: 0
+</pre><p> <br><br><b>Example with Valid WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a></b> </p>
+<br><pre>
+$ openssl pkcs12 -in mykey.p12 &gt; mykey2.pem
+
+$ curl -i -k --cert mykey2.pem  https://localhost:4433/ods/webid_check.vsp?callback=http://localhost:8894/myapp/
+Enter PEM pass phrase:
+HTTP/1.1 302 Found
+Server: Virtuoso/06.02.3129 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 24 May 2011 13:47:08 GMT
+Accept-Ranges: bytes
+Location: http://localhost:8894/myapp/?webid=http%3A%2F%2Flocalhost:8894%2Fdataspace%2Fperson%2Fdemo%23this&amp;ts=201
+00001-04%3A00&amp;signature=7KYzL7vwpH2LtF4bZ%2FtAEWCC8gY%3D
+Content-Length: 0
+
+</pre><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://www.youtube.com/watch?v=gzqHVUb3qrw&feature=share" class="absuri">Power of WebID + OpenID Hybrid Protocol via Internet Explorer &amp; Windows</a> </li>
+<li><a href="http://www.youtube.com/watch?v=eXoxUo7Py4M&feature=share" class="absuri">Using Safari to Demonstrate WebID + OpenID Hybrid Protocol Power!</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP" class="absuri">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy" class="absuri">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSecurityWebID" class="wikiword">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLEndpointProtection" class="wikiword">Safeguarding your Virtuoso-hosted SPARQL Endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpointProtection" class="wikiword">SPARQL Endpoint Protection Methods Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/" class="absuri">Virtuoso documentation</a> <ul><li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint" class="absuri">SPARQL Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri" class="absuri">Service Endpoint Security</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl" class="absuri">Managing a SPARQL Web Service Endpoint</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">SPARQL</a> </li>
+</ul></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLDET" class="wikiword">SPARQL Endpoint DET Configuration Guide</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideSPARQLEndpoints" class="wikiword">Securing SPARQL endpoints</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth" class="absuri">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Virtuoso Authentication Server UI</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLSSL" class="wikiword">Manage a SPARQL-WebID based Endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSetupSSL" class="wikiword">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL" class="absuri">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID" class="absuri">WebID Protocol Support in OpenLink Data Spaces</a>.
+</li>
+<li>Manage ODS Datadspaces Objects WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a> Access Control Lists (ACLs): <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID" class="absuri">ODS Briefcase WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson" class="absuri">Person Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup" class="absuri">Group Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic" class="absuri">Public WebID based ACL Guide</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL" class="absuri">ODS Feed Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL" class="absuri">ODS Calendar WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL" class="absuri">ODS Bookmark Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL" class="absuri">ODS Addressbook  WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson" class="absuri">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup" class="absuri">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic" class="absuri">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup" class="absuri">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub" class="absuri">Setting up PubSubHub in ODS</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub" class="absuri">PubSubHubBub Demo Client Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub" class="absuri">Feed subscription via PubSubHub protocol Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL" class="absuri">Setting Up PubSubHub to use WebID Protocol or IP based control lists</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport" class="absuri">CA Keys Import using Conductor</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate" class="absuri">Generate an X.509 Certificate hosted WebID Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore" class="absuri">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore" class="absuri">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile" class="absuri">ODS Briefcase WebID Protocol Share File Guide</a> </li>
+<li><a href="http://esw.w3.org/topic/foaf+ssl" class="absuri">WebID Protocol Specification</a> </li>
+<li><a href="https://foaf.me/simpleLogin.php" class="absuri">Test WebID Protocol Certificate page</a> </li>
+<li><a href="http://test.foafssl.org/cert/" class="absuri">WebID Protocol Certificate Generation page</a> </li>
+<li><a href="http://openid4.me/" class="absuri">openid4.me</a> -- An early WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a>+<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenID" class="wikiword">OpenID</a> implementation that isn&#39;t currently functional, but still provides good insights into the inner workings of WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a>+<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenID" class="wikiword">OpenID</a> </li>
+<li><a href="http://openid-demo.appspot.com/" class="absuri">A nice OpenID service for testing the prowess of OpenID+WebID</a> </li>
+<li>An WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtTipsAndTricksLDAPWebID" class="wikiword">?</a>+<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenID" class="wikiword">OpenID</a> protocol demo using ODS ...
+<ul><li><a href="http://www.youtube.com/watch?v=mjgXsjd8PDE" class="absuri">... through Firefox on Mac OS X</a> </li>
+<li><a href="http://www.youtube.com/watch?v=eXoxUo7Py4M" class="absuri">... through Safari on Mac OS X</a> </li>
+<li><a href="http://www.youtube.com/watch?v=gzqHVUb3qrw" class="absuri">... through IE on Windows</a> </li>
+</ul></li>
+<li><a href="http://goo.gl/oBYFD" class="absuri">Using WebID from an iOS5 device (iPhone or iPad) with Twitter as the Identity Provider (IdP) service</a></li>
+</ul></div></body></html>

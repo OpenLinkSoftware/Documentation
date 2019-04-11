@@ -1,0 +1,121 @@
+%META:TOPICPARENT{name="VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF"}%
+
+---+ Twitter Cartridge - Configuration Guidelines and Implementation Notes
+
+%TOC% 
+
+---++ Introduction
+
+Virtuoso's Cartridges VAD includes two Sponger cartridges for Twitter, listed as "Twitter" and "Twitter v2" in Conductor's Sponger Configuration UI. The most recent of these, "Twitter v2" is written for the Twitter REST API and OAuth. The other earlier cartridge was written for a previous version of the Twitter API and uses basic HTTP authentication. It is disabled by default when the new cartridge is present. These notes, intended for a 'Sponger Administrator', provide configuration guidelines and brief implementation details for the new cartridge.
+
+---++Registering the Sponger as a Twitter Application
+
+Before you can obtain access tokens for the cartridge, you first need to register the Sponger as a Twitter application.
+
+   1 Register the Sponger using the [[https://dev.twitter.com/][Twitter Developers Application]]. 
+%BR%<img src="%ATTACHURLPATH%/twt1.png" />%BR%%BR%
+   1 Click "Create an app".   
+%BR%<img src="%ATTACHURLPATH%/twt2.png" />%BR%%BR%
+   1 In the presented form:
+      1 Specify application name, for example: <nowiki>'Sponger_{your_host_name}'</nowiki> ;
+      1 Specify your website ;
+      1 Specify callback URL: it must point to the Virtuoso /twitter_oauth Virtual Path defined when the [[https://virtuoso.openlinksw.com/download/][Cartridges]] VAD package is installed, e.g. http://{<i>your-virtuoso-host:port</i>}/twitter_oauth ;
+      1 Hatch the "Yes, I agree" check-box;
+      1 Enter the "CAPTCHA" words:
+%BR%<img src="%ATTACHURLPATH%/twt3.png" />
+%BR%<img src="%ATTACHURLPATH%/twt4.png" />
+%BR%<img src="%ATTACHURLPATH%/twt5.png" />%BR%%BR%
+      1 Finally click "Create your Twitter application" button.
+   1 The application will be created and a Consumer key and secret will be generated: 
+%BR%<img src="%ATTACHURLPATH%/twt6.png" />
+%BR%<img src="%ATTACHURLPATH%/twt8.png" />%BR%%BR%
+   1 Now go to your local Conductor at http://your-virtuoso-host:port/conductor
+   1 Go to Linked Data -> Sponger -> Extractor Cartridges: 
+%BR%<img src="%ATTACHURLPATH%/twt7.png" />%BR%%BR%
+   1 Find "Twitter v2" and click on its link in order to edit its properties: 
+   1 Should be presented the cartridge's configuration details at the bottom of the page list:
+      * The 'Cartridge name' as <nowiki>DB.DBA.RDF_LOAD_TWITTER_V2</nowiki>;
+      * Configuration options:
+         * <nowiki>consumer_key=xxx</nowiki>
+         * <nowiki>consumer_secret=xxx</nowiki>
+         * <nowiki>friends_n_followers_pg_limit=0</nowiki>
+         * <nowiki>friends_n_followers_item_limit=20</nowiki>
+         * <nowiki>favorites_pg_limit=1</nowiki>
+         * <nowiki>user_timeline_pg_limit=1</nowiki>
+%BR%<img src="%ATTACHURLPATH%/twt9.png" />%BR%%BR%
+   1 Enter the API key and Secret Key noted in the cartridge's "Options" field as values for options consumer_key and consumer_secret:
+%BR%<img src="%ATTACHURLPATH%/twt10.png" />%BR%%BR%
+   1 Click 'Update" to save the "Options" settings.
+
+---++Granting an Access Token
+
+The Twitter user whose profile is to be fetched should first grant an OAuth access token. This can be done through the Twitter button displayed by http://{<i>your-virtuoso-host:port</i>}/sponger:
+
+   1 Go to http://{your-virtuoso-host:port}/sponger : 
+%BR%<img src="%ATTACHURLPATH%/twt11.png" />%BR%%BR%
+   1 Click the Twitter button:
+%BR%<img src="%ATTACHURLPATH%/twt12.png" />%BR%%BR%
+   1 Click the "Authorize app" button. 
+   1 As result a notification for successful OAuth access token generation should be displayed:
+%BR%<img src="%ATTACHURLPATH%/twt13.png" />%BR%%BR%
+
+
+Although it is not mandatory that each user grants an access token, at least one must have been granted so that requests to the Twitter REST API can be signed and Twitter can authenticate the caller. Thus one user's access token can be used to fetch another Network Resource user's profile.
+
+
+---++View the Retrieved Data
+
+The cartridge is configured to trigger on the URI pattern <nowiki>http://twitter.com/.*</nowiki>, i.e. the expected starting point for sponging a Twitter user's profile is a URL
+of the form <nowiki>http://twitter.com/{<i>screen_name</i>}</nowiki>. For example:
+
+
+   1 Access [[http://uriburner.com/about/html/http://twitter.com/kidehen][http://uriburner.com/about/html/http://twitter.com/kidehen]] :
+%BR%<img src="%ATTACHURLPATH%/twt14.png" />
+%BR%<img src="%ATTACHURLPATH%/twt15.png" />%BR%%BR%
+   1 Click the primary topic value link "Kingsley Uyi Idehen": 
+%BR%<img src="%ATTACHURLPATH%/twt16.png" />
+%BR%<img src="%ATTACHURLPATH%/twt17.png" />
+%BR%<img src="%ATTACHURLPATH%/twt18.png" />%BR%%BR%
+
+
+---++Alternative Follow-Your-Nose friendly view of a Twitter Data Object that represents a Person
+
+We can take a look at the /fct variant of the primaryTopic object page:
+
+   1 Click the <b>Facets</b> link from the footer section "Alternative Linked Data Views" of the page from above:
+%BR%<img src="%ATTACHURLPATH%/twt19.png" />
+%BR%<img src="%ATTACHURLPATH%/twt20.png" />%BR%%BR%
+   1 Click "Next" to view the next of the Attributes and their Values:
+%BR%<img src="%ATTACHURLPATH%/twt21.png" />%BR%%BR%
+   1 Click "Last" to view the last page of Attributes and their Values:
+%BR%<img src="%ATTACHURLPATH%/twt22.png" />%BR%%BR%
+
+
+---++Paging Options
+
+Because some Twitter API responses can return thousands of items, the following cartridge options are available to set configurable limits on the number of items returned. (A value of 0 indicates no limit)
+
+<nowiki>friends_n_followers_pg_limit</nowiki>:
+   * Limits the number of pages of friends or followers returned. Each page can contain up to 5000 items. (Default: 0)
+
+<nowiki>friends_n_followers_item_limit</nowiki>:
+   * Overrides <nowiki>friends_n_followers_pg_limit</nowiki>. Limits the number of friends or followers returned to the specified number where 1 &lt; <nowiki>friends_n_followers_limit</nowiki> &lt;= 5000. (Default: 100)
+
+<nowiki>favorites_pg_limit</nowiki>:
+   * Limits the number of pages of favorites returned. Each page can contain up to 20 items. (Default: 5)
+
+<nowiki>user_timeline_pg_limit</nowiki>:
+   * Limits the number of tweets returned as part of a user timeline. Each page can contain up to 20 items. (Default: 5)
+
+
+---++Related
+
+   * [[VirtSponger][Virtuoso Sponger]]
+   * [[VirtConfigureCartridges][Configure Sponger Cartridges Guide]]
+   * [[http://ode.openlinksw.com/][The OpenLink Data Explorer Extension]]
+   * [[http://delicious.com/kidehen/goodrelations][Meshups (links and lookups across Web 2.0 Services and LOD Cloud]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF][Complete list of supported Vendor-specific Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesNonRDF][Complete list of supported Standard Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesMeta][Complete list of supported Meta Cartridges]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridge Usage via REST Request]]

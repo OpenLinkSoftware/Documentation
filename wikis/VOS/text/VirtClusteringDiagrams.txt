@@ -1,0 +1,97 @@
+%META:TOPICPARENT{name="TedThibodeau"}%
+---+ Clustering Deployment Architecture Diagrams for Virtuoso (Release 6 and later, Commercial Edition only)
+
+%TOC%
+
+---++ Does my Virtuoso deployment support Replication Clustering and/or Elastic Clustering?
+
+[[VirtGraphReplication][Replication Clustering]] is a feature of all Commercial Editions of 
+Virtuoso 6 and later.  It is not available for use in the Open Source Edition (VOS).
+
+Elastic Clustering is enabled by the add-on Cluster Module of Virtuoso 7 and later.  It is 
+not available for use in the Open Source Edition (VOS).
+
+---++ Replication Clustering
+
+Replication clusters provide redundancy and disaster recovery, and can provide some 
+degree of load balancing and high availability -- but the downstream subscribers (commonly called "slaves") 
+are entirely dependent on the upstream publishers ("masters") for their data.  
+
+READ clients *may* be allowed to access any instance, but they will only get 
+whatever data has flowed downstream through the replication topology at that point.
+
+In Star or Chain topologies, WRITE clients should only access the most upstream 
+instance, so that all changes flow to all other instances.  In a Bi-directional
+topology, it doesn't matter which instance a WRITE client targets -- but issues
+can arise from collisions, when conflicting WRITEs are made to opposite ends of
+the stream.
+
+---+++ Replication Clustering with Single-Server Virtuoso instances
+
+   * [[VirtGraphReplicationStar][Star Topology]]
+%BR%%BR%<img src="%ATTACHURLPATH%/../VirtGraphReplicationStar/topo-star.png" />%BR%%BR%
+   * [[VirtGraphReplicationChain][Chain Topology]]
+%BR%%BR%<img src="%ATTACHURLPATH%/../VirtGraphReplicationChain/topo-chain.png" />%BR%%BR%
+   * [[VirtGraphReplicationBiDirectional][2-node Bi-directional Topology]]
+%BR%%BR%<img src="%ATTACHURLPATH%/../VirtGraphReplicationBiDirectional/topo-bidirectional.png" />%BR%%BR%
+
+
+---++ Shared-Nothing Elastic Clustering
+
+[[http://docs.openlinksw.com/virtuoso/clusteroperation/][Shared-Nothing Elastic Clustering]] is enabled by the Cluster Module, an optionally
+licensed component of Virtuoso 7 and later.
+
+Clients may access any instance in an Elastic Cluster, and every instance in the 
+Elastic Cluster effectively has *all* data available to it at all times.  
+
+Each Single-Server instance shown in the basic Replication Clustering,
+above, could be replaced by one of the "clouds" shown below.  Typically, the 
+deployment configuration within each "cloud" in a given Replication Cluster 
+would be the same as in all the others, but there *are* circumstances where 
+the instances in a replication cluster might not be identical.
+
+
+---+++ Simple Elastic Clustering (quorums of 1 instance per cluster node)
+
+Adding hosts to an elastic cluster provides more resources, and thus improves 
+performance, and increases capacities.
+
+The three clouds below may be viewed as a deployment's growth from initial 
+deployment on one host (with one license file), expanding to 2 hosts (and two 
+license files), and on to four hosts (and four license files).
+
+
+---++++ Four cluster nodes, one cluster host node
+
+%BR%%BR%<a href="%ATTACHURLPATH%/elastic-simple-1-host-4-nodes.png" target="_blank"><img src="%ATTACHURLPATH%/elastic-simple-1-host-4-nodes.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ Four cluster nodes, two cluster host nodes
+
+%BR%%BR%<a href="%ATTACHURLPATH%/elastic-simple-2-hosts-4-nodes.png" target="_blank"><img src="%ATTACHURLPATH%/elastic-simple-2-hosts-4-nodes.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ Four cluster nodes, four cluster host nodes
+
+%BR%%BR%<a href="%ATTACHURLPATH%/elastic-simple-4-hosts-4-nodes.png" target="_blank"><img src="%ATTACHURLPATH%/elastic-simple-4-hosts-4-nodes.png" width="600px" /></a>%BR%%BR%
+
+
+---+++ High Availability Elastic Clustering (quorums of three instances per cluster node)
+
+The three clouds in this section may be viewed as a high-availability version of 
+the preceding three, likewise evolving from smaller scale to larger scale.
+
+---++++ Four cluster nodes, three instances per cluster node (quorum), four instances per cluster host node, three cluster host nodes
+
+%BR%%BR%<a href="%ATTACHURLPATH%/elastic-ha-3-hosts-4-nodes-of-3-instance-quorums.png" target="_blank"><img src="%ATTACHURLPATH%/elastic-ha-3-hosts-4-nodes-of-3-instance-quorums.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ Four cluster nodes, three instances per cluster node (quorum), two instances per cluster host node, six cluster host nodes
+
+%BR%%BR%<a href="%ATTACHURLPATH%/elastic-ha-6-hosts-4-nodes-of-3-instance-quorums.png" target="_blank"><img src="%ATTACHURLPATH%/elastic-ha-6-hosts-4-nodes-of-3-instance-quorums.png" width="600px" /></a>%BR%%BR%
+
+
+
+---++++ Four cluster nodes, three instances per cluster node (quorum), one instance per cluster host node, twelve cluster host nodes
+
+%BR%%BR%<a href="%ATTACHURLPATH%/elastic-ha-12-hosts-4-nodes-of-3-instance-quorums.png" target="_blank"><img src="%ATTACHURLPATH%/elastic-ha-12-hosts-4-nodes-of-3-instance-quorums.png" width="600px" /></a>%BR%%BR%

@@ -1,0 +1,63 @@
+%META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%
+===Data Source Attributes===
+
+Express Edition drivers pass a variety of parameters that differ based upon the back-end database to which they are designed to connect. Use the following guide lines to assess the validity of Express Edition Data Source Attributes:
+
+# Ascertain what values need to be passed to connect to the target database.
+# Insure that you pass those values in the appropriate field of the DSN.
+# Insure that the values allow the database native client to connect to the database, if the database native client is available.
+# Compare DSN parameters with database native .profiles, config files, or screenshots of DBA GUI interfaces, when problems arise.
+
+Here is an overview of values that need to be passed in Express DSNs:
+
+|*Database*|*Values*|
+|DB2|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database|
+|Firebird|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database Path|
+|Informix|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database %BR% Informix Instance Name|
+|Ingres|Database Server Host Name or IP Address %BR% Port Name %BR% Database|
+|Microsoft SQL Server|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database|
+|<nop>MySQL|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database|
+|Oracle|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Oracle SID|
+|<nop>PostgreSQL|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database|
+|Sybase|Database Server Host Name or IP Address %BR% TCP Listening Port %BR% Database|
+
+====Single-Tier Driver Data Source Attributes====
+
+Single-Tier drivers pass a variety of parameters that differ based upon the back-end database to which they are designed to connect. Use the following guide lines to assess the validity of Single-Tier Data Source Attributes:
+
+# Ascertain what values need to be passed to connect to the target database.
+# Insure that the you pass those values in the appropriate field of the DSN.
+# Insure that the values allow the database native client to connect to the database.
+# Compare DSN parameters with database native .profiles, config files, or screenshots of DBA GUI interfaces, when problems arise.
+
+Here is an overview of values that need to be passed in Single-Tier DSNs:
+
+|*Database*|*Values*|
+|DB2|DB2 remote database alias|
+|Informix|Informix server name|
+|Ingres|<code><i>vnode</i>::<i>dbname</i></code>|
+|Microsoft SQL Server|<code>-S <i>server ip address</i> -P <i>sqlserver listening port</i> -V <i>TDS version</i></code> %BR%%BR% %RED%Note:%ENDCOLOR% Acceptable [[TDS versions]] are: 4.2, 4.6, 5.0, 7.0, and 8.0.|
+|<nop>MySQL|<code>-H <i>host</i> -P <i>port</i> -T</code>|
+|Oracle|SQL*Net alias|
+|<nop>PostgreSQL|<code>-H <i>host</i> -P <i>port</i> -T</code>|
+|Progress|sockets -SHN parameters|
+|Sybase|Sybase server name|
+
+
+====Multi-Tier Driver Data Source Attributes====
+
+Multi-Tier drivers use the same parameter set regardless of the target database to which they intend to connect. Here is an overview of those parameters and the problems associated with those parameters:
+
+|*Parameter*|*Value*|*Potential Problems*|
+|Driver|The full path to the <nop>OpenLink client driver.|Missing drivers or bad permissions produce "specified driver could not be loaded" or similar  errors.|
+|Description|A description of the use or nature of the data source.|No known problems are associated with this parameter.|
+|Host|The IP address or hostname of the machine, which contains the Request Broker.|Incorrect values can produce "Remote System Error" or "Program Unavailable" messages.|
+|Protocol|The network protocol. The default is TCP.|Testing shows that the connection will default to TCP if an erroneous value is passed.|
+|Domain (a.k.a. "<nop>ServerType")|A valid domain alias from the <nop>OpenLink server components' oplrqb.ini file.|The Broker will return "Broker is unable to resolve your Request" errors, if an erroneous value is passed. You must insure that case and spacing in your Domain value matches case and spacing in oplrqb.ini.|
+|Database|A database name or Oracle SID.|The database server will return a variety of invalid, unknown, or unavailable database/SID errors, when an invalid value is passed.|
+|Username|A valid database username.|Incorrect values will produce authentication errors.|
+|Password|A valid database password.|Incorrect values will produce authentication errors.|
+|Options|Optional. Database-specific connection parameters. Primarily used with Progress socket options and special "3-Tier" DSNs.|Due to the variety of parameters that may be passed, there is no specific error associated with this parameter. When values are passed to Options, you must ascertain why the values are being passed. This parameter should only be used to pass Progress sockets parameters or database-native client parameters that facilitate connection to a remote database via a local database native client. In other words, with an exception being made for Progress databases, you would only use this field if you had a database installed on a remote machine with no <nop>OpenLink software whatsoever. Then, you would have the database native client installed on the same machine as the <nop>OpenLink Request Broker and database agent. At this point, you could use this field to pass a remote database alias, node, or other form of connection attributes that the database native client recognizes. The database native client would use this value to connect the <nop>OpenLink agent to the remote database. Example values are DB2 nodes, Oracle Net10 service names, and Ingres vnodes.|
+|<nop>FetchBufferSize|An integer, which represents the number of rows to return during one fetch operation.|An inappropriate value will cause performance issues. You can test with the values 1 and 99. Performance boosts with low numbers indicates database performance problems. Performance boosts with high numbers denotes network latency issues.|
+|<nop>ReadOnly|Boolean.  Enables or disables read-only access to the database.|Errors are not associated with <nop>ReadOnly. However, you should enable <nop>ReadOnly to prevent updates to the database. You should disable <nop>ReadOnly to allow updates.|
+|<nop>DeferLongFetch|Boolean. Pushes binary objects to the end of the result set. Smaller data types are retrieved first. This enhances performance.|No errors are associated with <nop>DeferLongFetch. However, failure to set <nop>DeferLongFetch can result in performance issues, when a result set contains large binary objects.|

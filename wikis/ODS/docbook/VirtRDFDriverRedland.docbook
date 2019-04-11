@@ -1,0 +1,221 @@
+<docbook><section><title>VirtRDFDriverRedland</title><para> </para>
+<title> Virtuoso Redland RDF Storage Provider</title> Virtuoso Redland RDF Storage Provider
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What is Redland</bridgehead>
+<para><ulink url="http://librdf.org">Redland</ulink> is a set of free software &#39;C&#39; libraries that provide support for the Resource Description Framework (RDF), providing modular, object-based libraries, and APIs for manipulating the RDF graph, triples, URIs, and Literals.
+ Redland includes several high-level language APIs providing RDF manipulation and storage, and requires the <ulink url="http://librdf.org/raptor/">Raptor</ulink> RDF parser and <ulink url="http://librdf.org/rasqal/">Rasqal</ulink> RDF syntax and query library for its use.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What is the Virtuoso Redland Provider</bridgehead>
+<para>The Virtuoso Redland RDF Provider is an implementation of the Storage API, Model, and Query interfaces of the Redland framework for RDF.
+ This provider enables the execution of queries via the Redland Rasqal query engine or via Virtuoso query engine directly against the Virtuoso Quad store.
+ The Virtuoso Redland Provider uses ODBC as the data access mechanism for communicating with the Virtuoso Quad Store and therefore requires the Virtuoso ODBC Driver be installed on the Redland client and a suitable ODBC DSN be configured for connecting to the target Virtuoso Quad Store instance.
+ The provider has been tested against the <ulink url="http://download.librdf.org/source/">Redland 1.0.8</ulink> version available for download at the time of writing.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Fig 1: Redland Component Stack</bridgehead>
+<figure><graphic fileref="VirtRDFDriverRedland/virt_redland_arch.png" /></figure><para>As indicated in the diagram above, the Virtuoso Provider can be used to execute RDF queries either directly against the Virtuoso graph storage module (which supports the <ulink url="http://dbpedia.org/resource/SPARQL">SPARQL</ulink>, <ulink url="http://dbpedia.org/resource/SPARUL">SPARUL</ulink>, and <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSArticleBISPARQL2">SPARQL-BI</ulink> query languages) or via the Rasqal query engine built into Redland (which supports only the SPARQL query language).
+ The query handler is specified by the query; use &quot;vsparql&quot; for Virtuoso, or the default &quot;sparql&quot;  for Redland, as indicated in the sample queries below: </para>
+<programlisting>rdfproc -r xml -t &quot;user=&#39;dba&#39;,password=&#39;dba&#39;,dsn=&#39;Demo&#39;&quot; gr query sparql - &quot;SELECT * WHERE { ?s ?p ?o }&quot;           ;; via Redland Rasqal engine
+
+rdfproc -r xml -t &quot;user=&#39;dba&#39;,password=&#39;dba&#39;,dsn=&#39;Demo&#39;&quot; gr query vsparql - &quot;SELECT * WHERE { ?s ?p ?o }&quot;          ;; direct to Virtuoso storage module
+</programlisting><para> The Virtuoso Provider uses the <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSSQL2RDF">SPASQL</ulink> query language for querying the remote Virtuoso QUAD store.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Setup</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Required files</bridgehead>
+<para>The Virtuoso Redland Provider has been integrated into the Redland RDF Framework and submitted to the open source project to become part of the standard distribution available for <ulink url="http://librdf.org/INSTALL.html">download</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Compling Redland with Virtuoso storage support</bridgehead>
+<orderedlist spacing="compact"><listitem><ulink url="http://svn.librdf.org/">Download  Redland</ulink> from the svn repository.
+</listitem>
+<listitem>Use the following additional configure options to enable support for Virtuoso storage: <programlisting>--with-virtuoso(=yes|no)  Enable Virtuoso RDF store 
+                            (default=auto)
+--with-iodbc(=DIR)        Select iODBC support
+                            DIR is the iODBC base install directory
+                            (default=/usr/local)
+--with-unixodbc(=DIR)     Select UnixODBC support
+                            DIR is the UnixODBC base install directory
+                            (default=/usr/local)
+--with-datadirect(=DIR)   Select DataDirect support
+                            DIR is the DataDirect base install directory
+                            (default=/usr/local)
+--with-odbc-inc=DIR       Specify custom ODBC include directory
+                            (default=/usr/local/include)
+--with-odbc-lib=DIR       Specify custom ODBC lib directory
+                            (default=/usr/local/lib)
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>The --with-virtuoso option is auto-enabled if a valid ODBC Driver         Manager (iODBC, <ulink url="UnixODBC">UnixODBC</ulink>, or <ulink url="DataDirect">DataDirect</ulink>) or include and lib         directories for required ODBC header files and libraries are discovered via the suitable         setting for one or more of the other ODBC related options above.
+</listitem>
+<listitem>Assuming <ulink url="http://www.iodbc.org/">iODBC</ulink> is installed, the following command can         be used to enable Virtuoso storage support to be configured for compilation into         your Redland build: <programlisting>./configure --with-iodbc=/usr/local/iODBC
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Run make to compile the Redland libraries and sudo make install      to install in the default /usr/local location </listitem>
+<listitem>Test compilation with the utils/rdfproc test utility.
+ This test will use      the default hashes storage.
+<programlisting>rdfproc test parse http://planetrdf.com/guide/rss.rdf
+rdfproc test print
+rdfproc test serialize ntriples
+</programlisting></listitem>
+<listitem>Ensure you have <ulink url="http://virtuoso.openlinksw.com/download/">the Virtuoso ODBC Driver</ulink>      installed, and <ulink url="http://docs.openlinksw.com/virtuoso/odbcimplementation/">a valid ODBC 
+     DSN called &quot;Local Virtuoso&quot;</ulink> configured for your target Virtuoso Server.
+</listitem>
+<listitem>Set the following environment variable: <programlisting>export RDFPROC_STORAGE_TYPE=virtuoso                                   ;; Enable Virtuoso Storage 
+export ODBCINI=&lt;path_to_odbcini_directory&gt;/odbc.ini                    ;; Enable ODBC DSN to be located
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH                 ;; May be required to enable Redland libraries to be located
+</programlisting></listitem>
+<listitem>Test Virtuoso storage with the provided utils/vtest test program: <programlisting>$ utils/vtest 
+  1: Remove all triples in &lt;http://red&gt; context
+**PASSED**: removed context triples from the graph
+  2: Add triples to &lt;http://red&gt; context
+**PASSED**: add triple to context
+  3: Print all triples in &lt;http://red&gt; context
+[[
+  {[aa], [bb], [cc]} with context [http://red]
+  {[aa], [bb1], [cc]} with context [http://red]
+  {[aa], [a2], &quot;cc&quot;} with context [http://red]
+  {[aa], [a2], (cc)} with context [http://red]
+  {[mm], [nn], &quot;Some long literal with language@en&quot;} with context [http://red]
+  {[oo], [pp], &quot;12345^^&lt;http://www.w3.org/2001/XMLSchema#int&gt;&quot;} with context [http://red]
+]]
+**PASSED**:
+  4: Count of triples in &lt;http://red&gt; context
+**PASSED**: graph has 6 triples
+  5: Exec:  ARC  aa bb 
+Matched node: [cc]
+**PASSED**:
+  6: Exec:  ARCS  aa cc 
+Matched node: [bb] with context [http://red]
+Matched node: [bb1] with context [http://red]
+: matching nodes: 2
+**PASSED**:
+  7: Exec:  ARCS-IN  cc 
+Matched arc: [bb] with context [http://red]
+Matched arc: [bb1] with context [http://red]
+**PASSED**: matching arcs: 2
+  8: Exec:  ARCS-OUT  aa 
+Matched arc: [bb] with context [http://red]
+Matched arc: [bb1] with context [http://red]
+Matched arc: [a2] with context [http://red]
+Matched arc: [a2] with context [http://red]
+**PASSED**: matching arcs: 4
+  9: Exec:  CONTAINS aa bb1 cc 
+**PASSED**: the graph contains the triple
+ 10: Exec:  FIND aa - - 
+Matched triple: {[aa], [bb], [cc]} with context [http://red]
+Matched triple: {[aa], [bb1], [cc]} with context [http://red]
+Matched triple: {[aa], [a2], &quot;cc&quot;} with context [http://red]
+Matched triple: {[aa], [a2], (cc)} with context [http://red]
+**PASSED**: matching triples: 4
+ 11: Exec:  HAS-ARC-IN cc bb 
+**PASSED**: the graph contains the arc
+ 12: Exec:  HAS-ARC-OUT aa bb 
+**PASSED**: the graph contains the arc
+ 13: Exec:  SOURCE  aa cc 
+Matched node: [aa]
+**PASSED**:
+ 14: Exec:  SOURCES  bb cc 
+Matched node: [aa] with context [http://red]
+: matching nodes: 1
+**PASSED**:
+ 15: Exec:  TARGET  aa bb 
+Matched node: [cc]
+**PASSED**:
+ 16: Exec:  TARGETS  aa bb 
+Matched node: [cc] with context [http://red]
+: matching nodes: 1
+**PASSED**:
+ 17: Exec:  REMOVE aa bb1 cc 
+**PASSED**: removed triple from the graph
+ 18: Exec:  QUERY &quot;CONSTRUCT {?s ?p ?o} FROM &lt;http://red&gt; WHERE {?s ?p ?o}&quot; 
+Matched triple: {[aa], [a2], &quot;cc&quot;}
+Matched triple: {[oo], [pp], &quot;12345^^&lt;http://www.w3.org/2001/XMLSchema#int&gt;&quot;}
+Matched triple: {[aa], [a2], (cc)}
+Matched triple: {[aa], [bb], [cc]}
+Matched triple: {[mm], [nn], &quot;Some long literal with language@en&quot;}
+**PASSED**: matching triples: 5
+ 19: Exec1:  QUERY_AS_BINDINGS &quot;SELECT * WHERE {graph &lt;http://red&gt; { ?s ?p ?o }}&quot; 
+**: Formatting query result as &#39;xml&#39;:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;sparql xmlns=&quot;http://www.w3.org/2005/sparql-results#&quot;&gt;
+  &lt;head&gt;
+    &lt;variable name=&quot;s&quot;/&gt;
+    &lt;variable name=&quot;p&quot;/&gt;
+    &lt;variable name=&quot;o&quot;/&gt;
+  &lt;/head&gt;
+  &lt;results&gt;
+    &lt;result&gt;
+      &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;aa&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;bb&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;o&quot;&gt;&lt;uri&gt;cc&lt;/uri&gt;&lt;/binding&gt;
+    &lt;/result&gt;
+    &lt;result&gt;
+      &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;aa&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;a2&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;o&quot;&gt;&lt;literal&gt;cc&lt;/literal&gt;&lt;/binding&gt;
+    &lt;/result&gt;
+    &lt;result&gt;
+      &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;aa&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;a2&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;o&quot;&gt;&lt;bnode&gt;cc&lt;/bnode&gt;&lt;/binding&gt;
+    &lt;/result&gt;
+    &lt;result&gt;
+      &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;mm&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;nn&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;o&quot;&gt;&lt;literal&gt;Some long literal with language@en&lt;/literal&gt;&lt;/binding&gt;
+    &lt;/result&gt;
+    &lt;result&gt;
+      &lt;binding name=&quot;s&quot;&gt;&lt;uri&gt;oo&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;p&quot;&gt;&lt;uri&gt;pp&lt;/uri&gt;&lt;/binding&gt;
+      &lt;binding name=&quot;o&quot;&gt;&lt;literal&gt;12345^^&lt;http://www.w3.org/2001/XMLSchema#int&gt;&lt;/literal&gt;&lt;/binding&gt;
+    &lt;/result&gt;
+  &lt;/results&gt;
+&lt;/sparql&gt;
+**PASSED**:
+ 20: Exec2:  QUERY_AS_BINDINGS &quot;SELECT * WHERE {graph &lt;http://red&gt; { ?s ?p ?o }}&quot; 
+: Query returned bindings results:
+result: [s=[aa], p=[bb], o=[cc]]
+result: [s=[aa], p=[a2], o=cc]
+result: [s=[aa], p=[a2], o=(cc)]
+result: [s=[mm], p=[nn], o=Some long literal with language@en]
+result: [s=[oo], p=[pp], o=12345^^&lt;http://www.w3.org/2001/XMLSchema#int&gt;]
+: Query returned 5 results
+**PASSED**:
+=============================================
+PASSED: 20  FAILED:  0
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Connection Attributes</bridgehead>
+<para>The Virtuoso Redland Provider has the following connection attributes available for use:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>dsn</emphasis> - ODBC datasource name </listitem>
+<listitem> <emphasis>user</emphasis> - user name of database server </listitem>
+<listitem> <emphasis>password</emphasis> - password of database server </listitem>
+<listitem> <emphasis>host</emphasis> - hostname:portno of the database server </listitem>
+<listitem> <emphasis>charset</emphasis> -  database charset to use</listitem>
+</itemizedlist><emphasis><emphasis>NOTE:</emphasis> Take care exposing the password as, for example, program arguments or environment variables.
+ The rdfproc utility can help with this by reading the password from standard input.
+ Inside programs, one way to prevent storing the password in a string is to construct a Redland hash of the storage options such as via librdf_hash_from_string and use librdf_new_storage_with_options to create a storage.
+ The rdfproc utility source code demonstrates this.</emphasis><para>The storage name parameter given to the storage constructor librdf_new_storage is used inside the Virtuoso store to allow multiple stores inside one Virtuoso database instance, as parametrized with the options above.</para>
+<para>This store always provides contexts; the Boolean storage option contexts is not checked.</para>
+<para>Examples: </para>
+<programlisting>  /* A new Virtuoso store */
+  storage=librdf_new_storage(world, &quot;virtuoso&quot;, &quot;db1&quot;,
+      &quot;dsn=&#39;Local Virtuoso&#39;,user=&#39;demo&#39;,password=&#39;demo&#39;&quot;);
+
+  /* A different, existing Virtuoso store in the same database as above */
+  storage=librdf_new_storage(world, &quot;virtuoso&quot;, &quot;db2&quot;,
+      &quot;dsn=&#39;Local Virtuoso&#39;,user=&#39;demo&#39;,password=&#39;demo&#39;&quot;);
+
+  /* An existing Virtuoso store on a different database server */
+  storage=librdf_new_storage(world, &quot;virtuoso&quot;, &quot;http://red3&quot;,
+      &quot;dsn=&#39;Remote Virtuoso&#39;,user=&#39;demo&#39;,password=&#39;demo&#39;&quot;);
+
+  /* Opening with an options hash */
+  options=librdf_new_hash(world, NULL);
+  librdf_hash_from_string(options, 
+      &quot;dsn=&#39;Local Virtuoso&#39;,user=&#39;demo&#39;&quot;);
+  librdf_hash_put_strings(options, &quot;password&quot;, user_password);
+  storage=librdf_new_storage_with_options(world, &quot;virtuoso&quot;, &quot;http://red3&quot;, options);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtJenaProvider">Virtuoso Jena RDF Storage Provider</ulink> </listitem>
+<listitem><ulink url="VirtSesame2Provider">Virtuoso Sesame RDF Storage Provider</ulink> </listitem>
+<listitem><ulink url="VirtRDFDriverRedland">Virtuoso Redland RDF Storage Provider</ulink> </listitem>
+<listitem><ulink url="VirtRDFInsert">RDF Insert Methods in Virtuoso</ulink> </listitem>
+<listitem><ulink url="VirtBulkRDFLoader">Guide for Bulk Loading of RDF Source Files into one or more Graph IRIs</ulink> </listitem>
+<listitem><ulink url="VOSBuild">Virtuoso Installation Guide</ulink> </listitem>
+<listitem><ulink url="http://librdf.org/docs/api/redland-storage.html">RedLand Triple Store</ulink> </listitem>
+<listitem><ulink url="http://librdf.org/docs/api/redland-storage-modules.html">RedLand Storage Modules</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategoryOpenSource">CategoryOpenSource</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryVOS">CategoryVOS</ulink> <ulink url="CategoryNativeRDFProviders">CategoryNativeRDFProviders</ulink> <ulink url="CategoryDocumentation">CategoryDocumentation</ulink></para>
+<para> </para>
+</section></docbook>

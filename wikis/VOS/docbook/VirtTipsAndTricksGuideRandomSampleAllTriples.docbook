@@ -1,0 +1,37 @@
+<docbook><section><title>VirtTipsAndTricksGuideRandomSampleAllTriples</title><title> What is the best method to get a random sample of all triples for a subset of all the resources of a SPARQL endpoint?</title> What is the best method to get a random sample of all triples for a subset of all the resources of a SPARQL endpoint?
+<para>The best method to get a random sample of all triples for a subset of all the resources of a SPARQL endpoint, is decimation in its original style:</para>
+<programlisting>SELECT ?s ?p ?o 
+FROM &lt;some-graph&gt;
+WHERE 
+  { 
+    ?s ?p ?o .
+    FILTER ( 1 &gt;  &lt;bif:rnd&gt; (10, ?s, ?p, ?o) )
+  }
+</programlisting><para> By tweaking the first argument of bif:rnd() and the left side of the inequality, you can tweak the decimation ratio from 1/10 to any desired value.
+ It is important to know that the SQL optimizer has a right to execute bif:rnd (10) only once at the beginning of the query, so we pass three additional arguments that can be known only when a table row is fetched.
+ Thus, bif:rnd (10, ?s, ?p, ?o) is calculated for each and every row, and any given row is either returned or ignored independently from others.</para>
+<para>However, bif:rnd (10, ?s, ?p, ?o) contains a subtle inefficiency.
+ In the RDF store, graph nodes are stored as numeric IRI IDs, and literal objects may be stored in a separate table.
+ A SQL function call needs arguments of traditional SQL datatypes, so the query processor will extract the text of the IRI for each node and the full value for each literal object.
+ That is a significant waste of time.
+ The workaround is to tell the SPARQL front-end to omit redundant conversions of values, by use of the SHORT_OR_LONG tag, as shown here --</para>
+<programlisting>SELECT ?s ?p ?o 
+FROM &lt;some-graph&gt; 
+WHERE 
+  { 
+    ?s ?p ?o .
+    FILTER ( 1 &gt;  &lt;SHORT_OR_LONG::bif:rnd&gt; (10, ?s, ?p, ?o))  
+  }
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Live Example</bridgehead>
+<para>The following SPARQL Query shows random occurrences of dc:description on the <ulink url="http://lod.openlinksw.com">LOD Cloud Cache</ulink> instance:</para>
+<programlisting>SELECT * 
+WHERE 
+  {
+    ?s &lt;http://purl.org/dc/elements/1.1/description&gt; ?o
+    FILTER ( 1 &gt;  &lt;SHORT_OR_LONG::bif:rnd&gt; (10, ?s,  ?o))  
+  }
+limit 100
+</programlisting><para> View the results of the query execution <ulink url="http://lod.openlinksw.com/sparql?default-graph-uri=&amp;query=SELECT+*+WHERE+%7B%3Fs+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2Fdescription%3E+%3Fo%0D%0A++FILTER+%28+1+%3E+%3CSHORT_OR_LONG%3A%3Abif%3Arnd%3E++%2810%2C+%3Fs%2C++%3Fo%29%29++%7D%0D%0Alimit+100%0D%0A%0D%0A&amp;should-sponge=&amp;format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=15000&amp;debug=on">here</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+</itemizedlist></section></docbook>

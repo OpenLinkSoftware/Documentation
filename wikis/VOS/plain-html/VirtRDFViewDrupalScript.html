@@ -1,0 +1,250 @@
+<html><body><div class="topic-text"><h2><a name="Drupal Linked Data Views Script to set up your own instance"></a>Drupal Linked Data Views Script to set up your own instance</h2>
+<br><pre>use drupal;
+
+drop view poll_v;
+drop view forum_v;
+drop view blog_v;
+drop view blog_post_v;
+drop view forum_post_v;
+drop view poll_post_v;
+drop view aggregator_item_v;
+
+SPARQL
+prefix v: &lt;http://www.openlinksw.com/schemas/drupal_v#&gt;
+
+drop quad map virtrdf:Drupal .
+
+drop iri class v:user_iri .
+drop iri class v:iri .
+drop iri class v:feed_item_iri .
+drop iri class v:space_iri .
+drop iri class v:feed_iri .
+drop iri class v:poll_iri .
+drop iri class v:forum_iri .
+drop iri class v:blog_iri .
+drop iri class v:blog_post_iri .
+drop iri class v:forum_post_iri .
+drop iri class v:poll_post_iri .
+drop iri class v:mbox .
+;
+
+
+use drupal;
+
+create procedure ts2date (in x int)
+{
+  return dateadd (&#39;second&#39;, x, stringdate (&#39;1970-1-1&#39;));
+};
+
+create view poll_v as select n.*, u.name from poll p, node n, users u where n.nid = p.nid and n.uid = u.uid;
+create view forum_v as select n.*, u.name from forum f, node n, users u where n.nid = f.nid and n.uid = u.uid;
+create view blog_v as select u.*, u.name||&#39;\&#39;s blog&#39; as title_v from users u;
+create view blog_post_v as select nr.*, u.name, drupal..ts2date (n.created) as created, drupal..ts2date (n.changed) as changed
+        from node n, node_revisions nr, users u where
+        nr.nid = n.nid and nr.vid = n.vid and n.uid = u.uid and n.type in (&#39;blog&#39;, &#39;story&#39;);
+create view forum_post_v as select nr.*, u.name, drupal..ts2date (n.created) as created, drupal..ts2date (n.changed) as changed
+        from node n, node_revisions nr, users u where
+        nr.nid = n.nid and nr.vid = n.vid and n.uid = u.uid and n.type = &#39;forum&#39;;
+create view poll_post_v as select nr.*, u.name, drupal..ts2date (n.created) as created, drupal..ts2date (n.changed) as changed
+        from node n, node_revisions nr, users u where
+        nr.nid = n.nid and nr.vid = n.vid and n.uid = u.uid and n.type = &#39;poll&#39;;
+create view aggregator_item_v as select *, drupal..ts2date(timestmp) as created from aggregator_item;
+
+grant select on poll_v to &quot;SPARQL&quot;;
+grant select on forum_v to &quot;SPARQL&quot;;
+grant select on blog_v to &quot;SPARQL&quot;;
+grant select on blog_post_v to &quot;SPARQL&quot;;
+grant select on forum_post_v to &quot;SPARQL&quot;;
+grant select on poll_post_v to &quot;SPARQL&quot;;
+grant select on aggregator_item_v to &quot;SPARQL&quot;;
+grant execute on ts2date to &quot;SPARQL&quot;;
+grant select on drupal..users to &quot;SPARQL&quot;;
+grant select on drupal..aggregator_feed to &quot;SPARQL&quot;;
+grant select on drupal..aggregator_item to &quot;SPARQL&quot;;
+
+
+SPARQL
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+prefix dct: &lt;http://purl.org/dc/terms/&gt;
+prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+prefix aowl: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+prefix v: &lt;http://www.openlinksw.com/schemas/drupal_v#&gt;
+
+create iri class v:user_iri &quot;http://^{URIQADefaultHost}^/drupal/user/%U#this&quot; (in user_name varchar not null) .
+create iri class v:iri &quot;http://^{URIQADefaultHost}^/drupal/proxy/%s#this&quot; (in uri varchar not null) .
+create iri class v:feed_item_iri &quot;http://^{URIQADefaultHost}^/drupal/feed/item/%d#this&quot; (in iid integer not null) .
+create iri class v:space_iri  &quot;http://^{URIQADefaultHost}^/drupal/space/%s#this&quot; (in uri varchar not null) .
+create iri class v:feed_iri &quot;http://^{URIQADefaultHost}^/drupal/feed/%d#this&quot; (in fid integer not null) .
+create iri class v:poll_iri &quot;http://^{URIQADefaultHost}^/drupal/poll/%d#this&quot; (in nid integer not null) .
+create iri class v:forum_iri &quot;http://^{URIQADefaultHost}^/drupal/forum/%d#this&quot; (in nid integer not null) .
+create iri class v:blog_iri &quot;http://^{URIQADefaultHost}^/drupal/blog/%d#this&quot; (in uid integer not null) .
+create iri class v:blog_post_iri &quot;http://^{URIQADefaultHost}^/drupal/blog/%d/%d#this&quot; (in uid integer not null, in nid integer not null) .
+create iri class v:forum_post_iri &quot;http://^{URIQADefaultHost}^/drupal/forum/%d/%d#this&quot; (in uid integer not null, in nid integer not null) .
+create iri class v:poll_post_iri &quot;http://^{URIQADefaultHost}^/drupal/poll/%d/%d#this&quot; (in uid integer not null, in nid integer not null) .
+create iri class v:mbox &quot;mailto:%s&quot; (in mail varchar not null) .
+
+alter quad storage virtrdf:DefaultQuadStorage
+
+from drupal.drupal.users as users
+from drupal.drupal.aggregator_feed as feed
+from drupal.DBA.aggregator_item_v as feed_item where (^{feed_item.}^.fid = ^{feed.}^.fid)
+from drupal.drupal.node as node
+from drupal.drupal.node_revisions as node_revisions
+from drupal.DBA.poll_v as poll
+from drupal.DBA.forum_v as forum
+from drupal.DBA.blog_v as blog
+from drupal.DBA.blog_post_v as blog_post
+from drupal.DBA.forum_post_v as forum_post
+from drupal.DBA.poll_post_v as poll_post
+
+  {
+    create virtrdf:Drupal as graph iri (&quot;http://^{URIQADefaultHost}^/drupal_v&quot;) option (exclusive)
+      {
+        v:user_iri (users.name) a sioc:User as virtrdf:Drupal-User-cls ;
+        sioc:name users.name as virtrdf:Drupal-User-name ;
+        sioc:email v:mbox(users.mail) as virtrdf:Drupal-User-mail ;
+        sioc:id users.uid as virtrdf:Drupal-User-sioc_id .
+
+        v:feed_iri (feed.fid)
+        a aowl:Feed as virtrdf:Drupal-Feed-cls ;
+        aowl:title feed.title as virtrdf:Drupal-Feed-title ;
+        aowl:link v:iri (feed.link) as virtrdf:Drupal-Feed-link ;
+        dc:description feed.description as virtrdf:Drupal-Feed-desc .
+
+        v:feed_iri (feed.fid)
+        aowl:entry
+        v:feed_item_iri (feed_item.iid) as virtrdf:Drupal-Feed-aowl-entry .
+
+        v:feed_item_iri (feed_item.iid) a aowl:Entry as virtrdf:Drupal-FeedItem-cls ;
+        aowl:title feed_item.title as virtrdf:Drupal-FeedItem-title ;
+        aowl:link feed_item.link as virtrdf:Drupal-FeedItem-link ;
+        sioc:id feed_item.iid as virtrdf:Drupal-FeedItem-sioc-id ;
+        sioc:content feed_item.description as virtrdf:Drupal-FeedItem-sioc-content ;
+        aowl:content feed_item.description as virtrdf:Drupal-FeedItem-aowl-content ;
+        dct:created feed_item.created as virtrdf:Drupal-FeedItem-cr ;
+        aowl:source
+        v:feed_iri (feed.fid) as virtrdf:Drupal-FeedItem-aowl-src .
+
+        v:poll_iri (poll.nid) a sioct:SurveyCollection as virtrdf:Drupal-Poll-cls ;
+        sioc:id poll.nid as virtrdf:Drupal-Poll-sioc-id ;
+        dc:title poll.title as virtrdf:Drupal-Poll-title ;
+        dct:created poll.created as virtrdf:Drupal-Poll-cr ;
+        dct:modified poll.changed as virtrdf:Drupal-Poll-mod ;
+        sioc:has_owner v:user_iri (poll.name) as virtrdf:Drupal-Poll-owner.
+
+        v:user_iri (poll.name) sioc:owner_of v:poll_iri (poll.nid) as virtrdf:Drupal-Poll-owner_of .
+
+        v:blog_iri (blog.uid) a sioct:Weblog as virtrdf:Drupal-Blog-cls ;
+        sioc:id blog.uid as virtrdf:Drupal-Blog-sioc-id ;
+        dc:title blog.title_v as virtrdf:Drupal-Blog-title ;
+        sioc:has_owner v:user_iri (blog.name) as virtrdf:Drupal-Blog-owner .
+
+        v:user_iri (blog.name) sioc:owner_of v:blog_iri (blog.uid) as virtrdf:Drupal-Blog-owner_of .
+
+        v:forum_iri (forum.nid) a sioc:Forum as virtrdf:Drupal-Forum-cls ;
+        sioc:id forum.nid as virtrdf:Drupal-Forum-sioc-id ;
+        dc:title forum.title as virtrdf:Drupal-Forum-title ;
+        dct:created forum.created as virtrdf:Drupal-Forum-cr ;
+        dct:modified forum.changed as virtrdf:Drupal-Forum-mod ;
+        sioc:has_owner v:user_iri (forum.name) as virtrdf:Drupal-Forum-owner.
+
+        v:user_iri (forum.name) sioc:owner_of v:forum_iri (forum.nid) as virtrdf:Drupal-Forum-owner_of .
+
+        v:blog_post_iri (blog_post.uid, blog_post.nid) a sioct:BlogPost as virtrdf:Drupal-BlogPost-cls ;
+        sioc:id blog_post.nid as virtrdf:Drupal-BlogPost-sioc-id ;
+        dc:title blog_post.title as virtrdf:Drupal-BlogPost-dc-title ;
+        sioc:content blog_post.body as virtrdf:Drupal-BlogPost-sioc-content ;
+        dct:created blog_post.created as virtrdf:Drupal-BlogPost-cr ;
+        dct:modified blog_post.changed as virtrdf:Drupal-BlogPost-mod ;
+        sioc:has_container v:blog_iri (blog_post.uid) as virtrdf:Drupal-BlogPost-sioc-has_container ;
+        sioc:has_creator v:user_iri (blog_post.name) as virtrdf:Drupal-BlogPost-owner .
+
+        v:blog_iri (blog_post.uid) sioc:container_of v:blog_post_iri (blog_post.uid, blog_post.nid)
+        as virtrdf:Drupal-BlogPost-container_of .
+        v:user_iri (blog_post.name) sioc:creator_of v:blog_post_iri (blog_post.uid, blog_post.nid)
+        as virtrdf:Drupal-BlogPost-creator_of .
+
+        v:forum_post_iri (forum_post.uid, forum_post.nid) a sioc:Post as virtrdf:Drupal-ForumPost-cls ;
+        sioc:id forum_post.nid as virtrdf:Drupal-ForumPost-sioc-id ;
+        dc:title forum_post.title as virtrdf:Drupal-ForumPost-dc-title ;
+        sioc:content forum_post.body as virtrdf:Drupal-ForumPost-sioc-content ;
+        dct:created forum_post.created as virtrdf:Drupal-ForumPost-cr ;
+        dct:modified forum_post.changed as virtrdf:Drupal-ForumPost-mod ;
+        sioc:has_container v:forum_iri (forum_post.uid) as virtrdf:Drupal-ForumPost-sioc-has_container ;
+        sioc:has_creator v:user_iri (forum_post.name) as virtrdf:Drupal-ForumPost-owner .
+
+        v:forum_iri (forum_post.uid) sioc:container_of v:forum_post_iri (forum_post.uid, forum_post.nid)
+        as virtrdf:Drupal-ForumPost-container_of .
+        v:user_iri (forum_post.name) sioc:creator_of v:forum_post_iri (forum_post.uid, forum_post.nid)
+        as virtrdf:Drupal-ForumPost-creator_of .
+
+        v:poll_post_iri (poll_post.uid, poll_post.nid) a sioc:Poll as virtrdf:Drupal-PollPost-cls ;
+        sioc:id poll_post.nid as virtrdf:Drupal-PollPost-sioc-id ;
+        dc:title poll_post.title as virtrdf:Drupal-PollPost-dc-title ;
+        sioc:content poll_post.body as virtrdf:Drupal-PollPost-sioc-content ;
+        dct:created poll_post.created as virtrdf:Drupal-PollPost-cr ;
+        dct:modified poll_post.changed as virtrdf:Drupal-PollPost-mod ;
+        sioc:has_container v:poll_iri (poll_post.uid) as virtrdf:Drupal-PollPost-sioc-has_container ;
+        sioc:has_creator v:user_iri (poll_post.name) as virtrdf:Drupal-PollPost-owner .
+
+        v:poll_iri (poll_post.uid) sioc:container_of v:poll_post_iri (poll_post.uid, poll_post.nid)
+        as virtrdf:Drupal-PollPost-container_of .
+        v:user_iri (poll_post.name) sioc:creator_of v:poll_post_iri (poll_post.uid, poll_post.nid)
+        as virtrdf:Drupal-PollPost-creator_of .
+
+      }
+  } .
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;drupal_rule2&#39;,
+    1,
+    &#39;/drupal/([^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/drupal/%U%%23this%%3E+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/drupal_v%%3E&amp;format=%U&#39;,
+    vector(&#39;path&#39;, &#39;path&#39;, &#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    2,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;drupal_rule3&#39;,
+    1,
+    &#39;/drupal/(user|post|site|proxy|wiki|forum|poll|blog|feed|space)/([^#]*)&#39;,
+    vector(&#39;obj&#39;, &#39;path&#39;),
+    1,
+    &#39;/ode/index.html?uri=http%%3A//^{URIQADefaultHost}^/drupal/%U/%U%%23this&#39;,
+    vector(&#39;obj&#39;, &#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    2,
+    303
+    );
+
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;drupal_rule_list1&#39;,
+    1,
+    vector (
+                &#39;drupal_rule3&#39;,
+                &#39;drupal_rule2&#39;
+          ));
+
+DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/drupal&#39;);
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/drupal&#39;, ppath=&gt;&#39;/vad/vsp/drupal/&#39;, is_dav=&gt;0, vsp_user=&gt;&#39;dba&#39;, is_brws=&gt;1, def_page=&gt;&#39;index.php&#39;,
+    opts=&gt;vector (&#39;url_rewrite&#39;, &#39;drupal_rule_list1&#39;));
+</pre><p> </p>
+<h3><a name="References"></a>References</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DrupalSIOCRef" class="wikiword">Drupal SIOC Reference</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsIntegrationDrupal" class="absuri">Drupal Installation Guide</a> </li>
+</ul></div></body></html>

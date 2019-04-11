@@ -1,0 +1,150 @@
+---+ Facebook Cartridge - Configuration Guidelines and Implementation Notes
+
+%TOC%
+
+Virtuoso's Cartridges VAD includes Sponger cartridges for Facebook. Two variants are included, for the [[http://developers.facebook.com/docs/reference/api/][Facebook Graph API]] and for [[http://developers.facebook.com/docs/reference/fql/][Facebook Query Language (FQL)]]. These notes, intended for a 'Sponger Administrator', provide configuration guidelines and brief implementation details for the first of these, the Facebook Graph API cartridge.
+
+After clicking on the cartridge name, the cartridge's configuration details at the bottom of the page list the 'Cartridge name' as <nowiki>DB.DBA.RDF_LOAD_FACEBOOK_OPENGRAPH</nowiki>.
+
+The cartridge is configured in the Sponger UI to trigger on the URI pattern ".*". Internally it currently recognizes the URI patterns:
+
+   * <nowiki>http://www.facebook.com/profile.php?id=...</nowiki>
+   * <nowiki>http://www.facebook.com/album.php?aid=...&id=...</nowiki>
+   * <nowiki>http://www.facebook.com/...</nowiki>
+   * <nowiki>http://graph.facebook.com/...</nowiki>
+   * <nowiki>http://graph.facebook.com/?ids=...</nowiki>
+
+from which it extracts an Open Graph object ID, before querying Open Graph for a description of this object. Sample URIs for sponging a Facebook user's profile might be:
+   * <nowiki>http://<i>your-virtuoso-host:port</i>/about/html/http://www.facebook.com/profile.php?id={Facebook user ID}</nowiki>
+   * <nowiki>http://<i>your-virtuoso-host:port</i>/about/html/http://graph.facebook.com/{Facebook user ID}</nowiki>
+
+This cartridge calls the Open Graph REST interface iteratively. After retrieving the metadata for the principal Open Graph object, it identifies the object's connections (Facebook parlance for other Open Graph objects of a particular type connected to this object) and queries each of these in turn. Which of these connections are accessible and the amount of data returned depends on whether access to them has been granted through an Open Graph [[http://developers.facebook.com/docs/authentication/][access token]]. If none is configured in the Sponger UI, or the access token is invalid, the cartridge makes a best-effort graph; but much richer structured data can be extracted when an access token is granted.
+
+---++Open Graph Access Tokens
+
+The Open Graph REST API requires that most calls to it include an access token. The access token is issued by a Facebook user to a requesting Facebook application, in this case the Sponger. Via the token, a user grants the application access to their profile information. Any access token granted is specific to the user granting it. So the Sponger can fetch their Network Resource(s) connections, but not those of their friends.
+
+---+++Configuring the Facebook Cartridge OAuth Binding
+
+Two options exist for granting access tokens for use by the Facebook cartridge. The recommended option is to use VAL (Virtuoso Authentication Layer). For details of how to configure the Facebook cartridge / VAL OAuth binding see topic [[SpongerOAuthSupport][Sponger OAuth Support via VAL]]. The following section describes how to configure the cartridge's pre-VAL OAuth binding. This option is deprecated and may be removed at some future time.
+
+---+++Pre-VAL OAuth Configuration
+ 
+---++++Registering the Sponger as a Facebook Application
+Before you can obtain access tokens for the cartridge, you first need to register the Sponger as a Facebook application.
+   1. Register the Sponger using the [[http://developers.facebook.com/tools/][Facebook Developer App]].
+   1. Click "Create New App"
+   1. Specify the application name, e.g. <nowiki>"Sponger (<i>your-virtuoso-host</i>)"</nowiki>:
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb1.png" />%BR%%BR%
+   1. In the "Basic" tab form:
+      1 Provide an application description;
+      1 Specify application domain as <nowiki><i>your-virtuoso-host</i></nowiki>;
+      1 In the "Web Site" sub-section specify "Site URL" as <nowiki>http://<i>your-virtuoso-host:port</i>/facebook_oauth/</nowiki>
+      1 Specify a Privacy Policy URL, etc. and finally click "Save Changes":
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb2.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb3.png" />%BR%%BR%
+   1 Note the Application ID and Application secret can be obtained from your new created application -> Settings ->Basic:
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb5.png" />%BR%%BR%
+   1. Go to About -> Advanced
+      1 Specify the "Deauthorize Callback" as <nowiki>http://<i>your-virtuoso-host:port</i>/facebook_oauth/</nowiki>
+         * Note: <i>your-virtuoso-host:port</i> is the host and the port specified as the <nowiki>DefaultHost</nowiki> in the URIQA section of your virtuoso.ini file;
+         * Note: The virtual directory /facebook_oauth/ is created when the [[https://virtuoso.openlinksw.com/download/][Cartridges VAD]] is first installed. It provides a redirect URL to capture the response from the Facebook OAuth dialog. 
+      1 Set "Stream post URL security" to "Enabled";
+      1 Set "Include recent activity stories" to "Disabled";
+      1 Click "Save Changes".
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb4.png" />%BR%%BR%
+   1. Now go to your local Conductor at http://<i>your-virtuoso-host:port</i>/conductor
+   1 Go to Linked Data -> Sponger -> Extractor Cartridges 
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb6.png" />%BR%%BR%
+   1 Find "Facebook (Graph API)" and click on its link in order to edit its properties
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb7.png" />%BR%%BR%
+   1 Enter the "App ID" and "App Secret" noted earlier in the cartridge's "Options" field as values for options <nowiki>app_id</nowiki> and <nowiki>app_secret</nowiki>:
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb8.png" />%BR%%BR%
+   1 Click 'Update" to save the "Options" settings.
+
+---++++Obtaining an Access Token
+Having registered the Sponger as a Facebook application, it should now be possible for users to grant access tokens to the Sponger.
+
+Virtuoso <b>system administrators</b> can obtain access tokens via the Sponger configuration UI:
+   1 Click again on the "Facebook (Graph API)" Cartridge link from Conductor->  Sponger -> Extractor Cartridges .
+   1 Click "Get Facebook access token" to retrieve a token.
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb10.png" />%BR%%BR%
+   1 You will be asked to log into Facebook if you are not already.
+   1 If you grant access to the requesting application (identified by the application name you entered earlier, e.g.  <nowiki>"Sponger (<i>your-virtuoso-host</i>)"</nowiki>), you'll be redirected to the app's site URL.
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb11.png" />%BR%%BR%
+   1 As a result, a confirmation page should be displayed by the Sponger showing the generated access token or any error message:
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb12.png" />%BR%%BR%
+
+<b>End users</b> can grant access tokens in a similar manner by clicking on the Facebook button displayed by the <b>Sponger front page</b> <nowiki>http://<i>your-virtuoso-host:port</i>/sponger/</nowiki>.
+
+---++++Obtaining a Long-Lived Token
+
+By default, most access tokens expire after a short time period to ensure applications only make requests on behalf of the user when they are actively using the application, i.e.
+   * a Facebook user must be logged in for the OAuth access token to remain valid
+   * the token is immediately invalidated when the user logs out of Facebook
+   * the access token typically has a life of around 2 hours
+
+However, a user can grant a non-expiring access token. To request one, add <nowiki>offline_access=1</nowiki> to the cartridge options. (<nowiki>offline_access=1</nowiki> is the default setting when the [[https://virtuoso.openlinksw.com/download/][Cartridges VAD]] is first installed.) The <nowiki>offline_access</nowiki> permission enables an application to perform authorized requests on behalf of the user at any time. 
+
+---++View the Retrieved data
+
+The cartridge is configured to trigger on the URI pattern pattern ".*" , i.e. the expected starting point for sponging a Facebook user's profile is a URL of the form for ex.: http://graph.facebook.com/{user-id}. For example:
+
+   1 Access http://uriburner.com/about/html/http://graph.facebook.com/kidehen : 
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb13.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb14.png" />%BR%%BR%
+   1 Click the primary topic value link "Kingsley Uyi Idehen": 
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb15.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb16.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb17.png" />%BR%%BR%
+
+---++Alternative Follow-Your-Nose friendly view of a Facebook Data Object that represents a Person
+
+We can take a look at the /fct variant of the primaryTopic object page:
+
+   1 Click the Facets link from the footer section "Alternative Linked Data Views" of the page from above: 
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb18.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb19.png" />%BR%%BR%
+   1 Click "Next" to view the next of the Attributes and their Values:
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb20.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb21.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb22.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb23.png" />%BR%%BR%
+   1 Click "Last" to view the last page of Attributes and their Values:
+%BR%%BR%<img src="%ATTACHURLPATH%/fcb24.png" />
+%BR%<img src="%ATTACHURLPATH%/fcb25.png" />%BR%%BR%
+
+---++Paging Options
+
+Because a Facebook user profile can include hundreds of associated objects, the cartridge supports paging to provide some control over the amount of data returned by the Sponger.
+
+The page size used by Facebook's Graph API is not configurable. Two page sizes are routinely used:
+   * 25 objects per page
+      * connections using this page size include: posts, statuses, links, notes, photos, albums, checkins
+   * 5000 objects per page
+      * connections using this page size include: friends, interests, music, books, movies, games, likes
+
+Two cartridge options control the number of pages returned for a particular collection of objects (i.e. for a particular 'connection', in Facebook parlance)
+
+   * <code><nowiki>max_pages</nowiki></code>
+      * Sets the maximum number of pages to retrieve from a connection. (Default: 1)
+      * A value of 0 indicates no limit; all available pages will be returned.
+
+   * <code><nowiki>paging_page_size_limit</nowiki></code>
+      * Only turn on paging for page sizes below this limit. (Default: 5000)
+      * For connections using page sizes at or above this limit, only the first page will be fetched.
+      * A value of 0 will fetch all available pages, irrespective of their size.
+
+---++Related
+
+   * [[VirtSponger][Virtuoso Sponger]]
+   * [[VirtConfigureCartridges][Configure Sponger Cartridges Guide]]
+   * [[http://ode.openlinksw.com/][The OpenLink Data Explorer Extension]]
+   * [[http://ode.openlinksw.com/FacebookPersonProfile.html][Facebook to Linked Data Transformation Examples]]
+   * [[http://delicious.com/kidehen/goodrelations][Meshups (links and lookups across Web 2.0 Services and LOD Cloud]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF][Complete list of supported Vendor-specific Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesNonRDF][Complete list of supported Standard Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesMeta][Complete list of supported Meta Cartridges]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridge Usage via REST Request]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parametrized Examples of Meta Cartridge Usage via REST Request]]

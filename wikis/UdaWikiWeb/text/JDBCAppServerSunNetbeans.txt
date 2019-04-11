@@ -1,0 +1,370 @@
+%META:TOPICPARENT{name="InstallConfigJDBC"}%
+= UDA, Netbeans, and the Sun Java Application Server =
+
+%TOC%
+
+== Introduction ==
+
+The purpose of this document is to give brief instructions detailing how to use the Netbeans IDE to create a small JDBC Web Application, utilizing the <nop>OpenLink Generic JDBC Driver ({{{opljdbc3.jar}}}).
+
+The Web application will then be deployed an run against the Sun Java Application Server.
+
+There are two ways of configuring connectivity through a JDBC Driver -
+
+# By creating a JDBC Resource, or
+# By creating a Enterprise level Connector Resource.
+
+This document covers both means of establishing a connection although only one method is required.
+
+== Prerequisites ==
+
+* [[http://www.netbeans.org|Netbeans 6.1 IDE (Windows)]] 
+* [[http://developers.sun.com/appserver/|Sun Java System Application Server 9.1 (GlassFish V2) (Windows)]]
+* [[http://download.openlinksw.com|OpenLink JDBC Driver]] ({{{opljdbc3.jar}}}) 
+
+
+== Install the <nop>OpenLink JDBC Driver ==
+
+Installation of the JDBC driver is a simple process and requires nothing more than to copy the driver ({{{opljdbc3.jar}}}) to the following directory -
+{{{<APP_SERVER_INSTALL>/lib}}}
+
+For example: {{{C:\Sun\AppServer\lib}}}
+
+NOTE: this will make the JDBC driver available to *all* applications deployed against the application server.
+
+If you require the JDBC driver be restricted to a specific application domain then you should copy the driver .jar file into the {{{<DOMAIN>/lib/ext}}} directory.
+
+For example:{{{C:\Sun\AppServer\domains\domain1\lib\ext}}}
+
+
+== Create JDBC Resource ==
+
+Ensure the Sun Java Application Server is started then, browse to the HTTP based admin console -
+{{{http://localhost:4848}}}
+
+Log in using a suitable username and password.
+
+=== JDBC Connection Pool ===
+
+Navigate to {{{Resources -> JDBC -> Connection Pools}}}.
+
+In the main window, select the {{{New}}} button to display "New JDBC Connection Pool (Step 1 of 2)".
+
+Enter a suitable name for the connection pool, for example {{{openlink}}}.
+
+Select a "Resource Type" of {{{javax.sql.ConnectionPoolDataSource}}}.
+
+Leave the "Database Vendor" field blank then select {{{Next}}} which takes you to "New JDBC Connection Pool (Step 2 of 2)".
+
+Enter the "Datasource Classname" {{{openlink.javax.OPLConnectionPoolDataSource}}}.
+
+Now scroll to the "Additional Properties" section at the bottom of the main window.
+
+Select {{{Add Property}}}.
+
+The screen will refresh displaying two new text fields (Name and Value).
+
+For the "Name" enter {{{URL}}}.
+
+And for the "Value" enter a suitable JDBC connection URL.
+
+For the <nop>OpenLink JDBC Multi-tier client (Generic JDBC Driver) this will be of the form -
+{{{jdbc:openlink://<multi-tier-server>:<port>/SVT=domain-type/DATABASE=<database>/OPTIONS=<options>/UID=<username>/PWD=<password>}}}
+
+For example -
+{{{jdbc:openlink://oplsolaris10:5000/SVT=Progress 91E/DATABASE=demo92/OPTIONS=-H localhost -S pro9 -N tcp}}}
+
+Once entered, select {{{Finish}}} to return back to the main "Connection Pools" screen.
+
+Select your newly created connection pool using the link provided which will take you to the "Edit Connection Pool" screen.
+
+You can now use the "Ping" button to test connectivity to the target database.
+
+=== JDBC Resource ===
+
+Once you have created the Connection Pool you will need to set up a JDBC Resource.
+
+In the HTTP Admin Console, navigate to {{{Resources -> JDBC -> JDBC Resources}}}.
+
+In the main window, select the {{{New}}} button to display "New JDBC Resource".
+
+Enter a suitable "JNDI Name", for example {{{jdbc/openlink}}}
+
+Select the "Connection Pool" (created above) in the "Pool Name" drop down list.
+
+Select {{{OK}}}
+
+The resource is now available for use via the JNDI name {{{jdbc/openlink}}}.
+
+
+== Create Connector Resource ==
+
+Download and extract the archive of JDBC Connector templates from the following URL -
+
+[[http://java.sun.com/developer/earlyAccess/jdbc/index.html]]
+
+The archive includes documentation detailing the steps required.
+
+This document will detail the minimal steps required to use the <nop>ConnectionPoolDataSource implementation of the JDBC driver for the Connector 1.5 specification (in J2EE 1.4) using the Service Provider Interface (SPI).
+
+The template used for this is contained in the .rar file ({{{spi_15_cp.rar}}}). 
+
+=== Prepare the ===
+
+A rudimentary way to edit the contents of the archive is to rename the archive to .zip and extract.
+
+There are two things that must be done to the Connector archive ({{{spi_15_cp.rar}}}) -
+
+1) Place the JDBC Driver into the archive, and
+
+2) Edit the Resource Adapter XML file (ra.xml) to include details about the JDBC Driver and connection information to the target database.
+
+NOTE: Remember to copy any changes back to the original archive ({{{spi_15_cp.rar}}}) before deploying to the application server.
+
+==== JDBC Driver ====
+
+The JDBC Driver ({{{opljdbc3.jar}}}) should be placed into the root directory of the archive alongside the file {{{spi.rar}}} giving --
+{{{
+/
+  /META-INF/
+  opljdbc3.jar
+  spi.jar
+}}}
+
+==== Resource Adapter XML file ====
+
+Edit the file {{{/META-INF/ra.xml}}} to include the following changes --
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+
+<connector xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd"
+           version="1.5">
+  <description>Resource adapter wrapping Connection Pool Datasource implementation of driver</description>
+  <display-name>Connection Pool DataSource Resource Adapter</display-name>
+  <icon>
+    <small-icon></small-icon>
+    <large-icon></large-icon>   
+  </icon>
+  <vendor-name>OpenLink Software</vendor-name>
+  <eis-type>Multi-tier client</eis-type>
+  <resourceadapter-version>1.0</resourceadapter-version>
+  <license>
+    <license-required>false</license-required>
+  </license>
+  <resourceadapter>
+    <resourceadapter-class>com.sun.gjc.spi.ResourceAdapter</resourceadapter-class>
+    <outbound-resourceadapter>
+      <connection-definition>
+        <managedconnectionfactory-class>com.sun.gjc.spi.CPManagedConnectionFactory</managedconnectionfactory-class>
+        <config-property>
+          <config-property-name>DriverProperties</config-property-name>
+          <config-property-type>java.lang.String</config-property-type>
+          <config-property-value>setURL#jdbc:openlink://<multi-tier-server>:<port>/SVT=domain-type/DATABASE=<database>/OPTIONS=<options>/UID=<username>/PWD=<password>##</config-property-value>
+        </config-property>
+        <config-property>    
+          <config-property-name>Description</config-property-name>
+          <config-property-type>java.lang.String</config-property-type>
+          <config-property-value>OpenLink Multi-tier driver</config-property-value>
+        </config-property>
+        <config-property>    
+          <config-property-name>Delimiter</config-property-name>
+          <config-property-type>java.lang.String</config-property-type>
+          <config-property-value>#</config-property-value>
+        </config-property>
+        <config-property>    
+          <config-property-name>ClassName</config-property-name>
+          <config-property-type>java.lang.String</config-property-type>
+          <config-property-value>openlink.javax.OPLConnectionPoolDataSource</config-property-value>
+        </config-property>
+        <connectionfactory-interface>javax.sql.ConnectionPoolDataSource</connectionfactory-interface>
+        <connectionfactory-impl-class>com.sun.gjc.spi.DataSource</connectionfactory-impl-class>
+        <connection-interface>java.sql.ConnectionPoolDataSource</connection-interface>
+        <connection-impl-class>com.sun.gjc.spi.ConnectionHolder</connection-impl-class>
+      </connection-definition>
+      <transaction-support>LocalTransaction</transaction-support>
+      <authentication-mechanism>
+        <authentication-mechanism-type>BasicPassword</authentication-mechanism-type>
+        <credential-interface>javax.resource.spi.security.PasswordCredential</credential-interface>
+      </authentication-mechanism>
+      <reauthentication-support>false</reauthentication-support>
+    </outbound-resourceadapter>
+  </resourceadapter>
+</connector>
+}}}
+
+NOTE: All Unnecessary whitespace and comments have been removed.
+
+It should be pretty straight forward to determine the changes that have been made.
+
+NOTE: Remember to copy any changes back to the original archive ({{{spi_15_cp.rar}}}) before deploying to the application server.
+
+
+=== Deploy the Resource Adaptor ====
+
+Ensure the Sun Java Application Server is started then, browse to the HTTP based admin console -
+{{{http://localhost:4848}}}
+
+Log in using a suitable username and password.
+
+Navigate to {{{Applications -> Connector Modules}}}.
+
+Select {{{Deploy}}}.
+
+On the "Deploy Enterprise Applications/Modules" screen select a "Type:" of {{{Connector Module (.rar)}}}.
+
+Then Browse to the .rar file ({{{spi_15_cp.rar}}}) as prepared above.
+
+Finally, select {{{OK}}}.
+
+The Connector will be deployed to the application server with the default name of "{{{spi_15_cp}}}". 
+
+
+=== Connector Connection Pool ===
+
+Navigate to {{{Resources -> Connectors -> Connector Connection Pools}}}.
+
+In the main window, select the {{{New}}} button to display "New Connector Connection Pool (Step 1 of 2)".
+
+Enter a suitable name for the connection pool, for example {{{openlink}}}.
+
+Select the "Resource Adaptor:" as created above {{{spi_15_cp}}} .
+
+After the screen refreshes, select {{{Next}}}.
+
+
+On the next screen, select {{{Finish}}} to return back to the main "Connector Connection Pool" screen.
+
+
+=== Connector Resource ===
+
+Once you have created the Connector Connection Pool you will need to set up a Connector Resource.
+
+In the HTTP Admin Console, navigate to {{{Resources -> Connectors -> Connector Resources}}}.
+
+In the main window, select the {{{New}}} button to display "New Connector Resource".
+
+Enter a suitable "JNDI Name", for example {{{jdbc/openlink}}}
+
+Select the "Connector Connection Pool" (created above) in the "Pool Name" drop down list.
+
+Select {{{OK}}}
+
+The resource is now available for use via the JNDI name {{{jdbc/openlink}}}.
+
+
+== Creating a new Web Application ==
+
+=== Create a new Netbeans Project ===
+
+Select {{{File -> New Project}}}.
+
+In the "Choose Project" dialog, select a "Categories:" of {{{Web}}}, a "projects:" of {{{Web Application}}} then select {{{Next}}}.
+
+Enter a suitable "Project Name", for example {{{openlink}}} then select {{{Next}}}.
+
+Select the {{{Add}}} button to configure a new "Server".
+
+NOTE: You may have already configured a "Server" in which case you will see it listed in the drop down list and can skip the next few steps.
+
+Enter the type of application server {{{GlassFish V2}}}, enter a recognizable name for it then {{{Next}}}.
+
+Enter the "Platform Location", for example {{{C:\Sun\AppServer}}}.
+
+NOTE: Entering a correct value here will result in the default local domain being visible in the "Register Local Default Domain" drop down list.
+{{{localhost:4848(...\domains\domain1)}}}
+
+Leave this selected then {{{Next}}}.
+
+Enter the username and password required for domain administration commands then {{{Finish}}}.
+
+You should now see the Server listed in the "Server" drop down list.
+
+Select {{{Finish}}}.
+
+The IDE will refresh to display the project view.
+
+That is, you are ready to start editing the project.
+
+=== web.xml ===
+
+In the "Project" tree view (top left) locate, and edit the file, {{{openlink -> Configuration Files -> web.xml}}} to read -
+
+HINT: Hitting the "XML" button toward the top of the form view will make it much simpler to make the following change.
+
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  <session-config>
+    <session-timeout>
+      30
+    </session-timeout>
+  </session-config>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <resource-ref>
+    <description>Datasource example</description>
+    <res-ref-name>jdbc/openlink</res-ref-name>
+    <res-type>javax.sql.ConnectionPoolDataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+</web-app>
+}}}
+
+NOTE: the content of the res-ref-name tag should match the JNDI name you used when creating the JDBC Resource (above).
+
+Save the changes.
+
+=== index.jsp ===
+
+Now, locate, and edit the file, {{{openlink -> Web Pages -> index.jsp}}} to read -
+
+{{{
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core"%>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+  </head>
+  <body>
+    <sql:query var="data" dataSource="jdbc/openlink">
+      SELECT * FROM test
+    </sql:query> 
+    <p>jdbc/openlink test</p>
+    <table>
+      <tr>
+        <th>F1</th>
+        <th>F2</th>
+      </tr>
+      <c:forEach var="row" items="${data.rows}">
+        <tr>
+          <td>${row.f1}</td>
+          <td>${row.f2}</td>
+        </tr>
+      </c:forEach>
+    </table>
+  </body>
+</html>
+}}}
+ 
+Save the changes.
+
+ 
+== Deploy and Run the Application ==
+ 
+Using the configuration described in this document deploying and running the newly created application requires you to do nothing more than select {{{Run -> Run Main Project}}} from the Netbeans IDE.
+ 
+This will build the application, deploy the application and, finally, start up the default Web browser to display the running application.
+
+The built Web application will also be packages as a .war file located in -
+{{{<PROJECTS>/openlink/dist/<PROJECT_NAME>.war
+
+For example:
+{{{C:\Users\garry\openlink\dist\openlink.war}}}

@@ -1,0 +1,169 @@
+<html><body><div class="topic-text"><h1><a name="Using X.509 Certificates for ODBC SQL TLS Connection"></a> Using X.509 Certificates for ODBC SQL TLS Connection</h1>
+<p>Virtuoso can be configured to authenticate SQL logins, including ODBC with a single X.509 certificate.
+ The certificate must be registered server side for this purpose and may contain an additional custom attribute for the users SQL account name.
+ In this way all login information is held in the possibly password protected certificate.
+ The user specifies the certificate path in the place of the user name and the certificate encryption password as the password.
+ This works with the login dialog of the ODBC driver or within a <nop></nop>SQLDriverConnect login string.</p>
+<p>It is also possible to set up the ODBC client to check for the server&#39;s X.509 certificate by specifying a client side CA (Certificate Authority) list.</p>
+<p>An X.509 certificate can be used to authenticate a SQL User account associated with  Virtuoso server a TLS connection.
+ In this usage scenario, the ODBC client will use an X.509 certificate that contains a SQL username incorporated via custom attribute or extension that created at certificate generation time.
+ Any valid object ID (OID) can hold the username, but it important to note that any new object identifier must not conflict with existing OIDs (for example, we currently use <code>2.16.840.1.NNNNNN</code>).
+ Ultimately, It will be best to have one&#39;s own registered OID for this purpose.</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Attribute-Based%20vs%20Role-Based%20Access%20Control">Attribute-Based vs Role-Based Access Control</a></li> <li><a href="#Web%20ID%20Protocol%20ODBC%20Login">Web ID Protocol ODBC Login</a></li> <li><a href="#Client%20Certificate%20Generation%20Using%20%22openssl%22%20Tool">Client Certificate Generation Using &quot;openssl&quot; Tool</a></li> <li><a href="#Virtuoso%20Server%20Configuration">Virtuoso Server Configuration</a></li> <li><a href="#Registering%20Keys%20with%20Virtuoso">Registering Keys with Virtuoso</a></li> <li><a href="#Virtuoso%20Client%20Configuration">Virtuoso Client Configuration</a></li>
+<ul><li><a href="#Encrypted%20SQL%20SSL%20Connection">Encrypted SQL SSL Connection</a></li><ul><li><a href="#ODBC%20Data%20Source%20Configuration%20%28Windows%20or%20macOS%29">ODBC Data Source Configuration (Windows or macOS)</a></li> </ul><li><a href="#Server%20Certificate%20SQL%20TLS%20Connection">Server Certificate SQL TLS Connection</a></li><ul><li><a href="#ODBC%20Data%20Source%20Configuration%20%28Windows%20or%20macOS%29">ODBC Data Source Configuration (Windows or macOS)</a></li> </ul> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Attribute-Based vs Role-Based Access Control"></a> Attribute-Based vs Role-Based Access Control</h2>
+<p>Role-Based Access Control (RBAC) maps a SQL User Account to a Public Key (which is the part of an X.509 certificate that&#39;s imported into the SQL User&#39;s profile, just like placing a certificate into an LDAP entry for a User).
+ Alternatively, you can place the SQL Username in the OID of an X.509 certificate.</p>
+<p>Attribute-Based Access Control (ABAC) doesn&#39;t map a Public Key directly to a SQL User Account; instead, you have a <nop></nop>WebID that&#39;s associated with an ACL within a Realm (HTTP or SQL).
+ As the ABAC ACL system, <a href="https://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ValWhatWhyHow" class="absuri">VAL</a> includes a mapping to a SQL Role Account, which is what interacts with the Graph Security System.</p>
+<h2><a name="Web ID Protocol ODBC Login"></a> Web ID Protocol ODBC Login</h2>
+<p>Virtuoso supports the <nop></nop>WebID Protocol for ODBC Login, for which the INI parameter <code>X509ClientVerify</code> accepts the following values:</p>
+<ul><li><b>0</b> - do not require </li>
+<li><b>1</b> - require trusted certificate </li>
+<li><b>2</b> - request but do not require certificate; if certificate is given, it will be verified (and must be trusted) </li>
+<li><b>3</b> - request but do not require certificate; any certificate, even self-signed, will be accepted</li>
+</ul><p>If a certificate contains a <nop></nop>WebID in the SAN, the ODBC login will use it.
+ A <nop></nop>WebID may be mapped to a particular SQL account via the Conductor&#39;s admin interface.</p>
+<h2><a name="Client Certificate Generation Using &quot;openssl&quot; Tool"></a> Client Certificate Generation Using &quot;openssl&quot; Tool</h2>
+<p>To generate X.509 certificates, one can use the <code>openssl</code> tool freely obtainable from <a href="http://www.openssl.org/" class="absuri">openssl.org</a> . The <code>openssl.cnf</code> configuration file must be edited to include the new extension for <code>sqlUserName</code>, but first we have to find the hexadecimal representation of the SQL Username in question.
+ Then you can use <code>openssl</code> to create and confirm the certificate.
+ Follow the steps below:</p>
+<ol><li><b>Find the HEX representation of the SQL Username</b> - You can work this out from ASCII codes or use the <code>hexdump</code> utility found on most Unix platforms.
+ The following command would be sufficient, replacing <code>&lt;user_name&gt;</code> with the actual username: <br><pre><br>$ echo -n &quot;&lt;user_name&gt;&quot; | hexdump -e &#39;&quot;:&quot; 1/1 &quot;%02X&quot;&#39;
+</pre><br>For example, the username &#39;dba&#39; would be :64:62:61 .<br><br> </li>
+<li><b>Edit the <nop></nop>OpenSSL config file, <code>openssl.cnf</code></b> - Open the file in a text editor of your choosing, and add the following, replacing <code>:NN:NN.....</code> (keeping the preceding <code>DER</code>!) in the <code>sqlUserName</code> value with the hexadecimal representation of the username we discovered in the previous step.
+<br><pre><br>oid_section  = new_oids                   # section where new oids are defined
+
+[ CA_default ]
+x509_extensions = usr_cert                # The extensions to add to the cert
+
+[ new_oids ]
+sqlUserName=2.16.840.1.NNNNNN.1
+
+...
+[ usr_cert ]
+...
+sqlUserName = DER:NN:NN:NN:NN:NN.....
+</pre><br></li>
+<li><b>Generate a Private Key</b> <br><pre><br>openssl genrsa -des3 -out server.key 1024 -config ./openssl.cnf 
+</pre><br></li>
+<li><b>Make New Certificate Request</b> - Make new certificate request using the command: <br><pre><br>$ openssl req -new -key server.key -out server.csr -config ./openssl.cnf 
+</pre><br>The tool will ask for certain details.
+ Once answered, it will also generate a private key.<br><br> </li>
+<li><b>Generate Certificate</b> - Assuming the role of CA, generate a certificate using the request from the previous step, using the following command: <br><pre><br>$ openssl ca -in server.csr -config ./openssl.cnf 
+</pre><br>The tool will print the details of the request and will ask you to sign and commit the certificate into the CA repository.<br><br> </li>
+<li><b>Generate a <code>.pfx/.p12</code> certificate file</b> <br><pre><br>$ openssl pkcs12 -export -out server.p12 -inkey server.key -in server.pem
+</pre><br></li>
+<li><b>Verify New Certificate</b> - Check that the certificate contains the right SQL account name by using the following command to obtain a text dump of the certificate: <br><pre><br>$ openssl x509 -in server.pem -text -noout
+</pre><br>Now we can scan the contents of the output for the extension entries we added earlier: <br><pre><br>&gt;&gt;&gt;&gt;&gt;
+X509v3 extensions:
+....
+2.16.840.1.NNNNNNN.1:
+&lt;SqlAccountName&gt;
+^^^^^^ this should match the new OID ^^^^^
+&gt;&gt;&gt;&gt;&gt;
+</pre><br> </li>
+</ol><h2><a name="Virtuoso Server Configuration"></a> Virtuoso Server Configuration</h2>
+<p>The Virtuoso server can handle SSL connections in two modes:</p>
+<ul><li> <b>basic</b> - The connection is encrypted, with no certificate verification.
+ The client is not required to have its own trusted certificate.
+</li>
+<li> <b>trusted</b> - Additional mechanisms are enabled to check the client&#39;s certificate.
+ In this case, the client is required to have a trusted certificate.</li>
+</ul><p>To allow Virtuoso to check the client&#39;s certificates, the Virtuoso INI file must contain the following entries in the <code>[Parameters]</code> section: </p>
+<br><pre>; Basic session encryption-only parameters
+SSLServerPort          = 1113
+SSLCertificate          = server.pem ; server&#39;s certificate
+SSLPrivateKey          = server.key  ; server&#39;s private key, must match the certificate
+; Trusted operation parameters
+X509ClientVerify        = 3
+X509ClientVerifyCAFile  = server.pem         ; CA list; file containing certificates of acceptable CA
+X509ClientVerifyDepth   = 15                ; dependent of type of certificate checking can be &gt;1
+X509ExtensionOID          = 2.16.840.1.NNNNNNN.1 ; the OID value, same as that used to make client&#39;s certificates
+</pre><p>All certificate/key files must be in PEM format (but need not use the <code>.pem</code> filename extension).</p>
+<p>The server needs an <code>SSLCertificate</code> and <code>SSLPrivateKey</code> to begin listening on the <code>SSLServerPort</code>.
+ These are essential for secure operations.
+ Furthermore, the certificate must match the private key; if these do not match, the server will not start, and an error will be logged.
+ The private key is required to guarantee that the certificate&#39;s claim is true.
+ The server certificate is used by the client to identify the server.
+ The client can retrieve and verify this key and choose whether the server an be trusted depending on circumstances.</p>
+ <p><b>Note</b>: Basic (encryption-only) SSL/TLS cannot be used to identify a client through its certificate.</p>
+<p>The <code>X509ClientVerifyCAFile</code> is a file containing CA (Certificate Authority) certificates, that the server can use to verify client certificates.
+ The <code>X509ClientVerify</code> parameter enables (or disables) client certificate verification in general.
+ The <code>X509ClientVerifyDepth</code> parameter specifies the degree to which the server will trust the client&#39;s certificate.
+ The lower the value (with a minimum of 1), the higher the restriction levels.
+ This means that the server will look in the CA certificates to find which has issued the client certificate.
+ If there is no matching CA entry, the connection will be rejected; if there is a matching entry, Virtuoso will then verify the issuer chain; if the issuer chain is longer than <code>X509ClientVerifyDepth</code>, the connection will be rejected.</p>
+<p>All file paths above must be either absolute or set relative to the server working directory.</p>
+ <p><b>Note</b>: If the primary key file is encrypted, then the server must be started in foreground mode, such that the server can prompt for a password to be used to open the file.</p>
+<h2><a name="Registering Keys with Virtuoso"></a> Registering Keys with Virtuoso</h2>
+<p>To enable a client certificate to be used for authorization, the DBA must register it&#39;s MD5 fingerprint (checksum) in the database.
+ Registered certificates may subsequently be removed from the system.
+ Two functions exist for the purposes: <code>USER_CERT_REGISTER()</code> and <code>USER_CERT_UNREGISTER()</code>.</p>
+<p>The function prototypes are: </p>
+<br><pre>USER_CERT_REGISTER ( user_name , certificate , password , type );
+</pre><br> <br><pre>USER_CERT_UNREGISTER ( user_name , certificate , password , type );
+</pre><p> Both functions rely on the MD5 checksum of the certificates being registered or un-registered, therefore you have the option of supplying these functions with the certificate file or the MD5 checksum directly.</p>
+<p>The fingerprints of registered certificates are kept in the <code>DB.DBA.SYS_USERS</code> table as vectors of strings under the <code>LOGIN_CERTIFICATES</code> user option value (<code>U_OPTS</code> column).
+ The data stored there can be retrieved using a third function: </p>
+<br><pre>USER_GET_OPTION()
+</pre><p>For example, one might invoke: </p>
+<br><pre>USER_CERT_REGISTER (&#39;DBA&#39;, &#39;file:/server.pem&#39;, &#39;&#39;, &#39;PEM&#39;);
+</pre><p> Note: the <code>file:/</code> URL prefix is needed to designate that the certificate is in a file on the file system.</p>
+<p>The above action can also be performed without supplying the certificate itself, if the MD5 fingerprint is known: </p>
+<br><pre>USER_CERT_REGISTER (&#39;DBA&#39;, &#39;D9:6D:47:D7:67:47:D7:3C:2C:E0:89:91:F3:BC:E7:59&#39;);
+</pre><p>and </p>
+<br><pre>USER_CERT_UNREGISTER (&#39;DBA&#39;, &#39;D9:6D:47:D7:67:47:D7:3C:2C:E0:89:91:F3:BC:E7:59&#39;);
+</pre><p> </p>
+<h2><a name="Virtuoso Client Configuration"></a>Virtuoso Client Configuration</h2>
+<p>The following connection options control the client&#39;s SSL-related behavior:</p>
+<ul><li> <b>Encrypt</b> - specifies the type of secure connection to use </li>
+<li><nop> <b>ServerCert<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ServerCert&parent=VirtSecureSQLTLSX509CertificateConnection" class="wikiword">?</a></b> - (optional) to specify which certificate(s) are to be used to verify server certificates.</nop></li>
+</ul><h3><a name="Encrypted SQL SSL Connection"></a> Encrypted SQL SSL Connection</h3>
+<p>The <code>Encrypt</code> option can be set to &#39;1&#39; to specify a basic secure connection; no server identity verification will be performed.
+ Note that basic connections will only succeed if the server is also set to make basic SSL connections.</p>
+<code>isql</code> may be used to make such connections by including the <code>-E = 1</code> in the launch arguments, as shown: <br><pre>isql &lt;hostname&gt;:&lt;port&gt; &lt;uid&gt; &lt;pwd&gt; -E = 1
+</pre><p> Any ODBC connect string can achieve the same with the <code>ENCRYPT=1</code> parameter and value.
+</p>
+<br><pre>connectString = &quot;HOST=&lt;hostname&gt;:&lt;port&gt;;UID=&lt;uid&gt;;PWD=&lt;pwd&gt;;ENCRYPT=1&quot;
+</pre><p> </p>
+<h4><a name="ODBC Data Source Configuration (Windows or macOS)"></a> ODBC Data Source Configuration (Windows or macOS)</h4>
+<ol><li>Choose the <b><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso ODBC Driver</b> in the ODBC Administrator.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection01.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>Specify an ODBC data source <code>Name</code>, and ensure <b>The server requires a secure connection (SSL)</b> check box option is ticked.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection02.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>Tick the <b>Connect to the Virtuoso Server to obtain default settings for the additional configuration options</b> check box, enter a valid <b>Username</b> and <code>Password</code>, and click <b>Next</b> button; a secure connection to the database will be attempted.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection03.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>If successful, the configuration dialog for additional database options will be presented.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection04.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>Click the <b>Finish</b> button to complete the DSN creation.</li>
+</ol><p> </p>
+<h3><a name="Server Certificate SQL TLS Connection"></a> Server Certificate SQL TLS Connection</h3>
+<p>To ensure the server&#39;s identity the <code>Encrypt</code> option must be set to full or relative (to application working directory) path to the file containing client&#39;s certificate and private key.
+ This file can be encoded in PKCS#12 or PEM format.
+ The certificate and private key contained may be generated using the steps outlined above.</p>
+<p>When the Encrypt option is set to point to a certificate file, the <nop></nop>ServerCert option must be set to the full or relative path to file containing list of CA certificates in PEM format.
+ The content of this file will be used to verify server&#39;s certificate.</p>
+<p>When using these options the <code>UID</code> connect option must be set to an empty string to enable certificate authorization.
+ The <code>PWD</code> connection option will be used to open the private key.</p>
+<p>Using <code>isql</code> this can be done as follows: </p>
+<br><pre>isql &lt;hostname&gt;:&lt;port&gt; &quot;&quot; &lt;keysecret&gt;  -X server.p12 -T server.pem
+</pre><p> Using <code>ODBC connect string</code> this can be done as follows: </p>
+<br><pre>connectString = &quot;HOST=&lt;hostname&gt;:&lt;port&gt;;UID=;PWD=&lt;keysecret&gt;;ENCRYPT=server.p12;SERVERCERT=server.pem&quot;
+</pre><p> If client&#39;s certificate does not contain a user name for SQL login, the server will try matching the certificate fingerprint against registered certificates.
+ If any SQL account has a matching certificate registered, that account will be used for login; otherwise, login will be rejected.</p>
+<h4><a name="ODBC Data Source Configuration (Windows or macOS)"></a> ODBC Data Source Configuration (Windows or macOS)</h4>
+<ol><li>Choose the <b><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso ODBC Driver</b> in the ODBC Administrator.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection01.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>Specify an ODBC data source <b>Name</b> and ensure <b>The server requires a secure connection (SSL)</b> check box is ticked.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection02.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>Tick the <b>Connect to the Virtuoso Server to obtain default settings for the additional configuration options</b> check box, and: <ul><li>for <b>Authentication method</b>, select the <b>Public key authentication protocol</b> from the drop-down menu </li>
+<li>for <b>Certificate</b>, browse to the filesystem location of the <code>.p12<code> file </code></code></li>
+<li>enter the <b>password</b> for the <code>.p12<code> file </code></code></li>
+<li>optionally, tick the <b>Require the server to authenticate itself with the public key</b> check box, and browse to the public key file in your local filesystem.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection05.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+</ul></li>
+<li>If successful the configuration dialog for additional database options will be presented.
+<br><br>  <img src="VirtSecureSQLTLSX509CertificateConnection/VirtSecureSQLTLSX509CertificateConnection04.png" style="wikiautogen" height="300" width="450"> <br><br> </li>
+<li>Click the <code>Finish</code> button to complete the DSN creation.</li>
+</ol></div></body></html>

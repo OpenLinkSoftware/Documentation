@@ -1,0 +1,74 @@
+%VOSWARNING%
+
+%META:TOPICPARENT{name="VirtJenaProvider"}%
+
+---+ Virtuoso Jena Provider - SPARQL Example 11
+
+<verbatim>
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.query.DataSource;
+import com.hp.hpl.jena.util.iterator.*;
+import com.hp.hpl.jena.graph.*;
+import com.hp.hpl.jena.graph.test.*;
+import java.util.*;
+
+import virtuoso.jena.driver.*;
+
+public class VirtuosoSPARQLExample11 {
+
+
+	/**
+	 * Executes a SPARQL query against a virtuoso url and prints results.
+	 */
+	public static void main(String[] args) {
+
+		String url;
+		if(args.length == 0)
+		    url = "jdbc:virtuoso://localhost:1111";
+		else
+		    url = args[0];
+
+/*			STEP 1			*/
+                VirtDataSource ds =  new VirtDataSource(url, "dba", "dba");
+
+                Model md = ds.getNamedModel("gr");
+
+        	Statement st;
+
+        	st = statement( md, "D E F" );
+        	md.add(st);
+        	st = statement( md, "A B C" );
+        	md.add(st);
+
+
+                StmtIterator it = md.listStatements();
+                while(it.hasNext()) {
+                  st = it.nextStatement();
+                  System.out.println(st);
+                }
+
+	}
+
+
+    public static Statement statement( Model m, String fact )
+         {
+         StringTokenizer st = new StringTokenizer( fact );
+         Resource sub = resource( m, st.nextToken() );
+         Property pred = property( m, st.nextToken() );
+         RDFNode obj = rdfNode( m, st.nextToken() );
+         return m.createStatement( sub, pred, obj );    
+         }    
+
+    public static Resource resource( Model m, String s )
+        { return (Resource) rdfNode( m, s ); }
+
+    public static Property property( Model m, String s )
+        { return (Property) rdfNode( m, s ).as( Property.class ); }
+
+    public static RDFNode rdfNode( Model m, String s )
+        { return m.asRDFNode( NodeCreateUtils.create( m, s ) ); }
+
+
+}
+</verbatim>

@@ -1,0 +1,51 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ What is the best method to get a random sample of all triples for a subset of all the resources of a SPARQL endpoint?
+
+The best method to get a random sample of all triples for a subset of all the resources of a SPARQL endpoint, 
+is decimation in its original style:
+
+<verbatim>
+SELECT ?s ?p ?o 
+FROM <some-graph>
+WHERE 
+  { 
+    ?s ?p ?o .
+    FILTER ( 1 >  <bif:rnd> (10, ?s, ?p, ?o) )
+  }
+</verbatim>  
+
+By tweaking the first argument of <code>bif:rnd()</code> and the left side of the inequality, you can tweak the decimation ratio from 1/10 to any desired value. It is important to know that the SQL optimizer has a right to execute <code>bif:rnd (10)</code> only once at the beginning of the query, so we pass three additional arguments that can be known only when a table row is fetched.  Thus, <code>bif:rnd (10, ?s, ?p, ?o)</code> is calculated for each and every row, and any given row is either returned or ignored independently from others.
+
+However, <code>bif:rnd (10, ?s, ?p, ?o)</code> contains a subtle inefficiency. In the RDF store, graph nodes are stored as numeric IRI IDs, and literal objects may be stored in a separate table. A SQL function call needs arguments of traditional SQL datatypes, so the query processor will extract the text of the IRI for each node and the full value for each literal object. That is a significant waste of time. The workaround is to tell the SPARQL front-end to omit redundant conversions of values, by use of the <code><nowiki>SHORT_OR_LONG</nowiki></code> tag, as shown here --
+
+<verbatim>
+SELECT ?s ?p ?o 
+FROM <some-graph> 
+WHERE 
+  { 
+    ?s ?p ?o .
+    FILTER ( 1 >  <SHORT_OR_LONG::bif:rnd> (10, ?s, ?p, ?o))  
+  }
+</verbatim>   
+
+
+---++ Live Example
+
+The following SPARQL Query shows random occurrences of <code>dc:description</code> on the [[http://lod.openlinksw.com][LOD Cloud Cache]] instance:
+
+<verbatim>
+SELECT * 
+WHERE 
+  {
+    ?s <http://purl.org/dc/elements/1.1/description> ?o
+    FILTER ( 1 >  <SHORT_OR_LONG::bif:rnd> (10, ?s,  ?o))  
+  }
+limit 100
+</verbatim>
+
+View the results of the query execution [[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+*+WHERE+%7B%3Fs+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2Fdescription%3E+%3Fo%0D%0A++FILTER+%28+1+%3E+%3CSHORT_OR_LONG%3A%3Abif%3Arnd%3E++%2810%2C+%3Fs%2C++%3Fo%29%29++%7D%0D%0Alimit+100%0D%0A%0D%0A&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on][here]].
+
+---++ Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]

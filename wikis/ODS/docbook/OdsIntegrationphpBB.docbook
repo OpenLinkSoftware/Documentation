@@ -1,0 +1,164 @@
+<docbook><section><title>OdsIntegrationphpBB</title><title> ODS Integration of phpBB</title> ODS Integration of phpBB
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What is phpBB?</bridgehead>
+<para>phpBB is the most famous Open Source product for online forums.
+ Here you can find instructions how to use Virtuoso Database for hosting phpBB tables, and use it as Application Server with php hosting.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Install VAD</bridgehead>
+<orderedlist spacing="compact"><listitem>Start virtuoso db using the hosting_php.so ( .dll for win users).
+ In oder to use this plugin, it needs to be included in your virtuoso ini file as follows: <programlisting>...
+[Plugins]
+# for ex. here the location of the plugins is the plugin folder
+LoadPath = ./plugin
+...
+Load6    = Hosting,hosting_php.so
+...
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>Notes: Make sure you have the following line in your virtuoso.ini section [Parameters] (for instance that is used for phpBB database).
+ If not set phpBB would not work correct with the Virtuoso DB: <programlisting>PrefixResultNames        = 0
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Setup &quot;Local Virtuoso&quot; DSN (note the empty space in the name!) in order to access any of the application URLs.
+<itemizedlist mark="bullet" spacing="compact"><listitem>For windows users, please perform the following steps: <orderedlist spacing="compact"><listitem>Go to Start &gt;&gt; Settings &gt;&gt; Control Panel &gt;&gt; Administrative Tools &gt;&gt; Data Sources (ODBC) </listitem>
+<listitem>Go to tab &quot;User DSN&quot; and click &quot;Add&quot; </listitem>
+<listitem>Select the &quot;<ulink url="OpenLink">OpenLink</ulink> Virtuoso (version)&quot; driver and click &quot;Finish&quot; </listitem>
+<listitem>Enter &quot;Name&quot;: Local Virtuoso</listitem>
+<listitem>Enter &quot;Description&quot;: My Local Virtuoso</listitem>
+<listitem>For &quot;Server&quot;, enter your Virtuoso&#39;s hostname and ISQL port, e.g., localhost:1116</listitem>
+<listitem>Click &quot;Next&quot; </listitem>
+<listitem>Enter a username for &quot;Login ID&quot;, e.g., dba</listitem>
+<listitem>Enter the user&#39;s &quot;Password&quot;.
+ For dba, the default password is dba</listitem>
+<listitem>Click &quot;Next&quot; </listitem>
+<listitem>Click &quot;Finish&quot;.
+</listitem>
+</orderedlist></listitem>
+</itemizedlist></listitem>
+<listitem>Installing packages: <orderedlist spacing="compact"><listitem>Using ISQL: <orderedlist spacing="compact"><listitem>Install the ODS ods_framework_dav.vad package: <programlisting>DB.DBA.VAD_INSTALL(&#39;tmp/ods_framework_dav.vad&#39;,0);
+</programlisting></listitem>
+<listitem>Install the phpBB3 phpBB3_fs.vad package: <programlisting>SQL&gt; DB.DBA.VAD_INSTALL(&#39;tmp/phpBB3_fs.vad&#39;,0);
+</programlisting></listitem>
+</orderedlist></listitem>
+<listitem>Using Conductor UI: <itemizedlist mark="bullet" spacing="compact"><listitem>For more information see <ulink url="OdsIntegrationphpBBInstallCond">here</ulink>.</listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Linked Data View Scripts</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>You can find the phpBB3 Linked Data View scripts <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtRDFViewPHPBB3">here</ulink>.
+ Note that they are included in the phpBB3 package.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Configuration</bridgehead>
+<orderedlist spacing="compact"><listitem>In case you want to change the dba password, you need to locate the file below in your FS and change the <emphasis>$dbpasswd<emphasis /> value: <programlisting>vad\vsp\phpBB3\config.php
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Important:</emphasis> In the config.php file leave the tables prefix to default &quot;phpbb_&quot; as well as $dbuser.</listitem>
+</itemizedlist></emphasis></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">phpBB3 Administration</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>For more information see <ulink url="OdsIntegrationphpBBAdm">here</ulink> .</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">phpBB3 and ODS Newsgroups</bridgehead>
+<orderedlist spacing="compact"><listitem>Install the ODS Discussion ods_discussion_dav.vad package.
+ For ex.
+ from ISQL: <programlisting>SQL&gt;DB.DBA.VAD_INSTALL(&#39;tmp/ods_discussion_dav.vad&#39;,0);
+</programlisting></listitem>
+<listitem><ulink url="OdsIntegrationphpBB/phpBB-news-create_procedures.sql">phpBB-news-create_procedures.sql</ulink>: create procedures which are needed later: <programlisting>isql localhost:1116 dba dba phpBB-news-create_procedures.sql
+</programlisting></listitem>
+<listitem><ulink url="OdsIntegrationphpBB/phpBB-news-fill_tables.sql">phpBB-news-fill_tables.sql</ulink>: modifies the phpBB tables and fills them with data from Virtuoso News tables and ODS tables: <programlisting>isql localhost:1116 phpBB-news-fill_tables.sql
+</programlisting></listitem>
+<listitem><ulink url="OdsIntegrationphpBB/phpBB-news-create_triggers.sql">phpBB-news-create_triggers.sql</ulink> <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:verbatim: creates the triggers which will sync the data between phpBB and Virtuoso news tables: isql localhost:1116 phpBB-news-create_triggers.sql
+</span></listitem>
+<listitem>In order to make new news groups or to subscribe to other servers you should use the admin or Conductor UI: <orderedlist spacing="compact"><listitem>From ISQL install the Conductor conductor_dav.vad package: <programlisting>DB.DBA.VAD_INSTALL(&#39;tmp/conductor_dav.vad&#39;,0);
+</programlisting></listitem>
+<listitem>Go to <ulink url="http://host:port/conductor">http://host:port/conductor</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb10.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Login as dba and go to NNTP: <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb11.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Enter Server Address, port and if needed user name and password and click the button &quot;Add&quot;.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb12.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the server address link <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb13.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the &quot;Subscribe to newsgroups&quot; link.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb14.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the Subscribe link for Group name <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb15.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result the group will be shown in the list of &quot;Subscribed groups for ...&quot; Click its Newsgroup name link.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb16.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result will be shown the page with information about the newsgroup and the messages that have been retrieved.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb17.png" /></figure> </listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+<listitem>Register in ODS.
+ Then with the created account you will be able to log in at phpBB3 UI: <orderedlist spacing="compact"><listitem>Go to <ulink url="http://host:port/ods">http://host:port/ods</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb2.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the &quot;Sign Up&quot; link </listitem>
+<listitem>Enter in the shown form Login Name, etc, and click the &quot;Sign Up&quot; button.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb3.png" /></figure> </listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+<listitem>Access the phpBB3 home page: <ulink url="http://host:port/phpBB3">http://host:port/phpBB3</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb1.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the Login link and enter the user name and pwd you have entered when registering in ODS: <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb4.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result you will be successfully logged in to the phpBB3 UI.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb5.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the link of the forum with name &quot;Your first forum&quot;.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb6.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the &quot;new topic&quot; button <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb7.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Enter in the form in the Subject and text-area fields some values and click the &quot;Submit&quot; button.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb8.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result your topic will be created.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb9.png" /></figure></listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Newsgroup support available</bridgehead>
+<para>In case you have installed the ODS Discussion ods_discussion_dav.vad package, executed the 3 files as described above and added a newsgroup from Conductor, then:</para>
+<orderedlist spacing="compact"><listitem>Access the phpBB3 home page: <ulink url="http://host:port/phpBB3:">http://host:port/phpBB3:</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb18.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result will be shown the phpBB3 UI with list of the subscribed for <ulink url="NewsGroups">NewsGroups</ulink>.
+ Click the Login link and enter the user name and pwd you have entered when registering in ODS: <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb4.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result you will be successfully logged in to the phpBB3 UI.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb19.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click on the newsgroup name link.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb20.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result will be shown the posts for this newsgroup.
+ Click the &quot;Post a new topic&quot; link.
+</listitem>
+<listitem>Enter in the form in the Subject and text-area fields some values and click the &quot;Submit&quot; button.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb21.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>As result your topic will be created.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb22.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>You can view your post also from the ODS UI: <orderedlist spacing="compact"><listitem>Go to <ulink url="http://host:port/ods">http://host:port/ods</ulink> and login as ODS user.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb23.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Go to ODS-&gt;Discussions <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb24.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the link &quot;Discussions&quot; <itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb25.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the link &quot;List&quot; for the newsgroup you have posted your message to.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb26.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the Read link for your message shown at the top of the messages list.
+</listitem>
+<listitem>As result your message details will be shown.
+<itemizedlist mark="bullet" spacing="compact"><listitem><figure><graphic fileref="OdsIntegrationphpBB/pb27.png" /></figure></listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">URI Schemes</bridgehead>
+ <programlisting>http://&lt;your-instance-cname&gt;/phpBB3/user/&lt;ods-user-id&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Download</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>You can download the phpBB3 VAD package from <ulink url="https://virtuoso.openlinksw.com/download/">here</ulink>.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">References</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">See Also</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/PHPBB3SIOCRef">phpBB 3 SIOC Reference</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://my-movies.s3.amazonaws.com/Virtuoso_PHPBB3_Vista_Linked_Data_Demo.mov.zip">Windows Vista (x64) Virtuoso Installation Movie</ulink> </listitem>
+<listitem><ulink url="http://my-movies.s3.amazonaws.com/Virtuoso_PHPBB3_MacOSX_Linked_Data_Demo.mov.zip">Mac OS X (x64 &amp; Universal binary) Virtuoso  Installation Movie</ulink> </listitem>
+<listitem><ulink url="http://my-movies.s3.amazonaws.com/Virtuoso_PHPBB3_EC2_AMI_Linked_Data_Demo.zip">Virtuoso EC2 Cloud Edition Installation Movie</ulink></listitem>
+</itemizedlist><para><ulink url="CategorySPARQL">CategorySPARQL</ulink> <ulink url="CategorySIOC">CategorySIOC</ulink> <ulink url="CategoryODS">CategoryODS</ulink> <ulink url="CategoryWebSite">CategoryWebSite</ulink> </para>
+</section></docbook>

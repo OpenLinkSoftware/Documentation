@@ -1,0 +1,111 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Timezoneless Datetimes
+
+---++ What
+
+As of version 07.20.3213, Virtuoso supports <code>DATETIME</code>and <code>xsd:dateTime</code> values both with and without timezone information, i.e., both "timezoned" and "timezoneless".
+
+---++ Why
+
+Some traditional relational databases keep all values of <code>DATETIME</code> type as combination of time and timezone data. Others treat all time values as if they're in a single timezone (which might be specified by configuration, or inferred from local environment), which may mean conversion of submitted values which include timezone information or simple omission of that information upon storage.
+
+In RDF, incoming triples may contain literals of types like <code>xsd:dateTime</code> with arbitrary values matching <a href="http://dbpedia.org/page/ISO_8601">ISO 8601</a>, and this standard makes inclusion of timezone optional, i.e., both timezoned and timezoneless values may be included.
+
+This mix makes it necessary to handle both "timezoned" and "timezoneless" datetimes inside one database. Virtuoso servers support this starting from version 07.20.3213.
+
+<i><b>Important:</b> the use of timezoneless datetimes may result in subtle errors in data processing. Applications that worked fine with timezoned datetimes may work incorrectly when timezoneless datetimes are used. Such application errors may stay unnoticed during local testing and only be revealed after worldwide use.</i>
+
+To stay on safe side, the use of timezoneless datetimes remains blocked with databases created pre-07.20.3213, even after the server executable is upgraded, so old applications will continue to work as before. When developing new applications, please pay attention to the check-list at the end of this section.
+
+---++ How
+
+---+++ Enabling Timezoneless Support
+
+Different applications may require different behavior when input data contains timezoneless values. 
+
+In some cases, it is better to simply <code>CAST</code> all values to timezoned than to upgrade existing application code. 
+
+Virtuoso offers five different modes of support for timezoneless values. The mode is selected by setting the "<code><nop>TimezonelessDatetimes</code>" parameter in <code>[Parameters]</code> section of <code>virtuoso.ini</code>. This should be set before creating the database and the set value is stored in the database.
+
+After database is created, an attempt to change the mode by changing the setting in the <code>virtuoso.ini</code>, will have no effect and the <code>virtuoso.log</code> will contain a warning about mismatch between setting in the <code>virtuoso.ini</code> file and the database file.
+
+The possible variants are:
+
+|  <b><code><nowiki>TimezonelessDatetimes</nowiki></code> setting</b>  |  <b>effect</b>  |
+|  <b><code>0</code></b> %BR% (or unset)  | Never use timezoneless, as it was in old databases. Always set local timezone on parsing strings if no timezone specified. An attempt to set timezoneless by calling function forget_timezone() will signal an error. Timezoneless values still may come from outside as deserializations of timezoneless DATETIME values, serialized by other database instances, but not in any other way. |
+|  <b><code>1</code></b>  | When parsing strings, set timezoneless if ISO format tells so.  |
+|  <b><code>2</code></b>  | Set timezoneless always, exception when the parsed string contains explicit timezone or when RFC requires the use of GMT or when timezone is set by the function adjust_timezone(). This is default for new databases if <nop>TimezonelessDatetimes parameter is missing in virtuoso.ini.  |
+|  <b><code>3</code></b>  | Never use timezoneless. Always set local timezone on parsing strings if not timezone specified. An attempt to set timezoneless by calling function forget_timezone() will signal an error. Timezoneless values still may come from outside as deserializations of timezoneless DATETIME values, serialized by other database instances, but not in any other way. The difference with <nop>TimezonelessDatetimes=0 is that timezones are always printed on cast datetimes to strings etc. so timezoneless-aware clients will get unambiguous data.  |
+|  <b><code>4</code></b>  | On parsing string, set timezone to GMT if no timezone was specified. However, timezoneless can be set by calling function <code>forget_timezone()</code>. This mode can be convenient for global web services when real "local" timezones of specific users are not known.  |
+
+
+For most new applications, we recommend <code><nop>TimezonelessDatetimes = 2</code>, with <code><nop>TimezonelessDatetimes = 1</code> as the second-best.
+
+---+++ Formats of Datetime Strings
+
+Traditional SQL strings are of format "<code>YYYY-MM-DD hh:mm:ss</code>" with optional decimal fraction at the end and then optional tinmezone data. Depending on software, the timezone can be specified as "timezone offset", i.e., the difference with GMT in minutes, or as "timezone label", i.e., an identifier of timezone in special system dictionary that contains not only an offset in minutes but also information about daylight saving changes of the offset.
+<b>Virtuoso does not support timezone labels, only numerical timezone offsets.</b>
+Depending on the system, notation without timezone data at the end may mean timezoneless value or, more probably, the value in some "default" timezone, such as the server's local timezone or GMT.
+
+ISO 8601 introduced format "<code>YYYY-MM-DDThh:mm:ss</code>", with "<code>T</code>" character between the "date" and "time" parts.
+It also prescribed an unambiguous difference between timezoneless and timezoned values: an absent timezone means a timezoneless value.
+
+The timezone offset is written as "<code>+hh:mm</code>" or "<code>-hh:mm</code>", the "<code>+00:00</code>" is usually shortened to "<code>Z</code>". 
+
+Oracle Java may use 1 to 4 digits without delimiting "<code>:</code>"; in that case, 1 or 2 digits mean whole hours whereas 3 or 4 digits mean 1 or 2 digits of hour and two digits of minutes. For historical reasons, "<code>-00:00</code>" notation differs from "<code>+00:00</code>" and means timezoneless, not GMT datetime.
+
+---+++ Comparison of Datetimes
+
+ISO 8601 explicitly warns that comparison of timezoned and timezoneless datetime is not always possible. Valid timezones vary from <code>-14:00</code> to <code>+14:00</code>; the fact that the span can exceed 24 hours may not be immediately obvious.
+
+Nevertheless, storing rows in a database table require some unambiguous order; any order is OK as long as it does not break the rules and common sense, but it should be well-defined.
+
+Virtuoso's ordering for a mix of timezoned and timezoneless datetimes is very simple:
+
+   1 All timezoned datetimes are sorted in natural chronological order, based on their GMT equivalence. The value of timezone offset does not matter.
+   1 All timezoneless datetimes are sorted in natural chronological order, as if in GMT.
+   1 For each GMT calendar day, all timezoned datetimes are placed before all timezoneless datetimes.
+
+---+++ Related Functions
+
+   * <b><code>integer is_timezoneless (in dt datetime)</code></b> 
+%BR%The function returns 1 for timezoneless arguments, zero for timezoned.
+%BR%%BR%
+   * <b><code>integer timezone (in dt datetime [, in ignore_tzl integer])</code></b>
+%BR%The function returns timezone offset of its first argument, as an integer value in minutes.
+      * if the first argument is timezoneless and second argument is missing or zero then the returned value is NULL.
+      * if the first argument is timezoneless and second argument is nonzero then the returned value is 0. %BR%%BR%
+
+   * <b><code>datetime adjust_timezone (in dt datetime, in tz_offset integer [, in ignore_tzl integer])</code></b>
+%BR%The function returns its first argument with unchanged GMT value but new timezone offset, as it is specified by the second argument.
+      * if the first argument is timezoneless and third argument is missing or zero then error 22023 is signaled.
+      * if the first argument is timezoneless and third argument is nonzero then no error is signalled and the argument is handled like it is a GMT value.
+%BR%%BR%
+   * <b><code><nowiki>datetime dt_set_tz (in dt datetime, in tz_offset integer)</nowiki></code></b>
+%BR%The function returns its first argument with unchanged GMT value but new timezone offset. Unlike adjust_timezone(), if the argument is timezoneless then no error is signalled.
+%BR%%BR%
+   * <b><code>datetime forget_timezone (in dt datetime [, in ignore_timezone integer])</code></b>
+%BR%The function returns its first argument as a timezoned value.
+      * if the first argument is timezoneless, then it is returned unchanged.
+      * if the first argument is timezoned and second argument is missing or zero, then the result is a timezoneless value that "looks like" local time notation.
+      * if the first argument is timezoned and second argument is nonzero, then the value is first made GMT and then it becomes timezoneless.
+%BR%%BR%
+   * <b><code>datetime now ()</code></b>
+   * <b><code>datetime <nowiki>rdf_now_impl</nowiki> ()</code></b>
+   * <b><code>datetime getdate ()</code></b>
+   * <b><code>datetime get_timestamp ()</code></b>
+   * <b><code>datetime current_timestamp ()</code></b>
+%BR%All these names refer to one function that returns the timestamp of current transaction. It is the datetime of the beginning of current transaction with the fractional part of seconds replaced with serial number of a transaction within the second.
+      * If <code><nop>TimezonelessDatetimes=0</code> then the time has local timezone offset (as it was set at the time of last server start); otherwise it is timezoneless.
+%BR%%BR%
+   * <b><code>datetime curdatetime ([in fraction_microseconds integer])</code></b>
+%BR%The function returns current datetime, like <code>now()</code>, but fractional part of seconds can be adjusted by providing the number of "microseconds" as the argument.
+%BR%%BR%
+   * <b><code>datetime curdatetimeoffset ([in fraction_microseconds integer])</code></b>
+%BR%The function is like <code>curdatetime()</code>, but the returned datetime is in GMT timezone.
+%BR%%BR%
+   * <b><code>datetime curutcdatetime ([in fraction_microseconds integer])</code></b> and
+%BR% <b><code>datetime sysutcdatetime ([in fraction_microseconds integer])</code></b>
+%BR%These two names refer to one function that is similar to <code>curdatetime()</code>, but the returned datetime is in GMT timezone.
+%BR%%BR%

@@ -1,0 +1,46 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h2><a name="What is the difference between the functions SAMPLE, GROUP_CONCAT and GROUP_DIGEST?"></a>What is the difference between the functions SAMPLE, GROUP_CONCAT and GROUP_DIGEST?</h2>
+<p>This example demonstrates the differences between the functions <code><a href="http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html" class="absuri">SAMPLE</a></code>, <code><a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html" class="absuri">GROUP_CONCAT</a></code> and <code><a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html" class="absuri">GROUP_DIGEST</a></code>.</p>
+<p>Assume the following query that should get all <code>?assets</code> as a list with delimiters:</p>
+<br><pre>SPARQL SELECT ?view ?path (sql:GROUP_CONCAT (?asset, &#39; &#39;)) as ?asset_list
+FROM &lt;http://mygraph.com&gt; 
+WHERE
+ { 
+   ?view &lt;viewPath&gt; ?path ; 
+     &lt;viewContent&gt; ?asset ; 
+     &lt;viewType&gt;  &#39;phyview&#39;. 
+ }
+;
+</pre><p>This method is not universal, because conversion to strings will eliminate the difference between strings and IRIs and there should be some delimiter that never appears in values of <code>?asset</code>.
+ In addition, the query may fail with &quot;row too long&quot; error if values of <code>?asset</code> are lengthy and/or numerous enough.
+ It is also possible the query not work completely free from duplicates if more than one list is desired.
+ E.g.:</p>
+<br><pre>SPARQL 
+SELECT ?view (sql:GROUP_CONCAT (?path, &#39; &#39;)) as ?path_list
+  (sql:GROUP_CONCAT (?asset, &#39; &#39;)) as ?asset_list
+FROM &lt;http://mygraph.com&gt;
+WHERE 
+  { 
+    ?view &lt;viewPath&gt; ?path ; 
+      &lt;viewContent&gt; ?asset ; 
+      &lt;viewType&gt; &#39;phyview&#39; . 
+  }
+</pre><p> will not contain duplicates in lists only if either <code>?path</code> or <code>?asset</code> is unique for every found <code>?view</code>; but if it&#39;s so unique then there&#39;s no need in the corresponding <code>sql:<a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html" class="absuri">GROUP_CONCAT</a>()</code> .</p>
+<p>If there are many values per property but it&#39;s enough to return any single value and ignore the rest then use <code>sql:<a href="http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html" class="absuri">SAMPLE</a>()</code> function instead of <code>sql:<a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html" class="absuri">GROUP_CONCAT</a>() </code>.</p>
+<p>If there are many values per property and it&#39;s better to show more than one value but &quot;row too long&quot; error happens, then the <code>sql:<a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html" class="absuri">GROUP_DIGEST</a></code> function can be used:</p>
+<br><pre>SPARQL 
+SELECT ?view (sql:GROUP_DIGEST (?path, &#39; &#39;, 1000, 1)) as ?path_list 
+  (sql:GROUP_DIGEST (?asset, &#39; &#39;, 1000, 1)) as ?asset_list
+FROM &lt;http://mygraph.com&gt; 
+WHERE
+  { 
+    ?view &lt;viewPath&gt; ?path ; 
+      &lt;viewContent&gt; ?asset ; 
+      &lt;viewType&gt; &#39;phyview&#39; . 
+  }
+</pre><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/fn_SAMPLE.html" class="absuri">SAMPLE</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_CONCAT.html" class="absuri">GROUP_CONCAT</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/fn_GROUP_DIGEST.html" class="absuri">GROUP_DIGEST</a> </li>
+</ul></div></body></html>

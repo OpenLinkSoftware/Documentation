@@ -1,0 +1,63 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICPARENT{name="VOSSPARQL"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VOSSPARQL"}%--> </p>
+<h2><a name="SPARUL"></a>SPARUL</h2>
+<p>SPARUL is an Update Language For RDF Graphs.</p>
+<p>Since version 5.0, Virtuoso has supported the <a href="http://jena.hpl.hp.com/~afs/SPARQL-Update.html" class="absuri">SPARQL/Update</a> (SPARUL) extension of SPARQL.
+This is sufficient for most routine data manipulation operations.</p>
+<p>If SPARQL_UPDATE role is granted to SPARQL user, then data manipulation statements may be executed via the SPARQL Web service endpoint; if SPARQL_UPDATE role is not granted, users are limited to data querying statements.</p>
+<h3><a name="Related Functions"></a> Related Functions</h3>
+<p>Two functions allow the user to alter RDF storage by inserting or deleting all triples listed in some vector.</p>
+<p>Both functions receive an IRI of a graph that should be altered and a vector of triples that should be added or removed.
+ The graph IRI can be either IRI ID or a string.</p>
+<p>The return values of these functions are not defined and should not be used by applications.</p>
+<br><pre>create function DB.DBA.RDF_INSERT_TRIPLES (in graph_iri any, in triples any);
+create function DB.DBA.RDF_DELETE_TRIPLES (in graph_iri any, in triples any);
+</pre><p> Simple operations may be faster if written as low-level SQL code instead of using SPARUL.
+For instance, the use of SPARQL DELETE is redundant when the application can delete from RDF_QUAD by using simple filters like:</p>
+<br><pre>delete from DB.DBA.RDF_QUAD
+where G = DB.DBA.RDF_MAKE_IID_OF_QNAME (
+    &#39;http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf&#39; );
+</pre><p> On the other hand, simple filters do not work when search criteria refer to triples that are affected by the modification.</p>
+<p>Consider a function that deletes all triples whose subjects are nodes of type &#39;<a href="http://xmlns.com/foaf/0.1/Person&quot;." class="absuri">http://xmlns.com/foaf/0.1/Person&#39;.</a> Type information is stored in triples that will be deleted, so the simplest function is something like this:</p>
+<br><pre>create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  declare pdata_dict, pdata_array any;
+-- Step 1: select everything that should be deleted
+  pdata_dict := ((
+      sparql construct { ?s ?p ?o }
+      where { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+            } }
+      ));
+-- Step 2: delete all found triples
+  pdata_array := dict_list_keys (pdata_dict, 1);
+  RDF_DELETE_TRIPLES (foaf_graph, pdata_array);
+};
+
+DELETE_PERSONAL_DATA (
+  &#39;http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf&#39; );
+</pre><p> Since Virtuoso 5.0, applications may use SPARUL to do the same in a more convenient way:</p>
+<br><pre>create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  sparql delete { ?s ?p ?o }
+      where { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+           } }
+};
+</pre><h2><a name="Virtuoso's SPARUL Implementation"></a>Virtuoso&#39;s SPARUL Implementation</h2>
+<h3><a name="References"></a>References</h3>
+ <a name="SparqlSpecs">
+ <h4><a name="Specs"></a>Specs</h4>
+ <ul><li><a href="http://jena.hpl.hp.com/~afs/SPARQL-Update.html" class="absuri">SPARQL/UPDATE</a> </li>
+<li><a href="http://www.w3.org/TR/rdf-sparql-query/" class="absuri">SPARQL Query Language for RDF</a> </li>
+<li><a href="http://www.w3.org/TR/2005/WD-rdf-sparql-XMLres-20050527/" class="absuri">SPARQL Query Results XML Format</a> </li>
+<li><a href="http://www.w3.org/TR/rdf-sparql-protocol/" class="absuri">SPARQL Protocol for RDF</a> <a name="SparqlFaqs">
+ </a></li>
+</ul><h4><a name="FAQs"></a>FAQs</h4>
+ <a name="SparqlPresentations">
+ <h4><a name="Presentations"></a>Presentations</h4>
+ <a name="SparqlTutorials">
+ <h4><a name="Tutorials"></a>Tutorials</h4>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryGlossary" class="wikiword">CategoryGlossary</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategorySPARQL" class="wikiword">CategorySPARQL</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVOS" class="wikiword">CategoryVOS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryDocumentation" class="wikiword">CategoryDocumentation</a> </p>
+</a></a></a></div></body></html>

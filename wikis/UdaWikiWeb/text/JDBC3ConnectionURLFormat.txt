@@ -1,0 +1,70 @@
+%META:TOPICPARENT{name="InstallConfigJDBC"}%
+= Connection URLs for Enterprise Edition (Multi-Tier) Generic Client Type 3 JDBC Driver =
+
+A Type 3 JDBC Driver connects a pure JDBC client environment to non- or partially-Java environments, such as our Enterprise Edition (Multi-Tier) server components (Request Broker and target-specific Database or Bridge Agents).
+
+//**Note:** You should generally have only one of the following in your <code>CLASSPATH</code> environment variable.  If you have multiple jars which use the same Classname, only the first found by the JVM (typically the first in your <code>CLASSPATH</code>) will be active.  Choose the one best matched to your active JVM and to whether you will only need Type 3, or a combination of Type 1 and Type 3, connections.//
+
+Our pure Type 3 JDBC Drivers have the following attributes --
+|  <b>Java %BR% Version(s)</b> |  <b>Compatible %BR% JVM/JRE/JDK</b> |  <b>JDBC %BR% Version</b> |  <b>Filename</b>             |  <b>Classname</b>                  |
+|  Java 8                      |  1.8.x                              |  JDBC 4.2                 | <code>megathin4_2.jar</code> | <code>openlink.jdbc4.Driver</code> |
+|  Java 7                      |  1.7.x                              |  JDBC 4.1                 | <code>megathin4_1.jar</code> | <code>openlink.jdbc4.Driver</code> |
+|  Java 6                      |  1.6.x                              |  JDBC 4                   | <code>megathin4.jar</code>   | <code>openlink.jdbc4.Driver</code> |
+|  Java 4 and 5                |  1.4.x and 1.5.x                    |  JDBC 3                   | <code>megathin3.jar</code>   | <code>openlink.jdbc3.Driver</code> |
+|  Java 2 and 3                |  1.2.x and 1.3.x                    |  JDBC 2                   | <code>megathin2.jar</code>   | <code>openlink.jdbc2.Driver</code> |
+|  Java 1                      |  1.1.x                              |  JDBC 1                   | <code>megathin.jar</code>    | <code>openlink.jdbc.Driver</code>  |
+
+Our hybrid Type 3 and [[JDBC1ConnectionURLFormat| Type 1 JDBC]] Drivers have the following attributes --
+|  <b>Java %BR% Version</b> |  <b>Compatible %BR% JVM/JRE/JDK</b> |  <b>JDBC %BR% Version</b> |  <b>Filename</b>            |  <b>Classname</b>                  |
+|  Java 8                   |  1.8.x                              |  JDBC 4.2                 | <code>opljdbc4_2.jar</code> | <code>openlink.jdbc4.Driver</code> |
+|  Java 7                   |  1.7.x                              |  JDBC 4.1                 | <code>opljdbc4_1.jar</code> | <code>openlink.jdbc4.Driver</code> |
+|  Java 6                   |  1.6.x                              |  JDBC 4                   | <code>opljdbc4.jar</code>   | <code>openlink.jdbc4.Driver</code> |
+|  Java 4 and 5             |  1.4.x and 1.5.x                    |  JDBC 3                   | <code>opljdbc3.jar</code>   | <code>openlink.jdbc3.Driver</code> |
+|  Java 2 and 3             |  1.2.x and 1.3.x                    |  JDBC 2                   | <code>opljdbc2.jar</code>   | <code>openlink.jdbc2.Driver</code> |
+|  Java 1                   |  1.1.x                              |  JDBC 1                   | <code>opljdbc.jar</code>    | <code>openlink.jdbc.Driver</code>  |
+
+== Type 3 JDBC URL Syntax ==
+
+Our Type 3 JDBC URL sytax is as shown below.  Spaces between arguments are here only for clarity; they should be omitted for actual use, as in the [[#Example|example]].
+
+{{{
+jdbc:openlink://<Hostname>[:portnumber] [/DSN=<dsn>] [/UID=<uid>] [/PWD=<pwd>] [/READONLY=<y>] 
+              [/FBS=<x>] [/JDBCAGENT=<AgentType>] [/SVT=<ServerType>] [/DATABASE=<Schema>] 
+              [/OPTIONS=<AgentOptions>] [/DRIVER=<RemoteOdbcDriver>] [/SSL=<y>] [/TIMEOUT=<seconds>]
+}}}
+
+=== Handling JDBC URL Reserved Characters ===
+
+JDBC URL escape characters '{{{{}}}' and '{{{}}}}' should be used when parameters in the JDBC URL contain any JDBC URL reserved characters, such as '{{{/}}}'.
+
+Common examples include
+
+* Database or other file paths: <b>{{{{/path/to/database/demo}}}}</b>
+* Oracle Instant Client connection strings: <b>{{{{//oracle_hostname:port/TNSNAME}}}}</b>
+
+=== Type 3 JDBC URL Attributes ===
+
+* **{{{Hostname}}}** -- Network Alias or IP address of server machine running an <nop>OpenLink Request Broker instance
+* **{{{Port Number}}}** -- Port number that identifies location of <nop>OpenLink JDBC Agent Service; the default value is 5000
+* **{{{/DSN}}}** -- ODBC Data Source Name from which the JDBC driver should automatically derive JDBC URL values; does not imply connection via ODBC
+* **{{{/UID}}}** -- Username
+* **{{{/PWD}}}** -- Password
+* **{{{/READONLY}}}** -- Determines session mode &mdash; read-write ({{{=N}}}) or read-only ({{{=Y}}}).
+* **{{{/SVT}}}** -- Determines <nop>OpenLink Database Agent type (Oracle, Informix, Sybase, Progress, Ingres, Microsoft SQL Server, <nop>MySQL, <nop>PostgreSQL, etc.)
+* **{{{/OPTIONS}}}** -- Values used to connect to <nop>OpenLink Database Agents to remote database servers using database vendors networking. [[MTServerConfigConnectOptions|See additional information]].
+* **{{{/DATABASE}}}** -- Actual database/schema name within a particular database environment; not relevant to all connections.
+* **{{{/DRIVER}}}** -- Only used when making a DSN-Less connection to a remote ODBC Driver.
+* **{{{/FBS}}}** -- Sets number of JDBC resultset rows that get packed together for transmission from the Database Agent to the Client Driver
+* **{{{/SSL}}}** -- Specifies use of SSL to secure the connection. [[SecureJDBCType3wSSL|See additional information]].
+* **{{{/JDBCAGENT}}}** -- //Only applicable to Release 3.x and older; not used with Release 4.x or later.//  Specifies a particular handler for the client request rather than letting the Broker decide (separate handlers exist for ODBC and UDBC Generic Clients).
+* **{{{/TIMEOUT}}}** -- Generally best set to 10-30 seconds longer than the longest query you execute takes to return data.  Analogous to the client-side Enterprise Edition (Multi-Tier) ODBC Generic Client [[ConfiguringMTCommunicationsAttributes| ReceiveTimeout]].
+
+== Example ==
+
+{{{
+jdbc:openlink://test.example.com:5000/UID=sa/PWD=admin/READONLY=N/FBS=10/SVT=SQLSERVER/DATABASE=pubs/OPTIONS=-H sqlhost.example.com -V 8.0 -P 1433/
+}}}
+
+== See Also ==
+
+* [[JDBC1ConnectionURLFormat| Connection URLs for Type 1 JDBC Driver ]]

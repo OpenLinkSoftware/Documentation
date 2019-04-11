@@ -1,0 +1,77 @@
+<docbook><section><title>VirtTransactionLogsRead</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">Reading Virtuoso Transaction Logs</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ A Stored Procedure that uses the in-built <ulink url="http://docs.openlinksw.com/virtuoso/fn_read_log.html">read_log()</ulink> function to read the Transaction log of a Virtuoso Instance, in regards to Quad Store activity.<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+ There are times when you application functionality benefits from being able to read Virtuoso Transaction logs.
+ In particular, the database triggers on the RDF_QUAD table are not meant to be supported in Virtuoso 7+, thus reading transaction logs as indicated below is the recommended method for tracking changes to the RDF_QUAD table.<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para>To read the changes made to the RDF_QUAD table i.e RDF data, one can use the following Virtuoso Stored procedure that uses the in-built <ulink url="http://docs.openlinksw.com/virtuoso/fn_read_log.html">read_log()</ulink>:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Sample Scenario</bridgehead>
+<orderedlist spacing="compact"><listitem>Insert sample data so to change the rdf_quad index: <programlisting>SQL&gt; SPARQL INSERT INTO &lt;g&gt; { &lt;s&gt; &lt;p&gt; &lt;o&gt; };
+</programlisting></listitem>
+<listitem>Create the following example procedure: <programlisting>create procedure rlt (in f any, in inpos int := 0) 
+{   
+  declare h, op, g, s, p, o any;
+  declare pos int;
+  result_names (op, g, s, p, o);
+  h := file_open (f, inpos);
+  declare r, rr any;
+  while ((rr := read_log (h, pos)) is not null)
+    {
+      declare rw, k any;
+      declare i int;
+      rw := null;
+      k := null;
+      for (i := 1; i &lt; length (rr); i := i + 1)
+        {
+	  r := rr[i];
+	  if (r[0] = 13) -- key insert
+	    {
+	      rw := r[2];
+	      op := &#39;I&#39;;
+	    }
+	  else if (r[0] in (1,8,9)) -- insert,soft,replacing
+	    {
+	      rw := r[1];
+	      op := &#39;I&#39;;
+	    }
+	  else if (r[0] in (3,14)) -- delete
+	    {
+	      rw := r[1];
+	      op := &#39;D&#39;;
+	    }
+	  if (rw is not null)
+	    {
+	      k := rw[0];
+	      if (k = 273) -- RDF_QUAD, should check with SYS_KEYS
+		{
+		  result (op, __ro2sq (rw[1]), __ro2sq (rw[2]), __ro2sq (rw[3]), __ro2sq (rw[4]));
+		}
+	    }
+	}
+    } 
+  result (pos + inpos, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;);
+}
+;
+</programlisting></listitem>
+<listitem>Call the procedure: <itemizedlist mark="bullet" spacing="compact"><listitem>In case of no changes to the RDF_QUAD Index are done, it will return: <programlisting>SQL&gt; rlt(&#39;tmp/Virtuoso.trx&#39;);
+Query result:
+op    g   s   p    o
+ANY   ANY ANY ANY  ANY
+8403
+No. of rows in result: 1
+</programlisting></listitem>
+<listitem>In case of changes to the RDF_QUAD Index are done ( example with the short INSERT we did above), it will return for example: <programlisting>SQL&gt; rlt(&#39;tmp/Virtuoso.trx&#39;);
+Query result:
+op     g   s   p    o
+ANY    ANY ANY ANY  ANY
+I      g   s   p    o
+71446
+No. of rows in result: 2
+</programlisting></listitem>
+</itemizedlist></listitem>
+</orderedlist><para>To read the transaction log in general, one should use the Virtuoso <ulink url="http://docs.openlinksw.com/virtuoso/fn_read_log.html">read_log()</ulink> function.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/vsp1.html#longhttptrans">Long HTTP Transactions.</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/clusteroperation.html#clusteroperationtransc">Cluster Operations transactions.</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/fn_log_text.html">Insert a SQL statement into the roll forward log.</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/fn_log_enable.html">Enable logs.</ulink> </listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,208 @@
+<docbook><section><title>ConfigHSODBCr8onHP</title><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Data Migration &amp; Integration Configuration </bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Configuring an ODBC data source using Oracle Heterogeneous Services for HP/UX (Release 8i and up)</bridgehead>
+<para><emphasis> Parts of this article were extracted from Doc ID Note:214834.1 from Oracle&#39;s <ulink url="http://metalink.oracle.com">Metalink</ulink> website (<ulink url="http://metalink.oracle.com">http://metalink.oracle.com</ulink>) </emphasis></para><bridgehead class="http://www.w3.org/1999/xhtml:h4">PURPOSE</bridgehead>
+<para>Setup of HSODBC on HP-UX 11.0 differs from other UNIX platforms.</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">SCOPE &amp; APPLICATION</bridgehead>
+<para>This note describes how to set up HSODBC (heterogeneous services) for HP-UX 11.0 using Oracle 9.2 release.
+ It is similar for 9.1 release, but the directory structure changed between 8i and 9i.
+ If using this note for 8i, please keep in mind that the library directory structure has changed.</para><para>This article is divided into four different parts:</para><para>- Part I describes how to relink the HSODBC executable (if necessary) - Part II describes the configuration process of HSODBC - Part III is a summary of how to set HSODBC up for Oracle 8i on HP-UX</para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Part I: How to relink the HSODBC executable</bridgehead>
+<para>(Everything done in this section is done as the ORACLE user.)</para><para>While most ODBC drivers are linked with a C++ compiler, Oracle is linked with a C compiler.
+ This can cause issues on HP-UX machines.
+ The <computeroutput>hsodbc</computeroutput> library must be relinked with C++ compiler.
+ This document contains relinking instructions for release 9i.
+ A description for an Oracle 8i relink can be found in Note:150458.1 Relinking Heterogeneous Serviceon HP-UX):</para><orderedlist spacing="compact"><listitem> See if the following file exists on HP-UX: <programlisting>/opt/aCC/lib/cpprt0_stub.o
+</programlisting></listitem>
+<listitem> If it does not exist, use these instruction to create it: <orderedlist spacing="compact"><listitem> Create a file called <computeroutput>cpprt0_stub.s</computeroutput> with the following contents: <programlisting>.code
+; stubs for static constructors in a.out
+.export __StaticCtorTable_Start,data
+.export __StaticCtorTable_End,data
+__StaticCtorTable_Start
+__StaticCtorTable_End
+
+.data
+; stubs for static constructors in a.out, compiled with +z/+Z
+.export __ZStaticCtorTable_Start,data
+.export __ZStaticCtorTable_End,data
+__ZStaticCtorTable_Start
+__ZStaticCtorTable_End
+</programlisting><emphasis><emphasis>Note:</emphasis> If you create the file on a PC, don&#39;t forget to transfer the file in ASCII mode.</emphasis> </listitem>
+</orderedlist></listitem>
+<listitem> If you created the file, use the following command to compile it: <programlisting>as cpprt0_stub.s -o ./cpprt0_stub.o
+</programlisting></listitem>
+<listitem> Rename the files <computeroutput>hsodbc</computeroutput> and <computeroutput>hsodbc0</computeroutput> in the directory <computeroutput>$ORACLE_HOME/bin</computeroutput>.
+</listitem>
+<listitem> Then change to the directory <computeroutput>$ORACLE_HOME/rdbms/lib</computeroutput>.
+</listitem>
+<listitem> Copy the file <computeroutput>cpprt0_stub.o</computeroutput> to this directory.
+</listitem>
+<listitem> Set the <computeroutput>HSA_ODBC_SYSLIBS</computeroutput> environment variable: <programlisting>export HSA_ODBC_SYSLIBS=&quot;cpprt0_stub.o -lstd -lstream -lCsup -lcl -ldld&quot;
+</programlisting></listitem>
+<listitem> Relink of the hsodbc library is done as follows: <programlisting>/usr/ccs/bin/make -f ins_rdbms.mk ihsodbc
+</programlisting>The linking should proceed without any error and create the <computeroutput>hsodbc</computeroutput> file in the <computeroutput>$ORACLE_HOME/bin</computeroutput> directory.
+</listitem>
+<listitem> To make sure, that the linking worked, simply type <computeroutput>hsodbc</computeroutput> and press enter.
+ For Oracle 9.2 <computeroutput>hsodbc</computeroutput> executable a similar screen to the following will appear: <programlisting>ora920 @ hsodbc
+
+Oracle Corporation --- TUESDAY OCT 15 2002 09:31:32.746
+
+Heterogeneous Agent Release 9.2.0.1.0 - Production Built with
+Driver for ODBC
+</programlisting>This will indicate that the relinking was successful.
+ Please don&#39;t proceed with the next part, if this part was unsuccessful!</listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Part II: How to configure HSODBC</bridgehead>
+<para>(Complete all steps in this section using the Oracle user account that starts the listener!)</para><para>The following elements must be configured: </para><itemizedlist mark="bullet" spacing="compact"><listitem> <computeroutput>listener.ora</computeroutput> </listitem>
+<listitem> <computeroutput>tnsnames.ora</computeroutput> </listitem>
+<listitem> <computeroutput>init&lt;SID&gt;.ora</computeroutput> </listitem>
+<listitem> Oracle environment </listitem>
+<listitem> Oracle database</listitem>
+</itemizedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h5">1) The listener needs a new SID entry like the following:</bridgehead>
+<programlisting>(SID_DESC =
+  (SID_NAME = hsodbc)
+  (ORACLE_HOME = /u01/app/oracle/product/9.2.0)
+  (PROGRAM = hsodbc)
+  (ENVS=&quot;SHLIB_PATH=/u05/odbc/lib:/u01/app/oracle/product/9.2.0/lib32&quot;)
+)
+</programlisting><para> Set the <computeroutput>ORACLE_HOME</computeroutput> entry and the <computeroutput>ENVS</computeroutput> entry accordingly.
+ <computeroutput>ORACLE_HOME</computeroutput> must point to your <computeroutput>ORACLE_HOME</computeroutput> directory and the <computeroutput>ENVS</computeroutput> string contains entries for the <computeroutput>SHLIB_PATH</computeroutput>.
+ The <computeroutput>SHLIB_PATH</computeroutput> setting must contain the Oracle and ODBC library paths, at a minimum.</para><para> Note: Differing from 8i releases, the 32 bit Oracle libraries are now located in the <computeroutput>lib32</computeroutput> directory while for 8i the 32 bit library was located in the <computeroutput>lib</computeroutput> directory.
+ So please pay attention to this while using older configuration files.
+ More details can be found in <emphasis>Note: 109621.1</emphasis>.</para><para>Here is a sample <computeroutput>listener.ora</computeroutput> file: </para><programlisting>SID_LIST_LISTENER920 =
+   (SID_LIST =
+      (SID_DESC =
+         (SID_NAME = hsodbc)
+         (ORACLE_HOME = /u01/app/oracle/product/9.2.0)
+         (PROGRAM = hsodbc)
+         (ENVS=&quot;SHLIB_PATH=/u05/odbc/lib:/u01/app/oracle/product/9.2.0/lib32&quot;)
+      )
+   )
+
+LISTENER920 =
+   (DESCRIPTION_LIST =
+      (DESCRIPTION =
+         (ADDRESS_LIST =
+            (ADDRESS = 
+               (PROTOCOL = TCP)
+               (HOST = &lt;hostname of the Oracle Server&gt;)
+               (PORT = 1921)
+            )
+         )
+         (ADDRESS_LIST =
+            (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC))
+         )
+      )
+   )
+</programlisting><para> This <computeroutput>listener.ora</computeroutput> file contains a listener called <computeroutput>LISTENER920</computeroutput> instead of the default name <computeroutput>LISTENER</computeroutput>.
+ To stop/start the listener from above, the <computeroutput>current_listener</computeroutput> must be set to <computeroutput>listener920</computeroutput>.</para><para>The listener must be restarted after changing the <computeroutput>listener.ora</computeroutput>!</para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h5">2) The <computeroutput>tnsnames.ora</computeroutput> needs an entry for the HSODBC alias:</bridgehead>
+<programlisting>hsodbc.DE.ORACLE.COM =
+   (DESCRIPTION =
+      (ADDRESS_LIST =
+         (ADDRESS = 
+            (PROTOCOL = TCP)
+            (HOST = &lt;hostname of the Oracle Server&gt;)
+            (PORT = 1921)
+         )
+      )
+      (CONNECT_DATA =
+         (SID= hsodbc)
+      )
+      (HS=)
+   )
+</programlisting><para> Your TNS alias domain will likely differ from the one used above (<computeroutput>de.oracle.com</computeroutput>), depending on the parameter in the <computeroutput>sqlnet.ora</computeroutput>:<computeroutput>NAMES.DEFAULT_DOMAIN = de.oracle.com</computeroutput></para><para>The most important entry is the <computeroutput>(HS=)</computeroutput> keyword.
+ This keyword must be added manually, and opening the Net Configuration Assistants will remove this entry from your <computeroutput>tnsnames.ora</computeroutput> file! The <computeroutput>(HS=)</computeroutput> parameter must be outside the <computeroutput>SID</computeroutput> section and specifies that this connector uses the Oracle Heterogeneous Service Option.</para><para>Restart the listener after adding the TNS alias.
+ Then, use <computeroutput>tnsping &lt;alias&gt;</computeroutput> to perform a connectivity check.
+</para><programlisting>tnsping hsodbc
+</programlisting><para> <computeroutput>tnsping</computeroutput> should come back with a successful message.</para><bridgehead class="http://www.w3.org/1999/xhtml:h5">3) <computeroutput>init.ora</computeroutput>:</bridgehead>
+<para>The <computeroutput>SID</computeroutput> is also relevant for the <computeroutput>init.ora</computeroutput> file.
+ The name of the file is <computeroutput>init&lt;SID&gt;.ora</computeroutput>.
+ In this example, it is called <computeroutput>inithsodbc.ora</computeroutput>.
+ The file is located at <computeroutput>$ORACLE_HOME/hs/admin/</computeroutput>.
+ It should contain the following entries: </para><programlisting>#
+# HS init parameters
+#
+HS_FDS_CONNECT_INFO = mssql
+HS_FDS_TRACE_LEVEL = off
+HS_FDS_SHAREABLE_NAME = &lt;OpenLink home directory&gt;/lib/libiodbc.so 
+# 
+# ODBC specific environment variables
+#
+set ODBCINI=/dbs/openlink/32bit/v42/bin/odbc.ini
+set ODBCINSTINI=/dbs/openlink/32bit/v42/bin/odbcinst.ini
+#
+# *** The following variables are extra requirements of the OpenLink ODBC drivers 
+# ***
+set OPENLINKINI=[OpenLink home directory]/bin/openlink.ini
+set PATH=$PATH:[OpenLink home directory]/bin
+set SHLIB_PATH=$SHLIB_PATH:[OpenLink home directory]/lib
+</programlisting><para> Short explanation of the parameters: </para><itemizedlist mark="bullet" spacing="compact"><listitem> <computeroutput>HS_FDS_CONNECT_INFO</computeroutput> points to the ODBC DSN configured in PART I of this note.
+</listitem>
+<listitem> <computeroutput>HS_FDS_SHAREABLE_NAME</computeroutput> points to the ODBC Driver Manager library at <computeroutput>&lt;OpenLink home directory&gt;/lib/&lt;ODBCLIB&gt;</computeroutput></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h5">5) Configuring the Oracle database</bridgehead>
+<para>You need to create a database link.
+ To proceed, connect with the username/password that has sufficient rights to create a database link (i.e., <computeroutput>system</computeroutput>).
+ The syntax is: </para><programlisting>CREATE [PUBLIC] DATABASE LINK &lt;name&gt;
+CONNECT TO &quot;&lt;UID&gt;&quot; IDENTIFIED BY &quot;&lt;pwd&gt;&quot; USING &#39;&lt;tnsalias&gt;&#39;;
+</programlisting><para> Using values found in our previous example files, the following syntax would be used to connect to the Microsoft SQL Server: </para><programlisting>CREATE DATABASE LINK sqlserver
+CONNECT TO &quot;sa&quot; IDENTIFIED BY &quot;sa&quot; USING &#39;hsodbc&#39;;
+</programlisting><para> The database link name is &quot;<computeroutput>sqlserver</computeroutput>&quot;.
+ Username and password must be in double quotes, because they are case sensitive.
+ &#39;<computeroutput>hsodbc</computeroutput>&#39; points to the TNS alias in the <computeroutput>tnsnames.ora</computeroutput> file that calls the HS subsystem.</para><para>If everything is configured properly, a select of the <computeroutput>EMP</computeroutput> table (created for the <computeroutput>demoodbc</computeroutput> program) should be successful: </para><programlisting>select * from &quot;EMP&quot;@sqlserver;
+</programlisting><para> <emphasis><emphasis>Note:</emphasis> The <computeroutput>EMP</computeroutput> table is capitalized in the Microsoft SQL Server database.
+ Because Microsoft SQL Server is case sensitive, the <computeroutput>EMP</computeroutput> table must be surrounded by double quotes in the context of the query.</emphasis><computeroutput>@sqlserver</computeroutput> points to the name of the database link to the Microsoft SQL Server.</para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Part III How to set it up for Oracle 8i on HP-UX</bridgehead>
+<para> ODBC is independent from the Oracle version being used.
+ Therefore, Part I of this document is the same for 8i and 9i Oracle database releases.</para><para>Relinking as described in Part II varies substantially.
+ These are the steps that need to be followed:</para><orderedlist spacing="compact"><listitem> Check to see if <computeroutput>/opt/aCC/lib/cpprt0_stub.o</computeroutput> exists.
+</listitem>
+<listitem> If it does not exist, create it as described in Part II above.
+</listitem>
+<listitem> Copy this file to <computeroutput>$ORACLE_HOME/rdbsm/lib</computeroutput> directory.
+</listitem>
+<listitem> Change to <computeroutput>$ORACLE_HOME/rdbsm/lib</computeroutput> directory.
+</listitem>
+<listitem> Copy/paste the command into a script on the HP-UX machine, make it executable (<computeroutput>chmod +x</computeroutput>), and run it.
+<programlisting>cc -Wl,+s -Wl,+n \
+-o $ORACLE_HOME/rdbms/lib/hsodbc \
+-L $ORACLE_HOME/rdbms/lib \
+-L $ORACLE_HOME/lib \
+-o $ORACLE_HOME/rdbms/lib/hsodbc \
+$ORACLE_HOME/hs/lib/hsodbc.o \
+$ORACLE_HOME/rdbms/lib/defopt.o \
+$ORACLE_HOME/rdbms/lib/homts.o \
+$ORACLE_HOME/rdbms/lib/ssdbaed.o \
+$ORACLE_HOME/rdbms/lib/cpprt0_stub.o \
+-L $ORACLE_HOME/hs/lib/ \
+-lnavhoa \
+-lnavshr \
+-lnvbaseshr \
+-lagtsh \
+-lpls8 \
+-lplp8 \
+-lclntsh \
+-lnls8 \
+-lcore8 \
+-lnls8 \
+-lcore8 \
+-lnls8 \
+`cat $ORACLE_HOME/lib/sysliblist` \
+-lm \
+-lstd -lstream -lCsup -lcl -ldld
+</programlisting></listitem>
+<listitem> The new <computeroutput>hsodbc</computeroutput> executable is built in the <computeroutput>$ORACLE_HOME/rdbms/lib</computeroutput> directory.
+ Rename the old <computeroutput>hsodbc</computeroutput> library <computeroutput>$ORACLE_HOME/bin/hsodbc</computeroutput> and then move the new <computeroutput>hsodbc</computeroutput> to the <computeroutput>$ORACLE_HOME/bin</computeroutput> location.
+</listitem>
+<listitem> Test again while entering <computeroutput>hsodbc</computeroutput> and pressing enter key.
+ A message like the following should appear: <programlisting>ora817 @ /u01/app/oracle/product/8.1.7/rdbms/lib hsodbc
+</programlisting></listitem>
+<listitem> A select in SQL*Plus via the db link should be possible now.</listitem>
+</orderedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h5">Part III contains minor variations.</bridgehead>
+<para>The description of the <computeroutput>tnsnames.ora</computeroutput> and <computeroutput>init.ora</computeroutput> of the HS subsystem is also valid for 8i.
+ The <computeroutput>CREATE DATABASE LINK</computeroutput> statement is also the same.
+ Only the <computeroutput>listener.ora</computeroutput> file differs slightly in regards to the <computeroutput>ENVS</computeroutput> setting.</para><para>In release 9i, the 32 bit libraries are stored at: <computeroutput>$ORACLE_HOME/lib32</computeroutput></para><para>In 8i, the 32 bit libraries are stored in: <computeroutput>$ORACLE_HOME/lib</computeroutput></para><para>The <computeroutput>Oracle_Home</computeroutput> is the home directory of 8i release.
+ Therefore, the <computeroutput>SID</computeroutput> section looks like:</para><programlisting>(SID_DESC =
+   (SID_NAME = hsodbc)
+   (ORACLE_HOME = /u01/app/oracle/product/8.1.7)
+   (PROGRAM = hsodbc)
+   (ENVS=SHLIB_PATH=/u05/odbc/lib:/u01/app/oracle/product/8.1.7/lib)
+)
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4">RELATED DOCUMENTS</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem> <ulink url="http://metalink.oracle.com">Metalink</ulink> NOTE:150458.1 </listitem>
+<listitem> <ulink url="http://metalink.oracle.com">Metalink</ulink> NOTE:109621.1 </listitem>
+</itemizedlist></section></docbook>

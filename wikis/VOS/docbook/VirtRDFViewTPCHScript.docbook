@@ -1,0 +1,381 @@
+<docbook><section><title>VirtRDFViewTPCHScript</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">TPC H Linked Data Views Script to set up your own instance</bridgehead>
+<programlisting>use DB;
+
+GRANT SELECT ON TPCH.DBA.PARTSUPP  TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.SUPPLIER  TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.CUSTOMER  TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.HISTORY   TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.PART      TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.LINEITEM  TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.ORDERS    TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.NATION    TO &quot;SPARQL&quot;;
+GRANT SELECT ON TPCH.DBA.REGION    TO &quot;SPARQL&quot;;
+
+SPARQL
+drop quad map virtrdf:TPCH
+;
+
+SPARQL
+prefix tpch: &lt;http://www.openlinksw.com/schemas/tpch#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+create iri class tpch:customer &quot;http://^{URIQADefaultHost}^/tpch/customer/%U%d#this&quot; (in custname varchar, in c_custkey integer not null) option (bijection, deref) .
+create iri class tpch:lineitem &quot;http://^{URIQADefaultHost}^/tpch/lineitem/%d/%d#this&quot; (in l_orderkey integer not null, in l_linenumber integer not null) option (bijection, deref) .
+create iri class tpch:nation &quot;http://^{URIQADefaultHost}^/tpch/nation/%U%d#this&quot; (in name varchar, in l_nationkey integer not null) option (bijection, deref) .
+create iri class tpch:order &quot;http://^{URIQADefaultHost}^/tpch/order/%d#this&quot; (in o_orderkey integer not null) option (bijection, deref) .
+create iri class tpch:part &quot;http://^{URIQADefaultHost}^/tpch/part/%U%d#this&quot; (in p_partname varchar, in p_partkey integer not null) option (bijection, deref) .
+create iri class tpch:partsupp &quot;http://^{URIQADefaultHost}^/tpch/partsupp/%d/%d#this&quot; (in ps_partkey integer not null, in ps_suppkey integer not null) option (bijection, deref) .
+create iri class tpch:region &quot;http://^{URIQADefaultHost}^/tpch/region/%U%d#this&quot; (in name varchar, in r_regionkey integer not null) option (bijection, deref) .
+create iri class tpch:supplier &quot;http://^{URIQADefaultHost}^/tpch/supplier/%U%d#this&quot; (in name varchar, in s_supplierkey integer not null) option (bijection, deref) .
+;
+
+SPARQL
+prefix tpch: &lt;http://www.openlinksw.com/schemas/tpch#&gt;
+prefix oplsioc: &lt;http://www.openlinksw.com/schemas/oplsioc#&gt;
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+prefix wgs: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+alter quad storage virtrdf:DefaultQuadStorage
+from TPCH.DBA.LINEITEM as lineitems
+from TPCH.DBA.CUSTOMER as customers
+from TPCH.DBA.NATION as nations
+from TPCH.DBA.ORDERS as orders
+from TPCH.DBA.PART as parts
+from TPCH.DBA.PARTSUPP as partsupps
+from TPCH.DBA.REGION as regions
+from TPCH.DBA.SUPPLIER as suppliers
+where (^{suppliers.}^.S_NATIONKEY = ^{nations.}^.N_NATIONKEY)
+where (^{customers.}^.C_NATIONKEY = ^{nations.}^.N_NATIONKEY)
+{
+    create virtrdf:TPCH as graph iri (&quot;http://^{URIQADefaultHost}^/tpch&quot;) option (exclusive)
+    {
+# Customers
+        tpch:customer (customers.C_NAME, customers.C_CUSTKEY)
+            a  tpch:customer
+                as virtrdf:customer-tpch-type ;
+            a  foaf:Organization
+                as virtrdf:customer-foaf-type ;
+            tpch:custkey customers.C_CUSTKEY
+                as virtrdf:customer-c_custkey ;
+            foaf:name customers.C_NAME
+                as virtrdf:customer-foaf_name ;
+            tpch:companyName customers.C_NAME
+                as virtrdf:customer-c_name ;
+            tpch:has_nation tpch:nation (nations.N_NAME, customers.C_NATIONKEY)
+                as virtrdf:customer-c_nationkey ;
+            tpch:address customers.C_ADDRESS
+                as virtrdf:customer-c_address ;
+            foaf:phone customers.C_PHONE
+                as virtrdf:customer-foaf_phone ;
+            tpch:phone customers.C_PHONE
+                as virtrdf:customer-phone ;
+            tpch:acctbal customers.C_ACCTBAL
+                as virtrdf:customer-acctbal ;
+            tpch:mktsegment customers.C_MKTSEGMENT
+                as virtrdf:customer-c_mktsegment ;
+            tpch:comment customers.C_COMMENT
+                as virtrdf:customer-c_comment .
+
+# Nations
+        tpch:nation (nations.N_NAME, customers.C_NATIONKEY)
+            tpch:nation_of tpch:customer (customers.C_NAME, customers.C_CUSTKEY)
+            as virtrdf:customer-nation_of .
+
+        tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER)
+            a tpch:lineitem
+                as virtrdf:lineitem-lineitems ;
+            tpch:has_order tpch:order (lineitems.L_ORDERKEY)
+                as virtrdf:lineitem-l_orderkey ;
+            tpch:has_part tpch:part (parts.P_NAME, lineitems.L_PARTKEY)
+                where (^{parts.}^.P_PARTKEY = ^{lineitems.}^.L_PARTKEY)
+                as virtrdf:lineitem-l_partkey ;
+            tpch:has_supplier tpch:supplier (suppliers.S_NAME, lineitems.L_SUPPKEY)
+                where (^{suppliers.}^.S_SUPPKEY = ^{lineitems.}^.L_SUPPKEY)
+                as virtrdf:lineitem-l_suppkey ;
+            tpch:linenumber lineitems.L_LINENUMBER
+                as virtrdf:lineitem-l_linenumber ;
+            tpch:linequantity lineitems.L_QUANTITY
+                as virtrdf:lineitem-l_linequantity ;
+            tpch:lineextendedprice lineitems.L_EXTENDEDPRICE
+                as virtrdf:lineitem-l_lineextendedprice ;
+            tpch:linediscount lineitems.L_DISCOUNT
+                as virtrdf:lineitem-l_linediscount ;
+            tpch:linetax lineitems.L_TAX
+                as virtrdf:lineitem-l_linetax ;
+            tpch:returnflag lineitems.L_RETURNFLAG
+                as virtrdf:lineitem-l_returnflag ;
+            tpch:linestatus lineitems.L_LINESTATUS
+                as virtrdf:lineitem-l_linestatus ;
+            tpch:shipdate lineitems.L_SHIPDATE
+                as virtrdf:lineitem-l_shipdate ;
+            tpch:commitdate lineitems.L_COMMITDATE
+                as virtrdf:lineitem-l_commitdate ;
+            tpch:receiptdate lineitems.L_RECEIPTDATE
+                as virtrdf:lineitem-l_receiptdate ;
+            tpch:shipinstruct lineitems.L_SHIPINSTRUCT
+                as virtrdf:lineitem-l_shipinstruct ;
+            tpch:shipmode lineitems.L_SHIPMODE
+                as virtrdf:lineitem-l_shipmode ;
+            tpch:comment lineitems.L_COMMENT
+                as virtrdf:lineitem-l_comment .
+
+        tpch:part (parts.P_NAME, lineitems.L_PARTKEY)
+            tpch:part_of tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER)
+            where (^{parts.}^.P_PARTKEY = ^{lineitems.}^.L_PARTKEY)
+            as virtrdf:lineitem-part_of .
+
+        tpch:order (lineitems.L_ORDERKEY)
+            tpch:order_of tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER) as virtrdf:lineitem-order_of .
+
+        tpch:supplier (suppliers.S_NAME, lineitems.L_SUPPKEY)
+            tpch:supplier_of tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER)
+            where (^{suppliers.}^.S_SUPPKEY = ^{lineitems.}^.L_SUPPKEY)
+            as virtrdf:lineitem-supplier_of .
+
+# Nation
+        tpch:nation (nations.N_NAME, nations.N_NATIONKEY)
+            a tpch:nation
+                as virtrdf:nation-nations ;
+            tpch:name nations.N_NAME
+                as virtrdf:nation-n_name ;
+            tpch:has_region tpch:region (regions.R_NAME, nations.N_REGIONKEY)
+                where (^{regions.}^.R_REGIONKEY = ^{nations.}^.N_REGIONKEY)
+                as virtrdf:nation-n_regionkey ;
+            tpch:comment nations.N_COMMENT
+                as virtrdf:nation-n_comment .
+
+        tpch:region (regions.R_NAME, nations.N_REGIONKEY)
+            tpch:region_of tpch:nation (nations.N_NAME, nations.N_NATIONKEY)
+            where (^{regions.}^.R_REGIONKEY = ^{nations.}^.N_REGIONKEY)
+            as virtrdf:nation-region_of .
+
+# Order
+        tpch:order (orders.O_ORDERKEY)
+            a tpch:order
+                as virtrdf:order-orders ;
+            tpch:orderkey orders.O_ORDERKEY
+                as virtrdf:order-o_orderkey ;
+            tpch:has_customer tpch:customer (customers.C_NAME, orders.O_CUSTKEY)
+                where (^{orders.}^.O_CUSTKEY = ^{customers.}^.C_CUSTKEY)
+                as virtrdf:order-o_custkey ;
+            tpch:orderstatus orders.O_ORDERSTATUS
+                as virtrdf:order-o_orderstatus ;
+            tpch:ordertotalprice orders.O_TOTALPRICE
+                as virtrdf:order-o_totalprice ;
+            tpch:orderdate orders.O_ORDERDATE
+                as virtrdf:order-o_orderdate ;
+            tpch:orderpriority orders.O_ORDERPRIORITY
+                as virtrdf:order-o_orderpriority ;
+            tpch:clerk orders.O_CLERK
+                as virtrdf:order-o_clerk ;
+            tpch:shippriority orders.O_SHIPPRIORITY
+                as virtrdf:order-o_shippriority ;
+            tpch:comment orders.O_COMMENT
+                as virtrdf:order-o_comment .
+
+        tpch:customer (customers.C_CUSTKEY, orders.O_CUSTKEY)
+            tpch:customer_of tpch:order (orders.O_ORDERKEY)
+            where (^{orders.}^.O_CUSTKEY = ^{customers.}^.C_CUSTKEY)
+            as virtrdf:order-customer_of .
+
+# Part
+        tpch:part (parts.P_NAME, parts.P_PARTKEY)
+            a tpch:part
+                as virtrdf:part-parts ;
+            tpch:partkey parts.P_PARTKEY
+                as virtrdf:part-p_partkey ;
+            tpch:name parts.P_NAME
+                as virtrdf:part-p_name ;
+            tpch:mfgr parts.P_MFGR
+                as virtrdf:part-p_mfgr ;
+            tpch:brand parts.P_BRAND
+                as virtrdf:part-p_brand ;
+            tpch:type parts.P_TYPE
+                as virtrdf:part-p_type ;
+            tpch:size parts.P_SIZE
+                as virtrdf:part-p_size ;
+            tpch:container parts.P_CONTAINER
+                as virtrdf:part-p_container ;
+            tpch:comment parts.P_COMMENT
+                as virtrdf:part-p_comment .
+
+# Partsupp
+        tpch:partsupp (partsupps.PS_PARTKEY, partsupps.PS_SUPPKEY)
+            a tpch:partsupp
+                as virtrdf:partsupp-partsupps ;
+            tpch:has_part tpch:part (parts.P_NAME, partsupps.PS_PARTKEY)
+                where (^{parts.}^.P_PARTKEY = ^{partsupps.}^.PS_PARTKEY)
+                as virtrdf:partsupp-ps_partkey ;
+            tpch:has_supplier tpch:supplier (suppliers.S_NAME, partsupps.PS_SUPPKEY)
+                where (^{suppliers.}^.S_SUPPKEY = ^{partsupps.}^.PS_SUPPKEY)
+                as virtrdf:partsupp-ps_suppkey ;
+            tpch:availqty partsupps.PS_AVAILQTY
+                as virtrdf:partsupp-ps_availqty ;
+            tpch:supplycost partsupps.PS_SUPPLYCOST
+                as virtrdf:partsupp-ps_supplycost ;
+            tpch:comment partsupps.PS_COMMENT
+                as virtrdf:partsupp-ps_comment .
+
+        tpch:part (parts.P_NAME, partsupps.PS_PARTKEY)
+            tpch:part_of tpch:partsupp (partsupps.PS_PARTKEY, partsupps.PS_SUPPKEY)
+            where (^{parts.}^.P_PARTKEY = ^{partsupps.}^.PS_PARTKEY)
+            as virtrdf:partsupp-part_of .
+
+        tpch:supplier (suppliers.S_NAME, partsupps.PS_SUPPKEY)
+            tpch:supplier_of tpch:partsupp (partsupps.PS_PARTKEY, partsupps.PS_SUPPKEY)
+            where (^{suppliers.}^.S_SUPPKEY = ^{partsupps.}^.PS_SUPPKEY)
+            as virtrdf:partsupp-supplier_of .
+
+# Region
+        tpch:region (regions.R_NAME, regions.R_REGIONKEY)
+            a tpch:region
+                as virtrdf:region-regions ;
+            tpch:name regions.R_NAME
+                as virtrdf:region-r_name ;
+            tpch:comment regions.R_COMMENT
+                as virtrdf:region-r_comment .
+
+# Supplier
+        tpch:supplier (suppliers.S_NAME, suppliers.S_SUPPKEY)
+            a tpch:supplier
+                as virtrdf:supplier-suppliers ;
+            tpch:name suppliers.S_NAME
+                as virtrdf:supplier-s_name ;
+            tpch:address suppliers.S_ADDRESS
+                as virtrdf:supplier-s_address ;
+            tpch:has_nation tpch:nation (nations.N_NAME, suppliers.S_NATIONKEY)
+                where (^{nations.}^.N_NATIONKEY = ^{suppliers.}^.S_NATIONKEY)
+                as virtrdf:supplier-s_nationkey ;
+            foaf:phone suppliers.S_PHONE
+                as virtrdf:supplier-foaf_phone ;
+            tpch:phone suppliers.S_PHONE
+                as virtrdf:supplier-s_phone ;
+            tpch:acctbal suppliers.S_ACCTBAL
+                as virtrdf:supplier-s_acctbal ;
+            tpch:comment suppliers.S_COMMENT
+                as virtrdf:supplier-s_comment .
+
+        tpch:nation (nations.N_NAME, suppliers.S_NATIONKEY)
+            tpch:nation_of tpch:supplier (suppliers.S_NAME, suppliers.S_SUPPKEY)
+            where (^{nations.}^.N_NATIONKEY = ^{suppliers.}^.S_NATIONKEY)
+            as virtrdf:supplier-nation_of .
+    } .
+} .
+;
+
+delete from db.dba.url_rewrite_rule_list where urrl_list like &#39;tpch_rule%&#39;;
+delete from db.dba.url_rewrite_rule where urr_rule like &#39;tpch_rule%&#39;;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;tpch_rule2&#39;,
+    1,
+    &#39;([^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/tpch%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&amp;format=%U&#39;,
+    vector(&#39;path&#39;, &#39;path&#39;, &#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;tpch_rule1&#39;,
+    1,
+    &#39;([^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/about/html/http/^{URIQADefaultHost}^%s%%23this&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;tpch_rule3&#39;,
+    1,
+    &#39;(/[^#]*)/\x24&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;%s&#39;,
+    vector(&#39;path&#39;),
+    null,
+    null,
+    0,
+    null
+    );
+
+create procedure DB.DBA.REMOVE_TPCH_RDF_DET()
+{
+  declare colid int;
+  colid := DAV_SEARCH_ID(&#39;/DAV/home/demo/tpch&#39;, &#39;C&#39;);
+  if (colid &lt; 0)
+    return;
+  update WS.WS.SYS_DAV_COL set COL_DET=null where COL_ID = colid;
+}
+;
+
+DB.DBA.REMOVE_TPCH_RDF_DET();
+
+drop procedure DB.DBA.REMOVE_TPCH_RDF_DET;
+
+create procedure DB.DBA.TPCH_MAKE_RDF_DET()
+{
+    declare uriqa_str varchar;
+    uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+    uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/tpch&#39;;
+    DB.DBA.&quot;RDFData_MAKE_DET_COL&quot; (&#39;/DAV/home/demo/tpch/RDFData/&#39;, uriqa_str, NULL);
+    VHOST_REMOVE (lpath=&gt;&#39;/tpch/data/rdf&#39;);
+    DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/tpch/data/rdf&#39;, ppath=&gt;&#39;/DAV/home/demo/tpch/RDFData/All/&#39;, is_dav=&gt;1, vsp_user=&gt;&#39;dba&#39;);
+}
+;
+
+DB.DBA.TPCH_MAKE_RDF_DET();
+
+drop procedure DB.DBA.TPCH_MAKE_RDF_DET;
+
+create procedure DB.DBA.TPCH_DET_REF (in par varchar, in fmt varchar, in val varchar)
+{
+  declare res, iri any;
+  declare uriqa_str varchar;
+  uriqa_str := cfg_item_value(virtuoso_ini_path(), &#39;URIQA&#39;,&#39;DefaultHost&#39;);
+  uriqa_str := &#39;http://&#39; || uriqa_str || &#39;/tpch&#39;;
+  iri := uriqa_str || val;
+  res := sprintf (&#39;iid (%d).rdf&#39;, iri_id_num (iri_to_id (iri)));
+  return sprintf (fmt, res);
+}
+;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (&#39;tpch_rdf&#39;, 1,
+    &#39;/tpch/(.*)&#39;, vector(&#39;path&#39;), 1,
+    &#39;/tpch/data/rdf/%U&#39;, vector(&#39;path&#39;),
+    &#39;DB.DBA.TPCH_DET_REF&#39;,
+    &#39;application/rdf.xml&#39;,
+    2,
+    303);
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;tpch_rule_list1&#39;,
+    1,
+    vector (
+                &#39;tpch_rule1&#39;,
+                &#39;tpch_rule2&#39;,
+                &#39;tpch_rule3&#39;,
+                &#39;tpch_rdf&#39;
+          ));
+
+DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/tpch&#39;);
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/tpch&#39;, ppath=&gt;&#39;/DAV/home/demo/tpch/&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1,
+          is_brws=&gt;0, opts=&gt;vector (&#39;url_rewrite&#39;, &#39;tpch_rule_list1&#39;));
+
+
+DB.DBA.VHOST_REMOVE (lpath=&gt;&#39;/tpch/linkeddata&#39;);
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/tpch/linkeddata&#39;, ppath=&gt;&#39;/DAV/home/demo/tpch/&#39;, vsp_user=&gt;&#39;dba&#39;, is_dav=&gt;1,
+          is_brws=&gt;1);
+
+</programlisting></section></docbook>

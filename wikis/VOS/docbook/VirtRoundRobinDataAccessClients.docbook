@@ -1,0 +1,144 @@
+<docbook><section><title>VirtRoundRobinDataAccessClients</title><title> Virtuoso Data Access Clients Connection Fail over and Load Balancing Support</title> Virtuoso Data Access Clients Connection Fail over and Load Balancing Support
+<para>As of Release 6.1, all Virtuoso Data Access Clients (ODBC, JDBC, ADO.Net, OLE DB, Sesame, Jena, and Redland) enable server failover, load-balanced, and fault-tolerant connections.
+ Full fault tolerance is only delivered against shared-nothing Cluster Edition configurations.</para>
+<para>In each case, where the &quot;Host&quot; or &quot;Server&quot; connect string attribute would previously have held a single hostname and port (e.g., demo.openlinksw.com:1111), a comma-delimited list is now specified.</para>
+<para>In the most basic fail-over configuration, an attempt is made against each instance in the list, always starting with the first listed, until a successful connection is achieved.</para>
+<para>A round-robin, load-balanced connection, where the server targeted by the initial connection attempt is chosen at random from the comma-delimited list as provided for a failover connection, can be configured by adding a new connect string attribute -- </para>
+<programlisting>RoundRobin = [True | Yes | False | No]
+</programlisting><para> If the listed instances are all member nodes in a Cluster Edition deployment, the connections can become fault-tolerant, but this the client application must be written to take advantage of this functionality.</para>
+<para>Example connect strings for Virtuoso ODBC, JDBC, ADO.Net and OLE DB drivers/providers are provided below.
+ The Sesame and Jena providers make use of the JDBC driver, and the Redland Provider makes use of the ODBC driver, so these do not require their own special connect strings.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> ODBC driver</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Failover Connect String format</bridgehead>
+ <programlisting>Driver={OpenLink Virtuoso};Host=server1:port1,server2:port2,server3:port3;UID=dba;PWD=dba;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Round Robin Connect String format</bridgehead>
+ <programlisting>Driver={OpenLink Virtuoso};Host=server1:port1,server2:port2,server3:port3;UID=dba;PWD=dba;RoundRobin=Yes&quot;
+</programlisting><para> Or alternatively ensure the &quot;use Round Robin for failover connection&quot; check box in the setup dialog.
+  <figure><graphic fileref="VirtRoundRobinDataAccessClients/VirtRoundRobin01.png" /></figure> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> JDBC  Driver</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Failover Connect String format</bridgehead>
+ <programlisting>jdbc:virtuoso://server1:port1,server2:port2,server3:port3/UID=dba/PWD=dba/;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Round Robin Connect String format</bridgehead>
+ <programlisting> jdbc:virtuoso://server1:port1,server2:port2,server3:port3/UID=dba/PWD=dba/ROUNDROBIN=yes;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> OLE DB Provider</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Failover Connect String format</bridgehead>
+ <programlisting>Provider=VIRTOLEDB;Data Source=server1:port1,server2:port2,server3:port3;User Id=dba;Password=dba;Initial Catalog=Demo;Prompt=NoPrompt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Round Robin Connect String format</bridgehead>
+ <programlisting> Provider=VIRTOLEDB;Data Source=server1:port1,server2:port2,server3:port3;User Id=dba;Password=dba;Initial Catalog=Demo;Prompt=NoPrompt;Round Robin=true
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> ADO.NET Provider</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Failover Connect String format</bridgehead>
+ <programlisting>Server=server1:port1,server2:port2,server3:port3;UserId=dba;Password=dba;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Round Robin Connect String format</bridgehead>
+ <programlisting>Server=server1:port1,server2:port2,server3:port3;UserId=dba;Password=dba;Round Robin=true;Pooling=false;
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Sesame</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Failover Connect String format</bridgehead>
+ <programlisting>VirtuosoRepository(&quot;server1:port1,server2:port2,server3:port3&quot;, &quot;uid&quot;, &quot;pwd&quot;);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Round Robin Connect String format</bridgehead>
+ <programlisting>VirtuosoRepository(&quot;server1:port1,server2:port2,server3:port3&quot;, &quot;uid&quot;, &quot;pwd&quot;);
+((VirtuosoRepository)repository).setRoundrobin(true);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Sample program</bridgehead>
+ <programlisting>/*
+ *  $Id:$
+ *
+ *  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+ *  project.
+ *
+ *  Copyright (C) 1998-2009 OpenLink Software
+ *
+ *  This project is free software; you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation; only version 2 of the License, dated June 1991.
+ *
+ *  This program is distributed in the hope that it will be useful, but
+ *  WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ *  General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+import java.sql.*;
+import java.util.*;
+import java.lang.*;
+
+import org.openrdf.model.*;
+import org.openrdf.query.*;
+import org.openrdf.repository.*;
+import org.openrdf.rio.*;
+import virtuoso.jdbc4.*;
+
+import virtuoso.sesame2.driver.*;
+
+public class TestSesame2 {
+
+  public static void main(String[] args) {
+
+      Repository repository = new
+	VirtuosoRepository(&quot;localhost:1111,localhost:1311,localhost:1312,localhost:1313&quot;, &quot;dba&quot;, &quot;dba&quot;);
+      ((VirtuosoRepository)repository).setRoundrobin(true);
+
+      RepositoryConnection con = null;
+      Random rnd = new Random();
+      for (int i = 0; i &lt; 1000000; ) {
+	  try {
+	      if (null == con) {
+		  System.out.println(&quot;New connection&quot;);
+		  con = repository.getConnection();
+	      }
+
+	      TupleQuery query = con.prepareTupleQuery(
+		      QueryLanguage.SPARQL, &quot;INSERT INTO &lt;test_g&gt; { &lt;sub&quot; + i + &quot;&gt; &lt;pred&gt; &lt;obj&quot; + i+ &quot;&gt; . &quot; + 
+		      &quot; &lt;r&quot; + Math.abs (rnd.nextInt()) + &quot;&gt; &lt;rndpred&gt; &lt;r&quot; + Math.abs (rnd.nextInt ()) + &quot;&gt; . }&quot;);
+	      TupleQueryResult queryResult = query.evaluate();
+	      /*long count = 0;
+	      while (queryResult.hasNext()) 
+	      {
+		  queryResult.next();
+		  count++;
+		  if (count % 1000 == 0) 
+		  {
+		      System.out.println(&quot;Passed &quot; + count + &quot; results...&quot;);
+		  }
+	      }
+	      */
+	      queryResult.close();
+	      i++;
+	      try { Thread.sleep(100); } catch (InterruptedException ie) { }
+
+	  } catch (Exception e) {
+	      String state = &quot;&quot;;
+	      if (e.getCause() instanceof SQLException) {
+		  state = ((SQLException)e.getCause()).getSQLState();
+	      }
+	      System.out.println(&quot;ERROR:&quot; + state + &quot; &quot; + e.getCause()); 
+	      try { Thread.sleep(2000); } catch (InterruptedException ie) { }
+	      System.out.println(&quot;ERROR:&quot; + e.toString ());
+	      if (state == &quot;&quot;)
+	        e.printStackTrace();
+	      try {
+		  if (con != null /*&amp;&amp; (state == &quot;08U01&quot; || state == &quot;S2801&quot;)*/) {  
+		      System.out.println(&quot;Closing Connection.&quot;);
+		      con.close();
+		      con = null;
+		  }
+	      } catch (RepositoryException re) {
+		  System.out.println(&quot;Test Failed.&quot;);
+		  re.printStackTrace();
+		  System.exit (1);
+	      }
+	  } finally {
+	  }
+      }
+  }
+}
+</programlisting></section></docbook>

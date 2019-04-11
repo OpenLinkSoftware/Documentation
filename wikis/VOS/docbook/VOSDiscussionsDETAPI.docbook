@@ -1,0 +1,825 @@
+<docbook><section><title>VOSDiscussionsDETAPI</title><programlisting>--  
+--  $Id: DET_nntp.sql,v 1.2 2007/03/28 10:48:51 source Exp $
+--
+--  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+--  project.
+--  
+--  Copyright (C) 1998-2006 OpenLink Software
+--  
+--  This project is free software; you can redistribute it and/or modify it
+--  under the terms of the GNU General Public License as published by the
+--  Free Software Foundation; only version 2 of the License, dated June 1991.
+--  
+--  This program is distributed in the hope that it will be useful, but
+--  WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+--  General Public License for more details.
+--  
+--  You should have received a copy of the GNU General Public License along
+--  with this program; if not, write to the Free Software Foundation, Inc.,
+--  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+--  
+--  
+
+use DB
+;
+
+create function &quot;nntp_FIXNAME&quot; (in mailname any) returns varchar
+{
+  return
+    replace (
+      replace (
+        replace (
+          replace (
+            replace (
+              replace (
+                replace (
+                  replace (mailname, &#39;/&#39;, &#39;_&#39;), &#39;\\&#39;, &#39;_&#39;), &#39;:&#39;, &#39;_&#39;), &#39;+&#39;, &#39;_&#39;), &#39;\&quot;&#39;, &#39;_&#39;), &#39;[&#39;, &#39;_&#39;), &#39;]&#39;, &#39;_&#39;), &#39;\&#39;&#39;, &#39;_&#39;);
+}
+;
+
+create procedure &quot;nntp_PARSE_SERVER_NAME&quot;(in fullname varchar, out server varchar, out port integer)
+{
+  declare pos integer;
+  pos := strrchr(fullname, &#39;_&#39;);
+  server := subseq(fullname, 0, pos);
+  port := atoi(subseq(fullname, pos + 1));
+}
+;
+
+create function &quot;nntpf_display_message_text2&quot;(in _text varchar, in ct varchar := &#39;text/plain&#39;, in ses any)
+{
+   _text := nntpf_replace_at (_text);
+   if (ct = &#39;text/plain&#39;)
+     http (&#39;&lt;pre class=&quot;artbody&quot;&gt; &lt;br/&gt;&#39;, ses);
+   else
+     http (&#39;&lt;div class=&quot;artbody&quot;&gt;&#39;, ses);
+
+   http (_text, ses);
+
+   if (ct = &#39;text/plain&#39;)
+     http (&#39;&lt;/pre&gt;&#39;, ses);
+   else
+     http (&#39;&lt;/div&gt;&#39;, ses);
+}
+;
+
+create function &quot;nntp_COMPOSE_HTML_NAME&quot; (in title varchar, in id varchar) returns varchar
+{
+  if (title is null or title = &#39;&#39;)
+    return &quot;nntp_FIXNAME&quot;(sprintf(&#39;%s&#39;, id));
+  return &quot;nntp_FIXNAME&quot;(sprintf(&#39;%s %s&#39;, title, id));
+}
+;
+
+create function &quot;nntp_COMPOSE_COMMENTS_NAME&quot; (in title varchar, in id varchar) returns varchar
+{
+  if (title is null or title = &#39;&#39;)
+    return &quot;nntp_FIXNAME&quot;(sprintf(&#39;%s Comments&#39;, id));
+  return &quot;nntp_FIXNAME&quot;(sprintf(&#39;%s %s Comments&#39;, title, id));
+}
+;
+
+create procedure &quot;nntp_PARSE_HTML_NAME&quot; (in fullname varchar, out title varchar, out id varchar)
+{
+  declare pos integer;
+  pos := strrchr(fullname, &#39; &#39;);
+  if (pos is NULL)
+    id := fullname;
+  else
+  {
+    title := subseq(fullname, 0, pos);
+    id := subseq(fullname, pos + 1);
+  }
+}
+;
+
+create procedure &quot;nntp_PARSE_COMMENTS_NAME&quot; (in fullname varchar, out title varchar, out id varchar)
+{
+  declare pos integer;
+  declare real_part, comment_part varchar;
+  pos := strrchr(fullname, &#39; &#39;);
+  comment_part := subseq(fullname, pos + 1);  
+  if (comment_part = &#39;Comments&#39;)
+  {
+    real_part := subseq(fullname, 0, pos);
+    pos := strrchr(real_part, &#39; &#39;);
+    if (pos is NULL)
+      id := real_part;
+    else
+    {
+      title := subseq(real_part, 0, pos);
+      id := subseq(real_part, pos + 1);
+    }    
+  }
+}
+;
+
+create function &quot;nntp_CHANNEL_DESC_NAMES&quot; () returns any
+{
+  return vector (&#39;atom.xml&#39;, &#39;foaf.xml&#39;, &#39;index.ocs&#39;, &#39;index.opml&#39;, &#39;index.rdf&#39;, &#39;rss.xml&#39;, &#39;xbel.xml&#39;);
+}
+;
+
+create function &quot;nntp_ACCESS_PARAMS&quot; (in detcol_id any, out access varchar, out gid integer, out uid integer)
+{
+  declare access_tmp varchar;
+  whenever not found goto ret;
+  access := &#39;100000000NN&#39;;
+  gid := http_nogroup_gid ();
+  uid := http_nobody_uid ();
+  if (isinteger (detcol_id))
+  {
+    select COL_PERMS, COL_GROUP, COL_OWNER into access_tmp, gid, uid from WS.WS.SYS_DAV_COL where COL_ID = detcol_id;
+  }
+  access[0] := access_tmp[0];
+  access[1] := access_tmp[1];
+--  access[3] := access_tmp[3];
+ret:
+  ;
+}
+;
+
+--| This matches DAV_AUTHENTICATE (in id any, in what char(1), in req varchar, in a_uname varchar, in a_pwd varchar, in a_uid integer := null)
+--| The difference is that the DET function should not check whether the pair of name and password is valid; the auth_uid is not a null already.
+create function &quot;nntp_DAV_AUTHENTICATE&quot; (in id any, in what char(1), in req varchar, in auth_uname varchar, in auth_pwd varchar, in auth_uid integer)
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_AUTHENTICATE (&#39;, id, what, req, auth_uname, auth_pwd, auth_uid, http_dav_uid(), &#39;)&#39;);
+  if (auth_uid &lt; 0)
+    return -12;
+  if (not (&#39;110&#39; like req))
+  {
+    --dbg_obj_princ (&#39;a_uid2 is &#39;, auth_uid, &#39;, id[3] is &#39;, id[3], &#39; mismatch&#39;);
+    return -13;
+  }
+  if ((auth_uid &lt;&gt; id[3]) and (auth_uid &lt;&gt; http_dav_uid()))
+  {
+    --dbg_obj_princ (&#39;a_uid is &#39;, auth_uid, &#39;, id[3] is &#39;, id[3], &#39; mismatch&#39;);
+    return -13;
+  }
+  return auth_uid;
+}
+;
+
+--| This exactly matches DAV_AUTHENTICATE_HTTP (in id any, in what char(1), in req varchar, in can_write_http integer, inout a_lines any, inout a_uname varchar, inout a_pwd varchar, inout a_uid integer, inout a_gid integer, inout _perms varchar) returns integer
+--| The function should fully check access because DAV_AUTHENTICATE_HTTP do nothing with auth data either before or after calling this DET function.
+--| Unlike DAV_AUTHENTICATE, user name passed to DAV_AUTHENTICATE_HTTP header may not match real DAV user.
+--| If DET call is successful, DAV_AUTHENTICATE_HTTP checks whether the user have read permission on mount point collection.
+--| Thus even if DET function allows anonymous access, the whole request may fail if mountpoint is not readable by public.
+create function &quot;nntp_DAV_AUTHENTICATE_HTTP&quot; (in id any, in what char(1), in req varchar, in can_write_http integer, inout a_lines any, inout a_uname varchar, inout a_pwd varchar, inout a_uid integer, inout a_gid integer, inout _perms varchar) returns integer
+{
+  declare rc integer;
+  declare puid, pgid, ruid, rgid integer;
+  declare u_password, pperms varchar;
+  -- anon are never allowed for mails! declare allow_anon integer;
+  if (length (req) &lt;&gt; 3)
+    return -15;
+
+  whenever not found goto nf_col_or_res;
+  if ((what &lt;&gt; &#39;R&#39;) and (what &lt;&gt; &#39;C&#39;))
+    return -14;
+  -- allow_anon := WS.WS.PERM_COMP (substring (cast (pperms as varchar), 7, 3), req);
+  if (a_uid is null)
+    {
+      -- if ((not allow_anon) or (&#39;&#39; &lt;&gt; WS.WS.FINDPARAM (a_lines, &#39;Authorization:&#39;)))
+      rc := WS.WS.GET_DAV_AUTH (a_lines, 0, can_write_http, a_uname, u_password, a_uid, a_gid, _perms);
+      if (rc &lt; 0)
+        return rc;
+    }
+  if (isinteger (a_uid))
+    {
+      if (a_uid &lt; 0)
+  return a_uid;
+     if (a_uid = 1) -- Anonymous FTP
+  {
+          a_uid := http_nobody_uid ();
+    a_gid := http_nogroup_gid ();
+  }
+    }
+  if ((a_uid &lt;&gt; id[3]) and (a_uid &lt;&gt; http_dav_uid()))
+    {
+      -- dbg_obj_princ (&#39;a_uid is &#39;, a_uid, &#39;, id[3] is &#39;, id[3], &#39; mismatch&#39;);
+      return -13;
+    }
+  if (not (&#39;100&#39; like req))
+    return -13;
+  return a_uid;
+
+nf_col_or_res:
+  return -1;
+}
+;
+
+
+--| This matches DAV_GET_PARENT (in id any, in st char(1), in path varchar) returns any
+create function &quot;nntp_DAV_GET_PARENT&quot; (in id any, in st char(1), in path varchar) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_GET_PARENT (&#39;, id, st, path, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| When DAV_COL_CREATE_INT calls DET function, authentication, check for lock and check for overwrite are passed, uid and gid are translated from strings to IDs.
+--| Check for overwrite, but the deletion of previously existing collection should be made by DET function.
+create function &quot;nntp_DAV_COL_CREATE&quot; (in detcol_id any, in path_parts any, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_COL_CREATE (&#39;, detcol_id, path_parts, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| It looks like that this is redundant and should be removed at all.
+create function &quot;nntp_DAV_COL_MOUNT&quot; (in detcol_id any, in path_parts any, in full_mount_path varchar, in mount_det varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_COL_MOUNT (&#39;, detcol_id, path_parts, full_mount_path, mount_det, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| It looks like that this is redundant and should be removed at all.
+create function &quot;nntp_DAV_COL_MOUNT_HERE&quot; (in parent_id any, in full_mount_path varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_COL_MOUNT_HERE (&#39;, parent_id, full_mount_path, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+
+--| When DAV_DELETE_INT calls DET function, authentication and check for lock are passed.
+create function &quot;nntp_DAV_DELETE&quot; (in detcol_id any, in path_parts any, in what char(1), in silent integer, in auth_uid integer) returns integer
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_DELETE (&#39;, detcol_id, path_parts, what, silent, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| When DAV_RES_UPLOAD_STRSES_INT calls DET function, authentication and check for locks are performed before the call.
+--| There&#39;s a special problem, known as &#39;Transaction deadlock after reading from HTTP session&#39;.
+--| The DET function should do only one INSERT of the &#39;content&#39; into the table and do it as late as possible.
+--| The function should return -29 if deadlocked or otherwise broken after reading blob from HTTP.
+create function &quot;nntp_DAV_RES_UPLOAD&quot; (in detcol_id any, in path_parts any, inout content any, in type varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_RES_UPLOAD (&#39;, detcol_id, path_parts, &#39;, [content], &#39;, content, type, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+
+--| When DAV_PROP_REMOVE_INT calls DET function, authentication and check for locks are performed before the call.
+--| The check whether it&#39;s a system name or not is _not_ permitted.
+create function &quot;nntp_DAV_PROP_REMOVE&quot; (in id any, in what char(0), in propname varchar, in silent integer, in auth_uid integer) returns integer
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_PROP_REMOVE (&#39;, id, what, propname, silent, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| When DAV_PROP_SET_INT calls DET function, authentication and check for locks are performed before the call.
+--| The check whether it&#39;s a system property or not is _not_ permitted and the function should return -16 for live system properties.
+create function &quot;nntp_DAV_PROP_SET&quot; (in id any, in what char(0), in propname varchar, in propvalue any, in overwrite integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_PROP_SET (&#39;, id, what, propname, propvalue, overwrite, auth_uid, &#39;)&#39;);
+  if (propname[0] = 58)
+    {
+      return -16;
+    }
+  return -20;
+}
+;
+
+--| When DAV_PROP_GET_INT calls DET function, authentication and check whether it&#39;s a system property are performed before the call.
+create function &quot;nntp_DAV_PROP_GET&quot; (in id any, in what char(0), in propname varchar, in auth_uid integer)
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_PROP_GET (&#39;, id, what, propname, auth_uid, &#39;)&#39;);
+  return -11;
+}
+;
+
+--| When DAV_PROP_LIST_INT calls DET function, authentication is performed before the call.
+--| The returned list should contain only user properties.
+create function &quot;nntp_DAV_PROP_LIST&quot; (in id any, in what char(0), in propmask varchar, in auth_uid integer)
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_PROP_LIST (&#39;, id, what, propmask, auth_uid, &#39;)&#39;);
+  return vector ();
+}
+;
+
+--| When DAV_PROP_GET_INT or DAV_DIR_LIST_INT calls DET function, authentication is performed before the call.
+create function &quot;nntp_DAV_DIR_SINGLE&quot; (in id any, in what char(0), in path any, in auth_uid integer) returns any
+{
+  declare mnamefmt varchar;
+  declare folder_id, server_id varchar;
+  declare fullpath, rightcol, resname varchar;
+  declare maxrcvdate datetime;
+  declare colname varchar;
+  --dbg_obj_princ (&#39;nntp_DAV_DIR_SINGLE (&#39;, id, what, path, auth_uid, &#39;)&#39;);
+  server_id := cast(id[4] as varchar);
+  folder_id := cast(id[5] as varchar);
+  fullpath := &#39;&#39;;
+  rightcol := NULL;  
+  if (atoi(folder_id) = 0)
+  {
+    maxrcvdate := (select FTHR_DATE from DB.DBA.NNFE_THR where FTHR_MESS_ID = folder_id);
+    while (folder_id is not null)
+    {
+      colname := (select &quot;nntp_COMPOSE_COMMENTS_NAME&quot;(FTHR_SUBJ, FTHR_MESS_ID)
+        from DB.DBA.NNFE_THR where FTHR_MESS_ID = folder_id);
+      if (DAV_HIDE_ERROR (colname) is null)
+        return -1;
+      if (rightcol is null)
+        rightcol := colname;
+      fullpath := colname || &#39;/&#39; || fullpath;
+      folder_id := coalesce ((select FTHR_REFER from DB.DBA.NNFE_THR where FTHR_MESS_ID = folder_id));
+    }
+    folder_id := cast((select FTHR_GROUP from DB.DBA.NNFE_THR where FTHR_MESS_ID = id[5]) as varchar);    
+  }
+  if ((server_id = &#39;0&#39; or server_id is null) and folder_id is not null)
+  {
+    server_id := folder_id;
+    folder_id := null;
+  }
+  if (folder_id is not null)
+  {
+    if (maxrcvdate is null)
+      maxrcvdate := (select NG_UP_TIME from DB.DBA.NEWS_GROUPS where NG_GROUP = folder_id);
+    colname := (select &quot;nntp_FIXNAME&quot;(NG_NAME) from DB.DBA.NEWS_GROUPS where NG_GROUP = atoi(folder_id));
+    if (DAV_HIDE_ERROR (colname) is null)
+      return -1;
+    if (rightcol is null)
+      rightcol := colname;
+    fullpath := colname || &#39;/&#39; || fullpath;
+  }
+  if (server_id is not null)
+  {
+    if (maxrcvdate is null)
+      maxrcvdate := coalesce ((select max(NG_UP_TIME) from DB.DBA.NEWS_GROUPS where NG_SERVER = atoi(folder_id)),
+      cast (&#39;1980-01-01&#39; as datetime) );
+    colname := (select &quot;nntp_FIXNAME&quot; (concat(NS_SERVER, &#39;:&#39;, cast(NS_PORT as varchar)))
+      from DB.DBA.NEWS_SERVERS where NS_ID = atoi(server_id));
+    if (DAV_HIDE_ERROR (colname) is null)
+      return -1;
+    if (rightcol is null)
+      rightcol := colname;
+    fullpath := colname || &#39;/&#39; || fullpath;
+  }
+  fullpath := DAV_CONCAT_PATH (DAV_SEARCH_PATH (id[1], &#39;C&#39;), fullpath);
+  if (&#39;C&#39; = what)
+  {
+    if (id[6] &gt;= 0)
+      return -1;
+    return vector (fullpath, &#39;C&#39;, 0, maxrcvdate,
+      id, &#39;100000000NN&#39;, 0, id[3], maxrcvdate, &#39;dav/unix-directory&#39;, rightcol );
+  }
+  for select &quot;nntp_COMPOSE_HTML_NAME&quot;(FTHR_SUBJ, FTHR_MESS_ID) as orig_mname,
+        FTHR_MESS_ID as m_id, FTHR_DATE
+      from DB.DBA.NNFE_THR
+      where FTHR_MESS_ID = id[6]
+    do
+    {
+      return vector (fullpath || orig_mname, &#39;R&#39;, 1024, FTHR_DATE,
+        id, 
+        &#39;100000000NN&#39;, 0, id[3], FTHR_DATE, &#39;text/plain&#39;, orig_mname);
+    }
+  return -1;
+}
+;
+
+--| When DAV_PROP_GET_INT or DAV_DIR_LIST_INT calls DET function, authentication is performed before the call.
+create function &quot;nntp_DAV_DIR_LIST&quot; (in detcol_id any, in path_parts any, in detcol_path varchar, in name_mask varchar, in recursive integer, in auth_uid integer) returns any
+{
+  --dbg_obj_princ (&#39;nntp_DAV_DIR_LIST (&#39;, detcol_id, path_parts, detcol_path, name_mask, recursive, auth_uid, &#39;)&#39;);
+  declare mgroup_id, muser_id integer;
+  declare mfolder_id, mserver_id varchar;
+  declare top_davpath varchar;
+  declare res, grand_res any;
+  declare top_id, descnames any;
+  declare reslen integer;
+  declare what char (1);
+  declare access varchar;
+  declare ownergid, owner_uid, dn_ctr, dn_count integer;
+  &quot;nntp_ACCESS_PARAMS&quot; (detcol_id, access, ownergid, owner_uid);
+  if ((0 = length (path_parts)) or (&#39;&#39; = path_parts[length (path_parts) - 1]))
+    what := &#39;C&#39;;
+  else
+    what := &#39;R&#39;;
+  mgroup_id := 0;
+  mserver_id := NULL;
+  mfolder_id := NULL;
+  grand_res := vector();
+  if (&#39;C&#39; = what and 1 = length(path_parts))
+    top_id := vector (UNAME&#39;nntp&#39;, detcol_id, mgroup_id, owner_uid, null, null, -1); -- may be a fake id because top_id[4] may be NULL
+  else
+    top_id := &quot;nntp_DAV_SEARCH_ID_IMPL&quot; (detcol_id, path_parts, what, mgroup_id, muser_id, mserver_id, mfolder_id);
+  if (DAV_HIDE_ERROR (top_id) is null)
+    return vector();
+  top_davpath := DAV_CONCAT_PATH (detcol_path, path_parts);
+  if (&#39;R&#39; = what)
+    return vector (&quot;nntp_DAV_DIR_SINGLE&quot; (top_id, what, top_davpath, auth_uid));
+  res := vector();
+  reslen := 0;
+  if (&#39;C&#39; = what and 1 = length(path_parts))
+  {
+    for select &quot;nntp_FIXNAME&quot; (concat(NS_SERVER, &#39;:&#39;, cast(NS_PORT as varchar))) as orig_name, cast(NS_ID as varchar) as f_id
+      from DB.DBA.NEWS_SERVERS
+      order by 1, 2
+    do
+    {
+      declare maxrcvdate datetime;
+      maxrcvdate := coalesce((select max(NG_UP_TIME)
+        from DB.DBA.NEWS_GROUPS
+        where
+        NG_SERVER = atoi(f_id)),
+        cast(&#39;1980-01-01&#39; as datetime));
+      res := vector_concat (res, vector (vector (DAV_CONCAT_PATH (top_davpath, orig_name) || &#39;/&#39;, &#39;C&#39;, 0, maxrcvdate,
+        vector (UNAME&#39;nntp&#39;, detcol_id, mgroup_id, owner_uid, mserver_id, f_id, -1),
+        &#39;100000000NN&#39;, ownergid, owner_uid, maxrcvdate, &#39;dav/unix-directory&#39;, orig_name) ) );
+    }
+    grand_res := res;
+  }
+  if (&#39;C&#39; = what and length(path_parts) = 2)
+  {
+    for select &quot;nntp_FIXNAME&quot; (NG_NAME) as orig_name, NG_UP_TIME as maxrcvdate, cast(NG_GROUP as varchar) as f_id
+      from DB.DBA.NEWS_GROUPS
+      where NG_SERVER = top_id[5]
+      order by 1, 2
+    do
+    { 
+      res := vector_concat (res, vector (vector (DAV_CONCAT_PATH (top_davpath, orig_name) || &#39;/&#39;, &#39;C&#39;, 0, maxrcvdate,
+        vector (UNAME&#39;nntp&#39;, detcol_id, mgroup_id, owner_uid, mserver_id, f_id, -1),
+        &#39;100000000NN&#39;, ownergid, owner_uid, maxrcvdate, &#39;dav/unix-directory&#39;, orig_name) ) );
+    }
+    grand_res := res;    
+  }
+  if (&#39;C&#39; = what and length(path_parts) &gt; 2)
+  {
+    for select distinct FTHR_REFER as f_ref
+      from DB.DBA.NNFE_THR
+      where FTHR_GROUP = atoi(top_id[5]) and FTHR_REFER is not null
+    do
+    {
+      for select &quot;nntp_COMPOSE_COMMENTS_NAME&quot;(FTHR_SUBJ, FTHR_MESS_ID) as orig_name, FTHR_MESS_ID as f_id, FTHR_DATE
+        from DB.DBA.NNFE_THR
+        where f_ref = FTHR_MESS_ID and FTHR_TOP = 1 and FTHR_SUBJ like name_mask
+        order by 1, 2
+      do
+      {
+        res := vector_concat(res, vector (vector (DAV_CONCAT_PATH (top_davpath, orig_name) || &#39;/&#39;, &#39;C&#39;, 0, FTHR_DATE,
+          vector (UNAME&#39;nntp&#39;, detcol_id, mgroup_id, owner_uid,  mserver_id, f_id, -1),
+          &#39;100000000NN&#39;, ownergid, owner_uid, FTHR_DATE, &#39;dav/unix-directory&#39;, orig_name) ) );
+        reslen := reslen + 1;
+      }
+    }
+    for select distinct FTHR_MESS_ID as f_ref2
+      from DB.DBA.NNFE_THR
+      where FTHR_REFER = top_id[5]
+    do
+    {
+      for select &quot;nntp_COMPOSE_COMMENTS_NAME&quot;(FTHR_SUBJ, FTHR_MESS_ID) as orig_name,
+          FTHR_MESS_ID as f_id, FTHR_DATE
+        from DB.DBA.NNFE_THR
+        where f_ref2 = FTHR_MESS_ID
+          and FTHR_SUBJ like name_mask
+        order by 1, 2
+      do
+      {
+        res := vector_concat(res, vector (vector (DAV_CONCAT_PATH (top_davpath, orig_name) || &#39;/&#39;, &#39;C&#39;, 0, FTHR_DATE,
+          vector (UNAME&#39;nntp&#39;, detcol_id, mgroup_id, owner_uid,  mserver_id, f_id, -1),
+          &#39;100000000NN&#39;, ownergid, owner_uid, FTHR_DATE, &#39;dav/unix-directory&#39;, orig_name) ) );
+        reslen := reslen + 1;
+      }
+    }
+    grand_res := res;
+    reslen := 0;
+    res := vector();
+    for select &quot;nntp_COMPOSE_HTML_NAME&quot;(FTHR_SUBJ, FTHR_MESS_ID) as orig_mname,
+        FTHR_MESS_ID as m_id, FTHR_DATE
+      from DB.DBA.NNFE_THR
+      where ((FTHR_GROUP = atoi(top_id[5]) and FTHR_TOP=1) or FTHR_REFER = top_id[5])
+        and FTHR_SUBJ like name_mask
+      order by 1, 2
+    do
+    {
+      res := vector_concat (res, vector (vector (DAV_CONCAT_PATH (top_davpath, orig_mname), &#39;R&#39;, 1024, FTHR_DATE,
+        vector (UNAME&#39;nntp&#39;, detcol_id, mgroup_id, owner_uid, mserver_id, top_id[5], m_id),
+        &#39;100000000NN&#39;, ownergid, owner_uid, FTHR_DATE, &#39;text/plain&#39;, orig_mname) ) );
+      reslen := reslen + 1;
+    }
+    grand_res := vector_concat (grand_res, res);
+  }
+finalize_res:
+  return grand_res;
+}
+;
+                         
+--| When DAV_DIR_FILTER_INT calls DET function, authentication is performed before the call and compilation is initialized.
+create function &quot;nntp_DAV_DIR_FILTER&quot; (in detcol_id any, in path_parts any, in detcol_path any, inout compilation any, in recursive integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_DIR_FILTER (&#39;, detcol_id, path_parts, detcol_path, compilation, recursive, auth_uid, &#39;)&#39;);
+  return vector();
+}
+;
+
+create function &quot;nntp_DAV_SEARCH_ID_IMPL&quot; (in detcol_id any, in path_parts any, in what char(1), inout group_id integer, inout muser_id integer, inout mserver_id varchar, inout mfolder_id varchar) returns any
+{
+  declare colpath, merged_fnameext, orig_fnameext varchar;
+  declare orig_id varchar;
+  declare ctr, len integer;
+  declare hitlist any;
+  declare access varchar;
+  declare ownergid, owner_uid integer;
+  --dbg_obj_princ (&#39;nntp_DAV_SEARCH_ID_IMPL (&#39;, detcol_id, path_parts, what, group_id, muser_id, mfolder_id, &#39;)&#39;);
+  &quot;nntp_ACCESS_PARAMS&quot; (detcol_id, access, ownergid, owner_uid);
+  if (0 = length(path_parts))
+  {
+    if (&#39;C&#39; &lt;&gt; what)
+    {
+      return -1;
+    }
+    return vector (UNAME&#39;nntp&#39;, detcol_id, group_id, owner_uid, mserver_id, mfolder_id, -1);
+  }
+  if (&#39;&#39; = path_parts[length(path_parts) - 1])
+  {
+    if (&#39;C&#39; &lt;&gt; what)
+    {
+      return -1;
+    }
+  }
+  else
+  {
+    if (&#39;R&#39; &lt;&gt; what)
+    {
+      return -1;
+    }
+  }
+  len := length (path_parts) - 1;
+  ctr := 0;
+  while (ctr &lt; len)
+  {
+    if (ctr = 0)
+    {
+      hitlist := vector ();
+      for select NS_ID
+        from DB.DBA.NEWS_SERVERS
+        where &quot;nntp_FIXNAME&quot;(concat(NS_SERVER, &#39;:&#39;, cast(NS_PORT as varchar))) = path_parts[ctr]
+      do 
+      {
+        hitlist := vector_concat (hitlist, vector (NS_ID));
+      }
+      if (length (hitlist) &lt;&gt; 1)
+        return -1;
+      mfolder_id := cast(hitlist[0] as varchar);
+      if (len &gt; 1)
+        mserver_id := cast(hitlist[0] as varchar);
+    }
+    if (ctr = 1)
+    {
+      hitlist := vector ();
+      for select NG_GROUP
+        from DB.DBA.NEWS_GROUPS
+        where &quot;nntp_FIXNAME&quot;(NG_NAME) = path_parts[ctr]
+      do 
+      {
+        hitlist := vector_concat (hitlist, vector (NG_GROUP));
+      }
+      if (length (hitlist) &lt;&gt; 1)
+        return -1;
+      mfolder_id := cast(hitlist[0] as varchar);
+    }
+    if (ctr &gt; 1)
+    {
+      hitlist := vector ();
+      for select FTHR_MESS_ID from DB.DBA.NNFE_THR
+        where &quot;nntp_COMPOSE_COMMENTS_NAME&quot;(FTHR_SUBJ, FTHR_MESS_ID) = path_parts[ctr]
+      do 
+      {
+        hitlist := vector_concat (hitlist, vector (FTHR_MESS_ID));
+      }
+      if (length (hitlist) &lt;&gt; 1)
+        return -1;
+      mfolder_id := cast(hitlist[0] as varchar);
+    }
+    ctr := ctr + 1;
+  }
+  if (&#39;C&#39; = what)
+    return vector (UNAME&#39;nntp&#39;, detcol_id, group_id, owner_uid, mserver_id, mfolder_id, -1);
+
+  len := length (path_parts);
+  while (ctr &lt; len)
+  {
+    hitlist := vector ();
+    for select FTHR_MESS_ID
+      from DB.DBA.NNFE_THR
+      where (FTHR_GROUP = atoi(mfolder_id) or (FTHR_REFER = mfolder_id)) and
+      (&quot;nntp_COMPOSE_HTML_NAME&quot; (FTHR_SUBJ, FTHR_MESS_ID) = path_parts[ctr])
+    do 
+    {
+      hitlist := vector_concat (hitlist, vector (FTHR_MESS_ID));
+    }
+    if (length (hitlist) &lt;&gt; 1)
+      return -1;
+    ctr := ctr + 1;
+  }  
+  return vector (UNAME&#39;nntp&#39;, detcol_id, group_id, owner_uid, mserver_id, mfolder_id, hitlist[0]);
+}
+;
+
+--| When DAV_PROP_GET_INT or DAV_DIR_LIST_INT calls DET function, authentication is performed before the call.
+create function &quot;nntp_DAV_SEARCH_ID&quot; (in detcol_id any, in path_parts any, in what char(1)) returns any
+{
+  declare mgroup_id,  muser_id integer;
+  declare mfolder_id, mserver_id varchar;
+  --dbg_obj_princ (&#39;nntp_DAV_SEARCH_ID (&#39;, detcol_id, path_parts, what, &#39;)&#39;);
+  return &quot;nntp_DAV_SEARCH_ID_IMPL&quot; (detcol_id, path_parts, what, mgroup_id, muser_id, mserver_id, mfolder_id);
+}
+;
+
+--| When DAV_SEARCH_PATH_INT calls DET function, authentication is performed before the call.
+create function &quot;nntp_DAV_SEARCH_PATH&quot; (in id any, in what char(1)) returns any
+{
+  --dbg_obj_princ (&#39;nntp_DAV_SEARCH_PATH (&#39;, id, what, &#39;)&#39;);
+  return NULL;
+}
+;
+
+--| When DAV_COPY_INT calls DET function, authentication and check for locks are performed before the call, but no check for existing/overwrite.
+create function &quot;nntp_DAV_RES_UPLOAD_COPY&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite_flags integer, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_RES_UPLOAD_COPY (&#39;, detcol_id, path_parts, source_id, what, overwrite_flags, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| When DAV_COPY_INT calls DET function, authentication and check for locks are performed before the call, but no check for existing/overwrite.
+create function &quot;nntp_DAV_RES_UPLOAD_MOVE&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite_flags integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_RES_UPLOAD_MOVE (&#39;, detcol_id, path_parts, source_id, what, overwrite_flags, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| When DAV_RES_CONTENT or DAV_RES_COPY_INT or DAV_RES_MOVE_INT calls DET function, authentication is made.
+--| If content_mode is 1 then content is a valid output stream before the call.
+create function &quot;nntp_DAV_RES_CONTENT&quot; (in id any, inout content any, out type varchar, in content_mode integer) returns integer
+{
+  --dbg_obj_princ (&#39;nntp_DAV_RES_CONTENT (&#39;, id, &#39;, [content], [type], &#39;, content_mode, &#39;)&#39;);
+  declare str_out any;
+  str_out := string_output();
+  content := &#39;&#39;;
+  if (id[6] is not null)
+  {
+    type := &#39;text/plain&#39;;
+    
+   declare _date, _from, _subj, _grps, _print_body, d_name varchar;
+   declare _body, _head, parsed_message any;
+   declare idx integer;
+
+   set isolation=&#39;committed&#39;;
+
+   select NM_HEAD, blob_to_string (NM_BODY)
+     into parsed_message, _body
+     from DB.DBA.NEWS_MSG
+     where NM_ID = id[6];
+
+   for (select NM_GROUP
+          from DB.DBA.NEWS_MULTI_MSG
+          where NM_KEY_ID = id[6]) do
+     {
+        if (ns_rest_rate_read (NM_GROUP) &gt; 0)
+          {
+             content := &#39;&lt;h3&gt;Excessive read detected, please try again later.&lt;/h3&gt;&#39;;
+             return 0;
+          }
+     }
+
+   if (__tag (parsed_message) &lt;&gt; 193)
+     parsed_message := mime_tree (_body);
+
+   _head := parsed_message[0];
+   _subj := coalesce (get_keyword_ucase (&#39;Subject&#39;, _head), &#39;&#39;);
+   _from := coalesce (get_keyword_ucase (&#39;From&#39;, _head), &#39;&#39;);
+   _grps := coalesce (get_keyword_ucase (&#39;Newsgroups&#39;, _head), &#39;&#39;);
+   _date := coalesce (get_keyword_ucase (&#39;Date&#39;, _head), &#39;&#39;);
+
+   nntpf_decode_subj (_subj);
+
+   nntpf_decode_subj (_from);
+   _from := nntpf_replace_at (_from);
+
+   http (&#39;&lt;div class=&quot;artheaders&quot;&gt;&#39;, str_out);
+   http (sprintf (&#39;&lt;span class=&quot;header&quot;&gt;From:&lt;/span&gt;%V&lt;br/&gt;&#39;, _from), str_out);
+   http (sprintf (&#39;&lt;span class=&quot;header&quot;&gt;Subject:&lt;/span&gt;%s&lt;br/&gt;&#39;, _subj), str_out);
+   http (sprintf (&#39;&lt;span class=&quot;header&quot;&gt;Newsgroups:&lt;/span&gt;%s&lt;br/&gt;&#39;, _grps), str_out);
+   http (sprintf (&#39;&lt;span class=&quot;header&quot;&gt;Date:&lt;/span&gt;%s&lt;br/&gt;&#39;, _date), str_out);
+   http (&#39;&lt;/div&gt;&lt;br/&gt;&#39;, str_out);
+
+
+   --if (parsed_message[2] &lt;&gt; 0)
+   --  return nntpf_display_article_multi_part (parsed_message, _body, id, sid);
+
+   --nntpf_display_message_reply (sid, id);
+
+    _print_body := subseq (_body, parsed_message[1][0], parsed_message[1][1]);
+    if (length (_print_body) &gt; 3)
+       _print_body := subseq (_print_body, 0, (length (_print_body) - 3));
+
+   -- CLEAR THIS
+
+   parsed_message := nntpf_get_mess_attachments (_print_body, 0);
+
+   _print_body := parsed_message[0];
+   
+   &quot;nntpf_display_message_text2&quot; (_print_body, get_keyword_ucase (&#39;Content-Type&#39;, _head), str_out);
+
+   http (&#39;&lt;br/&gt;&#39;, str_out);
+   idx := 1;
+   while (idx &lt; length (parsed_message))
+     {
+        d_name := parsed_message[idx];
+        http (sprintf (&#39;Download attachment : &lt;a href=&quot;http://%s/INLINEFILE/%s?VSP=/nntpf/attachment.vsp&amp;id=%U&amp;part=%i&amp;fn=%s&quot;&gt; %s &lt;/a&gt;&lt;br/&gt;&#39;,
+                       nntpf_get_host (vector ()),
+                       d_name,
+                       encode_base64 (id),
+                       idx,
+                       d_name,
+                       d_name), str_out);
+
+        if (d_name like &#39;%.jpg&#39; or d_name like &#39;%.gif&#39;)
+          {
+             http (sprintf (&#39;&lt;img alt=&quot;attachment&quot; src=&quot;http://%s/INLINEFILE/%s?VSP=/nntpf/attachment.vsp&amp;id=%U&amp;part=%i&amp;fn=%s&quot;&gt;&#39;,
+                   nntpf_get_host (vector()),
+                   d_name,
+                   encode_base64 (id),
+                   idx,
+                   d_name), str_out);
+             http (&#39;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&#39;, str_out);
+          }
+
+        idx := idx + 1;
+     }
+  }
+  content := string_output_string(str_out);
+  return 0;
+}
+;
+
+--| This adds an extra access path to the existing resource or collection.
+create function &quot;nntp_DAV_SYMLINK&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite integer, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_SYMLINK (&#39;, detcol_id, path_parts, source_id, overwrite, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| This gets a list of resources and/or collections as it is returned by DAV_DIR_LIST and and writes the list of quads (old_id, &#39;what&#39;, old_full_path, dereferenced_id, dereferenced_full_path).
+create function &quot;nntp_DAV_DEREFERENCE_LIST&quot; (in detcol_id any, inout report_array any) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_DEREFERENCE_LIST (&#39;, detcol_id, report_array, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| This gets one of reference quads returned by ..._DAV_REREFERENCE_LIST() and returns a record (new_full_path, new_dereferenced_full_path, name_may_vary).
+create function &quot;nntp_DAV_RESOLVE_PATH&quot; (in detcol_id any, inout reference_item any, inout old_base varchar, inout new_base varchar) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_RESOLVE_PATH (&#39;, detcol_id, reference_item, old_base, new_base, &#39;)&#39;);
+  return -20;
+}
+;
+
+--| There&#39;s no API function to lock for a while (do we need such?) The &quot;LOCK&quot; DAV method checks that all parameters are valid but does not check for existing locks.
+create function &quot;nntp_DAV_LOCK&quot; (in path any, in id any, in type char(1), inout locktype varchar, inout scope varchar, in token varchar, inout owner_name varchar, inout owned_tokens varchar, in depth varchar, in timeout_sec integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_LOCK (&#39;, id, type, locktype, scope, token, owner_name, owned_tokens, depth, timeout_sec, owner_name, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+
+--| There&#39;s no API function to unlock for a while (do we need such?) The &quot;UNLOCK&quot; DAV method checks that all parameters are valid but does not check for existing locks.
+create function &quot;nntp_DAV_UNLOCK&quot; (in id any, in type char(1), in token varchar, in auth_uid integer)
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_UNLOCK (&#39;, id, type, token, auth_uid, &#39;)&#39;);
+  return -27;
+}
+;
+
+--| The caller does not check if id is valid.
+--| This returns -1 if id is not valid, 0 if all existing locks are listed in owned_tokens whitespace-delimited list, 1 for soft 2 for hard lock.
+create function &quot;nntp_DAV_IS_LOCKED&quot; (inout id any, inout type char(1), in owned_tokens varchar) returns integer
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_IS_LOCKED (&#39;, id, type, owned_tokens, &#39;)&#39;);
+  return 0;
+}
+;
+
+
+--| The caller does not check if id is valid.
+--| This returns -1 if id is not valid, list of tuples (LOCK_TYPE, LOCK_SCOPE, LOCK_TOKEN, LOCK_TIMEOUT, LOCK_OWNER, LOCK_OWNER_INFO) otherwise.
+create function &quot;nntp_DAV_LIST_LOCKS&quot; (in id any, in type char(1), in recursive integer) returns any
+{
+  -- dbg_obj_princ (&#39;nntp_DAV_LIST_LOCKS&quot; (&#39;, id, type, recursive);
+  return vector ();
+}
+;
+
+</programlisting></section></docbook>

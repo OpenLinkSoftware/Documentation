@@ -1,0 +1,95 @@
+<docbook><section><title>VAL_CuriACLs</title><title> ACLs for the URI Shortener Service</title> ACLs for the URI Shortener Service
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>The URI Shortener Service &quot;curi&quot; can make optional use of <ulink url="http://docs.openlinksw.com/val/index.html">VAL</ulink> for login and ACL support.</para>
+<para>If VAL is installed the URI Shortener Service will show a login link along with information about the currently authenticated user.
+ By default ACLs are disabled which means that anyone can create and read compressed URIs.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Private Graphs used for ACL storage</bridgehead>
+ The Rules can be controlled via the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__http__api.html">VAL ACL RESTful API</ulink> or the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html#ga89b2c77c10c82186ddc0e7b46093123c">Internal VAL API</ulink>.
+ Alternatively one can directly add the rules to the private graph matching the realm in which the rules should apply.
+ Given the default realm http://www.openlinksw.com/ontology/acl#DefaultRealm and default hostname &quot;HOST&quot; the graph IRI would be http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm and the groups will be stored in named graph http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm.
+ Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">these graphs can be customized</ulink> for better readability.<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Enable ACLs for the URI Shortener Service</bridgehead>
+<para>VAL controls ACL application through <ulink url="http://docs.openlinksw.com/val//val_acl.html#val_acl_rule_scopes">ACL</ulink> scopes which can be enabled and disabled per application realm.
+ Thus, in order to enable curi ACLs in the default realm the following can be done:</para>
+<programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+with &lt;urn:virtuoso:val:config&gt;
+delete {
+  oplacl:DefaultRealm oplacl:hasDisabledAclScope &lt;urn:virtuoso:val:scopes:curi&gt; .
+}
+insert {
+  oplacl:DefaultRealm oplacl:hasEnabledAclScope &lt;urn:virtuoso:val:scopes:curi&gt; .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> ACL Rules Used for Compressed URIs</bridgehead>
+<para>Curi allows to control both the creation and the reading of compressed URIs via ACL.
+ The resource URI is the URL of the Curi page itself, typically something like http://host.com/c.
+ The ACL scope is as could be seen above urn:virtuoso:val:scopes:curi.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> ACL Examples</bridgehead>
+<emphasis>The following examples assume that the default realm <ulink url="http://www.openlinksw.com/ontology/acl#DefaultRealm">oplacl:DefaultRealm</ulink> is used for creating the ACL resources.</emphasis><emphasis>The following examples use &quot;HOST&quot; as a placeholder for the default hostname of the system the ACL resource are created on.</emphasis><para>Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">the ACL graphs can be customized</ulink> for better readability.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant Everyone the Right to Read Compressed URIs</bridgehead>
+ One typically wants to allow everyone to read compressed URIs, i.e.
+ &quot;de-compress&quot; them by resolving the URIs.
+ The following rule does grant this right:<programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#rule&gt; a acl:Authorization ;
+    oplacl:hasAccessMode oplacl:Read ;
+    acl:accessTo &lt;http://HOST/c&gt; ;
+    acl:agentClass foaf:Agent ;
+    oplacl:hasScope &lt;urn:virtuoso:val:scopes:curi&gt; ;
+    oplacl:hasRealm oplacl:DefaultRealm .
+};
+</programlisting><para> Typically this rule should be created using the ACL API (<ulink url="http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html">internal API</ulink> or <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__http__api.html">RESTful API</ulink>)</para>
+<para>(When manually creating ACL rules without the help of the API, then the realm need to be specified via oplacl:hasRealm and the rule needs to be added into the corresponding graph.
+ In the case of the default application realm this would be http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm.)</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant The Right to Create Compressed URIs to Authenticated Users</bridgehead>
+ A rule and group can be created to allow compression of URIs only if one is authenticated.
+ To that end a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> needs to be created:<programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#group&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Valid Identifiers&quot; ;
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:GenericCondition ;
+      oplacl:hasCriteria oplacl:NetID ;
+      oplacl:hasComparator oplacl:IsNotNull ;
+      oplacl:hasValue 1
+    ] .
+};
+</programlisting><para> (When manually creating groups without the help of the API, then the group needs to be added into the corresponding graph.
+ In the case of the default application realm this would be http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm.)</para>
+<para>This group can then be used in an ACL rule as follows:</para>
+<programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#rule&gt; a acl:Authorization ;
+    oplacl:hasAccessMode oplacl:Write ;
+    acl:accessTo &lt;http://HOST/c&gt; ;
+    acl:agent &lt;#group&gt; ;
+    oplacl:hasScope &lt;urn:virtuoso:val:scopes:curi&gt; ;
+    oplacl:hasRealm oplacl:DefaultRealm .
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Allow Users to Request Access to CURI</bridgehead>
+<para>Like all applications using VAL&#39;s authentication pages curi can make use of VAL&#39;s request for access feature which allows to easily send a message to the owner of the resource asking for permission to use it.</para>
+<para>All VAL requires to know is who owns the resource.
+ This is easily done by using the VAL API.
+ If, for example, &quot;dba&quot; should be the owner of the curi service, then the following call will save that fact: </para>
+<programlisting>VAL.DBA.set_resource_ownership (
+   scope=&gt;&#39;urn:virtuoso:val:scopes:curi&#39;,
+   resource=&gt;&#39;http://HOST/c&#39;,
+   serviceId=&gt;VAL.DBA.user_personal_uri (&#39;dba&#39;)
+);
+</programlisting><para> This call will add a triple like the following into a private graph which is then added to a graph group containing all ownership graphs for the given scope: </para>
+<programlisting>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://HOST/dataspace/person/dba#this&gt; foaf:made &lt;urn:virtuoso:access:curi&gt; .
+</programlisting></section></docbook>

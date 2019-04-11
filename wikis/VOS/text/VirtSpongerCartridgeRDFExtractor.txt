@@ -1,0 +1,45 @@
+%VOSNAV%
+%META:TOPICPARENT{name="VirtSponger"}%
+
+---++Sponger Cartridge RDF Extractor
+
+Used to extract RDF from a Web Data Source.  It consumes services from Virtuoso PL, C/C++, Java-based, and other RDF Extractors.
+
+RDF mappers provide a way to extract metadata from non-RDF documents such as HTML pages, images, Office documents, 
+etc., and pass this to the SPARQL sponger (crawler which retrieves missing source graphs). For brevity further in this article, 
+we will refer to the "RDF mapper" simply as the "mapper".
+
+---++RDF Mappers Concept
+
+RDF mappers consist of PL procedure (hook) and extractor, where extractor itself can be built using PL, C or any external language 
+supported by Virtuoso server. See the [[VirtProgrammerGuideRDFCartridge][Sponger Cartridge RDF Extractor PL Requirements]] for 
+more information.
+
+Once the mapper is developed, it must be plugged into the SPARQL engine by adding a record to the table 
+<code><nowiki>DB.DBA.SYS_RDF_MAPPERS</nowiki></code>.
+
+
+If a SPARQL query instructs the SPARQL processor to retrieve a target graph into local storage, then the SPARQL sponger will 
+be invoked. If the target graph IRI represents a dereferenceable URL, then content will be retrieved using content negotiation. 
+The next step is to detect the content type:
+
+   * If RDF and no further transformation (such as GRDDL) is needed, then the process would stop. 
+   * If 'text/plain' and not known to have metadata, then the SPARQL sponger will look in the 
+<code><nowiki>DB.DBA.SYS_RDF_MAPPERS</nowiki></code> table by order of <code><nowiki>RM_ID</nowiki></code> 
+and for every matching URL or MIME type pattern (depends on column  <code><nowiki>RM_TYPE</nowiki></code>) will 
+call the mapper hook. 
+      * If hook returns zero, the next mapper will be tried;
+      * If result is negative, the process would stop instructing the SPARQL nothing was retrieved;
+      * If result is positive, the process would stop instructing the SPARQL that metadata was retrieved. 
+
+---++References
+
+   * [[RDFMappers][RDF Mappers]]
+   * [[SPARQLSponger][Virtuoso SPARQLSponger]]
+   * [[VirtProgrammerGuideRDFCartridge][RDF Cartridge Programmer Guide]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+
+
+CategoryVirtuoso CategorySpec CategoryDocumentation CategoryODS CategoryRDF
+
+%VOSCOPY%

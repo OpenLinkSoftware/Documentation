@@ -1,0 +1,179 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Using Expressions inside SPARQL <code>CONSTRUCT {...}</code>, <code>INSERT {...}</code>, or <code>DELETE {...}</code> statements
+
+The are times when you may want to post-process existing RDF triples, en route to creating enhanced data views. For instance, you may want to enhance the literal values associated with annotation properties such as <code>rdfs:label</code> and <code>rdfs:comment</code>.
+
+You can do this in <code>CONSTRUCT {...}</code>, <code>INSERT {...}</code>, or <code>DELETE {...}</code> construction templates, by including expressions wrapped in back-ticks, i.e. --
+<verbatim>
+`expression`
+</verbatim>
+
+
+%TOC%
+
+
+---++ Examples
+
+Here some SPARQL 1.1 Update Language examples showcasing how this is achieved using Virtuoso.
+
+---+++ Example showing an expression used inside a CONSTRUCT query
+
+<verbatim>
+CONSTRUCT 
+  {
+    ?inst
+      rdfs:label
+        `bif:concat ( ?inst_label, 
+                      " Instance with up to ", 
+                      str(?core_val), 
+                      " logical processor cores and " , 
+                      str(?sess_val) , 
+                      " concurrent ODBC sessions from licensed host" )`
+  }
+FROM <http://uda.openlinksw.com/pricing/>
+WHERE 
+  {
+    ?inst  a                                gr:Individual              , 
+                                            oplweb:ProductLicense       ;
+           rdfs:label                       ?inst_label                 ;
+           oplweb:hasMaximumProcessorCores  ?core                       ;
+           oplweb:hasSessions               ?sess                        .
+    
+    ?core  a                                gr:QuantitativeValueInteger ;
+           gr:hasMaxValueInteger            ?core_val .
+             
+    ?sess  a                                gr:QuantitativeValueInteger ;
+           gr:hasValue                      ?sess_val                    .
+}
+</verbatim>
+
+You can see [[http://uriburner.com/c/MBGD7Y][live results of this query]].
+
+
+---+++ Example showing an expression used inside an INSERT query
+
+<verbatim>
+SPARQL 
+INSERT INTO GRAPH <urn:mygraph> 
+  {
+    ?inst
+      rdfs:label
+        `bif:concat ( ?inst_label, 
+                      " Instance with up to ", 
+                      str(?core_val), 
+                      " logical processor cores and " , 
+                      str(?sess_val) , 
+                      " concurrent ODBC sessions from licensed host" )`
+  }
+FROM <http://uda.openlinksw.com/pricing/>
+WHERE 
+  {
+    ?inst  a                                gr:Individual              ,
+                                            oplweb:ProductLicense       ;
+           rdfs:label                       ?inst_label                 ;
+           oplweb:hasMaximumProcessorCores  ?core                       ;
+           oplweb:hasSessions               ?sess                        .
+    
+    ?core  a                                gr:QuantitativeValueInteger ;
+           gr:hasMaxValueInteger            ?core_val                    .
+             
+    ?sess  a                                gr:QuantitativeValueInteger ;
+           gr:hasValue                      ?sess_val                    .
+  };
+
+Done. -- 406 msec.
+
+
+SQL> SPARQL 
+SELECT ?label 
+FROM <urn:mygraph> 
+WHERE 
+  {
+    ?inst  rdfs:label  ?label
+  };
+
+
+label
+VARCHAR
+_______________________________________________________________________________
+
+ODBC Driver (Single-Tier Express Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Express Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+JDBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+OLEDB Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+ADO.NET Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor cores and 5 concurrent ODBC sessions from licensed host
+
+9 Rows. -- 31 msec.
+</verbatim>
+
+---+++ Example showing an expression used inside a DELETE query
+
+<verbatim>
+SPARQL 
+DELETE FROM GRAPH <urn:mygraph> 
+  {
+    ?inst
+      rdfs:label
+        `bif:concat ( "JDBC Driver (Single-Tier Lite Edition) Instance with up to ", 
+                      str(?core_val), 
+                      " logical processor cores and ", 
+                      str(?sess_val), 
+                      " concurrent ODBC sessions from licensed host" 
+                    )` 
+  } 
+FROM <http://uda.openlinksw.com/pricing/> 
+WHERE 
+  {
+    ?inst  a                                gr:Individual              , 
+                                            oplweb:ProductLicense       ;
+           rdfs:label                       ?inst_label                 ;
+           oplweb:hasMaximumProcessorCores  ?core                       ;
+                        oplweb:hasSessions  ?sess                        .
+    FILTER ( regex ( ?inst_label, "JDBC Driver" ) )                      .
+    
+    ?core  a                                gr:QuantitativeValueInteger ;
+           gr:hasMaxValueInteger            ?core_val                    .
+             
+    ?sess  a                                gr:QuantitativeValueInteger ;
+           gr:hasValue                      ?sess_val                    .
+  };
+
+
+Done. -- 32 msec.
+
+
+SQL> SPARQL 
+SELECT ?label 
+FROM <urn:mygraph> 
+WHERE 
+  {
+    ?inst  rdfs:label  ?label
+  };
+
+
+label
+VARCHAR
+_______________________________________________________________________________
+
+ODBC Driver (Single-Tier Express Edition) Instance with up to 16 logical ...
+ODBC Driver (Single-Tier Express Edition) Instance with up to 16 logical ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ODBC Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+OLEDB Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+ADO.NET Driver (Single-Tier Lite Edition) Instance with up to 16 logical processor ...
+
+8 Rows. -- 16 msec.
+</verbatim>
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]

@@ -1,0 +1,61 @@
+<docbook><section><title>VirtSPARUL</title><para>  </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">SPARUL</bridgehead>
+<para>SPARUL is an Update Language For RDF Graphs.</para>
+<para>Since version 5.0, Virtuoso has supported the <ulink url="http://jena.hpl.hp.com/~afs/SPARQL-Update.html">SPARQL/Update</ulink> (SPARUL) extension of SPARQL.
+This is sufficient for most routine data manipulation operations.</para>
+<para>If SPARQL_UPDATE role is granted to SPARQL user, then data manipulation statements may be executed via the SPARQL Web service endpoint; if SPARQL_UPDATE role is not granted, users are limited to data querying statements.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Related Functions</bridgehead>
+<para>Two functions allow the user to alter RDF storage by inserting or deleting all triples listed in some vector.</para>
+<para>Both functions receive an IRI of a graph that should be altered and a vector of triples that should be added or removed.
+ The graph IRI can be either IRI ID or a string.</para>
+<para>The return values of these functions are not defined and should not be used by applications.</para>
+<programlisting>create function DB.DBA.RDF_INSERT_TRIPLES (in graph_iri any, in triples any);
+create function DB.DBA.RDF_DELETE_TRIPLES (in graph_iri any, in triples any);
+</programlisting><para> Simple operations may be faster if written as low-level SQL code instead of using SPARUL.
+For instance, the use of SPARQL DELETE is redundant when the application can delete from RDF_QUAD by using simple filters like:</para>
+<programlisting>delete from DB.DBA.RDF_QUAD
+where G = DB.DBA.RDF_MAKE_IID_OF_QNAME (
+    &#39;http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf&#39; );
+</programlisting><para> On the other hand, simple filters do not work when search criteria refer to triples that are affected by the modification.</para>
+<para>Consider a function that deletes all triples whose subjects are nodes of type &#39;<ulink url="http://xmlns.com/foaf/0.1/Person&quot;.">http://xmlns.com/foaf/0.1/Person&#39;.</ulink> Type information is stored in triples that will be deleted, so the simplest function is something like this:</para>
+<programlisting>create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  declare pdata_dict, pdata_array any;
+-- Step 1: select everything that should be deleted
+  pdata_dict := ((
+      sparql construct { ?s ?p ?o }
+      where { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+            } }
+      ));
+-- Step 2: delete all found triples
+  pdata_array := dict_list_keys (pdata_dict, 1);
+  RDF_DELETE_TRIPLES (foaf_graph, pdata_array);
+};
+
+DELETE_PERSONAL_DATA (
+  &#39;http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf&#39; );
+</programlisting><para> Since Virtuoso 5.0, applications may use SPARUL to do the same in a more convenient way:</para>
+<programlisting>create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  sparql delete { ?s ?p ?o }
+      where { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type &lt;http://xmlns.com/foaf/0.1/Person&gt;
+           } }
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2">Virtuoso&#39;s SPARUL Implementation</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">References</bridgehead>
+ <ulink url="">
+ <bridgehead class="http://www.w3.org/1999/xhtml:h4">Specs</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://jena.hpl.hp.com/~afs/SPARQL-Update.html">SPARQL/UPDATE</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/TR/2005/WD-rdf-sparql-XMLres-20050527/">SPARQL Query Results XML Format</ulink> </listitem>
+<listitem><ulink url="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL Protocol for RDF</ulink> <ulink url="">
+ </ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">FAQs</bridgehead>
+ <ulink url="">
+ <bridgehead class="http://www.w3.org/1999/xhtml:h4">Presentations</bridgehead>
+ <ulink url="">
+ <bridgehead class="http://www.w3.org/1999/xhtml:h4">Tutorials</bridgehead>
+<para><ulink url="CategoryGlossary">CategoryGlossary</ulink> <ulink url="CategorySPARQL">CategorySPARQL</ulink> <ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategoryVOS">CategoryVOS</ulink> <ulink url="CategoryDocumentation">CategoryDocumentation</ulink> </para>
+</ulink></ulink></ulink></section></docbook>

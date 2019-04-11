@@ -1,0 +1,112 @@
+%META:TOPICPARENT{name="VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF"}%
+
+---+<nowiki>LinkedIn</nowiki> Cartridge - Configuration Guidelines and Implementation Notes
+
+%TOC% 
+
+---++ Introduction
+
+The Sponger cartridge for [[http://www.linkedin.com][<nowiki>LinkedIn</nowiki>]] is written to the [[http://developer.linkedin.com/rest][<nowiki>LinkedIn</nowiki> REST API]]. In order to use this API, the cartridge must be configured with a <nowiki>LinkedIn</nowiki> API key. To [[https://www.linkedin.com/secure/developer][obtain an API key]], register the Sponger as a <nowiki>LinkedIn</nowiki> application. Any application name can be used, for example '<b>Sponger_{your-virtuoso-host}</b>'. However the OAuth redirect URL must point to the <nowiki>/linkedin_oauth</nowiki> virtual path defined when the [[https://virtuoso.openlinksw.com/download/][Cartridges]] VAD is installed, e.g. <b><nowiki>http://{your-virtuoso-host:port}/linkedin_oauth/linkedin_access_token.vsp</nowiki></b>.
+
+
+---++Registering the Sponger as a <nowiki>LinkedIn</nowiki> Application
+
+Before you can obtain access tokens for the cartridge, you first need to register the Sponger as a <nowiki>LinkedIn</nowiki> application. 
+
+   1 Register the Sponger using the [[https://www.linkedin.com/secure/developer][<nowiki>LinkedIn</nowiki> Developer Network Application]]. 
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk1.png" />%BR%%BR%
+   1 Click "Add New Application".
+   1 Specify company name, application name and application description:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk2.png" />%BR%%BR%
+   1 Next specify JavaScript API Domain with value http://<cname> e.g. e.g., http://uriburner.com and specify application type and use. Additionally set live status:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk3.png" />%BR%%BR%
+   1 Specify contact email and phone. 
+   1 Specify OAuth Redirect URL. As noted above, the OAuth redirect URL must point to the <nowiki>/linkedin_oauth</nowiki> virtual path defined when the <nowiki>cartridges</nowiki> VAD is installed, e.g. <b><nowiki>http://{your-virtuoso-host:port}/linkedin_oauth/linkedin_access_token.vsp</nowiki></b>:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk4.png" />%BR%%BR%
+   1 Click "Add Application".
+   1 As result a notification for successfully created application should be displayed:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk5.png" />%BR%%BR%
+   1 To complete the process click "Done".
+   1 You have successfully registered your Sponger instance as a <nowiki>LinkedIn</nowiki> application and you have been granted an API key:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk6.png" />%BR%%BR%
+   1 Now go to your local Conductor at http://your-virtuoso-host:port/conductor 
+   1 Go to Linked Data -> Sponger -> Extractor Cartridges:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk7.png" />%BR%%BR%
+   1 Find "<nowiki>LinkedIn</nowiki>" and click on its link in order to edit its properties:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk8.png" />%BR%%BR%
+   1 Enter the API key and Secret Key noted in the cartridge's "Options" field as values for options <nowiki>consumer_key</nowiki> and <nowiki>consumer_secret</nowiki>. Set option <nowiki>consumer_name</nowiki> to match the registered application name:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk9.png" />%BR%%BR%
+      * <b>Note</b>: you can also set <code>accept_lang</code>. This entry in the cartridge options is not created by default. LinkedIn alters the language of some output fields. Its choice of locale is based on the geographic location of the server. By setting the <code>accept_lang</code> option, you can allow LinkedIn's choice of locale to be overridden. For ex:
+<verbatim>
+accept_lang=en-us
+</verbatim>
+   1 Click 'Update" to save the "Options" settings.
+   1 Note: A shortcut for Granting an Access Token ( as described in the next section) is by placing the OAuth Redirect URL for ex.: <code>http://example.com/linkedin_oauth/linkedin_access_token.vsp</code> directly in an browser address bar:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk3a.png" />%BR%%BR%  
+      1 Click "Ok, I'll Allow it":
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk3aa.png" />%BR%%BR%  
+
+
+
+---++Granting an Access Token
+
+The <nowiki>LinkedIn</nowiki> user whose profile is to be fetched should first grant an OAuth access token. This can be done through the <nowiki>LinkedIn</nowiki> button displayed by http://{your-virtuoso-host:port}/sponger:
+
+   1. Go to http://{your-virtuoso-host:port}/sponger :
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk10.png" />%BR%%BR%
+   1 Click the <nowiki>LinkedIn</nowiki> button
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk11.png" />%BR%%BR%
+   1 Click the "Ok, I'll Allow it" button.
+   1 As result a notification for successful OAuth access token generation should be displayed:
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk12.png" />%BR%%BR%
+
+
+Although it is not mandatory that each user grants an access token, at least one must have been granted via the registered Sponger instance so that requests to the <nowiki>LinkedIn</nowiki> REST API can be signed and <nowiki>LinkedIn</nowiki> can authenticate the caller. Thus one user's access token can be used to fetch another <nowiki>LinkedIn</nowiki> member's profile. However, a <nowiki>LinkedIn</nowiki> user's connections and posts are only included in the the profile being fetched if the access token used was granted specifically to that user. Even if this is the case, <nowiki>LinkedIn</nowiki> prevents browsing of connections, i.e. starting with one member and descending through her connections, then through the connections of a connection etc.
+
+
+---++View the Retrieved Data
+
+The cartridge is configured to trigger on URI pattern http://.*.linkedin.com/.*. It is assumed that a <nowiki>LinkedIn</nowiki> user's public profile URL will be used as the starting point for sponging their profile: <b>http://uriburner.com/about/html/{your-LinkedIn-public-profile-url}</b>. For example:
+
+   1 Access http://uriburner.com/about/html/http://www.linkedin.com/in/kidehen :
+%BR%%BR%<img src="%ATTACHURLPATH%/lnk13.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk14.png" />%BR%%BR%
+   1 Click the primary topic value link "Kingsley Uyi Idehen":
+%BR%<img src="%ATTACHURLPATH%/lnk15.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk16.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk17.png" />%BR%%BR%
+
+
+
+---++Alternative Follow-Your-Nose friendly view
+
+We can take a look at the /fct variant of the primaryTopic object page:
+
+   1 Click the <b>Facets</b> link from the footer section "Alternative Linked Data Views" of the page from above:
+%BR%<img src="%ATTACHURLPATH%/lnk18.png" />
+   1 Click "Next" to view the rest of the Attributes and their Values:
+%BR%<img src="%ATTACHURLPATH%/lnk19.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk20.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk21.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk22.png" />%BR%%BR%
+%BR%<img src="%ATTACHURLPATH%/lnk23.png" />%BR%%BR%
+   1 Click "Last" to view the last page of Attributes and their Values:
+%BR%<img src="%ATTACHURLPATH%/lnk24.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk25.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk26.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk27.png" />
+%BR%<img src="%ATTACHURLPATH%/lnk28.png" />%BR%%BR%
+
+
+---++Related
+
+   * [[VirtSponger][Virtuoso Sponger]]
+   * [[VirtConfigureCartridges][Configure Sponger Cartridges Guide]]
+   * [[http://ode.openlinksw.com/][The OpenLink Data Explorer Extension]]
+   * [[http://delicious.com/kidehen/goodrelations][Meshups (links and lookups across Web 2.0 Services and LOD Cloud]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF][Complete list of supported Vendor-specific Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesNonRDF][Complete list of supported Standard Non-RDF Data Formats]]
+      * [[VirtSpongerCartridgeSupportedDataSourcesMeta][Complete list of supported Meta Cartridges]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridge Usage via REST Request]]
+         * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parametrized Examples of Meta Cartridge Usage via REST Request]]

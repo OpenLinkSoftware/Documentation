@@ -1,0 +1,66 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+---+How can I use sub-queries to enable literal value based joins?
+
+---++What?
+
+Use of SPARQL sub-queries to enable the dynamic generation of literal values for SPO triple objects.
+
+---++Why?
+
+Sophisticated access to literal values via sub-queries provides a powerful 
+mechanism for enhancing SPARQL graph patterns via dynamic literal value 
+generation.
+
+
+---++How?
+
+Use select list variables from sub-queries to produce literal object values in SPARQL graph patterns as demonstrated in the example below.
+
+---+++Example
+
+Assume the following query in which for <code>?app</code> there is only exactly one resource which has this identifier:
+<verbatim>
+SELECT DISTINCT ?r 
+WHERE 
+  {
+    graph ?g 
+      {
+        ?r nie:url ?url .
+      }  .
+      ?g nao:maintainedBy ?app .
+      ?app nao:identifier "nepomukindexer" .
+  }
+</verbatim>
+
+If one is not sure that <code>?app</code> is the only identifier (e.g., if triple <code>?app nao:identifier "nepomukindexer"</code> can appear in more than one graph), then the query can be rewritten to:
+
+<verbatim>
+SELECT DISTINCT ?r 
+WHERE 
+  {
+    graph ?g 
+      {
+        ?r nie:url ?url .
+      }  .
+      ?g nao:maintainedBy ?app .
+      FILTER (?app = (SELECT ?a WHERE { ?a nao:identifier "nepomukindexer" }))
+}
+</verbatim>
+
+or even simpler:
+
+<verbatim>
+SELECT DISTINCT ?r 
+WHERE 
+  {
+   graph ?g 
+     {
+       ?r nie:url ?url .
+     }  .
+   ?g nao:maintainedBy `(SELECT ?a WHERE { ?a nao:identifier "nepomukindexer" })` .
+ }
+</verbatim>
+
+---+++Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]

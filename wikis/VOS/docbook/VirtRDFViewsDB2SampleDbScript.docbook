@@ -1,0 +1,927 @@
+<docbook><section><title>VirtRDFViewsDB2SampleDbScript</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">DB2 Sample Linked Data Views Script to set up your own instance</bridgehead>
+<programlisting>-- $Id: $
+-- Setup script for Linked Data View of portions of DB2 SAMPLE database included
+-- in DB2 Express Edition v9.5
+-- 
+-- The script assumes external DB2 tables are linked into Virtuoso using 
+-- local schema name db2sample.
+
+DB..vd_remote_data_source (&#39;db2ma-smpl&#39;, &#39;&#39;, &#39;&lt;uid&gt;&#39;,&#39;&lt;pwd&gt;);
+
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;ACT&quot;      PRIMARY KEY (&quot;ACTNO&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;ACT&quot;      FROM &#39;db2ma-smpl&#39;;
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;DEPARTMENT&quot;      PRIMARY KEY (&quot;DEPTNO&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;DEPARTMENT&quot;      FROM &#39;db2ma-smpl&#39;;
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;EMPLOYEE&quot;      PRIMARY KEY (&quot;EMPNO&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;EMPLOYEE&quot;      FROM &#39;db2ma-smpl&#39;;
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;EMPPROJACT&quot;      PRIMARY KEY (&quot;EMPNO&quot;, &quot;PROJNO&quot;, &quot;ACTNO&quot;, &quot;EMSTDATE&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;EMPPROJACT&quot;      FROM &#39;db2ma-smpl&#39;;
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;EMP_RESUME&quot;      PRIMARY KEY (&quot;EMPNO&quot;, &quot;RESUME_FORMAT&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;EMP_RESUME&quot;      FROM &#39;db2ma-smpl&#39;;
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;PROJACT&quot;      PRIMARY KEY (&quot;PROJNO&quot;, &quot;ACTNO&quot;, &quot;ACSTDATE&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;PROJACT&quot;      FROM &#39;db2ma-smpl&#39;;
+ATTACH TABLE  &quot;DB2ADMIN&quot;.&quot;PROJECT&quot;      PRIMARY KEY (&quot;PROJNO&quot;)              AS &quot;DB&quot;.&quot;db2sample&quot;.&quot;PROJECT&quot;      FROM &#39;db2ma-smpl&#39;;
+
+COMMIT WORK;
+
+GRANT SELECT ON DB.db2sample.ACT TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+GRANT SELECT ON DB.db2sample.DEPARTMENT TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+GRANT SELECT ON DB.db2sample.EMPLOYEE TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+GRANT SELECT ON DB.db2sample.EMPPROJACT TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+GRANT SELECT ON DB.db2sample.EMP_RESUME TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+GRANT SELECT ON DB.db2sample.PROJACT TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+GRANT SELECT ON DB.db2sample.PROJECT TO &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+
+create function DB.DBA.PROJ_ACT_IRI (
+  in proj_no varchar, 
+  in act_no integer, 
+  in ac_st_date date
+  ) returns varchar
+{
+  declare _act_no, _datetime, _date any;
+  _act_no := cast(act_no as varchar);
+  _datetime := cast(ac_st_date as varchar);
+  _date := left(_datetime, 10);
+  return sprintf(&#39;http://localhost:8890/db2sample/proj_act/%s_%s_%s#this&#39;,
+    proj_no, _act_no, _date);
+};
+
+create function 
+DB.DBA.PROJ_ACT_IRI_INV_1 (in proj_act_iri varchar) returns varchar
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/proj_act/%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return parts[0];
+  }
+  return NULL;
+};
+
+create function 
+DB.DBA.PROJ_ACT_IRI_INV_2 (in proj_act_iri varchar) returns integer
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/proj_act/%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return cast(parts[1] as integer);
+  }
+  return NULL;
+};
+
+create function 
+DB.DBA.PROJ_ACT_IRI_INV_3 (in proj_act_iri varchar) returns date
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/proj_act/%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return cast(parts[2] as date);
+  }
+  return NULL;
+};
+
+create function DB.DBA.EMP_PROJ_ACT_IRI (
+  in emp_no varchar,
+  in proj_no varchar,
+  in act_no integer,
+  in emp_start_date date 
+  ) returns varchar
+{
+  declare _act_no, _datetime, _date any;
+  _act_no := cast(act_no as varchar);
+  _datetime := cast(emp_start_date as varchar);
+  _date := left(_datetime, 10);
+  return sprintf(
+      &#39;http://localhost:8890/db2sample/emp_proj_act/%s_%s_%s_%s#this&#39;,
+    emp_no, proj_no, _act_no, _date);
+};
+
+create function 
+DB.DBA.EMP_PROJ_ACT_IRI_INV_1 (in emp_proj_act_iri varchar) returns varchar
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (emp_proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/emp_proj_act/%s_%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return parts[0];
+  }
+  return NULL;
+};
+
+create function 
+DB.DBA.EMP_PROJ_ACT_IRI_INV_2 (in emp_proj_act_iri varchar) returns varchar
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (emp_proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/emp_proj_act/%s_%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return parts[1];
+  }
+  return NULL;
+};
+
+create function 
+DB.DBA.EMP_PROJ_ACT_IRI_INV_3 (in emp_proj_act_iri varchar) returns integer
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (emp_proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/emp_proj_act/%s_%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return cast(parts[2] as integer);
+  }
+  return NULL;
+};
+
+create function 
+DB.DBA.EMP_PROJ_ACT_IRI_INV_4 (in emp_proj_act_iri varchar) returns date
+{
+  declare exit handler for sqlstate &#39;*&#39; { return NULL; };
+  declare parts any;
+  parts := sprintf_inverse (emp_proj_act_iri, 
+   &#39;http://localhost:8890/db2sample/emp_proj_act/%s_%s_%s_%s#this&#39;, 1);
+  if (parts is not null)
+  {
+    return cast(parts[3] as date);
+  }
+  return NULL;
+};
+
+grant execute on DB.DBA.PROJ_ACT_IRI to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.PROJ_ACT_IRI_INV_1 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.PROJ_ACT_IRI_INV_2 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.PROJ_ACT_IRI_INV_3 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+
+grant execute on DB.DBA.EMP_PROJ_ACT_IRI to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_1 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_2 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_3 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_4 to &quot;SPARQL&quot;, &quot;SPARQL_UPDATE&quot;;
+
+sparql drop graph &lt;http://localhost:8890/schemas/db2sample&gt; ;
+sparql drop graph &lt;http://localhost:8890/db2sample&gt; ;
+
+sparql drop quad map virtrdf:db2sample ;
+
+--------------------------
+-- RDFS class definitions
+ttlp (
+&#39;
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+@prefix opl: &lt;http://localhost:8890/schemas/db2sample/&gt; .
+
+opl:Act a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;Act&quot; ;
+	rdfs:comment &quot;Activity&quot; .
+
+# ACTNO SMALLINT PRIMARY KEY
+opl:act_no a rdf:Property ;
+	rdfs:domain opl:Act ;
+	rdfs:range xsd:integer ;
+	rdfs:label &quot;Activity number&quot; .
+
+# ACTKWD VARCHAR(6) 
+opl:act_kwd a rdf:Property ;
+	rdfs:domain opl:Act ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Activity keyword&quot; .
+
+# ACTDESC VARCHAR(20) 
+opl:act_desc a rdf:Property ;
+	rdfs:domain opl:Act ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Activity description&quot; .
+
+#####
+opl:Department a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;Department&quot; ;
+	rdfs:comment &quot;Department&quot; .
+
+# DEPTNO VARCHAR(3) PRIMARY KEY 
+opl:dept_no a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Department number&quot; .
+
+# DEPTNAME VARCHAR(36) 
+opl:dept_name a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Department name&quot; .
+
+# MGRNO CHAR(6)
+opl:dept_manager a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range xsd:Employee ;
+	rdfs:label &quot;Department manager&quot; .
+
+# ADMRDEPT CHAR(3)
+opl:supervising_dept a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range opl:Department ;
+	rdfs:label &quot;Department reported to&quot; .
+
+# LOCATION CHAR(6)
+opl:location a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Location&quot; .
+
+opl:employee_collection a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range opl:Employee ;
+	rdfs:label &quot;Department employees&quot; .
+
+opl:dept_project_collection a rdf:Property ;
+	rdfs:domain opl:Department ;
+	rdfs:range opl:Project ;
+	rdfs:label &quot;Department projects&quot; .
+
+#####
+opl:Employee a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;Employee&quot; ;
+	rdfs:comment &quot;Employee&quot; .
+
+# EMPNO VARCHAR(6) PRIMARY KEY 
+opl:emp_no a rdf:Property ;
+	rdfs:domain opl:Employee;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Employee number&quot; .
+
+# FIRSTNME VARCHAR(12) 
+opl:first_name a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;First name&quot; .
+
+# MIDINIT VARCHAR(1)
+opl:middle_initial a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Middle initial&quot; .
+
+# LASTNAME VARCHAR(15)
+opl:last_name a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Last name&quot; .
+
+# WORKDEPT VARCHAR(3)
+opl:work_dept a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range opl:Department ;
+	rdfs:label &quot;Work department&quot; .
+
+# PHONENO VARCHAR(4)
+opl:phone_no a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Phone number&quot; .
+
+# HIREDATE DATE
+opl:hire_date a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:date;
+	rdfs:label &quot;Hire date&quot; .
+
+# JOB VARCHAR(8)
+opl:job a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Job&quot; .
+
+# EDLEVEL SMALLINT
+opl:education_level a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:integer ;
+	rdfs:label &quot;Education level&quot; .
+
+# SEX VARCHAR(1)
+opl:gender a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Gender&quot; .
+
+# BIRTHDATE DATE
+opl:date_of_birth a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Date of birth&quot; .
+
+# SALARY DECIMAL(9,2)
+opl:salary a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:decimal ;
+	rdfs:label &quot;Salary&quot; .
+
+# BONUS DECIMAL(9,2)
+opl:bonus a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:decimal ;
+	rdfs:label &quot;Bonus&quot; .
+
+# COMM DECIMAL(9,2)
+opl:commission a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range xsd:decimal ;
+	rdfs:label &quot;Commission&quot; .
+
+opl:resume_collection a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range opl:EmployeeResume ;
+	rdfs:label &quot;Employee resumes&quot; .
+
+opl:projects_responsible_for_collection a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range opl:Project ;
+	rdfs:label &quot;reponsible for project&quot; .
+
+opl:activity_collection a rdf:Property ;
+	rdfs:domain opl:Employee ;
+	rdfs:range opl:EmpProjAct ;
+	rdfs:label &quot;project activities&quot; .
+
+#####
+opl:EmpProjAct a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;EmpProjAct&quot; ;
+	rdfs:comment &quot;Employee project activity&quot; .
+
+# EMPNO VARCHAR(6) PRIMARY KEY 
+opl:epa_emp_no a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Employee number&quot; .
+
+# PROJNO VARCHAR(6) PRIMARY KEY 
+opl:epa_proj_no a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Project number&quot; .
+
+# ACTNO SMALLINT PRIMARY KEY
+opl:epa_act_no a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Activity number&quot; .
+
+# EMSTDATE DATE PRIMARY KEY 
+opl:emp_start_date a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Employee activity start date&quot; .
+
+# EMPTIME DECIMAL(5,2)
+opl:emp_time a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range xsd:decimal ;
+	rdfs:label &quot;Employee time&quot; .
+
+# EMENDATE DATE PRIMARY KEY 
+opl:emp_end_date a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Employee activity end date&quot; .
+
+opl:assigned_to a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range opl:Employee ;
+	rdfs:label &quot;Assigned to&quot; .
+
+opl:project_activity a rdf:Property ;
+	rdfs:domain opl:EmpProjAct ;
+	rdfs:range opl:ProjAct ;
+	rdfs:label &quot;Project activity&quot; .
+
+#####
+opl:EmployeeResume a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;EmployeeResume&quot; ;
+	rdfs:comment &quot;Employee resume&quot; .
+
+# EMPNO VARCHAR(6) PRIMARY KEY 
+opl:er_emp_no a rdf:Property ;
+	rdfs:domain opl:EmployeeResume ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Employee number&quot; .
+
+# RESUME_FORMAT VARCHAR(10) PRIMARY KEY 
+opl:resume_format a rdf:Property ;
+	rdfs:domain opl:EmployeeResume ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Resume format&quot; .
+
+# RESUME VARCHAR(5120)
+opl:resume a rdf:Property ;
+	rdfs:domain opl:EmployeeResume ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Resume&quot; .
+
+opl:resume_of a rdf:Property ;
+	rdfs:domain opl:EmployeeResume ;
+	rdfs:range opl:Employee ;
+	rdfs:label &quot;Resume subject&quot; .
+
+#####
+opl:ProjAct a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;ProjAct&quot; ;
+	rdfs:comment &quot;Project activity&quot; .
+
+# PROJNO VARCHAR(6) PRIMARY KEY 
+opl:pa_proj_no a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Project number&quot; .
+
+# ACTNO SMALLINT PRIMARY KEY 
+opl:pa_act_no a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Activity number&quot; .
+
+# ACSTDATE DATE PRIMARY KEY 
+opl:ac_st_date a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Activity start date&quot; .
+
+# ACSTAFF DECIMAL(5,2)
+opl:ac_staff a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range xsd:decimal ;
+	rdfs:label &quot;Acstaff&quot; .
+
+# ACENDATE DATE
+opl:ac_en_date a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Activity end date&quot; .
+
+opl:project a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range opl:Project ;
+	rdfs:label &quot;Project&quot; .
+
+opl:activity a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range opl:Act ;
+	rdfs:label &quot;Activity&quot; .
+
+opl:employee_activity_collection a rdf:Property ;
+	rdfs:domain opl:ProjAct ;
+	rdfs:range opl:EmpProjAct ;
+	rdfs:label &quot;Employee activity collection&quot; .
+
+#####
+opl:Project a rdfs:Class ;
+	rdfs:isDefinedBy &lt;http://localhost:8890/schemas/db2sample&gt; ;
+	rdfs:label &quot;Project&quot; ;
+	rdfs:comment &quot;Project&quot; .
+
+# PROJNO VARCHAR(6) PRIMARY KEY 
+opl:proj_no a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Project number&quot; .
+
+# PROJNAME VARCHAR(24)
+opl:proj_name a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;Project name&quot; .
+
+# DEPTNO CHAR(3)
+opl:is_project_of_department a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range opl:Department ;
+	rdfs:label &quot;is project of department&quot; .
+
+# RESPEMP VARCHAR(6)
+opl:resp_emp a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range opl:Employee ;
+	rdfs:label &quot;Employee responsible&quot; .
+
+# PRSTAFF DECIMAL(5,2)
+opl:pr_staff a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range xsd:decimal ;
+	rdfs:label &quot;PrStaff&quot; .
+
+# PRSTDATE DATE
+opl:pr_st_date a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Project start date&quot; .
+
+# PRENDATE DATE
+opl:pr_en_date a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range xsd:date ;
+	rdfs:label &quot;Project end date&quot; .
+
+# MAJPROJ VARCHAR(6)
+opl:maj_proj a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range xsd:string ;
+	rdfs:label &quot;MajProj&quot; .
+
+opl:proj_activity_collection a rdf:Property ;
+	rdfs:domain opl:Project ;
+	rdfs:range opl:ProjAct ;
+	rdfs:label &quot;Project activities&quot; .
+
+&#39;, &#39;&#39;, &#39;http://localhost:8890/schemas/db2sample&#39;, 0);
+
+--------------------------
+
+sparql
+prefix opl: &lt;http://localhost:8890/schemas/db2sample/&gt;
+
+create iri class
+&lt;http://localhost:8890/schemas/db2sample/act_iri&gt;
+	&quot;http://localhost:8890/db2sample/act/%d#this&quot;
+	(
+	 in act_no integer not null
+	) .
+
+create iri class
+&lt;http://localhost:8890/schemas/db2sample/department_iri&gt;
+	&quot;http://localhost:8890/db2sample/department/%s#this&quot;
+	(
+	 in dept_no varchar not null
+	) .
+
+create iri class
+&lt;http://localhost:8890/schemas/db2sample/employee_iri&gt;
+	&quot;http://localhost:8890/db2sample/employee/%s#this&quot;
+	(
+	 in emp_no varchar not null
+	) .
+
+create iri class opl:emp_proj_act_iri using
+	function DB.DBA.EMP_PROJ_ACT_IRI (
+	 	in emp_no varchar,
+	 	in proj_no varchar,
+	 	in act_no integer,
+	 	in emp_start_date date 
+		) returns varchar,
+	function DB.DBA.EMP_PROJ_ACT_IRI_INV_1 (in emp_proj_act_iri varchar) 
+		returns varchar ,
+	function DB.DBA.EMP_PROJ_ACT_IRI_INV_2 (in emp_proj_act_iri varchar) 
+		returns varchar ,
+	function DB.DBA.EMP_PROJ_ACT_IRI_INV_3 (in emp_proj_act_iri varchar) 
+		returns integer , 
+	function DB.DBA.EMP_PROJ_ACT_IRI_INV_4 (in emp_proj_act_iri varchar) 
+		returns date
+	option (bijection, returns 
+	  &quot;http://localhost:8890/db2sample/emp_proj_act/%s_%s_%s_%s#this&quot;)
+	.
+
+
+create iri class
+&lt;http://localhost:8890/schemas/db2sample/employee_resume_iri&gt;
+	&quot;http://localhost:8890/db2sample/employee_resume/%s_%s#this&quot;
+	(
+	 in emp_no varchar not null,
+	 in resume_format varchar not null
+	) .
+
+create iri class opl:proj_act_iri using
+	function DB.DBA.PROJ_ACT_IRI (
+		in proj_no varchar,
+		in act_no integer,
+		in ac_st_date date
+		) returns varchar,
+	function DB.DBA.PROJ_ACT_IRI_INV_1 (in proj_act_iri varchar) 
+		returns varchar ,
+	function DB.DBA.PROJ_ACT_IRI_INV_2 (in proj_act_iri varchar) 
+		returns integer ,
+	function DB.DBA.PROJ_ACT_IRI_INV_3 (in proj_act_iri varchar) 
+		returns date 
+	option (bijection, returns 
+		&quot;http://localhost:8890/db2sample/proj_act/%s_%s_%s#this&quot;)
+	.
+
+create iri class
+&lt;http://localhost:8890/schemas/db2sample/project_iri&gt;
+	&quot;http://localhost:8890/db2sample/project/%s#this&quot;
+	(
+	 in proj_no varchar not null
+	) .
+;
+
+sparql
+prefix opl: &lt;http://localhost:8890/schemas/db2sample/&gt;
+
+alter quad storage virtrdf:DefaultQuadStorage
+from DB.db2sample.ACT as act_tbl
+from DB.db2sample.DEPARTMENT as dept_tbl
+from DB.db2sample.EMPLOYEE as emp_tbl
+from DB.db2sample.EMPPROJACT as emp_proj_act_tbl
+from DB.db2sample.EMP_RESUME as emp_resume_tbl
+from DB.db2sample.PROJACT as proj_act_tbl
+from DB.db2sample.PROJECT as project_tbl
+{
+	create virtrdf:db2sample as
+		graph &lt;http://localhost:8890/db2sample&gt;
+	{
+	opl:act_iri(act_tbl.ACTNO) a opl:Act
+		as virtrdf:act_id ;
+	opl:act_no act_tbl.ACTNO
+		as virtrdf:act_act_no ;
+	opl:act_kwd act_tbl.ACTKWD
+		as virtrdf:act_act_kwd ;
+	opl:act_desc act_tbl.ACTDESC
+		as virtrdf:act_act_desc .
+
+	opl:department_iri(dept_tbl.DEPTNO) a opl:Department
+		as virtrdf:dept_id ;
+	opl:dept_no dept_tbl.DEPTNO
+		as virtrdf:dept_dept_no ;
+	opl:dept_name dept_tbl.DEPTNAME
+		as virtrdf:dept_dept_name ;
+	opl:dept_manager opl:employee_iri(dept_tbl.MGRNO)
+		as virtrdf:dept_mgr_no ;
+	opl:supervising_dept opl:department_iri(dept_tbl.ADMRDEPT)
+		as virtrdf:dept_supervising_dept ;
+	opl:location dept_tbl.LOCATION
+		as virtrdf:dept_location ;
+	opl:employee_collection opl:employee_iri(emp_tbl.EMPNO) 
+		where (^{emp_tbl.}^.WORKDEPT = ^{dept_tbl.}^.DEPTNO)
+		as virtrdf:dept_employee_collection ;
+	opl:dept_project_collection opl:project_iri(project_tbl.PROJNO) 
+		where (^{project_tbl.}^.DEPTNO = ^{dept_tbl.}^.DEPTNO)
+		as virtrdf:dept_project_collection .
+
+	opl:employee_iri(emp_tbl.EMPNO) a opl:Employee
+		as virtrdf:employee_id ;
+	opl:emp_no emp_tbl.EMPNO
+		as virtrdf:employee_emp_no ;
+	opl:first_name emp_tbl.FIRSTNME
+		as virtrdf:employee_first_name ;
+	opl:middle_initial emp_tbl.MIDINIT
+		as virtrdf:employee_middle_initial ;
+	opl:last_name emp_tbl.LASTNAME
+		as virtrdf:employee_last_name ;
+	opl:work_dept opl:department_iri(emp_tbl.WORKDEPT)
+		as virtrdf:employee_work_dept ;
+	opl:phone_no emp_tbl.PHONENO
+		as virtrdf:employee_phone_no ;
+	opl:hire_date emp_tbl.HIREDATE
+		as virtrdf:employee_hire_date ;
+	opl:job emp_tbl.JOB
+		as virtrdf:employee_job ;
+	opl:education_level emp_tbl.EDLEVEL
+		as virtrdf:employee_education_level ;
+	opl:gender emp_tbl.SEX
+		as virtrdf:employee_gender ;
+	opl:date_of_birth emp_tbl.BIRTHDATE
+		as virtrdf:employee_date_of_birth ;
+	opl:salary emp_tbl.SALARY
+		as virtrdf:employee_salary ;
+	opl:bonus emp_tbl.BONUS
+		as virtrdf:employee_bonus ;
+	opl:commission emp_tbl.COMM
+		as virtrdf:employee_commission ;
+	opl:resume_collection opl:employee_resume_iri(
+		emp_resume_tbl.EMPNO,
+		emp_resume_tbl.RESUME_FORMAT
+		) 
+		where (^{emp_tbl.}^.EMPNO = ^{emp_resume_tbl.}^.EMPNO)
+		as virtrdf:employee_resume_collection ;
+	opl:projects_responsible_for_collection
+ 		opl:project_iri(project_tbl.PROJNO) 
+		where (^{project_tbl.}^.RESPEMP = ^{emp_tbl.}^.EMPNO)
+		as virtrdf:employee_projects_responsible_for_collection ;
+	opl:activity_collection opl:emp_proj_act_iri(
+		emp_proj_act_tbl.EMPNO,
+		emp_proj_act_tbl.PROJNO,
+		emp_proj_act_tbl.ACTNO,
+		emp_proj_act_tbl.EMSTDATE
+		) 
+		where (^{emp_tbl.}^.EMPNO = ^{emp_proj_act_tbl.}^.EMPNO)
+		as virtrdf:employee_activity_collection .
+
+	opl:emp_proj_act_iri(
+		emp_proj_act_tbl.EMPNO,
+		emp_proj_act_tbl.PROJNO,
+		emp_proj_act_tbl.ACTNO,
+		emp_proj_act_tbl.EMSTDATE
+		) a opl:EmpProjAct
+		as virtrdf:empprojact_id ;
+	opl:epa_emp_no emp_proj_act_tbl.EMPNO
+		as virtrdf:empprojact_emp_no ;
+	opl:epa_proj_no emp_proj_act_tbl.PROJNO
+		as virtrdf:empprojact_proj_no ;
+	opl:epa_act_no emp_proj_act_tbl.ACTNO
+		as virtrdf:empprojact_act_no ;
+	opl:emp_start_date emp_proj_act_tbl.EMSTDATE
+		as virtrdf:empprojact_emp_start_date ;
+	opl:emp_time emp_proj_act_tbl.EMPTIME
+		as virtrdf:empprojact_emp_time ;
+	opl:emp_end_date emp_proj_act_tbl.EMENDATE
+		as virtrdf:empprojact_emp_end_date ;
+	opl:assigned_to opl:employee_iri(emp_proj_act_tbl.EMPNO)
+		as virtrdf:empprojact_assigned_to ;
+	opl:project_activity opl:proj_act_iri(
+		emp_proj_act_tbl.PROJNO,
+		emp_proj_act_tbl.ACTNO,
+		emp_proj_act_tbl.EMSTDATE
+		)
+		as virtrdf:empprojact_project_activity .
+
+	opl:employee_resume_iri(
+		emp_resume_tbl.EMPNO,
+		emp_resume_tbl.RESUME_FORMAT
+		) a opl:EmployeeResume
+		as virtrdf:employee_resume_id ;
+	opl:er_emp_no emp_resume_tbl.EMPNO
+		as virtrdf:employee_resume_emp_no ;
+	opl:resume_format emp_resume_tbl.RESUME_FORMAT
+		as virtrdf:employee_resume_resume_format ;
+	opl:resume emp_resume_tbl.RESUME 
+		as virtrdf:employee_resume_resume ;
+	opl:resume_of opl:employee_iri(emp_resume_tbl.EMPNO)
+		as virtrdf:employee_resume_resume_of .
+
+	opl:proj_act_iri(
+		proj_act_tbl.PROJNO,
+		proj_act_tbl.ACTNO,
+		proj_act_tbl.ACSTDATE
+		) a opl:ProjAct
+		as virtrdf:projact_id;
+	opl:pa_proj_no proj_act_tbl.PROJNO
+		as virtrdf:projact_proj_no ;
+	opl:pa_act_no proj_act_tbl.ACTNO
+		as virtrdf:projact_act_no ;
+	opl:ac_st_date proj_act_tbl.ACSTDATE
+		as virtrdf:projact_ac_st_date ;
+	opl:ac_staff proj_act_tbl.ACSTAFF
+		as virtrdf:projact_ac_staff ;
+	opl:ac_en_date proj_act_tbl.ACENDATE
+		as virtrdf:projact_ac_en_date ;
+	opl:project opl:project_iri(proj_act_tbl.PROJNO)
+		as virtrdf:projact_project ;
+	opl:activity opl:act_iri(proj_act_tbl.ACTNO)
+		as virtrdf:projact_activity ;
+	opl:employee_activity_collection opl:emp_proj_act_iri(
+		emp_proj_act_tbl.EMPNO,
+		emp_proj_act_tbl.PROJNO,
+		emp_proj_act_tbl.ACTNO,
+		emp_proj_act_tbl.EMSTDATE
+		)
+		where (
+		^{proj_act_tbl.}^.PROJNO = ^{emp_proj_act_tbl.}^.PROJNO AND
+	        ^{proj_act_tbl.}^.ACTNO = ^{emp_proj_act_tbl.}^.ACTNO AND
+	        ^{proj_act_tbl.}^.ACSTDATE = ^{emp_proj_act_tbl.}^.EMSTDATE
+	        )
+		as virtrdf:project_employee_activity_collection .
+
+	opl:project_iri(project_tbl.PROJNO) a opl:Project
+		as virtrdf:project_id ;
+	opl:proj_no project_tbl.PROJNO
+		as virtrdf:project_proj_no ;
+	opl:proj_name project_tbl.PROJNAME
+		as virtrdf:project_proj_name ;
+	opl:is_project_of_department opl:department_iri(project_tbl.DEPTNO)
+		as virtrdf:project_is_project_of_department ;
+	opl:resp_emp opl:employee_iri(project_tbl.RESPEMP)
+		as virtrdf:project_resp_emp ;
+	opl:pr_staff project_tbl.PRSTAFF
+		as virtrdf:project_pr_staff ;
+	opl:pr_st_date project_tbl.PRSTDATE
+		as virtrdf:project_pr_st_date ;
+	opl:pr_en_date project_tbl.PRENDATE
+		as virtrdf:project_pr_en_date ;
+	opl:maj_proj project_tbl.MAJPROJ
+		as virtrdf:project_maj_proj ;
+	opl:proj_activity_collection opl:proj_act_iri(
+		proj_act_tbl.PROJNO,
+		proj_act_tbl.ACTNO,
+		proj_act_tbl.ACSTDATE
+		)
+		where (^{project_tbl.}^.PROJNO = ^{proj_act_tbl.}^.PROJNO)
+		as virtrdf:project_activity_collection .
+	} .
+} .
+;
+
+delete from db.dba.url_rewrite_rule_list where urrl_list like &#39;db2sample_rule%&#39;;
+delete from db.dba.url_rewrite_rule where urr_rule like &#39;db2sample_rule%&#39;;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;db2sample_rule1&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/about/html/http://localhost:8890%s&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;db2sample_rule2&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/db2sample%%3E&amp;format=%U&#39;,
+
+    vector(&#39;path&#39;,&#39;path&#39;,&#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;db2sample_rule_list1&#39;,
+    1,
+    vector (
+  	 	&#39;db2sample_rule1&#39;,
+  	 	&#39;db2sample_rule2&#39;
+	  ));
+
+
+-- ensure a VD for the IRIs which begins with /
+VHOST_REMOVE (lpath=&gt;&#39;/db2sample&#39;);
+
+VHOST_DEFINE (
+	lpath=&gt;&#39;/db2sample&#39;, 
+	ppath=&gt;&#39;/DAV/db2sample/&#39;, 
+	vsp_user=&gt;&#39;dba&#39;, 
+    	is_dav=&gt;1, 
+	is_brws=&gt;0, 
+	opts=&gt;vector (&#39;url_rewrite&#39;, &#39;db2sample_rule_list1&#39;) 
+	);
+delete from db.dba.url_rewrite_rule_list where urrl_list like &#39;db2sample_schema_rule%&#39;;
+delete from db.dba.url_rewrite_rule where urr_rule like &#39;db2sample_schema_rule%&#39;;
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;db2sample_schema_rule1&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/about/html/http://localhost:8890%U&#39;,
+    vector(&#39;path&#39;),
+    null,
+    &#39;(text/html)|(\\*/\\*)&#39;,
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    &#39;db2sample_schema_rule2&#39;,
+    1,
+    &#39;(/[^#]*)&#39;,
+    vector(&#39;path&#39;),
+    1,
+    &#39;/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/db2sample%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&amp;format=%U&#39;,
+    vector(&#39;path&#39;,&#39;path&#39;,&#39;*accept*&#39;),
+    null,
+    &#39;(text/rdf.n3)|(application/rdf.xml)&#39;,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    &#39;db2sample_schema_rule_list1&#39;,
+    1,
+    vector (
+  	 	&#39;db2sample_schema_rule1&#39;,
+  	 	&#39;db2sample_schema_rule2&#39;
+	  ));
+
+
+-- ensure a VD for the IRIs which begins with /
+VHOST_REMOVE (lpath=&gt;&#39;/schemas/db2sample&#39;);
+
+VHOST_DEFINE (
+	lpath=&gt;&#39;/schemas/db2sample&#39;, 
+	ppath=&gt;&#39;/DAV/schemas_db2sample/&#39;, 
+	vsp_user=&gt;&#39;dba&#39;, 
+    	is_dav=&gt;1, 
+	is_brws=&gt;0, 
+	opts=&gt;vector (&#39;url_rewrite&#39;, &#39;db2sample_schema_rule_list1&#39;) 
+	);
+</programlisting></section></docbook>

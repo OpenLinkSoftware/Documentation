@@ -1,0 +1,26 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I determine the time taken to load datasets with RDF Bulk Loader"></a>How can I determine the time taken to load datasets with RDF Bulk Loader</h1>
+<h2><a name="What"></a>What</h2>
+<p>To determine the time taken to load the triples into a RDF graph when it is comprised of multiple datasets using the Virtuoso RDF Bulk Loader functions.</p>
+<h2><a name="Why"></a>Why</h2>
+<p>If loading datasets from multiple files at the same time and/or running multiple <code>rdf_loader_run()</code> functions for faster parallel loading of datasets on a multi-core machine.</p>
+<h2><a name="How"></a>How</h2>
+<p>The Virtuoso <code>rdf_loader_run()</code> is used for loading RDF datasets, and records the results of loading these datasets in the <code>load_list</code>, including the load times for each physical files and the graph name it is loaded into with the <code>ll_start</code> and <code>ll_done</code> columns.
+ A SQL query of the following form can be used to determine the time taken to load the datasets for a given graph:</p>
+<br><pre>select min(ll_started) as start, max(ll_done) as finish, datediff(&#39;second&#39;, min(ll_started), max(ll_done)) as delta from load_list where ll_graph like &#39;&lt;graph-name&gt;&#39;;
+</pre><p> where <code>graph-name</code> is the name of the graph the load time is required for, with the <code>delta</code> return value being the time taken in seconds.</p>
+<p>For example, the time taken to load the Freebase dataset into the <a href="http://lod.openlinksw.com" class="absuri">Virtuoso LOD Cloud Cluster</a> instance was 6135 seconds i.e.
+ about 1.7hrs:</p>
+<br><pre>SQL&gt; select min(ll_started) as start, max(ll_done) as finish, datediff(&#39;second&#39;, min(ll_started), max(ll_done)) as delta from load_list where ll_graph like &#39;http://commondatastorage.googleapis.com/freebase-public/rdf/freebase-rdf-2013-11-17-00-00.gz&#39;;
+start                finish               delta
+TIMESTAMP            TIMESTAMP            INTEGER
+_______________________________________________________________________________
+
+2013.12.2 22:34.9 0  2013.12.3 0:16.24 0  6135
+
+1 Rows. -- 74 msec.
+SQL&gt;
+</pre><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtBulkRDFLoader" class="wikiword">Virtuoso RDF Bulk Loader</a> </li>
+</ul></div></body></html>

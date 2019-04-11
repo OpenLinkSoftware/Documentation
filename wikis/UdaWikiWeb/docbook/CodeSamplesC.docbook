@@ -1,0 +1,132 @@
+<docbook><section><title>CodeSamplesC</title><programlisting>/* $Header: 
+* 
+* Synopsis: Test ODBC application for using prepared statement with bound parameters. 
+*           Uses test table.  Modify according to your database. 
+*/ 
+/*******************************************************************************/ 
+
+#include &lt;stdio.h&gt; 
+#include &lt;string.h&gt; 
+
+#include &quot;isql.h&quot; 
+#include &quot;isqlext.h&quot; 
+
+/*******************************************************************************/ 
+
+HENV    henv=SQL_NULL_HENV; 
+HDBC    hdbc=SQL_NULL_HDBC; 
+HSTMT hstmt; 
+SQLINTEGER retval = 0; 
+int main() 
+{ 
+    char szDsn[128] =&quot;&quot; , szLogin[25] =&quot;&quot;, szPassword[25] = &quot;&quot;, name[] = &quot;50&quot;, 
+        statement[] = &quot;select * from test_table where name = ?&quot;; 
+
+    RETCODE returncode; 
+        SDWORD  cbOut; 
+        SQLINTEGER cbValue; 
+        SQLSMALLINT numParams; 
+        UDWORD connAttr; 
+        int i; 
+        connAttr = SQL_TXN_READ_COMMITTED; 
+    system (&quot;clear&quot;); 
+
+    printf(&quot;\n Starting Test...\n&quot;); 
+
+    strcpy( szDsn, &quot;ORA8I_SOLARIS&quot;); 
+    printf( &quot;\n szDsn = %s&quot;, szDsn); 
+
+    strcpy( szLogin, &quot;scott&quot;); 
+    printf( &quot;\n szLogin = %s&quot;, szLogin); 
+
+    strcpy( szPassword,&quot;tiger&quot;); 
+    printf( &quot;\n szPassword = %s\n\n&quot;, szPassword); 
+
+    returncode = SQLAllocEnv(&amp;henv); 
+    returncode = SQLAllocConnect(henv,&amp;hdbc); 
+
+    if(returncode==SQL_SUCCESS) 
+        returncode = SQLConnect(hdbc,(unsigned char *)szDsn,SQL_NTS, 
+                    (unsigned char *)szLogin,SQL_NTS, 
+                    (unsigned char *)szPassword,SQL_NTS); 
+    if(returncode!=SQL_SUCCESS) return 0; 
+
+    cbOut  = SQL_NTS; 
+
+    returncode = SQLAllocStmt(hdbc, &amp;hstmt); 
+
+    SQLSetConnectAttr(hdbc, SQL_TXN_ISOLATION, (SQLPOINTER) connAttr, 255); 
+
+    SQLPrepare(hstmt,statement,SQL_NTS); 
+
+    SQLNumParams(hstmt, &amp;numParams); 
+
+    printf (&quot;Numparams output = %i\n&quot;, numParams); 
+
+    SQLBindParameter(hstmt,1,SQL_PARAM_INPUT,SQL_C_CHAR,SQL_VARCHAR,4,0,&amp;name,0,&amp;cbOut); 
+
+    /* Bind the column we&#39;ll be outputting.  */ 
+    SQLBindCol(hstmt,1,SQL_C_CHAR, pwd, 20, &amp;cbOut); 
+
+    /* Execute the statement */ 
+    SQLExecute(hstmt); 
+
+    /* Fetch the data */ 
+    SQLFetch(hstmt); 
+
+    printf (&quot;pwd (OUTPUT) = %s\n&quot;,pwd); 
+
+    printf (&quot;length of pwd = %i\n&quot;,strlen(pwd)); 
+
+    SQLFreeStmt(hstmt, SQL_DROP ); 
+
+    SQLDisconnect(hdbc); 
+    SQLFreeConnect(hdbc); 
+
+    SQLFreeEnv(henv); 
+
+    printf(&quot;\n End of Program\n\n&quot;); 
+
+    return 0; 
+} 
+
+int 
+DB_Errors (char *where) 
+{ 
+unsigned char buf[250]; 
+unsigned char sqlstate[15]; 
+
+/* 
+*  Get statement errors 
+*/ 
+while (SQLError (henv, hdbc, hstmt, sqlstate, NULL, 
+buf, sizeof(buf), NULL) == SQL_SUCCESS) 
+{ 
+fprintf (stderr, &quot;%s, SQLSTATE=%s\n&quot;, buf, sqlstate); 
+} 
+
+  /* 
+   *  Get connection errors 
+   */ 
+  while (SQLError (henv, hdbc, SQL_NULL_HSTMT, sqlstate, NULL, 
+      buf, sizeof(buf), NULL) == SQL_SUCCESS) 
+    { 
+      fprintf (stderr, &quot;%s, SQLSTATE=%s\n&quot;, buf, sqlstate); 
+    } 
+
+  /* 
+   *  Get environmental errors 
+   */ 
+  while (SQLError (henv, SQL_NULL_HDBC, SQL_NULL_HSTMT, sqlstate, NULL, 
+      buf, sizeof(buf), NULL) == SQL_SUCCESS) 
+    { 
+      fprintf (stderr, &quot;%s, SQLSTATE=%s\n&quot;, buf, sqlstate); 
+    } 
+
+  return -1; 
+} 
+
+/*******************************************************************************/ 
+/* End of File */ 
+
+</programlisting></section></docbook>

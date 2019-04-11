@@ -1,0 +1,41 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ What is the difference between a "merge" and a "one by one" execution of SPARQL queries across named graphs?
+
+By wrapping one or more triple patterns in a <b><code>GRAPH ?g { ... }</code></b> pattern, the triple patterns inside this "graph group pattern" will be restricted to the specified named graph, <b><code>?g</code></b>.  Lacking the <b><code>GRAPH ?g { ... }</code></b>, the triples may be found in different named graphs. Using graph group patterns can thus dramatically reduce the amount of data to be processed for all triple patterns after the first in join order, so it's typically faster.
+
+<i><b>Note</b> -- The "default graph" in Virtuoso is not a union of all graphs; it is a sum.  This means that Virtuoso's behavior differs slightly from the SPARQL spec, in that some duplicate result rows may appear if the same values appear as <code>{ ?s ?p ?o }</code> in two or more different graphs). (Results perfectly conforming to the SPARQL spec would leave out these duplicate rows.)</i>
+
+This query will deliver matching triples from any and all named graphs in the Virtuoso store --
+<verbatim>
+[PREFIXes here]
+  SELECT ?serial ?sr ?ct1 ?ct2 
+  WHERE 
+    {
+      ?sr      a                    dm:SessionRecord 
+    . ?sr      dm:hasDataSnapshot   ?snap 
+    . ?device  dm:hasSessionRecord  ?sr 
+    . ?device  dm:hasSerialNumber   ?serial 
+    . [etc.] 
+    }
+</verbatim>
+
+With the added <b><code>GRAPH ?g { ... }</code></b> patterns below, only matching triples from the specified named graph(s) will be returned.
+<verbatim>
+[PREFIXes here]
+SELECT ?serial ?sr ?ct1 ?ct2 
+WHERE 
+  {
+    GRAPH ?g1 { ?sr      a                    dm:SessionRecord }
+    GRAPH ?g2 { ?sr      dm:hasDataSnapshot   ?snap            }
+    GRAPH ?g3 { ?device  dm:hasSessionRecord  ?sr              }
+    GRAPH ?g4 { ?device  dm:hasSerialNumber   ?serial          }
+    [etc.] 
+  }
+</verbatim>
+
+
+---++ Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://www.w3.org/TR/rdf-sparql-query/][SPARQL Query Language for RDF]]

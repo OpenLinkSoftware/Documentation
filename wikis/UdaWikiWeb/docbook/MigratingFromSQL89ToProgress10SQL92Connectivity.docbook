@@ -1,0 +1,74 @@
+<docbook><section><title>MigratingFromSQL89ToProgress10SQL92Connectivity</title><title>Migrating from Progress SQL-89 Connectivity to SQL-92 Connectivity</title>Migrating from Progress SQL-89 Connectivity to SQL-92 Connectivity
+<para>Migrating from Progress SQL-89 connectivity (Progress 7.x through 9.1x) to SQL-92 connectivity (Progress 9.1x through OpenEdge 10.x and beyond) presents many challenges.
+ This is especially the case as more and more organizations move to Progress OpenEdge 10.x and newer.
+ These challenges apply to all data access mechanisms -- ODBC, JDBC, OLE DB, ADO.NET, etc.</para><para>With proper planning, most known challenges are quickly and easily resolvable.
+ (Some challenges do require more time and effort than others!)</para><para>This guide advises you of some of the hurdles ahead and shows you how to properly plan for them and troubleshoot them.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Challenges</bridgehead>
+<para>Data access challenges presented by Progress SQL-92 connectivity include --</para><itemizedlist mark="bullet" spacing="compact"><listitem> All Shared Memory connectivity is replaced with TCP (i.e., &quot;Sockets&quot;) connectivity. </listitem>
+<listitem> All SQL-92 connections require a username and password (though the password may be blank).
+ This username may be an entry in the Progress <computeroutput>_User</computeroutput> table or in <computeroutput>sysprogress</computeroutput>, or, if no database users have been set up, the username of the operating system user that created (or now owns) the database file, e.g., <computeroutput>isports.db</computeroutput>. </listitem>
+<listitem> Unqualified identifiers (e.g., <computeroutput>tablename</computeroutput> vs <computeroutput>owner.tablename</computeroutput>) may result in errors unless/until <ulink url="SetThePUBSchemaForSQL92ConnectivityToSQL89Schemas">extra steps are taken</ulink>. </listitem>
+<listitem> <ulink url="ConfigureProgressTableview">Tableview configuration</ulink> is no longer available.
+ This impacts -- <itemizedlist mark="bullet" spacing="compact"><listitem> Distributed Databases -- An ODBC DSN targeting Progress 9 through <ulink url="OpenEdge">OpenEdge</ulink> 10.1A can only work with one Progress database (one <computeroutput>.db</computeroutput> file) at a time.
+ <computeroutput>USE dbname</computeroutput> and similar functionality can still change the target from one database to another within that connection, but <computeroutput>JOIN</computeroutput>s across Progress &quot;distributed databases&quot; (multiple <computeroutput>.db</computeroutput> files) are not possible over a single ODBC connection.
+<itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis><emphasis>Note</emphasis> Progress has re-enabled JOINs over Distributed Databases as of OpenEdge 10.1B.
+ As of this writing, we are testing this functionality in our drivers, and will update documentation as soon as this is fully supported.</emphasis> </listitem>
+</itemizedlist></listitem>
+<listitem> Array Fields -- Array data cannot be accessed using SQL-89 syntax (i.e., <computeroutput>field@1</computeroutput>, <computeroutput>field@2</computeroutput>, etc.).
+ <ulink url="UsingProgress4GLSQL-89ARRAYFieldsWithSQL-92Drivers">New SQL-92 syntax is available, but is more complex to work with</ulink>.
+</listitem>
+<listitem> Progress trigger support is not available through SQL-92 connections.
+</listitem>
+<listitem> Progress Data Dictionary (schema) definitions of <ulink url="DataIsTruncated">data fields with content exceeding their specified length must be adjusted</ulink>.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Prerequisites</bridgehead>
+<para>To move forward with SQL-92 connectivity, you need to do the following on the Progress host:</para><itemizedlist mark="bullet" spacing="compact"><listitem> <ulink url="HowCanITellIfProgressIsRunningInSocketsOrSharedMemory">Ensure your target Progress instance is running in Sockets Mode</ulink>. <itemizedlist mark="bullet" spacing="compact"><listitem> Optinally, <ulink url="http://tinyurl.com/m6xk7j">configure a supplementary Progress Broker</ulink> to accept SQL-based (as opposed to 4GL/ABL-based) connections. </listitem>
+</itemizedlist></listitem>
+<listitem> <ulink url="HowCanITellIfProgressIsRunningInSQL89OrSQL92Mode">Ensure your target Progress instance is running in &quot;SQL&quot; or &quot;Mixed&quot; (SQL + 4GL/ABL) Mode</ulink>.
+ (&quot;Mixed&quot; mode is only available with Progress 9.1x.)</listitem>
+</itemizedlist><para>If you are using our Single-Tier &quot;Lite&quot; Drivers, Progress® SQL-92 Client Access must be installed and functional on the same machine as our driver.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Choosing between SQL-89 and SQL-92 Connectivity </bridgehead>
+<para>We support both SQL-89 and SQL-92 connections wherever possible.</para><para>If you are a veteran OpenLink user, you may be familiar with our SQL-89 drivers, which have letter-version-specific branding in their product names, e.g., &quot;Multi-Threaded Database Agent for Progress 8.2A&quot; and &quot;Multi-Threaded ODBC Driver for Progress 9.1D.&quot;</para><para>Our SQL-92 drivers are only major-version-specific, e.g., &quot;Multi-Threaded Database Agent for Progress 9 (SQL-92)&quot; and &quot;Multi-Threaded ODBC Driver for Progress 10 (SQL-92).&quot;</para><table><title /><tgroup><thead /><tbody> <row> <entry /> </row> </tbody></tgroup></table><bridgehead class="http://www.w3.org/1999/xhtml:h2">Installing Data Access Drivers for Progress (SQL-92) </bridgehead>
+<para>Follow the <ulink url="InstallConfigODBC">installation instructions</ulink> for your new drivers, as normal.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Verifying the Multi-Tier Database Agent for Progress 10 (SQL-92) </bridgehead>
+<para>If you are using our Multi-Tier Drivers, you should verify your Progress 10 SQL-92 Database Agent&#39;s functionality.
+ Our Database Agents should return version and usage information in any environment that is properly configured.
+ Failure to return version and usage information usually reveals environment or compatibility issues that should be addressed before continuing on.</para><orderedlist spacing="compact"><listitem> Log into the machine that hosts your Multi-Tier server components installation.
+</listitem>
+<listitem> Open an MS-DOS command prompt or Unix terminal session.
+</listitem>
+<listitem> <computeroutput>cd</computeroutput> into the <computeroutput>bin</computeroutput> sub-directory of the OpenLink installation, e.g., <computeroutput>cd /opt/openlink/bin</computeroutput>.
+</listitem>
+<listitem> Execute this command: <programlisting>./prs100_mv -?
+</programlisting></listitem>
+<listitem> You should see output similar to the following: <programlisting>Progress 10 Database Agent
+Version 1.11 as of Wed Apr 29 2009 (Release 6.2 cvsid 00090). 
+Compiled for Linux 2.6.9-78.0.13.EL (i686-generic-linux-glibc23-32) 
+Copyright (C) OpenLink Software.
+
+Usage:
+  pro100a_sv [-CmijrlLd] [+noautocommit] [+maxrows num] [+initsql arg]
+             [+jetfix] [+norowsetlimit] [+loglevel num] [+logfile arg]
+             [+debug]
+  +noautocommit    turn autocommit off by default
+  +maxrows         maximum allowed rows to fetch
+  +initsql         execute SQL from this file for every connection made
+  +jetfix          Jet Engine Compatibility Features
+  +norowsetlimit   turn off rowset size limit
+  +loglevel        log level
+  +logfile         log file
+  +debug           debug mode
+</programlisting>If the agent fails to return the desired output, use our <ulink url="UDAErrorMessages">Error Messages</ulink> reference guide to troubleshoot your problem.</listitem>
+</orderedlist><table><title /><tgroup><thead /><tbody> <row> <entry /> </row> </tbody></tgroup></table><bridgehead class="http://www.w3.org/1999/xhtml:h2">Troubleshooting Progress SQL-92 Connectivity</bridgehead>
+<para>Initial SQL-92 connection attempts to Progress are often unsuccessful.
+ However, the errors are almost always easily resolvable.
+ Use these guidelines to troubleshoot any problems that arise in your environment:</para><itemizedlist mark="bullet" spacing="compact"><listitem> <ulink url="TheSharedMemoryIsVersionX">The shared memory is version &lt;some number&gt;; expected &lt;some number&gt; (1178)</ulink> </listitem>
+<listitem> <ulink url="InvalidPacketLength">Invalid Packet Length</ulink> </listitem>
+<listitem> <ulink url="InvalidAuthSpecs">Invalid user name[SQLSTATE:285890Invalid Auth Specs]</ulink> </listitem>
+<listitem> <ulink url="DisconnectedFromServerBecauseDatabaseNameWasIncorrect">Disconnected from server because database name was incorrect. (437)</ulink> </listitem>
+<listitem> <ulink url="DisconnectedFromServerBecauseDatabaseNameWasIncorrect">Remote Database Name not valid.</ulink> </listitem>
+<listitem> <ulink url="ServerDidNotRespond">Server did not respond[SQLSTATE:k0k130Progress Open SQL network interface]</ulink> </listitem>
+<listitem> <ulink url="InvalidPacketLength">Server&#39;s received count 1 does not equal client(1)&#39;s send count 16777216.</ulink></listitem>
+</itemizedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Troubleshooting Progress SQL-92 Queries</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem> <ulink url="TableViewSynonymNotFound7519">Table/View/Synonym not found (7519)</ulink> </listitem>
+<listitem> <ulink url="ProgressColumnCouldNotBeFound">Column &quot;x&quot; cannot be found or is not specified for query. (13865)</ulink> </listitem>
+<listitem> <ulink url="FailureGettingRecordLockOnARecordFromTable">Failure getting record lock on a record from table</ulink> </listitem>
+<listitem> <ulink url="ProgressInvalidArrayColumnName">Invalid column name: field@1</ulink></listitem>
+</itemizedlist></section></docbook>

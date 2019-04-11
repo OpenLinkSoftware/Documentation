@@ -1,0 +1,175 @@
+<docbook><section><title>VirtGraphReplicationPSQL</title><para> </para>
+<title>How to set up RDF Replication via procedure calls</title>How to set up RDF Replication via procedure calls
+ <bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>The following example shows how to use SQL procedures to set up Virtuoso RDF Graph Replication in a Chain Topology.
+<figure><graphic fileref="VirtGraphReplicationPSQL/topo-chain.png" /></figure></para>
+<para>This can also be done <ulink url="VirtGraphReplicationChain">through the HTTP-based Virtuoso Conductor</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Prerequisites</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Database INI Parameters</bridgehead>
+<para>Suppose there are 3 Virtuoso instances on the same machine.</para>
+<para>The first instance holds the master copy of the data and publishes its changes to all other instances that subscribe to this master.</para>
+<para>The second instance subscribes to the publication of the master copy, but also publishes all of these changes to any instance that subscribes to it.</para>
+<para>The third instance only subscribes to the publication of the second instance.</para>
+<para> Each of these 3 servers need unique ports and <ulink url="ServerName">ServerName</ulink>, <ulink url="DefaultHost">DefaultHost</ulink> for this replication scheme to work properly.
+Although not needed, this example also sets separate names for the database and related files.
+This results in the following ini parameters values (only changes are shown, the rest can remain default):</para>
+<orderedlist spacing="compact"><listitem>repl1/virtuoso.ini: <programlisting>...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = localhost:8891
+...
+[Replication]
+ServerName   = db1-r
+...
+</programlisting></listitem>
+<listitem>repl2/virtuoso.ini: <programlisting>...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2-r
+...
+</programlisting></listitem>
+<listitem>repl3/virtuoso.ini: <programlisting>...
+[Database]
+DatabaseFile    = virtuoso3.db
+TransactionFile = virtuoso3.trx
+ErrorLogFile     = virtuoso3.log
+...
+[Parameters]
+ServerPort               = 1113
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = localhost:8893
+...
+[Replication]
+ServerName   = db3-r
+...
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Database DSNs</bridgehead>
+<para>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, <emphasis>Start</emphasis> menu -&gt; <emphasis>Control Panel</emphasis> -&gt; <emphasis>Administrative Tools</emphasis> -&gt; <emphasis>Data Sources (ODBC)</emphasis>; on Mac OS X, /Applications/Utilities/OpenLink ODBC Administrator.app) to create a System DSN for each of db1, db2, db3, with names db1, db2 and db3, respectively.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Configure Publishers and Subscribers</bridgehead>
+ <orderedlist spacing="compact"><listitem>Run the databases by starting start.sh, which has the following content: <programlisting>cd repl1
+virtuoso -f &amp;
+cd ../repl2
+virtuoso -f &amp;
+cd ../repl3
+virtuoso -f &amp;
+cd ..
+</programlisting></listitem>
+<listitem>Use the <computeroutput>isql</computeroutput> command to execute the following rep.sql file: <programlisting>--
+--  connect to the first database which is only a publisher
+--
+set DSN=localhost:1111;
+reconnect;
+
+--
+-- start publishing the graph http://test.org
+---
+DB.DBA.RDF_REPL_START();
+DB.DBA.RDF_REPL_GRAPH_INS (&#39;http://test.org&#39;);
+
+
+
+--
+--  connect to the second database in the chain, which is both a publisher and a subscriber
+--
+set DSN=localhost:1112;
+reconnect;
+
+--
+--  start publishing the graph http://test.org
+--
+DB.DBA.RDF_REPL_START();
+DB.DBA.RDF_REPL_GRAPH_INS (&#39;http://test.org&#39;);
+
+--
+--  contact the first database 
+--
+repl_server (&#39;db1-r&#39;, &#39;db1&#39;, &#39;localhost:1111&#39;);
+
+--
+--  subscribe to its RDF publication(s)
+--
+repl_subscribe (&#39;db1-r&#39;, &#39;__rdf_repl&#39;, &#39;dav&#39;, &#39;dav&#39;, &#39;dba&#39;, &#39;dba&#39;);
+
+--
+--  bring the replication service online
+--
+repl_sync_all();
+
+--
+--  and set scheduler to check every minute
+--
+DB.DBA.SUB_SCHEDULE (&#39;db1-r&#39;, &#39;__rdf_repl&#39;, 1);
+
+
+
+--
+--  connect to the third database in the chain, which is only a subscriber
+--
+set DSN=localhost:1113;
+reconnect;
+
+--
+-- uncomment next 2 commands if this database should also be a publisher
+--
+--DB.DBA.RDF_REPL_START();
+--DB.DBA.RDF_REPL_GRAPH_INS (&#39;http://test.org&#39;);
+
+--
+--  contact second database
+--
+repl_server (&#39;db2-r&#39;, &#39;db2&#39;, &#39;localhost:1112&#39;);
+
+--
+--  subscribe to its RDF publication(s)
+--
+repl_subscribe (&#39;db2-r&#39;, &#39;__rdf_repl&#39;, &#39;dav&#39;, &#39;dav&#39;, &#39;dba&#39;, &#39;dba&#39;);
+
+--
+--  bring the replication service online
+--
+repl_sync_all();
+
+--
+--  and set schedule to check every minute
+--
+DB.DBA.SUB_SCHEDULE (&#39;db2-r&#39;, &#39;__rdf_repl&#39;, 1);
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<para> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtGraphReplicationStar">Replication Example: Star Topology</ulink> </listitem>
+<listitem><ulink url="VirtGraphReplicationChain">Replication Example: Chain Topology</ulink> </listitem>
+<listitem><ulink url="VirtGraphReplicationBiDirectional">Replication Example: 2-node Bi-directional Topology</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub">Example of Linked Data Usage of PubSubHubbub Implementation</ulink> </listitem>
+<listitem><ulink url="VirtRdfReplScenarios">Exploit Virtuoso&#39;s Replication Functionality Web based Solutions</ulink></listitem>
+</itemizedlist></section></docbook>

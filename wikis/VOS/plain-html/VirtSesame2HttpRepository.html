@@ -1,0 +1,298 @@
+<html><body><div class="topic-text"><h1><a name="Virtuoso RDF4J and Sesame HTTP Repository Configuration and Usage"></a>Virtuoso RDF4J and Sesame HTTP Repository Configuration and Usage</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What">What</a></li> <li><a href="#Why">Why</a></li> <li><a href="#How">How</a></li> <li><a href="#Setup%20and%20Testing">Setup and Testing</a></li>
+<ul><li><a href="#Requirements">Requirements</a></li> <li><a href="#Setup%20RDF4J%20or%20Sesame%20HTTP%20Repository">Setup RDF4J or Sesame HTTP Repository</a></li> <li><a href="#Setup%20RDF4J%20or%20Sesame%20Console%20Repository">Setup RDF4J or Sesame Console Repository</a></li> <li><a href="#Connection%20to%20RDF4J%20or%20Sesame%20HTTP%20repository%20from%20Console%20repository">Connection to RDF4J or Sesame HTTP repository from Console repository</a></li> <li><a href="#Remote%20RDF4J%20or%20Sesame%20HTTP%20Repository%20Connections">Remote RDF4J or Sesame HTTP Repository Connections</a></li><ul><li><a href="#Using%20the%20RDF4J%20or%20Sesame%20Remote%20Repository%20Manager%20class">Using the RDF4J or Sesame Remote Repository Manager class</a></li> <li><a href="#Using%20the%20RDF4J%20or%20Sesame%20HTTP%20Repository%20class">Using the RDF4J or Sesame HTTP Repository class</a></li> </ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What"></a>What</h2>
+<p>Eclipse RDF4J (<a href="http://rdf4j.org/2016/05/18/goodbye-sesame-hello-rdf4j/" class="absuri">formerly known as OpenRDF Sesame</a>) is an open source Java framework for storing, querying and reasoning with RDF and RDF Schema.
+ It can be used as a database for RDF and RDF Schema, or as a Java library for applications that need to work with RDF internally.
+ The RDF4J HTTP  and Console repositories serves as a proxy for a RDF store hosted on a remote RDF4J server, enabling the querying of the RDF store using the RDF4J HTTP protocol.</p>
+<h2><a name="Why"></a>Why</h2>
+<p>The RDF4J HTTP repository endpoint provides users with the greater flexibility for manipulating the RDF store via a common interface.
+ RDF4J provides you with the necessary tools to parse, interpret, query and store all this information, embedded in your own application if you want, or, if you prefer, in a separate database or even on a remote server.</p>
+<h2><a name="How"></a>How</h2>
+<p>To create a new RDF4J HTTP repository, the Console needs to create such an RDF document and submit it to the SYSTEM repository.
+ The Console uses so called repository configuration templates to accomplish this.
+ Repository configuration templates are simple Turtle RDF files that describe a repository configuration, where some of the parameters are replaced with variables.
+ The Console parses these templates and asks the user to supply values for the variables.
+ The variables are then substituted with the specified values, which produces the required configuration data.
+ Refer to the <a href="http://docs.rdf4j.org/server-workbench-console/" class="absuri">RDF4J Server, Workbench, and Console</a> documentation for more details on it usage.</p>
+<h2><a name="Setup and Testing"></a>Setup and Testing</h2>
+<p>This section details the steps required for configuring and testing a Virtuoso RDF4J or Sesame Repository, both using the HTTP  and Console RDF4J or Sesame repositories.</p>
+<h3><a name="Requirements"></a>Requirements</h3>
+<ul><li><a href="http://rdf4j.org/download/" class="absuri">RDF4J 2.x SDK</a> or <a href="http://www.openrdf.org/download.jsp" class="absuri">Sesame 2.3.1</a> or higher </li>
+<li><a href="https://download3.openlinksw.com/uda/virtuoso/rdfproviders/rdf4j/2/virt_rdf4j.jar" class="absuri">RDF4J 2.x</a> (virt_rdf4j.jar), <a href="VOSDownload/virt_sesame2.jar" style="wikiautogen">Virtuoso Sesame 2.x </a> (virt_sesame2.jar) or  <a href="http://download3.openlinksw.com/uda/virtuoso/rdfproviders/sesame/40/virt_sesame4.jar" class="absuri">Virtuoso Sesame 4.x</a> (virt_sesame4.jar) Provider </li>
+<li><a href="https://download3.openlinksw.com/uda/virtuoso/jdbc/virtjdbc4_2.jar" class="absuri">Virtuoso JDBC Driver for Java 8</a> (virtjdbc4_2.jar) or <a href="VOSDownload/virtjdbc4.jar" style="wikiautogen">Virtuoso JDBC Driver for earlier Java versions</a> (virtjdbc4.jar) </li>
+<li>Virtuoso System Repository config file for <a href="https://download3.openlinksw.com/uda/virtuoso/rdfproviders/rdf4j/2/create.xsl" class="absuri">RDF4J 2.x</a> or <a href="VirtSesame2HttpRepository/create.xsl" style="wikiautogen">Sesame 2.x</a> or <a href="http://download3.openlinksw.com/uda/virtuoso/rdfproviders/sesame/40/create.xsl" class="absuri">Sesame 4.x</a> (create.xsl) </li>
+<li>Virtuoso Repository config file for <a href="https://download3.openlinksw.com/uda/virtuoso/rdfproviders/rdf4j/2/create-virtuoso.xsl" class="absuri">RDF4J 2.x</a> or <a href="VirtSesame2HttpRepository/create-virtuoso.xsl" style="wikiautogen">Sesame 2.x </a> or <a href="http://download3.openlinksw.com/uda/virtuoso/rdfproviders/sesame/40/create-virtuoso.xsl" class="absuri">Sesame 4.x</a> (create-virtuoso.xsl) </li>
+<li>Configuration Template file for a Virtuoso Repository for <a href="https://download3.openlinksw.com/uda/virtuoso/rdfproviders/rdf4j/2/virtuoso.ttl" class="absuri">RDF4J 2.x</a> or <a href="VirtSesame2HttpRepository/virtuoso.ttl" style="wikiautogen">Sesame 2.x </a> or <a href="http://download3.openlinksw.com/uda/virtuoso/rdfproviders/sesame/40/virtuoso.ttl" class="absuri">Sesame 4.x</a>  (virtuoso.ttl) </li>
+<li><a href="http://tomcat.apache.org/download-60.cgi" class="absuri">Apache Tomcat</a> version 5 or higher</li>
+</ul><h3><a name="Setup RDF4J or Sesame HTTP Repository"></a>Setup RDF4J or Sesame HTTP Repository</h3>
+<p>This section details the steps required for configuring and testing a Virtuoso HTTP RDF4J or  Sesame Repository.</p>
+<ol><li>Install <a href="http://tomcat.apache.org/tomcat-6.0-doc/index.html" class="absuri">Apache Tomcat</a> web server </li>
+<li>If using RDF4J: <ul><li>From the RDF4J 2.x SDK  &quot;lib&quot; directory copy the &quot;rdf4j-server.war&quot; and &quot;rdf4j-workbench.war&quot; files to the tomcat &quot;webapps&quot; directory where they will automatically be deployed creating two new sub directories &quot;rdf4j-server&quot; and &quot;rdf4j-workbench&quot;.
+</li>
+<li>Place the corresponding Virtuoso RDF4J 2.x Provider &quot;virt_rdf4j.jar&quot; and JDBC Driver &quot;virtjdbc4_2.jar&quot; into the Tomcat <code>~/webapps/rdf4j-server/WEB-INF/lib/</code> and  <code>~/webapps/rdf4j-workbench/WEB-INF/lib/</code> directories for use by the RDF4J HTTP Repository for accessing the Virtuoso RDF repository.
+</li>
+<li>Place the &quot;create.xsl&quot; and &quot;create-virtuoso.xsl&quot; files in the Tomcat <code>~/webapps/rdf4j-workbench/transformations/</code> directory.
+ Note &quot;create.xsl&quot; replaces the default provided with RDF4J and contains the necessary entries required to reference the new &quot;create-virtuoso.xsl&quot; template file for Virtuoso repository configuration.
+</li>
+<li>The RDF4J HTTP Repository will now be accessible on the URLs <ul><li><a href="http://localhost:8080/rdf4j-server" class="absuri">http://localhost:8080/rdf4j-server</a> <br><br>          <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository01.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li><a href="http://localhost:8080/rdf4j-workbench" class="absuri">http://localhost:8080/rdf4j-workbench</a> <br><br>          <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository02.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+</ul></li>
+</ul></li>
+<li>If using Sesame: <ul><li>From Sesame 2.3.1 or higher  &quot;lib&quot; directory copy the &quot;openrdf-sesame.war&quot; and &quot;openrdf-workbench.war&quot; files to the tomcat &quot;webapps&quot; directory where they will automatically be deployed creating two new sub directories &quot;openrdf-sesame&quot; and &quot;openrdf-workbench&quot;.
+</li>
+<li>Place the corresponding Virtuoso Sesame Provider &quot;virt_sesame2.jar&quot; or &quot;virt_sesame4.jar&quot; and JDBC Driver &quot;virtjdbc4.jar&quot; into the Tomcat <code>~/webapps/openrdf-sesame/WEB-INF/lib/</code> and  <code>~/webapps/openrdf-workbench/WEB-INF/lib/</code> directories for use by the Sesame HTTP Repository for accessing the Virtuoso RDF repository.
+</li>
+<li>Place the &quot;create.xsl&quot; and &quot;create-virtuoso.xsl&quot; files in the Tomcat <code>~/webapps/openrdf-workbench/transformations/</code> directory.
+ Note &quot;create.xsl&quot; replaces the default provided with Sesame and contains the necessary entries required to reference the new &quot;create-virtuoso.xsl&quot; template file for Virtuoso repository configuration.
+</li>
+<li>The Sesame HTTP Repository will now be accessible on the URLs <br><pre><br>http://localhost:8080/openrdf-sesame
+http://localhost:8080/openrdf-workbench
+</pre><br></li>
+</ul></li>
+<li>The Eclipse RDF4J or Sesame <nop></nop>OpenRDF Workbench is used for accessing the RDF4J or Sesame HTTP Repositories, loading &quot;<a href="http://localhost:8080/openrdf-workbench" class="absuri">http://localhost:8080/openrdf-workbench</a>&quot; will enable the default &quot;SYSTEM&quot; repository to be accessed.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository02.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository02.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;New Repository&quot; link in the left frame to create a new RDF4J or Sesame Repository.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository03.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository03.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Select the &quot;Virtuoso RDF Store&quot; from the &quot;Type&quot; drop down list box presented.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository04.png" style="max-width: 800px ; min-width: 300px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository04.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Choose suitable repository &quot;ID&quot; and &quot;Title&quot; for the Virtuoso repository to be created and click &quot;Next&quot;.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository05.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository05.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Fill in the connection parameters for the target Virtuoso sever the repository is to be created for and click the &quot;create&quot; button.
+ The minimum required are the hostname, port number, username and password of the Virtuoso Server.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository06.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository06.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>The new Virtuoso respository will be created and its summary page displayed.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository07.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository07.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;Namespaces&quot; link in the left frame to obtain a list of the available namespaces in the Virtuoso repository.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository08.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository08.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;Context&quot; link in the left frame to obtain a list of the available contexts in the Virtuoso repository.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository09.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository09.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;Types&quot; link in the left frame to obtain a list of the available types in the Virtuoso repository.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository10.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository10.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;Query&quot; link in the left frame, enter a suitable SPARQL query to execute against the Virtuoso repository and click the &quot;execute&quot; button.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository11.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br>  <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository11.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>The results of the SPARQL query are returned.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository12.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository12.png" style="wikiautogen"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;SPARQL Update&quot; link in the left where SPARQL update queries can be executed against the Virtuoso repository and click the &quot;execute&quot; button.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository13.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+</ul></li>
+<li>Click on the &quot;Repositories&quot; link in the left frame and the newly created Virtuoso repository entry is displayed along side the default SYSTEM repository.
+<ul><li>RDF4J <br><br> <img src="VirtSesame2HttpRepository/VirtRDF4JHttpRepository14.png" style="max-width: 800px ; min-width: 250px ; width: 100%"> <br><br> </li>
+<li>Sesame <br><br> <img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository13.png" style="wikiautogen"> <br></li>
+</ul></li>
+</ol><h3><a name="Setup RDF4J or Sesame Console Repository"></a>Setup RDF4J or Sesame Console Repository</h3>
+<p>This section details the steps required for configuring and testing a Virtuoso RDF4J Console Repository</p>
+<ol><li>Extract RDF4J  2.x SDK or Sesame 2.3.1 or higher archive to a location of choice and place the <code>virt_rdf4j.jar</code>, <code>virt_sesame2.jar</code> or <code>virt_sesame4.jar</code> and <code>virtjdbc4.jar</code> files to the sesame &quot;lib&quot; directory </li>
+<li>Start the <a href="http://docs.rdf4j.org/server-workbench-console/#_rdf4j_console" class="absuri">RDF4J</a> or  <a href="http://www.openrdf.org/doc/sesame2/users/ch07.html#section-console-repository-creation" class="absuri">Sesame</a> console application by running the &quot;console.bat&quot; script in the sesame &quot;bin&quot; directory and then &quot;exit.&quot; the program <br><pre><br>$ sh console.sh 
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/logback-classic-0.9.18.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/slf4j-jdk14-1.5.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+10:32:38.317 [main] DEBUG info.aduna.platform.PlatformFactory - os.name &lt;http://os.name&gt; &lt;http://os.name&gt; = mac os x
+10:32:38.351 [main] DEBUG info.aduna.platform.PlatformFactory - Detected Mac OS X platform
+Connected to default data directory
+Commands end with &#39;.&#39; at the end of a line
+Type &#39;help.&#39; for help
+exit.
+</pre><br></li>
+<li>This will create the necessary sesame application data directories as detailed in the <a href="http://docs.rdf4j.org/server-workbench-console/" class="absuri">RDF4J</a> or Sesame <a href="http://www.openrdf.org/doc/sesame2/2.3.1/users/userguide.html#chapter-datadir-config" class="absuri">data directory configuration</a> documentation.
+<br><pre><br>Windows - C:\Documents and Settings\LocalService\Application Data\Aduna\
+Mac OS X - /Users/myuser/Library/Application Support/Aduna/
+Linux - $HOME/.aduna/
+</pre><br></li>
+<li>If you do not want to use the default sesame data directory location the RDF4J or Sesame console application can be started by specifying a custom data directory location with the &quot;-d&quot; option.
+ Note in this case the directory &quot;<nop></nop>OpenRDF Sesame console&quot; always has to be manually appended to the directory as RDF4J/Sesame assumes the data file will reside in a sub directory of this name.
+<br><pre><br>$ sh console.sh -d /Users/myuser/OpenRDF Sesame console
+</pre><br></li>
+<li>Add the <code>virtuoso.ttl</code> file to the <code>~/OpenRDF Sesame console/templates</code> folder, to enable the Virtuoso repository default configuration parameters to be located.
+</li>
+<li>Start the sesame console application with the required data directory location and create a Virtuoso repository as detailed in the steps below, the key parameters to be specified being the target Virtuoso server hostname, port number, username, password and a unique &quot;Repository ID&quot;.
+<br><pre><br>$ sh console.sh 
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/logback-classic-0.9.18.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/slf4j-jdk14-1.5.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+10:32:38.317 [main] DEBUG info.aduna.platform.PlatformFactory - os.name &lt;http://os.name&gt; &lt;http://os.name&gt; = mac os x
+10:32:38.351 [main] DEBUG info.aduna.platform.PlatformFactory - Detected Mac OS X platform
+Connected to default data directory
+Commands end with &#39;.&#39; at the end of a line
+Type &#39;help.&#39; for help
+create virtuoso .
+Please specify values for the following variables:
+Host list [localhost:1111]: 
+Username [dba]: 
+Password [dba]: 
+Default graph name [sesame:nil]: 
+Enable using batch optimization (false|true) [false]: 
+Use RoundRobin for connection (false|true) [false]: 
+Buffer fetch size [200]: 
+Inference RuleSet name [null]: 
+Repository ID [virtuoso]: myvirt
+Repository title [Virtuoso repository]: 
+Repository created
+show r .
++----------
+|SYSTEM
+|myvirt (&quot;Virtuoso repository&quot;)
++----------
+open myvirt .
+Opened repository &#39;myvirt&#39;
+myvirt&gt; show n .
++----------
+|bif  bif:
+|dawgt  http://www.w3.org/2001/sw/DataAccess/tests/test-dawg#
+|dbpedia  http://dbpedia.org/resource/
+|dbpprop  http://dbpedia.org/property/
+|dc  http://purl.org/dc/elements/1.1/
+|foaf  http://xmlns.com/foaf/0.1/
+|geo  http://www.w3.org/2003/01/geo/wgs84_pos#
+|go  http://purl.org/obo/owl/GO#
+|math  http://www.w3.org/2000/10/swap/math#
+|mesh  http://purl.org/commons/record/mesh/
+|mf  http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#
+|nci  http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#
+|obo  http://www.geneontology.org/formats/oboInOwl#
+|owl  http://www.w3.org/2002/07/owl#
+|protseq  http://purl.org/science/protein/bysequence/
+|rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+|rdfdf  http://www.openlinksw.com/virtrdf-data-formats#
+|rdfs  http://www.w3.org/2000/01/rdf-schema#
+|sc  http://purl.org/science/owl/sciencecommons/
+|scovo  http://purl.org/NET/scovo#
+|skos  http://www.w3.org/2004/02/skos/core#
+|sql  sql:
+|vcard  http://www.w3.org/2001/vcard-rdf/3.0#
+|virtrdf  http://www.openlinksw.com/schemas/virtrdf#
+|void  http://rdfs.org/ns/void#
+|xf  http://www.w3.org/2004/07/xpath-functions
+|xml  http://www.w3.org/XML/1998/namespace
+|xsd  http://www.w3.org/2001/XMLSchema#
+|xsl10  http://www.w3.org/XSL/Transform/1.0
+|xsl1999  http://www.w3.org/1999/XSL/Transform
+|xslwd  http://www.w3.org/TR/WD-xsl
+|yago  http://dbpedia.org/class/yago/
++----------
+exit.
+</pre><br> </li>
+</ol><h3><a name="Connection to RDF4J or Sesame HTTP repository from Console repository"></a>Connection to RDF4J or Sesame HTTP repository from Console repository</h3>
+<p>The RDF4J or Sesame Console repository can connect to a RDF4J or Sesame HTTP repository and vice-versa, enabling access to remote RDF4J or Sesame HTTP repositories from a local server.</p>
+<ol><li>The RDF4J or Sesame Console repository can connect to a RDF4J or Sesame HTTP repository and query it as if local using the &quot;connect&quot; command.
+<br><pre><br>$ sh console.sh
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/logback-classic-0.9.18.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/slf4j-jdk14-1.5.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+10:32:38.317 [main] DEBUG info.aduna.platform.PlatformFactory - os.name &lt;http://os.name&gt; &lt;http://os.name&gt; = mac os x
+10:32:38.351 [main] DEBUG info.aduna.platform.PlatformFactory - Detected Mac OS X platform
+Connected to default data directory
+Commands end with &#39;.&#39; at the end of a line
+Type &#39;help.&#39; for help
+&gt; connect http://localhost:8080/openrdf-sesame.
+Connected to http://localhost:8080/openrdf-sesame
+&gt; show r.
++----------
+|SYSTEM (&quot;System configuration repository&quot;)
+|VirtSesRep (&quot;Virtuoso Sesame HTTP Repository&quot;)
++----------
+&gt; open VirtSesRep.
+Opened repository &#39;VirtSesRep&#39;
+VirtSesRep&gt; sparql select * from &lt;http://localhost:8890/Northwind&gt; where {?s ?p ?o} Limit 10.
+Evaluating query...
++------------------------+------------------------+------------------------+
+| s                      | p                      | o                      |
++------------------------+------------------------+------------------------+
+| &lt;http://localhost:8890/Northwind/CustomerContact/ALFKI#this&gt;| rdf:type  | foaf:Person            |
+| &lt;http://localhost:8890/Northwind/CustomerContact/ALFKI#this&gt;| rdf:type  | northwind:CustomerContact|
+| &lt;http://localhost:8890/Northwind/CustomerContact/ALFKI#this&gt;| opl:isDescribedUsing   | northwind:             |
+| &lt;http://localhost:8890/Northwind/CustomerContact/ANATR#this&gt;| rdf:type | foaf:Person            |
+| &lt;http://localhost:8890/Northwind/CustomerContact/ANATR#this&gt;| rdf:type | northwind:CustomerContact|
+| &lt;http://localhost:8890/Northwind/CustomerContact/ANATR#this&gt;| opl:isDescribedUsing   | northwind:             |
+| &lt;http://localhost:8890/Northwind/CustomerContact/ANTON#this&gt;| rdf:type  | foaf:Person            |
+| &lt;http://localhost:8890/Northwind/CustomerContact/ANTON#this&gt;| rdf:type  | northwind:CustomerContact|
+| &lt;http://localhost:8890/Northwind/CustomerContact/ANTON#this&gt;| opl:isDescribedUsing   | northwind:             |
+| &lt;http://localhost:8890/Northwind/CustomerContact/AROUT#this&gt;| rdf:type  | foaf:Person            |
++------------------------+------------------------+------------------------+
+10 result(s) (530 ms)
+VirtSesRep&gt; show n.
++----------
+|SearchResults  http://www.zillow.com/static/xsd/SearchResults.xsd
+|UpdatedPropertyDetails  http://www.zillow.com/static/xsd/UpdatedPropertyDetails.xsd
+|a  http://www.w3.org/2005/Atom
+|aapi  http://rdf.alchemyapi.com/rdf/v1/s/aapi-schema#
+|address  http://schemas.talis.com/2005/address/schema#
+|admin  http://webns.net/mvcb/
+|amz  http://webservices.amazon.com/AWSECommerceService/2005-10-05
+|atom  http://atomowl.org/ontologies/atomrdf#
+|audio  http://purl.org/media/audio#
+|awol  http://bblfish.net/work/atom-owl/2006-06-06/#
+|aws  http://soap.amazon.com/
+|b3s  http://b3s.openlinksw.com/
+</pre><br></li>
+<li>Conversely the RDF4J or Sesame HTTP repository can be configured to access the repository created by the RDF4J or Sesame console.
+ To do this the location of the data directory for both needs to be reconfigured using the Java system property info.aduna.platform.appdata.basedir  (does not include RDF4J or Sesame console directory) to point to the same location.
+ When you are using Tomcat as the servlet container then you can set this property using the JAVA_OPTS parameter.
+ Note, if you are using Apache Tomcat as a Windows Service you should use the Windows Services configuration tool to set this property.
+ Other users can either edit the Tomcat startup script or set the property some other way.
+<br><pre><br>    * set JAVA_OPTS=-Dinfo.aduna.platform.appdata.basedir=\path\to\other\dir\ (on Windows)
+    * export JAVA_OPTS=&#39;-Dinfo.aduna.platform.appdata.basedir=/path/to/other/dir/&#39; (on Linux/UNIX/Mac OS X) 
+</pre><br><img src="VirtSesame2HttpRepository/VirtSesame2HttpRepository01.png" style="wikiautogen"> <br></li>
+</ol><h3><a name="Remote RDF4J or Sesame HTTP Repository Connections"></a> Remote RDF4J or Sesame HTTP Repository Connections</h3>
+<p>There are two methods of making a remote RDF4J or Sesame HTTP connection to a Virtuoso repository:</p>
+<ul><li><b>RDF4J or Sesame Remote Repository Manager</b> class - A manager for Repositories that reside on a remote server, allowing one to access repositories over HTTP similar to how local repositories are accessed using the LocalRepositoryManager<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/LocalRepositoryManager&parent=VirtSesame2HttpRepository" class="wikiword">?</a>.
+ A connection via this method is made via the Virtuoso RDF4J or Sesame provider which will be faster and provide better support for transactions, than making a direct connection to the SPARQL endpoint using the HTTP Repository class.
+ This is analogous to the ODBC Driver Manager in the ODBC realm for generic access to a data store via a suitable ODBC Driver.</li>
+</ul><ul><li><b>RDF4J or Sesame HTTP Repository</b> class - A repository that serves as a proxy for a remote repository on a RDF4J or Sesame server or directly to a SPARQL endpoint.
+ This method does not make use of the Virtuoso RDF4J or Sesame Provider, using instead the HTTP protocol to make requests directly RDF4J or Sesame server or  other SPARQL endpoint.</li>
+</ul><h4><a name="Using the RDF4J or Sesame Remote Repository Manager class"></a> Using the RDF4J or Sesame Remote Repository Manager class</h4>
+<p>If a RDF4J or Sesame HTTP Repository endpoint, as detailed above already exists, the <a href="http://docs.rdf4j.org/server-workbench-console/#_http_repository_configuration" class="absuri">Remote Repository Manager class</a> can be used to make a remote connection as follows by specify the URL to the remote RDF4J or Sesame HTTP Server and the <nop></nop>RepositoryID for the repository the connection is to be made to:</p>
+<br><pre>
+//Initialize Remote Repository Manager 
+RepositoryManager repositoryManager = new RemoteRepositoryManager( &quot;http://hostname:portno/openrdf-sesame&quot; );
+repositoryManager.initialize();
+
+//Set Virtuoso (or any other) repositoryID on http://hostname:portno/openrdf-sesame
+Repository repository = repositoryManager.getRepository(&quot;RepositoryID&quot;); 
+
+// Open a connection to this repository
+con = repository.getConnection();
+
+// ... do something 
+</pre><p> </p>
+<h4><a name="Using the RDF4J or Sesame HTTP Repository class"></a> Using the RDF4J or Sesame HTTP Repository class</h4>
+<p>A direct connection to the default built-in Virtuoso SPARQL Endpoint can be made using the <a href="http://docs.rdf4j.org/server-workbench-console/#_rdf4j_console" class="absuri">RDF4J or Sesame HTTP Repository class</a> by simply specifying the URL to the Virtuoso SPARQL Endpoint i.e.
+ <code>http://{host}:{port}/sparql</code> as follows:</p>
+<br><pre>// Initialize Direct SPARQL Endpoint HTTP Repository connection
+String endpointURL = &quot;http://hostname:portno/sparql&quot;;
+HTTPRepository sparqlEndpoint = new HTTPRepository(endpointURL, &quot;&quot;);
+sparqlEndpoint.initialize();
+
+// Open a connection to this repository
+con = sparqlEndpoint.getConnection(); 
+
+// ... do something 
+</pre><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSesame2Provider" class="wikiword">Virtuoso RDF4J and Sesame Provider</a> </li>
+</ul></div></body></html>

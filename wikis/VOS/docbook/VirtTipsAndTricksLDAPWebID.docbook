@@ -1,0 +1,141 @@
+<docbook><section><title>VirtTipsAndTricksLDAPWebID</title><title>How can I use LDAP based WebIDs?</title>How can I use LDAP based <ulink url="WebIDs">WebIDs</ulink>?
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+<para>Use of LDAP scheme  (ldap:) URIs as bona fide <ulink url="WebIDs">WebIDs</ulink> that are verifiable using the <ulink url="WebID">WebID</ulink> protocol.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+<para>As a protocol, <ulink url="WebID">WebID</ulink> is about verifying Identity via de-referencable URIs for Agents (people, organizations, programs).
+ Thus, bearing in mind the multi scheme essence of URIs, and the fact that many existing systems already leverage X.500 names as part of LDAP setups, its vital that <ulink url="WebID">WebID</ulink> usage extends naturally to these setups; especially, when introducing <ulink url="WebID">WebID</ulink> to organizations, unobtrusively.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para> The steps that follow walk you through the process of generating an X.509 Certificate that has an ldap: URI value in the Subject Alternate Name (SAN) and then using this Certificate to verify Identity using the <ulink url="WebID">WebID</ulink> protocol.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Basic steps for setting up LDAP Server, generating and importing certificate with <ulink url="WebID">WebID</ulink> in the LDAP server</bridgehead>
+<orderedlist spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/htmlconductorbar.html#dbusersandgroupsldap">Setup LDAP to Virtuoso instance binding via Conductor UI</ulink>.
+</listitem>
+<listitem>As LDAP query works based on the attribute=value from profile, perform LDAP lookup test: <orderedlist spacing="compact"><listitem>Access the following URL: <programlisting>https://mail.openlinksw.com/ldapinfo.php?dn=uid=john,ou=Accounts,o=OpenLink%20Software,c=US
+</programlisting><figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid1.png" /></figure> </listitem>
+<listitem>Post successful authentication should show the user details: <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid2.png" /></figure> </listitem>
+</orderedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup">Set up of an X.509 certificate issuer and HTTPS listener</ulink> </listitem>
+<listitem>Generate certificate with LDAP based <ulink url="WebID">WebID</ulink> <ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate">via ODS</ulink> or another method, by placing LDAP: scheme URI in SAN of the Certificate to be generate, for ex: <programlisting>ldap://mail.openlinksw.com/cn=John%20Smith%2Cou=Accounts%2Co=OpenLink%20Software%2Cc=US
+</programlisting><figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid3.png" /></figure> <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid4.png" /></figure> </listitem>
+<listitem>Convert from p12 to DER format: Suppose the certificate generated from the previous step is exported as p12 format . To convert it to DER format, one should perform the following commands: <programlisting>openssl pkcs12 -in mykey.p12 -nokeys &gt; mykey.pem
+
+openssl x509 -in mykey.pem -outform DER &gt; mykey.crt
+
+</programlisting></listitem>
+<listitem>LDAP Setup: <orderedlist spacing="compact"><listitem>Start LDAP manager UI e.g.
+ <ulink url="http://mail.openlinksw.com">http://mail.openlinksw.com</ulink> </listitem>
+<listitem>Post successful authentication click on Profile </listitem>
+<listitem>Update the &quot;Country&quot; and &quot;Company&quot; (Organization) fields if empty <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid5.png" /></figure> </listitem>
+<listitem>Go to security section as import X.509 Cert so that DN is now associated with a Public Key.
+<figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid6.png" /></figure> </listitem>
+</orderedlist></listitem>
+<listitem>The LDAP based <ulink url="WebId">WebId</ulink> is ready to be used.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Verification Tests</bridgehead>
+<orderedlist spacing="compact"><listitem>Make sure the steps from above are performed.
+</listitem>
+<listitem>If you generated Cert.
+ using ODS and enabled <ulink url="WebID">WebID</ulink> login, attempt a <ulink url="WebID">WebID</ulink> login: <orderedlist spacing="compact"><listitem>Access <ulink url="https://id.myopenlink.net/ods">https://id.myopenlink.net/ods</ulink> </listitem>
+<listitem>Select when prompted from your browser, the certificate generated from above.
+<figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid7.png" /></figure> </listitem>
+<listitem>As result should be presented the ODS Log in form.
+ Click the &quot;<ulink url="WebID">WebID</ulink> Login&quot; <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid10.png" /></figure> </listitem>
+<listitem>Post successful authentication should show ODS home page for the logged in user </listitem>
+</orderedlist></listitem>
+<listitem>Access <ulink url="https://id.myopenlink.net/ods/webid_demo.html">https://id.myopenlink.net/ods/webid_demo.html</ulink> <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid7.png" /></figure> <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid8.png" /></figure> </listitem>
+<listitem>Click &quot;Check&quot; </listitem>
+<listitem>The verification result message should be shown: <figure><graphic fileref="VirtTipsAndTricksLDAPWebID/ldapwebid9.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Other Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">cURL Examples</bridgehead>
+<emphasis>Example with No Certificate using the  <ulink url="WebID">WebID</ulink> Testing Service endpoint at  <ulink url="https://host/ods/webid_check.vsp">https://host/ods/webid_check.vsp</ulink> </emphasis> <programlisting>$ curl -i -k   https://localhost:4433/ods/webid_check.vsp?callback=http://localhost:8894/myapp/
+HTTP/1.1 302 Found
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 24 May 2011 11:15:09 GMT
+Accept-Ranges: bytes
+Location: http://localhost:8894/myapp/?error=noCert&amp;ts=2011-05-24T13%3A15%3A09%2B02%3A00&amp;signature=rT1gooyUcPjWo3yhIdx7y8j05oM%3
+Content-Length: 0
+</programlisting><para> <emphasis>Example with Valid <ulink url="WebID">WebID</ulink></emphasis> </para>
+<programlisting>
+$ openssl pkcs12 -in mykey.p12 &gt; mykey2.pem
+
+$ curl -i -k --cert mykey2.pem  https://localhost:4433/ods/webid_check.vsp?callback=http://localhost:8894/myapp/
+Enter PEM pass phrase:
+HTTP/1.1 302 Found
+Server: Virtuoso/06.02.3129 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 24 May 2011 13:47:08 GMT
+Accept-Ranges: bytes
+Location: http://localhost:8894/myapp/?webid=http%3A%2F%2Flocalhost:8894%2Fdataspace%2Fperson%2Fdemo%23this&amp;ts=201
+00001-04%3A00&amp;signature=7KYzL7vwpH2LtF4bZ%2FtAEWCC8gY%3D
+Content-Length: 0
+
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://www.youtube.com/watch?v=gzqHVUb3qrw&amp;feature=share">Power of WebID + OpenID Hybrid Protocol via Internet Explorer &amp; Windows</ulink> </listitem>
+<listitem><ulink url="http://www.youtube.com/watch?v=eXoxUo7Py4M&amp;feature=share">Using Safari to Demonstrate WebID + OpenID Hybrid Protocol Power!</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSecurityWebID">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLEndpointProtection">Safeguarding your Virtuoso-hosted SPARQL Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpointProtection">SPARQL Endpoint Protection Methods Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/">Virtuoso documentation</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint">SPARQL Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri">Service Endpoint Security</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl">Managing a SPARQL Web Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">SPARQL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSPARQLDET">SPARQL Endpoint DET Configuration Guide</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuideSPARQLEndpoints">Securing SPARQL endpoints</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</ulink> </listitem>
+<listitem><ulink url="VirtAuthServerUI">Virtuoso Authentication Server UI</ulink> </listitem>
+<listitem><ulink url="VirtSPARQLSSL">Manage a SPARQL-WebID based Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtSetupSSL">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID">WebID Protocol Support in OpenLink Data Spaces</ulink>.
+</listitem>
+<listitem>Manage ODS Datadspaces Objects <ulink url="WebID">WebID</ulink> Access Control Lists (ACLs): <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebID">ODS Briefcase WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPerson">Person Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDGroup">Group Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDPublic">Public WebID based ACL Guide</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACL">ODS Feed Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSFeedManagerWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACL">ODS Calendar WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSCalendarWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACL">ODS Bookmark Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBookmarksWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACL">ODS Addressbook  WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSAddressBookWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates.</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub">Setting up PubSubHub in ODS</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub">PubSubHubBub Demo Client Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub">Feed subscription via PubSubHub protocol Example</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL">Setting Up PubSubHub to use WebID Protocol or IP based control lists</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport">CA Keys Import using Conductor</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate">Generate an X.509 Certificate hosted WebID Guide</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</ulink> </listitem>
+<listitem><ulink url="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseWebIDShareFile">ODS Briefcase WebID Protocol Share File Guide</ulink> </listitem>
+<listitem><ulink url="http://esw.w3.org/topic/foaf+ssl">WebID Protocol Specification</ulink> </listitem>
+<listitem><ulink url="https://foaf.me/simpleLogin.php">Test WebID Protocol Certificate page</ulink> </listitem>
+<listitem><ulink url="http://test.foafssl.org/cert/">WebID Protocol Certificate Generation page</ulink> </listitem>
+<listitem><ulink url="http://openid4.me/">openid4.me</ulink> -- An early <ulink url="WebID">WebID</ulink>+<ulink url="OpenID">OpenID</ulink> implementation that isn&#39;t currently functional, but still provides good insights into the inner workings of <ulink url="WebID">WebID</ulink>+<ulink url="OpenID">OpenID</ulink> </listitem>
+<listitem><ulink url="http://openid-demo.appspot.com/">A nice OpenID service for testing the prowess of OpenID+WebID</ulink> </listitem>
+<listitem>An <ulink url="WebID">WebID</ulink>+<ulink url="OpenID">OpenID</ulink> protocol demo using ODS ...
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.youtube.com/watch?v=mjgXsjd8PDE">... through Firefox on Mac OS X</ulink> </listitem>
+<listitem><ulink url="http://www.youtube.com/watch?v=eXoxUo7Py4M">... through Safari on Mac OS X</ulink> </listitem>
+<listitem><ulink url="http://www.youtube.com/watch?v=gzqHVUb3qrw">... through IE on Windows</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://goo.gl/oBYFD">Using WebID from an iOS5 device (iPhone or iPad) with Twitter as the Identity Provider (IdP) service</ulink></listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,114 @@
+%META:TOPICPARENT{name="OdsBriefcase"}%
+---+ Using ODS-Briefcase to mediate access to data stored on Box (box.com a/k/a box.net)
+
+%TOC%
+
+---++ Introduction
+Box is an online file system service that enables users to share, store, and access files of any type from anywhere.
+
+Box file storage offers users a number of features:
+
+   * Share, access, and collaborate on files of any type from anywhere and any device
+   * Have complete control and access to your data including establishing permissions, and adding or removing collaborators
+   * Data files are secure on Enterprise-grade servers, in multiple, geographically-separated facilities
+   * All data requests pass through an audited verification code to ensure user authorization
+   * Optional 256-bit Secured Socket Layer (SSL) security to encrypt data between the end user and Box
+   * Ideal for remote access to your important files from multiple computers, any time and anywhere
+   * Compatible with all major browsers and operating systems including both Windows and Mac
+   * Free online storage: allows 5GB of free online storage
+
+ODS-Briefcase offers a new "Box" folder type which provides several additional features, once ODS has been configured to use a registered Box API key:
+
+   * Specify credentials for authentication against Box, enabling retrieval of any or all of your folders and files, including any associated metadata
+   * Specify which Sponger Extractor Cartridges and Sponger Meta Cartridges should be run against your Box data
+   * Save fetched data, metadata, and Sponger output, into a newly created Box-specific RDF Graph in the Virtuoso RDF Quad Store
+   * Specify other ODS Users or <nop>WebID ACLs which should be granted access to your Box data through ODS-Briefcase
+
+---++ Example
+
+Here is a sample scenario showing the whole process, from setting the Box API key in ODS, to retrieving all Box content to ODS-Briefcase.
+
+---+++ Prerequisites
+
+   * A [[https://www.box.com/][Box user account]] 
+   * Files and folders (data) stored in your [[https://www.box.com/][Box Space]]
+   * Administrative (DBA) access to a [[http://virtuoso.openlinksw.com/][Virtuoso Server]] instance, on which the following have been installed --
+      * [[https://virtuoso.openlinksw.com/download/][ODS-Framework VAD package]]
+      * [[https://virtuoso.openlinksw.com/download/][ODS-Briefcase VAD package]]
+      * [[https://virtuoso.openlinksw.com/download/][Virtuoso RDF Mappers VAD package]]
+   
+---+++ Steps
+
+---++++ 1 - Get a Box API key for use with ODS-Briefcase
+
+<i>Note that at present, each Virtuoso + ODS instance can only be configured with a single Box API key, which will then be used by all ODS-Briefcase users when targeting Box from that instance. Box may impose limitations on this key's use.  Such limitations are outside the scope of <nop>OpenLink or Virtuoso control.</i>
+
+   1 Browse to &lt;[[https://www.box.com/developers/services/edit/][https://www.box.com/developers/services/edit/]]&gt;, and enter your Box user credentials:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-1.png" target="_blank"><img src="%ATTACHURLPATH%/step1-1.png" width="600px" /></a>%BR%%BR%
+   1 Enter a name for your Box client application (i.e., your ODS-Briefcase instance) to be known by, e.g., "<nop>MyExampleBox":
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-2.png" target="_blank"><img src="%ATTACHURLPATH%/step1-2.png" width="600px" /></a>%BR%%BR%
+   1 Click the <b>Create App</b> button.
+   1 You will be shown an API key for the newly registered application.  (You can copy the API key now, or come back for it later; it will also show up on the "Edit" page.  Do be aware that you will need this key in the steps that follow.)  Click <b>Edit this application</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-3.png" target="_blank"><img src="%ATTACHURLPATH%/step1-3.png" width="600px" /></a>%BR%%BR%
+   1 In the edit form, set the <b>Redirect url</b> to target the Box interface (<code>access_box.vsp</code>, by default) on your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/access_box.vsp][http://example.com/ods/access_box.vsp]]&gt;, and click <b>Save service</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-4.png" target="_blank"><img src="%ATTACHURLPATH%/step1-4.png" width="600px" /></a>%BR%%BR% 
+
+---++++ 2 - Configure ODS to use your Box API key 
+
+   1 Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/][http://example.com/ods/]]&gt;, and click <b>Sign In</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-1.png" target="_blank"><img src="%ATTACHURLPATH%/step2-1.png" width="600px" /></a>%BR%%BR%
+   1 Log in as a Virtuoso+ODS user with Administrator privileges, e.g., <code>dba</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-2.png" target="_blank"><img src="%ATTACHURLPATH%/step2-2.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>Site Settings</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-3.png" target="_blank"><img src="%ATTACHURLPATH%/step2-3.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>Login Authentication Keys</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-4.png" target="_blank"><img src="%ATTACHURLPATH%/step2-4.png" width="600px" /></a>%BR%%BR%
+   1 Select <b>Box API</b> in the <b>API Name</b> menu, provide the Box API Key you got when you registered the application with Box, and click <b>Add</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-5.png" target="_blank"><img src="%ATTACHURLPATH%/step2-5.png" width="600px" /></a>%BR%%BR%
+   1 ODS-Briefcase is now configured to use the Box API.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-6.png" target="_blank"><img src="%ATTACHURLPATH%/step2-6.png" width="600px" /></a>%BR%%BR%
+
+---++++ 3 - Access files stored on Box through ODS-Briefcase 
+
+   1 Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/][http://example.com/ods/]]&gt;.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-01.png" target="_blank"><img src="%ATTACHURLPATH%/step3-01.png" width="600px" /></a>%BR%%BR%
+   1 Log in as a Virtuoso+ODS user with normal privileges, e.g., <code>demo</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-02.png" target="_blank"><img src="%ATTACHURLPATH%/step3-02.png" width="600px" /></a>%BR%%BR%
+   1 Click to the <b>ODS-Briefcase</b> application: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-03.png" target="_blank"><img src="%ATTACHURLPATH%/step3-03.png" width="600px" /></a>%BR%%BR%
+   1 Click <b>New Folder</b> from the main Briefcase control strip:
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-04.png" target="_blank"><img src="%ATTACHURLPATH%/step3-04.png" width="600px" /></a>%BR%%BR%
+   1 In the New Folder form, specify a <b>Folder Name</b>, e.g., <b><nop>MyBoxFolder</b>, and set the <b>Folder type</b> to <b>Box Net</b>: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-05.png" target="_blank"><img src="%ATTACHURLPATH%/step3-05.png" width="600px" /></a>%BR%%BR%
+   1 Click to the newly visible <b>Box Net</b> tab: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-06.png" target="_blank"><img src="%ATTACHURLPATH%/step3-06.png" width="600px" /></a>%BR%%BR%
+   1 All RDF data extracted from and otherwise collected about your Box files will be saved to a named graph, where the default name is constructed from the host ODS instance, the ODS username, and the Briefcase folder name -- <code>http://&lt;host&gt;[:&lt;port&gt;]/DAV/home/&lt;user-name&gt;/&lt;folder-name&gt;#this</code> -- so, in this example, the default graph would be named &lt;[[http://example.com/ods/demo/MyBoxFolder#this][http://example.com/ods/demo/MyBoxFolder#this]]&gt;.  Expert users may wish to change this graph name, but the default is suitable for most users.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-07.png" target="_blank"><img src="%ATTACHURLPATH%/step3-07.png" width="600px" /></a>%BR%%BR%
+   1 You can also turn on the [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger][Virtuoso Sponger]], to process your Box files more comprehensively.  When the Sponger is enabled for your folder, you can specify which "Sponger Extractor Cartridges" and "Sponger Meta Cartridges" will be run over the files in your Box.  You can enable all cartridges, but this will introduce some processing overhead.  It's generally best to enable only those cartridges which will be applicable to your files and their content.  For instance, you may know that you'll only be storing Microsoft and Open Office documents here.  Then, click "Authenticate", to connect your new folder to your Box: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-08.png" target="_blank"><img src="%ATTACHURLPATH%/step3-08.png" width="600px" /></a>%BR%%BR%
+   1 You'll be prompted to enter your Box user's credentials.  Note that this Box user need not be the application owner/"developer" who got the API key earlier.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-09.png" target="_blank"><img src="%ATTACHURLPATH%/step3-09.png" width="600px" /></a>%BR%%BR%
+   1 Box will confirm that ODS has been authorized, and you can close that browser window/tab.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-10.png" target="_blank"><img src="%ATTACHURLPATH%/step3-10.png" width="600px" /></a>%BR%%BR%
+   1 Now click <b>Create</b> to finish the process.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-11.png" target="_blank"><img src="%ATTACHURLPATH%/step3-11.png" width="600px" /></a>%BR%%BR%
+   1 Your new Box-linked folder should now be displayed in your Briefcase resources list: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-12.png" target="_blank"><img src="%ATTACHURLPATH%/step3-12.png" width="600px" /></a>%BR%%BR%
+   1 Click the folder name to see the resources ODS-Briefcase has found in your Box Dataspace:
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-13.png" target="_blank"><img src="%ATTACHURLPATH%/step3-13.png" width="600px" /></a>%BR%%BR%
+
+
+---++ Related 
+
+   * [[http://bit.ly/SK7WAI][How Linked Data & WebID Deliver Controlled Access to Resources in Google Drive, Microsoft OneDrive (formerly SkyDrive), DropBox, Box.Net, and Amazon S3]]
+   * [[OdsBriefcaseAmazonS3][Using ODS-Briefcase to mediate access to data stored on Amazon S3]]   
+   * [[OdsBriefcaseDropBox][Using ODS-Briefcase to mediate access to data stored on DropBox]]
+   * [[OdsBriefcaseGoogleDrive][Using ODS-Briefcase to mediate access to data stored on Google Drive]]   
+   * [[OdsBriefcaseSkyDrive][Using ODS-Briefcase to mediate access to data stored on Microsoft OneDrive (formerly SkyDrive)]] 
+   * [[OdsBriefcaseFolders][Manage different Briefcase type folders in Briefcase]]
+   * [[OdsBriefcase][ODS-Briefcase]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger][Virtuoso Sponger]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMeta][Supported Meta Cartridges in Virtuoso]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridges Usage via REST Request]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parameterized Examples of Meta Cartridge Usage via REST Request]]

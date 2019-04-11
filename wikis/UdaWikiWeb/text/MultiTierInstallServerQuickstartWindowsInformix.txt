@@ -1,0 +1,98 @@
+%META:TOPICPARENT{name="MultiTierInstallServerQuickstartWindows"}%
+
+==<nop>OpenLink Multi-tier Server Side Components (Windows) for <nop>Informix==
+
+===Aims and Intentions ===
+
+This guide is intended to enable competent system administrators to install and configure <nop>OpenLink Multi-tier client side components on Windows operating systems in a few steps as possible.
+
+This guide does not explain any of the non-pertinent features encountered along the way. Such explanations may be found in the full documentation.
+
+===Prerequisites===
+
+* You **MUST** be proficient in using Command Prompt (CMD/DOS) window (for preferred testing purposes).
+* There **MUST** be an existing installation of either Informix (full), Informix CSDK, or Informix Connect present on the machine, and you **MUST** know where this installation resides.
+* You **MUST** have a preconfigured <nop>{{{INFORMIX_SERVER}}}.  [[ConfigureInformixClientWindows|This should be configured]] using Informix "{{{setnet32}}}" and connectivity proven using Informix "{{{iLogin Demo}}}".
+
+===Installation===
+
+# Copy all relevant installation components to a suitable starting directory such as your Desktop. At a minimum, these will include the <nop>OpenLink Request Broker, an <nop>OpenLink Database Agent for <nop>Informix, and an <nop>OpenLink license file ({{{oplrqb.lic}}}).
+# Install the <nop>OpenLink Request Broker which will prompt for the license file.
+# Install the <nop>OpenLink Database Agent for <nop>Informix.
+# All installers should finish without error.
+
+===Licensing===
+
+<nop>OpenLink Multi-tier licensing is handled on the server side so you should have provided the location of the license file ({{{oplrqb.lic}}}) during the installation of the Request Broker component.
+
+If you chose to skip that part, you should now copy the license file to {{{c:\Program Files\OpenLink Software\UDA\bin}}} (or the {{{\bin\}}} subdirectory of your custom installation location).
+
+===Configuration===
+
+<nop>Informix requires a small amount of additional environmental configuration in the <nop>OpenLink Request Broker session rule book (c:\Program Files\OpenLink Software\UDA\bin\oplrqb.ini)--
+
+# Open the file {{{c:\Program Files\OpenLink Software\UDA\bin\oplrqb.ini}}} with a suitable text editor, such as Wordpad.
+# Locate and edit the {{{[Environment xxxxx]}}} section (where //{{{xxxxx}}}// matches your target database), and ensure that any relevant environment variables pertaining your system and target database are correct. //**NOTE:** You may need to consult with your database administrator to verify these.//  The following example depicts an environment section for Informix --
+{{{
+[Environment INFORMIX2000]
+INFORMIXSERVER        = your_informix_server
+INFORMIXDIR           = C:\Program Files\IBM\Informix\Client-SDK
+DELIMIDENT            = Y      ; Allow quoted identifiers
+OPL_INF_MULTISESS     = Y      ; Allow multiple sessions
+OPL_SPACEPADCHAR      = Y      ; Pad CHAR fields with spaces
+CURSOR_SENSITIVITY    = LOW    ; Set to HIGH after loading oplrvc.sql
+;FET_BUF_SIZE          = 65535  ; Size of the fetch buffer
+;FORCE_ONLINE_DATABASE = 1      ; Force mode to (0) SE or (1) ONLINE
+;CLIENT_LOCALE         = EN_US.UTF8  ; Uncomment and adjust when Client and Server locale settings differ
+Path                  = C:\Program Files\IBM\Informix\Client-SDK\bin  ; Find shared libraries
+}}}
+
+===Start the <nop>OpenLink Request Broker=== 
+
+==== Starting in Debug Mode ====
+It is often best to initially start the Request Broker in debug mode ({{{oplrqb +debug}}}) in order to diagnose problems.
+
+To do this, you must first stop the "<nop>OpenLink Request Broker" service.
+
+Then, open a "Command Prompt" (Start >> Run... >> CMD) window and --
+{{{
+C:\> cd c:\Program Files\OpenLink Software\UDA\bin
+C:\> oplrqb +debug
+OpenLink Request Broker
+Version 2.47 as of Wed Mar 05 2008 (Release 6.2 cvsid 00089)
+Compiled for Win32 (x86)
+Copyright (C) OpenLink Software  
+
+Registered to OpenLink US Lab - INTERNAL USE ONLY
+with product serial number OPL-US-INTERNAL
+This is a 500 concurrent users license
+restricted to 500 concurrent connections
+Issued by OpenLink Software
+This license will expire on Thu May 22 01:52:13 2008 GMT
+
+using rulebook c:\Program Files\OpenLink Software\UDA\bin\oplrqb.ini
+bound TCP protocol to 0.0.0.0.5000
+created job for controlling agents
+request broker started by garry
+spawning "C:\Program Files\OpenLink Software\UDA\bin\www_sv.exe" +debug +internal 2472
+started persistent www_sv (pid=3356)
+}}}
+The <nop>OpenLink Request Broker will continue to run, taking over the session, until &lt;Ctrl-C&gt; is entered which stops the Broker%BR%
+
+==== Starting Normally ====
+
+To start the <nop>OpenLink Request Broker normally, simply restart the "**<nop>OpenLink Request Broker**" service through the **Services** control panel.
+
+===Testing===
+
+You are now ready to test the connection.  This requires that you read the relevant [[MultiTierQuickStart|quick start guide for client component]] on the chosen operating system and have the <nop>OpenLink Request Broker running in Debug Mode as detailed above.
+
+===Additional Information===
+
+Changes made to {{{c:\Program Files\OpenLink Software\UDA\bin\oplrqb.ini}}} will not take effect until the Request Broker is reinitialized or (in some cases) stopped and restarted.  
+
+Open a "Command Prompt" window and -
+{{{
+C:\> cd c:\Program Files\OpenLink Software\UDA\bin
+C:\> oplshut +reinit
+}}}

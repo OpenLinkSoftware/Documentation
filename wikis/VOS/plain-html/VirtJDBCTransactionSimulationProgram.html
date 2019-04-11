@@ -1,0 +1,79 @@
+<html><body><div class="topic-text"><h1><a name="Virtuoso JDBC Transaction Simulation Program"></a>Virtuoso JDBC Transaction Simulation Program</h1>
+<h2><a name="What"></a> What</h2>
+<p>Java program to simulate Virtuoso Transaction Handling</p>
+<h2><a name="Why"></a> Why</h2>
+<p>It is important to understand Virtuoso Transaction Handling in order to minimise locks and deadlocks in the database, which can adversely affect application performance and stability.</p>
+<h2><a name="How"></a> How</h2>
+<p>The <a href="https://download3.openlinksw.com.s3.amazonaws.com/misc/MTSparqlTest2.java" class="absuri">MTSparqlTest2.java</a> JDBC Transaction Simulation program can be compiled with the <a href="http://download3.openlinksw.com/index.html?prefix=uda/virtuoso/jdbc/" class="absuri">Virtuoso JDBC Driver</a> (for the Java runtime in use) and run as follows:</p>
+<br><pre>javac -cp &quot;./virtjdbc4.jar:.&quot; MTSparqlTest2.java   // Compile program
+java -cp &quot;./virtjdbc4.jar:.&quot; MTSparqlTest2 init    // Loads the test data into Virtuoso instance 
+java -cp &quot;./virtjdbc4.jar:.&quot; MTSparqlTest2         // Run the test
+</pre><p> The program usage is the defined at the beginning of the source file which needs to be amended accordingly depending on what transaction mode or size of params (graphs, triples, threads etc) the test is to be run with:</p>
+<br><pre>
+ static String url = &quot;jdbc:virtuoso://localhost:1111/charset=UTF-8/log_enable=0&quot;;
+ static String uid = &quot;dba&quot;;
+ static String pwd = &quot;dba&quot;;
+
+ static int n_iterations = 100; //how many queries will be executed by thread
+ static int def_tx_isolation = Connection.TRANSACTION_READ_COMMITTED;
+ static int dml_tx_isolation = Connection.TRANSACTION_REPEATABLE_READ;
+ static int select_tx_isolation = Connection.TRANSACTION_READ_COMMITTED;
+ static int n_threads = 10;
+ static int commitAfterNCalls = 4;  // commit after N DML queries
+
+ static int n_graphs = 10;       // count of graphs
+ static int n_g_triples = 10000; // count of triples per graph
+ static int n_g_uniq_obj = 2;    // count of uniq objects per graph
+
+ static int n_top_for_select = 100;
+ static int BATCH_SIZE = 5000;
+
+ static String dml_query =
+                  &quot;select * from (SPARQL define output:format &#39;JSON&#39; \n&quot;
+                 +&quot;PREFIX owl:&lt;http://www.w3.org/2002/07/owl#&gt; \n&quot;
+                 +&quot;DELETE { GRAPH ?g { ?s ?p ?o } } \n&quot;
+                 +&quot;INSERT { GRAPH ?g { ?s ?p &lt;%s&gt; } } \n&quot;
+                 +&quot;WHERE \n&quot;
+                 +&quot;{ \n&quot;
+                 +&quot;    GRAPH ?g { \n&quot;
+                 +&quot;              ?s ?p &lt;%s&gt; . \n&quot;
+                 +&quot;              BIND(&lt;%s&gt; as ?o) . \n&quot;
+                 +&quot;              FILTER (?p != owl:sameAs) \n&quot;
+                 +&quot;            } \n&quot;
+                 +&quot;}) as rdfview FOR UPDATE&quot;;
+
+ static String select_query =
+          &quot;SPARQL SELECT ?s ?p ?o &quot;
+         +&quot;WHERE { \n&quot;
+         +&quot;   GRAPH `iri(??)` {\n&quot;
+         +&quot;               ?s ?p ?o \n&quot;
+         +&quot;                   }\n&quot;
+         +&quot;      } ORDER BY ?s ?p ?o&quot;;
+
+</pre><p> Sample output from program run:</p>
+<br><pre>
+[virtuoso@opllinux5 ~]$ java -cp &quot;./virtjdbc4.jar:.&quot; MTSparqlTest2
+.
+.
+.
+Conn_16 &gt;&gt; iter[U]= 61   Time:3045 ms
+Conn_38 &gt;&gt; iter[S]= 94   Time:3097 ms
+Conn_0 &gt;&gt; iter[S]= 91   Time:1760 ms
+Conn_20 ###Deadlock happened for DML query
+Conn_20 Call rollback
+Conn_20 End rollback Time:1 ms
+Conn_20 &gt;&gt; iter[U]= 99   Time:1959 ms
+Conn_46 &gt;&gt; iter[U]= 97   Time:2 ms
+Conn_46 &gt;&gt; iter[U]= 98   Time:2 ms
+Conn_46 &gt;&gt; iter[U]= 99   Time:1 ms
+===================================
+Conn_47   Time:2506 ms
+Conn_48   Time:2654 ms
+Conn_49   Time:2607 ms
+
+    Exec Time:2870 ms
+   Total Time:3130 ms
+[virtuoso@opllinux5 ~]$
+
+</pre><p> Google Spreadsheet with <a href="https://docs.google.com/spreadsheets/d/1CV8K9aweKf8CSWSlLqDiEPgrouAxsrEPWZ6NlkNLE8U/edit#gid=0" class="absuri">MTSparqlTest2 - JDBC Transaction Simulation Program Results ...</a> </p>
+</div></body></html>

@@ -1,0 +1,100 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+How to convert from Row Store to Column Store Table?
+
+---+++ What
+
+As of version 7, Virtuoso offers a column-wise compressed storage format alongside its traditional row-wise storage format. In the column-wise storage model, each column of a table or index is stored contiguously, so that values of a single column on consecutive rows are physically adjacent. In this way, adjacent values are of the same type, and if the index is sorted on said value, the consecutive values often form an ascending sequence. This organization allows the use of more powerful compression techniques than could be used for rows where consecutive values belong to different columns, and thus are of disparate data types with values in different ranges.
+ 
+
+---+++ Why 
+
+Virtuoso 7 supports both traditional row-wise and column-wise storage formats, with the new column-wise storage format providing 3 times better data compression than row-wise storage and thus  more space efficient in terms of disk space for storing the database on disk and memory for hosting the working set for best performance. Thus at times there will be a need to convert a table from row-size to column-wise storage.
+
+When migrating a Virtuoso 6 (row-wise storage) database to Virtuoso 7 as the migrated database remains in row-wise storage format when started with a Virtuoso 7 binary, they may be a need to convert it to column-wise storage. In the case of a RDF database this is especially recommended as RDF triples tend to be columnar in nature and thus lends themselves very well to column-wise storage, requiring the <code>RDF_QUAD</code> table to be converted.
+
+---+++ How
+
+The process is the same whether your Row Store database was originally created with Virtuoso 6 or Virtuoso 7, and whether your Virtuoso instance is running as a Single-Server or in Cluster mode.
+
+The following steps must be taken to convert each <code>TABLE</code> from Row Store format to Column Store format --
+   1 <code>DROP</code> any <code>INDEX</code> on the existing <code>TABLE</code>
+   1 <code>RENAME</code> the existing <code>TABLE</code>
+   1 <code>CREATE</code> a new <code>TABLE</code> with the original name, including the <code>COLUMN</code> keyword 
+in the <code>CREATE TABLE</code> statement
+   1 <code>CREATE</code> a new <code>INDEX</code> (if relevant) on the new <code>TABLE</code> including the 
+<code>COLUMN</code> keyword in the <code>CREATE INDEX</code> statement
+   1 <code>INSERT</code> the data from the renamed table into the newly created table
+
+Using the Virtuoso <code>RDF_QUAD</code> table as an example the following script can be used to convert it to Column Store format: 
+
+<verbatim>
+
+set echo on;
+
+cl_exec ('checkpoint_interval (0)');
+
+drop index rdf_quad_pogs;
+drop index rdf_quad_sp;
+drop index rdf_quad_op;
+drop index rdf_quad_gs;
+
+alter table rdf_quad rename rq_rows;
+-- remove non-inlined strings, can't fit into O
+delete from rq_rows where isstring (o);
+
+create table RDF_QUAD (
+  G IRI_ID_8,
+  S IRI_ID_8,
+  P IRI_ID_8,
+  O any,
+  primary key (P, S, O, G) column
+  )
+alter index RDF_QUAD on RDF_QUAD partition (S int (0hexffff00))
+create column index RDF_QUAD_POGS on RDF_QUAD (P, O, S, G) partition (O varchar (-1, 0hexffff))
+;
+create distinct no primary key ref column index RDF_QUAD_SP on RDF_QUAD (S, P) partition (S int (0hexffff00))
+create distinct no primary key ref column index RDF_QUAD_GS on RDF_QUAD (G, S) partition (S int (0hexffff00))
+create distinct no primary key ref column index RDF_QUAD_OP on RDF_QUAD (O, P) partition (O varchar (-1, 0hexffff))
+;
+
+-- disable transaction log and use autocommit
+-- as result of query might be too large to fit into transaction
+log_enable(2, 1);
+insert into rdf_quad (g,s,p,o) select g,s,p,o from rq_rows;
+--checkpoint;
+-- reenable transaction log
+log_enable(1, 1);
+</verbatim>
+
+Note for large tables this process will take some time to complete.
+
+The <code>sys_keys</code> table can then be queried to verify if the index type of the table is 
+<code>column</code>, <code>index</code>, <code>bitmap</code> or <code>NULL</code> (indicating row wise table):
+<verbatim>
+SQL> SELECT TOP 10 KEY_TABLE, sys_sql_val_print (KEY_OPTIONS) 
+  FROM sys_keys 
+  WHERE KEY_TABLE = 'DB.DBA.RDF_QUAD' ;
+KEY_TABLE                   sys_sql_val_print
+VARCHAR NOT NULL            VARCHAR
+_______________________________________________________________________________
+
+DB.DBA.RDF_QUAD             vector ('column')
+DB.DBA.RDF_QUAD             vector ('distinct', 'no_pk', 'column', vector (525, 0, 0, '__ALL', vector (vector (0, 'S', 1, 16776960, 0))))
+DB.DBA.RDF_QUAD             vector ('distinct', 'no_pk', 'column', vector (525, 0, 0, '__ALL', vector (vector (0, 'O', 3, -1, 65535))))
+DB.DBA.RDF_QUAD             vector ('column', vector (525, 0, 0, '__ALL', vector (vector (0, 'O', 3, -1, 65535))))
+DB.DBA.RDF_QUAD             vector ('distinct', 'no_pk', 'column', vector (525, 0, 0, '__ALL', vector (vector (0, 'S', 1, 16776960, 0))))
+
+5 Rows. -- 1 msec.
+SQL> 
+</verbatim>
+
+
+
+The online Virtuoso [[http://docs.openlinksw.com/virtuoso/coredbengine.html#colstore][Column Store documentation]] 
+provides much more detail.
+
+---++Related
+
+   * [[http://docs.openlinksw.com/virtuoso/coredbengine.html#colstore][Column Store documentation]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]

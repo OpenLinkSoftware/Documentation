@@ -1,0 +1,132 @@
+%META:TOPICPARENT{name="VirtSetCrawlerJobsGuide"}%
+
+---+Setting up a Content Crawler Job to Retrieve Content from SPARQL endpoint
+
+
+The following step-by guide walks you through the process of:
+
+   * Populating a Virtuoso Quad Store with data from a 3rd party SPARQL endpoint
+   * Generating RDF dumps that are accessible to basic HTTP or WebDAV user agents.
+
+
+   1. Sample SPARQL query producing a list SPARQL endpoints:
+<verbatim>
+PREFIX rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:     <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:      <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:      <http://www.w3.org/2001/XMLSchema#>
+PREFIX foaf:     <http://xmlns.com/foaf/0.1/>
+PREFIX dcterms:  <http://purl.org/dc/terms/>
+PREFIX scovo:    <http://purl.org/NET/scovo#>
+PREFIX void:     <http://rdfs.org/ns/void#>
+PREFIX akt:      <http://www.aktors.org/ontology/portal#>
+
+SELECT DISTINCT ?endpoint 
+WHERE 
+  { 
+    ?ds a void:Dataset . 
+    ?ds void:sparqlEndpoint ?endpoint 
+  }
+</verbatim>
+   1 Here is a sample SPARQL protocol URL constructed from one of the sparql endpoints in the result from the query above:
+<verbatim>
+http://void.rkbexplorer.com/sparql/?query=PREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E+%0D%0APREFIX+void%3A+++++%3Chttp%3A%2F%2Frdfs.org%2Fns%2Fvoid%23%3E++%0D%0ASELECT+distinct+%3Furl++WHERE+%7B+%3Fds+a+void%3ADataset+%3B+foaf%3Ahomepage+%3Furl+%7D%0D%0A&format=sparql
+</verbatim>
+   1 Here is the cURL output showing a Virtuoso SPARQL URL that executes against a 3rd party SPARQL Endpoint URL:
+<verbatim>
+$ curl "http://void.rkbexplorer.com/sparql/?query=PREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E+%0D%0APREFIX+void
+%3A+++++%3Chttp%3A%2F%2Frdfs.org%2Fns%2Fvoid%23%3E++%0D%0ASELECT+distinct+%3Furl++WHERE+%7B+%3Fds+a+void%3ADataset+%3B+foaf%3Ah
+omepage+%3Furl+%7D%0D%0A&format=sparql"
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="url"/>
+  </head>
+  <results ordered="false" distinct="true">
+    <result>
+      <binding name="url"><uri>http://kisti.rkbexplorer.com/</uri></binding>
+    </result>
+    <result>
+      <binding name="url"><uri>http://epsrc.rkbexplorer.com/</uri></binding>
+    </result>
+    <result>
+      <binding name="url"><uri>http://test2.rkbexplorer.com/</uri></binding>
+    </result>
+    <result>
+      <binding name="url"><uri>http://test.rkbexplorer.com/</uri></binding>
+    </result>
+    ...
+    ...
+    ...
+  </results>
+</sparql>
+</verbatim>
+   1 Go to Conductor UI. For ex. http://localhost:8890/conductor :
+%BR%%BR%<a href="%ATTACHURLPATH%/scp1.png" target="_blank"><img src="%ATTACHURLPATH%/scp1.png" width="600px" /></a>%BR%%BR%
+   1 Enter dba credentials
+   1 Go to "Web Application Server"-> "Content Management" -> "Content Imports"
+%BR%%BR%<a href="%ATTACHURLPATH%/scp2.png" target="_blank"><img src="%ATTACHURLPATH%/scp2.png" width="600px" /></a>%BR%%BR%
+   1 Click "New Target"
+%BR%%BR%<a href="%ATTACHURLPATH%/scp3.png" target="_blank"><img src="%ATTACHURLPATH%/scp3.png" width="600px" /></a>%BR%%BR%
+   1 In the presented form enter for ex.:
+      * "Crawl Job Name": voiD store
+      * "Data Source Address (URL)": the url from above i.e.:
+<verbatim>
+http://void.rkbexplorer.com/sparql/?query=PREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E+%0D%0APREFIX+void%3A+++++%3Chttp%3A%2F%2Frdfs.org%2Fns%2Fvoid%23%3E++%0D%0ASELECT+distinct+%3Furl++WHERE+%7B+%3Fds+a+void%3ADataset+%3B+foaf%3Ahomepage+%3Furl+%7D%0D%0A&format=sparql
+</verbatim>
+      * "Local WebDAV Identifier": 
+<verbatim>
+/DAV/void.rkbexplorer.com/content
+</verbatim>
+      * "Follow links matching (delimited with ;)": 
+<verbatim>
+%
+</verbatim>
+      * Un-hatch "Use robots.txt" ;
+      * "XPath expression for links extraction": 
+<verbatim>
+//binding[@name="url"]/uri/text()
+</verbatim>
+      * Hatch "Semantic Web Crawling";
+      * "If Graph IRI is unassigned use this Data Source URL:": enter for ex:
+<verbatim>
+http://void.collection
+</verbatim>
+      * Hatch "Follow URLs outside of the target host";
+      * Hatch "Run "Sponger" and "Accept RDF"
+%BR%%BR%<a href="%ATTACHURLPATH%/scp4.png" target="_blank"><img src="%ATTACHURLPATH%/scp4.png" width="600px" /></a>
+%BR%<a href="%ATTACHURLPATH%/scp5.png" target="_blank"><img src="%ATTACHURLPATH%/scp5.png" width="600px" /></a>%BR%%BR%
+   1 Click "Create".
+   1 The target should be created and presented in the list of available targets:
+%BR%%BR%<a href="%ATTACHURLPATH%/scp7.png" target="_blank"><img src="%ATTACHURLPATH%/scp7.png" width="600px" /></a>%BR%%BR%
+   1 Click "Import Queues":
+%BR%%BR%<a href="%ATTACHURLPATH%/scp8.png" target="_blank"><img src="%ATTACHURLPATH%/scp8.png" width="600px" /></a>%BR%%BR%
+   1 Click "Run" for the imported target:
+%BR%%BR%<a href="%ATTACHURLPATH%/scp9.png" target="_blank"><img src="%ATTACHURLPATH%/scp9.png" width="600px" /></a>%BR%%BR%
+   1 To check the retrieved content go to "Web Application Server"-> "Content Management" -> "Content Imports" -> "Retrieved Sites":
+%BR%%BR%<a href="%ATTACHURLPATH%/scp11.png" target="_blank"><img src="%ATTACHURLPATH%/scp11.png" width="600px" /></a>%BR%%BR%
+   1 Click voiD store -> "Edit":
+%BR%%BR%<a href="%ATTACHURLPATH%/scp12.png" target="_blank"><img src="%ATTACHURLPATH%/scp12.png" width="600px" /></a>%BR%%BR%
+   1 To check the imported URLs go to "Web Application Server"-> "Content Management" -> "Repository" path <b>DAV/void.rkbexplorer.com/content</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/scp10.png" target="_blank"><img src="%ATTACHURLPATH%/scp10.png" width="600px" /></a>%BR%%BR%
+   1 To check the inserted into the RDF QUAD data go to http://cname/sparql and execute the following query:
+<verbatim>
+SELECT * 
+FROM <http://void.collection> 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+%BR%%BR%<a href="%ATTACHURLPATH%/scp13.png" target="_blank"><img src="%ATTACHURLPATH%/scp13.png" width="600px" /></a>%BR%%BR%
+%BR%%BR%<a href="%ATTACHURLPATH%/scp14.png" target="_blank"><img src="%ATTACHURLPATH%/scp14.png" width="600px" /></a>%BR%%BR%
+
+
+---++Related
+
+
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodvirtuosocrawler][Setting up a Content Crawler Job to Add RDF Data to the Quad Store]]
+   * [[VirtSetCrawlerJobsGuideSitemaps][Setting up a Content Crawler Job to Retrieve Sitemaps]] (when the source includes RDFa)
+   * [[VirtSetCrawlerJobsGuideSemanticSitemaps][Setting up a Content Crawler Job to Retrieve Semantic Sitemaps]] (a variation of the standard sitemap)
+   * [[VirtSetCrawlerJobsGuideDirectories][Setting up a Content Crawler Job to Retrieve Content from Specific Directories]]
+   * [[VirtCrawlerGuideAtom][Setting up a Content Crawler Job to Retrieve Content from ATOM feed]]

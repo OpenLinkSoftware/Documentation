@@ -1,0 +1,112 @@
+%META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%
+---+ <nop>WebID+TLS+Delegation ACL Testing
+
+A basic <nop>WebID+TLS+Delegation connection can now be made as detailed below.
+
+First the Public Key (PEM file) for the Virtuoso self-signed certificate created previously when performing the [[VirtWTDServerSetup][Virtuoso TLS Setup]] needs to be downloaded from the <code>dba</code> user account.  In the Conductor, a <b>download</b> link for each available cryptographic key may be found in the <b>System Admin -> User Accounts -> Users</b> tab:
+ %BR%%BR% <img src="%ATTACHURLPATH%/VirtWTDACLTesting-01.png" style="wikiautogen" height="350" width="640"/> %BR%%BR% 
+Once downloaded, the PEM file may be loaded into an Operating System Keystore such that it is automatically available when needed, or passed in the connect string as the server public key (<code>-T</code> parameter), to provide a full chain of trust for the connection. Note the public key (PEM file) for the <nop>YouID generated certificate (e.g., <code>[[https://download3.openlinksw.com/certificates/ca_list_shop_2016.pem][ca_list_shop_2016.pem]]</code>) and the Virtuoso PEM file can be combined into a single PEM file, which may then be passed to Virtuoso as part of the TLS connect string.
+
+The <code>isql</code> command line tool may be used to verify the <nop>WebID+TLS+Delegation connection, as shown below:
+<verbatim>
+C:\Program Files\OpenLink Software\Virtuoso 7.2\database>..\bin\isql 1113 "" 1 -X WebIDTlsDelegation_id_myopenlink_net.p12 -T ca_list_shop_2016.pem -W http://id.myopenlink.net/DAV/home/wtd/YouID/WebIDTlsDelegation_id_myopenlink_net/profile.ttl#wtd
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL> sparql SELECT COUNT (*) FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> WHERE {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+2
+
+1 Rows. -- 16 msec.
+SQL> sparql SELECT COUNT (*) FROM <penPermID-bulk-industry-20151111_095806.ttl.gz> WHERE {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+0
+
+1 Rows. -- 16 msec.
+SQL> SELECT * FROM sys_users;
+
+*** Error 42000: [OpenLink][Virtuoso ODBC Driver][Virtuoso Server]ACL01: Statement is prohibited
+at line 3 of Top-Level:
+SELECT * FROM sys_users
+SQL>
+</verbatim>
+
+<code>isql</code> can also be used to verify that connections using another user's <nop>WebID profile document (<code>-W</code> parameter) that has not been configured to allow the delegation of connections <nop>OnBehalfOf the Software agent, cannot execute SPARQL queries:
+<verbatim>
+C:\Program Files\OpenLink Software\Virtuoso 7.2\database>..\bin\isql 1113 "" 1 -X WebIDTlsDelegation_id_myopenlink_net.p12 -T ca_list_shop_2016.pem -W http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL> sparql SELECT COUNT (*) FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> WHERE {?s ?p ?o};
+
+*** Error 42000: [OpenLink][Virtuoso ODBC Driver][Virtuoso Server]SQ033: SELECT access denied for column G of table DB.DBA.RDF_QUAD, user ID 5
+at line 1 of Top-Level:
+sparql SELECT COUNT (*) FROM <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> WHERE {?s ?p ?o}
+SQL>
+</verbatim>
+
+---++ ODBC Connection
+
+Details on how to configure and make and ODBC Connections can be found at:
+
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/WebIDTLSDelegationWhatWhyHow#ODBC%20Connection][ODBC DSN Configuration]]
+   * [[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/WebIDTLSDelegationWhatWhyHow#ODBC%20CPPDemo%20Interactive%20SQL%20Application][CPPDemo Sample Application]]
+
+---++Tracing
+
+The VAL Configuration UI, accessible through the Conductor menus and links "System Admin > Packages > VAL Configure", includes a tracing option to debug SQL client connections made using certificates. 
+
+<img src="%ATTACHURLPATH%/trace_sql_cert_logins.png" style="wikiautogen"/>
+
+When enabled, console trace output similar to that below shows the progress of the login and delegation.
+<verbatim>
+isql localhost:2113 "" 1 -X ./keys/software_agent.p12 -T ./keys/ca_list_shop_2016_with_localhost.pem -W http://id.myopenlink.net/DAV/home/jsmith/youid_profile.ttl#i
+</verbatim>
+
+<verbatim>
+DB.DBA.USER_CERT_LOGIN: Checking VAL ACLs for Query scope in SQL realm
+DB.DBA.WEBID_CHECK_DELEGATE: Looking for existence of: <http://kingsley.idehen.net/DAV/home/kidehen/agent-profile-document.ttl#i> cert:onBehalfOf <http://id.myopenlink.net/DAV/home/jsmith/youid_profile.ttl#i> in <http:59FB336FB5FA814F086C2AD38D37D53C>
+DB.DBA.WEBID_CHECK_DELEGATE: Found onBehalfOf relation. Loading profile document http://id.myopenlink.net/DAV/home/jsmith/youid_profile.ttl
+DB.DBA.WEBID_CHECK_DELEGATE: Found public key of software agent in delegating user's profile document
+DB.DBA.USER_CERT_LOGIN: Agent/WebID <http://id.myopenlink.net/DAV/home/jsmith/youid_profile_160420.ttl#i>
+			has SPARQL permissions: read: 1, write: 0, sponge: 0
+DB.DBA.USER_CERT_LOGIN: Setting graph security callback
+</verbatim>
+
+---++Trouble Shooting
+
+   * If when making a SQL connection with the VAL <code>Trace certificate based SQL client logins</code> option enabled the error "<nowiki>DB.DBA.USER_CERTLOGIN: Agent/WebID <Web-ID> has no SPARQL permissions - Reverting to normal non-VAL authentication</nowiki>" followed by the error "<nowiki>DB.DBA.WEBID_CHECKAUTH: <nop>WebID certificate-based authentication unsuccessful. Trying fingerprint authentication and other identity claims</nowiki>", then the URIQA <nop>DefaultHost setting in the INI (virtuoso.ini) file does not match the {URIQA-<nop>DefaultHost-INI-file-setting} in the ACL script as detailed in the  [[VirtWTDVALACLCreation][<nop>WebID+TLS+Delegation VAL ACL Creation]] documentation, and needs to be corrected. See example of complete trace output:
+<verbatim>
+DB.DBA.WEBID_CHECK_AUTH: Extracting all WebID URIs from the X.509 certificate
+DB.DBA.WEBID_CHECK_AUTH: Checking WebID <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#identity>
+DB.DBA.WEBID_CHECK_AUTH: Loading WebID profile document <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl>
+DB.DBA.WEBID_CHECK_DELEGATE: Looking for existence of: <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#identity> cert:onBehalfOf <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#REALLY> in <http:9D35760D86713028E737210F35F913CF>
+DB.DBA.WEBID_CHECK_DELEGATE: Found onBehalfOf relation. Loading profile document http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl
+DB.DBA.WEBID_CHECK_DELEGATE: Found public key of software agent in delegating user's profile document
+DB.DBA.WEBID_CHECK_AUTH: Returning WebID <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#REALLY>
+DB.DBA.USER_CERT_LOGIN: Agent/WebID <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#REALLY> has no SPARQL permissions - Reverting to normal non-VAL authentication
+DB.DBA.WEBID_CHECK_AUTH: Extracting all WebID URIs from the X.509 certificate
+DB.DBA.WEBID_CHECK_AUTH: Checking WebID <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#identity>
+DB.DBA.WEBID_CHECK_AUTH: Loading WebID profile document <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl>
+DB.DBA.WEBID_CHECK_DELEGATE: Looking for existence of: <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#identity> cert:onBehalfOf <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#REALLY> in <http:9D35760D86713028E737210F35F913CF>
+DB.DBA.WEBID_CHECK_DELEGATE: Found onBehalfOf relation. Loading profile document http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl
+DB.DBA.WEBID_CHECK_DELEGATE: Found public key of software agent in delegating user's profile document
+DB.DBA.WEBID_CHECK_AUTH: WebID certificate-based authentication unsuccessful. Trying fingerprint authentication and other identity claims
+DB.DBA.WEBID_CHECK_AUTH: Returning WebID <http://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl#REALLY>)
+DB.DBA.USER_CERT_LOGIN: After FOAF_SSL_LOGIN: user_name: (NULL), rc: 0
+</verbatim>
+
+---+++Related
+
+   * [[VirtWTDServerSetup][Virtuoso Server WebID+TLS+Delegation Setup]]
+   * [[VirtWTDSoftwareAgentDocCreation][Software Agent & WebID Profile Document Creation]]
+   * [[VirtWTDVALACLCreation][WebID+TLS+Delegation VAL ACL Creation]]
+   * [[VirtWTDWebIdProfileDocInNamedGraph][Using Named Graph for hosting WebID Profile Document Data]]

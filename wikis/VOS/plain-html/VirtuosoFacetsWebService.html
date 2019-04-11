@@ -1,0 +1,171 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VOSIndex"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VOSIndex"}%--><p> </p>
+<h1><a name="Faceted Browsing Service"></a> Faceted Browsing Service</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What">What</a></li> <li><a href="#Why">Why</a></li> <li><a href="#How">How</a></li>
+<ul><li><a href="#Customizing">Customizing</a></li> <li><a href="#Examples%20for%20Customizing">Examples for Customizing</a></li> <li><a href="#Choice%20of%20Labels">Choice of Labels</a></li><ul><li><a href="#Examples%20for%20Choice%20of%20Labels">Examples for Choice of Labels</a></li> <li><a href="#Enable%20Labels">Enable Labels</a></li> </ul><li><a href="#WebService%20Interfaces">WebService<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebService&parent=VirtuosoFacetsWebService" class="wikiword">?</a> Interfaces</a></li><ul><li><a href="#REST%20Interface">REST Interface</a></li><ul><li><a href="#Examples%20Using%20CURL%20program">Examples Using CURL program</a></li> </ul><li><a href="#SOAP%20Interface">SOAP Interface</a></li> <li><a href="#Example%20for%20SOAP%20Interface">Example for SOAP Interface</a></li> </ul><li><a href="#Virtuoso%20Facets%20API%20for%20REST%20services">Virtuoso Facets API for REST services</a></li> <li><a href="#Tutorials">Tutorials</a></li> <li><a href="#Related">Related</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What"></a>What</h2>
+<p>The Virtuoso Faceted Browser service is a general purpose RDF data query facility for faceted browsing over entity relationship types (i.e.
+ relations).
+ It takes an XML or JSON description of the desired view, and generates the reply in the form of  XML or JSON documents comprised of the requested data.
+ For The user agent or a local web page can use XSLT for rendering out for end users, when XML documents are returned.
+ Likewise, JSON oriented tools can be used to transform  JSON documents as part of user experience via Javascript based applications.</p>
+<h2><a name="Why"></a>Why</h2>
+<p>The selection of facets and values is represented as an XML tree.
+ Such a representation is easier to process in an application than the SPARQL source text or a parse tree of SPARQL, and more compactly captures the specific subset of SPARQL needed for faceted browsing.
+ The Web service also returns the SPARQL source text, which can serve as a basis for hand-crafted queries.</p>
+<h2><a name="How"></a>How</h2>
+ The top element of the tree is <code>&lt;query&gt;</code>.
+ It must be in namespace &quot;<code>http://openlinksw.com/services/facets/1.0/</code>&quot;.<p>The <code>&lt;query&gt;</code> element has the following attributes:</p>
+<p> </p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=0&col=1">Attribute</a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=1&col=2">Description</a></th></tr><tr><td><code><b>graph</b>=&quot;graph_iri&quot;</code></td><td>installed default is to search in all graphs, but system defaults may override this</td></tr><tr><td><code><b>timeout</b>=&quot;no_of_msec&quot;</code></td><td>installed default is no timeout, but system defaults may override this</td></tr><tr><td><code><b>inference</b>=&quot;name&quot;</code></td><td>where <code>name</code> is the name of an inference context declared with <code>rdfs_rule_set</code>.</td></tr><tr><td><code><b>same-as</b>=&quot;boolean&quot;</code></td><td>If &quot;<code>boolean</code>&quot; is &quot;<code>yes</code>&quot;, then <code>owl:sameAs</code> links will be considered in the query evaluation.</td></tr></table>
+<p> The result is a tree of the form: </p>
+<br><pre>&lt;facets xmlns=&quot;http://openlinksw.com/services/facets/1.0/&quot;&gt;
+  &lt;result&gt;
+    &lt;row&gt;
+      &lt;column datatype=&quot;...&quot; shortform=&quot;...&quot; xml:lang=&quot;...&quot;&gt;...&lt;/column&gt;
+    &lt;/row&gt;
+  &lt;/result&gt; 
+  &lt;time&gt;msecs&lt;/time&gt;
+  &lt;complete&gt;yes or no&lt;/complete&gt;
+  &lt;db-activity&gt;resource use string&lt;/db-activity&gt;
+  &lt;sparql&gt;sparql statement text&lt;/sparql&gt;
+</pre><p>By convention, the first column is the subject selected by the view element, typically a URI; the second is a label of the URI; and the third, if present, is either a count or a search summary.</p>
+<p>The first column&#39;s text child is the text form of the value.
+ The column element has the following attributes qualifying this further:</p>
+
+<table class="wikitable">
+<tr><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=2&col=1">Attribute</a></th><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=3&col=2">Description</a></th></tr>
+<tr><td><code><b>datatype</b></code></td><td>The xsd type of the value. If this is a URI, the datatype is &quot;<code>uri</code>&quot;.</td></tr>
+<tr><td><code><b>shortform</b></code></td><td>If the value is a URI, this is an abbreviated form where known namespaces are replaced with their prefixes, and very long URIs are middle-truncated, preserving start and end.</td></tr>
+<tr><td><code><b>xml:lang</b></code></td><td>if the value is a language tagged string, this is the language.</td></tr>
+</table>
+<p>The query has the top level element &lt;query&gt;.
+ The child elements of this represent conditions pertaining to a single subject.
+ A join is expressed with the property or property-of element.
+ This has in turn children which state conditions on a property of the first subject.
+ <b>property</b> and <b>property-of elements</b> can be nested to an arbitrary depth and many can occur inside one containing element.
+ In this way, tree-shaped structures of joins can be expressed.</p>
+<p>Expressing more complex relationships, such as intermediate grouping, subqueries, arithmetic or such requires writing the query in SPARQL.
+ The XML format is a shorthand for easy automatic composition of queries needed for showing facets, not a replacement for SPARQL.</p>
+<p>A facet query contains a single view element.
+ This specifies which subject of the joined subjects is shown.
+ Its attributes specify the manner of viewing, e.g., a list of distinct values, a list of distinct values with occurrence counts, a list of properties or classes of the selected subjects, etc.</p>
+<p>The top query element or any property or property-of element can have the following types of children:</p>
+<p> </p>
+
+<table class="wikitable">
+<tr><th id="4"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=4&col=1">Type of children</a></th><th id="5"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=5&col=2">Description</a></th></tr>
+<tr><td><code><b>&lt;text property=&quot;iri&quot;&gt;text pattern&lt;/text&gt;</b></code></td><td>The subject has an O that matches the text pattern. If property is given, the text pattern must occur in a value of this property. If not specified, any property will do. The value &quot;none&quot; for property is the same as not specifying a property. This is restricted to occurring directly under the top level query element.</td></tr>
+<tr><td><code><b>&lt;class iri=&quot;iri&quot; inference=&quot;ctx_name&quot; /&gt;</b></code></td><td> The S must be an instance of this class. If inference is specified then option (input:inference &quot;ctx_name&quot; is added and applies to this pattern alone.</td></tr>
+<tr><td><code><b>&lt;property iri=&quot;iri&quot; same_as=&quot;yes&quot; inference=&quot;ctx_name&quot;&gt;</b></code></td><td>The child elements of this are conditions that apply to the value of this property of the S that is in scope in the enclosing <code>&lt;query&gt;</code> or <code>&lt;property&gt;</code> element. If <code>same_as</code> is present, then option <code>(input:same-as &quot;yes&quot;)</code> is added to the triple pattern which specifies this property. If inference is present, then option<code> (input:inference &quot;ctx_name&quot;)</code> is added to the triple pattern for the property.</td></tr>
+<tr><td><code><b>&lt;property-of iri=&quot;iri&quot; same_as=&quot;yes&quot; inference=&quot;ctx_name&quot; &gt;</b></code></td><td>The child elements of this are conditions that apply to an S which has property &quot;iri&quot; whose object is the S in scope in the enclosing <code>&lt;query&gt;</code> or <code>&lt;property&gt;</code> element. The options are otherwise the same as with property.</td></tr>
+<tr><td><code><b>&lt;value datatype=&quot;type&quot; xml:lang=&quot;lng&quot; op=&quot;= | &lt; | &gt; | &gt;= |</b></code></td><td> &lt;=&quot;&gt;value &lt;/value&gt;| When this occurs inside <code>&lt;property&gt;</code> or <code>&lt;property-of&gt;</code> this means that the property in scope has the specified relation to the value. type and language can be used for XML typed or language tagged literals. The &quot;uri&quot; type means that the value is a qualified name of a URI. If this occurs directly under the <code>&lt;query&gt;element,</code> this means that the query starts with a fixed subject. If this is so, then there must be property or propertyof elements or the view element must specify properties or classes, list is not allowed as a view type. This is so because the query must have at least one triple pattern.</td></tr>
+<tr><td><code><b>&lt;view type=&quot;view&quot; limit=&quot;n&quot; offset=&quot;n&quot; &gt;</b></code></td><td> This may occur once inside a <code>&lt;query&gt;</code> element but may occur either at top level or inside property or property-of elements. This specifies what which subject is presented in the result set.</td></tr>
+</table>
+<p> The type can be:</p>
+
+<table class="wikitable">
+<tr><th id="6"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=6&col=1">Label</a></th><th id="7"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=7&col=2">Syntax Usage</a></th></tr>
+<tr><td><b>properties</b></td><td><verbatim><br>SELECT  ?p COUNT (*)<br>WHERE  { ?this_s  ?p  ?any_o ... }<br>GROUP BY  ?p<br>ORDER BY  DESC 2 <br>LIMIT 1 <br> OFFSET 0</verbatim></td></tr>
+<tr><td><b>properties-in</b></td><td>SELECT  ?p<br>COUNT (*)<br>WHERE  { ?any_s  ?p  ?this_s ... }<br>GROUP BY  ?p<br>ORDER BY  DESC 2<br>LIMIT 1<br>OFFSET 0</td></tr>
+<tr><td><b>classes</b></td><td>SELECT  ?c  COUNT (*)<br>WHERE {?xx  a  ?c ... }<br>GROUP BY  ?c<br>ORDER BY DESC 2<br>LIMIT 1<br>OFFSET 0</td></tr>
+<tr><td><b>text</b></td><td><verbatim><br>SELECT DISTINCT  ?s (bif:search_excerpt (sql:search_terms (&quot;pattern&quot;), ?o))<br>WHERE { ... }<br>ORDER BY ?s<br>LIMIT 1<br>OFFSET 0<br></verbatim></td></tr>
+<tr><td><b>list</b></td><td><verbatim><br>SELECT DISTINCT  ?s long::sql:fct_label (?s)<br>WHERE { ... }<br>ORDER BY ?s<br>LIMIT 1<br>OFFSET 0<br></verbatim></td></tr>
+<tr><td><b>list-count</b></td><td><verbatim><br>SELECT  ?s COUNT (*)<br>WHERE { ... }<br>GROUP BY ?s<br>ORDER BY DESC 2<br></verbatim></td></tr>
+<tr><td><b>alphabet</b></td><td><verbatim><br>SELECT  (sql:subseq (?s, 0, 1)) COUNT (*)<br>WHERE { ... }<br>GROUP BY (sql:subseq (?s, 0, 1))<br>ORDER BY 1<br></verbatim></td></tr>
+<tr><td><b>geo</b></td><td><verbatim><br>SELECT  DISTINCT ?lat ?long ?s<br>WHERE { ?s geo:lat ?lat .<br>?s  geo:long  ?long  .<br>... }<br></verbatim></td></tr>
+<tr><td><b>years</b></td><td><verbatim><br>SELECT  sql::year (?s)  COUNT (*) <br>WHERE { ... }<br>GROUP BY  (bif:year (?s))<br>ORDER BY 1<br>LIMIT 1<br>OFFSET 0<br></verbatim></td></tr>
+<tr><td><b>months</b></td><td><verbatim><br>SELECT  sql::round_month (?s) COUNT (*)<br>WHERE { ... }<br>GROUP BY  (sql:round_month (?s))<br>ORDER BY 1<br>LIMIT 1<br>OFFSET 0<br></verbatim></td></tr>
+<tr><td><b>weeks</b></td><td><verbatim><br>SELECT  sql::round_week (?s) COUNT (*)<br>WHERE { ... }<br>GROUP BY  (sql:round_week (?s))<br>ORDER BY 1<br>LIMIT 1<br>OFFSET 0<br></verbatim></td></tr>
+<tr><td><b>describe</b></td><td><verbatim><br>DESCRIBE  ?s<br>WHERE { ... }<br>LIMIT 1<br>OFFSET 0<br></verbatim></td></tr>
+</table>
+<p> </p>
+<h3><a name="Customizing"></a> Customizing</h3>
+<p>The following types of customization will be generally useful:</p>
+<ul><li>Resource accounting and limitations, managing access and login </li>
+<li>Localization, choice of labels shown with class/property/instance URIs </li>
+<li>Adding types of views, for example timelines, map or business graphics </li>
+<li>Controlling navigation, for example choosing what type of view is initially presented when opening a given property.
+</li>
+<li>Page layout, captions, help texts, etc.</li>
+</ul><p>The source code is deivided in two SQL files and a number of XSLT sheets.
+The file <code>facet.sql</code> has the code for the web service.
+ The <code>facet_view.sql</code> file contains the procedures for the sample HTML interface.</p>
+<h3><a name="Examples for Customizing"></a> Examples for Customizing</h3>
+<p>See a detailed collection of examples <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceCustmExamples" class="wikiword">here</a>.</p>
+<h3><a name="Choice of Labels"></a> Choice of Labels</h3>
+<p>The Virtuoso Facets web service offers the feature of using label inferencing for better labels handling.
+ This enables the automated use labels for anchor text in faceted browser pages across property names and their values, when value is a URI reference.</p>
+<p>We use inference for labels called &quot;facets&quot;.
+ The inference is: </p>
+<br><pre>-- The SPARUL statement for loading it into the Quad Store:
+SPARQL INSERT INTO GRAPH &lt;facets&gt; 
+  {
+    rdfs:label     rdfs:subPropertyOf  virtrdf:label  .
+    dc:title       rdfs:subPropertyOf  virtrdf:label  .
+    foaf:name      rdfs:subPropertyOf  virtrdf:label  .
+    foaf:nick      rdfs:subPropertyOf  virtrdf:label  .
+    geonames:name  rdfs:subPropertyOf  virtrdf:label  .
+  }
+
+--Making the rule from the graph:
+rdfs_rule_set (&#39;facets&#39;, &#39;facets&#39;);
+</pre><p> <b>Note</b>: In case a labels oriented inference rule already exists e.g., for <code>virtrdf-label</code>, then all you need to do is run the procedure:</p>
+<br><pre>rdfs_rule_set(&#39;facets&#39;,&#39;virtrdf-label&#39;);
+</pre><h4><a name="Examples for Choice of Labels"></a> Examples for Choice of Labels</h4>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceChoiceExample" class="wikiword">Choice of Labels</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksCustomControlLabelsURI" class="wikiword">Custom Controlling Virtuoso Labels for URI functionality</a></li>
+</ul><p> </p>
+<h4><a name="Enable Labels"></a>Enable Labels</h4>
+ To enable the labels, user &quot;dba&quot;should do: <br><pre>registry_set (&#39;fct_desc_value_labels&#39;, &#39;1&#39;);
+</pre><p> Otherwise the labels will be off by default.</p>
+<h3><a name="WebService Interfaces"></a> WebService Interfaces</h3>
+<h4><a name="REST Interface"></a> REST Interface</h4>
+<p>The Virtuoso Facets web service provide the following REST interface:</p>
+
+<table class="wikitable">
+<tr><th id="8"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=8&col=1">Component</a></th><th id="9"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService?sort=9&col=2">Description</a></th></tr>
+<tr><td>Service description</td><td>* Endpoint: <code>http://cname/fct/service</code> or <code>http://lod.openlinksw.com/fct/service</code><br>* HTTP method: <code>POST</code><br>* Content-Type: MUST be &#39;<code>text/xml</code>&#39;<br>* The entity body must be XML document with top element &#39;<code>query</code>&#39; as described above. <br>* The request response namespace MUST be &quot;<code>http://openlinksw.com/services/facets/1.0</code>&quot;</td></tr>
+<tr><td>Error conditions</td><td>All error conditions are reported via &#39;<code>&lt;error&gt;Error explanation&lt;/error&gt;</code>&#39;</td></tr>
+<tr><td>Files</td><td>The <code>facet_svc.sql</code> contains web service code and virtual directory mapping, and it uses <code>fct_req.xsl</code> and <code>fct_resp.xsl</code> as request and response filters.</td></tr>
+</table>
+<h5><a name="Examples Using CURL program"></a>Examples Using CURL program</h5>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceCURLExample1" class="wikiword">Example 1</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceCURLExample2" class="wikiword">Example 2</a></li>
+</ul><h4><a name="SOAP Interface"></a> SOAP Interface</h4>
+<p>The facet web service is also available via SOAP protocol.</p>
+<p>The request message contains single element &#39;query&#39; with syntax explained earlier.
+ Also the SOAPAction HTTP header should be &#39;#query&#39;.
+ After successful evaluation of the query, the service will return a SOAP envelope containing in the Body element single &#39;facets&#39; element described above.</p>
+<p> </p>
+<h4><a name="Example for SOAP Interface"></a> Example for SOAP Interface</h4>
+<p>See a detailed example <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceSOAPExample" class="wikiword">here</a>.</p>
+<h3><a name="Virtuoso Facets API for REST services"></a> Virtuoso Facets API for REST services</h3>
+<p>A full list of Facets API calls for REST services can be viewed <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIs" class="wikiword">here</a>.</p>
+<h3><a name="Tutorials"></a>Tutorials</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoLODSampleTutorial" class="wikiword">Faceted Browsing Sample using LOD Cloud Cache data space</a>.</li>
+</ul><h3><a name="Related"></a> Related</h3>
+<ul><li>Linked Data: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsViewsLinkedData" class="wikiword">Faceted Views over Large-Scale Linked Data</a> </li>
+</ul></li>
+<li>Facet Browser Installation and configuration: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfig" class="wikiword">Virtuoso Facet Browser Installation and configuration</a> </li>
+</ul></li>
+<li>Facet APIs: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIs" class="wikiword">Virtuoso APIs for FCT REST services</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIsFCTEXEC" class="wikiword"><code><nowiki>fct_exec</nowiki></code> API Example</a> </li>
+</ul></li>
+<li>Pivot Viewer and CXML: <ul><li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxmlFacetPivotBridge#AncSparqlCxmlFacetPivotBridge" class="absuri">Facet Pivot Bridge -  A bridge to PivotViewer from Virtuoso&#39;s Faceted query service for RDF</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxml#AncFacetTypeAutoDetection" class="absuri">Auto-Detection of Facet Type</a> </li>
+</ul></li>
+<li>Tutorials: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoLODSampleTutorial" class="wikiword">Faceted Browsing Sample using LOD Cloud Cache data space</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceSOAPExample" class="wikiword">SOAP Facets Example</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfigQueried" class="wikiword">Querying The Facet Browser Web Service endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFCTFeatureQueries" class="wikiword">Virtuoso Facet Browser Featured Queries</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtVisualizeWithPivotViewer#GenFCT" class="absuri">Visualizing Your Data With PivotViewer Using The Facet Browser</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksCustomControlLabelsURI" class="wikiword">Custom Controlling Virtuoso Labels for URI functionality Example</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceCustmExamples" class="wikiword">Facets Web Service: Examples for customizing different types</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceChoiceExample" class="wikiword">Facets Web Service: Choice of Labels Example</a> </li>
+</ul></li>
+<li>Downloads: <ul><li><a href="http://shop.openlinksw.com/license_generator/virtuoso-download/" class="absuri">Latest Virtuoso</a> </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso Facet Browser VAD package</a></li>
+</ul></li>
+</ul></div></body></html>

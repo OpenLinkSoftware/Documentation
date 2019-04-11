@@ -1,0 +1,44 @@
+<docbook><section><title>TheDecimalFieldPrecisionIsTooSmallToAcceptTheNumericYouAttemptedToAdd</title><title> Error Message: The decimal field precision is too small to accept the numeric you attempted to add. </title> Error Message: <computeroutput>The decimal field precision is too small to accept the numeric you attempted to add.</computeroutput> 
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Problem</bridgehead>
+<para>Informix&#39;s <computeroutput>DECIMAL</computeroutput> type can hold both fixed-point and floating-point values.</para><itemizedlist mark="bullet" spacing="compact"><listitem> <computeroutput>DECIMAL (p,s)</computeroutput> — Holds fixed point values with precision <computeroutput>p</computeroutput>, scale <computeroutput>s</computeroutput>.
+ <computeroutput>p &lt;= 32</computeroutput>, <computeroutput>s &lt;= p</computeroutput>, range <computeroutput>10^-130 - 10^124</computeroutput>.
+</listitem>
+<listitem> <computeroutput>DECIMAL (p)</computeroutput> — <itemizedlist mark="bullet" spacing="compact"><listitem> Non-ANSI db — Holds floating point data with precision <computeroutput>p</computeroutput>.
+</listitem>
+<listitem> ANSI db — <computeroutput>DECIMAL (p)</computeroutput> interpreted as <computeroutput>DECIMAL(p,0)</computeroutput>.
+</listitem>
+</itemizedlist></listitem>
+<listitem> <computeroutput>DECIMAL</computeroutput> — Interpreted as <computeroutput>DECIMAL(16)</computeroutput>.
+ Holds floating point data with precision 16.</listitem>
+</itemizedlist><para> The problem occurs with columns defined using the second and third forms above, i.e., when a <computeroutput>DECIMAL</computeroutput> column holds floating-point data.
+ When Informix detects such a column, it reports the column&#39;s scale as 255.
+ The maximum scale of a <computeroutput>DECIMAL</computeroutput> column holding fixed-point data is 32, so 255 indicates floating-point data.
+ Our agent was detecting when <computeroutput>scale = 255</computeroutput> and adjusting the scale to a more meaningful value for ODBC.</para><para>The issue was that the driver always mapped an Informix <computeroutput>DECIMAL</computeroutput> to the ODBC SQL type <computeroutput>SQL_DECIMAL</computeroutput>, and when <computeroutput>scale=255</computeroutput> was detected, the driver adjusted the scale to match the column&#39;s precision.
+ However the adjusted scale value was not always appropriate, which caused Access to balk.
+ A column&#39;s scale can be retrieved through several ODBC functions: <computeroutput>SQLDescribeCol()</computeroutput>, <computeroutput>SQLColAttributes()</computeroutput>, <computeroutput>SQLColumns()</computeroutput>, and this fix applies to all of these calls.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Fix</bridgehead>
+<para>The driver now maps: </para><itemizedlist mark="bullet" spacing="compact"><listitem> When the <computeroutput>jetfix</computeroutput> option is off: <itemizedlist mark="bullet" spacing="compact"><listitem> An Informix <computeroutput>DECIMAL</computeroutput> holding fixed-point data to the ODBC SQL type <computeroutput>SQL_DECIMAL</computeroutput>.
+ The reported scale is that reported by Informix.
+</listitem>
+<listitem> An Informix <computeroutput>DECIMAL</computeroutput> holding floating-point data to ODBC <computeroutput>SQL_FLOAT</computeroutput>.
+ The reported scale is <computeroutput>NULL</computeroutput> (<computeroutput>SQLColumns()</computeroutput>) or <computeroutput>0</computeroutput> (<computeroutput>SQLDescribeCol()</computeroutput> and <computeroutput>SQLColAttribute()</computeroutput>).
+ (This is how the Microsoft&#39;s driver for SQL Server handles a <computeroutput>FLOAT</computeroutput> column.) </listitem>
+</itemizedlist></listitem>
+<listitem> When the <computeroutput>jetfix</computeroutput> option is on: <itemizedlist mark="bullet" spacing="compact"><listitem> An Informix <computeroutput>DECIMAL</computeroutput> column is mapped to the ODBC <computeroutput>SQL_DOUBLE</computeroutput> type, irrespective of whether it holds fixed-point or floating-point data.
+ Because the maximum precision of a <computeroutput>SQL_DOUBLE</computeroutput> is 15, rounding may occur when fetching from <computeroutput>DECIMAL</computeroutput>, <computeroutput>DECIMAL(p)</computeroutput>, or <computeroutput>DECIMAL(p,s)</computeroutput> columns where <computeroutput>p&gt;15</computeroutput>.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Testing</bridgehead>
+<para>Create and populate a test table — </para><programlisting>CREATE TABLE bug5552 
+   ( id INT, 
+     d1 DECIMAL(5,2), 
+     d2 DECIMAL(6), 
+     d3 DECIMAL
+   ) ;
+
+INSERT INTO bug5552 
+   VALUES (1, 321.12,    654.321,    654321.0987654321 ) 
+   VALUES (2, 654.32,    65432.1,     6543210987654321 ) 
+   VALUES (3,  92.37,  6.54321e6,  6.543210987654321e2 )
+   VALUES (4, 987.65, 6.54321e41, 6.543210987654321e49 ) ;
+</programlisting><para> These values were chosen to use the full precision of each column.</para><para>All of these values should be retrieved correctly from a linked table in Microsoft Access whether <computeroutput>jetfix</computeroutput> is on or off.
+ Note that Microsoft Access fetches these columns into <computeroutput>NUMBER</computeroutput> columns, the precision of which varies depending on the underlying Field Size property; consequently, some values may be rounded.
+</para></section></docbook>

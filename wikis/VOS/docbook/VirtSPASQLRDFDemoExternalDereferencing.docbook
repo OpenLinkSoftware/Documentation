@@ -1,0 +1,78 @@
+<docbook><section><title>VirtSPASQLRDFDemoExternalDereferencing</title><title>Extending RDFDemo to Allow Dereferencing of External IRIs</title>Extending RDFDemo to Allow Dereferencing of External IRIs
+ This document will guide you through extending the application created in <ulink url="VirtSPASQLWinFormApp">Creating a Windows Forms Application To Access RDF Data Using The Virtuoso ADO.Net Provider</ulink> so that it will dereference external <ulink url="http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype">IRIs</ulink>.<bridgehead class="http://www.w3.org/1999/xhtml:h3">Pre-requisites</bridgehead>
+ <orderedlist spacing="compact"><listitem>A working copy of the RDFDemo application created in <ulink url="SPASQLStepByStep">Creating a Windows Forms Application To Access RDF Data Using The Virtuoso ADO.Net Provider</ulink>.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Extending the Application.</bridgehead>
+<para>In RDFDemo when the sparql endpoint is queried to get the description of the selected item it executes a query that is restricted to the local Northwind dataset.
+  The query is something like </para>
+<programlisting>SPARQL
+PREFIX nwind: &lt;http://demo.openlinksw.com/schemas/northwind#&gt;
+SELECT DISTINCT  ?s  
+FROM &lt;http://demo.openlinksw.com/Northwind&gt;
+WHERE {?s a nwind:Customer}
+</programlisting><para> If you examine the ExtendedStringHandler class you will see that the dataset clause, from &lt;http://localhost:8890/Northwind&gt;, is hard coded.
+ This means that when when the selected IRI is a link to an external data store, such as dbpedia, there is no matching data and an error is displayed.
+ If the application is to be able to dereference external IRIs then the hard coded dataset clause needs to be removed and then we can use a Virtuoso extension to SPARQL, get:soft, that tells Virtuoso that it needs to go and look elsewhere for the graph.
+  However, this will result in a loss of performance when exploring the local Northwind dataset.
+ To minimize the impact on performance we will first query the local Northwind dataset and if there are no matching triples returned then we will use a more generic query that will look elsewhere for matching data.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 1 -  Add the alternative query to the ExtendedString Class.</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Open the RDFDemo project in Visual Studio </listitem>
+<listitem>Open the ExtendedStringHandler class.
+</listitem>
+<listitem>Remove DescribeCommand by removing the line <programlisting>        StringBuilder DescribeCommand;
+</programlisting>and substitute the following: <programlisting>        StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+</programlisting></listitem>
+<listitem>In the ExtendedStringHandler constructor the sparql query that was DescribeCommand becomes DescribeCommandSimple and we define a new query for DescribeCommandGeneral.
+<programlisting>                 DescribeCommandSimple = new StringBuilder(&quot;sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {&lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o}&quot;);       // Replace demo.openlinksw.com with your  URIQA DefaultHost setting                DescribeCommandGeneral = new StringBuilder(&quot;sparql define get:soft &quot; + &#39;&quot;&#39;.ToString() + &quot;soft&quot; + &#39;&quot;&#39;.ToString() + &quot; select * from &lt;&quot; + iri.ToString() + &quot;&gt; where { &lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o }&quot;);</programlisting> </listitem>
+<listitem>The single describeCommand property needs to be replaced with the two new properties, DescribeCommandSimple and DescribeCommandGeneral <programlisting>        public string describeCommandSimpleText
+        {
+            get
+            {
+                return DescribeCommandSimple.ToString();
+            }
+        }
+        public string describeCommandGeneralText
+        {
+            get
+            {
+                return DescribeCommandGeneral.ToString();
+            }
+        }
+</programlisting></listitem>
+<listitem>Finally, the getDescribeData method needs changing to: <programlisting>        public void getDescribeData()        {            VirtuosoCommand myCommand = new VirtuosoCommand(this.describeCommandSimpleText, this.ParentConnection);            VirtuosoDataAdapter myAdapter = new VirtuosoDataAdapter();            myAdapter.SelectCommand = myCommand;            myAdapter.Fill(describeDataSet.DataTable1);            // Tried the simple version if fails to get the data try            // to look elsewhere.            if (describeDataSet.DataTable1.Rows.Count == 0)            {                myCommand.CommandText = describeCommandGeneralText;                myAdapter.Fill(describeDataSet.DataTable1);            }        }</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 2 - Build and Run the Application</bridgehead>
+ You will see the same starting form:<para>    <figure><graphic fileref="VirtSPASQLRDFDemoExternalDereferencing/Form1.png" /></figure></para>
+<para>Select a Customer and then select the link to the City in dbpedia.
+ This will now open up another window displaying information about the city from dbpedia.
+ Be patient as it may take a little while to open.</para>
+<para>    <figure><graphic fileref="VirtSPASQLRDFDemoExternalDereferencing/BerlinDetails.png" /></figure></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Step 3 - Changing the Form Title</bridgehead>
+ Notice that in displayData method that we look for a http://www.w3.org/1999/02/22-rdf-syntax-ns#type and create a title for the form from it.
+<programlisting>                   foreach (DataRow row in table1.Rows)
+                        if (row[0].ToString() == &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;)
+                        {
+                            StringBuilder title = new StringBuilder(row[1].ToString() + &quot; details&quot;);
+                            label1.Text = title.ToString();
+                            break;
+                        }
+</programlisting><para>This worked well for the Northwind subjects but less well now we are getting data from other graphs.
+ To change the title of the forms used to display the data: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Add an new member variable to hold the IRI that we exploring to the bock of member variables <programlisting>        StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+        VirtuosoConnection ParentConnection;
+        List&lt;Label&gt; labelList = new List&lt;Label&gt;();
+        List&lt;TextBox&gt; textBoxList = new List&lt;TextBox&gt;();
+        DescribeDataSet describeDataSet = new DescribeDataSet();
+        Boolean isIRI = false;
+        SqlExtendedString ParentIRI;
+</programlisting></listitem>
+<listitem>Assign a value to ParentIRI in the constructor <programlisting>         public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnetion)        {            ParentConnection = parentConnetion;            if (iri.IriType == SqlExtendedStringType.IRI)            {                ParentIRI = iri;                isIRI = true;                DescribeCommandSimple = new StringBuilder(&quot;sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {&lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o}&quot;);      // Replace demo.openlinksw.com with your  URIQA DefaultHost setting                DescribeCommandGeneral = new StringBuilder(&quot;sparql define get:soft &quot; + &#39;&quot;&#39;.ToString() + &quot;soft&quot; + &#39;&quot;&#39;.ToString() + &quot; select * from &lt;&quot; + iri.ToString() + &quot;&gt; where { &lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o }&quot;);            }        }</programlisting> </listitem>
+<listitem>Remove the existing foreach block that sets the form title and replace with the following lines: <programlisting>                    StringBuilder title = new StringBuilder(ParentIRI.ToString() + &quot; details&quot;);
+                    label1.Text = title.ToString();
+</programlisting></listitem>
+<listitem>Build and run the application.</listitem>
+</itemizedlist><para>   <figure><graphic fileref="VirtSPASQLRDFDemoExternalDereferencing/BerlinDetails2.png" /></figure></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Next Steps</bridgehead>
+ The application now allows you to explore data and follow links from your locally held data into the external web of data.
+ Looking at the data displayed in the form it would be nice to make the labels for the properties more compact.
+ The label http://dbpedia.org/property/population is a very precise definition but for our purposes it would be clearer to label the property just population.
+ In the next step will be to modify the application so that it displays more readable labels.<para><ulink url="VirtSPASQLRDFDemoLabels">Extending RDFDemo to Display More Compact Labels.</ulink> </para>
+</section></docbook>

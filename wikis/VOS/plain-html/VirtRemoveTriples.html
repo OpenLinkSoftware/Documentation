@@ -1,0 +1,32 @@
+<html><body><div class="topic-text"><h1><a name="Removing all triples from a Virtuoso Server instance"></a>Removing all triples from a Virtuoso Server instance</h1>
+<p>There are times it can be useful to remove all triples from Virtuoso Server.
+ There are a few ways to accomplish this.</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Remove%20all%20triples%20including%20those%20in%20the%20the%20system%20graphs">Remove all triples including those in the the system graphs</a></li> <li><a href="#Remove%20all%20triples%20except%20those%20in%20the%20system%20graphs">Remove all triples except those in the system graphs</a></li>
+<ul><li><a href="#Use%20the%20built-in%20RDF_GLOBAL_RESET%20procedure">Use the built-in RDF <u>GLOBAL_RESET procedure</u></a></li> <li><a href="#Write%20your%20own%20procedure">Write your own procedure</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p> </p>
+<h2><a name="Remove all triples including those in the the system graphs"></a>Remove all triples including those in the the system graphs</h2>
+<p>Use <b>iSQL</b>, either on the command-line or through the <b>Virtuoso Conductor</b> -&gt; <b>Database</b> -&gt; <b>Interactive SQL</b>, to execute this SQL query --</p>
+<br><pre>SQL&gt; DELETE FROM DB.DBA.RDF_QUAD ;
+</pre><h2><a name="Remove all triples except those in the system graphs"></a>Remove all triples except those in the system graphs</h2>
+<h3><a name="Use the built-in RDF_GLOBAL_RESET procedure"></a> Use the built-in RDF_GLOBAL_RESET procedure</h3>
+<ol><li>When removing large graphs or numbers of triples it is advised/required to change the transaction log mode to <code>autocommit</code> with no transaction logging on each operation, deleting the graph(s) or triples, and then setting the log mode back to its original setting.
+ This is easily done using the Virtuoso <code><a href="http://docs.openlinksw.com/virtuoso/fn_log_enable.html" class="absuri">log_enable</a></code> function, with the settings <code>log_enable(3,1)</code>.
+</li>
+<li>Use <b>iSQL</b>, either on the command-line or through the <b>Virtuoso Conductor</b> -&gt; <b>Database</b> -&gt; <b>Interactive SQL</b>, to execute this SQL query -- <br><pre><br>SQL&gt; RDF_GLOBAL_RESET ();
+</pre><br></li>
+<li>Now selecting all graphs from your db should return only the system graphs, like so -- <br><pre><br>SQL&gt; SPARQL
+SELECT  DISTINCT ?g
+  FROM  &lt;http://localhost:8894/&gt;
+  {
+    GRAPH  ?g   
+      { ?s  a  ?t }
+  } ;
+
+g
+ANY  http://www.openlinksw.com/schemas/virtrdf#
+No. of rows in result: 1
+</pre><br></li>
+</ol><h3><a name="Write your own procedure"></a> Write your own procedure</h3>
+<p>Take all non-system graphs, and for each of them execute: </p>
+<br><pre>SPARQL CLEAR GRAPH &lt;The Graph URI here&gt; ;
+</pre></div></body></html>

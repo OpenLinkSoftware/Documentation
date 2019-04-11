@@ -1,0 +1,279 @@
+---+ Git Quickstart
+
+%TOC%
+
+In order to get started with developing follow the simple steps below. To learn
+more about the git policies used for VOS read [[VOSGitUsage][Git and VOS]].
+
+---++ Cloning the repository
+
+Git is a decentralized VCS. As such one maintains a complete local copy of the
+repository - a clone.
+
+<verbatim>
+> git clone git://github.com/openlink/virtuoso-opensource.git
+</verbatim>
+
+This will clone the repository into sub-folder <tt>virtuoso-opensource</tt>.
+
+---++ Working With Branches
+
+Git's main concept is the branch which is essentially just a label for a commit.
+The default branch is called =master= and (following the VOS git policies, other
+projects may use different policies) always points to the latest stable release.
+
+List the remote and local branches with
+<verbatim>
+> git branch -a
+</verbatim>
+
+In order to start developing we need to checkout another branch. Here we use the
+main development branch of Virtuoso 6, "devel/6". Since this is the first time
+we check the branch out locally we need to tell git that we want to track the
+remote branch.
+
+<verbatim>
+> git checkout -t remotes/origin/devel/6
+</verbatim>
+This creates a new local branch "devel/6" which tracks remote branch "remotes/origin/devel/6".
+
+From here we create a new branch in which we will do our actual development.
+Depending on the type of development this branch is prefixed with =feature= or
+=bugfix=:
+
+<verbatim>
+> git checkout -b feature/myFancyFeature
+</verbatim>
+
+--++ Committing Changes
+
+Now we do our development and regularly commit to the local branch. We try to
+create nice self-contained commits with good commit messages. There are several
+ways of commiting code. The easiest is to specify the files and folders to
+commit directly. However, caution should be taken with commiting whole folders -
+every file in the folder will be part of the commit, independent of its state.
+
+<verbatim>
+> git commit <fileA> <fileB> <dirA>
+</verbatim>
+
+Alternatively we can first mark files to include in the commit and files to be
+removed:
+
+<verbatim>
+> git add <fileA> <fileB> <dirA>
+> git remove <fileC>
+</verbatim>
+
+Verify that all is in order:
+<verbatim>
+> git status
+# On branch feature/myFancyFeature
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   fileA
+#                   fileB
+#                   dirA/fileX
+#
+# Changed but not updated:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   fileZ
+</verbatim>
+
+And finally commit the files:
+<verbatim>
+> git commit
+</verbatim>
+
+---++ Viewing What You've Changed
+
+To see the difference between your tracked but unstaged changes and the current
+branch (including your not-yet-pushed commits)
+<verbatim>
+> git diff
+> git diff <filename>
+</verbatim>
+
+To see the difference between your staged changes and the current branch
+(including your not-yet-pushed commits):
+<verbatim>
+> git diff --staged
+> git diff --staged <filename>
+</verbatim>
+
+To see a list of commits to a branch:
+<verbatim>
+> git log
+</verbatim>
+
+To see the details and diff for a commit
+<verbatim>
+> git show <commit>
+</verbatim>
+
+
+--++ Stashing Changes
+
+If you have changes you don't wish to commit but don't want to lose either while
+you do something else, you can temporarily 'stash' the changes away. This could
+be some frequently used debug code,or just some work in progress you need to
+move to another branch without committing. If the code is just WIP for the
+current branch we recommend using an interim commit instead.
+
+The stash is a temporary store that holds a stack of uncommitted changes at a
+repository level. Commands given below work by default with the stash at the top
+of the stack, or you can optionally provide the stack reference.
+
+To store your current changes at the top of the stash stack:
+<verbatim>
+> git stash <optional comment>
+</verbatim>
+
+To see all your stashed items in the stash stack:
+<verbatim>
+> git stash list
+</verbatim>
+
+This will show something like:
+<verbatim>
+stash@{0}: WIP on master: 6ebd0e2... My debug code
+stash@{1}: WIP on master: 9cc0589... My stashed changes
+</verbatim>
+
+To see the details of an individual stash (use bash-completion for ease of use):
+<verbatim>
+> git stash show <optional stash ref>
+</verbatim>
+
+To see the changes in a stash:
+<verbatim>
+> git stash show -p <optional stash ref>
+</verbatim>
+
+To restore a stash while keeping a copy in the stack:
+<verbatim>
+> git stash apply <optional stash ref>
+</verbatim>
+
+To restore a stash and remove it from the stack:
+<verbatim>
+> git stash pop <optional stash ref>
+</verbatim>
+
+To remove a single stash from the stack without applying it:
+<verbatim>
+> git stash drop <optional stash ref>
+</verbatim>
+
+To clear out your entire stash stack:
+<verbatim>
+> git stash clear
+</verbatim>
+
+
+---++ A convenient git setup - tips &amp; tricks
+
+---+++ Setup git command shortcuts
+
+Git supports a lot of commands like =checkout= or =status=. It also allows to define shortcuts which makes working on the command line faster. And isn't that what we all want?
+
+To set them up simply edit the git config file (typically ~/.gitconfig but it
+could also be defined globally) and add an =alias= section like so:
+
+<verbatim>
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+    ch = cherry-pick
+</verbatim>
+
+Now you can use the shortcuts like any other git command. Example: =git st= as a
+shortcut for =git status=.
+
+
+---+++ Git commit template
+
+It is customary to use a specific format for commit messages. Git allows to
+specify a template which reminds the committer of these policies. A typical
+template could look as follows:
+
+<verbatim>
+#  Please enter the commit message for your changes. Lines starting
+#  with '#' will be ignored, and an empty message aborts the commit.
+#
+#  You MUST wrap all lines at 72 characters.
+#
+# ==[ Subject: One line only short meaningful description for logs ]===|
+
+# ==[ Blank: Follow the Subject with a blank line, do NOT remove ]=====|
+
+# ==[ Details: Describe what changed and explain why it changed]=======|
+</verbatim>
+
+The template could also contain hints to special fields which are supported like
+keywords to close bug reports or to CC the commit to a certain email address and
+so on (the KDE project uses a variety of git commit hooks like these).
+
+To use the template add a new section =commit= into the git config file
+(typically ~/.gitconfig but it could also be defined globally):
+
+<verbatim>
+[commit]
+        template = /home/user/dev/git.commit-template
+</verbatim>
+
+--+++ Bash shell magic
+
+For those of us who like to work on the shell there is a little command prompt
+treat available. In addition to all the fancy coloring and whatever you want to
+do with your command prompt you can include information about the git repository
+in the current folder.
+
+For that you need the git bash completion to be installed (this depends on your
+system setup and if left as an
+[[http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/completion/git-completion.bash;hb=HEAD][exercise]]
+for the interested reader). Then the "<nowiki>__git_ps1</nowiki>" function will
+be available for you to play with.
+
+Example prompt:
+<verbatim>
+PS1="\[\033[01;31m\]\u\[\033[00m\]:\[\033[01;34m\]\w \[\033[0;33m\]$(__git_ps1 "(%s)")\[\033[00m\] \$ \[\033[00m\]"
+</verbatim>
+
+The result can be seen here (without colors):
+<verbatim>
+trueg:~/kde/dev/kde/src/nepomuk-core (libnepomukcore/query/optimization/subQueries) $
+</verbatim>
+
+
+
+---++ Fix Screw-ups
+
+---+++ Split a commit
+Imagine you committed a set of changes and realize that you actually wanted to
+split that into several commits. That is no problem at all if nothing has been
+pushed to a public repo yet. We simple need to do a mixed reset and then do the
+separate commits:
+
+<verbatim>
+> git reset HEAD^
+</verbatim>
+
+This will reset the index to the previous commit and keep the current working
+dir unchanged. Now you can continue with creating your commits the way you
+originally intended ("git add -p" is your friend).
+
+---++ Keep In Mind
+   * Never pull after a merge! It will mess with your history.
+   * Never branch from master. Branch from a devel or stable branch instead.
+

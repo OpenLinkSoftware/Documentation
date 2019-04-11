@@ -1,0 +1,164 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="SPARQL Arithmetic Examples Collection"></a>SPARQL Arithmetic Examples Collection</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Example%20Find%20death%20age%20of%20musicians">Example Find death age of musicians</a></li> <li><a href="#Example%20Find%20death%20age%20of%20musicians%20with%20validating%20the%20born%20and%20died%20dates">Example Find death age of musicians with validating the born and died dates</a></li> <li><a href="#Example%20Find%20death%20age%20of%20musicians%20with%20calculated%20rank%20based%20on%20person">Example Find death age of musicians with calculated rank based on person</a></li> <li><a href="#Example%20Find%20average%20death%20age%20of%20musicians%20by%20genre">Example Find average death age of musicians by genre</a></li> <li><a href="#Example%20Show%20people%20data%20with%20Entity%20Rank%2C%20Grouping%20and%20Pretty%20Labels">Example Show people data with Entity Rank, Grouping and Pretty Labels</a></li> <li><a href="#Related">Related</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p>This guide contains Virtuoso SPARQL Arithmetic Examples Collection of queries which you can run against any SPARQL endpoint.</p>
+<p> </p>
+<h2><a name="Example Find death age of musicians"></a>Example Find death age of musicians</h2>
+<br><pre>SELECT ?s ?genre ?died ?born 
+       ( bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died) ) ) ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?s ?genre ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?s a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+             &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+             &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+        }
+      LIMIT 20 
+    }
+  }
+</pre><ul><li><a href="http://bit.ly/U8TKW0" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/U8SXnY" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ul><p> </p>
+<h2><a name="Example Find death age of musicians with validating the born and died dates"></a>Example Find death age of musicians with validating the born and died dates</h2>
+<br><pre>SELECT ?person ?genre ?died ?born
+       ( 
+         if 
+           (
+             ( datatype (?born) in (xsd:dateTime, xsd:date) ) 
+             and
+             ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+             bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died) ) ),
+             &quot;error&quot; 
+           ) 
+       ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?person ?genre ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                     &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                  &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                  &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+        }      
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) ) 
+      LIMIT 10
+    }
+  }  
+</pre><ul><li><a href="http://bit.ly/14PqPZ4" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/U8TS7X" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ul><p> </p>
+<h2><a name="Example Find death age of musicians with calculated rank based on person"></a>Example Find death age of musicians with calculated rank based on person</h2>
+<br><pre>SELECT DISTINCT ?person ?plabel ?genre ?glabel ?died 
+      ?born ( &lt;LONG::IRI_RANK&gt; (?person) ) as ?rank
+      ( 
+        if 
+          (
+            ( datatype (?born) in (xsd:dateTime, xsd:date) ) 
+            and
+            ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+            bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died) ) ),
+            &quot;error&quot; 
+          ) 
+       ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?person ?plabel ?genre ?glabel ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                     &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                  &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                                             rdfs:label ?plabel ;
+                  &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+                                      ?genre rdfs:label ?glabel .
+          FILTER (lang(?plabel) = &quot;en&quot;)
+          FILTER (lang(?glabel) = &quot;en&quot;)
+        }
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) ) 
+      LIMIT 10
+    }
+  }  
+</pre><ul><li><a href="http://bit.ly/U8UmL3" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/WX5Tfh" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ul><p> </p>
+<h2><a name="Example Find average death age of musicians by genre"></a>Example Find average death age of musicians by genre</h2>
+<br><pre>SELECT ?genre, (avg(?age)) AS ?avg
+WHERE 
+  {
+    {
+      SELECT distinct ?genre ?person (bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died)))) as ?age
+      WHERE 
+        { 
+          {
+            SELECT distinct ?person ?genre ?died ?born 
+            FROM &lt;http://dbpedia.org&gt; 
+            WHERE 
+              { 
+                ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                           &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                        &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                        &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+                FILTER ( datatype (?born) IN (xsd:dateTime, xsd:date) ) 
+                FILTER ( datatype (?died) IN (xsd:dateTime, xsd:date) ) 
+      
+              }      
+          }
+        }
+    }
+  }
+GROUP BY (?genre)
+LIMIT 10
+</pre><ul><li><a href="http://bit.ly/YTrrJW" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/V28S99" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ul><h2><a name="Example Show people data with Entity Rank, Grouping and Pretty Labels"></a>Example Show people data with Entity Rank, Grouping and Pretty Labels</h2>
+<p> </p>
+<br><pre>SELECT DISTINCT ?person str(?plabel) ?genre str(?glabel) 
+       ?died ?born ( &lt;LONG::IRI_RANK&gt; (?person) ) as ?rank
+       ( 
+         if 
+           (
+             ( datatype (?born) in (xsd:dateTime, xsd:date) )
+             and
+             ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+             bif:datediff(&#39;year&#39;,xsd:dateTime(str(?born)),xsd:dateTime(str(?died))),
+             &quot;error&quot; 
+           ) 
+       ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?person ?plabel ?genre ?glabel ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                     &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                  &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                                             rdfs:label ?plabel ;
+                  &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+          ?genre rdfs:label ?glabel .
+          FILTER ( lang(?plabel) = &quot;en&quot; )
+          FILTER ( lang(?glabel) = &quot;en&quot; )
+        }
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) ) 
+      LIMIT 10
+    }
+  }
+</pre><ul><li><a href="http://bit.ly/WX6n4R" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/Y6ahWO" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ul><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso Documentation</a></li>
+</ul></div></body></html>

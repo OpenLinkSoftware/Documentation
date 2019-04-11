@@ -1,0 +1,85 @@
+<docbook><section><title>Multi-TierServerQuickStatGuideNix</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">OpenLink Multi-tier Server Side Components (*nix)</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Aims and Intentions </bridgehead>
+<para>This guide is intended to enable competent system administrators to install and configure OpenLink Multi-tier client side components on *nix style operating systems in a few steps as possible.</para><para>This guide does not explain any of the non-pertinent features encountered along the way.
+ Such explanations may be found in the full documentation.</para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem> You <emphasis>MUST</emphasis> be proficient in using a Unix shell.
+</listitem>
+<listitem> You <emphasis>MUST</emphasis> be proficient in using a Unix editor such as vi.
+</listitem>
+<listitem> You <emphasis>MUST</emphasis> have any required third party client libraries installed and configured.
+ (Applicable to: DB2, Informix, Ingres, Oracle, Progress)</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Installation</bridgehead>
+<orderedlist spacing="compact"><listitem> Log onto the machine and create a suitable OpenLink installation directory ($OPENLINK_INSTALL). </listitem>
+<listitem> Copy all relevant components to $OPENLINK_INSTALL. As a bare minimum, these will include the OpenLink Request Broker and OpenLink Database Agent for your respective target database. </listitem>
+<listitem> Install using the &quot;install.sh&quot; shell script -- <programlisting> #sh install.sh
+
+</programlisting></listitem>
+<listitem> You should take care to enter correct information when prompted pertaining to ports, passwords, etc and ensure that you remember these for future use. </listitem>
+<listitem> The installation should finish without error.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Licensing</bridgehead>
+<para>OpenLink Multi-tier licensing is handled on the server side so you should place the OpenLink license file (oplrqb.lic) in the $OPENLINK_INSTALL/bin directory.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Configuration</bridgehead>
+<para>Many, supported target database types (MySQL, PostgreSQL, SQL Server, Sybase) require no further configuration, in which case you should move onto the next section.</para><para>Other, supported target database types (DB2, Informix, Ingres, Oracle, Progress) do require additional environmental configuration in the OpenLink Request Broker session rule book ($OPENLINK_INSTALL/bin/oplrqb.ini)--</para><orderedlist spacing="compact"><listitem> Edit the file $OPENLINK_INSTALL/bin/oplrqb.ini with a suitable text editor such as vi. </listitem>
+<listitem> Locate and edit the [Environment xxxxx] section where xxxxx matches your target database so as to ensure that any relevant environment variables pertaining you your system and target database are correct.NOTE: You may need to consult with your database administrator to verify these.The following example depicts an environment section for Oracle 10-- <programlisting> [Environment ORACLE100]
+ ORACLE_HOME          = /usr/instantclient_10_2
+ ;ORACLE_SID          = 
+ ;ORACLE_SERVER	       = 
+ ;TWO_TASK	       = P:
+ ;ODBC_CATALOGS	       = Y	 ; Uncomment after loading odbccat10.sql
+ ;MULTIPLEX_LDA	       = 5	 ; Allow 5 OpenLink clients on a single lda
+ ;OPL_USR_TBLS_FIRST   = Y	 ; Sort SQLTables starting with user tables
+ SHOW_REMARKS         = N	; Retrieve SQLColumns REMARKS field
+ CURSOR_SENSITIVITY   = LOW  ; Set to HIGH after loading odbccat10.sql
+ ;OCI_PREFETCH_ROWS    = 100  ; Number of rows to prefetch
+ ;OCI_PREFETCH_MEMORY  = 65535  ; Amount of memory to use for prefetching
+ LD_LIBRARY_PATH      = /instantclient_10_2  ; Find shared libraries
+ SHLIB_PATH	      = /instantclient_10_2  ; Find HP/UX shared libraries
+ LIBPATH	      = /instantclient_10_2  ; Find AIX shared libraries
+ ;NLS_LANG	       = AMERICAN_AMERICA.UTF8 ; Uncomment for Unicode connections
+
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Start the OpenLink Request Broker</bridgehead>
+<orderedlist spacing="compact"><listitem> <emphasis>Starting in foreground debug mode</emphasis>It is often best to initially start the Request Broker in (f)oreground (d)ebug in order to diagnose problems-- <programlisting> #cd $OPENLINK_INSTALL
+ #. ./openlink.sh
+ #oplrqb -fd
+ OpenLink Request Broker
+ Version 2.47 as of Tue Jan 08 2008 (Release 6.2 cvsid 00089).
+ Compiled for Solaris 5.8 (sparc-sun-solaris2.8-32)
+ Copyright (C) OpenLink Software.  
+
+ Registered to OpenLink US Lab - INTERNAL USE ONLY
+ with product serial number OPL-US-INTERNAL
+ This is a 5 concurrent users license
+ restricted to 5 concurrent connections
+ Issued by OpenLink Software
+ This license will expire on Thu May 22 01:52:13 2008 GMT
+
+ oplrqb: using rulebook $OPENLINK_INSTALL/bin/oplrqb.ini
+ oplrqb: bound TCP protocol to 0.0.0.0.5000
+ oplrqb: request broker started by openlink
+ oplrqb: spawning $OPENLINK_INSTALL/bin/w3config/www_sv www_sv +debug
+ www_sv: started http://hostname:5000
+ oplrqb: started persistent www_sv (pid=25896)
+ oplrqb: ZeroConfig thread started
+ oplrqb: ZeroConfig registration Oracle 9.2 (oplussol4)
+
+</programlisting>The OpenLink Request Broker will continue to run, taking over the session, until <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:ctrl-c is entered which stops the Broker </span></listitem>
+<listitem> <emphasis>Starting Normally</emphasis> <programlisting> #cd $OPENLINK_INSTALL
+ #. ./openlink.sh
+ #oplrqb
+
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Testing</bridgehead>
+<para>You are now ready to test the connection which now requires that you read the relevant quick start guide for client component on the chosen operating system.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Additional Information</bridgehead>
+<orderedlist spacing="compact"><listitem> Any changes made to $OPENLINK_INSTALL/bin/oplrqb.ini whilst the Request Broker is running will require the Request Broker to be re-initialised -- <programlisting> #cd $OPENLINK_INSTALL
+ #. ./openlink.sh
+ #oplshut +reinit
+
+</programlisting></listitem>
+<listitem> To stop a Request Broker running normally -- <programlisting> #cd $OPENLINK_INSTALL
+ #. ./openlink.sh
+ #oplshut +force
+
+</programlisting></listitem>
+</orderedlist></section></docbook>

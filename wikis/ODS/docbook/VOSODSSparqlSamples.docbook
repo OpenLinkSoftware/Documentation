@@ -1,0 +1,310 @@
+<docbook><section><title>VOSODSSparqlSamples</title><bridgehead class="http://www.w3.org/1999/xhtml:h2"> SPARQL Sample Queries using Live Demonstration Data</bridgehead>
+ This page presents examples of querying ODS RDF Graph via SPARQL.<bridgehead class="http://www.w3.org/1999/xhtml:h3">Querying ODS Data via RDF data mapped to SIOC Ontology</bridgehead>
+<para>Graph IRI format: http://&lt;cname&gt;/dataspace</para>
+<para>Examples:</para>
+<orderedlist spacing="compact"><listitem>Public Demo Server Instance: <ulink url="http://demo.openlinksw.com/dataspace">http://demo.openlinksw.com/dataspace</ulink> </listitem>
+<listitem><ulink url="MyOpenLink">MyOpenLink</ulink> Services (a demo instance of ODS): <ulink url="http://myopenlink.net/dataspace">http://myopenlink.net/dataspace</ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Setup Guide</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>MyOpenLink.net Service: You can either log on as user: <computeroutput>test1</computeroutput>, pwd: <computeroutput>1</computeroutput> or create a new account at <ulink url="http://myopenlink.net:8890/ods.">http://myopenlink.net:8890/ods.</ulink></listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem>Live Demo Server: You can either log on as user: demo, pwd: demo or create a new account at: <ulink url="http://demo.openlinksw.com/ods">http://demo.openlinksw.com/ods</ulink></listitem>
+</itemizedlist><para>If you are creating a new account, please perform the following steps:</para>
+<orderedlist spacing="compact"><listitem>Register under a username of your choosing </listitem>
+<listitem>Create ODS Application instances (aka Data Space Applications) for Briefcase, FeedManager, Mail, Blog, Wiki, Gallery, Bookmarks.
+</listitem>
+<listitem>Log under new user or use account: <computeroutput>test1</computeroutput> and then proceed to the &quot;My Weblog&quot; </listitem>
+<listitem>Create a few sample blog posts </listitem>
+<listitem>Go to the &quot;My Wiki&quot; tab </listitem>
+<listitem>Create a sample Wiki article: Test1Sample, for instance </listitem>
+<listitem>Go to the Wiki Cluster Settings and press `Turn On&#39; to enable Conversations </listitem>
+<listitem>Verify the &quot;Conversation&quot; feature by going to the &quot;Discussions&quot; tab in your ODS home, to see if a newsgroup has been automatically generated for your Wiki article.
+ It should appear as: &quot;oWiki-test1Wiki&quot; assuming this is the name of your Wiki Data Space Instance </listitem>
+<listitem>From the WelcomeVisitors page clicks the Conversations link and sends one reply with body &quot;This is sample reply&quot; </listitem>
+<listitem>Create Data Space instances for the other ODS applications by clicking on the &quot;My....&quot; tabs which indicate each ODS Data Space </listitem>
+<listitem>Proceed to experiment with the SPARQL queries below.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">SPARQL Query Interfaces</bridgehead>
+<para>The SPARQL Sample queries can be executed using Virtuoso&#39;s traditional console-based ISQL interface, the Web-based equivalent bundled with the Virtuoso Conductor Admin UI, or by using the iSPARQL Web Query Interface at <ulink url="http://myopenlink.net:8890/sparql_demo/">http://myopenlink.net:8890/sparql_demo/</ulink> or exposed via the SPARQL endpoint at: <ulink url="http://myopenlink.net:8890/sparql/">http://myopenlink.net:8890/sparql/</ulink> . Of course you can also use the SPARQL Protocol to invoke these queries over HTTP using the SPARQL Query Endpoint at: <ulink url="http://myopenlink.net:8890/sparql/.">http://myopenlink.net:8890/sparql/.</ulink></para>
+ <para><emphasis>Note</emphasis>: If you are using SQL-based Data Access methods such as ISQL, ODBC, JDBC, ADO.NET, or XMLA , you must prepend each query with <emphasis>sparql</emphasis> which is the convention required for executing SPARQL via Virtuoso SQL.
+ Also do not forget to terminate your queries with semicolons (<emphasis>;</emphasis>) when using the ISQL interface in console mode.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Query Samples</bridgehead>
+<para>Note: Default Graph URI value used in the queries below is: <ulink url="http://myopenlink.net/dataspace">http://myopenlink.net/dataspace</ulink></para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>To return a list of all Classes <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+SELECT distinct ?cls
+WHERE { ?o rdf:type ?cls }
+LIMIT 10
+</programlisting></listitem>
+<listitem>To return all Spaces <programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+SELECT *
+WHERE 
+   {
+     ?space rdf:type sioc:Space. 
+     optional { ?site sioc:name ?name }
+   }
+LIMIT 10
+</programlisting></listitem>
+<listitem>To return a  list of Predicates/Properties/Attributes <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcc: &lt;http://purl.org/dc/terms/&gt; 
+SELECT distinct ?Predicate
+WHERE { ?o ?Predicate ?s . }
+LIMIT 10
+</programlisting></listitem>
+<listitem>To list all posts title, author, reply and post date.
+<programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcc: &lt;http://purl.org/dc/terms/&gt; 
+SELECT *
+WHERE 
+  {
+     optional { ?post dct:title ?post_title }.
+     optional { ?post dcc:created ?post_date}.
+     optional { ?post sioc:has_creator ?creator}.
+     optional { ?creator rdfs:label ?post_author}.
+     optional { ?post sioc:has_reply ?reply }.
+     optional { ?post rdfs:seeAlso ?post_sioc }.
+   }
+LIMIT 10
+</programlisting></listitem>
+<listitem>To list all blog data spaces which belongs to friends of ODS user <emphasis>test1</emphasis> <programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?n, ?knows, ?name
+WHERE 
+  {
+   ?po sioc:account_of ?t .
+   ?t rdf:type foaf:Person .
+   ?t foaf:nick ?n filter regex (&#39;test1&#39;, ?n) .
+   ?t foaf:knows ?s .
+   ?s foaf:nick ?knows .
+   ?s foaf:holdsAccount ?xx .
+   ?xx  sioc:owner_of ?f .
+   ?f a sioct:Weblog .
+   optional{?f sioc:id ?name}.   
+  }
+</programlisting></listitem>
+<listitem>To list all posts from ODS user <emphasis>test1_&#39;s blogs </emphasis><programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcc: &lt;http://purl.org/dc/terms/&gt; 
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT ?post, ?title ?cr ?name
+WHERE 
+  {
+    optional{ ?post dct:title ?title }.
+    optional{ ?post dcc:created ?cr }.
+    ?post sioc:has_container ?forum .
+    ?forum rdf:type sioct:Weblog .
+    ?forum ?has_member ?member .
+    ?member sioc:id  ?name filter regex (?name, &#39;test1&#39;) .
+  }
+</programlisting></listitem>
+<listitem>Find all posts from <emphasis>test1_&#39;s blogs including post timestamps accurate to the second (as opposed to millisecond) </emphasis><programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcc: &lt;http://purl.org/dc/terms/&gt; 
+SELECT ?title ?cr ?forum 
+WHERE 
+  {
+    optional{?post dcc:created ?cr}.
+    optional{?post dct:title ?title }.
+    ?post sioc:has_container ?forum .
+    ?forum rdf:type sioct:Weblog .
+    ?forum ?has_member ?member .
+    ?member sioc:name &quot;test1&quot; .
+    filter (xsd:dateTime (?cr) &gt; xsd:dateTime (&quot;2006-05-01T10:56:00Z&quot;))
+  }
+ORDER BY ?cr limit 10
+</programlisting></listitem>
+<listitem>To find all Data Spaces belonging to ODS member: <emphasis>test1</emphasis> <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+SELECT DISTINCT ?u ?name ?group
+WHERE 
+  {
+    ?x rdf:type sioc:User .
+    ?x sioc:name ?name .
+    ?u sioc:has_member ?x .
+    { ?u sioc:id ?group  } UNION
+    { ?u sioc:description ?group } .
+    FILTER REGEX(str(?name), &quot;^test1&quot;)
+  }
+</programlisting></listitem>
+<listitem>To find all Briefcase Data Spaces owned by friends of user <emphasis>test1</emphasis>: <programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?n, ?knows, ?name
+WHERE 
+  {
+   ?po sioc:account_of ?t .
+   ?t rdf:type foaf:Person .
+   ?t foaf:nick ?n filter regex (&#39;test1&#39;, ?n) .
+   ?t foaf:knows ?s .
+   ?s foaf:nick ?knows .
+   ?s foaf:holdsAccount ?xx .
+   ?xx  sioc:owner_of ?f .
+   ?f a sioct:Briefcase.
+   optional{?f sioc:id ?name}.   
+  }
+</programlisting></listitem>
+<listitem>To find all ODS Data Spaces belonging to  friends of user &#39;test1&#39;: <programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?n, ?knows, ?name
+WHERE 
+  {
+   ?po sioc:account_of ?t .
+   ?t rdf:type foaf:Person .
+   ?t foaf:nick ?n filter regex (&#39;test1&#39;, ?n) .
+   ?t foaf:knows ?s .
+   ?s foaf:nick ?knows .
+   ?s foaf:holdsAccount ?xx .
+   ?xx  sioc:owner_of ?f .
+   optional{?f sioc:id ?name}.   
+  }
+</programlisting></listitem>
+<listitem>To find all Feed subscriptions that have ODS member:  &#39;test1&#39; <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE 
+  {
+    ?f rdf:type sioct:SubscriptionList .
+    optional{?f sioc:has_member ?m}.
+    ?m sioc:id ?name filter regex(?name,&#39;test1&#39;)     
+  }
+</programlisting></listitem>
+<listitem>To find all Feeds entries/posts/items for ODS member: &#39;test1&#39;: <programlisting>define input:inference &quot;http://myopenlink.net/dataspace&quot;  
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT ?fname ?post ?title
+WHERE 
+  { 
+    ?forum rdf:type sioct:SubscriptionList .
+    ?forum sioc:id ?fname .
+    ?forum ?has_member ?member  filter regex (?member, &quot;test1&quot;).
+    optional{?forum sioc:parent_of ?parentf }.
+    optional{?parentf sioc:container_of ?post} .
+    optional{ ?post dct:title ?title }.
+  }
+</programlisting></listitem>
+<listitem>To find all Feed Data Spaces hosted by the MyOpenLink.net service: <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE { ?f rdf:type sioct:SubscriptionList . }
+</programlisting></listitem>
+<listitem>To find all Blog Data Spaces hosted by the MyOpenLink.net service: <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE { ?f rdf:type sioct:Weblog. }
+</programlisting></listitem>
+<listitem>To find all Wiki Data Spaces hosted by the MyOpenLink.net service: <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE { ?f rdf:type sioct:Wiki .}
+</programlisting></listitem>
+<listitem>To find all Wiki Data Spaces and their respective owners: <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE 
+  {
+    ?f rdf:type sioct:Wiki .
+    ?f sioc:has_owner ?owner. 
+    ?owner sioc:id ?name .
+  }
+</programlisting></listitem>
+<listitem>To find all ODS Wiki Data Spaces where instance name contains the string pattern: &#39;test&#39; <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE {
+        ?f rdf:type sioct:Wiki .
+        ?f sioc:id ?s.
+        FILTER REGEX(str(?s), &quot;^test&quot;)
+      }
+</programlisting></listitem>
+<listitem>To find all Wiki articles created ODS member: &#39;test1&#39; <programlisting>define input:inference &quot;http://myopenlink.net/dataspace&quot;  
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT *
+WHERE 
+   {
+     ?forum rdf:type sioct:Wiki .
+     ?forum sioc:id ?forum_name.
+     ?forum ?has_member ?member .
+     ?member sioc:id &quot;test1&quot; .
+     ?forum sioc:container_of ?post .
+     optional{?post  dct:title ?title}.    
+   }
+</programlisting></listitem>
+<listitem>To find all the Wiki articles associated with one or more conversations managed by newsgroup: oWiki-test1Wiki.
+<programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcc: &lt;http://purl.org/dc/terms/&gt; 
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT ?title ?created
+WHERE
+  {
+    graph &lt;http://myopenlink.net/dataspace&gt;
+      {
+        ?forum sioc:id &quot;oWiki-test1WikiEndpoint&quot; .
+        ?forum rdf:type sioct:MessageBoard .
+        ?forum sioc:container_of ?post .
+        optional { ?post sioc:link ?link } .
+        optional { ?post  dct:title ?title}.
+        optional { ?post dcc:created ?created }.
+      }
+  }
+</programlisting></listitem>
+<listitem>To find all discussions entries/posts across all conversation enabled ODS Data Spaces: <programlisting>PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX dct: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcc: &lt;http://purl.org/dc/terms/&gt; 
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT ?title ?created
+WHERE {
+        graph &lt;http://myopenlink.net/dataspace&gt;
+          {
+            ?forum rdf:type sioct:MessageBoard .
+            ?post sioc:has_container ?forum .  
+            optional { ?post sioc:link ?link } .
+            optional { ?post  dct:title ?title}.
+            optional { ?post dcc:created ?created }.
+          }
+      }
+ORDER BY DESC (?created)
+LIMIT 10
+</programlisting></listitem>
+<listitem>To find all Photo Gallery Data Spaces hosted by the MyOpenLink.net service: <programlisting>PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX sioct: &lt;http://rdfs.org/sioc/types#&gt;
+SELECT *
+WHERE {  ?forum rdf:type sioct:ImageGallery . }
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Learn More</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSSIOCRef">ODS SIOC reference</ulink> </listitem>
+<listitem><ulink url="ODSAtomOWLRef">Query ODS Data Spaces using SPARQL and Atom OWL Ontology</ulink> </listitem>
+<listitem><ulink url="ODSSKOSRef">Query ODS Data Spaces using SPARQL and SKOS Ontology</ulink> </listitem>
+<listitem><ulink url="ODSFOAFRef">Query ODS Data Spaces using SPARQL and FOAF Ontology</ulink> </listitem>
+<listitem><ulink url="ODSAnnoteaRef">Query ODS Data Spaces using SPARQL and Annotea Ontology</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/NorthWindREF">Northwind SPARQL Reference</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/SIOCRefTutorial">Query Virtuoso Tutorials using SPARQL</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/SIOCRefDocs">Query Virtuoso Documentation using SPARQL</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VOS/WordPressSIOCRef">WordPress SIOC Reference</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VOS/MediaWikiSIOCRef">MedaWiki SIOC Reference</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VOS/PHPBB3SIOCRef">PHPBB SIOC Reference</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VOS/DrupalSIOCRef">Drupal SIOC Reference</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryWebSite">CategoryWebSite</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryOpenSource">CategoryOpenSource</ulink> <ulink url="CategoryVOS">CategoryVOS</ulink> <ulink url="CategorySPARQL">CategorySPARQL</ulink> <ulink url="CategoryRDF">CategoryRDF</ulink> <ulink url="CategoryODS">CategoryODS</ulink>  <ulink url="CategoryDocumentation">CategoryDocumentation</ulink> </para>
+</section></docbook>

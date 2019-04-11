@@ -1,0 +1,83 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ErrorMessagesI"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ErrorMessagesI"}%--><h1><a name="Error Message:"></a> Error Message: <tt>Internal RPC call failed (Bad file descriptor)</tt> </h1>
+<!--Begin of %TOC{}%--><p> <br></p><div class="MACRO_TOC"> <br> <div class="wikitoc"> <br>  <ul> <br><li><a href="#Background">Background</a></li> <br><li><a href="#Common%20Solutions">Common Solutions</a></li><ul><li><a href="#With%20Any%20Database%20Agent">With Any Database Agent</a></li> <br><li><a href="#With%20a%20Database%20Agent%20for%20Sybase%20or%20Microsoft%20SQL%20Server">With a Database Agent for Sybase or Microsoft SQL Server</a></li> <br></ul>
+<li><a href="#For%20Persistent%20Cases">For Persistent Cases</a></li>
+<p>  </p></ul> <br> </div> <br></div><!--End of %TOC{}%--><h2><a name="Background"></a> Background </h2>
+<p>Historically, <i><tt>Bad file descriptor</tt></i> errors were fairly rare, and were exclusively associated with Sybase and SQL Server database agents based on the DB-LIB and CT-LIB client libraries.
+ <i><tt>RPC: Timed Out</tt></i> variants of the file descriptor error appeared when our components unsuccessfully tried to obtain a socket.
+ Sometimes these errors were permissions related.
+ And, there was little that users could do to configure around this problem.</p><p>Today&#39;s <i><tt>Bad file descriptor</tt></i> errors are significantly different in nature.
+ They are intermittent errors that tend to appear suddenly, after long periods of stability.
+ When users encounter this type of error, configuration changes have often been made to the machine hosting the server-side Multi-Tier components.
+ Most commonly, Anti-Virus Software, Windows Updates, and/or SQL Server patches have affected hostname resolution and/or TCP port usage on the affected machine.</p><h2><a name="Common Solutions"></a> Common Solutions </h2>
+<h3><a name="With Any Database Agent"></a> With Any Database Agent </h3>
+<p>To resolve such errors when using any Database Agent, start by checking the <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/ConfiguringMTCommunicationsAttributes" class="wikiword">Multi-Tier communications settings, particularly the timeouts, on both Generic Client and Broker host</a>.</p><h3><a name="With a Database Agent for Sybase or Microsoft SQL Server"></a> With a Database Agent for Sybase or Microsoft SQL Server </h3>
+<p>If you are receiving these errors when connecting to Sybase or Microsoft SQL Server, and adjusting the communications settings doesn&#39;t resolve them, take the following action:</p><ol><li> Ensure that you are using our TDS-based database agents.
+ These agents are typically named sql_mv or sql_sv.
+ (The older DB-LIB and CT-LIB agents can not bypass this problem.) <br></li>
+<li> Use a text editor to open the active Rulebook file, typically <tt>$OPENLINK_INSTALL/bin/oplrqb.ini</tt> on the Broker host.
+<br></li>
+<li> Locate the <tt>[generic_sql]</tt> section.
+<br></li>
+<li> Build an argument string based on the following <nop></nop>ConnectOptions: <br><ul><li> <strong><tt>-H &lt;FQDN&gt;</tt></strong> - Fully-qualified domain name (i.e., DNS-resolvable hostname) or IP address of the SQL Server host machine <br></li>
+<li> <strong><tt>-P &lt;port number&gt;</tt></strong> - TCP Port at which the target SQL Server instance is listening <br></li>
+<li> <strong><tt>-V &lt;version&gt;</tt></strong> - SQL Server version.
+ Acceptable values are <strong><tt>10.0</tt></strong> for SQL Server 2008, <strong><tt>9.0</tt></strong> for SQL Server 2005, <strong><tt>8.0</tt></strong> for SQL Server 2000, <strong><tt>7.0</tt></strong> for SQL Server 7.x.
+<br></li>
+<li> <strong><tt>-I &lt;instance&gt;</tt></strong> - SQL Server instance name on the specified host machine (-H).
+ This option can be used in preference to the &quot;-S&quot; SQL Server name option above for connecting to a SQL Server instance name <br></li>
+<li> <strong><tt>-S &lt;server-name&gt;</tt></strong> - <em>Not recommended.
+ <tt>-H</tt> and <tt>-I</tt> are preferred.</em>  Specifies a target SQL Server instance by combining the host and instance names as &quot;<tt>&lt;FQDN&gt;\\&lt;instance&gt;</tt>&quot;, e.g., &quot;<tt>sql-host.example.com\\demo-instance</tt>&quot;.
+ Note the double backslash (<tt>\\</tt>) between the <nop></nop>SQLServerName and <nop></nop>InstanceName.
+<br></li>
+<li> <strong><tt>-F &lt;fail-over server name&gt;</tt></strong> - Specify Fail over server name for Database Mirroring <br></li>
+<li> <strong><tt>-N &lt;size&gt;</tt></strong> - Network Packet size, which is a value that determines the number of bytes per network packet transferred from the database server to the client.
+ The correct setting of this attribute can improve performance.
+ When set to 0, the initial default, the driver uses the default packet size as specified in the Sybase server configuration.
+ When set to -1, the driver computes the maximum allowable packet size on the first connect to the data source and saves the value in the system information.
+<br></li>
+<li> <strong><tt>-O &lt;value&gt;</tt></strong>  Prepared Method, which is a value that determines whether stored procedures are created on the server for every call to SQLPrepare.
+ When set to Full (2), stored procedures are created for every call to SQLPrepare, which can decrease performance when processing static statements.
+ When set to Partial(1), the initial default, the driver creates stored procedures only if the statement contains parameters.
+ Otherwise, the statement is cached and executed directly at SQLExecute time.
+ When set to None (0), the driver never creates stored procedures.
+<br></li>
+<li> <strong><tt>-L &lt;language&gt;</tt></strong> - The name of a Microsoft SQL Server supported national language.
+ The default language is English.
+<br></li>
+<li> <strong><tt>-C &lt;character set&gt;</tt></strong> - The name of an installed character set on the server.
+ By default it is the setting on the Microsoft SQL Server.
+<br></li>
+<li> <strong><tt>-A</tt></strong> - Turn Off ANSI NULL handling <br></li>
+<li> <strong><tt>-E</tt></strong> - Turn On SSL Strong Data Encryption <br></li>
+<li> <strong><tt>-R</tt></strong> - Turn On SSL Server Certificate Verification <br></li>
+<li> <strong><tt>-D &lt;filename&gt;</tt></strong> - Specify Name of Certificate Authority file to be used for SSL Certificate Verification <br></li>
+<li> <strong><tt>-Z</tt></strong> - Turn On Snapshot Serializable Isolation <br></li>
+<li> <strong><tt>-M</tt></strong> - Turn On Multiple Active Result Sets (MARS) <br></li>
+</ul></li>
+<li> Uncomment the <tt>ConnectOptions =</tt> parameter by removing the leading semicolon (if present), and put the string you just built as the value.
+ For example: <br><br><pre><br>ConnectOptions = -S mysqlserver.company.com -P 1433 -V 8.0
+</pre><br></li>
+<li> Save your changes and exit the file.
+<br></li>
+<li> Restart the Request Broker Service.
+<br></li>
+<li> Test.</li>
+</ol><h2><a name="For Persistent Cases"></a> For Persistent Cases </h2>
+<p>If the problem persists, take the following action:</p><ol><li> Obtain the database agent version string.
+<br></li>
+<li> Note the mapscode.c line on which the error occurs.
+ This will be helpful for development.
+ For example: <br><br><pre><br>12:11:21 ERROR (f:\devel\openlink\binsrc\oplrqb\mapscode.c:594): internal rpc call failed (Bad file descriptor): RPC: Timed out 
+</pre><br></li>
+<li> Get the precise version of the operating system on which the failure occurs.
+<br></li>
+<li> Ascertain whom the user is logged in as.
+ Perhaps Administrative access may alleviate the problem.
+<br></li>
+<li> Insure that unnecessary processes are terminated on the server that is associated with this problem.
+ This alleviates resource use, which may contribute to the problem.
+<br></li>
+<li> Attempt a 3-Tier connection to another SQL Server DBMS.
+<br></li>
+<li> Attempt a Single-Tier connection to the same SQL Server instance.</li>
+</ol><p> <br></p></div></body></html>

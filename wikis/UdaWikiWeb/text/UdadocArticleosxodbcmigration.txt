@@ -1,0 +1,69 @@
+
+= doc.Article.osxodbcmigration
+
+%TOC%
+
+   
+This document details the steps required to migrate an existing ODBC driver to Mac OS X, and thus assumes the reader is familiar with the ODBC API, as well as the Mac OS X development environment. 
+
+The document "Linking iODBC and ODBC Applications on Mac OS HOW-TO", available on the iODBC web site ( [[http://www.iodbc.org]]  ) is also recommended, as this provides details on how the iODBC SDK is used for linking ODBC applications on Mac OS X. 
+
+First, you need a suitable ODBC SDK with the necessary header files and libraries to compile and link the ODBC Driver against. Apple has been bundling a version of iODBC, compiled by themselves, since Mac OS X v10.2, although this a Darwin-based version which we at [[OpenLink]]  and others have not been able to make work. We are currently liaising with Apple to try and resolve this issue. 
+
+We therefore recommend that you use the [[OpenLink]]  -branded iODBC SDK for Mac OS X which include the necessaries libraries and headers files (shipped as frameworks), as we have verified them to work. This is what we build our ODBC Driver suite for Mac OS X against. It can be obtained from the iODBC.org site ( [[http://www.iodbc.org/opliodbc.htm)]]  or from the main [[OpenLink]]  Web Site ( [[http://www.openlinksw.com]]  ). 
+
+The next step is to compile the ODBC driver sources on Mac OS X. 
+
+The [[OpenLink]]  iODBC SDK is shipped on Mac OS X as a set of frameworks, accessible under /Library/Frameworks/iODBC.framework/ for the ODBC driver manager, /Library/Frameworks/iODBCinst.framework/ for the ODBC configuration manager. 
+
+The source files will need to be modified to point to the iODBC header files. Thus all header filer-references to the ODBC driver manager (sql.h sqlext.h sqltypes.h and sqlucode.h) have to be modified as below: 
+
+{{{
+#include <sql.h> has to be replaced with #include <iODBC/sql.h> #include <sqlext.h> has to be replaced with #include <iODBC/sqlext.h> #include <sqltypes.h> has to be replaced with #include <iODBC/> #include <sqlucode.h> has to be replaced with #include <iODBC/sqlucode.h> 
+}}}
+
+The same applies to all header files references to the ODBC configuration manager (odbcinst.h), as indicated below: 
+
+{{{
+#include <odbcinst.h> has to be replaced with #include <iODBCinst/odbcinst.h> 
+}}}
+
+At this point, the compiler and linker should be checked to ensure it can manage frameworks correctly. 
+
+All the frameworks to be used must be added to Project Builder, which in this case means the iODBC and iODBCinst frameworks. This is quite a straight-forward process, but if necessary the command line compiler shipped with Project Builder can also be passed appropriate compiler options to locate the necessary frameworks. 
+
+The -F option is required to add a path telling the compiler to search for frameworks under this path. The correct syntax is -Fdir, where dir is the path to searched. At least one path must be provided, and there are no limits on the number of F options that can be passed on the command line to the compiler. A typical cc compilation command line would be : 
+
+{{{
+cc -c "-F/Library/Frameworks" "-F/System/Library/Frameworks" ... mysources.c 
+}}}
+
+To enable an ODBC driver to be loadable on Mac OS X, it needs to be built as a bundle, and not a shared library. 
+
+This has to be done during the linkage phase, and it is done automatically by Project Builder if you have chosen a "Bundle" for the project type during its creation. If instead you chose to use the linker command line, the same options are used as for the compiler command line, with the linker options specifying at the end of the command line all the frameworks used by the ODBC driver, preceded with the option -framework. 
+
+A typical cc linkage command line will be as follows, if the ODBC driver make internal API calls to the ODBC driver manager and/or ODBC configuration manager: 
+
+{{{
+cc -bundle -o "mydriver" "-F/Library/Frameworks" "-F/System/Library/Frameworks" ... -framework "iODBC" -framework "iODBCinst" 
+}}}
+
+Now that the necessary components for your ODBC driver (core driver and possibly setup) are built, the ODBC driver needs to be registered with the iODBC Administrator. This can happen when the user installs the ODBC driver on the system (in the case were an installer is provided), through the iODBC Administrator. 
+
+To register the Driver as part of the installation process, the ODBC API call [[SQLInstallerDriverEx]]  available in the ODBC Configuration manager should be used, providing the full path to your ODBC driver libraries. 
+
+This is achieved in the iODBC Administrator by clicking in the "Add driver" button on the "Driver" tab, at which point the full path to your ODBC driver libraries under the "Driver filename" and "Setup filename" needs to be provided. 
+
+Provided the ODBC driver to be migrated does not include any graphical user interfaces, all the steps described above are straight-forward. In the case where the ODBC Driver uses graphical user interfaces, these must be migrated to the target OS, in this case Mac OS X. 
+
+In the majority of cases the ODBC API functions used in the graphical user interface of the ODBC Driver are [[SQLConfigDSN]]  (which enables the user to setup DSNs with the corresponding driver) and [[SQLDriverConnect]]  (which displays a login panel for authentication information such as the user name and password). 
+
+The two ODBC API functions are fully implemented in iODBC, and a proxy dialog is also supported for those drivers without graphical user interfaces, enabling users to manually enter key-value pairs for DSN configuration. 
+
+document covers the steps required to migrate an existing ODBC driver to a Mac OS X system. The document is not intended be complete, and any feedback on its contents and suggestions for improvement are welcomed. 
+
+Please send any feedback regarding the subject of this HOW-TO to the maintainer of this document above. 
+
+
+----
+  

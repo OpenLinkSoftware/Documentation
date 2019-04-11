@@ -1,0 +1,41 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Interrogating attributes of a Virtuoso Server instance via SPARQL 
+
+Sometimes you need to know the version or other details about the Virtuoso instance you're running SPARQL queries against, and only have access to the SPARQL interface, possibly through a proxy page that strips out the server version information included on the default <code>/sparql</code> page.
+
+You can leverage Virtuoso's built-in-functions, such as <a href="http://docs.openlinksw.com/virtuoso/fn_sys_stat/"><code><nowiki>sys_stat</nowiki></code></a>, and the associated <code>bif:</code> SPARQL prefix, to interrogate the server for various details, such as --
+<verbatim>
+PREFIX  bif:  <bif:>
+
+SELECT
+  ( bif:sys_stat('st_dbms_name')          AS ?name )
+  ( bif:sys_stat('st_dbms_ver')           AS ?version )
+  ( bif:sys_stat('st_build_date')         AS ?build_date )
+
+##   The following line must be commented for execution on 
+##   builds produced before the switch from `cvs` to `git`;
+##   it only works on versions later than v6.1.5
+
+# ( bif:sys_stat('git_head')              AS ?git_head )   
+
+  ( bif:sys_stat('st_build_thread_model') AS ?thread )
+  ( bif:sys_stat('st_build_opsys_id')     AS ?opsys )
+
+##   The following two lines must be commented for execution 
+##   on VOS; these only work on Enterprise Edition
+
+# ( bif:sys_stat('st_lic_owner')          AS ?owner )
+# ( bif:sys_stat('st_lic_serial_number')  AS ?serial )
+
+WHERE
+  {  ?s  ?p  ?o  }
+LIMIT 1
+</verbatim>
+As noted in the SPARQL above, the <code><nowiki>st_lic_owner</nowiki></code> and <code><nowiki>st_lic_serial_number</nowiki></code> arguments are only valid on the Commercial Edition, and will produce a SPARQL error on the Open Source Edition.  Similarly, the <code><nowiki>git_head</nowiki></code> argument is only valid on builds produced after source code management was switched from <code>cvs</code> to <code>git</code>, circa v6.1.5, in March, 2012.
+
+
+The [[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_name%27%29++++++++++AS+%3Fname+%29%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_ver%27%29+++++++++++AS+%3Fversion+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_date%27%29+++++++++AS+%3Fbuild_date+%29%0D%0A%0D%0A%23%23+The+following+line+must+be+commented+for+execution+on+%0D%0A%23%23+builds+produced+before+the+switch+from+%60cvs%60+to+%60git%60%3B%0D%0A%23%23+it+only+works+on+versions+later+than+v6.1.5%0D%0A++%28+bif%3Asys_stat%28%27git_head%27%29++++++++++++++AS+%3Fgit_head+%29+++%0D%0A%0D%0A++%28+bif%3Asys_stat%28%27st_build_thread_model%27%29+AS+%3Fthread+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_opsys_id%27%29+++++AS+%3Fopsys+%29%0D%0A%0D%0A%23%23+The+following+two+lines+line+must+be+commented+for+execution+%0D%0A%23%23+on+VOS%3B+these+only+work+on+Enterprise+Edition%0D%0A++%28+bif%3Asys_stat%28%27st_lic_owner%27%29++++++++++AS+%3Fowner+%29%0D%0A++%28+bif%3Asys_stat%28%27st_lic_serial_number%27%29++AS+%3Fserial+%29%0D%0A%0D%0AWHERE%0D%0A++%7b++%3Fs++%3Fp++%3Fo++%7d%0D%0ALIMIT+1&format=text%2Fhtml&timeout=30000&debug=on&run=+Run+Query+][query output]] will resemble the following --
+
+|  *name*  |  *version*  |  *build_date*  |  *git_head*  |  *thread*  |  *opsys*  |  *owner*  |  *serial*  |
+|  <code><nowiki>OpenLink Virtuoso  VDB Server</nowiki></code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>07.20.3228</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>Apr 10 2018</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>7913e54</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>-pthreads</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>Linux</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>LOD operated by <nowiki>OpenLink</nowiki> Software</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>opl-lod</code> &nbsp; &nbsp;  |

@@ -1,0 +1,96 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="HTTP Logging and Recording in Virtuoso"></a> HTTP Logging and Recording in Virtuoso</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#HTTP%20Logging">HTTP Logging</a></li>
+<ul><li><a href="#HTTP%20Logging%20Format">HTTP Logging Format</a></li> </ul><li><a href="#HTTP%20Recording">HTTP Recording</a></li><ul><li><a href="#Sample%20Log%20of%20a%20GET%20request">Sample Log of a GET request</a></li> <li><a href="#Sample%20Log%20of%20a%20POST%20request">Sample Log of a POST request</a></li> <li><a href="#Enabling%20Recording%20of%20HTTP%20Activity">Enabling Recording of HTTP Activity</a></li> <li><a href="#Disabling%20Recording%20of%20HTTP%20Activity">Disabling Recording of HTTP Activity</a></li> <li><a href="#Restricting%20Recording%20of%20HTTP%20Activity">Restricting Recording of HTTP Activity</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="HTTP Logging"></a> HTTP Logging</h2>
+<p>Virtuoso can keep HTTP logs with all the requests that are made to the HTTP endpoint.
+ Here are the steps:</p>
+<p> </p>
+<ol><li>Edit your INI file (default, <code>virtuoso.ini</code>) and add the <code><a href="http://docs.openlinksw.com/virtuoso/dbadm/#ini_httpserver_httplogfile" class="absuri">HTTPLogFile</a></code> setting: <br><pre><br>[HTTPServer]
+HTTPLogFile                = logs/http15022012.log
+</pre><br></li>
+<li>Restart Virtuoso.
+</li>
+<li>Virtuoso will now maintain a http log in the logs subdirectory, with one line per request as in: <br><pre><br>180.76.5.87 - - [15/Feb/2012:21:50:44 +0100] &quot;GET /data/Wilton_power_stations.json HTTP/1.0&quot; 200 8014 &quot;&quot; 
+&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;
+180.76.5.87 - - [15/Feb/2012:21:50:45 +0100] &quot;POST /sparql HTTP/1.0&quot; 200 3012 &quot;&quot; &quot;&quot;
+</pre><br></li>
+<li>The first request after midnight will start a new logfile, to make sure one logfile does not grow to infinite size.
+ Old logfiles can be gzipped or removed by hand to conserve disk space.</li>
+</ol><p>The HTTP log files that Virtuoso produces can be processed by programs like <a href="http://www.webalizer.org/" class="absuri">Webalizer</a> or <a href="http://awstats.sourceforge.net/" class="absuri">AWstats</a> to accurately measure site usage.</p>
+<p> </p>
+<h3><a name="HTTP Logging Format"></a> HTTP Logging Format</h3>
+<p>Virtuoso supports HTTP Logging format string like <a href="http://httpd.apache.org/docs/2.2/mod/mod_log_config.html" class="absuri">Apache Module mod_log_config</a>.
+ That string can be set in the &quot;<code>HTTPLogFormat</code>&quot; INI file parameter which works in conjunction with the &quot;<code>HTTPLogFile</code>&quot; INI file parameter.
+ For example: </p>
+<br><pre>[HTTPServer]
+HTTPLogFormat = %h %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-agent}i&quot; &quot;%{NetId}e&quot;
+</pre><p> In this example we have <code>%{User-Agent}i</code> which means to log the HTTP header for user-agent.
+ We can log other HTTP request headers in similar fashion.
+ &quot;<code>e</code>&quot; modifier is for environment variables; <code>NetId</code>, in this case.</p>
+<p>Note that not all escapes from <a href="http://httpd.apache.org/docs/2.2/mod/mod_log_config.html" class="absuri">Apache Module mod_log_config</a> are supported.</p>
+<p> </p>
+<h2><a name="HTTP Recording"></a> HTTP Recording</h2>
+<p>Virtuoso can also record the complete HTTP request for both <code>GET</code> and <code>POST</code> requests, including all incoming headers, <code>POST</code> parameters, etc.
+ This is a very useful tool for debugging, but it will cost performance and disk space, so it should not be left on for long periods of time.
+ Each request will be written to a separate file.</p>
+<i><b>Note</b>: Some filesystem types like <code>ext2</code> and earlier versions of <code>ext3</code> on Linux cannot handle huge amounts of files in a single directory without slowing down the whole system.</i><h3><a name="Sample Log of a GET request"></a> Sample Log of a GET request</h3>
+<br><pre>GET /sparql?query=DESCRIBE%20%3CnodeID%3A%2F%2Fb15481%3E&amp;output=text%2Fcxml     HTTP/1.1
+Host: localhost:8890
+Connection: Keep-alive
+Accept: */*
+From: googlebot(at)googlebot.com
+User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+Accept-Encoding: gzip,deflate
+</pre><p> </p>
+<h3><a name="Sample Log of a POST request"></a> Sample Log of a POST request</h3>
+<br><pre>POST /ods_services/Http/usersGetInfo HTTP/1.1
+User-Agent: Opera/9.80 (Macintosh; Intel Mac OS X 10.5.8; U; en) Presto/2.9.168 Version/11.51
+Host: localhost:8890
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/webp, image/jpeg, image/gif, 
+ image/x-xbitmap, */*;q=0.1
+Accept-Language: en,en-US;q=0.9,ja;q=0.8,fr;q=0.7,de;q=0.6,es;q=0.5,it;q=0.4,pt;q=0.3,pt-  
+ PT;q=0.2,nl;q=0.1,sv;q=0.1,nb;q=0.1,da;q=0.1,fi;q=0.1,ru;q=0.1,pl;q=0.1,zh-CN;q=0.1,zh-TW;q=0.1,ko;q=0.1
+Accept-Encoding: gzip, deflate
+Referer: https://localhost:8890/ods/
+Cookie: interface=js; oatSecurityCookie=0123456878794576; sid=b3fae40reb78bc4babab3cb2a70fb111
+Connection: Keep-Alive
+Content-Length: 77
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic bnQacPPuhhxs
+Content-Transfer-Encoding: binary
+</pre><h3><a name="Enabling Recording of HTTP Activity"></a> Enabling Recording of HTTP Activity</h3>
+<ol><li>Navigate to the directory holding the INI file, and execute the following shell commands: <br><pre><br>mkdir sys_http_recording
+chmod 777 sys_http_recording
+</pre><br></li>
+<li>Edit your INI file (default, <code>virtuoso.ini</code>) and set: <br><pre><br>[HTTPServer]
+EnableRequestTrap          = 1
+</pre><br></li>
+<li>Next connect to your database with <code>isql</code>, and execute the following SQL commands: <br><pre><br>registry_set (&#39;__save_http_history_on_disk&#39;, &#39;1&#39;);
+registry_set (&#39;__save_http_history&#39;, &#39;/&#39;);
+</pre><br></li>
+<li>Finally, restart Virtuoso.
+</li>
+<li>At this point, every HTTP <code>GET</code> and <code>POST</code> request will be logged with all the parameters, headers, and settings.</li>
+</ol><p> </p>
+<h3><a name="Disabling Recording of HTTP Activity"></a> Disabling Recording of HTTP Activity</h3>
+<ol><li>To temporary disable recording, edit your INI file (default, <code>virtuoso.ini</code>) and set: <br><pre><br>[HTTPServer]
+EnableRequestTrap          = 0
+</pre><br></li>
+<li>Next, remove the two Virtuoso registry items: <br><pre><br>registry_remove (&#39;__save_http_history_on_disk&#39;);
+registry_remove (&#39;__save_http_history&#39;);
+</pre><br></li>
+<li>Finally, restart Virtuoso.</li>
+</ol><h3><a name="Restricting Recording of HTTP Activity"></a> Restricting Recording of HTTP Activity</h3>
+<p>HTTP recording can be made to ignore certain types of HTTP activity (for example, the loading of images) by listing exceptions in the &quot;<code>WS.WS.HTTP_SES_TRAP_DISABLE</code>&quot; table:</p>
+<br><pre>insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;css&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;js&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;png&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;jpg&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;gif&#39;);
+</pre><p> </p>
+<h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><code><a href="http://docs.openlinksw.com/virtuoso/dbadm/#ini_httpserver_httplogfile" class="absuri">HTTPLogFile</a></code> INI file setting </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/loggingandrecording/" class="absuri">1.5.66. How can I make HTTP Logging and Recording in Virtuoso?</a></li>
+</ul></div></body></html>

@@ -1,0 +1,320 @@
+---+ Virtuoso Authentication Layer (VAL) - What, Why and How
+
+%TOC%
+
+---++ What Is the Virtuoso Authentication Layer (VAL)?
+
+VAL, the Virtuoso Authentication Layer, is an open-standards-based, multi-protocol authentication layer, 
+that provides fine-grained, attributed-based access controls (ABAC) to protected resources (HTTP-accessible 
+documents, folders, services [via their endpoints], and SPARQL named graphs). In a nutshell, this solution 
+uses logic, expressed in the form of entity relationships, to address issues such as identity, authorization, 
+and restriction.
+
+The key components of this solution are:
+
+   * HTTP URI (Hyperlink) based Entity Identifiers (Names)
+   * TLS based data transmission
+   * RDF Language based Statements representing Entity Relationships and
+     Entity Relationship Types
+   * Vocabulary of terms from publicly accessible vocabularies such as 
+      * &lt;[[http://www.w3.org/ns/auth/acl#][http://www.w3.org/ns/auth/acl#]]&gt;
+      * &lt;[[http://www.openlinksw.com/ontology/acl#][http://www.openlinksw.com/ontology/acl#]]&gt;
+      * &lt;[[http://www.openlinksw.com/ontology/restrictions#][http://www.openlinksw.com/ontology/restrictions#]]&gt;
+      * &lt;[[http://www.openlinksw.com/schemas/cert#][http://www.openlinksw.com/schemas/cert#]]&gt;
+   * Entity Relationship Type Semantics
+
+Collectively, the components above enable:
+
+   * Unambiguous Naming
+   * Identity Claims Construction
+   * Identity Claims Verification
+   * Resource Access Rules (Authorizations) Creation and Evaluation
+   * Resource Access Rate Rules (Restrictions) Creation and Evaluation
+ 
+--++ Why Is VAL Important?
+
+As access to data grows across users, private networks, public networks, and hybrid network dimensions, 
+there is an ever-increasing demand for controlled access to this data, in a manner that covers a variety 
+of operational and social dimensions. It is no longer feasible to secure data using naive literal 
+identification that doesn't attend to entity relationship realities reflected in the nature of different 
+kinds of entity relationships.
+
+--++ How Do I Use VAL?
+
+---+++ Prerequisites
+
+   * Virtuoso Commercial Edition Instance
+   * Virtuoso Authentication Layer (VAL) add-on module installation
+   * Virtuoso Faceted Browser &mdash; optional; recommended for verification and troubleshooting
+   * X.509 Certificates for Agents (Virtuoso Web Server and Client Software [e.g., SSH, HTTPS, ODBC, JDBC, ADO.NET applications]) that will communicate over TLS 
+   * X.509 Certificates for Application Users ? optional; not necessary whn Identity Delegation is in use
+
+---+++ Authorization Scoping
+
+Every resource type protected by VAL is associated with a distinct ACL scope. Examples include:
+
+   * Sponger - for the Virtuoso Sponger Middleware Layer
+   * <nowiki>SpongerCartridges</nowiki> - for specific Sponger Cartridges (for finer granularity control of 
+     access to the Sponger)
+   * Query - for Query Services (SPARQL or SQL)
+   * <nowiki>WebDAV</nowiki> - for all folders and documents accessible via <nowiki>WebDAV</nowiki> or 
+     Linked Data Profile (LDP) protocols
+   * OAuth - for OAuth protocol
+   * Private Named Graphs -- for internal RDF documents controlled by the Virtuoso Quad Store
+   * Basic Entity Description Services
+   * Advanced Faceted Browsing based Entity Description Services
+   * <nowiki>PivotViewer</nowiki> Data Visualization
+   * URI Shortener
+   * Custom Scopes created for custom applications
+
+---+++ Virtuoso Realms
+
+As a hybrid data server, Virtuoso provides access to data across two distinct (but interlinked) functionality 
+realms: HTTP and SQL. Thus, configuring VAL requires creation of Authorization and Restrictions rules that 
+target each of the aforementioned realms, individually.
+
+VAL Authorizations apply to HTTP and/or SQL realms distinctly. Basically, you have an ACL Scope by Virtuoso 
+Realms matrix per basic unit of ABAC functionality.
+
+<img style="display: block; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/ACL_Configuration_UI.png"/>
+<div style="text-align: center; width: 100%;"><b>Conductor's VAL Configuration UI</b></div>
+
+---+++ Creating an ABAC ACL
+
+You achieve this by writing a collection of RDF language statements to a special VAL system named graph. 
+These statements describe an instance of an authorization, and where additional restrictions apply they 
+are also used to describe resource usage rate restrictions.
+
+----++++ Example of ABAC ACL
+
+<verbatim>
+## Declaring an Authorization granting read-access to the named graph identified by the IRI 
+## <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz>
+ 
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+
+WITH
+   <http://linkeddata.uriburner.com/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>
+INSERT
+   {
+     <#PrivateNamedGraphRule1> 
+       a                     acl:Authorization ;
+       foaf:maker            <http://kingsley.idehen.net/dataspace/person/kidehen#this> ;
+       oplacl:hasAccessMode  oplacl:Read ;
+       acl:accessTo          <OpenPermID-bulk-assetClass-20151111_095807.ttl.gz> ;
+       acl:agent             <https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i> ;
+       oplacl:hasScope       oplacl:PrivateGraphs ;
+       oplacl:hasRealm       oplacl:DefaultRealm .
+  };
+</verbatim>
+
+---+++Protecting an HTTP Realm (aka <nowiki>DefaultRealm</nowiki>) Service
+
+To protect HTTP Services provided by a Virtuoso instance such as: SPARQL endpoints, <nowiki>WebDAV</nowiki> 
+and LDP file systems, Faceted Browsing, Sponger Entity Description Pages, <nowiki>PivotViewer</nowiki>, 
+URL Shortener, and SPARQL/SQL Interactive Query Builder, etc., you need create the following:
+
+   1 Describe your ACL using RDF Statements based on terms from the 
+     &lt;[[http://www.w3.org/ns/auth/acl#][http://www.w3.org/ns/auth/acl#]]&gt;, 
+     &lt;[[http://www.openlinksw.com/ontology/acl#][http://www.openlinksw.com/ontology/acl#]]&gt;, 
+     and &lt;[[http://www.openlinksw.com/ontology/restrictions#][http://www.openlinksw.com/ontology/restrictions#]]&gt; 
+     vocabularies.
+   1 Load your ACLs to the Virtuoso Quad Store hosted VAL system named graph using one of the following:
+      * Virtuoso's RDF document loader
+      * SPARQL
+      * SPARQL inside SQL - via Conductor or command-line ISQL interfaces.
+   1 Test your ACL
+
+---++++ Troubleshooting ACLs on HTTP Realm
+
+If your ACL doesn't perform as expected please check the following:
+
+   * <b>Your desired ACL scope is enabled</b> - this will be visible via the Conductor Configuration URI 
+     for VAL or it can be looked up via its HTTP URI using the Faceted Browser or SPARQL.
+   * <b>The enabled ACL scope is associated with the <nowiki>DefaultRealm</nowiki></b> - this is what 
+     binds an ACL to the HTTP functionality realm and this will be visible via the Conductor Configuration 
+     UI for VAL or it can be lookedup via its HTTP URI using the Faceted Browser or SPARQL.
+
+---+++ Protecting a SQL Realm (aka <nowiki>SqlRealm</nowiki>) Service
+
+To protect SQL Services provided by a Virtuoso instance (e.g., ODBC, JDBC, ADO.NET, OLE-DB connectivity and 
+access; SPASQL (SPARQL inside SQL); etc.), you need to take the following steps:
+
+   1 Create RDF statements, based on terms from the 
+     &lt;[[http://www.w3.org/ns/auth/acl#][http://www.w3.org/ns/auth/acl#]]&gt;, 
+     &lt;[[http://www.openlinksw.com/ontology/acl#][http://www.openlinksw.com/ontology/acl#]]&gt;, and 
+     &lt;[[http://www.openlinksw.com/ontology/restrictions#][http://www.openlinksw.com/ontology/restrictions#]]&gt; 
+     vocabularies, that describe each of the following
+      * a SQL Realm access authorization, for example &mdash;
+<verbatim>
+-- SQLRealm ACL
+-- Cleanup
+
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+
+WITH 
+  <http://id.myopenlink.net/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm>
+DELETE 
+  {
+     <#WebIDTLSSQLAccessRule1>  ?p  ?o . 
+  };
+
+-- ACL Definition 
+
+-- SQL Access Privileges Grant to a Specific WebID --
+
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX     acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX    foaf:  <http://xmlns.com/foaf/0.1/>
+
+WITH GRAPH 
+  <http://id.myopenlink.net/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm>
+INSERT 
+  {
+    <#WebIDTLSSQLAccessRule1> 
+       a                     acl:Authorization ;
+       foaf:maker            <http://kingsley.idehen.net/dataspace/person/kidehen#this> ;
+       rdfs:label            "SQL Realm Access Authorization ACL" ;
+       rdfs:comment          """Mandatory ACL for granting access to SQL Realm which then enables ODBC, JDBC, ADO.NET, OLE-DB compliant
+                                application access, subject to Agent & User Identity.""" ;
+       oplacl:hasAccessMode  oplacl:Read ;
+       acl:accessTo          <urn:virtuoso:access:sparql> ;
+       acl:agent             <http://id.myopenlink.net/dataspace/person/kidehen#this> ,
+                             <http://kingsley.idehen.net/dataspace/person/kidehen#this> ,
+                             <https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i> ,
+                             <http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i> , 
+                             <https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity> ;
+       oplacl:hasScope       oplacl:Query ;
+       oplacl:hasRealm       oplacl:SqlRealm .
+  };
+
+</verbatim>
+      * a SQL Realm usage rate per second restriction, for example &mdash;
+<verbatim>
+-- SQL Query Access Restrictions (SQLRealm re. ODBC, JDBC, ADO.NET) -- 
+-- Query Request Rate
+-- Cleanup
+
+SPARQL 
+
+PREFIX   oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX      acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX     foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX  oplrest:  <http://www.openlinksw.com/ontology/restrictions#>
+
+WITH GRAPH 
+  <http://id.myopenlink.net/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm>
+DELETE
+  {
+     <#IDMyOpenLinkTLSSQLAccessRestriction1>  ?p  ?o . 
+  };
+
+-- Restriction Definition
+
+SPARQL 
+
+PREFIX   oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX      acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX     foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX  oplrest:  <http://www.openlinksw.com/ontology/restrictions#>
+
+WITH GRAPH
+   <http://id.myopenlink.net/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm>
+INSERT
+  {
+    <#IDMyOpenLinkTLSSQLAccessRestriction1> 
+       a                              oplrest:Restriction ;
+       foaf:maker                     <http://kingsley.idehen.net/dataspace/person/kidehen#this> ;
+       rdfs:label                     "SQL Realm Query Rate Restriction" ;
+       rdfs:comment                   """Mandatory Restriction for metering Query Request Rates per second.""" ;
+       oplrest:hasRestrictedResource  <urn:virtuoso:restrictions:sql-request-rate> ;
+       oplrest:hasMaxValue            "100"^^xsd:integer ;
+       acl:agent                      <http://id.myopenlink.net/dataspace/person/kidehen#this> ,
+                                      <http://kingsley.idehen.net/dataspace/person/kidehen#this> ,
+                                      <https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i> ,
+                                      <http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i> , 
+                                      <https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity> ;
+       oplacl:hasRealm                oplacl:SqlRealm .
+};
+
+</verbatim>
+      * a SQL Realm Max Rows per query result set [solution] restriction, for example &mdash;
+<verbatim>
+-- Query Results Size 
+-- Cleanup
+
+SPARQL 
+
+PREFIX   oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX      acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX     foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX  oplrest:  <http://www.openlinksw.com/ontology/restrictions#>
+
+WITH GRAPH
+   <http://id.myopenlink.net/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm>
+DELETE
+  {
+     <#IDMyOpenLinkTLSSQLAccessRestriction2>  ?p  ?o . 
+  };
+
+
+-- Restriction Definition
+SPARQL 
+
+PREFIX   oplacl:  <http://www.openlinksw.com/ontology/acl#> 
+PREFIX      acl:  <http://www.w3.org/ns/auth/acl#>
+PREFIX     foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX  oplrest:  <http://www.openlinksw.com/ontology/restrictions#>
+
+WITH GRAPH
+   <http://id.myopenlink.net/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm>
+INSERT
+  {
+    <#IDMyOpenLinkTLSSQLAccessRestriction2> 
+       a                              oplrest:Restriction ;
+       foaf:maker                     <http://kingsley.idehen.net/dataspace/person/kidehen#this> ;
+       rdfs:label                     "SQL Realm Resultset [Query Solution] Size Restriction" ;
+       rdfs:comment                   """Mandatory Restriction for restrictng maximum size of query resultsets [solutions].""" ;
+       oplrest:hasRestrictedResource  <urn:virtuoso:restrictions:sql-result-rows> ;
+       oplrest:hasMaxValue            "200"^^xsd:integer ;
+       acl:agent                      <http://id.myopenlink.net/dataspace/person/kidehen#this> ,
+                                      <http://kingsley.idehen.net/dataspace/person/kidehen#this> ,
+                                      <https://s3.amazonaws.com/webid-sandbox/Profile/Basic-Identity-Claims-And-Profile-Document.ttl#i> ,
+                                      <http://kingsley.idehen.net/public_home/kidehen/profile.ttl#i> , 
+                                      <https://dbfff61d85d4da9b5aefce09723385e78a93f731.googledrive.com/host/0B-Mx14cLTEsaczdJdk96UVQ0aVE/profile.ttl#identity> ;
+       oplacl:hasRealm                oplacl:SqlRealm .
+};
+
+</verbatim>
+   1 Load your ACLs to the Virtuoso Quad Store hosted VAL system named graph using one of the following:
+      * Virtuoso's RDF document loader
+      * SPARQL
+      * SPARQL inside SQL - via Conductor or command-line ISQL interfaces.
+   1 Test your ACL
+
+---++++ Troubleshooting ACLs on SQL Realm 
+
+If your ACL doesn't perform as expected, please check the following:
+
+   * <b>Existence of an Authorization</b> - You can look up the existence of your Authorization via its HTTP URI using the 
+     Faceted Browser or SPARQL.
+   * <b>Existence of a Restriction</b> - You can look up the existence of your Restriction via its HTTP URI using the 
+     Faceted Browser or SPARQL.
+   * <b>Your desired ACL scope is enabled</b> - this will be visible via the Conductor Configuration UI for VAL or 
+     it can be looked up via its HTTP URI using the Faceted Browser or SPARQL.
+   * <b>The enabled ACL scope is associated with the <nowiki>DefaultRealm</nowiki></b> - this is what binds an ACL 
+     to the HTTP functionality realm and will be visible via the Conductor Configuration UI for VAL or it can 
+     be looked-up via its HTTP URI using the Faceted Browser or SPARQL.
+
+---
+
+---++ Further Reading
+
+   * [[ValQuickStartGuide][Virtuoso Authentication Layer - ACL System Quickstart Guide]]
+
+---

@@ -1,0 +1,131 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h2><a name="What"></a>What</h2>
+<p>Create a Virtuoso RDF Graph Replication  slave Subscriber node from a master Publisher node.</p>
+<h2><a name="Why"></a>Why</h2>
+<p>If the master Publisher node is known to contain the current state of the database, Subscriber nodes can be created from a copy of it such that they start from this known good state and keep in sync from that point forward.
+ This could be in the cases of a subscriber failing and needing to be rebuilt or if a new Subscriber node needs to be added the Farm (note this could also be done from a copy of a subscriber node if know to be in sync with the master Publisher).</p>
+<h2><a name="How"></a>How</h2>
+<ol><li>Stop/disable all updates to the publisher so its state remains constant when setting up the new subscriber(s) <br><br> </li>
+<li>Run a checkpoint to commit any pending updates in the trx file to the database (db) file <br><br> </li>
+<li>On each subscriber node if database files already exist then remove the following to ensure no remnants of the older subscriber node database exists: <br><pre><br>   rm virtuoso.db virtuoso.trx virtuoso.log virtuoso.pxa 
+</pre><br></li>
+<li>Copy the publisher database file &quot;virtuoso.db&quot; to the subscriber node(s) using rsync or prefer  copy method <br><br> </li>
+<li>Start the copy of the publisher database and do the following to remove the information store in the database of it being a publisher: <br><pre><br>   delete from sys_repl_accounts; 
+   delete from sys_repl_subscribers; 
+   registry_remove (&#39;DB.DBA.RDF_REPL&#39;); 
+   shutdown(); 
+</pre><br></li>
+<li>Restart the database with virtuoso-start.sh  and run the following command to set it up as a subscriber node: <br><pre><br>   repl_server (&#39;MASTER&#39;, &#39;MASTER_DSN&#39;);  
+   repl_subscribe (&#39;MASTER&#39;, &#39;__rdf_repl&#39;, &#39;dav&#39;, &#39;dav&#39;, &#39;dba&#39;, &#39;dba&#39;);  
+   shutdown(); 
+</pre><br></li>
+<li>Restart the database again with virtuoso-start.sh  and run the following command to continue setting it up as a subscriber node <br><pre><br>   repl_sync_all ();  
+   DB.DBA.SUB_SCHEDULE (&#39;MASTER&#39;, &#39;__rdf_repl&#39;, 1); 
+</pre><br></li>
+<li>Run the following status commands to check it is in sync with the MASTER publisher: <br><pre><br>   status(); 
+   repl_stat(); 
+</pre><br> </li>
+</ol><h2><a name="Trouble Shooting"></a> Trouble Shooting</h2>
+<p>There maybe occasions when Subscriber nodes are failing to sync with the master Publisher with errors of the following form being reported:</p>
+<ul><li>The Subscriber remains constantly in the replication state of &quot;SYNCING&quot; with the master Publisher as reported by the output of running the <code>rep_stat()</code> command on it: <br><pre><br>SQL&gt; repl_stat(); 
+server   account  level       stat 
+VARCHAR  VARCHAR  INTEGER     INTEGER 
+_______________________________________________________________________________ 
+
+MASTER   __rdf_repl  939         SYNCING 
+SLAVE-1  SLAVE-1      0           OFF  
+
+SQL&gt;
+</pre><br></li>
+<li>The master Publisher report a <code>__rdf_repl&#39; is not valid ...</code> error in the database log file: <br><pre><br>14:19:20 Subscriber &#39;SLAVE-1&#39; for &#39;__rdf_repl&#39; is not valid (level 2, requested level 662)
+</pre><br> As can be seen from the errors above the master Publisher is at replication level 2, but the Subscriber is requesting a sync from replication level 662, which is clearly invalid, as the Subscriber should always be one replication level less than the master Publisher i.e.
+ &quot;1&quot; in this case.</li>
+</ul><p>Thus the replication level on the master Publisher needs to be verified and the Subscriber set to be one less than it using the database <a href="http://docs.openlinksw.com/virtuoso/fn_sequence_set.html" class="absuri">sequence_set()</a> function as follows:</p>
+<p> </p>
+<ol><li>On the publisher determine the replication server name with the following command: <br><pre><br>SQL&gt; select repl_this_server(); 
+repl_this_server 
+VARCHAR 
+_______________________________________________________________________________ 
+
+MASTER 
+
+1 Rows. -- 1 msec. 
+SQL&gt;  
+</pre><br></li>
+<li>On the publisher determine the &quot;internal&quot; replication server name to pass to the set_sequence function with the command: <br><pre><br>SQL&gt; select concat (&#39;repl_&#39;, repl_this_server(), &#39;_&#39;, &#39;__rdf_repl&#39;); 
+concat 
+VARCHAR 
+_______________________________________________________________________________ 
+
+repl_MASTER___rdf_repl 
+
+1 Rows. -- 1 msec. 
+SQL&gt; 
+</pre><br></li>
+<li>Check the publisher replication level with the command: <br><pre><br>SQL&gt; select sequence_set (&#39;repl_MASTER___rdf_repl&#39;, 0, 2); 
+sequence_set 
+VARCHAR 
+_______________________________________________________________________________ 
+
+1685 
+
+1 Rows. -- 0 msec. 
+SQL&gt; 
+</pre><br></li>
+<li>Switch to the subscriber and check the publisher replication level store: <br><pre><br>SQL&gt; select sequence_set (&#39;repl_MASTER___rdf_repl&#39;, 0, 2); 
+sequence_set 
+VARCHAR 
+_______________________________________________________________________________ 
+
+939 
+
+1 Rows. -- 0 msec. 
+SQL&gt; 
+</pre><br></li>
+<li>Set the publisher replication level on the subscriber to be one less than its level on the publisher itself with command: <br><pre><br>SQL&gt; sequence_set (&#39;repl_MASTER___rdf_repl&#39;, 1684, 0); 
+
+Done. -- 0 msec. 
+
+SQL&gt; 
+</pre><br></li>
+<li>Check the publisher replication level on the subscriber is one less than on the publisher: <br><pre><br>SQL&gt; select sequence_set (&#39;repl_MASTER___rdf_repl&#39;, 0, 2); 
+sequence_set 
+VARCHAR 
+_______________________________________________________________________________ 
+
+1684 
+
+1 Rows. -- 0 msec. 
+SQL&gt; 
+</pre><br></li>
+<li>Back on the master Publisher, check Subscriber replication status is valid by ensuring its <code>RS_VALID</code> column of the <code>SYS_REPL_SUBSCRIBERS</code> table is set &quot;1&quot; and the <code>RS_LEVEL</code> column is set to one less than the replication level of the subscriber: <br><pre><br>SQL&gt;   select * from SYS_REPL_SUBSCRIBERS; 
+RS_SERVER          RS_ACCOUNT         RS_SUBSCRIBER     RS_LEVEL    RS_VALID 
+VARCHAR NOT NULL   VARCHAR NOT NULL   VARCHAR NOT NULL  INTEGER     INTEGER 
+_______________________________________________________________________________ 
+
+MASTER             __rdf_repl         SLAVE-1           939         0 
+
+1 Rows. -- 49 msec. 
+
+SQL&gt;
+</pre><br></li>
+<li>If as above the <code>RS_VALID</code> is &quot;0&quot; then set it to &quot;1&quot; and set the <code>RS_LEVEL</code> column  to one less than the replication level of the master Publisher as follows to activate replication from the slave subscriber node: <br><pre><br>SQL&gt; update SYS_REPL_SUBSCRIBERS set RS_LEVEL = 1684 , RS_VALID = 1 ;
+
+0 Rows. -- 2 msec.
+SQL&gt;
+SQL&gt; select * from SYS_REPL_SUBSCRIBERS; 
+RS_SERVER          RS_ACCOUNT         RS_SUBSCRIBER     RS_LEVEL    RS_VALID 
+VARCHAR NOT NULL   VARCHAR NOT NULL   VARCHAR NOT NULL  INTEGER     INTEGER 
+_______________________________________________________________________________ 
+
+MASTER             __rdf_repl         SLAVE-1           1684        1 
+
+1 Rows. -- 49 msec. 
+
+SQL&gt;
+</pre><br></li>
+<li>Then restart master Publisher and the subscriber for the settings to take effect, and run the following on each subscriber to force them to sync: <br><pre><br>    repl_sync_all (); 
+</pre><br></li>
+<li>Finally check the Subscriber node(s) is now <code>IN SYNC</code> and that there are no occurrences of the <code>__rdf_repl&#39; is not valid ...</code> errors in the master Publisher database log.
+</li>
+</ol></div></body></html>

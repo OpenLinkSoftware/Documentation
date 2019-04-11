@@ -1,0 +1,192 @@
+<docbook><section><title>VAL_OAuthACLs</title><title> VAL OAuth Application ACLs</title> VAL OAuth Application ACLs
+<para>VAL&#39;s OAuth provider implementation provides an application management page to create, delete, and edit OAuth client application key/secret pairs.</para>
+<para>Like most aspects in VAL the creation of OAuth Clients is subject to ACLs and Restrictions.
+ An instance maintainer can define who is allowed to create new OAuth clients and how many they are allowed to create.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Private Graphs used for ACL storage</bridgehead>
+ The Rules can be controlled via the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__http__api.html">VAL ACL RESTful API</ulink> or the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html#ga89b2c77c10c82186ddc0e7b46093123c">Internal VAL API</ulink>.
+ Alternatively one can directly add the rules to the private graph matching the realm in which the rules should apply.
+ Given the default realm http://www.openlinksw.com/ontology/acl#DefaultRealm and default hostname &quot;HOST&quot; the graph IRI would be http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm and the groups will be stored in named graph http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm.
+ Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">these graphs can be customized</ulink> for better readability.<para>The same principle applies to the named graph for restrictions.
+ Given the default realm http://www.openlinksw.com/ontology/acl#DefaultRealm and default hostname &quot;HOST&quot; the graph IRI would be http://HOST/acl/restrictions/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> ACLs</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Enable ACLs for the OAuth Application Page</bridgehead>
+<para>For the ACL system to work properly the appropriate ontologies need to be loaded into the private named graph urn:virtuoso:val:acl:schema.
+ This can be achieved as follows: </para>
+<programlisting>sparql load &lt;http://www.openlinksw.com/ontology/acl#&gt; into &lt;urn:virtuoso:val:acl:schema&gt;;
+sparql load &lt;http://www.openlinksw.com/ontology/restrictions#&gt; into &lt;urn:virtuoso:val:acl:schema&gt;;
+</programlisting><para>By default any authenticated person can create an arbitrary number of OAuth Client Keys.</para>
+<para>VAL controls ACL application through <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_rule_scopes">ACL</ulink> scopes which can be enabled and disabled per application realm.
+ Thus, in order to enable ACLs in the default realm the following must be done:</para>
+<programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+with &lt;urn:virtuoso:val:config&gt;
+delete {
+  oplacl:DefaultRealm oplacl:hasDisabledAclScope oplacl:OAuth .
+}
+insert {
+  oplacl:DefaultRealm oplacl:hasEnabledAclScope oplacl:OAuth .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3"> ACL Resource And Access Modes</bridgehead>
+<para>Creating new OAuth client keys requires one to have <ulink url="http://www.openlinksw.com/ontology/acl#Write">oplacl:Write</ulink> permissions on the virtual resource urn:virtuoso:access:oauth:apps in ACL scope <ulink url="http://www.openlinksw.com/ontology/acl#OAuth">oplacl:OAuth</ulink>.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> ACL Examples</bridgehead>
+<emphasis>The following examples assume that the default realm <ulink url="http://www.openlinksw.com/ontology/acl#DefaultRealm">oplacl:DefaultRealm</ulink> is used for creating the ACL resources.</emphasis><emphasis>The following examples use &quot;HOST&quot; as a placeholder for the default hostname of the system the ACL resource are created on.</emphasis><para>Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">the ACL graphs can be customized</ulink> for better readability.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant Everyone the Right To Create OAuth Apps</bridgehead>
+ <programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#rule&gt; a acl:Authorization ;
+    oplacl:hasAccessMode oplacl:Write ;
+    acl:accessTo &lt;urn:virtuoso:access:oauth:apps&gt; ;
+    acl:agentClass foaf:Agent ;
+    oplacl:hasScope oplacl:OAuth ;
+    oplacl:hasRealm oplacl:DefaultRealm .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant the Right to Create OAuth Apps to an Individual</bridgehead>
+ <programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#rule&gt; a acl:Authorization ;
+    oplacl:hasAccessMode oplacl:Write ;
+    acl:accessTo &lt;urn:virtuoso:access:oauth:apps&gt; ;
+    acl:agent &lt;http://www.linkedin.com/in/test&gt; ;
+    oplacl:hasScope oplacl:OAuth ;
+    oplacl:hasRealm oplacl:DefaultRealm .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant the Right to Create OAuth Apps to a Group Of People</bridgehead>
+ (When not using the API the groups and ACLs need to be inserted into the appropriate graph (see above) with additional properties oplacl:hasRealm and foaf:maker)<para>There are two types of groups: static and conditional ones.
+ The former is a simple list of individuals as see below, the latter is a set of conditions which define a dynamic group of individuals.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> A Static Group</bridgehead>
+ <programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#group&gt; a foaf:Group, oplacl:StaticGroup ;
+    foaf:name &quot;Some people&quot; ;
+    foaf:member &lt;http://dduck.wordpress.com&gt; ,
+                &lt;http://peterparker.tumblr.com/&gt; .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h5"> Anyone Who Is Authenticated</bridgehead>
+ The Required Group in a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> which includes every authenticated <ulink url="NetID">NetID</ulink>: <programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#group&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Valid Identifiers&quot; ;
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:GenericCondition ;
+      oplacl:hasCriteria oplacl:NetID ;
+      oplacl:hasComparator oplacl:IsNotNull ;
+      oplacl:hasValue 1
+    ] .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h5"> Any Verified WebID</bridgehead>
+ The Required Group in a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> which includes every authenticated <ulink url="NetID">NetID</ulink>: <programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#group&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Valid WebIDs&quot; ;
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:GenericCondition ;
+      oplacl:hasCriteria oplacl:WebIDVerified ;
+      oplacl:hasComparator oplacl:EqualTo ;
+      oplacl:hasValue 1
+    ] .
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Any Valid X.509 Client Certificate</bridgehead>
+ The Required Group in a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> which includes every valid X.509 certificate: <programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#group&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Valid X.509 Certificates&quot; ;
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:GenericCondition ;
+      oplacl:hasCriteria oplacl:CertVerified ;
+      oplacl:hasComparator oplacl:EqualTo ;
+      oplacl:hasValue 1
+    ] .
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Any Verified WebID Which Claims to be a Person</bridgehead>
+ Query conditions consist of a query which supports two variables which are replaced with the profile graph and the personal URI respectively.
+<programlisting>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#group&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Valid WebIDs&quot; ;
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:GenericCondition ;
+      oplacl:hasCriteria oplacl:WebIDVerified ;
+      oplacl:hasComparator oplacl:EqualTo ;
+      oplacl:hasValue 1
+    ] ,
+    [
+      a oplacl:GroupCondition, oplacl:OAuthCondition ;
+      oplacl:hasQuery &quot;&quot;&quot;ask where { graph ^{graph}^ { ^{uri}^ a foaf:Person } }&quot;&quot;&quot;
+    ]
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Control the Max Number of OAuth Clients via Restrictions</bridgehead>
+<para>In addition to controlling who can create OAuth clients the instance maintainer can define how many OAuth clients can be created.
+ By default whoever has the right to create applications can create as many as they like.</para>
+<para>In order to limit that number a restriction on resource urn:virtuoso:restrictions:oauth:apps needs to be defined.
+ As always with VAL restrictions the least restrictive value will be used.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Restriction Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Limit the Maximum Number of OAuth Client to 2 for Everyone</bridgehead>
+<programlisting>sparql
+prefix oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/restrictions/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#res1&gt; a oplres:Restriction ;
+    rdfs:label &quot;Max 2 OAuth Apps for Everyone&quot; ;
+    oplres:hasResource &lt;urn:virtuoso:restrictions:oauth:apps&gt; ;
+    oplres:hasAgentClass foaf:Agent ;
+    oplres:hasMaxValue &quot;2&quot;^^xsd:decimal .
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Limit the Maximum Number of OAuth Client to 10 for an Individual</bridgehead>
+<programlisting>sparql
+prefix oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+with &lt;http://HOST/acl/graph/restrictions/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+insert {
+  &lt;#res1&gt; a oplres:Restriction ;
+    rdfs:label &quot;Max 10 OAuth Apps&quot; ;
+    oplres:hasResource &lt;urn:virtuoso:restrictions:oauth:apps&gt; ;
+    oplres:hasAgent &lt;http://peterparker.tumblr.com/&gt; ;
+    oplres:hasMaxValue &quot;10&quot;^^xsd:decimal .
+};
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Allow Users to Request Access to OAuth App Management</bridgehead>
+<para>Like all applications using VAL&#39;s authentication pages one can make use of VAL&#39;s request for access feature which allows to easily send a message to the owner of the resource asking for permission to use it.</para>
+<para>All VAL requires to know is who owns the resource.
+ This is easily done by using the VAL API.
+ If, for example, &quot;dba&quot; should be the owner of the OAuth Client Management, then the following call will save that fact: </para>
+<programlisting>VAL.DBA.set_resource_ownership (
+   scope=&gt;VAL.DBA.oplacl_uri(&#39;OAuth&#39;),
+   resource=&gt;&#39;urn:virtuoso:access:oauth:apps&#39;,
+   serviceId=&gt;VAL.DBA.user_personal_uri (&#39;dba&#39;)
+);
+</programlisting><para> This call will add a triple like the following into a private graph which is then added to a graph group containing all ownership graphs for the given scope: </para>
+<programlisting>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+http://HOST/dataspace/person/dba#this foaf:made &lt;urn:virtuoso:access:oauth:apps&gt; .
+</programlisting></section></docbook>

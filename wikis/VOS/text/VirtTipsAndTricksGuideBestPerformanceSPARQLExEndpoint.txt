@@ -1,0 +1,98 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++How to achieve best performance executing a query against SPARQL Endpoint?
+
+Assume the query from below is to be executed against the [[http://dbpedia.org/sparql][dbpedia sparql endpoint]]:
+<verbatim>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX prop: <http://dbpedia.org/property/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?thumbnail ?abstract
+WHERE 
+  {
+    ?location rdfs:label ?label;
+          a dbo:PopulatedPlace . 
+    OPTIONAL { ?location dbo:thumbnail ?thumbnail . }
+    OPTIONAL { ?location dbo:abstract ?abstract . 
+      FILTER langMatches(lang(?abstract), 'en') }
+    FILTER REGEX(?label, 'Swanage', 'i')
+  } 
+LIMIT 1
+</verbatim>
+
+What should we do if the endpoint either times out or does not return any data at all? - There are a number of reasons why the dbpedia endpoint can give  
+timeouts such as:
+
+   1. You send too many requests in very short amount of time;
+   2. You send very time-consuming queries and you receive a timeout
+   3. Someone else is doing some very expensive queries
+
+We have several ACLs in place to deal with the above scenarios but  that does not mean that some users write crawlers that ignore the HTTP  
+status codes and properly act upon them. We are looking into the best way to deal with such.
+
+Back to the query from above, the performance killer in it is the use of:
+
+<verbatim>
+FILTER regex(?label, 'Swanage', 'i')
+</verbatim>
+
+which is basically will need to check every individual place triple to see if it matches which is not a very efficient way to quickly get the results.
+
+
+We suggest the FILTER line to be replaced it with:
+
+<verbatim>
+?label bif:contains '\'D?sseldorf\''
+</verbatim>
+
+or
+
+<verbatim>
+?label bif:contains " 'Antwerpen' "
+</verbatim>
+
+
+which takes into account the fact there can be special characters in names. If you are dealing only with Latin1 characters, you can leave out the inner quotes. 
+Also note the spaces between the double and single quote are not needed, but enhance readability.
+
+The CONTAINS function has the same advantage as the REGEX (x, 'i')  option of finding both antwerpen, Antwerpen or any other case mixes but using an index which is much faster.
+
+Finally the query should like this:
+<verbatim>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX prop: <http://dbpedia.org/property/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?thumbnail ?abstract
+WHERE 
+  {
+    ?location rdfs:label ?label;
+         a dbo:PopulatedPlace.
+     ?label bif:contains " 'Antwerpen' ".
+     OPTIONAL { ?location dbo:thumbnail ?thumbnail . }
+     OPTIONAL { ?location dbo:abstract ?abstract . 
+       FILTER  langMatches(lang(?abstract), 'en') }
+  }
+LIMIT 1
+</verbatim>
+
+which is much faster.
+
+
+Another trick you can use is to turn a SPARQL request into an ANYTIME query. This is done by adding:
+
+<verbatim>
+&timeout=5000
+</verbatim>
+
+to the end of the /sparql/?query=XXXX request which instructs the Virtuoso SPARQL endpoint to only return results that it can find in  approximate 5000msec. There are special HTTP result header flags that  indicate if the resultset is a partial or full result.
+
+
+[[http://lod.openlinksw.com/sparql?default-graph-uri=&query=PREFIX+dbo%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fontology%2F%3E%0D%0APREFIX+prop%3A+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2F%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0ASELECT+%3Fthumbnail+%3Fabstract%0D%0AWHERE+%0D%0A++%7B%0D%0A++++%3Flocation+rdfs%3Alabel+%3Flabel%3B%0D%0A+++++++++a+dbo%3APopulatedPlace.%0D%0A+++++%3Flabel+bif%3Acontains+%22+%27Antwerpen%27+%22.%0D%0A+++++OPTIONAL+%7B+%3Flocation+dbo%3Athumbnail+%3Fthumbnail+.+%7D%0D%0A+++++OPTIONAL+%7B+%3Flocation+dbo%3Aabstract+%3Fabstract+.+%0D%0A+++++++FILTER++langMatches%28lang%28%3Fabstract%29%2C+%27en%27%29+%7D%0D%0A++%7D%0D%0ALIMIT+1&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on&timeout=5000][View the results]] of the query execution on the [[http://lod.openlinksw.com][LOD]] instance.
+
+
+---+++Related
+
+   * [[http://docs.openlinksw.com/virtuoso/anytimequeries.html][Anytime Queries]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]

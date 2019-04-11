@@ -1,0 +1,270 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--></p>
+<h2><a name="Facebook Client API as User Defined Type (UDT)"></a>Facebook Client API as User Defined Type (UDT)</h2>
+<h3><a name="What is it for?"></a>What is it for?</h3>
+<p>The API gives developers an easy way to communicate with Facebook, handling authentication with transparent communication.
+ It may be used with any VSP or VSPX page, not just ODS.</p>
+<h3><a name="How to use it?"></a>How to use it?</h3>
+<p>To use the API, you should execute <code><a href="FacebookAPI/facebook.sql" style="wikiautogen">facebook.sql</a></code>.</p>
+<p>Note: Be sure to get the latest versions of all files, by upgrading to the latest version of the <code>ods_framework_dav.vad</code> package.</p>
+<h4><a name="What is the expected result?"></a>What is the expected result?</h4>
+<p>After execution of the SQL file, a type with name &quot;<code>DB.DBA.Facebook</code>&quot; will be created.
+ Creating an object of this type with the correct parameter(s) will set up a functional REST client for Facebook.</p>
+<h3><a name="Description of usage:"></a>Description of usage:</h3>
+<ul><li>The <code>DB.DBA.Facebook</code> type consists of a main object containing all the properties (<code>api_key</code>, <code>api_secret</code>) required to establish a connection to Facebook and user that is currently logged in to Facebook.
+</li>
+<li>The Facebook user has no interaction with (<code>api_key</code>, <code>api_secret</code>).
+ The developer must set <code>api_key</code> and <code>api_secret</code>.
+ Essential part of the UDT is its property named &quot;<code>api_client</code>&quot; — <ul><li>This property is of type <code>DB.DBA.FacebookRestClient</code>, also made available after execution of <code>facebook.sql</code>.
+</li>
+<li>This property is the real REST client that takes care of authentication and communication to Facebook.</li>
+</ul></li>
+</ul><p> </p>
+<h3><a name="Examples"></a>Examples</h3>
+<p>The most appropriate code example is <a href="FacebookAPI/index.vsp" style="wikiautogen">index.vsp</a>.
+ Here is an annotated short code snippet:</p>
+<br><pre>DECLARE  appapikey, appsecret   VARCHAR;
+DECLARE  _facebook              DB.DBA.Facebook;
+DECLARE  _user                  INTEGER;
+
+-- here you should put the 32-character API key that corresponds to the application you have 
+-- created in Facebook .
+appapikey := &#39;5568c178ad6a4cef74da4848b164602c&#39;; 
+
+-- here you should put the 32-character API secret that corresponds to the application you have 
+-- created in Facebook.
+appsecret := &#39;f35a624a0c9d153a6fa712a439bea14b&#39;; 
+
+_facebook := new Facebook(appapikey, appsecret, params, lines);
+
+-- Constructor method for the UDT should contain 4 obligatory parameters -  
+-- API key, API secret, params, and lines parameters available in VSP
+
+-- With this action the API is set up.
+
+-- To work with Facebook data, we must make the Facebook user login
+
+_user := _facebook.require_login();
+
+-- after successful login, _user is INTEGER that contains Facebook user ID.
+
+-- All further communication to Facebook is related to api_client property:
+
+-- for example if we want to take full name of current user:
+
+DECLARE _xmle ANY;
+
+_xmle:=_facebook.api_client.users_getInfo(CAST(_user AS VARCHAR),&#39;name&#39;);
+
+-- Here we cast _user as VARCHAR, as the first parameter is comma-separated list of 
+-- the users IDs for which we need the field &quot;name&quot;. On successful execution, _xmle 
+-- will contain xml entity with the result. We should parse it in order to get what 
+-- we need from result. For example, if we need name as VARCHAR we can 
+-- perform the following:
+
+DECLARE _uname VARCHAR;
+_uname:=CAST(xpath_eval(&#39;/users_getInfo_response/user/name&#39;, _res) AS VARCHAR);
+
+   METHOD auth_getSession
+      (
+        auth_token    ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD users_getInfo
+      (
+        uids          ANY, 
+        fields        ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD users_isAppAdded
+      () 
+      RETURNS         ANY,
+   METHOD friends_areFriends
+      (
+        uids1         ANY, 
+        uids2         ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD friends_get
+      () 
+      RETURNS         ANY,
+   METHOD events_get
+      (
+        uid           INTEGER, 
+        eids          ANY,
+        start_time    INTEGER,
+        end_time      INTEGER,
+        rsvp_status   VARCHAR 
+      ) 
+      RETURNS         ANY,
+   METHOD events_get
+      (
+        uid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD events_getMembers
+      (
+        eid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD fql_query
+      (
+        _query        VARCHAR 
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishStoryToUser
+      (
+        title         VARCHAR,
+        body          VARCHAR,
+        image_1       VARCHAR,
+        image_1_link  VARCHAR,
+        image_2       VARCHAR,
+        image_2_link  VARCHAR,
+        image_3       VARCHAR,
+        image_3_link  VARCHAR,
+        image_4       VARCHAR,
+        image_4_link  VARCHAR,
+        priority      INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishStoryToUser
+      (
+        title         VARCHAR,
+        body          VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishActionOfUser
+      (
+        title         VARCHAR,
+        body          VARCHAR,
+        image_1       VARCHAR,
+        image_1_link  VARCHAR,
+        image_2       VARCHAR,
+        image_2_link  VARCHAR,
+        image_3       VARCHAR,
+        image_3_link  VARCHAR,
+        image_4       VARCHAR,
+        image_4_link  VARCHAR,
+        priority      INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD feed_publishActionOfUser
+      (
+        title         VARCHAR,
+        body          VARCHAR 
+      ) 
+      RETURNS         ANY,
+   METHOD friends_getAppUsers
+      () 
+      RETURNS         ANY,
+   METHOD groups_get
+      (
+        uid           INTEGER, 
+        gids          ANY
+      ) 
+      RETURNS         ANY,
+   METHOD groups_getMembers
+      (
+        gid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD notifications_get
+      () 
+      RETURNS         ANY,
+   METHOD notifications_send
+      (
+        to_ids        ANY,
+        notification  VARCHAR,
+        email         VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD notifications_sendRequest
+      (
+        to_ids        ANY,
+        type          VARCHAR,
+        content       VARCHAR,
+        image         VARCHAR,
+        invite        INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD photos_get
+      (
+        subj_id       INTEGER,
+        aid           INTEGER,
+        pids          ANY
+      ) 
+      RETURNS         ANY,
+   METHOD photos_getAlbums
+      (
+        uid           INTEGER,
+        aids          INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD photos_getTags
+      (
+        pids          ANY 
+      ) 
+      RETURNS         ANY,
+   METHOD profile_setFBML
+      (
+        markup        VARCHAR,
+        uid           INTEGER
+      ) 
+      RETURNS         ANY,
+   METHOD profile_getFBML
+      (
+        uid           INTEGER 
+      ) 
+      RETURNS         ANY,
+   METHOD fbml_refreshImgSrc
+      (
+        _url          VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD fbml_refreshRefUrl
+      (
+        _url          VARCHAR
+      ) 
+      RETURNS         ANY,
+   METHOD fbml_setRefHandle
+      (
+        _handle       VARCHAR,
+        fbml          VARCHAR 
+      ) 
+      RETURNS         ANY
+
+-- You can find description for every method at the beginning of the method 
+-- definition in facebook.sql or in http://wiki.developers.facebook.com/index.php/API
+
+-- there are 3 methods that are related to REST communication but not to API function.
+   METHOD generate_sig
+      (
+        params_array ANY, 
+        secret VARCHAR
+      ) 
+      RETURNS VARCHAR,
+   METHOD call_method
+      (
+        method VARCHAR,
+        params ANY
+      ) 
+      RETURNS ANY,
+   METHOD post_request
+      (
+        method VARCHAR,
+        params ANY
+      ) 
+      RETURNS ANY,
+
+-- all functions return XML entity as result, except 
+-- auth_getSession(), 
+-- users_getInfo(uids ANY, fields ANY), and 
+-- users_isAppAdded()
+</pre><p> </p>
+<h3><a name="Usage of the Facebook Client API as UDT in ODS"></a> Usage of the Facebook Client API as UDT in ODS</h3>
+<p>Usage of this UDT in ODS is <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OdsFacebookIntegration" class="wikiword">covered elsewhere</a>.</p>
+<p> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryODS" class="wikiword">CategoryODS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryOpenSource" class="wikiword">CategoryOpenSource</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryHowTo" class="wikiword">CategoryHowTo</a> CategoryFacebook<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryFacebook&parent=FacebookAPI" class="wikiword">?</a> CategoryUDT<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryUDT&parent=FacebookAPI" class="wikiword">?</a></p>
+<!--Begin of %VOSCOPY{}%--><p> </p>
+<!--End of %VOSCOPY{}%--><p> </p>
+</div></body></html>

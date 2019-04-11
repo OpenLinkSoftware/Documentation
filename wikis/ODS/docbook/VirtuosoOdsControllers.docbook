@@ -1,0 +1,127 @@
+<docbook><section><title>VirtuosoOdsControllers</title><title> ODS Controllers</title> ODS Controllers
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Overview</bridgehead>
+<para>ODS Controllers enable programmatic manipulation of ODS based Data Spaces via RESTful Web Services.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Access point</bridgehead>
+<para>The API can be accessed via REST using http://host:port/ods/api/[method].
+ Parameters specific to each method are given as URL parameters if using GET, as www-url-encoded or multipart/form-data if using POST.</para>
+<para>The API can be accessed via UI page using http://host:port/ods/oauth_test.vsp.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Authentication</bridgehead>
+<para>Most API calls which modify data, i.e., CRUD operations, need authentication; thus the requests need to be authenticated using OAuth, or session + password hashes.
+ The user account used to authenticate in either case MUST have relevant privileges to a given ODS data space.
+ This is done by granting owner or author level membership to the given data space.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Password Hash Authentication</bridgehead>
+<para>When authenticating via password hashes parameters &#39;user_name&#39; and &#39;password_hash&#39; need to be specified.
+ The password hash uses the sha1 digest algorithm and includes both the user name and the password.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Password Hash Authentication Example</bridgehead>
+<para>To authenticate user demo with password foobar the sha1 digest of the term demofoobar needs to be provided.
+ This can be created via openssl or any sha1 tool: </para>
+<programlisting># echo -n &quot;demofoobar&quot; | openssl dgst -sha1
+# echo -n &quot;demofoobar&quot; | sha1sum
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">OAuth</bridgehead>
+<para>The user account for authentication must have OAuth tokens generated via ODS -&gt; Settings -&gt; OAuth keys.
+ This UI provides a list of all applications to which the user has access (i.e., he/she is member or owner).
+ If an instance needs to be accessed with OAuth, user simply selects the instance from the list and clicks &#39;generate keys&#39;.
+ The generated consumer key &amp; token will be associated to the active ODS user account and selected application instance.</para>
+<para>Once a consumer token is available, the sequence below must be done in order to establish an authorized session: </para>
+<orderedlist spacing="compact"><listitem>client uses request_token to get a token/secret pair for establishing session using consumer token </listitem>
+<listitem>client asks OAuth server to authorize the token from step 1 </listitem>
+<listitem>using authorized token from step 1, client asks OAuth server for authentication token </listitem>
+<listitem>with authentication token from step 3, clients can access instance data associated with the consumer token from step 1</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">OAuth  Examples</bridgehead>
+<para>To demonstrate the above, we supply <ulink url="VirtuosoOdsControllersClientApi">a simple client written in VSP</ulink>.</para>
+<para>Also there are available <ulink url="VirtuosoOdsControllersClientApiExamples">Examples of sample session</ulink> recorded with the client above.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Response format</bridgehead>
+<para>The following Response format are supported by the ODS Controllers implementation:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry>IUD operations</entry><entry> On success; On failure</entry><entry><emphasis>On success</emphasis>: <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:verbatim&lt;result&gt;  &lt;code&gt;NNN&lt;/code&gt;  &lt;message&gt;human readable explanation if applicable&lt;/message&gt;&lt;/result&gt;</span><emphasis>On failure</emphasis>:  <span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:verbatim&lt;failed&gt;  &lt;code&gt;NNN&lt;/code&gt;  &lt;message&gt;human readable explanation&lt;/message&gt;&lt;/failed&gt;</span></entry><entry>The IUD methods return an XML response with code &amp; message format are On success and On failure</entry></row>
+<row><entry>Search (get)</entry><entry> </entry><entry> </entry><entry>The search methods returns results in RDF format according to FOAF, SIOC and SIOC types module ontology. See ODS RDF model.</entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> API methods</bridgehead>
+<para>All APIs are acting on behalf of the user who established authentication, i.e., the user which is authorized.
+ The APIs where user is subject of removal or freeze as well as registration the user name is passed as parameter.
+ Therefore user.register, user.delete would need user name as input parameter where user.update, instance.create will use the user from authentication information.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Framework Controllers</bridgehead>
+<para> </para>
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry><emphasis>user.register</emphasis> (  name varchar,  password varchar  email varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx1">Example</ulink></entry><entry>Registers new user.</entry></row>
+<row><entry><emphasis>user.authenticate</emphasis> (  user_name varchar,  password_hash varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx2">Example</ulink></entry><entry>Authenticates existing user. </entry></row>
+<row><entry><emphasis>user.update</emphasis> (user_info any)</entry><entry> </entry><entry>Updates user&#39;s data. </entry></row>
+<row><entry><emphasis>user.password_change</emphasis> (new_password varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx3">Example</ulink></entry><entry>Changes user password. </entry></row>
+<row><entry><emphasis>user.delete</emphasis> (name varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx4">Example</ulink></entry><entry>Deletes user. </entry></row>
+<row><entry><emphasis>user.enable</emphasis> (name varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx5">Example</ulink></entry><entry>Enables user. </entry></row>
+<row><entry><emphasis>user.disable</emphasis> (name varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx6">Example</ulink></entry><entry>Disables user. </entry></row>
+<row><entry><emphasis>user.get</emphasis> (name varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx7">Example</ulink></entry><entry>Gets user data. </entry></row>
+<row><entry><emphasis>user.search</emphasis> (pattern varchar)</entry><entry><ulink url="VirtuosoOdsControllersUserEx8">Example</ulink></entry><entry>Performs search for user by given pattern. </entry></row>
+<row><entry><emphasis>user.invite</emphasis> (  friends_email varchar,  custom_message varchar default)</entry><entry><ulink url="VirtuosoOdsControllersUserEx9">Example</ulink></entry><entry> Invites user</entry></row>
+<row><entry><emphasis>user.invitation</emphasis>  (  invitation_id varchar,   approve int)</entry><entry> </entry><entry>Gets user invitation details. </entry></row>
+<row><entry><emphasis>user.invitations.get</emphasis> ()</entry><entry><ulink url="VirtuosoOdsControllersUserEx10">Example</ulink></entry><entry>Gets all user&#39;s invitations. </entry></row>
+<row><entry><emphasis>user.relation_terminate</emphasis> (friend varchar)</entry><entry> </entry><entry> Terminates a relation with user.</entry></row>
+<row><entry><emphasis>user.tagging_rules.add</emphasis> (  rulelist_name varchar,  rules any,  is_public int default 1)</entry><entry> </entry><entry>Adds tagging rule. </entry></row>
+<row><entry><emphasis>user.tagging_rules.delete</emphasis> (rulelist_name varchar)</entry><entry> </entry><entry>Deletes tagging rule. </entry></row>
+<row><entry><emphasis>user.tagging_rules.update</emphasis> (  rulelist_name varchar,  rules any)</entry><entry> </entry><entry>Updates tagging rule. </entry></row>
+<row><entry><emphasis>user.hyperlinking_rules.add</emphasis> (rules any)</entry><entry> </entry><entry>Adds user hyperlinking rule. </entry></row>
+<row><entry><emphasis>user.hyperlinking_rules.update</emphasis> (rules any)</entry><entry> </entry><entry>Updates user hyperlinking rule.</entry></row>
+<row><entry><emphasis>user.hyperlinking_rules.delete</emphasis> (rules any)</entry><entry> </entry><entry>Deletes user hyperlinking rule. </entry></row>
+<row><entry><emphasis>user.annotation.add</emphasis> (  claimIri varchar,  claimRelation varchar,  claimValue varchar)</entry><entry> </entry><entry>Adds user annotation. </entry></row>
+<row><entry><emphasis>user.annotation.delete</emphasis> (  claimIri varchar,  claimRelation varchar,  claimValue varchar)</entry><entry> </entry><entry> Deletes user annotation.</entry></row>
+<row><entry><emphasis>instance.create</emphasis> (  type varchar,  name varchar,  description varchar,  model int,  public int)</entry><entry> <ulink url="VirtuosoOdsControllersInstanceEx1">Example</ulink></entry><entry>Creates ODS Dataspace instance. Its type can be:  * <ulink url="AddressBook">AddressBook</ulink>  * Bookmark  * Calendar  * Community  * IM (Messenger)  * Polls  * WEBLOG2 (Weblog)  * eCRM  * eNews2  * oDrive (Briefcase)  * oGallery  * oMail (Webmail)  * oWiki</entry></row>
+<row><entry><emphasis>instance.update</emphasis> (  inst_id int,  name varchar,  description varchar,  model int,  public int)</entry><entry><ulink url="VirtuosoOdsControllersInstanceEx2">Example</ulink> </entry><entry>Updates instance&#39;s details. </entry></row>
+<row><entry><emphasis>instance.delete</emphasis> (inst_id int)</entry><entry> </entry><entry> Deletes existing instance.</entry></row>
+<row><entry><emphasis>instance.freeze</emphasis> (name varchar)</entry><entry><ulink url="VirtuosoOdsControllersInstanceEx3">Example</ulink> </entry><entry> Freeze existing instance. Its owner is no more able to manage the instance.</entry></row>
+<row><entry><emphasis>instance.unfreeze</emphasis> (name varchar)</entry><entry><ulink url="VirtuosoOdsControllersInstanceEx4">Example</ulink> </entry><entry>Unfreeze existing instance. Its owner is then enabled to manage the instance. </entry></row>
+<row><entry><emphasis>instance.join</emphasis> (inst_id int)</entry><entry><ulink url="VirtuosoOdsControllersInstanceEx5">Example</ulink> </entry><entry>Joins user to existing instance. </entry></row>
+<row><entry><emphasis>instance.disjoin</emphasis> (inst_id int)</entry><entry><ulink url="VirtuosoOdsControllersInstanceEx6">Example</ulink> </entry><entry>Dis-joins user to an existing instance he/she is member of. </entry></row>
+<row><entry><emphasis>instance.join_approve</emphasis> (  inst_id int,   uname varchar)</entry><entry> </entry><entry> Performs instance join approve.</entry></row>
+<row><entry><emphasis>instance.notification.services</emphasis> (in inst_id integer)</entry><entry> </entry><entry> Shows instance notification services details.</entry></row>
+<row><entry><emphasis>instance.notification.set</emphasis> (  inst_id int,  services any)</entry><entry> </entry><entry> Sets instance notification data.</entry></row>
+<row><entry><emphasis>instance.notification.cancel</emphasis> (  inst_id int,  services any)</entry><entry> </entry><entry> Cancels instance notification services.</entry></row>
+<row><entry><emphasis>instance.notification.log</emphasis> (inst_id int)</entry><entry> </entry><entry> Shows instance notification log.</entry></row>
+<row><entry><emphasis>instance.get</emphasis> (inst_id int)</entry><entry> </entry><entry> Gets instance&#39;s details.</entry></row>
+<row><entry><emphasis>instance.get.id</emphasis> (instanceName varchar)</entry><entry><ulink url="VirtuosoOdsControllersInstanceEx7">Example</ulink> </entry><entry> Returns instance name by given instance id.</entry></row>
+<row><entry><emphasis>site.search</emphasis> (  pattern varchar,  options any)</entry><entry> </entry><entry> Executes search over the ODS Data space data by given pattern.</entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> ODS Data Spaces Controllers</bridgehead>
+<para>The following ODS Data Spaces offer a variety of application specific controllers:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry><ulink url="OdsBriefcase">Briefcase</ulink></entry><entry><ulink url="VirtuosoOdsControllersBriefcase">List</ulink></entry><entry> </entry><entry> Briefcase Data Space collection of controllers covers all activities for managing user resources.</entry></row>
+<row><entry><ulink url="OdsBlog">Weblog</ulink></entry><entry><ulink url="VirtuosoOdsControllersWeblog">List</ulink></entry><entry><ulink url="OdsWeblogProgrammersGuide">View</ulink> </entry><entry> Weblog Data Space collection of controllers includes manipulation of user weblog posts, hyperlinking tags, etc. </entry></row>
+<row><entry><ulink url="OdsAddressbook">Addressbook</ulink></entry><entry><ulink url="VirtuosoOdsControllersAddressbook">List</ulink></entry><entry><ulink url="OdsAddressbookProgrammersGuide">View</ulink></entry><entry> <ulink url="AdressBook">AdressBook</ulink> Data Space collection of controllers covers different ways of managing user&#39;s contacts, personal data, annotations and many others.</entry></row>
+<row><entry><ulink url="OdsBookmarkManager">Bookmarks</ulink></entry><entry><ulink url="VirtuosoOdsControllersBookmarks">List</ulink></entry><entry><ulink url="OdsBookmarkManager">View</ulink></entry><entry> Bookmarks Data Space collection includes a rich number of controllers for managing user&#39;s bookmarks details, organizing the collected data by folders,  manage sharing options and many others. </entry></row>
+<row><entry><ulink url="OdsPolls">Polls</ulink></entry><entry><ulink url="VirtuosoOdsControllersPolls">List</ulink></entry><entry><ulink url="OdsPollsProgrammersGuide">View</ulink></entry><entry> Polls Data Space collection of controllers offers a variety of commands for creating., editing, deleting users polls.</entry></row>
+<row><entry><ulink url="OdsCalendar">Calendar</ulink></entry><entry> <ulink url="VirtuosoOdsControllersCalendar">List</ulink></entry><entry><ulink url="OdsCalendarProgrammersGuide">View</ulink></entry><entry> Calendar Data Space collection of controllers covers organizing user&#39;s Calendar events and tags, import and export, managing subscriptions and publications.</entry></row>
+<row><entry><ulink url="OdsFeedManager">Feed Manager</ulink></entry><entry><ulink url="VirtuosoOdsControllersFeeds">List</ulink></entry><entry><ulink url="OdsFeedManagerProgrammersGuide">View</ulink></entry><entry> Feed Manager Data Space collection of controllers covers managing user&#39;s subscriptions data, import and export, changing specific feed&#39;s details, and many others.</entry></row>
+<row><entry><ulink url="OdsMail">Webmail</ulink></entry><entry><ulink url="VirtuosoOdsControllersWebmail">List</ulink></entry><entry><ulink url="OdsWebmailProgrammersGuide">View</ulink> </entry><entry> Webmail Data Space collection of controllers covers managing user&#39;s webmail data.</entry></row>
+<row><entry><ulink url="OdsDiscussions">Discussion</ulink></entry><entry><ulink url="VirtuosoOdsControllersDiscussion">List</ulink></entry><entry><ulink url="OdsDiscussionsProgrammersGuide">View</ulink></entry><entry> Discussions Data Space collection of controllers covers managing discussions groups and posts data.</entry></row>
+<row><entry><ulink url="OdsGallery">Gallery</ulink></entry><entry><ulink url="VirtuosoOdsControllersGallery">List</ulink></entry><entry> </entry><entry> Gallery Data Space collection of controllers covers managing user&#39;s own galleries&#39; images and settings.</entry></row>
+<row><entry><ulink url="OdsWiki">Wiki</ulink></entry><entry><ulink url="VirtuosoOdsControllersWiki">List</ulink></entry><entry> </entry><entry> Wiki Data Space collection of controllers covers managing user&#39;s wiki articles details, upstreaming and many others.</entry></row>
+<row><entry>Messenger</entry><entry><ulink url="VirtuosoOdsControllersMessenger">List</ulink></entry><entry> </entry><entry><ulink url="MessengerData">MessengerData</ulink> Space collection of controllers covers  managing user&#39;s messages.</entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoAppODSUsers">ODS REST based Controller Interfaces</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/OAuth">OpenLink&#39;s explanation of OAuth</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VirtuosoOAuthServer">Virtuoso OAuth server</ulink> </listitem>
+<listitem><ulink url="VirtOAuthControllers">Using OAuth with ODS</ulink> </listitem>
+<listitem><ulink url="VirtuosoOdsUbiquity">ODS Ubiquity Commands</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VirtOAuth">Virtuoso OAuth Implementation</ulink> </listitem>
+<listitem><ulink url="VirtODSOAuthQA">Testing Virtuoso OAuth with 3rd Party OAuth Clients</ulink> </listitem>
+<listitem><ulink url="VirtuosoOdsUbiquityTutorialsOAuth">OAuth Ubiquity Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtOAuthTestTool">Virtuoso OAuth Test Tool for ODS Controllers</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/wiki/main/Main/VirtOAuthSPARQL">Virtuoso SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtuosoOdsUbiquityTutorials">ODS Ubiquity Tutorials</ulink> </listitem>
+<listitem><ulink url="VirtOAuthExamples">OAuth Applications Authentication examples</ulink> </listitem>
+<listitem><ulink url="http://oauth.net/core/1.0/">OAuth API</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryODS">CategoryODS</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> </para>
+</section></docbook>

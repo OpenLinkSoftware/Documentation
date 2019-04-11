@@ -1,0 +1,244 @@
+<docbook><section><title>VirtSPASQLRDFDemoClickableLabels</title><title>Extending RDFDemo To Make The Property Labels Clickable</title>Extending RDFDemo To Make The Property Labels Clickable
+ This document will guide you through extending RDFDemo to make the property labels clickable.
+ Clicking on the property label will take you to a page describing that property.
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Pre-requisites</bridgehead>
+ <orderedlist spacing="compact"><listitem>A working copy of the RDFDemo application created in<ulink url="VirtSPASQLRDFDemoImageText">Extending RDFDemo to Display Images and Longer Text Fields.</ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Modifying the Application.</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Making the Labels Clickable</bridgehead>
+ Making the property labels clickable is fairly straight forward.
+  We will use basically the same code as is used to make the values clickable.<orderedlist spacing="compact"><listitem>First we need to add a new event handler.
+ In the ExtendedStringHandler class modify displayData to add an event handler for each of the property labels.
+<programlisting>                    for (int i = 0; i &lt; table1.Rows.Count; i++)
+                    {
+                        textBoxList[i].Click += new EventHandler(this.iri_Click);
+                        labelList[i].Location = new Point(10, i * 22 + 50);
+                        textBoxList[i].Location = new Point(150, i * 22 + 50);
+                        describeForm.Controls.Add(labelList[i]);
+                        describeForm.Controls.Add(textBoxList[i]);
+</programlisting>becomes <programlisting>                    for (int i = 0; i &lt; table1.Rows.Count; i++)
+                    {
+                        textBoxList[i].Click += new EventHandler(this.iri_Click);
+                        labelList[i].Location = new Point(10, i * 22 + 50);
+                        labelList[i].Click += new EventHandler(this.label_Click);
+                        textBoxList[i].Location = new Point(150, i * 22 + 50);
+                        describeForm.Controls.Add(labelList[i]);
+                        describeForm.Controls.Add(textBoxList[i]);
+</programlisting></listitem>
+<listitem>Then we need to add the EventHandler method.
+ Add the following to the ExtendedStringHandler Class.
+<programlisting>        public void label_Click(object sender, EventArgs e)
+        {
+            int labelNum = 0;
+
+            for (int i = 0; i &lt; labelList.Count; i++)
+            {
+                if (sender == labelList[i])
+                {
+                    labelNum = i;
+                    break;
+                }
+            }
+
+            Object o = describeDataSet.DataTable1.Rows[labelNum][0];
+            if (o is SqlExtendedString)
+            {
+                SqlExtendedString se = (SqlExtendedString)o;
+                ExtendedStringHandler seHandler = new ExtendedStringHandler(se, ParentConnection);
+                seHandler.displayData();
+            }
+            else if (o is SqlRdfBox)
+            {
+                //doesn&#39;t do anything at the moment 
+            }
+        }
+</programlisting>If you compare this method to the EventHandler for the values, iri_Click, you will see that it is basically the same.
+ The only difference is that it uses the property element from the data table rather than value.
+</listitem>
+<listitem>Finally, to make it clear that the labels are now active links, we will change the label colour to blue and underline them.
+<programlisting>                        propertyLabel.Text = getLabelText(row[0]);
+                        propertyLabel.AutoEllipsis = true;
+                        propertyLabel.AutoSize = false;
+                        propertyLabel.Width = 130;
+                        propertyLabel.TextAlign = ContentAlignment.MiddleRight;
+</programlisting>becomes <programlisting>                        propertyLabel.Text = getLabelText(row[0]);
+                        propertyLabel.ForeColor = Color.Blue;
+                        propertyLabel.Font = new Font(propertyLabel.Font.FontFamily, propertyLabel.Font.Size, propertyLabel.Font.Style | FontStyle.Underline, propertyLabel.Font.Unit);
+                        propertyLabel.AutoEllipsis = true;
+                        propertyLabel.AutoSize = false;
+                        propertyLabel.Width = 130;
+                        propertyLabel.TextAlign = ContentAlignment.MiddleRight;
+</programlisting></listitem>
+<listitem>Build and run the application.
+ You will see the familiar starting page.
+ If you then select one of the Customers you will notice the property labels now look like hyperlinks.
+<figure><graphic fileref="VirtSPASQLRDFDemoClickableLabels/AlfkiDetails.png" /></figure>  If you click on one of the label  hyperlinks you will see a new form showing detailed information about the property which can itself be explored further by clicking on labels and values.
+ <figure><graphic fileref="VirtSPASQLRDFDemoClickableLabels/PrimaryTopicDetails.png" /></figure></listitem>
+</orderedlist><para>These simple changes work up to a point but are not robust.
+ If you explore the properties used by the local Northwind graph you quickly find that the property details are not found.
+ The application needs some further changes to work consistently.
+ The problem is finding the graph where the property information is defined.
+ The general handler for Extended Strings first checks the local Northwind graph, <ulink url="http://localhost:8890/Northwind,">http://localhost:8890/Northwind,</ulink> where the Northwind data is held, and then uses the IRI itself as the graph and tries to load that dynamically.
+ This is not working for information about the Northwind properties.
+ These properties are defined in the Northwind ontology, <ulink url="http://demo.openlinksw.com/schemas/northwind.">http://demo.openlinksw.com/schemas/northwind.</ulink>   We have already had to find this graph when getting the short label name.
+ We need to be able to associate the property label with the graph where its definition is stored.
+ Then we can search this graph for details about the property when the label is clicked.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Using the Graph Where the Property Label was Found to Find the Property Details</bridgehead>
+<orderedlist spacing="compact"><listitem>Create a new class, IRILabel, that inherits from System.Windows.Forms.Label.
+<itemizedlist mark="bullet" spacing="compact"><listitem>In the <emphasis>Solution Explorer</emphasis> right click on the RDFDemo project and select <emphasis>Add</emphasis> then <emphasis>New Item</emphasis>.
+</listitem>
+<listitem>Add a new class called IRILabel.cs.
+<figure><graphic fileref="VirtSPASQLRDFDemoClickableLabels/IRILabel.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>We need to reference System.Windows.Forms, System.Data and OpenLink.Data.Virtuoso so add <programlisting>using System.Windows.Forms;
+using OpenLink.Data.Virtuoso;
+using System.Data;
+</programlisting>to the using block at the top of the class file.
+The class definition should look like this <programlisting>    class IRILabel : Label
+</programlisting></listitem>
+<listitem>Paste the following code into the body of the class <programlisting>        SqlExtendedString SourceIRI;
+        String GraphUsed;
+        VirtuosoConnection ParentConnection;
+
+        public IRILabel(Object iri, List&lt;String&gt; graphList, VirtuosoConnection parentConnection)
+        {
+            ParentConnection = parentConnection;
+            if (iri is SqlExtendedString)
+            {
+                SourceIRI = (SqlExtendedString)iri;
+                Text = this.getLabelText(graphList);
+            }
+            else
+                Text = iri.ToString();
+        }
+
+        public SqlExtendedString iri
+        {
+            get
+            {
+                return SourceIRI;
+            }
+        }
+
+        public String graph
+        {
+            get
+            {
+                return GraphUsed;
+            }
+        }
+        
+        private string getLabelText(List&lt;String&gt; graphList)
+        {
+            string labelText = SourceIRI.ToString();
+            Boolean foundLabel = false;
+            VirtuosoDataAdapter getLabelAdapter = new VirtuosoDataAdapter();
+            DataSet getLabelDataSet = new DataSet();
+
+            //Try finding it in resources graph first
+            foreach (String graph in graphList)
+            {
+                StringBuilder getLabelCommandText = new StringBuilder(&quot;sparql select * from &lt;&quot; + graph + &quot;&gt; where {&lt;&quot; + SourceIRI.ToString() + &quot;&gt; ?p ?o}&quot;);
+                VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+                getLabelAdapter.SelectCommand = getLabelCommand;
+
+                try
+                {
+                    getLabelAdapter.Fill(getLabelDataSet);
+                    foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                    {
+                        if (getLabelRow[0].ToString() == &quot;http://www.w3.org/2000/01/rdf-schema#label&quot;)
+                        {
+                            labelText = getLabelRow[1].ToString();
+                            foundLabel = true;
+                            break;
+                        }
+                    }
+                }
+                catch
+                {
+                }
+                if (foundLabel)
+                {
+                    GraphUsed = graph;
+                    break;
+                }
+            }
+            
+            // If we still have no label try the predicate itself as the graph
+            if (!foundLabel)
+            {
+                GraphUsed = SourceIRI.ToString();
+                StringBuilder getLabelCommandText = new StringBuilder(&quot;sparql define get:soft \&quot;soft\&quot; select * from &lt;&quot; + GraphUsed + &quot;&gt; where {&lt;&quot; + SourceIRI.ToString() + &quot;&gt; ?p ?o}&quot;);
+                VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+                getLabelAdapter.SelectCommand = getLabelCommand;
+                try
+                {
+                    getLabelAdapter.Fill(getLabelDataSet);
+                    foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                    {
+                        if (getLabelRow[0].ToString() == &quot;http://www.w3.org/2000/01/rdf-schema#label&quot;)
+                        {
+                            labelText = getLabelRow[1].ToString();
+                            break;
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+            return labelText;
+        }
+</programlisting>Notice that the getLabelText method has been moved into this new class and is now called from the constructor.
+ When the IRILabel is constructed the label text is found using the list of graphs provided to the constructor.
+ The graph containing the label is noted.
+ We need to alter ExtendedStringHandler so that the labels are the new IRILabel type and so that the correct information is supplied to the constructor.
+</listitem>
+<listitem>Change the labelList member variable declaration so it looks like this: <programlisting>        List&lt;IRILabel&gt; labelList = new List&lt;IRILabel&gt;();
+</programlisting></listitem>
+<listitem>Each propertyLabel created must be the new IRILabel type so the line: <programlisting>                       Label propertyLabel = new Label();
+</programlisting>becomes <programlisting>                        IRILabel propertyLabel = new IRILabel(row[0], graphList, ParentConnection);
+</programlisting></listitem>
+<listitem>As getLabelText is now called by the IRILabel constructor we can remove the line <programlisting>                        propertyLabel.Text = getLabelText(row[0]);
+</programlisting>from describeData in ExtendedStringHandler.
+</listitem>
+<listitem>Now we modify the label_Click EventHandler so that it uses the graph information.
+ Replace the existing method with: <programlisting>        public void label_Click(object sender, EventArgs e)
+        {
+            int labelNum = 0;
+
+            for (int i = 0; i &lt; labelList.Count; i++)
+            {
+                if (sender == labelList[i])
+                {
+                    labelNum = i;
+                    break;
+                }
+            }
+
+            SqlExtendedString se = labelList[labelNum].iri;
+            ExtendedStringHandler seHandler = new ExtendedStringHandler(se, ParentConnection, labelList[labelNum].graph);
+                seHandler.displayData();
+
+        }
+</programlisting></listitem>
+<listitem>Note that this method uses a new constructor for the ExtendedStringHandler that takes the graph as an additional argument.
+ We need to add this new constructor.
+<programlisting>        public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnetion, String graph)
+        {
+            ParentConnection = parentConnetion;
+            if (iri.IriType == SqlExtendedStringType.IRI)
+            {
+                ParentIRI = iri;
+                isIRI = true;
+                DescribeCommandSimple = new StringBuilder(&quot;sparql select * from &lt;http://localhost:8890/Northwind&gt; where {&lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o}&quot;);
+                DescribeCommandGeneral = new StringBuilder(&quot;sparql define get:soft &quot; + &#39;&quot;&#39;.ToString() + &quot;soft&quot; + &#39;&quot;&#39;.ToString() + &quot; select * from &lt;&quot; + graph + &quot;&gt; where { &lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o }&quot;);
+            }
+        }
+</programlisting>This new constructor uses the supplied graph to build the alternative sparql select statement that looks for the details about the supplied IRI.
+With these changes in place the application will find the description of the Northwind properties.
+</listitem>
+<listitem>Build and run.
+ As you explore the data you will see that you can find descriptions of the properties used to describe the entities in the Northwind dataset.
+<figure><graphic fileref="VirtSPASQLRDFDemoClickableLabels/CustomerDetails.png" /></figure> </listitem>
+</orderedlist></section></docbook>

@@ -1,0 +1,762 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICPARENT{name="VirtuosoWhitePapers"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtuosoWhitePapers"}%--> </p>
+<h1><a name="Deploying Linked Data"></a> Deploying Linked Data</h1>
+<p>v1.2 (Virtuoso 5.0) April 2008</p>
+<p>This document describes the process of deploying Linked Data into the existing Web.
+ It discusses some of the difficulties faced in exposing RDF data and in bridging the &quot;Semantic Data-Web&quot; and the traditional &quot;Document Web&quot;.
+ Two generic approaches to resolving these deployment challenges are described, content negotiation and URL rewriting, before looking at <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso, both from the standpoint of how it implements these solutions and how Linked Data is deployed.</p>
+<p>A companion document, Virtuoso Linked Data Views Getting Started Guide<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/RDFViewOverviewDoc&parent=VirtLinkedDataDeployment" class="wikiword">?</a>, focuses on Virtuoso Linked Data Views, a facility for exposing relational data as RDF.
+ In addition, it provides useful background information for readers unfamiliar with RDF and outlines some of the key technologies of the Semantic Web.</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li>
+<ul><li><a href="#What%20is%20Linked%20Data%3F">What is Linked Data?</a></li> <li><a href="#Deployment%20Challenges">Deployment Challenges</a></li> <li><a href="#Data%20Object%20Names">Data Object Names</a></li><ul><li><a href="#Unambiguous%20Reference%20vs%20Ambiguous%20Access">Unambiguous Reference vs Ambiguous Access</a></li> <li><a href="#URIs%20As%20Unique%20Data%20Object%20Names">URIs As Unique Data Object Names</a></li> </ul><li><a href="#Difficulties%20with%20Hash%20URIs%20As%20Data%20Object%20Names">Difficulties with Hash URIs As Data Object Names</a></li> <li><a href="#Resolution%20of%20the%20Deployment%20Challenge">Resolution of the Deployment Challenge</a></li> <li><a href="#Content%20Negotiation">Content Negotiation</a></li><ul><li><a href="#HttpRange%20-%2014%20Recommendations">HttpRange<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/HttpRange&parent=VirtLinkedDataDeployment" class="wikiword">?</a> - 14 Recommendations</a></li> <li><a href="#Solving%20Linked%20Data%20Challenges%20using%20Content%20Negotiation">Solving Linked Data Challenges using Content Negotiation</a></li> </ul><li><a href="#URL%20Rewriting">URL Rewriting</a></li><ul><li><a href="#Using%20URL%20Rewriting%20to%20Solve%20Linked%20Data%20Deployment%20Challenges">Using URL Rewriting to Solve Linked Data Deployment Challenges</a></li> </ul></ul><li><a href="#Deploying%20Linked%20Data%20using%20Virtuoso">Deploying Linked Data using Virtuoso</a></li><ul><li><a href="#The%20Virtuoso%20Rules-Based%20URL%20Rewriter">The Virtuoso Rules-Based URL Rewriter</a></li> <li><a href="#Conductor%20UI%20for%20the%20URL%20Rewriter">Conductor UI for the URL Rewriter</a></li> <li><a href="#Virtual%20Domains%20%28Hosts%29%20%26%20Directories">Virtual Domains (Hosts) &amp; Directories</a></li> <li><a href="#%22Nice%22%20URLs%20vs.%0A%20%22Long%22%20URLs">&quot;Nice&quot; URLs vs.
+ &quot;Long&quot; URLs</a></li> <li><a href="#Rule%20Processing%20Mechanics">Rule Processing Mechanics</a></li> <li><a href="#Enabling%20URL%20Rewriting%20via%20the%20Virtuoso%20Conductor%20UI">Enabling URL Rewriting via the Virtuoso Conductor UI</a></li> <li><a href="#Enabling%20URL%20Rewriting%20via%20Virtuoso%20PL">Enabling URL Rewriting via Virtuoso PL</a></li><ul><li><a href="#Configuration%20API">Configuration API</a></li> <li><a href="#Creating%20Rewriting%20Rules">Creating Rewriting Rules</a></li><ul><li><a href="#Function%20Prototype%3A">Function Prototype:</a></li> <li><a href="#Parameters%3A">Parameters:</a></li> </ul></ul><li><a href="#Example%20-%20URL%20Rewriting%20For%20the%20Northwind%20Linked%20Data%20View">Example - URL Rewriting For the Northwind Linked Data View</a></li><ul><li><a href="#Interacting%20with%20Linked%20Data%20via%20RDF%20Browser">Interacting with Linked Data via RDF Browser</a></li> <li><a href="#Interacting%20with%20Linked%20Data%20via%20iSPARQL">Interacting with Linked Data via iSPARQL</a></li> <li><a href="#Interacting%20with%20Linked%20Data%20via%20a%20standard%20Document%20Web%20Browser">Interacting with Linked Data via a standard Document Web Browser</a></li><ul><li><a href="#Saved%20Browser%20Session">Saved Browser Session</a></li> <li><a href="#Saved%20iSPARQL%20Query">Saved iSPARQL Query</a></li> </ul><li><a href="#Northwind%20URL%20Rewriting%20Verification%20Using%20curl">Northwind URL Rewriting Verification Using curl</a></li><ul><li><a href="#Example%201">Example 1</a></li> <li><a href="#Example%202">Example 2</a></li> <li><a href="#Example%203">Example 3</a></li> </ul></ul><li><a href="#Transparent%20Content%20Negotiation">Transparent Content Negotiation</a></li><ul><li><a href="#HTTP%2F1.1%20Content%20Negotiation">HTTP/1.1 Content Negotiation</a></li> <li><a href="#Transparent%20Content%20Negotiation">Transparent Content Negotiation</a></li><ul><li><a href="#Deficiencies%20of%20HTTP%2F1.1%20Server-Driven%20Negotiation">Deficiencies of HTTP/1.1 Server-Driven Negotiation</a></li> <li><a href="#Variant%20Selection%20By%20User%20Agent">Variant Selection By User Agent</a></li> <li><a href="#Variant%20Selection%20By%20Server">Variant Selection By Server</a></li> <li><a href="#Variant%20Selection%20By%20End-User">Variant Selection By End-User</a></li> </ul></ul><li><a href="#Transparent%20Content%20Negotiation%20in%20Virtuoso%20HTTP%20Server">Transparent Content Negotiation in Virtuoso HTTP Server</a></li><ul><li><a href="#Describing%20Resource%20Variants">Describing Resource Variants</a></li><ul><li><a href="#"></a></li> <li><a href="#Configuration%20using%20Virtuoso%2FPL">Configuration using Virtuoso/PL</a></li> <li><a href="#Configuration%20using%20Conductor%20UI">Configuration using Conductor UI</a></li> </ul><li><a href="#Variant%20Selection%20Algorithm">Variant Selection Algorithm</a></li> <li><a href="#Examples">Examples</a></li> </ul><li><a href="#Glossary">Glossary</a></li> </ul><li><a href="#Notes">Notes</a></li> <li><a href="#Bibliography">Bibliography</a></li> <li><a href="#See%20Also">See Also</a></li> <li><a href="#Change%20History">Change History</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>The ubiquitous &quot;Web,&quot; born as the &quot;World Wide Web,&quot; is primarily experienced today as a &quot;Web of <i>Documents</i>,&quot; where documents (or Web pages) are connected by simple hypertext links.
+ When you click on a hypertext link within one document, the result is simply that the browser loads (or downloads) the linked document.
+ This widely understood and accepted pattern of interaction with the Web is made possible by two things — the <i>Uniform Resource Identifier</i>, or <i>URI</i>, and the <i>Hypertext Transfer Protocol</i>, or <i>HTTP</i>.</p>
+<p>(Uniform Resource <i>Identifier?</i>  <i>URI?</i>  Don&#39;t we mean <i>URL</i>, or Uniform Resource <i>Locator</i>?  Yes and no.
+ A Uniform Resource <i>Locator</i> (URL) is a particular kind of Uniform Resource <i>Identifier;</i> a Uniform Resource <i>Name</i>, or URN, is another.
+ As may be obvious from these names, a <i>URL</i> specifies the <i>location</i> of a resource -- like, &quot;the piece of paper centered on the blotter on your desk,&quot; or &quot;the third book from the left on the top shelf of the bookcase in the entryway.&quot;  A <i>URN</i> specifies the <i>name</i> of a resource -- like &quot;your resume,&quot; or &quot;the local Chicago telephone directory.&quot;  Both of these are <i>URIs</i> -- as both can be used to <i>identify</i> the resource in question, at a given moment in time.
+ The piece of paper centered on the blotter on your desk, and where the book is shelved, may change -- and though the URL is the same as what once referred to your resume, the URN is now different, as it is now &quot;the menu for the pizza place down the street,&quot; or &quot;the Tom Robbins novel, <i>Still Life With Woodpecker</i>.&quot;  On the Web, URLs can only lead to HTTP-transmissible documents, so the paper on which your resume is printed cannot actually have a URL -- but the word processing document which was printed on that paper <i>can</i> have a URL.
+ In this example, both the word processing document and the printout are associated with the URN, &quot;your resume,&quot; and each is a different <i>representation</i> thereof -- one which is only easily consumable by humans, and one which is easily consumable by humans or machines.
+ URNs are typically less transient, as &quot;your resume&quot; will always mean the same document, but that document&#39;s content will change over time -- so increasingly common practice is to have URNs that incorporate some sense of time into the name, often leading to two &quot;special&quot; URNs which are tied to the &quot;first&quot; and the &quot;latest&quot; version of the document.
+ The &quot;first&quot; always leads to the same content -- but the &quot;latest&quot; is obviously likely to change over time.)</p>
+<p>The popularity of the current &quot;Document Web&quot; sometimes obscures the fact that from the onset, Tim Berners-Lee envisaged a broader and deeper Web of <i>Linked Data</i>, where URIs weren&#39;t simply URLs and therefor limited to association with HTTP-transmissible documents, and where links between resources were not limited to simple hypertext.
+ URNs make it possible to have &quot;hyperdata&quot; links — explicit connections between <i>Named Entities</i> or <i>Data Objects</i>, rather than vague connections between document locations.
+ Hyperdata links include descriptions of the kind of link exposed — such as &quot;the PDF representation of your resume,&quot; &quot;the Microsoft Word representation of your resume,&quot; &quot;the website of the company at which you worked in 1998 which was named Widgets, Inc.&quot;  There is no natural requirement that URNs be based on HTTP, but as we discuss below this <i>is</i> necessary to enabling the Web of Linked Data.</p>
+<p>This document describes one way to start sprinkling Linked Data into the existing Document Web, gradually bringing the Web closer to Tim Berners-Lee&#39;s vision, without breaking its current functionality.</p>
+<h3><a name="What is Linked Data?"></a> What is Linked Data?</h3>
+<p>&quot;Linked Data&quot; is the title of a Web Design Issues Note by Berners-Lee that issues a best practice recipe for injecting data into the Web as part of a broader effort to evolve the current Web of interlinked documents to a Web of interlinked data known as the &quot;Semantic Data-Web&quot; (Data-Web).
+ The principles he outlined are paraphrased as:</p>
+<ul><li>Identify things (real or abstract) in your universe-of-discourse (or &quot;data space&quot;) using URIs (whether URNs or URLs — each has its place) </li>
+<li>Make each URI (URN, URL, or otherwise) acessible via HTTP, so that people can discover and explore your data spaces via the Web </li>
+<li>Use URIs to expose the context of your data (i.e., describe and provide other information about your data, using URIs) </li>
+<li>Enhance your URIs by adding links to other URIs, enabling discovery of other things on the Web</li>
+</ul><h3><a name="Deployment Challenges"></a> Deployment Challenges</h3>
+<p>The Data-Web and the Document Web are two dimensions of the same Web separated by a common element: the URI.
+ On the Document Web, URIs always point to physical resources, while in the Data-Web they point to physical things that are associated with physical and/or abstract things.
+ Of course, this unveils a number of deployment challenges.</p>
+<h3><a name="Data Object Names"></a> Data Object Names</h3>
+<p>In the current Document Web, resource URIs do not separate <i>identity</i> from <i>representation</i>.
+ The Document Web assumes that a resource URI points to the location of a physical Web information resource.
+ The HTTP payload that conveys the &quot;GET&quot; request for a resource also includes a mechanism for defining representation.
+ Thus, the URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> points to the (X)HTML document representation of the physical resource <code>ALFKI</code> located in the directory <code>/Northwind/Customer/</code> on host machine <code>demo.openlinksw.com</code> that accepts HTTP requests at the default port 80.</p>
+<p>The Data-web on the other hand, seeks to use the URI scheme in a manner that separates identity from representation.
+ A URI may simply identify a physical or abstract entity, aka a &quot;data object&quot;, and so serve as a unique data object name or ID.
+ Accessing, or de-referencing, the data object returns a representation of the object, not the object itself.
+ (For instance, the object in question may be Paris!)</p>
+<h4><a name="Unambiguous Reference vs Ambiguous Access"></a> Unambiguous Reference vs Ambiguous Access</h4>
+<p>When we refer to, or identify, a data object through a data object name, that reference should be unambiguous.
+ However, when we access (or de-reference) a data object, access is inherently ambiguous.
+ Accessing an abstract data object relies on materialization of a description of the entity in a form compatible with the transmission medium.
+ As the object may have many possible descriptions (facets), the act of accessing it is ambiguous.</p>
+<h4><a name="URIs As Unique Data Object Names"></a>URIs As Unique Data Object Names</h4>
+<p>Thus, unlike in the Document Web, in the Semantic Web the same URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> cannot serve as both the identity and representation of the Customer <code>ALFKI</code>.
+ The Linked Data provider needs to adhere to a URI based naming convention in order to avoid data access ambiguity.
+ For example, the URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code>, could always to taken to imply the ID of the Customer data object referred to as ?<code>ALFKI</code>?.
+ The URI with the <code>#this</code> suffix is a so-called <i>hash URI</i>, which is a convention adopted by some practitioners.</p>
+<h3><a name="Difficulties with Hash URIs As Data Object Names"></a>Difficulties with Hash URIs As Data Object Names</h3>
+<p>In the prior section, we established the need for disambiguating references and accesses to resources via the Data-Web, and highlighted the <i>hash URI</i> scheme as one scheme some practitioners have adopted when using URIs as unique data object names.
+ However from the perspective of the Data-Web Server (the piece responsible for understanding Reference), the URIs <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> and <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> are identical, and thereby inherently ambiguous, because nothing following the fragment identifier, &quot;<code>#</code>&quot;, ever leaves the Web Client, due to the fact that the Web Client expects to process &quot;<code>#this</code>&quot; locally, post resource retrieval.
+As a result, the Data-Web Server has to figure out how to dereference the Information Resource URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> and the Identity URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> from the HTTP <code>GET</code> request payload that will only predictably contain the URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code>.
+ (Even if a Web client knowingly tacks the data following the &quot;<code>#</code>&quot; to the HTTP <code>GET</code> request it has no control over proxies along the way that may strip out &quot;<code>#this</code>&quot;.) Likewise, referencing an entity via its identity URI (the act of dereferencing) is only achieved via interaction with an associated Web information resource that &quot;<code>DESCRIBE</code>&quot; the entities in question.
+ In reality, this associative process is inherently ambiguous and unavoidable.</p>
+<p>It is also important to note that descriptive Web information resources can take the form of bona fide parameterized URLs of the kind commonly associated with RESTful Web Services.</p>
+<h3><a name="Resolution of the Deployment Challenge"></a> Resolution of the Deployment Challenge</h3>
+<p>To unobtrusively evolve the dominant Document Web usage pattern to a Data-Web usage pattern, the challenges of Data Access and Data Reference need to be resolved using the existing Web infrastructure.
+ The best means of resolution is content negotiation as it provides the foundation for an unobtrusive mechanism known as URL rewriting.</p>
+<h3><a name="Content Negotiation"></a> Content Negotiation</h3>
+<p>Content negotiation is a mechanism defined in the HTTP specification that makes it possible to serve different representations of <a name="BodyNote1">
+ a document (or any resource) at the same (<a href="#FootNote1" style="anchorhere">Note 1</a>) URL, so that software agents can choose which representation best fits their capabilities.
+The originally conceived need for this mechanism stemmed from mobile phone browsers, which were better suited to smaller page sizes, without many graphics and other niceties of the fully featured Web, often satisfied by a WAP representation.
+ In the world of RDF, a user interacting through a traditional Web browser may want a resource represented in HTML or XHTML, whereas a Semantic Web application would prefer an RDF/XML representation due to its Structured Data orientation.</a></p>
+<p>A browser or any other HTTP based web application indicates it resource representation preferences by packaging these preferences via the &quot;Accept:&quot; headers of each HTTP request.
+ For example, a browser could send this HTTP request to indicate that it wants an HTML or XHTML version of <code><a href="http://www.openlinksw.com/whitepapers/data_management" class="absuri">http://www.openlinksw.com/whitepapers/data_management</a></code> in English or French:</p>
+<br><pre>GET /whitepapers/data_management HTTP/1.1 
+Host: www.openlinksw.com 
+Accept: text/html, application/xhtml+xml 
+Accept-Language: en, fr 
+</pre><p> Here, the HTTP <code>Accept</code> header sent by the browser indicates the MIME types it wants (<code>text/html</code> or <code>application/xhtml+xml</code>).
+ An RDF browser, in contrast, might stipulate a MIME type of <code>application/rdf+xml</code> or <code>application/rdf+n3</code> to receive a rendering in RDF/XML or N3 respectively.</p>
+<p>Rather than returning the content in the required format directly, servers often implement content negotiation by redirecting to a URL where the appropriate representation is found.
+ For example, a server might respond with:</p>
+<br><pre>HTTP/1.1 302 Found 
+Location: http://www.openlinksw.com/whitepapers/data_management.en.html
+</pre><p> The redirect is indicated by the HTTP status code <code>302</code> (<code>Found</code>).
+ The client would then send another HTTP request to the new URL.
+HTTP defines a number of <code>3xx</code> status codes all of which indicate the client is being redirected.
+ Instead of <code>302</code>, servers can also use <code>303</code> (<code>See Other</code>) to indicate the response to the request can be found at another location (as expressed via the &quot;<code>Location:</code>&quot; response header).</p>
+<h4><a name="HttpRange - 14 Recommendations"></a> HttpRange - 14 Recommendations</h4>
+<p>The problem of URI/resource-type interpretation was originally addressed by the W3C Technical Architecture Group (TAG) around 2005 and was known as the &quot;HttpRange<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/HttpRange&parent=VirtLinkedDataDeployment" class="wikiword">?</a>-14&quot; issue.
+ After a good deal of deliberation, the TAG proposed the guidelines below on the information that can be inferred from the HTTP protocol response codes when dereferencing a URI:</p>
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=0&col=1">HTTP Response Code</a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=1&col=2">Material Returned</a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=2&col=3">Inference</a></th></tr><tr><td><code>200</code> <br>(<code>success</code>)</td><td>A Resource Representation and its Location</td><td>A Web information resource has been located in the desired Representation.</td></tr><tr><td><code>303</code> <br>(<code>see other</code>)</td><td>A Resource Location</td><td>A redirection to the Location of an associated Web information resource in a desired Representation.</td></tr><tr><td><code>4XX</code> or <code>5XX</code> <br> (<code>error</code>)</td><td>Nothing</td><td>No Web information resource or Resource Location is discernible from the Resource and Representation combination used in the message.</td></tr></table>
+<h4><a name="Solving Linked Data Challenges using Content Negotiation"></a> Solving Linked Data Challenges using Content Negotiation</h4>
+<p>Returning to our earlier example URIs (<code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> and <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code>) we can construct a decision table that demonstrates how a deployer of Linked Data would leverage content negotiation en route to alleviating the previously outlined Data Access and Data Reference challenges.</p>
+
+<table class="wikitable">
+<tr><th id="3"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=3&col=1">URI</a></th><th id="4"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=4&col=2">URI Type</a></th><th id="5"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=5&col=3">Requested Representation (X)HTML</a></th><th id="6"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=6&col=4">Requested Representation RDF</a></th></tr>
+<tr><td><code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> </td><td> Slash based </td><td> <code>406</code> (Not available or applicable) or <code>303</code> (Redirect to an associated resource in requested representation format, e.g., <code><a href="http://demo.openlinksw.com/" class="absuri">http://demo.openlinksw.com/</a></code>)</td><td> <code>303</code> (Redirect to URL of information resource that <code>DESCRIBEs</code> the entity <code><a href="http://demo.openlinksw.com/" class="absuri">http://demo.openlinksw.com/</a></code> in the Data space <code><a href="http://demo.openlinksw.com/" class="absuri">http://demo.openlinksw.com/</a></code>) </td></tr>
+<tr><td><code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> </td><td> Hash based </td><td> <code>200</code> OK (Since fragment ID component of the URI doesn&#39;t affect the URL for the information resource </td><td> <code>200</code> OK (Return an information resource that <code>DESCRIBEs</code> the entity <code><a href="http://demo.openlinksw.com/" class="absuri">http://demo.openlinksw.com/</a></code> </td></tr>
+</table>
+<h3><a name="URL Rewriting"></a> URL Rewriting</h3>
+<p>URL rewriting is the act of modifying a source URL prior to the final processing of that URL by a Web Server.</p>
+<p>The ability to rewrite URLs may be desirable for many reasons that include:</p>
+<ul><li>Changing Web information resource URLs on the a Web Server without breaking existing bookmarks held in User Agents (e.g., Web browsers)</li>
+</ul><ul><li>URL compaction where shorter URLs may be constructed on a conditional basis for specific User Agents (e.g., Email clients)</li>
+</ul><ul><li>Construction of search engine friendly URLs that enable richer indexing since most search engines cannot process parameterized URLs effectively.</li>
+</ul><h4><a name="Using URL Rewriting to Solve Linked Data Deployment Challenges"></a> Using URL Rewriting to Solve Linked Data Deployment Challenges</h4>
+<p>In the previous section we demonstrated how content negotiation and HTTP response messages could be used to address the data access issues arising from the use of URIs associated with resource identity and representation.</p>
+<p>We determined earlier that URI naming schemes don&#39;t resolve the challenges associated with referencing data.
+To reiterate, this is demonstrated by the fact that the URIs <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> and <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> both appear as <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> to the Web Server, since data following the fragment identifier &quot;<code>#</code>&quot; never makes it that far.</p>
+<p>The only way to address data referencing is by pre-processing source URIs (e.g., via regular expression or sprintf substitutions) as part of a URL rewriting processing pipeline.
+ The pipeline process has to take the form of a set of rules that cater for elements such as HTTP Accept headers, HTTP response code, HTTP response headers, and rule processing order.</p>
+<p>An example of such a pipeline for the hash URI scheme is depicted in the table below:</p>
+
+<table class="wikitable">
+<tr><th id="7"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=7&col=1">URI Source (Regular Expression Pattern)</a></th><th id="8"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=8&col=2">HTTP Accept Headers (Regular Expression)</a></th><th id="9"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=9&col=3">HTTP Response Code</a></th><th id="10"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=10&col=4">HTTP Response Headers</a></th><th id="11"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=11&col=5">Rule Processing Order</a></th></tr>
+<tr><td><code>/Northwind/Customer/([^#]*)</code></td><td>None (meaning default)</td><td><code>200</code> or <code>303</code> responses depending on the user agent default or server side quality of service rules via Transparent Content Negotiation.</td><td>None</td><td>Normal (order irrelevant)</td></tr>
+<tr><td><code>/Northwind/Customer/([^#]*)</code></td><td>(<code>text/rdf.n3</code>) / (<code>application/rdf.xml</code>) </td><td> <code>200 OK</code> and return the information resource that <code>DESCRIBEs</code> the entity identified by the hash URI in the requested representation. </td><td> None </td><td> Normal (order irrelevant) </td></tr>
+<tr><td><code>/Northwind/Customer/([^#]*)</code></td><td> (<code>text/html</code>) / (<code>application/xhtml.xml</code>) </td><td> <code>200 OK</code> and return an information resource in requested representation. </td><td> None </td><td> Normal (order irrelevant) </td></tr>
+</table>
+<p>A similar pipeline for the slash URI scheme would be:</p>
+
+<table class="wikitable">
+<tr><th id="12"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=12&col=1">URI Source (Regular Expression Pattern)</a></th><th id="13"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=13&col=2">HTTP Accept Headers (Regular Expression)</a></th><th id="14"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=14&col=3">HTTP Response Code</a></th><th id="15"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=15&col=4">HTTP Response Headers</a></th><th id="16"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=16&col=5">Rule Processing Order</a></th></tr>
+<tr><td><code>/Northwind/Customer/([^#]*)</code></td><td>None (meaning default)</td><td><code>200</code> or <code>303</code> responses depending on the user agent default or server side quality of service rules via Transparent Content Negotiation.</td><td> None </td><td> Normal (order irrelevant) </td></tr>
+<tr><td><code>/Northwind/Customer/([^#]*)</code></td><td>(<code>text/rdf.n3</code>) / (<code>application/rdf.xml</code>)</td><td> <code>303 Redirect</code> to an associated URL of an information resource that <code>DESCRIBEs</code> the entity identified by the URI </td><td> None</td><td>Normal (order irrelevant)</td></tr>
+<tr><td><code>/Northwind/Customer/([^#]*)</code></td><td>(<code>text/html</code>) / (<code>application/xhtml.xml</code>)</td><td><code>406</code> (Not Acceptable) or <code>303 Redirect</code> to location of resource in requested representation</td><td><code>Vary: negotiate, accept Alternates: {&quot;ALFKI&quot; 0.9 {type application/rdf+xml}}</code></td><td>Last (must be last in processing chain)</td></tr>
+</table>
+<p>The source URI patterns refer to virtual or physical directories at <code><a href="http://demo.openlinksw.com/" class="absuri">http://demo.openlinksw.com/</a></code>.
+ Rules can be placed at the head or tail of the pipeline, or applied in the order they are declared, by specifying a Rule Processing Order of <code>First</code>, <code>Last</code>, or <code>Normal</code>, respectively.
+ The decision as to which representation to return for URI <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> is based on the MIME type(s) specified in any <code>Accept</code> header accompanying the request.</p>
+<p>In the case of the last rule, the <code>Alternates</code> response header applies only to response code <code>406</code>.
+ <code>406</code> would be returned if there were no (X)HTML representation available for the requested resource.
+ In the example shown, an alternative representation is available in RDF/XML.</p>
+<p>When applied to matching HTTP requests, the last two rules might generate responses similar to those below:</p>
+<br><pre>
+$ curl -I -H &quot;Accept: application/rdf+xml&quot; http://demo.openlinksw.com/Northwind/Customer/ALFKI
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Mon, 16 Jul 2007 22:40:03 GMT
+Accept-Ranges: bytes
+Location: /sparql?query=CONSTRUCT+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Custom
+er/ALFKI%23this%3E+%3Fp+%3Fo+}+FROM+%3Chttp%3A//demo.openlinksw.com/Northwind%3E+WHE
+RE+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}&amp;
+format=application/rdf%2Bxml
+Content-Length: 0 
+</pre><p> In the cURL exchange depicted above, the target Virtuoso server redirects to a SPARQL endpoint that retrieves an RDF/XML representation of the requested entity.</p>
+<br><pre>$ curl -I -H &quot;Accept: text/html&quot; http://demo.openlinksw.com/Northwind/Customer/ALFKI
+
+HTTP/1.1 406 Not Acceptable
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Mon, 16 Jul 2007 22:40:23 GMT
+Accept-Ranges: bytes
+Vary: negotiate,accept
+Alternates: {&quot;ALFKI&quot; 0.9 {type application/rdf+xml}}
+Content-Length: 0 
+</pre><p> In this second cURL exchange, the target Virtuoso server indicates that there is no resource to deliver in the requested representation.
+ It provides hints in the form of an alternate resource representation and URI that may be appropriate, i.e., an RDF/XML representation of the requested entity.</p>
+<h2><a name="Deploying Linked Data using Virtuoso"></a> Deploying Linked Data using Virtuoso</h2>
+<p>The preceding sections described a generic approach to deploying linked data into the existing Web.
+ We now turn our attention to Virtuoso, to describe its solution for linked data deployment.</p>
+<p>In fact, Virtuoso&#39;s solution is to implement the generic approach outlined in the prior sections, using the twin pillars of Content Negotiation and URL rewriting.</p>
+<h3><a name="The Virtuoso Rules-Based URL Rewriter"></a> The Virtuoso Rules-Based URL Rewriter</h3>
+<p>Virtuoso provides a URL rewriter that can be enabled for URLs matching specified patterns.
+ Coupled with customizable HTTP response headers and response codes, Data-Web server administrators can configure highly flexible rules for driving content negotiation and URL rewriting.
+ The key elements of the URL rewriter are:</p>
+<ul><li>Rewriting rule </li>
+<li>Each rule describes how to parse a single source URL, and how to compose the URL of the page ultimately returned in the &quot;<code>Location:</code>&quot; response headers </li>
+<li>Every rewriting rule is uniquely identified internally (using IRIs).
+</li>
+<li>Two types of rule are supported, based on the syntax used to describe the source URL pattern matching: sprintf-based and regex-based.
+</li>
+<li>Rewrite rules list </li>
+<li>A named ordered list of rewrite rules or rule lists where rules of the list are processed from top to bottom or in line with processing pipeline precedence instructions </li>
+<li>Configuration API </li>
+<li>The rewriter configuration API defines functions for creating, dropping, and enumerating rules and rule lists.
+</li>
+<li>Virtual hosts and virtual paths </li>
+<li>URL rewriting is enabled by associating a rewrite rules list with a virtual directory</li>
+</ul><p>Each of these elements is described in more detail below, although complete descriptions of the features or functions in question are not given.
+ The intention here is to provide an overview of Virtuoso&#39;s URL rewriting capabilities and their application to deploying linked data.
+ Please refer to the Virtuoso Reference Documentation for full details.</p>
+<h3><a name="Conductor UI for the URL Rewriter"></a> Conductor UI for the URL Rewriter</h3>
+<p>Virtuoso is a full-blown HTTP server in its own right.
+ The HTTP server functionality co-exists with the product core (i.e., DBMS Engine, Web Services Platform, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> filesystem, and other components of the Universal Server).
+ As a result, it has the ability to multi-home Web domains within a single instance across a variety of domain name and port combinations.
+ In addition, it also enables the creation of multiple virtual directories per domain.</p>
+<p>In addition to the basic functionality describe above, Virtuoso facilitates the association of URL Rewriting rules with the virtual directories associated with a hosted Web domain.</p>
+<p>In all cases, Virtuoso enables you to configure virtual domains, virtual directories and URL rewrite rules for one or more virtual directories, via the (X)HTML-based Conductor Admin User Interface or a collection of Virtuoso Stored Procedure Language (PL)-based APIs.</p>
+<h3><a name="Virtual Domains (Hosts) &amp; Directories"></a> Virtual Domains (Hosts) &amp; Directories</h3>
+<p>A Virtuoso virtual directory maps a logical path to a physical directory that is file system or <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> based.
+This mechanism allows physical locations to be hidden or simply reorganized.
+ Virtual directory definitions are held in the system table <code>DB.DBA.HTTP_PATH</code>.
+ Virtual directories can be administered in three basic ways:</p>
+<ul><li>Using the Visual Administration Interface via a Web browser; </li>
+<li>Using the functions <code>vhost_define()</code> and <code>vhost_remove()</code>; and </li>
+<li>Using SQL statements to directly update the <code>HTTP_PATH</code> system table.</li>
+</ul><h3><a name="&quot;Nice&quot; URLs vs.&#10; &quot;Long&quot; URLs"></a> &quot;Nice&quot; URLs vs.
+ &quot;Long&quot; URLs</h3>
+<p>Although we are approaching the URL Rewriter from the perspective of deploying linked data, the Rewriter was developed with additional objectives in mind.
+ These in turn have influenced the naming of some of the formal argument names in the Configuration API function prototypes.
+ In the following sections, long URLs are those containing a query string with named parameters; nice (aka.
+ source) URLs have data encoded in some other format.
+ The primary goal of the Rewriter is to accept a nice URL from an application and convert this into a long URL, which then identifies the page that should actually be retrieved.</p>
+<h3><a name="Rule Processing Mechanics"></a> Rule Processing Mechanics</h3>
+<p>When an HTTP request is accepted by the Virtuoso HTTP server, the received nice URL is passed to an internal path translation function.
+ This function takes the nice URL and, if the current virtual directory has a url_rewrite option set to an existing ruleset name, tries to match the corresponding rulesets and rules; that is, it performs a recursive traversal of any rule-list associated with it.
+ For every rule in the rule-list, the same logic is applied (only the logic for regex-based rules is described; that for sprintf-based rules is very similar):</p>
+<ul><li>The input for the rule is the resource URL as received from the HTTP header, i.e., the portion of the URL from the first solidus (&#39;<code>/</code>&#39;) after the <code>host:port</code> fields to the end of the URL.
+</li>
+<li>The input is normalized.
+</li>
+<li>The input is matched against the rule&#39;s regex.
+ If the match fails, the rule is not applied and the next rule is tried.
+ If the match succeeds, the result is a vector of values.
+</li>
+<li>If the URL contains a query string, the names and values of the parameters are decoded by <code>split_and_decode()</code>.
+</li>
+<li>The names and values of any parameters in the request body are also decoded.
+</li>
+<li>The destination URL is composed: </li>
+<li>The value of each parameter in the destination URL is taken from (in order of priority): <ul><li>the value of a parameter in the match result; </li>
+<li>the value of a named parameter in the query string of the input nice URL; </li>
+<li>if the original request was submitted by the <code>POST</code> method, the value of a named parameter in the body of the <code>POST</code> request; or </li>
+<li>if a parameter value cannot be derived from one of these sources, the rule is not applied and the next rule is tried.</li>
+</ul></li>
+</ul><p>Note:</p>
+<p>The path translation function described above is internal to the Web server, so its signature is not appropriate for Virtuoso/PL calls and thus is not published.
+ Virtuoso/PL developers can harness the same functionality using the <code>DB.DBA.URLREWRITE_APPLY</code> API call.</p>
+<h3><a name="Enabling URL Rewriting via the Virtuoso Conductor UI"></a> Enabling URL Rewriting via the Virtuoso Conductor UI</h3>
+<p>The steps for configuring URL Rewrite rules via the Virtuoso Conductor are as follows:</p>
+<ol><li>Assuming you are using the local demonstration database, load <code><a href="http://localhost:8890/conductor" class="absuri">http://localhost:8890/conductor</a></code> into your browser, and then proceed through the Conductor as follows: </li>
+<li>Click the &quot;<code>WebDAV &amp; HTTP</code>&quot;, and &quot;<code>HTTP Hosts &amp; Directories</code>&quot; tabs </li>
+<li>Pick the domain that contains the virtual directories to which the rules are to be applied (in this case the default was taken) </li>
+<li>Click on the &quot;<code>URL-rewrite</code>&quot; link to create, delete, or edit a rule as shown below: </li>
+<li>Create a Rule for <code>HTML Representation Requests (via SPARQL SELECT Query)</code> </li>
+<li>Create a Rule for <code>RDF Representation Requests (via SPARQL CONSTRUCT Query)</code> </li>
+<li>Then save and exit the Conductor, and test your rules with <code>curl</code> or any other User Agent.
+<br><br><img src="VirtLinkedDataDeployment/conductor_url_rewrite_ui_1.png" style="wikiautogen"><br><br></li>
+</ol><h3><a name="Enabling URL Rewriting via Virtuoso PL"></a> Enabling URL Rewriting via Virtuoso PL</h3>
+<p>The <code>vhost_define()</code> API is used to define virtual hosts and virtual paths hosted by the Virtuoso HTTP server.
+ URL rewriting is enabled through this function&#39;s <code>opts</code> parameter.
+ <code>opts</code> is of type <code>ANY</code>, e.g., a vector of field-value pairs.
+ Numerous fields are recognized for controlling different options.
+ The field value <code>url_rewrite</code> controls URL rewriting.
+ The corresponding field value is the IRI of a rule list to apply.</p>
+<h4><a name="Configuration API"></a> Configuration API</h4>
+<p>Virtuoso includes the following functions for managing URL rewriting rules and rule lists.
+ The names are self-explanatory.</p>
+<ul><li><code>DB.DBA.URLREWRITE_DROP_RULE</code> — Deletes a rewriting rule </li>
+<li><code>DB.DBA.URLREWRITE_CREATE_SPRINTF_RULE</code> — Creates a rewriting rule which uses sprintf-based pattern matching </li>
+<li><code>DB.DBA.URLREWRITE_CREATE_REGEX_RULE</code> — Creates a rewriting rule which uses regular expression (regex) based pattern matching </li>
+<li><code>DB.DBA.URLREWRITE_DROP_RULELIST</code> — Deletes a rewriting rule list </li>
+<li><code>DB.DBA.URLREWRITE_CREATE_RULELIST</code> — Creates a rewriting rule list </li>
+<li><code>DB.DBA.URLREWRITE_ENUMERATE_RULES</code> — Lists all the rules whose IRI match the specified &#39;SQL like&#39; pattern </li>
+<li><code>DB.DBA.URLREWRITE_ENUMERATE_RULELISTS</code> — Lists all the rule lists whose IRIs match the specified &#39;SQL like&#39; pattern</li>
+</ul><h4><a name="Creating Rewriting Rules"></a> Creating Rewriting Rules</h4>
+<p>Rewriting rules take two forms: sprintf-based or regex-based.
+ When used for nice URL to long URL conversion, the only difference between them is the syntax of format strings.
+ The reverse long to nice conversion works only for sprintf-based rules, whereas regex-based rules are unidirectional.</p>
+<p>For the purposes of describing how to make dereferenceable URIs for linked data, we will stick with the nice to long conversion using regex-based rules.</p>
+<p>Regex rules are created using the <code>URLREWRITE_CREATE_REGEX_RULE()</code> function.</p>
+<h5><a name="Function Prototype:"></a> Function Prototype:</h5>
+<br><pre>URLREWRITE_CREATE_REGEX_RULE (
+rule_iri,
+allow_update,
+nice_match,
+nice_params,
+nice_min_params,
+target_compose,
+target_params,
+target_expn := null,
+accept_pattern := null,
+do_not_continue := 0,
+http_redirect_code := null
+);
+</pre><p> </p>
+<h5><a name="Parameters:"></a> Parameters:</h5>
+<ul><li><code>rule_iri</code>: VARCHAR.
+ The rule&#39;s name / identifier </li>
+<li><code>allow_update</code>: INTEGER.
+ Indicates whether the rule can be updated.
+ <code>Non-zero</code> indicates yes; <code>0</code> indicates no.
+ The update is subject to the following rules: <ul><li>If the given <code>rule_iri</code> is already in use as a rule list identifier, an error is signaled.
+</li>
+<li>If the given <code>rule_iri</code> is already in use as a rule identifier and <code>allow_update</code> for the existing rule is <code>0</code>, an error is signaled.
+</li>
+<li>If the given <code>rule_iri</code> is already in use as a rule identifier and <code>allow_update</code> for the existing rule is non-zero, the existing rule is updated.
+</li>
+</ul></li>
+<li><code>nice_match</code>: VARCHAR.
+ A regex match expression to parse the URL into a vector of occurrences.
+</li>
+<li><code>nice_params</code>: ANY.
+ A vector of the names of the parsed parameters.
+ The length of the vector should be equal to the number of &#39;(...)&#39; specifiers in the format string.
+</li>
+<li><code>nice_min_params</code>: INTEGER.
+ Used to specify the minimum number of sprintf format patterns to be matched in order to trigger the given rule.
+ It only affects sprintf rules and has no effect for regex rules.
+</li>
+<li><code>target_compose</code>: VARCHAR.
+ A regex compose expression for the URL of the destination page.
+</li>
+<li><code>target_params</code>: ANY.
+ A vector of names of parameters that should be passed to the compose expression (<code>target_compose</code>) as <code>$1</code>, <code>$2</code> and so on.
+</li>
+<li><code>target_expn</code>: VARCHAR.
+ Optional SQL text that should be executed instead of a regex <code>compose</code> call.
+</li>
+<li><code>accept_pattern</code>: VARCHAR.
+ A regex expression to match the HTTP <code>Accept</code> header </li>
+<li><code>do_not_continue</code>: INTEGER.
+ If the given rule satisfies the match conditions, <code>1</code> signifies do not try the next rule from same rule list, and <code>0</code> signifies try the next rule.
+</li>
+<li><code>http_redirect_code</code>: INTEGER.
+ <code>NULL</code> or the integer values <code>301</code>, <code>302</code>, <code>303</code>, or <code>406</code>, are currently allowed.
+ If a <code>3xx</code> redirect code is given, an HTTP <code>redirect</code> response will be sent back to client.
+ If <code>NULL</code> is specified, the server will process the redirect internally.</li>
+</ul><h3><a name="Example - URL Rewriting For the Northwind Linked Data View"></a> Example - URL Rewriting For the Northwind Linked Data View</h3>
+<p>In our Linked Data Views of SQL white paper we covered the process of declaring Linked Data Views of SQL data via the Virtuoso Meta-schema Language.
+ When producing the Linked Data Views we used the Virtuoso &quot;Demo&quot; database, which is very similar to the &quot;Northwind&quot; database that comes as an installation bundle with Microsoft ACCESS and SQL Server.</p>
+<p>The Northwind schema is comprised of commonly understood SQL Tables including <code>Customers</code>, <code>Orders</code>, <code>Employees</code>, <code>Products</code>, <code>Product Categories</code>, <code>Shippers</code>, <code>Countries</code>, <code>Provinces</code>, etc.</p>
+<p>An Linked Data View of SQL data is an RDF Named Graph (RDF data set) comprised of RDF Linked Data (triples) stored in a Virtuoso Quad Store (the native RDF Data Management realm of Virtuoso).</p>
+<p>In the example that follows, we are going interact with Linked Data deployed into the Data-Web from a live instance of Virtuoso, which uses the URL Rewrite rules from the prior section.</p>
+<p>The components used in the example are as follows:</p>
+<ol><li>Virtuoso SPARQL Endpoint: <code><a href="http://demo.openlinksw.com/sparql" class="absuri">http://demo.openlinksw.com/sparql</a></code> </li>
+<li>Named RDF Graph: <code><a href="http://demo.openlinksw.com/Northwind" class="absuri">http://demo.openlinksw.com/Northwind</a></code> </li>
+<li>Entity ID - <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> </li>
+<li>Information Resource: <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> </li>
+<li>Interactive SPARQL Query Builder (iSPARQL) - <code><a href="http://demo.openlinksw.com/DAV/JS/isparql/index.html" class="absuri">http://demo.openlinksw.com/DAV/JS/isparql/index.html</a></code></li>
+</ol><h4><a name="Interacting with Linked Data via RDF Browser"></a> Interacting with Linked Data via RDF Browser</h4>
+<p>Steps:</p>
+<ol><li>Start the browser - <code><a href="http://demo.openlinksw.com/DAV/JS/rdfbrowser/index.html" class="absuri">http://demo.openlinksw.com/DAV/JS/rdfbrowser/index.html</a></code> </li>
+<li>Enter the Information Resource URI, <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code>, into the input field labeled &quot;<code>URI</code>&quot; <br><br><img src="VirtLinkedDataDeployment/rdf_browser2.png" style="wikiautogen"><br><br> </li>
+<li>Click on the &quot;<code>Query</code>&quot; button or simply hit &quot;<code>Enter</code>&quot; after typing (or pasting in) the Information Resource URI </li>
+<li>For the purpose of this exercise, view the data returned via the &quot;Navigator&quot; Viewer <br><br><img src="VirtLinkedDataDeployment/rdf_browser3.png" style="wikiautogen"><br><br> </li>
+<li>Click on the &quot;<code>Raw Triples</code>&quot; viewer tab and observe the exposure of the Entity <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> via the Triple based (<code>Subject, Predicate, Object</code>) records in the results table.
+<br><br><img src="VirtLinkedDataDeployment/rdf_browser4.png" style="wikiautogen"><br><br></li>
+</ol><h4><a name="Interacting with Linked Data via iSPARQL"></a> Interacting with Linked Data via iSPARQL</h4>
+<p>We can interact with the same Information Resource and associated RDF using the iSPARQL Query tool as follows:</p>
+<ol><li>Start the Query Builder by entering the following into your browser: <code><a href="http://demo.openlinksw.com/isparql" class="absuri">http://demo.openlinksw.com/isparql</a></code> You will be presented with a default Query By Example (QBE) canvas that includes a default Graph Pattern and a default URI.
+ Change the URI to: <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> (Information Resource as a Data Resource in the context of RDF) <br><br><img src="VirtLinkedDataDeployment/isparql_qbe_1.png" style="wikiautogen"><br><br> </li>
+<li>Then execute the default query (which simply gets a list of concepts), by clicking on the &quot;<code>&gt;</code>&quot; button.
+Note: There is a single record in the result table.
+ It indicates that there is a single concept, Organization, as defined by the FOAF schema.
+<br><br><img src="VirtLinkedDataDeployment/isparql_qbe_2.png" style="wikiautogen"><br><br> </li>
+<li>Click on the <code>foaf:Organization</code> record, and you will be presented with a Data Web-optimized hyperlink that presents you with three options: <code>Dereference</code>, <code>Explore</code>, and <code>(X)HTML Page Open</code>.
+<br><br><img src="VirtLinkedDataDeployment/isparql_qbe_3.png" style="wikiautogen"><br><br> </li>
+<li>Click <code>Explore</code> (since you are interested in &quot;instance data&quot; for the <code>foaf:Organization</code> concept, as opposed to the schema definitions of said concept).
+ You will be presented with <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI#this" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI#this</a></code> which is an RDF Entity ID of a <code>foaf:Organization</code> instance.
+<br><br><img src="VirtLinkedDataDeployment/isparql_qbe_4.png" style="wikiautogen"><br><br> </li>
+<li>Click on the <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code> record, and you will once again be presented with the enhanced hyperlink and its options.
+ This time, click <code>Dereference</code>, since you are interested in the description of the entity <code><a href="http://demo.openlinksw.com/Northwind/Customer/ALFKI" class="absuri">http://demo.openlinksw.com/Northwind/Customer/ALFKI</a></code>, as opposed to all the records in the RDF database that are related to it.
+<br><br><img src="VirtLinkedDataDeployment/isparql_qbe_5.png" style="wikiautogen"><br><br> <br><br><img src="VirtLinkedDataDeployment/isparql_qbe_6.png" style="wikiautogen"><br><br></li>
+</ol><p> </p>
+<h4><a name="Interacting with Linked Data via a standard Document Web Browser"></a> Interacting with Linked Data via a standard Document Web Browser</h4>
+<p>In the prior sections, we used the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> RDF Browser and iSPARQL Query-By-Example tools to interact with RDF Entities via associated Information Resources.
+ Each of these tools includes a Resource Save feature that enables you to save an RDF Browser session or an iSPARQL Query for future reuse.
+ In either scenario the end-product is a Dynamic Linked Data Page — a Web Information Resource (document) that includes links to RDF based Linked Data.</p>
+<h5><a name="Saved Browser Session"></a> Saved Browser Session</h5>
+<p>Steps:</p>
+<ol><li>From your RDF Browser session, go to the <code>Session</code> &gt;&gt; <code>Save</code> menu item.
+<br><br><img src="VirtLinkedDataDeployment/rdf_browser5.png" style="wikiautogen"><br><br> </li>
+<li>Select a directory location (note: this is a <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> location in the Virtuoso Server) and then enter a file name, e.g., <code>ALFKI_Linked_Datay</code>.
+ The saved file will automatically be assigned the extension <code>.wqx</code>.
+<br><br><img src="VirtLinkedDataDeployment/rdf_browser6.png" style="wikiautogen"><br><br> </li>
+<li>Open a standard browser instance on your internet device (desktop, notebook, phone, etc.), and enter the URL for the location into which you just saved your browser session, e.g., <code><a href="http://demo.openlinksw.com/DAV/home/demo/Public/Queries/SQLRDFIntegraton/" class="absuri">http://demo.openlinksw.com/DAV/home/demo/Public/Queries/SQLRDFIntegraton/</a></code> (based on our example).
+<br><br><img src="VirtLinkedDataDeployment/saving_to_webdav_1.png" style="wikiautogen"><br><br> </li>
+<li>Click on the file <code>ALFKI_Linked_Data.wqx</code>, which will then reveal a browser session-oriented Linked Data page.
+<br><br><img src="VirtLinkedDataDeployment/saving_to_webdav_3.png" style="wikiautogen"><br><br> <br><br><img src="VirtLinkedDataDeployment/rdf_browser8.png" style="wikiautogen"><br><br></li>
+</ol><h5><a name="Saved iSPARQL Query"></a> Saved iSPARQL Query</h5>
+<p>Steps:</p>
+<ol><li>From your iSPARQL Session, pick the <code>File</code> &gt;&gt; <code>Save</code> (if first time) or <code>File</code> &gt;&gt; <code>Save As</code> (for saving to different name) <br><br><img src="VirtLinkedDataDeployment/isparql_qbe_7.png" style="wikiautogen"><br><br> </li>
+<li>Type in a name for your saved query, e.g., <code>ALFKI_Linked_Data</code>.
+ Note that you have a number of file type options.
+ For this exercise, we are going to choose the <code>.isparql</code> type, since we are attempting to create a Dynamic Linked Data page.
+<br><br><img src="VirtLinkedDataDeployment/isparql_qbe_save_1.png" style="wikiautogen"><br><br> </li>
+<li>Open a standard browser instance on your internet device (desktop, notebook, phone, etc.), and enter the URL for the location into which you save your browser session, e.g., <code><a href="http://demo.openlinksw.com/DAV/home/demo/Public/Queries/SQLRDFIntegraton/" class="absuri">http://demo.openlinksw.com/DAV/home/demo/Public/Queries/SQLRDFIntegraton/</a></code> (based on our example).
+<br><br><img src="VirtLinkedDataDeployment/saving_to_webdav_2.png" style="wikiautogen"><br><br> </li>
+<li>Click on the file <code>ALFKI_Linked_Data.isparql</code>, and then interact with the Linked Data page.
+<br><br><img src="VirtLinkedDataDeployment/isparql_linked_data_page1.png" style="wikiautogen"><br><br></li>
+</ol><h4><a name="Northwind URL Rewriting Verification Using curl"></a> Northwind URL Rewriting Verification Using curl</h4>
+<p>As illustrated earlier, the <code>curl</code> utility provides a useful tool for verifying HTTP server responses and rewriting rules.
+The curl exchanges below show the URL rewriting rules defined for the Northwind Linked Data View being applied.</p>
+<h5><a name="Example 1"></a>Example 1</h5>
+<br><pre>$ curl -I -H &quot;Accept: text/html&quot; http://demo.openlinksw.com/Northwind/Customer/ALFKI 
+
+HTTP/1.1 303 See Other 
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5 
+Connection: close 
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 14 Aug 2007 13:30:02 GMT 
+Accept-Ranges: bytes 
+Location:  /isparql/execute.html?query=SELECT%20%3Fp%20%3Fo%20FROM%20%3Chttp%3A//dem
+o.openlinksw.com/Northwind%3E%20WHERE%20{%20%3Chttp%3A//demo.openlinksw.com/Northwin
+d/Customer/ALFKI%23this%3E%20%3Fp%20%3Fo%20}&amp;endpoint=/sparql
+Content-Length: 0 
+</pre><p> </p>
+<h5><a name="Example 2"></a>Example 2</h5>
+<br><pre>$ curl -I -H &quot;Accept: application/rdf+xml&quot; http://demo.openlinksw.com/Northwind/Cust
+omer/ALFKI
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5 
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Tue, 14 Aug 2007 13:30:22 GMT
+Accept-Ranges: bytes 
+Location: /sparql?query=CONSTRUCT+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Custom
+er/ALFKI%23this%3E+%3Fp+%3Fo+}+FROM+%3Chttp%3A//demo.openlinksw.com/Northwind%3E+WHE
+RE+{+%3Chttp%3A//demo.openlinksw.com/Northwind/Customer/ALFKI%23this%3E+%3Fp+%3Fo+}&amp;
+format=application/rdf%2Bxml
+Content-Length: 0 
+</pre><p> </p>
+<h5><a name="Example 3"></a>Example 3</h5>
+<br><pre>$ curl -I -H &quot;Accept: text/html&quot; http://demo.openlinksw.com/Northwind/Customer/ALFKI
+#this 
+
+HTTP/1.1 404 Not Found 
+Server: Virtuoso/05.00.3016 (Solaris) x86_64-sun-solaris2.10-64 PHP5 
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1 
+Date: Tue, 14 Aug 2007 13:31:01 GMT 
+Accept-Ranges: bytes 
+Content-Length: 0 
+</pre><p> The output above shows how RDF entities from the Data-Web, in this case customer ALFKI, are exposed in the Document Web.
+The power of SPARQL coupled with URL rewriting enables us to produce results in line with the desired representation.
+A SPARQL SELECT or CONSTRUCT query is used depending on whether the requested representation is <code>text/html</code> or <code>application/rdf+xml</code>, respectively.</p>
+<p>The <code>404</code> response in Example 3 indicates that no HTML representation is available for entity <code>ALFKI#this</code>.
+ In most cases, a URI of this form (containing a &#39;<code>#</code>&#39; fragment identifier) will not reach the server.
+ This example supposes that it does, i.e., the RDF client and network routing allows the suffixed request.
+ The presence of the <code>#this</code> suffix implicitly states <a name="BodyNote2">
+ that this is a request for a data resource in the Data-Web realm, not a document resource from the Document Web.
+ <a href="#FootNote2" style="anchorhere">Note 2</a></a></p>
+<p>Rather than return <code>404</code>, we could instead choose to construct our rewriting rules to perform a <code>303</code> redirect, so that the response for <code>ALFKI#this</code> in Example 3 becomes the same as that for <code>ALFKI</code> in Example 1.</p>
+<h3><a name="Transparent Content Negotiation"></a> Transparent Content Negotiation</h3>
+<p>So as not to overload our preceding description of Linked Data deployment with excessive detail, the description of content negotiation presented thus far was kept deliberately brief.
+ This section discusses content negotiation in more detail.</p>
+<h4><a name="HTTP/1.1 Content Negotiation"></a> HTTP/1.1 Content Negotiation</h4>
+<p>Recall that a resource (conceptual entity) identified by a URI may be associated with more than one representation (e.g., multiple languages, data formats, sizes, resolutions).
+ If multiple representations are available, the resource is referred to as negotiable and each of its representations is termed a variant.
+ For instance, a Web document resource, named &#39;<code>ALFKI</code>&#39; may have three variants: <code>alfki.xml</code>, <code>alfki.html</code>, and <code>alfki.txt</code>, all representing the same data.
+ Content negotiation provides a mechanism for selecting the best variant.</p>
+<p>As outlined in the earlier brief discussion of content negotiation, when a user agent requests a resource, it can include with the request <code>Accept</code> headers (<code>Accept</code>, <code>Accept-Language</code>, <code>Accept-Charset</code>, <code>Accept-Encoding</code>, etc.) which express the user preferences and user agent capabilities.
+ The server then chooses and returns the best variant based on the <code>Accept</code> headers.
+Because the selection of the best resource representation is made by the server, this scheme is classed as server-driven negotiation.</p>
+<h4><a name="Transparent Content Negotiation"></a> Transparent Content Negotiation</h4>
+<p>An alternative content negotiation mechanism is Transparent Content Negotiation (TCN), a protocol defined by RFC2295.
+ TCN offers a number of benefits over standard HTTP/1.1 negotiation, for suitably enabled user agents.</p>
+<p>RFC2295 introduces a number of new HTTP headers including the <code>Negotiate</code> request header, and the <code>TCN</code> and <code>Alternates</code> response headers.
+ (Krishnamurthy et al note that although the HTTP/1.1 specification reserved the <code>Alternates</code> header for use in agent- driven negotiation, it was not fully specified.
+ Consequently under a pure HTTP/1.1 implementation as defined by RFC2616, server-driven content negotiation is the only option.
+ RFC2295 addresses this issue.)</p>
+<h5><a name="Deficiencies of HTTP/1.1 Server-Driven Negotiation"></a> Deficiencies of HTTP/1.1 Server-Driven Negotiation</h5>
+<p>Weaknesses of server-driven negotiation highlighted by RFCs 2295 and 2616 include:</p>
+<ul><li>Inefficiency — Sending details of a user agent&#39;s capabilities and preferences with every request is very inefficient, not least because very few Web resources have multiple variants, and expensive in terms of the number of <code>Accept</code> headers required to fully describe all but the most simple browser&#39;s capabilities.
+</li>
+<li>Server doesn&#39;t always know &#39;best&#39; — Having the server decide on the &#39;best&#39; variant may not always result in the most suitable resource representation being returned to the client.
+ The user agent might often be better placed to decide what is best for its needs.</li>
+</ul><h5><a name="Variant Selection By User Agent"></a> Variant Selection By User Agent</h5>
+<p>Rather than rely on server-driven negotiation and variant selection by the server, a user agent can take full control over deciding the best variant by explicitly requesting transparent content negotiation through the <code>Negotiate</code> request header.
+The negotiation is &#39;transparent&#39; because it makes all the variants on the server visible to the agent.</p>
+<p>Under this scheme, the server sends the user agent a list, represented in an <code>Alternates</code> header, containing the available variants and their properties.
+ The user agent can then choose the best variant itself.
+ Consequently, the agent no longer needs to send large <code>Accept</code> headers describing in detail its capabilities and preferences.
+ (However, unless caching is used, user-agent driven negotiation does suffer from the disadvantage of needing a second request to obtain the best representation.
+By sending its best guess as the first response, server driven negotiation avoids this second request if the initial best guess is acceptable.)</p>
+<h5><a name="Variant Selection By Server"></a> Variant Selection By Server</h5>
+<p>As well as variant selection by the user agent, TCN allows the server to choose on behalf of the user agent if the user agent explicitly allows it through the <code>Negotiate</code> request header.
+ This option allows the user agent to send smaller <code>Accept</code> headers containing enough information to allow the server to choose the best variant and return it directly.
+ The server&#39;s choice is controlled by a &#39;remote variant selection algorithm&#39; as defined in RFC2296.</p>
+<h5><a name="Variant Selection By End-User"></a> Variant Selection By End-User</h5>
+<p>A further option is to allow the end-user to select a variant, in case the choice made by negotiation process is not optimal.
+For instance, the user agent could display an HTML-based &#39;pick list&#39; of variants constructed from the variant list returned by the server.
+ Alternatively the server could generate this pick list itself and include it in the response to a user agent&#39;s request for a variant list.
+ (Virtuoso currently responds this way.)</p>
+<h3><a name="Transparent Content Negotiation in Virtuoso HTTP Server"></a> Transparent Content Negotiation in Virtuoso HTTP Server</h3>
+<p>The following section describes the Virtuoso HTTP server&#39;s TCN implementation which is based on RFC2295, but without &quot;<code>Feature</code>&quot; negotiation.
+ <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a>&#39;s RDF rich clients, iSparql and the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> RDF Browser, both support TCN.
+ User agents which do not support transparent content negotiation continue to be handled using HTTP/1.1 style content negotiation (whereby server-side selection is the only option - the server selects the best variant and returns a list of variants in an <code>Alternates</code> response header).</p>
+<h4><a name="Describing Resource Variants"></a> Describing Resource Variants</h4>
+<p>In order to negotiate a resource, the server needs to be given information about each of the variants.
+ Variant descriptions are held in SQL table <code>HTTP_VARIANT_MAP</code>.
+ The descriptions themselves can be created, updated or deleted using Virtuoso/PL or through the Conductor UI.</p>
+<h5><a name=""></a> <code>HTTP_VARIANT_MAP</code> Table Definition</h5>
+<p>The table definition is as follows:</p>
+<br><pre>create table DB.DBA.HTTP_VARIANT_MAP (
+  VM_ID integer identity, -- unique ID 
+  VM_RULELIST varchar, -- HTTP rule list name 
+  VM_URI varchar, -- name of requested resource e.g. &#39;page&#39; 
+  VM_VARIANT_URI varchar, -- name of variant e.g. &#39;page.xml&#39;, &#39;page.de.html&#39; etc. 
+  VM_QS float, -- Source quality, a number in the range 0.001-1.000, with 3 digit precision 
+  VM_TYPE varchar, -- Content type of the variant e.g. text/xml 
+  VM_LANG varchar, -- Content language e.g. &#39;en&#39;, &#39;de&#39; etc. 
+  VM_ENC varchar, -- Content encoding e.g. &#39;utf-8&#39;, &#39;ISO-8892&#39; etc. 
+  VM_DESCRIPTION long varchar, -- a human readable description about the variant e.g. &#39;Profile in RDF format&#39; 
+  VM_ALGO int default 0, -- reserved for future use 
+  primary key (VM_RULELIST, VM_URI, VM_VARIANT_URI)
+ ) 
+create unique index HTTP_VARIANT_MAP_ID on DB.DBA.HTTP_VARIANT_MAP (VM_ID)
+</pre><h5><a name="Configuration using Virtuoso/PL"></a> Configuration using Virtuoso/PL</h5>
+<p>Two functions are provided for adding or updating, or removing variant descriptions using Virtuoso/PL:</p>
+<h6><a name="Adding or Updating a Resource Variant:"></a> Adding or Updating a Resource Variant:</h6>
+<br><pre>DB.DBA.HTTP_VARIANT_ADD ( 
+  in rulelist_uri varchar, -- HTTP rule list name 
+  in uri varchar, -- Requested resource name e.g. &#39;page&#39; 
+  in variant_uri varchar, -- Variant name e.g. &#39;page.xml&#39;, &#39;page.de.html&#39; etc. 
+  in mime varchar, -- Content type of the variant e.g. text/xml 
+  in qs float := 1.0, -- Source quality, a floating point number with 3 digit precision in 0.001-1.000 range 
+  in description varchar := null, -- a human readable description of the variant e.g. &#39;Profile in RDF format&#39; 
+  in lang varchar := null, -- Content language e.g. &#39;en&#39;, &#39;bg&#39;. &#39;de&#39; etc. 
+  in enc varchar := null -- Content encoding e.g. &#39;utf-8&#39;, &#39;ISO-8892&#39; etc. 
+)
+</pre><p> </p>
+<h6><a name="Removing a Resource Variant"></a>Removing a Resource Variant</h6>
+<br><pre>DB.DBA.HTTP_VARIANT_REMOVE ( 
+  in rulelist_uri varchar, -- HTTP rule list name 
+  in uri varchar, -- Name of requested resource e.g. &#39;page&#39; 
+  in variant_uri varchar := &#39;%&#39; -- Variant name filter 
+)
+</pre><p> </p>
+<h5><a name="Configuration using Conductor UI"></a> Configuration using Conductor UI</h5>
+<p>The Conductor &#39;<code>Content negotiation</code>&#39; panel for describing resource variants and configuring content negotiation is depicted below.
+ It can be reached by selecting the &#39;<code>HTTP Hosts &amp; Directories</code>&#39; tab under the &#39;<code>WebDAV &amp; HTTP</code>&#39; menu item, then selecting the &#39;<code>URL rewrite</code>&#39; option for a logical path listed amongst those for the relevant HTTP host, e.g., &#39;<code>{Default Web Site}</code>&#39;.</p>
+<p>The screen snapshot shows the variant descriptions created by issuing the <code>HTTP_VARIANT_ADD</code> and <code>VHOST_DEFINE</code> Virtuoso/PL calls detailed in the examples at the end of this section.
+ Obviously these definitions could instead have been created entirely &#39;from scratch&#39; through the Conductor UI.</p>
+<p>The input fields reflect the supported &#39;dimensions&#39; of negotiation which include content type, language and encoding.
+Quality values corresponding to the options for &#39;Source Quality&#39; are as follows:</p>
+
+<table class="wikitable">
+<tr><th id="17"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=17&col=1">Source Quality</a></th><th id="18"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeployment?sort=18&col=2">Quality Value</a></th></tr>
+<tr><td>perfect representation</td><td>1.000</td></tr>
+<tr><td>threshold of noticeable loss of quality</td><td>0.900</td></tr>
+<tr><td>noticeable, but acceptable quality reduction</td><td>0.800</td></tr>
+<tr><td>barely acceptable quality</td><td>0.500</td></tr>
+<tr><td>severely degraded quality</td><td>0.300</td></tr>
+<tr><td>completely degraded quality</td><td>0.000</td></tr>
+</table>
+<h4><a name="Variant Selection Algorithm"></a> Variant Selection Algorithm</h4>
+<p>When a user agent instructs the server to select the best variant, Virtuoso does so using the selection algorithm below:</p>
+<p>If a virtual directory has URL rewriting enabled (has the &#39;<code>url_rewrite</code>&#39; option set), the web server:</p>
+<ul><li>Looks in <code>DB.DBA.HTTP_VARIANT_MAP</code> for a <code>VM_RULELIST</code> matching the one specified in the &#39;<code>url_rewrite</code>&#39; option</li>
+</ul><ul><li>If present, it loops over all variants for which <code>VM_URI</code> is equal to the resource requested</li>
+</ul><ul><li>For every variant it calculates the source quality based on the value of <code>VM_QS</code> and the source quality given by the user agent</li>
+</ul><ul><li>If the best variant is found, it adds TCN HTTP headers to the response and passes the <code>VM_VARIANT_URI</code> to the URL rewriter</li>
+</ul><ul><li>If the user agent has asked for a variant list, it composes such a list and returns an &#39;<code>Alternates</code>&#39; HTTP header with response code <code>300</code></li>
+</ul><ul><li>If no URL rewriter rules exist for the target URL, the web server returns the content of the dereferenced <code>VM_VARIANT_URI</code>.</li>
+</ul><p>The server may return the best-choice resource representation or a list of available resource variants.
+ When a user agent requests transparent negotiation, the web server returns the TCN header &quot;<code>choice</code>&quot;.
+ When a user agent asks for a variant list, the server returns the TCN header &quot;<code>list</code>&quot;.</p>
+<h4><a name="Examples"></a> Examples</h4>
+<p>In this example we assume the following files have been uploaded to the Virtuoso <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> server, with each containing the same information but in different formats:</p>
+<ul><li><code>/DAV/TCN/page.xml</code> - a XML variant </li>
+<li><code>/DAV/TCN/page.html</code> - a HTML variant </li>
+<li><code>/DAV/TCN/page.txt</code> - a text variant</li>
+</ul><p>We add TCN rules and define a virtual directory:</p>
+<br><pre>DB.DBA.HTTP_VARIANT_ADD (&#39;http_rule_list_1&#39;, &#39;page&#39;, &#39;page.html&#39;, &#39;text/html&#39;, 
+0.900000, &#39;HTML variant&#39;); DB.DBA.HTTP_VARIANT_ADD (&#39;http_rule_list_1&#39;, &#39;page&#39;, 
+&#39;page.txt&#39;, &#39;text/plain&#39;, 0.500000, &#39;Text document&#39;); DB.DBA.HTTP_VARIANT_ADD 
+(&#39;http_rule_list_1&#39;, &#39;page&#39;, &#39;page.xml&#39;, &#39;text/xml&#39;, 1.000000, &#39;XML variant&#39;); 
+DB.DBA.VHOST_DEFINE (lpath=&gt;&#39;/DAV/TCN/&#39;, ppath=&gt;&#39;/DAV/TCN/&#39;, is_dav=&gt;1, 
+vsp_user=&gt;&#39;dba&#39;, opts=&gt;vector (&#39;url_rewrite&#39;, &#39;http_rule_list_1&#39;));
+</pre><p> Having done this we can now test the setup with a suitable HTTP client, in this case the <code>curl</code> command line utility.
+ In the following examples, the curl client supplies <code>Negotiate</code> request headers containing content negotiation directives which include:</p>
+<ul><li>&quot;<code>trans</code>&quot; — The user agent supports transparent content negotiation for the current request.
+</li>
+<li>&quot;<code>vlist</code>&quot; — The user agent requests that any transparently negotiated response for the current request includes an Alternates header with the variant list bound to the negotiable resource.
+ Implies &quot;<code>trans</code>&quot;.
+</li>
+<li>&quot;<code>*</code>&quot; — The user agent allows servers and proxies to run any remote variant selection algorithm.</li>
+</ul><p>The server returns a TCN response header signaling that the resource is transparently negotiated and either a choice or a list response as appropriate.</p>
+<p>In the first curl exchange, the user agent indicates to the server that, of the formats it recognizes, HTML is preferred and it instructs the server to perform transparent content negotiation.
+ In the response, the <code>Vary</code> header field expresses the parameters the server used to select a representation, i.e., only the <code>Negotiate</code> and <code>Accept</code> header fields are considered.</p>
+<br><pre>$ curl -i -H &quot;Accept: text/xml;q=0.3,text/html;q=1.0,text/plain;q=0.5,*/*;q=0.3&quot; -H 
+&quot;Negotiate: *&quot; http://localhost:8890/DAV/TCN/page 
+
+HTTP/1.1 200 OK 
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB 
+Connection: Keep-Alive 
+Date: Wed, 31 Oct 2007 15:43:18 GMT 
+Accept-Ranges: bytes 
+TCN: choice 
+Vary: negotiate,accept 
+Content-Location: page.html 
+Content-Type: text/html 
+ETag: &quot;14056a25c066a6e0a6e65889754a0602&quot; 
+Content-Length: 49
+
+&lt;html&gt; &lt;body&gt; some html &lt;/body&gt; &lt;/html&gt;
+</pre><p>Next, the source quality values are adjusted so that the user agent indicates that XML is its preferred format.</p>
+<br><pre>$ curl -i -H &quot;Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3&quot; -H &quot;Negot
+iate: *&quot; http://localhost:8890/DAV/TCN/page 
+
+HTTP/1.1 200 OK 
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB 
+Connection: Keep-Alive 
+Date: Wed, 31 Oct 2007 15:44:07 GMT 
+Accept-Ranges: bytes 
+TCN: choice 
+Vary: negotiate,accept 
+Content-Location: page.xml 
+Content-Type: text/xml 
+ETag: &quot;8b09f4b8e358fcb7fd1f0f8fa918973a&quot; 
+Content-Length: 39
+
+&lt;?xml version=&quot;1.0&quot; ?&gt; &lt;a&gt;some xml&lt;/a&gt;
+</pre><p>In the final example, the user agent wants to decide itself which is the most suitable representation, so it asks for a list of variants.
+ The server provides the list, in the form of an <code>Alternates</code> response header, and, in addition, sends an HTML representation of the list so that the end user can decide on the preferred variant himself if the user agent is unable to.</p>
+<br><pre>$ curl -i -H &quot;Accept: text/xml,text/html;q=0.7,text/plain;q=0.5,*/*;q=0.3&quot; -H &quot;Negot
+iate: vlist&quot; http://localhost:8890/DAV/TCN/page 
+
+HTTP/1.1 300 Multiple Choices 
+Server: Virtuoso/05.00.3021 (Linux) i686-pc-linux-gnu VDB 
+Connection: close 
+Content-Type: text/html; charset=ISO-8859-1 
+Date: Wed, 31 Oct 2007 15:44:35 GMT 
+Accept-Ranges: bytes 
+TCN: list 
+Vary: negotiate,accept 
+Alternates: {&quot;page.html&quot; 0.900000 {type text/html}}, {&quot;page.txt&quot; 0.500000 {type text
+/plain}}, {&quot;page.xml&quot; 1.000000 {type text/xml}} 
+Content-Length: 368
+
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;300 Multiple Choices&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Multiple Choices&lt;/h1&gt;
+Available variants: 
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&quot;page.html&quot;&gt;HTML variant&lt;/a&gt;, type text/html&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;page.txt&quot;&gt;Text document&lt;/a&gt;, type text/plain&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;page.xml&quot;&gt;XML variant&lt;/a&gt;, type text/xml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p> </p>
+<h3><a name="Glossary"></a> Glossary</h3>
+<ul><li><b>class</b>: A concept in a domain of interest.
+ A class describes the common attributes and behaviors shared by entities belonging to the same group by virtue of their common characteristics.
+</li>
+<li><b>content negotiation</b>: A mechanism defined in HTTP which supports serving different representations of a URL-addressable resource.
+ An HTTP client can indicate which representation formats it understands and prefers.
+</li>
+<li><b><code>cURL</code></b>: A command line tool for transferring files to or from a URL.
+ It writes to standard output by default and provides a good tool for simulating a web browser&#39;s interaction with an HTTP server.
+</li>
+<li><b>data resource</b>: same as data source </li>
+<li><b>data source</b>: A source of data (e.g., a place that provides access to property values associated with one or more Entities).
+</li>
+<li><b>data space</b>: A moniker for Web-accessible atomic containers that manage and expose data, information, services, processes, and knowledge.
+ Data Spaces are fundamentally problem-domain-specific database applications with the benefit of being data model and query language agnostic.
+</li>
+<li><b>dereferencing</b>: The act of accessing and retrieving data, in desired representation, from a location identified by URL.
+</li>
+<li><b>document resource</b>: A Web information resource in a specific representation that is identifiable and accessible via a URL.
+ Documents are the dominant information resource form on the Document Web (i.e., the current Web).
+</li>
+<li><b>Document Web</b>: Web of Linked Documents.
+</li>
+<li><b>entity</b>: Something, real or conceptual, which exists apart from other things.
+</li>
+<li><b>entity ID</b>: A unique identifier for an entity, uniquely identifying and distinguishing a particular entity instance from other similar entities (typically of the same type or class).
+</li>
+<li><b>entity set</b>: A collection of entities all belonging to the same class.
+</li>
+<li><b>HTTP</b>: Hypertext Transport Protocol.
+</li>
+<li><b>HTTP header</b>: A text record exchanged between an HTTP client and server, which forms part of an HTTP request or HTTP response message.
+ A request consists of a method (or verb), headers, and an optional message body.
+ The request header fields allow the client to send additional information about the request and the client itself.
+A response consists of a status line, headers, and an optional message body.
+ A response header typically contains information about the data being returned and about the server itself.
+</li>
+<li><b>Hypertext Transport Protocol)</b>: A communication protocol for information transfer on the World Wide Web.
+</li>
+<li><b>information resource</b>: An encapsulation of data and representation that forms the basic payload unit (packet) on the Web Information Bus.
+</li>
+<li><b>IRI (Internationalized Resource Identifier)</b>: An internationalized version of a Uniform Resource Identifier (URI).
+ While URIs are limited to a subset of the ASCII character set, IRIs may contain any Unicode character.
+</li>
+<li><b>Linked Data</b>: Information resource(s) encapsulating Structured Data expressed in RDF.
+</li>
+<li><b>non-information resource</b>: Any resource that is not an information resource (i.e., not Web transportable in basic form).
+ Structured data resource (see below) is a more accurate and preferable term.
+</li>
+<li><b>Semantic Data-Web</b>: Web of Linked Data.
+</li>
+<li><b>structured data</b>: Data organized into semantic chunks or entities, with similar entities grouped together in relations or classes, and presented in a patterned manner.
+</li>
+<li><b>structured data resource</b>: A Web accessible container of structured data representing physical and abstract entities.
+</li>
+<li><b>structured data source</b>: A repository of structured data.
+</li>
+<li><b>URI (Uniform Resource Identifier )</b>: An Internet naming syntax which identifies a resource.
+ The resource may be abstract and consequently not dereferenceable.
+</li>
+<li><b>URL (Uniform Resource Locator)</b>: An Internet naming syntax, which specifies both the identity and location of a physical, dereferenceable Web information resource.
+ Although URLs and URIs share the same syntax, a URI specifies only the identity of a resource.
+</li>
+<li><b>Web information resource</b>: An entity of interest, which both exists in some form and is accessible on the World Wide Web.</li>
+</ul><p> </p>
+<h2><a name="Notes"></a> Notes</h2>
+<a name="FootNote1">
+<p> </p>
+<ol><li>Reiterating our earlier point, the URL identifies the resource, not its representations.
+ <a href="#BodyNote1" style="anchorhere">return</a> <a name="FootNote2">
+ </a></li>
+<li>Some Semantic Web (SemWeb) practitioners have argued in favor of using the URI format to distinguish between requests for document resources (also sometimes termed as information resources) belonging to the Document Web, and Data Sources, i.e., physical or abstract RDF entities (also sometimes referred to as non-information resources) belonging to the Data Web.
+ (The terms information resource and non-information resource are disliked by many and have generated a good deal of debate.) With this so-called &#39;hash vs.
+ slash&#39; URI convention, the presence of a fragment identifier (a hash URI, using the &quot;#&quot;) is taken to mean that a data source (entity) is being referenced; the absence of a fragment identifier (a slash URI, not using the &quot;#&quot;) implies a document resource is being referenced.
+ <a href="#BodyNote2" style="anchorhere">return</a></li>
+</ol><h2><a name="Bibliography"></a> Bibliography</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Software: Virtuoso Linked Data Views - Getting Started Guide </li>
+<li>T.
+ Berners-Lee: Linked Data </li>
+<li>C.
+ Bizer et al.: How to Publish Linked Data on the Web </li>
+<li>L.
+ Sauermann et al.: Cool URIs for the Semantic Web </li>
+<li>P.
+ Hayes: In Defence of Ambiguity </li>
+<li>R.
+ Cyganiak: Debugging Semantic Web Sites With cURL </li>
+<li>W3C: Dereferencing HTTP URIs </li>
+<li>W3C: What do HTTP URIs Identify? </li>
+<li>W3C: What URIs Identify </li>
+<li>W3C: [httpRange-14] Resolved </li>
+<li>W3C: Best Practice Recipes for Publishing RDF Vocabularies </li>
+<li>Wikipedia: Using HTTP URIs to identify abstract resources </li>
+<li>B.
+ Krishnamurthy et al.: Key Differences between HTTP/1.0 and HTTP/1.1 </li>
+<li>R.
+ Fielding et al.: RFC2616 - HyperText Transfer Protocol - HTTP/1.1 </li>
+<li>K.
+ Holtman &amp; A.
+ Mutz: RFC2295 - Transparent Content Negotiation in HTTP</li>
+</ul><h2><a name="See Also"></a> See Also</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtEvaluatorGuideLinkedDataDeployment" class="wikiword">Evaluator Guide for Linked Data Deployment</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtLinkedDataDeploymentTutorialDOAP" class="wikiword">Linked Data Deployment DOAP Tutorial</a></li>
+</ul><h2><a name="Change History"></a> Change History</h2>
+<p>1.0 Initial draft (K.
+ Idehen / C.
+ Blakeley, 14 Aug 2007)</p>
+<p>1.1 Additions covering transparent content negotiation (C.
+ Blakeley, 07 Nov 2007)</p>
+<p>1.2 ???</p>
+<p>1.3 Edit and polish (T.
+ Thibodeau, K.
+ Idehen, etc., Nov 2008) </p>
+</a></div></body></html>

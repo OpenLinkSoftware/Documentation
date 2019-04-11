@@ -1,0 +1,119 @@
+<docbook><section><title>VOSSemanticBank</title><para>  </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Semantic Bank Services</bridgehead>
+<para>Virtuoso implements the HTTP-based <ulink url="http://simile.mit.edu/semantic-bank/">Semantic Bank</ulink> API that enables client applications to post to its RDF Triple Store.
+ This method offers an alternative to using Virtuoso/PL functions or <ulink url="WebDAV">WebDAV</ulink> uploads as the triples-insertion mechanism.</para>
+ <para><emphasis>Semantic Bank</emphasis> was developed by MIT&#39;s SIMILE project as a back-end for its RDF content-scraper, <ulink url="http://simile.mit.edu/piggy-bank/">PiggyBank</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> What is <ulink url="PiggyBank">PiggyBank</ulink>?</bridgehead>
+<para><ulink url="PiggyBank">PiggyBank</ulink> is a <ulink url="FireFox">FireFox</ulink> plug-in which enables end-users to discover RDF content embedded within Web pages.
+ Discovered content can then be deposited, through the Semantic Bank API, into local or remote RDF data servers known as &quot;Semantic Banks&quot;.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Semantic Bank Service Configuration and Usage</bridgehead>
+<para>Virtuoso&#39;s Semantic Bank Service is exposed via the endpoint <emphasis>bank</emphasis> .</para>
+<para>For example, the server at <ulink url="http://demo.openlinksw.com/">http://demo.openlinksw.com/</ulink> exposes its Semantic Bank services at <ulink url="http://demo.openlinksw.com/bank/">http://demo.openlinksw.com/bank/</ulink> .</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Setting-Up the <ulink url="PiggyBank">PiggyBank</ulink> <ulink url="FireFox">FireFox</ulink> plug-in</bridgehead>
+<para>To set up the plug-in, follow the steps below.
+</para>
+<orderedlist spacing="compact"><listitem>Install the <ulink url="http://simile.mit.edu/piggy-bank/install.html">Piggybank plugin</ulink> </listitem>
+<listitem>restart <ulink url="FireFox">FireFox</ulink> </listitem>
+<listitem>open <emphasis>Tools</emphasis> &gt;&gt; <emphasis><ulink url="PiggyBank">PiggyBank</ulink></emphasis> &gt;&gt; <emphasis>My Semantic Bank Accounts</emphasis> </listitem>
+<listitem>The presented form should initially be empty.
+ Click the <emphasis>Add</emphasis> button, and enter http://&lt;cname&gt; <emphasis>bank</emphasis> for the Virtuoso&#39;s <ulink url="PiggyBank">PiggyBank</ulink> service endpoint, with a valid Virtuoso or ODS  account username and password, where &lt;cname&gt; is the host:port of your Virtuoso server.
+</listitem>
+<listitem>Confirm the changes.
+ _Note that on some Linux version of <ulink url="FireFox">FireFox</ulink> have skewed locations for the <emphasis>confirmation</emphasis> button which is often out of sight without resizing the dialog_.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Working with <ulink url="PiggyBank">PiggyBank</ulink> plug-in</bridgehead>
+<para>Using the plug-in is simple.</para>
+<orderedlist spacing="compact"><listitem>Open a web page and then do one of the following: <itemizedlist mark="bullet" spacing="compact"><listitem>press Alt-P, </listitem>
+<listitem>go to <emphasis>Tools</emphasis>, <emphasis><ulink url="PiggyBank">PiggyBank</ulink></emphasis>, <emphasis>Browse tidbits</emphasis> on this page, or click on the RDF icon in the bottom-right part of your browser status bar.
+</listitem>
+</itemizedlist></listitem>
+<listitem>Once the RDF data is discovered and retrieved, you are then presented with a visually intuitive insight into the extracted RDF data.
+ At this point, you can either: <itemizedlist mark="bullet" spacing="compact"><listitem>Save - to the local RDF repository (plug-in), or </listitem>
+<listitem>Publish - to a Semantic Bank</listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Exploiting Semantic Bank Data</bridgehead>
+<para>As stated above, a Semantic Bank is either an RDF data-store in its own right, or a gateway to such an RDF Data Store.
+ In the case of Virtuoso-based Semantic Banks, you access your PiggyBank-generated RDF data via Virtuoso&#39;s built-in support for SPARQL.</para>
+<para>When querying your Semantic Bank&#39;s RDF Data via SPARQL, it is important to note that the RDF Data Set (Graph) Name for <ulink url="PiggyBank">PiggyBank</ulink> generated data is : <ulink url="http://simile.org/piggybank/(user_name).">http://simile.org/piggybank/(user_name).</ulink> This is especially important since a Virtuoso RDF data-store would typically host numerous RDF Graphs.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Sample SPARQL queries</bridgehead>
+<para>In the following examples, <ulink url="PiggyBank">PiggyBank</ulink> is used to discover RDF data available from the <ulink url="http://www.openlinksw.com/weblogs/virtuoso/">Virtuoso Weblog</ulink>.</para>
+<para>1.
+ Retrieve the titles of the posts based on the SIOC ontology</para>
+<programlisting>prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; 
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt; 
+select ?title 
+where { 
+  graph &lt;http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]&gt; 
+  { ?s rdf:type sioc:Post . ?s sioc:title ?title }
+};
+</programlisting><para> 2.
+ Retrieve posts ordered by date of publishing, newest first</para>
+<programlisting>prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; 
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt; 
+select ?title, ?created 
+where { 
+  graph &lt;http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]&gt; 
+  { ?s rdf:type sioc:Post . ?s sioc:title ?title . ?s sioc:created_at ?created } 
+} 
+order by desc (?created);
+</programlisting><para> 3.
+ Retrieve forum names (Weblog instance names) to which collected posts belong:</para>
+<programlisting>prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; 
+prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt; 
+select distinct ?title 
+where { 
+  graph &lt;http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]&gt; 
+  { ?s rdf:type sioc:Post . ?s sioc:has_container ?container . ?container sioc:name ?title }
+};
+</programlisting><para> 4.
+ Retrieve all Persons (name and e-mail address where specified) which are mentioned, using the FOAF ontology:</para>
+<programlisting>prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; 
+prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; 
+select ?name ?mbox 
+where { 
+  graph &lt;http://simile.org/piggybank/[virtuoso-user-name|ods-member-name]&gt; 
+  { ?s rdf:type foaf:Person . ?s foaf:name ?name optional { ?s foaf:mbox ?mbox } }
+};
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Sample Example</bridgehead>
+<para> 1.
+ From your machine go to <ulink url="FireFox">FireFox</ulink>-&gt;Tools-&gt;<ulink url="PiggyBank">PiggyBank</ulink>-&gt;My Semantic Bank Accounts</para>
+<para>2.
+ Add in the shown form:</para>
+<orderedlist spacing="compact"><listitem>For bank: address: <ulink url="http://demo.openlinksw.com/bank">http://demo.openlinksw.com/bank</ulink> </listitem>
+<listitem>For account id: demo </listitem>
+<listitem>For password: demo</listitem>
+</orderedlist><para>3.
+ Go to demo.openlinksw.com/ods</para>
+<para>4.
+ Log in as user demo, password: demo</para>
+<para>5.
+ Go to the Weblog tab from the main ODS Navigation</para>
+<para>6.
+ Click the &quot;<ulink url="MyBlog">MyBlog</ulink>&quot; instance name.</para>
+<para>7.
+ When the weblog home page is loaded, click Alt + P.</para>
+<para>8.
+ As result is shown the &quot;My <ulink url="PiggyBank">PiggyBank</ulink>&quot; page with all the collected information presented in items.</para>
+<para>9.
+ For several of the items add Tags from the form &quot;Tag&quot; shown for each of them.</para>
+<para>10.
+ As result should be shown the message &quot;Last updated: [here goes the date value].</para>
+<para>11.
+ You can also click &quot;Save&quot; and &quot;Publish&quot; for these items.</para>
+<para>12.
+ Go to <ulink url="http://demo.openlinksw.com/sparql">http://demo.openlinksw.com/sparql</ulink></para>
+<para>13.
+ Enter for the &quot;Default Graph URI&quot; field: <ulink url="http://simile.org/piggybank/demo">http://simile.org/piggybank/demo</ulink></para>
+<para>14.
+ Enter for the &quot;Query text&quot; text-area:</para>
+<programlisting>   prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+   prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+   select *
+   from &lt;http://simile.org/piggybank/demo&gt;
+   where {?s ?p  ?o}
+</programlisting><para> 15.
+ Click &quot;Run Query&quot;.</para>
+<para>16.
+ As results are shown the found results.</para>
+<para><ulink url="CategoryWebSite">CategoryWebSite</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryOpenSource">CategoryOpenSource</ulink>  </para>
+</section></docbook>

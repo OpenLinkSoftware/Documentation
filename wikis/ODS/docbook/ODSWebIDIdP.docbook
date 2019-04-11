@@ -1,0 +1,203 @@
+<docbook><section><title>ODSWebIDIdP</title><title> Delegated WebID Verification Service</title> Delegated <ulink url="WebID">WebID</ulink> Verification Service
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ A delegated (proxy) service that provides <ulink url="WebID">WebID</ulink> verification to 3rd party HTTP applications.
+ This service currently uses <ulink url="WebIDs">WebIDs</ulink> based on the following URI schemes: http:, ldap:, mailto:, acct:.
+ Other URI schemes will be added over time.<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+ <ulink url="WebID">WebID</ulink> shouldn&#39;t require developers and end-users to build every layer of the technology stack en route to exploitation.
+ This service provides a simple URL pattern for existing HTTP applications seeking to verify <ulink url="WebIDs">WebIDs</ulink> via the <ulink url="WebID">WebID</ulink> verification protocol.<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para>This service takes the following inputs via URL parameters:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>a callback URL (for your actual authentication service endpoint); </listitem>
+<listitem>optional X.509 certificate for the identity being verified by the calling service.</listitem>
+</itemizedlist><para>It returns the following payload via URL parameters: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>verified <ulink url="WebID">WebID</ulink>; </listitem>
+<listitem>error: error code if verification fails; </listitem>
+<listitem>ts: timestamp in ISO 8601 format; </listitem>
+<listitem>RSA-SHA1 digest (digital signature) of the URL returned to the calling service.</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Examples of using the Web ID Verification Service Endpoint with requesting Web ID authentication Service Endpoint</bridgehead>
+<para>These examples make use of the following endpoints:</para>
+<orderedlist spacing="compact"><listitem><ulink url="http://id.myopenlink.net/ods/webid_demo.html">http://id.myopenlink.net/ods/webid_demo.html</ulink> -- an authentication service that delegates <ulink url="WebID">WebID</ulink> verification to a proxy service </listitem>
+<listitem><ulink url="http://id.myopenlink.net/ods/webid_verify.vsp">http://id.myopenlink.net/ods/webid_verify.vsp</ulink> -- actual proxy (delegated) service.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Prerequisites</bridgehead>
+<para>If you want to use your own Virtuoso instance for this exercise, please ensure the following steps are performed:</para>
+<orderedlist spacing="compact"><listitem>Start Virtuoso server instance (locally, remote, EC2 AMI, etc.
+ ); </listitem>
+<listitem>Configure an <ulink url="ODSSetupSSL">HTTPS Listener</ulink> for handling HTTPS requests from HTTP user agents (clients); </listitem>
+<listitem>Install the <ulink url="https://virtuoso.openlinksw.com/download/">ODS Framework VAD package</ulink>; </listitem>
+<listitem>Install the <ulink url="https://virtuoso.openlinksw.com/download/">HTML based Certificate Generator VAD package</ulink>; </listitem>
+<listitem>Create an <ulink url="ODSGenerateX509Certificate">X.509 Certificate</ulink> with <ulink url="WebID">WebID</ulink> watermark.
+ Otherwise, simply use the live certificate generation service at: <ulink url="http://id.myopenlink.net/certgen/.">http://id.myopenlink.net/certgen/.</ulink></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Example 1</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to <ulink url="http://id.myopenlink.net/ods/webid_verify.vsp">http://id.myopenlink.net/ods/webid_verify.vsp</ulink> : <figure><graphic fileref="ODSWebIDIdP/http1.png" /></figure> <figure><graphic fileref="ODSWebIDIdP/http2.png" /></figure> </listitem>
+<listitem>Using the form presented, fill in the following: <itemizedlist mark="bullet" spacing="compact"><listitem>&quot;Requesting service endpoint:&quot;: <ulink url="http://id.myopenlink.net/ods/webid_demo.html">http://id.myopenlink.net/ods/webid_demo.html</ulink> </listitem>
+<listitem>Leave the X.509 certificate input area empty:  <figure><graphic fileref="ODSWebIDIdP/http5.png" /></figure>  <figure><graphic fileref="ODSWebIDIdP/http6.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click &quot;Verify&quot;.
+</listitem>
+<listitem>As result you should be redirected to the callback URL and in this case the verification will fail since it doesn&#39;t have an X.509 certificate to verify, but a new form is presented due to the effects of the callback URL of the calling service:  <figure><graphic fileref="ODSWebIDIdP/http7.png" /></figure> </listitem>
+<listitem>Click on the &quot;Check&quot; button and you will be challenged to presented an X.509 certificate, and if the certificate presented bears a <ulink url="WebID">WebID</ulink> watermark in its Subject Alternative Name (SAN) slot, verification will be successful.
+ <figure><graphic fileref="ODSWebIDIdP/http8.png" /></figure>  <figure><graphic fileref="ODSWebIDIdP/http9.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Example 2</bridgehead>
+ <orderedlist spacing="compact"><listitem>Go to <ulink url="http://id.myopenlink.net/ods/webid_verify.vsp">http://id.myopenlink.net/ods/webid_verify.vsp</ulink> : <figure><graphic fileref="ODSWebIDIdP/http1.png" /></figure> <figure><graphic fileref="ODSWebIDIdP/http2.png" /></figure> </listitem>
+<listitem>Using the form presented, fill in the following: <itemizedlist mark="bullet" spacing="compact"><listitem>&quot;Requesting service endpoint:&quot;: <ulink url="http://id.myopenlink.net/ods/webid_demo.html">http://id.myopenlink.net/ods/webid_demo.html</ulink> </listitem>
+<listitem>Paste a base64 DER or PEM encoded representation of the X.509 certificate (that has a <ulink url="WebID">WebID</ulink> watermark in its SAN slot) into the X.509 certificate input area:  <figure><graphic fileref="ODSWebIDIdP/http3.png" /></figure> <figure><graphic fileref="ODSWebIDIdP/http3a.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click &quot;Verify&quot;.
+</listitem>
+<listitem>As result you should be redirected to the callback URL and in our case the verification is successful - the <ulink url="WebID">WebID</ulink>, Subject, RSA-SHA1 digest (digital signature) of the callback URL returned, and timestamp in ISO 8601 format will be presented.
+ <figure><graphic fileref="ODSWebIDIdP/http4.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Examples Using cURL</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Prerequisites</bridgehead>
+<para>If you want to use your own Virtuoso instance for this exercise, please ensure the following steps are performed:</para>
+<orderedlist spacing="compact"><listitem>Start Virtuoso server instance (locally, remote, EC2 AMI, etc.
+ ); </listitem>
+<listitem>Configure an <ulink url="ODSSetupSSL">HTTPS Listener</ulink> for handling HTTPS requests from HTTP user agents (clients); </listitem>
+<listitem>Install the <ulink url="https://virtuoso.openlinksw.com/download/">ODS Framework VAD package</ulink>; </listitem>
+<listitem>Install the <ulink url="https://virtuoso.openlinksw.com/download/">HTML based Certificate Generator VAD package</ulink>; </listitem>
+<listitem>Create an <ulink url="ODSGenerateX509Certificate">X.509 Certificate</ulink> with <ulink url="WebID">WebID</ulink> watermark.
+ Otherwise, simply use the live certificate generation service at: <ulink url="http://id.myopenlink.net/certgen/.">http://id.myopenlink.net/certgen/.</ulink> </listitem>
+<listitem>Using the service at: <ulink url="http://id.myopenlink.net/certgen/,">http://id.myopenlink.net/certgen/,</ulink> export the generated X.509 Certificate and its associated private key to a local PKCS#12 (.p12 of .pfx) file system e.g., the file: &quot;demo.p12&quot; and password: &quot;test&quot;; or simply export to a PEM file.
+</listitem>
+<listitem>Alternatively, you can achieve the same using <ulink url="OpenSSL">OpenSSL</ulink> utilities by executing the following from the command line: <programlisting>openssl pkcs12 -in demo.p12 -out demo.pem -nodes
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Example 1: Call the Web ID Verification Service with Certificate and Callback URL Parameters</bridgehead>
+<para>In this example the cURL command includes the &quot;-E&quot; parameter which provides the X.509 certificate required by the proxy verification service: </para>
+<programlisting>curl -i -k -E demo.pem:test https://id.myopenlink.net/ods/webid_verify.vsp?callback=http://id.myopenlink.net/ods/webid_demo.html
+
+HTTP/1.1 302 Found
+Server: Virtuoso/06.03.3131 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Mon, 06 Feb 2012 12:55:55 GMT
+Accept-Ranges: bytes
+Location: http://id.myopenlink.net/ods/webid_demo.html?webid=http%3A%2F%2Fid.myopenlink.net%2Fdataspace%2Fperson%2Fdemo%23this&amp;ts=2012-02-06T07%3A55%3A55.000011-05%3A00&amp;signature=vVhmk%2Fni1WN%2BEahDdnslPOd%2F8RCXdfdK1Syo4hDrIwCBf%2FDpGIMQjI%2FAhyIZW%2BsvV%2BKlWRBeFsDWyVZjRK6bkx2sC%2B4R4Pj1zH8539p7j8H0j8BLqBV9E3yhVvwTUhf4YdqVbXAzGBVwkuaxpfePWCjFhmvwAtkHH25Mo1wwvCE%3D
+Content-Length: 0
+</programlisting><para> </para>
+<orderedlist spacing="compact"><listitem>In case of successful <ulink url="WebID">WebID</ulink> verification, the <ulink url="WebID">WebID</ulink> should be returned, as above: <programlisting>webid=http%3A%2F%2Fid.myopenlink.net%2Fdataspace%2Fperson%2Fdemo%23this   
+</programlisting></listitem>
+<listitem>Additionally a timestamp in ISO 8601 format should be returned, as above: <programlisting>ts=2012-02-06T07%3A55%3A55.000011-05%3A00
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Example 2: Call the Web ID Verification Service without Certificate and Callback URL Parameters</bridgehead>
+<para>In this example the cURL command excludes the &quot;-E&quot; parameter.
+ Thus, an X.509 certificate isn&#39;t presented to the proxy verification service: </para>
+<programlisting>curl -i -k https://id.myopenlink.net/ods/webid_verify.vsp?callback=http://id.myopenlink.net/ods/webid_demo.html
+
+HTTP/1.1 302 Found
+Server: Virtuoso/06.03.3131 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Mon, 06 Feb 2012 13:02:28 GMT
+Accept-Ranges: bytes
+Location: http://id.myopenlink.net/ods/webid_demo.html?error=noCert&amp;ts=2012-02-06T08%3A02%3A28-05%3A00&amp;signature=Kp99KHmQwv8Ar7R4L5Iofh3ZO63uPUkZu%2FZiS%2FUz%2BF8pdXMQiS4Mjy5vH3WGkqCGLLrEJv1Rth%2BTfZ7TXohtwNrIveZR6jIymLYyacaTY70VZ6Em%2B6SbJxuE3mzfKlmEOeKGIZQkDQcn67PjI2TQ42830ybXjobDr9t9DoNZTHE%3D
+Content-Length: 0
+</programlisting><para> </para>
+<orderedlist spacing="compact"><listitem>In case of any error, the service returns &quot;error=..&quot; as it is in our example showing there is no certificate to verify: <programlisting>error=noCert  
+</programlisting> cURL showcases how the client of a <ulink url="WebID">WebID</ulink> authentication client and proxy service can exchange messages using REST patterns via HTTP.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Client Using the Web ID Verification Service Sample Scenarios</bridgehead>
+<para>The following examples include Virtuoso PL (VSP), <ulink url="JavaScript">JavaScript</ulink>, and PHP variants.
+ Each has as part of their prototype (or call signature) an Address (a URL) that is used by the webid_verify.vsp service.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Virtuoso Server Pages (VSP) Example</bridgehead>
+<para>This example presents a VSP client leveraging service with an X.509 Cert bearing a standard http: scheme URI re.
+ its SAN hosted <ulink url="WebID">WebID</ulink> watermark.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>View the code <ulink url="ODSWebIDIdPVSPEx1">here</ulink>; <itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Note</emphasis>: The VSP pages can be tested/used both in case they are located in OS file system / or DAV.
+ <ulink url="ODSWebIDIdPVSPModify">See more details</ulink>.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para>Trying the service via <emphasis>http</emphasis>:</para>
+<orderedlist spacing="compact"><listitem>Access http://&lt;cname&gt;/ods/webid/webid_demo.vsp: <figure><graphic fileref="ODSWebIDIdP/js14.png" /></figure> </listitem>
+<listitem>Click the &quot;Check&quot; button.
+</listitem>
+<listitem>As a result you should be challenged to present an certificate that has <ulink url="WebID">WebID</ulink> watermark: <figure><graphic fileref="ODSWebIDIdP/js15.png" /></figure> </listitem>
+<listitem>Click &quot;Ok&quot;.
+</listitem>
+<listitem>As a result you should be redirected to a page with URL including the signature and timestamp REST pattern parameters, and in case of successful authentication, you should be presented the <ulink url="WebID">WebID</ulink> extracted value and timestamp in ISO 8601 format: <figure><graphic fileref="ODSWebIDIdP/js16.png" /></figure></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Javascript Example</bridgehead>
+<para>This example presents a <ulink url="JavaScript">JavaScript</ulink> client leveraging service with an X.509 Cert bearing a standard http: scheme URI re.
+ its SAN hosted <ulink url="WebID">WebID</ulink> watermark.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>View the code <ulink url="ODSWebIDIdPJScriptEx1">here</ulink>; <itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Note</emphasis>: The Javascript pages can be tested/used both in case they are located in OS file system / or DAV.
+ <ulink url="ODSWebIDIdPJavascriptModify">See more details</ulink>.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para>Trying the service via <emphasis>http</emphasis>:</para>
+<orderedlist spacing="compact"><listitem>Access http://&lt;cname&gt;/ods/webid/webid_demo.html : <itemizedlist mark="bullet" spacing="compact"><listitem>Note: Optionally you can hatch &quot;Check Certificate Expiration&quot;: <figure><graphic fileref="ODSWebIDIdP/js17.png" /></figure> </listitem>
+</itemizedlist></listitem>
+<listitem>Click the &quot;Check&quot; button.
+</listitem>
+<listitem>As a result you should be challenged to present an certificate that has <ulink url="WebID">WebID</ulink> watermark: <figure><graphic fileref="ODSWebIDIdP/js15.png" /></figure> </listitem>
+<listitem>Click &quot;Ok&quot;.
+</listitem>
+<listitem>As a result you should be redirected to a page with URL including the signature and timestamp REST pattern parameters, and in case of successful authentication, you should be presented the <ulink url="WebID">WebID</ulink> extracted value, Subject, MD5, SHA1 and timestamp in ISO 8601 format: <figure><graphic fileref="ODSWebIDIdP/js18.png" /></figure></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4"> PHP Example</bridgehead>
+<para>This example presents a PHP client leveraging service with an X.509 Cert bearing a standard http: scheme URI re.
+ its SAN hosted <ulink url="WebID">WebID</ulink> watermark.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>View the code <ulink url="ODSWebIDIdPPHPEx1">here</ulink>; <itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Notes</emphasis>: The PHP pages can be tested/used only when they are located in OS file system.
+ <ulink url="ODSWebIDIdPPHPModify">See more details</ulink>.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para> Trying the service via <emphasis>http</emphasis>:</para>
+<orderedlist spacing="compact"><listitem>Access http://&lt;cname&gt;/ods/webid/webid_demo.php : <figure><graphic fileref="ODSWebIDIdP/js19.png" /></figure> </listitem>
+<listitem>Click the &quot;Check&quot; button.
+</listitem>
+<listitem>As a result you should be challenged to present an certificate that has <ulink url="WebID">WebID</ulink> watermark: <figure><graphic fileref="ODSWebIDIdP/js15.png" /></figure> </listitem>
+<listitem>Click &quot;Ok&quot;.
+</listitem>
+<listitem>As a result you should be redirected to a page with URL including the signature and timestamp REST pattern parameters, and in case of successful authentication, you should be presented the <ulink url="WebID">WebID</ulink> extracted value and timestamp in ISO 8601 format: <figure><graphic fileref="ODSWebIDIdP/js20.png" /></figure></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSWebIDIdpProxy">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate bearing an LDAP scheme WebID</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLEndpointProtection">Safeguarding your Virtuoso-hosted SPARQL Endpoint</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpointProtection">SPARQL Endpoint Protection Methods Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/">Virtuoso documentation</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint">SPARQL Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri">Service Endpoint Security</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl">Managing a SPARQL Web Service Endpoint</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">SPARQL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLDET">SPARQL Endpoint DET Configuration Guide</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSecurityWebID">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtOAuthSPARQL">SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpoints">Securing SPARQL endpoints</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="OdsSPARQLAuth">SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtAuthServerUI">Virtuoso Authentication Server UI</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSSL">Manage a SPARQL-WebID based Endpoint</ulink> </listitem>
+<listitem><ulink url="VirtODSSecurityWebID">WebID Protocol Support in OpenLink Data Spaces</ulink>.
+</listitem>
+<listitem>Manage ODS Datadspaces Objects <ulink url="WebID">WebID</ulink> Access Control Lists (ACLs): <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSBriefcaseWebID">ODS Briefcase WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSBriefcaseWebIDPerson">Person Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="ODSBriefcaseWebIDGroup">Group Entity WebID based ACL Guide</ulink> </listitem>
+<listitem><ulink url="ODSBriefcaseWebIDPublic">Public WebID based ACL Guide</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="ODSFeedManagerWebIDACL">ODS Feed Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSFeedManagerWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSFeedManagerWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSFeedManagerWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="ODSCalendarWebIDACL">ODS Calendar WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSCalendarWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSCalendarWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSCalendarWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="ODSBookmarksWebIDACL">ODS Bookmark Manager WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSBookmarksWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSBookmarksWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSBookmarksWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="ODSAddressBookWebIDACL">ODS Addressbook  WebID based ACL Guide</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="ODSAddressBookWebIDACLPerson">Person Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSAddressBookWebIDACLGroup">Group Entity Specific ACL</ulink> </listitem>
+<listitem><ulink url="ODSAddressBookWebIDACLPublic">Public Specific ACL for anyone with a WebID</ulink> </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="ODSPkiSetup">Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates</ulink> </listitem>
+<listitem><ulink url="ODSSetupSSL">Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetupSSL">Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener</ulink> </listitem>
+<listitem><ulink url="VirtODSPubSubHub">Setting up PubSubHub in ODS</ulink> </listitem>
+<listitem><ulink url="VirtPubSubHub">PubSubHubBub Demo Client Example</ulink> </listitem>
+<listitem><ulink url="VirtFeedPubSubHub">Feed subscription via PubSubHub protocol Example</ulink> </listitem>
+<listitem><ulink url="VirtPubSubHubACL">Setting Up PubSubHub to use WebID Protocol or IP based control lists</ulink> </listitem>
+<listitem><ulink url="OdsKeyImport">CA Keys Import using Conductor</ulink> </listitem>
+<listitem><ulink url="ODSGenerateX509Certificate">Generate an X.509 Certificate hosted WebID Guide</ulink> </listitem>
+<listitem><ulink url="ODSGenerateWebIDX509CertOSKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</ulink> </listitem>
+<listitem><ulink url="ODSGenerateWebIDX509CertBrsKeystore">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</ulink> </listitem>
+<listitem><ulink url="ODSBriefcaseWebIDShareFile">ODS Briefcase WebID Protocol Share File Guide</ulink> </listitem>
+<listitem><ulink url="http://esw.w3.org/topic/foaf+ssl">WebID Protocol Specification</ulink> </listitem>
+<listitem><ulink url="https://foaf.me/simpleLogin.php">Test WebID Protocol Certificate page</ulink> </listitem>
+<listitem><ulink url="http://test.foafssl.org/cert/">WebID Protocol Certificate Generation page</ulink></listitem>
+</itemizedlist></section></docbook>

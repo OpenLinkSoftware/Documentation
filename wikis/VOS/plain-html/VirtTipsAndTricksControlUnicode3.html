@@ -1,0 +1,105 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="Normalization of UNICODE3 accented characters for Virtuoso free-text indexing"></a> Normalization of UNICODE3 accented characters for Virtuoso free-text indexing</h1>
+<p>Normalization of UNICODE3 accented characters in a free-text index can be controlled by setting the <b><code>XAnyNormalization</code></b> configuration parameter in the <b><code>[I18N]</code></b> section of the Virtuoso configuration file, <code>virtuoso.ini</code>.
+This parameter controls whether accented UNICODE characters should be converted to their non-accented base variants when creating a free-text index or when parsing a free-text query string.
+ The parameter&#39;s value is a bitmask integer, currently with only 2 bits in use:</p>
+
+<table class="wikitable"><tr><th id="0">XAnyNormalization<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/XAnyNormalization&parent=VirtTipsAndTricksControlUnicode3" class="wikiword">?</a> value </th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksControlUnicode3?sort=1&col=2">bit equivalent </a></th><th id="2"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksControlUnicode3?sort=2&col=3">Description </a></th></tr><tr><td align="center">  <code>0</code>  </td><td align="center">  <code>00</code>  </td><td> Default. Nothing is normalized, so &quot;Jose&quot; and &quot;Jos?&quot; are two distinct words.  </td></tr><tr><td align="center">  <code>1</code>  </td><td align="center">  <code>01</code>  </td><td align="center">  <i>ToBeDone<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ToBeDone&parent=VirtTipsAndTricksControlUnicode3" class="wikiword">?</a></i>  </td></tr><tr><td align="center">  <code>2</code>  </td><td align="center">  <code>10</code>  </td><td> Any &quot;combining character sequence&quot; (a combination of a base character and one or more combining characters) is converted to its (smallest known) base. For example, &quot;?&quot; will lose its accent, and become a plain ASCII &quot;e&quot;.  </td></tr><tr><td align="center">  <code>3</code>  </td><td align="center">  <code>11</code>  </td><td> This combines <code>1</code> and <code>2</code>, and so causes both conversions. Any pair of base character and combining character loses the second character, and characters with accents lose their accents.  </td></tr></table>
+<p>So the fragment of <code>virtuoso.ini</code> would look like: </p>
+<br><pre>...
+
+[I18N]
+XAnyNormalization = 3
+
+...
+</pre><p> </p>
+<ul><li><code>XAnyNormalization = 3</code> is recommended for most scenarios requiring such normalization.
+ In some rare cases, <code>XAnyNormalization = 1</code> may be more appropriate.</li>
+</ul><ul><li>The parameter should generally be set before creating a database, and must be set identically for all instances in a cluster configuration.
+ If changed on an existing database, you should rebuild all free-text indexes that may contain non-ASCII data by running the following procedure from isql -- <br><pre><br>VT_INDEX_DB_DBA_RDF_OBJ(0)
+</pre><br> </li>
+<li>On a typical system, the parameter affects all text columns, XML columns, RDF literals, and queries.
+ (Strictly speaking, it only affects items that use default &quot;<code>x-any</code>&quot; language, or a language derived from <code>x-any</code> such as &quot;<code>en</code>&quot; or &quot;<code>en-US</code>&quot;.
+ If you haven&#39;t tried writing new C plug-ins for custom languages, you need not look so deep.)</li>
+</ul><ul><li><i><b>Note:</b> We have had requests for a database function that normalizes characters in strings, as the free-text engine does with <code>XAnyNormalization=3</code>.
+ This function will be provided as a separate patch/update, and will depend on <code>XAnyNormalization</code>.</i></li>
+</ul><h2><a name="Example"></a> Example</h2>
+<p>With <b><code>XAnyNormalization=3</code></b>, one can get the following:</p>
+<br><pre>SQL&gt; SPARQL 
+     INSERT 
+       IN &lt;http://InternationalNSMs/&gt;
+         {
+           &lt;s&gt;  &lt;sp&gt;  &quot;?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?&quot;  ; 
+                &lt;ru&gt;  &quot;?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????&quot;   
+         }
+       ;
+
+INSERT INTO &lt;http://InternationalNSMs/&gt;, 2 (or less) triples -- done
+
+
+SQL&gt; DB.DBA.RDF_OBJ_FT_RULE_ADD (NULL, NULL, &#39;InternationalNSMs.wb&#39;);
+
+Done. -- 0 msec.
+
+SQL&gt; VT_INDEX_DB_DBA_RDF_OBJ(0);
+
+Done. -- 26 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE 
+         {
+           ?s  ?p  ?o 
+         }
+       ORDER BY ASC (str(?o))
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+s  ru  ?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????
+
+2 Rows. -- 2 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE 
+         { 
+           ?s  ?p            ?o                                                    . 
+           ?o  bif:contains  &quot;&#39;?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?&#39;&quot;  
+         }
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+
+1 Rows. -- 2 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE
+         { 
+           ?s  ?p            ?o                                                    . 
+           ?o  bif:contains  &quot;&#39;Indio Joao Macapa Junior Torres Luis Araujo Jose&#39;&quot; 
+         }
+       ;
+
+s  sp  ?ndio Jo?o Macap? J?nior T?rres Lu?s Ara?jo Jos?
+
+1 Rows. -- 1 msec.
+
+SQL&gt; SPARQL 
+     SELECT * 
+       FROM &lt;http://InternationalNSMs/&gt; 
+       WHERE 
+         { 
+           ?s  ?p            ?o                         . 
+           ?o  bif:contains  &quot;&#39;???????? ???????? ?? ?????&#39;&quot; 
+         }
+       ;
+
+s  ru  ?? ??????? ????????, ??????? ? ???????? ???????? ?? ?????
+</pre><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_I18N" class="absuri">Virtuoso ini I18N section</a> </li>
+</ul></div></body></html>

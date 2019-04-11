@@ -1,0 +1,316 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ODSIndex"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="ODSIndex"}%--><p> </p>
+<h1><a name="A Quick Start to"></a> A Quick Start to OpenLink<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenLink&parent=OdsConfig" class="wikiword">?</a> Data Spaces (ODS)</h1>
+<p>ODS is included as part of Virtuoso Open Source (VOS) version 6.0 and higher.
+ This page provides instructions on installation of the ODS suite of Data Space applications.</p>
+<p>Please note that ODS is automatically installed in the Virtuoso Demo Database.
+ Thus, you do not need to perform the installation steps below if working with a Virtuoso 6.0 (or higher) demonstration database.</p>
+<p> <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Configuring%20ODS">Configuring ODS</a></li>
+<ul><li><a href="#Configuration%20Parameters">Configuration Parameters</a></li> </ul><li><a href="#Locate%20and%20install%20the%20VAD%20packages">Locate and install the VAD packages</a></li><ul><li><a href="#VAD%20Packages">VAD Packages</a></li><ul><li><a href="#VAD%20Installation">VAD Installation</a></li> </ul></ul><li><a href="#DNS%20Settings">DNS Settings</a></li> <li><a href="#Configure%20ODS">Configure ODS</a></li> <li><a href="#Configuring%20the%20ODS%20domain%28s%29">Configuring the ODS domain(s)</a></li> <li><a href="#Configuring%20ODS%20instance%20as%20an%20X.509%20Certificate%20Authority%20and%20HTTPS%20listener">Configuring ODS instance as an X.509 Certificate Authority and HTTPS listener</a></li> <li><a href="#Configuring%20ODS%20Dataspace%20Objects">Configuring ODS Dataspace Objects</a></li> <li><a href="#Configuring%20PSH%20in%20ODS%20Dataspace">Configuring PSH in ODS Dataspace</a></li> <li><a href="#Customization">Customization</a></li> <li><a href="#Adding%20users%20with%20Conductor">Adding users with Conductor</a></li> <li><a href="#Configuring%20the%20Virtuoso%20mail%20handler%20on%20UNIX">Configuring the Virtuoso mail handler on UNIX</a></li><ul><li><a href="#Virtuoso%20Mail%20Handler%20Configuration">Virtuoso Mail Handler Configuration</a></li> <li><a href="#Sendmail%20program%20configuration">Sendmail program configuration</a></li> <li><a href="#Verify%20Mail%20Settings">Verify Mail Settings</a></li> </ul><li><a href="#Other%20SMTP%20Servers">Other SMTP Servers</a></li><ul><li><a href="#Setting%20the%20VOS%20SMTP%20Mail%20handler%20on%20Win32%20platforms">Setting the VOS SMTP Mail handler on Win32 platforms</a></li> </ul><li><a href="#ODS%20Tutorials">ODS Tutorials</a></li> <li><a href="#Reference%20Guides">Reference Guides</a></li> <li><a href="#Related">Related</a></li> <li><a href="#Additional%20Information">Additional Information</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--></p>
+<h2><a name="Configuring ODS"></a> Configuring ODS</h2>
+<h3><a name="Configuration Parameters"></a> Configuration Parameters</h3>
+<p>ODS depends on certain parameters in the Virtuoso Database Initialization File (INI file, e.g., <code>demo.ini</code> for the demonstration database).
+ The default settings in this file are appropriate for most installations.
+ However, before starting the Virtuoso server for ODS use, you should verify that the following parameters are set in the INI file:</p>
+<ul><li>HTTP Server must be enabled (<code>HTTPServer</code> section), e.g.
+ -- <br><pre><br>;Virtuoso ini
+...
+[HTTPServer]
+ServerPort                  = 8890
+...
+</pre><br></li>
+<li>A default mail server must be specified in <code><nop></nop>DefaultMailServer</code> INI option of the <code>HTTPServer</code> section.
+ This must point to a valid SMTP server for outgoing mail, e.g.
+ -- <br><pre><br>;Virtuoso ini
+...
+[HTTPServer]
+DefaultMailServer           = smtp-submit.example.com:587
+...
+</pre><br></li>
+<li>The URIQA section must have a proper &#39;<code><nop></nop>DefaultHost</code>&#39; setting, which must contain the name and http port of the Virtuoso instance&#39;s HTTP listener (as set above).
+ This name must be valid across the network where ODS will be used.
+ This may require you to have a CNAME or similar entry in DNS for the service.
+ (See the <a href="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_URIQA" class="absuri">URIQA section</a> in the documentation for more details.) <br><pre><br>;Virtuoso ini
+...
+[URIQA]
+DefaultHost = demo.mydomain.com:1112
+...
+</pre><br></li>
+<li>The <nop></nop>ImageMagick, <nop>Wikiv, <nop></nop>CreoleWiki, <nop></nop>MediaWiki plugins are enabled via the following entries in the &quot;[Plugins]&quot; section, for ex: <br><pre><br>;Virtuoso ini
+...
+
+[Plugins]
+... other plugins..
+LoadPath = /usr/local/lib
+Load1    = plain,im
+Load2    = plain,wikiv
+Load3    = plain,mediawiki
+Load5    = plain,creolewiki
+... other plugins ...
+</pre><br> </nop></li>
+</ul><h2><a name="Locate and install the VAD packages"></a> Locate and install the VAD packages</h2>
+<h3><a name="VAD Packages"></a>VAD Packages</h3>
+<p>Once you have verified the server settings, the next step is to install the VAD packages.</p>
+<p>For binary distributions and the tree made by make install, they are located in the share/virtuoso/vad directory under the installation root.
+ If you are using the demo database, the packages are pre-installed.</p>
+<p>The ODS VAD packages for this release include:</p>
+<ol><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsFramework" class="wikiword">OpenLink Data Space (ODS) Framework</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_framework_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBlog" class="wikiword">ODS-WebBlog</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_blog_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBriefcase" class="wikiword">ODS-Briefcase</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_briefcase_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsFeedManager" class="wikiword">ODS-Feed Manager</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_feedmanager_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsWiki" class="wikiword">ODS-Wiki</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_wiki_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsMail" class="wikiword">ODS-Mail</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_webmail_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsBookmarkManager" class="wikiword">ODS-Bookmark Manager</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_bookmark_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsGallery" class="wikiword">ODS-Gallery</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_gallery_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsCommunity" class="wikiword">ODS-Community</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_community_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsPolls" class="wikiword">ODS-Polls</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_polls_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsAddressbook" class="wikiword">ODS-Addressbook</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_addressbook_dav.vad</a>) </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsDiscussions" class="wikiword">ODS-Discussions</a> (<a href="https://virtuoso.openlinksw.com/download/" class="absuri">ods_discussion_dav.vad</a>)</li>
+</ol><h4><a name="VAD Installation"></a>VAD Installation</h4>
+<p>The next step is to install the VAD packages: </p>
+<ol><li>With ISQL, run the following command: <br><pre><br>SQL&gt; VAD_INSTALL(&#39;&lt;path of the VAD file&gt;&#39;,0);
+</pre><br></li>
+<li>Install the files in the order of the above listing.
+ The web pages of the packages will go into the server&#39;s WebDAV<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebDAV&parent=OdsConfig" class="wikiword">?</a> repository.</li>
+</ol><h2><a name="DNS Settings"></a> DNS Settings</h2>
+<p>If you wish to offer virtual host names for applications, as in myblog.example.com, then the DNS has to be set up to direct *.example.com to the host where Virtuoso is running.
+ If users will not choose Virtual Host names for their applications, this step can be skipped.</p>
+<h2><a name="Configure ODS"></a> Configure ODS</h2>
+<p>The larger part of configuration is performed through the browser:</p>
+<ol><li>Enter the URL http://[host]:[port]/ods where the host and port are the server and port your Virtuoso instance is running on.
+ (e.g.
+ <a href="http://localhost:8890/ods/)" class="absuri">http://localhost:8890/ods/)</a> : <br><br><a href="OdsConfig/c1.png" target="_blank"><img src="OdsConfig/c1.png" width="600px"></a><br><br> </li>
+<li>Login as &quot;dav&quot;, the default password is &quot;dav&quot;.
+<br><br><a href="OdsConfig/c2.png" target="_blank"><img src="OdsConfig/c2.png" width="600px"></a><br><br> </li>
+<li>Click on &quot;Site Settings&quot;: <br><br><a href="OdsConfig/c3.png" target="_blank"><img src="OdsConfig/c3.png" width="600px"></a><br><br> </li>
+<li>Open the &quot;Web Application Configuration&quot; page and enter a Google API key.
+ You can obtain a key by from <a href="http://www.google.com/apis/maps/signup.html," class="absuri">http://www.google.com/apis/maps/signup.html,</a> and choosing the appropriate Geocoder service.
+ Note that not all Geocoder services return addresses for non-US countries: <br><br><a href="OdsConfig/c4.png" target="_blank"><img src="OdsConfig/c4.png" width="600px"></a> <br><a href="OdsConfig/c5.png" target="_blank"><img src="OdsConfig/c5.png" width="600px"></a><br><br> </li>
+<li>Save the changes and return to the &quot;Site Settings&quot; via the link at the top.</li>
+</ol><p>You can skip these steps but then the map-related features will be disabled.</p>
+<ol><li>Click on &quot;Site Settings&quot; -&gt; &quot;Mail&quot; settings page: <br><a href="OdsConfig/c6.png" target="_blank"><img src="OdsConfig/c6.png" width="600px"></a><br><br> </li>
+<li>Specify the proper default mail domain, whether to use the default mail server (from the INI) or enter another: <br><a href="OdsConfig/c7.png" target="_blank"><img src="OdsConfig/c7.png" width="600px"></a><br><br> </li>
+<li>Specify the proper ODS admin mail address and save the settings: <br><a href="OdsConfig/c8.png" target="_blank"><img src="OdsConfig/c8.png" width="600px"></a><br><br> </li>
+<li>Press the &quot;Test&quot; button to verify that the mail settings actually work and click &quot;Update.
+</li>
+<li>Return to the &quot;Site Settings&quot; page.
+</li>
+<li>Click on the &quot;Member Registration&quot; settings page: <br><a href="OdsConfig/c9.png" target="_blank"><img src="OdsConfig/c9.png" width="600px"></a><br><br> </li>
+<li>Select the desired registration scheme from the options, or if you are not sure what to use, just leave as it is.
+Here are the options that change the behavior of the ODS site registration: <ul><li>&quot;Allow Digest: Logins/Registrations&quot; - allow regular users logins and registrations; </li>
+<li>&quot;Allow OpenID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenID&parent=OdsConfig" class="wikiword">?</a>: Logins/Registrations&quot; - allow OpenID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenID&parent=OdsConfig" class="wikiword">?</a> user logins and registrations; </li>
+<li>&quot;Allow Facebook: Logins/Registrations&quot; - allow Facebook user logins and registrations; </li>
+<li>&quot;Allow Twitter: Logins/Registrations&quot;; - allow Twitter user logins and registrations; </li>
+<li>&quot;Allow LinkedIn<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/LinkedIn&parent=OdsConfig" class="wikiword">?</a>: Logins/Registrations&quot;; - allow LinkedIn<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/LinkedIn&parent=OdsConfig" class="wikiword">?</a> user logins and registrations; </li>
+<li>&quot;Allow WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> Based: Logins/Registrations&quot;; - allow WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> based user logins and registrations; </li>
+<li>&quot;WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> based Login &amp; Registration Rules&quot;; - allow WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> based Login &amp; Registration Rules; </li>
+<li>&quot;Automatic WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> Registration &amp; Login&quot;; - allow Automatic WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> Registration &amp; Login; </li>
+<li>&quot;Verify registration by email&quot; - whether to send a mail to the new users with confirmation or create the account immediately.
+</li>
+<li>&quot;Require unique email&quot; - if not checked a single mail can be used multiple times for registering new users.
+</li>
+<li>&quot;Verify registration with formula&quot; - formula is presented so the registration to be verified.
+</li>
+<li>&quot;Registration expiry time&quot; - time in hours after which registration confirmation is not possible.
+</li>
+<li>&quot;Membership (Join) expiry time&quot; - time in hours for which membership invitation is valid.</li>
+</ul></li>
+</ol><p>ODS is now ready for use.</p>
+<p>Note: if you disable the default site registration, then in addition to the above the ODS admin will need to create user accounts for the site members.</p>
+<h2><a name="Configuring the ODS domain(s)"></a> Configuring the ODS domain(s)</h2>
+<p>In order to allow ODS users to create their own sub-domains (e.g.
+ user.sample.domain, where ODS domain is sample.domain) the ODS should be configured via Conductor UI.</p>
+<p>The following describes how to enable an ODS domain :</p>
+<ol><li>Go to <a href="http://host:port/conductor" class="absuri">http://host:port/conductor</a> <br><a href="OdsConfig/c10.png" target="_blank"><img src="OdsConfig/c10.png" width="600px"></a><br><br> </li>
+<li>Login as &#39;dba&#39; and open &quot;Web Application Server&quot; -&gt; &quot;Virtual Domains &amp; Directories&quot; <br><a href="OdsConfig/c11.png" target="_blank"><img src="OdsConfig/c11.png" width="600px"></a><br><br> </li>
+<li>Specify the interface address, port to listen and domain like &#39;0.0.0.0&#39; (all interfaces), 8888 and &#39;sample.domain&#39; in the form below the list and click &#39;Add&#39;: <br><a href="OdsConfig/c13.png" target="_blank"><img src="OdsConfig/c13.png" width="600px"></a><br><br> <br><a href="OdsConfig/c14.png" target="_blank"><img src="OdsConfig/c14.png" width="600px"></a><br><br> </li>
+<li>Open &quot;System Admin&quot; then &quot;Packages&quot;, open the Configure page for &quot;Framework&quot; package: <br><a href="OdsConfig/c12.png" target="_blank"><img src="OdsConfig/c12.png" width="600px"></a><br><br> </li>
+<li>Select &quot;Create New Endpoint&quot; link; the new ODS endpoint form should be shown: <ol><li>You can specify either &quot;Endpoint prefix&quot; or &quot;Virtual directory&quot; or both to enable the domain from selection list to be used as ODS domain.
+</li>
+<li>Leave the &quot;Domain registration&quot; option enabled </li>
+<li>Confirm the changes; the new ODS endpoint will be listed.
+<br><a href="OdsConfig/c15.png" target="_blank"><img src="OdsConfig/c15.png" width="600px"></a><br><br></li>
+</ol></li>
+</ol><p>After performing the above steps, when creating a new application instance, the new domain will be selectable when choosing a virtual host name for the application.</p>
+<h2><a name="Configuring ODS instance as an X.509 Certificate Authority and HTTPS listener"></a> Configuring ODS instance as an X.509 Certificate Authority and HTTPS listener</h2>
+<p>See our <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSPkiSetup" class="wikiword">Certificate Authority and Issuer Setup Guide</a>.</p>
+<p> </p>
+<h2><a name="Configuring ODS Dataspace Objects"></a> Configuring ODS Dataspace Objects WebID<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebID&parent=OdsConfig" class="wikiword">?</a> Access Control Lists (ACLs)</h2>
+<ol><li><ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebID" class="wikiword">ODS Briefcase WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDPerson" class="wikiword">Person Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDGroup" class="wikiword">Group Entity WebID based ACL Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBriefcaseWebIDPublic" class="wikiword">Public WebID based ACL Guide</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACL" class="wikiword">ODS Feed Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSFeedManagerWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACL" class="wikiword">ODS Calendar WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSCalendarWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACL" class="wikiword">ODS Bookmark Manager WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSBookmarksWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a> </li>
+</ul></li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACL" class="wikiword">ODS Addressbook  WebID based ACL Guide</a> <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACLPerson" class="wikiword">Person Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACLGroup" class="wikiword">Group Entity Specific ACL</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSAddressBookWebIDACLPublic" class="wikiword">Public Specific ACL for anyone with a WebID</a></li>
+</ul></li>
+</ul></li>
+</ol><p> </p>
+<h2><a name="Configuring PSH in ODS Dataspace"></a> Configuring PSH in ODS Dataspace</h2>
+<p>PubSubHub<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/PubSubHub&parent=OdsConfig" class="wikiword">?</a> (PSH) setup consists of two steps:</p>
+<ol><li>Set up the ODS server.
+</li>
+<li>Configure applications to publish to hub.</li>
+</ol><p>See <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtODSPubSubHub" class="wikiword">detailed steps here</a>.</p>
+<p> </p>
+<h2><a name="Customization"></a> Customization</h2>
+<ul><li>ODS pages</li>
+</ul><p>The ODS pages can be modified by editing the <b>.vspx and</b>.css files in &lt;Virtuoso OpenSource<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenSource&parent=OdsConfig" class="wikiword">?</a>&gt;/appsrc/ODS-Framework/ and then re-build the ods_framework_dav.vad and re-install it.
+ Alternately, you can install the ods_framework_filesystem.vad package which will put the dynamic web pages in the filesystem and you can edit them as the server is running, as you would edit any dynamic web pages under PHP or similar.</p>
+<ul><li>User&#39;s home</li>
+</ul><p>The users in ODS may wish to change the look and feel of their own home pages in the ODS.
+ To do so, the user should go to &#39;Application Settings&#39; -&gt; &#39;Home Page Template Selection&#39; settings page.
+ In the presented text area he/she can edit the home page without any special permissions by ODS administrator.</p>
+<p>Note: The current ODS version of the ODS contains one &#39;default&#39; home page template, which can serve as a basis for customization.</p>
+<br><a href="OdsConfig/c16.png" target="_blank"><img src="OdsConfig/c16.png" width="600px"></a><br><br><h2><a name="Adding users with Conductor"></a> Adding users with Conductor</h2>
+<p> IMPORTANT: Below are instructions for adding new user accounts if registrations are disabled.</p>
+<p>This can be performed in the Conductor (pre-installed on the Demo Database):</p>
+<ol><li>Open Conductor via browser at <a href="http://host:port/conductor" class="absuri">http://host:port/conductor</a> (e.g.
+ <a href="http://localhost:8890/conductor/)" class="absuri">http://localhost:8890/conductor/)</a> </li>
+<li>Login as &#39;dba&#39; </li>
+<li>Go to &quot;System Admin&quot; and the &quot;User Accounts&quot; tab: <br><a href="OdsConfig/c17.png" target="_blank"><img src="OdsConfig/c17.png" width="600px"></a><br><br> </li>
+<li>Open the &quot;Create New Account&quot; page: <br><a href="OdsConfig/c18.png" target="_blank"><img src="OdsConfig/c18.png" width="600px"></a><br><br> </li>
+<li>Enter the requested information and specify <b>User type</b> as &quot;WebDAV<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/WebDAV&parent=OdsConfig" class="wikiword">?</a>&quot;: <br><a href="OdsConfig/c19.png" target="_blank"><img src="OdsConfig/c19.png" width="600px"></a><br><br> </li>
+<li>Click &quot;Save&quot; to finish the user creation.</li>
+</ol><h2><a name="Configuring the Virtuoso mail handler on UNIX"></a> Configuring the Virtuoso mail handler on UNIX</h2>
+<p>Virtuoso provides a local mail delivery program (virt_mail) for SMTP servers.
+ This program is used to store the received mail into the Virtuoso database.</p>
+<p>The following instructions are applicable to UNIX systems using sendmail as a mail server.</p>
+<p> Note: for more detailed information view a <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsMailInstallGuideUnix" class="wikiword">detailed guide for settings VOS SMTP Mail handler on Win32 platforms</a>.</p>
+<p> </p>
+<h3><a name="Virtuoso Mail Handler Configuration"></a> Virtuoso Mail Handler Configuration</h3>
+<p> </p>
+<ol><li>Copy virt_mail to /usr/bin/virt_mail </li>
+<li>Copy <virtuoso open="open" source="source">/binsrc/maildrop/odbc_mail.default.ini to /etc/odbc_mail.ini </virtuoso></li>
+<li>Edit /etc/odbc_mail.ini and change the login settings to match your current database installation:</li>
+</ol><br><pre>[Options]
+DSN = DSN=Virtuoso; HOST=localhost:1111;UID=dba;PWD=dba
+;MaxMessageSize = 2097152
+Verify = DB.DBA.WA_MAIL_VALIDATE (&#39;$local&#39;)
+Deliver = DB.DBA.WA_NEW_MAIL(&#39;$1&#39;, $message)
+</pre><p> (You can probably leave the rest of the odbc_mail.ini alone.)</p>
+<p>Note that DSN contains reference to the VOS server SQL port, so this should be replaced if non-default SQL port (1111) is used.</p>
+<h3><a name="Sendmail program configuration"></a> Sendmail program configuration</h3>
+<p>Replace the default local mailer in your sendmail.cf</p>
+<br><pre>...
+#Mlocal,        P=/usr/bin/procmail, F=lsDFMAw5:/|@qSPfhn9, S=EnvFromL/HdrFromL, R=EnvToL/HdrToL,
+#               T=DNS/RFC822/X-Unix,
+#               A=procmail -t -Y -a $h -d $u
+Mlocal,         P=/usr/bin/virt_mail, F=lsDFMA5:/|@qSPhn9, S=10/30, R=20/40,
+                T=DNS/RFC822/X-Unix,
+                A=virt_mail -c /etc/odbc_mail.ini -l $u -h $h -s $g
+...
+</pre><p> IMPORTANT: make sure that ODS packages are installed prior to making the changes above.</p>
+<h3><a name="Verify Mail Settings"></a> Verify Mail Settings</h3>
+<p>Send an e-mail to the &#39;dav&#39; user account:</p>
+<br><pre>bash$ mail dav@&lt;domain&gt;
+Subject: virt-mail-test
+.
+Cc:
+</pre><p> Using the ISQL tool check the mailbox of the &#39;dav&#39; user account:</p>
+<br><pre>SQL&gt; select mm_subj from mail_message where mm_own = &#39;dav&#39;;
+MM_SUBJ
+VARCHAR
+_______________________________________________________________________________
+
+virt-mail-test
+
+</pre><p> If you see the subject of the mail which was sent in previous step, then the handler works correctly.
+ Otherwise you should check the log of the sendmail program.</p>
+<p> </p>
+<h2><a name="Other SMTP Servers"></a> Other SMTP Servers</h2>
+<p>For the other mail server programs please consult INSTALL document in the &lt;Virtuoso Open Source&gt;/binsrc/maildrop/ directory.</p>
+<h3><a name="Setting the VOS SMTP Mail handler on Win32 platforms"></a> Setting the VOS SMTP Mail handler on Win32 platforms</h3>
+<p>Before to start you make sure that STMP services for Internet Information Services (IIS) are installed on your Windows box.</p>
+<p>To check that open Control Panel, Add or Remove Programs, Add/Remove Windows Components.
+ In the &quot;Internet Information Services&quot; see Details there you must have &quot;SMTP Service&quot; installed, if not check and proceed with Windows installation update.
+ Please note that Windows installation disk may be asked.</p>
+<p> Note: for more detailed information view a <a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsMailInstallGuideWindows" class="wikiword">detailed guide for settings VOS SMTP Mail handler on Win32 platforms</a>.</p>
+<p>If SMTP Service is installed then proceed with following steps: </p>
+<ol><li>Open IIS configuration via Control Panel -&gt; Administrative Tools -&gt; Internet Information Services: <br><a href="OdsConfig/c20.png" target="_blank"><img src="OdsConfig/c20.png" width="600px"></a><br><br> </li>
+<li>Check the default SMTP Virtual server is running , and if needed add alias or domain.
+ Note the domain name, this will be used in the next steps: <br><a href="OdsConfig/c21.png" target="_blank"><img src="OdsConfig/c21.png" width="600px"></a><br><br> </li>
+<li>Open a command prompt (CMD) </li>
+<li>Go to the VOS binary distribution (c:\vos for example), in the c:\vos\bin directory </li>
+<li>Make sure <a href="http://ods.openlinksw.com/wiki/ODS/OdsMailInstallGuideWindows/register.bat" class="absuri">register.bat</a>, <a href="http://ods.openlinksw.com/wiki/ODS/OdsMailInstallGuideWindows/smtpreg.vbs" class="absuri">smtpreg.vbs</a> and <a href="http://ods.openlinksw.com/wiki/ODS/OdsMailInstallGuideWindows/odbc_mail.ini" class="absuri">odbc_mail.ini</a> are in place, if not download the ZIP (attached) and unpack in this directory </li>
+<li>Run <br><pre><br>   register.bat /register &quot;domain-name&quot;
+</pre><br>   where the domain-name is domain that you wish to be served for the purpose (the one from second step) </li>
+<li>If no error, you should see message like: <br><pre><br>   assigning priority (0 of 32767)
+   registered OpenLink MailDrop
+   set priority Command to c:\vos\bin\odbc_mail.exe
+</pre><br></li>
+<li>Edit the c:\vos\bin\virt_mail.ini and edit HOST address and port to match your Virtuoso OpenSource<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenSource&parent=OdsConfig" class="wikiword">?</a> server in following line: <br><pre><br>   DSN = DSN=Virtuoso; HOST=localhost:1112;UID=dba;PWD=dba
+</pre><br></li>
+<li>Make sure Virtuoso OpenSource<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OpenSource&parent=OdsConfig" class="wikiword">?</a> server is running and test the SMTP handler installation as follows: <ol><li>Connect with ISQL tool to the VOS database and execute following commands: <br><pre><br>SQL&gt; smtp_send (&#39;localhost:25&#39;, &#39;dba@testdomain&#39;, &#39;dba@testdomain&#39;, &#39;Subject: test\r\n\r\ntest&#39;);
+
+Done. -- 26 msec.
+SQL&gt; select MM_SUBJ from mail_message;
+MM_SUBJ
+VARCHAR
+_______________________________________________________________________________
+
+test
+
+1 Rows. -- 0 msec.
+SQL&gt;
+</pre><br><ol><li>You should see a row with text &quot;test&quot; in the result.
+ Please note that &quot;testdomain&quot; should be replaced by your domain (see above).
+</li>
+<li>If something is broken, you can turn on logging in virt-mail.ini with uncommenting MailDebug<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/MailDebug&parent=OdsConfig" class="wikiword">?</a> setting </li>
+<li>If all is ok, then change the Verify and Deliver options in odbc_mail.ini to: <br><pre><br>Verify = DB.DBA.WA_MAIL_VALIDATE (&#39;$local&#39;)
+Deliver = DB.DBA.WA_NEW_MAIL(&#39;$1&#39;, $message)
+</pre><br></li>
+</ol></li>
+</ol></li>
+<li>The STMP mail handler is ready for use with VOS ODS applications.</li>
+</ol><p> </p>
+<h2><a name="ODS Tutorials"></a>ODS Tutorials</h2>
+ <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSProfileManagerGuide" class="wikiword">ODS-Profile Manger Usage Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VOSODSSparqlSamples" class="wikiword">ODS SIOC Query Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsUbiquityTutorials" class="wikiword">ODS Ubiquity Commands Tutorials</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtuosoOdsUbiquityTutorialsOAuth" class="wikiword">OAuth Ubiquity Tutorial</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/VirtOAuthSPARQL" class="absuri">SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/VirtAuthFOAFSSLACL" class="absuri">WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsOpenIDRegister" class="wikiword">Register ODS User with OpenID2 Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSSWATOTutorial" class="wikiword">SWATO Tutorial</a></li>
+</ul><h2><a name="Reference Guides"></a>Reference Guides</h2>
+<ul><li><a href="http://virtuoso.openlinksw.com/presentations/SPARQL_Tutorials/SPARQL_Tutorials_Part_1/SPARQL_Tutorials_Part_1.html" class="absuri">SPARQL Tutorials Part 1: Using SIOC to Model the Linked Data Web</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/presentations/SPARQL_Tutorials/SPARQL_Tutorials_Part_2/SPARQL_Tutorials_Part_2.html" class="absuri">SPARQL Tutorials Part 2: SPARQL Extensions in the Virtuoso Universal Server</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/presentations/SPARQL_Tutorials/SPARQL_Tutorials_Part_3/SPARQL_Tutorials_Part_3.html" class="absuri">SPARQL Tutorials Part 3: SPARQL and Analytics</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/presentations/SPARQL_Tutorials/SPARQL_Tutorials_Part_4/SPARQL_Tutorials_Part_4.html" class="absuri">SPARQL Tutorials Part 4: Exploring FOAF-, Atom OWL-, Annotea-, and SKOS-based Data Spaces on the Linked Data Web</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSProgrammersGuide" class="wikiword">ODS Programmers&#39; Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSSIOCRef" class="wikiword">ODS SIOC Reference</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/wiki/main/Main/VirtuosoOAuthProgrammersGuide" class="absuri">Virtuoso OAuth Programmers&#39; Guide</a>.</li>
+</ul><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<p> </p>
+<ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSIndex" class="wikiword">OpenLink Data Spaces</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsMailInstallGuide" class="wikiword">Virtuoso ODS-Mail Installation Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsGettingStarted" class="wikiword">General Intranet Quick Start Guides</a>  by functionality realm </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsKeyImport" class="wikiword">CA Keys Import using Conductor</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateX509Certificate" class="wikiword">Generate an X.509 Certificate hosted WebID Guide</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore" class="wikiword">Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore" class="wikiword">Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdP" class="wikiword">Using Virtuoso&#39;s WebID Verification Proxy Service with a WebID-bearing X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSWebIDIdpProxy" class="wikiword">Using Virtuoso&#39;s WebID Identity Provider (IdP) Proxy Service with an X.509 certificate</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtPubSubHub" class="wikiword">PubSubHubBub Demo Client Example</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtFeedPubSubHub" class="wikiword">Feed subscription via PubSubHub protocol Example</a> </li>
+<li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/VirtPubSubHubACL" class="wikiword">Setting Up PubSubHub to use WebID Protocol or IP based control lists</a></li>
+</ul><p> </p>
+<h2><a name="Additional Information"></a>Additional Information</h2>
+ <ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/ODSTipsAndTricksGuide" class="wikiword">ODS Tips and Tricks Collection</a> </li>
+<li><a href="http://goo.gl/pdkRI" class="absuri">Understanding Data</a></li>
+</ul></div></body></html>

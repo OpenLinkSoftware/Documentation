@@ -1,0 +1,450 @@
+<html><body><div class="topic-text"><h2><a name="phpBB 3 Linked Data Views Script to set up your own instance"></a>phpBB 3 Linked Data Views Script to set up your own instance</h2>
+<br><pre>USE PHPBB3;
+
+DROP VIEW  PHPBB3.DBA.phpBB3_site_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_users_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_forums_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_usergroups_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_user_usergroups_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_forum_moderators_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_posts_rdf;
+DROP VIEW  PHPBB3.DBA.phpBB3_forum_posts_rdf;
+
+CREATE VIEW  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_site_rdf AS
+  SELECT TOP 1
+    config_value AS WEB_TITLE,
+    &#39;&#39; AS WEB_LINK,
+    &#39;&#39; AS WS_DUMMY
+  FROM phpbb_config
+  WHERE config_name = &#39;sitename&#39;;
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_users_rdf AS
+  SELECT user_id,
+         username,
+         &#39;&#39; AS WS_DUMMY
+  FROM phpbb_users
+  WHERE user_type &lt;&gt; 2;
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_usergroups_rdf AS
+  SELECT group_id, 
+         group_name
+  FROM phpbb_groups;
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_user_usergroups_rdf AS
+  SELECT g.group_name, 
+         u.username
+  FROM phpbb_user_group  ug, 
+       phpbb_users       u, 
+       phpbb_groups      g
+  WHERE ug.group_id = g.group_id 
+        AND u.user_id = ug.user_id 
+        AND ug.user_pending = 0;
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_forums_rdf AS
+  SELECT f.forum_id,
+         f.forum_name,
+         f.forum_desc,
+         &#39;Forum&#39; AS forum_type,
+         &#39;&#39; AS WS_DUMMY
+  FROM phpbb_forums f
+         phpbb_acl_groups aclg,
+         phpbb_groups g
+  WHERE
+         f.forum_id = aclg.forum_id
+         AND aclg.group_id = g.group_id
+         AND g.group_name = &#39;GUESTS&#39;;
+
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_forum_moderators_rdf AS
+  SELECT forum_id,
+         u.username
+  FROM phpbb_user_group  ug, 
+       phpbb_acl_groups  aa, 
+       phpbb_users       u
+  WHERE ug.group_id = aa.group_id 
+        AND u.user_id = ug.user_id 
+        AND aa.group_id = 4 
+        AND ug.user_pending = 0;
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_posts_rdf AS
+  SELECT pp.post_id,
+         pp.forum_id,
+         u.username,
+         pp.post_subject,
+         pp.post_text
+  FROM phpbb_posts  pp, 
+       phpbb_users  u,
+       phpbb_acl_groups aclg,
+       phpbb_groups g
+  WHERE pp.poster_id = u.user_id
+       AND pp.forum_id = aclg.forum_id
+       AND aclg.group_id = g.group_id
+       AND g.group_name = &#39;GUESTS&#39;;
+
+CREATE VIEW &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_forum_posts_rdf AS
+  SELECT post_id,
+         forum_id
+  FROM phpbb_posts;
+
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_site_rdf              TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_users_rdf             TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_usergroups_rdf        TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_user_usergroups_rdf   TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_forums_rdf            TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_forum_moderators_rdf  TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_posts_rdf             TO  &quot;SPARQL&quot;;
+GRANT SELECT ON  &quot;PHPBB3&quot;.&quot;phpBB&quot;.phpBB3_forum_posts_rdf       TO  &quot;SPARQL&quot;;
+
+GRANT EXECUTE ON  DB.DBA.RDF_SPONGE_UP  TO  &quot;SPARQL&quot;;
+
+GRANT SPARQL_UPDATE  TO  &quot;SPARQL&quot;;
+
+SPARQL
+
+PREFIX  sioc:  &lt;http://rdfs.org/sioc/ns#&gt;
+PREFIX  sioct: &lt;http://rdfs.org/sioc/types#&gt;
+PREFIX  atom:  &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+PREFIX  rdfs:  &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX  foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX  dc:    &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX  dct:   &lt;http://purl.org/dc/terms/&gt;
+PREFIX  skos:  &lt;http://www.w3.org/2004/02/skos/core#&gt;
+PREFIX  geo:   &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+PREFIX  bm:    &lt;http://www.w3.org/2002/01/bookmark#&gt;
+PREFIX  exif:  &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+PREFIX  ann:   &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+PREFIX  phpbb: &lt;http://openlinksw.com/phpBB3/&gt;
+
+DROP QUAD MAP GRAPH IRI(&quot;http://^{URIQADefaultHost}^/phpBB3_v/&quot;) .
+
+CREATE IRI CLASS  phpbb:site_iri 
+   &quot;http://^{URIQADefaultHost}^/phpBB3/%U#this&quot; 
+   ( IN  dummy       VARCHAR NOT NULL )  .
+CREATE IRI CLASS  phpbb:user_iri
+   &quot;http://^{URIQADefaultHost}^/phpBB3/user/%U#this&quot; 
+   ( IN  user_name   INTEGER NOT NULL ) .
+CREATE IRI CLASS  phpbb:usergroup_iri
+   &quot;http://^{URIQADefaultHost}^/phpBB3/group/%U#this&quot; 
+   ( IN  group_name  INTEGER NOT NULL ) .
+CREATE IRI CLASS  phpbb:forum_iri
+   &quot;http://^{URIQADefaultHost}^/phpBB3/forum/%d#this&quot; 
+   ( IN  forum_id    INTEGER NOT NULL ) .
+CREATE IRI CLASS  phpbb:post_iri
+   &quot;http://^{URIQADefaultHost}^/phpBB3/post/%d#this&quot; 
+   ( IN  post_id     INTEGER NOT NULL ) .
+
+ALTER QUAD STORAGE  virtrdf:DefaultQuadStorage
+  {
+    CREATE  virtrdf:phpBB3  AS GRAPH IRI (&quot;http://^{URIQADefaultHost}^/phpBB3_v/&quot;)
+      {
+   # Default phpBB Space
+   phpbb:site_iri (PHPBB3.phpBB.phpBB3_site_rdf.WS_DUMMY)
+     a         sioc:Space ;
+     dc:title  WEB_TITLE .
+
+   # User
+   phpbb:user_iri (PHPBB3.phpBB.phpBB3_users_rdf.username)
+     a                sioc:User ;
+     sioc:id          user_id ;
+     sioc:name        username ;   
+     sioc:has_space   phpbb:site_iri(WS_DUMMY) .
+
+   # Usergroup
+   phpbb:usergroup_iri (PHPBB3.phpBB.phpBB3_usergroups_rdf.group_name)
+     a          sioc:Usergroup ;
+     sioc:id    group_id ;
+     sioc:name  group_name .
+
+   # Usergroup - USER relationship
+   phpbb:usergroup_iri (PHPBB3.phpBB.phpBB3_user_usergroups_rdf.group_name)
+     sioc:has_member  phpbb:user_iri(username) .
+
+   # USER - Usergroup relationship
+   phpbb:user_iri (PHPBB3.phpBB.phpBB3_user_usergroups_rdf.username)
+     sioc:member_of  phpbb:usergroup_iri(group_name) .
+
+   # Forum
+   phpbb:forum_iri (PHPBB3.phpBB.phpBB3_forums_rdf.forum_id)
+     a                 sioc:Forum ;
+     sioc:id           forum_id ;
+     sioc:name         forum_name ;
+     sioc:description  forum_desc ;
+     dc:title          forum_name ;
+     dc:description    forum_desc ;
+     sioc:type         forum_type .
+
+   # Forum - moderators relationship
+   phpbb:user_iri (PHPBB3.phpBB.phpBB3_forum_moderators_rdf.username)
+     sioc:moderator_of  phpbb:forum_iri(forum_id) .
+
+   # Site - Forum relationship
+   phpbb:site_iri (PHPBB3.phpBB.phpBB3_users_rdf.WS_DUMMY)
+     sioc:space_of  phpbb:user_iri(username) .
+
+   # Moderators - Forum relationship
+   phpbb:forum_iri (PHPBB3.phpBB.phpBB3_forum_moderators_rdf.forum_id)
+     sioc:has_moderator  phpbb:user_iri(username) .
+
+   # Post
+   phpbb:post_iri (PHPBB3.phpBB.phpBB3_posts_rdf.post_id)
+     a                   sioc:Post ;
+     sioc:id             post_id ;
+     sioc:has_container  phpbb:forum_iri(forum_id) ;
+     dc:title            post_subject ;
+     sioc:has_creator    phpbb:user_iri (username) ;
+     sioc:content        post_text .
+
+   phpbb:user_iri (PHPBB3.phpBB.phpBB3_posts_rdf.username)
+     sioc:creator_of  phpbb:post_iri(post_id) .
+
+   # Forum - post
+   phpbb:forum_iri (PHPBB3.phpBB.phpBB3_forum_posts_rdf.forum_id)
+     sioc:container_of  phpbb:post_iri(post_id)
+      }
+  };
+
+DELETE FROM  db.dba.url_rewrite_rule_list  
+  WHERE urrl_list like &#39;phpBB3_rule%&#39;;
+DELETE FROM  db.dba.url_rewrite_rule 
+  WHERE urr_rule like &#39;phpBB3_rule%&#39;;
+
+CREATE PROCEDURE  phpBB3.phpbb.ur_get_uid 
+  (
+    IN  par  VARCHAR, 
+    IN  fmt  VARCHAR, 
+    IN  val  VARCHAR
+  )
+{
+  DECLARE  id  INT;
+  id := (SELECT user_id FROM phpBB3..phpbb_users WHERE username = val);
+  RETURN sprintf (fmt, id);
+};
+
+CREATE PROCEDURE  phpBB3.phpbb.ur_get_gid 
+  (
+    IN  par  VARCHAR,
+    IN  fmt  VARCHAR,
+    IN  val  VARCHAR
+  )
+{
+  DECLARE  id  INT;
+  id := (SELECT group_id FROM phpBB3..phpbb_groups WHERE group_name = val);
+  RETURN sprintf (fmt, id);
+};
+
+CREATE PROCEDURE  phpBB3.phpbb.ur_get_uname 
+  (
+    IN  par  VARCHAR,
+    IN  fmt  VARCHAR,
+    IN  val  VARCHAR
+  )
+{
+  DECLARE  id  ANY;
+  id := (SELECT username FROM phpBB3..phpbb_users WHERE user_id = val);
+  RETURN sprintf (fmt, id);
+};
+
+CREATE PROCEDURE  phpBB3.phpbb.ur_get_gname 
+  ( 
+    IN  par  VARCHAR,
+    IN  fmt  VARCHAR,
+    IN  val  VARCHAR
+  )
+{
+  DECLARE  id  ANY;
+  id := (SELECT group_name FROM phpBB3..phpbb_groups WHERE group_id = val);
+  RETURN sprintf (fmt, id);
+};
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_u&#39;, 
+    1,
+    &#39;/phpBB3/user/([^#]*)&#39;, 
+    VECTOR(&#39;uname&#39;), 
+    1,
+    &#39;/phpBB3/memberlist.php?mode=viewprofile&amp;u=%d&#39;, 
+    VECTOR(&#39;uname&#39;),
+    &#39;phpBB3.phpbb.ur_get_uid&#39;,
+    NULL,
+    2,
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_ug&#39;, 
+    1,
+    &#39;/phpBB3/group/([^#]*)&#39;, 
+    VECTOR(&#39;uname&#39;), 
+    1,
+    &#39;/phpBB3/memberlist.php?mode=group&amp;g=%d&#39;, 
+    VECTOR(&#39;uname&#39;),
+    &#39;phpBB3.phpbb.ur_get_gid&#39;,
+    NULL,
+    2,
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_f&#39;, 
+    1,
+    &#39;/phpBB3/forum/([^#]*)&#39;, 
+    VECTOR(&#39;id&#39;), 
+    1,
+    &#39;/phpBB3/viewforum.php?f=%s&#39;, 
+    VECTOR(&#39;id&#39;),
+    NULL,
+    NULL,
+    2,
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_p&#39;, 
+    1,
+    &#39;/phpBB3/post/([^#]*)&#39;, 
+    VECTOR(&#39;id&#39;), 
+    1,
+    &#39;/phpBB3/viewtopic.php?t=%s&#39;, 
+    VECTOR(&#39;id&#39;),
+    NULL,
+    NULL,
+    2,
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule&#39;, 
+    1,
+    &#39;/phpBB3/([^#]*)&#39;, 
+    VECTOR(&#39;path&#39;), 
+    1,
+    &#39;/sparql?query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/phpBB3/%U%%23this%%3E+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/phpBB3_v%%2F%%3E&amp;format=%U&#39;, 
+    VECTOR(&#39;path&#39;, &#39;*accept*&#39;),
+    NULL,
+    &#39;(text/rdf.n3)|(application/rdf.xml)|(text/rdf.turtle)|(text/rdf.ttl)&#39;,
+    2,
+    NULL
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_u_rdf&#39;,
+    1,
+    &#39;/phpBB3/memberlist.php\\?mode=viewprofile&amp;u=([0-9]+)&#39;,
+    VECTOR(&#39;id&#39;),
+    1,
+    &#39;/phpBB3/user/%U#this&#39;,
+    VECTOR(&#39;id&#39;),
+    &#39;phpBB3.phpbb.ur_get_uname&#39;,
+    &#39;(text/rdf.n3)|(application/rdf.xml)|(text/rdf.turtle)|(text/rdf.ttl)&#39;,
+    2, 
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_g_rdf&#39;,
+    1,
+    &#39;/phpBB3/memberlist.php\\?mode=group&amp;g=([0-9]+)&#39;,
+    VECTOR(&#39;id&#39;),
+    1,
+    &#39;/phpBB3/group/%U#this&#39;,
+    VECTOR(&#39;id&#39;),
+    &#39;phpBB3.phpbb.ur_get_gname&#39;,
+    &#39;(text/rdf.n3)|(application/rdf.xml)|(text/rdf.turtle)|(text/rdf.ttl)&#39;,
+    2, 
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_f_rdf&#39;,
+    1,
+    &#39;/phpBB3/viewforum.php\\?f=([0-9]+)&#39;,
+    VECTOR(&#39;id&#39;),
+    1,
+    &#39;/phpBB3/forum/%U#this&#39;,
+    VECTOR(&#39;id&#39;),
+    NULL,
+    &#39;(text/rdf.n3)|(application/rdf.xml)|(text/rdf.turtle)|(text/rdf.ttl)&#39;,
+    2, 
+    303
+  );
+
+db.dba.urlrewrite_create_regex_rule 
+  (
+    &#39;phpBB3_rule_p_rdf&#39;,
+    1,
+    &#39;/phpBB3/viewtopic.php\\?t=([0-9]+)&#39;,
+    VECTOR(&#39;id&#39;),
+    1,
+    &#39;/phpBB3/post/%U#this&#39;,
+    VECTOR(&#39;id&#39;),
+    NULL,
+    &#39;(text/rdf.n3)|(application/rdf.xml)|(text/rdf.turtle)|(text/rdf.ttl)&#39;,
+    2, 
+    303
+  );
+
+db.dba.urlrewrite_create_rulelist 
+  (
+    &#39;phpBB3_rule_list&#39;, 
+    1,
+    VECTOR 
+      (
+        &#39;phpBB3_rule_u&#39;,
+        &#39;phpBB3_rule_ug&#39;,
+        &#39;phpBB3_rule_f&#39;,
+        &#39;phpBB3_rule_p&#39;,
+        &#39;phpBB3_rule&#39;,
+        &#39;phpBB3_rule_u_rdf&#39;,
+        &#39;phpBB3_rule_g_rdf&#39;,
+        &#39;phpBB3_rule_f_rdf&#39;,
+        &#39;phpBB3_rule_p_rdf&#39;
+      )
+  );
+
+
+db.dba.vhost_remove 
+  (lpath=&gt;&#39;/phpBB3&#39;);
+db.dba.vhost_define 
+  (
+    lpath=&gt;&#39;/phpBB3&#39;, 
+    ppath=&gt;&#39;/vad/vsp/phpBB3/&#39;, 
+    is_dav=&gt;0, 
+    is_brws=&gt;0, 
+    vsp_user=&gt;&#39;dba&#39;, 
+    def_page=&gt;&#39;index.php&#39;, 
+    opts=&gt;vector (&#39;url_rewrite&#39;, &#39;phpBB3_rule_list&#39;)
+  );
+
+db.dba.vhost_remove 
+  (
+    vhost=&gt;&#39;*sslini*&#39;, 
+    lhost=&gt;&#39;*sslini*&#39;, 
+    lpath=&gt;&#39;/phpBB3&#39;
+  );
+db.dba.vhost_define 
+  (
+    vhost=&gt;&#39;*sslini*&#39;,
+    lhost=&gt;&#39;*sslini*&#39;,
+    lpath=&gt;&#39;/phpBB3&#39;,
+    ppath=&gt;&#39;/vad/vsp/phpBB3/&#39;, 
+    is_dav=&gt;0,
+    is_brws=&gt;0,
+    vsp_user=&gt;&#39;dba&#39;, 
+    def_page=&gt;&#39;index.php&#39;,
+    opts=&gt;VECTOR (&#39;url_rewrite&#39;, &#39;phpBB3_rule_list&#39;)
+  );
+
+DB.DBA.XML_SET_NS_DECL (&#39;phpbb&#39;, &#39;http://openlinksw.com/phpBB3/&#39;, 2);
+</pre><p> </p>
+<h3><a name="References"></a>References</h3>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/PHPBB3SIOCRef" class="wikiword">phpBB 3 SIOC Reference</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsIntegrationphpBB" class="absuri">phpBB 3 Installation Guide</a> </li>
+</ul></div></body></html>

@@ -1,0 +1,83 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?
+
+---++What?
+Index-friendly filter for Date range ( bif:dateadd ) optimization within SPARQL query.
+
+---++Why?
+Achieve fast results and better performance.
+
+---++How?
+
+Assume the following SPARQL query:
+
+<verbatim>
+SELECT ?wiki, 
+       ?dbp, 
+       bif:datediff('second',  xsd:DateTime(?extracted), now()) AS ?secondsAgo
+ FROM <http://nl.dbpedia.org>
+WHERE 
+  {
+    ?wiki foaf:primaryTopic ?dbp .
+    ?dbp dcterms:modified ?extracted .
+    FILTER ( bif:datediff('minute', now(), xsd:DateTime(?extracted)) <= 10 )
+  }  
+ORDER BY DESC(?extracted)
+LIMIT 30
+</verbatim>
+
+
+
+Let's take a look at the calculation of: 
+<verbatim>
+FILTER ( bif:datediff('minute', now(),  xsd:DateTime(?extracted)) <= 10 ) . 
+</verbatim>
+
+For each "is modified" triple we:
+  1 Convert <code>?extracted</code> to <code>xsd:dateTime</code> , 
+  1 Calculate <code>datediff</code>, 
+  1 Make a comparison and know whether we hit or miss 10 minutes interval. 
+
+Written so, this will lead to a potentially long loop, because even if the optimizer will realize that the filter is selective, it can't discover <code>_why_</code> is it so selective.
+
+Now let's change the filter to:
+<verbatim>
+FILTER ( ?extracted > bif:dateadd('minute', -10, now())) . 
+</verbatim> 
+
+<code>now()</code> can be calculated once at the very beginning of the query execution because it does not depend on any rows in a given table. Then <code>bif:dateadd</code> has all arguments known and thus the whole <code>bif:dateadd('minute', -10, now())</code> can be calculated only once and produce some value. Therefor <code>FILTER ( ?extracted > <nowiki>some_known_value</nowiki> )</code> can be represented as a single search step: look at index and get triples with known P, known G, O greater than the given one and any S. That's pretty fast and predictable step, good for both optimizer and the runtime.
+
+We can rephrase the query to filter index-friendly:
+
+<verbatim>
+SELECT ?wiki, 
+       ?dbp, 
+        bif:datediff('second',  xsd:DateTime(?extracted) ,
+        now()) AS ?secondsAgo
+ FROM <http://nl.dbpedia.org>
+WHERE 
+  {
+    ?wiki foaf:primaryTopic ?dbp .
+    ?dbp dcterms:modified ?extracted .
+     FILTER ( ?extracted > bif:dateadd('minute', -10, now()))
+  } 
+ORDER BY DESC (?extracted) 
+LIMIT 30
+</verbatim>
+
+
+In this case the presence or the absence of the order by does not matter too much, because the query is way more straightforward: selective index-friendly filter first, and the selection could be ordered naturally via hot index used by the filter.
+
+Note also that if you know the datatype of an object literal, there's no need to write a cast like xsd:dateTime --- it can make an expression index-unfriendly even if it will always return the argument unchanged on your specific data.
+
+
+   * [[http://bit.ly/13xefMl][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/18rI9VA][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuideDataRangeQueries][How can I manage Date Range SPARQL queries?]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]

@@ -1,0 +1,39 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+How can I determine the time taken to load datasets with RDF Bulk Loader
+
+---++What 
+
+To determine the time taken to load the triples into a RDF graph when it is comprised of multiple datasets using the Virtuoso RDF Bulk Loader functions.
+
+---++Why
+
+If loading datasets from multiple files at the same time and/or running multiple <code><nowiki>rdf_loader_run()</code></nowiki> functions for faster parallel loading of datasets on a multi-core machine.
+
+---++How
+
+The Virtuoso <code><nowiki>rdf_loader_run()</code></nowiki> is used for loading RDF datasets, and records the results of loading these datasets in the <code><nowiki>load_list</code></nowiki>, including the load times for each physical files and the graph name it is loaded into with the <code><nowiki>ll_start</code></nowiki> and <code><nowiki>ll_done</code></nowiki> columns. A SQL query of the following form can be used to determine the time taken to load the datasets for a given graph:
+
+<verbatim>
+select min(ll_started) as start, max(ll_done) as finish, datediff('second', min(ll_started), max(ll_done)) as delta from load_list where ll_graph like '<graph-name>';
+</verbatim>
+
+where <code>graph-name</code> is the name of the graph the load time is required for, with the <code>delta</code> return value being the time taken in seconds.
+
+For example, the time taken to load the Freebase dataset into the [[http://lod.openlinksw.com][Virtuoso LOD Cloud Cluster]] instance was 6135 seconds i.e. about 1.7hrs:
+
+<verbatim>
+SQL> select min(ll_started) as start, max(ll_done) as finish, datediff('second', min(ll_started), max(ll_done)) as delta from load_list where ll_graph like 'http://commondatastorage.googleapis.com/freebase-public/rdf/freebase-rdf-2013-11-17-00-00.gz';
+start                finish               delta
+TIMESTAMP            TIMESTAMP            INTEGER
+_______________________________________________________________________________
+
+2013.12.2 22:34.9 0  2013.12.3 0:16.24 0  6135
+
+1 Rows. -- 74 msec.
+SQL>
+</verbatim>
+
+---++Related
+
+   * [[VirtBulkRDFLoader][Virtuoso RDF Bulk Loader]]

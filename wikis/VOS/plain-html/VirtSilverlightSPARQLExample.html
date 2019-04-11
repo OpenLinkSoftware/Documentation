@@ -1,0 +1,363 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><h1><a name="Silverlight Application for Browsing RDF Data"></a>Silverlight Application for Browsing RDF Data</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Create%20the%20Silverlight%20Application">Create the Silverlight Application</a></li>
+<ul><li><a href="#Create%20the%20project">Create the project</a></li> <li><a href="#Get%20The%20List%20of%20Graphs">Get The List of Graphs</a></li> <li><a href="#Fetching%20The%20List%20of%20Types">Fetching The List of Types</a></li> <li><a href="#Fetching%20the%20list%20of%20Entities.">Fetching the list of Entities.</a></li> <li><a href="#Examining%20the%20Entities">Examining the Entities</a></li> </ul><li><a href="#Hosting%20the%20Silverlight%20Application">Hosting the Silverlight Application</a></li> <li><a href="#Accessing%20Remote%20SPARQL%20End%20Points">Accessing Remote SPARQL End Points</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>There are several examples in this documentation showing how to integrate Virtuoso&#39;s RDF data store into a Windows forms application or ADO.NET Data Service using the Virtuoso ADO.NET Data Provider.
+ This example demonstrates how it is is possible to bypass ADO.NET completely and integrate RDF data from Virtuoso into a Silverlight application by directly querying the SPARQL endpoint on the Virtuoso Server using the .NET WebClient.</p>
+<h2><a name="Prerequisites"></a> Prerequisites</h2>
+<ul><li>Virtuoso Server.
+</li>
+<li>The Virtuoso <a href="https://virtuoso.openlinksw.com/download/" class="absuri">Cartridges</a> VAD package.
+</li>
+<li>Microsoft Visual Studio 2008.
+</li>
+<li><a href="http://www.microsoft.com/downloads/details.aspx?familyid=9442b0f2-7465-417a-88f3-5e7b5409e9dd&displaylang=en" class="absuri">Silverlight 3 Tools for Visual Studio 2008 SP1</a>.</li>
+</ul><h2><a name="Create the Silverlight Application"></a> Create the Silverlight Application</h2>
+<h3><a name="Create the project"></a> Create the project</h3>
+<ol><li>Open Visual Studio and create a new <b>Silverlight Application</b> project called RDFBrowser.
+ Click the <b>OK</b> button.
+<br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser.png" style="wikiautogen"> <br><br> </li>
+<li>In the <b>New Silverlight Application</b> dialog box check the <b>Host the Silverlight application in a new Web site</b> box.
+ Click OK.
+</li>
+<li>Add a title to the Silverlight page by editing <code>MainPage.xaml</code>.
+ Drag a TextBlock from the Toolbox onto <code>MainPage.xaml</code> between the <code>&lt;Grid&gt;</code> and <code>&lt;/Grid&gt;</code> tags.
+ Add the title text, &quot;Example RDF Browser&quot; and some formatting so that it looks like: <br><pre><br>&lt;TextBlock Text=&quot;Example RDF Browser&quot; FontSize=&quot;20&quot; &gt;&lt;/TextBlock&gt;
+</pre><br> </li>
+</ol><h3><a name="Get The List of Graphs"></a> Get The List of Graphs</h3>
+<p>Below the title we want a box where we can type in the address of a SPARQL endpoint and a button to click to get a list of graphs available on that endpoint.
+ So drag another TextBlock, a TextBox and a Button onto the grid.
+ We will now add some row and column formatting to the grid as well.
+</p>
+<br><pre>      &lt;Grid x:Name=&quot;LayoutRoot&quot;&gt;
+        &lt;Grid.RowDefinitions&gt;
+            &lt;RowDefinition Height=&quot;80&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+        &lt;/Grid.RowDefinitions&gt;
+        &lt;Grid.ColumnDefinitions&gt;
+            &lt;ColumnDefinition Width=&quot;60&quot; /&gt;
+            &lt;ColumnDefinition Width=&quot;60&quot; /&gt;
+            &lt;ColumnDefinition Width=&quot;350&quot;/&gt;
+            &lt;ColumnDefinition Width=&quot;100&quot;/&gt;
+            &lt;ColumnDefinition Width=&quot;100&quot;/&gt;
+        &lt;/Grid.ColumnDefinitions&gt;
+        &lt;TextBlock Text=&quot;Example RDF Browser&quot;  FontSize=&quot;20&quot; Grid.Row=&quot;0&quot; Grid.Column=&quot;0&quot; Grid.ColumnSpan=&quot;4&quot; HorizontalAlignment=&quot;Center&quot; VerticalAlignment=&quot;Center&quot;/&gt;
+        &lt;TextBlock Text=&quot;Endpoint:&quot; HorizontalAlignment=&quot;Right&quot; VerticalAlignment=&quot;Center&quot; Grid.Row=&quot;1&quot; Grid.Column=&quot;1&quot;&gt;&lt;/TextBlock&gt;
+        &lt;TextBox Text=&quot;{Binding Mode=OneWay}&quot; x:Name=&quot;txtEndpoint&quot; HorizontalAlignment=&quot;Left&quot; VerticalAlignment=&quot;Center&quot; Width=&quot;290&quot; Height=&quot;30&quot; Grid.Row=&quot;1&quot; Grid.Column=&quot;2&quot;&gt;&lt;/TextBox&gt;
+        &lt;Button Content=&quot;Get Graphs&quot; Click=&quot;Button_Click&quot; VerticalAlignment=&quot;Center&quot; Grid.Row=&quot;1&quot; Grid.Column=&quot;3&quot;/&gt;
+    &lt;/Grid&gt;
+</pre><p> Note the binding of the TextBox to a variable called txtEndpoint.  This makes text typed into the TextBox available to the code.  Also note that the button click handler method, Button_Click.  When the Get Graphs button is clicked we want to send a query to the endpoint and get back a list of graphs.
+ We will need to create the Button_Click method in the code behind file, <code>MainPage.xaml.cs</code>.</p>
+<ol><li>Open <code>MainPage.xaml.cs</code> and paste the following method beneath the MainPage method.
+ System.IO and System.Text will need to be added to the using block.
+<br><pre><br>       private void Button_Click (object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(&quot;http://&quot; + txtEndpoint.Text + &quot;/sparql?&amp;query=select+distinct+%3Fg+where+{graph+%3fg+{%3Fs+%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23type%3E+%3Fo}}&amp;format=text%2Fxml&quot;);
+
+            try
+            {
+                WebClient client = new WebClient();
+                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
+                client.DownloadStringAsync (new Uri(sb.ToString()));
+            }
+            catch (WebException webEx)
+            {
+                Console.WriteLine(webEx.ToString());
+                if (webEx.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    Console.WriteLine(&quot;Are you behind a firewall?  If so, go through the proxy server.&quot;);
+                }
+            }
+        }
+</pre><br></li>
+<li>In the Button_Click method a WebClient object is created to send the SPARQL protocol web request.
+ The SPARQL request that is sent is equivalent to <br><pre><br>SELECT DISTINCT ?g
+WHERE { GRAPH ?g { ?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns/type&gt; ?o } }
+</pre><br></li>
+<li>This web request returns an XML result set.
+ The line: <br><pre><br>client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
+</pre><br>adds an event handler to the WebClient to process these results.
+ We need to add the event handler method client_DownloadStringComplete so paste the following code after the Button_Click method.
+<br><pre><br>        void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                List&lt;String&gt; graphs = new List&lt;string&gt;();
+
+                using (XmlReader reader = XmlReader.Create(new StringReader(e.Result)))
+                {
+                    reader.Read();
+                    while (reader.ReadToFollowing(&quot;literal&quot;))
+                    {
+                        graphs.Add(reader.ReadElementContentAsString());
+                    }
+                }
+        }
+</pre><br></li>
+<li>This method extracts the list of available graphs from the returned XML and puts them in a List.
+ If you build and run the application it look like this: <br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser1.png" style="wikiautogen"> <br><br> </li>
+<li>We now need to display the list of graphs in a drop down box so one can be selected.
+ We will also add another button to the app.
+ Open <code>MainPage.xaml</code> and define another row in the grid: <br><pre><br>       &lt;Grid.RowDefinitions&gt;
+            &lt;RowDefinition Height=&quot;80&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+</pre><br></li>
+<li>Add a TextBlock, a ComboBox and a Button <br><pre><br>            &lt;TextBlock x:Name=&quot;graphLabel&quot; Text=&quot;Graphs:&quot; Visibility=&quot;Collapsed&quot;  HorizontalAlignment=&quot;Right&quot; VerticalAlignment=&quot;Center&quot; Grid.Column=&quot;1&quot; Grid.Row=&quot;2&quot; /&gt;
+            &lt;ComboBox x:Name=&quot;graphList&quot; Visibility=&quot;Collapsed&quot;  SelectedItem=&quot;{Binding Mode=OneWay}&quot; HorizontalAlignment=&quot;Left&quot; VerticalAlignment=&quot;Center&quot; Width=&quot;290&quot; Grid.Row=&quot;2&quot; Grid.Column=&quot;2&quot;&gt;&lt;/ComboBox&gt;
+            &lt;Button x:Name=&quot;getTypeButton&quot; Content=&quot;Get Types&quot; Visibility=&quot;Collapsed&quot;  Click=&quot;Button_Click2&quot; VerticalAlignment=&quot;Center&quot; Grid.Row=&quot;2&quot; Grid.Column=&quot;3&quot;/&gt;
+</pre><br></li>
+<li>We now want to fill the ComboBox with the list of graphs in client_DownloadStringComplete.
+ Open <code>MainPage.xaml.cs</code> and update the method so it looks like this.
+<br><pre><br>        void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                List&lt;String&gt; graphs = new List&lt;string&gt;();
+
+                using (XmlReader reader = XmlReader.Create(new StringReader(e.Result)))
+                {
+                    reader.Read();
+                    while (reader.ReadToFollowing(&quot;literal&quot;))
+                    {
+                        graphs.Add(reader.ReadElementContentAsString());
+                    }
+                }
+                graphList.ItemsSource = graphs;
+                graphLabel.Visibility = Visibility.Visible;
+                graphList.Visibility = Visibility.Visible;
+                getTypeButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                graphList.ItemsSource = null;
+            }
+        }
+</pre><br></li>
+<li>The second button has a methods Button_Click2 to handle the click event.
+ We will add an empty method for now.
+<br><pre><br>        private void Button_Click2(object sender, RoutedEventArgs e)
+        {
+  
+        }
+</pre><br></li>
+<li>Now check that the graphs are being fetched by building and running the application.
+ Type the hostname and port of a Virtuoso instance in the endpoint box and click the button.
+ There will be a pause while the SPARQL query is sent to Virtuoso and the list of graphs returned.
+ When the graph list is filled the ComboBox will become visible and you can select a graph.
+<br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser2.png" style="wikiautogen"> <br><br></li>
+</ol><h3><a name="Fetching The List of Types"></a> Fetching The List of Types</h3>
+<p>The Get Types button does nothing so far.
+ We need to add a body to the Button_Click2 method to issue another SPARQL query using the selected graph.
+ This query will fetch a list of the types of object held in the graph.
+ The query we want to send is </p>
+<br><pre>SELECT DISTINCT ?o
+FROM &lt;i&gt;graph name&lt;/i&gt;
+WHERE {?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns/type&gt; ?o}
+</pre><p>where the from clause is the graph selected form the ComboBox.<br><br>   1. Update the Button_Click2 method with the following code: </p>
+<br><pre>        private void Button_Click2 (object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(&quot;http://&quot; + txtEndpoint.Text + &quot;/sparql?default-graph-uri=&quot;+graphList.SelectedItem+&quot;&amp;query=select+distinct+%3Fo%0D%0Awhere+%0D%0A{%3Fs+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23type%3E+%3Fo}&amp;format=text%2Fxml&quot;);
+            try
+            {
+                WebClient client2 = new WebClient();
+                client2.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client2_DownloadStringCompleted);
+                client2.DownloadStringAsync(new Uri(sb.ToString()));
+            }
+            catch (WebException webEx)
+            {
+                Console.WriteLine(webEx.ToString());
+                if (webEx.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    Console.WriteLine(&quot;Are you behind a firewall?  If so, go through the proxy server.&quot;);
+                }
+            }
+        }
+</pre><ol><li>Again we are using a WebClient to send the query and we have defined a method, client2_DownloadStringCompleted to get the results.  Add the client2_DownloadStringCompleted method: <br><pre><br>        void client2_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                List&lt;String&gt; types = new List&lt;string&gt;();
+
+                using (XmlReader reader = XmlReader.Create(new StringReader(e.Result)))
+                {
+                    reader.Read();
+                    while (reader.ReadToFollowing(&quot;literal&quot;))
+                    {
+                        types.Add(reader.ReadElementContentAsString());
+                    }
+                }
+                typeList.ItemsSource = types;
+                typeLabel.Visibility = Visibility.Visible;
+                typeList.Visibility = Visibility.Visible;
+                getItemButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                typeList.ItemsSource = null;
+            }
+        }
+</pre><br></li>
+<li>This method takes the returned list of types and fills another ComboBox.  We need to add another row to the grid in <code>MainPage.xaml</code> and a TextBlock, a ComboBox and a Button.
+<br><pre><br>       &lt;Grid.RowDefinitions&gt;
+            &lt;RowDefinition Height=&quot;80&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+</pre><br>and <br><pre><br>        &lt;TextBlock x:Name=&quot;typeLabel&quot; Text=&quot;Types:&quot; Visibility=&quot;Collapsed&quot; HorizontalAlignment=&quot;Right&quot; VerticalAlignment=&quot;Center&quot; Grid.Column=&quot;1&quot; Grid.Row=&quot;3&quot; /&gt;
+        &lt;ComboBox x:Name=&quot;typeList&quot; Visibility=&quot;Collapsed&quot; SelectedItem=&quot;{Binding Mode=OneWay}&quot; HorizontalAlignment=&quot;Left&quot; VerticalAlignment=&quot;Center&quot; Width=&quot;290&quot; Grid.Row=&quot;3&quot; Grid.Column=&quot;2&quot;&gt;&lt;/ComboBox&gt;
+        &lt;Button x:Name=&quot;getItemButton&quot; Content=&quot;Get Items&quot; Visibility=&quot;Collapsed&quot; Click=&quot;Button_Click3&quot; VerticalAlignment=&quot;Center&quot; Grid.Row=&quot;3&quot; Grid.Column=&quot;3&quot;/&gt;
+</pre><br></li>
+<li>Again, we will add an empty method as the button click handler for now.
+<br><pre><br>        private void Button_Click3(object sender, RoutedEventArgs e)
+        {
+  
+        }
+</pre><br></li>
+<li>Build and run the application.
+ You will see that the types of entity held in the graph are now listed in the second ComboBox.  We want to be able to select one of the types and fetch a list of all the entities of that type in the graph.
+<br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser3.png" style="wikiautogen"> <br><br></li>
+</ol><h3><a name="Fetching the list of Entities."></a> Fetching the list of Entities.</h3>
+<p>When the Get Items button is clicked we want to query the endpoint for a list of all the entities in the selected graph whose type matches the type selected on the Types ComboBox.
+ The SPARQL query we want to issue is</p>
+<br><pre>select ?s
+from &lt;i&gt;Graph URI&lt;/i&gt;
+where {?s &lt;&gt; &lt;i&gt;Type URI&lt;/i&gt;}
+</pre><p> </p>
+<ol><li>Replace the empty Button_Click3 method with the following: <br><pre><br>        private void Button_Click3(object sender, RoutedEventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(&quot;http://&quot; + txtEndpoint.Text + &quot;/sparql?default-graph-uri=&quot; + graphList.SelectedItem + &quot;&amp;query=select+distinct+%3Fs%0D%0Awhere+%0D%0A{%3Fs+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23type%3E+%3C&quot; + typeList.SelectedItem + &quot;%3E}&amp;format=text%2Fxml&quot;);
+            //The selected type URI may contain a # - we need %23 instead
+            String queryString;
+            if (sb.ToString().IndexOf(&#39;#&#39;) &gt; 0)
+                queryString = sb.ToString().Replace(&quot;#&quot;, &quot;%23&quot;);
+            else 
+                queryString = sb.ToString();
+            try
+            {
+                WebClient client3 = new WebClient();
+                client3.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client3_DownloadStringCompleted);
+                client3.DownloadStringAsync(new Uri(queryString));
+            }
+            catch (WebException webEx)
+            {
+                Console.WriteLine(webEx.ToString());
+                if (webEx.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    Console.WriteLine(&quot;Are you behind a firewall?  If so, go through the proxy server.&quot;);
+                }
+            }
+        }
+</pre><br></li>
+<li>Again, we use a WebClient to send the query so need to add the method to handle the returned results.
+ Add the following method: <br><pre><br>        void client3_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                List&lt;String&gt; items = new List&lt;string&gt;();
+
+                using (XmlReader reader = XmlReader.Create(new StringReader(e.Result)))
+                {
+                    reader.Read();
+                    while (reader.ReadToFollowing(&quot;literal&quot;))
+                    {
+                        items.Add(reader.ReadElementContentAsString());
+                    }
+                }
+                uriGrid.ItemsSource = items;
+                uriGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                uriGrid.ItemsSource = null;
+            }
+        }
+</pre><br></li>
+<li>Again the results are loaded into a List.
+ However, this time we will display them in a DataGrid rather than a ComboBox.
+ Open <code>MainPage.xaml</code> and add another row to the grid <br><pre><br>        &lt;Grid.RowDefinitions&gt;
+            &lt;RowDefinition Height=&quot;80&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;40&quot;/&gt;
+            &lt;RowDefinition Height=&quot;220&quot;/&gt;
+</pre><br></li>
+<li>Drag a DataGrid from the <b>Toolbox</b> onto <code>MainPage.xaml</code> after the last button.
+ Then replace <code>&lt;data:DataGrid&gt;<br>&lt;/data:DataGrid&gt;</code> tags with the following: <br><pre><br>            &lt;data:DataGrid x:Name=&quot;uriGrid&quot; Visibility=&quot;Collapsed&quot; AutoGenerateColumns=&quot;False&quot; Grid.Row=&quot;4&quot; Grid.Column=&quot;1&quot; Grid.ColumnSpan=&quot;3&quot; &gt;
+                &lt;data:DataGrid.Columns&gt;
+                    &lt;data:DataGridTemplateColumn Header=&quot;Items&quot;&gt;
+                        &lt;data:DataGridTemplateColumn.CellTemplate&gt;
+                            &lt;DataTemplate&gt;
+                                &lt;TextBlock Text=&quot;{Binding Mode=OneWay}&quot;&gt;&lt;/TextBlock&gt;
+                            &lt;/DataTemplate&gt;
+                        &lt;/data:DataGridTemplateColumn.CellTemplate&gt;
+                        &lt;/data:DataGridTemplateColumn&gt;
+                &lt;/data:DataGrid.Columns&gt;
+            &lt;/data:DataGrid&gt;
+</pre><br></li>
+<li>This takes the URIs from the items List in client3_DownloadStringCompleted and displays them in the DataGrid.  Build and run the project and you should see a list of entities of the selected type held in the selected graph.
+<br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser4.png" style="wikiautogen"> <br><br></li>
+</ol><h3><a name="Examining the Entities"></a> Examining the Entities</h3>
+<ol><li>The list of entities in the DataGrid are identified by URI.
+ These URIs can be made into hyperlinks to take you to a description of the entity.
+ Simply remove the line <br><pre><br> &lt;TextBlock Text=&quot;{Binding Mode=OneWay}&quot;&gt;&lt;/TextBlock&gt;
+</pre><br>from <code>MainPage.xaml</code> and replace it with: <br><pre><br>&lt;HyperlinkButton Content=&quot;{Binding}&quot; NavigateUri=&quot;{Binding}&quot; TargetName=&quot;_blank&quot;&gt;&lt;/HyperlinkButton&gt;
+</pre><br></li>
+<li>One further change makes the results more readable by adding a scroll bar.
+ Surround the whole <grid> </grid> block with a ScrollViewer and remove the name LayoutRoot from the <grid> <br><pre><br>    &lt;ScrollViewer x:Name=&quot;LayoutRoot&quot; Background=&quot;AliceBlue&quot;&gt;
+       &lt;Grid&gt;
+      .
+      .
+      .
+      &lt;/Grid&gt;
+   &lt;/ScrollViewer&gt;
+</pre><br></grid></li>
+<li>Build and run the project and it should look like this.
+<br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser6.png" style="wikiautogen"> <br><br> </li>
+<li>If you click on one the the URIs identifying an entity it will take you to a page describing it.
+<br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser5.png" style="wikiautogen"> <br><br></li>
+</ol><h2><a name="Hosting the Silverlight Application"></a> Hosting the Silverlight Application</h2>
+<p>Testing the application so far has been done using the Visual Studio Development Server.
+ It is possible to host the application using Virtuoso as the web server on non Windows platforms.</p>
+<ol><li>The first stage is to get a copy of the files needed to run the application.
+</li>
+<li>In the <b>Solution Explorer</b> right click on <b>RDFBrowser.Web </b> and select <b>Publish</b>.
+</li>
+<li>In the <b>Publish Web</b> dialog box set a folder as the <b>Target Location</b> and select <b>Only Files Needed To Run This Application</b>.
+</li>
+<li>Click the <b>Publish</b> button.
+<br><br><br> <img src="VirtSilverlightSPARQLExample/RDFBrowser7.png" style="wikiautogen"> <br><br> </li>
+<li>Copy the folder containing the exported files to the <code>vsp</code> folder of the Virtuoso instance you want to use as the web server; typically, <code>/usr/local/virtuoso-opensource/var/lib/virtuoso/vsp</code>.
+</li>
+<li>Open the Conductor and select the <b>Web Application Server</b> tab.
+</li>
+<li>Then select the <b>Virtuoso Domains and Directories</b> sub-tab.
+</li>
+<li>Select the <b>Default Web Site</b> Interface and <b>Add New Directory</b>.
+</li>
+<li>Select <b>None</b> as the template directory and click <b>Next</b>.
+</li>
+<li>In the <b>Virtuoso Directory</b> setup page set the <b>Path</b> to /RDFBrowser, the <b>Physical path</b> to the directory name below  <code>/usr/local/virtuoso-opensource/var/lib/virtuoso/vsp</code>; so in my example, <code>RDFBrowser</code> and the <b>Default Page</b> to <code>RDFBrowserTestPage.html</code>.
+</li>
+<li>Check the <b>Allow Directory Browsing</b> box and <b>Override exec permission flag in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a></b>.
+</li>
+<li>Set the <b>VSP user</b> to dba.
+</li>
+<li>Click the <b>Save Changes</b> button.
+ Virtuoso will now serve the Silverlight application.
+ In this example, it will be found at <code>http://localhost:8890/RDFBrowser</code>.
+<br><br> <img src="VirtSilverlightSPARQLExample/VirtuosoDir.png" style="wikiautogen"> <br><br></li>
+</ol><h2><a name="Accessing Remote SPARQL End Points"></a>Accessing Remote SPARQL End Points</h2>
+<p>This Silverlight application will only allow you to browse data on SPARQL endpoints that are accessible on your domain.
+ This is due to the Silverlight security model which is described <a href="http://msdn.microsoft.com/en-us/library/cc645032%28VS.95%29.aspx" class="absuri">in the MSDN</a>.
+ As the Silverlight application is itself making HTTP web requests, these are restricted to only going to the domain that originally served the application.
+ To allow cross-domain access to the SPARQL service from Silverlight, the SPARQL endpoint would require either a <code>clientaccesspolicy.xml</code> or <code>crossdomain.xml</code> file allowing access from the site serving the Silverlight application.</p>
+</div></body></html>

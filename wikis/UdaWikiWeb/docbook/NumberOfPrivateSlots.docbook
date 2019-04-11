@@ -1,0 +1,27 @@
+<docbook><section><title>NumberOfPrivateSlots</title><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Error Messages (N)</bridgehead>
+<para><ulink url="UDAErrorMessages">A</ulink> <ulink url="ErrorMessagesB">B</ulink> <ulink url="ErrorMessagesC">C</ulink> <ulink url="ErrorMessagesD">D</ulink> <ulink url="ErrorMessagesE">E</ulink> <ulink url="ErrorMessagesF">F</ulink> <ulink url="ErrorMessagesG">G</ulink> <ulink url="ErrorMessagesH">H</ulink> <ulink url="ErrorMessagesI">I</ulink> <ulink url="ErrorMessagesJ">J</ulink> <ulink url="ErrorMessagesK">K</ulink> <ulink url="ErrorMessagesL">L</ulink> <ulink url="ErrorMessagesM">M</ulink> <ulink url="ErrorMessagesN">N</ulink> <ulink url="ErrorMessagesO">O</ulink> <ulink url="ErrorMessagesP">P</ulink> <ulink url="ErrorMessagesQ">Q</ulink> <ulink url="ErrorMessagesR">R</ulink> <ulink url="ErrorMessagesS">S</ulink> <ulink url="ErrorMessagesT">T</ulink> <ulink url="ErrorMessagesU">U</ulink> <ulink url="ErrorMessagesV">V</ulink> <ulink url="ErrorMessagesW">W</ulink> <ulink url="ErrorMessagesX">X</ulink> <ulink url="ErrorMessagesY">Y</ulink> <ulink url="ErrorMessagesZ">Z</ulink> <ulink url="ErrorMessagesSymbols">#</ulink></para><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Number of private slots in segment table exhausted (1083)</bridgehead>
+<para>PROGRESS uses shared memory for database access.
+ Each process that uses shared memory must attach to it.
+ If the PROGRESS client could only attach to 1 database, then when the broker created the shared memory segment, it would be created in such a way that all the processes connecting to the shared memory segments would be connected at the same address so all the pointer locations inside shared memory would have the same address regardless of which process was looking at them.</para><para>Since version 6 when a PROGRESS client was made capable of connecting to multiple databases a new scheme needed to be invented for looking at data in shared memory.
+ No longer was it the case that all processes would connect to shared memory at the same address.
+ For Example:</para><para>A Process could look at a place in shared memory and it&#39;s address would be 10752 because it&#39;s attach address to the shared memory segment was 10000.
+A different process connects to the same shared memory, but attaches at address 20000 instead of 10000.
+ The same data for this process will have address 20752.</para><para>To solve this problem, PROGRESS came up with Position Independent Pointers (PIP).
+ The rule being any pointer which is stored in shared memory *MUST* be a PIP pointer.
+ The implementation for PIP pointers is to only store offsets from the beginning of the shared memory segment.
+ In addition, a table is created to keep track of attach addresses.
+In this way, the above example would look like:</para><para>The value in question would have a PIP address of Segment 1, offset 752.
+Process 1 would look at the Attach address of Segment 1 (10000) and add 752 to get it real pointer relative to that process (10752).
+Process 2 would do the same, Segment 1 (20000) and <computeroutput>752 = 20752</computeroutput>} for a real pointer.</para><para>With this all said and done, now back to the error message: SYSTEM ERROR: Number of private slots in segment table exhausted (1083)</para><para>The Database Manager code is not always sure if a data structure is to reside in shared memory or not.
+ To that end, PROGRESS reserves a few (10) table entries for pointers that get converted to PIP pointers when the pointers were not in shared memory, but rather private memory.
+ These reserved table entries are called &quot;Private Slots&quot;.
+ Each slot can address up to 16MB (which is the largest shared memory segment size PROGRESS uses, 128 MB on IBM).
+ When a pointer is getting converted to a PIP pointer, PROGRESS looks for the shared memory segment that would contain the pointer.
+ If it can&#39;t find it, then the pointer *must* reside in private memory.
+ It will then look to see if this pointer is within any of the already existing private slots made up of 16 MB each, if not then we&#39;ll create a new virtual private segment by taking up a table entry (slot).
+Once all these slots are consumed, then upon creation of the next virtual private slot, you would get the above message.</para><para> So, how does this happen.
+ Maybe the client process is taking up too much memory performing it&#39;s operation.
+ Maybe the processes heap is split up into 2 segments, below and above shared memory swo that the pointers more than 16MB away from each other (not likely).
+Maybe the clients -hs setting is too high.
+ Most likely it&#39;s a bug in PROGRESS that needs investigating.
+</para></section></docbook>

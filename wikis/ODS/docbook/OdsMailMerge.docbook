@@ -1,0 +1,139 @@
+<docbook><section><title>OdsMailMerge</title><title> Guide to using ODS-Mail for Mail Merge</title> Guide to using ODS-Mail for Mail Merge
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What is it?</bridgehead>
+<para>ODS-Mail has an &quot;Email Merge&quot; feature that enables dynamic email message construction, merging content with data from:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>ODS-<ulink url="AddressBook">AddressBook</ulink> </listitem>
+<listitem>vCard collections </listitem>
+<listitem>CSV documents</listitem>
+</itemizedlist><para>These &quot;merge-sources&quot; may be local or remote HTTP-accessible files, including SPARQL SELECT Queries which deliver CSV-formatted output.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Why is this important?</bridgehead>
+<para>Just as printed mail merges once did, this provides a productive mechanism by which to generate email messages to dispatch information, on a highly focused basis, to relevant contacts.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How do I use it?</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 1 - Prepare Recipient List</bridgehead>
+<para>Create or locate your recipient list (&quot;merge-source&quot; document), in any supported format --</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>vCard</emphasis> <programlisting>BEGIN:VCARD
+VERSION:2.1
+N:Gump;Forrest
+FN:Forrest Gump
+ORG:Bubba Gump Shrimp Co.
+TITLE:Shrimp Man
+PHOTO;GIF:http://www.example.com/dir_photos/my_photo.gif
+TEL;WORK;VOICE:(111) 555-1212
+TEL;HOME;VOICE:(404) 555-1212
+ADR;WORK:;;100 Waters Edge;Baytown;LA;30314;United States of America
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:100 Waters Edge=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+ADR;HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
+LABEL;HOME;ENCODING=QUOTED-PRINTABLE:42 Plantation St.=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+EMAIL;PREF;INTERNET:forrestgump@example.com
+REV:20080424T195243Z
+END:VCARD
+</programlisting></listitem>
+<listitem><emphasis>CSV</emphasis> <programlisting>key,firstName,lastName,mbox
+0,John,Smith,john.smith@example.com
+1,Anna,Clarks,anna.clarks@example.com
+2,Rojer,Danrette,rojer.danrette@example.com
+3,Kate,Sigton,kate.sigton@example.com
+4,Tim,Craft,tim.craft@example.com
+</programlisting></listitem>
+<listitem><emphasis>SPARQL Query Results URL</emphasis> where the output format is set to CSV <orderedlist spacing="compact"><listitem>Suppose the following SPARQL query: <programlisting>PREFIX rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT DISTINCT  ?person, 
+                 ?firstName, 
+                 ?lastName, 
+                 ?mbox
+  WHERE 
+    {
+      ?person  a              foaf:Person
+            ;  foaf:firstName ?firstName
+            ;  foaf:lastName  ?lastName
+            ;  foaf:mbox      ?mbox
+    }  
+  LIMIT 100    
+</programlisting></listitem>
+<listitem>Test it against your Virtuoso SPARQL Endpoint before passing it to the email merge tool.
+<itemizedlist mark="bullet" spacing="compact"><listitem>The <emphasis>SPARQL Query Results URL</emphasis> is: <programlisting>http://example.com/sparql?default-graph-uri=&amp;query=PREFIX+rdf%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0ASELECT+DISTINCT+%3Fperson%2C+%3FfirstName%2C+%3FlastName%2C+%3Fmbox%0D%0AWHERE+%0D%0A++{%0D%0A++++%3Fperson+a+foaf%3APerson+%3B%0D%0A++++++++++++foaf%3AfirstName+%3FfirstName+%3B%0D%0A++++++++++++foaf%3AlastName++%3FlastName+%3B%0D%0A++++++++++++foaf%3Ambox++++++%3Fmbox+.%0D%0A++}++%0D%0ALIMIT+100&amp;format=csv&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=30000&amp;debug=on
+</programlisting></listitem>
+<listitem><ulink url="http://bit.ly/1oo0XdX">Live results</ulink> should be similar to the following: <programlisting>&quot;person&quot;,&quot;firstName&quot;,&quot;lastName&quot;,&quot;mbox&quot;
+&quot;http://www.miroslavmilic.com/#Miroslav%20Milic&quot;,&quot;Miroslav&quot;,&quot;Mili?&quot;,&quot;mailto:miroslav.milic@gmail.com&quot;
+&quot;http://www.morelab.deusto.es/resource/pcuriel&quot;,&quot;Pablo&quot;,&quot;Curiel&quot;,&quot;mailto:pablo.curiel.alamo@gmail.com&quot;
+&quot;http://www.morelab.deusto.es/resource/pcuriel&quot;,&quot;Pablo&quot;,&quot;Curiel&quot;,&quot;mailto:pcuriel@deusto.es&quot;
+&quot;http://www.morelab.deusto.es/resource/pcuriel&quot;,&quot;Pablo&quot;,&quot;Curiel&quot;,&quot;mailto:pablo.curiel@deusto.es&quot;
+&quot;http://tw.rpi.edu/instances/EricRozell&quot;,&quot;Eric&quot;,&quot;Rozell&quot;,&quot;mailto:rozele@rpi.edu&quot;
+&quot;http://tw.rpi.edu/instances/EricRozell&quot;,&quot;Eric&quot;,&quot;Rozell&quot;,&quot;mailto:rozele@rpi.edu&quot;
+&quot;http://tw.rpi.edu/instances/TimLebo&quot;,&quot;Tim&quot;,&quot;Lebo&quot;,&quot;mailto:lebot@rpi.edu&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:frank.dengler@kit.edu&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:dengler@aifb.uni-karlsruhe.de&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:dengler@kit.edu&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:frank.dengler@aifb.uni-karlsruhe.de&quot;
+</programlisting> </listitem>
+</itemizedlist></listitem>
+</orderedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 2 - Prepare Merge Template</bridgehead>
+<orderedlist spacing="compact"><listitem>Go to the ODS-Mail application home page: <ulink url="OdsMailMerge/mail1.png"><figure><graphic fileref="OdsMailMerge/mail1.png" /></figure></ulink> </listitem>
+<listitem>Drill down to <emphasis>Preferences</emphasis> -&gt; <emphasis>Templates</emphasis>: <ulink url="OdsMailMerge/mail2.png"><figure><graphic fileref="OdsMailMerge/mail2.png" /></figure></ulink> </listitem>
+<listitem>Click <emphasis>Create</emphasis> for a new Template, or click <emphasis>Edit</emphasis> to work with an existing one: <ulink url="OdsMailMerge/mail3.png"><figure><graphic fileref="OdsMailMerge/mail3.png" /></figure></ulink> <itemizedlist mark="bullet" spacing="compact"><listitem>ODS-Mail supports merge placeholders only in the <emphasis>To:</emphasis> and <emphasis>Subject:</emphasis> headers, and the message body.
+</listitem>
+<listitem>Wrap placeholder strings in double-braces (e.g.,  <emphasis>{{place holder}}</emphasis>) to indicate content merge insertion points.
+</listitem>
+<listitem>If you can, use placeholder strings that match the field names you&#39;ve used in your merge source.
+ Don&#39;t worry if you don&#39;t know what those names are yet -- during the mail merge process, you will be prompted to set up a manual mapping between any unrecognized template placeholders and the fields in your merge-source.
+</listitem>
+<listitem>ODS-Mail supports a number of default template placeholders, which follow the other conventions for field mapping in ODS.
+ If your placeholders have other names, then you will be prompted to provide a mapping for this merge.
+<itemizedlist mark="bullet" spacing="compact"><listitem>{{Title}} </listitem>
+<listitem>{{First Name}} </listitem>
+<listitem>{{Middle Name}} </listitem>
+<listitem>{{Last Name}} </listitem>
+<listitem>{{Gender}} </listitem>
+<listitem>{{Birthday}} </listitem>
+<listitem>{{Company}} </listitem>
+<listitem>{{Job Title}} </listitem>
+<listitem>{{Home Street}} </listitem>
+<listitem>{{Home Street 2}} </listitem>
+<listitem>{{Home City}} </listitem>
+<listitem>{{Home State}} </listitem>
+<listitem>{{Home Postal Code}} </listitem>
+<listitem>{{Home Country}} </listitem>
+<listitem>{{Home Phone}} </listitem>
+<listitem>{{Home Fax}} </listitem>
+<listitem>{{E-mail Address}} </listitem>
+</itemizedlist></listitem>
+<listitem>Due to nuances of Web browser, Web server, Mail server, and Mail client interaction, you may want to test with a simple merge to only yourself, to ensure that all content is delivered as intended.
+ For example: <itemizedlist mark="bullet" spacing="compact"><listitem>In the &quot;To:&quot; header -- <programlisting>To: &quot;{{name}}&quot; &lt;{{mbox}}&gt; 
+</programlisting>-- will preview and be output as the SMTP-deliverable -- <programlisting>To: Fred Jones fjones@example.com
+</programlisting>-- while -- <programlisting>To: &amp;quot;{{name}}&amp;quot; &amp;lt;{{mbox}}&amp;gt; 
+</programlisting>-- will preview as -- <programlisting>To: &quot;Fred Jones&quot; &lt;fjones@example.com&gt;
+</programlisting>-- but be output as the SMTP-undeliverable -- <programlisting>To: &amp;quot;Fred Jones&amp;quot; &amp;lt;fjones@example.com&amp;gt; 
+</programlisting></listitem>
+<listitem>In the Body -- <programlisting>Dear {{firstname}},
+</programlisting>-- will render as -- <programlisting>Dear Fred,
+</programlisting></listitem>
+<listitem>In the Body -- <programlisting>&amp;quot;&amp;#123;&amp;#123;firstname&amp;#125;&amp;#125; &amp;#123;&amp;#123;lastName&amp;#125;&amp;#125;&amp;quot; &amp;lt;&amp;#123;&amp;#123;mbox&amp;#125;&amp;#125;&amp;gt; 
+</programlisting>-- will render as -- <programlisting>&quot;Fred Jones&quot; &lt;fjones@example.com&gt;
+</programlisting></listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+<listitem>Click <emphasis>Save</emphasis> to preserve your changes.
+ <emphasis><emphasis>Note:</emphasis> When creating a new template, you will only have a <emphasis>Save</emphasis> button, until you do so.
+ When editing an existing template, you will have both <emphasis>Save</emphasis> and <emphasis>Merge</emphasis> buttons from the start, and clicking <emphasis>Merge</emphasis> will automatically save your changes before proceeding.
+ If you wish to discard changes to the template, you must click the <emphasis>Cancel</emphasis> button.</emphasis> </listitem>
+<listitem>Click <emphasis>Merge</emphasis> button to save your changes and proceed to the actual email merge-and-send process: <ulink url="OdsMailMerge/mail3.png"><figure><graphic fileref="OdsMailMerge/mail4.png" /></figure></ulink></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Step 3 - Preview and Send the Merged Messages</bridgehead>
+<orderedlist spacing="compact"><listitem>Click <emphasis>Merge</emphasis>, and then select a CSV data source <ulink url="OdsMailMerge/mailMerge_2.png"><figure><graphic fileref="OdsMailMerge/mailMerge_2.png" /></figure></ulink> </listitem>
+<listitem>Map each template placeholder to a column name in the structured data source, and indicate whether this column should be used for record de-duplication.
+<programlisting>  mbox      =&gt; E-mail Address
+  lastName  =&gt; Last Name      
+  firstName =&gt; First Name     
+</programlisting><ulink url="OdsMailMerge/mailMerge_3.png"><figure><graphic fileref="OdsMailMerge/mailMerge_3.png" /></figure></ulink> </listitem>
+<listitem>Merge the data with the template, and preview the mapping and email messages: <itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>Table showing mappad data</emphasis> <ulink url="OdsMailMerge/mailMerge_4.png"><figure><graphic fileref="OdsMailMerge/mailMerge_4.png" /></figure></ulink> </listitem>
+<listitem> <emphasis>Preview single message</emphasis> <ulink url="OdsMailMerge/mailMerge_5.png"><figure><graphic fileref="OdsMailMerge/mailMerge_5.png" /></figure></ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Send messages</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Glossary</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>merge-source</emphasis> -- data source for email merge, in a supported format (i.e., CSV or vCard) </listitem>
+<listitem><emphasis>placeholder</emphasis> -- marker of the form, &quot;{{mbox}},&quot; indicating the merge insertion points in a template</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="OdsMail">ODS-Mail</ulink></listitem>
+</itemizedlist></section></docbook>

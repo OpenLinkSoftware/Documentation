@@ -1,0 +1,47 @@
+---++Faceted Browser Pre-Installation 
+
+Run the following commands using the Virtuoso <code>isql</code> program before installing the Faceted Browser VAD:
+
+<verbatim>
+DROP INDEX  RDF_QUAD_OPGS;
+DROP INDEX  RDF_QUAD_POGS;
+DROP INDEX  RDF_QUAD_GPOS;
+DROP INDEX  RDF_QUAD_OGPS;
+
+CHECKPOINT;
+
+CREATE TABLE  R2 
+   ( G  iri_id_8 , 
+     S  iri_id_8 , 
+     P  iri_id_8 , 
+     O  ANY      , 
+     PRIMARY KEY (S, P, O, G)
+   );
+ALTER INDEX  R2  
+  ON  R2  
+  PARTITION ( S INT (0hexffff00) );
+
+LOG_ENABLE (2);
+
+INSERT INTO  R2 (G, S, P, O) 
+  SELECT G, S, P, O 
+  FROM rdf_quad;
+
+DROP TABLE RDF_QUAD;
+ALTER TABLE  R2 
+  RENAME RDF_QUAD;
+
+CHECKPOINT;
+
+CREATE BITMAP INDEX  RDF_QUAD_OPGS 
+  ON  RDF_QUAD (O, P, G, S) 
+  PARTITION ( O  VARCHAR ( -1, 0hexffff ) );
+CREATE BITMAP INDEX  RDF_QUAD_POGS 
+  ON  RDF_QUAD (P, O, G, S) 
+  PARTITION ( O  VARCHAR ( -1, 0hexffff ) );
+CREATE BITMAP INDEX  RDF_QUAD_GPOS 
+  ON  RDF_QUAD (G, P, O, S) 
+  PARTITION ( O  VARCHAR ( -1, 0hexffff ) );
+
+CHECKPOINT;
+</verbatim>

@@ -1,0 +1,63 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I execute query with labels preference order?"></a>How can I execute query with labels preference order?</h1>
+<p>The way to prefer one label to the other can be done as follows:</p>
+<ol><li>Have a procedure which returns preference order: <br><pre><br>create procedure lbl_order (in p any)
+{    
+  declare r int;
+  r := vector (
+  &#39;http://www.w3.org/2000/01/rdf-schema#label&#39;,
+  &#39;http://xmlns.com/foaf/0.1/name&#39;,
+  &#39;http://purl.org/dc/elements/1.1/title&#39;,
+  &#39;http://purl.org/dc/terms/title&#39;,
+  &#39;http://xmlns.com/foaf/0.1/nick&#39;,
+  &#39;http://usefulinc.com/ns/doap#name&#39;,
+  &#39;http://rdf.data-vocabulary.org/name&#39;,
+  &#39;http://www.w3.org/2002/12/cal/ical#summary&#39;,
+  &#39;http://aims.fao.org/aos/geopolitical.owl#nameListEN&#39;,
+  &#39;http://s.opencalais.com/1/pred/name&#39;,
+  &#39;http://www.crunchbase.com/source_description&#39;,
+  &#39;http://dbpedia.org/property/name&#39;,
+  &#39;http://www.geonames.org/ontology#name&#39;,
+  &#39;http://purl.org/ontology/bibo/shortTitle&#39;,
+  &#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#value&#39;,
+  &#39;http://xmlns.com/foaf/0.1/accountName&#39;,
+  &#39;http://www.w3.org/2004/02/skos/core#prefLabel&#39;,
+  &#39;http://rdf.freebase.com/ns/type.object.name&#39;,
+  &#39;http://s.opencalais.com/1/pred/name&#39;,
+  &#39;http://www.w3.org/2008/05/skos#prefLabel&#39;,
+  &#39;http://www.w3.org/2002/12/cal/icaltzd#summary&#39;,
+  &#39;http://rdf.data-vocabulary.org/name&#39;,
+  &#39;http://rdf.freebase.com/ns/common.topic.alias&#39;,
+  &#39;http://opengraphprotocol.org/schema/title&#39;,
+  &#39;http://rdf.alchemyapi.com/rdf/v1/s/aapi-schema.rdf#Name&#39;,
+  &#39;http://poolparty.punkt.at/demozone/ont#title&#39;
+   );
+  if (isiri_id (p))
+    p := id_to_iri (p);   
+  r := position (p, r);
+  if (r = 0)
+    return 100;
+  return r;
+}
+;
+</pre><br></li>
+<li>Execute the following query: <br><pre><br>SPARQL 
+DEFINE input:inference &quot;facets&quot; 
+SELECT ?o 
+WHERE 
+  { 
+    &lt;http://uriburner.com/about/id/entity/http/www.linkedin.com/in/kidehen#CV_mfrTl4s6Jy&gt; virtrdf:label ?o ; 
+       ?p ?o . 
+  } 
+ORDER BY (sql:lbl_order (?p));
+</pre><br></li>
+<li>Or execute the following query using sql: <br><pre><br>SELECT __ro2sq (O), lbl_order (P) 
+FROM RDF_QUAD table option (with &#39;&#39;facets&#39;&#39;) 
+WHERE G = __i2id (?) 
+  AND S = __i2id (?) 
+  AND P = __i2id (&#39;&#39;http://www.openlinksw.com/schemas/virtrdf#label&#39;&#39;, 0) 
+ORDER BY 2
+</pre><br> </li>
+</ol><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+</ul></div></body></html>

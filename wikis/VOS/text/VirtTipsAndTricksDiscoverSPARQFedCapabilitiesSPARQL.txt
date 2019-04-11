@@ -1,0 +1,66 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+Adding SPARQL Endpoint Capabilities Interrogation to Virtuoso SPARQL-FED functionality
+
+---++What?
+Discover the capabilities of a SPARQL endpoint en route to enhancing SPARQL-FED usage from Virtuoso instances by granting 
+special roles to "SPARQL".
+
+---++Why?
+Virtuoso service endpoints can interact with the Virtuoso compiler and in case of errors, for example when using 
+<code> SPARQL LOAD SERVICE &lt;http://example.com/sparql&gt; DATA  </code> , it can execute the appropriate 
+<code>LOAD SERVICE ... DATA</code> by itself and retry the failed query.
+
+---++How?
+
+Adding SPARQL Endpoint Capabilities Interrogation to Virtuoso SPARQL-FED functionality can be achieved by:
+   1. Granting ROLE privileges to the SPARQL user ;
+   1. Using SPARQL-FED as per usual via SPARQL-Protocol, HTML based Query UI, or SPASQL.
+
+Grant the <code><nowiki>SPARQL_LOAD_SERVICE_DATA</nowiki></code> ROLE privilege to the <code>SPARQL</code> user to enable the capabilities of external Virtuoso SPARQL endpoint to be determined by executing the following command from the Conductor or command line iSQL interfaces:
+
+<verbatim>
+GRANT SPARQL_LOAD_SERVICE_DATA to "SPARQL" ;
+</verbatim>
+
+Once executed when running SPARQL-FED queries the source SPARQL endpoint will interrogate the remote source en route to best understanding its capabilities for optimum execution of the SPARQL-FED queries. The "best effort" determination of capabilities is done by a combination of the following:
+
+   1 Service Description Document 
+   1 SPARQL 1.1 queries.
+
+The following curl command can be used to obtain the service description for a given SPARQL endpoint:
+<verbatim>
+curl -iLH "Accept: text/turtle" http://linkeddata.uriburner.com/sparql
+</verbatim>
+
+Example usage:
+
+   1 Execute from iSQL:
+<verbatim>   
+SQL> grant SPARQL_LOAD_SERVICE_DATA to "SPARQL";
+Done. -- 3 msec.
+SQL> grant SPARQL_SPONGE to "SPARQL";
+Done. -- 3 msec.
+</verbatim>
+   1 From the http://host:port/sparql endpoint execute as an anonymous user the following query:
+<verbatim>
+SELECT DISTINCT ?Entity
+WHERE {SERVICE <http://dbmi-icode-01.dbmi.pitt.edu:8080/sparql>
+      {SELECT *
+       WHERE { ?Entity ?Relation ?EntityType} limit 50
+     }
+    }
+</verbatim>    
+      * [[http://bit.ly/1E5FLq5][View the SPARQL Query Definition via SPARQL Protocol URL]];
+      * [[http://bit.ly/1yJ4C08][View the SPARQL Query Results via SPARQL Protocol URL]];
+   
+   
+---++Related
+
+   * [[http://www.w3.org/TR/sparql11-service-description/][W3C SPARQL 1.1 Service Description]]
+   * [[http://linkeddata.uriburner.com/c/8B2FXO][SPARQL Service Description Ontology]] 
+   * [[VirtTipsAndTricksDiscoverSPARQFedCapabilities][How to discover the capabilities of a SPARQL endpoint to enhancing SPARQL-FED usage from Virtuoso instances?]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+  
+   
+   

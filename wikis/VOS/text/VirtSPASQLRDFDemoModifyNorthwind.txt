@@ -1,0 +1,154 @@
+%META:TOPICPARENT{name="VirtSPASQLRDFDemoLabels"}%
+
+---+ Modifying the Northwind Ontology to Add Labels
+
+This document will guide you through modifying the Northwind Ontology created when you installed the [[https://virtuoso.openlinksw.com/download/][demo database VAD package]] so that each resource is identified by an <nowiki>http://www.w3.org/2000/01/rdf-schema#label</nowiki>.  This will improve the readability of the information displayed by the application created in [[VirtSPASQLRDFDemoLabels][Extending RDFDemo to Display More Compact Labels]].  
+
+---++ Pre-requisites
+
+   * A working copy of the RDFDemo application created in [[VirtSPASQLRDFDemoLabels][Extending RDFDemo to Display More Compact Labels]].  Modify RDFDemo so that it looks for the graph used to describe the Northwind data and searches that graph for the predicate details, as follows:
+      1. Add a new member variable to the <nowiki>ExtendedStringHandler</nowiki> class to hold the graphs that we need to search for the prediacate information.
+<verbatim>
+        StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+        VirtuosoConnection ParentConnection;
+        List&lt;Label> labelList = new List<Label>();
+        List&lt;TextBox> textBoxList = new List<TextBox>();
+        List&lt;String> graphList = new List<String>();
+        DescribeDataSet describeDataSet = new DescribeDataSet();
+        Boolean isIRI = false;
+        SqlExtendedString ParentIRI;
+</verbatim>
+      1. In displayData, after we have set the title of the form, add the following block of code:
+<verbatim>
+                    // Later we will want to get property labels and for that 
+                    // we will need the graph where the resource is defined.
+                  foreach (DataRow row in table1.Rows)
+                       if (row[0].ToString() == "http://www.openlinksw.com/schema/attribution#isDescribedUsing"
+                      &amp;&amp; row[1].ToString() != ParentIRI.ToString())                        {
+                           String graph = row[1].ToString();
+                           graphList.Add(graph);
+                       }
+ </verbatim>
+      1. Replace the existing <nop>getLabelText method with an extended version
+<verbatim>
+        private string getLabelText(Object label)
+        {
+            string labelText = label.ToString();
+            if (label is SqlExtendedString)
+            {
+                Boolean foundLabel = false;
+                SqlExtendedString se = (SqlExtendedString)label;
+                VirtuosoDataAdapter getLabelAdapter = new VirtuosoDataAdapter();
+                DataSet getLabelDataSet = new DataSet();
+
+                //Try finding it in resources graph first
+                foreach (String graph in graphList)
+                {
+                    StringBuilder getLabelCommandText = new StringBuilder("sparql select * from &lt;" + graph + "&gt; where {&lt;" + se.ToString() + "&gt; ?p ?o}");
+                    VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+                    getLabelAdapter.SelectCommand = getLabelCommand;
+
+                    try
+                    {
+                        getLabelAdapter.Fill(getLabelDataSet);
+                        foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                        {
+                            if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                            {
+                                labelText = getLabelRow[1].ToString();
+                                foundLabel = true;
+                                break;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    if (foundLabel)
+                        break;
+                }
+                // If we still have no label try the predicate itself as the graph
+                if (!foundLabel)
+                {
+                    StringBuilder getLabelCommandText = new StringBuilder("sparql define get:soft \"soft\" select * from &lt;" + se.ToString() + "&gt; where {&lt;" + se.ToString() + "&gt; ?p ?o}");
+                    VirtuosoCommand getLabelCommand = new VirtuosoCommand(getLabelCommandText.ToString(), ParentConnection);
+                    getLabelAdapter.SelectCommand = getLabelCommand;
+                    try
+                    {
+                        getLabelAdapter.Fill(getLabelDataSet);
+                        foreach (DataRow getLabelRow in getLabelDataSet.Tables[0].Rows)
+                        {
+                            if (getLabelRow[0].ToString() == "http://www.w3.org/2000/01/rdf-schema#label")
+                            {
+                                labelText = getLabelRow[1].ToString();
+                                break;
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            return labelText;
+        }
+
+</verbatim>
+This extended method first checks the graphs in the graph list for the predicate information then if no label has been found tries the predicate itself as the graph.  
+      1. Build and run, the Northwind resources should now be correctly and concisely labelled.
+ <img src="%ATTACHURLPATH%/Labels.png" style="wikiautogen"/>
+
+---++ Improving The Appearance of the Form
+The following changes are not strictly necessary but improve the appearance of the form.
+   * Line up the right hand edge of the labels with the text boxes by setting <nowiki><b>TextAlign</b></nowiki> to <nowiki>MiddleRight</nowiki> and reduce the width of the labels.  In <nowiki>displayData</nowiki>  replace 
+<verbatim>
+                        propertyLabel.Text = getLabelText(row[0]);
+                        propertyLabel.AutoEllipsis = true;
+                        propertyLabel.AutoSize = false;
+                        propertyLabel.Width = propertyLabel.PreferredWidth > 380 ? 380 : propertyLabel.PreferredWidth;
+</verbatim>
+with
+<verbatim>
+                        propertyLabel.Text = getLabelText(row[0]);
+                        propertyLabel.AutoEllipsis = true;
+                        propertyLabel.AutoSize = false;
+                        propertyLabel.Width = 130;
+                        propertyLabel.TextAlign = ContentAlignment.MiddleRight;
+</verbatim>
+   * Make the form narrower.  At the top of <nowiki>displayData</nowiki>  change the form width from 840 to 660.
+<verbatim>
+                describeForm.Width = 660;
+</verbatim>
+   * Alter the positioning of the labels and <nowiki>TextBoxes</nowiki> on the form.  Replace the block
+<verbatim>
+                    for (int i = 0; i < table1.Rows.Count; i++)
+                    {
+                        textBoxList[i].Click += new EventHandler(this.iri_Click);
+                        labelList[i].Location = new Point(10, i * 20 + 50);
+                        textBoxList[i].Location = new Point(400, i * 20 + 50);
+                        describeForm.Controls.Add(labelList[i]);
+                        describeForm.Controls.Add(textBoxList[i]);
+                    }
+</verbatim>
+
+with
+
+<verbatim>
+                     for (int i = 0; i < table1.Rows.Count; i++)
+                    {
+                        textBoxList[i].Click += new EventHandler(this.iri_Click);
+                        labelList[i].Location = new Point(10, i * 22 + 50);
+                        textBoxList[i].Location = new Point(150, i * 22 + 50);
+                        describeForm.Controls.Add(labelList[i]);
+                        describeForm.Controls.Add(textBoxList[i]);
+                    }
+</verbatim>
+<img src="%ATTACHURLPATH%/Neater.png" style="wikiautogen"/>
+
+---++ Next Steps
+
+The image below shows some of the information about an employee in the Northwind dataset.  There are two two items of data referenced that could be handled better.  One is Notes and the other is Photo.  It would be nice to be able to click through links to images and web pages and have those items displayed in a browser window.  It would also be helpful to be able to display the longer text fields as a block of text rather than having to scroll along the small <nowiki>TextBox</nowiki> in the form.
+%BR%%BR%<img src="%ATTACHURLPATH%/EmpDetail.png" style="wikiautogen"/>%BR%%BR%
+In the next step we will extend the application so the images and web pages can be viewed and long text fields are displayed in full.
+
+[[VirtSPASQLRDFDemoImageText][Extending RDFDemo to Display Images and Longer Text Fields.]]

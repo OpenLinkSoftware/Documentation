@@ -1,0 +1,119 @@
+%META:TOPICPARENT{name="OdsBriefcase"}%
+---+ Using ODS-Briefcase to mediate access to data stored on Microsoft <nop>OneDrive
+
+%TOC%
+
+---++ Introduction
+
+[[https://onedrive.live.com/about/][Microsoft OneDrive]] (formerly <nop>SkyDrive) is a service that allows users to upload and sync files to a cloud storage, and then access them from a Web browser or their local device. It is part of the [[http://www.live.com][Windows Live]] set of online services and allows users to keep the files private, share them only with chosen contacts, or make them public. 
+
+<nop>OneDrive file storage offers users a number of features:
+
+   * Free online storage: allows 7GB of free online cloud storage
+   * Can be used for back up of photos or documents, or for making them public and/or sharing a folder with friends
+   * Drag-and-drop upload: uploading files by simply dragging files from one's computer and dropping them into <nop>OneDrive
+   * Create and share office (Word, Excel, and <nop>PowerPoint) documents which can then be shared through [[http://hotmail.com][Hotmail]]
+
+ODS-Briefcase offers a new "<nop>OneDrive" folder type which provides several additional features, once the ODS system is configured with a registered Windows API key and secret pair:
+
+   * Specify credentials for authentication against <nop>OneDrive, enabling retrieval of any or all of your folders and files, including any associated metadata
+   * Specify which Sponger Extractor Cartridges and Sponger Meta Cartridges should be run against your <nop>OneDrive data
+   * Save fetched data, metadata, and Sponger output, into a newly created <nop>OneDrive-specific RDF Graph in the Virtuoso RDF Quad Store
+   * Specify other ODS Users or <nop>WebID ACLs who should be granted access to your <nop>OneDrive data through ODS-Briefcase
+
+
+---++ Example
+
+Here is a sample scenario showing the whole process, from setting the Windows Live API key in ODS, to retrieving all <nop>OneDrive content to ODS-Briefcase.
+
+---+++ Prerequisites
+
+   * A [[http://www.live.com/][Windows Live user account]] 
+   * Files and folders (data) stored in your [[https://onedrive.live.com/][OneDrive Space]]
+   * Administrative (DBA) access to a [[http://virtuoso.openlinksw.com/][Virtuoso Server]] instance, on which the following have been installed --
+      * [[https://virtuoso.openlinksw.com/download/][ODS-Framework VAD package]]
+      * [[https://virtuoso.openlinksw.com/download/][ODS-Briefcase VAD package]]
+      * [[https://virtuoso.openlinksw.com/download/][Virtuoso RDF Mappers VAD package]]
+   
+---+++ Steps
+
+---++++ 1 - Get a Live Connect API key for use with ODS-Briefcase
+
+<i>Note that at present, each Virtuoso + ODS instance can only be configured with a single Live Connect API key, which will then be used by all ODS-Briefcase users when targeting <nop>OneDrive from that instance. Microsoft may impose limitations on this key's use.  Such limitations are outside the scope of <nop>OpenLink or Virtuoso control.</i>
+
+   1 Browse to &lt;[[http://msdn.microsoft.com/en-us/live/ff519582][http://msdn.microsoft.com/en-us/live/ff519582]]&gt;:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-1.png" target="_blank"><img src="%ATTACHURLPATH%/step1-1.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>My Apps</b> -- or browse directly to [[https://manage.dev.live.com/][https://manage.dev.live.com/]] -- and enter your Windows Live user credentials:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-2.png" target="_blank"><img src="%ATTACHURLPATH%/step1-2.png" width="600px" /></a>%BR%%BR%
+   1 Enter a name for your Live Connect client application (i.e., your ODS-Briefcase instance) to be known by, e.g., "<nop>MyODSOneDrive", choose the primary language Windows Live should use when interacting with its users, and click the <b>I Accept</b> button:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-3.png" target="_blank"><img src="%ATTACHURLPATH%/step1-3.png" width="600px" /></a>%BR%%BR%
+   1 You will be shown a <b>Client ID</b> and <b>Client Secret</b> for the newly registered application.  (You can copy these now, or come back for them later; they will also show up on the "API Settings" section of the "Application Settings Page".  Do be aware that you will need these in the steps that follow.)  Click <b>Application Settings Page</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-4.png" target="_blank"><img src="%ATTACHURLPATH%/step1-4.png" width="600px" /></a>%BR%%BR%
+   1 Click <b>API Settings</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-5.png" target="_blank"><img src="%ATTACHURLPATH%/step1-5.png" width="600px" /></a>%BR%%BR%
+   1 Set the <b>Redirect domain</b> to the authority component of your Virtuoso + ODS instance URL, <code>http://&lt;cname&gt;[:&lt;port&gt;]</code>, e.g., &lt;[[http://example.com][http://example.com]]&gt;, and click <b>Save</b>.  <i>Note that Live Connect only permits one <nop>OneDrive client application to come from a given domain.</i>  Click <b>Save</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-6.png" target="_blank"><img src="%ATTACHURLPATH%/step1-6.png" width="600px" /></a>%BR%%BR% 
+   1 You can close this tab/window once your changes are shown as saved:
+%BR%%BR%<a href="%ATTACHURLPATH%/step1-7.png" target="_blank"><img src="%ATTACHURLPATH%/step1-7.png" width="600px" /></a>%BR%%BR% 
+
+---++++ 2 - Configure ODS to use your Live Connect API key and secret 
+
+   1 Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/][http://example.com/ods/]]&gt;, and click <b>Sign In</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-1.png" target="_blank"><img src="%ATTACHURLPATH%/step2-1.png" width="600px" /></a>%BR%%BR%
+   1 Log in as a Virtuoso+ODS user with Administrator privileges, e.g., <code>dba</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-2.png" target="_blank"><img src="%ATTACHURLPATH%/step2-2.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>Site Settings</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-3.png" target="_blank"><img src="%ATTACHURLPATH%/step2-3.png" width="600px" /></a>%BR%%BR%
+   1 Click on <b>Login Authentication Keys</b>:
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-4.png" target="_blank"><img src="%ATTACHURLPATH%/step2-4.png" width="600px" /></a>%BR%%BR%
+   1 Select <b><nop>OneDrive API</b> in the <b>API Name</b> menu, provide the <b>Client ID</b> and <b>Client secret</b> from the new Live Connect application you created above, and click <b>Add</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-5.png" target="_blank"><img src="%ATTACHURLPATH%/step2-5.png" width="600px" /></a>%BR%%BR%
+   1 ODS-Briefcase is now configured to use <nop>OneDrive.
+%BR%%BR%<a href="%ATTACHURLPATH%/step2-6.png" target="_blank"><img src="%ATTACHURLPATH%/step2-6.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ 3 - Access files stored on <nop>OneDrive through ODS-Briefcase 
+
+   1 Browse to your Virtuoso + ODS instance, <code>http://&lt;cname&gt;[:&lt;port&gt;]/ods</code>, e.g., &lt;[[http://example.com/ods/][http://example.com/ods/]]&gt;.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-01.png" target="_blank"><img src="%ATTACHURLPATH%/step3-01.png" width="600px" /></a>%BR%%BR%
+   1 Log in as a Virtuoso+ODS user with normal privileges, e.g., <code>demo</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-02.png" target="_blank"><img src="%ATTACHURLPATH%/step3-02.png" width="600px" /></a>%BR%%BR%
+   1 Click to the <b>ODS-Briefcase</b> application: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-03.png" target="_blank"><img src="%ATTACHURLPATH%/step3-03.png" width="600px" /></a>%BR%%BR%
+   1 Click <b>New Folder</b> from the main Briefcase control strip:
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-04.png" target="_blank"><img src="%ATTACHURLPATH%/step3-04.png" width="600px" /></a>%BR%%BR%
+   1 In the New Folder form, specify a <b>Folder Name</b>, e.g., <b><nop>MyOneDriveFolder</b>, and set the <b>Folder type</b> to <b><nop>OneDrive</b>: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-05.png" target="_blank"><img src="%ATTACHURLPATH%/step3-05.png" width="600px" /></a>%BR%%BR%
+   1 Click to the newly visible <b><nop>OneDrive</b> tab: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-06.png" target="_blank"><img src="%ATTACHURLPATH%/step3-06.png" width="600px" /></a>%BR%%BR%
+   1 All RDF data extracted from and otherwise collected about your Google Drive files will be saved to a named graph, where the default name is constructed from the host ODS instance, the ODS username, and the Briefcase folder name -- <code>http://&lt;host&gt;[:&lt;port&gt;]/DAV/home/&lt;user-name&gt;/&lt;folder-name&gt;#this</code> -- so, in this example, the default graph would be named &lt;[[http://example.com/ods/demo/MyOneDriveFolder#this][http://example.com/ods/demo/MyOneDriveFolder#this]]&gt;.  Expert users may wish to change this graph name, but the default is suitable for most users.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-07.png" target="_blank"><img src="%ATTACHURLPATH%/step3-07.png" width="600px" /></a>%BR%%BR%
+   1 You can also turn on the [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger][Virtuoso Sponger]], to process your Google Drive files more comprehensively.  When the Sponger is enabled for your folder, you can specify which "Sponger Extractor Cartridges" and "Sponger Meta Cartridges" will be run over the files in your Google Drive.  You can enable all cartridges, but this will introduce some processing overhead.  It's generally best to enable only those cartridges which will be applicable to your files and their content.  For instance, you may know that you'll only be storing Microsoft and Open Office documents here, and that you want to find all Named Entities described by DBpedia.  Then, click "Authenticate", to connect your new folder to your <nop>OneDrive: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-08.png" target="_blank"><img src="%ATTACHURLPATH%/step3-08.png" width="600px" /></a>%BR%%BR%
+   1 You'll be prompted to enter your Windows Live user's credentials.  Note that this Windows Live user need not be the application owner/"developer" who got the API key earlier.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-09.png" target="_blank"><img src="%ATTACHURLPATH%/step3-09.png" width="600px" /></a>%BR%%BR%
+   1 Windows Live will prompt for confirmation that you intend to let your application ("<nop>MyODSOneDrive") have access to your <nop>OneDrive content.  Click <b>Yes</b>.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-10.png" target="_blank"><img src="%ATTACHURLPATH%/step3-10.png" width="600px" /></a>%BR%%BR%
+   1 Your Windows Live user's real name will now be displayed.  Click <b>Create</b> to finish the folder creation process.
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-11.png" target="_blank"><img src="%ATTACHURLPATH%/step3-11.png" width="600px" /></a>%BR%%BR%
+   1 Your new <nop>OneDrive-linked folder should now be displayed in your Briefcase resources list: 
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-12.png" target="_blank"><img src="%ATTACHURLPATH%/step3-12.png" width="600px" /></a>%BR%%BR%
+   1 Click the folder name to see the resources ODS-Briefcase has found in your <nop>OneDrive Dataspace:
+%BR%%BR%<a href="%ATTACHURLPATH%/step3-13.png" target="_blank"><img src="%ATTACHURLPATH%/step3-13.png" width="600px" /></a>%BR%%BR%
+
+
+
+---++ Related 
+
+   * [[http://bit.ly/SK7WAI][How Linked Data & WebID Deliver Controlled Access to Resources in Google Drive, OneDrive, DropBox, Box.Net, and Amazon S3]]
+   * [[OdsBriefcaseAmazonS3][Using ODS-Briefcase to mediate access to data stored on Amazon S3]]   
+   * [[OdsBriefcaseBoxNet][Using ODS-Briefcase to mediate access to data stored on Box (a/k/a box.com or box.net)]]
+   * [[OdsBriefcaseDropBox][Using ODS-Briefcase to mediate access to data stored on DropBox]]
+   * [[OdsBriefcaseGoogleDrive][Using ODS-Briefcase to mediate access to data stored on Google Drive]]   
+   * [[OdsBriefcaseFolders][Manage different Briefcase type folders in Briefcase]]
+   * [[OdsBriefcase][ODS-Briefcase]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger][Virtuoso Sponger]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMeta][Supported Meta Cartridges in Virtuoso]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridges Usage via REST Request]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parametrized Examples of Meta Cartridge Usage via REST Request]]

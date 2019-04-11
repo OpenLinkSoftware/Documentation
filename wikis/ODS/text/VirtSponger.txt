@@ -1,0 +1,196 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+---+Virtuoso Sponger
+
+%TOC% 
+
+---++ What Is The Sponger?
+
+The Virtuoso Sponger is the [[http://dbpedia.org/resource/Linked_Data][Linked Data]] middleware 
+component of Virtuoso. It generates Linked Data from a variety of data sources, and supports 
+a wide variety of data representation and serialization formats. The Sponger is transparently 
+integrated into Virtuoso's SPARQL Query Processor where it delivers URI de-referencing within 
+SPARQL query patterns, across disparate data spaces. It also delivers configurable smart HTTP 
+caching services. Optionally, it can be used by the 
+[[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodvirtuosocrawler][Virtuoso Content Crawler]] 
+to periodically populate and replenish data within the native RDF Quad Store. 
+
+The Sponger is also a full-fledged HTTP proxy service, directly accessible via SOAP or REST interfaces.
+
+As depicted below, OpenLink's broad portfolio of Linked-Data-aware products supports a number of 
+routes for creating or consuming Linked Data. The Sponger provides a key platform for developers 
+to generate quality data meshes from unstructured or semi-structured data sources.
+
+<a href="%ATTACHURLPATH%/Sponger_LinkedDataGenOptions_2014_v3.png"><img src="%ATTACHURLPATH%/Sponger_LinkedDataGenOptions_2014_v3.png" height=700></a>
+
+
+---++ Why is it Important?
+
+A majority of the worlds data naturally resides in non-Linked-Data form at the current time. The 
+Sponger delivers middleware that accelerates the bootstrap of the Semantic Data Web by unobtrusively 
+generating Linked Data (typically in RDF form, today) from non-Linked-Data data sources. This "Swiss 
+army knife" for on-the-fly Linked Data generation provides a bridge between the traditional Document 
+Web and the Linked Data Web ("Data Web").
+
+Sponging non-Linked-Data Web sources and converting their data content to Linked Data exposes that 
+data in a canonical form for querying and inference, and enables fast and easy construction of 
+Linked-Data-driven "mesh-ups" (as opposed to code-driven Web 2.0 mash-ups).
+
+Linked Data extraction and instance data generation products that offer functionality similar to 
+that demonstrated by the Sponger are also commonly referred to as "RDFizers."
+
+
+---++ How Does It Work?
+
+Designed with a pluggable architecture, the Sponger's core functionality is provided by 
+[[VirtSpongerCartridge][Cartridges]]. Each cartridge includes [[VirtSpongerCartridgeExtractor][Data Extractors]] 
+which extract data from one or more data sources, and [[VirtSpongerCartridgeOntologyMapper][Ontology Mappers]] 
+which map the extracted data to one or more ontologies/schemas, en route to producing RDF Linked Data.
+
+Cartridges are highly customizable, and can be developed using any language supported by the Virtuoso 
+Server Extensions API.  This enables generation of structured linked data from virtually any resource 
+type, rather than limiting users to resource types supported by the default Sponger Cartridge collection 
+bundled as part of the Virtuoso Sponger VAD package (<nowiki>cartridges_dav.vad</nowiki>).
+
+<object width="425" height="344" alt="simple Flash animation of Virtuoso Sponger activity">
+<embed src="http://virtuoso.openlinksw.com/screencasts/virtuoso-rdf-middleware3.swf" type="application/x-shockwave-flash" width="800" height="600" alt="simple Flash animation of Virtuoso Sponger activity"></embed>
+</object>
+
+(See [[http://virtuoso.openlinksw.com/screencasts/virtuoso-rdf-middleware3.swf][an animation of the concept]], 
+if the embed above fails in your browser.)
+
+The Sponger also includes a pluggable name resolution mechanism that enables Custom Resolvers for naming schemes 
+(e.g., URNs) associated with protocols beyond HTTP. Examples of custom resolvers include:
+
+
+| *URN handler* | *Sample URI* | *Resource Description* | *Linked Data View* | *Linked Data Graph* | *Needs* |
+| DOI | <code><nowiki>doi:10.1038/35057062</nowiki></code> |  [[http://demo.openlinksw.com/about/html/doi:10.1038/35057062][HTML Representation]]  |  [[http://demo.openlinksw.com/describe/?url=doi:10.1038/35057062][Linked Data View]]  |  [[http://demo.openlinksw.com/ode/?uri=doi:10.1038/35057062][Data Explorer View]]  | <code>hslookup</code> plugin; and enabling of relevant mappers for <code>html</code>, <code>pdf</code>, <code>xml</code>, etc.  |
+| LSID | <code><nowiki>urn:lsid:ubio.org:namebank:12292</nowiki></code> |  [[http://demo.openlinksw.com/about/html/urn:lsid:ubio.org:namebank:12292][HTML Representation]]  |  [[http://demo.openlinksw.com/describe/?url=urn:lsid:ubio.org:namebank:12292][Linked Data View]]  |  [[http://demo.openlinksw.com/ode/?uri=urn:lsid:ubio.org:namebank:12292][Data Explorer View]]  |  None  |
+| OAI | <code><nowiki>oai:dcmi.ischool.washington.edu:article/8</nowiki></code> |  [[http://demo.openlinksw.com/about/html/oai:dcmi.ischool.washington.edu:article/8][HTML Representation]]  |  [[http://demo.openlinksw.com/describe/?url=oai:dcmi.ischool.washington.edu:article/8][Linked Data View]]  |  [[http://demo.openlinksw.com/ode/?uri=oai:dcmi.ischool.washington.edu:article/8][Data Explorer View]]  |  None  |
+
+
+Cache expiration is managed through the 
+<b><code>[[http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_SPARQL][MinExpiration]]</code></b> parameter 
+in the <code>virtuoso.ini</code> file. 
+
+
+---++ Installation Steps
+
+   1 A default Virtuoso installation includes the <b><code>cartridges</code></b> VAD package, which includes 
+all publicly-available Sponger cartridges and associated components. Check to ensure it is installed using 
+the <b>System Admin</b> -> <b>Packages</b> tab of the Virtuoso Conductor.
+      * If listed as uninstalled, click the <b>install</b> button to the right of the package.
+      * If the <code>cartridges</code> VAD is not listed, it can be 
+<a href="VOSDownload#Other%20Virtuoso-related%20Packages">downloaded now</a>. Install the 
+<code><nowiki>cartridges_dav.vad</nowiki></code> package using the Conductor UI from the 
+<b>System Admin</b> -> <b>Packages</b> tab or by using iSQL: 
+<verbatim>
+SQL> DB.DBA.VAD_INSTALL('tmp/cartridges_dav.vad',0);
+SQL_STATE  SQL_MESSAGE
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000    No errors detected
+00000    Installation of "Linked Data Cartridges" is complete.
+00000    Now making a final checkpoint.
+00000    Final checkpoint is made.
+00000    SUCCESS
+
+6 Rows. -- 1078 msec.
+</verbatim>
+   1 To enable data insertion into the Quad Store via SPARQL queries, you need to 
+<a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri">assign 
+<code>SPARQL_SPONGE</code> privileges to user <code>SPARQL</code></a>. (Note: more sophisticated security 
+is provided via [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqloauthendpointfoafssl][WebID based ACL protection]] 
+of your SPARQL endpoint).
+   1 [[VirtConfigureCartridges][Configuring Sponger Cartridges]]
+      * [[VirtSpongerCartridge][Sponger Cartridges Registering API Key]]
+      * [[#ExtractorCartridges][Extractor Cartridges]]
+      * [[#MetaCartridges][Meta Cartridges]]
+      * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercreatecustcartrrgst][See also our doc]]
+
+---+++ Sponger Cartridges included in a Standard Virtuoso Installation
+
+There are a few kinds of Cartridge, and many of each kind are included in a standard Virtuoso installation.
+Click [[VirtSpongerCartridgeSupportedDataSources][here]] for a breakdown of OpenLink-supported Data Sources.
+
+#ExtractorCartridges
+---++++ Extractor Cartridges
+
+An Extractor Cartridge processes a Resource of a given format, extracting RDF according to rules appropriate 
+to that format.  External data does not come into play; only the content of the Resource fed to the Sponger.
+
+---+++++ Supported Standard Non-RDF Data Formats 
+
+These Cartridges handle open formats -- typically community-developed, openly-documented, and 
+freely-licensed data structures.
+
+   * [[VirtSpongerCartridgeSupportedDataSourcesNonRDF][Complete list of supported Standard Non-RDF Data Formats]]
+
+---+++++ Supported Vendor-specific Non-RDF Data Formats 
+
+These Cartridges handle closed formats -- typically proprietary; sometimes undocumented; possibly 
+licensed to no-one except the format originator. Sometimes data may not be parsed as desired or expected, 
+as many of these Cartridges have required reverse-engineering of the data format in question.
+
+   * [[VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF][Complete list of supported Vendor-specific Non-RDF Data Formats]]
+
+#MetaCartridges
+---++++ Meta Cartridges
+
+A Meta Cartridge submits a Resource to a third-party Web Service for processing. Returned RDF supplements 
+the RDF generated by Extractor and other Meta Cartridges. Locally generated RDF may also be submitted to 
+the third-party services, instead-of or in-addition-to the original Resource itself.
+
+Default Sponger behavior is for all installed Meta Cartridges to be brought to bear on all submitted Resources.
+
+   * [[VirtSpongerCartridgeSupportedDataSourcesMeta][Complete list of supported Meta Cartridges]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridge Usage via REST Request]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parametrized Examples of Meta Cartridge Usage via REST Request]]
+
+
+---+++ Sponger Cartridge-based, Dynamic Linked Data Cloud
+
+Click the image for a full-size, clickable version!
+
+[[ClickableVirtSpongerCloud][<img src="%ATTACHURLPATH%/../ClickableVirtSpongerCloud/sponger-cloud.png" alt="Sponger Cloud PNG" height="600" />]]
+
+---++ Sponger pragmas
+
+Virtuoso's Sponger is a sophisticated piece of middleware that provides full Linked Data fidelity for pre-existing data objects or resources. This Linked Data is then accessible via HTTP-based Web Services, and SPARQL is enhanced with Sponger pragmas and some optional additions to the FROM clause. See [[VirtSpongerLinkedDataHooksIntoSPARQL][full list of supported pragmas and usage examples]].
+
+---++ Sponger Cartridge Configuration
+
+   * [[VirtConfigureCartridges][Sponger Cartridge Configuration and Implementation Notes]]
+
+---++ Sponger Usage Examples
+
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusageprocessorex][SPARQL Processor Usage Example]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusageproxyex2][RDF Proxy Service Example]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView#AncMozToc2][Browsing &amp; Exploring RDF View Example Using ODE]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView#AncMozToc3][Browsing &amp; Exploring RDF View Example Using iSPARQL]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodplapissimpleexample][Basic Sponger Cartridge Example]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusagebriefex][HTTP Example for Extracting Metadata using CURL]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercartridgetypesmetarestexamples][RESTFul Interaction Examples]]
+   * [[http://docs.openlinksw.com/virtuoso/sect5_virtuosospongercreatecustcartrrgstflickr.html][Flickr Cartridge Example]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercreatecustcartrexmp][MusicBrainz Metadatabase Example]]
+   * [[VirtTipsAndTricksGuideAddTriplesNamedGraph][SPARQL Tutorial -- Magic of SPARUL and Sponger]]
+
+---++ Other Related Pages
+
+   * [[http://virtuoso.openlinksw.com/Whitepapers/html/VirtSpongerWhitePaper.html][Technical White Paper]]
+   * [[VirtSpongerCartridgeSupportedDataSources][Supported Virtuoso Sponger Cartridges]]
+   * [[SPARQLSponger][SPARQL Sponger]]
+   * [[VirtInteractSpongerMiddlewareRESTPatterns][Interacting with Sponger Middleware via RESTful Patterns]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Interacting with Sponger Meta Cartridge via RESTful Patterns]]
+   * [[VirtSpongerCartridgeRDFExtractor][Sponger Cartridge RDF Extractor]]
+   * [[RDFMappers][ Extending SPARQL IRI Dereferencing with RDF Mappers]]
+   * [[VirtSpongerCartridgeProgrammersGuide][Programmer Guide for Virtuoso Linked Data Middleware ("Sponger")]]
+   * [[VirtProgrammerGuideRDFCartridge][Create RDF Custom Cartridge Tutorial]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+   * [[VirtAuthServerUI][Virtuoso Authentication Server]]
+   * [[VirtOAuthSPARQL][Virtuoso SPARQL OAuth Tutorial]]
+   * [[VirtSpongerACL][Virtuoso Sponger Access Control List (ACL) Setup]]
+   * [[VirtSPARQLSecurityWebID][WebID Protocol &amp; SPARQL Endpoint ACLs Tutorial]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html][Virtuoso Documentation]]
+
+CategoryEvangelism CategoryDocumentation CategoryPR CategoryVirtuoso CategoryRDF CategorySPARQL

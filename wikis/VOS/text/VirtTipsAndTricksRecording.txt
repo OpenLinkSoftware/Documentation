@@ -1,0 +1,132 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ HTTP Logging and Recording in Virtuoso
+
+%TOC%
+
+---++ HTTP Logging
+
+Virtuoso can keep HTTP logs with all the requests that are made to the HTTP endpoint. Here are the steps:
+
+
+   1 Edit your INI file (default, <code>virtuoso.ini</code>) and add the <code>[[http://docs.openlinksw.com/virtuoso/dbadm/#ini_httpserver_httplogfile][HTTPLogFile]]</code> setting:
+<verbatim>
+[HTTPServer]
+HTTPLogFile                = logs/http15022012.log
+</verbatim>
+   1 Restart Virtuoso.
+   1 Virtuoso will now maintain a http log in the logs subdirectory, with one line per request as in:
+<verbatim>
+180.76.5.87 - - [15/Feb/2012:21:50:44 +0100] "GET /data/Wilton_power_stations.json HTTP/1.0" 200 8014 "" 
+"Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)"
+180.76.5.87 - - [15/Feb/2012:21:50:45 +0100] "POST /sparql HTTP/1.0" 200 3012 "" ""
+</verbatim>
+   1 The first request after midnight will start a new logfile, to make sure one logfile does not grow to infinite size. Old logfiles can be gzipped or removed by hand to conserve disk space.
+
+The HTTP log files that Virtuoso produces can be processed by programs like [[http://www.webalizer.org/][Webalizer]] or [[http://awstats.sourceforge.net/][AWstats]] to accurately measure site usage.
+
+
+---+++ HTTP Logging Format
+
+Virtuoso supports HTTP Logging format string like [[http://httpd.apache.org/docs/2.2/mod/mod_log_config.html][Apache Module mod_log_config]]. That string can be set in the "<code><nowiki>HTTPLogFormat</nowiki></code>" INI file parameter which works in conjunction with the "<code><nowiki>HTTPLogFile</nowiki></code>" INI file parameter. For example:
+<verbatim>
+[HTTPServer]
+HTTPLogFormat = %h %u %t "%r" %s %b "%{Referer}i" "%{User-agent}i" "%{NetId}e"
+</verbatim>
+
+In this example we have <code>%{User-Agent}i</code> which means to log the HTTP header for user-agent. We can log other HTTP request headers in similar fashion. "<code>e</code>" modifier is for environment variables; <code><nowiki>NetId</nowiki></code>, in this case.
+
+Note that not all escapes from [[http://httpd.apache.org/docs/2.2/mod/mod_log_config.html][Apache Module mod_log_config]] are supported.
+
+
+---++ HTTP Recording
+
+Virtuoso can also record the complete HTTP request for both <code>GET</code> and <code>POST</code> requests, including all incoming headers, <code>POST</code> parameters, etc. This is a very useful tool for debugging, but it will cost performance and disk space, so it should not be left on for long periods of time. Each request will be written to a separate file.
+
+<i><b>Note</b>: Some filesystem types like <code>ext2</code> and earlier versions of <code>ext3</code> on Linux cannot handle huge amounts of files in a single directory without slowing down the whole system.</i>
+
+---+++ Sample Log of a GET request
+
+<verbatim>
+GET /sparql?query=DESCRIBE%20%3CnodeID%3A%2F%2Fb15481%3E&output=text%2Fcxml     HTTP/1.1
+Host: localhost:8890
+Connection: Keep-alive
+Accept: */*
+From: googlebot(at)googlebot.com
+User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+Accept-Encoding: gzip,deflate
+</verbatim>
+
+---+++ Sample Log of a POST request
+
+<verbatim>
+POST /ods_services/Http/usersGetInfo HTTP/1.1
+User-Agent: Opera/9.80 (Macintosh; Intel Mac OS X 10.5.8; U; en) Presto/2.9.168 Version/11.51
+Host: localhost:8890
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/webp, image/jpeg, image/gif, 
+ image/x-xbitmap, */*;q=0.1
+Accept-Language: en,en-US;q=0.9,ja;q=0.8,fr;q=0.7,de;q=0.6,es;q=0.5,it;q=0.4,pt;q=0.3,pt-  
+ PT;q=0.2,nl;q=0.1,sv;q=0.1,nb;q=0.1,da;q=0.1,fi;q=0.1,ru;q=0.1,pl;q=0.1,zh-CN;q=0.1,zh-TW;q=0.1,ko;q=0.1
+Accept-Encoding: gzip, deflate
+Referer: https://localhost:8890/ods/
+Cookie: interface=js; oatSecurityCookie=0123456878794576; sid=b3fae40reb78bc4babab3cb2a70fb111
+Connection: Keep-Alive
+Content-Length: 77
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic bnQacPPuhhxs
+Content-Transfer-Encoding: binary
+</verbatim>
+
+
+---+++ Enabling Recording of HTTP Activity
+
+   1 Navigate to the directory holding the INI file, and execute the following shell commands:
+<verbatim>
+mkdir sys_http_recording
+chmod 777 sys_http_recording
+</verbatim>
+   1 Edit your INI file (default, <code>virtuoso.ini</code>) and set:
+<verbatim>
+[HTTPServer]
+EnableRequestTrap          = 1
+</verbatim>
+   1 Next connect to your database with <code>isql</code>, and execute the following SQL commands:
+<verbatim>
+registry_set ('__save_http_history_on_disk', '1');
+registry_set ('__save_http_history', '/');
+</verbatim>
+   1 Finally, restart Virtuoso.
+   1 At this point, every HTTP <code>GET</code> and <code>POST</code> request will be logged with all the parameters, headers, and settings. 
+
+
+---+++ Disabling Recording of HTTP Activity
+
+   1 To temporary disable recording, edit your INI file (default, <code>virtuoso.ini</code>) and set:
+<verbatim>
+[HTTPServer]
+EnableRequestTrap          = 0
+</verbatim>
+   1 Next, remove the two Virtuoso registry items:
+<verbatim>
+registry_remove ('__save_http_history_on_disk');
+registry_remove ('__save_http_history');
+</verbatim>
+   1 Finally, restart Virtuoso.
+
+---+++ Restricting Recording of HTTP Activity
+
+HTTP recording can be made to ignore certain types of HTTP activity (for example, the loading of images) by listing exceptions in the "<code><nowiki>WS.WS.HTTP_SES_TRAP_DISABLE</nowiki></code>" table:
+
+<verbatim>
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values ('css');
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values ('js');
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values ('png');
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values ('jpg');
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values ('gif');
+</verbatim>
+
+---++ Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * <code>[[http://docs.openlinksw.com/virtuoso/dbadm/#ini_httpserver_httplogfile][HTTPLogFile]]</code> INI file setting
+   * [[http://docs.openlinksw.com/virtuoso/loggingandrecording/][1.5.66. How can I make HTTP Logging and Recording in Virtuoso?]]

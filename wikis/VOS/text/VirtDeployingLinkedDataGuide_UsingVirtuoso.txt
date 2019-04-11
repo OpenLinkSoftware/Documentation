@@ -1,0 +1,503 @@
+%META:TOPICPARENT{name="VirtDeployingLinkedDataGuide"}%
+---+ Deploying Linked Data Guide - Part 2: Deploying Linked Data Using Virtuoso
+#AncmozTocId14001
+ [[VirtDeployingLinkedDataGuide][Deploying Linked Data - Overall TOC]]
+
+---++Section Contents
+
+   *  [[#AncmozTocId923721][Deploying Linked Data using Virtuoso]] 
+      *  [[#AncmozTocId644758][The Virtuoso Rule-Based URL Rewriter]] 
+      *  [[#AncmozTocId254803][Conductor UI for the URL Rewriter]] 
+      *  [[#AncmozTocId369762][Virtual Domains (Hosts) &amp; Directories]] 
+      *  [[#AncmozTocId904741]["Nice" URLs vs. "Long" URLs]] 
+      *  [[#AncmozTocId768867][Rule Processing Mechanics]] 
+      *  [[#AncmozTocId313638][Enabling URL Rewriting via the Virtuoso Conductor UI]] 
+         *  [[#AncmozTocId185357][Northwind Demonstration Database]] 
+         *  [[#AncmozTocId132652][Configuring Rewrite Rules using Conductor]] 
+         *  [[#AncmozTocId76317][Dissection of Northwind Rewrite Rules Configured using Conductor]] 
+            *  [[#AncmozTocId475034][Regex Rule for RDF Requests]] 
+            *  [[#AncmozTocId409168][Constructing the Destination Path Format]] 
+            *  [[#AncmozTocId376477][Data Flow in Conductor-Defined Northwind RDF Regex Rule]] 
+            *  [[#AncmozTocId146750][Regex Rule for HTML Requests]] 
+      *  [[#AncmozTocId83837][Enabling URL Rewriting via Virtuoso PL]] 
+         *  [[#AncmozTocId618240][Exporting Rewrite Rules from Conductor]] 
+         *  [[#AncmozTocId374304][Defining Virtual Hosts in Virtuoso PL]] 
+         *  [[#AncmozTocId234279][URL Rewriting Configuration API]] 
+         *  [[#AncmozTocId96294][Creating Rewrite Rules]] 
+            *  [[#AncmozTocId572134][<nowiki>URLREWRITE_CREATE_REGEX_RULE</nowiki>]] 
+         *  [[#AncmozTocId878640][Dissection of Northwind Rewrite Rules Configured using Virtuoso PL]] 
+            *  [[#AncmozTocId31722][Data Flow in Virtuoso/PL-Defined Northwind RDF Regex Rule]] 
+      *  [[#AncmozTocId719555][Northwind URL Rewriting Verification Using cURL]] 
+
+#AncmozTocId923721
+---++ Deploying Linked Data using Virtuoso
+
+The preceding sections described a generic approach to deploying Linked Data into the existing Web. We now turn our attention to Virtuoso, to describe its solution for Linked Data deployment. In fact, Virtuoso's solution is to implement the generic approach outlined in the prior sections, using the twin pillars of content negotiation and URL rewriting.
+
+
+#AncmozTocId644758
+---+++ The Virtuoso Rule-Based URL Rewriter
+
+
+Virtuoso provides a URL rewriter that can be enabled for URLs matching specified patterns. Coupled with customizable HTTP response headers and response codes, Linked Data Web server administrators can configure highly flexible rules for driving content negotiation and URL rewriting. The key elements of the URL rewriter are:
+
+   * Rewrite rule
+      * Each rule describes how to parse a single source URL, and how to compose the URL of the page ultimately returned in the " <code>Location: </code>" response headers
+      * Every rewrite rule is uniquely identified internally (using IRIs).
+      * Two types of rule are supported, based on the syntax used to describe the source URL pattern matching - sprintf-based and regex-based.
+   * Rewrite rule list
+      * A named ordered-list of rewrite rules or rule lists where rules of the list are processed from top to bottom or in line with processing pipeline precedence instructions
+   * Configuration API
+      * Defines functions for creating, dropping, and enumerating rules and rule lists.
+   * Virtual hosts and virtual paths
+      * URL rewriting is enabled by associating a rewrite rules list with a virtual directory
+
+Each of these elements is described in more detail below, although complete descriptions of the features or functions in question are not given. The intention here is to provide an overview of Virtuoso's URL rewriting capabilities and their application to deploying Linked Data. Please refer to the [[http://docs.openlinksw.com/virtuoso/][Virtuoso Reference Documentation]] for full details.
+
+
+#AncmozTocId254803
+---+++ Conductor UI for the URL Rewriter
+
+
+Virtuoso is a full-blown HTTP server in its own right. The HTTP server functionality co-exists with the product core (i.e. DBMS Engine, Web Services Platform, <nowiki>WebDAV</nowiki> filesystem, and other components of the Universal Server). As a result, it has the ability to multi-home Web domains within a single instance across a variety of domain name and port combinations. In addition, it also enables the creation of multiple virtual directories per domain.
+
+
+In addition to the basic functionality describe above, Virtuoso lets you associate URL rewrite rules with the virtual directories associated with a particular hosted Web domain.
+
+
+In all cases, Virtuoso enables you to configure virtual domains, virtual directories and URL rewrite rules for one or more virtual directories, via the (X)HTML-based Conductor Admin User Interface or a collection of Virtuoso Stored Procedure Language (PL)-based APIs.
+
+
+#AncmozTocId369762
+---+++ Virtual Domains (Hosts) &amp; Directories
+A Virtuoso virtual directory maps a logical path to a physical directory in your file system or <nowiki>WebDAV</nowiki> repository. This mechanism allows physical locations to be hidden or simply reorganised. Virtual directory definitions are held in the system table <code>DB.DBA.<nowiki>HTTP_PATH</nowiki></code>. Virtual directories can be administered in three basic ways:
+   * Using the Visual Administration Interface via a Web browser;
+   * Using the functions <code><nowiki>vhost_define()</nowiki></code> and <code><nowiki>vhost_remove()</nowiki></code>; and
+   * Using SQL statements to directly update the <code><nowiki>HTTP_PATH</nowiki></code> system table.
+
+#AncmozTocId904741
+---+++ "Nice" URLs vs. "Long" URLs
+
+
+Although we are approaching the URL Rewriter from the perspective of deploying Linked Data, the rewriter was developed with additional objectives in mind. These in turn have influenced the naming of some of the formal argument names in the Configuration API function prototypes. In the following sections, "long" URLs are those containing a query string with named parameters; "nice" (also known as "source") URLs have data encoded in some other format. The primary goal of the Rewriter was to accept a nice URL from an application and convert this into a long URL, which then identifies the page that should actually be retrieved.
+
+
+#AncmozTocId768867
+---+++ Rule Processing Mechanics
+
+
+When an HTTP request is accepted by the Virtuoso HTTP server, the received nice URL is passed to an internal path translation function. This function takes the nice URL and, if the current virtual directory has a <code><nowiki>url_rewrite</nowiki></code> option set to an existing rule list name, tries to match the corresponding rule lists and rules; that is, the function performs a recursive traversal of any rule list associated with the virtual directory. For every rule in the rule list, the same logic is applied (only the logic for regex-based rules is described; that for sprintf-based rules is very similar):
+
+   * The input for the rule is the resource URL as received from the HTTP header, i.e., the portion of the URL from the first '<code>/</code>' after the <code>host:port</code> fields to the end of the URL.
+   * The input is [[http://en.wikipedia.org/wiki/Url_normalization][normalized]] .
+   * The input is matched against the rule's regex. If the match fails, the rule is not applied and the next rule is tried. If the match succeeds, the result is a vector of values.
+   * If the URL contains a query string, the names and values of the parameters are decoded by <code><nowiki>split_and_decode()</nowiki></code>.
+   * The names and values of any parameters in the request body are also decoded.
+   * The destination URL is composed.
+      * The value of each parameter in the destination URL is taken from (in order of priority):
+      * the value of a parameter in the match result;
+      * the value of a named parameter in the query string of the input nice URL;
+      * if the original request was submitted by the <code>POST </code>method, the value of a named parameter in the body of the <code>POST </code>request; or
+   * if a parameter value cannot be derived from one of these sources, the rule is not applied and the next rule is tried.<i>
+   
+<b>Note:</b><br/></i> The path translation function described above is internal to the Web server, so its signature is not appropriate for Virtuoso/PL calls and thus is not published. Virtuoso/PL developers can harness the same functionality using the <code><nowiki>DB.DBA.URLREWRITE_APPLY</nowiki></code> API call.
+
+#AncmozTocId313638
+---+++ Enabling URL Rewriting via the Virtuoso Conductor UI
+
+
+The URL rewriting examples which follow are taken from the Virtuoso Northwind demonstration database, which is included in the Demo VAD (Virtuoso Application Distribution) archive.
+<table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">
+
+To check which version of the Demo VAD is installed, or to upgrade it, refer to the Conductor's '<b>VAD Packages</b>' screen, reachable through the '<b>System Admin</b>' &gt; '<b>Packages</b>' menu items.
+
+
+The latest VADs for the closed source releases of Virtuoso can be downloaded from the [[https://virtuoso.openlinksw.com/download/][downloads area]] of the <nowiki>OpenLink</nowiki> website. Select either the 'DBMS (<nowiki>WebDAV</nowiki>) Hosted' or 'File System Hosted' product format from the 'Distributed Collaborative Applications' section, depending on whether you want the Virtuoso application to be run from <nowiki>WebDAV</nowiki> or native filesystem storage. VADs for Virtuoso Open Source edition (VOS) are available for [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSDownload][download]] from the VOS Wiki.
+</td></tr></table>
+
+#AncmozTocId185357
+---++++ Northwind Demonstration Database
+
+
+The Virtuoso Northwind database (contained in the "Demo" catalog) is very similar to the Northwind example database available for SQL Server. Its schema comprises commonly understood SQL tables that include: <code>Customers</code>, <code>Orders</code>, <code>Employees</code>, <code>Products</code>, <code>Product Categories</code>, <code>Shippers</code>, <code>Countries</code>, <code>Provinces</code> etc.
+
+
+Northwind is installed with a preconfigured Linked Data View and a set of preconfigured URL rewrite rules that collectively expose RDF based entity graphs and URLs of (X)HTML web pages that describe the back-end relational data.
+
+
+An Linked Data View over relational data is a named collection (graph) of RDF records (triples) derived from an RDBMS-to-RDF source data map exposed via a Virtuoso Quad Store. The process of declaring Linked Data Views over RDBMS data using the Virtuoso Meta-schema Language is described in detail in our [[http://virtuoso.openlinksw.com/Whitepapers/pdf/Virtuoso_SQL_to_RDF_Mapping.pdf][Linked Data Views of SQL]] white paper.
+
+
+To view the Northwind entity graph in RDF format, starting with the entity "<code>ALFKI</code>", simply place the following document URL into the [[http://demo.openlinksw.com/ode][OpenLink Data Explorer]] :
+<code><nowiki>http://demo.openlinksw.com/Northwind/Customer/ALFKI</nowiki></code>
+
+Alternatively, you can view an (X)HTML based description of the entity "<code>ALFKI</code>" by pointing your Web browser to the same URL. (The details of these URLs will be explained shortly; for now they are presented purely as pointers to illustrate example data available from Northwind.)
+
+
+#AncmozTocId132652
+---++++ Configuring Rewrite Rules using Conductor
+
+
+The steps for configuring URL Rewrite rules via the Virtuoso Conductor are as follows:
+
+   1 Click to the "<b>Web Application Server</b>" &gt; "<b>Virtual Domains &amp; Directories</b>" tabs.
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig2.png" alt="figure 2">
+<br/><i>Conductor's Hosted Domains and Virtual Directories screen</i> 
+</div>
+   1 Pick the domain that contains the virtual directories to which the rules are to be applied (in this case the default was taken).
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig3.jpg" alt="figure 3">
+<br/><i>Accessing the URL rewrite rules for the Northwind demo database</i> 
+</div>
+   1 Click on the "<b>URL-rewrite</b>" link to create, delete, or edit a rule as shown below.
+   1 Create a rule for HTML based representations of resource description requests.
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig4.jpg" alt="figure 4">
+<br/><i>Northwind URL rewrite rule for HTML requests</i> 
+</div>
+   1 Create a rule for N3 or RDF/XML based representations or resource descriptions.
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig5.jpg" alt="figure 5">
+<br/><i>Northwind URL rewrite rule for RDF requests</i> 
+</div>
+   1 Save your rules, exit the Conductor, and test your rules with " <code>cURL </code>" or any other HTTP-based user agent.
+
+#AncmozTocId76317
+---++++ Dissection of Northwind Rewrite Rules Configured using Conductor
+
+
+The screenshots above show the default Northwind rewrite rules. Let's analyze what they are doing.
+
+
+#AncmozTocId475034
+---+++++ Regex Rule for RDF Requests
+
+The regex rule for handling RDF/XML or N3 representation requests specifies a '<b>Request Path Pattern</b>' of <b><code>(/[^#]*)</code></b>. Recall that the input path is the portion of the input URL from the first '<code>/</code>' after the <code>host:port </code>fields to the end of the normalized URL. So, given a request for <code><nowiki>http://demo.openlinksw.com/Northwind/Customer/ALFKI</nowiki></code>, the request path pattern would match <code>/Northwind/Customer/ALFKI</code>. Parentheses in the pattern collect the results of the pattern matching into parameters. Each successive pair of parentheses denotes a parameter, referred to elsewhere in the rewrite rule as <code>$U1, $U2, $U3, ... </code>, or <code>$s1, $s2, $s3, ... </code>, etc. These parameters can then be used to substitute a part of the input path that was matched into the new URL being composed. The parameter markers <code>$U1</code> and <code>$s1</code> (likewise <code>$U2</code> and <code>$s2</code> etc.) identify the same pattern segment in the request path pattern. The only difference between them is how the matched text is encoded when it is inserted into the new URL. The '<code>s</code>' format specifier inserts the matched text as is, whereas the '<code>U</code>' format specifier causes the inserted text to be URL encoded.
+
+Content types specified in the request's <code>Accept</code> header and matched by the '<code>Accept Header Request Pattern</code>' are available for substitution into the rewritten URL through the <code>$accept</code> variable.
+
+
+Rather than hardcoding host names and ports, the rules are made more generic by using the convenience macro <code><nowiki>URIQADefaultHost</nowiki></code>. Every occurrence of <code><nowiki>^{URIQADefaultHost}^</nowiki></code> will be substituted with the value of the <code><nowiki>DefaultHost</nowiki></code> parameter defined in the URIQA section of the Virtuoso configuration file, <code>virtuoso.ini</code>. "<code><nowiki>DefaultHost</nowiki></code>" is the "canonical" server name that is used to identify the service. It should be either a server host name including domain (i.e. an FQDN), or an IP address in standard notation. If Virtuoso's default HTTP port is not equal to 80 then the port should also be included, e.g. "<code>www.example.com:8890</code>".
+
+
+#AncmozTocId409168
+---+++++ Constructing the Destination Path Format
+
+
+The parameter markers, variables and macros just described provide the building blocks for constructing the '<b>Destination Path Format</b>' which serves as a template for the rewritten URL. It must be stressed that <b>it is not necessary to URL-encode the Destination Path Format by hand</b>. You need only write the underlying <code>CONSTRUCT </code>or <code>DESCRIBE </code>SPARQL query. When defining a new Destination Path Format, click on the SPARQL button to enable a text box (shown below) into which you can enter the base SPARQL query which will describe the entity being dereferenced. On clicking the '<b>Format</b>' button to return, the SPARQL query will be expanded into a full query string, including a result-set format-specifier, and URL-encoded automatically. For example, the base query:
+<verbatim>
+DESCRIBE &lt;http://^{URIQADefaultHost}^$U1#this&gt; &lt;http://^{URIQADefaultHost}^$U1&gt; FROM &lt;http://^{URIQADefaultHost}^/Northwind&gt;
+</verbatim>
+becomes:
+<verbatim>
+/sparql?query=DESCRIBE+%3Chttp%3A//^{URIQADefaultHost}^$U1%23this%3E+%3Chttp%3A//^{URIQADefaultHost}^$U1%3E
+    +FROM+%3Chttp%3A//^{URIQADefaultHost}^/Northwind%3E&amp;format=$accept
+</verbatim>
+<table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">
+
+The pre-configured <code>DESCRIBE </code>query for Northwind describes two entities:<br/>
+&nbsp;<code><nowiki>http://^{URIQADefaultHost}^/Northwind/Customer/ALFKI#this</nowiki></code><br/>and<br/>&nbsp;<code><nowiki>http://^{URIQADefaultHost}^/Northwind/Customer/ALFKI</nowiki></code><br/><br/><b> <code><nowiki>http://^{URIQADefaultHost}^/Northwind/Customer/ALFKI</nowiki></code></b> identifies a document (an entity of type <code>foaf:Document</code>) that has the entity <b><code><nowiki>http://^{URIQADefaultHost}^/Northwind/Customer/ALFKI#this</nowiki></code></b> as its <code><nowiki>foaf:PrimaryTopic</nowiki></code> property value. This relationship is the key to using the description of the document (a report) about "<code>ALFKI</code>" to expose the deeper entity graph that describes the entity "<code>ALFKI#this</code>".</td></tr></table><br/>
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig6.jpg" alt="figure 6">
+<br/><i>Defining the SPARQL query for the Northwind RDF requests</i> 
+</div>
+
+#AncmozTocId376477
+---+++++ Data Flow in Conductor-Defined Northwind RDF Regex Rule
+
+
+The process of rewriting a request for an RDF representation of Northwind customer ALFKI, through the corresponding regex rule, is depicted below as a data flow diagram. The arcs connecting similarly-colored items attempt to illustrate how portions of the input request are matched and substituted into the rewritten request.
+
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig7.png" alt="figure 7">
+<br/><i>Breakdown of the URL rewriting process for Northwind RDF requests</i> 
+</div>
+
+#AncmozTocId146750
+---+++++ Regex Rule for HTML Requests
+
+
+The Northwind regex rule for HTML requests functions in a similar way to the regex rule for RDF requests. That is, the mechanisms for pattern matching and parameter substitution are the same. The only differences are the content types matched and the target URL.
+
+In this case, the destination path format is:
+<code><nowiki>/about/html/http://^{URIQADefaultHost}^$s1</nowiki></code>
+
+Here, the path <code>/about/html/</code> redirects the client to the [[http://virtuoso.openlinksw.com/Whitepapers/pdf/sponger_whitepaper_10102007.pdf][Virtuoso Sponger]] proxy interface. The Sponger itself is a highly customizable RDFizer. Virtuoso reserves two paths for the proxy service, '<code>/about/rdf/</code>' and '<code>/about/html/</code>'. (<b>Note:</b> These proxy paths have since been augmented to support a richer slash URI scheme for identifying format variants. Please refer to [[VirtDeployingLinkedDataGuide_AppendixB][Appendix B]] for more details.) 
+The web service takes the target URL following the proxy path and either returns the content "as is" or tries to transform it to RDF. The RDF graph derived from the sponging process is then rendered in one of the RDF serialization formats (RDF/XML or N3) or HTML depending on whether the request specified /about/rdf/ or /about/html/. Thus, the proxy service can be used as middleware for enabling RDF based exploration of non-RDF sources using dedicated RDF browsers or standard (X)HTML browsers.
+
+
+The mechanism through which Virtuoso composes an HTML rendering of RDF data (whether this be a native RDF description, or one extracted by the Sponger) is via the "<code>description.vsp</code>" rendering template, a specialized [[http://docs.openlinksw.com/virtuoso/vsp1.html][Virtuoso Server Page]] specifically aimed at RDF-model-based resource description. The "<code>description.vsp</code>" template is described in more detail in Appendix A. A usage example covering the description of the entity <code><nowiki>&lt;http://demo.openlinksw.com/Northwind/Customer/ALFKI#this&gt;</nowiki></code> is shown below.
+
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig8.jpg" alt="description.vsp HTML rendering of Customer entity ALFKI">
+<br/><i>description.vsp HTML rendering of Customer entity ALFKI</i> 
+</div>
+
+#AncmozTocId83837
+---+++ Enabling URL Rewriting via Virtuoso PL
+
+
+While the Conductor UI provides the easiest way to set up URL rewriting, on occasion it may be preferable to configure URL rewriting programmatically using Virtuoso PL.
+
+
+#AncmozTocId618240
+---++++ Exporting Rewrite Rules from Conductor
+
+The Conductor lets you export configured rules as Virtuoso PL, making it easier to use them on another system, for instance. The exported script recreates the rewrite rules using Virtuoso's URL Rewriting Configuration API.
+
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig9.jpg" alt="Conductor's export button for exporting rewrite rules">
+<br/><i>Conductor's 'Export' button for exporting URL rewrite rules</i> 
+</div>
+
+The code listing below shows the exported Northwind rules. Describing the Configuration API and this exported rules file forms the focus of this section.
+<nowiki>
+<verbatim>
+DB.DBA.VHOST_REMOVE (
+ lhost=&gt;'*ini*',
+ vhost=&gt;'*ini*',
+ lpath=&gt;'/Northwind'
+);
+DB.DBA.VHOST_DEFINE (
+ lhost=&gt;'*ini*',
+ vhost=&gt;'*ini*',
+ lpath=&gt;'/Northwind',
+ ppath=&gt;'/DAV/home/demo/',
+ is_dav=&gt;1,
+ vsp_user=&gt;'dba',
+ ses_vars=&gt;0,
+ opts=&gt;vector ('url_rewrite', 'demo_nw_rule_list1'),
+ is_default_host=&gt;0
+);
+DB.DBA.URLREWRITE_CREATE_RULELIST ( 
+'demo_nw_rule_list1', 1, 
+ vector ('demo_nw_rule1', 'demo_nw_rule2'));
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( 
+'demo_nw_rule1', 1, 
+ '(/[^#]*)', 
+vector ('path'), 
+1, 
+'/about/html/http://^{URIQADefaultHost}^%s', 
+vector ('path'), 
+NULL, 
+'(text/html)|(\\*/\\*)', 
+0, 303, NULL );
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( 
+'demo_nw_rule2', 1, 
+ '(/[^#]*)', 
+vector ('path'), 
+1, 
+'/sparql?query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%3E
+    +FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/Northwind%%3E&amp;format=%U', 
+vector ('path', 'path', '*accept*'), 
+NULL, 
+'(text/rdf.n3)|(application/rdf.xml)', 
+0, NULL, NULL );
+</verbatim>
+</nowiki>
+
+<table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;"><b>Exporting Rewrite Rules from a Script</b>
+
+Use the function <code><nowiki>DB.DBA.URLREWRITE_DUMP_RULELIST_SQL</nowiki></code> to export rule lists programmatically. e.g. From isql, you can generate the listing shown above by executing:<br/>
+ <code><nowiki>SELECT DB.DBA.URLREWRITE_DUMP_RULELIST_SQL('demo_nw_rule_list1')</nowiki></code>
+</td></tr></table>
+
+#AncmozTocId374304
+---++++ Defining Virtual Hosts in Virtuoso PL
+
+
+As can be seen above, the <code><nowiki>vhost_define()</nowiki></code> API call is used to define virtual hosts and virtual paths hosted by the Virtuoso HTTP server. URL rewriting is enabled through this function's <code>opts</code> parameter. <code>opts</code> is of type <code>ANY</code>, e.g. a vector of field-value pairs. Numerous fields are recognized for controlling different options. The field value <code><nowiki>url_rewrite</nowiki></code> controls URL rewriting. The corresponding field value is the IRI of a rule list to apply.
+
+
+#AncmozTocId234279
+---++++ URL Rewriting Configuration API
+
+
+Virtuoso includes the following functions for managing URL rewrite rules and rule lists. The names are self-explanatory.
+
+   * <b><code><nowiki>DB.DBA.URLREWRITE_DROP_RULE</nowiki></code></b> - Deletes a rewrite rule.
+   * <b><code><nowiki>DB.DBA.URLREWRITE_CREATE_SPRINTF_RULE</nowiki></code></b> - Creates a rewrite rule which uses sprintf-based pattern matching.
+   * <b><code><nowiki>DB.DBA.URLREWRITE_CREATE_REGEX_RULE</nowiki></code></b> - Creates a rewrite rule which uses regular expression (regex)-based pattern matching.
+   * <b><code><nowiki>DB.DBA.URLREWRITE_DROP_RULELIST</nowiki></code></b> - Deletes a rewrite rule list.
+   * <b><code><nowiki>DB.DBA.URLREWRITE_CREATE_RULELIST</nowiki></code></b> - Creates a rewrite rule list.
+   * <b><code><nowiki>DB.DBA.URLREWRITE_ENUMERATE_RULES</nowiki></code></b> - Lists all the rules whose IRIs match the specified 'SQL like' pattern.
+   * <b><code><nowiki>DB.DBA.URLREWRITE_ENUMERATE_RULELISTS</nowiki></code></b> - Lists all the rule lists whose IRIs match the specified 'SQL like' pattern.
+
+#AncmozTocId96294
+---++++ Creating Rewrite Rules
+
+
+Rewrite rules take two forms: sprintf-based or regex-based. When used for nice URL to long URL conversion, the only difference between them is the syntax of format strings. The reverse long to nice conversion works only for sprintf-based rules, whereas regex-based rules are unidirectional. For the purpose of describing how to make dereferenceable URIs for Linked Data, we will focus on regex-based rules.
+
+
+Regex rules are created using the <code><nowiki>URLREWRITE_CREATE_REGEX_RULE()</nowiki></code> function.
+
+
+#AncmozTocId572134
+---+++++ <nowiki>URLREWRITE_CREATE_REGEX_RULE</nowiki>
+
+#AncmozTocId518926
+<b>Function Prototype:</b>
+<verbatim>
+URLREWRITE_CREATE_REGEX_RULE (
+ rule_iri,
+ allow_update,
+ nice_match,
+ nice_params,
+ nice_min_params,
+ target_compose,
+ target_params,
+ target_expn := null,
+ accept_pattern := null,
+ do_not_continue := 0,
+ http_redirect_code := null,
+ http_headers := null
+ );
+ </verbatim>
+
+#AncmozTocId330278
+<b>Parameters:</b>
+
+<b><code><nowiki>rule_iri</nowiki></code></b> : <code>VARCHAR</code>
+   * The rule's name / identifier
+
+<b><code><nowiki>allow_update</nowiki></code></b> : <code>INTEGER</code>
+   * Indicates whether the rule can be updated.  <code>1</code> indicates yes; <code>0</code> indicates no.  The update is subject to the following rules:
+      * If the given <code><nowiki>rule_iri</nowiki></code> is already in use as a rule list identifier, an error is signalled.
+      * If the given <code><nowiki>rule_iri</nowiki></code> is already in use as a rule identifier and <code><nowiki>allow_update</nowiki></code> for the existing rule is zero, 
+an error is signalled.
+      * If the given <code><nowiki>rule_iri</nowiki></code> is already in use as a rule identifier and <code><nowiki>allow_update</nowiki></code> for the existing rule is 
+non-zero, the existing rule is updated.
+
+<b><code><nowiki>nice_match</nowiki></code></b> : <code>VARCHAR</code>
+   * A regex match expression to parse the URL into a vector of occurrences.
+
+<b><code><nowiki>nice_params</nowiki></code></b> : <code>ANY</code>
+   * A vector of the names of the parsed parameters.  The length of the vector should be equal to the number of '<code>(...)</code>' specifiers 
+in the format string.
+
+<b><code><nowiki>nice_min_params</nowiki></code></b> : <code>INTEGER</code>
+   * Used to specify the minimum number of sprintf format patterns to be matched in order to trigger the given rule.  It only 
+affects sprintf rules and has no effect for regex rules.
+
+<b><code><nowiki>target_compose</nowiki></code></b> : <code>VARCHAR</code>
+   * A regex compose expression for the URL of the destination page.
+
+<b><code><nowiki>target_params</nowiki></code></b> : <code>ANY</code>
+   * A vector of names of parameters that should be passed to the compose expression (<code><nowiki>target_compose</nowiki></code>) as <code>$1</code>, <code>$2</code> and so on.
+
+<b><code><nowiki>target_expn</nowiki></code></b> : <code>VARCHAR</code>
+   * Optional SQL text that should be executed instead of a regex compose call.
+
+<b><code><nowiki>accept_pattern</nowiki></code></b> : <code>VARCHAR</code>
+   * A regex expression to match the HTTP <code>Accept</code> header
+
+<b><code><nowiki>do_not_continue</nowiki></code></b> : <code>INTEGER</code>
+   * If the given rule satisfies the match conditions, <b><code>1</code></b> signifies do not try the next rule from same rule list, and <b><code>0</code></b> signifies try the 
+next rule.
+
+<b><code><nowiki>http_redirect_code</nowiki></code></b> : <code>INTEGER</code>
+   * <b><code>NULL</code></b> or the integer values <b><code>301</code></b>, <b><code>302</code></b>, <b><code>303</code></b>, or <b><code>406</code></b>, are currently allowed.  If a <code>3xx</code> redirect code is given, an HTTP redirect 
+response will be sent back to client.  If <code>NULL</code> is specified, the server will process the redirect internally.
+
+<b><code><nowiki>http_headers</nowiki></code></b> : <code>VARCHAR</code>
+   * HTTP headers to supply with the rewritten request.
+
+
+#AncmozTocId878640
+---++++ Dissection of Northwind Rewrite Rules Configured using Virtuoso PL
+
+
+Having briefly outlined the URL Rewriting API, we return now to the Northwind rule configuration script listed earlier.
+
+At the start of the script, we define a virtual directory in order to turn on URL rewriting through <code><nowiki>vhost_define()</nowiki></code>. We first remove any existing definition for logical path <code>/Northwind</code> on the virtual host defined by <code>vhost</code>, before redefining the logical path. <code>vhost</code> specifies the host name sent to a user-agent in an HTTP response. This must be a valid fully-qualified host name or alias and port separated by '<code>:</code>'. This parameter accepts the special value '<code><nowiki>*ini*</nowiki></code>' which will be replaced with the hostname and port configured in the <code>virtuoso.ini </code>file.
+
+The <code>/Northwind </code>virtual directory is mapped to a DAV folder (indicated by <code><nowiki>is_dav</nowiki></code> being non-zero) whose physical path is <code>/DAV/home/demo</code>. The machine hosting the virtual directory listens on the IP address and port specified by <code>lhost</code> (i.e. listen host). Like <code>vhost</code>, this accepts the special value '<code><nowiki>*ini*</nowiki></code>'. Any VSP pages contained in the virtual directory will run as user '<code>dba</code>'.
+
+URL rewriting is enabled through the <code><nowiki>url_rewrite</nowiki></code> field in the <code>opts</code> vector; the URL rewriter will use the rule list named <code><nowiki>demo_nw_rule_list1</nowiki></code>. The latter is defined by the <code><nowiki>URLREWRITE_CREATE_RULELIST</nowiki></code> function call which follows. The rule list contains two regex-based rules, <code><nowiki>demo_nw_rule1</nowiki></code> and <code><nowiki>demo_nw_rule2</nowiki></code>, each defined by calls to function <code><nowiki>URLREWRITE_CREATE_REGEX_RULE</nowiki></code>.
+
+Consider first rule <code><nowiki>demo_nw_rule2</nowiki></code>. In this rule, the regular expression '<code>(/[^#]*)</code>' specified for <nowiki>nice_match</nowiki> matches the input IRI up to fragment delimiter (<code>#</code>). The corresponding occurrence is named '<code>path</code>' in the <code><nowiki>nice_params</nowiki></code> vector. The client must be requesting the return data as RDF serialized as N3 or RDF/XML in order for the rule to apply.
+
+Argument <code><nowiki>target_compose</nowiki></code> specifies a URL-encoded template for the rewritten destination URL. Spaces are encoded as '<code>+</code>' or '<code>%20</code>', the reserved character '<code>#</code>' is [[http://en.wikipedia.org/wiki/Percent-encoding][percent-encoded]] as '<code>%23</code>' and the '<code>%</code>' character itself is escaped by '<code>%</code>'.
+
+Removing the URL encoding and the final format specifier ('<code>&amp;format=%U</code>'), the SPARQL <code>DESCRIBE</code> query being built takes the form:
+ <code><nowiki>DESCRIBE &lt;http://^{URIQADefaultHost}^%U#this&gt; &lt;http://^{URIQADefaultHost}^%U&gt; FROM &lt;http://^{URIQADefaultHost}^/Northwind&gt; </nowiki></code>
+
+Unsurprisingly this is almost identical to the SPARQL query displayed by Conductor, when the same rewrite rules are viewed through the Conductor UI. The only difference lies in the slightly different syntax used for parameter markers ( <code>%U </code>or <code>%s </code>, as opposed to <code>$U1, $U2, ... </code>or <code>$s1, $s2, ... </code>in Conductor). Here, the two sprintf-like format characters <code>%U </code>are placeholders which receive the first two entries in the <code><nowiki>target_params</nowiki> </code>vector, i.e. the value of '<code>path</code>'. In our example, the value of '<code>path</code>' would be '<code>/Northwind/Customer/ALFKI</code>'.
+
+
+The query response format is controlled by the format query parameter. In the format specifier ('<code>&amp;format=%U</code>') at the end of the constructed query string, the third placeholder '<code>%U</code>' receives the value of the third entry in the <code><nowiki>target_params</nowiki></code> vector, '<code><nowiki>*accept*</nowiki></code>'. The '<code><nowiki>*accept*</nowiki></code>' parameter is used to pass the part of <code>Accept</code> header matched against <code><nowiki>accept_pattern</nowiki></code>, e.g. if the <code>Accept</code> header specified MIME types of '<code>application/rdf+xml, application/xml</code>' and the <code><nowiki>accept_pattern</nowiki></code> is '<code>(text/rdf.n3)|(application/rdf.xml)</code>', then the '<code><nowiki>*accept*</nowiki></code>' parameter will have the value of '<code>application/rdf+xml</code>'.
+
+
+The other rule, <code><nowiki>demo_nw_rule1</nowiki></code>, is essentially similar, but targeted at HTML browsers rather than RDF browsers. Rather than the internal redirect used by <code><nowiki>demo_nw_rule2</nowiki></code>, this rule returns HTTP redirect code <code>303</code> to the client when the rewrite rule is applied.
+<table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">
+
+<b>Internal Rewrites vs External Redirects</b>
+<br/><br/>
+<i>External redirect</i> : Tells the client to ask for the requested content again using a new URL and HTTP request. An external redirect is indicated by one of the HTTP response codes:<br/>
+<code>301</code> - Moved permanently (for permanent redirection) <code><br/>302</code> - Found (the most common way of performing a redirection) <code><br/>303</code> - See Other (the correct manner in which to redirect web applications to a new URI)
+<br/><br/>
+<i>Internal rewrite/redirect</i> : Gets the content for the requested URL from a different server file path than implied by the requested URL.
+</td></tr></table>
+
+As described earlier when examining the Conductor-configured rules, HTML requests are redirected to <code>description.vsp </code>via the Sponger proxy interface.
+<table style="border: 1px solid #999999; margin: 10px 20px; border-collapse: collapse;"><tr><td style="border: 1px solid #999999; padding: 1px 4px; background: #bbcbff;">
+
+<b>System Tables Supporting URL Rewriting</b>
+
+
+If you need to check your rewrite rule definitions, an alternative to inspecting them using Conductor is to query Virtuoso's system tables directly. The relevant system tables for URL rewriting are <code><nowiki>DB.DBA.URL_REWRITE_RULE_LIST</nowiki></code> and <code><nowiki>DB.DBA.URL_REWRITE_RULE</nowiki></code>. For example, the configured rule lists can be seen by executing '<code><nowiki>SELECT URRL_LIST FROM DB.DBA.URL_REWRITE_RULE_LIST</nowiki></code>'
+</td></tr></table>
+
+#AncmozTocId31722
+---+++++ Data Flow in Virtuoso/PL-Defined Northwind RDF Regex Rule
+
+
+Earlier we presented a data flow diagram showing the process of rewriting a request for an RDF representation of Northwind customer ALFKI, through a regex rule defined in the Conductor. Below is a similar diagram, depicting the same request rewrite, this time using the Virtuoso PL definition of the same rule. As before, the arcs connecting similarly coloured items illustrate how portions of the input request are matched and substituted into the rewritten request.
+
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig10.png" alt="Breakdown of the URL rewriting process for Northwind RDF requests">
+<br/><i>Breakdown of the URL rewriting process for Northwind RDF requests</i> 
+</div>
+
+#AncmozTocId719555
+---+++ Northwind URL Rewriting Verification Using cURL
+
+
+As illustrated earlier, the curl utility provides a useful tool for verifying HTTP server responses and rewrite rules. The first two curl exchanges below show the default Northwind URL rewrite rules being applied.
+
+<b>Example 1:</b>
+<verbatim>
+$ curl -I -H "Accept: text/html" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.09.3037 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Fri, 06 Feb 2009 11:11:01 GMT
+Accept-Ranges: bytes
+Location: http://demo.openlinksw.com/about/html/http://demo.openlinksw.com/Northwind/Customer/ALFKI
+Content-Length: 0
+</verbatim>
+
+<b>Example 2:</b>
+<verbatim>
+$ curl -I -H "Accept: application/rdf+xml" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+HTTP/1.1 200 OK
+Server: Virtuoso/05.09.3037 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: Keep-Alive
+Date: Fri, 06 Feb 2009 11:14:49 GMT
+Accept-Ranges: bytes
+Content-Type: application/rdf+xml; charset=UTF-8
+Content-Length: 9488
+</verbatim>
+
+<b>Example 3:</b>
+<verbatim>
+$ curl -I -H "Accept: application/rdf+xml" http://demo.openlinksw.com/Northwind/Customer/ALFKI
+HTTP/1.1 303 See Other
+Server: Virtuoso/05.09.3037 (Solaris) x86_64-sun-solaris2.10-64 VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Thu, 12 Feb 2009 11:23:31 GMT
+Accept-Ranges: bytes
+Location: http://demo.openlinksw.com/sparql?query=DESCRIBE+%3Chttp%3A//demo.openlinksw.com%2FNorthwind%2FCustomer%2FALFKI%23this%3E
+    +%3Chttp%3A//demo.openlinksw.com%2FNorthwind%2FCustomer%2FALFKI%3E
+    +FROM+%3Chttp%3A//demo.openlinksw.com/Northwind%3E&amp;format=application%2Frdf%2Bxml
+Content-Length: 0
+</verbatim>
+
+The third example shows the response generated when the default rule for RDF requests is changed to return an HTTP response code of 303, rather than use an internal redirect. Making this temporary change allows the generated SPARQL query to be viewed and checked with curl.
+
+<b>[[VirtDeployingLinkedDataGuide][Back]]</b> to Deploying Linked Data Guide |  <b>[[VirtDeployingLinkedDataGuide_Introduction][Previous:]]</b> Introduction | <b>[[VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView][Next:]]</b> Browsing &amp; Exploring the Northwind Linked Data View

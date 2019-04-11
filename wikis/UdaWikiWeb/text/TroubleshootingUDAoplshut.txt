@@ -1,0 +1,75 @@
+%META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%
+= Output of {{{oplshut}}} =
+
+The command {{{oplshut -s}}} produces output like this:
+{{{
+[openlink@openlinux bin]$ oplshut -s
+SVPID  SVTYPE  MACHINE            OPSYS  APPLIC    DATABASE  USERNAME  CONNECT
+-----------------------------------------------------------------------------------
+ 1480  mys3    dyn2.example.com   msdos  cppdmo32  test      mysql     Mar 30 12:01
+}}}
+
+Here is a brief overview of the output displayed by {{{oplshut -s}}}:
+
+* **SVPID** - Associates a Process Identification Number with a database agent. You can run <code>oplshut +kill &lt;svpid&gt;</code> to terminate database agents that will not disconnect. For example:
+{{{
+oplshut +kill 1480
+}}}
+//**Note:** {{{oplshut +kill}}}} will terminate **all** connections associated with an agent process. This is important since multi-threaded agents may handle multiple connections simultaneously.//
+
+* **SVTYPE** - Passes a label which identifies the Domain Alias, which was used to establish the connection. The Domain Aliases appear in the Session Rules Book (<code>oplrqb.ini</code>). For example:
+{{{
+[Domain Aliases]
+DB2          = db2
+Informix 5     = inf5
+Informix 6     = inf6
+Informix 7.1   = inf71
+Informix 7.2   = inf72
+Informix 7.3   = inf73
+Informix 2000  = inf2000
+Ingres 6       = ing6
+MySQL 3.x      = mys3
+}}}
+These aliases facilitate the resolution and configuration of connections. They associate each connection request with a specific Mapping Rule, Database Agent configuration section, and Environment section. For example:
+{{{
+[Environment MYSQL]
+CURSOR_SENSITIVITY = LOW
+
+[Mapping Rules]
+mys3:**:**:**:**:**:**  = accept generic_mys3
+
+[generic_mys3]
+Description = Default settings for MySQL 3.x agent
+Program       = mys3_mv
+Environment = MYSQL
+ReUse       = always
+}}}
+
+* **MACHINE** - Identifies the machine from which the connection request originated.
+
+* **OPSYS** - Identifies the operating system of the machine, from which the connection originated.
+
+* **APPLIC** - Identifies the application that has initiated the connection.
+
+* **DATABASE** - Identifies the target database to which the driver connects.
+
+* **USERNAME** - Identifies the username used to authenticate against the database or operating system.
+
+* **CONNECT** - The connection's inception date and time. This field is useful for detection of lingering connections.  
+
+ **Note:** If stability problems arise, you should compare the output of the following two commands (substituting your Agent configuration stanza for "generic_agent"):
+
+<code><pre>oplshut -s
+
+ps -ef <nop>| grep generic_agent</pre></code>
+
+Certain older Request Brokers can suffer from corruption of the internal tables that they use to monitor connections. Consequently, Brokers lose track of agents. While <code>oplshut -s</code> shows no or few agent connections, <code>ps -ef | grep generic_agent</code> will show many agents. Here is normal <code>oplshut</code> and <code>ps</code> output:
+<code><pre>bash$ oplshut -s
+SVPID  SVTYPE  MACHINE             OPSYS  APPLIC    DATABASE  USERNAME  CONNECT
+<nop>------------------------------------------------------------------------------------
+30003  mys3    dyn243.example.com  msdos  cppdmo32  Northwin  sa        Apr 09 10:46
+
+bash$ ps -ef <nop>| grep generic_mys3
+openlink 30003   29324  0 10:46:33  0:00 generic_mys3 +internal </pre></code>
+
+Abnormal output would have {{{ps}}} showing more agent processes than {{{oplshut}}}.

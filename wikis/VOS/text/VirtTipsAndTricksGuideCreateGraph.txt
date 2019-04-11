@@ -1,0 +1,67 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How do <code>CREATE GRAPH</code>, <code>DROP GRAPH</code>, <code>CLEAR GRAPH</code>, and <code>DELETE FROM &lt;graphname&gt;</code> work in Virtuoso?
+
+---++ What?
+
+Here are some details about the <code>CREATE GRAPH</code>, <code>DROP GRAPH</code>, <code>CLEAR GRAPH</code>, and <code>DELETE FROM &lt;graphname&gt;</code> commands.
+
+---++ Why?
+
+Clarifying implications of the various commands in Virtuoso.
+
+---++ How?
+
+In Virtuoso, it does not matter whether <code>CREATE GRAPH</code> and <code>DROP GRAPH</code> (or its synonym, 
+<code>CLEAR GRAPH</code>) are called or not. Their purpose is to provide compatibility with the original SPARUL that
+was designed for Jena. Some Jena triple stores require explicit creation of each graph (like <code>CREATE TABLE</code> 
+in SQL), report errors if one tries to create a graph twice, and so on.
+
+For Virtuoso, a new graph is not an important system event, because Virtuoso has a single quad-store shared by all 
+graphs. When a graph is made by <code>CREATE GRAPH</code>, its name is placed in an auxiliary table that is used 
+solely to signal appropriate errors when a user tries to <code>CREATE</code> a graph that has already been 
+<code>CREATEd</code>, or to <code>DROP</code> a graph which has not been <code>CREATEd</code>; this table is not 
+used in any way by SPARQL or other subsystems. In a perfect world, smart development tools will query that table 
+to give hints to a programmer regarding available graphs, but the reality is not so perfect.
+
+There is an important difference between <code>DELETE FROM &lt;graphname&gt; WHERE { ?s ?p ?o }</code> and 
+<code>CLEAR GRAPH &lt;graphname&gt;</code>. Both will delete all triples from the specified graph <code>&lt;graphname&gt;</code> 
+with equal speed, but <code>CLEAR GRAPH</code> will also delete free-text index data about occurrences of literals 
+in this specific graph. <code>CLEAR GRAPH</code> will therefor make the database slightly more compact and the text 
+search slightly faster. (Naturally, DROP GRAPH makes CLEAR GRAPH inside, not just DELETE FROM...)  
+
+---+++ DROP GRAPH and CLEAR GRAPH are equivalent
+
+<code>DROP GRAPH</code> is equivalent of <code>CLEAR GRAPH</code>. Both require that the graph has been explicitly <code>CREATEd</code>.
+
+ <i><b>Note:</b> All SPARUL a/k/a SPARQL-Update commands require that the user (i.e., the <code>SPARQL</code> user for the default <code>/sparql</code> endpoint) be granted <b><code><nowiki>SPARQL_UPDATE"</nowiki></code></b> privilege.</i>
+
+Assume the following sequence of commands to be executed from the <code>/sparql</code> endpoint:
+
+   1 Explicitly create a graph: 
+<verbatim>
+CREATE GRAPH <qq>
+	
+callret-0
+Create graph <qq> -- done
+</verbatim>
+   1 If you know the graph was explicitly created, use the simple <code>DROP GRAPH</code>: 
+<verbatim>
+DROP GRAPH <qq> 	
+	
+callret-0
+Drop graph <qq> -- done	
+</verbatim>
+   1 If you don't know whether a graph was created explicitly or not, you can add the <code>SILENT</code> option: 
+<verbatim>
+DROP SILENT GRAPH <qq> 
+	
+callret-0	
+Drop silent graph <qq> -- done
+</verbatim>
+
+
+---++Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html][RDF Insert Methods in Virtuoso]]

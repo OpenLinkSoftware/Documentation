@@ -1,0 +1,165 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtGraphReplication"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtGraphReplication"}%--><h1><a name="Replication Example: Star Topology"></a> Replication Example: Star Topology</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li>
+<ul><li><a href="#Database%20INI%20Parameters">Database INI Parameters</a></li> <li><a href="#Database%20DSNs">Database DSNs</a></li> <li><a href="#Install%20Conductor%20package">Install Conductor package</a></li> </ul><li><a href="#Create%20a%20Publication%20on%20the%20Host%20Virtuoso%20Instance%20--%20db1">Create a Publication on the Host Virtuoso Instance -- db1</a></li> <li><a href="#Insert%20Data%20into%20a%20Named%20Graph%20on%20the%20Host%20Virtuoso%20Instance">Insert Data into a Named Graph on the Host Virtuoso Instance</a></li> <li><a href="#Subscribe%20to%20the%20Publication%20on%20the%20a%20Destination%20Virtuoso%20Instance%20--%20db2%2C%20db3%2C%20etc.">Subscribe to the Publication on the a Destination Virtuoso Instance -- db2, db3, etc.</a></li> <li><a href="#Insert%20Triples%20into%20the%20Host%20Virtuoso%20Instance%20Graph%20and%20check%20availability%20at%20Destination%20Virtuoso%20Instance%20Graph">Insert Triples into the Host Virtuoso Instance Graph and check availability at Destination Virtuoso Instance Graph</a></li> <li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a>Introduction</h2>
+ The following How-To walks you through setting up Virtuoso RDF Graph Replication in a Star Topology.
+<br><br><img src="VirtGraphReplicationStar/topo-star.png"><br><br><h2><a name="Prerequisites"></a>Prerequisites</h2>
+ <h3><a name="Database INI Parameters"></a>Database INI Parameters</h3>
+<p>Suppose there are 3 Virtuoso instances respectively with the following ini parameters values:</p>
+<ol><li>virtuoso1.ini: <br><pre><br>...
+[Database]
+DatabaseFile    = virtuoso1.db
+TransactionFile = virtuoso1.trx
+ErrorLogFile     = virtuoso1.log
+...
+[Parameters]
+ServerPort               = 1111
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8891
+...
+[URIQA]
+DefaultHost = localhost:8891
+...
+[Replication]
+ServerName   = db1
+...
+</pre><br></li>
+<li>virtuoso2.ini: <br><pre><br>...
+[Database]
+DatabaseFile    = virtuoso2.db
+TransactionFile = virtuoso2.trx
+ErrorLogFile     = virtuoso2.log
+...
+[Parameters]
+ServerPort               = 1112
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8892
+...
+[URIQA]
+DefaultHost = localhost:8892
+...
+[Replication]
+ServerName   = db2
+...
+</pre><br></li>
+<li>virtuoso3.ini: <br><pre><br>...
+[Database]
+DatabaseFile    = virtuoso3.db
+TransactionFile = virtuoso3.trx
+ErrorLogFile     = virtuoso3.log
+...
+[Parameters]
+ServerPort               = 1113
+SchedulerInterval        = 1
+...
+[HTTPServer]
+ServerPort                  = 8893
+...
+[URIQA]
+DefaultHost = localhost:8893
+...
+[Replication]
+ServerName   = db3
+...
+</pre><br></li>
+</ol><h3><a name="Database DSNs"></a>Database DSNs</h3>
+<p>Use the ODBC Administrator on your Virtuoso host (e.g., on Windows, <b>Start</b> menu -&gt; <b>Control Panel</b> -&gt; <b>Administrative Tools</b> -&gt; <b>Data Sources (ODBC)</b>; on Mac OS X, <code>/Applications/Utilities/OpenLink ODBC Administrator.app</code>) to create a System DSN for each of db1, db2, db3, with names db1, db2 and db3, respectively.</p>
+<h3><a name="Install Conductor package"></a>Install Conductor package</h3>
+<p>On each of the 3 Virtuoso instances install the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">conductor_dav.vad</a> package.</p>
+<p> </p>
+<h2><a name="Create a Publication on the Host Virtuoso Instance -- db1"></a>Create a Publication on the Host Virtuoso Instance -- db1</h2>
+<ol><li>Go to <b>Conductor</b> -&gt; <b>Replication</b> -&gt; <b>Transactional</b> -&gt; <b>Publications</b>: <br><br><img src="VirtGraphReplicationStar/r6.png"><br><br> </li>
+<li>Click <b>Enable RDF Publishing</b>.
+</li>
+<li>A publication with the name <b>RDF Publication</b> should be created: <br><br><img src="VirtGraphReplicationStar/r7.png"><br><br> </li>
+<li>Click the link which is the publication name.
+</li>
+<li>You will be shown the publication items page: <br><br><img src="VirtGraphReplicationStar/r8.png"><br><br> </li>
+<li>Enter for <b>Graph IRI</b> <br><pre><br>http://example.org
+</pre><br><br><br><img src="VirtGraphReplicationStar/r9.png"><br><br> </li>
+<li>Click <b>Add New</b>.
+</li>
+<li>The item will be created and shown in the list of items for the currently viewed publication.
+<br><br><img src="VirtGraphReplicationStar/r10.png"><br><br></li>
+</ol><p> </p>
+<h2><a name="Insert Data into a Named Graph on the Host Virtuoso Instance"></a>Insert Data into a Named Graph on the Host Virtuoso Instance</h2>
+<p>There are several ways to insert data into a Virtuoso Named Graph.
+ In this Guide, we will use the Virtuoso Conductor&#39;s <b>Import RDF</b> feature:</p>
+<ol><li>In the Virtuoso Conductor, go to <b>Linked Data</b> -&gt; <b>Quad Store Upload</b>: <br><br><img src="VirtGraphReplicationStar/r1.png"><br><br> </li>
+<li>In the presented form: <ul><li>Tick the box for <b>Resource URL</b> and enter your resource URL, for e.g.: <br><pre><br>http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+</pre><br></li>
+<li>Enter for <b>Named Graph IRI</b>: <br><pre><br>http://example.org
+</pre><br><br><br><img src="VirtGraphReplicationStar/r2.png"><br><br> </li>
+</ul></li>
+<li>Click <b>Upload</b> </li>
+<li>A successful upload will result in this message: <br><br><img src="VirtGraphReplicationStar/r3.png"><br><br> </li>
+<li>Check the inserted triples by executing a query like the following against the SPARQL endpoint, <code>http://cname:port/sparql</code> -- <br><pre><br>SELECT * 
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</pre><br><br><br><img src="VirtGraphReplicationStar/r4.png"><br><br> </li>
+<li>See how many triples have been inserted in your graph: <br><pre><br>SELECT COUNT(*) 
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</pre><br><br><br><img src="VirtGraphReplicationStar/r5.png"><br><br></li>
+</ol><p> </p>
+<h2><a name="Subscribe to the Publication on the a Destination Virtuoso Instance -- db2, db3, etc."></a>Subscribe to the Publication on the a Destination Virtuoso Instance -- db2, db3, etc.</h2>
+<ol><li>Go to <b>Conductor</b> -&gt; <b>Replication</b> -&gt; <b>Transactional</b> -&gt; <b>Subscriptions</b>: <br><br><img src="VirtGraphReplicationStar/r11.png"><br><br> </li>
+<li>Click <b>New Subscription</b>: <br><br><img src="VirtGraphReplicationStar/r12.png"><br><br> </li>
+<li>Specify a new Data Source Enter or selected target data source from the available connected Data Sources: <br><br><img src="VirtGraphReplicationStar/r13.png"><br><br> <br><br><img src="VirtGraphReplicationStar/r13a.png"><br><br> </li>
+<li>Click <b>Publications list</b>: <br><br><img src="VirtGraphReplicationStar/r15.png"><br><br> </li>
+<li>Select the <b>RDF Publication</b> and click <b>List Items</b>: <br><br><img src="VirtGraphReplicationStar/r16.png"><br><br> </li>
+<li>Click <b>Subscribe</b>.
+</li>
+<li>The subscription will be created: <br><br><img src="VirtGraphReplicationStar/r18.png"><br><br> </li>
+<li>Click <b>Sync</b>.
+</li>
+<li>Check the retrieved triples by executing the following query: <br><pre><br>SELECT * 
+  FROM &lt;http://example.org&gt;
+ WHERE {?s ?p ?o}
+</pre><br><br><br><img src="VirtGraphReplicationStar/r19.png"><br><br> </li>
+<li>See how many triples have been inserted into your graph by executing the following query: <br><pre><br>SELECT COUNT(*) 
+  FROM &lt;http://example.org&gt;
+ WHERE {?s ?p ?o}
+</pre><br><br><br><img src="VirtGraphReplicationStar/r5.png"><br><br></li>
+</ol><p>These steps may be repeated for any number of Subscribers.</p>
+<p> </p>
+<h2><a name="Insert Triples into the Host Virtuoso Instance Graph and check availability at Destination Virtuoso Instance Graph"></a>Insert Triples into the Host Virtuoso Instance Graph and check availability at Destination Virtuoso Instance Graph</h2>
+<ol><li>To check the starting count, on the Destination Virtuoso Instance SPARQL Endpoint, execute: <br><pre><br>SELECT COUNT(*) 
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</pre><br></li>
+<li>On the Host Virtuoso Instance go to <b>Conductor</b> -&gt; <b>Database</b> -&gt; <b>Interactive SQL</b> and execute the following statement: <br><pre><br>SPARQL INSERT INTO GRAPH &lt;http://example.org&gt; 
+  { 
+     &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;
+     &lt;http://xmlns.com/foaf/0.1/interest&gt;
+     &lt;http://dbpedia.org/resource/Web_Services&gt; 
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt; 
+  { 
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;  	
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;  	
+    &lt;http://dbpedia.org/resource/Web_Clients&gt; 
+  } ;
+SPARQL INSERT INTO GRAPH &lt;http://example.org&gt; 
+  { 
+    &lt;http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this&gt;  	
+    &lt;http://xmlns.com/foaf/0.1/interest&gt;  	
+    &lt;http://dbpedia.org/resource/SPARQL&gt; 
+  } ;
+</pre><br><br><br><img src="VirtGraphReplicationStar/r22.png"><br><br> <br><br><img src="VirtGraphReplicationStar/r23.png"><br><br> </li>
+<li>To confirm that the triple count has increased by the number of inserted triples, execute the following on the Destination Virtuoso Instance SPARQL Endpoint: <br><pre><br>SELECT COUNT(*) 
+  FROM &lt;http://example.org&gt;
+ WHERE { ?s ?p ?o }
+</pre><br><br><br><img src="VirtGraphReplicationStar/r24.png"><br><br></li>
+</ol><h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationChain" class="wikiword">Replication Example: Chain Topology</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationBiDirectional" class="wikiword">Replication Example: 2-node Bi-directional Topology</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtGraphReplicationPSQL" class="wikiword">Set up RDF Replication via procedure calls</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub" class="absuri">Example of Linked Data Usage of PubSubHubbub Implementation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRdfReplScenarios" class="wikiword">Exploit Virtuoso&#39;s Replication Functionality Web based Solutions</a></li>
+</ul></div></body></html>

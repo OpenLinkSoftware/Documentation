@@ -1,0 +1,117 @@
+%META:TOPICPARENT{name="SingleTierInstallQuickstartUnix"}%
+
+== <nop>OpenLink Single-tier Components (*nix) for <nop>Oracle==
+
+=== Aims and Intentions=== 
+
+This guide is intended to enable competent system administrators to install and configure <nop>OpenLink Multi-tier client side components on *nix style operating systems in a few steps as possible.
+
+This guide does not explain any of the non-pertinent features encountered along the way. Such explanations may be found in the full documentation.
+
+===Prerequisites===
+
+* You **MUST** be proficient in using a Unix shell.
+* You **MUST** be proficient in using a Unix editor such as vi
+* You **MUST** be in possession of relevant database connectivity details such as Database name, Username, password, etc.
+* You **MUST** have installed, and available either; a full installation of Oracle, Oracle Client or Oracle Instant Client (release 6.x only). 
+
+===Installation===
+
+# Log onto the machine and create a suitable <nop>OpenLink installation directory &lt;<nop>OPENLINK_INSTALL&gt;%BR%
+# Copy all relevant components to &lt;<nop>OPENLINK_INSTALL&gt;%BR%%BR% At bare minimum, these will be the <nop>OpenLink ODBC Driver for <nop>Oracle, <nop>OpenLink Http Administration Assistant and <nop>OpenLink license file.%BR%
+# Install using the "install.sh" shell script --
+{{{
+ #sh install.sh
+
+}}}
+# You should take care to enter correct information when prompted pertaining to ports, passwords, etc and ensure that you note these down for future use.%BR%
+# The installation should finish without error.
+
+===Configuration===
+====Environment====
+Open the file &lt;<nop>OPENLINK_INSTALL&gt;/openlink.sh with a suitable text editor such as vi.%BR%
+Locate the section that deals with the location of shared libraries pertaining to your system (LD_LIBRARY_PATH, LIBPATH or SHLIB_PATH) and add to it the location of your <nop>Informix lib and lib/esql directories --
+{{{
+ 
+ LD_LIBRARY_PATH="&lt;OPENLINK_INSTALL&gt;/lib:/oracle/lib:$LD_LIBRARY_PATH"
+  
+}}}
+====Driver Specific====
+Open the file &lt;<nop>OPENLINK_INSTALL&gt;/openlink.ini with a suitable text editor such as vi.%BR%
+Locate the [Environment <nop>Oracle xxx] section that deals with the driver specific <nop>Oracle configuration and edit to reflect your <nop>Oracle installation --
+{{{
+ 
+ [Environment Oracle 10.x]
+ ORACLE_HOME        = /oracle/
+ ;ORACLE_SID         = ORCL
+ ;ORACLE_SERVER          = T
+ ;TWO_TASK               = P:
+ ;ODBC_CATALOGS          = Y     ; Uncomment after loading odbccat10.sql
+ ;MULTIPLEX_LDA          = 5     ; Allow 5 OpenLink clients on a single lda
+ ;OPL_USR_TBLS_FIRST     = Y     ; Sort SQLTables starting with user tables
+ SHOW_REMARKS       = N  ; Retrieve SQLColumns REMARKS field
+ CURSOR_SENSITIVITY = LOW        ; Set to HIGH after loading odbccat10.sql
+ ;OCI_PREFETCH_ROWS      = 100   ; Number of rows to prefetch
+ ;OCI_PREFETCH_MEMORY    = 65535 ; Amount of memory to use for prefetching
+ ;NLS_LANG               = AMERICAN_AMERICA.UTF8 ; Unicode connection
+
+}}}
+====Data Souce====
+Open the file &lt;<nop>OPENLINK_INSTALL&gt;/bin/odbc.ini with a suitable text editor such as vi.%BR%
+Locate and edit the sample <nop>OpenLink Oracle ODBC data source (DSN) created during the installation process and edit as follows--
+
+====Sample <nop>Oracle 10 Data Source (Full client)====
+{{{
+ 
+ [oracle]
+ Driver            = &lt;OPENLINK_INSTALL&gt;/lib/ora100_mt_lt.so
+ ServerType        = Oracle 10.x
+ Options           = &lt;TNSName&gt;
+ Username          = &lt;scott&gt;
+ Password          = &lt;**********&gt;
+ FetchBufferSize   = 99
+ ReadOnly          =
+ DeferLongFetch    =
+ JetFix            = No
+ Description       = Sample Oracle 10.x Lite Connection
+
+}}}
+====Sample <nop>Oracle 10 Data Source (Instant client - <nop>OpenLink release 6.x only)====
+{{{
+ 
+ [oracle]
+ Driver            = &lt;OPENLINK_INSTALL&gt;/lib/ora100_mt_lt.so
+ ServerType        = Oracle 10.x
+ Options           = //&lt;oracle.hostname&gt;/&lt;TNSName&gt;
+ Username          = &lt;scott&gt;
+ Password          = &lt;**********&gt;
+ FetchBufferSize   = 99
+ ReadOnly          =
+ DeferLongFetch    =
+ JetFix            = No
+ Description       = Sample Oracle 10.x Lite Connection
+
+}}}
+
+
+===Testing===
+Use the {{{iodbctest}}} tool which is packaged with the HTTP-based <nop>OpenLink ODBC Administrator as follows -- 
+{{{
+ 
+ #cd &lt;OPENLINK_INSTALL&gt;
+ #. ./openLink.sh
+ # iodbctest oracle
+ iODBC Demonstration program
+ This program shows an interactive SQL processor
+ Driver Manager: 03.52.0507.0105
+ Driver: 06.02.1217 OpenLink Generic ODBC Driver (ora100_mt_lt.so) 
+
+ SQL>
+
+}}}
+
+You should now be able to issue <nop>SQL statements directly against the target database.
+
+====Additional Information====
+
+* The bitness of the ODBC Driver for <nop>Oracle is determined by the bitness of your ODBC client application.%BR%%BR%That is, if your ODBC client application is 32-bit then the Generic ODBC Driver component **MUST** also be 32-bit.

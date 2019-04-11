@@ -1,0 +1,48 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How do I recover from "Invalid log entry in replay" when transaction log is being replayed during server start?
+
+%TOC%
+
+---++ Error Condition
+
+A Virtuoso transaction log file may fail to replay, with an error of the form:
+<verbatim>
+11:42:57 Invalid log entry in replay. Delete transaction log virtuoso.trx or truncate at point of error. 
+Valid data may exist after this record. A log record begins with bytes 193 188 5 188 0. Error at offset 13205546
+11:42:57 Searching for the next valid header signature starting at 13205547
+11:42:57 No valid looking header found.
+11:42:57 Server exiting
+</verbatim>
+
+Resolution of this error varies with the kind of Virtuoso server you're running.
+
+---++ Recovery Methods
+
+---+++ Single-Server Deployments of both Open Source and Commercial Edition
+
+<i><b>WARNING:</b> Do not use this recovery method on Cluster Deployments of Commercial Edition.</i>
+
+This can be recovered by truncating to the transaction log to the reported error offset.  
+
+Unix-like OS can use the built-in <code>dd</code> command; Windows users must first install [[http://sourceforge.net/projects/windd/][WinDD]] or [[http://www.cygwin.com/][cygwin]] to get the same functionality.
+
+Given the error above, the recovery steps on a Unix-like OS would look like --
+<verbatim>
+# mv virtuoso.trx old.trx
+# dd if=old.trx of=new.trx bs=1 count=13205546
+13205546+0 records in
+13205546+0 records out
+# mv new.trx virtuoso.trx
+# virtuoso-iodbc-t -f
+</verbatim>
+
+Restarting Virtuoso should now succeed.
+
+---+++ Replication Cluster Deployments of Commercial Edition
+
+<i>Recovery instructions coming soon!  Until then, please [[http://support.openlinksw.com/support/online-support.vsp][contact Support for assistance]].</i>
+
+---+++ Elastic Cluster Deployments of Commercial Edition
+
+<i>Recovery instructions coming soon!  Until then, please [[http://support.openlinksw.com/support/online-support.vsp][contact Support for assistance]].</i>

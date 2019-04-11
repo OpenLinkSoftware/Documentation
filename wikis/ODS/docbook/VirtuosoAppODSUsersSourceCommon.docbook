@@ -1,0 +1,1179 @@
+<docbook><section><title>VirtuosoAppODSUsersSourceCommon</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">ODS Users Administration Implementation Source Code Common Files</bridgehead>
+<para>The following source codes represent the  Common Files of the ODS Users Administration Implementation:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">users_api.sql:</bridgehead>
+<programlisting>-------------------------------------------------------------------------------
+--
+-- ODS API
+--
+-------------------------------------------------------------------------------
+create procedure ODS_ERROR_XML (
+  inout pStream any,
+  in pCode varchar,
+  in pMessage varchar)
+{
+  http (&#39;&lt;error&gt;&#39;, pStream);
+  http (sprintf (&#39;&lt;code&gt;%s&lt;/code&gt;&#39;, pCode), pStream);
+  http (sprintf (&#39;&lt;message&gt;%s&lt;/message&gt;&#39;, pMessage), pStream);
+  http (&#39;&lt;/error&gt;&#39;, pStream);
+}
+;
+
+create procedure ODS_USER_XML_ITEM (
+  in pTag varchar,
+  in pValue any,
+  inout pStream any)
+{
+  if (not DB.DBA.is_empty_or_null (pValue))
+    http (sprintf (&#39;&lt;%s&gt;%V&lt;/%s&gt;&#39;, pTag, cast (pValue as varchar), pTag), pStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_XML (
+  inout pStream any,
+  in pUID varchar,
+  in pShort integer := 1)
+{
+  for (select * from DB.DBA.SYS_USERS, DB.DBA.WA_USER_INFO where WAUI_U_ID = U_ID and U_ID = pUID) do {
+    http (&#39;&lt;user&gt;&#39;, pStream);
+
+    -- Personal
+    ODS_USER_XML_ITEM (&#39;uid&#39;,       U_ID,            pStream);
+    ODS_USER_XML_ITEM (&#39;name&#39;,      U_NAME,          pStream);
+    ODS_USER_XML_ITEM (&#39;mail&#39;,      U_E_MAIL,        pStream);
+    ODS_USER_XML_ITEM (&#39;title&#39;,     WAUI_TITLE,      pStream);
+    ODS_USER_XML_ITEM (&#39;firstName&#39;, WAUI_FIRST_NAME, pStream);
+    ODS_USER_XML_ITEM (&#39;lastName&#39;,  WAUI_LAST_NAME,  pStream);
+    ODS_USER_XML_ITEM (&#39;fullName&#39;,  WAUI_FULL_NAME,  pStream);
+
+    if (not pShort) {
+      -- Personal
+      ODS_USER_XML_ITEM (&#39;gender&#39;,                 WAUI_GENDER,       pStream);
+      if (not isnull(WAUI_BIRTHDAY)) {
+        ODS_USER_XML_ITEM (&#39;birthdayDay&#39;,          dayofmonth(WAUI_BIRTHDAY), pStream);
+        ODS_USER_XML_ITEM (&#39;birthdayMonth&#39;,        month(WAUI_BIRTHDAY),      pStream);
+        ODS_USER_XML_ITEM (&#39;birthdayYear&#39;,         year(WAUI_BIRTHDAY),       pStream);
+      }
+
+      -- Contact
+      ODS_USER_XML_ITEM (&#39;icq&#39;,                    WAUI_ICQ,          pStream);
+      ODS_USER_XML_ITEM (&#39;skype&#39;,                  WAUI_SKYPE,        pStream);
+      ODS_USER_XML_ITEM (&#39;yahoo&#39;,                  WAUI_YAHOO,        pStream);
+      ODS_USER_XML_ITEM (&#39;aim&#39;,                    WAUI_AIM,          pStream);
+      ODS_USER_XML_ITEM (&#39;msn&#39;,                    WAUI_MSN,          pStream);
+
+      ODS_USER_XML_ITEM (&#39;defaultMapLocation&#39;,     WAUI_LATLNG_HBDEF, pStream);
+      -- Home
+      ODS_USER_XML_ITEM (&#39;homeCountry&#39;,            WAUI_HCOUNTRY,     pStream);
+      ODS_USER_XML_ITEM (&#39;homeState&#39;,              WAUI_HSTATE,       pStream);
+      ODS_USER_XML_ITEM (&#39;homeCity&#39;,               WAUI_HCITY,        pStream);
+      ODS_USER_XML_ITEM (&#39;homeCode&#39;,               WAUI_HCODE,        pStream);
+      ODS_USER_XML_ITEM (&#39;homeAddress1&#39;,           WAUI_HADDRESS1,    pStream);
+      ODS_USER_XML_ITEM (&#39;homeAddress2&#39;,           WAUI_HADDRESS2,    pStream);
+      ODS_USER_XML_ITEM (&#39;homeTimezone&#39;,           WAUI_HTZONE,       pStream);
+      ODS_USER_XML_ITEM (&#39;homeLatitude&#39;,           WAUI_LAT,          pStream);
+      ODS_USER_XML_ITEM (&#39;homeLongitude&#39;,          WAUI_LNG,          pStream);
+      ODS_USER_XML_ITEM (&#39;homePhone&#39;,              WAUI_HPHONE,       pStream);
+      ODS_USER_XML_ITEM (&#39;homeMobile&#39;,             WAUI_HMOBILE,      pStream);
+
+      -- Business
+      ODS_USER_XML_ITEM (&#39;businessIndustry&#39;,       WAUI_BINDUSTRY,    pStream);
+      ODS_USER_XML_ITEM (&#39;businessOrganization&#39;,   WAUI_BORG,         pStream);
+      ODS_USER_XML_ITEM (&#39;businessHomePage&#39;,       WAUI_BORG_HOMEPAGE,pStream);
+      ODS_USER_XML_ITEM (&#39;businessJob&#39;,            WAUI_BJOB,         pStream);
+      ODS_USER_XML_ITEM (&#39;businessCountry&#39;,        WAUI_BCOUNTRY,     pStream);
+      ODS_USER_XML_ITEM (&#39;businessState&#39;,          WAUI_BSTATE,       pStream);
+      ODS_USER_XML_ITEM (&#39;businessCity&#39;,           WAUI_BCITY,        pStream);
+      ODS_USER_XML_ITEM (&#39;businessCode&#39;,           WAUI_BCODE,        pStream);
+      ODS_USER_XML_ITEM (&#39;businessAddress1&#39;,       WAUI_BADDRESS1,    pStream);
+      ODS_USER_XML_ITEM (&#39;businessAddress2&#39;,       WAUI_BADDRESS2,    pStream);
+      ODS_USER_XML_ITEM (&#39;businessTimezone&#39;,       WAUI_BTZONE,       pStream);
+      ODS_USER_XML_ITEM (&#39;businessLatitude&#39;,       WAUI_BLAT,         pStream);
+      ODS_USER_XML_ITEM (&#39;businessLongitude&#39;,      WAUI_BLNG,         pStream);
+      ODS_USER_XML_ITEM (&#39;businessPhone&#39;,          WAUI_BPHONE,       pStream);
+      ODS_USER_XML_ITEM (&#39;businessMobile&#39;,         WAUI_BMOBILE,      pStream);
+      ODS_USER_XML_ITEM (&#39;businessRegNo&#39;,          WAUI_BREGNO,       pStream);
+      ODS_USER_XML_ITEM (&#39;businessCareer&#39;,         WAUI_BCAREER,      pStream);
+      ODS_USER_XML_ITEM (&#39;businessEmployees&#39;,      WAUI_BEMPTOTAL,    pStream);
+      ODS_USER_XML_ITEM (&#39;businessVendor&#39;,         WAUI_BVENDOR,      pStream);
+      ODS_USER_XML_ITEM (&#39;businessService&#39;,        WAUI_BSERVICE,     pStream);
+      ODS_USER_XML_ITEM (&#39;businessOther&#39;,          WAUI_BOTHER,       pStream);
+      ODS_USER_XML_ITEM (&#39;businessNetwork&#39;,        WAUI_BNETWORK,     pStream);
+      ODS_USER_XML_ITEM (&#39;businessResume&#39;,         WAUI_RESUME,       pStream);
+
+      -- Security
+      ODS_USER_XML_ITEM (&#39;securitySecretQuestion&#39;, WAUI_SEC_QUESTION, pStream);
+      ODS_USER_XML_ITEM (&#39;securitySecretAnswer&#39;,   WAUI_SEC_ANSWER,   pStream);
+      ODS_USER_XML_ITEM (&#39;securitySiocLimit&#39;,      USER_GET_OPTION (U_NAME, &#39;SIOC_POSTS_QUERY_LIMIT&#39;), pStream);
+    }
+    http (&#39;&lt;/user&gt;&#39;, pStream);
+  }
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_SESSION_XML (
+  inout pStream any,
+  in sid varchar,
+  in realm varchar)
+{
+  http (&#39;&lt;session&gt;&#39;, pStream);
+  http (sprintf (&#39;&lt;sid&gt;%U&lt;/sid&gt;&#39;, sid), pStream);
+  http (sprintf (&#39;&lt;realm&gt;%U&lt;/realm&gt;&#39;, realm), pStream);
+  http (&#39;&lt;/session&gt;&#39;, pStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_SESSION_CHECK (
+  in pSid varchar,
+  in pRealm varchar,
+  inout pUID integer,
+  inout pUser varchar)
+{
+  for (select U.U_ID,
+              U.U_NAME
+         from DB.DBA.VSPX_SESSION S,
+              WS.WS.SYS_DAV_USER U
+        where S.VS_REALM = pRealm
+          and S.VS_SID   = pSid
+          and S.VS_UID   = U.U_NAME) do
+  {
+    pUID := U_ID;
+    pUser := U_NAME;
+    return 1;
+  }
+  return 0;
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_LOGIN (
+  in pUser varchar,
+  in pPassword varchar,
+  in pOpenID varchar := &#39;&#39;,
+  in pDetail integer := 0
+) returns varchar
+{
+  declare sid, realm varchar;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  if (trim (pOpenID) &lt;&gt; &#39;&#39;) {
+    pUser := (select U_NAME from WA_USER_INFO, SYS_USERS where WAUI_U_ID = U_ID and WAUI_OPENID_URL = pOpenID);
+    if (isnull (pUser))
+      DB.DBA.ODS_ERROR_XML (sStream, &#39;BAD_LOGIN&#39;, &#39;Bad OpenID!&#39;);
+  } else {
+    pUser := (select U_NAME from DB.DBA.SYS_USERS where U_NAME = pUser and pwd_magic_calc (U_NAME, U_PASSWORD, 1) = pPassword);
+    if (isnull (pUser))
+      DB.DBA.ODS_ERROR_XML (sStream, &#39;BAD_LOGIN&#39;, &#39;Bad username and/or password!&#39;);
+  }
+  if (not isnull (pUser)) {
+    sid := vspx_sid_generate ();
+    realm := &#39;wa&#39;;
+    insert into DB.DBA.VSPX_SESSION (VS_REALM, VS_SID, VS_UID, VS_STATE, VS_EXPIRY)
+      values (realm, sid, pUser, serialize ( vector (&#39;vspx_user&#39;, pUser)), now());
+    DB.DBA.ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+    DB.DBA.ODS_SESSION_XML (sStream, sid, realm);
+    if (pDetail) {
+      declare pUID integer;
+      pUID := (select U_ID from DB.DBA.SYS_USERS where U_NAME = pUser);
+      DB.DBA.ODS_USER_XML (sStream, pUID);
+    }
+  }
+
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_LOGOUT (
+  in pSid varchar,
+  in pRealm varchar) returns varchar
+{
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  delete from DB.DBA.VSPX_SESSION where VS_REALM = pRealm and VS_SID = pSid;
+  ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_REGISTER (
+  in pUser varchar,
+  in pPassword varchar,
+  in pMail varchar,
+  in oid_identity varchar := &#39;&#39;,
+  in oid_fullname varchar := &#39;&#39;,
+  in oid_birthday varchar := &#39;&#39;,
+  in oid_gender varchar := &#39;&#39;,
+  in oid_postcode varchar := &#39;&#39;,
+  in oid_country varchar := &#39;&#39;,
+  in oid_tz varchar := &#39;&#39;,
+  in pDetail integer := 0) returns varchar
+{
+  declare uid integer;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  declare exit handler for sqlstate &#39;*&#39; {
+    ODS_ERROR_XML (sStream, __SQL_STATE, __SQL_MESSAGE);
+    goto _end;
+  };
+
+  if (exists (select 1 from DB.DBA.SYS_USERS where U_NAME = pUser)) {
+    ODS_ERROR_XML (sStream, &#39;BAD_REGISTER&#39;, &#39;Login name already in use!&#39;);
+  } else {
+    uid := ODS_CREATE_USER (pUser, pPassword, pMail);
+    if (length (oid_birthday))
+      WA_USER_EDIT (pUser, &#39;WAUI_BIRTHDAY&#39;, oid_birthday);
+    if (length (oid_fullname))
+      WA_USER_EDIT (pUser, &#39;WAUI_FULL_NAME&#39;, oid_fullname);
+    if (length (oid_gender))
+      WA_USER_EDIT (pUser, &#39;WAUI_GENDER&#39;, case oid_gender when &#39;M&#39; then &#39;male&#39; when &#39;F&#39; then &#39;female&#39; else null end);
+    if (length (oid_postcode))
+      WA_USER_EDIT (pUser, &#39;WAUI_HCODE&#39;, oid_postcode);
+    if (length (oid_country))
+      WA_USER_EDIT (pUser, &#39;WAUI_HCOUNTRY&#39;, (select WC_NAME from WA_COUNTRY where WC_ISO_CODE = upper (oid_country)));
+    if (length (oid_tz))
+      WA_USER_EDIT (pUser, &#39;WAUI_HTZONE&#39;, oid_tz);
+    if (length (oid_identity))
+      update WA_USER_INFO set WAUI_OPENID_URL = oid_identity where WAUI_U_ID = uid;
+    return ODS_USER_LOGIN (pUser, pPassword, oid_identity, pDetail);
+  }
+
+_end:;
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_SELECT (
+  in pSid varchar,
+  in pRealm varchar,
+  in pShort integer := 1) returns varchar
+{
+  declare pUID integer;
+  declare pUser varchar;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  if (ODS_SESSION_CHECK (pSid, pRealm, pUID, pUser)) {
+    ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+    ODS_USER_XML (sStream, pUID, pShort);
+  } else {
+    ODS_ERROR_XML (sStream, &#39;BAD_SESSION&#39;, &#39;Invalid session!&#39;);
+  }
+
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_UPDATE (
+  in pSid varchar,
+  in pRealm varchar,
+  in pMail varchar,
+  in pTitle varchar,
+  in pFirstName varchar,
+  in pLastName varchar,
+  in pFullName varchar,
+  in pGender varchar,
+  in pBirthdayDay varchar,
+  in pBirthdayMonth varchar,
+  in pBirthdayYear varchar,
+  in pIcq varchar,
+  in pSkype varchar,
+  in pYahoo varchar,
+  in pAim varchar,
+  in pMsn varchar,
+  in pDefaultMapLocation varchar,
+  in pHomeCountry varchar,
+  in pHomeState varchar,
+  in pHomeCity varchar,
+  in pHomeCode varchar,
+  in pHomeAddress1 varchar,
+  in pHomeAddress2 varchar,
+  in pHomeTimeZone varchar,
+  in pHomeLatitude varchar,
+  in pHomeLongitude varchar,
+  in pHomePhone varchar,
+  in pHomeMobile varchar,
+  in pBusinessIndustry varchar,
+  in pBusinessOrganization varchar,
+  in pBusinessHomePage varchar,
+  in pBusinessJob varchar,
+  in pBusinessCountry varchar,
+  in pBusinessState varchar,
+  in pBusinessCity varchar,
+  in pBusinessCode varchar,
+  in pBusinessAddress1 varchar,
+  in pBusinessAddress2 varchar,
+  in pBusinessTimeZone varchar,
+  in pBusinessLatitude varchar,
+  in pBusinessLongitude varchar,
+  in pBusinessPhone varchar,
+  in pBusinessMobile varchar,
+  in pBusinessRegNo varchar,
+  in pBusinessCareer varchar,
+  in pBusinessEmployees varchar,
+  in pBusinessVendor varchar,
+  in pBusinessService varchar,
+  in pBusinessOther varchar,
+  in pBusinessNetwork varchar,
+  in pBusinessResume varchar,
+  in pSecuritySecretQuestion varchar,
+  in pSecuritySecretAnswer varchar,
+  in pSecuritySiocLimit varchar) returns varchar
+{
+  declare pUID integer;
+  declare pUser varchar;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  declare exit handler for sqlstate &#39;*&#39; {
+    ODS_ERROR_XML (sStream, __SQL_STATE, __SQL_MESSAGE);
+    goto _end;
+  };
+
+  if (ODS_SESSION_CHECK (pSid, pRealm, pUID, pUser)) {
+    -- Personal
+    WA_USER_EDIT (pUser, &#39;E_MAIL&#39;, pMail);
+    WA_USER_EDIT (pUser, &#39;WAUI_TITLE&#39;, pTitle);
+    WA_USER_EDIT (pUser, &#39;WAUI_FIRST_NAME&#39;, pFirstName);
+    WA_USER_EDIT (pUser, &#39;WAUI_LAST_NAME&#39;, pLastName);
+    WA_USER_EDIT (pUser, &#39;WAUI_FULL_NAME&#39;, pFullName);
+    WA_USER_EDIT (pUser, &#39;WAUI_GENDER&#39;, pGender);
+    {
+      declare dt any;
+
+      declare continue handler for sqlstate &#39;*&#39;
+		  {
+		    goto _skip;
+			};
+      dt := stringdate (sprintf (&#39;%s-%s-%s&#39;, pBirthdayYear, pBirthdayMonth, pBirthdayDay));
+      WA_USER_EDIT (pUser, &#39;WAUI_BIRTHDAY&#39;, dt);
+    _skip:;
+		}
+
+    -- Contact
+    WA_USER_EDIT (pUser, &#39;WAUI_ICQ&#39;, pIcq);
+    WA_USER_EDIT (pUser, &#39;WAUI_SKYPE&#39;, pSkype);
+    WA_USER_EDIT (pUser, &#39;WAUI_AIM&#39;, pYahoo);
+    WA_USER_EDIT (pUser, &#39;WAUI_YAHOO&#39;, pAim);
+    WA_USER_EDIT (pUser, &#39;WAUI_MSN&#39;, pMsn);
+
+    WA_USER_EDIT (pUser, &#39;WAUI_LATLNG_HBDEF&#39;, pDefaultMapLocation);
+    -- Home
+    WA_USER_EDIT (pUser, &#39;WAUI_HCOUNTRY&#39;, pHomeCountry);
+    WA_USER_EDIT (pUser, &#39;WAUI_HSTATE&#39;, pHomeState);
+    WA_USER_EDIT (pUser, &#39;WAUI_HCITY&#39;, pHomeCity);
+    WA_USER_EDIT (pUser, &#39;WAUI_HCODE&#39;, pHomeCode);
+    WA_USER_EDIT (pUser, &#39;WAUI_HADDRESS1&#39;, pHomeAddress1);
+    WA_USER_EDIT (pUser, &#39;WAUI_HADDRESS2&#39;, pHomeAddress2);
+    WA_USER_EDIT (pUser, &#39;WAUI_HTZONE&#39;, pHomeTimeZone);
+    WA_USER_EDIT (pUser, &#39;WAUI_LAT&#39;, pHomeLatitude);
+    WA_USER_EDIT (pUser, &#39;WAUI_LNG&#39;, pHomeLongitude);
+    WA_USER_EDIT (pUser, &#39;WAUI_HPHONE&#39;, pHomePhone);
+    WA_USER_EDIT (pUser, &#39;WAUI_HMOBILE&#39;, pHomeMobile);
+
+    -- Business
+    WA_USER_EDIT (pUser, &#39;WAUI_BINDUSTRY&#39;, pBusinessIndustry);
+    WA_USER_EDIT (pUser, &#39;WAUI_BORG&#39;, pBusinessOrganization);
+    WA_USER_EDIT (pUser, &#39;WAUI_BORG_HOMEPAGE&#39;, pBusinessHomePage);
+    WA_USER_EDIT (pUser, &#39;WAUI_BJOB&#39;, pBusinessJob);
+    WA_USER_EDIT (pUser, &#39;WAUI_BCOUNTRY&#39;, pBusinessCountry);
+    WA_USER_EDIT (pUser, &#39;WAUI_BSTATE&#39;, pBusinessState);
+    WA_USER_EDIT (pUser, &#39;WAUI_BCITY&#39;, pBusinessCity);
+    WA_USER_EDIT (pUser, &#39;WAUI_BCODE&#39;, pBusinessCode);
+    WA_USER_EDIT (pUser, &#39;WAUI_BADDRESS1&#39;, pBusinessAddress1);
+    WA_USER_EDIT (pUser, &#39;WAUI_BADDRESS2&#39;, pBusinessAddress2);
+    WA_USER_EDIT (pUser, &#39;WAUI_BTZONE&#39;, pBusinessTimeZone);
+    WA_USER_EDIT (pUser, &#39;WAUI_BLAT&#39;, pBusinessLatitude);
+    WA_USER_EDIT (pUser, &#39;WAUI_BLNG&#39;, pBusinessLongitude);
+    WA_USER_EDIT (pUser, &#39;WAUI_BPHONE&#39;, pBusinessPhone);
+    WA_USER_EDIT (pUser, &#39;WAUI_BMOBILE&#39;, pBusinessMobile);
+    WA_USER_EDIT (pUser, &#39;WAUI_BREGNO&#39;, pBusinessRegNo);
+    WA_USER_EDIT (pUser, &#39;WAUI_BCAREER&#39;, pBusinessCareer);
+    WA_USER_EDIT (pUser, &#39;WAUI_BEMPTOTAL&#39;, pBusinessEmployees);
+    WA_USER_EDIT (pUser, &#39;WAUI_BVENDOR&#39;, pBusinessVendor);
+    WA_USER_EDIT (pUser, &#39;WAUI_BSERVICE&#39;, pBusinessService);
+    WA_USER_EDIT (pUser, &#39;WAUI_BOTHER&#39;, pBusinessOther);
+    WA_USER_EDIT (pUser, &#39;WAUI_BNETWORK&#39;, pBusinessNetwork);
+    WA_USER_EDIT (pUser, &#39;WAUI_RESUME&#39;, pBusinessResume);
+
+    -- Security
+    WA_USER_EDIT (pUser, &#39;SEC_QUESTION&#39;, pSecuritySecretQuestion);
+    WA_USER_EDIT (pUser, &#39;SEC_ANSWER&#39;, pSecuritySecretAnswer);
+    USER_SET_OPTION (pUser, &#39;SIOC_POSTS_QUERY_LIMIT&#39;, atoi (pSecuritySiocLimit));
+
+    ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+  } else {
+    ODS_ERROR_XML (sStream, &#39;BAD_SESSION&#39;, &#39;Invalid session!&#39;);
+  }
+
+_end:;
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_UPDATE_PASSWORD (
+  in pSid varchar,
+  in pRealm varchar,
+  in pOldPassword varchar,
+  in pNewPassword varchar) returns varchar
+{
+  declare pUID integer;
+  declare pUser varchar;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  declare exit handler for sqlstate &#39;*&#39; {
+    ODS_ERROR_XML (sStream, __SQL_STATE, __SQL_MESSAGE);
+    goto _end;
+  };
+
+  if (ODS_SESSION_CHECK (pSid, pRealm, pUID, pUser)) {
+    -- Security
+    USER_CHANGE_PASSWORD (pUser, pOldPassword, pNewPassword);
+
+    ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+    ODS_USER_XML (sStream, pUID);
+  } else {
+    ODS_ERROR_XML (sStream, &#39;BAD_SESSION&#39;, &#39;Invalid session!&#39;);
+  }
+
+_end:;
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_LINKS (
+  in pSid varchar,
+  in pRealm varchar) returns varchar
+{
+  declare pUID integer;
+  declare pUser varchar;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  if (ODS_SESSION_CHECK (pSid, pRealm, pUID, pUser)) {
+    ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+    http (sprintf (&#39;&lt;foaf&gt;%s&lt;/foaf&gt;&#39;, DB.DBA.WA_LINK (1, sprintf (&#39;/dataspace/%s/%s/foaf.rdf&#39;,wa_identity_dstype(pUser), pUser))), sStream);
+  } else {
+    ODS_ERROR_XML (sStream, &#39;BAD_SESSION&#39;, &#39;Invalid session!&#39;);
+  }
+
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_USER_LIST (
+  in pSid varchar,
+  in pRealm varchar,
+  in pList varchar,
+  in pParam varchar := &#39;&#39;) returns varchar
+{
+  declare pUID integer;
+  declare pUser varchar;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+  if (ODS_SESSION_CHECK (pSid, pRealm, pUID, pUser)) {
+    ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+    if (pList = &#39;Industry&#39;) {
+      http (&#39;&lt;items&gt;&#39;, sStream);
+      for (select WI_NAME from DB.DBA.WA_INDUSTRY order by WI_NAME) do {
+        http (sprintf (&#39;&lt;item&gt;%s&lt;/item&gt;&#39;, WI_NAME), sStream);
+      }
+      http (&#39;&lt;/items&gt;&#39;, sStream);
+    }
+    if (pList = &#39;Country&#39;) {
+      http (&#39;&lt;items&gt;&#39;, sStream);
+      for (select WC_NAME from DB.DBA.WA_COUNTRY order by WC_NAME) do {
+        http (sprintf (&#39;&lt;item&gt;%s&lt;/item&gt;&#39;, WC_NAME), sStream);
+      }
+      http (&#39;&lt;/items&gt;&#39;, sStream);
+    }
+    if (pList = &#39;Province&#39;) {
+      http (&#39;&lt;items&gt;&#39;, sStream);
+      for (select WP_PROVINCE from DB.DBA.WA_PROVINCE where WP_COUNTRY = pParam and WP_COUNTRY &lt;&gt; &#39;&#39; order by WP_PROVINCE) do {
+        http (sprintf (&#39;&lt;item&gt;%s&lt;/item&gt;&#39;, WP_PROVINCE), sStream);
+      }
+      http (&#39;&lt;/items&gt;&#39;, sStream);
+    }
+    if (pList = &#39;DataSpaces&#39;) {
+      http (&#39;&lt;items&gt;&#39;, sStream);
+      for (select SIOC..forum_iri (WAI_TYPE_NAME, WAI_NAME) as instance_iri, WAI_NAME
+             from DB.DBA.SYS_USERS, DB.DBA.WA_MEMBER, DB.DBA.WA_INSTANCE
+            where WAM_INST = WAI_NAME and WAM_USER = pUID and U_ID = WAM_USER) do
+      {
+        http (sprintf (&#39;&lt;item href=&quot;%V&quot;&gt;%V&lt;/item&gt;&#39;, instance_iri, WAI_NAME), sStream);
+      }
+      http (&#39;&lt;/items&gt;&#39;, sStream);
+    }
+    if (pList = &#39;WebServices&#39;) {
+      declare N integer;
+      declare sql varchar;
+      declare st, msg, meta, rows any;
+
+      sql := &#39;sparql
+              PREFIX sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+              PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+              SELECT ?title, ?service_definition
+                FROM &lt;%s&gt;
+               WHERE {
+                       ?forum foaf:maker &lt;%s&gt;.
+                       ?forum sioc:id ?title.
+                       ?forum sioc:has_service ?svc.
+                       ?svc sioc:service_definition ?service_definition.
+                       ?svc sioc:service_protocol &quot;SOAP&quot;.
+                     }
+               ORDER BY ?title&#39;;
+
+      sql := sprintf (sql, SIOC..get_graph (), SIOC..person_iri (SIOC..user_iri (pUID)));
+      st := &#39;00000&#39;;
+
+      set_user_id (&#39;dba&#39;);
+      exec (sql, st, msg, vector (), 0, meta, rows);
+      http (&#39;&lt;items&gt;&#39;, sStream);
+      if (&#39;00000&#39; = st) {
+        for (N := 0; N &lt; length (rows); N := N + 1)
+        {
+          http (sprintf (&#39;&lt;item href=&quot;%V&quot;&gt;%V&lt;/item&gt;&#39;, rows[N][1], rows[N][0]), sStream);
+        }
+      }
+      http (&#39;&lt;/items&gt;&#39;, sStream);
+    }
+  } else {
+    ODS_ERROR_XML (sStream, &#39;BAD_SESSION&#39;, &#39;Invalid session!&#39;);
+  }
+
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_GET_LOCATION (
+  in pCountry varchar,
+  in pState varchar,
+  in pCity varchar,
+  in pCode varchar,
+  in pAddress1 varchar,
+  in pAddress2 varchar) returns varchar
+{
+  declare latitude, longitude double precision;
+  declare sStream any;
+
+  sStream := string_output();
+  http (&#39;&lt;root&gt;&#39;, sStream);
+
+	if (0 &lt;&gt; DB.DBA.WA_MAPS_ADDR_TO_COORDS (pAddress1, pAddress2, pCity, pState, pCode, pCountry, latitude, longitude)) {
+    ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+    http (&#39;&lt;location&gt;&#39;, sStream);
+    http (sprintf (&#39;&lt;latitude&gt;%s&lt;/latitude&gt;&#39;, cast (latitude as varchar)), sStream);
+    http (sprintf (&#39;&lt;longitude&gt;%s&lt;/longitude&gt;&#39;, cast (longitude as varchar)), sStream);
+    http (&#39;&lt;/location&gt;&#39;, sStream);
+	} else {
+    ODS_ERROR_XML (sStream, &#39;BAD_ADDRESS&#39;, &#39;Invalid address data!&#39;);
+	}
+  http (&#39;&lt;/root&gt;&#39;, sStream);
+  return string_output_string(sStream);
+}
+;
+
+-------------------------------------------------------------------------------
+--
+create procedure ODS_CREATE_DSN ()
+{
+	declare S varchar;
+	declare _driver varchar;
+	declare _dsn varchar;
+	declare _address varchar;
+	declare _user varchar;
+	declare _pass varchar;
+	declare _attrib varchar;
+
+	_dsn := &#39;LocalVirtuosoDemo&#39;;
+	_address := &#39;localhost:&#39; || cfg_item_value (virtuoso_ini_path (), &#39;Parameters&#39;, &#39;ServerPort&#39;);
+	_user := &#39;dba&#39;;
+	_pass := (select pwd_magic_calc (U_NAME, U_PASSWORD, 1) from DB.DBA.SYS_USERS where U_NAME = &#39;dba&#39;);
+
+  if ((sys_stat(&#39;st_build_opsys_id&#39;) = &#39;Win32&#39;) and (sys_stat(&#39;st_has_vdb&#39;) = 1)) {
+  	_driver := null;
+  	foreach (varchar _drv in sql_get_installed_drivers ()) do {
+  		if (upper(_drv) like &#39;OPENLINK VIRTUOSO%&#39; or upper(_drv) like &#39;VIRTUOSO%&#39;) {
+  			_driver := _drv;
+  			goto _exit;
+  		}
+  	}
+  _exit:;
+    if (not isnull (_driver)) {
+    	_attrib := &#39;&#39;;
+    	_attrib := _attrib || &#39;DSN=&#39; || _dsn || &#39;;&#39;;
+    	_attrib := _attrib || &#39;Address=&#39; || _address || &#39;;&#39;;
+    	_attrib := _attrib || &#39;UserID=&#39; || _user || &#39;;&#39;;
+    	_attrib := _attrib || &#39;Password=&#39; || _pass || &#39;;&#39;;
+    	_attrib := _attrib || &#39;Description=Local Virtuoso Demo DSN for ODS Users;&#39;;
+
+    	sql_config_data_sources(_driver, &#39;system&#39;, _attrib);
+    }
+  }
+
+  -- create PHP dsn file
+	S := &#39;&lt;?php \n&#39; ||
+	     &#39;  \$_dsn = &quot;%s&quot;; \n&#39; ||
+	     &#39;  \$_user = &quot;%s&quot;; \n&#39; ||
+	     &#39;  \$_pass = &quot;%s&quot;; \n&#39; ||
+	     &#39;?&gt; \n&#39;;
+	S := sprintf (S, _dsn, _user, _pass);
+	DB.DBA.DAV_RES_UPLOAD_STRSES_INT (&#39;/DAV/VAD/wa/users/users_dsn.php&#39;, S, &#39;text/html&#39;, &#39;111101101RR&#39;, http_dav_uid (), http_dav_uid () + 1, null, null, 0);
+
+  -- create JSP dsn file
+	S := &#39;&lt;%%@ page import=&quot;java.sql.*&quot; %%&gt;\n&#39; ||
+       &#39;&lt;%%@ page import=&quot;java.io.*&quot; %%&gt;\n&#39; ||
+       &#39;&lt;%%!\n&#39; ||
+       &#39;  Connection getConnection ()\n&#39; ||
+       &#39;    throws ClassNotFoundException, SQLException\n&#39; ||
+       &#39;  {\n&#39; ||
+       &#39;    Class.forName(&quot;virtuoso.jdbc3.Driver&quot;);\n&#39; ||
+       &#39;    return DriverManager.getConnection(&quot;jdbc:virtuoso://%s&quot;, &quot;%s&quot;, &quot;%s&quot;);\n&#39; ||
+       &#39;  }\n&#39; ||
+       &#39;\n&#39; ||
+       &#39;%%&gt;&#39;;
+	S := sprintf (S, _address, _user, _pass);
+	DB.DBA.DAV_RES_UPLOAD_STRSES_INT (&#39;/DAV/VAD/wa/users/users_dsn.jsp&#39;, S, &#39;application/octet-stream&#39;, &#39;110100100RR&#39;, http_dav_uid (), http_dav_uid () + 1, null, null, 0);
+}
+;
+
+ODS_CREATE_DSN ();
+
+-------------------------------------------------------------------------------
+--
+grant execute on ODS_USER_LOGIN to GDATA_ODS;
+grant execute on ODS_USER_LOGOUT to GDATA_ODS;
+grant execute on ODS_USER_REGISTER to GDATA_ODS;
+grant execute on ODS_USER_SELECT to GDATA_ODS;
+grant execute on ODS_USER_UPDATE to GDATA_ODS;
+grant execute on ODS_USER_UPDATE_PASSWORD to GDATA_ODS;
+grant execute on ODS_USER_LINKS to GDATA_ODS;
+grant execute on ODS_USER_LIST to GDATA_ODS;
+grant execute on ODS_GET_LOCATION to GDATA_ODS;
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3">oid_login.vsp</bridgehead>
+<programlisting>&lt;?vsp
+--
+--  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+--  project.
+--
+--  Copyright (C) 1998-2006 OpenLink Software
+--
+--  This project is free software; you can redistribute it and/or modify it
+--  under the terms of the GNU General Public License as published by the
+--  Free Software Foundation; only version 2 of the License, dated June 1991.
+--
+--  This program is distributed in the hope that it will be useful, but
+--  WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+--  General Public License for more details.
+--
+--  You should have received a copy of the GNU General Public License along
+--  with this program; if not, write to the Free Software Foundation, Inc.,
+--  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+--
+--
+
+  declare url, cnt, this_page, trust_root, xt, hdr, host any;
+  declare setup_url, check_immediate any;
+  declare oid_action, oid_mode, oid_srv, oid_delegate, oid_handle, oid_sig, oid_signed, oid_key varchar;
+  declare oid_identity, oid_mail, oid_nickname, oid_fullname, oid_birthday, oid_gender, oid_postcode, oid_country, oid_tz varchar;
+
+  oid_action := {?&#39;openid_action&#39;};
+  oid_identity := {?&#39;openid_url&#39;};
+  oid_mode := {?&#39;openid.mode&#39;};
+
+  host := http_request_header (lines, &#39;Host&#39;);
+  this_page := &#39;http://&#39; || host || http_path () || sprintf (&#39;?openid_action=%s&#39;, oid_action);;
+  trust_root := &#39;http://&#39; || host;
+
+  http_header (&#39;Cache-Control: private, proxy-revalidate\r\n&#39;);
+
+  -- start handshake
+  if (oid_identity is not null) {
+    url := trim(oid_identity);
+    declare exit handler for sqlstate &#39;*&#39; {
+      http (&#39;{err_code: &quot;openid.url&quot;, err_text: &quot;The URL cannot be retrieved&quot;}&#39;);
+      return;
+    };
+    if (not length (url) or url not like &#39;http%://%&#39;) {
+      http (&#39;{err_code: &quot;openid.url&quot;, err_text: &quot;Invalid URL&quot;}&#39;);
+      return;
+    }
+  again:
+    hdr := null;
+    cnt := DB.DBA.HTTP_CLIENT_EXT (url=&gt;url, headers=&gt;hdr);
+    if (hdr [0] like &#39;HTTP/1._ 30_ %&#39;) {
+      declare loc any;
+   	  loc := http_request_header (hdr, &#39;Location&#39;, null, null);
+ 	    url := WS.WS.EXPAND_URL (url, loc);
+      oid_identity := url;
+ 	    goto again;
+    }
+    xt := xtree_doc (cnt, 2);
+    oid_srv := cast (xpath_eval (&#39;//link[@rel=&quot;openid.server&quot;]/@href&#39;, xt) as varchar);
+    oid_delegate := cast (xpath_eval (&#39;//link[@rel=&quot;openid.delegate&quot;]/@href&#39;, xt) as varchar);
+
+    if (oid_srv is null) {
+      http (&#39;{err_code: &quot;openid.server&quot;, err_text: &quot;The OpenID server cannot be located&quot;}&#39;);
+      return;
+    }
+
+    if (oid_delegate is not null)
+      oid_identity := oid_delegate;
+    check_immediate := sprintf (&#39;%s?openid.mode=associate&#39;, oid_srv);
+    cnt := http_client (url=&gt;check_immediate);
+    cnt := split_and_decode (cnt, 0, &#39;\0\0\x0A:&#39;);
+    oid_handle := get_keyword (&#39;assoc_handle&#39;, cnt, null);
+    oid_key := get_keyword (&#39;mac_key&#39;, cnt, &#39;&#39;);
+    check_immediate := sprintf (&#39;%s?openid.mode=checkid_setup&amp;openid.identity=%U&amp;openid.return_to=%U&amp;openid.trust_root=%U&#39;, oid_srv, oid_identity, this_page, trust_root);
+    if (length (oid_handle))
+      check_immediate := check_immediate || sprintf (&#39;&amp;openid.assoc_handle=%U&#39;, oid_handle);
+    if (oid_action = &#39;login&#39;) {
+      check_immediate := check_immediate || sprintf (&#39;&amp;openid.sreg.optional=%U&#39;, &#39;nickname&#39;);
+    } else if (oid_action = &#39;authenticate&#39;) {
+      check_immediate := check_immediate || sprintf (&#39;&amp;openid.sreg.optional=%U&#39;, &#39;email,fullname,nickname,dob,gender,postcode,country,timezone&#39;);
+    } else if (oid_action = &#39;register&#39;) {
+      check_immediate := check_immediate || sprintf (&#39;&amp;openid.sreg.optional=%U&#39;, &#39;email,fullname,nickname,dob,gender,postcode,country,timezone&#39;);
+    }
+    http (sprintf (&#39;{checkid_immediate_url: &quot;%s&quot;, id_server: &quot;%s&quot;, clean_identity_url: &quot;%s&quot;, openid_key: &quot;%s&quot; }&#39;, check_immediate, oid_srv, oid_identity, oid_key));
+
+  } else if (oid_mode = &#39;id_res&#39;) {
+    setup_url := {?&#39;openid.user_setup_url&#39;};
+    oid_sig := {?&#39;openid.sig&#39;};
+    if (oid_sig is null) {
+?&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script&gt;
+      if (parent.location.host == location.host)
+        parent.OpenID_callback_fail(&quot;&lt;?vsp http (coalesce (setup_url, &#39;&#39;)); ?&gt;&quot;);
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;?vsp
+    } else {
+      declare pUser, S varchar;
+
+      oid_identity := {?&#39;openid.identity&#39;};
+      if (oid_action = &#39;login&#39;) {
+        S := DB.DBA.ODS_USER_LOGIN (null, null, oid_identity, 1);
+      } else if ((oid_action = &#39;authenticate&#39;) or (oid_action = &#39;register&#39;)) {
+	      declare uid, N, M integer;
+
+        oid_mail := {?&#39;openid.sreg.email&#39;};
+        oid_nickname := {?&#39;openid.sreg.nickname&#39;};
+        oid_fullname := {?&#39;openid.sreg.fullname&#39;};
+        oid_birthday := {?&#39;openid.sreg.dob&#39;};
+        oid_gender := {?&#39;openid.sreg.gender&#39;};
+        oid_postcode := {?&#39;openid.sreg.postcode&#39;};
+        oid_country := {?&#39;openid.sreg.country&#39;};
+        oid_tz := {?&#39;openid.sreg.timezone&#39;};
+
+        -- generate unique user name
+	      N := 1;
+	      pUser := oid_nickname;
+      _again:
+	      M := (select count(*) from DB.DBA.SYS_USERS where U_NAME = pUser);
+	      if (M &gt; 0) {
+		      pUser := oid_nickname || cast (N as varchar);
+		      N := N + 1;
+		      goto _again;
+	      }
+
+        if (oid_action = &#39;authenticate&#39;) {
+          declare sStream any;
+
+          sStream := string_output();
+          http (&#39;&lt;root&gt;&#39;, sStream);
+
+          DB.DBA.ODS_ERROR_XML (sStream, &#39;OK&#39;, &#39;OK&#39;);
+          http (&#39;&lt;oid&gt;&#39;, sStream);
+          http (sprintf(&#39;&lt;identity&gt;%s&lt;/identity&gt;&#39;, oid_identity), sStream);
+          http (sprintf(&#39;&lt;uid&gt;%s&lt;/uid&gt;&#39;, pUser), sStream);
+          http (sprintf(&#39;&lt;mail&gt;%s&lt;/mail&gt;&#39;, oid_mail), sStream);
+          if (length (oid_fullname))
+            http (sprintf(&#39;&lt;fullname&gt;%V&lt;/fullname&gt;&#39;, oid_fullname), sStream);
+          if (length (oid_birthday))
+            http (sprintf(&#39;&lt;birthday&gt;%V&lt;/birthday&gt;&#39;, oid_birthday), sStream);
+          if (length (oid_gender))
+            http (sprintf(&#39;&lt;gender&gt;%V&lt;/gender&gt;&#39;, oid_gender), sStream);
+          if (length (oid_postcode))
+            http (sprintf(&#39;&lt;postcode&gt;%V&lt;/postcode&gt;&#39;, oid_postcode), sStream);
+          if (length (oid_country))
+            http (sprintf(&#39;&lt;country&gt;%V&lt;/country&gt;&#39;, oid_country), sStream);
+          if (length (oid_tz))
+            http (sprintf(&#39;&lt;tz&gt;%V&lt;/tz&gt;&#39;, oid_tz), sStream);
+          http (&#39;&lt;/oid&gt;&#39;, sStream);
+
+          http (&#39;&lt;/root&gt;&#39;, sStream);
+          S := string_output_string (sStream);
+        } else {
+          S := DB.DBA.ODS_USER_REGISTER (pUser, uuid (), oid_mail, oid_identity, oid_fullname, oid_birthday, oid_gender, oid_postcode, oid_country, oid_tz, 1);
+        }
+      }
+?&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script&gt;
+      if (window.opener) {
+        var pwin = window.opener;
+        if (pwin.OpenID_callback_pass) {
+          pwin.OpenID_callback_pass(&quot;&lt;?vsp http (S); ?&gt;&quot;);
+      	  window.close();
+        } else {
+          alert(&quot;Error: browser weirdness. Please report this.&quot;);
+        }
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;?vsp
+   }
+ } else if (oid_mode = &#39;cancel&#39;) {
+?&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script&gt;
+      if (window.opener) {
+        var win = window.opener;
+        if (win.OpenID_callback_pass) {
+      	  window.close();
+        } else {
+          alert(&quot;Error: browser weirdness. Please report this.&quot;);
+        }
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;?vsp
+ } else {
+?&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script&gt;
+      if (parent.location.host == location.host)
+        parent.OpenID_general_error({err_code: &quot;gen_error&quot;,err_text: &quot;Unexpected error occurred when establishing OpenID sequence.&quot;});
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;?vsp
+}
+?&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">users.css:</bridgehead>
+ <programlisting>.error
+{
+  color: red;
+  font-weight: bold;
+  padding: 5px 0px 5px 0px;
+  background-color: white;
+  border: 1pt solid red;
+  text-align: center;
+}
+
+#ob {
+  float: left;
+  background-color: #85B9D2;
+  width: 100%;
+}
+
+#ob_left {
+  padding: 5px;
+  float: left;
+}
+
+#ob_right {
+  padding: 5px;
+  float: right;
+}
+
+div.form {
+  width: 600px;
+  background-color: #FFF;
+  margin: 5px;
+}
+
+div.header {
+  width: 100%;
+  padding: 5px 0 5px 0;
+  background-color: #F6F6F6;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+div.footer {
+  width: 100%;
+  padding: 5px 0 5px 0;
+  background-color: #F6F6F6;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+table.form {
+  width: 100%;
+}
+
+table.form th {
+  text-align: right;
+  padding-right: 3px;
+  margin-bottom: 5px;
+}
+
+table.form td {
+  padding-left: 3px;
+  margin-bottom: 5px;
+}
+
+#tabs {
+	margin-top: 24px;
+	list-style-type: none;
+	padding-bottom: 1px;
+}
+
+#tabs li {
+	display: inline;
+	padding: 1px 3px;
+	margin-left: 0.5em;
+	cursor: pointer;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+	background-color: #F6F6F6;
+	z-index: 10;
+}
+
+#tabs li.tab_selected {
+	background-color: #FFF;
+}
+
+#tabs li.tab:hover {
+	background-color: #FFF;
+}
+
+#tabs.tab_signal {
+  background-color: #999;
+}
+
+input.openID {
+  background: #FFFFFF url(/ods/images/login-bg.gif) no-repeat scroll;
+  padding-left: 18px;
+}
+
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">oid_login.js</bridgehead>
+<programlisting>/*
+ *
+ *  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+ *  project.
+ *
+ *  Copyright (C) 1998-2007 OpenLink Software
+ *
+ *  This project is free software; you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation; only version 2 of the License, dated June 1991.
+ *
+ *  This program is distributed in the hope that it will be useful, but
+ *  WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ *  General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ *
+*/
+
+var setupWin;
+
+function getXTR () {
+  var xtr;
+
+  if (typeof(XMLHttpRequest) != &quot;undefined&quot;) {
+    // The Firefox/Safari/Opera way
+    xtr = new XMLHttpRequest();
+  } else {
+    // The IE way(s)
+    try {
+      xtr = new ActiveXObject(&quot;Msxml2.XMLHTTP.4.0&quot;);
+    } catch (e) {
+      try {
+        xtr = new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
+      } catch (ex) {
+      }
+    }
+  }
+  return xtr;
+}
+
+function openID_include (uri) {
+  window.open (uri, &quot;OpenID_window&quot;, &quot;&quot;);
+}
+
+// args is object with keys:
+//   client_url:          the HTML URL the client provided. is just
+//                        sent as-is to the helper URL on the server.
+//   helper_url:          the URL of the helper on the server
+//   on_success:          (canonical_identity_url, id_server, oid_ret, sig)
+//   on_error             (errtxt) general error callback
+//   on_need_permissions  (url) URL to send user
+//
+function openID_verify (optsParams) {
+  var xtr = getXTR();
+  var nf = function () {};  // null function
+
+  // make a copy to work around Safari bug w/ closures not capturing formal parameters
+  var opts = optsParams;
+
+  // make a top-level function that captures some internal variables
+  window.OpenID_callback_pass = function (obj) {
+    (opts.on_success||nf)(obj);
+  };
+  window.OpenID_callback_fail = function (url) {
+    (opts.on_need_permissions||nf)(url);
+  };
+  window.OpenID_general_error = function (error) {
+    (opts.on_error||nf)(error.err_code, error.err_text);
+  };
+
+  var state_callback = function () {
+    var ex;
+    var helperRes;
+
+    if (xtr.readyState != 4)
+      return;
+
+    if (xtr.status == 200) {
+      try {
+        (opts.on_debug||nf)(&quot;responseText = [&quot; + xtr.responseText + &quot;]&quot;);
+        try {
+          eval(&quot;var helperRes = &quot; + xtr.responseText + &quot;;\n&quot;);
+        } catch (ex) {
+          (opts.on_error||nf)(&quot;invalid_json&quot;, &quot;Got invalid JSON response from helper.  Got: &quot; + xtr.responseText + &quot;, e = &quot; + ex);
+          return;
+        }
+
+        if (helperRes.err_code) {
+          (opts.on_error||nf)(helperRes.err_code, helperRes.err_text);
+          return;
+        }
+
+        var cleanIdentityURL = helperRes.clean_identity_url;
+        var macKey = helperRes.openid_key;
+
+        (opts.on_post_helper||nf)(helperRes.id_server, cleanIdentityURL, macKey);
+        opts.id_server = helperRes.id_server;
+
+        openID_include(helperRes.checkid_immediate_url);
+
+      } catch (ex) {
+        (opts.on_error||nf)(&quot;iframe_exception&quot;, &quot;Error loading remote iframe: &quot; + ex);
+      }
+    } else {
+      (opts.on_error||nf)(&quot;helper_not_200&quot;, &quot;Didn&#39;t get status code 200 contacting helper.  Got: &quot; + xtr.status);
+    }
+  }
+  xtr.onreadystatechange = state_callback;
+  xtr.open(&quot;GET&quot;, opts.helper_url + &quot;?openid_url=&quot; + escape(opts.client_url) +&#39;&amp;openid_action=&#39; + opts.client_action, true);
+  xtr.send(null);
+}
+
+function cbDebug (txt) {
+}
+
+function cbSuccess (obj) {
+  var xml = OAT.Xml.createXmlDoc(obj);
+  afterLogin(xml);
+  cbSuccessWork ();
+}
+
+function cbSuccess2 (obj) {
+  var xml = OAT.Xml.createXmlDoc(obj);
+  afterLogin(xml);
+  cbSuccessWork ();
+}
+
+function cbSuccess3 (obj) {
+  var xml = OAT.Xml.createXmlDoc(obj);
+  afterAuthenticate(xml);
+  cbSuccessWork ();
+}
+
+function cbSuccessWork () {
+  // find the setup window, if they clicked the regular link
+  if (! setupWin) {
+    try {
+      setupWin = window.open(&quot;about:blank&quot;, &quot;user_setup_url_win&quot;);
+    } catch (e) { }
+  }
+
+  // and now try to close whatever it was
+  try {
+    if (setupWin)
+      setupWin.close();
+  } catch (e) { }
+}
+
+function cbError (errorCode, errorTxt) {
+  alert (errorTxt);
+}
+
+function cbNeedPermissions (url) {
+  alert (&#39;You need permissions to &#39;+URL);
+}
+
+</programlisting><para> </para>
+</section></docbook>

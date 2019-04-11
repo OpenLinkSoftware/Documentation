@@ -1,0 +1,108 @@
+<docbook><section><title>VirtuosoRDFSinkFolder</title><title> How to use Virtuoso&#39;s RDF Sink Folder</title> How to use Virtuoso&#39;s RDF Sink Folder
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What is the RDF Sink Folder?</bridgehead>
+<para><ulink url="WebDAV">WebDAV</ulink> supports a special folder type for RDF uploads, called <emphasis>rdf_sink</emphasis>.
+This folder can be used to uploads RDF files from any <ulink url="WebDAV">WebDAV</ulink> client.</para>
+<para>When a new user is created, a new <ulink url="WebDAV">WebDAV</ulink> folder with name rdf_sink is automatically created in the user&#39;s home directory.</para>
+<para>The rdf_sink folder has two special properties - <emphasis>virt:rdf_graph</emphasis> and <emphasis>virt:rdf_sponger</emphasis>.
+ <ulink url="WebDAV">WebDAV</ulink> property names are prefixed with <emphasis>virt:</emphasis>, and these are not shown as resource/collection properties in the ODS Briefcase; they can only be seen in the Conductor.
+ The properties of other <ulink url="DynamicFolder">DET folders</ulink> are prefixed in the same way.
+</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The property <emphasis>virt:rdf_graph</emphasis> contains the name of the graph into which triples parsed from the uploaded files will be loaded.
+</listitem>
+<listitem>The property <emphasis>virt:rdf_sponger</emphasis> holds the upload method.
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry>  on  </entry><entry> The content of <emphasis>every file uploaded to that folder</emphasis> will be added to the RDF store using the Sponger method.  </entry></row>
+<row><entry>  off  </entry><entry> The content of <emphasis>only files with special MIME types</emphasis> will be added to RDF store.  </entry></row>
+</tbody></tgroup></table>
+</listitem>
+</itemizedlist><para>After the first upload into the folder, a new file is created with a name based on the RDF graph name.
+ This file is dynamic, and contains all uploaded triples.</para>
+<para>Resources stored to the rdf_sink folder don&#39;t have any special properties.</para>
+<para>A user may see the properties of this folder through the Conductor UI, using the <emphasis>Properties</emphasis> button found to the right of the folder name.
+ That page will include two <ulink url="WebDAV">WebDAV</ulink> properties, for instance --</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>virt:rdf_graph</emphasis>: http://demo.openlinksw.com/DAV/home/demo/rdf_sink </listitem>
+<listitem><emphasis>virt:rdf_sponger</emphasis>:  on</listitem>
+</itemizedlist><para>Users may change these values as other <ulink url="WebDAV">WebDAV</ulink> properties.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Notes for Virtuoso upgraders</bridgehead>
+<para>When a Virtuoso DB is upgraded from a version which lacked the RDF Sink feature, to a version which includes it -- </para>
+<orderedlist spacing="compact"><listitem>A procedure is added to automatically create the rdf_sink  folder in the home directory of existing users.
+</listitem>
+<listitem>The <emphasis>Add Users</emphasis> page of the Conductor is changed so that when any new user created with a <ulink url="WebDAV">WebDAV</ulink> home directory, then the rdf_sink folder is created too.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> HTTP Content Negotiation</bridgehead>
+<para>How does it work?</para>
+<orderedlist spacing="compact"><listitem>When a file is uploaded to the rdf_sink folder, it is parsed for RDF data, which is then stored in 2 graphs: <itemizedlist mark="bullet" spacing="compact"><listitem>In the Public Graph specified as parameter for the rdf_sink folder, containing RDF data from all files stored there; </listitem>
+<listitem>In a Private Graph, containing only RDF data from this file; </listitem>
+</itemizedlist></listitem>
+<listitem>A rewrite rule is added for the virtual path &quot;/DAV&quot; especially for the rdf_sink folder.
+</listitem>
+<listitem>When the file is dereferenced and the user agent specifies one of the following content types in its Accept: header, then the parsed content of the file is returned from the private graph in accepted type.
+<itemizedlist mark="bullet" spacing="compact"><listitem>application/rdf+xml </listitem>
+<listitem>application/foaf+xml </listitem>
+<listitem>text/rdf+n3 </listitem>
+<listitem>text/rdf+ttl </listitem>
+<listitem>application/rdf+n3 </listitem>
+<listitem>application/rdf+turtle </listitem>
+<listitem>application/turtle </listitem>
+<listitem>application/x-turtle</listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Example 1</bridgehead>
+<para>User demo uploads an RDF file to the rdf_sink folder at <ulink url="http://demo.openlinksw.com/ods">http://demo.openlinksw.com/ods</ulink>: </para>
+<orderedlist spacing="compact"><listitem>Go to demo user&#39;s Briefcase instance home page.
+</listitem>
+<listitem>Upload the RDF file (e.g., &quot;TimBLcard.rdf&quot;) to the rdf_sink folder.
+</listitem>
+<listitem>After upload, &quot;http___demo.openlinksw.com_DAV_home_demo_rdf_sink_.RDF&quot; DET file is created.
+</listitem>
+<listitem>The RDF data will then be loaded into the graph name specified in the virt:rdf_graph property for the rdf_sink folder, i.e., http://demo.openlinksw.com/DAV/home/demo/rdf_sink.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Example 2</bridgehead>
+<para>Suppose there is myfoaf.rdf file with the following content:</para>
+<programlisting>&lt;rdf:RDF xmlns=&quot;http://www.example/jose/foaf.rdf#&quot;
+    xmlns:foaf=&quot;http://xmlns.com/foaf/0.1/&quot;
+    xmlns:log=&quot;http://www.w3.org/2000/10/swap/log#&quot;
+    xmlns:myfoaf=&quot;http://www.example/jose/foaf.rdf#&quot;
+    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+
+    &lt;foaf:Person rdf:about=&quot;http://www.example/jose/foaf.rdf#jose&quot;&gt;
+        &lt;foaf:homepage rdf:resource=&quot;http://www.example/jose/&quot;/&gt;
+        &lt;foaf:knows rdf:resource=&quot;http://www.example/jose/foaf.rdf#juan&quot;/&gt;
+        &lt;foaf:name&gt;Jose Jimen~ez&lt;/foaf:name&gt;
+        &lt;foaf:nick&gt;Jo&lt;/foaf:nick&gt;
+        &lt;foaf:workplaceHomepage rdf:resource=&quot;http://www.corp.example/&quot;/&gt;
+    &lt;/foaf:Person&gt;
+
+    &lt;foaf:Person rdf:about=&quot;http://www.example/jose/foaf.rdf#juan&quot;&gt;
+        &lt;foaf:mbox rdf:resource=&quot;mailto:juan@mail.example&quot;/&gt;
+    &lt;/foaf:Person&gt;
+
+    &lt;foaf:Person rdf:about=&quot;http://www.example/jose/foaf.rdf#julia&quot;&gt;
+        &lt;foaf:mbox rdf:resource=&quot;mailto:julia@mail.example&quot;/&gt;
+    &lt;/foaf:Person&gt;
+
+    &lt;rdf:Description rdf:about=&quot;http://www.example/jose/foaf.rdf#kendall&quot;&gt;
+        &lt;foaf:knows rdf:resource=&quot;http://www.example/jose/foaf.rdf#edd&quot;/&gt;
+    &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+</programlisting><para> Now let&#39;s upload the myfoaf.rdf file to destination server demo.openlinksw.com, for user demo:</para>
+<programlisting>File: myfoaf.rdf
+Destination Server: demo.openlinksw.com
+
+curl -T myfoaf.rdf http://demo.openlinksw.com/DAV/home/demo/rdf_sink/myfoaf.rdf -u demo:demo
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+  &lt;TITLE&gt;201 Created&lt;/TITLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+  &lt;H1&gt;Created&lt;/H1&gt;
+  Resource /DAV/home/demo/rdf_sink/ myfoaf.rdf has been created.
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> See Also</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/ODSRDFSinkFolder">ODS RDF Sink Folder</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryDAV">CategoryDAV</ulink> <ulink url="CategorySpec">CategorySpec</ulink></para>
+</section></docbook>

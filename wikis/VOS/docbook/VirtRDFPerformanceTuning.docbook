@@ -1,0 +1,319 @@
+<docbook><section><title>VirtRDFPerformanceTuning</title><title> Performance Tuning Virtuoso for RDF Queries and Other Use</title> Performance Tuning Virtuoso for RDF Queries and Other Use
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>For RDF query performance, we have the following possible questions:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Is the Virtuoso process properly configured to handle big data sets? </listitem>
+<listitem>Is the graph always specified? </listitem>
+<listitem>Are public web service endpoints protected against bad queries? </listitem>
+<listitem>Are there patterns where only a predicate is given? </listitem>
+<listitem>Is there a bad query plan because of cost model error?</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> General Memory Usage Settings</bridgehead>
+<para>When running with large data sets, one should configure the Virtuoso process to use between 2/3 to 3/5 of system RAM and to stripe storage on all available disks.
+ See <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#VIRTINI">NumberOfBuffers</ulink>, <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#VIRTINI">MaxDirtyBuffers</ulink>, and <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#VIRTINI">Striping</ulink> INI file parameters.
+</para>
+<programlisting>; default installation
+NumberOfBuffers          = 2000
+MaxDirtyBuffers          = 1200
+</programlisting><para> Typical sizes for the NumberOfBuffers and MaxDirtyBuffers (3/4 of NumberOfBuffers) parameters in the Virtuoso configuration file (virtuoso.ini)  for various memory sizes are as follows, with each buffer consisting of 8K bytes:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row />
+<row><entry>  2 GB  </entry><entry>   170000 </entry><entry>   130000 </entry></row>
+<row><entry>  4 GB  </entry><entry>   340000 </entry><entry>   250000 </entry></row>
+<row><entry>  8 GB  </entry><entry>   680000 </entry><entry>   500000 </entry></row>
+<row><entry>  16 GB  </entry><entry>   1360000 </entry><entry>   1000000 </entry></row>
+<row><entry>  32 GB  </entry><entry>   2720000 </entry><entry>   2000000 </entry></row>
+<row><entry>  48 GB  </entry><entry>   4000000 </entry><entry>   3000000 </entry></row>
+<row><entry>  64 GB  </entry><entry>   5450000 </entry><entry>   4000000 </entry></row>
+</tbody></tgroup></table>
+<para>Also, if running with a large database, setting <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#VIRTINI">MaxCheckpointRemap</ulink> to 1/4th of the database size is recommended.
+ This is in pages, 8K per page.</para>
+<para>A general formula for calculating the optimum Virtuoso NumberOfBuffers setting for a given amount of available memory is: </para>
+<programlisting>NumberOfBuffers = (Free Memory * 0.66)/8000
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> How to determine available Memory</bridgehead>
+<para>The following links provide methods that can be used to determine the available memory on various supported operating system, when determining how much memory Virtuoso can be configured to use on a system:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://blog.scoutapp.com/articles/2010/10/06/determining-free-memory-on-linux">Linux based systems</ulink> </listitem>
+<listitem><ulink url="http://support.apple.com/kb/ht1342">Mac OS X</ulink> </listitem>
+<listitem><ulink url="http://www.computerhope.com/issues/ch000149.htm">Windows</ulink> </listitem>
+<listitem><ulink url="http://nixcraft.com/showthread.php/492-unix-find-out-ram-usage-command">Solaris, HP-UX, AIX, others ...</ulink></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> RDF Index Scheme</bridgehead>
+<para>Starting with version 6.00.3126, the default RDF index scheme consists of 2 full indices over RDF quads plus 3 partial indices.
+ This index scheme is generally adapted to all kinds of workloads, regardless of whether queries generally specify a graph.
+ As indicated the default index scheme in Virtuoso is almost always applicable as is, whether one has a RDF database with very large numbers of small graphs or just one or a few large graphs.
+ With Virtuoso 7 the indices are column-wise by default, which results in them to consuming usually about 1/3 of the space the equivalent row-wise structures would consume.</para>
+<para>Alternate indexing schemes are possible but will not be generally needed.
+ For upgrading old databases with a different index scheme see the corresponding documentation.</para>
+<para>The index scheme consists of the following indices:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>PSOG</emphasis> - primary key </listitem>
+<listitem><emphasis>POGS</emphasis> - bitmap index for lookups on object value.
+</listitem>
+<listitem><emphasis>SP</emphasis> - partial index for cases where only S is specified.
+</listitem>
+<listitem><emphasis>OP</emphasis> - partial index for cases where only O is specified.
+</listitem>
+<listitem><emphasis>GS</emphasis> - partial index for cases where only G is specified.</listitem>
+</itemizedlist><para>This index scheme is created by the following statements for row-wise (v6 default) and column-wise (v7 default):</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Row wise storage</bridgehead>
+ <programlisting>CREATE TABLE DB.DBA.RDF_QUAD (
+  G IRI_ID_8,
+  S IRI_ID_8,
+  P IRI_ID_8,
+  O ANY,
+  PRIMARY KEY (P, S, O, G)
+  )
+ALTER INDEX RDF_QUAD ON DB.DBA.RDF_QUAD 
+  PARTITION (S INT (0hexffff00));
+
+CREATE DISTINCT NO PRIMARY KEY REF BITMAP INDEX RDF_QUAD_SP 
+  ON DB.DBA.RDF_QUAD (S, P) 
+  PARTITION (S INT (0hexffff00));
+
+CREATE BITMAP INDEX RDF_QUAD_POGS 
+  ON DB.DBA.RDF_QUAD (P, O, G, S) 
+  PARTITION (O VARCHAR (-1, 0hexffff));
+
+CREATE DISTINCT NO PRIMARY KEY REF BITMAP INDEX RDF_QUAD_GS 
+  ON DB.DBA.RDF_QUAD (G, S) 
+  PARTITION (S INT (0hexffff00));
+
+CREATE DISTINCT NO PRIMARY KEY REF INDEX RDF_QUAD_OP 
+  ON DB.DBA.RDF_QUAD (O, P) 
+  PARTITION (O VARCHAR (-1, 0hexffff));
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Column wise storage</bridgehead>
+<programlisting>CREATE TABLE DB.DBA.RDF_QUAD (
+  G IRI_ID_8,
+  S IRI_ID_8,
+  P IRI_ID_8,
+  O ANY,
+  PRIMARY key (P, S, O, G) COLUMN
+  )
+ALTER INDEX RDF_QUAD ON DB.DBA.RDF_QUAD 
+  PARTITION (S int (0hexffff00));
+
+CREATE DISTINCT NO PRIMARY KEY REF COLUMN INDEX RDF_QUAD_SP 
+  ON DB.DBA.RDF_QUAD (S, P) 
+  PARTITION (S int (0hexffff00));
+
+CREATE COLUMN INDEX RDF_QUAD_POGS 
+  ON DB.DBA.RDF_QUAD (P, O, S, G) 
+  PARTITION (O varchar (-1, 0hexffff));
+
+CREATE DISTINCT NO PRIMARY KEY REF COLUMN INDEX RDF_QUAD_GS 
+  ON DB.DBA.RDF_QUAD (G, S) 
+  PARTITION (S int (0hexffff00));
+
+CREATE DISTINCT NO PRIMARY KEY REF COLUMN INDEX RDF_QUAD_OP 
+  ON DB.DBA.RDF_QUAD (O, P) 
+  PARTITION (O varchar (-1, 0hexffff));
+</programlisting><para> The idea is to favor queries where the predicate is specified in triple patterns.
+ The entire quad can be efficiently accessed when P and at least one of S and O are known.
+ This has the advantage of clustering data by the predicate which improves working set.
+ A page read from disk will only have entries pertaining to the same predicate; chances of accessing other entries of the page are thus higher than if the page held values for arbitrary predicates.
+ For less frequent cases where only S is known, as in DESCRIBE, the distinct Ps of the S are found in the SP index.
+ These SP pairs are then used for accessing the PSOG index to get the O and G.
+ For cases where only the G is known, as when dropping a graph, the distinct Ss of the G are found in the GS index.
+ The Ps of the S are then found in the SP index.
+ After this, the whole quad is found in the PSOG index.</para>
+<para>The SP, OP, and GS indices do not store duplicates.
+ If an S has many values of the P, there is only one entry.
+ Entries are not deleted from SP, OP, or GS.
+ This does not lead to erroneous results since a full index (that is, either POSG or PSOG) is always consulted in order to know if a quad actually exists.
+ When updating data, most often a graph is entirely dropped and a substantially similar graph inserted in its place.
+ The SP, OP, and GS indices get to stay relatively unaffected.</para>
+<para>Still, over time, especially if there are frequent updates and values do not repeat between consecutive states, the SP, OP, and GS indices will get polluted, which may affect performance.
+ Dropping and recreating the index will remedy this situation.</para>
+<para>In cases where this is not practical, the index scheme should only have full indices; i.e., each key holds all columns of the primary key of the quad.
+ This will be the case if the DISTINCT NO PRIMARY KEY REF options are not specified in the CREATE INDEX statement.
+ In such cases, all indices remain in strict sync across deletes.</para>
+<para>Many RDF workloads have bulk-load and read-intensive access patterns with few deletes.
+ The default index scheme is optimized for these.
+ With these situations, this scheme offers significant space savings, resulting in better working set.
+ Typically, this layout takes 60-70% of the space of a layout with 4 full indices.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Index Scheme Selection</bridgehead>
+<para>The indexes in place on the RDF_QUAD table can greatly affect the performance of SPARQL queries, as can be determined by running the <emphasis>STATISTICS</emphasis> command on the table as follows:</para>
+<programlisting>SQL&gt; STATISTICS DB.DBA.RDF_QUAD;
+Showing SQLStatistics of table(s) &#39;DB.DBA.RDF_QUAD&#39;
+TABLE_QUALIFIER  TABLE_OWNER  TABLE_NAME  NON_UNIQUE  INDEX_QUALIFIER  INDEX_NAME     TYPE      SEQ_IN_INDEX  COLUMN_NAME  COLLATION  CARDINALITY  PAGES    FILTER_CONDITION
+VARCHAR          VARCHAR      VARCHAR     SMALLINT    VARCHAR          VARCHAR        SMALLINT  SMALLINT      VARCHAR      VARCHAR    INTEGER      INTEGER  VARCHAR
+_______________  ___________  __________  __________  _______________  _____________  ________  ____________  ___________  _________  ___________  _______  ________________
+
+DB               DBA          RDF_QUAD    NULL        NULL             NULL           0         NULL          NULL         NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    0           DB               RDF_QUAD       3         1             P            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    0           DB               RDF_QUAD       3         2             S            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    0           DB               RDF_QUAD       3         3             O            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    0           DB               RDF_QUAD       3         4             G            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_GS    3         1             G            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_GS    3         2             S            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_OP    3         1             O            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_OP    3         2             P            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_POGS  3         1             P            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_POGS  3         2             O            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_POGS  3         3             G            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_POGS  3         4             S            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_SP    3         1             S            NULL       NULL         NULL     NULL
+DB               DBA          RDF_QUAD    1           DB               RDF_QUAD_SP    3         2             P            NULL       NULL         NULL     NULL
+
+15 Rows. -- 24 msec.
+SQL&gt; 
+</programlisting><para> With only one index (OGPS) created by default, if the graph is always given, as with one or more FROM or FROM NAMED clauses, and there are no patterns where only graph and predicate are given, then the default indices should be sufficient.
+ If predicate and graph are given but subject is not, then it is sometimes useful to add: </para>
+<programlisting>CREATE BITMAP INDEX RDF_QUAD_GPOS
+  ON DB.DBA.RDF_QUAD (G, P, O, S) 
+  PARTITION (O VARCHAR (-1, 0hexffff));
+</programlisting><para> Note: If the server version is pre-5.0.7, leave out the partitioning clause.</para>
+<para>Making the PGOS index can help in some cases even if it is not readily apparent from the queries that one is needed.
+ This is so, for example, if the predicate by itself is selective; i.e.
+ there is a predicate that occurs in only a few triples.</para>
+<para>There is one known application scenario that requires a small alteration to the default index scheme.
+ If the application has a large number of small graphs, e.g.
+ millions of graphs of tens or hundreds of triples each, and it commonly happens that large numbers of graphs contain exactly the same triple, for example the same triple is found in 100000 or one million graphs, then some operations will become inefficient with the default index scheme.
+ In specific, dropping a graph may have to scan through large amounts of data in order to find the right quad to delete from the set of quads that differ only in the graph.</para>
+<para>This will affect a graph replace and a graph drop or generally any deletion that falls on a quad of the described sort.
+ If this is the situation in the application, then dropping the RDF_QUAD_GS distinct projection and replacing it with a covering index that starts with G is appropriate: </para>
+<programlisting>DROP INDEX RDF_QUAD_GS;
+CREATE COLUMN INDEX  RDF_QUAD_GPSO 
+   ON RDF_QUAD (G, P, S, O) 
+   PARTITION (S INT (0hexffff00);
+</programlisting><para> The partition clause only affects cluster settings and is ignored in the single server case.
+ Partitioning on S is usually better than on O since the distribution of S is generally less skewed than that of O.
+ That is, there usually are some very common O values (e.g., class &quot;thing&quot;).
+ This will increase space consumption by maybe 25% compared to the default scheme.</para>
+<para>Public web service endpoints have proven to be sources of especially bad queries.
+ While local application developers can obtain instructions from database administrators and use ISQL access to the database to tune execution plans, &quot;external&quot; clients do not know details of configuration and/or lack appropriate skills.
+ The most common problem is that public endpoints usually get requests that do not mention the required graph, because the queries were initially written for use with triple stores.
+ If the web service provides access to a single graph (or to a short list of graphs), then it is strongly recommended to configure it by adding a row into DB.DBA.SYS_SPARQL_HOST.
+ The idea is that if the client specifies the default graph in the request, or uses named graphs and group graph patterns, then he is probably smarter than average and will provide meaningful queries.
+ If no graph names are specified, then the query will benefit from preset graph because this will give the compiler some more indexes to choose from -- indexes that begin with G.</para>
+<para>Sometimes web service endpoints are used to access data of only one application, not all data in the system.
+ In that case, one may wish to declare a separate storage that consists of only RDF Views made by that application and define input:storage in the appropriate row of DB.DBA.SYS_SPARQL_HOST.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Erroneous Cost Estimates and Explicit Join Order</bridgehead>
+<para>The selectivity of triple patterns is determined at query compile time by sampling the data.
+ It is possible that misleading data is produced.
+ To see if the cardinality guesses are generally valid, look at the query plan with the <ulink url="http://docs.openlinksw.com/virtuoso/fn_explain.html">explain ()</ulink> function.</para>
+<para>Below is a sample from the LUBM qualification data set in the Virtuoso distribution.
+ After running make test in binsrc/test/lubm, there is a loaded database with the data.
+ Start a server in the same directory to see the data.</para>
+<programlisting>SQL&gt; EXPLAIN 
+  (&#39;SPARQL 
+  PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+  SELECT *
+  FROM &lt;lubm&gt;
+  WHERE { ?x  rdf:type  ub:GraduateStudent }
+  &#39;);
+
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+{
+
+Precode:
+      0: $25 &quot;callret&quot; := Call __BOX_FLAGS_TWEAK (&lt;constant (lubm)&gt;, &lt;constant (1)&gt;)
+      5: $26 &quot;lubm&quot; := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($25 &quot;callret&quot;)
+      12: $27 &quot;callret&quot; := Call __BOX_FLAGS_TWEAK (&lt;constant (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)&gt;, &lt;constant (1)&gt;)
+      17: $28 &quot;-ns#type&quot; := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($27 &quot;callret&quot;)
+      24: $29 &quot;callret&quot; := Call __BOX_FLAGS_TWEAK (&lt;constant (http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent)&gt;, &lt;constant (1)&gt;)
+      29: $30 &quot;owl#GraduateStudent&quot; := Call DB.DBA.RDF_MAKE_IID_OF_QNAME_SAFE ($29 &quot;callret&quot;)
+      36: BReturn 0
+from DB.DBA.RDF_QUAD by RDF_QUAD_OGPS    1.9e+03 rows
+Key RDF_QUAD_OGPS  ASC ($32 &quot;s-3-1-t0.S&quot;)
+&lt;col=415 O = $30 &quot;owl#GraduateStudent&quot;&gt; , &lt;col=412 G = $26 &quot;lubm&quot;&gt; , &lt;col=414 P = $28 &quot;-ns#type&quot;&gt;
+row specs: &lt;col=415 O LIKE &lt;constant (T)&gt;&gt;
+
+Current of: &lt;$34 &quot;&lt;DB.DBA.RDF_QUAD s-3-1-t0&gt;&quot; spec 5&gt;
+
+After code:
+      0: $35 &quot;x&quot; := Call ID_TO_IRI ($32 &quot;s-3-1-t0.S&quot;)
+      5: BReturn 0
+Select ($35 &quot;x&quot;, &lt;$34 &quot;&lt;DB.DBA.RDF_QUAD s-3-1-t0&gt;&quot; spec 5&gt;)
+}
+
+22 Rows. -- 1 msec.
+</programlisting><para> This finds the graduate student instances in the LUBM graph.
+ First the query converts the IRI literals to IDs.
+ Then, using a match of OG on OGPS, it finds the IRIs of the graduate students.
+ Then, it converts the IRI ID to return to the string form.</para>
+<para>The cardinality estimate of 1.9e+03 rows is on the FROM line.</para>
+<para>Doing an EXPLAIN() on the queries will show the cardinality estimates.
+ To drill down further, one can split the query into smaller chunks and see the estimates for these, up to doing it at the triple-pattern level.
+ To indicate a variable that is bound but whose value is not a literal known at compile time, one can use the parameter marker ??.</para>
+<programlisting>SQL&gt; EXPLAIN 
+  (&#39;
+      SPARQL 
+      DEFINE  sql:table-option &quot;order&quot;  
+      PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+      SELECT *
+         FROM &lt;lubm&gt;
+         WHERE { ?x  rdf:type  ?? }
+  &#39;);
+</programlisting><para> This will not know the type, but will know that a type will be provided.
+ So instead of guessing 1900 matches, this will guess a smaller number, which is obviously less precise; thus, literals are generally better.</para>
+<para>In some cases, generally to work around an optimization error, one can specify an explicit JOIN order.
+ This is done with the sql:select-option &quot;order&quot; clause in the SPARQL query prefix.</para>
+<programlisting>SQL&gt; SELECT SPARQL_to_sql_text 
+  (&#39;  
+      DEFINE sql:select-option &quot;order&quot; 
+      PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+      SELECT *
+      FROM &lt;lubm&gt;
+      WHERE
+        {
+          ?x        rdf:type  ub:GraduateStudent
+           ;  ub:takesCourse  &lt;http://www.Department0.University0.edu/GraduateCourse0&gt;
+        }
+  &#39;);
+</programlisting><para>shows the SQL text with the order option at the end.</para>
+<para>If an estimate is radically wrong, this should be reported as a bug.</para>
+<para>If there is a FROM with a KEY on the next line and no column specs, then this is a full table scan.
+ The more columns specified, the fewer rows will be passed to the next operation in the chain.
+ In the example above, there are three columns whose values are known before reading the table, and these columns are leading columns of the index in use so column specs are -- </para>
+<programlisting>&lt;col=415 O = $30 &quot;owl#GraduateStudent&quot;&gt; , 
+&lt;col=412 G = $26 &quot;lubm&quot;&gt; , 
+&lt;col=414 P = $28 &quot;-ns#type&quot;&gt;
+</programlisting><para> Note: A KEY with only a row spec is a full table scan with the row spec applied as a filter.
+ This is usually not good unless this is specifically intended.</para>
+<para>If queries are compiled to make full table scans when this is not specifically intended, this should be reported as a bug.
+ The explain() output and the query text should be included in the report.</para>
+<para>Consider: </para>
+<programlisting>SQL&gt; EXPLAIN 
+  (&#39;
+      SPARQL 
+      DEFINE sql:select-option &quot;order, loop&quot; 
+      PREFIX  ub:  &lt;http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#&gt;
+      SELECT *
+      FROM &lt;lubm&gt;
+      WHERE
+        {
+          ?x  ub:takesCourse  ?c
+           ;        rdf:type  ub:GraduateStudent
+        }
+  &#39;);
+</programlisting><para> One will see in the output that the first table access is to retrieve all in the lubm graph which take some course, and then later to check if each is a graduate student.
+ This is obviously not the preferred order, but the sql:select-option &quot;order&quot; forces the optimizer to join from left to right.</para>
+<para>It is very easy to end up with completely unworkable query plans in this manner, but if the optimizer really is in error, this is the only way of overriding its preferences.
+ The effect of sql:select-option is pervasive, extending inside UNIONs, OPTIONALs, subqueries, etc., within the statement.</para>
+<para>We note that if, in the above query, both the course taken by the student and the type of the student are given, the query compilation will be, at least for all non-cluster cases, an index intersection.
+ This is not overridden by the sql:select-option clause since an index intersection is always a safe guess, regardless of the correctness of the cardinality guesses of the patterns involved.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Linux-only -- &quot;swappiness&quot;</bridgehead>
+<para>On Linux, there is a kernel tuning parameter called &quot;<ulink url="http://www.linuxvox.com/2009/10/what-is-the-linux-kernel-parameter-vm-swappiness/">swappiness</ulink>&quot; that controls how much the kernel favors swap over RAM.</para>
+<para>When hosting large data sets, it is recommended that this parameter be changed from its default value of 60 to something closer to 10, to reduce the amount of swapping that takes place on the server.
+ Useful tidbits regarding swappiness include:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The swappiness setting is found in the file <emphasis>/proc/sys/vm/swappiness</emphasis>.
+</listitem>
+<listitem>The setting may be viewed with the command -- <programlisting>/sbin/sysctl vm.swappiness
+</programlisting></listitem>
+<listitem>The setting may be changed while the system is running, with a command like -- <programlisting>/sbin/sysctl -w vm.swappiness=10
+</programlisting></listitem>
+<listitem>The setting may be forced at machine boot time, by adding the following line to the file <emphasis>/etc/sysctl.conf</emphasis> -- <programlisting>vm.swappiness = 10
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html">Virtuoso Documentation -- RDF Performance Tuning</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdfperfcosttransanalyze">Translate and Analyze modes for analyzing sparql queries</ulink> </listitem>
+<listitem><ulink url="VirtBulkRDFLoader">Bulk Loading RDF Source Files into one or more Graph IRIs</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">Virtuoso Documentation</ulink> </listitem>
+</itemizedlist></section></docbook>

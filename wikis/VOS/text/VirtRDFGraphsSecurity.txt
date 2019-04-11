@@ -1,0 +1,413 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+---+ RDF Graph Security in Virtuoso
+
+Controlling access to Named Graphs, and especially to groups of such, is critical to constructing a security matrix 
+for any Graph DBMS.  This article describes how to do so in Virtuoso.
+
+%TOC%
+
+---++ RDF Graph Groups
+
+In some cases, the data set against which a SPARQL query will be run is not known at compile time. 
+It is possible to pass IRIs of source graphs via parameters, but the method is not perfect.
+   * Some protocols are not suitable for passing such parameters, and no protocol is a universally 
+interoperable standard.
+   * Passing a list of IRIs as a parameter can require the use of Virtuoso-specific functions in 
+the text of the SPARQL query, which causes some query builders to reject the query.
+   * Lack of knowledge about actual graphs may damage query optimization.
+
+It can be helpful to create and name lists of graphs, so you can write a query like "<code>SELECT FROM &lt;all graph names in this list&gt;</code>."
+<b>Graph groups</b> is a Virtuoso-specific SPARQL extension to serve this purpose.  Users create named lists of 
+IRIs, and when the name of the list is used in a <code>FROM</code> clause, like <code>IRI</code> of default graph, Virtuoso
+treats it as equivalent to a list of <code>FROM</code> clauses, one clause for each item in the list.
+
+   * <b><code>FROM</code></b> supports graph groups. 
+   * <b><code>FROM NAMED</code></b> supports only plain graphs.
+
+Internally, descriptions of graph groups are kept in two tables:
+
+<b>Table of graph groups:</b>
+
+<verbatim>
+CREATE TABLE DB.DBA.RDF_GRAPH_GROUP (
+  RGG_IID             IRI_ID   NOT NULL  PRIMARY KEY , -- IRI ID of RGG_IRI field
+  RGG_IRI             VARCHAR  NOT NULL,               -- Name of the group
+  RGG_MEMBER_PATTERN  VARCHAR,                         -- Member IRI pattern
+  RGG_COMMENT         VARCHAR                          -- Comment
+  );
+CREATE INDEX RDF_GRAPH_GROUP_IRI 
+  ON DB.DBA.RDF_GRAPH_GROUP (RGG_IRI);
+</verbatim>
+
+<b>Table of contents of groups:</b>
+
+<verbatim>
+CREATE TABLE DB.DBA.RDF_GRAPH_GROUP_MEMBER (
+  RGGM_GROUP_IID   IRI_ID  NOT NULL,           -- IRI_ID of the group
+  RGGM_MEMBER_IID  IRI_ID  NOT NULL,           -- IRI_ID of the group member
+  PRIMARY KEY (RGGM_GROUP_IID, RGGM_MEMBER_IID)
+  );
+</verbatim>
+
+
+Fields <code><nowiki>RGG_MEMBER_PATTERN</nowiki></code> and <code><nowiki>RGG_COMMENT</nowiki></code> are 
+not used by system internals, but applications may wish to write their data there for future reference.
+<code><nowiki>RGG_COMMENT</nowiki></code> is supposed to be a human-readable description of the group, 
+and <code><nowiki>RGG_MEMBER_PATTERN</nowiki></code> may be useful for functions that automatically add
+IRIs of a given graph to all graph groups such that the graph IRI string matches 
+<code><nowiki>RGG_MEMBER_PATTERN</nowiki></code> regexp patterns.
+
+A dictionary of all groups and their members is cached in memory for fast access. For this reason, 
+applications may read these tables and modify <code><nowiki>RGG_MEMBER_PATTERN</nowiki></code> and 
+<code><nowiki>RGG_COMMENT</nowiki></code> if needed, but may not change other fields directly.
+The following API procedures make changes in a safe way.
+
+   * <b><code><nowiki>DB.DBA.RDF_GRAPH_GROUP_CREATE</nowiki></code></b> creates a new empty graph group. An 
+error is signaled if the group already exists and the quiet parameter is zero.
+<verbatim>
+DB.DBA.RDF_GRAPH_GROUP_CREATE 
+  ( 
+    IN  group_iri       VARCHAR, 
+    IN  quiet           INTEGER, 
+    IN  member_pattern  VARCHAR := NULL, 
+    IN  comment         VARCHAR := NULL
+  );
+</verbatim>
+   * <b><code><nowiki>DB.DBA.RDF_GRAPH_GROUP_INS</nowiki></code></b> adds a member to an existing group.  Re-inserting 
+an existing member will not raise an error, but a missing group will be signaled.
+<verbatim>
+DB.DBA.RDF_GRAPH_GROUP_INS 
+  (
+    IN  group_iri  VARCHAR, 
+    IN  memb_iri   VARCHAR
+  );
+</verbatim>
+   * <b><code><nowiki>DB.DBA.RDF_GRAPH_GROUP_DEL</nowiki></code></b> removes a member from an existing group.  Removing 
+a non-existent member will not raise an error, but a missing group will be signaled.
+<verbatim>
+DB.DBA.RDF_GRAPH_GROUP_DEL 
+  (
+    IN  group_iri  VARCHAR, 
+    IN  memb_iri   VARCHAR
+  );
+</verbatim>
+   * <b><code><nowiki>DB.DBA.RDF_GRAPH_GROUP_DROP</nowiki></code></b> removes a graph group. An error is raised if the group 
+did not exist before the call and the quiet parameter is zero.
+<verbatim>
+DB.DBA.RDF_GRAPH_GROUP_DROP 
+  (
+    IN  group_iri  VARCHAR, 
+    IN  quiet      INTEGER
+  );
+</verbatim>
+
+
+Graph groups are <i>"macro-expanded"</i> only in <code>FROM</code> clauses and have no effect on <code>FROM NAMED</code> 
+nor on <code>GRAPH &lt;IRI&gt; {...}</code>.  Technically, it is permissible to use the same IRI as both a plain graph IRI 
+and a graph group IRI in one database, but this is confusing and is not recommended.
+
+Graph groups cannot be "nested" as members of other graph groups, i.e., every IRI appearing in the list of members of a 
+graph group will be treated as a plain graph IRI, and will not cause recursive expansion of groups even if it is (also)
+the name of another graph group.
+
+
+---++ NOT FROM and NOT FROM NAMED Clauses
+
+In addition to standard <code>FROM</code> and <code>FROM NAMED</code> clauses, Virtuoso extends SPARQL with 
+<b><code>NOT FROM</code></b> and <b><code>NOT FROM NAMED</code></b> clauses which exclude the graphs named 
+therein from the queried data set.
+
+   * <b><code>NOT FROM</code></b> supports graph groups. 
+   * <b><code>NOT FROM NAMED</code></b> supports only plain graphs.
+
+<verbatim>
+SELECT ... 
+  NOT FROM <x> ... 
+  WHERE {...} 
+</verbatim>
+means "select from other graphs, but not from the named one".
+
+So if --
+<verbatim>
+<http://example.com/users/private> 
+</verbatim>
+-- is a graph group of all graphs with confidential data about users, then --
+<verbatim>
+SELECT * 
+  NOT FROM <http://example.com/users/private> 
+  WHERE {...}
+</verbatim>
+-- will be restricted only to insecure data.
+
+<code>NOT FROM</code> overrides any <code>FROM</code>, and <code>NOT FROM NAMED</code> overrides any <code>FROM NAMED</code>; the order of these clauses in the query text is not important.
+
+The SPARQL web service endpoint configuration string may contain pragmas that get equivalent treatment as these SPARQL clauses --
+
+| *Pragma*                                         | *Equivalent SPARQL Clause*   |
+| <b><code>input:default-graph-exclude</code></b>  | <code>NOT FROM</code>        |
+| <b><code>input:named-graph-exclude</code></b>    | <code>NOT FROM NAMED</code>  |
+| <b><code>input:default-graph-uri</code></b>      | <code>FROM</code>            |
+| <b><code>input:named-graph-uri</code></b>        | <code>FROM NAMED</code>      |
+| 
+
+
+---++ Graph-Level Security
+
+Virtuoso supports graph-level security for "physical" RDF storage. This is somewhat similar to table-level 
+security in SQL. However, the differences between the SPARQL and SQL data models result in a totally different 
+style of security administration. In SQL, when a new application is installed, it typically comes with its 
+own set of tables, and every query in its code explicitly specifies tables in use. Security restrictions of two 
+applications interfere only if the applications know about each other and are supposedly designed to cooperate.
+It is possible to write an application that will get a list of available tables and retrieve data from any 
+given table, but that is a special case and it usually requires DBA privileges.
+
+With RDF and SPARQL, data from many different applications is all found in one table, and the query language 
+allows selection from the data of all applications at once. This feature makes SPARQL convenient for cross-application 
+data integration. At the same time, it become a giant security hole if any sensitive data are found in the graph store.
+
+Blindly copying the SQL security model to the SPARQL domain would result in a significant loss of performance, 
+weak security, or even both of these problems at the same time. That is why the SPARQL model is made much more 
+restrictive, even if it becomes inconvenient for some administration tasks.
+
+Graph-level security does not replace traditional SQL security. A user should become a member of an appropriate 
+group (e.g., <code><nowiki>SPARQL_SELECT</nowiki></code>, <code><nowiki>SPARQL_SPONGE</nowiki></code>, or 
+<code><nowiki>SPARQL_UPDATE</nowiki></code>) in order to start using its graph-level privileges.
+
+
+---+++ Understanding Default Permissions
+
+In relational databases, default permissions are trivial. DBA is usually the only account that can access any and 
+all tables, for both read and write. Making some table public or private does not affect applications that do not 
+refer to that table in their code.  Tables are always created before making security restrictions on them.
+
+Chances are very low that an application will unintentionally create some SQL table and fill it with confidential 
+data. There are no unauthenticated users; every client has some user ID, and no one user is "default user", so the 
+permissions of any two users are always independent.
+
+On the other hand, SPARQL access can be anonymous, and graphs may be created during routine data manipulation.
+For the anonymous user, only public resources are available. Thus "default permissions" on some or all graphs 
+are actually permissions of the "<code>nobody</code>" user, (the numeric ID of this user can be obtained with 
+the <b><code><nowiki>http_nobody_uid()</nowiki></code></b> function call).  As a consequence, there's a strong 
+need for a "default user permission"; this is the only way to specify what to do with all graphs that may ever exist.
+
+An attempt to make default permissions wider than specific is always a potential security hole in SPARQL, so this 
+is strictly prohibited.
+
+Four sorts of access are specified by four bits of an integer "permission bit-mask", following plain old UNIX style:
+
+| *Bit* | *Permits* |  *Notes*  |
+|  1  | Read access.  | |
+|  2  | Update access (i.e., Write via SPARUL).  | Basically useless without bit 1 set.  |
+|  4  | Sponge access (i.e., Write via "RDF Network Resource Fetch" methods).  | Basically useless without bits 1 and 2 set.  |
+|  8  | Listing the members of a graph group.  |As discussed above, an IRI can be used as a graph IRI and as a graph group IRI at the same time, so bit 8 can be freely combined with any of bits 1, 2 or 4.  |
+
+Note that obtaining the list of members of a graph group does not grant any access permissions to triples from those 
+member graphs. It is quite safe to mix secure and public graphs in one graph group.
+
+When a SPARQL query should check whether a given user has permission to access a given graph, the order of checks 
+is as follows:
+
+   1. permissions of the user on the specific graph;
+   2. default permissions of the user on all graphs;
+   3. public permissions on the specific graph;
+   4. public permissions on all graphs.
+
+If no listed permission is set, then access is "read/write/sponge/list".
+
+For user "<code>nobody</code>", steps 3 and 4 are skipped, because they are always exact copies of steps 1 and 2.
+
+
+
+---+++ Initial Configuration of SPARQL Security
+
+It is generally most convenient to configure the RDF storage security by adding restrictions in reverse order of 
+permission checking.
+
+   1. Set public permissions on all graphs to the most restricted level of any application that will be installed. 
+So if any single graph should be unreadable by the public, then public permissions on all graphs should be set 
+to <b>0</b> or <b>8</b>.
+   2. Set public permissions on "insecure" graphs; e.g., if the database contains DBpedia, WordNet, or some other 
+Linking Open Data project, then public permissions for such graphs might be set to <b>1</b>.
+   3. Configure trusted users, such as administrative DBA-like accounts, and specify their permissions on all 
+graphs. <i>Note that there's no need to grant anything to the DBA account itself, because (like Unix's 
+<code>root</code> user), DBA's default permissions are set automatically.</i>
+   4. Grant any appropriate additional rights on specific graphs to specific users.
+
+
+---+++ Configuring a New User
+
+   1. Grant <code>SPARQL_SELECT</code>, <code>SPARQL_SPONGE</code>, and/or <code>SPARQL_UPDATE</code> to the user.
+   2. Set the user's permissions on all graphs.
+   3. Grant specific rights on some specific graphs to the user.
+
+---++ Example: Blogs and Resource Sharing
+
+Consider a "groupware" application that let users create personal resources with access policies.
+
+---+++ <nowiki>1.</nowiki> Stop Replication
+
+<verbatim>
+DB.DBA.RDF_REPL_STOP();
+</verbatim>
+
+---+++ <nowiki>2.</nowiki> Remove Replication
+
+<verbatim>
+registry_remove ('DB.DBA.RDF_REPL');
+</verbatim>
+
+---+++ <nowiki>3.</nowiki> Create several users
+
+Create a few users:
+
+<verbatim>
+DB.DBA.USER_CREATE ('Anna', 'Anna');
+DB.DBA.USER_CREATE ('Brad', 'Brad');
+DB.DBA.USER_CREATE ('Carl', 'Carl');
+GRANT SPARQL_UPDATE TO "Anna";
+GRANT SPARQL_UPDATE TO "Brad";
+GRANT SPARQL_UPDATE TO "Carl";
+</verbatim>
+
+---+++ <nowiki>4.</nowiki> Set the overall graph store permission
+
+Remembering that some graphs within are supposed to be confidential, the whole quad store is first set to confidential.
+
+<verbatim>
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('nobody', 0);
+</verbatim>
+
+---+++ <nowiki>5.</nowiki> Set basic privileges for each user
+
+In this example, none of the individual users will have global access to graphs:
+
+<verbatim>
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Anna', 0);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Brad', 0);
+DB.DBA.RDF_DEFAULT_USER_PERMS_SET ('Carl', 0);
+</verbatim>
+
+---+++ <nowiki>6.</nowiki> Grant Specific Privileges on Specific Graphs to Specific Users
+
+---++++ <nowiki>6.1.</nowiki> Anna can read from (but not write to) her personal system data graph
+<verbatim>
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/system', 'Anna', 1);
+</verbatim>
+
+---++++ <nowiki>6.2.</nowiki> Anna can read from and write to her private data graph
+<verbatim>
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/private', 'Anna', 3);
+</verbatim>
+
+---++++ <nowiki>6.3.</nowiki> Anna and Brad are friends and can read from each other's notes for friends
+<verbatim>
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/friends', 'Anna', 3);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/friends', 'Brad', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Brad/friends', 'Brad', 3);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Brad/friends', 'Anna', 1);
+</verbatim>
+
+---++++ <nowiki>6.4.</nowiki> Brad and Carl share write access to the graph for their company
+<verbatim>
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/BubbleSortingServicesInc', 'Brad', 3);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/BubbleSortingServicesInc', 'Carl', 3);
+</verbatim>
+
+---++++ <nowiki>6.5.</nowiki> Anna writes a blog for the public to read
+<verbatim>
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/blog', 'Anna',   3);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Anna/blog', 'nobody', 1);
+</verbatim>
+
+---++++ <nowiki>6.7</nowiki> Set permissions on DBpedia and other graphs intended for public consumption
+
+DBpedia is public read, and the local discussion wiki is both readable and writable:
+<verbatim>
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://dbpedia.org/',        'nobody', 1);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/wiki',    'nobody', 3);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/publicB', 'nobody', 3);
+</verbatim>
+
+---++++ <nowiki>6.8</nowiki> Graph groups security
+
+Graph groups get their own security: 
+
+<verbatim>
+DB.DBA.RDF_GRAPH_GROUP_CREATE ('http://example.com/Personal', 1);
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Anna/system');
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Anna/private');
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Brad/system');
+DB.DBA.RDF_GRAPH_GROUP_INS ('http://example.com/Personal', 'http://example.com/Brad/private');
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Personal', 'Anna', 8);
+DB.DBA.RDF_GRAPH_USER_PERMS_SET ('http://example.com/Personal', 'Brad', 8);
+</verbatim>
+
+---+++ <nowiki>7.</nowiki> Sample query demonstrating permission effects
+
+If Anna and Brad execute the same
+<verbatim>
+SELECT * 
+    FROM <http://example.com/Personal> 
+   WHERE { ?s ?p ?o }
+</verbatim>
+their results will be totally different. Users will not get access to each other's data.
+
+
+---++ Application Callbacks for Graph Level Security
+
+In some cases, different applications should provide different security for different users. Two SPARQL pragmas 
+are provided for this purpose:
+
+| *Pragma* | *Effect* |
+| <b><code><nowiki>sql:gs-app-callback</nowiki></code></b> | Specifies the Virtuoso/PL callback function that returns permission bits for a given graph.  |
+| <b><code><nowiki>sql:gs-app-uid</nowiki></code></b>      | Specifies an application-specific user ID, which is some string that is passed to the callback "as is".  |
+
+The name of the callback is always <b><code><nowiki>DB.DBA.SPARQL_GS_APP_CALLBACK_nnn</nowiki></code></b>, where <code>nnn</code> is value of <code><nowiki>sql:gs-app-callback</nowiki></code>.
+
+The callback is called only if the application has access to the graph in question, so it may further restrict the caller's account but it cannot grant more permissions.
+
+---+++ Example
+
+Let the user of an application get full access to graphs whose IRIs contain the user's name in their path.
+In addition, let all of them have permission to use all graph groups and let the user "<code>moderator</code>" 
+read everything.
+
+<verbatim>
+RECONNECT "dba";
+
+CREATE FUNCTION DB.DBA.SPARQL_GS_APP_CALLBACK_TEST 
+  (
+    IN  g_iid    IRI_ID, 
+    IN  app_uid  VARCHAR
+  ) RETURNS INTEGER
+{
+  DECLARE g_uri VARCHAR;
+-- A fake IRI ID #i0 is used to mention account's default permissions for all graphs.
+  IF (#i0 = g_iid)
+    {
+      IF ('moderator' = app_uid)
+        RETURN 9;  -- Moderator can read and list everything.
+      RETURN 8;    -- Other users can list everything.
+    }
+  g_uri := id_to_iri (g_iid);
+  IF (strstr (g_uri, '/' || app_uid || '/'))
+    RETURN 15;     -- User has full access to "his" graph.
+  RETURN 8;        -- User can list any given graph group.
+}
+;
+
+SPARQL
+DEFINE  sql:gs-app-callback  "TEST"
+DEFINE  sql:gs-app-uid       "Anna"
+SELECT ?g ?s 
+  WHERE { ?s <p> ?o }
+;
+</verbatim>
+
+
+
+---++ Related
+   * [[http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#fastapproxdiffandpatch][Virtuoso graph delta sync functionality]]
+   * [[https://plus.google.com/+KingsleyIdehen/posts/UFpX2uiWt5b][WebID ACL and 3rd party storage services Guide]]
+   * [[https://plus.google.com/+KingsleyIdehen/posts/7A3Kgs4HMHk][Using Social Relationship Semantics & WebID to Drive Resource Access Control]]

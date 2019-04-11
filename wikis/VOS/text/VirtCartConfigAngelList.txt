@@ -1,0 +1,76 @@
+%META:TOPICPARENT{name="VirtConfigureCartridges"}%
+
+#AncConfigGuidelines
+---+ <nowiki>AngelList</nowiki> Cartridge - Configuration Guidelines
+
+The [[https://angel.co/][AngelList]] Sponger cartridge allows you to retrieve details of startups, angel investors and job-seekers from the <nowiki>AngelList</nowiki> website through the [[https://angel.co/api][AngelList REST API]]. In order to use this API, the cartridge must be configured for OAuth.
+
+---+++Contents
+
+   * [[#AncRegisterAngelApp][Registering the Sponger as an AngelList Application]]
+   *  [[#AncCreatingVALBinding][Creating an AngelList OAuth Binding in VAL]]
+   * [[#AncConfigFallbackTokenOwner][Configuring the Fallback Access Token Owner]]
+   * [[#AncGrantingAccessToken][Granting an Access Token]]
+
+#AncRegisterAngelApp
+---++ Registering the Sponger as an <nowiki>AngelList</nowiki> Application
+
+Before you can obtain access tokens for the cartridge, you first need to register the Sponger as an <nowiki>AngelList</nowiki>application. Go to the [[https://angel.co/api/oauth/clients][AngelList OAuth Client Applications]] page to register. In the registration form, illustrated below, enter a redirect URI of the form: <code>http://{your-virtuoso-host:port}/val/api/thirdparty_callback</code>.
+
+<img src="%ATTACHURLPATH%/angellist_client_app_reg.png" style="wikiautogen"/>
+
+Make a note of the client ID and the corresponding client secret which will be emailed to you.
+
+#AncCreatingVALBinding
+---++ Creating an <nowiki>AngelList</nowiki> OAuth Binding in VAL
+
+The Sponger relies on the Virtuoso Authentication Layer ([[https://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/ValWhatWhyHow][VAL]]) to provide  a common framework across all OAuth-capable Sponger cartridges for granting and managing OAuth access tokens.
+
+In order to hook into the VAL subsystem, the <nowiki>AngelList</nowiki> OAuth application keys obtained in the previous step must be registered with VAL.
+
+For a general overview of how VAL relates to the Sponger, see [[https://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/SpongerOAuthSupport][Sponger OAuth Support via VAL]].
+
+To register an <nowiki>AngelList</nowiki> OAuth Binding, go to the Virtuoso Conductor's "Login Authentication Keys" form which is accessed through the "Linked Data" and "OAuth Service Binding" tabs. (This last tab will not be displayed unless the VAL VAD is installed).
+
+<img src="%ATTACHURLPATH%/angellist_val_oauth_binding.png" style="wikiautogen"/>
+
+Select '<nowiki>AngelList</nowiki>' from the drop-down list of Service Names, enter the <nowiki>AngelList</nowiki> client ID and client secret in the 'Key' and 'Secret' fields respectively, then click 'Add'. Now the <nowiki>AngelList</nowiki> keys have been registered, you can grant the Sponger access to your <nowiki>AngelList</nowiki> profile data.
+
+#AncConfigFallbackTokenOwner
+---++ Configuring the Fallback Access Token Owner
+
+Before the Sponger cartridge can be used, you must identify the <em>fallback token owner</em>. This identifies the <nowiki>AngelList</nowiki> account which supplies the fallback OAuth token accompanying <nowiki>AngelList</nowiki> API requests. (We suggest creating an <nowiki>AngelList</nowiki> account specifically for the Sponger, for use as the fallback.)
+
+The fallback token entry takes the form: <nowiki><code>fallback_token_owner=https://angel.co/{user-name}</code></nowiki>
+
+The identified user must have granted an access token using the procedure described in the next section. If a user sponges their <nowiki>AngelList</nowiki> profile their token will be used if they have granted one, otherwise the fallback token will be used. The fallback token is always used when not sponging a user profile, e.g. when retrieving company details.
+
+<nowiki><code>fallback_token_owner</code></nowiki> is set in the <nowiki>AngelList</nowiki> cartridge options reached by selecting the <nowiki>AngelList</nowiki> cartridge from the list of extractor cartridges on the 'Sponger' panel in the Conductor UI. 
+
+<img src="%ATTACHURLPATH%/angellist_set_fallback_config.png" style="wikiautogen"/>
+
+#AncGrantingAccessToken
+---++ Granting an Access Token
+
+The <nowiki>AngelList</nowiki> user whose profile is to be fetched should first grant an OAuth access token. This can be done through the <nowiki>AngelList</nowiki> button displayed by http://{your-virtuoso-host:port}/sponger.
+
+1: Go to http://{your-virtuoso-host:port}/sponger
+
+<img src="%ATTACHURLPATH%/angellist_sponger_oauth_token.png" style="wikiautogen"/>
+
+2: Click the <nowiki>AngelList</nowiki> button
+
+3: Login to <nowiki>AngelList</nowiki> to allow the Sponger to access your profile and in so doing grant an access token.
+
+<img src="%ATTACHURLPATH%/angellist_oauth_grant.png" style="wikiautogen"/>
+
+4: As a result, a screen indicating successful access token generation should be displayed.
+
+<img src="%ATTACHURLPATH%/angellist_oauth_grant_confirmation.png" style="wikiautogen"/>
+
+5: You can now sponge your <nowiki>AngelList</nowiki> profile by clicking on either the About or Describe link.
+
+<img src="%ATTACHURLPATH%/angellist_sponged_profile.png" style="wikiautogen"/>
+
+6: You can also view <nowiki>AngelList</nowiki> company information, for example by invoking the Sponger /about service with a request similar to:
+<nowiki><code>http://localhost:8896/about/html/https/angel.co/openlink-software</code></nowiki>

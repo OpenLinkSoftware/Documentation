@@ -1,0 +1,47 @@
+---+Removing all triples from a Virtuoso Server instance
+
+There are times it can be useful to remove all triples from Virtuoso Server. There are a few ways to accomplish this.
+
+%TOC%
+
+
+---++Remove all triples including those in the the system graphs
+
+Use *iSQL*, either on the command-line or through the *Virtuoso Conductor* -> *Database* -> *Interactive SQL*, to execute this SQL query --
+
+<verbatim>
+SQL> DELETE FROM DB.DBA.RDF_QUAD ;
+</verbatim>
+
+
+---++Remove all triples except those in the system graphs
+
+---+++ Use the built-in RDF&#95;GLOBAL&#95;RESET procedure
+
+   1 When removing large graphs or numbers of triples it is advised/required to change the transaction log mode to <code>autocommit</code> with no transaction logging on each operation, deleting the graph(s) or triples, and then setting the log mode back to its original setting. This is easily done using the Virtuoso <code>[[http://docs.openlinksw.com/virtuoso/fn_log_enable.html][log_enable]]</code> function, with the settings <code>log_enable(3,1)</code>. 
+   1 Use *iSQL*, either on the command-line or through the *Virtuoso Conductor* -> *Database* -> *Interactive SQL*, to execute this SQL query --
+<verbatim>
+SQL> RDF_GLOBAL_RESET ();
+</verbatim>
+   1 Now selecting all graphs from your db should return only the system graphs, like so --
+<verbatim>
+SQL> SPARQL
+SELECT  DISTINCT ?g
+  FROM  <http://localhost:8894/>
+  {
+    GRAPH  ?g   
+      { ?s  a  ?t }
+  } ;
+
+g
+ANY  http://www.openlinksw.com/schemas/virtrdf#
+No. of rows in result: 1
+</verbatim>
+
+
+---+++ Write your own procedure
+
+Take all non-system graphs, and for each of them execute:
+<verbatim>
+SPARQL CLEAR GRAPH <The Graph URI here> ;
+</verbatim>

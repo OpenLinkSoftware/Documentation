@@ -1,0 +1,52 @@
+<docbook><section><title>VirtTipsAndTricksGuideDataRangeIndexFilter</title><title>How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?</title>How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What?</bridgehead>
+ Index-friendly filter for Date range ( bif:dateadd ) optimization within SPARQL query.<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why?</bridgehead>
+ Achieve fast results and better performance.<bridgehead class="http://www.w3.org/1999/xhtml:h2">How?</bridgehead>
+<para>Assume the following SPARQL query:</para>
+<programlisting>SELECT ?wiki, 
+       ?dbp, 
+       bif:datediff(&#39;second&#39;,  xsd:DateTime(?extracted), now()) AS ?secondsAgo
+ FROM &lt;http://nl.dbpedia.org&gt;
+WHERE 
+  {
+    ?wiki foaf:primaryTopic ?dbp .
+    ?dbp dcterms:modified ?extracted .
+    FILTER ( bif:datediff(&#39;minute&#39;, now(), xsd:DateTime(?extracted)) &lt;= 10 )
+  }  
+ORDER BY DESC(?extracted)
+LIMIT 30
+</programlisting><para> Let&#39;s take a look at the calculation of: </para>
+<programlisting>FILTER ( bif:datediff(&#39;minute&#39;, now(),  xsd:DateTime(?extracted)) &lt;= 10 ) . 
+</programlisting><para> For each &quot;is modified&quot; triple we:   1 Convert ?extracted to xsd:dateTime ,   1 Calculate datediff,   1 Make a comparison and know whether we hit or miss 10 minutes interval.</para>
+<para>Written so, this will lead to a potentially long loop, because even if the optimizer will realize that the filter is selective, it can&#39;t discover  <emphasis>why</emphasis> is it so selective.</para>
+<para>Now let&#39;s change the filter to: </para>
+<programlisting>FILTER ( ?extracted &gt; bif:dateadd(&#39;minute&#39;, -10, now())) . 
+</programlisting><para> now() can be calculated once at the very beginning of the query execution because it does not depend on any rows in a given table.
+ Then bif:dateadd has all arguments known and thus the whole bif:dateadd(&#39;minute&#39;, -10, now()) can be calculated only once and produce some value.
+ Therefor FILTER ( ?extracted &gt; some_known_value ) can be represented as a single search step: look at index and get triples with known P, known G, O greater than the given one and any S.
+ That&#39;s pretty fast and predictable step, good for both optimizer and the runtime.</para>
+<para>We can rephrase the query to filter index-friendly:</para>
+<programlisting>SELECT ?wiki, 
+       ?dbp, 
+        bif:datediff(&#39;second&#39;,  xsd:DateTime(?extracted) ,
+        now()) AS ?secondsAgo
+ FROM &lt;http://nl.dbpedia.org&gt;
+WHERE 
+  {
+    ?wiki foaf:primaryTopic ?dbp .
+    ?dbp dcterms:modified ?extracted .
+     FILTER ( ?extracted &gt; bif:dateadd(&#39;minute&#39;, -10, now()))
+  } 
+ORDER BY DESC (?extracted) 
+LIMIT 30
+</programlisting><para>In this case the presence or the absence of the order by does not matter too much, because the query is way more straightforward: selective index-friendly filter first, and the selection could be ordered naturally via hot index used by the filter.</para>
+<para>Note also that if you know the datatype of an object literal, there&#39;s no need to write a cast like xsd:dateTime --- it can make an expression index-unfriendly even if it will always return the argument unchanged on your specific data.</para>
+<para> </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/13xefMl">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/18rI9VA">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuideDataRangeQueries">How can I manage Date Range SPARQL queries?</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">Virtuoso Documentation</ulink></listitem>
+</itemizedlist></section></docbook>

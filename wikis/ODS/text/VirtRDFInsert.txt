@@ -1,0 +1,952 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+---+RDF Insert Methods in Virtuoso
+ 
+%TOC%
+
+---+++Loading RDF datasets into a Virtuoso Graph IRI
+
+   * [[http://docs.openlinksw.com/virtuoso/fn_ttlp_mt.html][Load TTL (TURTLE or N3 resource) datasets into Virtuoso Graph IRI]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_rdf_load_rdfxml_mt.html][Load RDF/XML datasets into Virtuoso Graph IRI]]
+
+---+++Loading RDF datasets into one or more Virtuoso Graph IRIs
+
+   * [[VirtBulkRDFLoader][Bulk Loading of RDF Source Files into one or more Graph IRIs]]
+
+---+++Loading RDF datasets using the Conductor "Quad Store Upload" tab menu option
+
+   * [[http://docs.openlinksw.com/virtuoso/htmlconductorbar.html#rdfadm][Conductor "Quad Store Upload" tab]]
+
+---+++ RDF Sink Folders (Virtuoso or ODS-Briefcase)   
+   * [[VirtuosoRDFSinkFolder ][Using Virtuoso RDF Sink Folder]]
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/ODSRDFSinkFolder][Using ODS RDF Sink Folder]] 
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodwebdav][Using WebDAV and ODS-Briefcase Graphical Interfaces]]
+
+--+++ HTTP PUT
+Using this approach we can upload RDF resources into Virtuoso's WebDAV repository and then 
+automatically upload the triples within the resource into the Virtuoso Quad store (if you so 
+choose via [[VirtuosoRDFSinkFolder][Virtuoso's special RDF Sink Folder]] feature of WebDAV ).
+
+---++++ HTTP PUT Example 1
+<verbatim>
+<rdf:RDF xmlns="http://www.example/jose/foaf.rdf#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:log="http://www.w3.org/2000/10/swap/log#"
+    xmlns:myfoaf="http://www.example/jose/foaf.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#jose">
+        <foaf:homepage rdf:resource="http://www.example/jose/"/>
+        <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#juan"/>
+        <foaf:name>Jose Jimen~ez</foaf:name>
+        <foaf:nick>Jo</foaf:nick>
+        <foaf:workplaceHomepage rdf:resource="http://www.corp.example/"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#juan">
+        <foaf:mbox rdf:resource="mailto:juan@mail.example"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#julia">
+        <foaf:mbox rdf:resource="mailto:julia@mail.example"/>
+    </foaf:Person>
+
+    <rdf:Description rdf:about="http://www.example/jose/foaf.rdf#kendall">
+        <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#edd"/>
+    </rdf:Description>
+</rdf:RDF>
+</verbatim>
+
+<verbatim>
+File: myfoaf.rdf
+Destination Server: demo.openlinksw.com
+
+curl -T myfoaf.rdf http://demo.openlinksw.com/DAV/home/demo/rdf_sink/myfoaf.rdf -u demo:demo
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+  <TITLE>201 Created</TITLE>
+</HEAD>
+<BODY>
+  <H1>Created</H1>
+  Resource /DAV/home/demo/rdf_sink/ myfoaf.rdf has been created.
+</BODY>
+</HTML>
+</verbatim>
+
+---++++ HTTP PUT Example 2
+
+   1. Create a folder of type "Linked Data Import" for an ODS user with the Briefcase application
+      1 Go to http://cname/ods, click the "Sign In" link and login as user "demo" for example;
+      1 Click the Briefcase application from the left vertical navigation bar;
+      1 Click "New Folder";
+      1 In the presented form specify the folder name and type, for example:
+         * <b>Folder name</b>: "MyData";
+         * <b>Folder type</b>: "Linked Data Import"
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput1.png" target="_blank"><img src="%ATTACHURLPATH%/ldput1.png" width="600px" /></a>%BR%%BR%
+      1 Go to the tab "Linked Data Import";
+      1 Specify "Graph name", for example "urn:mydata";
+      1 Select the "Sponger (on/off)" check-box option to enable the Virtuoso sponger for use.
+         * Optionally you can select which cartridges to be included from the "Sponger Extractor Cartridges" and "Sponger Meta Cartridges" lists: 
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput2.png" target="_blank"><img src="%ATTACHURLPATH%/ldput2.png" width="600px" /></a>%BR%%BR%
+      1 Click "Create".      
+   1 As result the new folder will be created. 
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput3.png" target="_blank"><img src="%ATTACHURLPATH%/ldput3.png" width="600px" /></a>%BR%%BR%
+   1 Assume the existence of a local file called "kidehen.n3" containing:
+<verbatim>   
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/ns#User> .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://www.w3.org/2000/01/rdf-schema#label> 	"Kingsley" .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#creator_of> <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300> .
+</verbatim>
+   1 Run the following command from a terminal shell, where <code> cname </code> is replaced with the  actual Virtuoso <code>host:port</code> to load the file to the specified location:
+<verbatim>   
+$ curl -T kidehen.n3 http://cname/DAV/home/demo/MyData/ -u demo:demo
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+  <HTML>
+    <HEAD>
+      <TITLE>201 Created</TITLE>
+    </HEAD>
+    <BODY>
+      <H1>Created</H1>Resource /DAV/home/demo/MyData/kidehen.n3 has been created.
+    </BODY>
+  </HTML>
+</verbatim>
+   1. Go to Briefcase application and view the content of the folder "DAV/home/demo/MyData"
+   1. As a result of the curl command to uploaded file "kidehen.n3" an additional file "urn_mydata.RDF" is available as the identifier for the Linked Data graph created in the Quad Store:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput4.png" target="_blank"><img src="%ATTACHURLPATH%/ldput4.png" width="600px" /></a>%BR%%BR%
+   1. The inserted triples can be queried from the Virtuoso SPARQL endpoint, i.e. 
+   <code><nowiki>http://cname/sparql</nowiki></code> by:
+      1. Entering the query below in the "Query Text" window:
+<verbatim>
+SELECT * 
+FROM <urn:mydata>
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+%BR%%BR%<a href="%ATTACHURLPATH%/ldq.png" target="_blank"><img src="%ATTACHURLPATH%/ldq.png" width="600px" /></a>%BR%%BR%
+      1. Click the "Run Query" button;
+      1. The inserted triples from the "kidehen.n3" is displayed as the result set:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput5.png" target="_blank"><img src="%ATTACHURLPATH%/ldput5.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ References
+   1. [[http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6][HTTP/1.1 PUT]]
+   1. [[http://docs.openlinksw.com/virtuoso/mime.html#mimemultipart][Some Virtuoso PUT Documentation regarding Multipart Forms]]
+
+---+++ HTTP POST
+Virtuoso's support for HTTP content negotiation and the SPARQL Protocol enables the execution 
+of SPARUL as part of an HTTP POST payload using Content-Type: application/sparql-query.
+
+---++++HTTP POST Example 1
+   1. For user demo from Conductor -> System Admin -> User Accounts -> user demo -> Edit make sure the following properies are set:
+      * <b>User type</b> is <code>SQL/ODBC and WebDAV</code>;
+      * <b>Accounts Roles</b> contains in "Selected" list <code>SPARQL_UPDATE</code>:
+%BR%%BR%<a href="%ATTACHURLPATH%/httppost1.png" target="_blank"><img src="%ATTACHURLPATH%/httppost1.png" width="600px" /></a>%BR%%BR%
+   1. From Conductor -> Web Application Server -> Content Management or ODS Briefcase UI create a DAV collection "xx" with the following properties: 
+      * <b>owner</b> is user demo (the user's password let's say is "demo");
+      * <b>permissions</b> set to <code>rwxrwxrwxn</code>:
+%BR%%BR%<a href="%ATTACHURLPATH%/httppost2.png" target="_blank"><img src="%ATTACHURLPATH%/httppost2.png" width="600px" /></a>%BR%%BR%
+
+   1. Execute the following command:
+<verbatim>
+curl -i -d "INSERT {<http://demo.openlinksw.com/DAV/home/demo_about.rdf> 
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/ns#User>}"  -u "demo:demo"
+-H "Content-Type: application/sparql-query" http://localhost:8890/DAV/xx/yy
+</verbatim>
+   1. The response should be:
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/05.00.3023 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Fri, 28 Dec 2007 12:50:12 GMT
+Accept-Ranges: bytes
+MS-Author-Via: SPARQL
+Content-Length: 0
+</verbatim>
+   1. the result in the DAV/xx location will be a new WebDAV resource with name "yy" containing 
+the inserted RDF:
+<verbatim>
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+<rdf:Description 
+rdf:about="http://demo.openlinksw.com/DAV/home/demo_about.rdf">
+<ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+rdf:resource="http://rdfs.org/sioc/ns#User"/>
+</rdf:Description>
+</rdf:RDF>
+</verbatim>
+
+---++++HTTP POST Example 2
+   1. Create a DAV collection, for ex. with name "test" for user for ex. demo with password demo.
+      * Note: user "demo" should have from "User type": SQL/ODBC and WebDAV and should have "SPARQL_UPDATE" role set from Conductor -> System Admin -> User Accounts -> user demo' Edit Properties.
+   2. Execute the following command:
+<verbatim>
+curl -i -d "INSERT IN GRAPH <http://mygraph.com> 
+{ <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> 
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> 
+  <http://rdfs.org/sioc/ns#User> . 
+  <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> 
+  <http://www.w3.org/2000/01/rdf-schema#label> 
+  <Kingsley Uyi Idehen> . 
+  <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> 
+  <http://rdfs.org/sioc/ns#creator_of>   
+  <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300>
+  } " -u "demo:demo" -H "Content-Type: application/sparql-query" http://localhost:8890/DAV/home/demo/test/myrq
+</verbatim>
+   3. As result the response will be:
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/05.00.3023 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=ISO-8859-1
+Date: Thu, 20 Dec 2007 16:25:25 GMT
+Accept-Ranges: bytes
+MS-Author-Via: SPARQL
+Content-Length: 0
+</verbatim>
+   4. Now let's check the inserted triples. Go to the SPARQL endpoint, i.e., 
+<code><nowiki>http://localhost:8890/sparql</nowiki></code> and:
+      1. Enter for Default Graph URI: 
+<verbatim>
+http://mygraph.com
+</verbatim>
+      1. Enter in the Query  area:
+<verbatim>
+SELECT * WHERE {?s ?p ?o}
+</verbatim>
+      1. Click the button "Run Query"
+      1. As result will be shown the inserted triples:
+<verbatim>
+s                                                                 p                                                 o
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://rdfs.org/sioc/ns#User
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://www.w3.org/2000/01/rdf-schema#label        Kingsley
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://rdfs.org/sioc/ns#creator_of                http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300
+</verbatim>
+
+
+---+++ Examples using LOAD feature of SPARUL
+
+---++++Using the file: protocol specifier
+
+   1 A RDF file can be loaded from an absolute path on the file system (whose location is specified in the DirsAllowed param in the INI file) using the <b>file&#58;&#47;&#47;&#47;</b> protocol specifier:
+<verbatim>
+SQL> sparql load <file://home/virtuoso/database/data/test.rdf> into <test>;
+
+Done. -- 48 msec.
+SQL> sparql select count(*) from <test> where {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+31
+
+1 Rows. -- 1 msec.
+SQL>
+</verbatim>
+   1 A RDF file can also be uploaded directly from the Virtuoso Web Server root(~/vsp) directory using the <b>file&#58;&#47;</b> protocol specifier:
+<verbatim>
+SQL> sparql load <scheme:/test.rdf> into <test>; 
+Done. -- 8 msec.
+SQL> sparql select count(*) from <test> where {?s ?p ?o};
+callret-0
+INTEGER
+_______________________________________________________________________________
+
+31
+
+1 Rows. -- 1 msec.
+SQL>
+</verbatim>
+
+---++++Using a SPARQL query stored on DAV
+
+   1. Execute from ISQL:
+<verbatim>
+SPARQL INSERT IN GRAPH <http://mygraph.com> 
+{ 
+  <http://myopenlink.net/dataspace/Kingsley#this> 
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> 
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Kingsley#this> 
+  <http://rdfs.org/sioc/ns#id> 
+  <Kingsley> .
+
+  <http://myopenlink.net/dataspace/Caroline#this> 
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> 
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Caroline#this> 
+  <http://rdfs.org/sioc/ns#id> 
+  <Caroline> .
+
+  <http://myopenlink.net/dataspace/Matt#this> 
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> 
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/Matt#this> 
+  <http://rdfs.org/sioc/ns#id> 
+  <Matt> .
+
+  <http://myopenlink.net/dataspace/demo#this> 
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> 
+  <http://rdfs.org/sioc/ns#User> .
+
+  <http://myopenlink.net/dataspace/demo#this> 
+  <http://rdfs.org/sioc/ns#id> 
+  <demo> .
+
+};
+</verbatim>
+   1. Create DAV collection which is visible to public, for ex: http://localhost:8890/DAV/tmp
+   1. Upload to the DAV collection the following file for ex. with name listall.rq and with the following content:
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sioc: <http://rdfs.org/sioc/ns#>
+SELECT ?x ?p ?o
+FROM <http://mygraph.com>
+WHERE 
+  {
+    ?x rdf:type sioc:User .
+    ?x ?p ?o.
+    ?x sioc:id ?id .
+    FILTER REGEX(str(?id), "^King")
+  }
+ORDER BY ?x
+</verbatim>
+   1. Now from ISQL execute the following command:
+<verbatim>
+SPARQL 
+LOAD bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/tmp/listall.rq") INTO GRAPH <http://myNewGraph.com>;
+</verbatim>
+   1. As result should be shown the message:
+<verbatim>
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Load <http://localhost:8890/DAV/tmp/listall.rq> into graph <http://myNewGraph.com> -- done
+
+1 Rows. -- 321 msec.
+</verbatim>
+
+---+++ SPARQL Insert via /sparql endpoint
+
+SPARQL INSERT operation can be sent to a web service endpoint as a single statement and executed in sequence.
+
+---++++Example
+
+Using the Virtuoso ISQL tool or using the /sparql UI, for ex. at http://localhost:8890/sparql, execute the following:
+
+   1. Insert into graph <nowiki>http://BookStore.com</nowiki> 3 triples:
+<verbatim>
+SPARQL INSERT IN GRAPH <http://BookStore.com> 
+{ <http://www.dajobe.org/foaf.rdf#i> <http://purl.org/dc/elements/1.1/date> <1999-04-01T00:00:00> .
+  <http://www.w3.org/People/Berners-Lee/card#i> <http://purl.org/dc/elements/1.1/date> <1998-05-03T00:00:00> .
+  <http://www.w3.org/People/Connolly/#me> <http://purl.org/dc/elements/1.1/date> <2001-02-08T00:00:00> };
+</verbatim>
+   1. As result will be shown the message:
+<verbatim>
+Insert into <http://BookStore.com>, 3 triples -- done
+</verbatim>
+   1. Next we will select all triples from the graph <nowiki>http://BookStore.com</nowiki>:
+<verbatim>
+SPARQL SELECT * FROM <http://BookStore.com> WHERE {?s ?p ?o};
+</verbatim>
+   1.  As result will be shown:
+<verbatim>
+s                                              p                                       o
+VARCHAR                                        VARCHAR                                 VARCHAR
+_______________________________________________________________________________
+
+http://www.w3.org/People/Berners-Lee/card#i    http://purl.org/dc/elements/1.1/date    1998-05-03T00:00:00
+http://www.w3.org/People/Connolly/#me          http://purl.org/dc/elements/1.1/date    2001-02-08T00:00:00
+http://www.dajobe.org/foaf.rdf#i               http://purl.org/dc/elements/1.1/date    1999-04-01T00:00:00
+
+3 Rows. -- 0 msec.
+</verbatim>
+   1. Now let's insert into graph another  <nowiki>http://NewBookStore.com</nowiki> graph's values:
+<verbatim>
+SPARQL 
+PREFIX dc:  <http://purl.org/dc/elements/1.1/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+INSERT INTO GRAPH <http://NewBookStore.com> { ?book ?p ?v }
+WHERE
+  { GRAPH  <http://BookStore.com>
+   { ?book dc:date ?date   
+     FILTER ( xsd:dateTime(?date) < xsd:dateTime("2000-01-01T00:00:00")). 
+     ?book ?p ?v.
+   } 
+  };
+</verbatim>
+   1. As result will be shown:
+<verbatim>
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into <http://NewBookStore.com>, 2 triples -- done
+</verbatim>
+   1. Finally we will check the triples from the graph <nowiki>NewBookStore.com</nowiki>:
+<verbatim>
+SQL> sparql select * from <http://NewBookStore.com> where {?s ?p ?o};
+</verbatim>
+   1. As result will be shown:
+<verbatim>
+s                                             p                                      o
+VARCHAR                                       VARCHAR                                VARCHAR
+_______________________________________________________________________________
+
+http://www.w3.org/People/Berners-Lee/card#i   http://purl.org/dc/elements/1.1/date   1998-05-03T00:00:00
+http://www.dajobe.org/foaf.rdf#i              http://purl.org/dc/elements/1.1/date   1999-04-01T00:00:00
+
+2 Rows. -- 10 msec.
+</verbatim>
+
+---++++ References
+   *  [[http://docs.openlinksw.com/virtuoso/rdfsparul.html][Virtuoso Documentation for Manage RDF Storage]]
+
+---+++ SPARQL Insert via HTTP Post using Content-Type: application/sparql-query and ODS wiki
+
+   * With HTTP Post and ODS wiki, you can write an RDF document and perform INSERT/UPDATE actions over it.
+   * You can write to a file using SIOC terms for ODS-Wiki.
+   * You can check with sparql the inserted / updated triples in the Quad Store.
+
+---++++Example
+   1. Suppose there is ODS user test3 with ODS password 1, which has testWiki wiki instance.
+   1. Execute the following:
+<verbatim>
+curl -i -d "INSERT {
+  <http://localhost:8890/dataspace/test3/wiki/testWiki>         <http://atomowl.org/ontologies/atomrdf#contains>   <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://rdfs.org/sioc/ns#has_container>            <http://localhost:8890/dataspace/test3/wiki/testWiki>         . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki>         <http://atomowl.org/ontologies/atomrdf#entry>      <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki>         <http://rdfs.org/sioc/ns#container_of>             <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://rdfs.org/sioc/ns#topic>                    <http://localhost:8890/dataspace/test3/wiki/testWiki>         . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://atomowl.org/ontologies/atomrdf#source>     <http://localhost:8890/dataspace/test3/wiki/testWiki>         . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://rdfs.org/sioc/types#Comment>                          . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://atomowl.org/ontologies/atomrdf#Entry>                 . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://www.w3.org/2000/01/rdf-schema#label>       'MyTest'                                                      . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>  <http://atomowl.org/ontologies/atomrdf#Link>                  . 
+  <http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest>  <http://rdfs.org/sioc/ns#content>                  <test>
+}" -u "test3:1" -H "Content-Type: application/sparql-query" http://localhost:8890/DAV/home/test3/wiki/testWiki/MyTest
+</verbatim>
+   1. As result we should have 2 files created:
+      1. In the user DAV folder "DAV/home/test3/wiki/testWiki/" will be created a file "MyTest" 
+with type "application/sparql-query".
+         1. You can view the content of this file from from the Conductor UI or from the user's 
+Briefcase UI, path "DAV/home/test3/wiki/testWiki":
+         2. It content will be:
+<verbatim>
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki"><ns0pred:entry xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:label xmlns:ns0pred="http://www.w3.org/2000/01/rdf-schema#">MyTest</ns0pred:label></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://atomowl.org/ontologies/atomrdf#Link"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://rdfs.org/sioc/types#Comment"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://atomowl.org/ontologies/atomrdf#Entry"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:has_container xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki"><ns0pred:container_of xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki"><ns0pred:contains xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:content xmlns:ns0pred="http://rdfs.org/sioc/ns#">test</ns0pred:content></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:topic xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki"/></rdf:Description>
+<rdf:Description rdf:about="http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:source xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://localhost:8890/dataspace/test3/wiki/testWiki"/></rdf:Description>
+</rdf:RDF> 
+</verbatim>
+      1. To the user's wiki instance will be added a new WikiWord "MyTest" with content the 
+value of the SIOC term attribue "content":
+<verbatim>
+<http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#content> <test>
+</verbatim>
+i.e., the content will be "test".
+         1. You can view this file in path "DAV/home/test3/wiki/testWiki/" and its name will be "MyTest.txt".
+         1. Using the ODS wiki UI you can:
+            1. Go to Index link
+            1. As result the MyTest article will be shown in the given list. Click on its link.
+            1. As result the content of the article will be shown.
+   1. Now lets check what data was inserted in the Quad Store:
+      1. Go to the sparql endpoint, i.e. for ex. to http://localhost:8890/sparql
+      1. Enter for Default Graph URI: 
+<verbatim>
+http://localhost:8890/DAV/home/test3/wiki/testWiki/MyTest
+</verbatim>
+      1. Enter for Query text:
+<verbatim>
+SELECT * WHERE {?s ?p ?o}
+</verbatim>
+      1. Click the "Run Query" button.
+      1. As result will be shown the inserted triples:
+<verbatim>
+s                                                             p                                                 o
+http://localhost:8890/dataspace/test3/wiki/testWiki           http://rdfs.org/sioc/ns#container_of              http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest
+http://localhost:8890/dataspace/test3/wiki/testWiki           http://atomowl.org/ontologies/atomrdf#entry       http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest
+http://localhost:8890/dataspace/test3/wiki/testWiki           http://atomowl.org/ontologies/atomrdf#contains    http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://rdfs.org/sioc/types#Comment
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://atomowl.org/ontologies/atomrdf#Entry
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://atomowl.org/ontologies/atomrdf#Link
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://www.w3.org/2000/01/rdf-schema#label        MyTest
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://rdfs.org/sioc/ns#has_container             http://localhost:8890/dataspace/test3/wiki/testWiki
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://rdfs.org/sioc/ns#content                   test
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://rdfs.org/sioc/ns#topic                     http://localhost:8890/dataspace/test3/wiki/testWiki
+http://localhost:8890/dataspace/test3/wiki/testWiki/MyTest    http://atomowl.org/ontologies/atomrdf#source      http://localhost:8890/dataspace/test3/wiki/testWiki
+</verbatim>
+
+---++++References
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsWiki][ODS Wiki]]
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsWikiFAQ][Wiki FAQ]]
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsWikiGettingStarted][Getting Started with Wiki]]
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/SIOCRefWiki][Query ODS-Wiki Data using SPARQL and SIOC Ontology]]
+
+
+#ExampleUsingWebDAV
+---+++Example Using WebDAV 
+
+Mount folder to DAV and dump; if this is the rdf_sink the Quad Store is updated automatically, or you can load from DAV manually to quad store.
+
+   1. Using ODS Briefcase:
+      1. Go to your ods location, for ex. http://localhost:8890/ods
+      2. Register user, for ex. user test1
+      3. Login if not already in ods
+      4. Go to ODS ->Briefcase
+      5. Create new instance
+      6. Go to the briefcase instance by clicking its name link
+      7. Upload file in a new created folder mytest or in the rdf_sink folder with:
+         1. checked option "RDF Store"
+         1. set RDF Graph Name, for example, 
+<code><nowiki>http://localhost:8890/DAV/home/test1/&lt;name of the current folder&gt;/</nowiki></code>, 
+e.g., <code><nowiki>http://localhost:8890/DAV/home/test1/mytest/</nowiki></code> or 
+<code><nowiki>http://localhost:8890/DAV/home/test1/rdf_sink/</nowiki></code>
+         1. For example, upload the following file with name <code>jose.rdf</code>. 
+<verbatim>
+<rdf:RDF xmlns="http://www.example/jose/foaf.rdf#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:log="http://www.w3.org/2000/10/swap/log#"
+    xmlns:myfoaf="http://www.example/jose/foaf.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#jose">
+        <foaf:homepage rdf:resource="http://www.example/jose/"/>
+        <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#juan"/>
+        <foaf:name>Jose Jimen~ez</foaf:name>
+        <foaf:nick>Jo</foaf:nick>
+        <foaf:workplaceHomepage rdf:resource="http://www.corp.example/"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#juan">
+        <foaf:mbox rdf:resource="mailto:juan@mail.example"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#julia">
+        <foaf:mbox rdf:resource="mailto:julia@mail.example"/>
+    </foaf:Person>
+
+    <rdf:Description rdf:about="http://www.example/jose/foaf.rdf#kendall">
+
+        <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#edd"/>
+    </rdf:Description>
+</rdf:RDF>
+</verbatim>
+      8. Execute the following query:
+<verbatim>
+-- for specified user folder:
+SELECT * FROM <http://localhost:8890/DAV/home/test1/mytest/>
+WHERE {?s ?p ?o}
+-- or if the file is uploaded into the rdf_sink folder
+SELECT * FROM <http://localhost:8890/DAV/home/test1/rdf_sink/>
+WHERE {?s ?p ?o} 
+</verbatim>
+      9. As result the following triples should be found:
+<verbatim>
+s                                         p                                                  o
+http://www.example/jose/foaf.rdf#jose     http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://xmlns.com/foaf/0.1/Person
+http://www.example/jose/foaf.rdf#jose     http://xmlns.com/foaf/0.1/nick                     Jo
+http://www.example/jose/foaf.rdf#jose     http://xmlns.com/foaf/0.1/name                     Jose Jimen~ez
+http://www.example/jose/foaf.rdf#jose     http://xmlns.com/foaf/0.1/knows                    http://www.example/jose/foaf.rdf#juan
+http://www.example/jose/foaf.rdf#jose     http://xmlns.com/foaf/0.1/homepage                 http://www.example/jose/
+http://www.example/jose/foaf.rdf#jose     http://xmlns.com/foaf/0.1/workplaceHomepage        http://www.corp.example/
+http://www.example/jose/foaf.rdf#kendall  http://xmlns.com/foaf/0.1/knows                    http://www.example/jose/foaf.rdf#edd
+http://www.example/jose/foaf.rdf#julia    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://xmlns.com/foaf/0.1/Person
+http://www.example/jose/foaf.rdf#julia    http://xmlns.com/foaf/0.1/mbox                     mailto:julia@mail.example
+http://www.example/jose/foaf.rdf#juan     http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://xmlns.com/foaf/0.1/Person
+http://www.example/jose/foaf.rdf#juan     http://xmlns.com/foaf/0.1/mbox                     mailto:juan@mail.example
+</verbatim>
+   1. Using Conductor UI:
+      1. Go to Conductor UI, for ex. at http://localhost:8890/conductor
+      1. Login as dba user
+      1. Go to WebDAV&HTTP and create new folder, for ex. test
+      1. Upload in the folder test a file, for ex. the file  jose.rdf from above with options:
+         1. Destination: RDF Store
+         2. Set the RDF IRI
+   
+---+++Example Using Linked Data Import folder and Upload from File
+
+   1. Create for ODS user demo a folder from type "Linked Data Import" using the Briefcase UI:
+      1 Go to http://cname/ods and click Sign In;
+      1 Enter user demo log in credentials;
+      1 Click Briefcase from the left vertical navigation bar;
+      1 Click "New Folder";
+      1 In the presented form specify for ex.:
+         * <b>Folder name</b>: "MyData";
+         * <b>Folder type</b>: "Linked Data Import"
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput1.png" target="_blank"><img src="%ATTACHURLPATH%/ldput1.png" width="600px" /></a>%BR%%BR%
+      1 Go to tab "Linked Data Import";
+      1 Specify "Graph name", for ex. "urn:mydata";
+      1 Hatch "Sponger (on/off)" check-box, which setting will enable the Sponger usage.
+         1 Optionally you can select which cartridges to be included from the "Sponger Extractor Cartridges" and "Sponger Meta Cartridges" lists: 
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput2.png" target="_blank"><img src="%ATTACHURLPATH%/ldput2.png" width="600px" /></a>%BR%%BR%
+      1 Click "Create".
+   1 As result the new folder should be created:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput3.png" target="_blank"><img src="%ATTACHURLPATH%/ldput3.png" width="600px" /></a>%BR%%BR%  
+   1 Click its name link:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput4.png" target="_blank"><img src="%ATTACHURLPATH%/ldput4.png" width="600px" /></a>%BR%%BR%
+   1 Click "Upload".
+   1 In the presented form:
+      1 Choose "Destination": WebDAV;
+      1 Specify the source for the n3, .ttl etc. file we are going to import. For example, choose 
+      source "File" and click "Choose file" in order to select from your local filesystem for ex. a file with name "kidehen.n3" and content as follows:
+<verbatim>   
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/ns#User> .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://www.w3.org/2000/01/rdf-schema#label> 	"Kingsley" .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#creator_of> <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300> .
+</verbatim> 
+%BR%%BR%<a href="%ATTACHURLPATH%/ldpost2.png" target="_blank"><img src="%ATTACHURLPATH%/ldpost2.png" width="600px" /></a>%BR%%BR%     
+      1 Click "Upload".
+   1 Should be created a new file with the name as specified in the form from above:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldpost3.png" target="_blank"><img src="%ATTACHURLPATH%/ldpost3.png" width="600px" /></a>%BR%%BR%
+   1. Now let's check the inserted triples. Go to your Virtuoso SPARQL endpoint, i.e., 
+   <code><nowiki>http://cname/sparql</nowiki></code> and:
+      1. Enter in the Query area the following simple query:
+<verbatim>
+SELECT * 
+FROM <urn:mydata>
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+%BR%%BR%<a href="%ATTACHURLPATH%/ldq.png" target="_blank"><img src="%ATTACHURLPATH%/ldq.png" width="600px" /></a>%BR%%BR%
+      1. Click the button "Run Query"
+      1. As result will be shown the inserted triples:
+<verbatim>
+s                                                                 p                                                 o
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://rdfs.org/sioc/ns#User
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://www.w3.org/2000/01/rdf-schema#label        Kingsley
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this   http://rdfs.org/sioc/ns#creator_of                http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300
+</verbatim>
+
+
+
+---+++Example Using Linked Data Import folder and a manually created resource with N3/Turtle content
+
+   1. Create for ODS user demo a folder from type "Linked Data Import" using the Briefcase UI:
+      1 Go to http://cname/ods and click Sign In;
+      1 Enter user demo log in credentials;
+      1 Click Briefcase from the left vertical navigation bar;
+      1 Click "New Folder";
+      1 In the presented form specify for ex.:
+         * <b>Folder name</b>: "MyData";
+         * <b>Folder type</b>: "Linked Data Import"
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput1.png" target="_blank"><img src="%ATTACHURLPATH%/ldput1.png" width="600px" /></a>%BR%%BR%
+      1 Go to tab "Linked Data Import";
+      1 Specify "Graph name", for ex. "urn:mydata";
+      1 Hatch "Sponger (on/off)" check-box, which setting will enable the Sponger usage.
+         1 Optionally you can select which cartridges to be included from the "Sponger Extractor Cartridges" and "Sponger Meta Cartridges" lists: 
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput2.png" target="_blank"><img src="%ATTACHURLPATH%/ldput2.png" width="600px" /></a>%BR%%BR%
+      1 Click "Create".
+   1 As result the new folder should be created:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldput3.png" target="_blank"><img src="%ATTACHURLPATH%/ldput3.png" width="600px" /></a>%BR%%BR%
+   1 Click its name link:
+%BR%%BR%<a href="%ATTACHURLPATH%/ldpost1.png" target="_blank"><img src="%ATTACHURLPATH%/ldpost1.png" width="600px" /></a>%BR%%BR%
+   1 Click "Create".
+   1 In the presented form:
+      1 Specify "File name", for ex: mytest.n3 ;
+      1 Specify "File Mime Type", for ex: text/rdf+n3 ;      
+      1 Enter in the "File Content" text area the following triples:
+<verbatim>   
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#id>  	"kidehen@openlinksw.com" .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#link> 	<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com> .
+<http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this> <http://rdfs.org/sioc/ns#account_of> 	<http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this> .
+</verbatim>      
+%BR%%BR%<a href="%ATTACHURLPATH%/lc1.png" target="_blank"><img src="%ATTACHURLPATH%/lc1.png" width="600px" /></a>%BR%%BR%
+      1 Click "Create".
+   1 Should be created a new file with the name as specified in the form from above:
+%BR%%BR%<a href="%ATTACHURLPATH%/lc3.png" target="_blank"><img src="%ATTACHURLPATH%/lc3.png" width="600px" /></a>%BR%%BR%
+   1. Now let's check the inserted triples. Go to your Virtuoso SPARQL endpoint, i.e., 
+   <code><nowiki>http://cname/sparql</nowiki></code> and:
+      1. Enter in the Query area the following simple query:
+<verbatim>
+SELECT * 
+FROM <urn:mydata>
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</verbatim>
+%BR%%BR%<a href="%ATTACHURLPATH%/ldq.png" target="_blank"><img src="%ATTACHURLPATH%/ldq.png" width="600px" /></a>%BR%%BR%
+      1. Click the button "Run Query"
+      1. As result will be shown the inserted triples:
+%BR%%BR%<a href="%ATTACHURLPATH%/lc4.png" target="_blank"><img src="%ATTACHURLPATH%/lc4.png" width="600px" /></a>%BR%%BR%
+
+
+#ExampleUsingVirtuosoCrawler 
+---+++ Example Using Virtuoso Crawler 
+
+The following example is using Virtuoso Crawler which includes the Sponger options so you crawl non-RDF and get RDF and this data will go to the Quad Store.
+
+
+
+   1. Go to conductor UI. For ex. at http://localhost:8890/conductor
+   1. Login as dba user
+   1. Go to tab "Web Application Server" -> "Content Management" -> "Content Imports"
+   1. Click the "New Target" button
+   1. In the shown form enter set respectively: 
+      1. "Crawl Job Name": Tim Berners-Lee's electronic Business Card
+      1. "Data Source Address (URL)": http://www.w3.org/People/Berners-Lee
+      1. "Local WebDAV Identifier" for ex.: /DAV/home/demo/rdf_sink/
+      1. Choose from the list "Local resources owner": demo
+      1. Check the check.box with label "Store metadata".
+      1. Check all the check-boxes shown below the check-box "Store metadata".
+%BR%%BR%<a href="%ATTACHURLPATH%/cond1.png" target="_blank"><img src="%ATTACHURLPATH%/cond1.png" width="600px" /></a>%BR%
+<a href="%ATTACHURLPATH%/cond1a.png" target="_blank"><img src="%ATTACHURLPATH%/cond1a.png" width="600px" /></a>%BR%
+<a href="%ATTACHURLPATH%/cond1b.png" target="_blank"><img src="%ATTACHURLPATH%/cond1b.png" width="600px" /></a>%BR%%BR%
+      1. Click "Create".
+   1 The new created target should be presented in the list of available targets:
+%BR%%BR%<a href="%ATTACHURLPATH%/cond1c.png" target="_blank"><img src="%ATTACHURLPATH%/cond1c.png" width="600px" /></a>%BR%%BR%
+   1. Click the button "Import Queues".
+   1. For "Robot target" with label "Tim Berners-Lee's electronic Business Card" click the start link.
+   1. As result should be shown the number of the pages retrieved.
+%BR%%BR%<a href="%ATTACHURLPATH%/cond2.png" target="_blank"><img src="%ATTACHURLPATH%/cond2.png" width="600px" /></a>
+   1. Now using the SPARQL endpoint with Sponger option "Use only local data" enter for Default 
+Graph URI: http://www.w3.org/People/Berners-Lee and execute the following query: 
+<verbatim>
+SELECT *
+WHERE {?s ?p ?o}
+</verbatim>
+   1. As result should be shown the following triples:
+<verbatim>
+s                                       p                                                  o
+http://www.w3.org/People/Berners-Lee    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://xmlns.com/foaf/0.1/Document
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Answers for young people - Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Berners-Lee: Weaving the Web
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Declaration by Tim BL 28 Feb 1996 w.r.t. CDA challenge
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Errata - Berners-Lee: Weaving the Web
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Frequently asked questions by the Press - Tim BL
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Glossary - Weaving the Web - Berners-Lee
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Longer Bio for Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Michael Dertouzos has left us
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              The Future of the Web and Europe
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              The World Wide Web: Past, Present and Future
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              The World Wide Web: A very short personal history
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Tim Berners-Lee
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Tim Berners-Lee - 3Com Founders chair
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Tim Berners-Lee: Disclosures
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Tim Berners-Lee: WWW and UU and I
+http://www.w3.org/People/Berners-Lee    http://purl.org/dc/elements/1.1/title              Tim Berners-Lee: WorldWideWeb, the first Web client
+</verbatim>
+
+---++++ References
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetCrawlerJobsGuide][Use the Content Crawler to Populate the RDF Quad Store]]
+   * [[http://docs.openlinksw.com/virtuoso/adminui.html][Virtuoso Conductor Administration]]
+
+
+---+++ Examples using SPARQL 1.1 Graph Store HTTP Protocol 
+
+   * [[VirtGraphUpdateProtocolUI][sparql-graph-crud-auth Endpoint UI Usage Example]]   
+   * [[VirtGraphProtocolCURLExamples][SPARQL 1.1. Graph Store HTTP Protocol cURL Examples Collection]]
+
+---+++ Example using SPARQL Query &amp; Sponger 
+
+(i.e. we Sponge the Resources in the FROM Clause or values for the graph-uri parameter in SPARQL protocol URLs)
+
+   1. Execute the following query:
+<verbatim>
+SPARQL
+SELECT ?id 
+FROM NAMED <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl>
+ OPTION (get:soft "soft", get:method "GET")
+WHERE { GRAPH ?g { ?id a ?o } }
+LIMIT 10; 
+</verbatim>
+   2. As result will be shown the retrived triples:
+<verbatim>
+id
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D
+http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/612
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/612
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/610
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/610
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/856
+http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/856
+
+10 Rows. -- 20 msec.
+</verbatim>
+
+---++++ References
+   * [[http://demo.openlinksw.com/tutorial/rdf/ri_s_1/ri_s_1.vsp][Virtuoso tutorial for RDF data import using SPARQL sponger.]]
+   * [[VOSSPARQL][SPARQL Query Language support]]
+   * [[VOSSparqlProtocol][SPARQL Protocol support]]
+
+---+++ Example using Virtuoso PL APIs
+
+   1. In the example script we implement a basic mapper which maps a text/plain mime type 
+to an imaginary ontology, which extends the class Document from FOAF with properties 
+'txt:UniqueWords' and 'txt:Chars', where the prefix 'txt:' we specify as 'urn:txt:v0.0:'.
+<verbatim>
+USE DB;
+
+CREATE PROCEDURE DB.DBA.RDF_LOAD_TXT_META
+    (
+     IN     graph_iri       VARCHAR,
+     IN     new_origin_uri  VARCHAR,
+     IN     dest            VARCHAR,
+     INOUT  ret_body        ANY,
+     INOUT  aq              ANY,
+     INOUT  ps              ANY,
+     INOUT  ser_key         ANY
+    )
+{
+  DECLARE words, chars INT;
+  DECLARE vtb, arr, subj, ses, str ANY;
+  DECLARE ses ANY;
+  -- if any error we just say nothing can be done
+  DECLARE EXIT HANDLER FOR SQLSTATE '*'
+    {
+      RETURN 0;
+    };
+  subj := COALESCE (dest, new_origin_uri);
+  vtb := vt_batch ();
+  chars := LENGTH (ret_body);
+  -- using the text index procedures we get a list of words
+  vt_batch_feed (vtb, ret_body, 1);
+  arr := vt_batch_strings_array (vtb);
+  -- the list has 'word' and positions array, so we must divide by 2
+  words := LENGTH (arr) / 2;
+  ses := string_output ();
+  -- we compose a N3 literal
+  http (sprintf ('<%s> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Document> .\n', subj), ses);
+  http (sprintf ('<%s> <urn:txt:v0.0:UniqueWords> "%d" .\n', subj, words), ses);
+  http (sprintf ('<%s> <urn:txt:v0.0:Chars> "%d" .\n', subj, chars), ses);
+  str := string_output_string (ses);
+  -- we push the N3 text into the local store
+  DB.DBA.TTLP (str, new_origin_uri, subj);
+  RETURN 1;
+}
+;
+
+--
+DELETE FROM  DB.DBA.SYS_RDF_MAPPERS  WHERE  RM_HOOK = 'DB.DBA.RDF_LOAD_TXT_META';
+
+INSERT SOFT  DB.DBA.SYS_RDF_MAPPERS (RM_PATTERN, RM_TYPE, RM_HOOK, RM_KEY, RM_DESCRIPTION)
+    VALUES ('(text/plain)', 'MIME', 'DB.DBA.RDF_LOAD_TXT_META', null, 'Text Files (demo)');
+
+-- here we set order to some large number so don't break existing mappers
+UPDATE  DB.DBA.SYS_RDF_MAPPERS  SET  RM_ID = 2000  WHERE  RM_HOOK = 'DB.DBA.RDF_LOAD_TXT_META';
+</verbatim>
+
+   1. To test the mapper we just use /sparql endpoint with option 'Retrieve remote RDF data for 
+all missing source graphs' to execute:
+<verbatim>
+SELECT * 
+  FROM <http://demo.openlinksw.com:8890/tutorial/hosting/ho_s_30/WebCalendar/tools/summary.txt> 
+  WHERE { ?s ?p ?o }
+</verbatim>
+   1. Check the results [[http://demo.openlinksw.com/sparql?default-graph-uri=http%3A%2F%2Flocalhost%3A80%2Ftutorial%2Fhosting%2Fho_s_30%2FWebCalendar%2Ftools%2Fsummary.txt&should-sponge=soft&query=select+*+where+%7B+%3Fs+%3Fp+%3Fo+.+%7D&format=text%2Fhtml][here]].
+    
+
+---++++Important: Setting Sponger Permissions
+
+In order to allow the Sponger to update the local RDF quad store with triples constituting the 
+the Network Resource being fetched as structured data, the role "SPARQL_UPDATE" must be granted to the account "SPARQL". This 
+should normally be the case. If not, you must manually grant this permission. As with most 
+Virtuoso DBA tasks, the Conductor provides the simplest means of doing this.
+
+---++++ References
+   * [[http://demo.openlinksw.com/tutorial/rdf/rd_s_1/rd_s_1.vsp][Virtuoso on-line tutorial]]
+
+---+++ Example using SIMILE RDF Bank API
+Virtuoso implements the HTTP-based Semantic Bank API that enables client applications to post 
+to its RDF Triple Store. This method offers an alternative to using Virtuoso/PL functions or 
+WebDAV uploads as the triples-insertion mechanism.
+
+   1. From your machine go to FireFox->Tools->PiggyBank->My Semantic Bank Accounts
+   2. Add in the shown form:
+      1. For bank address: http://demo.openlinksw.com/bank
+      2. For account id: demo
+      3. For password: demo
+   3. Go to demo.openlinksw.com/ods 
+   4. Log in as user demo, password: demo
+   5. Go to the Weblog tab from the main ODS Navigation
+   6. Click on weblog instance name, for ex. "demo's Weblog".
+   7. When the weblog home page is loaded, click Alt + P.
+   8. As result is shown the "My PiggyBank" page with all the collected information presented in items. 
+   9. For several of the items add Tags from the form "Tag" shown for each of them. 
+   10. As result should be shown the message "Last updated: [here goes the date value].
+   11. You can also click "Save" and "Publish" for these items.
+   12. Go to http://demo.openlinksw.com/sparql
+   13. Enter for the "Default Graph URI" field: http://simile.org/piggybank/demo
+   14. Enter for the "Query text" text-area:
+<verbatim>
+   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+   PREFIX sioc: <http://rdfs.org/sioc/ns#>
+   SELECT *
+   FROM <http://simile.org/piggybank/demo>
+   WHERE {?s ?p  ?o}
+</verbatim>
+   15. Click "Run Query".
+   16. As results are shown the found results.
+
+---++++ References
+   * [[VOSSemanticBank][Implementation of the SIMILE project's HTTP based Semantic Bank API]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparqlprotocolendpoint.html#rdftables][Virtuoso Documentation Semantic Bank end point]]
+
+---+++ Example using RDF NET
+
+<verbatim>
+SQL> SELECT DB.DBA.HTTP_RDF_NET ('SPARQL LOAD 
+"http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com" 
+INTO GRAPH <http://www.openlinksw.com/>');
+
+callret
+VARCHAR
+_______________________________________________________
+
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#" 
+xmlns="http://example.org/book/" xmlns:dc="http://purl.org/dc/elements/1.1/" 
+xmlns:ns="http://example.org/ns#">
+<rdf:Description>
+<callret-0>LOAD <http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com> 
+INTO GRAPH <http://www.openlinksw.com/> -- done</callret-0>
+</rdf:Description>
+</rdf:RDF>
+
+1 Rows. -- 1982 msec.
+</verbatim>
+
+---+++See Also 
+
+   * [[VirtEvaluatorGuideLinkedDataDeployment][Evaluator Guide for Linked Data Deployment]]
+   * [[VirtLinkedDataDeploymentTutorialDOAP][Linked Data Deployment DOAP Tutorial]]
+   * More Examples for [[VirtTipsAndTricksImportLinkedDataCreateFeature][Create Linked Data Resources using a variety content formats from the RDF family]]:
+      * [[VirtTipsAndTricksImportLinkedDataCreateFeatureNTriples][Create a Linked Data Resource with <b>N-Triples</b> content]]
+      * [[VirtTipsAndTricksImportLinkedDataCreateFeatureTTL][Create a Linked Data Resource with <b>Turtle</b> content]]
+      * [[VirtTipsAndTricksImportLinkedDataCreateFeatureRDFXML][Create a Linked Data Resource with <b>RDF/XML</b> content]]
+      * [[VirtTipsAndTricksImportLinkedDataCreateFeatureRDFA][Create a Linked Data Resource with <b>RDFa</b> content]] 
+
+
+---+++ References
+   * [[http://www.w3.org/Submission/2003/SUBM-rdf-netapi-20031002/][RDF NET API Specification]]
+   * [[http://demo.openlinksw.com/tutorial/rdf/][Virtuoso RDF tutorials]]
+
+
+CategoryRDF CategoryHowTo CategoryVirtuoso CategorySPARQL

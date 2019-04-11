@@ -1,0 +1,98 @@
+<docbook><section><title>VirtTipsAndTricksAnalyzingSPARQLQuery</title><title> How can I get a full explain and profile plans for a simple SPARQL query?</title> How can I get a full explain and profile plans for a simple SPARQL query?
+<para> Starting with Virtuoso Commercial Release 6.4, and Virtuoso Open Source 6.1.5, isql offers 2 new modes for analyzing SPARQL queries:</para>
+<orderedlist spacing="compact"><listitem>Translate a SPARQL query into the correspondent SQL: <programlisting>SQL&gt; SET SPARQL_TRANSLATE ON;
+SQL&gt; SELECT * FROM &lt;graph&gt; WHERE {?S a ?O};
+       ---&gt; Or execute query of your choice
+SQL&gt; SET SPARQL_TRANSLATE OFF;
+</programlisting></listitem>
+<listitem>Generate compilation plan of an SQL query: <programlisting>SQL&gt; SET EXPLAIN ON;
+SQL&gt; SELECT * FROM TABLE WHERE field = &#39;text&#39;;
+     ---&gt; Or execute query of your choice
+SQL&gt; SET EXPLAIN OFF;
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>The equivalent is <ulink url="http://docs.openlinksw.com/virtuoso/fn_explain/">EXPLAIN()</ulink>, which is much more difficult to use; you cannot just copy-and-paste a query, as all quotes must be doubled within the EXPLAIN(&#39; ...
+ &#39;), as shown below: <programlisting>SQL&gt; explain(&#39;select * from table where field = &#39;&#39;text&#39;&#39;&#39;);
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Generate compilation and execution plan of an SQL query: <programlisting>SQL&gt; SET PROFILE ON;
+SQL&gt; SELECT * FROM TABLE WHERE field = &#39;text&#39;;
+     ---&gt; Or execute query of your choice
+SQL&gt; SET PROFILE OFF;
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem>The equivalent (available in Virtuoso 7 and later) is <ulink url="http://docs.openlinksw.com/virtuoso/fn_profile/">PROFILE()</ulink>, which is much more difficult to use; you cannot just copy-and-paste a query, as all quotes must be doubled within the PROFILE(&#39; ...
+ &#39;), as shown below: <programlisting>SQL&gt; profile(&#39;select * from table where field = &#39;&#39;text&#39;&#39;&#39;);
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>A more detailed query profile (compilation and execution) with cardinality can be obtained by executing the following following sequence <programlisting>SQL&gt; __dbf_set(&#39;enable_qr_comment&#39;, 1);             
+SQL&gt; __dbf_set(&#39;dbf_explain_level&#39;, 3);
+SQL&gt; SET PROFILE ON;
+SQL&gt; SET BLOBS ON;
+SQL&gt; SELECT * FROM TABLE WHERE field = &#39;text&#39;;
+      ---&gt; Or execute query of your choice
+SQL&gt; SET PROFILE OFF;
+</programlisting> Provide the generated plans for analysis.</listitem>
+</orderedlist><para> Here is a simple example of how to combine the two options to get a full explain() plan for a simple SPARQL query:</para>
+<para> </para>
+<orderedlist spacing="compact"><listitem>Assume the following query: <programlisting>SELECT * 
+FROM &lt;http://dbpedia.org&gt; 
+WHERE 
+  {
+    ?s a ?o
+  } 
+LIMIT 10
+</programlisting></listitem>
+<listitem>Use the isql command line tool to connect to your database, and execute: <programlisting>SQL&gt; SET BLOBS ON;
+        -- in case output is very large
+SQL&gt; SET SPARQL_TRANSLATE ON;
+SQL&gt; SELECT * FROM &lt;http://dbpedia.org&gt; WHERE {?s a ?o} LIMIT 10;
+
+SPARQL_TO_SQL_TEXT
+VARCHAR
+_______________________________________________________________________________
+
+SELECT TOP 10 __id2i ( &quot;s_1_0-t0&quot;.&quot;S&quot; ) AS &quot;s&quot;,
+  __ro2sq ( &quot;s_1_0-t0&quot;.&quot;O&quot; ) AS &quot;o&quot;
+FROM DB.DBA.RDF_QUAD AS &quot;s_1_0-t0&quot;
+WHERE &quot;s_1_0-t0&quot;.&quot;G&quot; = __i2idn ( __bft( &#39;http://dbpedia.org&#39; , 1))
+  AND  &quot;s_1_0-t0&quot;.&quot;P&quot; = __i2idn ( __bft( &#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&#39; , 1))
+OPTION (QUIETCAST)
+
+1 Rows. -- 1 msec.
+
+SQL&gt; SET SPARQL_TRANSLATE OFF;
+</programlisting></listitem>
+<listitem>Use your mouse to select the query output, and paste it after the SET EXPLAIN ON; command.
+ Then hit the ENTER key.
+<programlisting>SQL&gt; SET EXPLAIN ON;
+SQL&gt; SELECT TOP 10 __id2i ( &quot;s_1_0-t0&quot;.&quot;S&quot; ) AS &quot;s&quot;, __ro2sq ( &quot;s_1_0-t0&quot;.&quot;O&quot; ) AS &quot;o&quot;
+ FROM DB.DBA.RDF_QUAD AS &quot;s_1_0-t0&quot;
+ WHERE &quot;s_1_0-t0&quot;.&quot;G&quot; = __i2idn ( __bft( &#39;http://dbpedia.org&#39; , 1))
+   AND  &quot;s_1_0-t0&quot;.&quot;P&quot; = __i2idn ( __bft( &#39;http://www.w3.org/1999/02/22-rdf-syn &#8;tax-ns#type&#39; , 1))
+ OPTION (QUIETCAST)
+;
+
+REPORT
+VARCHAR
+_______________________________________________________________________________
+
+{ 
+from DB.DBA.RDF_QUAD by RDF_QUAD_POGS    4.5e+05 rows   
+Key RDF_QUAD_POGS  ASC ($22 &quot;s_1_0-t0.S&quot;, $21 &quot;s_1_0-t0.O&quot;)
+ inlined &lt;col=556 P =  #type &gt;
+row specs: &lt;col=554 G =  #http://dbpedia.org &gt;
+ 
+ 
+After code:
+      0: $25 &quot;s&quot; := Call __id2i ($22 &quot;s_1_0-t0.S&quot;)
+      5: $26 &quot;o&quot; := Call __ro2sq ($21 &quot;s_1_0-t0.O&quot;)
+      10: BReturn 0
+Select (TOP  10 ) ($25 &quot;s&quot;, $26 &quot;o&quot;, &lt;$24 &quot;&lt;DB.DBA.RDF_QUAD s_1_0-t0&gt;&quot; spec 5&gt;)
+}
+
+13 Rows. -- 1 msec.
+
+SQL&gt; SET EXPLAIN OFF;
+</programlisting></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">Virtuoso Documentation</ulink></listitem>
+</itemizedlist><para> </para>
+</section></docbook>

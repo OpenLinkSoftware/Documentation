@@ -1,0 +1,91 @@
+<docbook><section><title>RemoteSystemError</title><para> </para><title>Error Message: RPC: Remote System error or Program Unavailable</title>Error Message: <computeroutput>RPC: Remote System error</computeroutput> or <computeroutput>Program Unavailable</computeroutput>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">General Cases</bridgehead>
+<para>The Multi-Tier Generic Client (whether ODBC Driver, JDBC Driver, or ADO.NET Provider) expects to find a running Request Broker.
+ Specifically, it will call for the Broker at the machine and port specified in the <computeroutput>Host</computeroutput> field of the client DSN (e.g., <computeroutput>broker-host.example.com:5000</computeroutput>).
+ If a running Broker cannot be reached, <emphasis>Remote System</emphasis> and <emphasis>Program Unavailable</emphasis> errors occur.
+ The most common causes of these errors should be resolved by the steps below.</para><orderedlist spacing="compact"><listitem> Ensure that the OpenLink Request Broker and Database Agents are installed somewhere on the network.
+ Typically, these components are installed on the database server.
+ However, they are occasionally installed on clients or third-tier &quot;gateway&quot; hosts.
+ If in doubt, use the Windows Explorer or the Unix find command to search for the oplrqb executable.
+</listitem>
+<listitem> Review your client&#39;s DSN.
+<itemizedlist mark="bullet" spacing="compact"><listitem> Ensure that the Host field passes the IP address or a DNS-resolvable fully qualified hostname (e.g., <computeroutput>broker-host.example.com</computeroutput>) of the machine which contains the OpenLink Request Broker.
+</listitem>
+<listitem> Ensure that the Broker&#39;s Listen port (found in the <computeroutput>[Protocol TCP]</computeroutput> stanza of the Broker Rulebook, <computeroutput>oplrqb.ini</computeroutput>) is also specified in the DSN, whether in its own field (e.g., <computeroutput>Port = 5000</computeroutput>), or as part of the Server field (e.g., <computeroutput>Host = brokerhost.example.com:5000</computeroutput>).
+ The following examples are all equivalent -- <programlisting>[OpenLink Multi-Tier DSN 1]
+Driver          = /home/openlink/lib/oplodbc.so
+Description     = Sample OpenLink DSN
+Host            = broker-host.example.com:5000
+
+[OpenLink Multi-Tier DSN 2]
+Driver          = /home/openlink/lib/oplodbc.so
+Description     = Sample OpenLink DSN
+Host            = 192.168.123.234
+Port            = 5000
+
+[OpenLink Multi-Tier DSN 3]
+Driver          = /home/openlink/lib/oplodbc.so
+Description     = Sample OpenLink DSN
+Host            = 192.168.123.234:5000
+</programlisting></listitem>
+<listitem> If you specify the Broker host by hostname, substitute the machine&#39;s IP address and retest; success with this substitution indicates issues with the client host&#39;s DNS setup and/or server.
+ You can also test for DNS issues by &quot;pinging&quot; the Broker host by name and by address (ctrl-C to exit the ping utility) -- <programlisting>ping broker-host.example.com
+ping 192.168.123.231
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem> Ensure that the Request Broker is running.
+ Unix users generally start the Broker with the commands -- <programlisting>. /path/to/openlink.sh
+oplrqb
+</programlisting>Windows users generally start the OpenLink Request Broker service through the Services control panel.
+</listitem>
+<listitem> If the Broker is running, determine whether firewalls exist between the client and the machine with the Broker.
+ If firewalls exist, take the following action: <orderedlist spacing="compact"><listitem> Open the active Rulebook file (<computeroutput>~/openlink/bin/oplrqb.ini</computeroutput> by default) with a text editor.
+</listitem>
+<listitem> Locate the <computeroutput>[Protocol TCP]</computeroutput> section.
+</listitem>
+<listitem> Record the values passed to <emphasis><computeroutput>PortLow</computeroutput></emphasis> and <emphasis><computeroutput>PortHigh</computeroutput></emphasis>.
+ <emphasis>If <computeroutput>PortHigh</computeroutput> is set to no value, is not set, and/or its entry is commented out, treat it as if set to 60000.
+ (To minimize future confusion, you may wish to set it to 60000, now.)</emphasis> </listitem>
+<listitem> On the firewall, open TCP ports PortLow through PortHigh, inclusive.
+ In other words, if <computeroutput>PortLow = 5000</computeroutput> and <computeroutput>PortHigh = 5500</computeroutput>, open all TCP ports 5000 to 5500.
+</listitem>
+<listitem> On the firewall, open TCP port 60001 and UDP port 60001.
+</listitem>
+</orderedlist></listitem>
+<listitem> If firewalls do not exist, determine whether multiple network cards have been installed in the machine containing the Broker and agents, or if this machine has multiple IP addresses.
+ If multiple network cards (even if only one is active) or IP addresses exist, take the following action: <orderedlist spacing="compact"><listitem> Open the active Rulebook file (<computeroutput>~/openlink/bin/oplrqb.ini</computeroutput> by default) with a text editor.
+</listitem>
+<listitem> Locate the <computeroutput>[Protocol TCP]</computeroutput> section.
+</listitem>
+<listitem> Remove the leading semicolon (&quot;<computeroutput>;</computeroutput>&quot;) from the <computeroutput>IPAddress</computeroutput> entry, if present.
+</listitem>
+<listitem> Set <computeroutput>IPAddress</computeroutput> equal to the IP address at which the Broker and Agents should be found.
+ For example: <programlisting>IPAddress = 192.168.123.234
+</programlisting></listitem>
+<listitem> Save your changes and exit the file.
+</listitem>
+<listitem> Restart your Request Broker.
+</listitem>
+<listitem> Ensure that client DSNs specify that IP address or a fully qualified hostname  (e.g., <computeroutput>broker-host.example.com</computeroutput>) which resolves to the same IP address.
+</listitem>
+<listitem> Test.</listitem>
+</orderedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Special Consideration for Request Brokers running on Windows NT or 2000 Workstation</bridgehead>
+<para>Applications making 6 (or more) connections in rapid succession to OpenLink Request Brokers running on Windows NT Workstation or Windows 2000 Workstation may receive <computeroutput>RPC: Remote System error</computeroutput>.</para><para>This is due to the size of the backlog queue for TCP sockets and RPC on the host OS, upon which our Multi-Tier communications layer depends.
+ On Windows NT Workstation and Windows 2000 Workstation, the maximum queue size is 5; on Windows Server (NT, 2000, and later), the queue size can be 200 (or more).
+ The Broker&#39;s internal backlog queue was 8 through Release 4.0, and increased to 32 in Release 4.1, but due to the OS limitations, on Windows Workstations, the effective value remains 5.
+ Unfortunately, there is no way to increase the maximum size of the Windows Workstation backlog queue.</para><para>The following Microsoft Knowledgebase articles discuss this Winsock-specific phenomenon: </para><itemizedlist mark="bullet" spacing="compact"><listitem> <ulink url="http://support.microsoft.com/default.aspx?scid=kb;EN-US;Q127144">Article ID: 127144</ulink> - Windows NT WinSock Listen (Backlog) Parameter Limit </listitem>
+<listitem> <ulink url="http://support.microsoft.com/default.aspx?scid=kb;EN-US;Q113576">Article ID: 113576</ulink> - Winsock App&#39;s Reject Connection Requests with Reset Frames</listitem>
+</itemizedlist><para>As these articles state, applications targeting an OpenLink Request Broker on Windows Workstation may have to force a timeout to avoid exhausting the Winsock TCP stack&#39;s resources before their next connection request.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2">Evidence</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem> output of commands -- <itemizedlist mark="bullet" spacing="compact"><listitem> HP-UX <programlisting>for i in `lanscan -i | awk &#39;{print $1}&#39;` ; do ifconfig $i ; done
+</programlisting></listitem>
+<listitem> Windows <programlisting>ipconfig /all
+</programlisting></listitem>
+<listitem> Mac OS X, Linux, AIX, Solaris, other Unix-like OS <programlisting>ifconfig -a
+</programlisting></listitem>
+<listitem> All OS (including the above) <programlisting>netstat -na
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem> DSN and Communications settings (from <computeroutput>odbc.ini</computeroutput> or Windows Registry) </listitem>
+<listitem> Session Rulebook (<computeroutput>oplrqb.ini</computeroutput>) </listitem>
+</itemizedlist></section></docbook>

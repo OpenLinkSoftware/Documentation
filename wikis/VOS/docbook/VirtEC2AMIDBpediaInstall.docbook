@@ -1,0 +1,82 @@
+<docbook><section><title>VirtEC2AMIDBpediaInstall</title><title> Installing the DBpedia data set on a Virtuoso EC2 AMI instance</title> Installing the DBpedia data set on a Virtuoso EC2 AMI instance
+<para><ulink url="OpenLink">OpenLink</ulink> Software provides a backup of the current DBpedia Database as hosted on the live service at http://dbpedia.org/, that users can restore into a Virtuoso EC2 AMI instance in the cloud, giving them an instance of DBpedia for their own use.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A <ulink url="VirtInstallationEC2">Virtuoso EC2 AMI instance</ulink>.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_AWS_Console_M1Large_Instance.png" /></figure> <itemizedlist mark="bullet" spacing="compact"><listitem>Note that a Virtuoso <emphasis>Release 5</emphasis> AMI instance (ami-id ami-59628630 or ami-c46084ad) must be used with this backup.
+</listitem>
+<listitem>The live DBpedia instance is an m1.large EC2 instance type, and we recommend a 64-bit large image AMI instance with at least 8GB of memory for best performance.</listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Safeguarding Your SPARQL End-point</bridgehead>
+ <para><emphasis>Important</emphasis> — The following section should be added to the Virtuoso configuration file (/opt/virtuoso/database/virtuoso.ini) to control and safeguard your SPARQL end-point against overzealous usage: </para>
+<programlisting>[SPARQL]
+MaxCacheExpiration         = 1    ; Cache Expiration time in seconds that overrides Sponger&#39;s default cache invalidation scheme
+ExternalQuerySource        = 1
+ExternalXsltSource         = 1
+ResultSetMaxRows           = 100000
+;DefaultGraph               = http://demo.openlinksw.com/dataspace/person/demo
+MaxQueryCostEstimationTime = 10000    ; in seconds
+MaxQueryExecutionTime      = 30    ; in seconds
+;ImmutableGraphs            = http://unknown:8890/dataspace
+;PingService                = http://rpc.pingthesemanticweb.com/
+DefaultQuery               = select distinct ?URI ?ObjectType where {?URI a ?ObjectType} limit 50
+DeferInferenceRulesInit    = 0  ;  Defer Loading of inference rules at start up
+</programlisting><para> Details about these settings can be found in the <ulink url="http://docs.openlinksw.com/virtuoso/">Virtuoso Online Documentation</ulink> in the <ulink url="http://docs.openlinksw.com/virtuoso/dbadm.html#ini_SPARQL">SPARQL Configuration File section</ulink>.
+ The &quot;DeferInferenceRulesInit = 1&quot; setting is important when hosting large RDF data sets like DBpedia, as it defers the load of the inference rules which can take quite some time (up to an hour) during server startup.</para>
+<para>OAuth support can be used to secure the SPARQL endpoint by installing the <ulink url="https://virtuoso.openlinksw.com/download/">conductor_dav.vad</ulink>  VAD package.
+ This allows the /sparql endpoint to be disabled or mapped to the Virtuoso OAuth SPARQL service thereby requiring an API key to use the endpoint as detailed in the <ulink url="VirtOAuthSPARQL">Virtuoso OAuth</ulink> documentation.</para>
+<para>Virtuoso <ulink url="http://docs.openlinksw.com/virtuoso/wsacl.html">Web Services ACLs</ulink> can be used to control (limit) access to the SPARQL endpoint as detailed in the documentation link.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> DBpedia VAD Application Package</bridgehead>
+<para>If you are running a Virtuoso EC2 AMI instance created before December 2, 2008, you will need to update your DBpedia VAD Application package to obtain the latest enhancements, by taking the following steps --</para>
+<orderedlist spacing="compact"><listitem>Download the <ulink url="https://virtuoso.openlinksw.com/download/">DBpedia VAD Application</ulink> (dbpedia_dav.vad) package.
+</listitem>
+<listitem>Navigate to the &quot;System Admin&quot; -&gt; &quot;Packages&quot; tab of the Virtuoso Conductor.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_VADPackages.png" /></figure> </listitem>
+<listitem>Scroll down to the &quot;Install Package&quot; section of the tab, use the &quot;Upload Package&quot; option  &quot;browse&quot; button.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_VAD_File_Upload.png" /></figure> </listitem>
+<listitem>Navigate to the location of the downloaded dbpedia_dav.vad file and click the &quot;open&quot; button to select it.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_VAD_DBpedia.png" /></figure> </listitem>
+<listitem>Click the &quot;Proceed&quot; button to begin the installation process.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_VAD_DBpedia_Install.png" /></figure></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Steps</bridgehead>
+<orderedlist spacing="compact"><listitem>Load the Virtuoso Conductor Administration interface of the running EC2 AMI instance with a URL of the form http://your-ec2-instance-cname/conductor.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_Conductor.png" /></figure> </listitem>
+<listitem>From the Virtuoso Conductor, navigate to the &quot;System Admin&quot; -&gt; &quot;Packages&quot; tab to obtain a list of available Virtuoso packages (VADs) to install.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_VADPackages.png" /></figure> </listitem>
+<listitem>Click the &quot;Install&quot; button to initiate installation of the &quot;EC2 Extensions&quot; VAD package for use in performing backup and restore tasks.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_VADEc2Exts.png" /></figure> </listitem>
+<listitem>Click the &quot;Proceed&quot; button to install the &quot;EC2 Extensions&quot; VAD package.
+</listitem>
+<listitem>Go to the URL http://your-ec2-instance-cname/ec2exts to load the Virtuoso Extensions for Amazon EC2 Images login page and log in as the &quot;dba&quot; user.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_ExtLogin.png" /></figure> </listitem>
+<listitem>From the Virtuoso Extensions for Amazon EC2 Images main page, click the &quot;Restore a Remote Backup&quot; link.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_MainPage.png" /></figure> </listitem>
+<listitem>On the &quot;Restore a Remote Backup&quot; page, set the follow options.
+<programlisting>Protocol: WebDAV/HTTP
+Host: s3.amazonaws.com
+Path or Bucket: dbpedia-version-32-bundle
+Backup File Prefix: dbpedia-version-32
+</programlisting><figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_RestoreDBpedia.png" /></figure> </listitem>
+<listitem>Click the &quot;Restore&quot; button to begin the restoration of the DBpedia database from backup.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_RestoreDBpediaProgress.png" /></figure> .
+ .
+ .
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_RestoreDBpediaProgressDone.png" /></figure> </listitem>
+<listitem>Click on the &quot;Continue&quot; button to begin the re-assembly of the database from the restored backup files.
+ Output similar to the following will be displayed when the re-assembly of the database is complete.
+<figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_ReassembleDB.png" /></figure></listitem>
+</orderedlist><para>Note that server restart may take a while as there are some initialization procedures that take some time to complete.
+ Once these are complete, the restored DBpedia database is ready for use.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Usage Examples</bridgehead>
+<para>You can then access pages such as these on your DBpedia server:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis>DBpedia About page</emphasis> — http://your-ec2-instance-cname/About <figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_DBpedia_About.png" /></figure> </listitem>
+<listitem> <emphasis>SPARQL end-point</emphasis> — http://your-ec2-instance-cname/sparql <figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_DBpedia_SPARQL.png" /></figure> </listitem>
+<listitem> <emphasis>DBPedia resource</emphasis> — http://your-ec2-instance-cname/resource/OpenLink_Software <figure><graphic fileref="VirtEC2AMIDBpediaInstall/EC2_DBpedia_Resource.png" /></figure></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The DBpedia SPARQL endpoint can be accessed on http://your-ec2-instance-cname/sparql </listitem>
+<listitem>The <ulink url="OpenLink">OpenLink</ulink> <ulink url="http://wikis.openlinksw.com/dataspace/owiki/wiki/OATWikiWeb/InteractiveSparqlQueryBuilder">Interactive SPARQL Query Builder</ulink> can be accessed on http://your-ec2-instance-cname/isparql, enabling the visual construction of queries (Graph Patterns).
+</listitem>
+<listitem>OAuth support can be used to secure the SPARQL endpoint by installing the <ulink url="https://virtuoso.openlinksw.com/download/">conductor_dav.vad</ulink>  VAD package.
+ This allows the /sparql endpoint to be disabled or mapped to the Virtuoso OAuth SPARQL service thereby requiring an API key to use the endpoint as detailed in the <ulink url="VirtOAuthSPARQL">Virtuoso OAuth</ulink> documentation.</listitem>
+</itemizedlist></section></docbook>

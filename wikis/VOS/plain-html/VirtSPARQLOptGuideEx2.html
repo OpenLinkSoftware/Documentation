@@ -1,0 +1,76 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="Generating a Unique ID via SPARQL HTTP"></a> Generating a Unique ID via SPARQL HTTP</h1>
+<p>Suppose you need unique IDs from within Virtuoso (unique only to a given Virtuoso instance/cluster would suffice), and that this should be done via SPARQL HTTP prior to issuing a SPARQL insert.</p>
+<p>One solution would be to create a table and procedure that keeps track of an incremental ID and returns each ID only once.
+ Then you can access this procedure via SPARQL HTTP by using: </p>
+<br><pre>( 
+  SELECT ( bif:foo() ) AS ?id 
+  WHERE 
+    { 
+      ?s ?p ?o 
+    } limit 1 
+)
+</pre><p> </p>
+<h2><a name="An optimized solution"></a> An optimized solution</h2>
+<p>Virtuoso&#39;s built-in functions (BIFs) <code><a href="http://docs.openlinksw.com/virtuoso/fn_sequence_next.html" class="absuri">sequence_next()</a></code> and <code><a href="http://docs.openlinksw.com/virtuoso/sequenceobjects.html" class="absuri">sequence_set()</a></code> will streamline this task.</p>
+<p>Like any other SQL functions without INOUT or OUT parameters, these can be called from SPARQL simply as <b><code>bif:sequence_next()</code></b> or <b><code>bif:sequence_set()</code></b>, but an IN parameter may be used to get one sequence per graph, i.e., <b><code>bif:sequence_next(&quot;GRAPH_IDENTIFIER&quot;)</code></b>, e.g., <code>bif:sequence_next(&quot;&lt;http://my.example.com/graph1&gt;&quot;)</code>.</p>
+<p> </p>
+<br><pre>SQL&gt; SPARQL 
+  INSERT INTO GRAPH &lt;http://mygraph.com&gt; 
+    { 
+      &lt;:a&gt;  &lt;:p&gt;  `bif:sequence_next(&quot;&lt;http://mygraph.com&gt;&quot;)` 
+    } ;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 (or less) triples -- done
+
+1 Rows. -- 141 msec.
+SQL&gt; SPARQL 
+  INSERT INTO GRAPH &lt;http://mygraph.com&gt;
+    {
+      &lt;:a&gt;  &lt;:p&gt;  `bif:sequence_next(&quot;&lt;http://mygraph.com&gt;&quot;)` 
+    } ;
+
+callret-0
+VARCHAR
+_______________________________________________________________________________
+
+Insert into &lt;http://mygraph.com&gt;, 1 (or less) triples -- done
+
+1 Rows. -- 4 msec.
+SQL&gt; SPARQL 
+  SELECT * 
+  FROM &lt;http://mygraph.com&gt; 
+  WHERE
+    { 
+      ?s  ?p  ?o 
+    }
+  ;
+
+s                  p                  o
+VARCHAR            VARCHAR            VARCHAR
+_______________________________________________________________________________
+
+:a                 :p                 0
+:a                 :p                 1
+
+2 Rows. -- 1 msec.
+SQL&gt; 
+</pre><p> </p>
+<h2><a name="Side-note -- bif: prefix vs.&#10; sql: prefix"></a> Side-note -- bif: prefix vs.
+ sql: prefix</h2>
+<p>For user-defined functions, the <b><code>sql:</code></b> prefix is preferred over the <b><code>bif:</code></b> prefix; e.g., </p>
+<br><pre>sql:foo(x) 
+</pre><p>-- will call -- </p>
+<br><pre>DB.DBA.foo(x)
+</pre><p>The difference is that <code>bif:foo</code> will make an unqualified call to <code>foo()</code>.
+If no built-in function <code>foo()</code> exists, and the system contains many users and database qualifiers, the search for exact name of <code>XXX.YYY.foo()</code> adds needless overhead.
+Further issues may arise if multiple <code>XXX.YYY.foo()</code> procedures have been defined.</p>
+<p> </p>
+<h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPARQLOptGuide" class="wikiword">Virtuoso SPARQL Optimization Guide</a> </li>
+</ul></div></body></html>

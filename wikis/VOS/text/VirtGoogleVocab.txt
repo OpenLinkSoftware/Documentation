@@ -1,0 +1,187 @@
+%TOC%
+
+---++Virtuoso Mapping Ontology for Google
+
+---+++What
+
+Virtuoso offers mapping ontology for Google. The Virtuoso hosted version:  http://www.openlinksw.com/schemas/external/googlevocab#
+
+It receives redirects from http://purl.org/NET/googlevocab# .
+
+---+++Why
+
+---+++How
+
+The mapping can be initialize executing the sql file and uploading the ontology file as shown in the list below:
+
+   1. <a href="%ATTACHURLPATH%/www.sql" style="wikiautogen">Re-write rules creation</a>
+   1. <a href="%ATTACHURLPATH%/googlevoc_v4.n3" style="wikiautogen">Google Vocabulary Ontology</a>
+   1. <a href="%ATTACHURLPATH%/googlevoc.rdf" style="wikiautogen">Google Vocabulary rdf</a>
+
+
+---++++Deploying Google Mapping Vocabulary using Conductor UI:
+
+The following step-by-step guide will lead you trough the process of Deploying Google Mapping Vocabulary using Conductor UI:
+
+   1 Go to http://&lt;cname&gt;:port/conductor
+   1 Log in as dba user
+ 
+Upload the ontology file:
+
+Go to Web Application Server -> Content Management
+
+ <img src="%ATTACHURLPATH%/cn4.png" style="wikiautogen"/>
+
+   1 Create folder schemas ( if does not exist already):
+   1. Click the button "New folder"
+   1. In the shown form:
+      1. Enter Folder name: schemas
+      1 Change Owner to dav
+      1 Change Free Text Indexing to Recursively
+      1 Click the "Create" button.
+      1 As result the folder "schemas" will be created. 
+       
+Go to path /DAV/schemas
+
+<img src="%ATTACHURLPATH%/cn5.png" style="wikiautogen"/>
+
+   1 Click the "Upload" button.
+   1 In the shown form:
+      1 Change Destination to RDF Store
+      1 For File click the Browse button and select the googlevoc.n3 file
+      1 Enter for RDF IRI for ex.: http://www.openlinksw.com/schemas/external/googlevocab#
+      1 Click the upload button
+
+<img src="%ATTACHURLPATH%/cn6.png" style="wikiautogen"/>      
+        
+As result the file will be uploaded. 
+
+Let's check the RDF data:
+
+   1 Go to http://&lt;cname&gt;:port/sparql
+   1 Enter the Graph IRI, for ex. http://www.openlinksw.com/schemas/external/googlevocab#
+   1 Enter the following query:
+<verbatim>
+select *
+where {?s ?p ?o}
+</verbatim>
+   1 Click the "Run Query" button.
+   1 As result the RDF data for the given graph will be shown:
+
+<img src="%ATTACHURLPATH%/cn7.png" style="wikiautogen"/>
+
+Create the virtual folder:
+
+   1 Go to Web Application Server -> Virtual Domains &amp; Directories
+   1 For defined http host, for ex. www. openlinksw.com expand the Interface blue folder icon:
+
+<img src="%ATTACHURLPATH%/cn1.png" style="wikiautogen"/>
+
+   1 Click New Directory
+   1. In the shown form select type: WebDAV doman and click the "Next" button.
+
+<img src="%ATTACHURLPATH%/cn2.png" style="wikiautogen"/>
+
+   1 In the Virtual Directory creation form:
+      1 Enter Path: /schemas/external/googlevocab
+      1 leave checked "Physical path is a WebDAV repository"
+      1 Enter Physical path: /DAV/schemas/googlevoc.n3
+      1 Click the "Save Changes" button
+
+<img src="%ATTACHURLPATH%/cn3.png" style="wikiautogen"/>
+
+As result the Virtual Directory will be created and shown in the list of virtual directories for the selected host.
+
+Create re-write rules for the created virtual folder from above:
+
+   1 Click the URL-rewrite link for the created "/schemas/external/googlevocab" virtual directory
+   1 As result will be shown the URL rewriting rules form:
+
+<img src="%ATTACHURLPATH%/cn8.png" style="wikiautogen"/>
+
+Add first rule:
+
+   1. Change "Destination Path format" to:
+<verbatim>
+/rdfdesc/description.vsp?g=http%3A%2F%2Fwww.openlinksw.com%2Fschemas%2Fexternal%2Fgooglevocab%2F$U1&p=googlevoc
+</verbatim>
+
+<img src="%ATTACHURLPATH%/cn9.png" style="wikiautogen"/>
+
+   1 Click the "Add" button.
+   1 As result the rule will be created:
+
+<img src="%ATTACHURLPATH%/cn10.png" style="wikiautogen"/>
+
+Now let's create the second rule:
+
+   1. Change "Rule matching" to "Last matching"
+   1 Enter for "Request Path pattern": 
+<verbatim>
+/schemas/external/googlevocab/([^\.]*)$ 
+</verbatim>
+   1 Enter for "Accept Header Request pattern": application/rdf.xml
+   1 Enter for "Destination Path format":
+<verbatim>
+/schemas/external/googlevocab/$U1.xml
+</verbatim>
+   1 Change "HTTP Response Code" to: 303
+
+<img src="%ATTACHURLPATH%/cn11.png" style="wikiautogen"/>          
+  
+   1 Click the "Add" button.
+   1 As result the rule will be created:
+
+<img src="%ATTACHURLPATH%/cn12.png" style="wikiautogen"/>
+
+Now let's create the third rule:
+
+   1 Change "Rule matching" to "Last matching"
+   1 Enter for "Request Path pattern": 
+<verbatim>
+/schemas/external/googlevocab/([^\.]*)$
+</verbatim>
+   1 Enter for "Accept Header Request pattern": text/rdf.n3
+   1 Enter for "Destination Path format":
+<verbatim>
+/schemas/external/googlevocab/$U1.n3
+</verbatim>
+   1 Change "HTTP Response Code" to: 303
+
+<img src="%ATTACHURLPATH%/cn13.png" style="wikiautogen"/>        
+    
+   1 Click the "Add" button.
+   1 As result the rule will be created:
+
+<img src="%ATTACHURLPATH%/cn14.png" style="wikiautogen"/>
+
+Now let's create the forth rule:
+
+   1 Change "Rule matching" to "Last matching"
+   1 Enter for "Request Path pattern": 
+<verbatim>
+/schemas/external/googlevocab/([^\.]*)\.(rdf|xml|n3)$
+</verbatim>
+   1 Enter for "Accept Header Request pattern": (text/rdf.n3)|(application/rdf.xml)
+   1 Enter for "Destination Path format":
+<verbatim>
+/sparql?query=describe%20%3Chttp%3A%2F%2Fwww.openlinksw.com%2Fschemas%2Fexternal%2Fgooglevocab%2F$U1%3E&format=$accept
+</verbatim>
+
+<img src="%ATTACHURLPATH%/cn15.png" style="wikiautogen"/>           
+ 
+   1 Click the "Add" button.
+   1 As result the rule will be created
+
+<img src="%ATTACHURLPATH%/cn16.png" style="wikiautogen"/>
+
+
+---+++Examples
+
+   * [[VirtGoogleVocabExamples][View Sample Curl Examples]].
+
+
+
+---+++References
+
+   * [[http://rdf.data-vocabulary.org/][Google Vocabulary]]

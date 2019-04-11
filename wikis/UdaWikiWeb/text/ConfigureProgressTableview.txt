@@ -1,0 +1,73 @@
+%META:TOPICPARENT{name="ConfigureUDAFeatures"}%
+= Advanced Features for Progress Connections: Distributed Databases, Array Fields, and Database Triggers =
+
+Our Progress <b>SQL-89</b> ODBC Drivers support a number of advanced features (referred to collectively as "Tableview" features) through the use of a custom "Data Dictionary File." 
+
+
+<i><b>Tableview configuration cannot be supported in our SQL-92 drivers, due to changes made in the Progress Software components.  Some features are still supported through different methods; others simply cannot be re-implemented (as of this writing).</b></i>
+
+%TOC%
+
+== Distributed Databases ==
+
+This is the most common reason users need to configure Tableview features, with the SQL-89 drivers.  There is no special configuration required here; just the basic Tableview Setup (below).
+
+Due to changes made in the Progress database engine between their SQL-89 and SQL-92 engines, <code>JOINs</code> over multiple Progress databases (i.e., multiple <code>.db</code> files) cannot be executed over a single SQL-92 mode ODBC connection against Progress <nop>OpenEdge 9.1x, 10.x, and later
+
+According to the Progress SQL-92 documentation:
+
+<blockquote>An application can connect to more than one database at a time, with a maximum of 10 connections. However, the application can actually gain access to only one database at a time. The database name specified in the <code>CONNECT</code> statement becomes the active one.</blockquote>
+
+For this reason, if you need to make such queries, <nop>OpenLink recommends you 
+* run Progress 9 in SQL-89 mode (perhaps in combination with SQL-92 mode; this "hybrid" operation is the default for Progress 9.x), and use the appropriate SQL-89 driver, permitting execution of these <code>JOINs</code> in the traditional manner; or
+* use Virtuoso and multiple single-DB SQL-92 connections to unify the Progress databases into a single Virtuoso schema, against which the <code>JOINs</code> may be executed.
+
+
+== Array Fields ==
+
+Array fields are the second-most common reason users need to configure Tableview features.  There is again no special configuration required with the SQL-89 drivers; just the basic Tableview Setup (below).
+
+Progress array fields are not supported via the SQL-92 engine the same way they are via the traditional SQL-89 interface drivers.  
+
+Progress tables with array fields cannot be created while connected to the SQL-92 engine; however, array fields previously created using the SQL-89 driver may be accessed via the SQL-92 engine.
+
+From a technical perspective, the array field is mapped to a single variable character (<code>VARCHAR</code>) field, and the data is returned as a semicolon-separated list. Individual elements of the array may be accessed using three Progress functions within SQL Statements:
+
+|=**Progress function** |=**Effect** |
+|<code>PRO_ELEMENT</code> |This function allows one or more elements to be selected. |
+|<code>PRO_ARR_ESCAPE</code> |This function simplifies escaping special characters when updating an array field. |
+|<code>PRO_ARR_DESCAPE</code> |This function removes escape characters from elements selected from an array field. |
+
+For more information on this topic, visit Appendix C, section 2, of the **SQL-92 Guide and Reference**, in the Progress 9 documentation. (Exact location will be different in Progress <nop>OpenEdge documentation.)
+
+== Progress Database Triggers ==
+
+Progress Database Triggers are only supported over SQL-89-based connections.  The SQL-92 engine has completely changed the way Progress Triggers work.
+
+//**Important:** To make use of Progress Database Triggers, the Logical Database Name to which your Triggers have been compiled must match the value provided to the "<code>-ld</code>" parameter when setting the Progress Database Connect options during the execution of "<code>setup.p</code>".//
+
+If you have compiled your triggers against a database physically identified as "<code>/usr/progress/demo.db</code>" but logically identified as "<code>mydemo</code>", your "<code>setup.p</code>" Database Connection String (used below) would be:
+{{{
+/usr/progress/demo -ld mydemo
+}}}
+
+== Setting Up Tableview Functionality for SQL-89 Connections ==
+
+This custom "Data Dictionary File" is built by running the <nop>OpenLink-provided Progress Program File "<code>setup.p</code>" found in the "bin" sub-directory below the <nop>OpenLink base installation directory. Follow the instructions for your platform --
+
+* [[RunTableviewOnUnix|Unix Host]]
+* [[RunTableviewOnWindows|Windows Host]]
+
+Once the <code>setup.p</code> script has been run, follow the instructions to configure your driver type to use the resulting <code>tableview.pf</code> and <code>tableview.dat</code> files:
+
+* [[ConfigureSingle-TierTo UseTableview|Single-Tier]]
+* [[ConfigureMulti-TierToUseTableview|Multi-Tier]]
+
+=== Advanced Tableview Configuration ===
+
+[[WorkingWithMultipleSetsOfTableviewConfigurationFilesMulti-TierOnly|Working with Multiple Sets of Tableview Configuration Files (Multi-Tier Only)]]
+
+== Troubleshooting Common Tableview Problems ==
+
+[[SetupiEnforces255CharFieldLimit|<code>setup.i</code> Enforces 255 Char Field Limit]]
+[[TableviewDefaultAllowsOnly5Databases|Tableview Default allows only 5 databases]]

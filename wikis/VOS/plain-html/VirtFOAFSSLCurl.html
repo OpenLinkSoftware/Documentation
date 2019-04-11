@@ -1,0 +1,70 @@
+<html><body><div class="topic-text"><!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Creating%20and%20Using%20a%20SPARQL-SSL%20based%20Endpoint">Creating and Using a SPARQL-SSL based Endpoint</a></li>
+<ul><li><a href="#Demo%20Examples">Demo Examples</a></li> <li><a href="#Related">Related</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Creating and Using a SPARQL-SSL based Endpoint"></a>Creating and Using a SPARQL-SSL based Endpoint</h2>
+<p>The following guide describes the basic steps for setting up an SSL protected and WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtFOAFSSLCurl" class="wikiword">?</a> based SPARQL Endpoint (SPARQL-SSL).
+ The guide also covers the use of Virtuoso PL functions and the Virtuoso Conductor for SPARQL endpoint creation and configuration.
+ It also covers the use of cURL for exercising the newly generated SPARQL-SSL endpoint.</p>
+<p> </p>
+<ol><li><a href="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup" class="absuri">Setup the CA issuer and https listener</a> </li>
+<li>Define the /sparql-ssl endpoint on an HTTPS based listener (HTTPS service endpoint), for example using Virtuoso PL: <br><pre><br>DB.DBA.VHOST_DEFINE (
+	 lhost=&gt;&#39;127.0.0.1:443&#39;,
+	 vhost=&gt;&#39;localhost&#39;,
+	 lpath=&gt;&#39;/sparql-ssl&#39;,
+	 ppath=&gt;&#39;/!sparql/&#39;,
+	 is_dav=&gt;1,
+	 auth_fn=&gt;&#39;DB.DBA.FOAF_SSL_AUTH&#39;,
+	 vsp_user=&gt;&#39;dba&#39;,
+	 ses_vars=&gt;0,
+	 auth_opts=&gt;vector (&#39;https_cert&#39;, &#39;db:https_key_localhost&#39;, &#39;https_key&#39;, &#39;db:https_key_localhost&#39;, &#39;https_verify&#39;, 3, &#39;https_cv_depth&#39;, 10),
+	 opts=&gt;vector (&#39;noinherit&#39;, 1),
+	 is_default_host=&gt;0
+);
+</pre><br></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Setup the SPARQL-SSL endpoint and define ACLs</a> using the Virtuoso Conductor </li>
+<li>Export your private key and its associated WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtFOAFSSLCurl" class="wikiword">?</a> based X.509 certificate from your Firefox browser or System&#39;s Key Manager into PEM (PKCS12) file <ol><li>If using Firefox use the menu path: Advanced-&gt;View Certificates, then  click Backup for your certificate with name &quot;mykey&quot;.
+</li>
+<li>The file &quot;mykey.p12&quot; will be created.
+ To disable password protection so that you can use this file in non-interactive mode (e.g.
+ with cURL and other HTTP clients) execute: <br><pre><br>openssl pkcs12 -in mykey.p12 -out mykey.pem -nodes 
+</pre><br></li>
+</ol></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFOAFSSLCurlExample1" class="wikiword">Test the SPARQL-SSL endpoint with cURL</a> (listening on default HTTPS 443 port): <ul><li>Note: In this example we use the &quot;-k / --insecure&quot; option with cURL since we are going to be using self-signed X.509 certificates signed by self-signed root CA.
+</li>
+</ul></li>
+<li>Import your key it via Conductor UI: <ol><li>Go to Conductor -&gt; System Admin-&gt;User Accounts <br><br><img src="VirtFOAFSSLCurl/c1.png"><br><br> </li>
+<li>Click &quot;Edit&quot; for your user <br><br><img src="VirtFOAFSSLCurl/c2.png"><br><br> </li>
+<li>Change &quot;User type&quot; to: SQL/ODBC and <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> <br><br><img src="VirtFOAFSSLCurl/c3.png"><br><br> </li>
+<li>Enter your ODS user WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtFOAFSSLCurl" class="wikiword">?</a>: <br><pre><br>http://cname:port/dataspace/person/username#this
+</pre><br><br><br><img src="VirtFOAFSSLCurl/c4.png"><br><br> </li>
+<li>Click &quot;Save&quot; </li>
+<li>Click again &quot;Edit&quot; for your user </li>
+<li>In &quot;PKCS12 file:&quot; click the Browse&quot; button and select your key.
+</li>
+<li>Enter a local Key Name, for e.g., &quot;cli_key&quot; </li>
+<li>Enter key password <br><br><img src="VirtFOAFSSLCurl/c5.png"><br><br> </li>
+<li>Click &quot;Import Key&quot; </li>
+<li>As result the key will be stored with name for ex.
+ cli_key <br><br><img src="VirtFOAFSSLCurl/c6.png"><br><br> </li>
+<li>Click &quot;Save&quot; </li>
+</ol></li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFOAFSSLCurlExample2" class="wikiword">Test the SPARQL-SSL endpoint with http_client</a> (listening on default HTTPS 443 port).</li>
+</ol><h3><a name="Demo Examples"></a>Demo Examples</h3>
+<ul><li><a href="http://demo.openlinksw.com/tutorial/rdf/fs_s_1/fs_s_1.vsp" class="absuri">Using HTTP client to perform FOAF+SSL connection</a></li>
+</ul><h3><a name="Related"></a>Related</h3>
+ <ul><li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub" class="absuri">Setting up PubSubHub in ODS</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub" class="absuri">PubSubHubBub Demo Client Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub" class="absuri">Feed subscription via PubSubHub protocol Example</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL" class="absuri">Setting Up PubSubHub to use FOAF+SSL or IP based control lists</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Set FOAF+SSL ACLs using the Virtuoso Authentication Server UI</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthFOAFSSLACL" class="wikiword">FOAF+SSL ACLs Tutorial</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/VirtODSFOAFSSL" class="absuri">FOAF+SSL Support in OpenLink Data Spaces</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup" class="absuri">Guide to Setting up a X.509 certificate issuer and HTTPS listener and Generating ODS user certificates</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/OdsKeyImport" class="absuri">CA Keys Import using Conductor</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseFOAFSSLODSCert" class="absuri">Generate an X.509 Certificate hosted WebID Guide</a> </li>
+<li><a href="http://ods.openlinksw.com/wiki/ODS/ODSBriefcaseFOAFSSLShareFile" class="absuri">ODS Briefcase FOAF+SSL Share File Guide</a> </li>
+<li><a href="http://esw.w3.org/topic/foaf+ssl" class="absuri">FOAF+SSL Specification</a> </li>
+<li><a href="https://foaf.me/simpleLogin.php" class="absuri">Test FOAF+SSL Certificate page</a> </li>
+<li><a href="http://test.foafssl.org/cert/" class="absuri">FOAF+SSL Certificate Generation page</a> </li>
+<li><a href="https://demo.openlinksw.com/sparql-ssl" class="absuri">Virtuoso Demo SPARQL-SSL Endpoint</a> </li>
+</ul></div></body></html>

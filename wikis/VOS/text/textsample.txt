@@ -1,0 +1,113 @@
+DE3A857A5FFB11DA923AF0924C194AED Cluster Main
+-- Sample code used in the Text Indexing and Filtering article 
+
+
+create table news (n_id int identity (start with 1), n_date datetime, n_text xmltype,
+  n_source varchar, n_title varchar,
+  primary key (n_id));
+
+
+create text xml index on news (n_text) with key n_id clustered with (n_date,
+n_source, n_title);
+
+
+
+create text trigger on news (n_text);
+
+
+
+create procedure news_download (in url varchar)
+{
+  declare cnt any;
+  declare xt, xp any;
+  declare l int;
+
+  cnt := http_client (url);
+  xt := xml_tree_doc (cnt);
+
+  xp := xpath_eval ('[xmlns:atom="http://www.w3.org/2005/Atom"]  //entry', xt, 0);
+  l := length (xp);
+
+  for (declare i int, i := 0; i < l; i := i + 1)
+    {
+      declare title, link, dt varchar;
+      title := xpath_eval ('[xmlns:atom="http://www.w3.org/2005/Atom"] ./atom:title/text()', xp[i]);
+      dt := cast (xpath_eval ('[xmlns:atom="http://www.w3.org/2005/Atom"] ./atom:published/text()', xp[i]) as varchar);
+      link := xpath_eval ('[xmlns:atom="http://www.w3.org/2005/Atom"] ./atom:id/text()', xp[i]);
+      if (not exists (select 1 from news where n_source = link))
+	insert into news (n_date, n_text, n_source, n_title)
+        values (dt, xml_cut (xp[i]), link, title);
+      commit work;
+    }
+}
+
+news_download ('http://virtuoso.openlinksw.com/blog/gems/atom.xml');
+
+
+
+select * from news where contains (n_text, 'database');
+
+select search_excerpt (vector ('database'), cast (n_text as varchar), 10000, 500, 80) from news where contains (n_text, 'database');
+
+
+
+
+
+create procedure  vt_words_1 (in tree any, inout res any)
+{
+  if (isstring (tree))
+    {
+      res := vector_concat (res, vector (tree));
+    }
+  else if (isarray (tree))
+    {
+      foreach (any elt in tree) do
+	vt_words_1 (elt, res);
+    }
+}
+
+create function vt_words (in q varchar) returns varchar array 
+{
+  declare v any;
+  v := vector ();
+  vt_words_1 (vt_parse (q), v);
+  return v;
+}
+
+
+select search_excerpt (vt_words('"open source"'), cast (n_text as varchar), 10000, 500, 80) from  news where contains (n_text, '"open source"');
+
+Select n_id, n_title, n_source from news where contains (n_text, 'openlink', offband, n_title, offband, n_source);
+
+select n_title from news where xcontains (n_text, '[xmlns:atom="http://www.w3.org/2005/Atom"] //atom:title[text-contains (., "virtuoso")]');
+
+select search_excerpt (vt_words ('"open source"'), cast (n_text as varchar), 10000, 500, 90) from 
+(select top 5 n_id from news where contains (n_text, '"open source"', offband, n_date) order by n_date desc) f, news n where f.n_id = n.n_id option (order);
+
+select search_excerpt (vt_words ('"open source"'), cast (n_text as varchar), 10000, 500, 90) from 
+(select top 1, 5 n_id from news where contains (n_text, '"open source"', offband, n_date) order by n_date desc) f, news n where f.n_id = n.n_id option (order);
+
+
+
+
+tt_query_news ('"open source"', 0, 'Article on open source software', 'john@example.com');
+tt_query_news ('virtuoso', 1, 'Article on Virtuoso software', 'mary@example.com');
+
+
+
+delete from news;
+
+news_download ('http://virtuoso.openlinksw.com/blog/gems/atom.xml');
+
+select * from news_n_text_hit;
+
+select search_excerpt (vt_words (tt_query), cast (n_text as varchar), 10000, 400, 80), tt_query, tt_comment, tth_notify from news, news_n_text_hit, news_n_text_query 
+   where n_id = tth_d_id and tt_id = tth_t_id;
+
+
+
+
+
+
+
+

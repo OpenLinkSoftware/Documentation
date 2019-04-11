@@ -1,0 +1,142 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="OdsMail"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="OdsMail"}%--><h1><a name="Guide to using ODS-Mail for Mail Merge"></a> Guide to using ODS-Mail for Mail Merge</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%20is%20it%3F">What is it?</a></li> <li><a href="#Why%20is%20this%20important%3F">Why is this important?</a></li> <li><a href="#How%20do%20I%20use%20it%3F">How do I use it?</a></li>
+<ul><li><a href="#Step%201%20-%20Prepare%20Recipient%20List">Step 1 - Prepare Recipient List</a></li> <li><a href="#Step%202%20-%20Prepare%20Merge%20Template">Step 2 - Prepare Merge Template</a></li> <li><a href="#Step%203%20-%20Preview%20and%20Send%20the%20Merged%20Messages">Step 3 - Preview and Send the Merged Messages</a></li> </ul><li><a href="#Glossary">Glossary</a></li> <li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What is it?"></a> What is it?</h2>
+<p>ODS-Mail has an &quot;Email Merge&quot; feature that enables dynamic email message construction, merging content with data from:</p>
+<ul><li>ODS-AddressBook<a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/AddressBook&parent=OdsMailMerge" class="wikiword">?</a> </li>
+<li>vCard collections </li>
+<li>CSV documents</li>
+</ul><p>These &quot;merge-sources&quot; may be local or remote HTTP-accessible files, including SPARQL SELECT Queries which deliver CSV-formatted output.</p>
+<h2><a name="Why is this important?"></a> Why is this important?</h2>
+<p>Just as printed mail merges once did, this provides a productive mechanism by which to generate email messages to dispatch information, on a highly focused basis, to relevant contacts.</p>
+<h2><a name="How do I use it?"></a> How do I use it?</h2>
+<h3><a name="Step 1 - Prepare Recipient List"></a> Step 1 - Prepare Recipient List</h3>
+<p>Create or locate your recipient list (&quot;merge-source&quot; document), in any supported format --</p>
+<ul><li><b>vCard</b> <br><pre><br>BEGIN:VCARD
+VERSION:2.1
+N:Gump;Forrest
+FN:Forrest Gump
+ORG:Bubba Gump Shrimp Co.
+TITLE:Shrimp Man
+PHOTO;GIF:http://www.example.com/dir_photos/my_photo.gif
+TEL;WORK;VOICE:(111) 555-1212
+TEL;HOME;VOICE:(404) 555-1212
+ADR;WORK:;;100 Waters Edge;Baytown;LA;30314;United States of America
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:100 Waters Edge=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+ADR;HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
+LABEL;HOME;ENCODING=QUOTED-PRINTABLE:42 Plantation St.=0D=0ABaytown, LA 30314=0D=0AUnited States of America
+EMAIL;PREF;INTERNET:forrestgump@example.com
+REV:20080424T195243Z
+END:VCARD
+</pre><br></li>
+<li><b>CSV</b> <br><pre><br>key,firstName,lastName,mbox
+0,John,Smith,john.smith@example.com
+1,Anna,Clarks,anna.clarks@example.com
+2,Rojer,Danrette,rojer.danrette@example.com
+3,Kate,Sigton,kate.sigton@example.com
+4,Tim,Craft,tim.craft@example.com
+</pre><br></li>
+<li><b>SPARQL Query Results URL</b> where the output format is set to CSV <ol><li>Suppose the following SPARQL query: <br><pre><br>PREFIX rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT DISTINCT  ?person, 
+                 ?firstName, 
+                 ?lastName, 
+                 ?mbox
+  WHERE 
+    {
+      ?person  a              foaf:Person
+            ;  foaf:firstName ?firstName
+            ;  foaf:lastName  ?lastName
+            ;  foaf:mbox      ?mbox
+    }  
+  LIMIT 100    
+</pre><br></li>
+<li>Test it against your Virtuoso SPARQL Endpoint before passing it to the email merge tool.
+<ul><li>The <b>SPARQL Query Results URL</b> is: <br><pre><br>http://example.com/sparql?default-graph-uri=&amp;query=PREFIX+rdf%3A++%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0ASELECT+DISTINCT+%3Fperson%2C+%3FfirstName%2C+%3FlastName%2C+%3Fmbox%0D%0AWHERE+%0D%0A++{%0D%0A++++%3Fperson+a+foaf%3APerson+%3B%0D%0A++++++++++++foaf%3AfirstName+%3FfirstName+%3B%0D%0A++++++++++++foaf%3AlastName++%3FlastName+%3B%0D%0A++++++++++++foaf%3Ambox++++++%3Fmbox+.%0D%0A++}++%0D%0ALIMIT+100&amp;format=csv&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&amp;timeout=30000&amp;debug=on
+</pre><br></li>
+<li><a href="http://bit.ly/1oo0XdX" class="absuri">Live results</a> should be similar to the following: <br><pre><br>&quot;person&quot;,&quot;firstName&quot;,&quot;lastName&quot;,&quot;mbox&quot;
+&quot;http://www.miroslavmilic.com/#Miroslav%20Milic&quot;,&quot;Miroslav&quot;,&quot;Mili?&quot;,&quot;mailto:miroslav.milic@gmail.com&quot;
+&quot;http://www.morelab.deusto.es/resource/pcuriel&quot;,&quot;Pablo&quot;,&quot;Curiel&quot;,&quot;mailto:pablo.curiel.alamo@gmail.com&quot;
+&quot;http://www.morelab.deusto.es/resource/pcuriel&quot;,&quot;Pablo&quot;,&quot;Curiel&quot;,&quot;mailto:pcuriel@deusto.es&quot;
+&quot;http://www.morelab.deusto.es/resource/pcuriel&quot;,&quot;Pablo&quot;,&quot;Curiel&quot;,&quot;mailto:pablo.curiel@deusto.es&quot;
+&quot;http://tw.rpi.edu/instances/EricRozell&quot;,&quot;Eric&quot;,&quot;Rozell&quot;,&quot;mailto:rozele@rpi.edu&quot;
+&quot;http://tw.rpi.edu/instances/EricRozell&quot;,&quot;Eric&quot;,&quot;Rozell&quot;,&quot;mailto:rozele@rpi.edu&quot;
+&quot;http://tw.rpi.edu/instances/TimLebo&quot;,&quot;Tim&quot;,&quot;Lebo&quot;,&quot;mailto:lebot@rpi.edu&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:frank.dengler@kit.edu&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:dengler@aifb.uni-karlsruhe.de&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:dengler@kit.edu&quot;
+&quot;http://f-dengler.de/foaf#fd&quot;,&quot;Frank&quot;,&quot;Dengler&quot;,&quot;mailto:frank.dengler@aifb.uni-karlsruhe.de&quot;
+</pre><br> </li>
+</ul></li>
+</ol></li>
+</ul><h3><a name="Step 2 - Prepare Merge Template"></a> Step 2 - Prepare Merge Template</h3>
+<ol><li>Go to the ODS-Mail application home page: <br><br><a href="OdsMailMerge/mail1.png" target="_blank"><img src="OdsMailMerge/mail1.png" width="600px"></a><br><br> </li>
+<li>Drill down to <b>Preferences</b> -&gt; <b>Templates</b>: <br><br><a href="OdsMailMerge/mail2.png" target="_blank"><img src="OdsMailMerge/mail2.png" width="600px"></a><br><br> </li>
+<li>Click <b>Create</b> for a new Template, or click <b>Edit</b> to work with an existing one: <br><br><a href="OdsMailMerge/mail3.png" target="_blank"><img src="OdsMailMerge/mail3.png" width="600px"></a><br><br> <ul><li>ODS-Mail supports merge placeholders only in the <b><code>To:</code></b> and <b><code>Subject:</code></b> headers, and the message body.
+</li>
+<li>Wrap placeholder strings in double-braces (e.g.,  <b><code>{{place holder}}</code></b>) to indicate content merge insertion points.
+</li>
+<li>If you can, use placeholder strings that match the field names you&#39;ve used in your merge source.
+ Don&#39;t worry if you don&#39;t know what those names are yet -- during the mail merge process, you will be prompted to set up a manual mapping between any unrecognized template placeholders and the fields in your merge-source.
+</li>
+<li>ODS-Mail supports a number of default template placeholders, which follow the other conventions for field mapping in ODS.
+ If your placeholders have other names, then you will be prompted to provide a mapping for this merge.
+<ul><li><code>{{Title}}</code> </li>
+<li><code>{{First Name}}</code> </li>
+<li><code>{{Middle Name}}</code> </li>
+<li><code>{{Last Name}}</code> </li>
+<li><code>{{Gender}}</code> </li>
+<li><code>{{Birthday}}</code> </li>
+<li><code>{{Company}}</code> </li>
+<li><code>{{Job Title}}</code> </li>
+<li><code>{{Home Street}}</code> </li>
+<li><code>{{Home Street 2}}</code> </li>
+<li><code>{{Home City}}</code> </li>
+<li><code>{{Home State}}</code> </li>
+<li><code>{{Home Postal Code}}</code> </li>
+<li><code>{{Home Country}}</code> </li>
+<li><code>{{Home Phone}}</code> </li>
+<li><code>{{Home Fax}}</code> </li>
+<li><code>{{E-mail Address}}</code> </li>
+</ul></li>
+<li>Due to nuances of Web browser, Web server, Mail server, and Mail client interaction, you may want to test with a simple merge to only yourself, to ensure that all content is delivered as intended.
+ For example: <ul><li>In the &quot;To:&quot; header -- <br><pre><br>To: &quot;{{name}}&quot; &lt;{{mbox}}&gt; 
+</pre><br>-- will preview and be output as the SMTP-deliverable -- <br><pre><br>To: Fred Jones fjones@example.com
+</pre><br>-- while -- <br><pre><br>To: &amp;quot;{{name}}&amp;quot; &amp;lt;{{mbox}}&amp;gt; 
+</pre><br>-- will preview as -- <br><pre><br>To: &quot;Fred Jones&quot; &lt;fjones@example.com&gt;
+</pre><br>-- but be output as the SMTP-undeliverable -- <br><pre><br>To: &amp;quot;Fred Jones&amp;quot; &amp;lt;fjones@example.com&amp;gt; 
+</pre><br></li>
+<li>In the Body -- <br><pre><br>Dear {{firstname}},
+</pre><br>-- will render as -- <br><pre><br>Dear Fred,
+</pre><br></li>
+<li>In the Body -- <br><pre><br>&amp;quot;&amp;#123;&amp;#123;firstname&amp;#125;&amp;#125; &amp;#123;&amp;#123;lastName&amp;#125;&amp;#125;&amp;quot; &amp;lt;&amp;#123;&amp;#123;mbox&amp;#125;&amp;#125;&amp;gt; 
+</pre><br>-- will render as -- <br><pre><br>&quot;Fred Jones&quot; &lt;fjones@example.com&gt;
+</pre><br></li>
+</ul></li>
+</ul></li>
+<li>Click <b>Save</b> to preserve your changes.
+ <i><b>Note:</b> When creating a new template, you will only have a <b>Save</b> button, until you do so.
+ When editing an existing template, you will have both <b>Save</b> and <b>Merge</b> buttons from the start, and clicking <b>Merge</b> will automatically save your changes before proceeding.
+ If you wish to discard changes to the template, you must click the <b>Cancel</b> button.</i> </li>
+<li>Click <b>Merge</b> button to save your changes and proceed to the actual email merge-and-send process: <br><br><a href="OdsMailMerge/mail3.png" target="_blank"><img src="OdsMailMerge/mail4.png" width="600px"></a><br><br></li>
+</ol><p> </p>
+<h3><a name="Step 3 - Preview and Send the Merged Messages"></a> Step 3 - Preview and Send the Merged Messages</h3>
+<ol><li>Click <b>Merge</b>, and then select a CSV data source <br><br><a href="OdsMailMerge/mailMerge_2.png" target="_blank"><img src="OdsMailMerge/mailMerge_2.png" width="600px"></a><br><br> </li>
+<li>Map each template placeholder to a column name in the structured data source, and indicate whether this column should be used for record de-duplication.
+<br><pre><br>  mbox      =&gt; E-mail Address
+  lastName  =&gt; Last Name      
+  firstName =&gt; First Name     
+</pre><br><br><br><a href="OdsMailMerge/mailMerge_3.png" target="_blank"><img src="OdsMailMerge/mailMerge_3.png" width="600px"></a><br><br> </li>
+<li>Merge the data with the template, and preview the mapping and email messages: <ul><li> <b>Table showing mappad data</b> <br><br><a href="OdsMailMerge/mailMerge_4.png" target="_blank"><img src="OdsMailMerge/mailMerge_4.png" width="600px"></a><br><br> </li>
+<li> <b>Preview single message</b> <br><br><a href="OdsMailMerge/mailMerge_5.png" target="_blank"><img src="OdsMailMerge/mailMerge_5.png" width="600px"></a><br><br> </li>
+</ul></li>
+<li>Send messages</li>
+</ol><p> </p>
+<h2><a name="Glossary"></a>Glossary</h2>
+<ul><li><b>merge-source</b> -- data source for email merge, in a supported format (i.e., CSV or vCard) </li>
+<li><b>placeholder</b> -- marker of the form, &quot;<code>{{mbox}}</code>,&quot; indicating the merge insertion points in a template</li>
+</ul><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://ods.openlinksw.com:80/dataspace/owiki/wiki/ODS/OdsMail" class="wikiword">ODS-Mail</a></li>
+</ul></div></body></html>

@@ -1,0 +1,34 @@
+%META:TOPICPARENT{name="VirtDeployingLinkedDataGuide"}%
+---+Deploying Linked Data Guide - Appendix A: <code>Description.vsp</code> - Rendering RDF as HTML
+[[VirtDeployingLinkedDataGuide][Deploying Linked Data Guide - TOC]]
+
+---++
+
+Description.vsp is a Virtuoso Server Page (Virtuoso's equivalent of ASP) which provides a hypertext description of RDF Linked Data. Its purpose is to provide a default HTML rendering of RDF data, to allow it to be navigated using an HTML, rather than RDF, browser. Description.vsp underpins the 'Page Description' facility in the [[http://ode.openlinksw.com/][OpenLink Data Explorer]] (ODE) browser extension. (ODE is also available as a hosted service - e.g. http://demo.openlinksw.com/ode.) The HTML view it provides substitutes RDF hyperdata links with hypertext links. The description is tabular, listing the properties of the entity being described and, adjacent, the property values.
+
+<div style="margin: 30px auto; text-align: center; width: 80%;"><img style="border: 1px solid ; padding: 20px; max-width: 90%; margin-left: auto; margin-right: auto;" src="%ATTACHURLPATH%/fig8.jpg" alt="fig8"></div>
+<br/>
+
+Description.vsp is invoked through the Virtuoso 'Page Description' service, a proxy service accessed via /about/html. For instance, to extract RDF data from an HTML page, http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html describing musician John Cale, and then view the extracted RDF as HTML, the page can be retrieved via the Page Description Service hosted by the Virtuoso instance at linkeddata.uriburner.com. viz:
+
+   *  http://linkeddata.uriburner.com/about/html/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html 
+
+Similarly, when deploying your own Linked Data, you can exploit the power of Virtuoso's URL rewriting to automatically redirect requests for HTML renditions of the RDF data to the /about/html proxy.
+
+When description.vsp is executed, the Network Resource Source URI is being fetched to extract the RDF data to be displayed. Two routes through the [[http://virtuoso.openlinksw.com/Whitepapers/pdf/sponger_whitepaper_10102007.pdf][Virtuoso Sponger]] are possible:
+
+   1 If the source contains RDF directly, this is used 'as is'.
+   1 If not, the Virtuoso Sponger extracts any available metadata through one or more Sponger cartridges and converts this to RDF.
+
+Data from the Northwind RDF view follows route 1. Data from the MusicBrainz page on John Cale follows route 2. Whichever route is followed, the Sponger caches the RDF data in the Virtuoso RDF quad store.
+
+With the Northwind demo rewrite rule for HTML requests set up with a Request Path Pattern of /about/html/(.*) and a Destination Path Format of /rdfdesc/description.vsp?g=$U1 , a request for an HTML rendering of <code><nowiki>http://myhost/Northwind/Customer/ALFKI#this</nowiki></code> results in description.vsp being called with parameter g set to <code><nowiki>http://myhost/Northwind/Customer/ALFKI#this</code></nowiki>.
+
+description.vsp uses Virtuoso's SPARQL extensions for IRI dereferencing (see the Virtuoso on-line documentation: [[http://docs.openlinksw.com/virtuoso/rdfiridereferencing.html#rdfinputgrab][IRI Dereferencing for FROM clauses]] ) to invoke the Sponger via the get:soft "soft" option and crawl the URI identified by 'g'. e.g.
+<verbatim>
+sparql define get:soft "soft" SELECT * from &lt;http://myhost/Northwind/Customer/ALFKI&gt; where { ?x ?y ?z }
+</verbatim>
+
+The Sponger creates graph <code><nowiki>&lt;http://myhost/Northwind/Customer/ALFKI&gt;</nowiki></code> to hold the extracted RDF data describing entity ALFKI. Once cached in the quad store, description.vsp then issues a series of SPARQL queries to identify the predicates and predicate values associated with all RDF statements having <nowiki><code>&lt;http://myhost/Northwind/Customer/ALFKI#this&gt;</code></nowiki> as the subject. These are then displayed in an HTML table.
+
+<b>[[VirtDeployingLinkedDataGuide][Back]]</b> to Deploying Linked Data Guide | <b>[[VirtDeployingLinkedDataGuide_TCN][Previous:]]</b> Transparent Content Negotiation | <b>[[VirtDeployingLinkedDataGuide_AppendixB][Next:]]</b> Appendix B: New Proxy URI Formats

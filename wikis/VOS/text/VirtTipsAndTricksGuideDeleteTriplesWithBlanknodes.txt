@@ -1,0 +1,192 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Can I Delete Triples containing Blank Nodes?
+
+There are two ways to delete a particular blank node:
+   1 Refer to it indirectly, using some of its properties, or
+   1 Discover and refer to it by its internal "serial number" or ID (in Virtuoso, <code><nowiki>bif:iri_id_XXX</nowiki></code>, a long integer).  <i><b>Important Note</b>: IDs of bnodes will always vary from server to server, and often from run-to-run on the same server, so it is usually better to identify bnodes by properties than ID.</i>
+
+---++ How to Delete Triples containing Blank Nodes
+
+Assume the following sample scenario:
+
+   1 Clear the graph:
+<verbatim>
+SPARQL 
+  CLEAR GRAPH <http://sample/>;
+
+Done. -- 4 msec.
+</verbatim>
+   1 Insert three blank nodes with two related triples each:
+<verbatim>   
+SPARQL 
+  INSERT IN GRAPH <http://sample/> 
+    { 
+      []  <p>  <o1a>
+            ,  <o1b>
+    . []  <p>  <o2a>
+            ,  <o2b>
+    . []  <p>  <o3a>
+            ,  <o3b>
+    };
+
+Done. -- 15 msec.
+</verbatim>
+   1 Delete one pair of triples:
+<verbatim>   
+SPARQL WITH <http://sample/> 
+  DELETE
+    { ?s  ?p   ?o } 
+  WHERE 
+    { 
+      ?s  ?p   ?o
+       ;  <p>  <o1a>
+    }
+
+Done. -- 7 msec.
+</verbatim>
+   1 Ensure that we still have two bnodes, two triple per bnode:
+<verbatim>   
+SPARQL 
+  SELECT * 
+  FROM <http://sample/> 
+  WHERE 
+    { 
+      ?s ?p ?o 
+    };
+
+s                p        o
+VARCHAR          VARCHAR  VARCHAR
+_________________________________
+
+nodeID://b10006  p        o3a
+nodeID://b10006  p        o3b
+nodeID://b10007  p        o2a
+nodeID://b10007  p        o2b
+
+4 Rows. -- 4 msec.
+</verbatim>
+   1 Every node in the Virtuoso store, whether "named" or "blank" ("unnamed"), is identified internally by a long integer:
+<verbatim>   
+SPARQL 
+  SELECT  (<LONG::bif:iri_id_num>(?s)) AS ?s_num ,
+                                          ?p     ,
+                                          ?o 
+  FROM <http://sample/> 
+  WHERE 
+    { 
+      ?s  ?p  ?o 
+    };
+
+s_num                p       o
+INTEGER              VARCHAR VARCHAR
+_____________________________
+
+4611686018427397910  p       o3a
+4611686018427397910  p       o3b
+4611686018427397911  p       o2a
+4611686018427397911  p       o2b
+
+4 Rows. -- 5 msec.
+</verbatim>
+   1 The integer can be converted back to internal identifier. Say, here we try to delete a triple that does not exist (even if the ID integer is valid):
+<verbatim>   
+SPARQL 
+  DELETE FROM <http://sample/>
+    { 
+      `bif:iri_id_from_num(4611686018427397911)`  <p>  <o3a> 
+    };
+
+Done. -- 5 msec.
+</verbatim>  
+   1 Should have no effect, because the "46..11" IRI has &lt;o2a&gt; and &lt;o2b&gt;, and was not requested &lt;o3a&gt;:
+<verbatim>   
+SPARQL 
+  SELECT * 
+  FROM <http://sample/> 
+  WHERE 
+    { 
+      ?s  ?p  ?o 
+    };
+s                p         o
+VARCHAR          VARCHAR   VARCHAR
+__________________________________
+
+nodeID://b10006  p         o3a
+nodeID://b10006  p         o3b
+nodeID://b10007  p         o2a
+nodeID://b10007  p         o2b
+
+4 Rows. -- 5 msec.
+</verbatim>
+   1 Now let's try to delete a triple that does actually exist. Note the use of backquotes to insert an expression into the graph template:
+<verbatim>   
+SPARQL 
+  DELETE FROM <http://sample/>
+    { 
+      `bif:iri_id_from_num(4611686018427397911)`  <p>  <o2a> 
+    };
+
+Done. -- 4 msec.
+</verbatim>
+   1 This time, there's an effect:
+<verbatim>   
+SPARQL 
+  SELECT * 
+  FROM <http://sample/> 
+  WHERE 
+    { 
+      ?s ?p ?o 
+    };
+s                p        o
+VARCHAR          VARCHAR  VARCHAR
+_________________
+
+nodeID://b10006  p        o3a
+nodeID://b10006  p        o3b
+nodeID://b10007  p        o2b
+
+3 Rows. -- 2 msec.
+</verbatim>
+   1 Now we'll delete everything related to <code>nodeID://b10006</code> subject:
+<verbatim>   
+SPARQL 
+  WITH <http://sample/> 
+  DELETE 
+    { 
+      ?s  ?p  ?o 
+    } 
+  WHERE 
+    { 
+      ?s  ?p  ?o
+    . FILTER ( ?s = bif:iri_id_from_num(4611686018427397910) )
+    };
+
+Done. -- 18 msec.
+</verbatim>
+   1 This should delete two of the previous three triples, leaving one remaining triple:
+<verbatim>   
+SQL> SPARQL 
+  SELECT * 
+  FROM <http://sample/> 
+  WHERE 
+    { 
+      ?s  ?p  ?o 
+    };
+s                 p         o
+VARCHAR           VARCHAR   VARCHAR
+___________________________________
+
+nodeID://b10007   p         o2b
+
+1 Rows. -- 4 msec.
+</verbatim>
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]
+   * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples14][Deleting triples from a graph]]
+   * [[VirtTipsAndTricksGuideDeleteLargeGraphs][Deleting triples from a "Large" graph]]

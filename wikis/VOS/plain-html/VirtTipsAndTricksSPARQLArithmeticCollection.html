@@ -1,0 +1,239 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="SPARQL Date Arithmetic Examples Collection"></a>SPARQL Date Arithmetic Examples Collection</h1>
+<p>The following collection presents examples of SPARQL Date arithmetic calculations.</p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Sample%20listing%20of%20musicians%20that%20includes%20age%20at%20time%20of%20death">Sample listing of musicians that includes age at time of death</a></li> <li><a href="#Sample%20listing%20of%20musicians%20%28includes%20use%20of%20IF%20for%20data%20cleansing%29%20that%20includes%20age%20at%20time%20of%20death">Sample listing of musicians (includes use of IF for data cleansing) that includes age at time of death</a></li> <li><a href="#Sample%20listing%20of%20musicians%20that%20includes%20birth%20date%2C%20death%20date%2C%20and%20age%20ordered%20by%20musicians%20entity%20rank">Sample listing of musicians that includes birth date, death date, and age ordered by musicians entity rank</a></li> <li><a href="#Sample%20listing%20of%20musicians%20that%20includes%20average%20age%20at%20time%20of%20death%2C%20by%20genre">Sample listing of musicians that includes average age at time of death, by genre</a></li> <li><a href="#Sample%20listing%20of%20musicians%20that%20includes%20average%20age%20at%20time%20of%20death%20with%20entity%20rank%2C%20by%20genre">Sample listing of musicians that includes average age at time of death with entity rank, by genre</a></li> <li><a href="#Sample%20listing%20of%20musicians%20that%20includes%20average%20age%20at%20time%20of%20death%20with%20entity%20rank%2C%20by%20genre%20and%20Pretty%20Labels">Sample listing of musicians that includes average age at time of death with entity rank, by genre and Pretty Labels</a></li> <li><a href="#Sample%20listing%20of%20musicians%20that%20includes%20Entity%20Rank%2C%20Grouping%20and%20Pretty%20Labels">Sample listing of musicians that includes Entity Rank, Grouping and Pretty Labels</a></li> <li><a href="#Related">Related</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Sample listing of musicians that includes age at time of death"></a>Sample listing of musicians that includes age at time of death</h2>
+<br><pre>SELECT ?s ?genre ?died ?born 
+       ( bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died) ) ) ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?s ?genre ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?s a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+             &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+             &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+        }
+      LIMIT 20 
+    }
+  }
+</pre><p> View <a href="http://uriburner.com/c/IHWYXN" class="absuri">online</a> the results of executing this query.</p>
+<h2><a name="Sample listing of musicians (includes use of IF for data cleansing) that includes age at time of death"></a>Sample listing of musicians (includes use of IF for data cleansing) that includes age at time of death</h2>
+<br><pre>SELECT ?person ?genre ?died ?born
+       ( 
+         IF 
+           (
+             ( datatype (?born) in (xsd:dateTime, xsd:date) ) 
+             and
+             ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+             bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died) ) ),
+             &quot;error&quot; 
+           ) 
+       ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?person ?genre ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                     &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                  &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                  &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+        }      
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) ) 
+      LIMIT 100  
+    }
+  }  
+</pre><p> View <a href="http://uriburner.com/c/IHZRVY" class="absuri">online</a> the results of executing this query.</p>
+<p> </p>
+<h2><a name="Sample listing of musicians that includes birth date, death date, and age ordered by musicians entity rank"></a>Sample listing of musicians that includes birth date, death date, and age ordered by musicians entity rank</h2>
+<p> </p>
+<br><pre>SELECT DISTINCT ?person ?plabel ?genre ?glabel ?died 
+      ?born ( &lt;LONG::IRI_RANK&gt; (?person) ) as ?rank
+      ( 
+        IF 
+          (
+            ( datatype (?born) in (xsd:dateTime, xsd:date) ) 
+            and
+            ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+            bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died) ) ),
+            &quot;error&quot; 
+          ) 
+       ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?person ?plabel ?genre ?glabel ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                     &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                  &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                                             rdfs:label ?plabel ;
+                  &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+                                      ?genre rdfs:label ?glabel .
+          FILTER (lang(?plabel) = &quot;en&quot;)
+          FILTER (lang(?glabel) = &quot;en&quot;)
+        }
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) ) 
+      LIMIT 100  
+    }
+  }  
+</pre><p>View <a href="http://uriburner.com/c/IGGP5I" class="absuri">online</a> the results of executing this query.</p>
+<h2><a name="Sample listing of musicians that includes average age at time of death, by genre"></a>Sample listing of musicians that includes average age at time of death, by genre</h2>
+<br><pre>SELECT ?genre, (avg(?age)) AS ?avg
+WHERE 
+  {
+    {
+      SELECT DISTINCT ?genre ?person 
+             (bif:datediff( &#39;year&#39;, xsd:dateTime( str(?born) ), xsd:dateTime( str(?died)))) as ?age
+      WHERE 
+        { 
+          {
+            SELECT DISTINCT ?person ?genre ?died ?born 
+            FROM &lt;http://dbpedia.org&gt; 
+            WHERE 
+              { 
+                ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                           &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                        &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                        &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+                FILTER ( datatype (?born) IN (xsd:dateTime, xsd:date) ) 
+                FILTER ( datatype (?died) IN (xsd:dateTime, xsd:date) )       
+              }      
+          }
+        }
+    }
+  }
+GROUP BY (?genre)
+ORDER BY DESC (?avg)
+LIMIT 100
+</pre><p>View <a href="http://uriburner.com/c/IGGP5B" class="absuri">online</a> the results of executing this query.</p>
+<p> </p>
+<h2><a name="Sample listing of musicians that includes average age at time of death with entity rank, by genre"></a> Sample listing of musicians that includes average age at time of death with entity rank, by genre</h2>
+<br><pre>SELECT ?genre, (avg(?age)) AS ?avg,
+    ( &lt;LONG::IRI_RANK&gt; (?person) ) as ?rank
+WHERE
+  {
+    {
+      SELECT DISTINCT ?genre ?person
+        (
+          bif:datediff
+            (
+              &#39;year&#39;,
+              xsd:dateTime( str(?born) ),
+              xsd:dateTime( str(?died) )
+            )
+        ) as ?age
+      WHERE
+        {
+          {
+            SELECT DISTINCT ?person ?genre ?died ?born
+            FROM &lt;http://dbpedia.org&gt;
+            WHERE
+              {
+                ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                           &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                        &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                        &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+                FILTER ( datatype (?born) IN (xsd:dateTime, xsd:date) )
+                FILTER ( datatype (?died) IN (xsd:dateTime, xsd:date) )
+              }
+          }
+        }
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) )
+    }
+  }
+ORDER BY DESC (?avg) 
+LIMIT 100 
+</pre><p>View <a href="http://uriburner.com/c/IHWYXK" class="absuri">online</a> the results of executing this query.</p>
+<h2><a name="Sample listing of musicians that includes average age at time of death with entity rank, by genre and Pretty Labels"></a> Sample listing of musicians that includes average age at time of death with entity rank, by genre and Pretty Labels</h2>
+<br><pre>SELECT ?genre, str(?glabel) as ?genre_names, (avg(?age)) AS ?avg,
+    ( &lt;LONG::IRI_RANK&gt; (?person) ) as ?rank 
+    
+WHERE
+  {
+    {
+      SELECT DISTINCT ?genre ?person ?glabel
+        (
+          IF 
+           (
+             ( datatype (?born) in (xsd:dateTime, xsd:date) )
+             and
+             ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+             bif:datediff(&#39;year&#39;,xsd:dateTime(str(?born)),xsd:dateTime(str(?died))),
+             &quot;error&quot; 
+           )
+        ) as ?age
+      WHERE
+        {
+          {
+            SELECT DISTINCT ?person ?genre ?died ?born ?glabel
+            FROM &lt;http://dbpedia.org&gt;
+            WHERE
+              {
+                ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                           &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                        &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                        &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+                FILTER ( datatype (?born) IN (xsd:dateTime, xsd:date) )
+                FILTER ( datatype (?died) IN (xsd:dateTime, xsd:date) )
+                ?genre rdfs:label ?glabel .
+                FILTER (?born &lt; ?died) .
+                FILTER ( lang(?glabel) = &quot;en&quot; )
+              }
+          }
+        }
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) )
+    }
+  }
+ORDER BY DESC (?avg) 
+LIMIT 100
+</pre><p>View <a href="http://uriburner.com/c/86SSZ" class="absuri">online</a> the results of executing this query.</p>
+<p> </p>
+<h2><a name="Sample listing of musicians that includes Entity Rank, Grouping and Pretty Labels"></a> Sample listing of musicians that includes Entity Rank, Grouping and Pretty Labels</h2>
+<p> </p>
+<br><pre>SELECT DISTINCT ?person str(?plabel) ?genre str(?glabel) 
+       ?died ?born ( &lt;LONG::IRI_RANK&gt; (?person) ) as ?rank
+       ( 
+         IF 
+           (
+             ( datatype (?born) in (xsd:dateTime, xsd:date) )
+             and
+             ( datatype (?died) in (xsd:dateTime, xsd:date) ),
+             bif:datediff(&#39;year&#39;,xsd:dateTime(str(?born)),xsd:dateTime(str(?died))),
+             &quot;error&quot; 
+           ) 
+       ) AS ?age
+WHERE 
+  { 
+    {
+      SELECT DISTINCT ?person ?plabel ?genre ?glabel ?died ?born 
+      FROM &lt;http://dbpedia.org&gt; 
+      WHERE 
+        { 
+          ?person a &lt;http://dbpedia.org/ontology/MusicalArtist&gt; ;
+                     &lt;http://dbpedia.org/ontology/genre&gt; ?genre ;
+                  &lt;http://dbpedia.org/ontology/deathDate&gt; ?died ;
+                                             rdfs:label ?plabel ;
+                  &lt;http://dbpedia.org/ontology/birthDate&gt; ?born .
+          ?genre rdfs:label ?glabel .
+          FILTER ( lang(?plabel) = &quot;en&quot; )
+          FILTER ( lang(?glabel) = &quot;en&quot; )
+        }
+      ORDER BY DESC ( &lt;LONG::IRI_RANK&gt; (?person) ) 
+      LIMIT 100  
+    }
+  }
+</pre><p> View <a href="http://uriburner.com/c/IGGP4Z" class="absuri">online</a> the results of executing this query.</p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+</ul></div></body></html>

@@ -1,0 +1,142 @@
+%VOSWARNING%
+
+
+---++ODS Weblog Movable Type API
+
+   * mt.getRecentPostTitles
+<verbatim>
+Description: Returns a list of the most recent posts in the system, containing a titles without descriptions.
+Parameters: 
+        string	 "blogid"
+	string	 "username"
+	string	 "password"
+	int	 "numberOfPosts"
+Return value: on success, array of structs containing only "dateCreated", "userid", ""postid"" and "title" members of structure. on failure, fault
+</verbatim>
+   * mt.getCategoryList
+<verbatim>
+Description: Returns a list of all categories defined in the weblog.
+Parameters: 
+	string "blogid"
+	string "username"
+	string "password"
+Return value: on success, an array of structs containing : string "categoryId" and string "categoryName" on failure, fault.
+</verbatim>	
+   * mt.setPostCategories
+<verbatim>
+Description: Sets the categories for a post.
+Parameters: 
+	string	 "postid"
+	string	 "username"
+	string	 "password"
+	array	 categories
+Return value: on success, boolean true value; on failure, fault
+Note: The array "categories" is an array of structs containing:
+  {
+   string "categoryId" 
+   boolean "isPrimary" 
+  }
+Using "isPrimary" to set the primary category is optional in the absence of this flag, the first struct in the array will be assigned the primary category for the post.
+</verbatim>
+   * mt.getPostCategories
+<verbatim>
+Description: Returns a list of all categories to which the post	is assigned.
+Parameters: 
+	string "postid"
+	string "username"
+	string "password"
+Return value: on success, an array of structs containing:
+  {
+    string  "categoryName"
+    string  "categoryId"
+    boolean "isPrimary"
+  }
+on failure, fault.
+Notes: "isPrimary" denotes whether a category is the post's primary category.
+</verbatim>
+   * mt.getTrackbackPings
+<verbatim>	 
+Description: Retrieve the list of TrackBack pings posted to a particular entry. This could be used to programmatically retrieve the list of pings for a particular entry, then iterate through each of those pings doing the same, until one has built up a graph of the web of entries referencing one another on a particular topic.
+Parameters: 
+	"postid" string
+Return value: an array of structs containing:
+  {
+    string "pingTitle"	 the title of the entry sent in the ping
+    string "pingURL"   the URL of the entry
+    string "pingIP"	 the IP address of the host that sent the ping
+  }
+</verbatim>		
+   * mt.publishPost
+<verbatim>
+Description: No effect (just for compatibility), as blog home page is dynamic resource.
+Parameters: 
+	string "postid"
+	string "username"
+	string "password"
+Return value: on success, boolean true value;  on failure, fault
+</verbatim>		
+   * mt.supportedMethods
+<verbatim>	 
+Description: Retrieve information about the XML-RPC methods supported by the server.
+Parameters: none
+Return value: an array of method names supported by the server.
+NOTE: the value of "appkey" is ignored by Movable Type in all of the Blogger XML-RPC methods.
+</verbatim>
+
+---+++XML-RPC endpoint configuration
+ 
+A virtual directory can be created and blogger API exposed to it.  To do that following two approaches are possible:
+  
+   1. Via Conductor UI create new virtual directory and select a template for XML-RPC link
+   1. Check the option 'bloggerAPI'  and click Add.
+   1. A logical path now will support the XML-RPC and will have blogger APIs exposed.
+
+Another approach is to execute following SQL script via ISQL tool as follows:
+	
+<verbatim>
+  .... blogserver.sql .... 
+	 vhost_define (lpath=>'/RPC2', ppath=>'/SOAP/', soap_user=>'$U{usr}', soap_opts=>vector ('XML-RPC', 'yes')); 
+	 grant execute on "blogger.newPost" to $U{usr};
+	 grant execute on "blogger.editPost" to $U{usr};
+	 grant execute on "blogger.deletePost" to $U{usr};
+	 grant execute on "blogger.getPost" to $U{usr};
+	 grant execute on "blogger.getRecentPosts" to $U{usr};
+	 grant execute on "blogger.getUsersBlogs" to $U{usr};
+	 grant execute on "blogger.getTemplate" to $U{usr};
+	 grant execute on "blogger.setTemplate" to $U{usr};
+	 grant execute on "blogger.getUserInfo" to $U{usr};
+	 grant execute on "metaWeblog.newPost" to $U{usr};
+	 grant execute on "metaWeblog.editPost" to $U{usr};
+	 grant execute on "metaWeblog.getPost" to $U{usr};
+	 grant execute on "metaWeblog.getRecentPosts" to $U{usr};
+	 grant execute on "mt.getRecentPostTitles" to $U{usr};
+	 grant execute on "mt.getCategoryList" to $U{usr};
+	 grant execute on "mt.setPostCategories" to $U{usr};
+	 grant execute on "mt.getPostCategories" to $U{usr};
+	 grant execute on "mt.getTrackbackPings" to $U{usr};
+	 grant execute on "mt.publishPost" to $U{usr};
+	 grant execute on "mt.supportedMethods" to $U{usr};
+  ... eof ...
+
+  $ isql 1111 dba dba -u usr="SQL user for execution" blog_server.sql
+</verbatim>
+
+Please note that "SQL user for execution"  needs to be created prior to this action.
+
+Important: if you specify the "dba" as user for SOAP execution in virtual directory, grant statements are not needed; but this will open a security hole. So this approach is not recommended. Always is better to have a separate user for SOAP execution with limited rights.
+  
+--+++ ODS Weblog Movable Type API Services UI Endpoint
+
+ODS Weblog Movable Type API Services UI endpoint:
+<verbatim>
+http://host:port/RPC2/services.vsmx
+</verbatim>
+
+ODS Weblog Movable Type API Services wsdl Endpoint:
+<verbatim>
+http://host:port/RPC2/services.wsdl
+</verbatim>
+
+---+++References
+
+   * [[http://www.movabletype.org/docs/mtmanual_programmatic.html][Movable type API (extensions for blogger API)]]

@@ -1,0 +1,82 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ConfigureUDAFeatures"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ConfigureUDAFeatures"}%--><h1><a name="Migrating from Progress SQL-89 Connectivity to SQL-92 Connectivity"></a>Migrating from Progress SQL-89 Connectivity to SQL-92 Connectivity</h1>
+<p>Migrating from Progress SQL-89 connectivity (Progress 7.x through 9.1x) to SQL-92 connectivity (Progress 9.1x through <nop></nop>OpenEdge 10.x and beyond) presents many challenges.
+ This is especially the case as more and more organizations move to Progress <nop></nop>OpenEdge 10.x and newer.
+ These challenges apply to all data access mechanisms -- ODBC, JDBC, OLE DB, ADO.NET, etc.</p><p>With proper planning, most known challenges are quickly and easily resolvable.
+ (Some challenges do require more time and effort than others!)</p><p>This guide advises you of some of the hurdles ahead and shows you how to properly plan for them and troubleshoot them.<!--Begin of %TOC{}%--><p> <br></p><div class="MACRO_TOC"> <br> <div class="wikitoc"> <br>  <ul> <br><li><a href="#Challenges">Challenges</a></li> <br><li><a href="#Prerequisites">Prerequisites</a></li> <br><li><a href="#Choosing%20between%20SQL-89%20and%20SQL-92%20Connectivity">Choosing between SQL-89 and SQL-92 Connectivity</a></li> <br><li><a href="#Installing%20Data%20Access%20Drivers%20for%20Progress%20%28SQL-92%29">Installing Data Access Drivers for Progress (SQL-92)</a></li><ul><li><a href="#Verifying%20the%20Multi-Tier%20Database%20Agent%20for%20Progress%2010%20%28SQL-92%29">Verifying the Multi-Tier Database Agent for Progress 10 (SQL-92)</a></li> <br></ul>
+<li><a href="#Troubleshooting%20Progress%20SQL-92%20Connectivity">Troubleshooting Progress SQL-92 Connectivity</a></li> <br><li><a href="#Troubleshooting%20Progress%20SQL-92%20Queries">Troubleshooting Progress SQL-92 Queries</a></li>
+<p>  </p></ul> <br> </div> <br></div><!--End of %TOC{}%--></p><h2><a name="Challenges"></a>Challenges</h2>
+<p>Data access challenges presented by Progress SQL-92 connectivity include --</p><ul><li> All Shared Memory connectivity is replaced with TCP (i.e., &quot;Sockets&quot;) connectivity.<br><br> <br></li>
+<li> All SQL-92 connections require a username and password (though the password may be blank).
+ This username may be an entry in the Progress <tt>_User</tt> table or in <tt>sysprogress</tt>, or, if no database users have been set up, the username of the operating system user that created (or now owns) the database file, e.g., <tt>isports.db</tt>.<br><br> <br></li>
+<li> Unqualified identifiers (e.g., <tt>tablename</tt> vs <tt>owner.tablename</tt>) may result in errors unless/until <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/SetThePUBSchemaForSQL92ConnectivityToSQL89Schemas" class="wikiword">extra steps are taken</a>.<br><br> <br></li>
+<li> <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/ConfigureProgressTableview" class="wikiword">Tableview configuration</a> is no longer available.
+ This impacts -- <br><ul><li> Distributed Databases -- An ODBC DSN targeting Progress 9 through OpenEdge<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/OpenEdge&parent=MigratingFromSQL89ToProgress10SQL92Connectivity" class="wikiword">?</a> 10.1A can only work with one Progress database (one <tt>.db</tt> file) at a time.
+ <tt>USE dbname</tt> and similar functionality can still change the target from one database to another within that connection, but <tt>JOIN</tt>s across Progress &quot;distributed databases&quot; (multiple <tt>.db</tt> files) are not possible over a single ODBC connection.
+<br><ul><li> <i><strong>Note</strong> Progress has re-enabled JOINs over Distributed Databases as of <nop></nop>OpenEdge 10.1B.
+ As of this writing, we are testing this functionality in our drivers, and will update documentation as soon as this is fully supported.</i> <br></li>
+</ul></li>
+<li> Array Fields -- Array data cannot be accessed using SQL-89 syntax (i.e., <tt>field@1</tt>, <tt>field@2</tt>, etc.).
+ <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/UsingProgress4GLSQL-89ARRAYFieldsWithSQL-92Drivers" class="wikiword">New SQL-92 syntax is available, but is more complex to work with</a>.
+<br></li>
+<li> Progress trigger support is not available through SQL-92 connections.
+<br></li>
+<li> Progress Data Dictionary (schema) definitions of <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/DataIsTruncated" class="wikiword">data fields with content exceeding their specified length must be adjusted</a>.</li>
+</ul></li>
+</ul><p> <br></p><h2><a name="Prerequisites"></a>Prerequisites</h2>
+<p>To move forward with SQL-92 connectivity, you need to do the following on the Progress host:</p><ul><li> <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/HowCanITellIfProgressIsRunningInSocketsOrSharedMemory" class="wikiword">Ensure your target Progress instance is running in Sockets Mode</a>.<br><br> <br><ul><li> Optinally, <a href="http://tinyurl.com/m6xk7j" class="absuri">configure a supplementary Progress Broker</a> to accept SQL-based (as opposed to 4GL/ABL-based) connections.<br><br> <br></li>
+</ul></li>
+<li> <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/HowCanITellIfProgressIsRunningInSQL89OrSQL92Mode" class="wikiword">Ensure your target Progress instance is running in &quot;SQL&quot; or &quot;Mixed&quot; (SQL + 4GL/ABL) Mode</a>.
+ (&quot;Mixed&quot; mode is only available with Progress 9.1x.)</li>
+</ul><p>If you are using our Single-Tier &quot;Lite&quot; Drivers, Progress® SQL-92 Client Access must be installed and functional on the same machine as our driver.</p><h2><a name="Choosing between SQL-89 and SQL-92 Connectivity"></a> Choosing between SQL-89 and SQL-92 Connectivity </h2>
+<p>We support both SQL-89 and SQL-92 connections wherever possible.</p><p>If you are a veteran <nop></nop>OpenLink user, you may be familiar with our SQL-89 drivers, which have letter-version-specific branding in their product names, e.g., &quot;Multi-Threaded Database Agent for Progress 8.2A&quot; and &quot;Multi-Threaded ODBC Driver for Progress 9.1D.&quot;</p><p>Our SQL-92 drivers are only major-version-specific, e.g., &quot;Multi-Threaded Database Agent for Progress 9 (SQL-92)&quot; and &quot;Multi-Threaded ODBC Driver for Progress 10 (SQL-92).&quot;</p><table bgcolor="teal" cellpadding="20"> <br><tr><td><font color="white"> <br>Q.What is the difference between the 10.0A (SQL-89) and 10.0 (SQL-92) options in the Download Wizard?
+<p>A.
+ <nop></nop>OpenLink&#39;s Development Team endeavored to make SQL-89-based drivers for <nop></nop>OpenEdge 10.x.
+ This was possible on a limited number of operating systems, and <strong><em>only</em></strong> with very early versions of Progress <nop></nop>OpenEdge 10.0A; later patches disable the required Progress features.
+ These products appear in our download wizard with a &quot;10.0A (SQL-89)&quot; branding.</p><p>The &quot;10.0 (SQL-92)&quot;-branded links lead to SQL-92-based installers suitable for use with all Progress <nop></nop>OpenEdge 10.x instances. <br></p></font></td></tr> <br></table><h2><a name="Installing Data Access Drivers for Progress (SQL-92)"></a>Installing Data Access Drivers for Progress (SQL-92) </h2>
+<p>Follow the <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/InstallConfigODBC" class="wikiword">installation instructions</a> for your new drivers, as normal.</p><h3><a name="Verifying the Multi-Tier Database Agent for Progress 10 (SQL-92)"></a>Verifying the Multi-Tier Database Agent for Progress 10 (SQL-92) </h3>
+<p>If you are using our Multi-Tier Drivers, you should verify your Progress 10 SQL-92 Database Agent&#39;s functionality.
+ Our Database Agents should return version and usage information in any environment that is properly configured.
+ Failure to return version and usage information usually reveals environment or compatibility issues that should be addressed before continuing on.</p><ol><li> Log into the machine that hosts your Multi-Tier server components installation.
+<br></li>
+<li> Open an MS-DOS command prompt or Unix terminal session.
+<br></li>
+<li> <tt>cd</tt> into the <tt>bin</tt> sub-directory of the <nop></nop>OpenLink installation, e.g., <tt>cd /opt/openlink/bin</tt>.
+<br></li>
+<li> Execute this command: <br><br><pre><br>./prs100_mv -?
+</pre><br></li>
+<li> You should see output similar to the following: <br><br><pre><br>Progress 10 Database Agent
+Version 1.11 as of Wed Apr 29 2009 (Release 6.2 cvsid 00090). 
+Compiled for Linux 2.6.9-78.0.13.EL (i686-generic-linux-glibc23-32) 
+Copyright (C) OpenLink Software.
+
+Usage:
+  pro100a_sv [-CmijrlLd] [+noautocommit] [+maxrows num] [+initsql arg]
+             [+jetfix] [+norowsetlimit] [+loglevel num] [+logfile arg]
+             [+debug]
+  +noautocommit    turn autocommit off by default
+  +maxrows         maximum allowed rows to fetch
+  +initsql         execute SQL from this file for every connection made
+  +jetfix          Jet Engine Compatibility Features
+  +norowsetlimit   turn off rowset size limit
+  +loglevel        log level
+  +logfile         log file
+  +debug           debug mode
+</pre><br>If the agent fails to return the desired output, use our <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/UDAErrorMessages" class="wikiword">Error Messages</a> reference guide to troubleshoot your problem.</li>
+</ol><table bgcolor="teal" cellpadding="20"> <br><tr><td><font color="white"> <br><code>Error: error while loading shared libraries: libesql92.so: cannot open shared object file: No such file or directory.</code>
+<p>This is the most common error produced by our agent during functionality verification.
+ This error occurs when the Progress <tt>lib</tt> sub-directory is not found in the relevant shared library environment variable -- <tt>LD_LIBRARY_PATH</tt>, <tt>LIBPATH</tt>, or <tt>SHLIB_PATH</tt> on Unix, or <tt>PATH</tt> on Windows.</p><p>Resolution: Simply add the directory path(s) to the environment variable(s). <br></p></font></td></tr> <br></table><h2><a name="Troubleshooting Progress SQL-92 Connectivity"></a>Troubleshooting Progress SQL-92 Connectivity</h2>
+<p>Initial SQL-92 connection attempts to Progress are often unsuccessful.
+ However, the errors are almost always easily resolvable.
+ Use these guidelines to troubleshoot any problems that arise in your environment:</p><ul><li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/TheSharedMemoryIsVersionX" class="wikiword">The shared memory is version &lt;some number&gt;; expected &lt;some number&gt; (1178)</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/InvalidPacketLength" class="wikiword">Invalid Packet Length</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/InvalidAuthSpecs" class="wikiword">Invalid user name[SQLSTATE:285890Invalid Auth Specs]</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/DisconnectedFromServerBecauseDatabaseNameWasIncorrect" class="wikiword">Disconnected from server because database name was incorrect. (437)</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/DisconnectedFromServerBecauseDatabaseNameWasIncorrect" class="wikiword">Remote Database Name not valid.</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/ServerDidNotRespond" class="wikiword">Server did not respond[SQLSTATE:k0k130Progress Open SQL network interface]</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/InvalidPacketLength" class="wikiword">Server&#39;s received count 1 does not equal client(1)&#39;s send count 16777216.</a></code></li>
+</ul><p> <br></p><h2><a name="Troubleshooting Progress SQL-92 Queries"></a>Troubleshooting Progress SQL-92 Queries</h2>
+<ul><li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/TableViewSynonymNotFound7519" class="wikiword">Table/View/Synonym not found (7519)</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/ProgressColumnCouldNotBeFound" class="wikiword">Column &quot;x&quot; cannot be found or is not specified for query. (13865)</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/FailureGettingRecordLockOnARecordFromTable" class="wikiword">Failure getting record lock on a record from table</a></code> <br></li>
+<li> <code><a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/ProgressInvalidArrayColumnName" class="wikiword">Invalid column name: field@1</a></code></li>
+</ul></div></body></html>

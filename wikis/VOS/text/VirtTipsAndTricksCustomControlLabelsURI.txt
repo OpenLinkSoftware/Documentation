@@ -1,0 +1,112 @@
+%META:TOPICPARENT{name="VirtuosoFacetsWebService"}%
+
+---+Custom Controlling Virtuoso Labels for URI functionality
+
+%TOC% 
+
+---++What is this? 
+A component of Virtuoso's DBMS hosted faceted browser engine for Linked Data that enhances UI by automagically relegating URIs to the <code>@href</code> attributes of an HTML anchor while using <code>label</code> property values for actual anchor text.
+
+---++Why is this important?
+The fundamental UI/UX goal of Linked Data oriented client solutions should always be to make URIs invisible without compromising their inherent power re. Web experience e.g., the ability to drill-down from an position on the WWW graph using click (de-reference) based follow-your-nose patterns. 
+
+URIs lie at the very core of that makes the Web and its Linked Data dimension tick. Unfortunately, they are also distracting to most end-users thereby compromising UI aesthetics. 
+
+---++How do I use this functionality?
+First, lets understand the fundamental challenge. There are a number of annotation oriented attributes (or predicates) used in relations across databases, data spaces, and stores the exposed access to Linked Data. Unfortunately, there isn't a universally adopted attribute/predicate for 'labels', since everyone doesn't uniformly use <code>rdfs:label</code> when constructing Linked Data.
+
+Virtuoso solves the problem at hand by enabling you to populate a named graph with <code>rdfs:subPropertyOf</code> and <code>owl:equivalentProperty</code> relations (triples) that map disparate annotation properties to Virtuoso's in-built <code>virtrdf:label</code> annotation property. Once in place, the aforementioned named graph is then used as the basis for an inference rule that's optionally available for use via SPARQL and/or the Faceted Browser. 
+
+---+++Example
+
+This is example is focuses on the in-built 'facets' named graph that is used by faceted browser engine. 
+
+---++++ Prerequisites
+
+
+Make sure the following packages are installed:
+
+   * [[https://virtuoso.openlinksw.com/download/][Cartridges]]
+   * [[https://virtuoso.openlinksw.com/download/][Virtuoso Faceted Browser]]
+
+
+---++++ Basic Steps
+
+   1 Load for ex. http://www.w3.org/People/Berners-Lee/card by accessing:
+<verbatim>
+http://localhost:8890/about/html/http://www.w3.org/People/Berners-Lee/card
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/lb0.png" />%BR%%BR%
+   1 View http://cname/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i, so for ex.:
+<verbatim>
+http://localhost:8890/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i
+</verbatim>
+   1 As result the "About" value will be shown as URI:
+<verbatim>
+http://www.w3.org/People/Berners-Lee/card#i  
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/lb1.png" />%BR%%BR%
+   1 Next use SPARQL 1.1 Update Statement to populate the 'facets' named graph:
+<verbatim>
+SPARQL INSERT INTO GRAPH <facets> 
+  {
+    <http://www.w3.org/2000/01/rdf-schema#label>  rdfs:subPropertyOf  virtrdf:label  .
+    <http://purl.org/dc/elements/1.1/title>       rdfs:subPropertyOf  virtrdf:label  .
+    <http://xmlns.com/foaf/0.1/name>              rdfs:subPropertyOf  virtrdf:label  .
+    <http://xmlns.com/foaf/0.1/nick>              rdfs:subPropertyOf  virtrdf:label  .
+    <http://www.geonames.org/ontology#name>       rdfs:subPropertyOf  virtrdf:label  .
+  }
+;
+
+Query result:
+
+callret-0
+ANY
+ Insert into <facets>, 5 (or less) triples -- done
+No. of rows in result: 1 
+
+</verbatim>
+   1 Use the named graph above as the basis for an inference rule or simply issue this command whenever you've added new relations to the 'facets' named graph:
+<verbatim>
+rdfs_rule_set ('facets', 'facets');
+</verbatim>
+      * Note: In situations where you have alternative named graphs (e.g. '<code>virtrdf-label</code>') which the relations you seek in an alternative named graph, you can bring those to bear by issuing the following command: 
+<verbatim>
+rdfs_rule_set('facets','virtrdf-label');
+</verbatim>
+   1 View again http://cname/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i, so for ex.:
+<verbatim>
+http://localhost:8890/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i
+</verbatim>
+   1 As result the "About" value will be shown as label:
+<verbatim>
+TimBL 
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/lb2.png" />%BR%%BR%
+
+
+---++Related 
+
+   * Facets Web Service:
+      * [[VirtuosoFacetsWebService][Virtuoso Facets Web Service]]
+   * Linked Data:   
+      * [[VirtuosoFacetsViewsLinkedData][Faceted Views over Large-Scale Linked Data]]   
+   * Facet Browser Installation and configuration:   
+      * [[VirtFacetBrowserInstallConfig][Virtuoso Facet Browser Installation and configuration]]   
+   * Facet APIs:
+      * [[VirtFacetBrowserAPIs][Virtuoso APIs for FCT REST services]]
+      * [[VirtFacetBrowserAPIsFCTEXEC][<code><nowiki>fct_exec</nowiki></code> API Example]]                   
+   * Pivot Viewer and CXML:         
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxmlFacetPivotBridge#AncSparqlCxmlFacetPivotBridge][Facet Pivot Bridge -  A bridge to PivotViewer from Virtuoso's Faceted query service for RDF]]      
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxml#AncFacetTypeAutoDetection][Auto-Detection of Facet Type]]
+   * Tutorials:
+      * [[VirtuosoLODSampleTutorial][Faceted Browsing Sample using LOD Cloud Cache data space]]         
+      * [[VirtuosoFacetsWebServiceSOAPExample][SOAP Facets Example]]   
+      * [[VirtFacetBrowserInstallConfigQueried][Querying The Facet Browser Web Service endpoint]]  
+      * [[VirtFCTFeatureQueries][Virtuoso Facet Browser Featured Queries]]      
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtVisualizeWithPivotViewer#GenFCT][Visualizing Your Data With PivotViewer Using The Facet Browser]]       
+      * [[VirtuosoFacetsWebServiceCustmExamples][Facets Web Service: Examples for customizing different types]]
+      * [[VirtuosoFacetsWebServiceChoiceExample][Facets Web Service: Choice of Labels Example]]      
+   * Downloads:   
+      * [[http://shop.openlinksw.com/license_generator/virtuoso-download/][Latest Virtuoso]]
+      * [[https://virtuoso.openlinksw.com/download/][Virtuoso Facet Browser VAD package]]

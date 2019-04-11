@@ -1,0 +1,224 @@
+%META:TOPICPARENT{name="VirtLDP"}%
+
+---+ RWW Interaction &amp; ACL Testing using cURL
+
+%TOC%
+
+
+---++ What?
+
+The [[http://www.w3.org/TR/ldp/][Linked Data Platform (LDP) specification]] from the W3C outlines how 
+HTTP interaction patterns can be used to facilitate loosely coupled Create, Read, Update (Write), and 
+Delete ("CRUD") operations, at World Wide Web scale.
+
+---++ Why?
+
+The "Write" dimension of the World Wide Web has been underutilized since the Web's inception. This has 
+lead to a proliferation of Web Applications and Services that confusingly conflate otherwise distinct 
+functionality realms in the way they work with entities, both "real world" and digital, and their --
+
+   * Identity (Denotation)
+   * Identification (Connotation)
+   * Verification of Identity Claims (Authentication)
+   * Identity-Driven Access Control & Privileges over Protected Resources 
+   * Identity-Driven Webs of Trust
+
+
+---++ How?
+
+---+++ Different File Usage
+
+---++++ 1: PKCS 12 File Usage
+
+<verbatim>
+curl --cert {pkcs#12-file-name}:{pwd} --cert-type P12 -k -I {resource-url}
+</verbatim>
+
+---++++ 2: Secure PEM File Usage
+
+<verbatim>
+curl --cert {cert-pem-file-name} --key {private-key-pem-file-name} -k -I {resource-url}
+</verbatim>
+
+
+---+++ LDP QA
+
+---++++ 1: Basic Metadata Interrogation
+
+<verbatim>
+curl -X OPTIONS -IH "Accept: text/turtle" http://example.com/DAV/home/demo/Public/
+</verbatim>
+
+---++++ 2: Basic Metadata and Content Interrogation
+
+<verbatim>
+curl -iH "Accept: text/turtle" http://example.com/DAV/home/demo/Public/
+</verbatim>
+
+---++++ 3: INSERT via POST with Slug header
+
+<verbatim>
+curl -X POST -ik -H "Content-Type:text/turtle"  -E MyCertificate-ODS-QA.pem:1234  --data-binary @profile2.ttl -H "Slug: profile2.ttl" https://example.com/DAV/home/demo/Public/
+</verbatim>
+
+---++++ 4: INSERT via POST without Slug header
+
+<verbatim>
+curl -X POST -ik -H "Content-Type:text/turtle"  -E MyCertificate-ODS-QA.pem:1234  --data-binary @profile2.ttl https://example.com/DAV/home/demo/Public/
+</verbatim>
+
+---++++ 5: INSERT via Inline Data without Slug header
+
+<verbatim>
+curl -X POST -ik -H "Content-Type:text/turtle"  -E MyCertificate-ODS-QA.pem:1234  --data-binary "<> a foaf:Document" https://example.com/DAV/home/demo/Public/
+</verbatim>
+
+---++++ 6: Collection (Folder) Creation
+
+   * Local data in <code><nowiki>ldp_container.ttl</nowiki></code>
+<verbatim>
+@prefix      ldp:  <http://www.w3.org/ns/ldp#> .
+@prefix  dcterms:  <http://purl.org/dc/terms/> .
+
+<>                   a  ldp:Container
+                     ,  ldp:BasicContainer
+ ;       dcterms:title  "Sample Folder" 
+ ; dcterms:description  "Sample Folder created using LDP." 
+.
+</verbatim>
+
+   * <b>Request:</b>
+<verbatim>
+curl -k -i -E MyCertificate-ODS-QA.pem:1234 https://example.com/DAV/home/demo/Public/ -H "Content-Type: text/turtle" -X POST  -H "Slug: ldp_container" --data-binary @ldp_container.ttl
+</verbatim>
+
+   * <b>Response:</b>
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Mon, 07 Jul 2014 12:54:32 GMT
+Accept-Ranges: bytes
+Location: https://example.com/DAV/home/demo/Public/ldp_container
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Content-Type: text/turtle
+Content-Length: 196
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+  <HTML>
+    <HEAD>
+      <TITLE>201 Created</TITLE>
+    </HEAD>
+    <BODY>
+      <H1>Created</H1>Resource /DAV/home/demo/Public/ldp_container has been created.
+    </BODY>
+  </HTML>
+</verbatim>
+
+---++++ 7: Without Slug
+
+<verbatim>
+curl -k -i -E MyCertificate-ODS-QA.pem:king6c/ -H "Content-Type: text/turtle" -X POST  --data-binary @ldp_container.ttl
+</verbatim>
+
+
+---+++ Methods 
+
+---++++ PUT Method
+
+To replace the content of the Document 
+at <code><nowiki>&lt;https://example.com/DAV/home/demo/Public/example.ttl&gt;</nowiki></code> 
+with <code><nowiki>"&lt;#this&gt; &lt;#relation&gt; &lt;#that&gt; ."</nowiki></code>
+
+   * <b>Request:</b>
+<verbatim>
+curl -X PUT -kv -i -H "Content-Type:text/turtle"  -E MyCertificate-ODS-QA.pem:1234  --data-binary  "<#this> <#relation> <#that> ." https://example.com/DAV/home/demo/Public/example.ttl
+<verbatim>
+
+   * <b>Response:</b>
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: close
+Date: Thu, 03 Jul 2014 19:56:45 GMT
+Accept-Ranges: bytes
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Content-Type: text/turtle
+Content-Length: 194
+</verbatim>
+
+---++++ PUT Method for creating a remote document from a local document
+
+<verbatim>
+curl -X PUT -k -i -E MyCertificate-ODS-QA.pem:1234 -H "Content-Type: text/turtle" -data-binary @test.ttl https://example.com/DAV/home/demo/Public/
+</verbatim>
+
+
+---++++ MKCOL Method
+
+<verbatim>
+curl -X MKCOL -k -i -E MyCertificate-ODS-QA.pem:1234 https://example.com/DAV/home/demo/Public/container2/
+</verbatim>
+
+
+---++++ HTTP PATCH method for SPARQL 1.1 INSERT
+
+   * <b>Request: </b>
+<verbatim>
+curl -E MyCertificate-ODS-QA.pem:1234  -X PATCH -k -i --data-binary "INSERT {GRAPH <urn:rww:demo:data> {<http://example.com/dataspace/person/demo#this> a <http://xmlns.com/foaf/0.1/Person> . } }" -H "Content-Type: application/sparql-update; utf-8" https://example.com/DAV/home/demo/Public/example2.ttl
+</verbatim>
+
+   * <b>Response: </b>
+<verbatim>
+HTTP/1.1 204 No Content
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Fri, 04 Jul 2014 17:18:16 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://example.com/DAV/home/demo/Public/example2.ttl
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 444
+</verbatim>
+
+---++++ HTTP POST method for SPARQL SELECT
+
+   * <b>Request: </b>
+<verbatim>
+curl -E MyCertificate-ODS-QA.pem:1234 -X POST -ik --data-binary "SELECT * FROM <urn:rww:demo:data> WHERE {?s ?p ?o}" -H "Content-Type: application/sparql-query" "https://example.com/sparql"
+</verbatim>
+
+   * <b>Response: </b>
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu-LDP  VDB
+Connection: Keep-Alive
+Date: Fri, 04 Jul 2014 17:31:38 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://example.com/DAV/VAD/val/sparql/
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 792
+
+<sparql xmlns="http://www.w3.org/2005/sparql-results#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
+ <head>
+  <variable name="s"/>
+  <variable name="p"/>
+  <variable name="o"/>
+ </head>
+ <results distinct="false" ordered="true">
+  <result>
+   <binding name="s"><uri>http://example.com/dataspace/person/demo#this</uri></binding>
+   <binding name="p"><uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri></binding>
+   <binding name="o"><uri>http://xmlns.com/foaf/0.1/Person</uri></binding>
+  </result>
+  <result>
+   <binding name="s"><uri>#this</uri></binding>
+   <binding name="p"><uri>#relation</uri></binding>
+   <binding name="o"><uri>#that</uri></binding>
+  </result>
+ </results> 
+</verbatim>
+
+
+---++ Related
+
+   * [[VirtuosoLDPSimpleCurlExamples][Virtuoso LDP Simple Curl Examples Collection]]

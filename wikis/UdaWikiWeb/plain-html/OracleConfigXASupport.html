@@ -1,0 +1,35 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ConfigTroubleshootORA"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="ConfigTroubleshootORA"}%--><p> <br></p><h2><a name="Configuring Oracle for XA support"></a>Configuring Oracle for XA support </h2>
+<p>XA support has been tested against Oracle version 9i and 10g</p><h3><a name="Granting SELECT Privilege on V$XATRANS$ &amp; DBA_PENDING_TRANSACTIONS Views"></a>Granting SELECT Privilege on V$XATRANS$ &amp; DBA_PENDING_TRANSACTIONS Views</h3>
+<p>You must grant SELECT privilege to the V$XATRANS$ view for all Oracle accounts that XA applications will use.
+ Otherwise, xa_recover will fail, in the event that TM needs to perform a recovery.
+ If the view does not already exist in your Oracle installation, it can be manually loaded using the following SQL script which should be included in your Oracle installation:<br></p><pre>$ORACLE_HOME/rdbms/admin/xaview.sql
+</pre><p> <br>The example below shows an extract from an Oracle XA Library trace file.
+ Oracle returns error <strong>ORA-00942 : table or view does not exist</strong>, because user scott does not have the necessary SELECT privilege on the V$XATRANS$ view.<br></p><pre>ORACLE XA: Version 10.1.0.0.0. RM name = &#39;Oracle_XA&#39;.
+
+113956.2352:536.536.1:
+xaoopen: xa_info=ORACLE_XA+Threads=true+SesTm=60+Acc=P/scott/tiger+DB=DB01BA5BF8+SQLNET=ORCL+DbgFl=0x1+LogDir=c:/,rmid=1,flags=0x0
+
+113956.2352:536.536.1:
+xaolgn_help: version#: 168821248 banner: Personal Oracle Database 10g Release 10.1.0.2.0 - Production
+With the Partitioning, OLAP and Data Mining options
+
+113956.2352:536.536.1:
+xaoopen: return 0
+
+113959.2352:536.536.1:
+xaorecover: xids=0xf8f8f8, count=10, rmid=1, flags=0x1000000
+
+113959.2352:536.536.1:
+ORA-00942: table or view does not exist
+
+113959.2352:536.536.1:
+xaorecover: xaofetch rtn -3.
+
+113959.2352:536.536.1:
+xaoclose: xa_info=DSN=au49-ora10-carlv;UID=scott;PWD=tiger;+DB=DB01BA5BF8, rmid=1769209857, flags=0x0
+
+113959.2352:536.536.1:
+xaoclose: rtn 0
+</pre><p> <br>The syntax for adding the grant privilege to the &#39;scott&#39; user is:<br></p><pre>grant select on V$XATRANS$ to scott;
+</pre><p> <br>In addition, the &quot;ORA-00942: table or view does not exist&quot; error also occurs if select privileges are not granted on the <tt>DBA_PENDING_TRANSACTIONS</tt> view, requiring the following command to be executed as a DBA user:<br></p><pre>GRANT SELECT ON DBA_PENDING_TRANSACTIONS TO PUBLIC
+</pre><p> <br><font color="#ff0000">Note: The V$XATRANS$ did not exist nor did the DBA_PENDING_TRANSACTIONS view have appropriate select privileges in Unix Oracle installations, although they are included in Windows installations by default.</font> <br></p></div></body></html>

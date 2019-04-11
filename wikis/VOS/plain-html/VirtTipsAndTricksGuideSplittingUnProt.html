@@ -1,0 +1,132 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="Splitting 3.4billion triple"></a>Splitting 3.4billion triple UniProt<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/UniProt&parent=VirtTipsAndTricksGuideSplittingUnProt" class="wikiword">?</a> datasets file Guide</h1>
+<h2><a name="What?"></a>What?</h2>
+ How to split up the Uniprot&#39;s 3.4 billion triples dataset en route to bulk loading into a Virtuoso instance.<h2><a name="Why?"></a>Why?</h2>
+<p>Attempting to load single file of this magnitude is an inefficient and problem prone undertaking for any RDF store.
+ Hence the need to break up the file prior to bulk loading.</p>
+<h2><a name="How?"></a>How?</h2>
+<p>The <a href="VirtTipsAndTricksGuideSplittingUnProt/RdfXmlSplitter.sql" style="wikiautogen">following script</a> splits 3.4billion triple uniprot datasets file into smaller files.</p>
+<p>The last line of the script tells which file should be split and where the result should go.</p>
+<p>The splitter occupies only one CPU core due to its linear nature, so many files could be split in parallel on any multi-core box.</p>
+<br><pre>create procedure DB.DBA.RDFXML_FILE_SPLIT_INIT (in out_fname_tmpl varchar, in cut_size integer, inout app_env any)
+{
+  app_env := vector (
+    out_fname_tmpl,			-- [0] - template for out names
+    string_output (),			-- [1] - out session
+    0,					-- [2] - index of current file
+    iri_id_num (#ib1),			-- [3] - ID of next bnode to allocate
+    dict_new (1000000),			-- [4] - dictionary of bnodes
+    make_array (50000, &#39;any&#39;),		-- [5] - accumulator of triples
+    0,					-- [6] - number of triples in the accumulator
+    vector (dict_new (16000), 0, &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 0, 0, 0), -- [7] env of http_ttl_xxx()
+    0,					-- [8] - count of tripless written to the current file
+    cut_size );				-- [9] - size of single cut file
+}
+;
+
+create procedure DB.DBA.RDFXML_FILE_SPLIT_FLUSH (inout app_env any, in can_continue_file integer)
+{
+  declare tctr, tcount, total_tcount, cut_size integer;
+  declare triples, env, ses any;
+  dbg_obj_princ (&#39;DB.DBA.RDFXML_FILE_SPLIT_FLUSH (..., can_continue_file=&#39;, can_continue_file, &#39;): file=&#39;, app_env[2], &#39; tcount=&#39;, app_env[6], &#39; total_count=&#39;, app_env[8]);
+  ses := aref_set_0 (app_env, 1);
+  triples := aref_set_0 (app_env, 5);
+  tcount := app_env[6];
+  env := aref_set_0 (app_env, 7);
+  total_tcount := app_env[8];
+  cut_size := app_env[9];
+  for (tctr := 0; tctr &lt; tcount; tctr := tctr + 1)
+    {
+      http_ttl_prefixes (env, triples[tctr][0], triples[tctr][1], triples[tctr][2], ses);
+    }
+  for (tctr := 0; tctr &lt; tcount; tctr := tctr + 1)
+    {
+      http_ttl_triple (env, triples[tctr][0], triples[tctr][1], triples[tctr][2], ses);
+    }
+  app_env[6] := 0;
+  total_tcount := total_tcount + tcount;
+  if ((not can_continue_file) or (total_tcount &gt;= cut_size))
+    {
+      string_to_file (sprintf (app_env[0], app_env[2]), ses, -2);
+      ses := string_output ();
+      env := vector (dict_new (16000), 0, &#39;&#39;, &#39;&#39;, &#39;&#39;, 0, 0, 0, 0);
+      app_env[2] := app_env[2] + 1;
+      total_tcount := 0;
+    }
+  aset_zap_arg (app_env, 1, ses);
+  aset_zap_arg (app_env, 5, triples);
+  aset_zap_arg (app_env, 7, env);
+  app_env[8] := total_tcount;
+}
+;
+
+create procedure DB.DBA.RDFXML_FILE_SPLIT_EV_NEW_BLANK (inout g_iid IRI_ID, inout app_env any, inout res IRI_ID) {
+  declare i integer;
+  i := app_env[3];
+  res := iri_id_from_num (i);
+  app_env[3] := i+1;
+}
+;
+
+create procedure DB.DBA.RDFXML_FILE_SPLIT_EV_GET_IID (inout uri varchar, inout g_iid IRI_ID, inout app_env any, inout res IRI_ID) {
+  res := uri;
+}
+;
+
+create procedure DB.DBA.RDFXML_FILE_SPLIT_EV_TRIPLE (
+  inout g_iid IRI_ID, inout s_uri varchar, inout p_uri varchar,
+  inout o_uri varchar,
+  inout app_env any )
+{
+  if (app_env[6] &gt;= 50000)
+    DB.DBA.RDFXML_FILE_SPLIT_FLUSH (app_env, 1);
+  __box_flags_set (o_uri, 1);
+  app_env[5][app_env[6]] := vector (s_uri, p_uri, o_uri);
+  app_env[6] := app_env[6]+1;
+}
+;
+
+create procedure DB.DBA.RDFXML_FILE_SPLIT_EV_TRIPLE_L (
+  inout g_iid IRI_ID, inout s_uri varchar, inout p_uri varchar,
+  inout o_val any, inout o_type varchar, inout o_lang varchar,
+  inout app_env any )
+{
+  if (app_env[6] &gt;= 50000)
+    DB.DBA.RDFXML_FILE_SPLIT_FLUSH (app_env, 1);
+  app_env[5][app_env[6]] := vector (s_uri, p_uri, DB.DBA.RDF_MAKE_LONG_OF_TYPEDSQLVAL_STRINGS (o_val, o_type, o_lang));
+  app_env[6] := app_env[6]+1;
+}
+;
+
+create procedure DB.DBA.RDFXML_FILE_SPLIT (in in_fname varchar, in base varchar, in parse_mode integer, in out_fname_tmpl varchar, in cut_size integer := 100000000)
+{
+  declare in_ses, app_env any;
+  if (in_fname like &#39;%.rdf.gz&#39; or in_fname like &#39;%.xml.gz&#39;)
+    in_ses := gz_file_open (in_fname);
+  else
+    in_ses := file_open (in_fname);
+  DB.DBA.RDFXML_FILE_SPLIT_INIT (out_fname_tmpl, cut_size, app_env);
+  rdf_load_rdfxml (in_ses, parse_mode,
+    &#39;&#39; /* fake graph, UNAME is to avoid copying */,
+    vector (
+      &#39;&#39;,
+      &#39;DB.DBA.RDFXML_FILE_SPLIT_EV_NEW_BLANK&#39;,
+      &#39;DB.DBA.RDFXML_FILE_SPLIT_EV_GET_IID&#39;,
+      &#39;DB.DBA.RDFXML_FILE_SPLIT_EV_TRIPLE&#39;,
+      &#39;DB.DBA.RDFXML_FILE_SPLIT_EV_TRIPLE_L&#39;,
+      &#39;&#39;,
+      &#39;&#39; ),
+    app_env,
+    base );
+  RDFXML_FILE_SPLIT_FLUSH (app_env, 0);
+}
+;
+
+DB.DBA.RDFXML_FILE_SPLIT (&#39;/demos/uniprot/src/uniparc.rdf&#39;, &#39;http://purl.uniprot.org/uniparc/&#39;, 0, &#39;/demos/uniprot/src/uniparc%06d.ttl&#39;, 200000);
+
+</pre><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso Documentation</a></li>
+</ul></div></body></html>

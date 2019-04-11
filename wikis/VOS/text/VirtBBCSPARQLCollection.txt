@@ -1,0 +1,125 @@
+---++BBC SPARQL Collection
+
+%TOC%
+
+---+++All Programmes Related To James Bond
+<verbatim>
+PREFIX po: <http://purl.org/ontology/po/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?uri ?label
+WHERE 
+  {
+    ?uri po:category 
+      <http://www.bbc.co.uk/programmes/people/bmFtZS9ib25kLCBqYW1lcyAobm8gcXVhbGlmaWVyKQ#person> ; 
+    rdfs:label ?label.
+   }
+</verbatim>
+
+---+++Find All Eastenders Broadcasta After A Given Date 
+<verbatim>
+## Find all eastenders broadcasta after 2009-01-01, 
+## along with the broadcast version &amp; type 
+PREFIX event: <http://purl.org/NET/c4dm/event.owl#> 
+PREFIX tl: <http://purl.org/NET/c4dm/timeline.owl#> 
+PREFIX po: <http://purl.org/ontology/po/> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?version_type ?broadcast_start
+WHERE
+  { 
+    <http://www.bbc.co.uk/programmes/b006m86d#programme> po:episode ?episode .
+    ?episode po:version ?version .
+    ?version a ?version_type .
+    ?broadcast po:broadcast_of ?version .
+    ?broadcast event:time ?time .
+    ?time tl:start ?broadcast_start .
+    FILTER ( (?version_type != <http://purl.org/ontology/po/Version>) 
+    &amp;&amp; (?broadcast_start > "2009-01-01T00:00:00Z"^^xsd:dateTime) )
+  }
+</verbatim>
+
+---+++Find All Programmes That Featured Both The Foo Fighters And All Green
+<verbatim>
+PREFIX po: <http://purl.org/ontology/po/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX mo: <http://purl.org/ontology/mo/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
+PREFIX tl: <http://purl.org/NET/c4dm/timeline.owl#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+SELECT DISTINCT ?programme ?label
+WHERE 
+  {
+    ?event1 po:track ?track1 .
+    ?track1 foaf:maker ?maker1 . 
+    ?maker1 owl:sameAs <http://www.bbc.co.uk/music/artists/67f66c07-6e61-4026-ade5-7e782fad3a5d#artist> .
+    ?event2 po:track ?track2 .
+    ?track2 foaf:maker ?maker2 . 
+    ?maker2 owl:sameAs <http://www.bbc.co.uk/music/artists/fb7272ba-f130-4f0a-934d-6eeea4c18c9a#artist> .
+    ?event1 event:time ?t1 .
+    ?event2 event:time ?t2 .
+    ?t1 tl:timeline ?tl .
+    ?t2 tl:timeline ?tl .
+    ?version po:time ?t .
+    ?t tl:timeline ?tl .
+    ?programme po:version ?version .
+    ?programme rdfs:label ?label .
+  }
+</verbatim>
+
+---+++Get Short Synopsis Of Eastenders Episodes
+<verbatim>
+PREFIX po: <http://purl.org/ontology/po/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+SELECT ?t ?o
+WHERE
+  {
+    <http://www.bbc.co.uk/programmes/b006m86d#programme> po:episode ?e .
+    ?e a po:Episode .
+    ?e po:short_synopsis ?o .
+    ?e dc:title ?t
+  }
+</verbatim>
+
+---+++Get Short Synopsis Of Eastenders Episodes ( With Graph )
+<verbatim>
+PREFIX po: <http://purl.org/ontology/po/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+SELECT ?g ?t ?o
+WHERE
+  {
+    graph ?g 
+      {
+         <http://www.bbc.co.uk/programmes/b006m86d#programme> po:episode ?e .
+         ?e a po:Episode .
+         ?e po:short_synopsis ?o .
+         ?e dc:title ?t
+      }
+  }
+</verbatim>
+
+---+++ Get Reviews Where John Paul Jones Has Been Involved
+<verbatim>
+PREFIX mo: <http://purl.org/ontology/mo/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX rev: <http://purl.org/stuff/rev#>
+PREFIX po: <http://purl.org/ontology/po/>
+SELECT DISTINCT ?r_name, ?rev
+WHERE 
+  {
+    {
+      <http://www.bbc.co.uk/music/artists/4490113a-3880-4f5b-a39b-105bfceaed04#artist> foaf:made ?r1 .
+      ?r1 a mo:Record .
+      ?r1 dc:title ?r_name .
+      ?r1 rev:hasReview ?rev
+    }
+    UNION 
+    {
+      <http://www.bbc.co.uk/music/artists/4490113a-3880-4f5b-a39b-105bfceaed04#artist> mo:member_of ?b1 .
+      ?b1 foaf:made ?r1 .
+      ?r1 a mo:Record .
+      ?r1 dc:title ?r_name .
+      ?r1 rev:hasReview ?rev
+    }
+  }
+</verbatim>

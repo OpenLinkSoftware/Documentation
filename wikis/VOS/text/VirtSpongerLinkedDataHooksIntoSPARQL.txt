@@ -1,0 +1,153 @@
+%META:TOPICPARENT{name="VirtSponger"}%
+
+---+ Enhancements the Virtuoso Sponger brings to SPARQL
+
+
+%TOC%
+
+---++Why?
+In the world of Linked Data, the Web is treated as a global data space where every data object has an identifier (URI) that serves as a key to its entity-attribute-value (3-tuple or triples)-based description. To make these "keys" work, data object URIs have to be dereferenceable &#8212; i.e., they must resolve to actual object content through functionality commonly delivered via data object locator and retriever URI specializations (or subtypes) such as URLs.
+
+---++What?
+Virtuoso's Sponger is a sophisticated piece of middleware that provides full Linked Data fidelity for pre-existing data objects or resources. This Linked Data is then accessible via HTTP-based Web Services, and SPARQL is enhanced with Sponger pragmas (or directives) and some optional additions to the <code>FROM</code> clause.
+
+---++How?
+
+---+++ Basics
+
+Sponger pragmas control various aspects of functionality &#8212;
+
+   1. <b>Identifier Dereference:</b> handled by <code>INPUT</code> pragmas.
+   1. <b>Actual Data Retrieval:</b> handled by <code>GET</code> pragmas.
+   1. <b>SQL Code Generation:</b> handled by <code>SQL</code> pragmas.
+   1. <b>Output Format Adjustments:</b> handled by <code>OUTPUT</code> pragmas.
+
+Pragmas are qualified at usage time using the following pattern: 
+<verbatim>
+<pragma-type>:<actual-method> ["<method-modifier>"]
+</verbatim>
+
+
+---+++ Details
+
+---++++ INPUT Pragmas
+
+<code>INPUT</code> Pragmas enable you control dereference behavior applied to a SPARQL query. Net effect, fine-grained control over how variables and explicit data object identifiers are dereferenced en route to creating base data from which SPARQL query solutions are derived. 
+
+Methods and method-modifiers associated with this pragma type include:
+
+| *Method* | *Modifier(s)* | *Description* | *Usage Example* |
+| <b><code>input:default-graph-exclude</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Works like "<code>NOT FROM</code>" clause  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx26][Example]]  | 
+| <b><code>input:default-graph-uri</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Works like "<code>FROM</code>" clause  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx24][Example]]  | 
+| <b><code>input:freeze</code></b>  |  | Blocks further changes in the list of source graphs. The web service endpoint (or similar non-web application) can edit an incoming query by placing a list of pragmas ending with <code>input:freeze</code> in front of the query text. If an intruder tries to place some graph names, they will get a compilation error, not access to the data. <code>input:freeze</code> disables all <code>input:grab-...</code> pragmas as well.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx28][Example]] | 
+| <b><code>input:grab-all</code></b> |  <b><code>"yes"</code></b>  | Instructs the SPARQL processor to dereference everything related to the query. All variables and literal IRIs in the query become values for <code>input:grab-var</code> and <code>input:grab-iri</code>. The resulting performance may be very bad. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx2][Example]] | 
+| <b><code>input:grab-base</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Specifies the base IRI to use when converting relative IRIs to absolute. (Default: empty string.)  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx3][Example]] | 
+| <b><code>input:grab-depth</code></b>  |  <b><code>"0"</code></b>  | Sets the maximum 'degrees of separation' or links (predicates) between nodes in the target graph.  Acceptable range is non-negative integers.  <code>0</code> means unlimited.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx4][Example]] | 
+| <b><code>input:grab-destination</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Overrides the default IRI dereferencing and Local Graph IRI designation. Retrieved content (triples) is stored in a graph IRI designated by the modifier value.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx5][Example]] | 
+| <b><code>input:grab-follow-predicate</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Specifies a predicate IRI to be used when traversing a graph. (This pragma may be included multiple times). Synonym of <code>input:grab-seealso</code>. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx6][Example]]  | 
+| <b><code>input:grab-iri</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Specifies an IRI that should be retrieved before executing the rest of the query, if it is not in the quad store already. (This pragma can be included multiple times).  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx7][Example]] | 
+| <b><code>input:grab-limit</code></b>  |  <b><code>"&lt;number&gt;"</code></b>  | Sets the maximum number of resources (triple subject or object IRIs) to be de-referenced. Acceptable range is non-negative integers. <code>0</code> means unlimited.   | [[VirtSpongerLinkedDataHooksIntoSPARQLEx8][Example]] | 
+| <b><code>input:grab-loader</code></b>  |  <b><code>"&lt;procedure-name&gt;"</code></b>  | Identifies the procedure used to retrieve, parse, and store content. (Default: <code><nowiki>DB.DBA.RDF_SPONGE_UP</nowiki></code>)  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx9][Example]]  | 
+| <b><code>input:grab-resolver</code></b>  |  <b><code>"&lt;procedure-name&gt;"</code></b>  | Identifies the procedure that handles IRI dereference and actual content retrieval via a specific data access protocol (e.g., HTTP). (Default: <code><nowiki>DB.DBA.RDF_GRAB_RESOLVER_DEFAULT</nowiki><code>.)  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx10][Example]] | 
+| <b><code>input:grab-seealso</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Synonym of <code>input:grab-follow-predicate</code>.  |[[VirtSpongerLinkedDataHooksIntoSPARQLEx11][Example]]  | 
+| <b><code>input:grab-var</code></b>  |  <b><code>"?&lt;var-name&gt;"</code></b>  | Specifies the name of the SPARQL variable whose values should be used as IRIs of resources that should be downloaded.   | [[VirtSpongerLinkedDataHooksIntoSPARQLEx1][Example]]  | 
+| <b><code>input:grab-group-destination</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Resembles <code>input:grab-destination</code> but sponges will create individual graphs for Network Resource Fetch results, and in addition to this common routine, a copy of each Network Resource Fetch result will be added to the resource specified by the value of <code>input:grab-group-destination</code>. <code>input:grab-destination</code> redirects loadings; <code>input:grab-group-destination</code> duplicates them.   | [[VirtSpongerLinkedDataHooksIntoSPARQLEx17][Example]] |
+| <b><code>input:grab-intermediate</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Extends the set of IRIs to sponge, useful in combination with <code>input:grab-seealso</code>. If present, then, for a given subject, Network Resource Fetch will retrieve not only values of see-also predicates for that subject, but also the subject itself. The define value is not used in current implementation.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx18][Example]] | 
+| <b><code>input:ifp</code></b> |  <b><code>"&lt;keyword&gt;"</code></b>  | Adds <code>IFP</code> keyword in <code>OPTION (QUIETCAST, ...)</code> clause in the generated SQL. The value of this define is not used yet; an empty string is safe for future extensions. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx21][Example]]  | 
+| <b><code>input:inference</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Specifies the name of an inference rule to provide context for backward-chained reasoner. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx22][Example]]  | 
+| <b><code>input:named-graph-exclude</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Works like "<code>NOT FROM NAMED</code>" clause  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx27][Example]] | 
+| <b><code>input:named-graph-uri</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Works like "<code>FROM NAMED</code>" clause | [[VirtSpongerLinkedDataHooksIntoSPARQLEx25][Example]] | 
+| <b><code>input:param</code></b>  |  <b><code>"&lt;variable-name&gt;"</code></b>  | <p>Declares a variable name to be used as a custom SPARQL protocol parameter.</p> <p>SPARQL query leverages this custom parameter using the special "<code>?::{variable}</code>" sytnax (excluding quotation marks).</p> <p>If query text is generated  by a query builder that does not understand Virtuoso's SPARQL-BI extensions, then the generated query text may contain a conventional query variable as long as it uses the <code>define input:param "X"</code> pragma in its preamble.</p> <p><i><b>Note:</b> This will not work for positional parameters; i.e., you cannot replace a SPARQL-BI reference like <code>?::3</code> with <code>?3</code> combined with a <code>define input:param "3"</code> pragma.</i></p>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx23][Example]]  | 
+| <b><code>input:params</code></b>  |  <b><code>"&lt;variable-name&gt;"</code></b>  | Synonym of <code>input:param</code>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx23][Example]]  | 
+| <b><code>input:same-as</code></b> |  <b><code>"yes"</code></b>  | Sets inference context for <code>owl:sameAs</code> (entity equivalence by name) reasoning and union expansion.    | [[VirtSpongerLinkedDataHooksIntoSPARQLEx19][Example]]  | 
+| <b><code>input:storage</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | Sets dataset (quads) storage scope. The value is a storage identifier (IRI) where the default value is <code><nowiki>virtrdf:DefaultQuadStorage</nowiki></code>. If the value is an empty string, then only quads associated with Linked Data Views are used. This is a good choice for low-level admin procedures, for two reasons: they will not interfere with any changes in <code><nowiki>virtrdf:DefaultQuadStorage</nowiki></code>; and they will continue to work even if all compiler's metadata is corrupted, including the description of <code><nowiki>virtrdf:DefaultQuadStorage</nowiki></code>. (<code>define input:storage ""</code> switches the SPARQL compiler to a small set of metadata that is built in 'C' code and thus are very hard for end-users to corrupt.) | [[VirtSpongerLinkedDataHooksIntoSPARQLEx20][Example]] | 
+| <b><code>input:target-fallback-graph-uri</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | This pragma tells the compiler to use <code>&lt;XXX&gt;</code> as target for SPARQL 1.1 <code>INSERT</code> and <code>DELETE</code> operations if no other graph is specified in the query. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx_29][Example]] |
+| <b><code>input:with-fallback-graph-uri</code></b> |  <b><code>"&lt;IRI&gt;"</code></b>  | This pragma tells the compiler to use <code>&lt;XXX&gt;</code> as target both for SPARQL 1.1  operations if no other graph is specified and for default graph IRI if no other source graphs are named in the query. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx_30][Example]] |
+
+
+---++++ GET Pragmas
+
+<code>GET</code> Pragmas enables you to control actual data-object content-retrieval behavior applied to a SPARQL query. The net effect is fine-grained control over data-access-oriented matters such as &#8212;
+
+   * Data object content format, via content negotiation
+   * Cache invalidation
+   * Proxy handling
+
+This pragma type is also usable as a comma-separated list of <code>SPARQL ... FROM &lt;options&gt;</code>. Its methods and method-modifiers include &#8212;
+
+| *Method* | *Modifier(s)* | *Description* | *Usage Example* |
+| <b><code>get:accept</code></b>  |  <b><code>"application/xml"</code></b>  %BR%   <b><code>"application/rdf+xml"</code></b>  %BR%  <b><code>"application/rdf+turtle"</code></b>  %BR%  <b><code>"application/x-turtle"</code></b>  %BR%  <b><code>"application/turtle"</code></b>  %BR%  <b><code>"text/rdf+n3"</code></b>  %BR%  <b><code>"text/turtle"</code></b>  | <code>get:accept</code> is most commonly used to access a web service that returns HTML by default but can also return RDF if forced to do so. The default value is  %BR% <code>"application/rdf+xml; q=1.0, text/rdf+n3; q=0.9,  %BR% application/rdf+turtle; q=0.5, application/x-turtle; q=0.6,  %BR% application/turtle; q=0.5, text/turtle; q=1.0,  %BR% application/xml; q=0.2, */*; q=0.1"</code>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx47][Example]]  | 
+| <b><code>get:cartridge</code></b>  |  <b><code>"extractor"</code></b>  %BR%  <b><code>"meta"</code></b>   | Designates the use of Sponger ?meta? or ?extractor? cartridges in the query being executed. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx29][Example]] | 
+| <b><code>get:method</code></b>  |  <b><code>"GET"</code></b>  %BR%  <b><code>"MGET"</code></b>  | <ul><li><code>"GET"</code> loads the resource itself.</li> <li><code>"MGET"</code> loads metadata about the resource.</li></ul>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx16][Example]] | 
+| <b><code>get:private</code></b>  |  <b><code>""</code></b>  %BR%  <b><code><nowiki>&lt;graph_group_IRI&gt;</nowiki></code></b>  | When used for sponging graph <code>X</code>, it adjusts graph-level security of graph <code>X</code> (and of <code><nowiki>graph_group_IRI</nowiki></code>, if specified) so that <code>X</code> becomes a privately accessible graph of the user who sponges the <code>X</code>. If <code><nowiki>graph_group_IRI</nowiki></code> is specified, <code>X</code> becomes accessible to users that can access <code><nowiki>graph_group_IRI</nowiki></code> with the same permissions they have on <code><nowiki>graph_group_IRI</nowiki></code>. %BR%%BR% The exact rules are &#8212; <br/><ul><li> If graph is <code>virtrdf:</code>, an error is signaled.</li> <li>If graph name is an IRI of handshaked web service endpoint or "public IRI" of a handshaked web service endpoint, an error is signaled.</li> <li>If access is public by default, even for private graphs, an error is signaled and sponging is not tried.</li> <li>If default is "no access" but someone (other than current user) has specifically granted read access to the graph in question AND current user is not <code>dba</code> AND current user has no bit 32 permission on this graph, an error is signaled.</li> <li>If read access is public by default for world and disabled for private graphs, then the graph to be sponged is added to the group of private graphs.</li> <li>If current user is not <code>DBA</code>, current user is granted <code>read+write+sponge+admin</code> access to the graph to be sponged. In addition, current user gets special permission bit 32, indicating that the graph is made by private sponge of this specific user.</li> <li>If the value of <code>get:private</code> is an IRI, then &#8212; <ul><li>the IRI is supposed to be an IRI of "plain" graph group.  An error is signaled in case of non-existing graph group, group of private graphs, or group of graphs to be replicated.</li> <li>the graph is added to that group.</li><li>each non-<code>dba</code> user that can get list of files of the group will get permissions for the loaded graph equal to permissions they have on graph group minus "list" permission.</li></ul></li></ul> | <ul><li>[[VirtSpongerLinkedDataHooksIntoSPARQLEx45][Example for entirely confidential database]] </li> <li>[[VirtSpongerLinkedDataHooksIntoSPARQLEx46][Example using private graphs]]</li></ul>  | 
+| <b><code>get:proxy</code></b>  |  <b><code>"&lt;host[:port]&gt;"</code></b>  | Similar to setting up a Web browser to work with a proxy-style HTTP server, this identifies the CNAME (URL <code>host:port</code> or <code>authority</code> component) to target if direct retrieval from the URL in the <code>FROM</code> clause or handling of a data object's dereferenceable identifier is not possible. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx12][Example]]  | 
+| <b><code>get:refresh</code></b>  |  <b><code>"&lt;seconds&gt;"</code></b>  | Limits the lifetime of a local cached copy of the source. The value is in seconds.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx15][Example]] | 
+| <b><code>get:query</code></b>  |    |  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx34][Example]] | 
+| <b><code>get:soft</code></b>  |  <b><code>"soft"</code></b>  %BR%  <b><code>"replace"</code></b>  %BR%  <b><code>"add"</code></b>  | <ul><li>"<code>soft</code>" applies cache-invalidation to the sponged resource en route to replacing content or doing nothing.</li> <li>"<code>replace</code>" replaces triples stored in named graphs.</li> <li>"<code>add</code>" simply adds triples to existing named graphs.</li></ul> | [[VirtSpongerLinkedDataHooksIntoSPARQLEx13][Example]]  | 
+| <b><code>get:uri</code></b>  |  <b><code>"&lt;IRI&gt;"</code></b>  | Identifies a specific URI to be de-referenced, distinct from the document URL in the <code>FROM</code> clause of a SPARQL query. Typically, this would be used to deference a specific subject or object of a relation in the data retrieved in by the document URL in the <code>FROM</code> clause.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx14][Example]]  | 
+
+
+---++++ SQL Pragmas
+
+Pragmas to control code generation:
+
+| *Method* | *Modifier(s)* | *Description* | *Usage Example* |
+| <b><code>sql:assert-user</code></b>  |  <b><code>"&lt;username&gt;"</code></b>  | Defines the user who is supposed to be the single "proper" use for the query. If the compiler is launched by any other user, an error is signaled. The typical use is <code>define sql:assist-user "dba"</code>. This is too weak to be a security measure, but may help in debugging of security issues. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx38][Example]] | 
+| <b><code>sql:big-data-const</code></b>  |  |  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx31][Example]]  | 
+| <b><code>sql:describe-mode</code></b>  |  <b><code>""</code></b>  %BR%  <b><code>"SPO"</code></b>  %BR%  <b><code>"CBD"</code></b>  %BR%  <b><code>"OBJCBD"</code></b>  %BR%  <b><code>"&lt;custom&gt;"</code></b>  | See detailed description [[http://docs.openlinksw.com/virtuoso/rdfsqlfromsparqldescribe/][here]]. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx32][Example]]  | 
+| <b><code>sql:globals-mode</code></b>  |  <code>"XSLT"</code>  %BR%  <code>"SQL"</code>  | Tells how to print names of global variables. Supported values are <ul><li><code>"XSLT"</code> &#8212; print colon before name of global variable</li> <li><code>"SQL"</code> &#8212; print as usual</li></ul>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx35][Example]] | 
+| <b><code>sql:gs-app-callback</code></b>  |   | Application-specific callback, returns permission bits of a given graph.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx39][Example]] | 
+| <b><code>sql:gs-app-uid</code></b>  |  | Application-specific user-id to use in callback. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx40][Example]] | 
+| <b><code>sql:log-enable</code></b>  |   | Value that will be passed to SPARUL procedures, where it will be passed to [[http://docs.openlinksw.com/virtuoso/fn_log_enable.html][log_enable()]] BIF. <code>define sql:log-enable N</code> will result in <code>log_enable(N, 1)</code> at the beginning of the operation; another [[http://docs.openlinksw.com/virtuoso/fn_log_enable.html][log_enable()]] call will restore previous mode of transaction log at exit from the procedure including any error signaled from it. For example, set to <code>2</code> to disable logging to avoid a huge transaction after-image when sponging is deep and wide. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx33][Example]]  | 
+| <b><code>sql:param</code></b>  |  <b><code>"&lt;variable-name&gt;"</code></b>  | Synonym of <code>input:param</code>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx23][Example]]  | 
+| <b><code>sql:params</code></b>  |  <b><code>"&lt;variable-name&gt;"</code></b>  | Synonym of <code>input:param</code>  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx23][Example]]  | 
+| <b><code>sql:select-option</code></b>  |   | Value will be added as a global <code>OPTION()</code> clause of the generated SQL <code>SELECT</code>. This clause is always printed; it is always at least <code>OPTION (QUIETCAST, ...)</code>. The most popular use case is <code>define sql:table-option "ORDER"</code> to tell the SQL compiler to execute <code>JOINs</code> in the order of their use in the query; this can make query compilation much faster, but the compilation result can be terrible if you do not know precisely what you're doing and do not inspect the execution plan of the generated SQL query.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx37][Example]] | 
+| <b><code>sql:signal-void-variables</code></b>  |   | When set to <code>0</code>, this forces the SPARQL compiler to signal errors if some variables cannot be bound due to, for instance, misspelled names or attempts to make joins across disjoint domains. These diagnostics are especially important when the query is long. It is the most useful debugging variable if Linked Data Views are in use. It tells the SPARQL compiler to signal an error if it can prove that some variable can never be bound. Usually it means an error in the query, like a typo in IRI or a totally wrong triple pattern.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx30][Example]]  | 
+| <b><code>sql:table-option</code></b>  |   | Value will be added as an option to each triple in the query, and later it will be printed in <code>TABLE OPTION (...)</code> clause of source table clause. This works only for SQL code for plain triples from <code>RDF_QUAD</code>; fragments of queries related to RDF Views will remain unchanged.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx36][Example]] | 
+
+
+
+---++++ OUTPUT Pragmas
+
+Pragmas to control the type of the result.
+
+| *Method* | *Modifier(s)* | *Description* | *Usage Example* |
+| <b><code>output:dict-format</code></b>  |  <code>"&lt;format-specifier&gt;"</code>  | Tells the compiler that the query should produce a string output with the serialization of the result, not a result set. Only <code>CONSTRUCT</code> and <code>DESCRIBE</code> queries are affected by the value of <code>output:dict-format</code>. Use <code>output:scalar-format</code> and/or <code>output:format</code> for <code>ASK</code> queries. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx44][Example]] | 
+| <b><code>output:format</code></b>  |  <code>"&lt;format-specifier&gt;"</code>  | Tells the compiler that the query should produce a string output with the serialization of the result, not a result set. The value of <code>output:format</code> is primarily used for <code>SELECT</code> and data manipulation queries. It will also be used for <code>CONSTRUCT</code>, <code>DESCRIBE</code>, and <code>ASK</code> queries, if  <code>output:dict-format</code> or <code>output:scalar-format</code> are not used.  | [[VirtSpongerLinkedDataHooksIntoSPARQLEx42][Example]] | 
+| <b><code>output:scalar-format</code></b>  |  <code>"&lt;format-specifier&gt;"</code>  | Tells the compiler that the query should produce a string output with the serialization of the result, not a result set. Only <code>ASK</code> queries are affected by the value of <code>output:scalar-format</code>.  Use <code>output:dict-format</code> and/or <code>output:format</code> for <code>CONSTRUCT</code> or <code>DESCRIBE</code> queries. | [[VirtSpongerLinkedDataHooksIntoSPARQLEx43][Example]] | 
+| <b><code>output:valmode</code></b>  |  <code>"SQLVAL"</code>  %BR%  <code>"LONG"</code>  %BR%  <code>"AUTO"</code>  | Tells the compiler which SQL datatypes should be used for output values. <ul><li><code>"SQLVAL"</code>, the default, is appropriate for ODBC clients and the like which know nothing about RDF and expect plain SQL values.</li> <li><code>"LONG"</code> tells the compiler to preserve RDF boxes as is and to return IRI IDs instead of IRI string value. This is good for when a Virtuoso/PL procedure is RDF-aware and keeps results to be passed on to other SPARQL queries or some low-level RDF routines.</li> <li><code>"AUTO"</code>, is for dirty hackers that do not want any conversion of any sort at the output to read the SQL output of SPARQL front-end, who will find the format of each column and add the needed conversions later.</li></ul> | [[VirtSpongerLinkedDataHooksIntoSPARQLEx41][Example]] | 
+
+---+++ Sponger Usage Examples
+
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusageprocessorex][SPARQL Processor Usage Example]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusageproxyex2][RDF Proxy Service Example]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView#AncMozToc2][Browsing & Exploring RDF View Example Using ODE]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtDeployingLinkedDataGuide_BrowsingNorthwindRdfView#AncMozToc3][Browsing & Exploring RDF View Example Using iSPARQL]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfinsertmethods.html#rdfinsertmethodplapissimpleexample][Basic Sponger Cartridge Example]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongerusagebriefex][HTTP Example for Extracting Metadata using CURL]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercartridgetypesmetarestexamples][RESTFul Interaction Examples]]
+   * [[http://docs.openlinksw.com/virtuoso/sect5_virtuosospongercreatecustcartrrgstflickr.html][Flickr Cartridge Example]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html#virtuosospongercreatecustcartrexmp][MusicBrainz Metadatabase Example]]
+   * [[VirtTipsAndTricksGuideAddTriplesNamedGraph][SPARQL Tutorial &#8212; Magic of SPARUL and Sponger]]
+
+
+
+---++ Related
+
+   * [[VirtSponger][Virtuoso Sponger]]
+   * [[http://virtuoso.openlinksw.com/Whitepapers/html/VirtSpongerWhitePaper.html][Technical White Paper]]
+   * [[VirtSpongerCartridgeSupportedDataSources][Supported Virtuoso Sponger Cartridges]]
+   * [[SPARQLSponger][SPARQL Sponger]]
+   * [[VirtInteractSpongerMiddlewareRESTPatterns][Interacting with Sponger Middleware via RESTful Patterns]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Interacting with Sponger Meta Cartridge via RESTful Patterns]]
+   * [[VirtSpongerCartridgeRDFExtractor][Sponger Cartridge RDF Extractor]]
+   * [[RDFMappers][ Extending SPARQL IRI Dereferencing with RDF Mappers]]
+   * [[VirtSpongerCartridgeProgrammersGuide][Programmer Guide for Virtuoso Linked Data Middleware ("Sponger")]]
+   * [[VirtProgrammerGuideRDFCartridge][Create RDF Custom Cartridge Tutorial]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+   * [[VirtAuthServerUI][Virtuoso Authentication Server]]
+   * [[VirtOAuthSPARQL][Virtuoso SPARQL OAuth Tutorial]]
+   * [[VirtSpongerACL][Virtuoso Sponger Access Control List (ACL) Setup]]
+   * [[VirtSPARQLSecurityWebID][WebID Protocol & SPARQL Endpoint ACLs Tutorial]]
+   * [[http://docs.openlinksw.com/virtuoso/virtuososponger.html][Virtuoso Documentation]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]

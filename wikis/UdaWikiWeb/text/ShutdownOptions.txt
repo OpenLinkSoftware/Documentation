@@ -1,0 +1,59 @@
+%META:TOPICPARENT{name="MTRequestBrokerAdministration"}%
+
+
+= Multi-Tier Request Broker Shutdown Options=
+
+The <nop>OpenLink Request Broker can be shut down in various ways, using the available command line options.
+
+{{{
+Usage:
+  oplshut [-hcskryfpP] [+hostname arg] [+configfile arg] [+show] [+kill]
+          [+reinit] [+yes] [+force] [+protocol arg] [+port num] [pid ..]
+  +hostname     contact oplrqb on given host
+  +configfile   use alternate configuration file
+  +show         show database agent connections
+  +kill         kill a database agent
+  +reinit       oplrqb must reread the rulebook
+  +yes          don't ask for confirmation
+  +force        force immediate shutdown (kill all)
+  +protocol     specify protocol to use
+  +port         specify port to use
+
+Examples:
+  oplshut            Shutdown broker on local machine (when idle)
+  oplshut -f         Shutdown broker without waiting for clients to terminate
+  oplshut -fy        Same as -f, but without asking for confirmation
+  oplshut -s         Show the current active connections
+  oplshut -k 81 93   Try to terminate the database agents with svpid 81 and 93
+}}}
+
+==Command Line Examples==
+
+* {{{oplshut}}}
+%BR%%BR%Shuts down the Request Broker on the local machine. When a connection is still active, and the user calls oplshut without additional arguments, the broker will enter a gracefull shutdown state which means that it will not accept any new connections, but remains active until all active connections are terminated.%BR%%BR%
+#* The shutdown state will be reported on the foreground screen or broker log:
+{{{
+oplrqb: shutdown mode initiated by openlink@127.0.0.1
+}}}
+#* Any client that tries to connect to the broker will get the following error message:
+{{{
+odbctest DSN=ora8i
+OpenLink ODBC Demonstration program
+This program shows an interactive SQL processor
+[OpenLink][ODBC]the broker is being shut down, SQLSTATE=08004
+[OpenLink][ODBC]Connection rejected by data source, SQLSTATE=08004
+}}}
+* {{{oplshut -f}}}
+%BR%%BR%Shuts down the Request Broker on the local machine without waiting for clients to terminate.%BR%%BR%
+#* If you use the -f (or force) flag, the broker will kill all active connections regardless what the client application is doing, which can lead to problems if the applications are not written to handle such events. Depending on the database, open transactions will be rolled back etc.%BR%%BR%
+#* Many databases like Oracle and Progress implement the same concept where the gracefull shutdown option is the default, but a shutdown can be forced in case of a big calamity, or when a connection remains lingering.%BR%%BR%
+* {{{oplshut -fy }}}
+%BR%%BR%Same functionality as prior command, but without asking for confirmation.%BR%%BR%
+* {{{oplshut +port 16000}}}
+%BR%%BR%Shuts down the Request Broker running on the TCP Listen port of "16000". Note that the default Request Broker Listen port is 5000, thus this option is not necessary unless you specified a different Listen port at install-time.%BR%%BR%
+* {{{oplshut -s }}}
+%BR%%BR%Shows the current active <nop>OpenLink Data Access Client connections.%BR%%BR%
+* {{{oplshut -k 81 93 }}}
+%BR%%BR%Try to terminate the database agent sessions with process IDs 81 and 93.%BR%%BR%
+* {{{oplshut -h 12.34.56.78}}}
+%BR%%BR%Shuts down the Request Broker on remote machine with IP address "12.34.56.78".%BR%%BR%

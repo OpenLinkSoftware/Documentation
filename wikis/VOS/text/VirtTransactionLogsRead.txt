@@ -1,0 +1,97 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++Reading Virtuoso Transaction Logs
+
+---++What?
+A Stored Procedure that uses the in-built [[http://docs.openlinksw.com/virtuoso/fn_read_log.html][read_log()]] function to read the Transaction log of a Virtuoso Instance, in regards to Quad Store activity.
+
+---++Why?
+There are times when you application functionality benefits from being able to read Virtuoso Transaction logs. In particular, the database triggers on the <code>RDF_QUAD</code> table are not meant to be supported in Virtuoso 7+, thus reading transaction logs as indicated below is the recommended method for tracking changes to the <code>RDF_QUAD</code> table.
+
+---++How?
+
+To read the changes made to the <code>RDF_QUAD</code> table i.e RDF data, one can use the following Virtuoso Stored procedure that uses the in-built [[http://docs.openlinksw.com/virtuoso/fn_read_log.html][read_log()]]:
+
+---+++Sample Scenario
+
+   1 Insert sample data so to change the rdf_quad index:
+<verbatim>
+SQL> SPARQL INSERT INTO <g> { <s> <p> <o> };
+</verbatim>
+   1 Create the following example procedure:
+<verbatim>
+create procedure rlt (in f any, in inpos int := 0) 
+{   
+  declare h, op, g, s, p, o any;
+  declare pos int;
+  result_names (op, g, s, p, o);
+  h := file_open (f, inpos);
+  declare r, rr any;
+  while ((rr := read_log (h, pos)) is not null)
+    {
+      declare rw, k any;
+      declare i int;
+      rw := null;
+      k := null;
+      for (i := 1; i < length (rr); i := i + 1)
+        {
+	  r := rr[i];
+	  if (r[0] = 13) -- key insert
+	    {
+	      rw := r[2];
+	      op := 'I';
+	    }
+	  else if (r[0] in (1,8,9)) -- insert,soft,replacing
+	    {
+	      rw := r[1];
+	      op := 'I';
+	    }
+	  else if (r[0] in (3,14)) -- delete
+	    {
+	      rw := r[1];
+	      op := 'D';
+	    }
+	  if (rw is not null)
+	    {
+	      k := rw[0];
+	      if (k = 273) -- RDF_QUAD, should check with SYS_KEYS
+		{
+		  result (op, __ro2sq (rw[1]), __ro2sq (rw[2]), __ro2sq (rw[3]), __ro2sq (rw[4]));
+		}
+	    }
+	}
+    } 
+  result (pos + inpos, '', '', '', '');
+}
+;
+</verbatim>
+   1 Call the procedure:
+      * In case of no changes to the <code><nowiki>RDF_QUAD</nowiki> Index</code> are done, it will return:
+<verbatim>
+SQL> rlt('tmp/Virtuoso.trx');
+Query result:
+op    g   s   p    o
+ANY   ANY ANY ANY  ANY
+8403
+No. of rows in result: 1
+</verbatim>
+      * In case of changes to the <code><nowiki>RDF_QUAD</nowiki> Index</code> are done ( example with the short INSERT we did above), it will return for example:
+<verbatim>
+SQL> rlt('tmp/Virtuoso.trx');
+Query result:
+op     g   s   p    o
+ANY    ANY ANY ANY  ANY
+I      g   s   p    o
+71446
+No. of rows in result: 2
+</verbatim>
+
+
+To read the transaction log in general, one should use the Virtuoso [[http://docs.openlinksw.com/virtuoso/fn_read_log.html][read_log()]] function.
+
+---++Related
+
+   * [[http://docs.openlinksw.com/virtuoso/vsp1.html#longhttptrans][Long HTTP Transactions.]]
+   * [[http://docs.openlinksw.com/virtuoso/clusteroperation.html#clusteroperationtransc][Cluster Operations transactions.]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_log_text.html][Insert a SQL statement into the roll forward log.]]
+   * [[http://docs.openlinksw.com/virtuoso/fn_log_enable.html][Enable logs.]]

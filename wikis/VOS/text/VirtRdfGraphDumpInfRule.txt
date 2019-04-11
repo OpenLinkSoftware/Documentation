@@ -1,0 +1,103 @@
+---++Virtuoso RDF Graph Dump based on Inference Rule Utility
+
+The <nowiki>graph_dump</nowiki> procedure below can be used to export triples from Named RDF Graphs in N3 triple format to file, filtering based on the specified Inference rule and predicate/property URI:
+
+Params:
+
+   * in <b>srcgraph</b> varchar - source graph
+   * in <b>format</b> varchar - output format N3 is supported for now  
+   * in <b>inf</b> varchar - inference name 
+   * in <b>pred</b> varchar - predicate to filter 
+   * in <b>out_file</b> varchar - output file prefix 
+   * in <b>file&#95llength&#95llimit</b> := 1000000000 - maximum size of files data is dumped in
+
+<verbatim>
+
+create procedure graph_dump (in srcgraph varchar, in format varchar := 'N3', in inf varchar := null, in pred varchar := null,
+			     in out_file varchar, in file_length_limit integer := 1000000000)
+{
+  declare qr, file_name varchar;
+  declare env, ses, meta, data, h any;
+  declare ses_len, max_ses_len, file_len, file_idx integer;
+  set isolation = 'uncommitted';
+  max_ses_len := 10000000;
+  file_len := 0;
+  file_idx := 1;
+  if (format <> 'N3')
+    signal ('22023', 'The output format is not supported');
+  file_name := sprintf ('%s%06d.ttl', out_file, file_idx);
+  string_to_file (file_name || '.graph', srcgraph, -2);
+  string_to_file (file_name, sprintf ('# Dump of graph <%s>, as of %s\n', srcgraph, cast (now() as varchar)), -2);
+  --env := vector (dict_new (16000), 0, '', '', '', 0, 0);
+  env := vector (dict_new (16000), 0, '', '', '', 0, 0, 0, 0);
+  ses := string_output ();
+  if (inf is not null)
+    inf := sprintf ('define input:inference "%s"', inf);
+  else  
+    inf := '';
+  if (pred is not null)
+    pred := sprintf ('<%s>', pred);  
+  else  
+    pred := '?p';
+  qr := sprintf ('select * from (sparql define input:storage "" %s select ?s %s as ?p ?o { graph <%S> { ?s %s ?o } } ) as sub option (loop)',
+  		inf, pred, srcgraph, pred);
+  exec (qr, null, null, vector (), 0, null, null, h);
+  while (0 = exec_next (h, null, null, data))
+    {
+      declare "s", "p", "o" any;
+      "s" := data[0];
+      "p" := data[1];
+      "o" := data[2];
+      http_ttl_triple (env, "s", "p", "o", ses);
+      ses_len := length (ses);
+      if (ses_len > max_ses_len)
+        {
+          file_len := file_len + ses_len;
+          if (file_len > file_length_limit)
+            {
+              http (' .\n', ses);
+              string_to_file (file_name, ses, -1);
+              file_len := 0;
+              file_idx := file_idx + 1;
+              file_name := sprintf ('%s%06d.ttl', out_file, file_idx);
+              string_to_file (file_name, sprintf ('# Dump of graph <%s>, as of %s (part %d)\n', srcgraph, cast (now() as varchar), file_idx), -2);
+              env := vector (dict_new (16000), 0, '', '', '', 0, 0);
+            }
+          else
+            string_to_file (file_name, ses, -1);
+          ses := string_output ();
+        }
+    }
+  exec_close (h);
+  if (length (ses))
+    {
+      http (' .\n', ses);
+      string_to_file (file_name, ses, -1);
+    }
+}
+;
+</verbatim>
+
+---+++Example
+
+[[http://www.ontologyportal.org/][SUMO ontology]] was recently mapped to DBpedia by its creators using RDF/XML and loaded into the [[http://dbpedia.org/sparql][DBpedia SPARQL Endpoint]].
+
+<b>Issues</b>:
+
+   * To add to DBpedia data sets, N3 is preferred format.
+   * Cross Links needed i.e. mapping <#<nop>dbpediaURI> owl:sameAs <#<nop>SumoURI> in addition to the authors links which are solely, <#<nop>SumoURI> owl:sameAs <#<nop>DBpediaURI>
+
+<b>Solution</b>:
+
+   * Make an inference rules graph where <nowiki>owl:sameAs</nowiki> is explicitly asserted to be an <nowiki><nop>owl:SymmetricalProperty</nowiki> type.
+<verbatim>
+ttlp('owl:sameAs a owl:SymmetricalProperty .', '', 'rule_graph');
+</verbatim>
+   * Make a Named Rule that's associated the the Named Graph in step above.
+<verbatim>
+rdfs_rule_set ('sas', 'rule_graph');
+</verbatim>
+   * Run the <nowiki>graph_dump</b> export procedure with the inference rule parameter and predicate/property filter option to export the data to file, in N3 format and with necessary <nowiki>owl:sameas</nowiki> cross links.
+<verbatim>
+graph_dump ('http://www.ontologyportal.org/SUMO#', 'N3', 'sas', 'http://www.w3.org/2002/07/owl#sameAs', 'sumo_');
+</verbatim>

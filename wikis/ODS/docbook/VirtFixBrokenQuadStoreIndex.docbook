@@ -1,0 +1,42 @@
+<docbook><section><title>VirtFixBrokenQuadStoreIndex</title><bridgehead class="http://www.w3.org/1999/xhtml:h2"> How to Fix Broken Index on RDF QUAD Store</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> What</bridgehead>
+<para>There are occasions when one of more of the indexes on the Virtuoso RDF QUAD Store table become corrupted.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Why</bridgehead>
+<para>In such cases it is important to repair these indexes to prevent query failures or incorrect data being returned.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> How</bridgehead>
+<para>Check the counts on all the indexes on the RDF_QUAD table by running the following queries:</para>
+<programlisting>    select count (*) from rdf_quad table option (index rdf_quad); 
+    select count (*) from rdf_quad table option (index rdf_quad_pogs); 
+    select count (*) from rdf_quad table option (index rdf_quad_sp); 
+    select count (*) from rdf_quad table option (index rdf_quad_gs); 
+    select count (*) from rdf_quad table option (index rdf_quad_op);
+</programlisting><para> If the counts differ then there one or more of the indexes is corrupt and need to be repaired.</para>
+<para>Check the primary key on the RDF_QUAD table is not broken by running the command: </para>
+<programlisting>select count (s), count (p ), count (o ), count (g ) from rdf_quad table option (index rdf_quad, check);
+</programlisting><para> The counts of s, p, o, g should all be the same.</para>
+<para>Run a <ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#diagnosingrepairing">database in integrity check</ulink> to check the state of the database with the command: </para>
+<programlisting>backup &#39;/dev/null&#39;;
+</programlisting><para> Failure of this command to complete is another indication of the database having some form of corruption, requiring a +backup-dump of the database with the command: </para>
+<programlisting>virtuoso-iodbc-t +configfile virtuoso.ini +backup-dump
+</programlisting><para> If the Virtuoso log output of this command indicates a Broken Index as below: </para>
+<programlisting>08:20:27 Database dump started 
+08:20:27 Checkpoint finished, log reused 
+08:20:27 Dumping the schema tables 
+08:20:27 Dumping the registry 
+08:20:27 Dumping the schema done 
+09:03:02 Broken index RDF_QUAD_POGS 
+09:03:02 GPF: colsearch.c:1753 less ces in seg than indicated in leaf col ref 
+GPF: colsearch.c:1753 less ces in seg than indicated in leaf col ref 
+Segmentation fault (core dumped)
+</programlisting><para> Then that index and any others (comma delimited) need to be removed from the +backup-dump by adding them to the BackupIgnoreKeys parameter in the [Parameters] section of the Virtuoso config file (virtuoso.ini): </para>
+<programlisting>[Parameters] 
+BackupIgnoreKeys = RDF_QUAD_POGS
+</programlisting><para> Repeat the +backup-dump which should then complete as which time the database can be restored with the +restore-crash-dump command: </para>
+<programlisting>virtuoso-iodbc-t +configfile virtuoso.ini +restore-crash-dump 
+</programlisting><para> The missing index will then have to be recreated as detailed in the <ulink url="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFPerformanceTuning#Column%20wise%20storage">RDF Performance Tuning</ulink> guide, thus is the case of the RDF_QUAD_POGS index the command would be: </para>
+<programlisting>CREATE COLUMN INDEX RDF_QUAD_POGS 
+  ON DB.DBA.RDF_QUAD (P, O, S, G) 
+  PARTITION (O varchar (-1, 0hexffff));
+</programlisting><para> Finally rerun the database integrity check above and check the index counts are now all the same, in which case the indexes are repaired and the database is ready for use again.
+</para>
+</section></docbook>

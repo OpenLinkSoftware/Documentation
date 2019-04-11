@@ -1,0 +1,82 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtuosoFacetsWebService"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtuosoFacetsWebService"}%--><h1><a name="Custom Controlling Virtuoso Labels for URI functionality"></a>Custom Controlling Virtuoso Labels for URI functionality</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%20is%20this%3F">What is this?</a></li> <li><a href="#Why%20is%20this%20important%3F">Why is this important?</a></li> <li><a href="#How%20do%20I%20use%20this%20functionality%3F">How do I use this functionality?</a></li>
+<ul><li><a href="#Example">Example</a></li><ul><li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Basic%20Steps">Basic Steps</a></li> </ul></ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What is this?"></a>What is this?</h2>
+ A component of Virtuoso&#39;s DBMS hosted faceted browser engine for Linked Data that enhances UI by automagically relegating URIs to the <code>@href</code> attributes of an HTML anchor while using <code>label</code> property values for actual anchor text.<h2><a name="Why is this important?"></a>Why is this important?</h2>
+ The fundamental UI/UX goal of Linked Data oriented client solutions should always be to make URIs invisible without compromising their inherent power re.
+ Web experience e.g., the ability to drill-down from an position on the WWW graph using click (de-reference) based follow-your-nose patterns.<p>URIs lie at the very core of that makes the Web and its Linked Data dimension tick.
+ Unfortunately, they are also distracting to most end-users thereby compromising UI aesthetics.</p>
+<h2><a name="How do I use this functionality?"></a>How do I use this functionality?</h2>
+ First, lets understand the fundamental challenge.
+ There are a number of annotation oriented attributes (or predicates) used in relations across databases, data spaces, and stores the exposed access to Linked Data.
+ Unfortunately, there isn&#39;t a universally adopted attribute/predicate for &#39;labels&#39;, since everyone doesn&#39;t uniformly use <code>rdfs:label</code> when constructing Linked Data.<p>Virtuoso solves the problem at hand by enabling you to populate a named graph with <code>rdfs:subPropertyOf</code> and <code>owl:equivalentProperty</code> relations (triples) that map disparate annotation properties to Virtuoso&#39;s in-built <code>virtrdf:label</code> annotation property.
+ Once in place, the aforementioned named graph is then used as the basis for an inference rule that&#39;s optionally available for use via SPARQL and/or the Faceted Browser.</p>
+<h3><a name="Example"></a>Example</h3>
+<p>This is example is focuses on the in-built &#39;facets&#39; named graph that is used by faceted browser engine.</p>
+<h4><a name="Prerequisites"></a> Prerequisites</h4>
+<p> Make sure the following packages are installed:</p>
+<ul><li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">Cartridges</a> </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso Faceted Browser</a></li>
+</ul><p> </p>
+<h4><a name="Basic Steps"></a> Basic Steps</h4>
+<ol><li>Load for ex.
+ <a href="http://www.w3.org/People/Berners-Lee/card" class="absuri">http://www.w3.org/People/Berners-Lee/card</a> by accessing: <br><pre><br>http://localhost:8890/about/html/http://www.w3.org/People/Berners-Lee/card
+</pre><br><br><br><img src="VirtTipsAndTricksCustomControlLabelsURI/lb0.png"><br><br> </li>
+<li>View <a href="http://cname/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i," class="absuri">http://cname/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i,</a> so for ex.: <br><pre><br>http://localhost:8890/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i
+</pre><br></li>
+<li>As result the &quot;About&quot; value will be shown as URI: <br><pre><br>http://www.w3.org/People/Berners-Lee/card#i  
+</pre><br><br><br><img src="VirtTipsAndTricksCustomControlLabelsURI/lb1.png"><br><br> </li>
+<li>Next use SPARQL 1.1 Update Statement to populate the &#39;facets&#39; named graph: <br><pre><br>SPARQL INSERT INTO GRAPH &lt;facets&gt; 
+  {
+    &lt;http://www.w3.org/2000/01/rdf-schema#label&gt;  rdfs:subPropertyOf  virtrdf:label  .
+    &lt;http://purl.org/dc/elements/1.1/title&gt;       rdfs:subPropertyOf  virtrdf:label  .
+    &lt;http://xmlns.com/foaf/0.1/name&gt;              rdfs:subPropertyOf  virtrdf:label  .
+    &lt;http://xmlns.com/foaf/0.1/nick&gt;              rdfs:subPropertyOf  virtrdf:label  .
+    &lt;http://www.geonames.org/ontology#name&gt;       rdfs:subPropertyOf  virtrdf:label  .
+  }
+;
+
+Query result:
+
+callret-0
+ANY
+ Insert into &lt;facets&gt;, 5 (or less) triples -- done
+No. of rows in result: 1 
+
+</pre><br></li>
+<li>Use the named graph above as the basis for an inference rule or simply issue this command whenever you&#39;ve added new relations to the &#39;facets&#39; named graph: <br><pre><br>rdfs_rule_set (&#39;facets&#39;, &#39;facets&#39;);
+</pre><br><ul><li>Note: In situations where you have alternative named graphs (e.g.
+ &#39;<code>virtrdf-label</code>&#39;) which the relations you seek in an alternative named graph, you can bring those to bear by issuing the following command: <br><pre><br>rdfs_rule_set(&#39;facets&#39;,&#39;virtrdf-label&#39;);
+</pre><br></li>
+</ul></li>
+<li>View again <a href="http://cname/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i," class="absuri">http://cname/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i,</a> so for ex.: <br><pre><br>http://localhost:8890/describe/?url=http://www.w3.org/People/Berners-Lee/card%23i
+</pre><br></li>
+<li>As result the &quot;About&quot; value will be shown as label: <br><pre><br>TimBL 
+</pre><br><br><br><img src="VirtTipsAndTricksCustomControlLabelsURI/lb2.png"><br><br></li>
+</ol><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li>Facets Web Service: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebService" class="wikiword">Virtuoso Facets Web Service</a> </li>
+</ul></li>
+<li>Linked Data: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsViewsLinkedData" class="wikiword">Faceted Views over Large-Scale Linked Data</a> </li>
+</ul></li>
+<li>Facet Browser Installation and configuration: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfig" class="wikiword">Virtuoso Facet Browser Installation and configuration</a> </li>
+</ul></li>
+<li>Facet APIs: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIs" class="wikiword">Virtuoso APIs for FCT REST services</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserAPIsFCTEXEC" class="wikiword"><code><nowiki>fct_exec</nowiki></code> API Example</a> </li>
+</ul></li>
+<li>Pivot Viewer and CXML: <ul><li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxmlFacetPivotBridge#AncSparqlCxmlFacetPivotBridge" class="absuri">Facet Pivot Bridge -  A bridge to PivotViewer from Virtuoso&#39;s Faceted query service for RDF</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSparqlCxml#AncFacetTypeAutoDetection" class="absuri">Auto-Detection of Facet Type</a> </li>
+</ul></li>
+<li>Tutorials: <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoLODSampleTutorial" class="wikiword">Faceted Browsing Sample using LOD Cloud Cache data space</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceSOAPExample" class="wikiword">SOAP Facets Example</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFacetBrowserInstallConfigQueried" class="wikiword">Querying The Facet Browser Web Service endpoint</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtFCTFeatureQueries" class="wikiword">Virtuoso Facet Browser Featured Queries</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtVisualizeWithPivotViewer#GenFCT" class="absuri">Visualizing Your Data With PivotViewer Using The Facet Browser</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceCustmExamples" class="wikiword">Facets Web Service: Examples for customizing different types</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoFacetsWebServiceChoiceExample" class="wikiword">Facets Web Service: Choice of Labels Example</a> </li>
+</ul></li>
+<li>Downloads: <ul><li><a href="http://shop.openlinksw.com/license_generator/virtuoso-download/" class="absuri">Latest Virtuoso</a> </li>
+<li><a href="https://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso Facet Browser VAD package</a></li>
+</ul></li>
+</ul></div></body></html>

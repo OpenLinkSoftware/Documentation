@@ -1,0 +1,162 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> </p>
+<h1><a name="Integrating Open Sources and Relational Data with SPARQL"></a> Integrating Open Sources and Relational Data with SPARQL</h1>
+<p>Orri Erling  (Program Manager, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso) and Ivan Mikhailov (Lead Developer, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Virtuoso).</p>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> Software, 10 Burlington Mall Road Suite 265 Burlington, MA 01803 U.S.A,<br> {oerling,imikhailov}@openlinksw.com <br> WWW home page: <a href="http://www.openlinksw.com/" class="absuri">http://www.openlinksw.com/</a></p>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Abstract">Abstract</a></li> <li><a href="#Introduction%20and%20Motivation">Introduction and Motivation</a></li> <li><a href="#The%20Data%20and%20Queries">The Data and Queries</a></li>
+<ul><li><a href="#SPARQL%20Extensions">SPARQL Extensions</a></li> <li><a href="#Linked%20Data">Linked Data</a></li> <li><a href="#Performance%20of%20Mapping">Performance of Mapping</a></li> </ul><li><a href="#System%20Demonstrated">System Demonstrated</a></li> <li><a href="#Conclusions">Conclusions</a></li> <li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Abstract"></a>Abstract</h2>
+ We believe that the possibility to use SPARQL as a frontend to heterogeneous data without significant cost in performance or expressive power is key to RDF taking its rightful place as the <i>lingua franca</i> of data integration.
+ To this effect, we demonstrate how RDF and SPARQL can tackle a mix of standard relational workload and data mining in public data sources.<p>We discuss extending SPARQL for business intelligence (BI) workloads and relate experiences on running SPARQL against relational and native RDF databases.
+ We use the well known TPC H benchmark as our reference schema and workload.
+ We define a mapping of the TPC H schema to RDF and restate the queries as BI extended SPARQL.
+ To this effect, we define aggregation and nested queries for SPARQL.
+ We demonstrate that it is possible to perform the TPC H workload restated in SPARQL against an existing RDBMS without loss of performance or expressivity and without changes to the RDBMS.
+ Finally, we demonstrate how to combine TPC-H or XBRL financial reports with RDF data from CIA factbook and DBpedia.</p>
+<h2><a name="Introduction and Motivation"></a>Introduction and Motivation</h2>
+<p>RDF promises to be a top-level representation for data extracted or accessed or demand from any conceivable source.
+ Thus, chief promise of RDF is in the field of information integration, analysis and discovery.
+ Yet it is difficult to imagine any business reporting, let alone more complex information integration task that would not involve aggregating and grouping.</p>
+<p>As a data access and data integration vendor, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> has a natural interest in seeing SPARQL succeed as a top level language for answering business questions on data mapped from any present day data warehouse or other repository.</p>
+<p>For SPARQL to deliver on this potential, several extension and scalability issues have to be addressed.
+These include: </p>
+<ul><li>Expressive power of SPARQL must be at least on par with SQL.
+ As of the    present, the SPARQL recommendation is lacking aggregation, grouping,    expressions in result sets, nested subqueries and full text support, to    name a few.
+ All these are either part of SQL or universally available in    RDBMS, as in the case of full text.
+ The baseline business intelligence    benchmark, TPC H, relies on these all, except for full text.
+</li>
+<li>Efficient mapping of SPARQL to relational queries against one or more    relational databases.
+ SPARQL&#39;s promise is greatest in combining data    from diverse sources.
+ Still, in cases where a straightforward    translation of SPARQL to SQL is possible, the performance should not be    much less than that of the relational back-end when accessed through    SQL.
+</li>
+<li>Scalability of RDF storage.
+ Parallelization and clustering are needed    for scaling into the tens of billions of triples and beyond.</li>
+</ul><p>We intend to demonstrate how we address all these questions with our Virtuoso product.</p>
+<h2><a name="The Data and Queries"></a>The Data and Queries</h2>
+<p>We draw on a combination of real-world and synthetic data sets for the demonstration.
+ In specific, we use the following:</p>
+<ul><li>DBpedia; </li>
+<li>US Census; </li>
+<li>real world XBRL financial data mapped into RDF; </li>
+<li>various Linking Open Data sets, such as Geonames and the CIA Factbook; </li>
+<li>TPC H benchmark data, a scalable industry standard benchmark data set.</li>
+</ul><p>The TPC H data is stored in relational form as well as as RDF triples.
+ We demonstrate queries combining these data in novel ways.
+ For example:</p>
+<ul><li>comparing sales figures from the TPC H data with population and GDP figures from the CIA Factbook; </li>
+<li>combining XBRL financial results with geography and DBpedia information on the same companies; </li>
+<li>comparing two TPC H data sets, one as a relational database and one in RDF form.</li>
+</ul><p>In addition to aggregate queries such as the above, we show navigation by following data links between these sets.</p>
+<p>We also present loading and query times for data sets such as the LUBM benchmark data and the Uniprot data set.</p>
+<p>The complete source code of the queries and data definitions and mappings is published at the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> web site at the time of the demonstration (<a href="http://demo.openlinksw.com/tpc-h/)." class="absuri">http://demo.openlinksw.com/tpc-h/).</a> The data itself is either linked open data or synthetic data that can be generated with generally available tools.
+ Thus the things demonstrated are readily reproducible.</p>
+<h3><a name="SPARQL Extensions"></a>SPARQL Extensions</h3>
+ We show how we have extended SPARQL with the following: <ul><li>Subqueries and derived tables.
+</li>
+<li>Aggregates, grouping and expressions in results.
+</li>
+<li>Syntax sugar for following chains of references, as in region of country of customer of order X.</li>
+</ul><p>The below is the SPARQL version of Q2 from the TPC H queries.</p>
+<br><pre>prefix tpcd: &lt;http://www.openlinksw.com/schemas/tpcd#&gt;
+select
+?supp+&gt;tpcd:acctbal
+?supp+&gt;tpcd:name
+?supp+&gt;tpcd:has_nation+&gt;tpcd:name as ?nation_name
+?part+&gt;tpcd:partkey
+?part+&gt;tpcd:mfgr
+?supp+&gt;tpcd:address
+?supp+&gt;tpcd:phone
+?supp+&gt;tpcd:comment
+from &lt;http://example.com/tpcd&gt;
+where {
+?ps a tpcd:partsupp ; tpcd:has_supplier ?supp ; tpcd:has_part ?part .
+?supp+&gt;tpcd:has_nation+&gt;tpcd:has_region tpcd:name &#39;EUROPE&#39; .
+?part tpcd:size 15 .
+?ps tpcd:supplycost ?minsc .
+{ select ?part min(?ps+&gt;tpcd:supplycost) as ?minsc
+where {
+?ps a tpcd:partsupp ;
+tpcd:has_part ?part ; tpcd:has_supplier ?ms .
+?ms+&gt;tpcd:has_nation+&gt;tpcd:has_region tpcd:name &#39;EUROPE&#39; .
+} }
+filter (?part+&gt;tpcd:type like &#39;%BRASS&#39;) }
+order by
+desc (?supp+&gt;tpcd:acctbal)
+?supp+&gt;tpcd:has_nation+&gt;tpcd:name
+?supp+&gt;tpcd:name
+?part+&gt;tpcd:partkey
+</pre><p> We notice a subquery used for determining the lowest supply cost for a part.
+We also notice the pattern </p>
+<br><pre>{ ?ms+&gt;tpcd:has_nation+&gt;tpcd:has_region tpcd:name &#39;EUROPE&#39; }
+</pre><p> which is a shorthand for </p>
+<br><pre>{ ?ms tpcd:has_nation ?t1 . ?t1 tpcd:has_region ?t2 .
+?t2 tpcd:name &quot;EUROPE&quot; }
+</pre><p> The notation with +&gt; differs from a join path expressed with [] in that these are allowed in expressions and that common subpaths are guaranteed to be included only once in the evaluation.
+ Thus</p>
+<br><pre>sum ( ?c+&gt;has_order+&gt;has_line+&gt;l_extendedprice *
+(1 - ?c+&gt;has_order+&gt;has_line-&gt;l_discount) )
+</pre><p> evaluates to the sum of each line&#39;s extendedprice multiplied by the line&#39;s discount whereas</p>
+<br><pre>sum ( ?extprice * (1 - ?discount))
+...
+?c has_order [ has_line [ l_extendedprice ?extprice ] ] .
+?c has_order [ has_line [ l_discount ?discount ] ]
+</pre><p> would mean the sum of every price times every discount.</p>
+<p>For brevity we have omitted the declarations for mapping the TPC H schema to its RDF equivalent.
+ The mapping is straightforward, with each column mapping to a predicate and each table to a class.</p>
+<h3><a name="Linked Data"></a>Linked Data</h3>
+<p>Virtuoso has an integrated HTTP server used for providing web services end points and web app hosting.
+ For presenting the TPC H data as linked data, we have added a virtual collection which presents the data as dereferenceable URIs, redirecting the dereference to a describe query against the SPARQL end point.</p>
+<h3><a name="Performance of Mapping"></a>Performance of Mapping</h3>
+<p>As a baseline, we take the performance of Virtuoso executing TPC H queries in SQL against Oracle.
+ There Virtuoso parses the SQL query, makes a distributed execution plan, finds out the whole query can go to Oracle and finally rewrites the query as a single Oracle SQL query.
+ This takes an average of 7 ms per query, including time to send and retrieve results.
+ The rest of the real time is spent by Oracle.</p>
+<p>Adding the SPARQL to SQL layer on top of this adds another 9 ms to each query.
+ The cost of SPARQL is negligible in the cases where the resulting SQL query passes as a single unit to Oracle.</p>
+<p>We note that the single most important factor in any distributed query performance as opposed to local query performance is the number of synchronous round trips between the processes involved.</p>
+<p>Some SPARQL queries make a suboptimal SQL that does not pass as a unit to Oracle (even if it should), so the execution is divided between Virtuoso and Oracle and there is significant cost from message latency.
+ Fixing this is a current work in progress.</p>
+<h2><a name="System Demonstrated"></a>System Demonstrated</h2>
+<p>The demonstration databases run on a cluster of X86-64 servers either at our offices or Amazon&#39;s EC2.
+ Smaller scale local demonstration can be run on laptops with the same software but less data.</p>
+<p>The software demonstrated includes: </p>
+<ul><li>Virtuoso 6.0 RDBMS and triple store.
+</li>
+<li>Oracle 10G RDBMS accessed both directly and through Virtuoso&#39;s RDF to relational mapping.
+</li>
+<li>Diverse RDF browsers (Tabulator, <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> RDF Browser and Zitgist).</li>
+</ul><h2><a name="Conclusions"></a>Conclusions</h2>
+<p>Mapping of relational data to RDF has existed for a long time [6][7].
+ The work shown here represents its coming of age.
+ We can tackle a standard SQL workload without loss of performance or added complexity.
+ Basically, we can bring any data warehouse to the world of linked data, giving dereferenceable URI&#39;s and SPARQL while retaining the performace of SQL.</p>
+<p>We would point out that bringing SPARQL on par with SQL for decision support queries is not aimed at replacing SQL but at making SPARQL capable of fulfilling its role as a language for integration.</p>
+<p>Indeed, we retain all of SPARQL&#39;s and RDF&#39;s flexibility for uniquely identifying entities, for abstracting away different naming conventions, layouts and types of primary and foreign keys and so forth.</p>
+<p>In the context of mapping relational data to RDF, we can map several instances of comparable but different schemes to the common terminology and couch all our queries within this terminology.
+ Further, we can join from this world of mapped data to native RDF data, such as the data in the Linking Open Data project.</p>
+<p>Once we have demonstrated that performance or expressivity barriers do not cripple SPARQL when performing traditional SQL tasks, we have removed a significant barrier from enterprise adoption of RDF and open data.</p>
+<h2><a name="References"></a>References</h2>
+ <ol><li>W3C RDF Data Access Working Group: SPARQL Query Language for RDF.
+ <a href="http://www.w3.org/TR/rdf-sparql-query/" class="absuri">http://www.w3.org/TR/rdf-sparql-query/</a> </li>
+<li>Transaction Processing Performance Council: TPC-H  a Decision Support Bench-mark.
+ <a href="http://www.tpc.org/tpch/" class="absuri">http://www.tpc.org/tpch/</a> </li>
+<li>Linking Open Data Project.
+ <a href="http://linkeddata.org/" class="absuri">http://linkeddata.org/</a> </li>
+<li>DBpedia:  A Community Effort to Extract Structured Information From Wikipedia.
+ <a href="http://dbpedia.org/" class="absuri">http://dbpedia.org/</a> </li>
+<li>XBRL - Extensible Business Reporting Language.
+ <a href="http://www.xbrl.org/Home/" class="absuri">http://www.xbrl.org/Home/</a> </li>
+<li>Andy Seaborn: Counting and GROUP BY in ARQ.
+ <a href="http://seaborne.blogspot.com/2007/09/counting-and-group-by.html" class="absuri">http://seaborne.blogspot.com/2007/09/counting-and-group-by.html</a> </li>
+<li>Christian Weiske, S?oren Auer: Implementing SPARQL Support for Relational Databases and Possible Enhancements.
+ Proceedings of the 1st Conference on Social Semantic Web.
+ Leipzig (CSSW 2007), SABRE.
+ LNI 113 GI 2007.
+ Bonner Kollen Verlag, ISBN 978-3-88579-207-9.
+ <a href="http://www.informatik.uni-leipzig.de/auer/publication/sparql-enhancements.pdf" class="absuri">http://www.informatik.uni-leipzig.de/auer/publication/sparql-enhancements.pdf</a> </li>
+<li>Orri Erling, Ivan Mikhailov: Adapting an ORDBMS for RDF Storage and Mapping.
+ Proceedings of the 1st Conference on Social Semantic Web.
+ Leipzig (CSSW 2007), SABRE.
+ LNI 113 GI 2007.
+ Bonner Kollen Verlag, ISBN 978-3-88579-207-9</li>
+</ol></div></body></html>

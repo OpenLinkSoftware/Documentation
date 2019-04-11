@@ -1,0 +1,33 @@
+<docbook><section><title>ErrorInNetworkDaemon</title><para> </para><title> Error Message: Error in Network Daemon. (8933) </title> Error Message: <computeroutput>Error in Network Daemon. (8933)</computeroutput> 
+<para>This error comes from Progress itself, and is frequently associated with the &quot;Personal Database&quot; Progress license.
+ You must determine whether or not any Progress licensing restrictions would prohibit your client components from connecting to a remote database, or prohibit your target database from accepting connections from remote clients.
+ Such Progress licensing is outside of our control.</para><para>Once Progress licensing has been ruled out, proceed to confirm the UDA connection configuration --</para><orderedlist spacing="compact"><listitem> Make sure both client and server host have the same definition for the relevant Progress service port. <orderedlist spacing="compact"><listitem> Open the Progress database server&#39;s <computeroutput>%SYSTEM32%/Drivers/etc/services</computeroutput> or <computeroutput>/etc/services</computeroutput> file. </listitem>
+<listitem> Locate the service associated with the Progress database, and make note of that port number.
+ For example: <programlisting>pro10c   8897
+</programlisting></listitem>
+<listitem> Include an identical in your client&#39;s <computeroutput>%SYSTEM32%/Drivers/etc/services</computeroutput> or <computeroutput>/etc/services</computeroutput> file.
+  </listitem>
+</orderedlist></listitem>
+<listitem> If the error persists, start the database in sockets mode using the port number (rather than the service name) from the services file.
+ For example: <programlisting>$DLC/bin/proserve demo.db -S 8897 -N TCP -H proserver.mycompany.com
+</programlisting></listitem>
+<listitem> You can also try using the port number (instead of the service name) in your data source.
+ For example: <programlisting>-S 8897 -N TCP -H proserver.mycompany.com
+</programlisting></listitem>
+<listitem> If the issue still persists, and you&#39;re using our Multi-Tier solution -- <orderedlist spacing="compact"><listitem> Open the Broker Rulebook (e.g., <computeroutput>oplrqb.ini</computeroutput>) in a text editor, and locate this section: <programlisting>[Protocol TCP]
+PingWatchdog = No     ; Send check-alive packets
+PingInterval = 600    ; every &lt;PingInterval&gt; seconds
+;IPAddress    = 192.168.123.231
+PortLow      = 5000
+;PortHigh     = 60000
+Listen       = 5000
+</programlisting></listitem>
+<listitem> Uncomment (i.e., remove the leading semicolon from) <computeroutput>PortHigh</computeroutput>, and set it to <computeroutput>6000</computeroutput>.
+ For example: <programlisting>PortHigh = 6000
+</programlisting></listitem>
+<listitem> Save your changes and exit the text editor. </listitem>
+<listitem> Confirm that any firewalls between Client and Broker host, and on the Broker host itself, permit connections to (and replies from) all ports in the range from <computeroutput>PortLow</computeroutput> to <computeroutput>PortHigh</computeroutput> (including those ports), as well as the port for <computeroutput>Listen</computeroutput>. </listitem>
+<listitem> Confirm that any firewalls permit connections to (and replies from) all ports between Progress <computeroutput>-minport</computeroutput> and <computeroutput>-maxport</computeroutput> settings. </listitem>
+</orderedlist></listitem>
+<listitem> Retest your connection.</listitem>
+</orderedlist></section></docbook>

@@ -1,0 +1,89 @@
+%META:TOPICPARENT{name="VOSSQL2RDF"}%
+
+---++Mapping Example
+
+This example follows in an excerpt from an actual mapping of the phpBB3 SQL schema to the classes defined by the SIOC and FOAF ontologies:
+
+
+<verbatim>
+-- SPARQL keyword which is the SPARQL cue for the SQL processor
+
+SPARQL
+
+-- PREFIX declarations
+
+PREFIX  sioc:  <http://rdfs.org/sioc/ns#>
+PREFIX  sioct: <http://rdfs.org/sioc/types#>
+PREFIX  atom:  <http://atomowl.org/ontologies/atomrdf#>
+PREFIX  rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX  dc:    <http://purl.org/dc/elements/1.1/>
+PREFIX  dct:   <http://purl.org/dc/terms/>
+PREFIX  skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX  geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX  bm:    <http://www.w3.org/2002/01/bookmark#>
+PREFIX  exif:  <http://www.w3.org/2003/12/exif/ns/>
+PREFIX  ann:   <http://www.w3.org/2000/10/annotation-ns#>
+PREFIX  phpbb: <http://openlinksw.com/phpBB3/>
+
+-- Remove prior mappings 
+DROP QUAD MAP GRAPH IRI ("http://^{URIQADefaultHost}^/phpBB3_v/") .
+
+-- Declare the special Virtuoso-URI-Generator functions for later use in actual mappings
+
+CREATE IRI CLASS  phpbb:site_iri     
+  "http://^{URIQADefaultHost}^/phpBB3/%U#this" 
+    ( IN  dummy       VARCHAR NOT NULL ) .
+CREATE IRI CLASS  phpbb:user_iri
+  "http://^{URIQADefaultHost}^/phpBB3/user/%U#this" 
+    ( IN  user_name   INTEGER NOT NULL ) .
+CREATE IRI CLASS  phpbb:usergroup_iri
+  "http://^{URIQADefaultHost}^/phpBB3/group/%U#this" 
+    ( IN  group_name  INTEGER NOT NULL ) .
+CREATE IRI CLASS  phpbb:forum_iri
+  "http://^{URIQADefaultHost}^/phpBB3/forum/%d#this" 
+    ( IN  forum_id    INTEGER NOT NULL ) .
+CREATE IRI CLASS  phpbb:post_iri
+  "http://^{URIQADefaultHost}^/phpBB3/post/%d#this" 
+    ( IN  post_id     INTEGER NOT NULL ) .
+
+-- Start the actual mapping declaration process
+-- Identify Quad Storage Partition within Quad Store
+
+ALTER QUAD STORAGE virtrdf:DefaultQuadStorage
+  {
+
+-- Declare Named Graph URI / IRI associated with previously declared Quad Storage partition
+
+    CREATE virtrdf:phpBB3 AS GRAPH IRI ("http://^{URIQADefaultHost}^/phpBB3_v/")
+      {
+
+-- Use SPARQL / Turtle Graph patterns to declare:
+-- mappings between Table and a RDF Schema or Ontology Class
+   # Default phpBB Space
+   phpbb:site_iri (PHPBB3.phpBB.phpBB3_site_rdf.WS_DUMMY)
+   a sioc:Space ;
+
+--- mappings between Columns in a Table with Attributes of a RDF Schema or Ontology Class
+   dc:title WEB_TITLE .
+
+-- The combined data from each mapped column (row) is used to generate an instance (Entity/Individual) of this RDF Schema or Ontology Class 
+-- Repeat the process for Each Table being mapped
+
+   # User
+   phpbb:user_iri (PHPBB3.phpBB.phpBB3_users_rdf.username)
+     a                sioc:User ;
+     sioc:id          user_id ;
+     sioc:name        username ;
+     sioc:email       E_MAIL ;
+     sioc:email_sha1  E_MAIL_SHA1 ;
+     sioc:has_space   phpbb:site_iri(WS_DUMMY) .
+
+   # Usergroup
+   phpbb:usergroup_iri (PHPBB3.phpBB.phpBB3_usergroups_rdf.group_name)
+     a          sioc:Usergroup ;
+     sioc:id    group_id ;
+     sioc:name  group_name .
+        .....
+
+</verbatim>

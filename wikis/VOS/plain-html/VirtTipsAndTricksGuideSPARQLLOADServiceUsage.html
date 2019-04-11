@@ -1,0 +1,106 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<h1><a name="Virtuoso SPARQL LOAD Service"></a>Virtuoso SPARQL LOAD Service</h1>
+<h2><a name="What?"></a>What?</h2>
+<p>Using SPARQL LOAD service to get remote endpoint&#39;s description.</p>
+<h2><a name="Why?"></a>Why?</h2>
+<p>Provides additional data that might be useful such as: if a local server knows what syntax extensions are supported by the remote SPARQL endpoint for ex.: <code> <a href="http://example.com/sparql" class="absuri">http://example.com/sparql</a> </code> then it can improve the compilation of SPARQL queries that contain clauses like: </p>
+<br><pre>SERVICE &lt;http://example.com/sparql&gt; {...} .
+</pre><h2><a name="How?"></a>How?</h2>
+<p>To get the description of remote endpoint, one should run the following statement at its local server:</p>
+<br><pre>SPARQL LOAD SERVICE &lt;http://example.com/sparql&gt; DATA;
+</pre><p> The retrieved description will be stored in local RDF storage as a part of &quot;<code> System Metadata&quot; graph </code>, so the user calling this statement should have appropriate write permissions.</p>
+<p> </p>
+<h3><a name="Example"></a>Example</h3>
+<ol><li>Suppose the following query: <br><pre><br>INSERT INTO &lt;http://voc.wkd.de&gt; 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE 
+  {
+    GRAPH &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} 
+    SERVICE &lt;http://de.dbpedia.org/sparql&gt; 
+      {
+        SELECT ?o 
+        WHERE 
+          { 
+            ?s &lt;http://www.w3.org/2002/07/owl#sameAs&gt; ?o . 
+            FILTER REGEX(str(?o), &quot;^http://dbpedia.org&quot;) .
+          } 
+        LIMIT 10
+      }
+  }
+</pre><br></li>
+<li>Next we will bound the ?s in the graph part and the ?s in the scope of the service part: For every concept ?s in the graph &lt;<a href="http://voc.wkd.de" class="absuri">http://voc.wkd.de</a>&gt; we want to retrieve the <code> owl:sameAs </code> elements in the service <code> &lt;<a href="http://de.dbpedia.org/sparql>" class="absuri">http://de.dbpedia.org/sparql&gt;</a> </code> , so for ex: <ul><li>Locally there is the following triple: <br><pre><br>  {
+    dbpedia:A a skos:Concept
+  }
+</pre><br></li>
+<li>In dbpedia there are the following triples: <br><pre><br>  {
+    dbpedia:B owl:sameAs dbpedia:C.
+    dbpedia:A owl:sameAs dbpedia:D.
+  }
+</pre><br></li>
+<li>The expected result we want to be: <br><pre><br>  {
+    dbpedia:A owl:sameAs dbpedia D.
+  }
+</pre><br></li>
+</ul></li>
+<li>The simplest way to make ?s interrelated is to alter the select statement and to add <code> ?s </code> into its result set: <br><pre><br>INSERT INTO &lt;http://voc.wkd.de&gt; 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE 
+  {
+    GRAPH &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} 
+    SERVICE &lt;http://de.dbpedia.org/sparql&gt; 
+    {
+      SELECT ?s ?o 
+      WHERE 
+        { 
+          ?s &lt;http://www.w3.org/2002/07/owl#sameAs&gt; ?o . 
+          FILTER REGEX(str(?o), &quot;^http://dbpedia.org&quot;) .
+        } 
+      LIMIT 10
+    }
+  }
+</pre><br></li>
+<li>The change will affect to the following: <ol><li><code> ?s from service </code> and <code> ?s from graph &lt;&gt; {} </code> will both appear at the same scope and the equality between them will be required by the semantics.
+</li>
+<li>The optimizer will understand that it&#39;s better to pass the <code> ?s </code> as parameter to the service instead of selecting all pairs of <code> ?s </code> and <code> ?o </code> and filter them at the main query server.
+</li>
+<li>The code generator will try to write a code for sending a query to <code> <a href="http://de.dbpedia.org/sparql" class="absuri">http://de.dbpedia.org/sparql</a> </code> but it may fail if it are not known the capabilities of SPARQL compiler at <code> <a href="http://de.dbpedia.org/sparql" class="absuri">http://de.dbpedia.org/sparql</a> </code> , so before the first compilation, one should execute the following statement: <br><pre><br>SPARQL LOAD SERVICE &lt;http://de.dbpedia.org/sparql&gt; DATA;
+</pre><br><ul><li>The effect of executing the <code> SPARQL LOAD SERVICE </code> statement will be: <ol><li>Recognize what syntax extensions are supported by the compiler inside <code> <a href="http://de.dbpedia.org/sparql" class="absuri">http://de.dbpedia.org/sparql</a> </code> service endpoint.
+ E.g., whether that endpoint can deal with external parameters.
+</li>
+<li>Will write small description of the endpoint to local metadata but will not try to copy any data stored remotely to the local storage.
+</li>
+</ol></li>
+</ul></li>
+</ol></li>
+<li><b>Important Note</b>: that if the graph <code> &lt;<a href="http://voc.wkd.de" class="absuri">http://voc.wkd.de</a>&gt; { ?s rdf:type skos:Concept.} </code> will produce many values for <code>?s</code>, there will be many requests to dbpedia, and the sum of round-trip latencies will be high.
+ In some cases it may be faster to get one big list of <code> ?s ?o pairs </code> from <b>dbpedia</b> and then search in local graph.
+To change the order of execution to &quot;remote first&quot; variant, the order of clauses should be changed to: <br><pre><br>INSERT INTO &lt;http://voc.wkd.de&gt; 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE
+  {
+    SERVICE &lt;http://de.dbpedia.org/sparql&gt; 
+      {
+        SELECT ?s ?o 
+        WHERE 
+          { 
+            ?s &lt;http://www.w3.org/2002/07/owl#sameAs&gt; ?o . 
+            FILTER REGEX(str(?o), &quot;^http://dbpedia.org&quot;) .
+          } 
+        LIMIT 10
+      }
+    GRAPH &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} 
+  }
+</pre><br></li>
+</ol><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso Documentation</a></li>
+</ul><p> </p>
+</div></body></html>

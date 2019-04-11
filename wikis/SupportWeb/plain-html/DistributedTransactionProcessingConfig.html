@@ -1,0 +1,253 @@
+<html><body><div class="topic-text"><h2><a name="Distributed Transaction Processing (DTP)"></a>Distributed Transaction Processing (DTP)</h2>
+<h3><a name="X/Open DTP Model"></a>X/Open DTP Model</h3>
+<p>The X/Open Distributed Transaction Processing (DTP) model defines a specification for the management of transactions whose operations are distributed among different computers or among different databases from different vendors.
+ DTP can be broken down into 3 core components:</p>
+<ul><li>An Application Program (AP) for defining transaction boundires and specifies actions that constitute a transaction.
+</li>
+<li>Resource Managers (RMs, such as databases or Data Access Drivers ie ODBC, JDBC, ADO.Net for accessing them)provide access to shared resources.
+</li>
+<li>A Transaction Manager (TM) that assigns identifiers to a transactions, monitors the progress, and takes responsibility for transaction completion and fault recovery.</li>
+</ul><p>Figure: 9.1.1.</p>
+<p>The TX standard defines the API used for communication between an application program and a transaction manager.
+ The XA (eXtended Architecture) standard defines the two-phase commit protocol and the API used for communication between a transaction manager and a resource manager.
+ A resource manager is a system service that manages durable data, e.g.
+ a DBMS or file system.
+ A transaction manager manages distributed transactions, which may span multiple resource managers.
+ It manages two-phase commit, coordinating the decision to commit distributed transactions or roll them back, and coordinates failure recovery.</p>
+<p>Whenever an application has a single function that needs to access or update the data in multiple transactional resources, it should use a distributed transaction.
+ You can use a separate simple transaction on each of the resources, but this approach is error-prone.
+ If the transaction in one resource commits successfully but another fails and must roll back, the first transaction can no longer be rolled back, so the state of the application becomes inconsistent.
+ If one resource commits successfully but the system crashes before the other resource can commit successfully, the application again is inconsistent.
+ An application moving data from one database to another requires a distributed transaction.
+ Otherwise, the data may be duplicated (if the insert completes and the delete fails) or lost (if the delete completes and the insert fails).</p>
+<h4><a name="Distributed Transaction Coordinator (DTC)"></a> Distributed Transaction Coordinator (DTC)</h4>
+<p>The Microsoft COM and MTS interfaces were unified into a single run-time layer and renamed COM+ for Windows 2000.
+ COM+ includes the transaction support that was created for MTS.
+ Both include a system service, DTC, for coordinating distributed transactions and the two-phase commit protocol.
+ Every machine running COM+ has a DTC system service.</p>
+<p>For distributed transactions, each computer has a local transaction manager ie.
+ the DTC on that machine.
+ When a transaction does work at multiple computers, the transaction managers interact with other transaction managers via either a superior or subordinate relationship.
+ These relationships are relevant only for a particular transaction.
+ The root transaction manager, also referred to as the global commit coordinator, is the transaction manager on the system that initiates a transaction.</p>
+<p>DTC introduces the notion of a resource dispenser which does two things.
+ It manages a pool of connections to a resource manager (i.e.
+ a DBMS in the context of Data Access) and it automatically enlists the resource manager in a component&#39;s transaction.
+ The ODBC Driver Manager is a typical resource dispenser, as is an ADO .NET Data Provider.</p>
+<h4><a name="Tuxedo"></a> Tuxedo</h4>
+<p>BEA Tuxedo provides the framework, or middleware, for building scalable multi-tier client/server applications in heterogeneous (dissimilar), distributed environments that extend from the Web to the Enterprise.
+ Using BEA Tuxedo, users can develop, manage, and deploy distributed applications independently of the underlying hardware, operating system, network, and database environment.</p>
+<p>In contrast to classic 2-tier client/server configuration of SQL servers, the Tuxedo brings 3-tier paradigm (clients, services, resource managers).</p>
+<p>At the foundation of BEA Tuxedo ATMI is a proven, reliable transaction processor, also known as a transaction processing (TP) monitor.
+ A transaction processor is an example of a 3-tier client/server architecture, where the transaction processor supports the application logic (represented by &quot;services&quot; between the GUI front-end and the back-end resource managers.
+ Examples of resource managers are SQL databases, message queues, legacy applications, and other back-end services.</p>
+<p>Tuxedo&#39;s Application-to-Transaction Monitor Interface consists of the Tuxedo transaction processor and infrastructure, and the ATMI API.
+ The ATMI API is used to create a Tuxedo client and server.</p>
+<p>A Tuxedo ATMI client collects a user request and forwards it to a server offering the requested service.
+ The client &quot;joins&quot; a distributed Tuxedo application by calling the ATMI client initialization routine.
+ The client can then exchange information with the server, sending and receiving data in typed buffers, and define transaction boundaries The client &quot;leaves&quot; the application by issuing an ATMI termination function.</p>
+<p>A Tuxedo server process oversees a set of services, calling them automatically for clients that request them.
+ ATMI clients do not call servers by name; they call services.
+ The server is not written as a complete program (i.e.
+ with a standard main).
+ Instead, the server&#39;s services are coded as a set of functions that are compiled with Tuxedo binaries to produce a server executable.</p>
+<h4><a name="Java Transaction API (JTA)"></a> Java Transaction API (JTA)</h4>
+<p>The JTA, or Java Transaction API, is a Java Enterprise API for managing distributed transactions.
+ It defines a Java binding for the standard XA API for distributed transactions (XA is a standard defined by the Open Group).
+ Using the JTA, one can write a program that communicates with a distributed transaction service and uses that service to coordinate a distributed transaction that accesses and update data on two or more networked computer resources, or databases in the case of JDBC.</p>
+<p>The XA specification defines an interface between the transaction manager (TM) and resource manager (RM) in a distributed transaction system.
+ This is a generic interface and it does not directly address the use of distributed transactions from Java.
+ The Java mapping of the XA interface is defined in Sun Microsystems Java Transaction API (JTA) and JDBC 2.0/3.0 specifications.</p>
+<h3><a name=""></a> <nop></nop>OpenLink Resource Manager XA Interface Implementation</h3>
+<p>The <nop></nop>OpenLink <nop></nop>DataAccess drivers (ODBC, JDBC, ADO.Net) form part of the Resource Manager in the overal DTP model, implementing the XA (eXtended Architecture) interface for the communication between itself as the upper layer of Resource Manager proess and the Transaction Manager (DTC, Tuxedo, JTS), and also providing the binding to the Database Vendors XA API implementation, which forms the lower layer of the Resoure Manager:</p>
+<p>Figure: 9.2.1.</p>
+<p>Distributed transactions are supported in the <nop></nop>OpenLink Multi-Tier and Single-Tier ODBC, JDBC and ADO.Net drivers/providers for Oracle, SQLServer, Sybase, Informix and Ingres II.</p>
+<h4><a name="ODBC"></a> ODBC</h4>
+<p>The <nop></nop>OpenLink Multi-Tier and Single-Tier ODBC drivers support distributed transactions using the Microsoft Distributed Transaction Co-ordinator (on Windows only) or Tuxedo as the Transaction Manager of the distributed transaction process.</p>
+<h5><a name="Distributed Transaction Co-ordinator (DTC)"></a> Distributed Transaction Co-ordinator (DTC)</h5>
+<p>An <nop></nop>OpenLink XA compliant ODBC driver acts as a proxy for an XA capable database (RM) and as such can be thought of as a resource manager.
+ The <nop></nop>OpenLink XA compliant ODBC drivers implement and export the function <nop></nop>GetXASwitch() which provide the entry points for the DBMS specific XA functions which the DTC can use to communicate directly with the DBMS should an for of distributed transaction recovery need to the performed.</p>
+<h6><a name="Transaction Enlistment"></a>  Transaction Enlistment</h6>
+<p>After initiating a transaction, an application enlists the resource managers it wants to participate in the transaction.
+ Enlistment is done through the ODBC 3.0 connection attribute function call:</p>
+<nop></nop><p>SQLSetConnectAttr(SQL_ATTR_ENLIST_IN_DTC)</p>
+<p> </p>
+<h5><a name="Tuxedo"></a> Tuxedo</h5>
+<p>An <nop></nop>OpenLink XA compliant ODBC driver acts as a proxy for an XA capable database (RM) and as such can be thought of as a resource manager.
+ The driver exports a function opl_xa_switch:</p>
+<br><pre>xa_switch_t * opl_xa_switch (void)
+</pre><p> which TP monitors can use to retrieve the xa_switch_t<nowiki> structure containing pointers to the XA functions.<br><br>---++++++ Defining the <nop></nop>OpenLink Resource Manager in Tuxedo<br><br>When integrating a new resource manager into Tuxedo, the file %TUXDIR%/udataobj/RM must be updated to include information about the resource manager. To integrate the <nop></nop>OpenLink Lite Driver for Oracle into Tuxedo on Windows, define anrm_alias entry in the RM file by adding a line similar to:<br><br><nowiki>OPL_ORA_XA;(*opl_xa_switch());&quot;c:\program files\openlink\lite32\ntl5o9zz.lib</nowiki></nowiki></p>
+<p>where, in this example, OPL_ORA_XA is therm_alias. ntl5o9zz.lib is an import library for the ODBC driver associated with the DSN identified by the xa_info string; in this example the <nop></nop>OpenLink Windows Lite Driver for Oracle (ntl5o9zz.dll).</p>
+<p>To create anrm_aliasentry in the RM file for the <nop></nop>OpenLink Generic Client add a line similar to:</p>
+OPL_XA;(*opl_xa_switch());&quot;c:\program files\openlink\olod5032u.lib<p>On Unix therm_aliasis created in a similar way.
+ A line adding an alias for the <nop></nop>OpenLink Generic Client is added to $TUXDIR/udataobj/RM as follows:</p>
+OPL_XA:(*opl_xa_switch()):/home/openlink/lib/oplodbcu.so<p>Where /home/openlink is the openlink installation directory.</p>
+<h6><a name="xa_info, OPENINFO and CLOSEINFO String Formats"></a> xa_info, OPENINFO and CLOSEINFO String Formats</h6>
+<p>The XA functions xa_open and xa_close open or close a connection to a resource manager for the calling thread.
+ Both functions accept anxa_infoargument.xa_info is a string containing instance-specific information for the resource manager.
+ For <nop></nop>OpenLink ODBC drivers, the xa_infostring takes the form of an ODBC Data Source Name.
+ The DSN must be defined in your ODBC.INI file or registry hive using the ODBC Administrator.</p>
+<p>In a Tuxedo environment, the xa_info strings required by xa_open and xa_close for a particular RM instance are identified by the OPENINFO and CLOSEINFO entries in the UBBCONFIG configuration file.
+ (An example UBBCONFIG file is given below.) OPENINFO and CLOSEINFO entries must be defined for each server group.
+ These entries must be quoted strings of the form &quot;rm_alias:DSN&quot;.
+ (OPENINFO and CLOSEINFO should not contain the usualxa_infostring required by the target database.
+ This string is stored as part of the DSN definition when the ODBC data source is configured.
+ The <nop></nop>OpenLink ODBC driver retrieves the storedxa_infostring using the DSN it receives through xa_open or xa_close.)</p>
+<h6><a name="Using ODBC in an XA Global Transaction"></a> Using ODBC in an XA Global Transaction</h6>
+<p>In order for a service to use ODBC functions in the context of a global transaction, the ODBC functions must use the XA connection created when the service connects to the resource manager with which it is linked.
+ (In the sample application, each service connects to a database using tpopen(), when the service is first initialized through tpsvrinit()).
+ <nop></nop>OpenLink XA-enabled ODBC drivers provide two functions, SQLGetXaEnv<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/SQLGetXaEnv&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>() and <nop></nop>SQLGetXaConnect(), which make an XA connection available for use with ODBC.
+ If the XA connection is enlisted in a global transaction, e.g.
+ the client has called tpbegin() before calling the service, then any &#39;work&#39; done by ODBC functions in the service will be controlled by that global transaction.</p>
+<nop></nop><p>SQLGetXaEnv() returns the ODBC environment handle associated with the XA connection.
+ <nop></nop>SQLGetXaConnect() returns the ODBC connection handle associated with the XA connection.
+ The prototypes for these functions are:</p>
+<br><pre>SQLRETURN SQLGetXaEnv(SQLHENV *phenv); 
+    SQLRETURN SQLGetXaConnect(SQLHDBC *phdbc);
+</pre><p> When using <nop>penLink ODBC drivers in a global transaction context, you should not create an environment handle using <nop></nop>SQLAllocHandle(), or use <nop></nop>SQLSetEnvAttr().
+ (The SQLHENV associated with the XA connection is created with SQL_ATTR_ODBC_VERSION set to SQL_OV_ODBC3.) If you create an ODBC connection using this SQLHENV, it will not be enlisted in the global transaction.</nop></p>
+<h4><a name="JDBC"></a> JDBC</h4>
+<p>The <nop></nop>OpenLink Multi-Tier JDBC drivers support distributed transactions using the Java Transaction API (JTA) as the Transaction Manager of the distributed transaction process.</p>
+<h5><a name="Java Transaction API (JTA)"></a>Java Transaction API (JTA)</h5>
+<p>The <nop></nop>OpenLink UDA Generic JDBC clients (opljdbc3.jar &amp; opljdbc2.jar) support the industry standard XA specification for distributed transaction processing.
+ The XA specification defines an interface between the transaction manager (TM) and resource manager (RM) in a distributed transaction system.
+ This is a generic interface and it does not directly address the use of distributed transactions from Java.
+ The Java mapping of the XA interface is defined in Sun Microsystems Java Transaction API (JTA) and JDBC 2.0/3.0 specifications.
+ The <nop></nop>OpenLink UDA Generic JDBC client drivers support the JTA architecture by providing the implementation of JTA resource manager interfaces.</p>
+<p>The <nop></nop>OpenLink UDA JDBC 3.0 driver provides the openlink.javax.OPLXid, openlink.javax.OPLXADataSource, and openlink.javax.OPLXAConnection classes which implement the interfaces javax.transaction.xa.Xid, javax.transaction.xa.XADataSource, javax.sql.XAConnection, and javax.sql.XAResource respectively.
+ The use if these interfaces is usually transparent for applications and the application developer shouldn&#39;t bother with them.
+ They are used only by the JTS transaction manager which normally runs as a part of the J2EE server.</p>
+<h7>  JDBC 3.0 (JDK 1.4 &amp; 1.5)</h7>
+<p>JTA support is built into the JRE for JDK 1.4 and 1.5, thus the UDA Generic JDBC client (opljdbc3.jar) simply needs to be added to the CLASSPATH and the XA classes will be available for use.</p>
+<h7> JDBC 2.0 (JDK 1.2 &amp; 1.3)</h7>
+<p>JTA support was added by Sun Microsystems as an extension to the JDK 1.2 and 1.3 JRE&#39;s resulting in the following jar files having to be added to you CLASSPATH in additon to the UDA Generic JDBC client (opljdbc2.jar) :</p>
+<br><pre>jdbc2_0-stdext.jar
+jta-spec1_0_1.jar
+jndi.jar
+</pre><p> </p>
+<h6><a name="JDBC XA Documentaton"></a> JDBC XA Documentaton</h6>
+<p>Reference documentation for the <nop></nop>OpenLink JDBC XA implementation in the UDA JDBC Client.</p>
+<h3><a name="Configuring Databases for XA support"></a>  Configuring Databases for XA support</h3>
+<ul><li>Informix XA Configuration<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/InformixConfigXASupport&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> </li>
+<li>Ingres XA Configuration<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/IngresConfigXASupport&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> </li>
+<li>SQL Server XA Configuration<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/SQLConfigXASupport&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> </li>
+<li>Oracle XA Configuration<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OracleConfigXASupport&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> </li>
+<li>Sybase XA Configuration<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/SybaseConfigXASupport&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a></li>
+</ul><h3><a name=""></a> <nop></nop>OpenLink XA Connection String Formats</h3>
+<p>To connect to a database&#39;s XA interface or some other XA compliant RM, a TM must connect using xa_open().
+ The xa_open() call accepts as one of its arguments an xa_info string.
+ When acting as an RM proxy, <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> drivers automatically construct the database dependent xa_info string from other connection information received through the driver&#39;s data access API.
+ The constructed string is sufficient to open an XA connection, but may omit optional settings.
+ These optional settings are database dependent, details of which are given below.
+ They can be entered in the &#39;XA Info&#39; text box in the driver&#39;s setup dialog.
+9.4.1.
+ ODBC 9.4.1.1.
+ Oracle</p>
+<p>For full details of the Oracle syntax for the xa_info string, refer to the &quot;Oracle Application Developer&#39;s Guide - Fundamentals : Chapter 20 Working With Transaction Monitors With Oracle XA : Developing and Installing Applications That Use the XA Libraries : Defining the xa_open String&quot;.</p>
+<p>The <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> driver builds an xa_info string of the form:</p>
+<p>Oracle_XA+Threads=true+SesTm<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/SesTm&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>=60+SqlNet<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/SqlNet&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>=serviceName+DB=dbName+Acc=P/username/password</p>
+<p>Fields in the xa_info string automatically inserted by the <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> driver should not be present in the &#39;XA Info&#39; string.
+ You should not include clauses such as &quot;DB=dbname&quot; or &quot;Acc=P/username/password&quot; .</p>
+<p>serviceNametakes the value of the &#39;Connection String&#39; textbox in the Single-Tier ODBC driver setup dialog or the &#39;NET x Service Name&#39; textbox in the Multi-Tier ODBC driver setup dialog.
+ If a value isn&#39;t specified in the respective setup dialog, serviceNamedefaults to the value of the ORACLE_SID environment variable.</p>
+<p>In addition to the tracing facilities provided by the <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> driver, Oracle&#39;s own XA interface also supports tracing.
+ Ordinarily a trace file is only created at this level when an error occurs, but it is possible to trace all calls to the Oracle XA interface by setting the DbgFl<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/DbgFl&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> entry appropriately in the xa_info string.
+ To enable tracing by the Oracle XA Library, use an XaInfo<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/XaInfo&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> string similar to: DbgFl<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/DbgFl&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>=0x1+LogDir<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/LogDir&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>=c:/ For full details of the Oracle XA Library trace facilities see the &quot;Oracle Application Developer&#39;s Guide - Fundamentals : Chapter 20 Working With Transaction Monitors With Oracle XA : Troubleshooting XA Applications&quot;.</p>
+<p>9.4.1.2.
+ Informix</p>
+<p>The <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> driver builds an xa_info string of the form:</p>
+<p>    DB=&lt;none&gt;;USER=username;PASSWD=password;CON=sessionid;</p>
+<p> No optional xa_info elements are supported.</p>
+<p>9.4.1.3.
+ Sybase</p>
+<p>No optional xa_info elements are supported.</p>
+<p>9.4.1.4.
+ SQL Server</p>
+<p>No optional xa_info elements are supported.</p>
+<p>9.4.1.5.
+ Ingres</p>
+<p>No optional xa_info elements are supported.</p>
+<p> 9.5.
+ Tracing XA calls in <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> ODBC Drivers</p>
+<p>When logging is enabled in an XA-enabled <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> ODBC driver, an XA log file is opened in addition to the usual ODBC log file.
+ For instance, when using a Windows Lite driver, if you specify a log file name of c:\ntl6o10zu.log in the Lite setup dialog, an XA log file named c:\ntl6o10zu.log-xa will also be created.
+ Because all DSNs which use the same <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> driver share the same log file name, if two applications use the same driver simultaneously, the log output from one application will be lost.
+ The last application to connect takes ownership of the log file.
+ This problem can be overcome by including meta-characters in the log file name.
+ This is an <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> v6 feature which allows applications to have their own log file.
+ The meta-characters substitute additional information into the log file name.
+ They can also be used when configuring logging for a <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> ODBC Lite driver or an <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> ODBC generic multi-tier client, on both Windows or Unix.)</p>
+<p>Supported meta-characters are:</p>
+<p>    * $$ - inserts $ (Windows &amp; Unix)     * $P - current process id (Windows &amp; Unix)     * $U - inserts user name (Windows &amp; Unix)     * $H - inserts C:\ (Windows) or user&#39;s home directory (Unix)     * $T - timestamp (yyyymmdd-hhmmss) (Windows &amp; Unix)</p>
+<p>For instance, when tracing XA, it is useful to include $P, e.g.
+ c:\ntl6i10zu_$P.log, so that each process using the driver gets its own XA log file.
+ This is important when using the MS DTC as the transaction monitor, as the DTC loads the ODBC driver at the same time as the application when connecting to an RM through ODBC.</p>
+<p> 9.6.
+ Enabling XA Transactions on Windows XP SP2 and Windows Server 2003</p>
+<p>In Windows 2000, the MSDTC runs as LocalSystem<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/LocalSystem&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>, a special account that is granted all possible privileges to the local computer on which it resides.
+ However, if someone compromises the DTC or any other service running under LocalSystem<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/LocalSystem&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>, that person then has full Administrator access to the computer.
+ To avoid this potential security problem, starting with Windows XP SP2 and Windows Server 2003, Microsoft changed the account under which MSDTC service runs to be &quot;NT AUTHORITY\NetworkService&quot;.
+ A service running as NetworkService<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/NetworkService&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> has the same network access as a service running as System (i.e.
+ the operating system), but has significantly reduced local access.
+ (NetworkService<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/NetworkService&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> services access local resources as members of the local Users group.) Microsoft also introduced other MSDTC security enhancements.
+ As a result, to enable XA transactions for these environment, some additional steps are needed after installing <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> XA/MSDTC enabled drivers.</p>
+<p>(If you are using the distributed transactions support in COM+/Enterprise Services components with <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> drivers, you must enable XA transactions.)</p>
+<p>1) Enable XA transactions</p>
+<p>To turn on support for XA transactions, follow these steps:</p>
+<ol><li>Open Component Services.
+</li>
+<li>Expand the tree view to locate the computer where you want to turn on support for XA transactions (for example, My Computer).
+</li>
+<li>Right-click the computer name, and then click Properties.
+</li>
+<li>Click the MSDTC tab, and then click Security Configuration.
+</li>
+<li>Under Security Settings, click to select the check box for XA Transactions to turn on this support.</li>
+</ol><p>2) Identify in the registry the XA DLLs you plan to use</p>
+<p>Windows Server 2003 and XP SP2 provide a registry entry for specifying the XA DLLs that the MSDTC can use.
+ For each XA enabled <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> ODBC driver you plan to use, you must create a registry named-value under the registry key HKEY <u>LOCAL_MACHINE\SOFTWARE\Microsoft\MSDTC\XADLL.
+ In your registry named-value, Name is the file name of the XA DLL (in the format dllname.dll), Type is String (REG_SZ), and the value is the full path name (including the file name) of the DLL file.</u></p>
+<p>e.g.</p>
+<p>[HKEY <u>LOCAL_MACHINE\SOFTWARE\Microsoft\MSDTC\XADLL] Key name: ntl6o10zu.dll Data: C:\program files\openlink\bin\ntl6o10zu.dll</u></p>
+<p>3) Allow the NetworkService<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/NetworkService&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> account access to the folder containing the XA DLL</p>
+<p>Since NetworkService<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/NetworkService&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a> a very restricted account, you need to provide this account with access to the folder where the XA DLL is located; for instance by modifying the access control list (ACL) for the folder.
+ The ACL for an object is generally found on the Security tab of the object&#39;s property sheet.</p>
+<p>4) Ensure the system PATH includes the folders of any DLLs loaded by the XA DLL</p>
+<p>The MSDTC must be able to locate any DLLs on which the XA DLL depends.
+ The folders containing these DLLs must be included in the global PATH environment variable.
+ (The required DLLs and their paths can be identified easily withDependencyWalkerafter enabling the &#39;Full Paths&#39; option on the &#39;View&#39; menu.) Correct the path using Control panel, System Properties, Environment Variables, System Variables, Path.
+ A reboot may be necessary for the change to take effect.</p>
+<p>In Windows versions supporting the XADLL registry entry, it is not necessary to include the location of the XA DLL itself in the system PATH, as the registry entry includes the DLL&#39;s full path.
+ In all earlier versions of Windows, the system PATH must include the XA DLL&#39;s location.
+9.6.1.
+ Useful Links</p>
+<p>Florin Lazar&#39;s Weblog - MSDTC Posts</p>
+<p>Microsoft Windows XP Professional Resource Kit Documentation(See Part III Security, Chapter 16 Authorization and Access Control)</p>
+<p>9.7.
+ Using <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Drivers with Tuxedo on Unix</p>
+<p>See also &quot;Using the <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Oracle Lite Driver with Tuxedo on Windows&quot; for additional information on configuring Tuxedo.
+9.7.1.
+ Defining an <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Resource Manager in Tuxedo</p>
+<p>When integrating an <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Unix driver into Tuxedo, the file <!--Begin of %TUXDIR{}%--><p>((The macro extension &quot;TUXDIR&quot; is not available on this server)) </p>
+<!--End of %TUXDIR{}%-->/udataobj/RM must be updated to include information about the driver.
+ Add a line similar to one of the examples below: 9.7.1.1.
+ <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> ODBC Generic Client for Unix (Multithreaded):</p>
+<p>OPL_XA:(*opl <u>xa_switch()):/home/openlink/lib/oplodbcu.so ;; Unicode Driver OPL_XA:(*opl_xa_switch()):/home/openlink/lib/oplodbc.so ;; Ansi Driver</u></p>
+<p> 9.7.1.2.
+ <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Unix ODBC Lite Driver for SQLServer or Sybase (Multithreaded):</p>
+<p>OPL_XA:(*opl <u>xa_switch()):/home/openlink/lib/sql_mt_lu.so ;; Unicode Driver OPL_XA:(*opl_xa_switch()):/home/openlink/lib/sql_mt_lt.so ;; Ansi Driver</u></p>
+<p> 9.7.1.3.
+ <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Unix ODBC Lite Driver for Informix 9 (Multithreaded):</p>
+<p>OPL_XA:(*opl <u>xa_switch()):/home/openlink/lib/inf9_mt_lu.so -lthxa -lthsql -lthasf -lthgen -lthos -lifgls -lifglx ;; Unicode Driver OPL_XA:(*opl_xa_switch()):/home/openlink/lib/inf9_mt_lt.so -lthxa -lthsql -lthasf -lthgen -lthos -lifgls -lifglx ;; Ansi Driver</u></p>
+<p> 9.7.1.4.
+ <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Unix ODBC Lite Driver for Oracle 10g (Multithreaded):</p>
+<p>OPL_XA:(*opl <u>xa_switch()):/home/openlink/lib/ora100_mt_lu.so -lclntsh -lnnz10 ;; Unicode Driver OPL_XA:(*opl_xa_switch()):/home/openlink/lib/ora100_mt_lt.so -lclntsh -lnnz10 ;; Ansi Driver</u></p>
+<p> 9.7.1.5.
+ <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Unix ODBC Lite Driver for Ingres II (Multithreaded):</p>
+<p>OPL_XA:(*opl <u>xa_switch()):/home/openlink/lib/ingii_mt_lt.so ;; Ansi Driver</u></p>
+<p>Note that due a limitation in the current Ingres II OpenAPI<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenAPI&parent=DistributedTransactionProcessingConfig" class="wikiword">?</a>? XA implementation our Ingres II Lite driver cannot be used with Tuxedo as detailed in the <a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/SupportWeb/OpenLink" class="wikiword">OpenLink</a> Ingres II XA Implementation Wiki document, in which case the MT Ingres II agent is the only available solution currently</p>
+<p>where /home/openlink is the openlink installation directory and OPL <u>XA is the rm_alias.
+ Any additional database libraries on which the driver depends (as shown by ldd) must be included after the driver shared library name.
+ The example above for the Oracle Lite driver is for a driver linked against the Oracle 10g Instant Client.
+</u></p>
+</div></body></html>

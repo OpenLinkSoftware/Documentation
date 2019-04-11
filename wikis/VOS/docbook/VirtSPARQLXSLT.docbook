@@ -1,0 +1,135 @@
+<docbook><section><title>VirtSPARQLXSLT</title><title> Guide to using SPARQL inside XSLT</title> Guide to using SPARQL inside XSLT
+<para>This guide demonstrates how Virtuoso allows SPARQL queries to be embedded into an XSLT style sheet, and executed against a remote SPARQL endpoint (here, we use the <ulink url="http://lod.openlinksw.com/sparql/">LOD Cloud Cache</ulink>) to retrieve data for use in HTML output.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Implementation</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The key component of this feature is the &lt;xsl:for-each-row&gt; control element.
+ This element has one attribute, named either &quot;sparql&quot; or &quot;sql&quot;; the value of the attribute is an XPath expression that returns the text of the query to executed, e.g., <programlisting>&lt;xsl:for-each-row sparql=&quot;string(\044query)&quot;&gt;
+</programlisting></listitem>
+<listitem>The XPath expression can be a plain string constant, but because the query can be quite long, it is usually more convenient to store the text in a variable and refer to that variable.
+</listitem>
+<listitem>The SPARQL query may contain parameters (written in the form ?:name).
+A parameter of this sort will get its value from the XSLT variable $name.
+(If there is any nesting or recursion, the value(s) will come from the innermost variables.) </listitem>
+<listitem>The query execution in turn creates new XSLT variables that exist inside the body of &lt;xsl:for-each-row&gt;.
+ Each result column of a query becomes one XSLT variable.
+</listitem>
+<listitem>The body of &lt;xsl:for-each-row&gt; is instantiated once for each row of the query result set, with new values for the variables in each instantiation.</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Example</bridgehead>
+<orderedlist spacing="compact"><listitem>Execute from iSQL: <programlisting>SQL&gt;  xslt_sheet (&#39;local://friends.xsl&#39;, 
+                  xtree_doc (&#39;&lt;xsl:stylesheet xmlns:xsl = &quot;http://www.w3.org/1999/XSL/Transform&quot; version = &quot;1.0&quot; xmlns:sample=&quot;http://xslt/&quot; &gt;
+                              &lt;xsl:output method = &quot;html&quot; version=&quot;1.0&quot; doctype-public=&quot;http://public&quot; doctype-system=&quot;http://system&quot; /&gt;
+                              &lt;xsl:param name=&quot;fname&quot; select=&quot;&#39;&#39;Kingsley&#39;&#39;&quot; /&gt;
+                              &lt;xsl:param name=&quot;lname&quot; select=&quot;&#39;&#39;Idehen&#39;&#39;&quot; /&gt;
+                              &lt;xsl:param name=&quot;fullname&quot; select=&quot;&#39;&#39;Kingsley Idehen&#39;&#39;&quot; /&gt;
+                              &lt;xsl:variable name = &quot;query&quot;&gt;
+&lt;![CDATA[
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT DISTINCT ?maxlinkg 
+                ?fnick 
+                ?ffullname 
+                ?ffname 
+                ?flname 
+                ?fimg 
+WHERE
+  {
+    SERVICE &lt;http://lod.openlinksw.com/sparql/&gt; (DEFINE lang:dialect 65535)
+      {
+        { SELECT DISTINCT                                                     ?maxlinkg 
+                                                                              ?fg 
+                                                                              ?fnick
+                                                                              ?ffullname 
+                          ?ffname (bif:__max_notnull (?flname1, ?flname2)) AS ?flname 
+                                                                              ?fimg
+          WHERE
+            {
+              { SELECT (MAX(?linkg)) AS ?maxlinkg 
+                                        ?f 
+                 WHERE
+                   {
+                     { SELECT DISTINCT ?k 
+                        WHERE
+                          { GRAPH ?kg 
+                              {
+                                { ?k  foaf:firstName   ?:fname  
+                                   ;  foaf:familyName  ?:lname 
+                                }
+                                UNION
+                                { ?k  foaf:firstName    ?:fname
+                                   ;  foaf:family_name  ?:lname 
+                                }
+                                UNION
+                                { ?k  foaf:name       ?:fullname } 
+                          } 
+                     } 
+                   }
+                 GRAPH ?linkg { ?k foaf:knows ?f } 
+            } }
+            GRAPH ?fg 
+              {               ?f  a                 &lt;http://xmlns.com/foaf/0.1/Person&gt;
+                .  OPTIONAL { ?f  foaf:firstName    ?ffname     }
+                   OPTIONAL { ?f  foaf:nickname     ?fnick      }
+                   OPTIONAL { ?f  foaf:name         ?ffullname  }
+                   OPTIONAL { ?f  foaf:familyName   ?flname1    }
+                   OPTIONAL { ?f  foaf:family_name  ?flname2    }
+                   OPTIONAL { ?f  foaf:img          ?fimg       }
+              }
+            FILTER ( bound ( ?ffullname ) 
+                     || ( bound ( ?ffname ) 
+                          &amp;&amp; ( bound ( ?flname1 ) 
+                                  || bound ( ?flname2 ) 
+                           ) ) )
+          } 
+          ORDER BY ?fullname 
+                   ?ffname 
+        } 
+      } 
+  }
+]]&gt;&lt;/xsl:variable&gt;
+&lt;xsl:template match = &quot;/&quot;&gt;
+  &lt;html&gt;&lt;head&gt;Simple demo for SPARQL inside XSLT&lt;/head&gt;
+    &lt;body&gt;
+    &lt;p&gt;Known friends of &lt;xsl:choose&gt;
+         &lt;xsl:when test=&quot;\044fullname&quot;&gt;&lt;xsl:value-of select=&quot;\044fullname&quot; /&gt;&lt;/xsl:when&gt;
+         &lt;xsl:otherwise&gt;&lt;xsl:value-of select=&quot;\044fname&quot; /&gt; &lt;xsl:value-of select=&quot;\044lname&quot; /&gt;&lt;/xsl:otherwise&gt;
+       &lt;/xsl:choose&gt;&lt;/p&gt;
+    &lt;table&gt;
+    &lt;xsl:for-each-row sparql=&quot;string(\044query)&quot;&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;xsl:if test=&quot;\044fimg&quot;&gt;&lt;a href=&quot;{\044fimg}&quot; &gt;&lt;img src=&quot;{\044fimg}&quot; width=&quot;64&quot; height=&quot;64&quot; /&gt;&lt;/a&gt;&lt;/xsl:if&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;.?fname={\044ffname}&amp;lname={\044flname}&amp;fullname={\044ffullname}&quot;&gt;
+      &lt;b&gt;&lt;xsl:choose&gt;
+         &lt;xsl:when test=&quot;\044ffullname&quot;&gt;&lt;xsl:value-of select=&quot;\044ffullname&quot; /&gt;&lt;/xsl:when&gt;
+         &lt;xsl:otherwise&gt;&lt;xsl:value-of select=&quot;\044ffname&quot; /&gt; &lt;xsl:value-of select=&quot;\044flname&quot; /&gt;&lt;/xsl:otherwise&gt;
+       &lt;/xsl:choose&gt;&lt;/b&gt;&lt;/a&gt;&lt;br /&gt;
+       &lt;xsl:if test=&quot;\044fnick&quot;&gt;Nick: &lt;xsl:value-of select=&quot;\044fnick&quot; /&gt;&lt;br /&gt;&lt;/xsl:if&gt;
+       (data from &lt;a href=&quot;{\044maxlinkg}&quot; &gt;&lt;xsl:value-of select=&quot;\044maxlinkg&quot; /&gt;&lt;/a&gt; &lt;!-- and &lt;a href=&quot;{\044maxfg}&quot; &gt;&lt;xsl:value-of select=&quot;\044maxfg&quot; /&gt;&lt;/a&gt;--&gt;)
+       &lt;/td&gt;&lt;/tr&gt;
+    &lt;/xsl:for-each-row&gt;
+    &lt;/table&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;&#39;));
+
+DB.DBA.VHOST_DEFINE 
+  ( lpath=&gt;&#39;/friends/&#39;, 
+    ppath =&gt; &#39;/!friends/&#39;, 
+    is_dav =&gt; 1, 
+    vsp_user =&gt; &#39;dba&#39;, 
+    opts =&gt; vector(&#39;noinherit&#39;, 1)
+  );
+
+CREATE PROCEDURE WS.WS.&quot;/!friends/&quot; 
+  ( INOUT  path    VARCHAR, 
+    INOUT  params  ANY, 
+    INOUT  lines   ANY
+  )
+{
+  http_value (xslt (&#39;local://friends.xsl&#39;, xtree_doc (&#39;&lt;fake /&gt;&#39;), params));
+}
+;
+
+registry_set (&#39;/!friends/&#39;, &#39;no_vsp_recompile&#39;)
+;
+</programlisting></listitem>
+<listitem>Go to <ulink url="http://cname/friends/">http://cname/friends/</ulink>, where results should look something like this: <figure><graphic fileref="VirtSPARQLXSLT/xslt1.png" /></figure> <figure><graphic fileref="VirtSPARQLXSLT/xslt2.png" /></figure></listitem>
+</orderedlist></section></docbook>

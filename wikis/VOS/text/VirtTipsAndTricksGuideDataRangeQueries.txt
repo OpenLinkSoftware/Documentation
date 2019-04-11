@@ -1,0 +1,70 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---++How to Manage Date Range in SPARQL queries?
+
+The following examples demonstrate how to manage date range in a SPARQL query:
+
+---++++Example 1
+
+<verbatim>
+SELECT ?s ?date 
+FROM <http://dbpedia.org> 
+WHERE 
+  { 
+    ?s ?p ?date . FILTER ( ?date >= "19450101"^^xsd:date &amp;&amp; ?date <= "19451231"^^xsd:date )  
+  } 
+LIMIT 100
+</verbatim>
+
+[[http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=SELECT+%3Fs+%3Fdate+%0D%0AFROM+%3Chttp%3A%2F%2Fdbpedia.org%3E+%0D%0AWHERE+%0D%0A++%7B+%0D%0A++++%3Fs+%3Fp+%3Fdate+.+FILTER+%28+%3Fdate+%3E%3D+%2219450101%22%5E%5Exsd%3Adate+%26%26+%3Fdate+%3C%3D+%2219451231%22%5E%5Exsd%3Adate+%29++%0D%0A++%7D+%0D%0ALIMIT+100&format=text%2Fhtml&timeout=0&debug=on][View the results]] of the query execution on the [[http://dbpedia.org][dbpedia]] instance.
+
+---++++Example 2
+
+Suppose there is the following query using bif:contains for date:
+
+<verbatim>
+SELECT DISTINCT ?s ?date 
+FROM <http://dbpedia.org>
+WHERE
+  {
+    ?s ?p ?date . FILTER( bif:contains(?date, '"1945*"' ) &amp;&amp; (str(?p) != str(rdfs:label)) )
+  }
+LIMIT 30
+</verbatim>
+
+If ?date is of type xsd:date or xsd:dateTime and of valid syntax then bif:contains(?date, '"1945*"' ) will not found it, because it will be
+parsed at load/create and stored as SQL DATE value.
+
+So if data are all accurate and typed properly then the filter is:
+<verbatim>
+(?date >= xsd:date("1945-01-01") &amp;&amp; ?date < xsd:date("1946-01-01"))
+</verbatim>
+
+i.e. the query should be:
+
+<verbatim>
+SELECT DISTINCT ?s ?date
+FROM <http://dbpedia.org>
+WHERE
+  {
+    ?s ?p ?date . FILTER( ?date >= xsd:date("1945-01-01") &amp;&amp; ?date < xsd:date("1946-01-01") &amp;&amp; (str(?p) != str(rdfs:label)) )
+  }
+LIMIT 10
+</verbatim>
+
+
+[[http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=SELECT+DISTINCT+%3Fs+%3Fdate%0D%0A%0D%0AWHERE%0D%0A++%7B%0D%0A++++%3Fs+%3Fp+%3Fdate+.+FILTER%28+%3Fdate+%3E%3D+xsd%3Adate%28%221945-01-01%22%29+%26%26+%3Fdate+%3C+xsd%3Adate%28%221946-01-01%22%29+%26%26+%28str%28%3Fp%29+%21%3D+str%28rdfs%3Alabel%29%29+%29%0D%0A++%7D%0D%0ALIMIT+10&format=text%2Fhtml&timeout=0&debug=on][View the results]] of the query execution on the [[http://dbpedia.org][dbpedia]] instance.
+
+
+If data falls, then the free-text will be OK for tiny examples but not for "big" cases because <b>bif:contains(?date, '"1945*"')</b>
+would require that less than 200 words in the table begins with 1945. Still, some data can be of accurate type and syntax so range comparison should be used for them and results aggregated via UNION.
+
+If dates mention timezones then the application can chose the beginning and the end of the year in some timezones other than the default.
+
+
+
+---+++Related
+
+   * [[VirtTipsAndTricksGuideDataRangeIndexFilter][How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?]]   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][SPARQL]]

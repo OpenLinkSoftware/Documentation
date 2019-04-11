@@ -1,0 +1,73 @@
+<docbook><section><title>VirtWTDSoftwareAgentDocCreation</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Software Agent &amp; WebID Profile Document Creation</bridgehead>
+<para>The <ulink url="OpenLink">OpenLink</ulink> YouID certificate generation service (<ulink url="http://id.myopenlink.net/youid/)">http://id.myopenlink.net/youid/)</ulink> can be used to create a Digital Identity for a local or one of the available social media user accounts, automatically providing a certificate and WebID profile document that can be used as the Software Agent for the application connection.
+ Alternatively for organisation with the own certificate generation services/processes, these can be used the key requirement being the a suitable WebID is URL is associated with the SAN (Subject Alternate Name) attribute of the generated x509 certificate.</para>
+<para>The steps below outline how this can be done using the <ulink url="OpenLink">OpenLink</ulink> YouID certificate generation service (<ulink url="http://id.myopenlink.net/youid/)">http://id.myopenlink.net/youid/)</ulink> using a suitable WebID or social media login i.e.
+ Facebook in this case.</para>
+<orderedlist spacing="compact"><listitem>Open the <ulink url="OpenLink">OpenLink</ulink> YouID certificate generation service (<ulink url="http://id.myopenlink.net/youid/)">http://id.myopenlink.net/youid/)</ulink> in a Web Browser and login using one of the presented Single Sign on (SSO) services  for Authentication (in this case we chose Facebook):  <figure><graphic fileref="VirtWTDSoftwareAgentDocCreation/VirtWTDSoftwareAgentDocCreation-10.png" /></figure>  </listitem>
+<listitem>Once authenticated click on the Create New Identity Card button to start the certificate generation process:  <figure><graphic fileref="VirtWTDSoftwareAgentDocCreation/VirtWTDSoftwareAgentDocCreation-11.png" /></figure>  </listitem>
+<listitem>The <ulink url="YouID">YouID</ulink> Identity Card Generator page is presented:  <figure><graphic fileref="VirtWTDSoftwareAgentDocCreation/VirtWTDSoftwareAgentDocCreation-12.png" /></figure>  From which the following settings need to be made: </listitem>
+</orderedlist><itemizedlist mark="bullet" spacing="compact"><listitem>Set the Profile Data Provider option to WebID-Profile Document from the drop down list box </listitem>
+<listitem>Set the ID Card Storage Provider option to Manual Upload from the top down list box </listitem>
+<listitem>Set the WebID option to the URL for a suitable Web accessible document that <emphasis>can be edited</emphasis> </listitem>
+<listitem>Set a password for the certificate</listitem>
+</itemizedlist><para>Click on the Create Identity Card button to generated the certificate.
+  4.
+ The Web Scale Verifiable Digital Identity Card is presented:  <figure><graphic fileref="VirtWTDSoftwareAgentDocCreation/VirtWTDSoftwareAgentDocCreation-13.png" /></figure> </para>
+<para>From where: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The p12 public key can be downloaded for use when authenticating.
+</listitem>
+<listitem>The text of the generate public key in N3/Turtle or any of the other supported formats should be copy and pasted to the WebID-Profile Document specified in the previous step.</listitem>
+</itemizedlist><para>5.
+ Add the following content to the end of the WebID-Profile Document (<ulink url="https://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl">https://id.myopenlink.net/DAV/home/hugh/YouID/WTD_id_myopenlink_net_hugh/facebook.ttl</ulink> in this example) and save it: </para>
+<programlisting>## Profile Document combining credentials of Software Agent and Registered Users ##
+
+## This document leverages the portability of relative hash-based HTTP URIs as Entity Identifiers ##
+
+@prefix oplcert: &lt;http://www.openlinksw.com/schemas/cert#&gt; .
+@prefix cert: &lt;http://www.w3.org/ns/auth/cert#&gt;. 
+@prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt; . 
+@prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; .
+
+## Software Agent Credentials ##
+
+&lt;#identity&gt; 
+foaf:name &quot;A Software Agent&quot; ;
+oplcert:onBehalfOf &lt;#wtd&gt; ;
+cert:key [
+                 cert:exponent &quot;65537&quot;^^xsd:integer ;
+                 cert:modulus   
+&quot;b1f5a543b31744b014bd0d783804400377186b66c9082887ca037af687f160703224ba0627396a0853c286276271aa01dd7d532974df98d307797775c590955cc9c8993bdf6429462a9cc763bb74593c69463a2b8729a80ed17c18a5a766fada055eb69bbd5dc31a4b14c6f154d152c2d7ae83f66f0e61ee82ae85838f501eef5eabd1a4b031d612a4a6a5d6f9e4f53480c405ff51838e9cfcbf4c80a1ac9628c9e18b22a3cd4457b090e186845d6243160d151a3b2c02792312c70d620a954498913fde9ffcb09abb1cd2ad0ba28fa384b6b36255fd7b9b3be55cb31897c88f00eb3a24aaff2c8587f01d0fd5a399aa6b4b5486b6c38275cb08391662b3ba7f&quot;^^xsd:hexBinary
+] .
+
+## User Credentials (OnBehalfOf relation participants) ##
+
+&lt;#wtd&gt; 
+oplacl:hasIdentityDelegate &lt;#identity&gt; .
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Key Points</bridgehead>
+<para>In the WebID-Profile Document the key points of note are that:</para>
+<orderedlist spacing="compact"><listitem>It is being used as both the application software agent&#39;s and delegating users&#39; shared profile document.
+ If it is preferred to have separate delegating user profile documents, this can be done - the URL of each user&#39;s distinct profile document is simply pointed to by the oplcert:onBehalfOf property in the software agent&#39;s profile document, similar to the shared profile document example above.
+ But there is a strong case for a single document being used for ease of management.
+</listitem>
+<listitem>The oplcert:onBehalfOf attribute is used to reference the WebIDs (each contained within a user profile document) of the users the software agent is authenticating on behalf of.
+</listitem>
+<listitem>The  oplacl:hasIdentityDelegate attribute identifies the WebID of the software agent that acts as a delegate of connecting users, authenticating on their behalf.
+ As indicated, the user WebIDs can be stored in separate user WebID profile document if preferred.
+</listitem>
+<listitem>The cert:key attribute contains the public key of the software agent certificate, which is actually included (but not shown here) in its YouID auto-generated profile document i.e.
+ profile.ttl and thus can be seen from the generated content.
+ Particularly if separate software agent and user profile documents are used (but still required if a combined document is used), inclusion of the software agent&#39;s public key in the user profile document provides a critical validation check between the software agent and the delegating user who is authorising the OnBehalfOf connection.
+</listitem>
+<listitem>Only one public key is required.
+ Irrespective of whether a single or separate profile documents are used, it/they contain just the public key of the software agent.
+ When using WebID authentication delegation, the users being authenticated do not require a public/private key pair.
+ They require only a WebID - this can be provided without needing TLS, for instance by one of many third-party OAuth-based authentication services supported by VAL, and hence without needing a user key pair, so reducing the administration overhead when authenticating many users.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtWTDServerSetup">Virtuoso Server WebID+TLS+Delegation Setup</ulink> </listitem>
+<listitem><ulink url="VirtWTDVALACLCreation">WebID+TLS+Delegation VAL ACL Creation</ulink> </listitem>
+<listitem><ulink url="VirtWTDACLTesting">WebID+TLS+Delegation ACL Testing</ulink> </listitem>
+<listitem><ulink url="VirtWTDWebIdProfileDocInNamedGraph">Using Named Graph for hosting WebID Profile Document Data</ulink> </listitem>
+<listitem><ulink url="https://medium.com/virtuoso-blog/web-logic-sentences-and-the-magic-of-being-you-e2a719d01f73">Web, Logic, Sentences, and the Magic of Being You!</ulink> </listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,83 @@
+<docbook><section><title>VOSVirtSparqlProtocol</title><para>  </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"><span style="color: red">
+      UNKNOWN tag:
+      http://www.w3.org/1999/xhtml:notoc</span>Virtuoso SPARQL Query Service</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Introduction</bridgehead>
+<para>The Virtuoso SPARQL query service implements the <ulink url="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL Protocol for RDF</ulink> (W3C Working Draft 25 January 2006) providing SPARQL query processing for RDF data available on the open internet.</para>
+<para>The query processor extends the standard protocol to provide support for multiple output formats.
+ At present this uses additional query parameters.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Service Endpoint</bridgehead>
+<para>Virtuoso reserves the path &#39;/sparql/&#39; and a synonym path &#39;/SPARQL/&#39; for SPARQL service.</para>
+<para>In the current implementation, Virtuoso defines virtual directories for HTTP requests that come to the port specified as &#39;<ulink url="ServerPort">ServerPort</ulink>&#39; in the &#39;[HTTPServer]&#39; section of Virtuoso configuration file and refer to one of these two path strings.
+ So if the Virtuoso installation on host example.com listens for HTTP requests on port 8080 then client applications should use the &#39;service endpoint&#39; string equal to &#39;<ulink url="http://example.com:8080/sparql/&quot;.">http://example.com:8080/sparql/&#39;.</ulink></para>
+<para>Both GET and POST requests are supported by both server and client.
+ The server recognizes the &#39;Accept: ...&#39; line of request header to find MIME types preferred by the connected client and adjust the output mode of the response.
+The client chooses between GET and POST automatically, using the length of query text as a criterion.</para>
+<para>If the SPARQL endpoint is accessed without any url and query entered, will be shown a page with interactive query form.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Request Methods</bridgehead>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry>Method </entry><entry>Supported?</entry><entry> Notes </entry></row>
+<row><entry>GET </entry><entry>Yes </entry><entry> short queries are sent in GET mode </entry></row>
+<row><entry>POST </entry><entry>Yes </entry><entry> Queries longer than 1900 bytes are POST-ed </entry></row>
+<row><entry>DELETE</entry><entry>No</entry><entry /></row>
+<row><entry>PUT</entry><entry>No</entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Functions</bridgehead>
+<para>The SPARQL client can be invoked by three similar functions.</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry>Function</entry><entry>Notes</entry></row>
+<row><entry>DB.DBA.SPARQL_REXEC</entry><entry>behaves like DBA.SPARQL_EVAL, but executes the query on the specified server. The procedure does not return anything. Instead, it creates a result set. </entry></row>
+<row><entry>DB.DBA.SPARQL <emphasis>REXEC_TO_ARRAY</emphasis></entry><entry>behaves like DBA.SPARQL_EXEC_TO_ARRAY (), but executes the query on the specified server. The function return a vector of rows, where every row is represented by a vector of values of fields.</entry></row>
+<row><entry>DB.DBA.SPARQL_REXEC_WITH_META</entry><entry> has no local &#39;SPARQL_EVAL&#39; analog. It produces not only an array of result rows but also array of metadata about result set in a format used by the exec () function.</entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Request Parameters</bridgehead>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> Parameter </entry><entry> Notes </entry><entry> Required? </entry><entry> Occurrence </entry></row>
+<row><entry> service </entry><entry> service URI such as &#39;<ulink url="http://demo.openlinksw.com/sparql/&quot;">http://demo.openlinksw.com/sparql/&#39;</ulink> </entry><entry> Yes</entry><entry> </entry></row>
+<row><entry> query </entry><entry> text of the query </entry><entry> Yes</entry><entry> </entry></row>
+<row><entry> dflt_graph </entry><entry> default graph URI (string or NULL) </entry><entry> No </entry><entry> </entry></row>
+<row><entry> named_graphs </entry><entry> vector of named graphs (or NULL to not override what&#39;s specified in the query </entry><entry> No </entry><entry> </entry></row>
+<row><entry> req_hdr </entry><entry> additional HTTP header lines that should be passed to the service; &#39;Host: ...&#39; is most popular </entry><entry> No </entry><entry> </entry></row>
+<row><entry> maxrows </entry><entry> limit on numbers of rows that should be returned (actual size of result set may differ) </entry><entry> No </entry><entry> </entry></row>
+<row><entry> bnode_dict </entry><entry> dictionary of known blank node names, or NULL for usual loading </entry><entry> No </entry><entry> </entry></row>
+</tbody></tgroup></table>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Response Codes</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Response Format</bridgehead>
+<para>All standard MIME types of SPARQL Protocol are supported.</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry>Mimetype</entry><entry>Supported for result of Query</entry></row>
+<row><entry>&#39;application/sparql-results+xml&#39;</entry><entry>SELECT</entry></row>
+<row><entry>&#39;application/sparql-results+xml&#39;</entry><entry>ASK</entry></row>
+<row><entry>&#39;application/rdf+xml&#39;</entry><entry>CONSTRUCT</entry></row>
+<row><entry>&#39;application/rdf+xml&#39;</entry><entry>DESCRIBE</entry></row>
+<row><entry>&#39;text/rdf+n3&#39;</entry><entry>CONSTRUCT</entry></row>
+<row><entry>&#39;text/rdf+n3&#39;</entry><entry>DESCRIBE</entry></row>
+</tbody></tgroup></table>
+<para>If the HTTP header returned by the remote server does not contain &#39;Content-Type&#39; line, the MIME type may be guessed from the text of the returned body.
+Error messages returned from the service are returned as XML documents, using the mime type application/xml.
+ The documents consist of a single element containing an error message.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Additional Response Formats -- SELECT</bridgehead>
+<para>Use the format parameter to select one of the following alternate output formats:</para>
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry>Format Value</entry><entry> Description</entry><entry> Mimetype</entry></row>
+<row><entry>HTML</entry><entry> HTML document containing query summary and tabular results </entry><entry> text/html</entry></row>
+<row><entry>JSON </entry><entry>JSON serialization of results. Conforms to the draft specification Serializing SPARQL Query Results in JSON  </entry><entry> application/sparql-results+json</entry></row>
+<row><entry>Javascript</entry><entry> Javascript serialization of results. Generates an HTML table with the CSS class sparql. The table contains a column indicating row number and additional columns for each query variable. Each query solution contributes one row of the table. Unbound variables are indicated with a non-breaking space in the appropriate table cells. </entry><entry> application/javascript</entry></row>
+<row><entry>XML</entry><entry> </entry><entry> application/sparql-results+xml </entry></row>
+<row><entry>TURTLE</entry><entry> </entry><entry> text/rdf+n3 </entry></row>
+</tbody></tgroup></table>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Examples</bridgehead>
+<para>There is also a live  <ulink url="http://demo.openlinksw.com/sparql_demo">Virtuoso Demo Server</ulink> instance available at all times for experimentation and demonstrations.
+ It includes a collection of saved queries demonstrating Virtuoso&#39;s implementation of the <ulink url="http://www.w3.org/TR/rdf-dawg-uc/">DAWG&#39;s SPARQL test-suite</ulink>; a collection of SPARQL query language use-cases that enables interactive and simplified testing of a RDF Triple Store&#39;s SPARQL implementation.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Implementation Notes</bridgehead>
+<para>This service has been implemented using <ulink url="http://docs.openlinksw.com/virtuoso">OpenLink Virtuoso</ulink>.</para>
+<para><ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryWebSite">CategoryWebSite</ulink>  <ulink url="CategoryOpenSource">CategoryOpenSource</ulink> <ulink url="CategorySPARQL">CategorySPARQL</ulink> <ulink url="CategoryRDF">CategoryRDF</ulink></para>
+<para> </para>
+</section></docbook>

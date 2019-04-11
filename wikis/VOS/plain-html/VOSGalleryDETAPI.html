@@ -1,0 +1,1579 @@
+<html><body><div class="topic-text"><br><pre>--
+--  $Id: DET_Gallery.sql,v 1.3 2008/04/18 13:09:06 mitko Exp $
+--
+--  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+--  project.
+--
+--  Copyright (C) 1998-2006 OpenLink Software
+--
+--  This project is free software; you can redistribute it and/or modify it
+--  under the terms of the GNU General Public License as published by the
+--  Free Software Foundation; only version 2 of the License, dated June 1991.
+--
+--  This program is distributed in the hope that it will be useful, but
+--  WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+--  General Public License for more details.
+--
+--  You should have received a copy of the GNU General Public License along
+--  with this program; if not, write to the Free Software Foundation, Inc.,
+--  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+--
+
+use DB
+;
+
+create table WS.WS.HOSTFS_COL
+(
+  COL_ID                integer not null primary key,
+  COL_FULL_PATH         varchar not null,
+  COL_PARENT_ID         integer,
+  COL_CR_TIME           datetime,
+  COL_MOD_TIME          datetime,
+  COL_SCAN_TIME         datetime,
+  COL_NEXT_SCAN_TIME    datetime,
+  COL_NAME              varchar not null
+  )
+create index HOSTFS_COL_PARENT_ID on WS.WS.HOSTFS_COL (COL_PARENT_ID)
+create index HOSTFS_COL_FULL_PATH on WS.WS.HOSTFS_COL (COL_FULL_PATH)
+create index HOSTFS_COL_NEXT_SCAN_TIME on WS.WS.HOSTFS_COL (COL_NEXT_SCAN_TIME)
+;
+
+alter table WS.WS.HOSTFS_COL add COL_NAME varchar not null
+;
+
+create table WS.WS.HOSTFS_RES
+(
+  RES_ID                integer not null primary key,
+  RES_NAME              varchar (256),
+  RES_COL               integer,
+  RES_TYPE              varchar,
+  RES_FT_MODE           char (1), -- &#39;x&#39; file XML, &#39;t&#39; file text, &#39;X&#39; cached XML, &#39;T&#39; cached text, &#39;N&#39; no text data (so RES_NAME is indexed as text).
+  RES_LENGTH            integer,
+  RES_CR_TIME           datetime,       -- creation time
+  RES_MOD_TIME          datetime,       -- modification time
+  RES_SCAN_TIME         datetime,       -- last file scan time
+  RES_NEXT_SCAN_TIME    datetime,
+  RES_PERMS             char (11)
+)
+create index HOSTFS_RES_COL on WS.WS.HOSTFS_RES (RES_COL, RES_NAME)
+create index HOSTFS_RES_NEXT_SCAN_TIME on WS.WS.HOSTFS_RES (RES_NEXT_SCAN_TIME)
+;
+
+create table WS.WS.HOSTFS_RES_CACHE
+(
+  RESC_ID               integer not null primary key,
+  RESC_MOD_SCAN_TIME    datetime,       -- time of the last scan such that it has detected change in the resource.
+  RESC_DATA             long varchar,
+  RESC_TOPCOL_ID        integer not null
+)
+create index HOSTFS_RES_CACHE_TOPCOL_ID on WS.WS.HOSTFS_RES_CACHE (RESC_TOPCOL_ID)
+;
+
+alter table WS.WS.HOSTFS_RES_CACHE add RESC_TOPCOL_ID integer not null
+;
+
+create table WS.WS.HOSTFS_RES_META
+(
+  RESM_ID               integer not null primary key,
+  RESM_DATA             long XML,
+  RESM_TOPCOL_ID        integer not null
+)
+create index HOSTFS_RES_META_TOPCOL_ID on WS.WS.HOSTFS_RES_META (RESM_TOPCOL_ID)
+;
+
+alter table WS.WS.HOSTFS_RES_META add RESM_TOPCOL_ID integer not null
+;
+
+create table WS.WS.HOSTFS_RDF_INVERSE
+(
+  HRI_TOPCOL_ID integer not null,
+  HRI_PROP_CATID integer not null,
+  HRI_CATVALUE varchar not null,
+  HRI_RES_ID integer not null,
+  primary key (HRI_TOPCOL_ID, HRI_PROP_CATID, HRI_CATVALUE, HRI_RES_ID)
+)
+;
+
+create procedure WS.WS.HOSTFS_FEED_RDF_INVERSE (inout propval any, in r_id integer, in is_del integer, in topcol_id integer)
+{
+  declare resfullpath, path_head, pv varchar;
+  declare triplets any;
+  triplets := xpath_eval (&#39;[xmlns:virt=&quot;virt&quot;] /virt:rdf/virt:top-res/virt:prop[virt:value]&#39;, propval, 0);
+  foreach (any prop in triplets) do
+    {
+      declare propname varchar;
+      declare prop_catid integer;
+      propname := cast (xpath_eval (&#39;name(*[1])&#39;, prop) as varchar);
+      prop_catid := coalesce ((select RPN_CATID from WS.WS.SYS_RDF_PROP_NAME where RPN_URI = propname));
+      if (prop_catid is null)
+        {
+          prop_catid := WS.WS.GETID (&#39;RPN&#39;);
+          -- dbg_obj_princ (&#39;HOSTFS_FEEDV_RDF_INVERSE: insert into WS.WS.SYS_RDF_PROP_NAME (RPN_URI, RPN_CATID) values (&#39;, propname, prop_catid, &#39;)&#39;);
+          insert into WS.WS.SYS_RDF_PROP_NAME (RPN_URI, RPN_CATID) values (propname, prop_catid);
+        }
+      if (is_del)
+        delete from WS.WS.HOSTFS_RDF_INVERSE
+        where
+          (HRI_TOPCOL_ID = topcol_id) and (HRI_PROP_CATID = prop_catid) and
+          (HRI_CATVALUE = &quot;CatFilter_ENCODE_CATVALUE&quot; (cast (xpath_eval (&#39;[xmlns:virt=&quot;virt&quot;] virt:value&#39;, prop) as varchar))) and
+          (HRI_RES_ID = r_id);
+      else
+        insert soft WS.WS.HOSTFS_RDF_INVERSE (HRI_TOPCOL_ID, HRI_PROP_CATID, HRI_CATVALUE, HRI_RES_ID)
+        values (
+          topcol_id,
+          prop_catid,
+          &quot;CatFilter_ENCODE_CATVALUE&quot; (cast (xpath_eval (&#39;[xmlns:virt=&quot;virt&quot;] virt:value&#39;, prop) as varchar)),
+          r_id );
+    }
+}
+;
+
+
+create trigger HOSTFS_RES_META_I after insert on WS.WS.HOSTFS_RES_META referencing new as NP
+{
+  if (NP.RESM_DATA is not null)
+    WS.WS.HOSTFS_FEED_RDF_INVERSE (NP.RESM_DATA, NP.RESM_ID, 0, NP.RESM_TOPCOL_ID);
+}
+;
+
+
+create trigger HOSTFS_RES_META_D before delete on WS.WS.HOSTFS_RES_META referencing old as OP
+{
+  if (OP.RESM_DATA is not null)
+    WS.WS.HOSTFS_FEED_RDF_INVERSE (OP.RESM_DATA, OP.RESM_ID, 1, OP.RESM_TOPCOL_ID);
+}
+;
+
+
+create trigger HOSTFS_RES_META_U after update on WS.WS.HOSTFS_RES_META referencing old as OP, new as NP
+{
+  if (OP.RESM_DATA is not null)
+    WS.WS.HOSTFS_FEED_RDF_INVERSE (OP.RESM_DATA, OP.RESM_ID, 1, OP.RESM_TOPCOL_ID);
+  if (NP.RESM_DATA is not null)
+    WS.WS.HOSTFS_FEED_RDF_INVERSE (NP.RESM_DATA, NP.RESM_ID, 0, NP.RESM_TOPCOL_ID);
+}
+;
+
+
+--!AFTER __PROCEDURE__ DB.DBA.VT_CREATE_TEXT_INDEX !
+DB.DBA.vt_create_text_index (fix_identifier_case (&#39;WS.WS.HOSTFS_RES_META&#39;), fix_identifier_case (&#39;RESM_DATA&#39;), fix_identifier_case (&#39;RESM_ID&#39;), 2, 0, NULL, 0, &#39;*ini*&#39;, &#39;*ini*&#39;)
+;
+
+--!AFTER __PROCEDURE__ DB.DBA.VT_CREATE_TEXT_INDEX !
+DB.DBA.vt_batch_update (fix_identifier_case (&#39;WS.WS.HOSTFS_RES_META&#39;), &#39;ON&#39;, 1)
+;
+
+create function WS.WS.HOSTFS_RES_TOPCOL_ID (in r_id integer) returns integer
+{
+  declare res, parent integer;
+  whenever not found goto nf;
+  res := parent := (select RES_COL from WS.WS.HOSTFS_RES where RES_ID = r_id);
+  while (parent is not null)
+    {
+      res := parent;
+      parent := (select COL_PARENT_ID from WS.WS.HOSTFS_COL where COL_ID = res);
+    }
+  return res;
+nf:
+  return 0;
+}
+;
+
+create procedure WS.WS.HOSTFS_EXTRACT_AND_SAVE_RDF (in resid integer, in resname varchar, in restype varchar, inout rescontent any, in topcol_id integer)
+{
+  declare resttype varchar;
+  declare old_prop_id integer;
+  declare html_start, full_xml any;
+  declare old_n3, addon_n3 any;
+  -- dbg_obj_princ (&#39;DAV_EXTRACT_AND_SAVE_RDF_INT (&#39;, resid, resname, restype, rescontent, &#39;)&#39;);
+  html_start := null;
+  full_xml := null;
+  --if (restype is null)
+    restype := DAV_GUESS_MIME_TYPE (resname, rescontent, html_start);
+  -- dbg_obj_princ (&#39;restype is &#39;, restype);
+  if (restype is null)
+    return;
+  addon_n3 := call (&#39;DAV_EXTRACT_RDF_&#39; || restype)(resname, rescontent, html_start);
+  -- dbg_obj_princ (&#39;addon_n3 is&#39;, addon_n3);
+  if (addon_n3 is null)
+    return;
+  insert replacing WS.WS.HOSTFS_RES_META (RESM_ID, RESM_DATA, RESM_TOPCOL_ID)
+  values
+    (resid, xml_tree_doc (DAV_RDF_PREPROCESS_RDFXML (addon_n3, N&#39;http://local.virt/this&#39;, 1)), topcol_id);
+  return;
+
+no_op:
+  ;
+}
+;
+
+create procedure WS.WS.HOSTFS_TEST_RDF (in d_id integer)
+{
+  -- dbg_obj_princ (&#39;WS.WS.HOSTFS_TEST_RDF (&#39;, d_id, &#39;)&#39;);
+  for select RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE from WS.WS.HOSTFS_RES where RES_ID = d_id do
+    {
+      -- dbg_obj_princ (&#39;Found (RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE) = (&#39;, RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE, &#39;)&#39;);
+      if (&#39;N&#39; = RES_FT_MODE)
+        {
+          return 1;
+        }
+      else if ((&#39;T&#39; = RES_FT_MODE) or (&#39;X&#39; = RES_FT_MODE))
+        {
+          for select RESC_DATA, RESC_TOPCOL_ID from WS.WS.HOSTFS_RES_CACHE where RESC_ID = d_id do
+            {
+              WS.WS.HOSTFS_EXTRACT_AND_SAVE_RDF (d_id, RES_NAME, RES_TYPE, RESC_DATA, RESC_TOPCOL_ID);
+            }
+          return 1;
+        }
+      else if ((&#39;t&#39; = RES_FT_MODE) or (&#39;x&#39; = RES_FT_MODE))
+        {
+          for select COL_FULL_PATH from WS.WS.HOSTFS_COL where COL_ID = RES_COL do
+            {
+              declare ses any;
+              -- dbg_obj_princ (&#39;Found COL_FULL_PATH = &#39;, COL_FULL_PATH);
+              ses := file_to_string_output (COL_FULL_PATH || RES_NAME);
+              WS.WS.HOSTFS_EXTRACT_AND_SAVE_RDF (d_id, RES_NAME, RES_TYPE, ses, WS.WS.HOSTFS_RES_TOPCOL_ID (d_id));
+            }
+          return 1;
+        }
+    }
+  return 0;
+}
+;
+
+create function
+WS.WS.HOSTFS_RES_CACHE_RESC_DATA_INDEX_HOOK (inout vtb any, inout d_id integer) returns integer
+{
+  -- dbg_obj_princ (&#39;WS.WS.HOSTFS_RES_CACHE_RESC_DATA_INDEX_HOOK ( [], &#39;, d_id, &#39;)&#39;);
+  whenever sqlstate &#39;*&#39; goto done;
+  for select RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE from WS.WS.HOSTFS_RES where RES_ID = d_id do
+    {
+      -- dbg_obj_princ (&#39;Found (RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE) = (&#39;, RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE, &#39;)&#39;);
+      if (&#39;N&#39; = RES_FT_MODE)
+        {
+          vt_batch_feed (vtb, RES_NAME, 0, 0);
+          return 1;
+        }
+      else if ((&#39;T&#39; = RES_FT_MODE) or (&#39;X&#39; = RES_FT_MODE))
+        {
+          for select RESC_DATA, RESC_TOPCOL_ID from WS.WS.HOSTFS_RES_CACHE where RESC_ID = d_id do
+            {
+              vt_batch_feed (vtb, RESC_DATA, 0, case (RES_FT_MODE) when &#39;X&#39; then 2 else 0 end);
+              WS.WS.HOSTFS_EXTRACT_AND_SAVE_RDF (d_id, RES_NAME, RES_TYPE, RESC_DATA, RESC_TOPCOL_ID);
+            }
+          return 1;
+        }
+      else if ((&#39;t&#39; = RES_FT_MODE) or (&#39;x&#39; = RES_FT_MODE))
+        {
+          for select COL_FULL_PATH from WS.WS.HOSTFS_COL where COL_ID = RES_COL do
+            {
+              declare ses any;
+              -- dbg_obj_princ (&#39;Found COL_FULL_PATH = &#39;, COL_FULL_PATH);
+              ses := file_to_string_output (COL_FULL_PATH || RES_NAME);
+              vt_batch_feed (vtb, ses, 0, case (RES_FT_MODE) when &#39;x&#39; then 2 else 0 end);
+              WS.WS.HOSTFS_EXTRACT_AND_SAVE_RDF (d_id, RES_NAME, RES_TYPE, ses, WS.WS.HOSTFS_RES_TOPCOL_ID (d_id));
+            }
+          return 1;
+        }
+    }
+done:
+  -- dbg_obj_princ (&#39;Failed WS.WS.HOSTFS_RES_CACHE_RESC_DATA_INDEX_HOOK (&#39;, d_id, &#39;) :&#39;, __SQL_STATE, __SQL_MESSAGE);
+  return 1;
+}
+;
+
+create function
+WS.WS.HOSTFS_RES_CACHE_RESC_DATA_UNINDEX_HOOK (inout vtb any, inout d_id integer) returns integer
+{
+  whenever sqlstate &#39;*&#39; goto done;
+  for select RES_COL, RES_NAME, RES_TYPE, RES_FT_MODE from WS.WS.HOSTFS_RES where RES_ID = d_id do
+    {
+      if (&#39;N&#39; = RES_FT_MODE)
+        {
+          vt_batch_feed (vtb, RES_NAME, 1, 0);
+          return 1;
+        }
+      else if ((&#39;T&#39; = RES_FT_MODE) or (&#39;X&#39; = RES_FT_MODE))
+        {
+          for select RESC_DATA from WS.WS.HOSTFS_RES_CACHE where RESC_ID = d_id do
+            vt_batch_feed (vtb, RESC_DATA, 1, case (RES_FT_MODE) when &#39;X&#39; then 2 else 0 end);
+          return 1;
+        }
+    }
+done:
+  return 1;
+}
+;
+
+--#IF VER=5
+--!AFTER __PROCEDURE__ DB.DBA.VT_CREATE_TEXT_INDEX !
+--#ENDIF
+DB.DBA.vt_create_text_index (fix_identifier_case (&#39;WS.WS.HOSTFS_RES_CACHE&#39;), fix_identifier_case (&#39;RESC_DATA&#39;), fix_identifier_case (&#39;RESC_ID&#39;), 2, 0, NULL, 1, &#39;*ini*&#39;, &#39;*ini*&#39;)
+;
+
+--#IF VER=5
+--!AFTER __PROCEDURE__ DB.DBA.VT_CREATE_TEXT_INDEX !
+--#ENDIF
+DB.DBA.vt_batch_update (fix_identifier_case (&#39;WS.WS.HOSTFS_RES_CACHE&#39;), &#39;ON&#39;, 5)
+;
+
+create function
+WS.WS.HOSTFS_FIND_COL (in full_path varchar) returns integer
+{
+  declare slash_pos, parent, len, res integer;
+  declare parent_path, cname, tmp varchar;
+  declare cr_time datetime;
+  len := length (full_path);
+  if ((len &gt; 0) and full_path[len-1] = 47)
+    full_path := subseq (full_path, 0, len-1);
+  whenever not found goto not_found;
+  select COL_ID into res from WS.WS.HOSTFS_COL where COL_FULL_PATH = full_path || &#39;/&#39;;
+  return res;
+not_found:
+  slash_pos := strrchr (full_path, &#39;/&#39;);
+  if (slash_pos is null)
+    {
+      parent := null;
+      cname := full_path;
+    }
+  else
+    {
+      parent := WS.WS.HOSTFS_FIND_COL (subseq (full_path, 0, slash_pos));
+      cname := subseq (full_path, slash_pos + 1);
+    }
+  tmp := file_stat (full_path);
+  if (isstring (tmp))
+    cr_time := cast (tmp as datetime);
+  else
+    cr_time := null;
+  res := sequence_next (&#39;WS.WS.HOSTFS_COL_ID&#39;) + 1;
+  insert into WS.WS.HOSTFS_COL
+    (COL_ID     , COL_FULL_PATH         , COL_PARENT_ID , COL_CR_TIME   , COL_MOD_TIME  , COL_SCAN_TIME , COL_NEXT_SCAN_TIME    , COL_NAME      )
+  values
+    (res        , full_path || &#39;/&#39;      , parent        , cr_time       , cr_time       , NULL          , now ()                , cname         );
+  return res;
+}
+;
+
+create procedure
+WS.WS.HOSTFS_COL_DISAPPEARS (in full_path varchar)
+{
+  declare len integer;
+  len := length (full_path);
+  if ((len &gt; 0) and full_path[len-1] = 47)
+    full_path := subseq (full_path, 0, len-1);
+  for select COL_ID from WS.WS.HOSTFS_COL where COL_FULL_PATH between full_path || &#39;/&#39; and full_path || &#39;0&#39; do
+    {
+      for select RES_ID from WS.WS.HOSTFS_RES where RES_COL = COL_ID do
+        {
+          delete from WS.WS.HOSTFS_RES_META where RESM_ID = RES_ID;
+          delete from WS.WS.HOSTFS_RES_CACHE where RESC_ID = RES_ID;
+        }
+      delete from WS.WS.HOSTFS_RES where RES_COL = COL_ID;
+    }
+  delete from WS.WS.HOSTFS_COL where COL_FULL_PATH between full_path || &#39;/&#39; and full_path || &#39;0&#39;;
+}
+;
+
+create procedure
+WS.WS.HOSTFS_HANDLE_RES_SCAN (in full_path varchar, in c_id integer, in flen integer, in cr_time datetime, in mod_time datetime, in mimetype varchar, in ft_mode varchar)
+{
+  declare len, slash_pos integer;
+  declare r_id integer;
+  len := length (full_path);
+  if ((len = 0) or (full_path[len-1] = 47))
+    return; -- There&#39;s no resource with empty name, for sure
+  slash_pos := strrchr (full_path, &#39;/&#39;);
+  if (c_id is null)
+    {
+      if (slash_pos is null)
+        c_id := WS.WS.HOSTFS_FIND_COL (&#39;&#39;);
+      else
+        c_id := WS.WS.HOSTFS_FIND_COL (subseq (full_path, 0, slash_pos));
+    }
+  r_id := coalesce ((select RES_ID from WS.WS.HOSTFS_RES where RES_NAME = subseq (full_path, slash_pos + 1) and RES_COL = c_id));
+  if (r_id is null)
+    {
+      r_id := sequence_next (&#39;WS.WS.HOSTFS_RES_ID&#39;) + 1;
+      insert into WS.WS.HOSTFS_RES
+        (RES_ID , RES_NAME, RES_COL, RES_TYPE, RES_FT_MODE, RES_LENGTH, RES_CR_TIME, RES_MOD_TIME, RES_SCAN_TIME, RES_NEXT_SCAN_TIME, RES_PERMS)
+      values
+        (r_id   , subseq (full_path, slash_pos + 1), c_id, mimetype, ft_mode, flen, cr_time, mod_time, now(), null, null);
+-- TODO: add real support for &#39;X&#39; and &#39;T&#39; modes here.
+      insert replacing WS.WS.HOSTFS_RES_CACHE
+        (RESC_ID        , RESC_MOD_SCAN_TIME    , RESC_DATA     , RESC_TOPCOL_ID                        )
+      values
+        (r_id           , now()                 , null          , WS.WS.HOSTFS_RES_TOPCOL_ID (r_id)     );
+    }
+  else
+    {
+      if (exists (select top 1 1 from WS.WS.HOSTFS_RES
+         where RES_ID = r_id and
+           ((RES_LENGTH &lt;&gt; flen) or (RES_MOD_TIME &lt;&gt; mod_time) or (RES_TYPE &lt;&gt; mimetype) or (RES_FT_MODE &lt;&gt; ft_mode)) ) )
+        {
+          update WS.WS.HOSTFS_RES set RES_LENGTH = flen, RES_MOD_TIME = mod_time, RES_TYPE = mimetype, RES_FT_MODE = ft_mode, RES_SCAN_TIME = now() where RES_ID = r_id;
+-- TODO: add real support for &#39;X&#39; and &#39;T&#39; modes here.
+          update WS.WS.HOSTFS_RES_CACHE set RESC_MOD_SCAN_TIME = now();
+        }
+      else
+        {
+          update WS.WS.HOSTFS_RES set RES_SCAN_TIME = now() where (RES_ID = r_id) and RES_SCAN_TIME &lt;&gt; now ();
+        }
+    }
+}
+;
+
+create procedure
+WS.WS.HOSTFS_RES_DISAPPEARS (in full_path varchar)
+{
+  declare len, slash_pos integer;
+  declare c_id, r_id integer;
+  len := length (full_path);
+  if ((len = 0) or full_path[len-1] = 47)
+    return; -- There&#39;s no resource with empty name, for sure
+  slash_pos := strrchr (full_path, &#39;/&#39;);
+  c_id := coalesce ((select COL_ID from WS.WS.HOSTFS_COL where COL_FULL_PATH = subseq (full_path, 0, slash_pos + 1)));
+  if (c_id is null)
+    return;
+  r_id := coalesce ((select RES_ID from WS.WS.HOSTFS_RES where RES_NAME = subseq (full_path, slash_pos + 1) and RES_COL = c_id));
+  if (r_id is null)
+    return;
+  delete from WS.WS.HOSTFS_RES_CACHE where RESC_ID = r_id;
+  delete from WS.WS.HOSTFS_RES where RES_ID = r_id;
+  update WS.WS.HOSTFS_COL set COL_MOD_TIME = now() where COL_ID = c_id and COL_MOD_TIME &lt; now();
+}
+;
+
+create function
+WS.WS.HOSTFS_TOUCH_RES (in ospath varchar) returns integer
+{
+  declare mimetype, ft_mode varchar;
+  declare cr_time, mod_time datetime;
+  declare flen, rc integer;
+  -- dbg_obj_princ (&#39;WS.WS.HOSTFS_TOUCH_RES (&#39;, ospath, &#39;)&#39;);
+  rc := WS.WS.HOSTFS_PATH_STAT (ospath, flen, cr_time, mod_time);
+  if (rc &lt; 0)
+    {
+      WS.WS.HOSTFS_RES_DISAPPEARS (ospath);
+      return -1;
+    }
+  WS.WS.HOSTFS_READ_TYPEINFO (ospath, mimetype, ft_mode);
+  WS.WS.HOSTFS_HANDLE_RES_SCAN (ospath, null, flen, cr_time, mod_time, mimetype, ft_mode);
+  return 0;
+}
+;
+
+create procedure
+WS.WS.HOSTFS_GLOBAL_RESET ()
+{
+  set isolation = &#39;serializable&#39;;
+  delete from WS.WS.HOSTFS_RES_META;
+  delete from WS.WS.HOSTFS_RES_CACHE;
+  delete from WS.WS.HOSTFS_RES;
+  delete from WS.WS.HOSTFS_COL;
+  sequence_set (&#39;WS.WS.HOSTFS_COL_ID&#39;, 0, 0);
+  sequence_set (&#39;WS.WS.HOSTFS_RES_ID&#39;, 0, 0);
+}
+;
+
+create function
+WS.WS.HOSTFS_PATH_STAT (in full_path varchar, out flen integer, out cr_time datetime, out mod_time datetime) returns integer
+{
+  declare tmp varchar;
+  tmp := file_stat (full_path);
+  if (not isstring (tmp))
+    return -1;
+  cr_time := mod_time := cast (tmp as datetime);
+  flen := cast (file_stat (full_path, 1) as integer);
+  return 0;
+}
+;
+
+create procedure
+WS.WS.HOSTFS_READ_TYPEINFO (in full_path varchar, out mimetype varchar, out ft_mode varchar)
+{
+  declare mt varchar;
+  mt := http_mime_type (full_path);
+  mimetype := mt;
+  if (&#39;text/html&#39; = mt)
+    ft_mode := &#39;x&#39;;
+  else if (&#39;text/xml&#39; = mt)
+    ft_mode := &#39;x&#39;;
+  else if (&#39;text/xhtml&#39; = mt)
+    ft_mode := &#39;x&#39;;
+  else if (&#39;%+xml&#39; = mt)
+    ft_mode := &#39;x&#39;;
+  else if (mt like &#39;text/%&#39;)
+    ft_mode := &#39;t&#39;;
+  else
+    ft_mode := &#39;N&#39;;
+}
+;
+
+
+create function &quot;Gallery_DAV_AUTHENTICATE&quot; (in id any, in what char(1), in req varchar, in auth_uname varchar, in auth_pwd varchar, in auth_uid integer)
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_AUTHENTICATE (&#39;, id, what, req, auth_uname, auth_pwd, auth_uid, &#39;)&#39;);
+  declare puid, pgid integer;
+  declare pperms varchar;
+  if (auth_uid &lt; 0)
+    return auth_uid;
+  puid := http_dav_uid();
+  pgid := coalesce (
+    ( select G_ID from WS.WS.SYS_DAV_GROUP
+      where G_NAME = &#39;Gallery_&#39; || coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID=id[1] and COL_DET=&#39;Gallery&#39;), &#39;&#39;)
+      ), http_admin_gid() );
+  pperms := &#39;110100100RR&#39;;
+  if ((what &lt;&gt; &#39;R&#39;) and (what &lt;&gt; &#39;C&#39;))
+    return -14;
+  if (DAV_CHECK_PERM (pperms, req, auth_uid, null, pgid, puid))
+    return auth_uid;
+  return -13;
+}
+;
+
+create function &quot;Gallery_DAV_AUTHENTICATE_HTTP&quot; (in id any, in what char(1), in req varchar, in can_write_http integer, inout a_lines any, inout a_uname varchar, inout a_pwd varchar, inout a_uid integer, inout a_gid integer, inout _perms varchar) returns integer
+{
+  declare rc integer;
+  declare puid, pgid integer;
+  declare u_password, pperms varchar;
+  declare allow_anon integer;
+  if (length (req) &lt;&gt; 3)
+    return -15;
+
+  whenever not found goto nf_col_or_res;
+  puid := http_dav_uid();
+  pgid := coalesce (
+    ( select G_ID from WS.WS.SYS_DAV_GROUP
+      where G_NAME = &#39;Gallery_&#39; || coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID=id[1] and COL_DET=&#39;Gallery&#39;), &#39;&#39;)
+      ), http_admin_gid() );
+  pperms := &#39;110100100RR&#39;;
+  if ((what &lt;&gt; &#39;R&#39;) and (what &lt;&gt; &#39;C&#39;))
+    return -14;
+  allow_anon := WS.WS.PERM_COMP (substring (cast (pperms as varchar), 7, 3), req);
+  if (a_uid is null)
+    {
+      if ((not allow_anon) or (&#39;&#39; &lt;&gt; WS.WS.FINDPARAM (a_lines, &#39;Authorization:&#39;)))
+      rc := WS.WS.GET_DAV_AUTH (a_lines, allow_anon, can_write_http, a_uname, u_password, a_uid, a_gid, _perms);
+      if (rc &lt; 0)
+        return rc;
+    }
+  if (isinteger (a_uid))
+    {
+      if (a_uid &lt; 0)
+        return a_uid;
+     if (a_uid = 1) -- Anonymous FTP
+        {
+          a_uid := http_nobody_uid ();
+          a_gid := http_nogroup_gid ();
+        }
+    }
+  if (DAV_CHECK_PERM (pperms, req, a_uid, a_gid, pgid, puid))
+    return a_uid;
+  return -13;
+
+nf_col_or_res:
+  return -1;
+}
+;
+
+create function &quot;Gallery_DAV_GET_PARENT&quot; (in id any, in st char(1), in path varchar) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_GET_PARENT (&#39;, id, st, path, &#39;)&#39;);
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_COL_CREATE&quot; (in detcol_id any, in path_parts any, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  declare ospath varchar;
+  -- dbg_obj_princ (&#39;Gallery_DAV_COL_CREATE (&#39;, detcol_id, path_parts, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  -- dbg_obj_princ (&#39;cmd=&#39;, sprintf (&#39;mkdir &#39;&#39;%s&#39;&#39;&#39;, ospath));
+  system (sprintf (&#39;mkdir &#39;&#39;%s&#39;&#39;&#39;, ospath));
+  WS.WS.HOSTFS_FIND_COL (ospath);
+  return vector (UNAME&#39;Gallery&#39;, detcol_id, ospath);
+}
+;
+
+create function &quot;Gallery_DAV_COL_MOUNT&quot; (in detcol_id any, in path_parts any, in full_mount_path varchar, in mount_det varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_COL_MOUNT (&#39;, detcol_id, path_parts, full_mount_path, mount_det, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_COL_MOUNT_HERE&quot; (in parent_id any, in full_mount_path varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_COL_MOUNT (&#39;, parent_id, full_mount_path, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_DELETE&quot; (in detcol_id any, in path_parts any, in what char(1), in silent integer, in auth_uid integer) returns integer
+{
+  declare ospath varchar;
+  -- dbg_obj_princ (&#39;Gallery_DAV_DELETE (&#39;, detcol_id, path_parts, what, silent, auth_uid, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  -- dbg_obj_princ (&#39;cmd=&#39;, sprintf (&#39;rm -rf &#39;&#39;%s&#39;&#39;&#39;, ospath));
+  system (sprintf (&#39;rm -rf &#39;&#39;%s&#39;&#39;&#39;, ospath));
+  return 1;
+}
+;
+
+create table &quot;Gallery_DAV_RES_UPLOAD&quot; (ID varchar primary key, DT datetime, CNT long varchar)
+;
+
+create function &quot;Gallery_DAV_RES_UPLOAD&quot; (in detcol_id any, in path_parts any, inout content any, in type varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  declare ospath varchar;
+  declare rc integer;
+  -- dbg_obj_princ (&#39;Gallery_DAV_RES_UPLOAD (&#39;, detcol_id, path_parts, &#39;, [content], &#39;, type, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  if (__tag (content) = 126)
+    {
+      declare p varchar;
+      p := &#39;[&#39; || serialize (now()) || &#39;][&#39; || serialize (detcol_id) || &#39;][&#39; || serialize (path_parts) || &#39;]&#39;;
+      insert into &quot;Gallery_DAV_RES_UPLOAD&quot; values (p, now(), content);
+-- in the next string, &#39;1&#39; is an invalid argument for string_to_file to guarantee &#39;Internal Server Error&#39; visible by client
+      string_to_file (ospath, coalesce ((select CNT from &quot;Gallery_DAV_RES_UPLOAD&quot; where ID=p), 1), -2);
+    }
+  else
+    string_to_file (ospath, content, -2);
+  rc := WS.WS.HOSTFS_TOUCH_RES (ospath);
+  if (rc &lt; 0)
+    return -28;
+  return vector (UNAME&#39;Gallery&#39;, detcol_id, ospath);
+}
+;
+
+create function &quot;Gallery_DAV_PROP_REMOVE&quot; (in id any, in what char(0), in propname varchar, in silent integer, in auth_uid integer) returns integer
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_PROP_REMOVE (&#39;, id, what, propname, silent, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_PROP_SET&quot; (in id any, in what char(0), in propname varchar, in propvalue any, in overwrite integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_PROP_SET (&#39;, id, what, propname, propvalue, overwrite, auth_uid, &#39;)&#39;);
+  if (propname[0] = 58)
+    {
+      return -16;
+    }
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_PROP_GET&quot; (in id any, in what char(0), in propname varchar, in auth_uid integer)
+{
+  declare ospath varchar;
+  ospath := id[2];
+  -- dbg_obj_princ (&#39;Gallery_DAV_PROP_GET (&#39;, id, what, propname, auth_uid, &#39;)&#39;);
+  if (not isstring (file_stat (ospath)))
+    {
+      WS.WS.HOSTFS_COL_DISAPPEARS (ospath);
+      WS.WS.HOSTFS_RES_DISAPPEARS (ospath);
+      return -1;
+    }
+  return -11;
+}
+;
+
+create function &quot;Gallery_DAV_PROP_LIST&quot; (in id any, in what char(0), in propmask varchar, in auth_uid integer)
+{
+  declare ospath varchar;
+  ospath := id[2];
+  -- dbg_obj_princ (&#39;Gallery_DAV_PROP_LIST (&#39;, id, what, propmask, auth_uid, &#39;)&#39;);
+  if (not isstring (file_stat (ospath)))
+    {
+      WS.WS.HOSTFS_COL_DISAPPEARS (ospath);
+      WS.WS.HOSTFS_RES_DISAPPEARS (ospath);
+      return -1;
+    }
+  return vector ();
+}
+;
+
+create function &quot;Gallery_ID_TO_OSPATH&quot; (in col any)
+{
+  declare res varchar;
+  declare ctr, len integer;
+  if (isinteger (col))
+    return coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID = col), &#39; no such &#39;);
+  return col[2];
+}
+;
+
+create function &quot;Gallery_DAV_DIR_SINGLE&quot; (in id any, in what char(0), in path any, in auth_uid integer) returns any
+{
+  declare fullname, name, tmp, mimetype, ft_mode varchar;
+  declare cr_time, mod_time datetime;
+  declare puid, pgid, flen, rc integer;
+  -- dbg_obj_princ (&#39;Gallery_DAV_DIR_SINGLE (&#39;, id, what, path, auth_uid, &#39;)&#39;);
+  fullname := id[2];
+  rc := WS.WS.HOSTFS_PATH_STAT (fullname, flen, cr_time, mod_time);
+  if (rc &lt; 0)
+    {
+      if (&#39;R&#39; = what)
+        WS.WS.HOSTFS_RES_DISAPPEARS (fullname);
+      else
+        WS.WS.HOSTFS_COL_DISAPPEARS (fullname);
+      return -1;
+    }
+  name := subseq (fullname, strrchr (fullname, &#39;/&#39;) + 1);
+  if (path is null)
+    path := &quot;Gallery_DAV_SEARCH_PATH&quot; (id, what);
+  puid := http_dav_uid();
+  pgid := coalesce (
+    ( select G_ID from WS.WS.SYS_DAV_GROUP
+      where G_NAME = &#39;Gallery_&#39; || coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID=id[1] and COL_DET=&#39;Gallery&#39;), &#39;&#39;)
+      ), puid+1);
+  if (&#39;R&#39; = what)
+    {
+      WS.WS.HOSTFS_READ_TYPEINFO (fullname, mimetype, ft_mode);
+      WS.WS.HOSTFS_HANDLE_RES_SCAN (fullname, null, flen, cr_time, mod_time, mimetype, ft_mode);
+      return vector (path, &#39;R&#39;, flen, mod_time, id, &#39;110000000RR&#39;, pgid, puid, cr_time, mimetype, name);
+    }
+  if (&#39;C&#39; = what)
+    {
+      return vector (DAV_CONCAT_PATH (path, &#39;/&#39;), &#39;C&#39;, flen, mod_time, id, &#39;110000000RR&#39;, pgid, puid, cr_time, &#39;dav/unix-directory&#39;, name);
+    }
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_DIR_LIST&quot; (in detcol_id any, in path_parts any, in detcol_path varchar, in name_mask varchar, in recursive integer, in auth_uid integer) returns any
+{
+  declare ospath, name, fullname, top_davpath varchar;
+  declare stale_files, files, stale_dirs, dirs, res any;
+  declare ctr, len integer;
+  declare tmp, mimetype, ft_mode varchar;
+  declare cr_time, mod_time datetime;
+  declare puid, pgid, flen, rc, parent_c_id, r_id integer;
+  -- dbg_obj_princ (&#39;Gallery_DAV_DIR_LIST (&#39;, detcol_id, path_parts, detcol_path, name_mask, recursive, auth_uid, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  top_davpath := DAV_CONCAT_PATH (detcol_path, path_parts);
+  whenever sqlstate &#39;39000&#39; goto no_dir;
+  dirs := sys_dirlist (ospath, 0);
+  parent_c_id := WS.WS.HOSTFS_FIND_COL (ospath);
+  if (parent_c_id is null)
+    select VECTOR_AGG (COL_FULL_PATH) into stale_dirs from WS.WS.HOSTFS_COL where COL_PARENT_ID is null and 0 = position (COL_NAME, dirs);
+  else
+    select VECTOR_AGG (COL_FULL_PATH) into stale_dirs from WS.WS.HOSTFS_COL where COL_PARENT_ID = parent_c_id and 0 = position (COL_NAME, dirs);
+  foreach (varchar stale_fullname in stale_dirs) do
+    WS.WS.HOSTFS_COL_DISAPPEARS (stale_fullname);
+  puid := http_dav_uid();
+  pgid := coalesce (
+    ( select G_ID from WS.WS.SYS_DAV_GROUP
+      where G_NAME = &#39;Gallery_&#39; || coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID = detcol_id and COL_DET=&#39;Gallery&#39;), &#39;&#39;)
+      ), puid+1);
+  vectorbld_init (res);
+  len := length (dirs);
+  ctr := 0;
+  while (ctr &lt; len)
+    {
+      name := dirs [ctr];
+      if ((name &lt;&gt; &#39;.&#39;) and (name &lt;&gt; &#39;..&#39;))
+        {
+          fullname := DAV_CONCAT_PATH (ospath, name);
+          -- dbg_obj_princ (&#39;Gallery_DAV_DIR_LIST makes &#39;, fullname);
+          rc := WS.WS.HOSTFS_PATH_STAT (fullname, flen, cr_time, mod_time);
+          if (rc &lt; 0)
+            {
+              WS.WS.HOSTFS_COL_DISAPPEARS (fullname);
+            }
+          else
+            {
+              vectorbld_acc (res, vector (
+                DAV_CONCAT_PATH (top_davpath, name) || &#39;/&#39;, &#39;C&#39;,
+                flen,
+                mod_time,
+                vector (UNAME&#39;Gallery&#39;, detcol_id, fullname),
+                &#39;110100000RR&#39;, pgid, puid,
+                cr_time,
+                &#39;dav/unix-directory&#39;,
+                name ) );
+              if (recursive &gt; 0)
+                vectorbld_concat_acc (res,
+                  &quot;Gallery_DAV_DIR_LIST&quot; (detcol_id,
+                  vector_concat (subseq (path_parts, 0, length (path_parts)-1), vector (name, &#39;&#39;)),
+                  concat (DAV_CONCAT_PATH (detcol_path, name), &#39;/&#39;), name_mask, recursive, auth_uid) );
+            }
+        }
+      ctr := ctr + 1;
+    }
+  files := sys_dirlist (ospath, 1);
+  if (parent_c_id is null)
+    select VECTOR_AGG (RES_NAME) into stale_files from WS.WS.HOSTFS_RES where RES_COL is null and 0 = position (RES_NAME, files);
+  else
+    select VECTOR_AGG (RES_NAME) into stale_files from WS.WS.HOSTFS_RES where RES_COL = parent_c_id and 0 = position (RES_NAME, files);
+  foreach (varchar stale_name in stale_files) do
+    {
+      r_id := coalesce ((select RES_ID from WS.WS.HOSTFS_RES where RES_COL = parent_c_id and RES_NAME = stale_name));
+      delete from WS.WS.HOSTFS_RES_META where RESM_ID = r_id;
+      delete from WS.WS.HOSTFS_RES_CACHE where RESC_ID = r_id;
+      delete from WS.WS.HOSTFS_RES where RES_ID = r_id;
+    }
+  len := length (files);
+  ctr := 0;
+  while (ctr &lt; len)
+    {
+      name := files [ctr];
+      fullname := DAV_CONCAT_PATH (ospath, name);
+      rc := WS.WS.HOSTFS_PATH_STAT (fullname, flen, cr_time, mod_time);
+      if (rc &lt; 0)
+        {
+          delete from WS.WS.HOSTFS_RES_META where RESM_ID = r_id;
+          delete from WS.WS.HOSTFS_RES_CACHE where RESC_ID = r_id;
+          delete from WS.WS.HOSTFS_RES where RES_ID = r_id;
+        }
+      else
+        {
+          WS.WS.HOSTFS_READ_TYPEINFO (fullname, mimetype, ft_mode);
+          WS.WS.HOSTFS_HANDLE_RES_SCAN (fullname, parent_c_id, flen, cr_time, mod_time, mimetype, ft_mode);
+          if (name like name_mask)
+            {
+              -- dbg_obj_princ (&#39;Gallery_DAV_DIR_LIST makes &#39;, fullname);
+              vectorbld_acc (res, vector (
+                DAV_CONCAT_PATH (top_davpath, name), &#39;R&#39;,
+                flen,
+                mod_time,
+                vector (UNAME&#39;Gallery&#39;, detcol_id, fullname),
+                &#39;110100000RR&#39;, pgid, puid,
+                cr_time,
+                mimetype,
+                name ) );
+            }
+         }
+      ctr := ctr + 1;
+    }
+  update WS.WS.HOSTFS_COL set COL_MOD_TIME = now() where COL_ID = parent_c_id and COL_MOD_TIME &lt; now();
+  vectorbld_final (res);
+  -- dbg_obj_princ (&#39;Gallery_DAV_DIR_LIST returns &#39;, res);
+  return res;
+
+no_dir:
+  WS.WS.HOSTFS_COL_DISAPPEARS (ospath);
+  return vector();
+}
+;
+
+
+create function &quot;Gallery_DAV_DIR_FILTER&quot; (in detcol_id any, in path_parts any, in detcol_path varchar, in compilation varchar, in recursive integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_DIR_FILTER (&#39;, detcol_id, path_parts, detcol_path, compilation, recursive, auth_uid, &#39;)&#39;);
+  return vector ();
+}
+;
+
+
+create function &quot;Gallery_DAV_SEARCH_ID&quot; (in detcol_id any, in path_parts any, in what char(1)) returns any
+{
+  declare ospath, stat varchar;
+  -- dbg_obj_princ (&#39;Gallery_DAV_SEARCH_ID (&#39;, detcol_id, path_parts, what, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  stat := file_stat (ospath, 2);
+  if (not isstring (stat))
+    {
+      -- dbg_obj_princ (&#39;ospath=&#39;,ospath,&#39;, stat=&#39;,stat, &#39;, stat is not a string&#39;);
+      WS.WS.HOSTFS_COL_DISAPPEARS (ospath);
+      WS.WS.HOSTFS_RES_DISAPPEARS (ospath);
+      return -1;
+    }
+  if (what = &#39;R&#39;)
+    {
+      if (0 = bit_and (32768, cast (stat as integer)))
+        {
+          -- dbg_obj_princ (&#39;ospath=&#39;,ospath,&#39;, stat=&#39;,stat, &#39;, stat is not a resource&#39;);
+          WS.WS.HOSTFS_RES_DISAPPEARS (ospath);
+          return -1;
+        }
+    }
+  else -- what = &#39;C&#39;
+    {
+      if (0 = bit_and (16384, cast (stat as integer)))
+        {
+          -- dbg_obj_princ (&#39;ospath=&#39;,ospath,&#39;, stat=&#39;,stat, &#39;, stat is not a collection&#39;);
+          WS.WS.HOSTFS_COL_DISAPPEARS (ospath);
+          return -1;
+        }
+    }
+  -- dbg_obj_princ (&#39;ospath=&#39;,ospath,&#39;, stat=&#39;,stat, &#39;, hit of type &#39;, what);
+  return vector (UNAME&#39;Gallery&#39;, detcol_id, ospath);
+}
+;
+
+create function &quot;Gallery_DAV_SEARCH_PATH&quot; (in id any, in what char(1)) returns any
+{
+  declare ospath varchar;
+  declare slash_pos, detcol_fullpath integer;
+  -- dbg_obj_princ (&#39;Gallery_DAV_SEARCH_PATH (&#39;, id, what, &#39;)&#39;);
+  ospath := id[2];
+  slash_pos := strchr (ospath, &#39;/&#39;);
+  detcol_fullpath := coalesce ((select WS.WS.COL_PATH (COL_ID) from WS.WS.SYS_DAV_COL where COL_ID = id[1] and COL_DET=&#39;Gallery&#39;));
+  if (detcol_fullpath is null)
+    return -23;
+  if (not isstring (file_stat (ospath)))
+    {
+      WS.WS.HOSTFS_COL_DISAPPEARS (ospath);
+      WS.WS.HOSTFS_RES_DISAPPEARS (ospath);
+      return -23;
+    }
+  return detcol_fullpath || subseq (ospath, slash_pos + 1);
+}
+;
+
+create function &quot;Gallery_DAV_RES_UPLOAD_COPY&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite integer, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  declare ospath varchar;
+  -- dbg_obj_princ (&#39;Gallery_DAV_RES_UPLOAD_COPY (&#39;, detcol_id, path_parts, source_id, what, overwrite, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  if (what = &#39;R&#39;)
+    {
+      declare cnt any;
+      declare mime_type varchar;
+      declare rc integer;
+      rc := DAV_RES_CONTENT_INT (source_id, cnt, mime_type, 0, 0);
+      if (rc &lt; 0)
+        {
+          -- dbg_obj_princ (&#39;DAV_RES_CONTENT_INT (&#39;, source_id, cnt, mime_type, 0, 0, &#39;) returns &#39;, rc);
+          return rc;
+        }
+      string_to_file (ospath, case (__tag (cnt)) when 126 then blob_to_string (cnt) else cnt end, -2);
+      rc := WS.WS.HOSTFS_TOUCH_RES (ospath);
+      if (rc &lt; 0)
+        return -28;
+      return vector (UNAME&#39;Gallery&#39;, detcol_id, ospath);
+    }
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_RES_UPLOAD_MOVE&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite integer, in auth_uid integer) returns any
+{
+  declare ospath, src_path varchar;
+  -- dbg_obj_princ (&#39;Gallery_DAV_RES_UPLOAD_MOVE (&#39;, detcol_id, path_parts, source_id, what, overwrite, auth_uid, &#39;)&#39;);
+  ospath := DAV_CONCAT_PATH (&quot;Gallery_ID_TO_OSPATH&quot; (detcol_id), path_parts);
+  if (what = &#39;R&#39;)
+    {
+      declare cnt any;
+      declare mime_type varchar;
+      declare rc integer;
+      rc := DAV_RES_CONTENT_INT (source_id, cnt, mime_type, 0, 0);
+      if (rc &lt; 0)
+        {
+          -- dbg_obj_princ (&#39;DAV_RES_CONTENT_INT (&#39;, source_id, cnt, mime_type, 0, 0, &#39;) returns &#39;, rc);
+          return rc;
+        }
+      string_to_file (ospath, case (__tag (cnt)) when 126 then blob_to_string (cnt) else cnt end, -2);
+      rc := WS.WS.HOSTFS_TOUCH_RES (ospath);
+      if (rc &lt; 0)
+        return -28;
+      src_path := DAV_SEARCH_PATH (source_id, &#39;R&#39;);
+      if (src_path is not null)
+        DAV_DELETE_INT (src_path, 1, null, null, 0);
+      return vector (UNAME&#39;Gallery&#39;, detcol_id, ospath);
+    }
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_RES_CONTENT&quot; (in id any, inout content any, out type varchar, in content_mode integer) returns integer
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_RES_CONTENT (&#39;, id, &#39;, [content], [type], &#39;, content_mode, &#39;)&#39;);
+  whenever sqlstate &#39;*&#39; goto no_res;
+  declare ft_mode varchar;
+  if ((content_mode = 0) or (content_mode = 2))
+    content := file_to_string (id[2]);
+  else if (content_mode = 1)
+    file_append_to_string_output (id[2], content);
+  else if (content_mode = 3)
+    http_file (id[2]);
+  WS.WS.HOSTFS_READ_TYPEINFO (id[2], type, ft_mode);
+  return 0;
+
+no_res:
+  -- dbg_obj_princ (&#39;Gallery_DAV_RES_CONTENT (&#39;, id, &#39;, [content], [type], &#39;, content_mode, &#39;) caught an error &#39;, __SQL_STATE, __SQL_MESSAGE);
+  WS.WS.HOSTFS_RES_DISAPPEARS (id[2]);
+  return -1;
+}
+;
+
+create function &quot;Gallery_DAV_SYMLINK&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite integer, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_SYMLINK (&#39;, detcol_id, path_parts, source_id, overwrite, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_LOCK&quot; (in path any, in id any, in type char(1), inout locktype varchar, inout scope varchar, in token varchar, inout owner_name varchar, inout owned_tokens varchar, in depth varchar, in timeout_sec integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_LOCK (&#39;, path, id, type, locktype, scope, token, owner_name, owned_tokens, depth, timeout_sec, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+create function &quot;Gallery_DAV_UNLOCK&quot; (in id any, in type char(1), in token varchar, in auth_uid integer)
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_UNLOCK (&#39;, id, type, token, auth_uid, &#39;)&#39;);
+  return -27;
+}
+;
+
+create function &quot;Gallery_DAV_IS_LOCKED&quot; (inout id any, inout type char(1), in owned_tokens varchar) returns integer
+{
+  declare rc integer;
+  declare orig_id any;
+  declare orig_type char(1);
+  -- dbg_obj_princ (&#39;Gallery_DAV_IS_LOCKED (&#39;, id, type, owned_tokens, &#39;)&#39;);
+  orig_id := id;
+  id := orig_id[1];
+  orig_type := type;
+  type := &#39;C&#39;;
+  rc := DAV_IS_LOCKED_INT (id, type, owned_tokens);
+  if (rc &lt;&gt; 0)
+    return rc;
+  id := orig_id;
+  type := orig_type;
+  return 0;
+}
+;
+
+create function &quot;Gallery_DAV_LIST_LOCKS&quot; (in id any, in type char(1), in recursive integer) returns any
+{
+  -- dbg_obj_princ (&#39;Gallery_DAV_LIST_LOCKS&quot; (&#39;, id, type, recursive);
+  return vector ();
+}
+;
+
+create procedure &quot;Gallery_CF_LIST_PROP_DISTVALS&quot; (in detcol_id integer, in cfc_id integer, in rfc_spath varchar, inout rfc_list_cond any, in schema_uri varchar, inout filter_data any, inout distval_dict any, in auth_uid integer)
+{
+  declare topcol_name varchar;
+  declare topcol_id integer;
+  declare filter_length, p0_id, p1_id, p2_id, p3_id, p4_id, res0_id, res1_id, res2_id, res3_id, res4_id, res_last_id, res_id_max integer;
+  declare plast_id integer;
+  declare p0_val, p1_val, p2_val, p3_val, p4_val, v_last, v_max varchar;
+  --declare auth_gid integer;
+  --declare acl_bits any
+  declare hit_ids any;
+  declare c_last1 cursor for select             HRI_CATVALUE from WS.WS.HOSTFS_RDF_INVERSE
+    where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = plast_id and (v_max is null or HRI_CATVALUE &gt; v_max)
+--    No per-resource security for a while, so there&#39;s nothing like this: and
+--      exists (select top 1 1 from WS.WS.SYS_DAV_RES where RES_ID = HRI_RES_ID and case (DAV_CHECK_PERM (RES_PERMS, &#39;1__&#39;, auth_uid, auth_gid, RES_GROUP, RES_OWNER)) when 0 then WS.WS.ACL_IS_GRANTED (RES_ACL, auth_uid, acl_bits) else 1 end)
+    ;
+  declare c_last2 cursor for select HRI_RES_ID, HRI_CATVALUE from WS.WS.HOSTFS_RDF_INVERSE
+    where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = plast_id and (v_max is null or HRI_CATVALUE &gt; v_max)
+--    No per-resource security for a while, so there&#39;s nothing like this:and
+--      exists (select top 1 1 from WS.WS.SYS_DAV_RES where RES_ID = HRI_RES_ID and case (DAV_CHECK_PERM (RES_PERMS, &#39;1__&#39;, auth_uid, auth_gid, RES_GROUP, RES_OWNER)) when 0 then WS.WS.ACL_IS_GRANTED (RES_ACL, auth_uid, acl_bits) else 1 end)
+    ;
+  declare c0 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p0_id and HRI_CATVALUE = p0_val and HRI_RES_ID &gt;= res_id_max;
+  declare c1 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p1_id and HRI_CATVALUE = p1_val and HRI_RES_ID &gt;= res_id_max;
+  declare c2 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p2_id and HRI_CATVALUE = p2_val and HRI_RES_ID &gt;= res_id_max;
+  declare c3 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p3_id and HRI_CATVALUE = p3_val and HRI_RES_ID &gt;= res_id_max;
+  declare c4 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p4_id and HRI_CATVALUE = p4_val and HRI_RES_ID &gt;= res_id_max;
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS (&#39;, detcol_id, cfc_id, rfc_spath, rfc_list_cond, schema_uri, filter_data, auth_uid, &#39;)&#39;);
+  topcol_name := coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID = detcol_id and COL_DET = &#39;Gallery&#39;));
+  if (topcol_name is null)
+    {
+      -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: can not find the specified mount point&#39;, detcol_id);
+      return;
+    }
+  topcol_id := coalesce ((select COL_ID from WS.WS.HOSTFS_COL where COL_PARENT_ID is null and COL_NAME = topcol_name), WS.WS.HOSTFS_FIND_COL (topcol_name));
+  filter_length := length (filter_data);
+  plast_id := filter_data [filter_length - 1];
+  res_id_max := 0;
+  v_max := null;
+  --auth_gid := coalesce ((select U_GROUP from WS.WS.SYS_DAV_USER where U_ID = auth_uid), 0);
+  --acl_bits := DAV_REQ_CHARS_TO_BITMASK (&#39;1__&#39;);
+
+  if (filter_length = 2) -- distinct propvals with no filtering in front -- a special case
+    {
+      whenever not found goto nf_c_last1;
+      -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: distinct propvals of &#39;, plast_id, &#39; in &#39;, cfc_id);
+      open c_last1 (prefetch 1);
+      while (1)
+        {
+          fetch c_last1 into v_last;
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: v_last is &#39;, v_last, &#39; v_max is &#39;, v_max);
+          if (v_max is null or (v_last &gt; v_max))
+            {
+              v_max := v_last; -- note that vectorbld_acc() will destroy the value of v_last so this assignment should be before vectorbld_acc().
+              dict_put (distval_dict, v_last, 1);
+            }
+        }
+nf_c_last1:
+      close c_last1;
+      return;
+    }
+
+  res0_id := 0;
+  res1_id := 0;
+  res2_id := 0;
+  res3_id := 0;
+  res4_id := 0;
+  hit_ids := dict_new ();
+
+  p0_id := filter_data [1];
+  p0_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [2]);
+  if (filter_length = 6) -- distinct propvals with 1 fixed property
+    {
+      whenever not found goto get_distincts_0;
+      open c0 (prefetch 1);
+      while (1)
+        {
+          while (res0_id &lt;= res_id_max)
+            fetch c0 into res0_id;
+          res_id_max := res0_id;
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: put hit &#39;, res_id_max);
+          dict_put (hit_ids, res_id_max, 1);
+        }
+    }
+
+  p1_id := filter_data [4+1];
+  p1_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [4+2]);
+  if (filter_length = 10) -- distinct propvals with 2 fixed property
+    {
+      whenever not found goto get_distincts_1;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      while (1)
+        {
+          while (res0_id &lt;= res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: put hit &#39;, res_id_max);
+              dict_put (hit_ids, res_id_max, 1);
+            }
+          else
+            res_id_max := res_id_max + 1;
+
+        }
+    }
+
+  p2_id := filter_data [8+1];
+  p2_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [8+2]);
+  if (filter_length = 14) -- distinct propvals with 3 fixed property
+    {
+      whenever not found goto get_distincts_2;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      open c2 (prefetch 1);
+      while (1)
+        {
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: res_id_max is &#39;, res_id_max);
+--        res_id_max := 0;
+          while (res0_id &lt;= res_id_max) fetch c0 into res0_id;
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: res0_id is &#39;, res0_id);
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: res1_id is &#39;, res1_id);
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res2_id &lt; res_id_max) fetch c2 into res2_id;
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: res2_id is &#39;, res2_id);
+          if (res2_id &gt; res_id_max) res_id_max := res2_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max) and (res2_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: put hit &#39;, res_id_max);
+              dict_put (hit_ids, res_id_max, 1);
+            }
+        }
+    }
+
+  p3_id := filter_data [12+1];
+  p3_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [12+2]);
+  if (filter_length = 18) -- distinct propvals with 4 fixed property
+    {
+      whenever not found goto get_distincts_3;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      open c2 (prefetch 1);
+      open c3 (prefetch 1);
+      while (1)
+        {
+          while (res0_id &lt;= res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res2_id &lt; res_id_max) fetch c2 into res2_id;
+          if (res2_id &gt; res_id_max) res_id_max := res2_id;
+          while (res3_id &lt; res_id_max) fetch c3 into res3_id;
+          if (res3_id &gt; res_id_max) res_id_max := res3_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max) and (res2_id = res_id_max) and (res3_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: put hit &#39;, res_id_max);
+              dict_put (hit_ids, res_id_max, 1);
+            }
+        }
+    }
+
+  p4_id := filter_data [16+1];
+  p4_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [16+2]);
+  if (filter_length = 22) -- distinct propvals with 5 fixed property
+    {
+      whenever not found goto get_distincts_4;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      open c2 (prefetch 1);
+      open c3 (prefetch 1);
+      open c4 (prefetch 1);
+      while (1)
+        {
+          while (res0_id &lt;= res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res2_id &lt; res_id_max) fetch c2 into res2_id;
+          if (res2_id &gt; res_id_max) res_id_max := res2_id;
+          while (res3_id &lt; res_id_max) fetch c3 into res3_id;
+          if (res3_id &gt; res_id_max) res_id_max := res3_id;
+          while (res4_id &lt; res_id_max) fetch c4 into res4_id;
+          if (res4_id &gt; res_id_max) res_id_max := res4_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max) and (res2_id = res_id_max) and (res3_id = res_id_max) and (res4_id = res_id_max))
+            dict_put (hit_ids, res_id_max, 1);
+        }
+    }
+
+get_distincts_4:
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: close c4&#39;);
+  close c4;
+get_distincts_3:
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: close c3&#39;);
+  close c3;
+get_distincts_2:
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: close c2&#39;);
+  close c2;
+get_distincts_1:
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: close c1&#39;);
+  close c1;
+get_distincts_0:
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: close c0&#39;);
+  close c0;
+
+  -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: now search in all values of &#39;, plast_id);
+  whenever not found goto nf_c_last2;
+  open c_last2 (prefetch 1);
+  while (1)
+    {
+      fetch c_last2 into res_last_id, v_last;
+      if (v_max is null or (v_last &gt; v_max))
+        {
+          -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: next value &#39;, v_last, &#39; at &#39;, res_last_id);
+          if (dict_get (hit_ids, res_last_id, 0))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_LIST_PROP_DISTVALS: full hit at &#39;, res_last_id);
+              v_max := v_last; -- note that vectorbld_acc() will destroy the value of v_last so this assignment should be before vectorbld_acc().
+              dict_put (distval_dict, v_last, 1);
+            }
+        }
+    }
+nf_c_last2:
+      close c_last2;
+}
+;
+
+
+create function &quot;Gallery_CF_GET_RDF_HITS&quot; (in detcol_id integer, in cfc_id integer, in rfc_spath varchar, inout rfc_list_cond any, in schema_uri varchar, inout filter_data any, in detcol_path varchar, in make_diritems integer, in auth_uid integer) returns any
+{
+  declare topcol_name varchar;
+  declare topcol_id, acc_ctr, acc_len integer;
+  declare filter_length, p0_id, p1_id, p2_id, p3_id, p4_id, res0_id, res1_id, res2_id, res3_id, res4_id, res_id_max integer;
+  declare acc any;
+  declare p0_val, p1_val, p2_val, p3_val, p4_val varchar;
+  --declare acl_bits any;
+  --declare auth_gid integer;
+  declare c0 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p0_id and HRI_CATVALUE = p0_val and HRI_RES_ID &gt;= res_id_max
+--    No per-resource security for a while, so there&#39;s nothing like this: and
+--    exists (select top 1 1 from WS.WS.SYS_DAV_RES where RES_ID = HRI_RES_ID and case (DAV_CHECK_PERM (RES_PERMS, &#39;1__&#39;, auth_uid, auth_gid, RES_GROUP, RES_OWNER)) when 0 then WS.WS.ACL_IS_GRANTED (RES_ACL, auth_uid, acl_bits) else 1 end)
+    ;
+  declare c1 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p1_id and HRI_CATVALUE = p1_val and HRI_RES_ID &gt;= res_id_max;
+  declare c2 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p2_id and HRI_CATVALUE = p2_val and HRI_RES_ID &gt;= res_id_max;
+  declare c3 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p3_id and HRI_CATVALUE = p3_val and HRI_RES_ID &gt;= res_id_max;
+  declare c4 cursor for select HRI_RES_ID from WS.WS.HOSTFS_RDF_INVERSE where HRI_TOPCOL_ID = topcol_id and HRI_PROP_CATID = p4_id and HRI_CATVALUE = p4_val and HRI_RES_ID &gt;= res_id_max;
+  -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS (&#39;, detcol_id, cfc_id, rfc_spath, rfc_list_cond, schema_uri, filter_data, make_diritems, auth_uid, &#39;)&#39;);
+  topcol_name := coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID = detcol_id and COL_DET = &#39;Gallery&#39;));
+  if (topcol_name is null)
+    {
+      -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS: can not find the specified mount point&#39;, detcol_id);
+      return vector ();
+    }
+  topcol_id := coalesce ((select COL_ID from WS.WS.HOSTFS_COL where COL_PARENT_ID is null and COL_NAME = topcol_name), WS.WS.HOSTFS_FIND_COL (topcol_name));
+  filter_length := length (filter_data);
+  vectorbld_init (acc);
+
+  res0_id := -1;
+  res1_id := -1;
+  res2_id := -1;
+  res3_id := -1;
+  res4_id := -1;
+  res_id_max := 0;
+
+  --auth_gid := coalesce ((select U_GROUP from WS.WS.SYS_DAV_USER where U_ID = auth_uid), 0);
+  --acl_bits := DAV_REQ_CHARS_TO_BITMASK (&#39;1__&#39;);
+
+  p0_id := filter_data [1];
+  p0_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [2]);
+  if (filter_length = 4) -- resources with 1 fixed property
+    {
+      whenever not found goto get_distincts_0;
+      open c0 (prefetch 1);
+      while (1)
+        {
+          while (res0_id &lt;= res_id_max)
+            fetch c0 into res0_id;
+          res_id_max := res0_id;
+          -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS: put hit &#39;, res_id_max);
+          vectorbld_acc (acc, res0_id);
+        }
+    }
+
+  p1_id := filter_data [4+1];
+  p1_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [4+2]);
+  if (filter_length = 8) -- resources with 2 fixed properties
+    {
+      whenever not found goto get_distincts_1;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      while (1)
+        {
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res0_id &lt; res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS: put hit &#39;, res_id_max);
+              vectorbld_acc (acc, res0_id);
+              res_id_max := res_id_max + 1;
+            }
+        }
+    }
+
+  p2_id := filter_data [8+1];
+  p2_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [8+2]);
+  if (filter_length = 12) -- resources with 3 fixed properties
+    {
+      whenever not found goto get_distincts_2;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      open c2 (prefetch 1);
+      while (1)
+        {
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res2_id &lt; res_id_max) fetch c2 into res2_id;
+          if (res2_id &gt; res_id_max) res_id_max := res2_id;
+          while (res0_id &lt; res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max) and (res2_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS_RES_IDS: put hit &#39;, res_id_max);
+              vectorbld_acc (acc, res0_id);
+              res_id_max := res_id_max + 1;
+            }
+        }
+    }
+
+  p3_id := filter_data [12+1];
+  p3_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [12+2]);
+  if (filter_length = 16) -- resources with 4 fixed properties
+    {
+      whenever not found goto get_distincts_3;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      open c2 (prefetch 1);
+      open c3 (prefetch 1);
+      while (1)
+        {
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res2_id &lt; res_id_max) fetch c2 into res2_id;
+          if (res2_id &gt; res_id_max) res_id_max := res2_id;
+          while (res3_id &lt; res_id_max) fetch c3 into res3_id;
+          if (res3_id &gt; res_id_max) res_id_max := res3_id;
+          while (res0_id &lt; res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max) and (res2_id = res_id_max) and (res3_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS: put hit &#39;, res_id_max);
+              vectorbld_acc (acc, res0_id);
+              res_id_max := res_id_max + 1;
+            }
+        }
+    }
+
+  p4_id := filter_data [16+1];
+  p4_val := &quot;CatFilter_ENCODE_CATVALUE&quot; (filter_data [16+2]);
+  if (filter_length = 20) -- resources with 5 fixed properties
+    {
+      whenever not found goto get_distincts_4;
+      open c0 (prefetch 1);
+      open c1 (prefetch 1);
+      open c2 (prefetch 1);
+      open c3 (prefetch 1);
+      open c4 (prefetch 1);
+      while (1)
+        {
+          while (res1_id &lt; res_id_max) fetch c1 into res1_id;
+          if (res1_id &gt; res_id_max) res_id_max := res1_id;
+          while (res2_id &lt; res_id_max) fetch c2 into res2_id;
+          if (res2_id &gt; res_id_max) res_id_max := res2_id;
+          while (res3_id &lt; res_id_max) fetch c3 into res3_id;
+          if (res3_id &gt; res_id_max) res_id_max := res3_id;
+          while (res4_id &lt; res_id_max) fetch c4 into res4_id;
+          if (res4_id &gt; res_id_max) res_id_max := res4_id;
+          while (res0_id &lt; res_id_max) fetch c0 into res0_id;
+          if (res0_id &gt; res_id_max) res_id_max := res0_id;
+          if ((res0_id = res_id_max) and (res1_id = res_id_max) and (res2_id = res_id_max) and (res3_id = res_id_max) and (res4_id = res_id_max))
+            {
+              -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS: put hit &#39;, res_id_max);
+              vectorbld_acc (acc, res0_id);
+              res_id_max := res_id_max + 1;
+            }
+        }
+    }
+
+get_distincts_4:
+  close c4;
+get_distincts_3:
+  close c3;
+get_distincts_2:
+  close c2;
+get_distincts_1:
+  close c1;
+get_distincts_0:
+  close c0;
+
+finalize:
+  vectorbld_final (acc);
+  acc_len := length (acc);
+  acc_ctr := 0;
+  while (acc_ctr &lt; acc_len)
+    {
+      declare r_id integer;
+      declare fullname varchar;
+      declare full_id, diritm any;
+      r_id := acc [acc_ctr];
+      fullname := coalesce ((select top 1 COL_FULL_PATH || RES_NAME from WS.WS.HOSTFS_RES join WS.WS.HOSTFS_COL on (RES_COL = COL_ID) where RES_ID = r_id), &#39;\377\377\377dead&#39;);
+      full_id := vector (UNAME&#39;Gallery&#39;, detcol_id, fullname);
+      if (make_diritems = 1)
+        {
+          diritm := &quot;Gallery_DAV_DIR_SINGLE&quot; (full_id, &#39;R&#39;, &#39;(fake path)&#39;, auth_uid);
+          if (DAV_HIDE_ERROR (diritm) is not null)
+            {
+              diritm [0] := DAV_CONCAT_PATH (detcol_path, diritm[10]); -- now we can remove the fake path.
+              acc [acc_ctr] := diritm;
+              acc_ctr := acc_ctr + 1;
+            }
+          else --collision in the air: someone just removed the resource from the disk :(
+            {
+              if (acc_len &gt; 1)
+                {
+                  acc [acc_ctr] := acc [acc_len - 1];
+                  acc_len := acc_len - 1;
+                  -- no need in acc_ctr := acc_ctr + 1;
+                }
+            }
+        }
+      else
+        {
+          acc [acc_ctr] := full_id;
+          acc_ctr := acc_ctr + 1;
+        }
+    }
+  if (acc_len &lt; length (acc)) -- There were collisions in the air
+    {
+      acc := subseq (acc, 0, acc_len);
+    }
+  -- dbg_obj_princ (&#39;Gallery_CF_GET_RDF_HITS (&#39;, detcol_id, cfc_id, rfc_spath, rfc_list_cond, schema_uri, filter_data, make_diritems, auth_uid, &#39;) returns &#39;, acc);
+  return acc;
+}
+;
+
+
+create procedure &quot;Gallery_RF_ID2SUFFIX&quot; (in id any, in what char(1))
+{
+  if (what=&#39;C&#39;)
+    {
+      return sprintf (&#39;HostDir-%d-%d&#39;,
+        id[1], WS.WS.HOSTFS_FIND_COL (id[2]));
+    }
+  if (what=&#39;R&#39;)
+    {
+      declare full_path varchar;
+      declare len, slash_pos integer;
+      declare r_id, c_id integer;
+      full_path := id[2];
+      len := length (full_path);
+      if ((len = 0) or (full_path[len-1] = 47))
+        r_id := 0; -- There&#39;s no resource with empty name, for sure
+      else
+        {
+          slash_pos := strrchr (full_path, &#39;/&#39;);
+          if (c_id is null)
+            {
+              if (slash_pos is null)
+                c_id := WS.WS.HOSTFS_FIND_COL (&#39;&#39;);
+              else
+                c_id := WS.WS.HOSTFS_FIND_COL (subseq (full_path, 0, slash_pos));
+            }
+          r_id := coalesce ((select RES_ID from WS.WS.HOSTFS_RES where RES_NAME = subseq (full_path, slash_pos + 1) and RES_COL = c_id), 0);
+        }
+      return sprintf (&#39;HostFile-%d-%d&#39;, id[1], r_id);
+    }
+  signal (&#39;OBLOM&#39;, &#39;Invalid arguments for Gallery_RF_ID2SUFFIX&#39;);
+}
+;
+
+create procedure &quot;HostFile_RF_SUFFIX2ID&quot; (in suffix varchar, in what char(1))
+{
+  declare pairs any;
+  declare r_id varchar;
+  declare detcol_id integer;
+  if (&#39;R&#39; &lt;&gt; what)
+    return null;
+  pairs := regexp_parse (&#39;^([1-9][0-9]*)-([1-9][0-9]*)\044&#39;, suffix, 0);
+  if (pairs is null)
+    {
+      -- dbg_obj_princ (&#39;HostFile_RF_SUFFIX2ID (&#39;, suffix, &#39;) failed to parse the argument&#39;);
+      return null;
+    }
+  detcol_id := cast (subseq (suffix, pairs[2], pairs[3]) as integer);
+  whenever not found goto oblom;
+  select vector (UNAME&#39;Gallery&#39;, detcol_id, COL_FULL_PATH || RES_NAME) into r_id
+  from WS.WS.HOSTFS_RES join WS.WS.HOSTFS_COL on (RES_COL = COL_ID)
+  where RES_ID = cast (subseq (suffix, pairs[4], pairs[5]) as integer);
+  return r_id;
+oblom:
+  return null;
+}
+;
+
+create procedure &quot;HostDir_RF_SUFFIX2ID&quot; (in suffix varchar, in what char(1))
+{
+  declare pairs any;
+  declare c_id varchar;
+  declare detcol_id integer;
+  if (&#39;C&#39; &lt;&gt; what)
+    return null;
+  pairs := regexp_parse (&#39;^([1-9][0-9]*)-([1-9][0-9]*)\044&#39;, suffix, 0);
+  if (pairs is null)
+    {
+      -- dbg_obj_princ (&#39;HostDir_RF_SUFFIX2ID (&#39;, suffix, &#39;) failed to parse the argument&#39;);
+      return null;
+    }
+  detcol_id := cast (subseq (suffix, pairs[2], pairs[3]) as integer);
+  whenever not found goto oblom;
+  select vector (UNAME&#39;Gallery&#39;, detcol_id, COL_FULL_PATH) into c_id
+    from WS.WS.HOSTFS_RES join WS.WS.HOSTFS_COL on (RES_COL = COL_ID);
+  return c_id;
+oblom:
+  return NULL;
+}
+;
+
+</pre></div></body></html>

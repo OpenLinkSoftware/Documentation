@@ -1,0 +1,280 @@
+<docbook><section><title>VAL_SpongerACLs</title><title> Sponger ACL Rules</title> Sponger ACL Rules
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>The Virtuoso Sponger can be controlled via ACLs (Access Control Lists); basically, rules which define who is allowed to Sponge and who is not.
+ It is also possible to restrict use of particular Sponger Cartridges.
+ The ACL system is optional, and is enabled using a SPARQL pragma and the ACL Scope system as described below.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">ACL Checking Layers</bridgehead>
+<para>The Sponger can be accessed via several routes.
+ These are depicted below.
+ Sponging is provided as an optional service utilized by other service endpoints layered on top.
+ For sponging to occur, the service layers above the Sponger, and also the graph security settings (both enforced by VAL and the RDF Graph Security System), must all grant sponge permission.</para>
+<figure><graphic fileref="VAL_SpongerACLs/acl_checking_layers.png" /></figure><para>Having sponge permission means that sponging <emphasis>might</emphasis> occur (i.e.
+ sponge attempts will not be blocked by VAL); it doesn&#39;t guarantee that sponging <emphasis>will</emphasis> occur.
+ Whether sponging is done depends on whether the Sponger cache for the target data source URI is stale (as determined by the Sponger cache invalidation rules) and whether a re-sponge is forced through a Sponger option (the re-sponge option depends on which service is used to invoke sponging: /about, /describe or SPARQL).</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Scopes Applicable to the Sponger</bridgehead>
+<para>Two scopes control access to the Sponger: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>oplacl:Query <itemizedlist mark="bullet" spacing="compact"><listitem>Controls access to the Sponger in general and whether a user is able to sponge at all </listitem>
+</itemizedlist></listitem>
+<listitem>oplacl:SpongerCartridges <itemizedlist mark="bullet" spacing="compact"><listitem>Restricts access to particular Sponger cartridges</listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Enabling ACLs for General Sponger Use</bridgehead>
+<para>By default, Sponger ACLs are disabled in all realms.
+ (See also <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_rule_scopes">ACL Scopes in VAL</ulink>.)</para>
+<para> To enable evaluation of SPARQL ACL rules in the default realm (which includes services /sparql, /describe and /about, all of which support sponging) to determine whether the user may Sponge, enable the <ulink url="http://www.openlinksw.com/c/9D2L64WF">oplacl:Query</ulink> scope.
+ This can be done through the Conductor UI or by executing the following SPARQL:</para>
+<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+  WITH  &lt;urn:virtuoso:val:config&gt;
+    DELETE 
+      { oplacl:DefaultRealm  oplacl:hasDisabledAclScope  oplacl:Query }
+    INSERT
+      { oplacl:DefaultRealm  oplacl:hasEnabledAclScope   oplacl:Query }
+;
+</programlisting><para> SPARQL ACLs refer to ACLs which regulate who has which SPARQL permissions (Read, Update, Sponge, List).</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Enabling ACLs for Cartridge-Specific Control</bridgehead>
+<para>By default, as with generic Sponger ACLs, Cartridge ACLs are disabled in all realms.
+ (See also <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_rule_scopes">ACL Scopes in VAL</ulink>.)</para>
+<para>To enable evaluation of ACL rules in the default realm (which includes /sparql and /sponger, among others) for determination of whether the user may Sponge with a particular cartridge, execute the following SPARQL:</para>
+<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+  WITH  &lt;urn:virtuoso:val:config&gt;
+    DELETE
+      { oplacl:DefaultRealm  oplacl:hasDisabledAclScope  oplacl:SpongerCartridges }
+    INSERT
+      { oplacl:DefaultRealm  oplacl:hasEnabledAclScope   oplacl:SpongerCartridges }
+;
+</programlisting><para> Next, enable cartridge ACLs using the Conductor UI.
+ To do so, navigate to the Sponger&#39;s &#39;Configuration&#39; panel under the &#39;Linked Data&#39; &gt; &#39;Sponger&#39; tabs, then select &#39;ABAC&#39; as the cartridge ACL mode.</para>
+<figure><graphic fileref="VAL_SpongerACLs/cartridge_acl_mode_selection.png" /></figure> <para><emphasis>Cartridge ACL mode selection in Conductor</emphasis></para><emphasis>Note:</emphasis> <itemizedlist mark="bullet" spacing="compact"><listitem>Virtuoso supports two types of cartridge ACLs for protecting access to Sponger cartridges - ABAC and RBAC ACLs.
+ ABAC cartridge ACLs are VAL-based, and configured and managed through VAL.
+ RBAC cartridge ACLs are SQL-role-based, and are configured and managed through the Conductor UI&#39;s &#39;Access Control List&#39; panel accessible from the &#39;Linked Data&#39; &gt; &#39;Access Control&#39; tab.
+</listitem>
+<listitem>In the Configuration panel, option &#39;ABAC&#39; is disabled if the VAL VAD isn&#39;t installed.
+ &#39;None&#39; results in no cartridge ACLs of either type being applied.
+ If option &#39;ABAC&#39; is selected, scope oplacl:SpongerCartridges must be enabled for VAL cartridge ACLs to take effect.
+</listitem>
+<listitem>When the Cartridges VAD is first installed, the cartridge ACL mode is initialized to &#39;ABAC&#39; if the VAL VAD is present, or &#39;None&#39; otherwise.
+ Once initialized, any cartridge ACL mode subsequently set through the Conductor UI remains in effect.
+ If the VAL VAD is uninstalled and the cartridge ACL mode is &#39;ABAC&#39;, the mode is reset to &#39;None&#39;.</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Usage</bridgehead>
+<para>Before using the ACL engine, it is important to load the Openlink ACL Ontology into the VAL ACL Schema graph:</para>
+<programlisting>SPARQL
+  LOAD &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+    INTO &lt;urn:virtuoso:val:acl:schema&gt;
+;
+</programlisting><para> For Sponger ACL rules to be enforced by the SPARQL engine, the &quot;<emphasis>get:enforce-acls</emphasis>&quot; pragma must be set.
+ When VAL is installed, /sparql will do this automatically:</para>
+<programlisting>SPARQL 
+  DEFINE  get:enforce-acls  &quot;yes&quot; 
+    SELECT ....
+</programlisting><para>The Rules can be controlled via the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__http__api.html">RESTful VAL ACL API</ulink> or the <ulink url="http://docs.openlinksw.com/val/group__val__acl__module__internal__api.html#ga89b2c77c10c82186ddc0e7b46093123c">Internal VAL API</ulink>.
+Alternatively, one can explicitly add the rules to the private graph matching the realm in which the rules should apply.
+ Given the default realm -- </para>
+<programlisting>http://www.openlinksw.com/ontology/acl#DefaultRealm
+</programlisting><para>-- and default hostname &quot;HOST&quot; the graph IRI would be -- </para>
+<programlisting>http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm
+</programlisting><para>-- and the groups will be stored in named graph -- </para>
+<programlisting>http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm
+</programlisting><para> Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">these graphs can be customized</ulink> for better readability.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> ACL Resources</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Generic Sponger ACL Resource</bridgehead>
+<para>To grant the right to Sponge in general, there is only one resource of importance: <emphasis>urn:virtuoso:access:sparql</emphasis>.
+Whoever has oplacl:Sponge permissions on this virtual resource can sponge in the given realm.
+(See <ulink url="VAL_SparqlACLs">SPARQL and named graph ACLs</ulink> for details).</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Sponger Cartridge ACLs</bridgehead>
+<para>Each Cartridge is described as an RDF resource, and has a URI uniquely identifying it.
+ These URIs must be used in ACL rules governing the use of that specific cartridge.
+ As with generic Sponger access, the access mode is <emphasis>oplacl:Sponge</emphasis>.</para>
+<para>To date, Sponger cartridge URIs are built from a common prefix, <emphasis>http://data.openlinksw.com/oplweb/component/xc_</emphasis>, plus the lowercase internal name of the cartridge.
+ For example, the Wine cartridge has URI <emphasis>http://data.openlinksw.com/oplweb/component/xc_wine</emphasis>.
+ Graph &lt;urn:virtuoso:sponger:cartridges&gt; contains the full list of cartridge URIs.</para>
+<para>There is one special URI, which denotes <emphasis>all installed cartridges</emphasis> in a given Virtuoso instance: <emphasis>http://data.openlinksw.com/oplweb/component/xc_all</emphasis>.</para>
+<para>Be aware that <ulink url="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs">the ACL graphs can be customized</ulink> for better readability.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Sponger ACL Rule Examples</bridgehead>
+<para>In the following examples --</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>The default realm <ulink url="http://www.openlinksw.com/ontology/acl#DefaultRealm">oplacl:DefaultRealm</ulink> is used for creating the ACL resources.</emphasis></listitem>
+</itemizedlist><itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>&quot;HOST&quot; is used as a placeholder for the default hostname of the system the ACL resource are created on.</emphasis></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Generic Sponging ACL Examples</bridgehead>
+<para>See <ulink url="VAL_SparqlACLs">SPARQL and named graph ACLs</ulink> for more examples.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Allow everyone to sponge</bridgehead>
+<programlisting>SPARQL
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT 
+      {
+        &lt;#a1&gt;                    a  acl:Authorization ;
+                        foaf:maker  &lt;http://HOST/dataspace/person/dba#this&gt; ; 
+              oplacl:hasAccessMode  oplacl:Sponge ;
+                      acl:accessTo  &lt;urn:virtuoso:access:sparql&gt; ;
+                    acl:agentClass  foaf:Agent ;
+                   oplacl:hasScope  oplacl:Query ;
+                   oplacl:hasRealm  oplacl:DefaultRealm 
+      };
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Allow user &quot;demo&quot; to grant Sponging permissions</bridgehead>
+<para>By default, only &quot;dba&quot; and administrators can grant sponging permissions.
+ When this rule in in place, user &quot;demo&quot; can create additional ACL rules granting sponging permissions to others.
+</para>
+<programlisting>SPARQL
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#a1&gt;                     a  acl:Authorization ;
+                         foaf:maker  &lt;{ADMIN-IRI}&gt; ;
+               oplacl:hasAccessMode  oplacl:GrantSponge ;
+                       acl:accessTo  &lt;urn:virtuoso:access:sparql&gt; ;
+                          acl:agent  &lt;http://HOST/dataspace/person/demo#this&gt; ;
+                    oplacl:hasScope  oplacl:Query ;
+                    oplacl:hasRealm  oplacl:DefaultRealm .
+      };
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant Sponge Permissions to a Group Of People</bridgehead>
+<para>There are two types of groups: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>static -- a simple list of individuals </listitem>
+<listitem>conditional -- a set of conditions which define a dynamic group of individuals</listitem>
+</itemizedlist><para>The rule to grant Sponge permissions to a group looks exactly like the one for granting permissions to an individual: </para>
+<programlisting>SPARQL
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#a1&gt;                     a  acl:Authorization ;
+                         foaf:maker  &lt;{ADMIN-IRI}&gt; ;
+               oplacl:hasAccessMode  oplacl:Sponge ;
+                       acl:accessTo  &lt;urn:virtuoso:access:sparql&gt; ;
+                          acl:agent  &lt;#group&gt; ;
+                    oplacl:hasScope  oplacl:Query ;
+                    oplacl:hasRealm  oplacl:DefaultRealm .
+      };
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Grant Sponge Permissions to a Static Group</bridgehead>
+<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+     {
+       &lt;#group&gt;            a  foaf:Group, 
+                              oplacl:StaticGroup ;
+                   foaf:name  &quot;Some people&quot; ;
+                 foaf:member  &lt;http://dduck.wordpress.com&gt; ,
+                              &lt;http://peterparker.tumblr.com/&gt; .
+     };
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h5"> Grant Sponge Permissions to Anyone Who Is Authenticated</bridgehead>
+<para>The Required Group in a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> which includes every authenticated <ulink url="NetID">NetID</ulink>: </para>
+<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#group&gt;                   a  foaf:Group , 
+                                      oplacl:ConditionalGroup ;
+                           foaf:name  &quot;Valid Identifiers&quot; ;
+                 oplacl:hasCondition  [
+                                                           a  oplacl:GroupCondition , 
+                                                              oplacl:GenericCondition ;
+                                          oplacl:hasCriteria  oplacl:NetID ;
+                                        oplacl:hasComparator  oplacl:IsNotNull ;
+                                             oplacl:hasValue  1
+                                      ] 
+      };
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h5"> Grant Sponge Permissions to any Verified WebID</bridgehead>
+<para>The Required Group in a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> which includes every authenticated <ulink url="NetID">NetID</ulink>: </para>
+<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#group&gt;                    a  foaf:Group , 
+                                       oplacl:ConditionalGroup ;
+                            foaf:name  &quot;Valid WebIDs&quot; ;
+                  oplacl:hasCondition  [
+                                                            a  oplacl:GroupCondition, 
+                                                               oplacl:GenericCondition ;
+                                           oplacl:hasCriteria  oplacl:WebIDVerified ;
+                                         oplacl:hasComparator  oplacl:EqualTo ;
+                                              oplacl:hasValue  1
+                                       ] 
+      };
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Grant Sponge Permissions to any Valid X.509 Client Certificate</bridgehead>
+<para>The Required Group in a <ulink url="http://docs.openlinksw.com/val/val_acl.html#val_acl_groups_conditional">conditional group</ulink> which includes every valid X.509 certificate: </para>
+<programlisting>SPARQL
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#group&gt;                    a  foaf:Group, 
+                                       oplacl:ConditionalGroup ;
+                            foaf:name  &quot;Valid X.509 Certificates&quot; ;
+                  oplacl:hasCondition  [
+                                                            a  oplacl:GroupCondition, 
+                                                               oplacl:GenericCondition ;
+                                           oplacl:hasCriteria  oplacl:CertVerified ;
+                                         oplacl:hasComparator  oplacl:EqualTo ;
+                                              oplacl:hasValue  1
+                                       ] 
+      };
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h5"> Grant Sponge Permissions to any Verified WebID Which Claims to be a Person</bridgehead>
+<para>Query conditions consist of a query which supports two variables which are replaced with the profile graph and the personal URI respectively.
+</para>
+<programlisting>SPARQL
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#group&gt;                    a  foaf:Group, oplacl:ConditionalGroup ;
+                            foaf:name  &quot;Valid WebIDs&quot; ;
+                  oplacl:hasCondition  [
+                                                            a  oplacl:GroupCondition, 
+                                                               oplacl:GenericCondition ;
+                                           oplacl:hasCriteria  oplacl:WebIDVerified ;
+                                         oplacl:hasComparator  oplacl:EqualTo ;
+                                              oplacl:hasValue  1
+                                       ] ,
+                                       [
+                                                            a  oplacl:GroupCondition, 
+                                                               oplacl:QueryCondition ;
+                                              oplacl:hasQuery  &quot;&quot;&quot;ASK WHERE { GRAPH ^{graph}^ { ^{uri}^ a foaf:Person } }&quot;&quot;&quot;
+                                       ]
+      };
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Cartridge-Specific ACL Examples</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> Grant the Right to Use a Specific Cartridge to Everyone</bridgehead>
+<para>Everyone is allowed to Sponge using the Facebook Graph Cartridge: </para>
+<programlisting>SPARQL
+PREFIX     acl:  &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX  oplacl:  &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX    foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+  WITH  &lt;http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;
+    INSERT
+      {
+        &lt;#a1&gt;                     a  acl:Authorization ;
+                         foaf:maker  &lt;{ADMIN-IRI}&gt; ;
+               oplacl:hasAccessMode  oplacl:Sponge ;
+                       acl:accessTo  &lt;http://data.openlinksw.com/oplweb/component/xc_facebook_opengraph&gt; ;
+                     acl:agentClass  foaf:Agent ;
+                    oplacl:hasScope  oplacl:SpongerCartridges ;
+                    oplacl:hasRealm  oplacl:DefaultRealm 
+      };
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> See Also</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VAL_SparqlACLs">SPARQL and named graph ACLs</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/val/val_acl.html">VAL ACL System</ulink> </listitem>
+</itemizedlist></section></docbook>

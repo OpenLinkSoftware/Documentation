@@ -1,0 +1,357 @@
+<docbook><section><title>VirtVisualizeWithPivotViewer</title><title> Visualizing Your Data With PivotViewer</title> Visualizing Your Data With PivotViewer
+<para>Microsoft&#39;s PivotViewer Silverlight control is a great way to explore datasets in a web browser.
+ The Virtuoso PivotViewer application extends this control to add options to plot the data on a map and to view the raw collection data.
+ This guide shows you how to install and configure the Virtuoso PivotViewer application to view existing data sets and how to configure Virtuoso so that you can generate collections from your own data.</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="#ViewColl">Part 1. Viewing Collections</ulink> </listitem>
+<listitem><ulink url="#GenColl">Part 2. Generating your own Collections</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="#GenPivotViewer">2.1 Using PivotViewer</ulink> </listitem>
+<listitem><ulink url="#GenSPARQL">2.2 Using SPARQL</ulink> </listitem>
+<listitem><ulink url="#GenFCT">2.3 Using The Facet Browser</ulink> </listitem>
+<listitem><ulink url="#GeniSPARQL">2.4 Using iSPARQL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="#SeeAlso">Related</ulink></listitem>
+</itemizedlist><ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Part 1.
+ Viewing Collections</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A Virtuoso Server with the following VAD packages installed: <itemizedlist mark="bullet" spacing="compact"><listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">C_uri VAD</ulink> (c_uri_dav.vad).
+ This package contains a URL shortener that the PivotViewer application relies on to shorten the very long URIs that can result from generating a collection from a query.
+</listitem>
+<listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">PivotViewer VAD</ulink> (pivot_dav.vad).
+ This package contains the PivotViewer application.
+</listitem>
+</itemizedlist></listitem>
+<listitem>The PivotViewer is a <ulink url="http://silverlight.net/">Silverlight</ulink> application, so you will also need a browser running Silverlight.
+ On Mac that can be Safari, Firefox, Chrome, or Opera; and on Windows that can be Internet Explore or Firefox.
+ On Linux, the application will require a browser running <ulink url="http://www.mono-project.com/Moonlight">Moonlight</ulink>, however the current version of Moonlight does not support the PivotViewer control; hopefully this will be resolved soon.</listitem>
+</itemizedlist><para>Once these two packages are installed, viewing an existing collection is as simple as pointing your browser to the PivotViewer application on your server, i.e.
+ -- </para>
+<programlisting>http://your server address:your server port/PivotViewer
+</programlisting><para>-- and typing the collection address in the box on the page.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotViewer.png" /></figure></para>
+<para>Alternatively, you can specify the address of the collection as a parameter to the URL, e.g.
+ -- </para>
+<programlisting>http://your server address:your server port/PivotViewer?url=http%3A%2F%2Ftweetpivot.com%2Fcollections%2Ffriends_kidehen.cxml
+</programlisting><emphasis>Note:</emphasis> The collection address must be URL Encoded if given as part of the URL.<para>You can now start exploring existing pivot collections.</para>
+<ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Part 2.
+ Generating your own Collections</bridgehead>
+<para>Once you have the PivotViewer installed, you will want to start generating pivot collections from your own data.
+ There are a number of ways ways you can do this.</para>
+<para>One method is to generate a collection from the results of a SPARQL query.
+ The PivotViewer includes its own SPARQL query editor, or you can use the SPARQL endpoint on any Virtuoso server.</para>
+<para>Alternatively, you can generate a collection from a result set created in the facet browser.</para>
+<para>You will need to install some additional packages, whichever method you use.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">SPARQL-CXML VAD</ulink> (sparql_cxml_dav.vad).
+ This package supports generating a collection from a SPARQL endpoint, and it is also required to use the SPARQL editor in the Virtuoso PivotViewer.
+It also installs some example data that will be used in the rest of this guide.
+</listitem>
+<listitem>The Virtuoso ImageMagick and QR Code plugins need to be enabled.
+ In your virtuoso.ini, in the [Plugins] section, make sure you have lines for &quot;plain, im&quot; and &quot;plain, qrcode&quot;, like this -- <programlisting>[Plugins]
+LoadPath=../hosting
+...
+Load6=plain, im
+Load7=plain, qrcode
+</programlisting>Remember to restart Virtuoso if you make any changes to your virtuoso.ini.</listitem>
+</itemizedlist><emphasis>Note:</emphasis> The SPARQL-CXML package extends the SPARQL endpoint on the Virtuoso server where the package is installed.
+ This extension is required to be able to generate a pivot collection from the query results.
+ It is however possible to generate a pivot collection from a query against a third-party SPARQL endpoint or from a Virtuoso SPARQL endpoint that does not have the package installed, by using a SPARQL-FED query from the Virtuoso instance that <emphasis>does</emphasis> have the SPARQL-CXML package installed.<ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">2.1 Generating a Collection from a SPARQL Query In PivotViewer</bridgehead>
+<para>The PivotViewer application contains its own SPARQL editor.
+ In this example, you will see how to generate a collection from a simple DESCRIBE query; and also how to generate a collection from a SPARQL SELECT query, and then modify the query to meet your specific requirements.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">2.1.1 Generating the Collection - Using a SPARQL DESCRIBE</bridgehead>
+<para>Point your browser at the PivotViewer application on your server, i.e.
+ -- </para>
+<programlisting>http://your server address:your server port/PivotViewer
+</programlisting><para>-- and then select the <emphasis>Edit</emphasis> link in the top-right-corner.
+ You can type your query directly into the <emphasis>Query Text</emphasis> box in the form.
+ The simplest way to get an overview of the data in a particular graph is to use a SPARQL DESCRIBE query.
+ For example: </para>
+<programlisting>DESCRIBE ?s 
+  FROM &lt;http://pivot_test_data/ski_resorts&gt; 
+  WHERE {?s  ?p  ?o}
+</programlisting><para>creates a collection where each item is a ski resort with various facets giving further information about each resort.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/describe.png" /></figure></para>
+<para>Click on the <emphasis>View</emphasis> button at the foot of the page to view the collection in PivotViewer.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/describe2.png" /></figure></para>
+<emphasis>Note: </emphasis>If at this point you see the PivotViewer but it is completely empty, then it is likely that the SPARQL-CXML VAD has not been correctly installed.
+ However, if you see the PivotViewer with the filter pane correctly loaded but no item images showing and if the position of the images can be highlighted, then it is likely that you have not enabled the ImageMagick plugin for Virtuoso.<bridgehead class="http://www.w3.org/1999/xhtml:h4">2.1.2 Generating the Collection - Using a SPARQL SELECT</bridgehead>
+<para>If you want more control over the way the collection is generated from your data you can use a SELECT query.
+ This simple SELECT query will return all of the items in the http://pivot_test_data/ski_resorts graph, part of the example dataset.
+In the following sections you will see how this simple query can be modified to change the way that collection is generated.
+</para>
+<programlisting>SELECT * 
+  FROM &lt;http://pivot_test_data/ski_resorts&gt;
+  WHERE {?s ?p ?o}
+</programlisting><para> Execute the query and display the results in PivotViewer  by clicking the <emphasis>View</emphasis> button at the foot of the edit form.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotEdit.png" /></figure></para>
+<para>You should see the collection like this: <figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotViewer4.png" /></figure></para>
+<para>If you want to save or share the query, you can do so using the <emphasis>permalink</emphasis> at the top-right-corner of the page.
+ If you need to fine tune your query, you can return to the editor by clicking on the <emphasis>Edit</emphasis> link.
+ For example, the query that we used to generated this first collection gives us all the items in the ski resorts graph.
+ We can easily change it to get the items in the campsite graph by changing the from clause in the query: </para>
+<programlisting>SELECT * 
+  FROM &lt;http://pivot_test_data/campsites&gt;
+  WHERE {?s ?p ?o}
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotEdit3.png" /></figure><para>Then click on <emphasis>View</emphasis> to see the new collection.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/campsites.png" /></figure></para>
+<para>Alternatively, we can see both campsites and ski resorts using the following query: </para>
+<programlisting>PREFIX  ski:   &lt;http://www.openlinksw.com/ski_resorts/schema#&gt;
+PREFIX  camp:  &lt;http://www.openlinksw.com/campsites/schema#&gt;
+
+SELECT * 
+  WHERE
+  {
+    { ?s  a   ski:SkiResort  .  
+      ?s  ?p  ?o
+    }
+    UNION
+    { ?s  a   camp:Campsite   .
+      ?s  ?p  ?o
+    } 
+  }
+</programlisting> <figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotEdit4.png" /></figure>  <figure><graphic fileref="VirtVisualizeWithPivotViewer/both.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h4">2.1.3 Item Images</bridgehead>
+<para>In the examples so far, all items are represented by the same icon.
+ It would be helpful if different items had different images.
+ We have reserved some special variables in the SPARQL query to help control collection generation, and one of those variables is <emphasis>?image</emphasis>.
+If we can find an image of the item in the collection and call it ?image, then when the collection is generated that item will be represented by its image.
+ So, for example, we can use the following query to find images of some of the ski resorts in the example dataset -- </para>
+<programlisting>PREFIX  ski:   &lt;http://www.openlinksw.com/ski_resorts/schema#&gt;
+PREFIX  camp:  &lt;http://www.openlinksw.com/campsites/schema#&gt;
+
+SELECT * 
+  WHERE
+  {
+    { ?s  a   ski:SkiResort  .  
+      ?s  ?p  ?o             .  
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    }
+    UNION
+    { ?s  a   camp:Campsite   .  
+      ?s  ?p  ?o              .  
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    } 
+  }
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotViewer8.png" /></figure><para>It would also be helpful to distinguish between the different types of items; in this case, the ski resorts (without images) and the campsites.
+ Even if an item does not have its own image, we can change the default image depending on the type of the item.
+ To do this we use another reserved variable, <emphasis>?itemtype</emphasis>.
+ Our example query then becomes -- </para>
+<programlisting>PREFIX  ski:   &lt;http://www.openlinksw.com/ski_resorts/schema#&gt;
+PREFIX  camp:  &lt;http://www.openlinksw.com/campsites/schema#&gt;
+
+SELECT * 
+  WHERE
+  {
+    { ?s  a   ski:SkiResort . 
+      ?s  ?p  ?o            ; 
+          a   ?itemtype     .  
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    }
+    UNION
+    { ?s  a   camp:Campsite  .
+      ?s  ?p  ?o             ;
+          a   ?itemtype      .  
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    } 
+  }
+</programlisting><para>-- and we can clearly see which items are campsites.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotVIewer9.png" /></figure></para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">2.1.
+ Item Names</bridgehead>
+<para>If one of the campsite or ski resort items is selected in PivotViewer, the info box opens on the righthand side of the page.
+ It is headed with the name of the item, but in our example that name is in fact a URI for the item.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/title1.png" /></figure></para>
+<para>In our example, just the name of the item would be sufficient, and it would be more readable.
+ In the case of the campsites, we can use the rdfs:label as the name, while in the case of the ski resorts, we need to use the ski:resort_name.
+ The pattern is optional in case some of the items do not have the necessary attribute defined -- </para>
+<programlisting>PREFIX  ski:   &lt;http://www.openlinksw.com/ski_resorts/schema#&gt;
+PREFIX  camp:  &lt;http://www.openlinksw.com/campsites/schema#&gt;
+
+SELECT * 
+  WHERE
+  {
+    { ?s a  ski:SkiResort . 
+      ?s ?p ?o            ;
+         a  ?itemtype     . 
+      OPTIONAL { ?s  ski:resort_name  ?name  } . 
+      OPTIONAL { ?s  foaf:depiction   ?image } 
+    }
+    UNION  
+    { ?s  a   camp:Campsite  . 
+      ?s  ?p  ?o             ; 
+          a   ?itemtype      . 
+      OPTIONAL { ?s  rdfs:label       ?name } . 
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    } 
+  }
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/title2a.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h4">2.1.5 Facets</bridgehead>
+<para>The collection we are have generated has two facets, called virtcxml:FacetP and virtcxml:FacetO, that map to the predicate (?p) and object (?o) as returned by the simple, generic ?s ?p ?o pattern that we have in the WHERE clause of the SPARQL SELECT that we are using.
+ We can control which facets the items in the collection have by having a separate pattern for each facet that we are interested in, and by giving them meaningful names.
+ Some facets will be available on all items, while some will only be relevant to one type of item.
+ For example, all items in our collection have a country code, but only the ski resorts have altitude facets.
+</para>
+<programlisting>PREFIX  ski:   &lt;http://www.openlinksw.com/ski_resorts/schema#&gt;
+PREFIX  camp:  &lt;http://www.openlinksw.com/campsites/schema#&gt;
+
+SELECT * 
+  WHERE
+  {
+    { ?s  a                        ski:SkiResort         . 
+      ?s  a                        ?itemtype             ; 
+          geonames:countryCode     ?country              ;
+          ski:resort_name          ?name                 ;
+          ski:beginner_slopes      ?beginner_slopes      ;
+          ski:intermediate_slopes  ?intermediate_slopes  ;
+          ski:advanced_slopes      ?advanced_slopes      ;
+          ski:expert_slopes        ?expert_slopes        ;
+          ski:altitude_m           ?altitude             .
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    }
+    UNION  
+    { ?s  a                        camp:Campsite         . 
+      ?s  a                        ?itemtype             ; 
+          geonames:countryCode     ?country              ; 
+          rdfs:label               ?name                 ;
+          campsite:resort_type     ?resort_type          ;
+          campsite:resort          ?resort               ;
+          campsite:region          ?region               ;
+          campsite:category        ?category             . 
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    }
+  }
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotViewer7.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h4">2.1.6 Mapping Items</bridgehead>
+<para>If the items in the collection have a facet that ties them to a place, then the PivotViewer can plot them on a map.
+ The only change that we need to make is to rename the relevant facet to ?location.
+ ?location, ?latitude, and ?longitude are examples of reserved variables that have special meaning to PivotViewer.
+ If an item has both ?latitude and ?longitude facets, then these coordinates can be used to plot the item.
+ Otherwise, the string contained in the ?location facet is first sent to a geocoding service.
+ In our example, we use ski:resort_name and campsite:resort for the ?location facet.
+</para>
+<programlisting>PREFIX  ski:   &lt;http://www.openlinksw.com/ski_resorts/schema#&gt;
+PREFIX  camp:  &lt;http://www.openlinksw.com/campsites/schema#&gt;
+
+SELECT * 
+  WHERE
+  {
+    { ?s  a                        ski:SkiResort         . 
+      ?s  a                        ?itemtype             ; 
+          geonames:countryCode     ?Country              ;
+          ski:resort_name          ?name                 ;
+          ski:resort_name          ?location             ;
+          ski:beginner_slopes      ?beginner_slopes      ;
+          ski:intermediate_slopes  ?intermediate_slopes  ;
+          ski:advanced_slopes      ?advanced_slopes      ;
+          ski:expert_slopes        ?expert_slopes        ;
+          ski:altitude_m           ?altitude             .
+      OPTIONAL { ?s  foaf:depiction  ?image } 
+    }
+    UNION  
+    { ?s  a                     camp:Campsite            . 
+      ?s  a                     ?itemtype                ; 
+          geonames:countryCode  ?Country                 ; 
+          rdfs:label             ?name                   ;
+          campsite:resort_type  ?resort_type             ;
+          campsite:resort       ?resort                  ;
+          campsite:resort       ?location                ; 
+          campsite:region       ?region                  ;
+          campsite:category     ?category                .
+      OPTIONAL { ?s foaf:depiction ?image } 
+    } 
+  }
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotMap1.png" /></figure><emphasis>Note:</emphasis> the map shown in this example is a static map.
+ The PivotViewer can display location information on a fully-interactive Bing map, but this requires that you install a Bing map key in the Virtuoso registry.
+ A Bing map key can be obtained by creating an account at the <ulink url="http://www.bingmapsportal.com/">Bing Maps Account Center</ulink>.
+ Once you have a key, you need to register it with Virtuoso using iSQL and the command: <programlisting>registry_set (&#39;_pivot_BingMapsKey&#39;,&#39;XXX&#39;); 
+</programlisting><para>where &#39;XXX&#39; is replaced with your key.
+ Once the key is installed, the items will be displayed on an interactive map that allows zooming and selecting.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotMap2.png" /></figure></para>
+<ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">2.2 Generating a Collection from a SPARQL Endpoint</bridgehead>
+<para>The SPARQL-CXML VAD package extends the Virtuoso SPARQL endpoint to add &quot;CXML collection&quot; as an alternative output format for query results.
+ This example uses the same basic query that was used in the previous section, but executes it in the Virtuoso SPARQL endpoint.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">2.2.1 Generating the Collection</bridgehead>
+<para>The first step in generating the collection is the SPARQL query that returns the results that you are interested in.
+ Point your browser at the Virtuoso SPARQL endpoint.
+ It will be here: </para>
+<programlisting>http://your server address:your server port/sparql
+</programlisting><para> The following query will return all items in the http://pivot_test_data/ski_resorts graph, part of the example dataset -- </para>
+<programlisting>SELECT * 
+  FROM &lt;http://pivot_test_data/ski_resorts&gt;
+  WHERE {?s  ?p  ?o}
+</programlisting><para> By default, the results will be shown as a table in your browser.
+ We need the results as a PivotViewer collection.
+ Alternate result formats can be selected in a drop-down box below the query form.
+ Choose <emphasis>CXML (Pivot collection)</emphasis> --  <figure><graphic fileref="VirtVisualizeWithPivotViewer/sparql.png" /></figure></para>
+<para>Run the query and, depending on your browser, the result set may now be displayed as XML.
+ If you are using Safari, you will just see a blank page, but if you view the source of the page you will see the XML.
+To use this collection in PivotViewer, you simply copy the contents of the browser&#39;s address bar, and use that as the collection address in PivotViewer.
+ So, open PivotViewer, paste the address from the SPARQL query results in the collection URL box, and click submit.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotViewer3.png" /></figure></para>
+<para>You should see the collection like this: <figure><graphic fileref="VirtVisualizeWithPivotViewer/PivotViewer4.png" /></figure></para>
+<para>Once you have opened the collection in PivotViewer, any additional editing of the query can be done using the PivotViewer editor by simply clicking on the <emphasis>Edit</emphasis> link at the top right hand corner.</para>
+<emphasis>Tip:</emphasis> If a query in the PivotViewer editor is failing, pasting it into the Virtuoso SPARQL endpoint and attempting to run it there may reveal some additional error information which may help you resolve the problem.<ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">2.3 Generating a Collection Using The Facet Browser</bridgehead>
+<para>Using the Facet browser to create collections requires some extra packages.
+ Once these packages are installed, generating the collection is very straightforward.
+ You use the Facet browser to create a result set; then click on the <emphasis>Make Pivot Collection link</emphasis>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">Cartridges VAD</ulink> (cartridges_dav.vad).
+ This package provides base RDF functionality and the Sponger framework for converting non-RDF data to RDF.
+</listitem>
+<listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">Virtuoso Facets web service</ulink> (fct_dav.vad)  A general purpose RDF query facility for facet based browsing.
+</listitem>
+<listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">Facet Pivot Bridge</ulink> (fct_pivot_bridge.vad).
+ This package extends the Facets web service so a collection can be generated from the faceted query result sets.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">2.3.1 Generating the Collection</bridgehead>
+<para>The Facet browser service will be found at </para>
+<programlisting>http://your server address:your server port/fct
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/fct1.png" /></figure><para>Type the word &quot;resort&quot; in the search box.
+ This should find both the campsites and the ski resorts.
+ The result set can be manipulated to only include the items that you are interested in.
+ For example, by selecting <emphasis>Types</emphasis> in the <emphasis>Entity Relations Navigation</emphasis> pane, you can limit the result set to just items of the type ski:SkiResort.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/fct2.png" /></figure></para>
+<para>Once you have the result set that you want, click on the <emphasis>Make Pivot Collection</emphasis> link at the top of the page.
+ This creates the collection, and opens it in PivotViewer.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/fctpiv.png" /></figure></para>
+<ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">2.4 Generating a Collection from iSPARQL</bridgehead>
+<para>To generate a collection from the iSPARQL interface, you will need to install an extra package.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The <ulink url="https://virtuoso.openlinksw.com/download/">iSPARQL VAD</ulink> (isparql_dav.vad).
+ This package installs iSPARQL, a graphical utility for building and executing SPARQL queries.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">2.4.1 Generating the Collection</bridgehead>
+<para>Point your browser at the iSPARQL interface on your server.
+ It can be found at </para>
+<programlisting>http://your server address:your server port/isparql
+</programlisting><para> It will open to a page like this: <figure><graphic fileref="VirtVisualizeWithPivotViewer/isparql.png" /></figure></para>
+<para>From the three tabs in the top center, choose the <emphasis>Advanced</emphasis> tab.
+ This will open a page where you can type in a query.
+ Use the following DESCRIBE query: </para>
+<programlisting>DESCRIBE ?s 
+  FROM &lt;http://pivot_test_data/ski_resorts&gt; 
+  WHERE {?s  ?p  ?o}
+</programlisting><figure><graphic fileref="VirtVisualizeWithPivotViewer/isparql1.png" /></figure><para>Click on the arrow-in-a-blue-circle to run the query.
+ The results page will be opened, showing the ski resorts that have been found.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/isprql2.png" /></figure></para>
+<para>To make a pivot collection from these results, simply click on the <emphasis>Make Pivot</emphasis> link in the top left corner of the results pane.
+ This will open the link in the PivotViewer.
+<figure><graphic fileref="VirtVisualizeWithPivotViewer/isparql3.png" /></figure></para>
+<ulink url="">
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSparqlCxmlPivotViewer">Additional PivotViewer Guide</ulink> </listitem>
+<listitem>PivotViewer Demo Collections <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.delicious.com/kidehen/logd_demo">Linked Open Government-Oriented Demos</ulink> </listitem>
+<listitem><ulink url="http://www.delicious.com/kidehen/pivot_collection_app">General PivotViewer + Linked Data Demos</ulink> </listitem>
+<listitem><ulink url="http://www.delicious.com/kidehen/sparql_fed_demo">SPARQL-FED (Distributed or Federated SPARQL)-based Dynamic CXML and PivotViewer Demos</ulink> </listitem>
+<listitem><ulink url="http://www.delicious.com/kidehen/qrcode_use_demo">Demos where the SPARQL-based CXML generation includes QR Code generation</ulink> </listitem>
+<listitem><ulink url="http://www.delicious.com/kidehen/bbc_linkeddata">BBC-specific Demos</ulink> </listitem>
+<listitem><ulink url="http://www.delicious.com/kidehen/meshup">Various Meshups</ulink> (not &quot;Mashups,&quot; since these are driven by Linked Data, rather than by code) </listitem>
+<listitem><ulink url="http://www.delicious.com/kidehen/goodrelations">Linked Data-Driven eCommerce-Oriented PivotViewer Demos</ulink></listitem>
+</itemizedlist></listitem>
+</itemizedlist></ulink></ulink></ulink></ulink></ulink></ulink></ulink></section></docbook>

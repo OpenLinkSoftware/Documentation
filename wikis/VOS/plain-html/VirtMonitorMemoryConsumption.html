@@ -1,0 +1,48 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="Monitoring Virtuoso Memory Consumption"></a> Monitoring Virtuoso Memory Consumption</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What">What</a></li> <li><a href="#Why%20monitor%20memory%20consumption%3F">Why monitor memory consumption?</a></li> <li><a href="#How%20to%20monitor%20Virtuoso%27s%20memory%20consumption">How to monitor Virtuoso&#39;s memory consumption</a></li> <li><a href="#Also%20See">Also See</a></li>
+<p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What"></a> What</h2>
+<p>Like any other process, Virtuoso consumes system resources, including memory.
+ Here we describe one way to monitor the memory consumption of a Virtuoso server instance.</p>
+<h2><a name="Why monitor memory consumption?"></a> Why monitor memory consumption?</h2>
+<p>In a mission critical application, running 24/7, memory consumption should be fairly consistent when the server is in use.
+ A server should not consume all system memory, which may result in it hanging or being terminated by the operating system.</p>
+<h2><a name="How to monitor Virtuoso's memory consumption"></a> How to monitor Virtuoso&#39;s memory consumption</h2>
+<p>On a Linux or other Unix-like system, you can use a script like this, which we&#39;ve called <code>memcheck-virtuoso.sh</code>, which checks the memory consumption directly at the process level: </p>
+<br><pre>#!/bin/bash
+# saved to /tmp/memcheck-virtuoso.sh
+
+pid=$(pidof virtuoso-t);
+log=/tmp/mem-trace-virtuoso.txt;
+
+echo $(printf &quot;%s   %s   %s&quot; $(date +%FT%R) $(cat /proc/${pid}/status |grep VmSize) ${pid}) | tee -a ${log}
+</pre><p> This script outputs 3 columns: </p>
+<ol><li><code>date-timestamp</code> </li>
+<li><code>VmSize</code>: the actual memsize of the Virtuoso instance  (from the <code>cat -&gt; grep</code> for that process id) </li>
+<li>the process id (or <code>PID</code>) of the Virtuoso instance</li>
+</ol><p> Here is a sample: </p>
+<br><pre>$ cat /tmp/memcheck-virtuoso.txt
+2014-11-14T17:22   VmSize: 15724332kB   3974
+2014-11-14T17:46   VmSize: 15874064kB   3974
+2014-11-14T17:55   VmSize: 15874064kB   3974
+2014-11-14T18:52   VmSize: 15878076kB   3974
+2014-11-14T18:52   VmSize: 15878076kB   3974
+2014-11-14T22:29   VmSize: 15878076kB   3974
+2014-11-14T22:30   VmSize: 15878076kB   3974
+2014-11-14T22:56   VmSize: 15878076kB   3974
+2014-11-14T22:56   VmSize: 15878076kB   3974
+2014-11-14T23:33   VmSize: 15878076kB   3974
+2014-11-14T23:33   VmSize: 15878076kB   3974
+2014-11-14T23:52   VmSize: 15878076kB   3974
+2014-11-14T23:53   VmSize: 15878076kB   3974
+$
+</pre><p> The script can be run manually as required.
+ It can also be set up as a cron job to run at a specified internal, e.g., 4 hours in the sample below: </p>
+<br><pre>$ crontab -l |grep mem
+0 */4 * * * /tmp/memcheck-virtuoso.sh
+</pre><p> </p>
+<h2><a name="Also See"></a> Also See</h2>
+<ul><li>Technical discussion about <a href="http://locklessinc.com/articles/memory_usage/" class="absuri">Measuring Memory Usage</a></li>
+</ul><p> </p>
+</div></body></html>

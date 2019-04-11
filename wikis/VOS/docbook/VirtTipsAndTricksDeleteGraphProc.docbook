@@ -1,0 +1,47 @@
+<docbook><section><title>VirtTipsAndTricksDeleteGraphProc</title><title>How can I delete graphs using stored procedure?</title>How can I delete graphs using stored procedure?
+<para> The following script demonstrates the use of custom stored procedures for deleting graph(s).
+ It first creates a table GRAPHS_TO_DELETE, into which the names of the graphs to be deleted should be inserted, as follows:</para>
+<programlisting>use MYUSR;
+
+create procedure GRAPHS_TO_DELETE_SP (in gd_iris any)
+{
+  declare gd_iri iri_id;
+  declare dp, row any;
+  result_names (gd_iri);
+  dp := dpipe (0, &#39;__I2IDN&#39;);
+  foreach (varchar iri in GD_IRIS) do
+    {
+      dpipe_input (dp, iri);
+    }
+  while (0 &lt;&gt; (row := dpipe_next (dp, 0)))
+    {
+      result (row[0]);
+    }
+}
+;
+
+drop view GRAPHS_TO_DELETE_VIEW;
+create procedure view GRAPHS_TO_DELETE_VIEW as MYUSR.DBA.GRAPHS_TO_DELETE_SP (gd_iris) (gd_iri any);
+
+create procedure DELETE_GRAPHS (in g_iris any)
+{
+  declare g_iids any;
+  if (not isvector (g_iris) and g_iris is not null)
+    signal (&#39;22023&#39;, &#39;.....&#39;, &#39;The input argument must be an array of strings or null&#39;);
+  if (not length (g_iris))
+    return 0;
+  delete from DB.DBA.RDF_QUAD where G in (select * from GRAPHS_TO_DELETE_VIEW where gd_iris = g_iris) option (loop exists);
+  return row_count ();
+}
+;
+</programlisting><para> Finally call the procedure DELETE_GRAPHS to perform the deletion of the specified graphs.
+ Note it does not return a result set and can be called as follows:</para>
+<programlisting>SQL&gt; select MYUSR.DBA.DELETE_GRAPHS (vector (&#39;g1&#39;, &#39;g2&#39;, &#39;g3&#39;));
+</programlisting><para> This will return the number of triples removed from the specified graphs.</para>
+<para> <emphasis>Note</emphasis>: the procedure only applies to the cluster so to get IRI IDs via partitioned pipe (DAQ).
+ It is not usable on single.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples14">How can I delete triples from a graph?</ulink> </listitem>
+</itemizedlist></section></docbook>

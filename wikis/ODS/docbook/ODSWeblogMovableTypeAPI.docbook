@@ -1,0 +1,113 @@
+<docbook><section><title>ODSWeblogMovableTypeAPI</title><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">ODS Weblog Movable Type API</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>mt.getRecentPostTitles <programlisting>Description: Returns a list of the most recent posts in the system, containing a titles without descriptions.
+Parameters: 
+        string	 &quot;blogid&quot;
+	string	 &quot;username&quot;
+	string	 &quot;password&quot;
+	int	 &quot;numberOfPosts&quot;
+Return value: on success, array of structs containing only &quot;dateCreated&quot;, &quot;userid&quot;, &quot;&quot;postid&quot;&quot; and &quot;title&quot; members of structure. on failure, fault
+</programlisting></listitem>
+<listitem>mt.getCategoryList <programlisting>Description: Returns a list of all categories defined in the weblog.
+Parameters: 
+	string &quot;blogid&quot;
+	string &quot;username&quot;
+	string &quot;password&quot;
+Return value: on success, an array of structs containing : string &quot;categoryId&quot; and string &quot;categoryName&quot; on failure, fault.
+</programlisting></listitem>
+<listitem>mt.setPostCategories <programlisting>Description: Sets the categories for a post.
+Parameters: 
+	string	 &quot;postid&quot;
+	string	 &quot;username&quot;
+	string	 &quot;password&quot;
+	array	 categories
+Return value: on success, boolean true value; on failure, fault
+Note: The array &quot;categories&quot; is an array of structs containing:
+  {
+   string &quot;categoryId&quot; 
+   boolean &quot;isPrimary&quot; 
+  }
+Using &quot;isPrimary&quot; to set the primary category is optional in the absence of this flag, the first struct in the array will be assigned the primary category for the post.
+</programlisting></listitem>
+<listitem>mt.getPostCategories <programlisting>Description: Returns a list of all categories to which the post	is assigned.
+Parameters: 
+	string &quot;postid&quot;
+	string &quot;username&quot;
+	string &quot;password&quot;
+Return value: on success, an array of structs containing:
+  {
+    string  &quot;categoryName&quot;
+    string  &quot;categoryId&quot;
+    boolean &quot;isPrimary&quot;
+  }
+on failure, fault.
+Notes: &quot;isPrimary&quot; denotes whether a category is the post&#39;s primary category.
+</programlisting></listitem>
+<listitem>mt.getTrackbackPings <programlisting>Description: Retrieve the list of TrackBack pings posted to a particular entry. This could be used to programmatically retrieve the list of pings for a particular entry, then iterate through each of those pings doing the same, until one has built up a graph of the web of entries referencing one another on a particular topic.
+Parameters: 
+	&quot;postid&quot; string
+Return value: an array of structs containing:
+  {
+    string &quot;pingTitle&quot;	 the title of the entry sent in the ping
+    string &quot;pingURL&quot;   the URL of the entry
+    string &quot;pingIP&quot;	 the IP address of the host that sent the ping
+  }
+</programlisting></listitem>
+<listitem>mt.publishPost <programlisting>Description: No effect (just for compatibility), as blog home page is dynamic resource.
+Parameters: 
+	string &quot;postid&quot;
+	string &quot;username&quot;
+	string &quot;password&quot;
+Return value: on success, boolean true value;  on failure, fault
+</programlisting></listitem>
+<listitem>mt.supportedMethods <programlisting>Description: Retrieve information about the XML-RPC methods supported by the server.
+Parameters: none
+Return value: an array of method names supported by the server.
+NOTE: the value of &quot;appkey&quot; is ignored by Movable Type in all of the Blogger XML-RPC methods.
+</programlisting> </listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">XML-RPC endpoint configuration</bridgehead>
+<para>A virtual directory can be created and blogger API exposed to it.
+ To do that following two approaches are possible:</para>
+<orderedlist spacing="compact"><listitem>Via Conductor UI create new virtual directory and select a template for XML-RPC link </listitem>
+<listitem>Check the option &#39;bloggerAPI&#39;  and click Add.
+</listitem>
+<listitem>A logical path now will support the XML-RPC and will have blogger APIs exposed.</listitem>
+</orderedlist><para>Another approach is to execute following SQL script via ISQL tool as follows:</para>
+<programlisting>  .... blogserver.sql .... 
+	 vhost_define (lpath=&gt;&#39;/RPC2&#39;, ppath=&gt;&#39;/SOAP/&#39;, soap_user=&gt;&#39;$U{usr}&#39;, soap_opts=&gt;vector (&#39;XML-RPC&#39;, &#39;yes&#39;)); 
+	 grant execute on &quot;blogger.newPost&quot; to $U{usr};
+	 grant execute on &quot;blogger.editPost&quot; to $U{usr};
+	 grant execute on &quot;blogger.deletePost&quot; to $U{usr};
+	 grant execute on &quot;blogger.getPost&quot; to $U{usr};
+	 grant execute on &quot;blogger.getRecentPosts&quot; to $U{usr};
+	 grant execute on &quot;blogger.getUsersBlogs&quot; to $U{usr};
+	 grant execute on &quot;blogger.getTemplate&quot; to $U{usr};
+	 grant execute on &quot;blogger.setTemplate&quot; to $U{usr};
+	 grant execute on &quot;blogger.getUserInfo&quot; to $U{usr};
+	 grant execute on &quot;metaWeblog.newPost&quot; to $U{usr};
+	 grant execute on &quot;metaWeblog.editPost&quot; to $U{usr};
+	 grant execute on &quot;metaWeblog.getPost&quot; to $U{usr};
+	 grant execute on &quot;metaWeblog.getRecentPosts&quot; to $U{usr};
+	 grant execute on &quot;mt.getRecentPostTitles&quot; to $U{usr};
+	 grant execute on &quot;mt.getCategoryList&quot; to $U{usr};
+	 grant execute on &quot;mt.setPostCategories&quot; to $U{usr};
+	 grant execute on &quot;mt.getPostCategories&quot; to $U{usr};
+	 grant execute on &quot;mt.getTrackbackPings&quot; to $U{usr};
+	 grant execute on &quot;mt.publishPost&quot; to $U{usr};
+	 grant execute on &quot;mt.supportedMethods&quot; to $U{usr};
+  ... eof ...
+
+  $ isql 1111 dba dba -u usr=&quot;SQL user for execution&quot; blog_server.sql
+</programlisting><para> Please note that &quot;SQL user for execution&quot;  needs to be created prior to this action.</para>
+<para>Important: if you specify the &quot;dba&quot; as user for SOAP execution in virtual directory, grant statements are not needed; but this will open a security hole.
+ So this approach is not recommended.
+ Always is better to have a separate user for SOAP execution with limited rights.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> ODS Weblog Movable Type API Services UI Endpoint</bridgehead>
+<para>ODS Weblog Movable Type API Services UI endpoint: </para>
+<programlisting>http://host:port/RPC2/services.vsmx
+</programlisting><para> ODS Weblog Movable Type API Services wsdl Endpoint: </para>
+<programlisting>http://host:port/RPC2/services.wsdl
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.movabletype.org/docs/mtmanual_programmatic.html">Movable type API (extensions for blogger API)</ulink> </listitem>
+</itemizedlist></section></docbook>

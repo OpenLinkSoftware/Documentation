@@ -1,0 +1,74 @@
+%META:TOPICPARENT{name="ConfigureProgressTableview"}%
+
+The following instructions enable you to configure <nop>OpenLink Rulebooks and Data Sources for multiple tableview file sets.
+
+# Use a text editor to open your Rulebook (oplrqb.ini). 
+# Locate the {{{[Domain Aliases]}}} section.
+# Create one descriptive alias for each set of tableview files. For example:
+{{{
+Customer View                   = custv
+Order View                     = ordv
+}}}
+# Locate the {{{[Mapping Rules]}}} section. 
+# Create new rules which reference your new domain aliases. For example:
+{{{
+custv:*:*:*:*:*:*          = accept customer_view
+ordv:*:*:*:*:*:*           = accept order_view
+}}}
+# Locate the {{{[generic agent]}}} sections. 
+# Create new {{{[agent]}}} sections which reference the "accept agent" sections of your rules. For example:
+{{{
+[customer_view]
+Program       = pro81a_sv.exe  ;; MUST REFERENCE VALID DATABASE AGENT EXECUTABLE
+Environment   = CUSTV          ;; PASS UNIQUE, DESCRIPTIVE NAME.
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+
+[order_view]
+Program       = pro81a_sv.exe
+Environment   = ORDV
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+}}}
+# Add {{{ConnectOptions}}} parameters which pass the full path to the appropriate {{{.pf}}} file. For example:
+{{{
+[customer_view]
+Program       = pro82a_sv.exe
+Environment   = CUSTV
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+ConnectOptions = -pf /usr/lpp/openlink/bin/custview.pf
+
+[order_view]
+Program       = pro82a_sv.exe
+Environment   = ORDV
+ServerOptions = -q -d mdy -TB 31 -TM 31
+ReUse         = never
+ConnectOptions = -pf /usr/lpp/openlink/bin/ordview.pf
+}}}
+# Locate your Rulebook's {{{[Environment ***]}}} sections. For example:
+{{{
+[Environment PROGRESS81A]
+;TABLEVIEW	=
+CURSOR_SENSITIVITY = LOW
+DLC                = D:\DBS\Progress\Pro81a
+Path               = D:\DBS\Progress\Pro81a\BIN;D:\WINNT\System32
+}}}
+# Create one {{{[Environment ***]}}} section for each new {{{[agent]}}} section. Set each {{{TABLEVIEW}}} attribute to target the associated {{{.dat}}} file.  For example:
+{{{
+[Environment CUSTV]
+TABLEVIEW	   = /usr/lpp/openlink/bin/custview.dat
+CURSOR_SENSITIVITY = LOW
+DLC                = D:\DBS\Progress\Pro82a
+Path               = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+
+[Environment ORDV]
+TABLEVIEW	   = /usr/lpp/openlink/bin/ordview.dat
+CURSOR_SENSITIVITY = LOW
+DLC                = D:\DBS\Progress\Pro82a
+Path               = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+}}}
+# Save your changes and exit the file.
+# Restart your Request Broker.
+# Change the Domain or <nop>ServerType in your client Data Source Names to the appropriate newly defined Domain Alias, e.g., "Customer View" or "Order View".
+# Test your connections.

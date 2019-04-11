@@ -1,0 +1,238 @@
+%META:TOPICPARENT{name="TroubleshootingUDALoggingTracing"}%
+=Generating Client-side ODBC Traces and Driver Debug Logs=
+
+//**Important:** Tracing can over-run your entire disk, and will cause substantial drops in performance. It is vital that you disable tracing once any issues have been resolved.//
+
+The general principles of ODBC tracing and Driver debug logging are the same for all drivers and all platforms.  There are some differences in specific implementations.  Please follow the instructions relevant to your deployment.
+
+%TOC%
+
+== Filename tokens, valid for all platforms ==
+
+In iODBC 3.51.0 and later, and UDA Release 5.2 and later, there are some tokens that may be included in the target file names to make them more easily identified when prolonged tracing, or tracing of multiple connections and/or applications, is required:
+
+|  *Token*  |  *Expands to*  |
+|  **{{{$T}}}**  | a timestamp in <code>YYYYMMDD-hhmmss</code> format  |
+|  **{{{$H}}}**  | the home-directory of the user as whom the process is running  |
+|  **{{{$P}}}**  | the process-id (pid) of the application which invokes the driver manager, allowing for per-process log-files  |
+|  **{{{$U}}}**  | the user-id under which the process is currently running  |
+
+These options are case-insensitive, so, for instance, {{{$p}}} has the same effect as {{{$P}}}.
+
+Hence you can specify, for example:
+{{{
+[ODBC]
+Trace         = 1
+TraceFile     = iodbc.$U.$p.$T.log
+TraceAutoStop = 0
+;TraceDLL      =
+Debug         = 1
+DebugFile     = openlink.$u.$P.$t.log
+}}}
+
+This would produce separate iODBC trace files and <nop>OpenLink driver debug logs with names based on the userid, timestamp, and processid of each connection made.  
+
+Note that these tokens have no effect on MDAC (Windows driver manager) trace files, but they do have effect on driver debug logs produced on Windows.
+
+== Windows ==
+
+=== ODBC Tracing with the Microsoft ODBC Administrator ===
+
+# Quit all ODBC client applications.
+# Open your **Data Sources (ODBC)** control panel (often found in the **Administrative Tools** subfolder).  
+# Click the **Tracing** tab.
+# Locate the Log File Path field.
+# Use the **Log File Path** field to specify the complete location of the file to which you wish to write the trace, e.g., **{{{C:\Temp\odbc.trace.txt}}}**. 
+#* You may use the Browse button to locate or create the file, or specify it manually.
+# If the ODBC client application(s) you need to trace will run as System or under any other user login than your own, click the **Machine-Wide tracing for all user identities** box.  This option is often necessary, even though it doesn't seem like it should be.
+# Click the **Start Tracing Now** button, and exit the Data Sources (ODBC) control panel.
+# Reopen the ODBC client application.
+# Recreate the error condition.  
+# Locate the file(s) indicated in the log file path on the tracing tab.  
+# **DISABLE TRACING ON THE TRACING TAB.**  Failure to do this will leave the logs running, which can overflow your disk, and will have significant impact on performance.
+
+=== Driver Debug logging on Windows ===
+
+==== Configuring through the Client Configuration Utility ====
+
+# Launch the <nop>OpenLink Client Configuration Utility, {{{oplcfg32.exe}}}.
+# Click to the <b>ODBC</b> tab.
+# Set a target for the <b>Debug File</b> to the full path to your chosen log target. //Note: The filename tokens described above may be used for Driver Debug logging, but they will have no effect on MDAC Tracing.// For example:
+{{{
+C:\Program Files\OpenLink\Lite32\mydebug.$t.log
+}}}
+# Recreate your error message or error condition.
+# Locate your debug log.
+# **Return to the Registry Editor (regedit), and unset <nop>DebugFile.**  Failure to do this will leave the logs running, which can overflow your disk, and will have significant impact on performance.
+
+==== Configuring through the Registry Editor ====
+
+# Open a DOS or CMD window on your Windows client. 
+# Run the regedit command. For example:
+{{{
+C:\> regedit
+}}}
+# Expand the {{{HKEY_LOCAL_MACHINE\Software\OpenLink Software}}} menu items.
+# Locate the folder for the driver you're using, and the ODBC subfolder within that.
+# Locate the <nop>DebugFile parameter. It will appear on the right side of regedit.
+# Set <nop>DebugFile to the full path to your chosen log target. //Note: The filename tokens described above may be used for Driver Debug logging, but they will have no effect on MDAC Tracing.// For example:
+{{{
+C:\Program Files\OpenLink\Lite32\mydebug.$t.log
+}}}
+# Recreate your error message or error condition.
+# Locate your debug log.
+# **Return to the Registry Editor (regedit), and unset <nop>DebugFile.**  Failure to do this will leave the logs running, which can overflow your disk, and will have significant impact on performance.
+
+====Extra Driver Debug Logging for Single-Tier "Express" Edition ODBC Drivers, Single-Tier "Lite" Edition ODBC-to-JDBC Bridge, or Multi-Tier "Enterprise" Edition JDBC Bridge Agent on Windows====
+
+The Express Edition driver is a DBMS-specific bundling of our "Lite" Edition ODBC Driver for JDBC Data Sources (also known as ODBC-JDBC Bridge Driver) with a DBMS-specific Type 4 JDBC Driver.  Sometimes, troubleshooting requires looking into the Java calls made by the ODBC-JDBC Bridge, and the responses from the JDBC Driver.  Similar logging may be needed with our "Lite" Edition ODBC Driver for JDBC Data Sources, or our "Enterprise" Edition Bridge Agent for JDBC Data Sources.  These calls are logged within the Driver or Agent Debug Log by setting an environment variable --
+{{{
+LOG_JAVA_CALLS = YES
+}}}
+When Java-level troubleshooting is complete, you can set {{{LOG_JAVA_CALLS}}} to {{{NO}}}, or just leave it as-is if you disable Driver and Agent Debug Logging.  (The {{{LOG_JAVA_CALLS}}} setting has no effect when Driver and Agent Debug Logging are inactive.)
+
+==Mac OS X==
+
+=== ODBC Tracing on Mac OS X===
+
+ODBC tracing may be controlled through the Tracing Tab of the **<nop>OpenLink ODBC Administrator.app** --
+%BR%%BR%<img src="%ATTACHURLPATH%/TRACE1.png" style="wikiautogen"/>%BR%%BR%
+
+* **When to trace** &mdash; Use this option to turn tracing off or on. For a **One-time only** trace, the trace is made only for the duration of the next connection (which may be over sooner than you expect). Click the Apply button to make your selection active. This option corresponds to the **{{{Trace}}}** and **{{{TraceAutoStop}}}** parameters in the preference files.
+* **Custom trace library** &mdash; Use the Select Library button to browse the machine for a library file that contains the code to intercept the trace output. This field should generally be left blank. When setting this parameter, you may use the Browse button to locate the library, or specify it manually. If specified manually, note that the location must be specified as it would be in a Terminal session. You may use {{{~/}}} as a shortcut to your user Home directory. This option corresponds to the **{{{TraceDLL}}}** parameter in the preference files.
+* **Log file path** &mdash; Specify the complete location of the file to which you wish to write the trace. You may use the Browse button to locate or create the file, or specify it manually. If specified manually, note that the location must be specified as it would be in a Terminal session. You may use {{{~/}}} as a shortcut to your user Home directory. This option corresponds to the **{{{TraceFile}}}** parameter in the preference files.
+* **Trace Parameters in Preference Files** &mdash; When the ODBC tracing parameters are changed, they are saved in the {{{[ODBC]}}} section of the {{{ODBC.preference}}} or {{{odbc.ini}}} file, whichever is active on your system.
+
+The same settings may be adjusted by manually editing the relevant configuration file --
+* {{{/Library/ODBC/odbc.ini}}} -- for system-wide tracing; generally recommended
+* {{{/Users/*/Library/ODBC/odbc.ini}}} or {{{~/Library/ODBC/odbc.ini}}} -- for user-specific tracing; useful for rare but specific kinds of troubleshooting
+
+The following example shows the settings for continuous driver manager tracing to files on the active user's Desktop.
+{{{
+[ODBC]
+Trace         = 1
+TraceAutoStop = 0
+;TraceDLL      =
+TraceFile     = ~/Desktop/sql.trace.$p.$t.log
+}}}
+
+* **{{{Trace}}}** &mdash; This parameter corresponds to the **When to trace** option in the Tracing tab. Set to **{{{1}}}**, tracing is on; set to **{{{0}}}**, tracing is off.
+* **{{{TraceAutoStop}}}** &mdash; This parameter corresponds to the **One-time only** option in the tracing tab. Set to **{{{1}}}**, tracing will automatically stop after the next connection is closed; set to **{{{0}}}**, tracing must be manually stopped. When tracing is automatically stopped, the **{{{Trace}}}** and **{{{TraceAutoStop}}}** parameters will both be set to **{{{0}}}**.
+* **{{{TraceDLL}}}** &mdash; This parameter corresponds to the **Custom trace library** option in the tracing tab, and is very rarely used. When setting this parameter, note that the file must be fully specified as it would be in a Terminal session, but without shell-escaping (i.e., spaces and other shell-reserved characters do not need to be escaped). You may use {{{~/}}} as a shortcut to your user Home directory.
+* **{{{TraceFile}}}** &mdash; This parameter corresponds to the **Log file path** option in the tracing tab. When setting this parameter, note that the file must be fully specified as it would be in a Terminal session, but without shell-escaping (i.e., spaces and other shell-reserved characters do not need to be escaped). You may use {{{~/}}} as a shortcut to your user Home directory.
+
+=== Driver Debug logging on Mac OS X===
+
+Driver Debug logging may be controlled through the DSN configuration (different panes for different drivers).  Similar to ODBC tracing, there is a checkbox for turning this log on and off, and a text-entry box by which to specify the target file.
+
+The same settings may be adjusted by manually editing the relevant configuration file --
+* {{{/Library/ODBC/odbc.ini}}} -- for system-wide logging; generally recommended
+* {{{/Users/*/Library/ODBC/odbc.ini}}} or {{{~/Library/ODBC/odbc.ini}}} -- for user-specific tracing; useful for rare but specific kinds of troubleshooting
+
+When set through a GUI-based Administrator DSN setup, debug logging is per-DSN.  When manually set, debug logging may be per-DSN, or in the global {{{[ODBC]}}} stanza which applies to all DSNs.
+
+The following example shows the settings for continuous driver debug logging, for all DSNs and all OpenLink ODBC drivers, to files on the active user's Desktop.
+{{{
+[ODBC]
+Debug         = 1
+DebugFile     = ~/Desktop/sql.debug.$p.$t.log
+}}}
+
+* **{{{Debug}}}** &mdash; This parameter corresponds to the checkbox in the DSN configuration. Set to **{{{1}}}**, logging is on; set to **{{{0}}}**, logging is off.
+* **{{{DebugFile}}}** &mdash; This parameter corresponds to the text-entry box in the DSN configuration. When setting this parameter, note that the file must be fully specified as it would be in a Terminal session, but without shell-escaping (i.e., spaces and other shell-reserved characters do not need to be escaped; it is as if the path were entered within double-quotes in a shell session). You may use {{{~/}}} as a shortcut to your user Home directory.
+* //**Note:** There is no Auto-Stop for Driver Debug Logging -- you **must** manually stop this logging.//
+
+====Extra Driver Debug Logging for Single-Tier "Express" Edition ODBC Drivers, Single-Tier "Lite" Edition ODBC-to-JDBC Bridge, or Multi-Tier "Enterprise" Edition JDBC Bridge Agent on Mac OS X====
+
+The Express Edition driver is a DBMS-specific bundling of our "Lite" Edition ODBC Driver for JDBC Data Sources (also known as ODBC-JDBC Bridge Driver) with a DBMS-specific Type 4 JDBC Driver.  Sometimes, troubleshooting requires looking into the Java calls made by the ODBC-JDBC Bridge, and the responses from the JDBC Driver.  Similar logging may be needed with our "Lite" Edition ODBC Driver for JDBC Data Sources, or our "Enterprise" Edition Bridge Agent for JDBC Data Sources.  These calls are logged within the Driver or Agent Debug Log by setting an environment variable -- {{{LOG_JAVA_CALLS}}} -- to {{{YES}}}.
+
+When Java-level troubleshooting is complete, you can unset the variable, set it to {{{NO}}}, or just leave it as-is if you disable Driver and Agent Debug Logging.  (The {{{LOG_JAVA_CALLS}}} setting has no effect when Driver and Agent Debug Logging are inactive.)
+
+===== El Capitan (10.11), Yosemite (10.10), Mavericks (10.9), Mountain Lion (10.8), or Lion (10.7) =====
+
+As of Lion, these simple Terminal.app commands will do the job --
+{{{
+# to start including Java calls
+launchctl setenv LOG_JAVA_CALLS YES
+
+# to stop including Java calls
+launchctl unsetenv LOG_JAVA_CALLS 
+}}}
+
+Note that any active applications will not reflect the change; you have to quit and relaunch.  
+
+A reboot or user log out will unset variables set with these commands, and you'll need to re-set them afterward.  Persistent settings can be made through a {{{launchd.plist}}}, [[http://www.dowdandassociates.com/blog/content/howto-set-an-environment-variable-in-mac-os-x-launchd-plist/ | as described elsewhere]].
+
+
+===== Lion (10.7), Snow Leopard (10.6), Leopard (10.5), Tiger (10.4), Panther (10.3), Jaguar (10.2), Puma (10.1), or Cheetah (10.0) =====
+
+On Mac OS X 10.6 and earlier, this is best done by creating (or editing) a file called {{{environment.plist}}} in a (normally invisible) directory called {{{.MacOSX}}}, in the user's home directory.  This method also works on Lion (10.7).
+
+You can execute one of these commands in Terminal.app, to open the file for editing in TextEdit.app --
+{{{
+open -e /Users/ShortUsername/.MacOSX/environment.plist
+open -e ~/.MacOSX/environment.plist
+}}}
+
+%BR%%BR%If the file already exists, just add these two lines to the main {{{<dict>}}} block --
+{{{
+        <key>LOG_JAVA_CALLS</key>
+        <string>YES</string>
+}}}
+
+%BR%%BR%If you're creating a new file, make sure it contains this entire block --
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" 
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>LOG_JAVA_CALLS</key>
+        <string>YES</string>
+</dict>
+</plist>
+}}}
+
+
+
+==Unix-like OS including Linux, Solaris, HP-UX, AIX, and others==
+
+=== ODBC Tracing on Unix-like OS ===
+
+To create ODBC Traces for the iODBC Driver Manager and <nop>OpenLink ODBC Driver on Unix-like OS, edit the active {{{odbc.ini}}} file, typically specified by the {{{$ODBCINI}}} environment variable and found in the {{{/bin/}}} subdirectory of your <nop>OpenLink installation, and add an {{{[ODBC]}}} section like the following --
+{{{
+[ODBC]
+Trace         = 1
+TraceFile     = <iodbc-trace-filename>
+TraceAutoStop = 0
+;TraceDLL      =
+}}}
+-- where {{{iodbc-filename}}} is the full path to the file where the iODBC Driver Manager trace should be written. Tracing can be disabled by commenting out these parameters with a semi-colon ({{{;}}}), or setting {{{Trace = 0}}}.
+
+=== Driver Debug logging on Unix-like OS ===
+
+To create <nop>OpenLink Driver Debug logs for, edit the active {{{odbc.ini}}} file, typically specified by the {{{$ODBCINI}}} environment variable and found in the {{{/bin/}}} subdirectory of your <nop>OpenLink installation, and add an {{{[ODBC]}}} section like the following --
+{{{
+[ODBC]
+Debug         = 1
+DebugFile     = <driver-log-filename>
+}}}
+-- where {{{iodbc-filename}}} is the full path to the file where the Driver Debug log should be written. Tracing can be disabled by commenting out these parameters with a semi-colon ({{{;}}}), or (with the most recent driver builds) by setting {{{Debug = 0}}}.
+
+* **{{{Debug}}}** &mdash; This parameter corresponds to the checkbox in the DSN configuration. Set to **{{{1}}}**, logging is on; set to **{{{0}}}**, logging is off.
+* **{{{DebugFile}}}** &mdash; This parameter corresponds to the text-entry box in the DSN configuration. When setting this parameter, note that the file must be fully specified as it would be in a Terminal session, but without shell-escaping (i.e., spaces and other shell-reserved characters do not need to be escaped; it is as if the path were entered within double-quotes in a shell session). You may use {{{~/}}} as a shortcut to your user Home directory.
+* //**Note:** There is no Auto-Stop for Driver Debug Logging -- you **must** manually stop this logging.//
+
+==== Extra Driver Debug Logging for Single-Tier "Lite" Edition ODBC-to-JDBC Bridge or Multi-Tier "Enterprise" Edition JDBC Bridge Agent on Unix-like OS ====
+
+Sometimes, troubleshooting requires looking into the Java calls made by our "Lite" Edition ODBC Driver for JDBC Data Sources, or our "Enterprise" Edition Bridge Agent for JDBC Data Sources, and the responses from the JDBC Driver.  These calls are logged within the Driver or Agent Debug Log by setting an environment variable -- 
+{{{
+LOG_JAVA_CALLS = YES
+}}}
+When Java-level troubleshooting is complete, you can set {{{LOG_JAVA_CALLS = NO}}}, or just leave it as-is if you disable Driver and Agent Debug Logging.  (The {{{LOG_JAVA_CALLS}}} setting has no effect when Driver and Agent Debug Logging are inactive.)
+
+
+== Related ==
+
+* [[GeneratingRequestBrokerTraces|Generating Server-side Multi-Tier Request Broker Trace Logs (All Platforms)]]
+* [[GeneratingOLEDBTraceFile| Generating Trace Logs with the Single-Tier "Lite" Edition OLE DB Provider for ODBC (OpenLinkODBC) ]]

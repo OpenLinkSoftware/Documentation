@@ -1,0 +1,471 @@
+%META:TOPICPARENT{name="VOSBuild"}%
+
+---+How to Install Virtuoso Open Source (VOS) on Debian GNU/Linux
+
+%TOC%
+
+---++Starting Point
+
+   1 We start from a freshly installed Debian/Squeeze (currently stable release)
+installation.
+   1 For convenience, install and configure sudo and openssh-server, if you didn't
+already install these at package-selection time.
+   1 Update the index of available packages:
+<verbatim>
+sudo apt-get update
+</verbatim>
+
+---++Installing Virtuoso
+
+Debian carries pre-built binary packages of Virtuoso; you have the option of
+installing Virtuoso using these, or if a newer version is available upstream or
+you want to specify your own configuration options, you can build from source
+directly.
+
+---+++Installing Virtuoso with Debian Packages
+
+   1 Debian have split Virtuoso into a handful of packages so you can install only
+the bits you require; further, the packages cater for both minimal installations
+and as a database in its own right:
+<verbatim>
+tim@debian:~$ apt-cache search '^virtuoso'
+virtuoso-opensource - high-performance database
+virtuoso-server - high-performance database - server dependency package
+virtuoso-minimal - high-performance database - core dependency package
+virtuoso-opensource-6.1-bin - high-performance database - binaries
+virtuoso-opensource-6.1-common - high-performance database - common files
+virtuoso-opensource-6.1 - high-performance database - support files
+virtuoso-vsp-startpage - high-performance database - web interface files
+virtuoso-vad-bpel - high-performance database - BPEL module
+virtuoso-vad-conductor - high-performance database - conductor module
+virtuoso-vad-demo - high-performance database - demo module
+virtuoso-vad-doc - high-performance database - documentation module
+virtuoso-vad-isparql - high-performance database - iSPARQL module
+virtuoso-vad-ods - high-performance database - Open Data Spaces module
+virtuoso-vad-cartridges - high-performance database - Cartridges module
+virtuoso-vad-sparqldemo - high-performance database - SPARQL demo module
+virtuoso-vad-syncml - high-performance database - SyncML module
+virtuoso-vad-tutorial - high-performance database - tutorial module
+</verbatim>
+(The above output has been manually reordered into logical groupings.)
+   1 and additionally,
+<verbatim>
+libvirtodbc0 - high-performance database - ODBC libraries
+libvirtuoso5.5-cil - high-performance database - Mono assemblies
+</verbatim>
+   1 Proceed to install the umbrella `virtuoso-opensource' package, which brings in
+all dependencies:
+<verbatim>
+tim@debian:~$ sudo aptitude install virtuoso-opensource
+[sudo] password for tim: 
+The following NEW packages will be installed:
+  dbus{a} fontconfig-config{a} ghostscript{a} gsfonts{a} 
+  libavahi-client3{a} libavahi-common-data{a} libavahi-common3{a} 
+  libcups2{a} libcupsimage2{a} libdbus-1-3{a} libfontconfig1{a} 
+  libglib2.0-0{a} libglib2.0-data{a} libgs8{a} libjasper1{a} 
+  libjbig2dec0{a} libjpeg62{a} liblcms1{a} liblqr-1-0{a} libltdl7{a} 
+  libmagickcore3{a} libmagickwand3{a} libpaper-utils{a} libpaper1{a} 
+  libpng12-0{a} libreadline5{a} libtiff4{a} libvirtodbc0{a} libwbxml2-0{a} 
+  odbcinst{a} odbcinst1debian2{a} shared-mime-info{a} ttf-dejavu-core{a} 
+  virtuoso-opensource virtuoso-opensource-6.1{a} 
+  virtuoso-opensource-6.1-bin{a} virtuoso-opensource-6.1-common{a} 
+  virtuoso-server{a} virtuoso-vad-conductor{a} virtuoso-vsp-startpage{a} 
+0 packages upgraded, 40 newly installed, 0 to remove and 0 not upgraded.
+Need to get 25.6 MB of archives. After unpacking 69.5 MB will be used.
+Do you want to continue? [Y/n/?] 
+</verbatim>
+   1 As part of the installation, Debian will ask you for passwords to use for the
+dba (main database administrative) and dav (WebDAV filesystem administrative)
+users; if you leave it blank, the virtuoso service will not start after
+installation:
+%BR%%BR%<img src="%ATTACHURLPATH%/debian-vos-questions.png" style="wikiautogen"/>%BR%%BR%
+<verbatim>
+Setting up libvirtodbc0 (6.1.2+dfsg1-1) ...
+Setting up virtuoso-opensource-6.1 (6.1.2+dfsg1-1) ...
+Starting Virtuoso OpenSource Edition 6.1 : virtuoso-opensource-6.1.
+Setting up virtuoso-opensource (6.1.2+dfsg1-1) ...
+Setting up virtuoso-server (6.1.2+dfsg1-1) ...
+Setting up virtuoso-vad-conductor (6.1.2+dfsg1-1) ...
+Setting up virtuoso-vsp-startpage (6.1.2+dfsg1-1) ...
+                                         
+tim@debian:~$ 
+</verbatim>
+   1 At this point Virtuoso is installed and an instance created and running.
+
+---++++Package Contents and Layout
+
+   1 Debian's packaging involves renaming the <tt>isql</tt> binary to avoid a
+conflict with unixODBC, so the executables provided (in the
+virtuoso-opensource-6.1-bin package) are:
+      * <code><nowiki>/usr/bin/isql-vt</nowiki></code>
+         * commandline database-access tool isql*
+      * <code><nowiki>/usr/bin/isqlw-vt</nowiki></code>
+         * unicode isql
+      * <code><nowiki>/usr/bin/virt_mail</nowiki></code>
+         * SMTP delivery agent for incoming mail
+      * <code><nowiki>/usr/bin/virtuoso-t</nowiki></code>
+         * Main daemon executable
+   1 In accordance with Debian policy that services should start immediately after
+they've been installed, it creates a default instance based on
+a configuration file located at
+<code><nowiki>/etc/virtuoso-opensource-6.1/virtuoso.ini</nowiki></code>; the database itself lives in
+<code><nowiki>/var/lib/virtuoso-opensource-6.1/db/</nowiki></code> (a similar layout to
+MySQL, PostgreSQL, etc.).
+   1 At this stage you can move on to using Virtuoso through the Conductor
+web-interface and isql command-line utility, below.
+
+
+----++++Further VAD Packages
+
+   1 Debian have separated-out some of the Virtuoso VAD packages into separate
+packages of their own. When you install these, all you get is the VAD package on
+disk ready to be installed via the conductor; Debian does not install the VAD
+into any running instance for you (because by this time you might have created
+your own instances elsewhere on different ports).
+<verbatim>
+tim@debian:~$ sudo apt-get install virtuoso-vad-{isparql,ods,cartridges,tutorial}
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  virtuoso-vad-isparql virtuoso-vad-ods virtuoso-vad-cartridges
+  virtuoso-vad-tutorial
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 13.7 MB of archives.
+[...]
+Unpacking virtuoso-vad-tutorial (from .../virtuoso-vad-tutorial_6.1.2+dfsg1-1_all.deb) ...
+Setting up virtuoso-vad-isparql (6.1.2+dfsg1-1) ...
+Setting up virtuoso-vad-ods (6.1.2+dfsg1-1) ...
+Setting up virtuoso-vad-cartridges (6.1.2+dfsg1-1) ...
+Setting up virtuoso-vad-tutorial (6.1.2+dfsg1-1) ...
+tim@debian:~$ 
+</verbatim>
+   1 In the conductor (http://localhost:8890/conductor/), go to SysAdmin / Packages
+and the iSPARQL, Cartridges and Tutorial and ODS (of which there are several)
+packages will now be available.
+
+---+++Building Virtuoso from Source
+
+There are 2 ways to build Virtuoso from source: using Debian packges or the
+generic source build that works everywhere.
+
+---++++Rebuilding using Debian packages
+
+   1 First we install the minimum Debian build environment - basic C compilers and
+development headers.
+<verbatim>
+tim@debian:~/C$ sudo aptitude install dpkg-dev build-essential
+[sudo] password for tim: 
+The following NEW packages will be installed:
+  build-essential bzip2{a} dpkg-dev g++{a} g++-4.4{a} 
+  libalgorithm-diff-perl{a} libalgorithm-diff-xs-perl{a} 
+  libalgorithm-merge-perl{a} libdpkg-perl{a} libstdc++6-4.4-dev{a} 
+  libtimedate-perl{a} 
+0 packages upgraded, 11 newly installed, 0 to remove and 0 not upgraded.
+...
+</verbatim>
+   1 Then we download the Debian source packages:
+<verbatim>
+tim@debian:~$ mkdir C
+tim@debian:~$ cd C
+tim@debian:~/C$ apt-get source virtuoso-opensource
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+NOTICE: 'virtuoso-opensource' packaging is maintained in the 'Git' version control system at:
+git://scm.alioth.debian.org/git/pkg-virtuoso/pkg-virtuoso.git
+Need to get 69.4 MB of source archives.
+Get:1 http://ftp.uk.debian.org/debian/ squeeze/main virtuoso-opensource 6.1.2+dfsg1-1 (dsc) [3,260 B]
+dfsg1-1.dsc
+dpkg-source: info: extracting virtuoso-opensource in virtuoso-opensource-6.1.2+dfsg1
+dpkg-source: info: unpacking virtuoso-opensource_6.1.2+dfsg1.orig.tar.gz
+dpkg-source: info: applying virtuoso-opensource_6.1.2+dfsg1-1.diff.gz
+</verbatim>
+   1 Install the build-dependencies: because Debian build Virtuoso with all bells and
+whistles enabled (language hosting modules in particular), this brings in quite
+a lot more packages:
+<verbatim>
+tim@debian:~/C/virtuoso-opensource-6.1.2+dfsg1$ sudo aptitude build-dep virtuoso-opensource
+The following NEW packages will be installed:
+  autoconf automake autopoint{a} autotools-dev binfmt-support{a} bison cdbs 
+...
+update-alternatives: using /usr/bin/sn to provide /usr/bin/cli-sn (strong-name-tool) in auto mode.
+Setting up cli-common-dev (0.7.1) ...
+</verbatim>
+   1 Start the package build using dpkg-buildpackage:
+<verbatim>
+tim@debian:~/C/virtuoso-opensource-6.1.2+dfsg1$ dpkg-buildpackage -rfakeroot
+dpkg-buildpackage: export CFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export CPPFLAGS from dpkg-buildflags (origin: vendor): 
+dpkg-buildpackage: export CXXFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export FFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+...
+dpkg-deb: building package `libvirtuoso5.5-cil' in `../libvirtuoso5.5-cil_6.1.2+dfsg1-1_i386.deb'.
+ dpkg-genchanges  >../virtuoso-opensource_6.1.2+dfsg1-1_i386.changes
+dpkg-genchanges: including full source code in upload
+ dpkg-source --after-build virtuoso-opensource-6.1.2+dfsg1
+dpkg-buildpackage: full upload (original source is included)
+tim@debian:~/C/virtuoso-opensource-6.1.2+dfsg1$ 
+</verbatim>
+   1 Some time later the build will finish and you can see a lot of *.deb files
+created in the parent directory:
+<verbatim>
+tim@debian:~/C$ ls
+libvirtodbc0_6.1.2+dfsg1-1_i386.deb
+libvirtuoso5.5-cil_6.1.2+dfsg1-1_i386.deb
+virtuoso-minimal_6.1.2+dfsg1-1_all.deb
+virtuoso-opensource-6.1.2+dfsg1
+virtuoso-opensource_6.1.2+dfsg1-1_all.deb
+virtuoso-opensource_6.1.2+dfsg1-1.diff.gz
+virtuoso-opensource_6.1.2+dfsg1-1.dsc
+virtuoso-opensource_6.1.2+dfsg1-1_i386.changes
+virtuoso-opensource_6.1.2+dfsg1.orig.tar.gz
+virtuoso-opensource-6.1_6.1.2+dfsg1-1_i386.deb
+virtuoso-opensource-6.1-bin_6.1.2+dfsg1-1_i386.deb
+virtuoso-opensource-6.1-common_6.1.2+dfsg1-1_i386.deb
+virtuoso-server_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-bpel_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-conductor_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-demo_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-doc_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-isparql_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-ods_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-cartridges_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-sparqldemo_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-syncml_6.1.2+dfsg1-1_all.deb
+virtuoso-vad-tutorial_6.1.2+dfsg1-1_all.deb
+virtuoso-vsp-startpage_6.1.2+dfsg1-1_all.deb
+
+tim@debian:~/C$ sudo dpkg -i *deb
+(Reading database ... 53725 files and directories currently installed.)
+Preparing to replace libvirtodbc0 6.1.2+dfsg1-1 (using libvirtodbc0_6.1.2+dfsg1-1_i386.deb) ...
+Virtuoso has been deleted (if it existed at all) because its usage count became zero
+Unpacking replacement libvirtodbc0 ...
+Selecting previously deselected package libvirtuoso5.5-cil.
+Unpacking libvirtuoso5.5-cil (from libvirtuoso5.5-cil_6.1.2+dfsg1-1_i386.deb) ...
+Selecting previously deselected package virtuoso-minimal.
+Unpacking virtuoso-minimal (from virtuoso-minimal_6.1.2+dfsg1-1_all.deb) ...
+Preparing to replace virtuoso-opensource 6.1.2+dfsg1-1 (using virtuoso-opensource_6.1.2+dfsg1-1_all.deb) 
+...
+</verbatim>
+
+---++++Building from Upstream Source
+
+*Note*: Useful prior reading: please see the pages
+[[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSBuild][VOSBuild]]
+and [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSMake][VOSMake]]
+in the VOS Wiki.
+
+---+++++Dependencies
+
+Proceed to install the required build dependencies:
+<verbatim>
+tim@debian:~$ sudo aptitude install dpkg-dev build-essential autoconf automake \
+		libtool flex bison gperf gawk m4 make odbcinst libxml2-dev libssl-dev \
+		libreadline-dev
+The following NEW packages will be installed:
+  autoconf automake autotools-dev{a} bison build-essential bzip2{a} 
+...
+</verbatim>
+
+---+++++Unpacking
+
+Download the latest VOS archive (source tarball such as
+<code>virtuoso-opensource-6.1.3.tar.gz</code>) from
+[[http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VOSDownload#Latest%20source%20code%20on%20Github][GitHub]] and unpack it:
+
+<verbatim>
+tim@debian:~/C$ tar xvpfz virtuoso-opensource-6.1.3.tar.gz 
+virtuoso-opensource-6.1.3/
+virtuoso-opensource-6.1.3/bin/
+virtuoso-opensource-6.1.3/bin/installer/
+virtuoso-opensource-6.1.3/bin/installer/virtuoso.ini
+virtuoso-opensource-6.1.3/bin/installer/demo.ini
+...
+</verbatim>
+
+---+++++Configuring
+
+   1 For the purposes of this demonstration, we use a simple configuration with no
+frills:
+<verbatim>
+tim@debian:~/C$ cd virtuoso-opensource-6.1.3/
+tim@debian:~/C/virtuoso-opensource-6.1.3$ ./configure --prefix=/usr/local/ \
+>  --with-readline --program-transform-name="s/isql/isql-v/"
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+...
+</verbatim>
+   1 There are many other options that can be specified at this stage, to
+enable/disable the building of language-hosting plugins (Perl, Python, Ruby) or
+various VAD packages (sub-packages within Virtuoso); for more on these, read the
+relevant README files in the source distribution and run `<tt>./configure
+--help</tt>'.
+   1 Here we settle for asking for readline support, ie the ability to cursor-up/down
+and use typical readline key-combinations in the commandline <tt>isql</tt> tool
+once built.
+
+---++++++Aside: VOS component locations
+
+   1 Virtuoso instances usually take the form of a designated directory somewhere in
+the filesystem, centred around a configuration file (nominally virtuoso.ini)
+which specifies operational parameters such as the filenames of database
+page-files to use, port-numbers to use, numbers of threads and buffers, etc.
+   1 In the above command, we specify a prefix of /usr/local to Virtuoso's
+<tt>./configure</tt> script. This forms a base directory under which Virtuoso
+will create/use the following structure:
+      * <code><nowiki>/usr/local/lib/</nowiki></code>
+         * various libraries for sesame,jdbc,jena,hibernate, and hosting
+      * <code><nowiki>/usr/local/bin</nowiki></code>
+         * where the main executables (virtuoso-t, isql) live
+      * <code><nowiki>/usr/local/share/virtuoso/vad</nowiki></code>
+         * used to store VAD archives prior to installation in an instance
+      * <code><nowiki>/usr/local/share/virtuoso/doc</nowiki></code>
+         * local offline documentation
+      * <code><nowiki>/usr/local/var/lib/virtuoso/db</nowiki></code>
+         * the default location for a virtuoso instance 
+      * <code><nowiki>/usr/local/var/lib/virtuoso/vsp</nowiki></code>
+         * various VSP scripts - the default homepage before the Conductor is installed
+</verbatim>
+   1 Other directory-structures are possible by specifying variously:
+      * individual configure options such as <code><nowiki>--bindir</nowiki></code>, <code><nowiki>--libdir</nowiki></code>, etc.
+      * <code><nowiki>--with-layout={GNU|Debian|Gentoo|RedHat|FreeBSD|opt|OpenLink}</nowiki></code>%BR%
+where each layout specifies a set of locations where the VADs, 
+documentation (HTML and PDF), demo and default instance databases, and hosting 
+libraries will be installed, each compatible with the packaging requirements of the 
+named OS distribution ("<code>opt</code>" means a prefix of <code>/opt</code> 
+and <code><nowiki>OpenLink</nowiki></code> is the default, detailed above).
+
+---++++++Aside: Debian isql name conflict
+
+Unfortunately, both unixODBC and Virtuoso provide a command `<tt>isql</tt>',
+used to access data-sources from the commandline (in unixODBC, an ODBC
+DSN; in Virtuoso, the SQL interface).
+
+In order to allow both packages to coexist, Debian rename Virtuoso's isql
+command to <tt>isql-vt</tt>.
+
+Given that we are installing Virtuoso from source to a different prefix
+(<code><nowiki>/usr/local</nowiki></code>), it is not absolutely necessary to do the same here, but to avoid
+having to specify different PATH considerations and make life easier, the
+<tt>configure</tt> command above reflects this as well.
+
+---+++++Building and Installing
+
+   1 Having chosen some configure options, run make: 
+<verbatim>
+tim@debian:~/C/virtuoso-opensource-6.1.3$ nice make
+Making all in .
+make[1]: Entering directory `/home/tim/C/virtuoso-opensource-6.1.3'
+make[1]: Nothing to be done for `all-am'.
+make[1]: Leaving directory `/home/tim/C/virtuoso-opensource-6.1.3'
+Making all in docsrc
+...
+</verbatim>
+   1 Optionally, you can run `make check' to run the test-suite (beware, it takes
+some hours and multiple gigabytes of disk-space).
+<verbatim>
+tim@debian:~/C/virtuoso-opensource-6.1.3$ nice make check
+</verbatim>
+   1 Install it to the directory-structure chosen above:
+<verbatim>
+tim@debian:~/C/virtuoso-opensource-6.1.3$ sudo make install
+</verbatim>
+
+---++Getting Started
+
+   1 Take a copy of the default virtuoso.ini and store it safely in case of making
+erroneous changes.
+   1 Change into the default database directory:
+<verbatim>
+tim@debian:~/C/virtuoso-opensource-6.1.3$ cd /usr/local/var/lib/virtuoso/db/
+tim@debian:/usr/local/var/lib/virtuoso/db$ ls
+virtuoso.ini
+</verbatim>
+      * (At this point, if you wish to run virtuoso as a non-root user you should change
+the ownership on this directory, e.g. <tt>sudo chown -R tim .</tt> . Virtuoso
+only requires root if you wish to use it as a webserver listening on port 80; by
+default it listens only on high ports.)
+   1 Start the server:
+<verbatim>
+tim@debian:/usr/local/var/lib/virtuoso/db$ virtuoso-t -df
+
+                Thu Apr 28 2011
+15:20:13 INFO: { Loading plugin 1: Type `plain', file `wikiv' in `/usr/local/lib/virtuoso/hosting'
+15:20:13 INFO:   WikiV version 0.6 from OpenLink Software
+15:20:13 INFO:   Support functions for WikiV collaboration tool
+15:20:13 INFO:   SUCCESS plugin 1: loaded from /usr/local/lib/virtuoso/hosting/wikiv.so }
+...
+15:20:23 INFO: Checkpoint started
+15:20:23 INFO: Checkpoint finished, log reused
+15:20:23 INFO: HTTP/WebDAV server online at 8890
+15:20:23 INFO: Server online at 1111 (pid 23912)
+</verbatim>
+      * Here we see the server running in foreground mode with maximum debugging
+information. Because it's the first time this instance has been run, virtuoso
+has created a bunch of database files (virtuoso.db, virtuoso.trx (the
+transaction log), etc) and installed the Conductor VAD package into the
+database.
+   * If you close your terminal while this command is running, Virtuoso will stop. To
+run it as a daemon instead, omit the "-df" options. You can still see most of
+what's happening by running <tt>tail -f virtuoso.log</tt>.
+
+---+++Using Virtuoso
+
+---++++Web-based UI
+
+You can access the Conductor menu by pointing your web-browser at
+http://localhost:8890/conductor/ (substitute hostname as appropriate).
+
+From the Conductor you can manage users and automated backups, install VAD
+packages, execute SQL commands in a web-based iSQL tool, configure the RDF
+Sponger and loads more.
+
+There are two system users of immediate importance: dba (the relational data
+administrative account) and dav (the WebDAV adminstrative account). By default
+both these accounts have their passwords set the same as the respective
+usernames; it is highly advised that you change these as soon as possible for
+security reasons.
+
+---++++Command-line
+
+Virtuoso provides a SQL/ODBC listener on port 1111/tcp. You can connect directly
+to this and execute SQL statements using the isql (<tt>isql-v</tt>) tool:
+
+<verbatim>
+tim@debian:~$ isql-v
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL> tables;
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+Showing SQLTables of tables like 'NULL.NULL.NULL', tabletype/colname like 'NULL'
+TABLE_QUALIFIER  TABLE_OWNER      TABLE_NAME       TABLE_TYPE       REMARKS
+VARCHAR          VARCHAR          VARCHAR          VARCHAR          VARCHAR
+_______________________________________________________________________________
+
+DB               DBA              ADMIN_SESSION    SYSTEM TABLE     NULL
+DB               DBA              ADM_OPT_ARRAY_TO_RS_PVIEW  SYSTEM TABLE     NULL
+</verbatim>
+
+---++Resource Usage
+
+Virtuoso is highly configurable: the same executables and packages will service
+anything from a small "lite-mode" installation with a database of 10Mb up to a
+huge multi-user enterprise installation with terabytes of data.
+
+The defaults with Virtuoso Open-Source give a 160MB process size in memory,
+about 29MB database and total 237MB footprint on disk; this has 20 threads
+running for database and/or web-server use.
+
+The wiki document
+[[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSScale][VOSScale]]
+describes how to scale Virtuoso in some detail.
+
+---++Related
+
+   * [[VOSUbuntuNotes][Ubuntu]]
+   * [[VOSCentosNotes][CentOS]]
+   * [[VOSFedoraNotes][Fedora]]

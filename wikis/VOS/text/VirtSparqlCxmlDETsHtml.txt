@@ -1,0 +1,82 @@
+%META:TOPICPARENT{name="VirtSparqlCxmlHtml"}%
+---+Pivot Collections (Part 7)
+
+---++Contents
+
+Part 1: [[VirtSparqlCxmlHtml][Introduction]]
+
+Part 2: [[VirtSparqlCxmlHtml][SparqlCxml]]
+
+Part 3: [[VirtSparqlCxmlDzcsHtml][SparqlCxml Deep Zoom Collections]]
+
+Part 4: [[VirtSparqlCxmlHtmlPivotViewer][HtmlPivotViewer]]
+
+Part 5: [[VirtSparqlCxmlImportHtml][Importing CXML]]
+
+Part 6: [[VirtSparqlCxmlFacetPivotBridgeHtml][Facet Pivot Bridge]]
+
+Part 7: DETs : Persisting SPARQL Query Results to DAV
+
+   * [[#AncSparqlCxmlDETs][DETs : Persisting SPARQL Query Results to DAV]]
+      * [[#AncSparqlCxmlDETsOverview][Overview]]
+      * [[#AncSparqlDETSupport][SPARQL Endpoint Support for DETs]]
+      * [[#AncEnablingSparqlDETs][Enabling /sparql DETs]]
+
+Part 8: [[VirtSparqlCxmlFAQsHtml][Frequently Asked Questions (FAQs)]]
+
+Part 9: [[VirtSparqlCxmlGlossaryHtml][Glossary]]
+
+---
+#AncSparqlCxmlDETs
+---++DETs : Persisting SPARQL Query Results to DAV
+
+#AncSparqlCxmlDETsOverview
+---+++Overview
+
+Virtuoso's Dynamic Extension Types (DETs) provide a powerful mechanism for generating dynamic hypermedia resources that are akin to materialized views from database queries. DETs are useful in cases where clients do not support the requisite access mechanism for a specific data source but, because most modern operating systems are <nowiki>WebDAV</nowiki> compliant, are able to load a file from <nowiki>WebDAV</nowiki>. In situations like this, Virtuoso allows you to create an HTTP accessible resource from a query that's then exposed as a file in a <nowiki>WebDAV</nowiki> folder. <nowiki>WebDAV</nowiki> clients, for instance Windows Web Client, can connect to <nowiki>WebDAV</nowiki> storage and access this resource as if it was a plain local file. These resources may be temporary or long lived.
+
+#AncSparqlDETSupport
+---+++SPARQL Endpoint Support for DETs
+
+By default, Virtuoso's /sparql endpoint can only send query results back to the client. This can be inconvenient if the result needs to be accessible to programs like file managers and archivers. The solution is to let the endpoint create "dynamic" resources in DAV storage. To this end, Conductor's /sparql UI exposes Virtuoso's DET capability through options which allow you to save SPARQL query results to <nowiki>WebDAV</nowiki> and serve the results without needing to re-execute the query. Any of the supported SPARQL result set serialization formats can be used to write the results to file.
+
+#AncEnablingSparqlDETs
+---+++Enabling /sparql DETs
+
+The easiest way to enable this feature is through Conductor:
+
+Go to the 'System Admin' &gt; 'User Accounts' tab and choose the 'Edit' option for Login name 'SPARQL'
+   * Set the 'DAV Home Path' to /DAV/home/SPARQL/ (include the leading and trailing slashes) and click the 'create' checkbox
+   * Set the 'Default Permissions' on this folder to allow the required access, e.g. set +r for public or a specific group
+   * Change the 'User type' to 'SQL/ODBC and <nowiki>WebDAV</nowiki>'
+
+Open the newly created DAV/home/SPARQL folder using Conductor's <nowiki>WebDAV</nowiki> browser
+   * Create a new folder named 'saved-sparql-results'. (Use the folder icon at the top of the dialog).
+   * Set the 'Owner' to 'dav'
+   * Set the 'Folder type' to 'Dynamic Resources'
+   * Set the folder permissions to allow public or group access
+
+<verbatim>
+The net effect of the above steps is:
+   1. The "SPARQL" account under which the /sparql service runs is granted access to DAV (by setting U_DAV_ENABLE=1 in table DB.DBA.SYS_USERS)
+   2. A DAV home directory /DAV/home/SPARQL/ is created for the SPARQL account and the path saved in the U_HOME field of table DB.DBA.SYS_USERS
+   3. A subdirectory named "saved-sparql-results" is created with DAV Extension Type "DynaRes"
+</verbatim>
+
+Once enabled, the /sparql UI will show additional options for saving query results, as depicted below:
+
+<div>
+<img src="%ATTACHURLPATH%/sparql_save_as_det.jpg" style="wikiautogen"/>
+</div>
+
+When a SPARQL result has been successfully saved to DAV, Conductor displays a confirmation dialog:
+
+<div>
+<img src="%ATTACHURLPATH%/det_create_success.jpg" style="wikiautogen" />
+</div>
+
+and the generated dynamic resource can be seen in <nowiki>WebDAV</nowiki>:
+
+<div>
+<img src="%ATTACHURLPATH%/sparql_det_webdav_view.jpg" style="wikiautogen"/>
+</div>

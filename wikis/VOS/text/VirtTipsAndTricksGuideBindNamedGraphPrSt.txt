@@ -1,0 +1,66 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+How do I bind named graph parameter in prepared statement?
+
+Assume the following SPARQL query:
+
+<verbatim>
+CONSTRUCT 
+  { 
+    ?s ?p ?o
+  } 
+FROM ?context 
+WHERE 
+  { 
+    ?s ?p ?o 
+  }
+</verbatim>
+
+
+To bind the named graph context of the query from above, the best solution due to performance implications,
+is to change the syntax of the query as:
+
+<verbatim>
+CONSTRUCT 
+  { 
+    ?s ?p ?o
+  } 
+WHERE 
+  { 
+    graph `iri(??)` { ?s ?p ?o } 
+  }
+</verbatim>
+
+Note: In case of using "FROM clause", it needs a constant in order to check at the compile time 
+whether the IRI refers to a graph or a graph group:
+   * Assume "FROM clause" is used as for ex:
+<verbatim>
+CONSTRUCT 
+  { 
+    ?s ?p ?o
+  } 
+FROM `iri(??)` 
+WHERE
+  { 
+    ?s ?p ?o
+  }
+</verbatim>
+      * In this case can be made security checks at the compile time (i.e., once) and not waste time at the run time. 
+   * Assume "FROM clause" is used as for ex:
+<verbatim>
+CONSTRUCT 
+  { 
+    ?s ?p ?o
+  }
+FROM iri(??) 
+WHERE 
+  { 
+    ?s ?p ?o 
+  }
+</verbatim>
+      * In this case a compile-time check, a run-time check or 50/50 mix of them can be performed, depending on the security policies.
+   * FROM without constant would mean that security rules, if they present in the storage, are used at the run time, for every triple that matches every triple pattern in the default graph. This issue can be reproduced if FROM is not specified at all: if security differs from default then the effect is noticeably bad.
+
+---+++Related
+   
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]

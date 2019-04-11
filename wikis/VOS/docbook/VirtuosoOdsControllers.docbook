@@ -1,0 +1,340 @@
+<docbook><section><title>VirtuosoOdsControllers</title><para> </para>
+<title> ODS Controllers</title> ODS Controllers
+<para>The ODS provide an controllers (API) to manipulate the user accounts as well as instances, and instances specific data.
+The controllers can be accessed via REST using authentication based on OAuth, sessions or password hash.
+ The details are presented bellow.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Access point</bridgehead>
+<para>The API can be accessed via REST using http://host:port/ods/api/[method].
+ Parameters specific to each method are given as URL parameters if using GET, as www-url-encoded or multipart/form-data if using POST.</para>
+<para>The API can be accessed via UI page using http://host:port/ods/oauth_test.vsp.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Authentication</bridgehead>
+<para>Most API calls which modify data, i.e., IUD operations, need authentication; thus the request should contain OAuth authentication, or session or password hash.
+ The user account used to authenticate in either case MUST have relevant access to the ODS object.
+ This is done by having owner or author membership to the given application.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> OAuth</bridgehead>
+<para>The user account for authentication must have OAuth tokens generated via ODS -&gt; Settings -&gt; OAuth keys.
+ This UI provides a list of all applications to which the user has access (i.e., he is member or owner).
+ If an instance needs to be accessed with OAuth, user simply selects the instance from the list and clicks &#39;generate keys&#39;.
+The generated consumer key &amp; token will be associated to the active ODS user account and selected application instance.</para>
+<para>Once a consumer token is available, the sequence below must be done in order to establish an authorized session:</para>
+<orderedlist spacing="compact"><listitem>client uses request_token to get a token/secret pair for establishing session using consumer token </listitem>
+<listitem>client asks OAuth server to authorize the token from step 1 </listitem>
+<listitem>using authorized token from step 1, client asks OAuth server for authentication token </listitem>
+<listitem>with authentication token from step 3, clients can access instance data associated with the consumer token from step 1</listitem>
+</orderedlist><para> To demonstrate the above, we supply a simple client written in VSP:</para>
+<programlisting>&lt;html&gt;
+&lt;?vsp
+    declare consumer_key, consumer_secret, oauth_token, oauth_secret, signature, timest, nonce varchar;
+    declare srv, res, signature_base, ret_url, url, tmp, sid varchar;
+    declare meth, pars any;
+    consumer_key := {?&#39;key&#39;};
+    srv := sprintf (&#39;http://localhost:%s/OAuth/&#39;, server_http_port ());
+    sid := null;
+    res := &#39;&#39;;
+
+    sid :=  {?&#39;sid&#39;};
+    if (sid = &#39;&#39;)
+      sid := null;  
+    else
+      {
+        -- if selected token is not same as one from the session we need to get new authentication token
+        if (consumer_key &lt;&gt; OAUTH..get_consumer_key (sid))
+     {
+       OAUTH..session_terminate (sid);
+            sid := null;
+     }
+      }
+
+    meth := get_keyword (&#39;meth&#39;, params, &#39;weblog.post.new&#39;);;
+    pars := get_keyword (&#39;pars&#39;, params, &#39;inst_id=15&amp;title=testing&amp;description=Some test post&#39;);;
+
+    if ({?&#39;rt&#39;} is not null and sid is null) -- request new token for the session
+      {
+   url := srv||&#39;request_token&#39;;
+   url := OAUTH..sign_request (&#39;GET&#39;, url, &#39;&#39;, consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+   OAUTH..set_session_data (sid, params);
+   ret_url := sprintf (&#39;http://localhost:%s/oauth/oauth_client.vsp?ready=%U&#39;, server_http_port (), sid);
+   -- call authorize
+        url := sprintf (&#39;%sauthorize?oauth_token=%U&amp;oauth_callback=%U&#39;, srv, OAUTH..get_auth_token (sid), ret_url);
+   http_status_set (301);
+        http_header (sprintf (&#39;Location: %s\r\n&#39;, url));
+        return;
+      }
+    else if ({?&#39;ready&#39;} is not null) -- get access token
+      {
+   -- we go here when token above is authorized
+        sid := {?&#39;ready&#39;};
+   url := srv||&#39;access_token&#39;;
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request (&#39;GET&#39;, url, &#39;&#39;, consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+
+      }
+    if (sid is not null) -- access token is ready, and we can call API
+      {
+        -- here we are ready to call service
+   if ({?&#39;rt&#39;} is null)
+          {
+            tmp := OAUTH..get_session_data (sid);
+            pars := get_keyword (&#39;pars&#39;, tmp, pars);
+       meth := get_keyword (&#39;meth&#39;, tmp, meth);
+     }
+   url := sprintf (&#39;http://localhost:%s/ods/api/%s&#39;, server_http_port (), meth);
+   tmp := split_and_decode (pars);
+   params := &#39;&#39;;
+   for (declare i,l int, l:=length (tmp); i &lt; l; i := i + 2)
+      {
+        params := params || sprintf (&#39;%U=%U&amp;&#39;, tmp[i], tmp[i+1]);
+      }
+   --params := sprintf (&#39;inst_id=%d&amp;description=%U&amp;title=%U&#39;, 15, &#39;Some test post&#39;, &#39;testing&#39;);
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request (&#39;GET&#39;, url, params, consumer_key, sid);
+        res := http_get (url);
+        --dbg_obj_print (res);
+      }
+?&gt;
+    &lt;head&gt;&lt;title&gt;OAuth Client&lt;/title&gt;&lt;/head&gt;
+    &lt;body&gt;
+   &lt;h1&gt;OAuth client for ODS Controllers&lt;/h1&gt;
+   &lt;form method=&quot;POST&quot; action=&quot;oauth_client.vsp&quot;&gt;
+   &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; value=&quot;&lt;?V sid ?&gt;&quot;/&gt;
+   APPLICATION : &lt;br/&gt; &lt;select name=&quot;key&quot;&gt;
+   &lt;?vsp for select a_name, a_key from OAUTH..APP_REG do { ?&gt;
+            &lt;option value=&quot;&lt;?V a_key ?&gt;&quot; &lt;?vsp if (consumer_key = a_key) http (&#39;selected&#39;); ?&gt;&gt;&lt;?V a_name ?&gt;&lt;/option&gt;
+   &lt;?vsp } ?&gt;
+              &lt;/select&gt;
+   &lt;?vsp
+   if (sid is not null) http (sprintf (&#39; TOKEN: %s&#39;, OAUTH..get_auth_token (sid)));
+   ?&gt;
+   &lt;br/&gt;
+   ODS API: &lt;br/&gt;&lt;input type=&quot;text&quot; name=&quot;meth&quot; value=&quot;&lt;?V meth ?&gt;&quot; size=50/&gt; &lt;br/&gt;
+   PARAMETERS: &lt;br/&gt; &lt;textarea name=&quot;pars&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;?V pars ?&gt;&lt;/textarea&gt; &lt;br/&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Execute&quot; name=&quot;rt&quot;/&gt;&lt;br/&gt;
+   &lt;/form&gt;
+   RESULT:
+   &lt;hr/&gt;
+   &lt;pre&gt;&lt;?V res ?&gt;&lt;/pre&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</programlisting><para> The following is a sample session recorded with the client above :</para>
+<programlisting>GET /OAuth/request_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607ed
+c5f36&amp;oauth_nonce=b8f1089077cbce6e&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_times
+tamp=1211212829&amp;oauth_version=1.0&amp;oauth_signature=V1zmk757LBHcmqVJ6obMhNX5hKA%3
+D HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth_token_secret=M...
+</programlisting><programlisting>GET /OAuth/authorize?oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth
+_callback=http%3A//localhost%3A8890/oauth/oauth_client.vsp%3Fready%3D00c874b2fa
+b2f6424008b5064fe83e88 HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 301 Moved
+Location: /ods/oauth_authorize.vspx?....
+</programlisting><programlisting>GET /OAuth/access_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607edc
+5f36&amp;oauth_nonce=242cc4875a0059f6&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_timest
+amp=1211212831&amp;oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&amp;oauth_versi
+on=1.0&amp;oauth_signature=sqs/8nmNNnNJiZ/eBa688uNeg9o%3D HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+oauth_token=N..&amp;oauth_token_secret=M...
+</programlisting><para> </para>
+<programlisting>GET /ods/api/weblog.post.new?description=Some%20test%20post&amp;inst_id=15&amp;oauth_co
+nsumer_key=50082d0fb861b0e6e67d5d986b8333607edc5f36&amp;oauth_nonce=2f4765d20664e69
+6&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_timestamp=1211213321&amp;oauth_token=db83a
+37d74faf53edc8ed56d418ded3a70fcc0bc&amp;oauth_version=1.0&amp;title=testing&amp;oauth_signa
+ture=oocIyr6kgoEQkC3WVwzvl6w62W4%3D HTTP/1.1
+Host: localhost:8890
+
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF&gt;
+&lt;result&gt;&lt;code&gt;1&amp;lt/code&gt;&lt;/result&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Session based</bridgehead>
+<para>The request to the API in this type of authentication must have &#39;sid&#39; &amp; &#39;realm&#39; via &#39;user.authenticate&#39; method:</para>
+<para>To get session id: </para>
+<programlisting>curl -i &quot;http://localhost:8890/ods/api/user.authenticate?user_name=demo&amp;passwor
+d_hash=fe1774cfea9f7b402796751a4616c04a6f010ecb&quot;
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=&quot;UTF-8&quot;
+Content-Length: 32
+
+bfb2b13e4218a99f65b956eb6ba657cb &lt;&lt; SID
+
+</programlisting><para> Perform weblog.post.new  API call: </para>
+<programlisting>curl -i &quot;http://localhost:8890/ods/api/weblog.post.new?title=test&amp;description=S
+ome%20test%20post&amp;inst_id=15&amp;sid=bfb2b13e4218a99f65b956eb6ba657cb&amp;realm=wa&quot;
+HTTP/1.1 200 OK
+Connection: Keep-Alive
+Content-Type: text/xml; charset=&quot;UTF-8&quot;
+Content-Length: 53
+&lt;CR/LF&gt;
+&lt;result&gt;&lt;code&gt;1&amp;lt/code&gt;&lt;/result&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> password hash</bridgehead>
+<para>This approach is similar to above, but instead of sid and realm we just pass as parameters to request the user_name &amp; password_hash .</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Response format</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> IUD operations</bridgehead>
+<para>The IUD methods return an XML response with code &amp; message format follows:</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> On success</bridgehead>
+<para>&lt;result&gt;&lt;code&gt;NNN&lt;/code&gt;&lt;message&gt;human readable explanation if applicable&lt;/message&gt;&lt;/result&gt;</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> On failure</bridgehead>
+<para>&lt;failed&gt;&lt;code&gt;NNN&lt;/code&gt;&lt;failed&gt;human readable explanation&lt;/message&gt;&lt;/failed&gt;</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Search (get)</bridgehead>
+<para>The search methods returns results in RDF format according to FOAF, SIOC and SIOC types module ontology.
+ See ODS RDF model.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> API methods</bridgehead>
+<para>All APIs are acting on behalf of the user who established authentication, i.e., the user which is authorized.
+ The APIs where user is subject of removal or freeze as well as registration the user name is passed as parameter.
+ Therefore user.register, user.delete would need user name as input parameter where user.update, instance.create will use the user from authentication information.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Framework</bridgehead>
+<programlisting>user.register (
+    name varchar,
+    password varchar,
+    email varchar
+    )
+user.authenticate (
+    user_name varchar,
+    password_hash varchar
+    )
+user.update (user_info any)
+user.password_change (new_password varchar)
+user.delete (name varchar)
+user.enable (name varchar)
+user.disable (name varchar)
+user.get (name varchar)
+user.search (pattern varchar)
+user.invite (
+    friends_email varchar,
+    custom_message varchar default &#39;&#39;
+    )
+user.invitation (
+    invitation_id varchar,
+    approve int
+    )
+user.invitations.get ()
+user.relation_terminate (friend varchar)
+user.tagging_rules.add (
+    rulelist_name varchar,
+    rules any,
+    is_public int default 1
+    )
+user.tagging_rules.delete (rulelist_name varchar)
+user.tagging_rules.update (
+    rulelist_name varchar,
+    rules any
+    )
+user.hyperlinking_rules.add (rules any)
+user.hyperlinking_rules.update (rules any)
+user.hyperlinking_rules.delete (rules any)
+user.annotation.add (
+    claimIri varchar,
+    claimRelation varchar,
+    claimValue varchar
+    )
+user.annotation.delete (
+    claimIri varchar,
+    claimRelation varchar,
+    claimValue varchar
+    )
+
+instance.create (
+    type varchar,
+    name varchar,
+    description varchar,
+    model int,
+    public int
+    )
+instance.update (
+    inst_id int,
+    name varchar,
+    description varchar,
+    model int,
+    public int
+    )
+instance.delete (inst_id int)
+instance.freeze (name varchar)
+instance.unfreeze (name varchar)
+instance.join (inst_id int)
+instance.disjoin (inst_id int)
+instance.join_approve (
+    inst_id int,
+    uname varchar
+    )
+instance.notification.services ()
+instance.notification.set (
+    inst_id int,
+    services any
+    )
+instance.notification.cancel (
+    inst_id int,
+    services any
+    )
+instance.notification.log (inst_id int)
+instance.get (inst_id int)
+instance.get.id (name varchar)
+
+site.search (
+    pattern varchar,
+    options any
+    )
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Briefcase</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersBriefcase">Briefcase Controllers</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Weblog</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersWeblog">Weblog Controllers</ulink> </listitem>
+<listitem><ulink url="OdsWeblogProgrammersGuide">Weblog&#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Addressbook</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersAddressbook">Addressbook Controllers</ulink> </listitem>
+<listitem><ulink url="OdsAddressbookProgrammersGuide">Addressbook&#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Bookmarks</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersBookmarks">Bookmarks Controllers</ulink> </listitem>
+<listitem><ulink url="OdsBookmarkManager">Bookmarks Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Polls</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersPolls">Polls Controllers</ulink> </listitem>
+<listitem><ulink url="OdsPollsProgrammersGuide">Poll&#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Calendar</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersCalendar">Calendar Controllers</ulink> </listitem>
+<listitem><ulink url="OdsCalendarProgrammersGuide">Calendar&#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Feed Manager</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersFeeds">Feed Manager Controllers</ulink> </listitem>
+<listitem><ulink url="OdsFeedManagerProgrammersGuide">Feed Manager&#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Webmail</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersWebmail">Webmail Controllers</ulink> </listitem>
+<listitem><ulink url="OdsWebmailProgrammersGuide">Webmail&#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Discussion</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersDiscussion">Discussion Controllers</ulink> </listitem>
+<listitem><ulink url="OdsDiscussionsProgrammersGuide">Discussions &#39;s Programmers Guide</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Gallery</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersGallery">Gallery Controllers</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Wiki</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersWiki">Wiki Controllers</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Messenger</bridgehead>
+ <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtuosoOdsControllersMessenger">Messenger Controllers</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">References</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="OAuth">OpenLink&#39;s explanation of OAuth</ulink> </listitem>
+<listitem><ulink url="VirtuosoOAuthServer">Virtuoso OAuth server</ulink> </listitem>
+<listitem><ulink url="VirtOAuthControllers">Using OAuth with ODS</ulink> </listitem>
+<listitem><ulink url="VirtuosoOdsUbiquity">ODS Ubiquity Commands</ulink> </listitem>
+<listitem><ulink url="VirtOAuth">Virtuoso OAuth Implementation</ulink> </listitem>
+<listitem><ulink url="VirtODSOAuthQA">Testing Virtuoso OAuth with 3rd Party OAuth Clients</ulink> </listitem>
+<listitem><ulink url="VirtuosoOdsUbiquityTutorialsOAuth">OAuth Ubiquity Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtOAuthTestTool">Virtuoso OAuth Test Tool for ODS Controllers</ulink> </listitem>
+<listitem><ulink url="VirtOAuthSPARQL">Virtuoso SPARQL OAuth Tutorial</ulink> </listitem>
+<listitem><ulink url="VirtuosoOdsUbiquityTutorials">ODS Ubiquity Tutorials</ulink> </listitem>
+<listitem><ulink url="VirtOAuthExamples">OAuth Applications Authentication examples</ulink> </listitem>
+<listitem><ulink url="http://oauth.net/core/1.0/">OAuth API</ulink></listitem>
+</itemizedlist><para><ulink url="CategoryODS">CategoryODS</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> </para>
+</section></docbook>

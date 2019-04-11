@@ -1,0 +1,161 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+Simple Linked Data Deployment using Virtuoso's HTTP Re-write Rules
+
+---++What?
+Use basic URL pattern as the basis for re-write rules that serve 5-Star Linked Data from a Virtuoso instance.
+
+---++Why?
+Linked Data offers a powerful mechanism for incorporating the connectivity of hyperlinks (typically HTTP URIs) into the process of actual structured data representation and data access. 
+
+---++How?
+
+Perquisites:
+
+The following example demonstrates the usage of a basic URL pattern as the basis for URL re-write rules.
+
+Ensure Virtuoso's native faceted browser is installed so that you can leverage its entity description service via URL pattern: http://{hostname}/describe/?uri={URI}, for powerful HTML based follow-your-nose style of data exploration.
+
+URL Pattern: http://{hostname}:8890/id/... 
+Negotiated Data Representation formats to be handled by these rules: 
+
+   1 text/html via "/page/" path component of the URL.. 
+   1 RDF (text/turtle, application/rdf+xml) via "/data/" path component of the URL .
+
+<verbatim>
+-- Goals
+-- Use slash terminated HTTP scheme URIs as Object Identifiers (Names) for Data Objects that resolve to Object Representations via a variety of URL patterns aligned to different data representation formats
+-- Object IDs take the form /id while Object Representation Addresses take the form: /data .
+--
+-- Steps
+-- Create URL re-write rules:
+-- rules for HTML based Linked Data graphs
+
+DB.DBA.URLREWRITE_CREATE_RULELIST ( 'http_rule_list_1', 1, vector ('http_rule_1', 'http_rule_2'));
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( 'http_rule_2', 1, '/id/(.*)\x24', vector ('par_1'), 1, '/page/%s', vector ('par_1'), NULL, NULL, 2, 303, '' );
+
+-- rules for other Linked Data Graph formats e.g. rdf/xml, n3
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( 'http_rule_1', 1, '/id/(.*)\x24', vector ('par_1'), 1, '/data/%s', vector ('par_1'), NULL, 'text/n3|application/rdf\\+xml|text/rdf\\+n3', 2, 303, '' );
+
+-- rules for Virtuoso Faceted Linked Data Navigation Service
+
+-- rule: unconditionally we redirect "/page" URLs internally to "/describe" which is the default endpoint for the Faceted Navigation Service
+
+DB.DBA.URLREWRITE_CREATE_RULELIST ( 'http_rule_list_2', 1, vector ('http_rule_3')); 
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( 'http_rule_3', 1, '/page/(.*)\x24', vector ('par_1'), 1, '/fct/rdfdesc/description.vsp?g=http://localhost:8990/id/%s', vector ('par_1'), NULL, NULL, 2, 0, '' );
+
+
+-- "/SPARQL" URL pattern handling rules that allow use of SPARQL DESCRIBE queries for generating and returning Linked Data Graphs in a variety of formats determined by HTTP request URL patterns.
+
+-- query endpoints: http://localhost:8990/id/...> associated with "/data/" patterns
+
+DB.DBA.URLREWRITE_CREATE_RULELIST ( 'http_rule_list_3', 1, vector ('http_rule_4')); 
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE ( 'http_rule_4', 1, '/data/(.*)\x24', vector ('par_1'), 1, 
+'/sparql?query=describe%%20%%3Chttp%%3A%%2F%%2Flocalhost%%3A8990%%2Fid%%2F%s%%3E%%20from%%20%%3Chttp%%3A%%2F%%2Flocalhost%%3A8990%%2Fdata%%2F%%3E&format=%U', 
+vector ('par_1', '*accept*'), NULL, NULL, 2, 0, '' );
+
+
+-- Virtual Directory Setup
+-- Cleanup 
+DB.DBA.VHOST_REMOVE ( lhost=>'*ini*', vhost=>'*ini*', lpath=>'/id');
+
+-- Create Virtual Directory that's associated with a named URL re-write rule for handling "/id" URL patterns
+DB.DBA.VHOST_DEFINE ( lhost=>'*ini*', vhost=>'*ini*', lpath=>'/id', ppath=>'/id/', is_dav=>0, def_page=>'', vsp_user=>'dba', opts=>vector ('url_rewrite', 'http_rule_list_1'));
+
+-- do the same for "/page" URL patterns with use as Web Service endpoint for Virtuoso's Faceted Navigation Service in mind.
+DB.DBA.VHOST_REMOVE ( lhost=>'*ini*', vhost=>'*ini*', lpath=>'/page');
+DB.DBA.VHOST_DEFINE ( lhost=>'*ini*', vhost=>'*ini*', lpath=>'/page', ppath=>'/page/', is_dav=>0, def_page=>'', vsp_user=>'dba', opts=>vector ('url_rewrite', 'http_rule_list_2'));
+
+
+-- do same for "/data" URL patterns with other Linked Data Graph formats in mind
+DB.DBA.VHOST_REMOVE ( lhost=>'*ini*', vhost=>'*ini*', lpath=>'/data');
+DB.DBA.VHOST_DEFINE ( lhost=>'*ini*', vhost=>'*ini*', lpath=>'/data', ppath=>'/data/', is_dav=>0, def_page=>'', vsp_user=>'dba', opts=>vector ('url_rewrite', 'http_rule_list_3'));
+
+
+
+</verbatim>
+
+
+---+++Using CURL to verify re-write rules 
+
+---++++Example 1
+
+<verbatim>
+curl -L -I  http://localhost:8990/id/state/MA 
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Wed, 04 May 2011 13:44:24 GMT
+Accept-Ranges: bytes
+Location: http://localhost:8990/page/state/MA
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Wed, 04 May 2011 13:44:24 GMT
+Accept-Ranges: bytes
+Cache-Control: no-cache, must-revalidate
+Pragma: no-cache
+Link: <http://localhost:8990/sparql?query=define%20sql%3Adescribe-mode%20%22LOD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2Flocalhost%3A8
+3E&output=application%2Frdf%2Bxml>; rel="alternate"; type="application/rdf+xml"; title="Structured Descriptor Document (RDF/XML
+host:8990/sparql?query=define%20sql%3Adescribe-mode%20%22LOD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2Flocalhost%3A8990%2Fid%2Fstate%2F
+>; rel="alternate"; type="text/n3"; title="Structured Descriptor Document (N3/Turtle format)",<http://localhost:8990/sparql?quer
+ibe-mode%20%22LOD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2Flocalhost%3A8990%2Fid%2Fstate%2FMA%3E&output=application%2Frdf%2Bjson>; rel
+plication/rdf+json"; title="Structured Descriptor Document (RDF/JSON format)",<http://localhost:8990/sparql?query=define%20sql%3
+D%22%20%20DESCRIBE%20%3Chttp%3A%2F%2Flocalhost%3A8990%2Fid%2Fstate%2FMA%3E&output=application%2Fatom%2Bxml>; rel="alternate"; ty
+ml"; title="Structured Descriptor Document (OData/Atom format)",<http://localhost:8990/sparql?query=define%20sql%3Adescribe-mode
+RIBE%20%3Chttp%3A%2F%2Flocalhost%3A8990%2Fid%2Fstate%2FMA%3E&output=application%2Fodata%2Bjson>; rel="alternate"; type="applicat
+="Structured Descriptor Document (OData/JSON format)",<http://localhost:8990/sparql?query=define%20sql%3Adescribe-mode%20%22LOD%
+http%3A%2F%2Flocalhost%3A8990%2Fid%2Fstate%2FMA%3E&output=text%2Fcxml>; rel="alternate"; type="text/cxml"; title="Structured Des
+ format)",<http://localhost:8990/sparql?query=define%20sql%3Adescribe-mode%20%22LOD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2Flocalhost
+FMA%3E&output=text%2Fcsv>; rel="alternate"; type="text/csv"; title="Structured Descriptor Document (CSV format)",<http://localho
+rel="http://xmlns.com/foaf/0.1/primaryTopic",<http://localhost:8990/id/state/MA>; rev="describedby"
+Content-Length: 10858
+</verbatim>
+
+
+---++++Example 2
+
+<verbatim>
+curl -L -I -H "Accept: text/n3"  http://localhost:8894/id/state/MA 
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: close
+Content-Type: text/html; charset=ISO-8859-1
+Date: Wed, 04 May 2011 13:46:25 GMT
+Accept-Ranges: bytes
+Location: http://localhost:8990/page/state/MA
+Content-Length: 0
+
+HTTP/1.1 303 See Other
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Wed, 04 May 2011 13:46:25 GMT
+Accept-Ranges: bytes
+TCN: choice
+Vary: negotiate,accept
+Location: http://localhost:8990/sparql?query=define%20sql%3Adescribe-mode%20%22LOD%22%20%20DESCRIBE%20%3Chttp%3A%2F%2Flocalhost%
+MA%3E&format=text%2Fn3
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Server: Virtuoso/06.02.3129 (Win32) i686-generic-win-32  VDB
+Connection: Keep-Alive
+Date: Wed, 04 May 2011 13:46:25 GMT
+Accept-Ranges: bytes
+Content-Type: text/n3; charset=UTF-8
+Content-Length: 15
+</verbatim>
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtFacetBrowserInstallConfig][Virtuoso Faceted Browser Installation and Configuration Guide]]
+   * [[VirtuosoFacetsWebService][Virtuoso Faceted Search & Find Engine User Guide]]
+   * [[VirtuosoLODSampleTutorial][Faceted Navigation to Explore Virtuoso hosted Linked Data Usage Guide]]

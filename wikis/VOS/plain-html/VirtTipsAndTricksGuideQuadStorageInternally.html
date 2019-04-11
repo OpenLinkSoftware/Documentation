@@ -1,0 +1,43 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I see which quad storages exist and in which quad storage a graph resides?"></a> How can I see which quad storages exist and in which quad storage a graph resides?</h1>
+<p> Let&#39;s take for example a <a href="http://virtuoso.openlinksw.com/whitepapers/relational%20rdf%20views%20mapping.html" class="absuri">Linked Data (RDF) View created from relational data in Virtuoso</a>.
+The RDF output should have two graphs which reside in a quad storage named, for example --</p>
+<br><pre>http://localhost:8890/rdfv_demo/quad_storage/default
+</pre><p> The RDF is also accessible through the SPARQL endpoint with a query like --</p>
+<br><pre>DEFINE input:storage &lt;http://localhost:8890/rdfv_demo/quad_storage/default&gt;
+SELECT * 
+WHERE 
+  { 
+    ?s ?p ?o 
+  }
+</pre><p> One might ask, is there a way to tell Virtuoso (once) that the quad storage should always be included in all queries to the SPARQL endpoint, such that the user does not have to define the <b>input:storage</b> explicitly in each query?</p>
+<br><pre>http://localhost:8890/sparql?qtxt=SELECT%20*%20WHERE%20%7B%20%3Fs%20%3Fp%20%3Fo%20%7D&amp;default-graph-uri=NULL&amp;named-graph-uri=NULL
+</pre><p>All metadata about all RDF storages are kept in &quot;system&quot; graph <code>&lt;http://www.openlinksw.com/schemas/virtrdf#&gt;</code> (with built-in, predefined namespace prefix, <b><code>virtrdf:</code></b>).
+ Subjects of type <b><code>virtrdf:QuadStorage</code></b> are RDF storages.
+ There are three of them by default:</p>
+<br><pre>SQL&gt; SPARQL SELECT * FROM virtrdf: WHERE { ?s a virtrdf:QuadStorage };
+s
+VARCHAR
+_______________________________________________________________________________
+
+http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage
+http://www.openlinksw.com/schemas/virtrdf#DefaultServiceStorage
+http://www.openlinksw.com/schemas/virtrdf#SyncToQuads
+
+3 Rows. -- 3 msec.
+</pre><p> </p>
+<ul><li><b><code>virtrdf:DefaultQuadStorage</code></b> is used if no <code>input:storage</code> is specified.
+</li>
+<li><b><code>virtrdf:DefaultServiceStorage</code></b> is used for SPARQL Federation.
+</li>
+<li><b><code>virtrdf:SyncToQuads</code></b> is used to keep the list of Linked Data Views that are translated into RDB2RDF triggers.</li>
+</ul><p>There are two ways of using one of these Linked Data Views in SPARQL endpoint without making a <code>define input:storage</code> declaration.
+</p>
+<ul><li>Create a Linked Data View right in <b><code>virtrdf:DefaultQuadStorage</code></b>; or add the view in other storage, and then copy it from there to <b><code>virtrdf:DefaultQuadStorage</code></b>.
+ In either case, use: <br><pre><br>SPARQL ALTER QUAD STORAGE virtrdf:DefaultQuadStorage . . .
+</pre><br></li>
+<li>Use <b><code>SYS_SPARQL_HOST</code></b> table as <a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfdefaultgraph" class="absuri">described here</a>, and set <b><code>SH_DEFINES</code></b> so it contains your favorite <code>define input:storage</code>.</li>
+</ul><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">SPARQL</a></li>
+</ul></div></body></html>

@@ -1,0 +1,120 @@
+---+ Automated Generation of Linked Data Views over Relational Data Sources with Virtuoso
+
+The proliferation of relational databases across enterprises and behind Web sites makes them a vital data source for the burgeoning Linked Data Web. The process of publishing Linked Data from these sources needs to be as unobtrusive as possible, and must preserve and enhance the traditional virtues of relational database management systems (RDBMS) such as:
+
+   * Scalability
+   * Security
+   * Analytical Expressiveness of SQL
+   * Separation of Data <i>Storage</i> from Data <i>Access</i> via ODBC, JDBC, ADO.NET, and other call level interfaces (CLIs)
+
+To this end, Virtuoso includes an HTML-based Wizard interface for dynamically generating & publishing RDF-based Linked Data -- essentially RDF-based VIEWs -- from relational data sources.
+
+<i><b>Note:</b> In the Open Source Edition, this can only be used over locally-stored, Virtuoso-based SQL data.  With the Commercial Edition, local or remote ODBC- or JDBC-accessible data sources can also be exposed as RDF-based Linked Data.</i>
+
+%TOC%
+
+---++ How to Publish RDF-based Linked Data VIEWs of Relational Data
+
+   1 Check to ensure the <code>[[https://virtuoso.openlinksw.com/download/][cartridges_dav.vad]]</code> and <code>[[https://virtuoso.openlinksw.com/download/][fct_dav.vad]]</code> VAD packages are installed using the  <b>System Admin -> Packages</b> tab of the Virtuoso Conductor.
+      * If not yet present, use the <b>Install</b> button to the right of the package to install now.
+   1 If the data is hosted in the same Virtuoso instance, skip to the next step.
+      1 Identify the ODBC or JDBC data sources that host the data you seek to publish.
+      1 Attach/Link TABLEs and/or VIEWs from the external data sources into Virtuoso via their Data Source Names (DSNs).
+   1 In the Virtuoso schema, locate the local and/or linked TABLEs and/or VIEWs that hold the data you wish to publish.
+   1 Use the Linked Data publishing Wizard to produce a Data Source Ontology and associated Instance Data.
+   1 Configure Endpoints and Re-write Rules to disambiguate data object (resource) identity and description through HTTP-based content negotiation.
+   1 Expose the Data Source Ontology and associated Instance Data in Linked Data form through those Endpoints and Re-write Rules.
+
+These steps may be largely automated (the <i>[[#OneClickLinkedDataGenerationAndDeployment][One-Click Deployment]]</i> below), or performed manually (<i>[[#ManualLinkedDataGenerationAndDeployment][Using the Conductor's HTML-based Wizard]]</i> further down).
+
+#OneClickLinkedDataGenerationAndDeployment
+---+++ One-Click Linked Data Generation &amp; Deployment
+
+   1 Go to <code>http://&lt;cname&gt;:port/conductor</code>. Note, the appropriate cname (hostname) and port number for dereferencing URIs must be set for the [[http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_URIQA][URIQA DefaultHost]] Virtuoso configuration parameter before creating the Linked Data RDF views.
+   1 Log in as user <b><code>dba</code></b> (or another user with DBA privileges)
+   1 Follow menu path <b>RDF</b> -> <b>Linked Data Views</b>
+%BR%%BR%<img src="%ATTACHURLPATH%/rd1.png" style="wikiautogen" />%BR%%BR%
+   1 In the form presented, perform the following steps:
+%BR%%BR%<img src="%ATTACHURLPATH%/rd2.png" style="wikiautogen" />%BR%%BR%
+      1 Select the <b>Database Name Qualifier</b> (e.g., "<code>Demo</code>")  that exposes the Tables / Views for this exercise 
+      1 Enter the <b>Base URL</b> to which your URL rewrite rules will be bound (e.g., <code>http://&lt;cname&gt;:8890/Demo</code>)
+      1 Select the specific Tables containing the data to be published (e.g., <b>Demo.demo.Shippers</b> and <b>Demo.demo.Suppliers</b>)
+      1 Click the <b>Generate &amp; Publish</b> button
+   1 Virtuoso will perform the entire process of ontology generation, instance data generation, and linked data deployment (re-write rules generation and application).
+   1 Error messages will be presented if the Wizard encounters problems. If there are no error messages, your RDF view declarations and Linked Data publishing activities will have completed successfully.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd13.png" style="wikiautogen" />%BR%%BR%
+   1 Optionally, you can also perform one of the following tasks:
+      * <b>Save Data Mappings</b> when clicked, offers to save the generated Definitions to local file system
+      * <b>Save Ontology Mappings</b> when clicked, offers to save the generated Ontology to local file system
+      * <b>Click on the "Cancel" button</b> to return to the initial Linked Data View Generation form.
+
+#ManualLinkedDataGenerationAndDeployment
+---+++ Manual Linked Data Generation &amp; Deployment using the Conductor's HTML-based wizard
+
+   1 Go to <code>http://&lt;cname&gt;:port/conductor</code>
+   1 Log in as user <b><code>dba</code></b> (or another user with DBA privileges)
+   1 Follow menu path <b>Linked Data</b> -> <b>Views</b> (in previous versions, this path was <b>Database</b> -> <b>Linked Data Views</b>)
+%BR%%BR%<img src="%ATTACHURLPATH%/rd1.png" style="wikiautogen" />%BR%%BR%
+   1 In the form presented, perform the following steps:
+%BR%%BR%<img src="%ATTACHURLPATH%/rd2.png" style="wikiautogen" />%BR%%BR%
+      1 Select the <b>Database Name Qualifier</b> (e.g., "<code>Demo</code>")  that exposes the Tables / Views for this exercise 
+      1 Enter the <b>Base URL</b> to which your URL rewrite rules will be bound (e.g., <code>http://&lt;cname&gt;:8890/Demo</code>)
+      1 Select the specific Tables containing the data to be published (e.g., <b>Demo.demo.Shippers</b> and <b>Demo.demo.Suppliers</b>)
+      1 Click the <b>Generate via Wizard</b> button
+   1 At this point, you are presented with the option to edit your column selection.  Select the "Edit" link, for example, for table <code>Demo.demo.Shippers</code>.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd3.png" style="wikiautogen" />%BR%%BR%
+   1 For images or other binary data in MIME formats to be revealed as anything other than generic "binary objects", you must map large <code>varbinary</code> types 
+to the appropriate MIME types like <code>image/gif</code>. To do so, select the <b>Edit</b> link for <b>Binding/MIME Type</b> of the relevant table columns.  You can: 
+      * Leave the <b>Binding/MIME Type</b> literal; or
+      * Set to skip, such that the column will not be used in RDF generation; or
+      * Select the <b>binary object</b> value in order for the column to be referenced as binary.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd14.png" style="wikiautogen" />%BR%%BR%
+   1 After finishing with your changes click the <b>Save</b> button, or cancel the changes and go back by clicking the <b>Cancel</b> button.
+   1 Make sure you click the "Next" button.
+   1 At this point, the <b>Linked Data View Definition</b> form will let you <b>Select Generation Targets</b> options:
+%BR%%BR%<img src="%ATTACHURLPATH%/rd15.png" style="wikiautogen" />%BR%%BR%
+      * Data Source Ontology Mappings
+      * Instance Data View Mappings
+      * [[http://www.w3.org/TR/void/][VoID]] statistic
+   1 Make sure you click the "Next" button.
+   1 Based on your selections in the prior form, the <b>Linked Data View Definition</b> <b>Deployment Options</b> form will be offered:
+      * Data Source Ontology Rules
+      * Instance Data Rules
+%BR%%BR%<img src="%ATTACHURLPATH%/rd4.png" style="wikiautogen" />%BR%%BR%
+   1 Select the desired option(s) and click the "Prepare to Execute" button which unveils a generated Instance Data and/or Ontology form.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd5.png" style="wikiautogen" />%BR%%BR%
+   1 Click the <b>Execute</b> button and Virtuoso will:
+      1 Apply the generated declarations (instance data and ontology) to your Virtuoso instance
+      1 Publish / Deploy declarations that expose the Wizard-generated Rewrite Rules and associated endpoints.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd6.png" style="wikiautogen" />%BR%%BR%
+   1 Optionally, you can also perform one of the following tasks:
+      1 <b>Save Data Mappings</b>: when clicked, offers to save the generated Definitions to local file system
+      1 <b>Save Ontology Mappings</b>: when clicked, offers to save the generated Ontology to local file system
+      1 <b>Export as WebDAV resource</b>: exports the selected objects/items as a WebDAV resource:
+         1 Click <b>Browse</b>
+         1 Enter a WebDAV resource and click the <b>Select</b> button.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd7.png" style="wikiautogen" />%BR%%BR%
+Note, the WebDAV resource path value will be shown in the WebDAV location field. 
+         1 Then click the "Save Data Mappings" or "Save Ontology Mappings" button, to complete the option task of saving your generated (or edited) view declarations.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd8.png" style="wikiautogen" />%BR%%BR%
+   1 Error messages will be presented if the Wizard encounters problems. If there are no error messages, your RDF view declarations and Linked Data publishing activities will have completed successfully.
+%BR%%BR%<img src="%ATTACHURLPATH%/rd9.png" style="wikiautogen" />%BR%%BR%
+   1 Click on <b>Cancel</b> to return to the initial Linked Data View Generation form.
+
+---++ Creating Linked Data Views over Remote Data Sources <i>(Virtuoso Commercial Edition only!)</i>
+
+   * [[VirtDB2RDFViewUI][Creating Linked Data Views over DB2 Databases]]
+   * [[VirtInfRDFViewUI][Creating Linked Data Views over Informix Databases]]
+   * [[VirtIngRDFViewUI][Creating Linked Data Views over Ingres Databases]]
+   * [[VirtJdbcRDFViewUI][Creating Linked Data Views over JDBC Data Sources]]
+   * [[VirtMSSQLRDFViewUI][Creating Linked Data Views over Microsoft SQL Server Databases]]
+   * [[VirtMysRDFViewUI][Creating Linked Data Views over MySQL Databases]]
+   * [[VirtOdbcRDFViewUI][Creating Linked Data Views over ODBC Data Sources]]
+   * [[VirtOraRDFViewUI][Creating Linked Data Views over Oracle Databases]]
+   * [[VirtPgrRDFViewUI][Creating Linked Data Views over PostgreSQL Databases]]
+   * [[VirtProgressRDFViewUI][Creating Linked Data Views over Progress Databases]]
+   * [[VirtSybRDFViewUI][Creating Linked Data Views over Sybase Databases]]
+
+---++ Related
+
+   * [[VOSSQL2RDF][Mapping SQL Data to RDF]]

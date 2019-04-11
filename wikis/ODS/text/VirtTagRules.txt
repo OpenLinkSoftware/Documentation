@@ -1,0 +1,298 @@
+%VOSWARNING%
+
+
+%META:TOPICINFO{author="DeeGerhardt" date="1123522470" format="1.0" version="1.3"}%
+%META:TOPICPARENT{name="Tagging"}%
+
+---++Tagging Rules API
+
+---+++Automated Tagging of Documents
+
+This document presents a data dictionary and API for tagging documents. Automated and manual tagging of arbitrary content is provided for.
+
+
+---+++Tagging Rules Schema
+
+A OpenLinkVirtuoso instance has the below tables that serve the tagging needs of all application instances of all users.
+
+<verbatim>
+
+create table tag_rule_set (
+  trs_name varchar,
+  trs_id int,
+  trs_owner int references sys_users,
+  trs_is_public int,
+  primary key trs_id)
+
+create unique index trs_owner on tag_rule_set (trs_owner, trs_name)
+
+create table tag_rules (rs_trs int references tag_rule_set,
+  rs_query varchar,
+  rs_tag varchar,
+  rs_is_phrase int,
+  primary key (rs_trs, rs_tag, rs_query))
+
+</verbatim>
+
+The <nowiki>rs_query</nowiki> is a free text query expression. The <nowiki>rs_is_phrase</nowiki> is a flag indicating whether this query is a single phrase match suitable for automatic annotation. The <nowiki>rs_tag is</nowiki> the tag implied by the presence of the query pattern within a piece of text.
+
+A dummy table is created for holding taggable content. Then a text trigger is created on this table. In fact the text trigger rules will be invoked without recourse to the table or its triggers.
+
+The text trigger rule table gets the additional columns:
+
+<verbatim>
+tt_tag_set int references tag_rule_set (trs_id) tt_is_phrase int
+tt_cd contains the tag implied by the text condition.
+</verbatim>
+
+The relation between a user account and a set of tag rules is:
+
+<verbatim>
+create table tag_user (tu_u_id int references sys_users,
+  tu_trs int references tag_rule_set,
+  tu_order int,
+  primary key (tu_u_id, tu_order, tu_trs));
+
+</verbatim>
+
+Tags can be associated with any object. Once tags have been associated with the object, whether by applying rules or otherwise, the tags stay with the object. The user's prevailing tagging rules govern how new content produced or consumed by the user is tagged. Changing these rules does not affect already tagged content.
+
+In some cases, the tags associated with an object depend on both the object and the viewing user. Still, even then, the tags are persistently stored and are not inferred every time anew.
+
+While the rules for deriving tags may be private, the tags themselves are visible to anybody to whom the tagged content is visible.
+
+---+++Application Clustering
+
+In a cluster hosting the application, all public tagging rules are replicated across all nodes.
+
+
+
+---+++Tag Identity
+
+Tags are compared case insensitively as narrow strings.	Tags are stored in the form where they are entered. Unique indices on tags have a case insensitive collation. Case insensitivity outside of the ASCII space is not provided.
+
+Tags are UTF8 encoded strings of less than 50 characters. When two rules imply tags that differ only in case, the case of the tag to come out is undefined.
+
+There is nowhere any system wide assignment of unique ids or comprehensive enumeration of tags. Tags do not have to be registered before usage. Tags are always represented by the string which is the tag.
+
+For specific analytics, tags may be given numeric id's and these can be used as indices into bitmaps etc. But such representations are not part of the tagging proper and can be made as and when needed. These are not automatically maintained.
+
+---+++Relatedness of Tags
+
+Tags can be considered related if they tend to occur together within a specific corpus. The presence of a tag does not imply the presence of another tag. However, one search pattern may imply the presence of multiple tags.
+
+For example, "Steve Jobs" can imply "computers", "Steve Jobs", "Apple". Note that here "Steve Jobs" is both the pattern to match and the resulting tag.
+
+Calculating the relatedness of tags is a batch operation that can periodically be carried out over a collection of tagged documents.
+
+To compute this, we begin with counting the number of occurrences of each tag, obtaining tag, count pairs. This is the first linear pass over the corpus. We then take the top 5% of all tags. We perform a second linear pass over the corpus, counting the times each pair t1, t2 occurs in the same article,m such that t1 and t2 are both in the top 5%. The t1, t1 pairs is a half matrix, i.e. t2, t1 = t1, t2. Let the first member of the pair be the lexicographically first.
+
+Finally, for each distinct tag t, we take the set of t, t1 and t2, t and select the 5 cells of the matrix with the highest count. These will be the related tags of t.
+
+
+Besides this statistical relatedness metric, no other tag to tag relation should exist.
+
+---+++Tags and Applications
+
+   * Weblog stores tags in a table whose key is the blog, post id and tag.
+   * <nowiki>FeedManager</nowiki> stores tags in a table whose key is the user, news feed and tag.
+   * Wiki stores tags in a table whose key is the wiki cluster, topic and tag.
+   * Webmail stores tags in a table whose key is the user, mail folder, mail id and tag.
+
+---+++Encodings
+
+Tags are narrow strings in UTF8.
+
+
+---+++Tagging API
+
+
+This section discusses general purpose tagging functions for use in applications.
+
+<verbatim>
+user_tag_rules (in u_id int) returns int array
+</verbatim>
+
+This returns the set of tagging rules selected at the moment for the user account. An empty vector is returned if none are selected.
+
+<verbatim>
+tag_document (in text varchar, in top_n int, in rule_sets int array) returns any array
+</verbatim>
+
+This matches the text against the tagging rules and returns the inferred tags. The return format is an array with even places holding the tag and odd places the tag's score of relevance. The entries are sorted by descending score. If <nowiki>top_n</nowiki> is 0, then all tags are returned. If it is a positive integer, then only the top n tags are returned.
+
+The score is the sum of the text trigger hit scores given by all rules implying the tag. These numbers can only be compared among each other.
+
+Where to store the results and how to display them is left at the discretion of the application. The text can be large, for example the concatenation of all messages in a blog, so as to infer a general classification for the blog. The function can be applied to individual posts for their individual tagging.
+
+<verbatim>
+tag_html (in tags any array, in link_string varchar) returns varchar
+</verbatim>
+
+Given an array such as returned by tag_document, this produces an html fragment showing the tags with font attributes reflecting their relative importance. The highest score is shown with the most visible font. The use of size, bold, underline etc can be as in Technorati. 
+
+The link_format is a sprintf string with two %s placeholders: The first gets the tag name and the second gets the tag name surrounded by the selected font markup. For example:
+
+<verbatim>
+<li><a href="app.domain.com/tag_query/%s">%s</a></li>
+</verbatim>
+
+The first %s gets the tag and the second %s gets the tag with the font attributes.
+
+The output of the function is the concatenation of the result of applying the <nowiki>link_format</nowiki> to each tag in the input array. The input array will be typically sorted as with the output of <nowiki>tag_document</nowiki>.
+
+
+---+++Further Considerations
+
+The next specification deals with user actions for managing tagging. Also the storage of tags across applications and display within applications needs to be specified.
+
+----+++Certain natural linkages suggest themselves:
+
+Linking to Technorati with a query for content sharing the tags of the present blog post.
+
+   * Uploading a reference to the present blog post to del.icio.us with the tags as keywords.
+
+---+++Updated Schema
+
+<verbatim>
+
+create table "social"."DBA"."tag_rule_set"
+(
+  "trs_name" VARCHAR,
+  "trs_id" INTEGER,
+  "trs_owner" INTEGER,
+  "trs_is_public" INTEGER,
+  PRIMARY KEY ("trs_id")
+);
+
+ALTER TABLE "social"."DBA"."tag_rule_set"
+  ADD CONSTRAINT "tag_rule_set_SYS_USERS_trs_owner_U_NAME" FOREIGN KEY ("trs_owner")
+	 REFERENCES "DB"."DBA"."SYS_USERS" ("U_NAME");
+
+
+create table "social"."DBA"."tag_rules"
+(
+  "rs_trs" INTEGER,
+  "rs_query" VARCHAR,
+  "rs_tag" VARCHAR,
+  "rs_is_phrase" INTEGER,
+  PRIMARY KEY ("rs_trs", "rs_query", "rs_tag")
+);
+
+ALTER TABLE "social"."DBA"."tag_rules"
+  ADD CONSTRAINT "tag_rules_tag_rule_set_rs_trs_trs_id" FOREIGN KEY ("rs_trs")
+	 REFERENCES "social"."DBA"."tag_rule_set" ("trs_id");
+
+
+create table "social"."DBA"."tag_user"
+(
+  "tu_u_id" INTEGER,
+  "tu_trs" INTEGER,
+  "tu_order" INTEGER,
+  PRIMARY KEY ("tu_u_id", "tu_trs", "tu_order")
+);
+
+ALTER TABLE "social"."DBA"."tag_user"
+  ADD CONSTRAINT "tag_user_tag_rule_set_tu_trs_trs_id" FOREIGN KEY ("tu_trs")
+	 REFERENCES "social"."DBA"."tag_rule_set" ("trs_id");
+
+ALTER TABLE "social"."DBA"."tag_user"
+  ADD CONSTRAINT "tag_user_SYS_USERS_tu_u_id_U_NAME" FOREIGN KEY ("tu_u_id")
+	 REFERENCES "social"."DBA"."tag_rule_set" ("U_NAME");
+
+
+CREATE TRIGGER SOCIAL_DBA_TAG_RULE_SET_FK_CHECK_INSERT before insert on "social"."DBA"."tag_rule_set" order 99 referencing new as N { if ('ON' <> registry_get ('FK_UNIQUE_CHEK')) return;
+
+ DECLARE _VAR_trs_owner ANY;
+ _VAR_trs_owner := N."trs_owner";
+if (_VAR_trs_owner IS NOT NULL and	not exists (select 1 from "DB"."DBA"."SYS_USERS" WHERE "U_NAME" = _VAR_trs_owner)) 
+signal ('S1000','INSERT statement conflicted with FOREIGN KEY constraint referencing table "DB.DBA.SYS_USERS"', 'SR306');
+
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_RULE_SET_FK_CHECK_UPDATE before update on "social"."DBA"."tag_rule_set" order 99 REFERENCING OLD AS O, NEW AS N { if ('ON' <> registry_get ('FK_UNIQUE_CHEK')) return;
+if (N."trs_owner" IS NOT NULL and	not exists (select 1 from "DB"."DBA"."SYS_USERS" WHERE "U_NAME" = N."trs_owner")) 
+signal ('S1000','UPDATE statement conflicted with FOREIGN KEY constraint referencing table "DB.DBA.SYS_USERS"', 'SR307');
+
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_RULE_SET_PK_CHECK_DELETE BEFORE DELETE ON "social"."DBA"."tag_rule_set" order 99 referencing old as O {
+ if ('ON' <> registry_get ('FK_UNIQUE_CHEK'))
+	 return;
+ { 
+ DECLARE _VAR_trs_id ANY;
+ _VAR_trs_id := O."trs_id";
+if (exists (select 1 from "social"."DBA"."tag_rules" WHERE "rs_trs" = _VAR_trs_id)) 
+signal ('S1000','DELETE statement conflicted with COLUMN REFERENCE constraint "tag_rules_tag_rule_set_rs_trs_trs_id"', 'SR304');
+ }  { 
+ DECLARE _VAR_trs_id ANY;
+ _VAR_trs_id := O."trs_id";
+if (exists (select 1 from "social"."DBA"."tag_user" WHERE "tu_trs" = _VAR_trs_id)) 
+signal ('S1000','DELETE statement conflicted with COLUMN REFERENCE constraint "tag_user_tag_rule_set_tu_trs_trs_id"', 'SR304');
+ } 
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_RULE_SET_PK_CHECK_UPDATE BEFORE UPDATE ON "social"."DBA"."tag_rule_set" order 99 REFERENCING OLD AS O, NEW AS N {
+ if ('ON' <> registry_get ('FK_UNIQUE_CHEK'))
+	 return;
+if ((N."trs_id" <> O."trs_id") and exists (select 1 from "social"."DBA"."tag_rules" WHERE "rs_trs" = O."trs_id")) 
+signal ('S1000','UPDATE statement conflicted with COLUMN REFERENCE constraint "tag_rules_tag_rule_set_rs_trs_trs_id"', 'SR305');
+if ((N."trs_id" <> O."trs_id") and exists (select 1 from "social"."DBA"."tag_user" WHERE "tu_trs" = O."trs_id")) 
+signal ('S1000','UPDATE statement conflicted with COLUMN REFERENCE constraint "tag_user_tag_rule_set_tu_trs_trs_id"', 'SR305');
+
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_RULES_FK_CHECK_INSERT before insert on "social"."DBA"."tag_rules" order 99 referencing new as N { if ('ON' <> registry_get ('FK_UNIQUE_CHEK')) return;
+
+ DECLARE _VAR_rs_trs ANY;
+ _VAR_rs_trs := N."rs_trs";
+if (_VAR_rs_trs IS NOT NULL and	not exists (select 1 from "social"."DBA"."tag_rule_set" WHERE "trs_id" = _VAR_rs_trs)) 
+signal ('S1000','INSERT statement conflicted with FOREIGN KEY constraint referencing table "social.DBA.tag_rule_set"', 'SR306');
+
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_RULES_FK_CHECK_UPDATE before update on "social"."DBA"."tag_rules" order 99 REFERENCING OLD AS O, NEW AS N { if ('ON' <> registry_get ('FK_UNIQUE_CHEK')) return;
+if (N."rs_trs" IS NOT NULL and	not exists (select 1 from "social"."DBA"."tag_rule_set" WHERE "trs_id" = N."rs_trs")) 
+signal ('S1000','UPDATE statement conflicted with FOREIGN KEY constraint referencing table "social.DBA.tag_rule_set"', 'SR307');
+
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_USER_FK_CHECK_INSERT before insert on "social"."DBA"."tag_user" order 99 referencing new as N { if ('ON' <> registry_get ('FK_UNIQUE_CHEK')) return;
+
+ DECLARE _VAR_tu_u_id ANY;
+ _VAR_tu_u_id := N."tu_u_id";
+if (_VAR_tu_u_id IS NOT NULL and	not exists (select 1 from "DB"."DBA"."SYS_USERS" WHERE "U_NAME" = _VAR_tu_u_id)) 
+signal ('S1000','INSERT statement conflicted with FOREIGN KEY constraint referencing table "DB.DBA.SYS_USERS"', 'SR306');
+
+ DECLARE _VAR_tu_trs ANY;
+ _VAR_tu_trs := N."tu_trs";
+if (_VAR_tu_trs IS NOT NULL and	not exists (select 1 from "social"."DBA"."tag_rule_set" WHERE "trs_id" = _VAR_tu_trs)) 
+signal ('S1000','INSERT statement conflicted with FOREIGN KEY constraint referencing table "social.DBA.tag_rule_set"', 'SR306');
+
+}
+;
+
+CREATE TRIGGER SOCIAL_DBA_TAG_USER_FK_CHECK_UPDATE before update on "social"."DBA"."tag_user" order 99 REFERENCING OLD AS O, NEW AS N { if ('ON' <> registry_get ('FK_UNIQUE_CHEK')) return;
+if (N."tu_u_id" IS NOT NULL and	not exists (select 1 from "DB"."DBA"."SYS_USERS" WHERE "U_NAME" = N."tu_u_id")) 
+signal ('S1000','UPDATE statement conflicted with FOREIGN KEY constraint referencing table "DB.DBA.SYS_USERS"', 'SR307');
+if (N."tu_trs" IS NOT NULL and	not exists (select 1 from "social"."DBA"."tag_rule_set" WHERE "trs_id" = N."tu_trs")) 
+signal ('S1000','UPDATE statement conflicted with FOREIGN KEY constraint referencing table "social.DBA.tag_rule_set"', 'SR307');
+
+}
+;
+</verbatim>
+
+---+++Tag Database Model Diagrams
+
+   * Tag Data Model:
+      * <img src="%ATTACHURLPATH%/VirtTagRules.png" style="wikiautogen"/>
+   * Tag Data Model Visio File
+      * [[%ATTACHURL%/tags.vsd][tags.vsd]]: 
+ 	
+%META:FILEATTACHMENT{name="tags.vsd" attr="" comment="" date="1119546306" path="tags.vsd" size="79872" user="DeeGerhardt" version="1.2"}%

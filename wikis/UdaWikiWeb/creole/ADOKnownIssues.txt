@@ -1,0 +1,36 @@
+
+= ADOKnownIssues
+
+%TOC%
+
+  
+=  Known Issues with our ADO.NET Providers 
+
+%TOC%
+
+  Known Issues with our ADO.NET Providers 
+
+== Unsigned Type Handling 
+ 
+
+=== Partially Managed ODBC Provider 
+ 
+This provider assumes that all INTEGER data returned by an ODBC driver is signed. 
+
+The provider examines the ODBC SQL type of the data, but the ODBC SQL type actually gives no indication of whether INTEGER data is signed or unsigned. The ODBC to .NET type mappings used internally for fetched data assume that all data is signed. Thus there is the potential for overflow errors when fetching unsigned INTEGER data, because the .NET types to which INTEGER data is mapped are all signed. However, across the range of databases we currently support, this problem only manifests itself in one instance, that being the SQL Server TINYINT type. This is the only native unsigned data type supported across the specific databases we cover. However, as the Bridge Provider supports third-party ODBC drivers, more databases could expose this issue. 
+
+The SQL Server TINYINT type has a range of 0 to 255. It is returned by the provider as a .NET System.SByte type, which has a range of ?128 to +127. At present, TINYINT values over 127 will not be returned correctly by the Provider. 
+
+
+=== 100% Managed Providers (all) 
+ 
+The same general problem exists in the Multi-Tier Generic Client managed provider. However, this provider handles SQL_TINYINT data as a special case, so the problem with the SQL Server TINYINT type does not arise. If the provider detects data fetched using the OpenLink CTYPE_UNS8 transport type, it changes the mapping for SQL_TINYINT from System.SByte to System.Byte. Any other type of unsigned integer data will not be handled correctly, but at present this does not arise as TINYINT is the only unsigned native DBMS type the provider encounters across our currently supported agents. However, as the Bridge Agents for ODBC and JDBC data sources support third-party ODBC and JDBC drivers, more databases could expose this issue. 
+
+
+== Timestamp Precision 
+ 
+All our Providers, both managed and unmanaged, map the ODBC SQL_TYPE_TIMESTAMP type to the .NET DateTime type. The .NET DateTime type stores times with millisecond precision, while an ODBC SQL_C_TIMESTAMP struct can hold times accurate to nanoseconds. A loss of precision will therefore result when fetching timestamp data from databases which hold fractional second data to greater than millisecond precision. The corresponding DateTime values returned to an application will be rounded to the nearest millisecond. 
+
+
+----
+  

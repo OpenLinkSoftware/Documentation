@@ -1,0 +1,240 @@
+%META:TOPICPARENT{name="JDBCDataAccessDrivers"}%
+
+==Using UDA with Macromedia <nop>ColdFusion MX 7 (Linux)==
+
+===Contents===
+
+%TOC%
+
+===Required components===
+
+You will need to download the following components
+
+* Macromedia <nop>ColdFusion MX 7 (Delevoper Edition) - [[http://www.macromedia.com|download]]
+* <nop>OpenLink jar file - one of these, appropriate to the selected JDK/JRE -
+|  *JDK/JRE/JVM*  |  *<nop>OpenLink JDBC Driver*  |
+|  1.1  |  [[http://download.openlinksw.com|opljdbc.jar]]  |
+|  1.2 or 1.3  |  [[http://download.openlinksw.com|opljdbc2.jar]]  |
+|  1.4 or 1.5  |  [[http://download.openlinksw.com|opljdbc3.jar]]  |
+
+
+===Install Macromedia <nop>ColdFusion MX 7 (Delevoper Edition)==
+
+Execute the downloaded *.bin file -
+{{{./coldfusion-701-lin.bin}}}
+
+NOTE: You may need to set the execute permission on the *.bin file before it can be executed.
+
+Accept the license agreement.
+
+When prompted, select - {{{Install type ->3- Developer edition}}}
+
+What kind of installation do you want? {{{->1- Server configuration}}}
+
+Is there already a server configuration of Macromedia <nop>ColdFusion MX 7 installed? {{{->2- No}}}
+
+Sub-component installation choose {{{4) Continue with installation}}}
+
+Select all default options from this point onwards.
+
+Enter administrator password.
+
+Enable RDS (required for Report Builder and DW Extensions) (Y/N)	{{{: N}}}
+
+The installation will now complete.
+
+NOTE: This may take several minutes to complete.
+
+
+===Start Macromedia <nop>ColdFusion MX 7 (Delevoper Edition)===
+
+Start Macromedia <nop>ColdFusion MX 7 (Delevoper Edition) using the command --
+{{{/opt/coldfusionmx7/bin/coldfusion start}}}
+
+Browse to the following url to verify the Administrator application is running --
+{{{http://coldfision_server:8500/CFIDE/administrator}}}
+
+
+===Install <nop>OpenLink jar files}}}
+
+Copy the file chosen for your JDK/JVM/JRE --
+{{{opljdbc.jar
+opljdbc2.jar
+or
+opljdbc3.jar}}} 
+
+into the directory - {{{/opt/coldfusionmx7/openlink/jars}}}
+
+NOTE: You will need to create this directory if it does not already exist.
+
+Open the Administrator --
+{{{http://coldfision_server:8500/CFIDE/administrator}}}
+
+Select {{{Server Settings -> Java and JVM}}
+
+In the {{{ColdFusion Class Path}}} field enter --
+{{{/opt/coldfusionmx7/openlink/jars}}}
+
+Select {{{Submit Changes}}}
+
+You will be prompted to restart the server.
+
+Restart <nop>ColdFusion --
+{{{/opt/coldfusionmx7/bin/coldfusion restart}}}
+
+
+===Configure Data Sources===
+
+Open the Administrator --
+{{{http://coldfision_server:8500/CFIDE/administrator}}}
+
+Select {{{Server Settings -> Data & Services}}}
+
+Select {{{Data Sources}}}
+
+Enter a name for the Data Source - {{o32opljdbc1}}}
+
+In the {{{Driver}}} drop down list box select - {{{other}}}
+
+Select {{{Add}}}
+
+Enter the {{{JDBC URL}}} --
+{{{jdbc:openlink://192.168.0.150:5000/SVT=Odbc/Database=sqlserver/UID=sa/PWD=sa}}}
+
+Enter the {{{Driver Class}}} --
+{{{openlink.jdbc.Driver}}}
+
+Select {{{Submit}}}
+
+The {{{Datasources}}} page will display showing the new data source.
+
+Select the {{{Verify}}} icon to the left of the datasource name.
+
+If the data source was created successflly then the {{{Status}}} field will display {{{OK}}}
+
+
+You will need to repeat this for the following datasources --
+
+| *Data Source Name*  | *Driver Class*  | *URL*  |
+| o32opljdbc1  | openlink.jdbc.Driver  | {{{jdbc:openlink://192.168.0.150:5000/SVT=Odbc/Database=sqlserver/UID=sa/PWD=sa}}}  |
+| m32opljdbc1  | openlink.jdbc.Driver  | {{{jdbc:openlink://192.168.0.150:5000/SVT=SQLServer 2000/Database=Northwind/options=-H 192.168.0.150/UID=sa/PWD=sa}}}  |
+| o32opljdbc2  | openlink.jdbc2.Driver  | {{{jdbc:openlink://192.168.0.150:5000/SVT=Odbc/Database=sqlserver/UID=sa/PWD=sa}}}  |
+| m32opljdbc2  | openlink.jdbc2.Driver  | {{{jdbc:openlink://192.168.0.150:5000/SVT=SQLServer 2000/Database=Northwind/options=-H 192.168.0.150/UID=sa/PWD=sa}}} |
+| o32opljdbc3  | openlink.jdbc3.Driver  | {{{jdbc:openlink://192.168.0.150:5000/SVT=Odbc/Database=sqlserver/UID=sa/PWD=sa}}}  |
+| m32opljdbc3  | openlink.jdbc3.Driver  | {{{jdbc:openlink://192.168.0.150:5000/SVT=SQLServer 2000/Database=Northwind/options=-H 192.168.0.150/UID=sa/PWD=sa}}} |
+||||
+
+NOTE: You will need to edit the URLs accordingly.
+
+
+===Prepare the <nop>ColdFusion test page===
+
+Create the following file --
+{{{/opt/coldfusionmx7/wwwroot/opltest.cfm}}}
+
+to read --
+{{{
+<html>
+  <head>
+    <title>Hello World!!</title>
+  </head>
+  <body>
+    <cfquery name = "query_o32opljdbc1" dataSource = "o32opljdbc1" dbtype = "query">
+      select EmployeeID, FirstName, LastName, Title from Employees
+    </cfquery>
+    <cfquery name = "query_m32opljdbc1" dataSource = "m32opljdbc1" dbtype = "query">
+      select EmployeeID, FirstName, LastName, Title from Employees
+    </cfquery>
+    <cfquery name = "query_o32opljdbc2" dataSource = "o32opljdbc2" dbtype = "query">
+      select EmployeeID, FirstName, LastName, Title from Employees
+    </cfquery>
+    <cfquery name = "query_m32opljdbc2" dataSource = "m32opljdbc2" dbtype = "query">
+      select EmployeeID, FirstName, LastName, Title from Employees
+    </cfquery>
+    <cfquery name = "query_o32opljdbc3" dataSource = "o32opljdbc3" dbtype = "query">
+      select EmployeeID, FirstName, LastName, Title from Employees
+    </cfquery>
+    <cfquery name = "query_m32opljdbc3" dataSource = "m32opljdbc3" dbtype = "query">
+      select EmployeeID, FirstName, LastName, Title from Employees
+    </cfquery>
+
+    <h1>OpenLink - ColdFusion MX 7 test</h1>
+
+    <h2>Using: o32opljdbc1 - openlink.jdbc.Driver</h2>
+    <table>
+      <cfoutput query="query_o32opljdbc1">
+        <tr>
+          <td>#EmployeeID#</td>
+          <td>#FirstName#</td>
+          <td>#LastName#</td>
+          <td>#Title#</td>
+        </tr>
+      </cfoutput>
+    </table>
+
+    <h2>Using: m32opljdbc1 - openlink.jdbc.Driver</h2>
+    <table>
+      <cfoutput query="query_m32opljdbc1">
+        <tr>
+          <td>#EmployeeID#</td>
+          <td>#FirstName#</td>
+          <td>#LastName#</td>
+          <td>#Title#</td>
+        </tr>
+      </cfoutput>
+    </table>
+
+    <h2>Using: o32opljdbc2 - openlink.jdb2.Driver</h2>
+    <table>
+      <cfoutput query="query_o32opljdbc2">
+        <tr>
+          <td>#EmployeeID#</td>
+          <td>#FirstName#</td>
+          <td>#LastName#</td>
+          <td>#Title#</td>
+        </tr>
+      </cfoutput>
+    </table>
+
+    <h2>Using: m32opljdbc2 - openlink.jdbc2.Driver</h2>
+    <table>
+      <cfoutput query="query_m32opljdbc2">
+        <tr>
+          <td>#EmployeeID#</td>
+          <td>#FirstName#</td>
+          <td>#LastName#</td>
+          <td>#Title#</td>
+        </tr>
+      </cfoutput>
+    </table>
+
+    <h2>Using: o32opljdbc3 - openlink.jdbc3.Driver</h2>
+    <table>
+      <cfoutput query="query_o32opljdbc3">
+        <tr>
+          <td>#EmployeeID#</td>
+          <td>#FirstName#</td>
+          <td>#LastName#</td>
+          <td>#Title#</td>
+        </tr>
+      </cfoutput>
+    </table>
+
+    <h2>Using: m32opljdbc3 - openlink.jdbc3.Driver</h2>
+    <table>
+      <cfoutput query="query_m32opljdbc3">
+        <tr>
+          <td>#EmployeeID#</td>
+          <td>#FirstName#</td>
+          <td>#LastName#</td>
+          <td>#Title#</td>
+        </tr>
+      </cfoutput>
+    </table>
+
+  </body>
+</html>
+}}}
+
+View the test page at the following URL --
+{{{http://coldfision_server:8500/CFIDE/opltest.cfm}}}

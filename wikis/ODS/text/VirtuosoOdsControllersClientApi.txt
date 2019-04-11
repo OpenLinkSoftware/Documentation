@@ -1,0 +1,101 @@
+---+++Simple Client Written in VSP
+
+<verbatim>
+&lt;html>
+&lt;?vsp
+    declare consumer_key, consumer_secret, oauth_token, oauth_secret, signature, timest, nonce varchar;
+    declare srv, res, signature_base, ret_url, url, tmp, sid varchar;
+    declare meth, pars any;
+    consumer_key := {?'key'};
+    srv := sprintf ('http://localhost:%s/OAuth/', server_http_port ());
+    sid := null;
+    res := '';
+
+    sid :=  {?'sid'};
+    if (sid = '')
+      sid := null;  
+    else
+      {
+        -- if selected token is not same as one from the session we need to get new authentication token
+        if (consumer_key &lt;> OAUTH..get_consumer_key (sid))
+     {
+       OAUTH..session_terminate (sid);
+            sid := null;
+     }
+      }
+
+    meth := get_keyword ('meth', params, 'weblog.post.new');;
+    pars := get_keyword ('pars', params, 'inst_id=15&title=testing&description=Some test post');;
+
+    if ({?'rt'} is not null and sid is null) -- request new token for the session
+      {
+   url := srv||'request_token';
+   url := OAUTH..sign_request ('GET', url, '', consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+   OAUTH..set_session_data (sid, params);
+   ret_url := sprintf ('http://localhost:%s/oauth/oauth_client.vsp?ready=%U', server_http_port (), sid);
+   -- call authorize
+        url := sprintf ('%sauthorize?oauth_token=%U&oauth_callback=%U', srv, OAUTH..get_auth_token (sid), ret_url);
+   http_status_set (301);
+        http_header (sprintf ('Location: %s\r\n', url));
+        return;
+      }
+    else if ({?'ready'} is not null) -- get access token
+      {
+   -- we go here when token above is authorized
+        sid := {?'ready'};
+   url := srv||'access_token';
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request ('GET', url, '', consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+
+      }
+    if (sid is not null) -- access token is ready, and we can call API
+      {
+        -- here we are ready to call service
+   if ({?'rt'} is null)
+          {
+            tmp := OAUTH..get_session_data (sid);
+            pars := get_keyword ('pars', tmp, pars);
+       meth := get_keyword ('meth', tmp, meth);
+     }
+   url := sprintf ('http://localhost:%s/ods/api/%s', server_http_port (), meth);
+   tmp := split_and_decode (pars);
+   params := '';
+   for (declare i,l int, l:=length (tmp); i &lt; l; i := i + 2)
+      {
+        params := params || sprintf ('%U=%U&', tmp[i], tmp[i+1]);
+      }
+   --params := sprintf ('inst_id=%d&description=%U&title=%U', 15, 'Some test post', 'testing');
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request ('GET', url, params, consumer_key, sid);
+        res := http_get (url);
+        --dbg_obj_print (res);
+      }
+?>
+    &lt;head>&lt;title>OAuth Client&lt;/title>&lt;/head>
+    &lt;body>
+   &lt;h1>OAuth client for ODS Controllers&lt;/h1>
+   &lt;form method="POST" action="oauth_client.vsp">
+   &lt;input type="hidden" name="sid" value="&lt;?V sid ?>"/>
+   APPLICATION : &lt;br/> &lt;select name="key">
+   &lt;?vsp for select a_name, a_key from OAUTH..APP_REG do { ?>
+            &lt;option value="&lt;?V a_key ?>" &lt;?vsp if (consumer_key = a_key) http ('selected'); ?>>&lt;?V a_name ?>&lt;/option>
+   &lt;?vsp } ?>
+              &lt;/select>
+   &lt;?vsp
+   if (sid is not null) http (sprintf (' TOKEN: %s', OAUTH..get_auth_token (sid)));
+   ?>
+   &lt;br/>
+   ODS API: &lt;br/>&lt;input type="text" name="meth" value="&lt;?V meth ?>" size=50/> &lt;br/>
+   PARAMETERS: &lt;br/> &lt;textarea name="pars" rows="5" cols="50">&lt;?V pars ?>&lt;/textarea> &lt;br/>
+        &lt;input type="submit" value="Execute" name="rt"/>&lt;br/>
+   &lt;/form>
+   RESULT:
+   &lt;hr/>
+   &lt;pre>&lt;?V res ?>&lt;/pre>
+    &lt;/body>
+&lt;/html>
+</verbatim>

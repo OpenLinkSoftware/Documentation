@@ -1,0 +1,132 @@
+%META:TOPICPARENT{name="ErrorMessagesU"}%
+
+= Error Message: {{{Unable to Allocate Server Handle}}} =
+
+"Server handle" errors suggest environment or compatibility problems. If you receive "server handle" errors, take the action indicated for your target database and driver type.
+
+%TOC%
+
+== Oracle ==
+
+=== Oracle with Single-Tier "Lite" Edition Drivers ===
+
+# Log in to the machine that contains the problem driver.
+# Ensure that this machine contains a full Oracle database install, Net 8/9/10/11, or an Instant Client.
+# Ensure the <code>oracle</code> user owns the driver installation.
+# Ensure the "bitness" of the driver matches the "bitness" of the Oracle instance, i.e., 32-bit or 64-bit.
+# Ensure <code>ORACLE_HOME</code> passes the path to local Oracle installation.
+# Ensure <code>ORACLE_SID</code> names the target <code>ORACLE_SID</code> wherever it resides.
+# Identify the directory that contains the Oracle libraries. Instant Client installations generally consist of one directory that serves as both <code>$ORACLE_HOME</code> and the library directory. Full installations and Oracle client installations tend to have <code>lib</code>, <code>lib32</code>, and/or <code>lib64</code> sub-directories that contain various libraries. You want to identify the library directories that match the bit format of your <nop>OpenLink driver.
+# Confirm that the library path variable appropriate to your OS includes the directory that contains the relevant Oracle libraries. The library variables are:
+| **AIX** | <code>LIBPATH</code> |
+| **HP-UX** | 32-bit libraries: <code>SHLIB_PATH</code> %BR% 64-bit libraries: <code>LD_LIBRARY_PATH</code> |
+| **All Other Unix-like OS** | <code>LD_LIBRARY_PATH</code> |
+| **Windows** | <code>PATH</code> |
+# Test your connection.
+
+
+=== Oracle with Multi-Tier Drivers ===
+
+# Log in to the machine that contains your <nop>OpenLink server components.
+# Ensure that this machine contains a full Oracle database install, Net 8/9/10/11, or an <nop>InstantClient.
+# Ensure the <code>oracle</code> user owns the installation.
+# Ensure the "bitness" of the driver matches the "bitness" of the Oracle instance, i.e., 32-bit or 64-bit.
+# Ensure <code>ORACLE_HOME</code> passes the path to local Oracle installation.
+# Ensure <code>ORACLE_SID</code> names the target <code>ORACLE_SID</code> wherever it resides.
+# Identify the directory that contains the Oracle libraries. Instant Client installations generally consist of one directory that serves as both <code>$ORACLE_HOME</code> and the library directory. Full installations and Oracle client installations tend to have <code>lib</code>, <code>lib32</code>, and/or <code>lib64</code> sub-directories that contain various libraries. You want to identify the library directories that match the bit format of your <nop>OpenLink installation.
+# Confirm that the library path variable appropriate to your OS includes the directory that contains the relevant Oracle libraries. The library variables are:
+| **AIX** | <code>LIBPATH</code> |
+| **HP-UX** | 32-bit libraries: <code>SHLIB_PATH</code> %BR% 64-bit libraries: <code>LD_LIBRARY_PATH</code> |
+| **All Other Unix-like OS** | <code>LD_LIBRARY_PATH</code> |
+| **Windows** | <code>PATH</code> |
+# <code>cd</code> into the <code>bin</code> sub-directory of your <nop>OpenLink installation.
+# Use a text editor to open the <code>oplrqb.ini</code> file.
+# Locate the <code>[Environment ORACLE*]</code> section that corresponds to your <nop>OpenLink database agent. For example:
+{{{
+[Environment ORACLE100]
+ORACLE_HOME = /dbs5/oracle9i/64bit/v9.2.0.1.0
+ORACLE_SID = ora92
+LD_LIBRARY_PATH = /dbs5/oracle9i/64bit/v9.2.0.1.0/lib
+}}}
+# Ensure that the <code>ORACLE_HOME</code>, <code>ORACLE_SID</code>, and <code>LIBPATH</code>/<code>SHLIB_PATH</code>/<code>LD_LIBRARY_PATH</code> variables are properly set here as well.
+# Exit the file.
+# Execute the following command: <code>oplshut +reinit</code>
+# Run <code>ls</code> and identify your database agent binary. A few of the possibilities are:
+#* <code>ora100_mv</code>
+#* <code>ora100_sv</code>
+#* <code>ora90_mv</code>
+#* <code>ora90_sv</code>
+#* <code>ora81_mv</code>
+#* <code>ora81_sv</code>
+# Confirm that your database agent produces a version string by running passing <code>-?</code> to your agent on the command line. For example:
+{{{
+bash-2.03$ ./ora90_mv -?
+Oracle 9.x Database Agent (multi threaded)
+Version 1.29 as of Mon Nov 13 2006 (Release 6.0 cvsid 00084).
+Compiled for Solaris 5.8 (sparc-sun-solaris2.8-32)
+Copyright (C) OpenLink Software.
+}}}
+# Test your connection.
+
+
+== Progress ==
+
+"Server handle" errors suggest environment or compatibility problems. If you receive "server handle" errors, take the following action:
+
+
+=== Progress with Single-Tier "Lite" Edition Drivers ===
+
+# Ensure that your Progress database is running in sockets mode.
+# Ensure that you are passing the correct sockets parameters (<code>-S</code> service name or port, <code>-H</code> hostname or IP address, <code>-N</code> network, <code>-db</code> /path/to/database) in the Database Options field of your DSN. For example:
+{{{
+-S pro82a -N tcp -H saturnus.example.com
+-S pro82a -N tcp -H saturnus.example.com -db C:\wrk\my_prog.db
+}}}
+# Ensure the value passed to -S is [[TroubleshootingUDAServicesFiles|defined with the same name and number]] in the {{{services}}} file on the clients on the Progress host.
+# Leave the Server Options field blank.
+# If you have a Windows client, search it for <code>progress.ini</code>. Place a copy of <code>progress.ini</code> in your client's {{{%WINDOWS%}}} directory. (Normally this directory is either located at {{{C:\Windows\}}} (Windows 95/98/ME) or {{{C:\WINNT\}}} (Windows NT/2000/XP/2003), but it may be located elsewhere.)
+# Add the full path to your local Progress {{{\bin}}} directory to your System {{{PATH}}} variable.
+# If using IIS:
+## Create a new folder, e.g., {{{C:\temp\}}}, and ensure that the "{{{Everyone}}}" group has "Full Control" over this folder.
+## Add {{{-T c:\temp}}} (modified as needed to reflect the folder you just created) to Session Options, following the default {{{-d mdy}}} entry, in the ODBC Data Source --
+{{{
+-d mdy -T c:\temp
+}}}
+# Test your connection.
+
+
+=== Progress with Multi-Tier Drivers ===
+
+# Determine if your Progress database is running in sockets or shared memory mode.
+# If your database is running in shared memory mode, leave the Database Server or DB Connect Options field of your Data Source blank. 
+#* If your database is running in sockets mode, pass the sockets parameters ({{{-S}}}, {{{-H}}}, {{{-N}}}, {{{-db}}}, respectively for **S**ervice, **H**ost, **N**etwork, and **d**ata**b**ase). For example:
+{{{
+-S pro82a -N tcp -H saturnus.example.com
+-S pro82a -N tcp -H saturnus.example.com -db C:\wrk\my_prog.db        
+}}}
+# Use a text editor to open the Broker Rulebook (typically found at {{{~/openlink/bin/oplrqb.ini}}}, alongside the Broker executable, {{{oplrqb}}}).
+# Locate the Environment corresponding to the relevant Agent Template, typically {{{[generic_proxxx]}}}. For example:
+{{{          
+[Environment PROGRESS82A]
+;TABLEVIEW           =
+;TABLEVIEW_QUALIFIER = Y
+;DEADLOCK_TIMEOUT    = 60          ; Seconds to wait for lock to release
+;INSERT_LOGICAL      = Y
+;UPDATE_LOGICAL      = Y
+;MIN_FIELD_LEN       =
+;MAX_FIELD_LEN       =
+CURSOR_SENSITIVITY  = LOW
+DLC                 = D:\DBS\Progress\Pro82a
+PATH                = D:\DBS\Progress\Pro82a\BIN;D:\WINNT\System32
+}}}
+# Confirm that the environment variables ({{{DLC}}}, {{{PATH}}}) are correct for your environment.
+# Save any changes and exit the file.
+# Restart your Request Broker.
+# Test your connection.
+
+
+== Evidence ==
+
+* Data Source Attributes
+* Exact DBMS Version (e.g., Progress 8.1A04, Oracle 8.1.7.3)
+* Single-Tier Driver Version, Date, and File Details

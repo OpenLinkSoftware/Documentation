@@ -1,0 +1,62 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtSparqlCxmlHtmlPivotViewer"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtSparqlCxmlHtmlPivotViewer"}%--><p> </p>
+<h1><a name="- Configuring Support for Access Control Lists"></a><a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a> - Configuring Support for Access Control Lists</h1>
+<p><a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a> now includes support for integration with the Virtuoso Authentication Layer (VAL).
+ VAL provides an internal Virtuoso API for handling authentication in Virtuoso and provides a framework for setting up access control lists (ACL).
+ This new feature can be used to manage access to <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a>.
+ Use of this feature is dependant on the VAL VAD which can be downloaded from the <a href="http://virtuoso.openlinksw.com/download/" class="absuri">Virtuoso downloads page</a>.</p>
+<p>If the VAL VAD is not installed then <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a> works as before without requiring any authentication.
+ Although you may find that you still need to login if the collection that you are viewing is generated from a sparql query that is itself protected by an ACL.</p>
+<p>As part of the <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a> VAD installation process a new rule scope specifically for <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a> is created and then enabled.</p>
+<i>Creating the new scope effectively means inserting these triples into the VAL ACL schema graph, &lt;urn:virtuoso:val:acl:schema&gt;:</i> <br><pre>PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt; .
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; .
+&lt;urn:virtuoso:val:scopes:pivotviewer&gt; a oplacl:Scope ;
+    rdfs:label &quot;HtmlPivotViewer&quot; ;
+    rdfs:comment &quot;&quot;&quot;SQL ACL scope which contains all ACL rules granting permission to use the HtmlPivotViewer to visualize collections.&quot;&quot;&quot; ;
+    oplacl:hasApplicableAccess oplacl:Read .
+</pre><p> <i>This scope definition specifies that read access is required.
+ It is  enabled for the default realm by inserting this triple into the ACL graph:</i> </p>
+<br><pre>PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+&lt;http://HOSTNAME/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt; oplacl:hasEnabledAclScope &lt;urn:virtuoso:val:scopes:pivotviewer&gt; .
+</pre><p> The new scope can be seen on the VAL config pages accessed from the Packages page in the Virtuoso Conductor.
+ If the scope is disabled then only the dba is allowed access.</p>
+<img src="HtmlPivotViewerACL/scope.png" style="wikiautogen"><p>The next step is to set up a rule to control access to the scope.
+ The default rule created by the VAD installer allows all authenticated users access to <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a>.</p>
+<i>Setting up this rule is effectively a two step process.
+ First a group is defined that matches all authenticated users.
+  Again, defining a new group means inserting triples into a graph in this case the acl group graph for the default realm,</i> &lt;<a href="http://HOSTNAME/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>." class="absuri">http://HOSTNAME/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;.</a><br><pre>PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+&lt;#HtmlPivotViewerNetID&gt; a oplacl:ConditionalGroup ;
+  foaf:name &#39;&#39;Identities names using a NetID based Identifier&#39;&#39; ;
+  oplacl:hasCondition [
+	a oplacl:GroupCondition, oplacl:GenericCondition ;
+	oplacl:hasCriteria oplacl:NetID ;
+	oplacl:hasComparator oplacl:IsNotNull ;
+	oplacl:hasValue &#39;&#39;1&#39;&#39;^^xsd:boolean
+  ] .
+</pre><p> <i>Then a rule is created giving all members of that group read access rights to <a href="http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtSparqlCxmlHtml#AncPivotViewer" class="absuri">HtmlPivotViewer</a> by inserting triples into a graph in this case the acl rule graph for the default realm, &lt;<a href="http://HOSTNAME/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm>.</i" class="absuri">http://HOSTNAME/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm&gt;.</a>&gt;</i></p>
+<br><pre>PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+&lt;#NetIDPivotViewerAccessRule1&gt;  a acl:Authorization ;
+  rdfs:comment &quot;&quot;&quot;This ACL rule grants HtmlPivotViewer access to any identity denoted by a URI where identity claims are de-referenced and then verified using a variety of authentication protocols e.g., HTTP Digest, TLS basic, OAuth, WebID-TLS, OpenID, or Mozilla Persona &quot;&quot;&quot; ;
+  foaf:maker &lt;%s&gt; ;
+  acl:accessTo &lt;urn:virtuoso:access:pivotviewer&gt; ;
+  oplacl:hasAccessMode oplacl:Read ;
+  acl:agent &lt;#HtmlPivotViewerNetID&gt; ;
+  oplacl:hasRealm oplacl:DefaultRealm ;
+  oplacl:hasScope &lt;urn:virtuoso:val:scopes:pivotviewer&gt; .
+</pre><p> </p>
+<h3><a name="Allow Users to Request Access to HtmlPivotViewer"></a>Allow Users to Request Access to HtmlPivotViewer</h3>
+ An additional feature of the VAL framework is that a user denied access to a resource can automatically request access from the resource owner.
+ To make use of this feature an owner must be defined for the resource, in this case the HtmlPivotViewer or &lt;urn:virtuoso:access:pivotviewer&gt;.
+ If a user is denied access then an email is sent to the owner requesting that they are added to the list of allowed users.
+ Defining the owner of the resource can be easily done using the VAL API.
+ In this example the owner is &#39;dba&#39;, the database administrator.
+ Executing this call in isql or the sql editor in the Virtuoso Conductor will enable the feature.<br><pre>VAL.DBA.set_resource_ownership (
+   scope=&gt;&#39;urn:virtuoso:val:scopes:pivotviewer&#39;,
+   resource=&gt;&#39;urn:virtuoso:access:pivotviewer&#39;,
+   serviceId=&gt;VAL.DBA.user_personal_uri (&#39;dba&#39;)
+);
+</pre></div></body></html>

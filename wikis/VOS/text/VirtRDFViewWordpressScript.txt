@@ -1,0 +1,156 @@
+---++WordPress Linked Data Views Script to set up your own instance
+
+<verbatim>
+use wordpress;
+
+drop view wpl_users_rdf;
+drop view wpl_site_rdf;
+drop view wpl_posts_rdf;
+
+sparql
+prefix v: <http://www.openlinksw.com/schemas/wp#>
+drop quad map virtrdf:Wordpress .
+drop iri class v:user_iri .
+drop iri class v:iri .
+drop iri class v:post_iri .
+drop iri class v:site_iri .
+drop iri class v:forum_iri .
+drop iri class v:mbox .
+;
+
+
+use wordpress;
+
+create procedure w3c_date (in ds varchar)
+{
+  return replace (ds, ' ', 'T') || 'Z';
+};
+
+create view wpl_users_rdf as select ID, user_login, user_nicename, user_email as user_email, sha1_digest (user_email) as user_email_sha1, display_name from wpl_users;
+
+create view wpl_site_rdf as select a.option_value url, b.option_value blogname, c.option_value blogdesc from wpl_options a, wpl_options b, wpl_options c where c.option_name = 'blogdescription'and a.option_name = 'siteurl' and b.option_name = 'blogname';
+
+create view wpl_posts_rdf as select post_title, p.ID as post_id, post_content,
+        wordpress..w3c_date (post_date_gmt) as post_date_gmt, wordpress..w3c_date (post_modified_gmt) as post_modified_gmt, user_login,
+        o.option_value as site_url, concat (o.option_value, '?p=', cast (p.ID as varchar)) as post_url,
+        o2.option_value as blogname
+        from
+        wpl_posts p, wpl_users u, wpl_options o, wpl_options o2 where ((post_author = u.ID) or (post_author = 0 and u.ID = 1)) and o.option_name = 'siteurl' and p.post_status = 'publish' and o2.option_name = 'blogname';
+
+grant select on wpl_users_rdf to "SPARQL";
+grant select on wpl_site_rdf to "SPARQL";
+grant select on wpl_posts_rdf to "SPARQL";
+grant execute on wordpress..w3c_date to "SPARQL";
+
+
+sparql
+prefix sioc: <http://rdfs.org/sioc/ns#>
+prefix sioct: <http://rdfs.org/sioc/types#>
+prefix atom: <http://atomowl.org/ontologies/atomrdf#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix dc: <http://purl.org/dc/elements/1.1/>
+prefix dct: <http://purl.org/dc/terms/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+prefix v: <http://www.openlinksw.com/schemas/wp#>
+
+create iri class v:user_iri "http://^{URIQADefaultHost}^/wordpress/user/%U#this" (in user_name varchar not null) .
+create iri class v:iri "http://^{URIQADefaultHost}^/wordpress/proxy/%U#this" (in uri varchar not null) .
+create iri class v:post_iri "http://^{URIQADefaultHost}^/wordpress/post/%d#this" (in post_id integer not null) .
+create iri class v:site_iri  "http://^{URIQADefaultHost}^/wordpress/site/%U#this" (in blogname varchar not null) .
+create iri class v:forum_iri "http://^{URIQADefaultHost}^/wordpress/blog/%U#this" (in blogname varchar not null) .
+create iri class v:mbox "mailto:%s" (in mail varchar not null) .
+
+alter quad storage virtrdf:DefaultQuadStorage
+  {
+    create virtrdf:Wordpress as graph iri ("http://^{URIQADefaultHost}^/wpl_v")
+      {
+
+        v:site_iri (wordpress.DBA.wpl_site_rdf.blogname) a sioc:Space ;
+        dc:title blogname ;
+        sioc:link v:iri (url) ;
+        sioc:host_of v:forum_iri (blogname) .
+
+        v:forum_iri (wordpress.DBA.wpl_site_rdf.blogname) a sioc:Forum ;
+        a sioc:Container ;
+        a sioct:Weblog ;
+        dc:title blogname ;
+        sioc:description blogdesc ;
+        sioc:link v:iri (url) ;
+        sioc:has_host v:site_iri (blogname) .
+
+        v:user_iri (wordpress.DBA.wpl_users_rdf.user_login) a sioc:User ;
+        sioc:id user_login ;
+        sioc:name user_nicename ;
+        sioc:email v:mbox (user_email) ;
+        sioc:email_sha1 user_email_sha1 .
+
+        v:post_iri (wordpress.DBA.wpl_posts_rdf.post_id) a sioc:Item ;
+        a sioc:Post ;
+        a sioct:BlogPost ;
+        dc:title post_title ;
+        dct:created post_date_gmt ;
+        dct:modified post_modified_gmt ;
+        sioc:has_creator v:user_iri (user_login) ;
+        sioc:has_container v:forum_iri (blogname) ;
+        sioc:content post_content ;
+        sioc:link v:iri (post_url) ;
+        sioc:id post_id .
+
+       v:forum_iri (wordpress.DBA.wpl_posts_rdf.blogname) sioc:container_of v:post_iri (post_id) .
+       v:user_iri (wordpress.DBA.wpl_posts_rdf.user_login) sioc:creator_of v:post_iri (post_id) .
+
+      }
+  } .
+;
+
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'wpl_rule3',
+    1,
+    '/wordpress/([^#]*)',
+    vector('path'),
+    1,
+    '/sparql?query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/wordpress/%U%%23this%%3E+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/wpl_v%%3E&format=%U',
+    vector('path', 'path', '*accept*'),
+    null,
+    '(text/rdf.n3)|(application/rdf.xml)',
+    2,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'wpl_rule2',
+    1,
+    '/wordpress/(user|post|site|proxy|blog)/([^#]*)',
+    vector('obj', 'path'),
+    1,
+    '/ode/index.html?uri=http%%3A//^{URIQADefaultHost}^/wordpress/%U/%U%%23this',
+    vector('obj', 'path'),
+    null,
+    '(text/html)|(\\*/\\*)',
+    0,
+    303
+    );
+
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    'wpl_rule_list1',
+    1,
+    vector (
+                'wpl_rule2',
+                'wpl_rule3'
+          ));
+
+DB.DBA.VHOST_REMOVE (lpath=>'/wordpress');
+DB.DBA.VHOST_DEFINE (lpath=>'/wordpress', ppath=>'/vad/vsp/wordpress/', is_dav=>0, vsp_user=>'dba', is_brws=>1, def_page=>'index.php',
+    opts=>vector ('url_rewrite', 'wpl_rule_list1'));
+
+</verbatim>
+
+
+---+++References
+
+   * [[WordPressSIOCRef][WordPress SIOC Reference]]
+   * [[http://ods.openlinksw.com/dataspace/dav/wiki/ODS/OdsIntegrationWordPress][WordPress Installation Guide]]

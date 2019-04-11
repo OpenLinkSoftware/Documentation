@@ -1,0 +1,135 @@
+%META:TOPICPARENT{name="CodeSamples"}%
+
+{{{
+/* $Header: 
+* 
+* Synopsis: Test ODBC application for using prepared statement with bound parameters. 
+*           Uses test table.  Modify according to your database. 
+*/ 
+/*******************************************************************************/ 
+
+#include <stdio.h> 
+#include <string.h> 
+
+#include "isql.h" 
+#include "isqlext.h" 
+
+/*******************************************************************************/ 
+
+HENV    henv=SQL_NULL_HENV; 
+HDBC    hdbc=SQL_NULL_HDBC; 
+HSTMT hstmt; 
+SQLINTEGER retval = 0; 
+int main() 
+{ 
+    char szDsn[128] ="" , szLogin[25] ="", szPassword[25] = "", name[] = "50", 
+        statement[] = "select * from test_table where name = ?"; 
+
+    RETCODE returncode; 
+        SDWORD  cbOut; 
+        SQLINTEGER cbValue; 
+        SQLSMALLINT numParams; 
+        UDWORD connAttr; 
+        int i; 
+        connAttr = SQL_TXN_READ_COMMITTED; 
+    system ("clear"); 
+
+    printf("\n Starting Test...\n"); 
+
+    strcpy( szDsn, "ORA8I_SOLARIS"); 
+    printf( "\n szDsn = %s", szDsn); 
+
+    strcpy( szLogin, "scott"); 
+    printf( "\n szLogin = %s", szLogin); 
+
+    strcpy( szPassword,"tiger"); 
+    printf( "\n szPassword = %s\n\n", szPassword); 
+
+    returncode = SQLAllocEnv(&henv); 
+    returncode = SQLAllocConnect(henv,&hdbc); 
+
+    if(returncode==SQL_SUCCESS) 
+        returncode = SQLConnect(hdbc,(unsigned char *)szDsn,SQL_NTS, 
+                    (unsigned char *)szLogin,SQL_NTS, 
+                    (unsigned char *)szPassword,SQL_NTS); 
+    if(returncode!=SQL_SUCCESS) return 0; 
+
+    cbOut  = SQL_NTS; 
+
+    returncode = SQLAllocStmt(hdbc, &hstmt); 
+
+    SQLSetConnectAttr(hdbc, SQL_TXN_ISOLATION, (SQLPOINTER) connAttr, 255); 
+
+    SQLPrepare(hstmt,statement,SQL_NTS); 
+
+    SQLNumParams(hstmt, &numParams); 
+
+    printf ("Numparams output = %i\n", numParams); 
+
+    SQLBindParameter(hstmt,1,SQL_PARAM_INPUT,SQL_C_CHAR,SQL_VARCHAR,4,0,&name,0,&cbOut); 
+
+    /* Bind the column we'll be outputting.  */ 
+    SQLBindCol(hstmt,1,SQL_C_CHAR, pwd, 20, &cbOut); 
+
+    /* Execute the statement */ 
+    SQLExecute(hstmt); 
+
+    /* Fetch the data */ 
+    SQLFetch(hstmt); 
+
+    printf ("pwd (OUTPUT) = %s\n",pwd); 
+
+    printf ("length of pwd = %i\n",strlen(pwd)); 
+
+    SQLFreeStmt(hstmt, SQL_DROP ); 
+
+    SQLDisconnect(hdbc); 
+    SQLFreeConnect(hdbc); 
+
+    SQLFreeEnv(henv); 
+
+    printf("\n End of Program\n\n"); 
+
+    return 0; 
+} 
+
+int 
+DB_Errors (char *where) 
+{ 
+unsigned char buf[250]; 
+unsigned char sqlstate[15]; 
+
+/* 
+*  Get statement errors 
+*/ 
+while (SQLError (henv, hdbc, hstmt, sqlstate, NULL, 
+buf, sizeof(buf), NULL) == SQL_SUCCESS) 
+{ 
+fprintf (stderr, "%s, SQLSTATE=%s\n", buf, sqlstate); 
+} 
+
+  /* 
+   *  Get connection errors 
+   */ 
+  while (SQLError (henv, hdbc, SQL_NULL_HSTMT, sqlstate, NULL, 
+      buf, sizeof(buf), NULL) == SQL_SUCCESS) 
+    { 
+      fprintf (stderr, "%s, SQLSTATE=%s\n", buf, sqlstate); 
+    } 
+
+  /* 
+   *  Get environmental errors 
+   */ 
+  while (SQLError (henv, SQL_NULL_HDBC, SQL_NULL_HSTMT, sqlstate, NULL, 
+      buf, sizeof(buf), NULL) == SQL_SUCCESS) 
+    { 
+      fprintf (stderr, "%s, SQLSTATE=%s\n", buf, sqlstate); 
+    } 
+
+  return -1; 
+} 
+
+/*******************************************************************************/ 
+/* End of File */ 
+
+}}}

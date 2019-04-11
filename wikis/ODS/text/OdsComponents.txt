@@ -1,0 +1,764 @@
+%VOSWARNING%
+
+
+---++ODS Specification Components
+
+---+++ODS database back end
+
+---++++Tables
+
+   * <b><code><nowiki>WA_SETTINGS</nowiki></code></b>
+      1 Contains list of ODS-specific settings. 
+      1 Typically, this table contains one row only.
+<verbatim>
+CREATE TABLE WA_SETTINGS
+  (
+                            WS_ID  INTEGER IDENTITY PRIMARY KEY,
+                      WS_REGISTER  INT,
+                   WS_MAIL_VERIFY  INT,
+                    WS_VERIFY_TIP  INT,
+     WS_REGISTRATION_EMAIL_EXPIRY  INT DEFAULT 24,
+                   WS_JOIN_EXPIRY  INT DEFAULT 72,
+                       WS_DOMAINS  VARCHAR,
+                          WS_SMTP  VARCHAR,
+              WS_USE_DEFAULT_SMTP  INTEGER,
+                    WS_BRAND_NAME  VARCHAR,
+                    WS_WEB_BANNER  VARCHAR,
+                     WS_WEB_TITLE  VARCHAR,
+               WS_WEB_DESCRIPTION  VARCHAR,
+               WS_WELCOME_MESSAGE  VARCHAR,
+                     WS_COPYRIGHT  VARCHAR,
+                    WS_DISCLAIMER  VARCHAR,
+           WS_DEFAULT_MAIL_DOMAIN  VARCHAR,
+            WS_SHOW_SYSTEM_ERRORS  INTEGER,
+                  WS_MEMBER_MODEL  INTEGER,
+              WS_REGISTRATION_XML  LONG XML,
+             WS_GENERAL_AGREEMENT  VARCHAR,
+              WS_MEMBER_AGREEMENT  VARCHAR,
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_USERS</nowiki></code></b>
+      1 Contains list of registered ODS users together with some additional information 
+like secret question and answer for password recovery. 
+      1 Each user in this table have to be exists in SYS_USERS</nowiki></code> table too.
+      1 This table automatically filled during user registration through ODS interface
+<verbatim>
+CREATE TABLE WA_USERS
+  (
+                          WAU_U_ID  INT,
+                      WAU_QUESTION  VARCHAR,
+                        WAU_ANSWER  VARCHAR,
+                       WAU_LAST_IP  VARCHAR,
+                      WAU_TEMPLATE  VARCHAR,
+           WAU_LOGON_DISABLE_UNTIL  DATETIME,
+     WAU_PWD_RECOVER_DISABLE_UNTIL  DATETIME,
+                       PRIMARY KEY  (WAU_U_ID)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_USER_SETTINGS</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_USER_SETTINGS
+  (
+       WAUS_U_ID  INT,
+        WAUS_KEY  VARCHAR(50),
+       WAUS_DATA  LONG VARBINARY,
+     PRIMARY KEY  (WAUS_U_ID,WAUS_KEY)
+  );
+
+ALTER TABLE WA_USER_SETTINGS ADD FOREIGN KEY (WAUS_U_ID) REFERENCES SYS_USERS (U_ID) ON DELETE CASCADE;
+</verbatim>
+
+   * <b><code><nowiki>WA_USER_INFO</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_USER_INFO
+  (
+                WAUI_U_ID  INT,
+             WAUI_VISIBLE  VARCHAR(50),         -- concatenation of all fields flags. 
+                                                -- by default each is 1: 11111111...
+                                                -- 1: public, 
+                                                -- 2: friend, 
+                                                -- 3: private
+               WAUI_TITLE  VARCHAR(3),          -- 0
+          WAUI_FIRST_NAME  VARCHAR(50),         -- 1
+           WAUI_LAST_NAME  VARCHAR(50),         -- 2
+           WAUI_FULL_NAME  VARCHAR(100),        -- 3
+              WAUI_GENDER  VARCHAR(10),         -- 5
+            WAUI_BIRTHDAY  DATETIME,            -- 6
+             WAUI_WEBPAGE  VARCHAR(50),         -- 7
+                WAUI_FOAF  LONG VARCHAR,        -- 8 column type changed below
+          WAUI_MSIGNATURE  VARCHAR(255),        -- 9
+                 WAUI_ICQ  VARCHAR(50),         -- 10
+               WAUI_SKYPE  VARCHAR(50),         -- 11
+                 WAUI_AIM  VARCHAR(50),         -- 12
+               WAUI_YAHOO  VARCHAR(50),         -- 13
+                 WAUI_MSN  VARCHAR(50),         -- 14
+           WAUI_HADDRESS1  VARCHAR(50),         -- 15
+           WAUI_HADDRESS2  VARCHAR(50),         -- 15
+               WAUI_HCODE  VARCHAR(50),         -- 15
+               WAUI_HCITY  VARCHAR(50),         -- 16
+              WAUI_HSTATE  VARCHAR(50),         -- 16
+            WAUI_HCOUNTRY  VARCHAR(50),         -- 16
+              WAUI_HTZONE  VARCHAR(50),         -- 17
+              WAUI_HPHONE  VARCHAR(50),         -- 18
+             WAUI_HMOBILE  VARCHAR(50),         -- 18
+           WAUI_BINDUSTRY  VARCHAR(50),         -- 19
+                WAUI_BORG  VARCHAR(50),         -- 20
+                WAUI_BJOB  VARCHAR(50),         -- 21
+           WAUI_BADDRESS1  VARCHAR(50),         -- 22
+           WAUI_BADDRESS2  VARCHAR(50),         -- 22
+               WAUI_BCODE  VARCHAR(50),         -- 22
+               WAUI_BCITY  VARCHAR(50),         -- 23
+              WAUI_BSTATE  VARCHAR(50),         -- 23
+            WAUI_BCOUNTRY  VARCHAR(50),         -- 23
+              WAUI_BTZONE  VARCHAR(50),         -- 24
+                WAUI_BLAT  REAL,                -- 47
+                WAUI_BLNG  REAL,                -- 47
+              WAUI_BPHONE  VARCHAR(50),         -- 25
+             WAUI_BMOBILE  VARCHAR(50),         -- 25
+              WAUI_BREGNO  VARCHAR(50),         -- 26
+             WAUI_BCAREER  VARCHAR(50),         -- 27
+           WAUI_BEMPTOTAL  VARCHAR(50),         -- 28
+             WAUI_BVENDOR  VARCHAR(50),         -- 29
+            WAUI_BSERVICE  VARCHAR(50),         -- 30
+              WAUI_BOTHER  VARCHAR(50),         -- 31
+            WAUI_BNETWORK  VARCHAR(50),         -- 32
+             WAUI_SUMMARY  LONG VARCHAR,        -- 33
+              WAUI_RESUME  LONG VARCHAR,        -- 34
+        WAUI_SEC_QUESTION  VARCHAR(20),         -- 35
+          WAUI_SEC_ANSWER  VARCHAR(20),         -- 36
+           WAUI_PHOTO_URL  LONG VARCHAR,        -- 37
+            WAUI_TEMPLATE  VARCHAR(20),         -- 38
+                 WAUI_LAT  REAL,                -- 39
+                 WAUI_LNG  REAL,                -- 40
+      WAUI_LATLNG_VISIBLE  SMALLINT,            -- 41
+     WAUI_USER_SEARCHABLE  SMALLINT,            -- 42 - new fields
+          WAUI_AUDIO_CLIP  LONG VARCHAR,        -- 43
+      WAUI_FAVORITE_BOOKS  LONG VARCHAR,        -- 44
+      WAUI_FAVORITE_MUSIC  LONG VARCHAR,        -- 45
+     WAUI_FAVORITE_MOVIES  LONG VARCHAR,        -- 46
+          WAUI_SEARCHABLE  INT DEFAULT 1,
+        WAUI_LATLNG_HBDEF  SMALLINT DEFAULT 0,
+           WAUI_SITE_NAME  LONG VARCHAR,
+           WAUI_INTERESTS  LONG VARCHAR,        -- 48
+       WAUI_BORG_HOMEPAGE  LONG VARCHAR,        -- 20 same as BORG,
+              PRIMARY KEY  (WAUI_U_ID)
+  );
+
+ALTER TABLE DB.DBA.WA_USER_INFO ADD COLUMN WAUI_JOIN_DATE DATETIME;
+UPDATE DB.DBA.WA_USER_INFO SET WAUI_JOIN_DATE = NOW()');
+
+CREATE TRIGGER WA_USER_INFO_I AFTER INSERT ON WA_USER_INFO REFERENCING NEW AS N {
+
+  IF (N.WAUI_JOIN_DATE IS NULL)
+  {
+    SET TRIGGERS OFF;
+    UPDATE WA_USER_INFO SET WAUI_JOIN_DATE = NOW() WHERE WAUI_U_ID = N.WAUI_U_ID;
+    SET TRIGGERS ON;
+  }
+
+  RETURN;
+}
+;
+
+CREATE INDEX WA_GEO ON WA_USER_INFO (WAUI_LNG, WAUI_LAT, WAUI_LATLNG_VISIBLE);
+</verbatim>
+
+   * <b><code><nowiki>WA_USER_TEXT</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_USER_TEXT
+  (
+    WAUT_U_ID   INT,
+    WAUT_TEXT   LONG VARCHAR,
+    PRIMARY KEY (WAUT_U_ID)
+  );
+
+CREATE TEXT INDEX ON WA_USER_TEXT (WAUT_TEXT) WITH KEY WAUT_U_ID;
+</verbatim>
+
+   * <b><code><nowiki>WA_USER_TAG</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_USER_TAG
+  (
+       WAUTG_U_ID  INTEGER NOT NULL, -- the id of the user of whose tag it is
+     WAUTG_TAG_ID  INTEGER NOT NULL, -- the id of the user who gives the tags
+      WAUTG_FT_ID  INTEGER NOT NULL,
+       WAUTG_TAGS  VARCHAR NOT NULL,
+      PRIMARY KEY  (WAUTG_U_ID, WAUTG_TAG_ID)
+  );
+
+CREATE UNIQUE INDEX SYS_WA_USER_TAG_FT_ID ON WA_USER_TAG (WAUTG_FT_ID);
+CREATE INDEX WA_USER_TAG_TAG_ID ON WA_USER_TAG (WAUTG_TAG_ID);
+</verbatim>
+
+   * <b><code><nowiki>WA_TYPES</nowiki></code></b>
+      1 Contains list of registered ODS's application types. 
+      1 Based on this table information ODS can create instances of each application. 
+      1 Typically, each application should store necessary information in this table 
+during installation. For example: 
+<verbatim>
+INSERT REPLACING WA_TYPES(WAT_NAME, WAT_DESCRIPTION, WAT_TYPE, WAT_REALM) 
+VALUES ('WEBLOG2', 'Blog', 'db.dba.wa_blog2', 'blog2')
+</verbatim>
+
+<verbatim>
+CREATE TABLE WA_TYPES 
+  (
+            WAT_NAME  VARCHAR,
+            WAT_TYPE  VARCHAR,
+           WAT_REALM  VARCHAR,
+     WAT_DESCRIPTION  VARCHAR,
+         WAT_MAXINST  INTEGER,
+         PRIMARY KEY  (WAT_NAME)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_MEMBER_MODEL</nowiki></code></b>
+      1 Contains list of available ODS application member models. 
+      1 Now, it's:
+         * *Open* - each ODS user may became application member without any 
+restrictions.  Application owner will not be informed.
+         * *Closed* - no-one may become new member
+         * *Invite only* - only application owner can invite ODS users to become 
+application member
+         * *Approval based* - ODS user can became application member only after 
+application owner approval
+         * *Notify owner via E-mail* - each ODS user may became application member 
+without any restrictions. Application owner will be informed automatically by email.
+<verbatim>
+CREATE TABLE WA_MEMBER_MODEL
+  (
+       WMM_ID  INT PRIMARY KEY,
+     WMM_NAME  VARCHAR NOT NULL
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_MEMBER_TYPE</nowiki></code></b>
+      1 Contains list of available application-specific (for each registered application) 
+membership types. 
+      1 For example: <code><nowiki>author</nowiki></code>, <code><nowiki>reader</nowiki></code>. 
+<code><nowiki>Owner</nowiki></code> is not a member type, and is provided by another ODS mechanism.
+<verbatim>
+CREATE TABLE WA_MEMBER_TYPE 
+  (
+            WMT_APP  VARCHAR,
+           WMT_NAME  VARCHAR,
+             WMT_ID  INT,
+     WMT_IS_DEFAULT  INT,
+        PRIMARY KEY  (WMT_APP, WMT_ID))
+);
+</verbatim>
+
+   * <b><code><nowiki>WA_INSTANCE</nowiki></code></b>
+      1 Contains detailed information about each of created application instances. 
+      1 <code><nowiki>WAI_NAME</nowiki></code> field values *MUST BE EQUAL* to corresponding 
+<code><nowiki>application_object.wa_name value</nowiki></code>. If any application wants to 
+change values provided by ODS - it should check equality.
+      1 <code><nowiki>WAI_NAME</nowiki></code> should be unique through the whole table.
+<verbatim>
+CREATE TABLE WA_INSTANCE
+  (
+                  WAI_ID  INT IDENTITY,
+           WAI_TYPE_NAME  VARCHAR REFERENCES WA_TYPES ON DELETE CASCADE,
+                WAI_NAME  VARCHAR,
+                WAI_INST  WEB_APP,
+        WAI_MEMBER_MODEL  INT REFERENCES WA_MEMBER_MODEL,
+           WAI_IS_PUBLIC  INT DEFAULT 1,
+     WAI_MEMBERS_VISIBLE  INT DEFAULT 1,
+         WAI_DESCRIPTION  VARCHAR,
+            WAI_MODIFIED  TIMESTAMP,
+           WAI_IS_FROZEN  INT,
+     WAI_FREEZE_REDIRECT  VARCHAR,
+             WAI_LICENSE  LONG VARCHAR,
+             PRIMARY KEY  (WAI_NAME)
+  );
+
+CREATE TEXT INDEX ON WA_INSTANCE (WAI_DESCRIPTION) WITH KEY WAI_ID USING FUNCTION;
+CREATE INDEX WAI_TYPE_NAME_IDX1 ON WA_INSTANCE (WAI_TYPE_NAME)
+</verbatim>
+
+   * <b><code><nowiki>WA_MEMBER</nowiki></code></b>
+      1 Contains detailed information about each of member of each application instance. 
+      1 <code><nowiki>WAM_MEMBER_TYPE</nowiki></code> - corresponds (as foreign key) to <code><nowiki>WA_MEMBER_TYPE</nowiki></code> table.
+      1 <code><nowiki>WAM_STATUS</nowiki></code> contains ODS-specific (not application-specific) application member status
+         * <code>1</code> - owner
+         * <code>2</code> - approved
+         * <code>3</code> - awaiting approval from owner
+         * <code>4</code> - awaiting approval from user
+      1 ODS application *SHOULD NOT* work with this table directly (except for READ operation to determine member type and status)
+      1 All necessary action with this table will be done by ODS itself automatically.
+<verbatim>
+CREATE TABLE WA_MEMBER
+  (
+                WAM_USER  INT,
+                WAM_INST  VARCHAR REFERENCES WA_INSTANCE ON DELETE CASCADE ON UPDATE CASCADE,
+         WAM_MEMBER_TYPE  INT,            -- 1=owner, 2=admin, 3=regular, -1=waiting approval, etc.
+        WAM_MEMBER_SINCE  DATETIME,
+             WAM_EXPIRES  DATETIME,
+           WAM_IS_PUBLIC  INT DEFAULT 1,  -- Duplicate WAI_IS_PUBLIC
+     WAM_MEMBERS_VISIBLE  INT DEFAULT 1,  -- Duplicate WAI_MEMBERS_VISIBLE
+           WAM_HOME_PAGE  VARCHAR,
+            WAM_APP_TYPE  VARCHAR,
+                WAM_DATA  ANY,            -- app dependent, e.g., last payment info, other.
+              WAM_STATUS  INT,
+             PRIMARY KEY  (WAM_USER, WAM_INST, WAM_MEMBER_TYPE)
+  );
+
+CREATE INDEX WA_MEMBER_WAM_INST ON WA_MEMBER (WAM_INST);
+</verbatim>
+
+   * <b><code><nowiki>WA_MEMBER_INSTCOUNT</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_MEMBER_INSTCOUNT
+  (
+     WMIC_TYPE_NAME  VARCHAR REFERENCES WA_TYPES ON DELETE CASCADE,
+           WMIC_UID  INT REFERENCES SYS_USERS (U_ID) ON DELETE CASCADE,
+     WMIC_INSTCOUNT  INTEGER DEFAULT NULL,
+        PRIMARY KEY  (WMIC_TYPE_NAME, WMIC_UID)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_INVITATIONS</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_INVITATIONS 
+  (
+         WI_U_ID  INT,        -- U_ID
+      WI_TO_MAIL  VARCHAR,    -- email
+     WI_INSTANCE  VARCHAR,    -- WAI_NAME
+          WI_SID  VARCHAR,    -- VS_SID
+       WI_STATUS  VARCHAR,    -- pending, or rejected
+     PRIMARY KEY  (WI_U_ID, WI_TO_MAIL, WI_INSTANCE)
+  );
+
+CREATE UNIQUE INDEX WA_INVITATIONS_SID ON WA_INVITATIONS (WI_SID);
+</verbatim>
+
+   * <b><code><nowiki>WA_DOMAINS</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_DOMAINS
+  (
+          WD_DOMAIN  VARCHAR,    -- domain name
+            WD_HOST  VARCHAR,    -- this and rest are the endpoint to access wa via that domain
+     WD_LISTEN_HOST  VARCHAR,
+           WD_LPATH  VARCHAR,
+           WD_MODEL  INT,
+        PRIMARY KEY  (WD_DOMAIN)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_MAP_HOSTS</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_MAP_HOSTS
+  (
+        WMH_HOST  VARCHAR,
+         WMH_SVC  VARCHAR,
+         WMH_KEY  VARCHAR,
+          WMH_ID  INTEGER IDENTITY,
+     PRIMARY KEY  (WMH_HOST, WMH_SVC)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_VIRTUAL_HOSTS</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_VIRTUAL_HOSTS
+  (
+            VH_INST  INTEGER REFERENCES WA_INSTANCE (WAI_ID) ON DELETE CASCADE,
+            VH_HOST  VARCHAR,    -- this and rest are the endpoint to access wa via that domain
+     VH_LISTEN_HOST  VARCHAR,
+           VH_LPATH  VARCHAR,
+            VH_PAGE  VARCHAR,
+        PRIMARY KEY  (VH_INST,VH_HOST,VH_LISTEN_HOST,VH_LPATH)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_BLOCKED_IP</nowiki></code></b>
+      1 Used internally by ODS to prevent unlimited login (failed) attempts from the same IP address. 
+<verbatim>
+CREATE TABLE WA_BLOCKED_IP
+  (
+                WAB_IP  VARCHAR,
+     WAB_DISABLE_UNTIL  DATETIME,
+           PRIMARY KEY  (WAB_IP)
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_INDUSTRY</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_INDUSTRY
+  (
+     WI_NAME  VARCHAR NOT NULL PRIMARY KEY
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_COUNTRY</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_COUNTRY
+  (
+     WC_NAME  VARCHAR NOT NULL PRIMARY KEY,
+     WC_CODE  VARCHAR,
+      WC_LAT  REAL,
+      WC_LNG  REAL,
+     WC_CODE  VARCHAR
+  );
+</verbatim>
+
+   * <b><code><nowiki>WA_PROVINCE</nowiki></code></b>
+<verbatim>
+CREATE TABLE WA_PROVINCE 
+  (
+      WP_COUNTRY  VARCHAR,
+     WP_PROVINCE  VARCHAR,
+     PRIMARY KEY  (WP_COUNTRY, WP_PROVINCE)
+  );
+</verbatim>
+
+---++++ ODS base class web_app
+
+<verbatim>
+  CREATE TYPE WEB_APP AS
+  (
+    WA_NAME VARCHAR,      -- i.e., blog
+    WA_MEMBER_MODEL INT   -- how registration can be made
+  )
+  METHOD wa_id_string ()                              RETURNS any,     -- string in memberships list
+  METHOD wa_new_inst (login varchar)                  RETURNS any,     -- registering
+  METHOD wa_join_request (login varchar)              RETURNS any,     -- registering
+  METHOD wa_leave_notify (login varchar)              RETURNS any,     -- cancel join
+  METHOD wa_state_edit_form (stream any)              RETURNS any,     -- emit a state edit form into the stream present this to owner for setting the state
+  METHOD wa_membership_edit_form (stream any)         RETURNS any,     -- emit a membership edit form into the stream present this to owner for setting the state
+  METHOD wa_front_page (stream any)                   RETURNS any,     -- emit a front page into the stream present this to owner for setting the state
+  METHOD wa_state_posted (post any, 
+                          stream any)                 RETURNS any,     -- process a post, updating state and writing a reply into the stream for web interface
+  METHOD wa_periodic_activity ()                      RETURNS any,     -- send reminders, invoices, refresh content whatever is regularly done.
+  METHOD wa_drop_instance ()                          RETURNS any,
+  METHOD wa_private_url ()                            RETURNS any,
+  METHOD wa_notify_member_changed (account int, 
+                                   otype int, 
+                                   ntype int, 
+                                   odata any, 
+                                   ndata any, 
+                                   ostatus any, 
+                                   nstatus any)       RETURNS any,
+  METHOD wa_member_data (u_id int, 
+                         stream any)                  RETURNS any,     -- application specific membership attributes
+  METHOD wa_member_data_edit_form (u_id int, 
+                                   stream any)        RETURNS any,     -- application specific membership attributes edit form
+  METHOD wa_class_details ()                          RETURNS varchar, -- returns details about the nature of the instance class
+  METHOD wa_https_supported ()                        RETURNS int,
+  METHOD wa_dashboard ()                              RETURNS any,
+  METHOD wa_home_url ()                               RETURNS varchar,
+  METHOD wa_dashboard ()                              RETURNS any,
+  METHOD wa_addition_urls ()                          RETURNS any,
+  METHOD wa_addition_instance_urls ()                 RETURNS any,
+  METHOD wa_addition_instance_urls (in lpath any)     RETURNS any,
+  METHOD wa_domain_set (in domain varchar)            RETURNS any,                                                  
+  METHOD wa_size ()                                   RETURNS int,                                        
+  METHOD wa_front_page_as_user (in stream any, 
+                                in user_name varchar) RETURNS any,
+  METHOD wa_rdf_url (in vhost varchar, 
+                     in lhost varchar)                RETURNS varchar,                 
+  METHOD wa_post_url (in vhost varchar, 
+                      in lhost varchar, 
+                      in inst_name varchar, 
+                      in post any)                    RETURNS varchar,
+  METHOD wa_domain_set(in domain varchar)             RETURNS any,
+  wa_new_instance_url()                               RETURNS any,
+  wa_edit_instance_url()                              RETURNS any
+)
+;
+</verbatim>
+
+---++++ ODS methods for base class web_app
+<verbatim>
+CREATE METHOD wa_id_string () for web_app
+{
+  return '';
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_dashboard () for web_app
+{
+  return '';
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_member_data (in u_id int, inout stream any) for web_app
+{
+  return 'N/A';
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_member_data_edit_form (in u_id int, inout stream any) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_membership_edit_form (inout stream any) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_front_page (inout stream any) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_front_page_as_user (inout stream any, in user_name varchar) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_size () for web_app
+{
+  return 0;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_join_request (in login varchar) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_class_details() for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_state_edit_form (inout stream any) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_state_posted (in post any, inout stream any) for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_home_url () for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_rdf_url (in vhost varchar, in lhost varchar) for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_post_url (in vhost varchar, in lhost varchar, in inst_name varchar, in post any) for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_addition_urls () for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_addition_instance_urls () for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_addition_instance_urls (in lpath any) for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_domain_set (in domain varchar) for web_app
+{
+  return self;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_private_url () for web_app
+{
+  return null;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_https_supported () for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_drop_instance () for web_app {
+for select VH_HOST as _host, VH_LISTEN_HOST as _lhost, VH_LPATH as _path, WAI_INST as _inst
+  from WA_INSTANCE, WA_VIRTUAL_HOSTS where WAI_NAME = self.wa_name and WAI_ID = VH_INST and VH_HOST not like '%ini%'
+  do
+  {
+    declare inst web_app;
+    inst := _inst;
+    -- Application additional URL
+    declare len, i, ssl_port integer;
+    declare cur_add_url, addons any;
+
+    addons := inst.wa_addition_urls();
+    len := length(addons);
+    i := 0;
+    while (i < len)
+    {
+      cur_add_url := addons [i];
+      VHOST_REMOVE(
+        vhost=>_host,
+        lhost=>_lhost,
+        lpath=>cur_add_url[2]);
+      i := i + 1;
+    }
+    -- Instance additional URL
+    addons := inst.wa_addition_instance_urls(_path);
+    len := length(addons);
+    i := 0;
+    while (i < len)
+    {
+      cur_add_url := addons[i];
+      VHOST_REMOVE(
+        vhost=>_host,
+        lhost=>_lhost,
+        lpath=>cur_add_url[2]);
+      i := i + 1;
+    }
+    -- Home URL
+    VHOST_REMOVE(vhost=>_host, lhost=>_lhost, lpath=>_path);
+  }
+  delete from WA_MEMBER where WAM_INST = self.wa_name;
+  delete from WA_INSTANCE where WAI_NAME = self.wa_name;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_periodic_activity () for web_app
+{
+  return;
+};
+</verbatim>
+
+<verbatim>
+CREATE METHOD wa_new_inst (in login varchar) for web_app
+{
+  declare uid, id, tn, is_pub, is_memb_visb any;
+
+  uid := (select U_ID from SYS_USERS where U_NAME = login);
+  select WAI_ID, WAI_TYPE_NAME, WAI_IS_PUBLIC, WAI_MEMBERS_VISIBLE
+      into id, tn, is_pub, is_memb_visb from WA_INSTANCE where WAI_NAME = self.wa_name;
+  -- WAM_STATUS = 1 means OWNER
+  -- XXX: check this why is off
+  --set triggers off;
+  insert into WA_MEMBER
+      (WAM_USER, WAM_INST, WAM_MEMBER_TYPE, WAM_STATUS, WAM_HOME_PAGE, WAM_APP_TYPE, WAM_IS_PUBLIC, WAM_MEMBERS_VISIBLE)
+      values (uid, self.wa_name, 1, 1, wa_set_url_t (self), tn, is_pub, is_memb_visb);
+  --set triggers on;
+  return id;
+};
+</verbatim>
+<verbatim>
+CREATE METHOD wa_new_instance_url () for web_app{
+  return 'new_inst.vspx';
+};
+</verbatim>
+<verbatim>
+CREATE METHOD wa_edit_instance_url () for web_app{
+  return 'edit_inst.vspx';
+};
+</verbatim>
+
+---++++App membership processing
+
+---+++PL APIs
+
+---++++<nowiki>OpenID</nowiki> APIs
+
+Location: <code><nowiki>openid.sql</nowiki></code>
+
+  | <b><code><nowiki>OPENID_INIT</nowiki></code></b> |Creates user "<nowiki>OpenID</nowiki>" |
+  | | | |
+  | <b><code><nowiki>yadis</nowiki></code></b> | Automatic creation of user yadis doc format.| |
+  | |<code>in uname varchar,</code> |User name |
+  | |RESULT is XML composed yadis doc for the user| |
+  | | | |
+  | <b><code><nowiki>server</nowiki></code></b> | Depending on the openid mode performs: <code>associates</code>, <code><nowiki>checkid_immediate</nowiki></code>, <code><nowiki>checkid_setup</nowiki></code>, <code><nowiki>check_authentication</nowiki></code> | |
+  | |in "openid.mode" varchar := 'unknown', | OpenID of the Server |
+  | |RESULT depends on the openid mode| |
+  | | | |
+  | <b><code><nowiki>associate</nowiki></code></b> | Creates <code><nowiki>xenc_key_3DES</nowiki></code> key and inserts it into <code><nowiki>SERVER_SESSIONS</nowiki></code> | |
+  | |<code>in "openid.mode" varchar := 'unknown',</code> | |
+  | |<code>in <nowiki>assoc_type</nowiki> varchar := 'HMAC-SHA1',</code> | |
+  | |<code>in <nowiki>session_type</nowiki> varchar := '',</code> | |
+  | |<code>in <nowiki>dh_modulus</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>dh_gen</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>dh_consumer_public</nowiki> varchar := null</code> | |
+  | |RESULT is string| |
+  | | | |
+  | <b><code><nowiki>checkid_immediate</nowiki></code></b> | Check OpenID verification| |
+  | |<code>in <nowiki>_identity</nowiki> varchar,</code> | |
+  | |<code>in <nowiki>assoc_handle</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>return_to</nowiki> varchar,</code> | |
+  | |<code>in <nowiki>trust_root</nowiki> varchar := null,</code> | |
+  | |<code>in sid varchar,</code> | |
+  | |<code>in flag int := 0, -- called via checkid_setup</code> | |
+  | |<code>in <nowiki>sreg_required</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>sreg_optional</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>policy_url</nowiki> varchar := null</code> | |
+  | |RESULT is empty string| |
+  | | | |
+  | <b><code><nowiki>checkid_setup</nowiki></code></b> | Setup OpenID verification and perform check| |
+  | |<code>in <nowiki>_identity</nowiki> varchar,</code> | |
+  | |<code>in <nowiki>assoc_handle</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>return_to</nowiki> varchar,</code> | |
+  | |<code>in <nowiki>trust_root</nowiki> varchar := null,</code> | |
+  | |<code>in sid varchar,</code> | |
+  | |<code>in <nowiki>sreg_required</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>sreg_optional</nowiki> varchar := null,</code> | |
+  | |<code>in <nowiki>policy_url</nowiki> varchar := null</code> | |
+  | |RESULT is empty string| |
+  | | | |
+  | <b><code><nowiki>check_authentication</nowiki></code></b> | Check for OpenID authentication| |
+  | |<code>in <nowiki>assoc_handle</nowiki> varchar,</code> | |
+  | |<code>in sig varchar,</code> | |
+  | |<code>in signed varchar,</code> | |
+  | |<code>in <nowiki>invalidate_handle</nowiki> varchar := null,</code> | |
+  | |<code>in params any := null,</code> | |
+  | |<code>in sid varchar</code> | |
+  | |RESULT is empty string| |
+  | | | |
+  | <b><code><nowiki>check_signature</nowiki></code></b> | Check OpenID authentication comparing the <nowiki>xenc_key-s</nowiki>| |
+  | |<code>in params varchar</code> | |
+  | |RESULT is integer, 1 if the signature matches, 0 if not| |
+
+CategoryODS CategoryOpenSource CategoryAPI

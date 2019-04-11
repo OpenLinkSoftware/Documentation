@@ -1,0 +1,57 @@
+<docbook><section><title>VOSEngine</title><para>   </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Virtuoso Database Engine</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Architecture</bridgehead>
+<para>Virtuoso is designed to take advantage of operating system threading support and multiple CPU&#39;s.
+ It consists of a single process with an adjustable  pool of threads shared between clients.
+ Multiple threads may work on a single index tree with minimal interference with each other.
+ One cache of database pages is shared among all threads and old dirty pages are written back to disk as a background process.</para>
+<para>The database has at all times a clean checkpoint state and a delta of committed or uncommitted changes to this checkpointed state.
+ This makes it possible to do a  clean backup of the checkpoint state while transactions proceed on the commit state.</para>
+<para>A transaction log file records all transactions since the last checkpoint.
+ Transaction log files may be preserved and archived for an indefinite time, providing a full, recoverable history of the database.</para>
+<para>A single set of files is used for storing all tables.
+ A separate set of files is used for all temporary data.
+ The maximum size of a file set is 32 terabytes, for 4G x 8K pages.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Row Level Locking and Transactions</bridgehead>
+<para>Virtuoso provides dynamic locking, starting with row level locks and escalating to page level locks when a cursor holds a large percentage of a page&#39;s rows or when it has a history of locking entire pages.
+ Lock escalation only happens when no other transactions hold locks on the same page, hence it never deadlocks.
+ Virtuoso SQL provides means for exclusive read and for setting transaction isolation.</para>
+<para>All four levels of isolation are supported:  Dirty read, read committed, repeatable read and serializable.
+ The level of isolation may be specified operation by operation within a single transaction.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Clustered Index</bridgehead>
+<para>Virtuoso stores table rows in the index tree corresponding to the primary key of the table.
+ Secondary keys of the table form their own trees.
+ References from a non-primary key to the main row stored in the primary key are by value, so that the secondary key also holds those primary key parts that are  not declared key parts of the secondary key.</para>
+<para>When an operation can be performed entirely within an index, the SQL compiler generally prefers using a single index.
+ If more than one index can be used for resolving an AND of conditions, a merge intersection of indices is used.
+ When a select is done in order of a non-primary key and needs to access the primary key, special caching is used to speed up the lookup if there is locality of reference.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Large Objects</bridgehead>
+<para>Virtuoso supports character, wide character, binary and XML large objects.
+ When a row has a LOB column, the contents of the LOB column are in-lined on the row if they would fit without overflowing the 4K per row limit.
+ Otherwise, large objects are stored as one or more 8K pages.
+  Each LOB has a page directory store on the referencing row if the LOB is under 128K in length and otherwise on a list of separate directory pages, similarly to how file systems keep track of file disk allocation.
+ A LOB can be read from multiple devices in parallel and can deleted without reading.</para>
+<para>A table can have any number of LOB columns and any number of these can be in-lined if they fit within the 4K maximum length  of a row.
+ A LOB column&#39;s maximum length is 4GB.
+ A LOB can be read as a stream by a client process and SQL procedures can access these by offset and range.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Hot Backup</bridgehead>
+<para>Virtuoso has an online incremental backup capability.
+ The backup_online function writes the checkpointed state of the database to a compressed backup file or set of files.
+ The backup does not interfere with write transactions, it only prevents checkpoints for its duration.
+ Update transactions made while the backup is in progress are stored as page deltas over the checkpoint state and written into a redo log, just as with  normal operation.</para>
+<para>Once a full backup has been made, Virtuoso keeps tracks of pages checkpointed since the full backup.
+ This makes it possible to make an incremental hot backup at any time.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> IO Subsystem</bridgehead>
+<para>Virtuoso supports explicit striping and segmenting a database over multiple sets of stripes.
+ Striping means that logically consecutive pages are stored on distinct devices.
+ Hence these pages can be read and written in parallel for greater throughput.
+ Virtuoso supports 64 bit file offsets where the host operating system supports this.</para>
+<para>I/O is handled by dedicated threads, merging both background write as well as read-ahead of indices or LOB&#39;s into an ordered queue for minimizing disk head movement.
+ Random I/O can take place in parallel with the queue, leaving the ordering of disk access to the operating systems discretion.
+ For random access situations, a single file can be opened with multiple   descriptors so as  to allow the OS to optimize disk access sequence for concurrent requests.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Two Phase Commit</bridgehead>
+<para>Virtuoso is a Microsoft DTC (Distributed Transaction Coordinator) or XA compatible resource manager.
+ The Virtuoso JDBC driver supports the JAVAX XA interface.
+ A Windows Virtuoso server can also receive transaction coordination messages from MS DTC via the native COM.</para>
+<para><ulink url="CategoryWebSite">CategoryWebSite</ulink> <ulink url="CategoryVirtuoso">CategoryVirtuoso</ulink> <ulink url="CategoryOpenSource">CategoryOpenSource</ulink> </para>
+</section></docbook>

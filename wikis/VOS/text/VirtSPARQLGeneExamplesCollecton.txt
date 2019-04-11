@@ -1,0 +1,334 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+LinkedData SPARQL Reference Collection Using the Gene Ontology
+
+%TOC%
+
+The following guide presents collection of LinkedData SPARQL Query Examples Using the Gene Ontology:
+
+---++Example Find Genes and their links to Gene Ontology terms
+<verbatim>
+PREFIX psys: <http://proton.semanticweb.org/2006/05/protons#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX gene: <http://linkedlifedata.com/resource/entrezgene/>
+
+SELECT *
+WHERE 
+  {
+    ?gene rdf:type gene:Gene . 
+    ?gene gene:goTerm ?go .           
+  }
+LIMIT 10
+</verbatim>
+   * [[http://bit.ly/14PKiJh][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/YnSgE5][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find interacting partners for specified protein
+<verbatim>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?protein ?interactor_uri ?interactor_name
+WHERE 
+  {
+    ?i rdf:type biopax2:interaction .
+    ?i biopax2:PARTICIPANTS ?p .
+    ?p biopax2:PHYSICAL-ENTITY ?protein .
+    ?protein biopax2:NAME "Phytochrome A" .
+    ?i biopax2:PARTICIPANTS ?p1 .
+    ?p1 biopax2:PHYSICAL-ENTITY ?interactor_uri .
+    ?interactor_uri rdf:type biopax2:protein .
+    ?interactor_uri biopax2:NAME ?interactor_name .
+  }
+</verbatim>
+   * [[http://bit.ly/X4Hnqw][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/12IxrtU][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find Interactions where Participates Specified Protein
+<verbatim>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?interaction ?protein
+WHERE 
+  {
+    ?interaction rdf:type biopax2:interaction .
+    ?interaction biopax2:PARTICIPANTS ?p .
+    ?p biopax2:PHYSICAL-ENTITY ?protein .
+    ?protein biopax2:NAME "Phytochrome A" .
+  }
+</verbatim>
+   * [[http://bit.ly/14PKp7H][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/Vd7n5N][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find All Proteins That are Linked to a Curated Interaction from the Literature and to Inflammatory Response
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX uniprot: <http://purl.uniprot.org/core/>
+
+SELECT distinct ?fullname
+WHERE 
+  {
+    ?interaction rdf:type biopax2:physicalInteraction .
+    ?interaction biopax2:PARTICIPANTS ?participant .
+    ?participant biopax2:PHYSICAL-ENTITY ?physicalEntity .
+    ?physicalEntity skos:exactMatch ?protein .
+    ?protein uniprot:classifiedWith <http://purl.uniprot.org/go/0006954>.
+    ?protein uniprot:recommendedName ?name .
+    ?name uniprot:fullName ?fullname .
+  }
+</verbatim>
+   * [[http://bit.ly/WGnABt][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/WXFRbP][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find All Proteins that are Linked to a Curated Molecular Interaction, to Inflammatory Response and to a Target of Existing Drug
+
+
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX uniprot: <http://purl.uniprot.org/core/>
+PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>
+
+SELECT distinct ?fullname
+WHERE 
+  {
+    ?interaction rdf:type biopax2:physicalInteraction .
+    ?interaction biopax2:PARTICIPANTS ?participant .
+    ?participant biopax2:PHYSICAL-ENTITY ?physicalEntity .
+    ?physicalEntity skos:exactMatch ?protein .
+    ?protein uniprot:classifiedWith <http://purl.uniprot.org/go/0006954>.
+    ?protein uniprot:recommendedName ?name.
+    ?name uniprot:fullName ?fullname .
+    ?protein uniprot:mnemonic ?mnemonic .
+    ?target drugbank:swissprotName ?mnemonic .
+  }
+</verbatim>
+   * [[http://bit.ly/12aOyoe][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/YnSo6C][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Fund Drugs Related to Asthma that are Linked to a Molecular Interaction
+
+
+<verbatim>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX uniprot: <http://purl.uniprot.org/core/>
+PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>
+
+SELECT distinct ?fullname ?drugname ?indication
+WHERE 
+  {
+    ?participant biopax2:PHYSICAL-ENTITY ?physicalEntity .
+    ?physicalEntity skos:semanticRelation ?protein .
+    ?protein uniprot:recommendedName ?name.
+    ?name uniprot:fullName ?fullname .
+    ?target skos:exactMatch ?protein .
+    ?drug drugbank:target ?target.
+    ?drug drugbank:genericName ?drugname.
+    ?drug drugbank:indication ?indication.
+    filter(regex(?indication, "asthma", "i"))
+  }
+</verbatim>
+   * [[http://bit.ly/Z7o8Tq][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/Y9idZe][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find Drugs Related to Asthma that are Linked to a Curated Molecular Interaction in the Literature where the Protein is Known to cause Inflammatory Response
+
+
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX uniprot: <http://purl.uniprot.org/core/>
+PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>
+
+SELECT DISTINCT ?fullname ?drugname
+WHERE 
+  {
+    ?interaction rdf:type biopax2:physicalInteraction .
+    ?interaction biopax2:PARTICIPANTS ?participant .
+    ?participant biopax2:PHYSICAL-ENTITY ?physicalEntity .
+    ?physicalEntity skos:exactMatch ?protein .
+    ?protein uniprot:classifiedWith <http://purl.uniprot.org/go/0006954>.
+    ?protein uniprot:recommendedName ?name.
+    ?name uniprot:fullName ?fullname .
+    ?target skos:exactMatch ?protein .
+    ?drug drugbank:target ?target .
+    ?drug drugbank:genericName ?drugname .
+    ?drug drugbank:indication ?indication .
+  }
+</verbatim>
+   * [[http://bit.ly/X1PrLQ][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/XFR7c9][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find All Located in Y-chromosome Human Genes
+
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX gene: <http://linkedlifedata.com/resource/entrezgene/>
+PREFIX uniprot: <http://purl.uniprot.org/uniprot/core/>
+PREFIX core: <http://purl.uniprot.org/core/>
+
+SELECT ?genedescription ?taxonomy
+WHERE 
+  {
+    ?geneid gene:description ?genedescription .
+    ?geneid gene:uniprotAccession ?uniprotaccession .
+    ?geneid gene:chromosome 'Y' .
+    ?uniprotaccession core:organism ?taxonomy .
+    ?taxonomy core:scientificName 'Homo sapiens' .
+  }
+</verbatim>
+   * [[http://bit.ly/WXGlP3][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/Xyl5Nc][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find All Located in Y-chromosome Human Genes with Known Molecular Interactions
+
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX gene: <http://linkedlifedata.com/resource/entrezgene/>
+PREFIX core: <http://purl.uniprot.org/core/>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+
+SELECT ?genedescription ?taxonomy ?interactionname
+WHERE 
+  {
+    ?interaction rdf:type biopax2:interaction .
+    ?interaction biopax2:PARTICIPANTS ?p .
+    ?interaction biopax2:NAME ?interactionname .
+    ?p biopax2:PHYSICAL-ENTITY ?protein .
+    ?protein skos:exactMatch ?uniprotaccession .
+    ?uniprotaccession core:organism ?taxonomy .
+    ?taxonomy core:scientificName 'Homo sapiens' .
+    ?geneid gene:uniprotAccession ?uniprotaccession .
+    ?geneid gene:description ?genedescription .
+    ?geneid gene:chromosome 'Y' .
+  }
+</verbatim>
+   * [[http://bit.ly/V2Q6hS][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/12aOQLR][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find All Located in Y-chromosome, Human Genes with Known Molecular Interactions, which are analyzed with Molecular Techniques 
+
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX gene: <http://linkedlifedata.com/resource/entrezgene/>
+PREFIX core: <http://purl.uniprot.org/core/>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX lifeskim: <http://linkedlifedata.com/resource/lifeskim/>
+PREFIX umls: <http://linkedlifedata.com/resource/umls/>
+PREFIX pubmed: <http://linkedlifedata.com/resource/pubmed/>
+
+SELECT distinct ?genedescription ?prefLabel
+WHERE 
+  {
+    ?interaction rdf:type biopax2:interaction .
+    ?interaction biopax2:PARTICIPANTS ?p .
+    ?p biopax2:PHYSICAL-ENTITY ?protein .
+    ?protein skos:exactMatch ?uniprotaccession .
+    ?uniprotaccession core:organism <http://purl.uniprot.org/taxonomy/9606> .
+    ?geneid gene:uniprotAccession ?uniprotaccession .
+    ?geneid gene:description ?genedescription .
+    ?geneid gene:pubmed ?pmid .
+    ?geneid gene:chromosome 'Y' .
+    ?pmid lifeskim:mentions ?umlsid .
+    ?umlsid skos:prefLabel ?prefLabel .
+    ?umlsid rdf:type <http://linkedlifedata.com/resource/semanticnetwork/id/T063> . 
+  }
+</verbatim>
+   * [[http://bit.ly/WXGPEP][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/XylbVb][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Find All Located in Y-chromosome, Human Genes with Known Molecular Interactions, which are analyzed with 'Transfection' 
+
+<verbatim>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX gene: <http://linkedlifedata.com/resource/entrezgene/>
+PREFIX core: <http://purl.uniprot.org/core/>
+PREFIX biopax2: <http://www.biopax.org/release/biopax-level2.owl#>
+PREFIX lifeskim: <http://linkedlifedata.com/resource/lifeskim/>
+PREFIX umls: <http://linkedlifedata.com/resource/umls/>
+PREFIX pubmed: <http://linkedlifedata.com/resource/pubmed/>
+
+SELECT distinct ?genedescription ?prefLabel
+WHERE 
+  {
+    ?interaction rdf:type biopax2:interaction .
+    ?interaction biopax2:PARTICIPANTS ?p .
+    ?p biopax2:PHYSICAL-ENTITY ?protein .
+    ?protein skos:exactMatch ?uniprotaccession .
+    ?uniprotaccession core:organism <http://purl.uniprot.org/taxonomy/9606> .
+    ?geneid gene:uniprotAccession ?uniprotaccession .
+    ?geneid gene:description ?genedescription .
+    ?geneid gene:pubmed ?pmid .
+    ?geneid gene:chromosome 'Y' .
+    ?pmid lifeskim:mentions ?umlsid .
+    ?umlsid skos:prefLabel 'Transfection' .
+    ?umlsid skos:prefLabel ?prefLabel .
+  }
+</verbatim>
+   * [[http://bit.ly/X4HVgd][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/Vd7GO2][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Show All White blood Cell Types
+
+<verbatim>
+PREFIX umls-concept: <http://linkedlifedata.com/resource/umls/id/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX lld: <http://linkedlifedata.com/resource/>
+
+SELECT ?concept ?prefLabel
+WHERE 
+  {
+    { ?concept skos:prefLabel "Leukocytes" .
+      ?concept skos:inScheme lld:umls .
+      ?concept skos:prefLabel ?prefLabel }
+    UNION
+    { ?concept1 skos:prefLabel "Leukocytes" .
+      ?concept1 skos:inScheme lld:umls .
+      ?concept skos:broaderTransitive ?concept1 .
+      ?concept skos:inScheme lld:umls . 
+      ?concept skos:prefLabel ?prefLabel }
+  }
+</verbatim>
+   * [[http://bit.ly/11DxdF9][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/VQHXxa][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+---++Example Show Respirations Disorder Types
+
+<verbatim>
+PREFIX umls-concept: <http://linkedlifedata.com/resource/umls/id/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX lld: <http://linkedlifedata.com/resource/>
+
+SELECT ?concept ?prefLabel
+WHERE 
+  {
+    { ?concept skos:prefLabel "Respiration Disorders" .
+      ?concept skos:inScheme lld:umls .
+      ?concept skos:prefLabel ?prefLabel }
+    UNION
+    { ?concept1 skos:prefLabel "Respiration Disorders" .
+      ?concept1 skos:inScheme lld:umls .
+      ?concept skos:broaderTransitive ?concept1 .
+      ?concept skos:inScheme lld:umls . 
+      ?concept skos:prefLabel ?prefLabel }
+  }
+</verbatim>
+   * [[http://bit.ly/WXKUJ2][View the SPARQL Query Definition via SPARQL Protocol URL]]
+   * [[http://bit.ly/VQI0ZR][View the SPARQL Query Results via SPARQL Protocol URL]]
+
+
+---++Related
+
+   * [[http://linkedlifedata.com/sparql][The Linked Life Data SPARQL Endpoint]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]
+

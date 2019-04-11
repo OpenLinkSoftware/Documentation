@@ -1,0 +1,162 @@
+%META:TOPICPARENT{name="ValQuickStartGuide"}%
+
+---+ VAL Customization
+
+%TOC%
+
+---++ Introduction
+
+VAL can be customized in various ways, by manipulating the triples in a set of pre-defined private graphs.
+Typically these details will be hidden behind user interface elements, but it is good to know them anyway.
+
+
+---++ Customizing the Standard VAL Authentication Page
+
+VAL allows some customization of the <code>authenticate.vsp</code> page (also see the [[VAL_AuthenticateVspTutorial][the VAL VSP Authentication Tutorial]]).
+
+---+++ Customizing the Logos
+
+Logos displayed on the authentication page can easily be customized per application realm. By default, VAL shows details about 
+the identity provider on the left, and the Virtuoso logo as the image on the right.
+
+To set the left and right logos for the default realm, one can simply insert corresponding triples into the VAL config graph:
+
+<verbatim>
+SPARQL
+PREFIX  oplcfg:  <http://www.openlinksw.com/ontology/configuration#>
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+INSERT
+  INTO <urn:virtuoso:val:config> 
+    {
+      oplacl:DefaultRealm  oplcfg:hasLeftLogo  <http://path/to/a-logo.png> ;
+                           oplcfg:hasRightLogo <http://path/to/another-logo.png> .
+    };
+</verbatim>
+
+
+Similarly, the <code>href</code> targets of these logos (which default as shown here) can be set via:
+<verbatim>
+SPARQL
+PREFIX  oplcfg:  <http://www.openlinksw.com/ontology/configuration#>
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+INSERT
+  INTO <urn:virtuoso:val:config> 
+    {
+      oplacl:DefaultRealm  oplcfg:hasLeftAnchor   <http://www.openlinksw.com/> ;
+                           oplcfg:hasRightAnchor  <http://virtuoso.openlinksw.com/> .
+};
+</verbatim>
+
+---+++ Customizing the Access Request Dialog
+
+There are two modes to how the Access Request Dialog is to be presented: 
+   * the user needs to press a button to show it (the default)
+   * the dialog is shown automatically when an authenticated person is has been denied access to a resource
+
+This setting is tied to the application realm, which means that it does not apply to any other realm.
+
+To show the dialog automatically in the default realm, one sets the following property:
+<verbatim>
+SPARQL
+PREFIX  oplcfg:  <http://www.openlinksw.com/ontology/configuration#>
+INSERT
+  INTO <urn:virtuoso:val:config> 
+    {
+      <urn:virtuoso:val:realms:default>  oplcfg:hasRequestAccessDialogMode  oplcfg:SimpleRequestAccessDialog
+    };
+</verbatim>
+
+To restore the default, one simply deletes the configuration:
+<verbatim>
+SPARQL
+PREFIX  oplcfg:  <http://www.openlinksw.com/ontology/configuration#>
+DELETE
+  FROM <urn:virtuoso:val:config> 
+    {
+      <urn:virtuoso:val:realms:default>  oplcfg:hasRequestAccessDialogMode  oplcfg:SimpleRequestAccessDialog
+    };
+</verbatim>
+
+
+---++ Customizing the ACL Graphs
+
+The VAL ACL system uses a set of named graphs to store rules, groups, and restrictions. By default, VAL uses one graph for each combination 
+of application realm and ACL resource type. It uses the default hostname (<code>HOST</code> in the example below) of the Virtuoso instance.
+
+<b>Example:</b> The default graph which stores the rules in the default realm is the following:
+<verbatim>
+http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm
+</verbatim>
+
+On firsts usage of the API to create a rule, group, or restriction this graph will be created and made private. It will then be stored in the
+VAL configuration using the oplacl:hasRuleDocument property:
+
+<verbatim>
+{ oplacl:DefaultRealm  oplacl:hasRuleDocument  <http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23DefaultRealm> }
+</verbatim>
+
+It is possible to customize these graphs (ideally before the API creates them) which might be desireable for manual ACL resource creation
+via SPARQL Insert. Since VAL will honor the setting above one can simply add the required triples into the VAL config graph.
+
+<b>Example:</b> Given that one wants to change the rule, group, and restriction graphs for the default application realm, the following will do:
+
+<verbatim>
+SPARQL
+PREFIX  oplacl:  <http://www.openlinksw.com/ontology/acl#>
+PREFIX  oplres:  <http://www.openlinksw.com/ontology/restrictions#>
+WITH <urn:virtuoso:val:config>
+  INSERT
+    {
+      oplacl:DefaultRealm         oplacl:hasRuleDocument  <urn:acl:rules> ;
+                                 oplacl:hasGroupDocument  <urn:acl:groups> ;
+                           oplres:hasRestrictionDocument  <urn:acl:restrictions> .
+    };
+</verbatim>
+
+VAL will honor these settings, and store and read all rules, groups, and restrictions from the configured graphs.
+
+
+<b>Warnings:</b> 
+
+   * Be aware that <i><b>VAL does not automatically migrate</b></i> rules, groups, and restrictions between graphs. This means that changing
+the graph identifiers will disable existing rules, groups, and restrictions.
+%BR%%BR%
+   * It is highly recommended that these graphs be made and kept private:
+<verbatim>
+DB.DBA.RDF_GRAPH_GROUP_INS
+  ( 'http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'urn:acl:rules' );
+DB.DBA.RDF_GRAPH_GROUP_INS
+  ( 'http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'urn:acl:groups' );
+DB.DBA.RDF_GRAPH_GROUP_INS
+  ( 'http://www.openlinksw.com/schemas/virtrdf#PrivateGraphs', 'urn:acl:restrictions' );
+</verbatim>
+
+---++ Customizing the Page Footers
+
+VAL's own <code>/sparql</code> integration allows to set a custom page footer. This can be used to for example show social sharing controls
+via Javascript commands. Each endpoint has its own configuration. The following example shows how the main <code>/sparql</code> endpoint of
+http://my.openlinksw.com can be enhanced with social sharing controls:
+
+<verbatim>
+SPARQL
+PREFIX  oplcfg:  <http://www.openlinksw.com/ontology/configuration#>
+WITH <urn:virtuoso:val:config>
+  INSERT 
+    {
+      <http://my.openlinksw.com/sparql>  oplcfg:hasFooter  [
+                                                                               a  oplcfg:HtmlSnippet ;
+                                                              oplcfg:hasHtmlBody  """<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js">
+                                                                                     </script>
+                                                                                     <script type="text/javascript">
+                                                                                       addthis.layers({
+                                                                                         'theme' : 'transparent',
+                                                                                         'share' : {
+                                                                                           'position' : 'right',
+                                                                                           'services' : 'google,linkedin,twitter,facebook,more'
+                                                                                         }
+                                                                                       });
+                                                                                     </script>
+                                                                                  """
+                                                            ] 
+    }
+</verbatim>

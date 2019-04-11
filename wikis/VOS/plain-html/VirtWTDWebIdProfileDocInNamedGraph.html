@@ -1,0 +1,76 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtWTDStepByStepConfigGuide"}%--><p> </p>
+<h2><a name="Using Named Graph for hosting"></a> Using Named Graph for hosting WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtWTDWebIdProfileDocInNamedGraph" class="wikiword">?</a> Profile Document Data</h2>
+<p>This document details how a RDF <code>Named Graph</code> can be used for storing the <nop></nop>WebID Profile Document data directly in the RDF Quad Store rather than in a TTL file.</p>
+<ol><li>Generate  a Software Agent X509 Certificate  using <a href="http://ods.openlinksw.com/dataspace/doc/dav/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore" class="absuri">OpenLink Data Spaces (ODS) X509 certificate generator</a>.
+ The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> public ODS instance <a href="http://id.myopenlink.net/ods" class="absuri">http://id.myopenlink.net/ods</a> , could be used for example or a local ODS instance can be setup.
+</li>
+<li>The generated certificate will have a <nop></nop>WebID of <code>http://{cname}/dataspace/person/{userid}</code> i.e.
+ <a href="http://id.myopenlink.net/dataspace/person/u2990" class="absuri">http://id.myopenlink.net/dataspace/person/u2990</a> using the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> public ODS instance for a created userid of <code>u2990</code>.
+ The generated X509 certificate p12 file can be saved to disk or loaded into target OS or Browser Key store as appropriate.
+</li>
+<li>The <code>:onBehalfOf</code> relations can then be added as triples to the <code>http://{cname}/dataspace</code> named graph for the ODS instance to force the generation of the required RDF statements for the ODS user i.e.
+ <a href="http://id.myopenlink.net/dataspace" class="absuri">http://id.myopenlink.net/dataspace</a> for the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenLink" class="wikiword">OpenLink</a> public ODS instance for example.
+ <b>Note this named graph is not the WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VirtWTDWebIdProfileDocInNamedGraph" class="wikiword">?</a> of the  created ODS user</b> </li>
+<li>For example, with a X509 generated ODS certificate with <nop></nop>WebID of  <a href="http://id.myopenlink.net/dataspace/person/u2990#this" class="absuri">http://id.myopenlink.net/dataspace/person/u2990#this</a> and a single delegation user of <code>wtd</code>, its  required TTL profile document entries would be: <br><pre><br>## Profile Document combining credentials of Software Agent and Registered Users ##
+
+## This document leverages the portability of relative hash-based HTTP URIs as Entity Identifiers ##
+
+@prefix foaf:	&lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix oplcert: &lt;http://www.openlinksw.com/schemas/cert#&gt; .
+@prefix cert: &lt;http://www.w3.org/ns/auth/cert#&gt;. 
+@prefix acl: &lt;http://www.w3.org/ns/auth/acl#&gt; . 
+@prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+
+## Software Agent Credentials ##
+
+&lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; 
+foaf:name &quot;A Software Agent&quot; ;
+oplcert:onBehalfOf &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; ;
+cert:key [
+                 cert:exponent &quot;65537&quot;^^xsd:integer ;
+                 cert:modulus   
+&quot;d515694af35ab5e39219c23271d46746c9c0ccb2e2ddef11f003a3cceb563038da2fb76c2851b86eac83800130bb5b98664fe1b1909535707111bf2f25104b9152b05ea47d750f9ceecae4f625aa0c0bea69ec3771c6fe8ae9a23965e58282f7c5b041dfb640c7562af8cad1a77ee099eabd2dab339ad9f8ed3871b6214e513cc9f8d6a70ecab42d54e9b79f0dc31aa28999af3924bda802e51f7e98dff5f9208e06151b6c6d78bd9af4580011bcfe7743969f418ee5f89c36f7f9a212afc450c36e32a431aa1590c69b720512cc25abb603ad31ed43929cc100a3271319ea9a5a54d926a8013b6b031f2c6909fbb4e7a3d18b536acff10709946e7a2047562&quot;^^xsd:hexBinary
+] .
+
+## User Credentials (OnBehalfOf relation participants) ##
+
+&lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt;  oplacl:hasIdentityDelegate &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; .
+</pre><br><br> Requiring the following equivalent triple entries be inserted into the <a href="http://id.myopenlink.net/dataspace" class="absuri">http://id.myopenlink.net/dataspace</a> ODS instance named graph: <br> <br><pre><br>insert into &lt;http://id.myopenlink.net/dataspace&gt; { &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; &lt;http://www.openlinksw.com/schemas/cert#onBehalfOf&gt; &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; }
+
+insert into &lt;http://id.myopenlink.net/dataspace&gt; { [] &lt;http://www.w3.org/ns/auth/cert#exponent&gt; 65537 }
+
+insert into &lt;http://id.myopenlink.net/dataspace&gt; { [] &lt;http://www.w3.org/ns/auth/cert#modulus&gt; &quot;d515694af35ab5e39219c23271d46746c9c0ccb2e2ddef11f003a3cceb563038da2fb76c2851b86eac83800130bb5b98664fe1b1909535707111bf2f25104b9152b05ea47d750f9ceecae4f625aa0c0bea69ec3771c6fe8ae9a23965e58282f7c5b041dfb640c7562af8cad1a77ee099eabd2dab339ad9f8ed3871b6214e513cc9f8d6a70ecab42d54e9b79f0dc31aa28999af3924bda802e51f7e98dff5f9208e06151b6c6d78bd9af4580011bcfe7743969f418ee5f89c36f7f9a212afc450c36e32a431aa1590c69b720512cc25abb603ad31ed43929cc100a3271319ea9a5a54d926a8013b6b031f2c6909fbb4e7a3d18b536acff10709946e7a20475621&quot;^^&lt;http://www.w3.org/2001/XMLSchema#hexBinary&gt; }
+
+insert into &lt;http://id.myopenlink.net/dataspace&gt; {&lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; &lt;http://www.openlinksw.com/ontology/acl#hasIdentityDelegate&gt; &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; }
+</pre><br></li>
+<li>Then  assuming the p12 file was downloaded to a name of <code>u2990_ods_cert.p12</code> with a password of <code>1</code>, a <nop></nop>WebID+TLS+Delegation connection with <code>isql</code> can be made <code>onBehalfOf<code> the <code>wtd</code> designated delation user, with the command: <br><pre><br>$ ./isql opllinux6.usnet.private:1113 &quot;&quot; 1 -X u2990_ods_cert.p12 -T ca_list_shop_2016.pem -W http://id.myopenlink.net/dataspace/person/u2990#wtd
+Connected to OpenLink Virtuoso
+Driver: 07.20.3217 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 07.20.3217.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; sparql SELECT * FROM &lt;OpenPermID-bulk-assetClass-20151111_095807.ttl.gz&gt; WHERE {?s ?p ?o};
+s                                                                                 p                                                                                 o
+LONG VARCHAR                                                                      LONG VARCHAR                                                                      LONG VARCHAR
+_______________________________________________________________________________
+
+#this                                                                             #relatedTo                                                                        #that
+#kingsley                                                                         #knows                                                                            #hugh
+
+2 Rows. -- 95 msec.
+SQL&gt;
+</pre><br></code></code></li>
+<li>The VAL debug trace output of the delegation connection request is as follows: <br><pre><br>DB.DBA.USER_CERT_LOGIN: Checking VAL ACLs for Query scope in SQL realm
+DB.DBA.WEBID_CHECK_DELEGATE: Looking for existence of: &lt;http://id.myopenlink.net/dataspace/person/u2990#this&gt; cert:onBehalfOf &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt; in &lt;http:2A8D08FED2F735F4B178D7789DF26A16&gt;
+DB.DBA.WEBID_CHECK_DELEGATE: Found onBehalfOf relation. Loading profile document http://id.myopenlink.net/dataspace/person/u2990
+DB.DBA.WEBID_CHECK_DELEGATE: Found public key of software agent in delegating user&#39;s profile document
+DB.DBA.USER_CERT_LOGIN: Agent/WebID &lt;http://id.myopenlink.net/dataspace/person/u2990#wtd&gt;
+			has SPARQL permissions: read: 1, write: 0, sponge: 0
+DB.DBA.USER_CERT_LOGIN: Setting graph security callback
+</pre><br> </li>
+</ol><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtWTDServerSetup" class="wikiword">Virtuoso Server WebID+TLS+Delegation Setup</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtWTDSoftwareAgentDocCreation" class="wikiword">Software Agent &amp; WebID Profile Document Creation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtWTDVALACLCreation" class="wikiword">WebID+TLS+Delegation VAL ACL Creation</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtWTDACLTesting" class="wikiword">WebID+TLS+Delegation ACL Testing</a> </li>
+</ul></div></body></html>

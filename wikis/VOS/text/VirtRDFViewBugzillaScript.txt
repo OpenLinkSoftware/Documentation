@@ -1,0 +1,956 @@
+---++Bugzilla Linked Data Views Script to set up your own instance
+
+Note: Make sure the file ~\binsrc\dav\DET_RDFData.sql is loaded before loading the script from below.
+
+<verbatim>
+use DB;
+
+create procedure DB.DBA.exec_no_error (in expr varchar)                                                                       
+{                                                                                                             
+  declare state, message, meta, result any;                                                                   
+  exec(expr, state, message, vector(), 0, meta, result);                                                      
+}                                                                                                             
+; 
+
+DB.DBA.exec_no_error('GRANT \"SPARQL_UPDATE\" TO \"SPARQL\"')
+;
+
+GRANT SELECT ON "bugs"."bugs"."attach_data" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."attachments" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."bug_group_map" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."bug_severity" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."bug_status" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."bugs" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."bugs_activity" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."bz_schema" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."category_group_map" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."cc" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."classifications" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."components" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."dependencies" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."duplicates" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."email_setting" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."fielddefs" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."flagexclusions" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."flaginclusions" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."flags" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."flagtypes" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."group_control_map" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."group_group_map" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."groups" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."keyworddefs" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."keywords" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."logincookies" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."longdescs" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."milestones" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."namedqueries" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."op_sys" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."priority" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."products" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."profile_setting" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."profiles" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."profiles_activity" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."quips" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."rep_platform" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."resolution" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."series" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."series_categories" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."series_data" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."setting" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."setting_value" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."tokens" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."user_group_map" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."versions" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."votes" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."watch" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."whine_events" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."whine_queries" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."whine_schedules" TO "SPARQL";
+
+SPARQL
+prefix wf: <http://www.w3.org/2005/01/wf/flow#>
+prefix bugzilla: <http://demo.openlinksw.com/schemas/bugzilla#>
+prefix oplsioc: <http://www.openlinksw.com/schemas/oplsioc#>
+prefix sioc: <http://rdfs.org/sioc/ns#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+drop quad map graph iri("http://^{URIQADefaultHost}^/Bugzilla") .
+;
+
+SPARQL
+prefix wf: <http://www.w3.org/2005/01/wf/flow#>
+prefix bugzilla: <http://demo.openlinksw.com/schemas/bugzilla#>
+prefix oplsioc: <http://www.openlinksw.com/schemas/oplsioc#>
+prefix sioc: <http://rdfs.org/sioc/ns#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+drop quad map virtrdf:BugzillaDemo .
+;
+
+DB.DBA.exec_no_error('drop view bugs.bugs.bugs_view');
+DB.DBA.exec_no_error('drop view bugs.bugs.longdescs_view');
+
+create view "bugs"."bugs"."bugs_view" 
+(bug_id,    assigned_to, bug_file_loc,  bug_severity,   bug_status, creation_ts,    delta_ts,   short_desc, op_sys, priority,   product_id, rep_platform,   reporter,   version,    component_id,   resolution, target_milestone,   qa_contact, status_whiteboard,  votes,  keywords,   lastdiffed, everconfirmed,  reporter_accessible,    cclist_accessible,  estimated_time, remaining_time, deadline,   alias)
+as select 
+bug_id, assigned_to, bug_file_loc,  bug_severity,   bug_status, creation_ts,    delta_ts,   short_desc, op_sys, priority,   product_id, rep_platform,   reporter,   version,    component_id,   resolution, target_milestone,   qa_contact, status_whiteboard,  votes,  keywords,   lastdiffed, everconfirmed,  reporter_accessible,    cclist_accessible,  cast(estimated_time as varchar),    cast(remaining_time as varchar),    deadline,   alias
+from "bugs"."bugs"."bugs";
+
+create view "bugs"."bugs"."longdescs_view"
+(bug_id,    who,    bug_when,   work_time,  thetext,    isprivate,  already_wrapped,    thetext_ID)
+as select 
+bug_id, who,    bug_when,   cast(work_time as varchar), thetext,    isprivate,  already_wrapped,    thetext_ID
+from "bugs"."bugs"."longdescs";
+
+GRANT SELECT ON "bugs"."bugs"."bugs_view" TO "SPARQL";
+GRANT SELECT ON "bugs"."bugs"."longdescs_view" TO "SPARQL";
+
+SPARQL
+prefix wf: <http://www.w3.org/2005/01/wf/flow#>
+prefix bugzilla: <http://demo.openlinksw.com/schemas/bugzilla#>
+prefix oplsioc: <http://www.openlinksw.com/schemas/oplsioc#>
+prefix sioc: <http://rdfs.org/sioc/ns#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+create iri class bugzilla:Attach_Data "http://^{URIQADefaultHost}^/Bugzilla/Attach_Data/%d#this" (in id integer not null) .
+create iri class bugzilla:Attachment "http://^{URIQADefaultHost}^/Bugzilla/Attachment/%d#this" (in attach_id integer not null) .
+create iri class bugzilla:Bug_Group_Map "http://^{URIQADefaultHost}^/Bugzilla/Bug_Group_Map/%d%d#this" (in bug_id integer not null, in group_id integer not null) .
+create iri class bugzilla:Bug_Severity "http://^{URIQADefaultHost}^/Bugzilla/Bug_Severity/%d#this" (in id integer not null) .
+create iri class bugzilla:Bug_Status "http://^{URIQADefaultHost}^/Bugzilla/Bug_Status/%d#this" (in id integer not null) .
+create iri class bugzilla:Bug "http://^{URIQADefaultHost}^/Bugzilla/Bug/%d#this" (in id integer not null) .
+create iri class bugzilla:Bug_Activity "http://^{URIQADefaultHost}^/Bugzilla/Bug_Activity/%d#this" (in id integer not null) .
+create iri class bugzilla:Category_Group_Map "http://^{URIQADefaultHost}^/Bugzilla/Category_Group_Map/%d#this" (in category_id integer not null, in group_id integer not null) .
+create iri class bugzilla:Cc "http://^{URIQADefaultHost}^/Bugzilla/Cc/%d%d#this" (in id integer not null, in who integer not null) .
+create iri class bugzilla:Classification "http://^{URIQADefaultHost}^/Bugzilla/Classification/%d#this" (in id integer not null) .
+create iri class bugzilla:Component "http://^{URIQADefaultHost}^/Bugzilla/Component/%d#this" (in id integer not null) .
+create iri class bugzilla:Dependency "http://^{URIQADefaultHost}^/Bugzilla/Dependency/%d%d#this" (in blocked integer not null, in dependson integer not null) .
+create iri class bugzilla:Duplicate "http://^{URIQADefaultHost}^/Bugzilla/Duplicate/%d#this" (in dupe integer not null) .
+create iri class bugzilla:Email_Setting "http://^{URIQADefaultHost}^/Bugzilla/Email_Setting/%d%d%d#this" (in id1 integer not null, in id2 integer not null, in id3 integer not null) .
+create iri class bugzilla:FieldDefinition "http://^{URIQADefaultHost}^/Bugzilla/FieldDefinition/%d#this" (in id integer not null) .
+create iri class bugzilla:FlagExclusion "http://^{URIQADefaultHost}^/Bugzilla/FlagExclusion/%d%d%d#this" (in id1 integer not null, in id2 integer not null, in id3 integer not null) .
+create iri class bugzilla:FlagInclusion "http://^{URIQADefaultHost}^/Bugzilla/FlagInclusion/%d%d%d#this" (in id1 integer not null, in id2 integer not null, in id3 integer not null) .
+create iri class bugzilla:Flag "http://^{URIQADefaultHost}^/Bugzilla/Flag/%d#this" (in id integer not null) .
+create iri class bugzilla:FlagType "http://^{URIQADefaultHost}^/Bugzilla/FlagType/%d#this" (in id integer not null) .
+create iri class bugzilla:Group_Control_Map "http://^{URIQADefaultHost}^/Bugzilla/Group_Control_Map/%d%d#this" (in group_id integer not null, in product_id integer not null) .
+create iri class bugzilla:Group_Group_Map "http://^{URIQADefaultHost}^/Bugzilla/Group_Group_Map/%d%d%d#this" (in id1 integer not null, in id2 integer not null, in id3 integer not null) .
+create iri class bugzilla:Group "http://^{URIQADefaultHost}^/Bugzilla/Group/%d#this" (in id integer not null) .
+create iri class bugzilla:KeywordDefinition "http://^{URIQADefaultHost}^/Bugzilla/KeywordDefinition/%d#this" (in category_id integer not null) .
+create iri class bugzilla:Keyword "http://^{URIQADefaultHost}^/Bugzilla/Keyword/%d%d#this" (in bug_id integer not null, in key_id integer not null) .
+create iri class bugzilla:LoginCookie "http://^{URIQADefaultHost}^/Bugzilla/LoginCookie/%U#this" (in id varchar not null) .
+create iri class bugzilla:LongDescription "http://^{URIQADefaultHost}^/Bugzilla/LongDescription/%d#this" (in id integer not null) .
+create iri class bugzilla:Milestone "http://^{URIQADefaultHost}^/Bugzilla/Milestone/%d%U#this" (in id integer not null, in name varchar not null) .
+create iri class bugzilla:NamedQuery "http://^{URIQADefaultHost}^/Bugzilla/NamedQuery/%d%U#this" (in id integer not null, in name varchar not null) .
+create iri class bugzilla:Op_Sys "http://^{URIQADefaultHost}^/Bugzilla/Op_Sys/%d#this" (in id integer not null) .
+create iri class bugzilla:Priority "http://^{URIQADefaultHost}^/Bugzilla/Priority/%d#this" (in id integer not null) .
+create iri class bugzilla:Product "http://^{URIQADefaultHost}^/Bugzilla/Product/%d#this" (in id integer not null) .
+create iri class bugzilla:Profile_Setting "http://^{URIQADefaultHost}^/Bugzilla/Profile_Setting/%d%U#this" (in id integer not null, in name varchar not null) .
+create iri class bugzilla:Profile "http://^{URIQADefaultHost}^/Bugzilla/Profile/%d#this" (in id integer not null) .
+create iri class bugzilla:Profile_Activity "http://^{URIQADefaultHost}^/Bugzilla/Profile_Activity/%d%d%U#this" (in id1 integer not null, in id2 integer not null, in id3 varchar not null) .
+create iri class bugzilla:Quip "http://^{URIQADefaultHost}^/Bugzilla/Quip/%d#this" (in id integer not null) .
+create iri class bugzilla:Rep_Platform "http://^{URIQADefaultHost}^/Bugzilla/Rep_Platform/%d#this" (in id integer not null) .
+create iri class bugzilla:Resolution "http://^{URIQADefaultHost}^/Bugzilla/Resolution/%d#this" (in id integer not null) .
+create iri class bugzilla:Series "http://^{URIQADefaultHost}^/Bugzilla/Series/%d#this" (in id integer not null) .
+create iri class bugzilla:Series_Category "http://^{URIQADefaultHost}^/Bugzilla/Series_Category/%d#this" (in id integer not null) .
+create iri class bugzilla:Series_Data "http://^{URIQADefaultHost}^/Bugzilla/Series_Data/%d%U#this" (in id1 integer not null, in id2 varchar not null) .
+create iri class bugzilla:Setting "http://^{URIQADefaultHost}^/Bugzilla/Setting/%U#this" (in id varchar not null) .
+create iri class bugzilla:Setting_Value "http://^{URIQADefaultHost}^/Bugzilla/Setting_Value/%U%U#this" (in id varchar not null, in id2 varchar not null) .
+create iri class bugzilla:Token "http://^{URIQADefaultHost}^/Bugzilla/Token/%U#this" (in id varchar not null) .
+create iri class bugzilla:User_Group_Map "http://^{URIQADefaultHost}^/Bugzilla/User_Group_Map/%d%d%d%d#this" (in id1 integer not null, in id2 integer not null, in id3 integer not null, in id4 integer not null) .
+create iri class bugzilla:Version "http://^{URIQADefaultHost}^/Bugzilla/Version/%U%d#this" (in category_id varchar not null, in category_id integer not null) .
+create iri class bugzilla:Vote "http://^{URIQADefaultHost}^/Bugzilla/Vote/%d%d#this" (in category_id varchar not null, in category_id2 integer not null) .
+create iri class bugzilla:Watch "http://^{URIQADefaultHost}^/Bugzilla/Watch/%d%d#this" (in category_id integer not null, in category_id2 integer not null) .
+create iri class bugzilla:Whine_Event "http://^{URIQADefaultHost}^/Bugzilla/Whine_Event/%d#this" (in category_id integer not null) .
+create iri class bugzilla:Whine_Query "http://^{URIQADefaultHost}^/Bugzilla/Whine_Query/%d#this" (in category_id integer not null) .
+create iri class bugzilla:Whine_Schedule "http://^{URIQADefaultHost}^/Bugzilla/Whine_Schedule/%d#this" (in category_id integer not null) .
+;
+
+SPARQL
+prefix wf: <http://www.w3.org/2005/01/wf/flow#>
+prefix bugzilla: <http://demo.openlinksw.com/schemas/bugzilla#>
+prefix oplsioc: <http://www.openlinksw.com/schemas/oplsioc#>
+prefix sioc: <http://rdfs.org/sioc/ns#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+prefix owl: <http://www.w3.org/2002/07/owl#>
+alter quad storage virtrdf:DefaultQuadStorage
+from "bugs"."bugs"."attach_data" as attach_datas
+from "bugs"."bugs"."attachments" as attachments
+from "bugs"."bugs"."bug_group_map" as bug_group_map
+from "bugs"."bugs"."bug_severity" as bug_severity
+from "bugs"."bugs"."bug_status" as bug_status
+from "bugs"."bugs"."bugs_view" as bugs
+from "bugs"."bugs"."bugs_activity" as bug_activity
+from "bugs"."bugs"."category_group_map" as category_group_map
+from "bugs"."bugs"."cc" as cc
+from "bugs"."bugs"."classifications" as classifications
+from "bugs"."bugs"."components" as components
+from "bugs"."bugs"."dependencies" as dependencies
+from "bugs"."bugs"."duplicates" as duplicates
+from "bugs"."bugs"."email_setting" as email_setting
+from "bugs"."bugs"."fielddefs" as fields
+from "bugs"."bugs"."flagexclusions" as flagexclusions
+from "bugs"."bugs"."flaginclusions" as flaginclusions
+from "bugs"."bugs"."flags" as flags
+from "bugs"."bugs"."flagtypes" as flagtypes
+from "bugs"."bugs"."group_control_map" as group_control_map
+from "bugs"."bugs"."group_group_map" as group_group_map
+from "bugs"."bugs"."groups" as groups
+from "bugs"."bugs"."keyworddefs" as keyworddefs
+from "bugs"."bugs"."keywords" as keywords
+from "bugs"."bugs"."logincookies" as logincookies
+from "bugs"."bugs"."longdescs_view" as longdescs
+from "bugs"."bugs"."milestones" as milestones
+from "bugs"."bugs"."namedqueries" as namedqueries
+from "bugs"."bugs"."op_sys" as op_sys
+from "bugs"."bugs"."priority" as priority
+from "bugs"."bugs"."products" as products
+from "bugs"."bugs"."profile_setting" as profile_setting
+from "bugs"."bugs"."profiles" as profiles
+from "bugs"."bugs"."profiles_activity" as profiles_activity
+from "bugs"."bugs"."quips" as quips
+from "bugs"."bugs"."rep_platform" as rep_platform
+from "bugs"."bugs"."resolution" as resolution
+from "bugs"."bugs"."series" as series
+from "bugs"."bugs"."series_categories" as series_categories
+from "bugs"."bugs"."series_data" as series_data
+from "bugs"."bugs"."setting" as setting
+from "bugs"."bugs"."setting_value" as setting_value
+from "bugs"."bugs"."tokens" as tokens
+from "bugs"."bugs"."user_group_map" as user_group_map
+from "bugs"."bugs"."versions" as versions
+from "bugs"."bugs"."votes" as votes
+from "bugs"."bugs"."watch" as watch
+from "bugs"."bugs"."whine_events" as whine_events
+from "bugs"."bugs"."whine_queries" as whine_queries
+from "bugs"."bugs"."whine_schedules" as whine_schedules
+{
+        create virtrdf:BugzillaDemo as graph iri ("http://^{URIQADefaultHost}^/Bugzilla") option (exclusive)
+        {
+                bugzilla:Profile (profiles.userid)
+                        a foaf:Person
+                                as virtrdf:Profile-id ;
+                        foaf:nick profiles.login_name
+                                as virtrdf:Profile-login_name ;
+                        foaf:name profiles.realname
+                                as virtrdf:Profile-realname ;
+                        bugzilla:disabledText profiles.disabledtext
+                                as virtrdf:Profile-disabledtext ;
+                        foaf:homepage profiles.mybugslink
+                                as virtrdf:Profile-mybugslink ;
+                        bugzilla:refreshedWhen profiles.refreshed_when
+                                as virtrdf:Profile-refreshed_when ;
+                        bugzilla:externId profiles.extern_id
+                                as virtrdf:Profile-extern_id .
+
+                bugzilla:Attach_Data (attach_datas.id)
+                        a bugzilla:Attach_Data
+                                as virtrdf:Attach_Data-id ;
+                        bugzilla:thedata attach_datas.thedata
+                                as virtrdf:Attach_Data-thedata .
+
+                bugzilla:Attachment (attachments.attach_id)
+                        a bugzilla:Attachment
+                                as virtrdf:Attachment-id ;
+                        bugzilla:bug bugzilla:Bug(attachments.bug_id)
+                                as virtrdf:Attachment-bug_id ;
+                        bugzilla:created attachments.creation_ts
+                                as virtrdf:Attachment-creation_ts ;                        
+                        bugzilla:description attachments.description
+                                as virtrdf:Attachment-description ;                        
+                        bugzilla:mimeType attachments.mimetype
+                                as virtrdf:Attachment-mimetype ;                        
+                        bugzilla:isPatch attachments.ispatch
+                                as virtrdf:Attachment-ispatch ;                        
+                        bugzilla:fileName attachments.filename
+                                as virtrdf:Attachment-filename ;                        
+                        bugzilla:submitter attachments.submitter_id
+                                as virtrdf:Attachment-submitter_id ;                        
+                        bugzilla:isobsolete attachments.isobsolete
+                                as virtrdf:Attachment-isobsolete ;                        
+                        bugzilla:isprivate attachments.isprivate
+                                as virtrdf:Attachment-isprivate ;                        
+                        bugzilla:isurl attachments.isurl
+                                as virtrdf:Attachment-isurl .
+                                
+                 bugzilla:Bug_Group_Map (bug_group_map.bug_id, bug_group_map.group_id)
+                        a bugzilla:Bug_Group_Map
+                                as virtrdf:Bug_Group_Map-id ;
+                        bugzilla:bug bugzilla:Bug(bug_group_map.bug_id)
+                                as virtrdf:Bug_Group_Map-bug_id ;
+                        bugzilla:group bugzilla:Group(bug_group_map.group_id)
+                                as virtrdf:Bug_Group_Map-group_id .
+
+                bugzilla:Bug_Severity (bug_severity.id)
+                        a bugzilla:Bug_Severity
+                                as virtrdf:Bug_Severity-id ;
+                        bugzilla:value bug_severity.value
+                                as virtrdf:Bug_Severity-value ;
+                        bugzilla:sortKey bug_severity.sortkey
+                                as virtrdf:Bug_Severity-sortkey ;
+                        bugzilla:isActive bug_severity.isactive
+                                as virtrdf:Bug_Severity-isactive .
+
+                bugzilla:Bug_Status (bug_status.id)
+                        a wf:State
+                                as virtrdf:Bug_Status-id ;
+                        bugzilla:value bug_status.value
+                                as virtrdf:Bug_Status-value ;
+                        bugzilla:sortKey bug_status.sortkey
+                                as virtrdf:Bug_Status-sortkey ;
+                        bugzilla:isActive bug_status.isactive
+                                as virtrdf:Bug_Status-isactive .
+
+                bugzilla:Bug (bugs.bug_id)
+                        a wf:Task
+                                as virtrdf:Bug-id ;
+                        wf:assignee bugzilla:Profile(bugs.assigned_to)
+                                as virtrdf:Bug-assigned_to ;
+                        bugzilla:bug_file_loc bugs.bug_file_loc
+                                as virtrdf:Bug-bug_file_loc ;
+                        bugzilla:bug_severity bugs.bug_severity
+                                as virtrdf:Bug-bug_severity ;
+                        wf:state bugs.bug_status
+                                as virtrdf:Bug-bug_status ;
+                        bugzilla:created bugs.creation_ts
+                                as virtrdf:Bug-creation_ts ;
+                        bugzilla:delta bugs.delta_ts
+                                as virtrdf:Bug-delta_ts ;
+                        bugzilla:shortDescription bugs.short_desc
+                                as virtrdf:Bug-short_desc ;
+                        bugzilla:operationSystem bugs.op_sys
+                                as virtrdf:Bug-op_sys ;
+                        bugzilla:priority bugs.priority
+                                as virtrdf:Bug-priority ;
+                        bugzilla:product bugzilla:Product(bugs.product_id)
+                                as virtrdf:Bug-product_id ;
+                        bugzilla:reporterPlatform bugs.rep_platform
+                                as virtrdf:Bug-rep_platform ;
+                        bugzilla:reporter bugzilla:Profile(bugs.reporter)
+                                as virtrdf:Bug-reporter ;
+                        bugzilla:version bugs.version
+                                as virtrdf:Bug-version ;
+                        bugzilla:component bugzilla:Component(bugs.component_id)
+                                as virtrdf:Bug-component_id ;
+                        bugzilla:resolution bugs.resolution
+                                as virtrdf:Bug-resolution ;
+                        bugzilla:target_milestone bugs.target_milestone
+                                as virtrdf:Bug-target_milestone ;
+                        bugzilla:qaContact bugzilla:Profile(bugs.qa_contact)
+                                as virtrdf:Bug-qa_contact ;
+                        bugzilla:statusWhiteboard bugs.status_whiteboard
+                                as virtrdf:Bug-status_whiteboard ;
+                        bugzilla:votes bugs.votes
+                                as virtrdf:Bug-votes ;
+                        bugzilla:keywords bugs.keywords
+                                as virtrdf:Bug-keywords ;
+                        bugzilla:modified bugs.lastdiffed
+                                as virtrdf:Bug-lastdiffed ;
+                        bugzilla:everConfirmed bugs.everconfirmed
+                                as virtrdf:Bug-everconfirmed ;
+                        bugzilla:reporterAccessible bugs.reporter_accessible
+                                as virtrdf:Bug-reporter_accessible ;
+                        bugzilla:ccListAccessible bugs.cclist_accessible
+                                as virtrdf:Bug-cclist_accessible ;
+                        bugzilla:estimatedTime bugs.estimated_time
+                                as virtrdf:Bug-estimated_time ;
+                        bugzilla:remainingTime bugs.remaining_time
+                                as virtrdf:Bug-remaining_time ;
+                        bugzilla:deadline bugs.deadline
+                                as virtrdf:Bug-deadline ;
+                        bugzilla:alias bugs.alias
+                                as virtrdf:Bug-alias .
+
+                bugzilla:Bug_Activity (bug_activity.bug_id)
+                        a bugzilla:Bug_Activity
+                                as virtrdf:Bug_Activity-id ;
+                        bugzilla:attachment bugzilla:Attachment(bug_activity.attach_id)
+                                as virtrdf:Bug_Activity-attach_id ;
+                        bugzilla:who bugzilla:Profile(bug_activity.who)
+                                as virtrdf:Bug_Activity-who ;
+                        bugzilla:bugWhen bug_activity.bug_when
+                                as virtrdf:Bug_Activity-bug_when ;
+                        bugzilla:field bugzilla:FieldDefinition(bug_activity.fieldid)
+                                as virtrdf:Bug_Activity-fieldid ;
+                        bugzilla:added bug_activity.added
+                                as virtrdf:Bug_Activity-added ;
+                        bugzilla:removed bug_activity.removed
+                                as virtrdf:Bug_Activity-removed .
+
+                bugzilla:Category_Group_Map (category_group_map.category_id, category_group_map.group_id)
+                        a bugzilla:Category_Group_Map
+                                as virtrdf:Category_Group_Map-id ;
+                        bugzilla:group bugzilla:Group(category_group_map.group_id)
+                                as virtrdf:Category_Group_Map-group_id .
+
+                bugzilla:Cc (cc.bug_id, cc.who)
+                        a bugzilla:Cc
+                                as virtrdf:Cc-id ;
+                        bugzilla:bug bugzilla:Bug(cc.bug_id)
+                                as virtrdf:Cc-bug_id ;
+                        bugzilla:who bugzilla:Profile(cc.who)
+                                as virtrdf:Cc-who .
+
+                bugzilla:Classification (classifications.id)
+                        a bugzilla:Classification
+                                as virtrdf:Classification-id ;
+                        bugzilla:name classifications.name
+                                as virtrdf:Classification-name ;
+                        bugzilla:description classifications.description
+                                as virtrdf:Classification-description .
+
+                bugzilla:Component (components.id)
+                        a bugzilla:Component
+                                as virtrdf:Component-id ;
+                        bugzilla:name components.name
+                                as virtrdf:Component-name ;
+                        bugzilla:product bugzilla:Product(components.product_id)
+                                as virtrdf:Component-product_id ;
+                        bugzilla:initialOwner bugzilla:Profile(components.initialowner)
+                                as virtrdf:Component-initialowner ;
+                        bugzilla:initialqacontact bugzilla:Profile(components.initialqacontact)
+                                as virtrdf:Component-initialqacontact ;
+                        bugzilla:description components.description
+                                as virtrdf:Component-description .
+                                
+                bugzilla:Dependency (dependencies.blocked, dependencies.dependson)
+                        a bugzilla:Dependency
+                                as virtrdf:Dependency-id ;
+                        bugzilla:blocked bugzilla:Bug(dependencies.blocked)
+                                as virtrdf:Component-blocked ;
+                        bugzilla:dependson bugzilla:Bug(dependencies.dependson)
+                                as virtrdf:Component-dependson .
+
+                bugzilla:Duplicate (duplicates.dupe)
+                        a bugzilla:Duplicate
+                                as virtrdf:Duplicate-id ;
+                        bugzilla:dupe_of bugzilla:Bug(duplicates.dupe_of)
+                                as virtrdf:Duplicate-dupe_of ;
+                        bugzilla:dupe bugzilla:Bug(duplicates.dupe)
+                                as virtrdf:Duplicate-dupe .
+                                
+                 bugzilla:Email_Setting (email_setting.user_id, email_setting.relationship, email_setting.event)
+                        a bugzilla:Email_Setting
+                                as virtrdf:Email_Setting-id ;
+                        bugzilla:user bugzilla:Profile(email_setting.user_id)
+                                as virtrdf:Email_Setting-user_id ;
+                        bugzilla:relationship email_setting.relationship
+                                as virtrdf:Email_Setting-relationship ;
+                        bugzilla:event email_setting.event
+                                as virtrdf:Email_Setting-event .
+                                
+                bugzilla:FieldDefinition (fields.fieldid)
+                        a bugzilla:FieldDefinition
+                                as virtrdf:FieldDefinition-id ;
+                        bugzilla:name fields.name
+                                as virtrdf:FieldDefinition-name ;
+                        bugzilla:description fields.description
+                                as virtrdf:FieldDefinition-description ;
+                        bugzilla:mailHead fields.mailhead
+                                as virtrdf:FieldDefinition-mailhead ;
+                        bugzilla:sortKey fields.sortkey
+                                as virtrdf:FieldDefinition-sortkey ;
+                        bugzilla:obsolete fields.obsolete
+                                as virtrdf:FieldDefinition-obsolete .
+                                
+                 bugzilla:FlagExclusion (flagexclusions.type_id, flagexclusions.product_id, flagexclusions.component_id)
+                        a bugzilla:FlagExclusion
+                                as virtrdf:FlagExclusion-id ;
+                        bugzilla:flagType bugzilla:FlagType(flagexclusions.type_id)
+                                as virtrdf:FlagExclusion-type_id ;
+                        bugzilla:product bugzilla:Product(flagexclusions.product_id)
+                                as virtrdf:FlagExclusion-product_id ;                                 
+                        bugzilla:component bugzilla:Component(flagexclusions.component_id)
+                                as virtrdf:FlagExclusion-component_id .
+                                
+                 bugzilla:FlagInclusion (flaginclusions.type_id, flaginclusions.product_id, flaginclusions.component_id)
+                        a bugzilla:FlagInclusion
+                                as virtrdf:FlagInclusion-id ;
+                        bugzilla:flagType bugzilla:FlagType(flaginclusions.type_id)
+                                as virtrdf:FlagInclusion-type_id ;
+                        bugzilla:product bugzilla:Product(flaginclusions.product_id)
+                                as virtrdf:FlagInclusion-product_id ;                                 
+                        bugzilla:component bugzilla:Component(flaginclusions.component_id)
+                                as virtrdf:FlagInclusion-component_id .
+                                
+                bugzilla:Flag (flags.id)
+                        a bugzilla:Flag
+                                as virtrdf:Flag-id ;
+                        bugzilla:type bugzilla:FlagType(flags.type_id)
+                                as virtrdf:Flag-type_id ;
+                        bugzilla:status flags.status
+                                as virtrdf:Flag-status ;
+                        bugzilla:bug bugzilla:Bug(flags.bug_id)
+                                as virtrdf:Flag-bug_id ;
+                        bugzilla:attachment bugzilla:Attachment(flags.attach_id)
+                                as virtrdf:Flag-attach_id ;
+                        bugzilla:created flags.creation_date
+                                as virtrdf:Flag-creation_date ;
+                        bugzilla:modified flags.modification_date
+                                as virtrdf:Flag-modification_date ;
+                        bugzilla:setter bugzilla:Profile(flags.setter_id)
+                                as virtrdf:Flag-setter_id ;
+                        bugzilla:requestee bugzilla:Profile(flags.requestee_id)
+                                as virtrdf:Flag-requestee_id ;
+                        bugzilla:isActive flags.is_active
+                                as virtrdf:Flag-is_active .
+                        
+                bugzilla:FlagType (flagtypes.id)
+                        a bugzilla:FlagType
+                                as virtrdf:FlagType-id ;
+                        bugzilla:name flagtypes.name
+                                as virtrdf:FlagType-name ;
+                        bugzilla:description flagtypes.description
+                                as virtrdf:FlagType-description ;
+                        bugzilla:ccList flagtypes.cc_list
+                                as virtrdf:FlagType-cc_list ;
+                        bugzilla:targetType flagtypes.target_type
+                                as virtrdf:FlagType-target_type ;
+                        bugzilla:isActive flagtypes.is_active
+                                as virtrdf:FlagType-is_active ;
+                        bugzilla:isRequestable flagtypes.is_requestable
+                                as virtrdf:FlagType-is_requestable ;
+                        bugzilla:isRequesteeble flagtypes.is_requesteeble
+                                as virtrdf:FlagType-is_requesteeble ;
+                        bugzilla:isMultiplicable flagtypes.is_multiplicable
+                                as virtrdf:FlagType-is_multiplicable ;
+                        bugzilla:sortKey flagtypes.sortkey
+                                as virtrdf:FlagType-sortkey ;
+                        bugzilla:grantGroup bugzilla:Group(flagtypes.grant_group_id)
+                                as virtrdf:FlagType-grant_group_id ;
+                        bugzilla:requestGroup bugzilla:Group(flagtypes.request_group_id)
+                                as virtrdf:FlagType-request_group_id .
+
+                bugzilla:Group_Control_Map (group_control_map.group_id, group_control_map.product_id)
+                        a bugzilla:Group_Control_Map
+                                as virtrdf:Group_Control_Map-id ;
+                        bugzilla:group bugzilla:Group(group_control_map.group_id)
+                                as virtrdf:Group_Control_Map-group_id ;
+                        bugzilla:product bugzilla:Product(group_control_map.product_id)
+                                as virtrdf:Group_Control_Map-product_id ;
+                        bugzilla:entry group_control_map.entry
+                                as virtrdf:Group_Control_Map-entry ;
+                        bugzilla:memberControl group_control_map.membercontrol
+                                as virtrdf:Group_Control_Map-membercontrol ;
+                        bugzilla:otherControl group_control_map.othercontrol
+                                as virtrdf:Group_Control_Map-othercontrol ;
+                        bugzilla:canEdit group_control_map.canedit
+                                as virtrdf:Group_Control_Map-canedit .
+                                
+                bugzilla:Group_Group_Map (group_group_map.member_id, group_group_map.grantor_id, group_group_map.grant_type)
+                        a bugzilla:Group_Group_Map
+                                as virtrdf:Group_Group_Map-id ;
+                        bugzilla:member bugzilla:Profile(group_group_map.member_id)
+                                as virtrdf:Group_Group_Map-member_id ;
+                        bugzilla:grantor bugzilla:Profile(group_group_map.grantor_id)
+                                as virtrdf:Group_Group_Map-grantor_id ;
+                        bugzilla:grantType group_group_map.grant_type
+                                as virtrdf:Group_Group_Map-grant_type .
+                                
+                 bugzilla:Group (groups.id)
+                        a bugzilla:Group
+                                as virtrdf:Group-id ;
+                        bugzilla:name groups.name
+                                as virtrdf:Group-name ;
+                        bugzilla:description groups.description
+                                as virtrdf:Group-description ;
+                        bugzilla:isBugGroup groups.isbuggroup
+                                as virtrdf:Group-isbuggroup ;
+                        bugzilla:lastChanged groups.last_changed
+                                as virtrdf:Group-last_changed ;
+                        bugzilla:userRegexp groups.userregexp
+                                as virtrdf:Group-userregexp ;
+                        bugzilla:isActive groups.isactive
+                                as virtrdf:Group-isactive .
+                                
+                 bugzilla:KeywordDefinition (keyworddefs.id)
+                        a bugzilla:KeywordDefinition
+                                as virtrdf:KeywordDefinition-id ;
+                        bugzilla:name keyworddefs.name
+                                as virtrdf:KeywordDefinition-name ;
+                        bugzilla:description keyworddefs.description
+                                as virtrdf:KeywordDefinition-description .
+                                
+                 bugzilla:Keyword (keywords.bug_id, keywords.keywordid)
+                        a bugzilla:Keyword
+                                as virtrdf:Keyword-id ;
+                        bugzilla:bug bugzilla:Bug(keywords.bug_id)
+                                as virtrdf:Keyword-bug_id ;
+                        bugzilla:keyword bugzilla:KeywordDefinition(keywords.keywordid)
+                                as virtrdf:Keyword-keywordid .
+                                
+                 bugzilla:LoginCookie (logincookies.cookie)
+                        a bugzilla:LoginCookie
+                                as virtrdf:LoginCookie-id ;
+                        bugzilla:user bugzilla:Profile(logincookies.userid)
+                                as virtrdf:LoginCookie-userid ;
+                        bugzilla:ipAddress logincookies.ipaddr
+                                as virtrdf:LoginCookie-ipaddr ;
+                        bugzilla:lastUsed logincookies.lastused
+                                as virtrdf:LoginCookie-lastused .
+                                
+                 bugzilla:LongDescription (longdescs.bug_id)
+                        a bugzilla:LongDescription
+                                as virtrdf:LongDescription-id ;
+                        bugzilla:bug bugzilla:Bug(longdescs.bug_id)
+                                as virtrdf:LongDescription-bug_id ;
+                        bugzilla:who bugzilla:Profile(longdescs.who)
+                                as virtrdf:LongDescription-who ;
+                        bugzilla:bugWhen longdescs.bug_when
+                                as virtrdf:LongDescription-bug_when ;
+                        bugzilla:workTime longdescs.work_time
+                                as virtrdf:LongDescription-work_time ;
+                        bugzilla:theText longdescs.thetext
+                                as virtrdf:LongDescription-thetext ;
+                        bugzilla:isPrivate longdescs.isprivate
+                                as virtrdf:LongDescription-isprivate ;
+                        bugzilla:alreadyWrapped longdescs.already_wrapped
+                                as virtrdf:LongDescription-already_wrapped ;
+                        bugzilla:theTextID longdescs.thetext_ID
+                                as virtrdf:LongDescription-thetext_ID .
+                                
+                 bugzilla:Milestone (milestones.product_id, milestones.value)
+                        a bugzilla:Milestone
+                                as virtrdf:Milestone-id ;
+                        bugzilla:value milestones.value
+                                as virtrdf:Milestone-value ;
+                        bugzilla:sortKey milestones.sortkey
+                                as virtrdf:Milestone-sortkey .
+                                
+                 bugzilla:NamedQuery (namedqueries.userid, namedqueries.name)
+                        a bugzilla:NamedQuery
+                                as virtrdf:NamedQuery-id ;
+                        bugzilla:user bugzilla:Profile(namedqueries.userid)
+                                as virtrdf:NamedQuery-userid ;
+                        bugzilla:name namedqueries.name
+                                as virtrdf:NamedQuery-name ;
+                        bugzilla:linkinfooter namedqueries.linkinfooter
+                                as virtrdf:NamedQuery-linkinfooter ;
+                        bugzilla:query namedqueries.query
+                                as virtrdf:NamedQuery-query ;
+                        bugzilla:queryType namedqueries.query_type
+                                as virtrdf:NamedQuery-query_type .
+                                
+                 bugzilla:Op_Sys (op_sys.id)
+                        a bugzilla:Op_Sys
+                                as virtrdf:Op_Sys-id ;
+                        bugzilla:value op_sys.value
+                                as virtrdf:Op_Sys-value ;
+                        bugzilla:sortKey op_sys.sortkey
+                                as virtrdf:Op_Sys-sortkey ;
+                        bugzilla:isActive op_sys.isactive
+                                as virtrdf:Op_Sys-isactive .
+                                
+                 bugzilla:Priority (priority.id)
+                        a bugzilla:Priority
+                                as virtrdf:Priority-id ;
+                        bugzilla:value priority.value
+                                as virtrdf:Priority-value ;
+                        bugzilla:sortKey priority.sortkey
+                                as virtrdf:Priority-sortkey ;
+                        bugzilla:isActive priority.isactive
+                                as virtrdf:Priority-isactive .
+                                
+                 bugzilla:Product (products.id)
+                        a bugzilla:Product
+                                as virtrdf:Product-id ;
+                        bugzilla:name products.name
+                                as virtrdf:Product-name ;
+                        bugzilla:classification bugzilla:Classification(products.classification_id)
+                                as virtrdf:Product-classification_id ;
+                        bugzilla:description products.description
+                                as virtrdf:Product-description ;
+                        bugzilla:milestoneURL products.milestoneurl
+                                as virtrdf:Product-milestoneurl ;
+                        bugzilla:disallowNew products.disallownew
+                                as virtrdf:Product-disallownew ;
+                        bugzilla:votesPerUser products.votesperuser
+                                as virtrdf:Product-votesperuser ;
+                        bugzilla:maxVotesPerBug products.maxvotesperbug
+                                as virtrdf:Product-maxvotesperbug ;
+                        bugzilla:votesToConfirm products.votestoconfirm
+                                as virtrdf:Product-votestoconfirm ;
+                        bugzilla:defaultMileStone products.defaultmilestone
+                                as virtrdf:Product-defaultmilestone .
+                                 
+                 bugzilla:Profile_Setting (profile_setting.user_id, profile_setting.setting_name)
+                        a bugzilla:Profile_Setting
+                                as virtrdf:Profile_Setting-id ;
+                        bugzilla:user bugzilla:Profile(profile_setting.user_id)
+                                as virtrdf:Profile_Setting-user_id ;
+                        bugzilla:settingName profile_setting.setting_name
+                                as virtrdf:Profile_Setting-setting_name ;
+                        bugzilla:settingValue profile_setting.setting_value
+                                as virtrdf:Profile_Setting-setting_value .
+                                
+                                                 
+                 bugzilla:Profile_Activity (profiles_activity.userid, profiles_activity.who, profiles_activity.profiles_when)
+                        a bugzilla:Profile_Activity
+                                as virtrdf:Profile_Activity-id ;
+                        bugzilla:user bugzilla:Profile(profiles_activity.userid)
+                                as virtrdf:Profile_Activity-userid ;
+                        bugzilla:who bugzilla:Profile(profiles_activity.who)
+                                as virtrdf:Profile_Activity-who ;
+                        bugzilla:profiles_when profiles_activity.profiles_when
+                                as virtrdf:Profile_Activity-profiles_when ;
+                        bugzilla:fieldid bugzilla:FieldDefinition(profiles_activity.fieldid)
+                                as virtrdf:Profile_Activity-fieldid ;
+                        bugzilla:oldvalue profiles_activity.oldvalue
+                                as virtrdf:Profile_Activity-oldvalue ;
+                        bugzilla:newvalue profiles_activity.newvalue
+                                as virtrdf:Profile_Activity-newvalue .
+                                
+                 bugzilla:Quip (quips.quipid)
+                        a bugzilla:Quip
+                                as virtrdf:Quip-id ;
+                        bugzilla:user bugzilla:Profile(quips.userid)
+                                as virtrdf:Quip-userid ;
+                        bugzilla:quip quips.quip
+                                as virtrdf:Quip-quip ;
+                        bugzilla:approved quips.approved
+                                as virtrdf:Quip-approved .
+                                
+                  bugzilla:Rep_Platform (rep_platform.id)
+                        a bugzilla:Rep_Platform
+                                as virtrdf:Rep_Platform-id ;
+                        bugzilla:value rep_platform.value
+                                as virtrdf:Rep_Platform-value ;
+                        bugzilla:sortKey rep_platform.sortkey
+                                as virtrdf:Rep_Platform-sortkey ;
+                        bugzilla:isActive rep_platform.isactive
+                                as virtrdf:Rep_Platform-isactive .
+                                
+                  bugzilla:Resolution (resolution.id)
+                        a bugzilla:Resolution
+                                as virtrdf:Resolution-id ;
+                        bugzilla:value resolution.value
+                                as virtrdf:Resolution-value ;
+                        bugzilla:sortKey resolution.sortkey
+                                as virtrdf:Resolution-sortkey ;
+                        bugzilla:isActive resolution.isactive
+                                as virtrdf:Resolution-isactive .
+                                
+                  bugzilla:Series (series.series_id)
+                        a bugzilla:Series
+                                as virtrdf:Series-id ;
+                        bugzilla:creator bugzilla:Profile(series.creator)
+                                as virtrdf:Series-creator ;
+                        bugzilla:category bugzilla:Series_Category(series.category)
+                                as virtrdf:Series-category ;
+                        bugzilla:subcategory bugzilla:Series_Category(series.subcategory)
+                                as virtrdf:Series-subcategory ;
+                        bugzilla:name series.name
+                                as virtrdf:Series-name ;
+                        bugzilla:frequency series.frequency
+                                as virtrdf:Series-frequency ;
+                        bugzilla:lastViewed series.last_viewed
+                                as virtrdf:Series-last_viewed ;
+                        bugzilla:query series.query
+                                as virtrdf:Series-query ;
+                        bugzilla:isPublic series.is_public
+                                as virtrdf:Series-is_public .
+                                
+                  bugzilla:Series_Category (series_categories.id)
+                        a bugzilla:Series_Category
+                                as virtrdf:Series_Category-id ;
+                        bugzilla:name series_categories.name
+                                as virtrdf:Series_Category-name .
+                                
+                  bugzilla:Series_Data (series_data.series_id, series_data.series_date)
+                        a bugzilla:Series_Data
+                                as virtrdf:Series_Data-id ;
+                        bugzilla:series bugzilla:Series(series_data.series_id)
+                                as virtrdf:Series_Data-series_id ;
+                        bugzilla:seriesDate series_data.series_date
+                                as virtrdf:Series_Data-series_date ;
+                        bugzilla:seriesValue series_data.series_value
+                                as virtrdf:Series_Data-series_value .
+                                
+                  bugzilla:Setting (setting.name)
+                        a bugzilla:Setting
+                                as virtrdf:Setting-id ;
+                        bugzilla:name setting.name
+                                as virtrdf:Setting-name ;
+                        bugzilla:defaultValue setting.default_value
+                                as virtrdf:Setting-default_value ;
+                        bugzilla:isEnabled setting.is_enabled
+                                as virtrdf:Setting-is_enabled .
+                                
+                  bugzilla:Setting_Value (setting_value.name, setting_value.value)
+                        a bugzilla:Setting_Value
+                                as virtrdf:Setting_Value-id ;
+                        bugzilla:name setting_value.name
+                                as virtrdf:Setting_Value-name ;
+                        bugzilla:value setting_value.value
+                                as virtrdf:Setting_Value-value ;
+                        bugzilla:sortIndex setting_value.sortindex
+                                as virtrdf:Setting_Value-sortindex .
+                                
+                  bugzilla:Token (tokens.token)
+                        a bugzilla:Token
+                                as virtrdf:Token-id ;
+                        bugzilla:user bugzilla:Profile(tokens.userid)
+                                as virtrdf:Token-userid ;
+                        bugzilla:issueDate tokens.issuedate
+                                as virtrdf:Token-issuedate ;
+                        bugzilla:token tokens.token
+                                as virtrdf:Token-token ;
+                        bugzilla:tokenType tokens.tokentype
+                                as virtrdf:Token-tokentype ;
+                        bugzilla:eventData tokens.eventdata
+                                as virtrdf:Token-eventdata .
+                                
+                  bugzilla:User_Group_Map (user_group_map.user_id, user_group_map.group_id, user_group_map.isbless, user_group_map.grant_type)
+                        a bugzilla:User_Group_Map
+                                as virtrdf:User_Group_Map-id ;
+                        bugzilla:user bugzilla:Profile(user_group_map.user_id)
+                                as virtrdf:User_Group_Map-user_id ;
+                        bugzilla:group bugzilla:Group(user_group_map.group_id)
+                                as virtrdf:User_Group_Map-group_id ;
+                        bugzilla:isBless user_group_map.isbless
+                                as virtrdf:User_Group_Map-isbless ;
+                        bugzilla:grantType user_group_map.grant_type
+                                as virtrdf:User_Group_Map-grant_type .
+                                
+                  bugzilla:Version (versions.value, versions.product_id)
+                        a bugzilla:Version
+                                as virtrdf:Version-id ;
+                        bugzilla:value versions.value
+                                as virtrdf:Version-value ;
+                        bugzilla:product bugzilla:Product(versions.product_id)
+                                as virtrdf:Version-product_id .
+                                
+                  bugzilla:Vote (votes.who, votes.bug_id)
+                        a bugzilla:Vote
+                                as virtrdf:Vote-id ;
+                        bugzilla:who bugzilla:Profile(votes.who)
+                                as virtrdf:Vote-who ;
+                        bugzilla:bug bugzilla:Bug(votes.bug_id)
+                                as virtrdf:Vote-bug_id ;
+                        bugzilla:vote_count votes.vote_count
+                                as virtrdf:Vote-vote_count .
+                                
+                  bugzilla:Watch (watch.watcher, watch.watched)
+                        a bugzilla:Watch
+                                as virtrdf:Watch-id ;
+                        bugzilla:watcher bugzilla:Profile(watch.watcher)
+                                as virtrdf:Watch-who ;
+                        bugzilla:watched bugzilla:Bug(watch.watched)
+                                as virtrdf:Watch-watched .
+                                
+                  bugzilla:Whine_Event (whine_events.id)
+                        a bugzilla:Whine_Event
+                                as virtrdf:Whine_Event-id ;
+                        bugzilla:owner bugzilla:Profile(whine_events.owner_userid)
+                                as virtrdf:Whine_Event-owner_userid ;
+                        bugzilla:subject whine_events.subject
+                                as virtrdf:Whine_Event-subject ;
+                        bugzilla:body whine_events.body
+                                as virtrdf:Whine_Event-body .
+                                
+                  bugzilla:Whine_Query (whine_queries.id)
+                        a bugzilla:Whine_Query
+                                as virtrdf:Whine_Query-id ;
+                        bugzilla:event bugzilla:Whine_Event(whine_queries.eventid)
+                                as virtrdf:Whine_Query-eventid ;
+                        bugzilla:query_name whine_queries.query_name
+                                as virtrdf:Whine_Query-query_name ;
+                        bugzilla:sortKey whine_queries.sortkey
+                                as virtrdf:Whine_Query-sortkey ;
+                        bugzilla:oneMailPerBug whine_queries.onemailperbug
+                                as virtrdf:Whine_Query-onemailperbug ;
+                        bugzilla:title whine_queries.title
+                                as virtrdf:Whine_Query-title .
+                                
+                  bugzilla:Whine_Schedule (whine_schedules.id)
+                        a bugzilla:Whine_Schedule
+                                as virtrdf:Whine_Schedule-id ;
+                        bugzilla:event bugzilla:Whine_Event(whine_schedules.eventid)
+                                as virtrdf:Whine_Schedule-eventid ;
+                        bugzilla:runDay whine_schedules.run_day
+                                as virtrdf:Whine_Schedule-run_day ;
+                        bugzilla:runTime whine_schedules.run_time
+                                as virtrdf:Whine_Schedule-run_time ;
+                        bugzilla:runNext whine_schedules.run_next
+                                as virtrdf:Whine_Schedule-run_next ;
+                        bugzilla:mailto bugzilla:Profile(whine_schedules.mailto)
+                                as virtrdf:Whine_Schedule-mailto ;
+                        bugzilla:mailtoType whine_schedules.mailto_type
+                                as virtrdf:Whine_Schedule-mailto_type .
+        } .
+} .
+;
+
+create procedure bugzilla_rdf_doc (in path varchar)
+{
+  declare r any;
+  r := regexp_match ('[^/]*\x24', path);
+  return r||'#this';
+};
+
+create procedure bugzilla_html_doc (in path varchar)
+{
+  declare r any;
+  r := regexp_match ('[^/]*#', path);
+  return subseq (r, 0, length (r)-1);
+};
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'bugzilla_rule2',
+    1,
+    '(/[^#]*)',
+    vector('path'),
+    1,
+    '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/Bugzilla%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U',
+    vector('path', 'path', '*accept*'),
+    null,
+    '(text/rdf.n3)|(application/rdf.xml)',
+    0,
+    303
+    );    
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'bugzilla_rule1',
+    1,
+    '(/[^#]*)',
+    vector('path'),
+    1,
+    '/rdfbrowser/index.html?uri=http%%3A//^{URIQADefaultHost}^%U%%23this',
+    vector('path'),
+    null,
+    '(text/html)|(\\*/\\*)',
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'bugzilla_rule3',
+    1,
+    '(/[^#]*)/\x24',
+    vector('path'),
+    1,
+    '%s',
+    vector('path'),
+    null,
+    null,
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    'bugzilla_rule_list1',
+    1,
+    vector (
+                'bugzilla_rule1',
+                'bugzilla_rule2',
+                'bugzilla_rule3'
+          ));
+
+VHOST_REMOVE (lpath=>'/Bugzilla');
+VHOST_DEFINE (lpath=>'/Bugzilla', ppath=>'/DAV/home/demo/', is_dav=>1, vsp_user=>'dba', is_brws=>0, opts=>vector ('url_rewrite', 'bugzilla_rule_list1'));
+
+DB.DBA.XML_SET_NS_DECL ('bugzilla', 'http://demo.openlinksw.com/schemas/bugzilla#', 2);
+
+</verbatim>

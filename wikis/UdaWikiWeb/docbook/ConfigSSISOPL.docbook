@@ -1,0 +1,94 @@
+<docbook><section><title>ConfigSSISOPL</title><title>Configuring and Using Microsoft SQL Server 2005 SSIS</title>Configuring and Using Microsoft SQL Server 2005 SSIS
+<para>Typically, SSIS packages use OLE DB or .Net Providers for communication to external data sources and there are several means of establishing connections using these Providers.</para><para>This document aims to briefly demonstrate the common methods using OpenLink and Microsoft Providers.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2">An important note for 64-bit Windows environments</bridgehead>
+<para>Irrespective of whether your Microsoft SQL Server instance or Windows environment are 64-bit, the Visual Studio IDE is a 32-bit application and as a result, when you are developing and debugging SSIS applications, <emphasis><emphasis>all</emphasis></emphasis> OLE DB and .Net Providers <emphasis><emphasis>must</emphasis></emphasis> be 32-bit, as must any subsequently interfaced components such as ODBC drivers.</para><para>When you deploy your final SSIS package, a 64-bit Microsoft SQL Server instance will require a 64-bit Provider and if applicable a 64-bit ODBC driver.
+ A 32-bit Microsoft SQL Server instance will require a 32-bit Provider and if applicable a 32-bit ODBC driver, regardless of the Windows environment in which it runs.</para><para>Therefore, with 64-bit instances of Microsoft SQL Server you will require both 32-bit and 64-bit components to take full advantage of all the available features --</para><itemizedlist mark="bullet" spacing="compact"><listitem> 64-bit Microsoft SQL Server </listitem>
+<listitem> 32-bit Visual Studio IDE </listitem>
+<listitem> 32-bit .Net Provider (developing &amp; debugging) </listitem>
+<listitem> 32-bit ODBC Driver (developing &amp; debugging) </listitem>
+<listitem> 64-bit .Net Provider (final deployment) </listitem>
+<listitem> 64-bit ODBC Driver (final deployment)</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Business Intelligence Development Studio</bridgehead>
+<para>The Business Intelligence Development Studio is basically Microsoft Visual Studio 2008 with additional project types that are specific to Microsoft SQL Server business intelligence.
+ Business Intelligence Development Studio is the primary environment that you will use to develop business solutions that include Analysis Services, Integration Services, and Reporting Services projects.</para><para><emphasis>See <ulink url="http://msdn.microsoft.com/en-us/library/ms173767.aspx">the MSDN</ulink> for more information.</emphasis></para><para>There are several interfaces to establish connections to external data sources and within each interface there is support for both OLE DB and .Net Providers.</para><para>This document will concentrate on the following --</para><itemizedlist mark="bullet" spacing="compact"><listitem>Interfaces <itemizedlist mark="bullet" spacing="compact"><listitem> SSIS Import and Export Wizard...
+</listitem>
+<listitem> Comnnection Manager </listitem>
+<listitem> Solution Explorer -&gt; Data Sources </listitem>
+<listitem> Server Explorer -&gt; Data Connections </listitem>
+</itemizedlist></listitem>
+<listitem> Providers <itemizedlist mark="bullet" spacing="compact"><listitem> Microsoft .Net Provider for ODBC Drivers </listitem>
+<listitem> OpenLink Single-Tier ADO.NET Provider for ODBC Data Sources (Single-Tier ADO.NET to ODBC Bridge) </listitem>
+<listitem> OpenLink Generic Client ADO.NET Provider (Multi-Tier Generic Client)</listitem>
+</itemizedlist></listitem>
+</itemizedlist><para>The OpenLink OLE DB Provider (<computeroutput>OpenLinkODBC</computeroutput>) will not be covered since in much the same vein as its Microsoft counterpart it should be deprecated in favor of its ADO.NET alternative.<bridgehead class="http://www.w3.org/1999/xhtml:h3">Create a new Integration Services Project</bridgehead>
+<para>An Integration Services Project is one of the additional project types (mentioned above) that is included with the Microsoft SQL Server 2005 so you should start by selecting <emphasis>File</emphasis> &gt;&gt; <emphasis>New</emphasis> &gt;&gt; <emphasis>Project</emphasis>.</para><para>Highlight a Project Type of <emphasis>Business Intelligence Projects</emphasis>; then highlight the Visual Studio installed template <emphasis>Integration Services Project</emphasis>.</para><para>Enter a suitable name, location, etc.; then select <emphasis>OK</emphasis>.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3">Establish a connection</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4">SSIS Import and Export Wizard...</bridgehead>
+<para>The quickest way to build a complete ready-to-run SSIS package is by using the <emphasis>SSIS Import and Export Wizard</emphasis>.</para></para><orderedlist spacing="compact"><listitem> Select <emphasis>Project</emphasis> &gt;&gt; <emphasis>SSIS Import and Export Wizard...</emphasis> to start the wizard.
+</listitem>
+<listitem> You will be prompted for connection information to the &quot;source from which to copy data&quot; </listitem>
+<listitem> Select your chosen data provider in the &quot;<emphasis>Data Source</emphasis>&quot; drop down list.
+</listitem>
+<listitem> Enter the requested connection information which will vary depending upon the Provider chosen.
+ (In the case of the aforementioned providers addressed in this document, specific connection details will be given below) </listitem>
+<listitem> Repeat the last steps, choosing a destination for the data, then click <emphasis>Next</emphasis>.
+</listitem>
+<listitem> Choose whether you would like to &quot;<emphasis>Copy data from one or more tables or views</emphasis>&quot; or &quot;<emphasis>Write a query to specify the data to transfer</emphasis>&quot;, then click <emphasis>Next</emphasis>.
+</listitem>
+<listitem> If you choose &quot;<emphasis>Write a query to specify the data to transfer</emphasis>&quot;, then you will now be prompted to enter a valid SQL statement.
+</listitem>
+<listitem> At the &quot;<emphasis>Select Source Tables and Views</emphasis>&quot; dialog you have several options which include editing the destination table name, editing the data type mappings and previewing the data, etc.
+</listitem>
+<listitem> Finally, select <emphasis>Next</emphasis>, then <emphasis>Finish</emphasis> to complete the wizard and perform the Import and Export.</listitem>
+</orderedlist><para><emphasis>IMPORTANT:</emphasis> Packages created using the Import/Export Widard that utulise .Net Providers will have a CommandTimeout of 30 seconds.
+ What this means, in reality, is that tables with larger data sets will fail to import/export if this 30 seconds is exceeded.
+ In order to work around this - you will need to save as an SSIS Package where you can manually edit the CommandTimeout property.
+</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Connection Managers</bridgehead>
+<para>Connections for use with manually crafted SSIS packages can be created via the &quot;Connection Managers&quot; lower central pane in the IDE.</para><orderedlist spacing="compact"><listitem> Right-click the pane, to add a new connection manager to the SSIS package.
+</listitem>
+<listitem> Select <emphasis>New ADO.NET Connection</emphasis>.
+</listitem>
+<listitem> In the &quot;<emphasis>Configure ADO.NET Connection Manager</emphasis>&quot; dialog, select <emphasis>New</emphasis>.
+</listitem>
+<listitem> From the &quot;<emphasis>Provider</emphasis>&quot; drop-down, select the required ADO.NET Provider, then click <emphasis>OK</emphasis>.
+</listitem>
+<listitem> The main portion of the windows should now change to reflect the Provider selected above.
+</listitem>
+<listitem> This dialog offers two views -- a &quot;<emphasis>Connection</emphasis>&quot; view and an &quot;<emphasis>All</emphasis>&quot; view -- which can be selected by clicking the large buttons on the left of the dialog.
+</listitem>
+<listitem> The &quot;<emphasis>Connection</emphasis>&quot; button produces a form-style display populated with text fields, drop-down lists, etc., by which to configure the chosen Provider.
+</listitem>
+<listitem> Alternatively, the &quot;<emphasis>All</emphasis>&quot; view gives a key/value list similar to that presented in the Import and Export wizard.
+</listitem>
+<listitem> Once you have configured the Provider, you can test the connection, then click <emphasis>OK</emphasis> to save the configured connection.
+ It will then appear in the &quot;Data Connections&quot; pane of the &quot;<emphasis>Configure ADO.NET Connection Manager</emphasis>&quot; dialog, and subsequently in the main &quot;<emphasis>Connection Managers</emphasis>&quot; pane of the main display.
+</listitem>
+<listitem> This connection is now available for use in a &quot;<emphasis>DataReader Source</emphasis>&quot; component.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Solution Explorer -&gt; Data Sources</bridgehead>
+<para>Connections can also be created using the Data Source Wizard.
+ These Data Sources are solution-wide data connections which can be used across many Packages that may make up the Project.</para><orderedlist spacing="compact"><listitem> Ensure the &quot;Solution Explorer&quot; is visible - <computeroutput>View -&gt; Solution Explorer</computeroutput> </listitem>
+<listitem> Right click on <computeroutput>Data Sources</computeroutput> then select <computeroutput>New Data Source</computeroutput> </listitem>
+<listitem> You should now see the &quot;Data Source Wizard&quot;.
+</listitem>
+<listitem> Progress through the wizard and follow the instructions for creating a &quot;Connection Manager&quot; (see above) or select a previously defined connection from the &quot;Data Connections&quot; pane.
+</listitem>
+<listitem> Once created the new &quot;Data Source&quot; is available for use when creating a new &quot;Connection Managers&quot; (above) by selecting &quot;New Connection From Data Source...&quot;.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h4">Server Explorer -&gt; Data Connections</bridgehead>
+<para>Connections can also be added through the &quot;Server Explorer&quot;.</para><orderedlist spacing="compact"><listitem> The Server Explorer displays database connections beneath the Data Connections node.
+</listitem>
+<listitem> After a connection is established, you can design programs to open connections and retrieve and manipulate the data provided, or directly access and work with the data using Visual Database Tools.
+</listitem>
+<listitem> Ensure the &quot;Server Explorer&quot; is visible - <computeroutput>View -&gt; Server Explorer</computeroutput> </listitem>
+<listitem> Right click on <computeroutput>Data Connections</computeroutput> then select <computeroutput>Add Connection</computeroutput> </listitem>
+<listitem> Against the &quot;Data Source&quot; choice select the <computeroutput>Change</computeroutput> button to choose the required Provider.
+</listitem>
+<listitem> Once again, the main dialog, which looks like a form, will change to reflect the chosen Provider.
+</listitem>
+<listitem> Complete the fields then test the connection before selecting <computeroutput>OK</computeroutput> </listitem>
+<listitem> Once created the new &quot;Data Connection&quot; is available for interrogation at a table and column level.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3">Configuring the Providers</bridgehead>
+<para>You will have to provide a connection string, which should be of the appropriate form to your chosen provider, as shown below --</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">Microsoft .Net Provider for ODBC</bridgehead>
+<programlisting>DSN=&lt;odbc_dsn_name&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;
+</programlisting><para> </para><bridgehead class="http://www.w3.org/1999/xhtml:h4">OpenLink .Net Provider for ODBC (.Net to ODBC Bridge)</bridgehead>
+<programlisting>DSN=&lt;odbc_dsn_name&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;
+</programlisting><para>Alternatively, you can provide the individual parameters in their own fields beneath the ConnectionString field.</para><bridgehead class="http://www.w3.org/1999/xhtml:h4">OpenLink .Net Generic Client Provider (Multi-tier client)</bridgehead>
+<programlisting>HOST=&lt;multi_tier_server_hostname&gt;;PORT=&lt;port&gt;;SVT=&lt;server_type&gt;;DATABASE=&lt;database&gt;;OPTIONS=&lt;connection_options&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;;
+</programlisting></section></docbook>

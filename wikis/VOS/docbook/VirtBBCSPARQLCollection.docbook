@@ -1,0 +1,111 @@
+<docbook><section><title>VirtBBCSPARQLCollection</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">BBC SPARQL Collection</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">All Programmes Related To James Bond</bridgehead>
+ <programlisting>PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+SELECT ?uri ?label
+WHERE 
+  {
+    ?uri po:category 
+      &lt;http://www.bbc.co.uk/programmes/people/bmFtZS9ib25kLCBqYW1lcyAobm8gcXVhbGlmaWVyKQ#person&gt; ; 
+    rdfs:label ?label.
+   }
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Find All Eastenders Broadcasta After A Given Date</bridgehead>
+ <programlisting>## Find all eastenders broadcasta after 2009-01-01, 
+## along with the broadcast version &amp; type 
+PREFIX event: &lt;http://purl.org/NET/c4dm/event.owl#&gt; 
+PREFIX tl: &lt;http://purl.org/NET/c4dm/timeline.owl#&gt; 
+PREFIX po: &lt;http://purl.org/ontology/po/&gt; 
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+SELECT ?version_type ?broadcast_start
+WHERE
+  { 
+    &lt;http://www.bbc.co.uk/programmes/b006m86d#programme&gt; po:episode ?episode .
+    ?episode po:version ?version .
+    ?version a ?version_type .
+    ?broadcast po:broadcast_of ?version .
+    ?broadcast event:time ?time .
+    ?time tl:start ?broadcast_start .
+    FILTER ( (?version_type != &lt;http://purl.org/ontology/po/Version&gt;) 
+    &amp;&amp; (?broadcast_start &gt; &quot;2009-01-01T00:00:00Z&quot;^^xsd:dateTime) )
+  }
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Find All Programmes That Featured Both The Foo Fighters And All Green</bridgehead>
+ <programlisting>PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX mo: &lt;http://purl.org/ontology/mo/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX event: &lt;http://purl.org/NET/c4dm/event.owl#&gt;
+PREFIX tl: &lt;http://purl.org/NET/c4dm/timeline.owl#&gt;
+PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt; 
+SELECT DISTINCT ?programme ?label
+WHERE 
+  {
+    ?event1 po:track ?track1 .
+    ?track1 foaf:maker ?maker1 . 
+    ?maker1 owl:sameAs &lt;http://www.bbc.co.uk/music/artists/67f66c07-6e61-4026-ade5-7e782fad3a5d#artist&gt; .
+    ?event2 po:track ?track2 .
+    ?track2 foaf:maker ?maker2 . 
+    ?maker2 owl:sameAs &lt;http://www.bbc.co.uk/music/artists/fb7272ba-f130-4f0a-934d-6eeea4c18c9a#artist&gt; .
+    ?event1 event:time ?t1 .
+    ?event2 event:time ?t2 .
+    ?t1 tl:timeline ?tl .
+    ?t2 tl:timeline ?tl .
+    ?version po:time ?t .
+    ?t tl:timeline ?tl .
+    ?programme po:version ?version .
+    ?programme rdfs:label ?label .
+  }
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Get Short Synopsis Of Eastenders Episodes</bridgehead>
+ <programlisting>PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT ?t ?o
+WHERE
+  {
+    &lt;http://www.bbc.co.uk/programmes/b006m86d#programme&gt; po:episode ?e .
+    ?e a po:Episode .
+    ?e po:short_synopsis ?o .
+    ?e dc:title ?t
+  }
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3">Get Short Synopsis Of Eastenders Episodes ( With Graph )</bridgehead>
+ <programlisting>PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT ?g ?t ?o
+WHERE
+  {
+    graph ?g 
+      {
+         &lt;http://www.bbc.co.uk/programmes/b006m86d#programme&gt; po:episode ?e .
+         ?e a po:Episode .
+         ?e po:short_synopsis ?o .
+         ?e dc:title ?t
+      }
+  }
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Get Reviews Where John Paul Jones Has Been Involved</bridgehead>
+ <programlisting>PREFIX mo: &lt;http://purl.org/ontology/mo/&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX rev: &lt;http://purl.org/stuff/rev#&gt;
+PREFIX po: &lt;http://purl.org/ontology/po/&gt;
+SELECT DISTINCT ?r_name, ?rev
+WHERE 
+  {
+    {
+      &lt;http://www.bbc.co.uk/music/artists/4490113a-3880-4f5b-a39b-105bfceaed04#artist&gt; foaf:made ?r1 .
+      ?r1 a mo:Record .
+      ?r1 dc:title ?r_name .
+      ?r1 rev:hasReview ?rev
+    }
+    UNION 
+    {
+      &lt;http://www.bbc.co.uk/music/artists/4490113a-3880-4f5b-a39b-105bfceaed04#artist&gt; mo:member_of ?b1 .
+      ?b1 foaf:made ?r1 .
+      ?r1 a mo:Record .
+      ?r1 dc:title ?r_name .
+      ?r1 rev:hasReview ?rev
+    }
+  }
+</programlisting></section></docbook>

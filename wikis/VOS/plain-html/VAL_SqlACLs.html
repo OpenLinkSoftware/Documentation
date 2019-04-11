@@ -1,0 +1,189 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="ValQuickStartGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="ValQuickStartGuide"}%--><h1><a name="SQL ACLs and Restrictions - Controlling SPARQL Access in SQL Data Connections"></a> SQL ACLs and Restrictions - Controlling SPARQL Access in SQL Data Connections</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Private%20Graphs%20used%20for%20ACL%20storage">Private Graphs used for ACL storage</a></li> <li><a href="#Enabling%20SQL%20ACLs">Enabling SQL ACLs</a></li> <li><a href="#ACL%20Restrictions%20to%20Control%20Request%20and%20Result%20Limits">ACL Restrictions to Control Request and Result Limits</a></li> <li><a href="#Examples">Examples</a></li>
+<ul><li><a href="#Restriction%20Examples">Restriction Examples</a></li><ul><li><a href="#Restrict%20The%20Request%20Rate">Restrict The Request Rate</a></li> <li><a href="#ACL%20Examples">ACL Examples</a></li><ul><li><a href="#Grant%20SPARQL%20Read%20Permissions%20to%20Anyone%20With%20a%20Valid%20Certificate">Grant SPARQL Read Permissions to Anyone With a Valid Certificate</a></li> <li><a href="#Grant%20SPARQL%20Sponge%20Permission%20to%20One%20Certificate">Grant SPARQL Sponge Permission to One Certificate</a></li> </ul><li><a href="#Grant%20SPARQL%20Write%20Permissions%20For%20One%20Private%20Graph%20To%20One%20Certificate">Grant SPARQL Write Permissions For One Private Graph To One Certificate</a></li> <li><a href="#Grant%20SPARQL%20Write%20Permissions%20Based%20on%20a%20SPARQL%20ASK%20Query">Grant SPARQL Write Permissions Based on a SPARQL ASK Query</a></li> </ul></ul><li><a href="#See%20Also">See Also</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>Virtuoso allows control over certain functionality in SQL data connections (ODBC, JDBC, ADO.NET, OLE DB, etc.) via ACLs.
+ These ACLs mostly refer to SPARQL and match what is described in <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VAL_SparqlACLs" class="wikiword">SPARQL ACLs</a>.</p>
+<p>The primary difference is the realm, which is <code><a href="http://www.openlinksw.com/ontology/acl#SqlRealm" class="absuri">oplacl:SqlRealm</a></code> here.</p>
+<i><b>Note:</b> SPARQL ACL rules defined in the default realm do not apply in SQL connections!</i><p>There is also one additional resource, which simply allows users to perform SQL commands in addition to SPARQL: <b><code>urn:virtuoso:access:sql</code></b>.
+ In theory, both <b><code>oplacl:Read</code></b> and <b><code>oplacl:Write</code></b> would apply, but these are not enforced yet.
+ Either of them will currently enable all SQL commands.</p>
+<h2><a name="Private Graphs used for ACL storage"></a> Private Graphs used for ACL storage</h2>
+<p>The Rules can be controlled via the <a href="http://docs.openlinksw.com/val/group__val__acl__module__http__api.html" class="absuri">VAL ACL RESTful API</a> or the <a href="http://docs.openlinksw.com/val//group__val__acl__module__internal__api.html#ga89b2c77c10c82186ddc0e7b46093123c" class="absuri">Internal VAL API</a>.
+ Alternatively one can directly add the rules to the private graph matching the realm in which the rules should apply.
+ Given the SQL realm <code>http://www.openlinksw.com/ontology/acl#SqlRealm</code> and default hostname <code>&quot;HOST&quot;</code> the graph IRIs would be:</p>
+<ul><li>ACL Rules: <code>http://HOST/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm</code> </li>
+<li>Groups: <code>http://HOST/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm</code>.
+</li>
+<li>Restrictions: <code>http://HOST/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm</code>.</li>
+</ul><p>Be aware that <a href="http://docs.openlinksw.com/val/val_configuration.html#val_configuration_acl_graphs" class="absuri">these graphs can be customized</a> for better readability.</p>
+<p> </p>
+<h2><a name="Enabling SQL ACLs"></a> Enabling SQL ACLs</h2>
+ By default ACLs will not be enforced since the ACL scope is disabled.
+ To enable general SPARQL ACL rules in the sql realm: <br><pre>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+with &lt;urn:virtuoso:val:config&gt;
+delete {
+  oplacl:SqlRealm oplacl:hasDisabledAclScope oplacl:Query .
+}
+insert {
+  oplacl:SqlRealm oplacl:hasEnabledAclScope oplacl:Query .
+};
+</pre><p> Similarly ACLs for individual private graphs are enabled via: </p>
+<br><pre>sparql
+prefix oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt;
+with &lt;urn:virtuoso:val:config&gt;
+delete {
+  oplacl:SqlRealm oplacl:hasDisabledAclScope oplacl:PrivateGraphs .
+}
+insert {
+  oplacl:SqlRealm oplacl:hasEnabledAclScope oplacl:PrivateGraphs .
+};
+</pre><h2><a name="ACL Restrictions to Control Request and Result Limits"></a> ACL Restrictions to Control Request and Result Limits</h2>
+<p>In addition to the ACL Rules to control who has the right to perform which actions Virtuoso allows to control certain limits via <a href="http://docs.openlinksw.com/val/val_acl.html#val_acl_restrictions" class="absuri">ACL Restrictions</a>.</p>
+<p>The following restriction resources are supported:</p>
+<ul><li><code>urn:virtuoso:restrictions:sql-request-rate</code> - Limit the request rate in one SQL connection.
+</li>
+<li><code>urn:virtuoso:restrictions:sql-content-size</code> - Limit the result content size.
+ This applies to individual blobs as well as the whole result set.
+</li>
+<li><code>urn:virtuoso:restrictions:sql-result-rows</code> - Limit the number of result rows.</li>
+</ul><p>Should no restriction apply to the authenticated person, then no limit will be enforced.
+ Should multiple restrictions apply, then the least restrictive will apply.</p>
+<h2><a name="Examples"></a> Examples</h2>
+<h3><a name="Restriction Examples"></a> Restriction Examples</h3>
+<p>Placeholders in the examples need to be replaced with actual values.
+ <code>{FINGERPRINT-URI}</code> refers to a URI identifying a certificate by its fingerprint.
+ Finderprint URIs have the following format: <code>cert:XX:XX:XX:XX:XX:XX:XX</code>.</p>
+<h4><a name="Restrict The Request Rate"></a> Restrict The Request Rate</h4>
+ <br><pre>SPARQL
+
+PREFIX oplres: &lt;http://www.openlinksw.com/ontology/restrictions#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/restrictions/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+
+INSERT {
+  &lt;#RequestRate&gt; a oplres:Restriction ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    foaf:name &quot;10 requests per second&quot; ;
+    oplres:hasMaxValue &quot;10&quot;^^xsd:decimal ;
+    oplres:hasRestrictedResource &lt;urn:virtuoso:restrictions:sql-request-rate&gt; ;
+    oplres:hasAgent &lt;{FINGERPRINT-URI}&gt; ;
+    oplres:hasRealm oplacl:SqlRealm .
+};
+</pre><h4><a name="ACL Examples"></a> ACL Examples</h4>
+<h5><a name="Grant SPARQL Read Permissions to Anyone With a Valid Certificate"></a> Grant SPARQL Read Permissions to Anyone With a Valid Certificate</h5>
+<p>First we create the conditional group representing the validated certificates: </p>
+<br><pre>SPARQL
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+
+INSERT {
+  &lt;{GROUP-IRI}&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Valid X.509 Certificates&quot; ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:GenericCondition ;
+      oplacl:hasCriteria oplacl:CertVerified ;
+      oplacl:hasComparator oplacl:EqualTo ;
+      oplacl:hasValue 1
+    ] .
+};
+</pre><p> We then create the actual ACL rule referencing the group: </p>
+<br><pre>SPARQL
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+insert {
+  &lt;{RULE-IRI}&gt; a acl:Authorization ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    oplacl:hasAccessMode oplacl:Read ;
+    acl:accessTo &lt;urn:virtuoso:access:sparql&gt; ;
+    acl:agent &lt;{GROUP-IRI}&gt; ;
+    oplacl:hasScope oplacl:Query ;
+    oplacl:hasRealm oplacl:SqlRealm .
+};
+</pre><h5><a name="Grant SPARQL Sponge Permission to One Certificate"></a> Grant SPARQL Sponge Permission to One Certificate</h5>
+ <br><pre>SPARQL
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+insert {
+  &lt;{RULE-IRI}&gt; a acl:Authorization ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    oplacl:hasAccessMode oplacl:Sponge ;
+    acl:accessTo &lt;urn:virtuoso:access:sparql&gt; ;
+    acl:agent &lt;{FINGERPRINT-URI}&gt; ;
+    oplacl:hasScope oplacl:Query ;
+    oplacl:hasRealm oplacl:SqlRealm .
+};
+</pre><h4><a name="Grant SPARQL Write Permissions For One Private Graph To One Certificate"></a> Grant SPARQL Write Permissions For One Private Graph To One Certificate</h4>
+ <br><pre>SPARQL
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+insert {
+  &lt;{RULE-IRI}&gt; a acl:Authorization ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    oplacl:hasAccessMode oplacl:Write ;
+    acl:accessTo &lt;{GRAPH-IRI}&gt; ;
+    acl:agent &lt;{FINGERPRINT-URI}&gt; ;
+    oplacl:hasScope oplacl:PrivateGraphs ;
+    oplacl:hasRealm oplacl:SqlRealm .
+};
+</pre><p> </p>
+<h4><a name="Grant SPARQL Write Permissions Based on a SPARQL ASK Query"></a> Grant SPARQL Write Permissions Based on a SPARQL ASK Query</h4>
+ First we create the conditional group which contains a SPARQL ASK Query template for testing the existence of Group and Query conditions, in conjunction with a foaf:knows relation -- that has one WebID<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebID&parent=VAL_SqlACLs" class="wikiword">?</a>  (i.e., relation subject URI that denotes a <code>foaf:Person</code> entity e.g., <code>http://kingsley.idehen.net/dataspace/person/kidehen#this</code> ) as its subject and several other WebIDs<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebIDs&parent=VAL_SqlACLs" class="wikiword">?</a> as its object.<p>This is an example of using social network oriented relations as the basis for SQL access privileges, granted via an Authorization.</p>
+<br><pre>SPARQL
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/graph/groups/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+
+INSERT {
+  &lt;{GROUP-IRI}&gt; a oplacl:ConditionalGroup ;
+    foaf:name &quot;Known by {PERSON-NAME}&quot; ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    oplacl:hasCondition [
+      a oplacl:GroupCondition, oplacl:QueryCondition ;
+      oplacl:hasQuery &quot;&quot;&quot;ask where {
+          &lt;{PERSON-WEBID}&gt; foaf:knows ^{uri}^ .
+        }&quot;&quot;&quot;
+    ] .
+};
+</pre><p> We then create the actual ACL rule referencing the group: </p>
+<br><pre>SPARQL
+
+PREFIX oplacl: &lt;http://www.openlinksw.com/ontology/acl#&gt; 
+PREFIX acl: &lt;http://www.w3.org/ns/auth/acl#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH GRAPH &lt;http://{HOST-CNAME}/acl/graph/rules/http%3A%2F%2Fwww.openlinksw.com%2Fontology%2Facl%23SqlRealm&gt;
+insert {
+  &lt;{RULE-IRI}&gt; a acl:Authorization ;
+    foaf:maker &lt;{PERSON-WEBID}&gt; ; 
+    oplacl:hasAccessMode oplacl:Write ;
+    acl:accessTo &lt;{GRAPH-IRI}&gt; ;
+    acl:agent &lt;{GROUP-IRI}&gt; ;
+    oplacl:hasScope oplacl:PrivateGraphs ;
+    oplacl:hasRealm oplacl:SqlRealm .
+};
+</pre><h2><a name="See Also"></a> See Also</h2>
+ <ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VAL_SparqlACLs" class="wikiword">SPARQL ACLs</a> </li>
+<li><a href="http://docs.openlinksw.com/val/val_acl.html" class="absuri">VAL ACL System</a> </li>
+</ul></div></body></html>

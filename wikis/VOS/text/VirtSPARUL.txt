@@ -1,0 +1,89 @@
+%VOSWARNING%
+
+
+%META:TOPICPARENT{name="VOSSPARQL"}%
+---++SPARUL
+
+SPARUL is an Update Language For RDF Graphs.
+
+Since version 5.0, Virtuoso has supported the [[http://jena.hpl.hp.com/~afs/SPARQL-Update.html][SPARQL/Update]] (SPARUL) extension of SPARQL.
+This is sufficient for most routine data manipulation operations. 
+
+If <nowiki>SPARQL_UPDATE</nowiki> role is granted to SPARQL user, then data manipulation statements may be executed via the SPARQL Web service endpoint; if <nowiki>SPARQL_UPDATE</nowiki> role is not granted, users are limited to data querying statements.
+
+---+++ Related Functions
+
+Two functions allow the user to alter RDF storage by inserting or deleting all triples listed in some vector.
+
+Both functions receive an IRI of a graph that should be altered and a vector of triples that should be added or removed.  The graph IRI can be either IRI ID or a string. 
+
+The return values of these functions are not defined and should not be used by applications.
+
+<verbatim>
+create function DB.DBA.RDF_INSERT_TRIPLES (in graph_iri any, in triples any);
+create function DB.DBA.RDF_DELETE_TRIPLES (in graph_iri any, in triples any);
+</verbatim>
+
+Simple operations may be faster if written as low-level SQL code instead of using SPARUL.
+For instance, the use of SPARQL DELETE is redundant when the application can delete from <nowiki>RDF_QUAD</nowiki> by using simple filters like:
+
+<verbatim>
+delete from DB.DBA.RDF_QUAD
+where G = DB.DBA.RDF_MAKE_IID_OF_QNAME (
+    'http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf' );
+</verbatim>
+
+On the other hand, simple filters do not work when search criteria refer to triples that are affected by the modification.
+
+Consider a function that deletes all triples whose subjects are nodes of type 'http://xmlns.com/foaf/0.1/Person'. Type information is stored in triples that will be deleted, so the simplest function is something like this:
+
+<verbatim>
+create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  declare pdata_dict, pdata_array any;
+-- Step 1: select everything that should be deleted
+  pdata_dict := ((
+      sparql construct { ?s ?p ?o }
+      where { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type <http://xmlns.com/foaf/0.1/Person>
+            } }
+      ));
+-- Step 2: delete all found triples
+  pdata_array := dict_list_keys (pdata_dict, 1);
+  RDF_DELETE_TRIPLES (foaf_graph, pdata_array);
+};
+
+DELETE_PERSONAL_DATA (
+  'http://local.virt/DAV/sparql_demo/data/data-xml/source-simple2/source-data-01.rdf' );
+</verbatim>
+
+Since Virtuoso 5.0, applications may use SPARUL to do the same in a more convenient way:
+
+<verbatim>
+create procedure DELETE_PERSONAL_DATA (in foaf_graph varchar)
+{
+  sparql delete { ?s ?p ?o }
+      where { graph ?:foaf_graph {
+              ?s ?p ?o . ?s rdf:type <http://xmlns.com/foaf/0.1/Person>
+           } }
+};
+</verbatim>
+
+
+---++Virtuoso's SPARUL Implementation
+
+---+++References
+#SparqlSpecs
+---++++Specs
+   * [[http://jena.hpl.hp.com/~afs/SPARQL-Update.html][SPARQL/UPDATE]]
+   * [[http://www.w3.org/TR/rdf-sparql-query/][SPARQL Query Language for RDF]]
+   * [[http://www.w3.org/TR/2005/WD-rdf-sparql-XMLres-20050527/][SPARQL Query Results XML Format]]
+   * [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol for RDF]]
+#SparqlFaqs
+---++++FAQs
+#SparqlPresentations
+---++++Presentations
+#SparqlTutorials
+---++++Tutorials
+
+CategoryGlossary CategorySPARQL CategoryRDF CategoryVOS CategoryDocumentation

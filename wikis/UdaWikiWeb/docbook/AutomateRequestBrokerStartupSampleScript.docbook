@@ -1,0 +1,80 @@
+<docbook><section><title>AutomateRequestBrokerStartupSampleScript</title><para> OpenLink Product Support does not provide customized shell scripts to automate Broker startup or any other feature of our software.
+ However, we do provide a sample shell script as a courtesy to those individuals who may want general guidance before creating their own scripts.</para><para> </para><programlisting>&gt;&gt; Begin file
+
+#!/bin/sh
+# 
+# Run the OpenLink Request Broker
+
+# For entry in /etc/rc2.d/SnnOpenLinkBroker, where nn is 90 or higher.
+# Typically, nn is 98 so that it precedes the CDE login process which
+# does not return.
+
+BIN_DIR=/usr/openlink/bin
+
+if [ &quot;$1&quot; = stop ]
+then
+   echo &quot;Shutting down OpenLink Request Broker ...&quot;
+
+   # This code derived from the OpenLink rqbshut script.
+   #######################################################################
+
+   process=oplrqb
+   set - `ps -e | grep &quot; $process\$&quot; | grep -v grep`
+
+   if [ $# -eq 0 ]
+   then
+   echo $0: $process is not running
+   exit 1
+   fi
+
+   kill $1 2&gt;/dev/null
+   if [ $# -eq 0 ]
+   then
+   echo $0: unable to shutdown $process
+   exit 1
+   fi
+
+   echo $0: $process shutdown complete
+   exit 0
+   echo &quot;Shut down process but not exiting script&quot;
+fi
+
+# Else, assume start.
+
+# BIN_DIR=/export/home/openlink/sschadt/bin
+exe=$BIN_DIR/oplrqb
+if [ -x $exe ]
+then
+   # See OpenLink installation guide for alternatives.
+
+   if id | grep &quot;uid=0&quot; &gt;/dev/null 2&gt;&amp;1
+   then
+       # Start broker under its owner&#39;s identity.
+
+       #  set - `ls -l $exe`   (this line was clearing out $1)
+
+       # See if the file exists and use $? to determine outcome
+       ls -l $exe &gt;/dev/null 2&gt;&amp;1
+       if [ $? -eq 0 ]
+       then
+           id=&quot;$1&quot;
+           echo &quot;The id being used is &#39;$id&#39;&quot;
+           echo &quot;Starting OpenLink Request Broker with &#39;&quot;$id&quot;&#39; identity.&quot;
+           su &quot;$id&quot; -c &quot;$exe &amp;&quot;
+           echo &quot;ps -ef | grep opl ...&quot;
+           ps -ef | grep opl
+           exit $?
+       fi
+   fi
+
+   echo &quot;Starting OpenLink Request Broker.&quot;
+   $exe &gt;/dev/null 2&gt;&amp;1 &amp;
+   exit $?
+
+else
+   echo &quot;OpenLink Request Broker not found: $exe&quot;
+   exit 1
+fi
+
+&lt;&lt; end of file 
+</programlisting></section></docbook>

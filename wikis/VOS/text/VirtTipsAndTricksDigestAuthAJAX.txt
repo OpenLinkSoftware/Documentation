@@ -1,0 +1,111 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+Using Digest Authentication to Insert Triples 
+
+---++What
+Insert triples using Digest Authentication against the Virtuoso /sparql-auth endpoint.
+
+---++Why
+To simplify data management by using HTTP digest authentication.
+
+---++How 
+
+Here is a sample example showcasing how to insert triples in Virtuoso Quad store using Digest Authentication in a simple HTML 5 form with embedded AJAX:
+
+
+---+++Example
+
+This example demonstrates how Virtuoso user can insert triples into the Virtuoso Quad Store using Digest authentication against the Virtuoso "/sparql-auth" endpoint. The implementation is done on the base of simple html form using HTML 5 and AJAX:
+
+<verbatim>
+<html lang="en">
+...
+
+<script type="text/javascript">
+    function authenticate()
+      {
+      
+        vgraphuri   = document.demo.graphuri.value ;
+        vsubject    = document.demo.subject.value ;
+        vpredicate  = document.demo.predicate.value ;
+        vobject     = document.demo.object.value ;
+        vuser       = document.demo.username.value ;
+        vpassword   = document.demo.userpassword.value ;
+        
+        var q = "INSERT INTO GRAPH " + vgraphuri + " { " + vsubject + " " + vpredicate + " " + vobject + "  . } " ;
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange=function()
+        {
+          if (xhr.readyState==4 && xhr.status==200)
+            {
+              alert(xhr.responseText); 
+            }
+          if (xhr.readyState==4 && xhr.status==401)
+            {
+              alert("Error: Invalid credentials or insufficient rights to perform the operation."); 
+            }   
+         if (xhr.readyState==4 && xhr.status==500)
+            {
+              alert(xhr.responseText); 
+            }   
+         if (xhr.readyState==4 && xhr.status==400)
+            {
+              alert(xhr.responseText); 
+            }             
+        }
+  
+   
+	xhr.open("POST", "/sparql-auth/", false, vuser, vpassword);
+	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xhr.send("query=" + encodeURIComponent (q));
+      
+      };  
+</script>
+...
+</verbatim>
+
+
+<b>Steps</b>:
+
+   1 To be able to perform updates to the Quad Store, a Virtuoso user account should have specific settings done:
+      1 Go to http://host:port/conductor
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth1.png" target="_blank"><img src="%ATTACHURLPATH%/dauth1.png" width="600px" /></a>%BR%%BR%
+      1 Enter admin credentials 
+      1 Go to "System Admin" -> "Users"
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth2.png" target="_blank"><img src="%ATTACHURLPATH%/dauth2.png" width="600px" /></a>%BR%%BR%
+      1 Click "Create New Account". Optionally, you can apply the settings to existing user too.
+      1 In the presented form:
+         * enter "Account name", for ex. demo
+         * enter "Password", 
+         * change "User type" to "SQL/ODBC and WebDAV", 
+         * for "DAV Home Path" hatch the "create" check-box,
+         * change "Quata" to 5,
+         * Select from "Account Roles" the role "SPARQL_UPDATE" and move to "Selected" list 
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth3.png" target="_blank"><img src="%ATTACHURLPATH%/dauth3.png" width="600px" /></a>%BR%%BR%
+      1 Click "Save"
+      1 The new user "demo" should be created and displayed in the users list:
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth4.png" target="_blank"><img src="%ATTACHURLPATH%/dauth4.png" width="600px" /></a>%BR%%BR%      
+   1 Now when we have an user that can update the Quad Store data, we will demonstrate how this user will insert a triple. Place the following <a href="%ATTACHURLPATH%/demo.html" style="wikiautogen">demo.html</a> file at your server, so for ex. it to be accessible from http://host:port/mydemo:
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth5.png" target="_blank"><img src="%ATTACHURLPATH%/dauth5.png" width="600px" /></a>%BR%%BR%      
+   1 The presented form offers 4 fields -- one for graph URI, respectively one for subject, object and predicate values. Each of these fields has predefined values that can be changed to other preferable. Enter for the created user from above its credentials and click "Insert".
+   1 On a successful insert, a message as below will be presented:
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth6.png" target="_blank"><img src="%ATTACHURLPATH%/dauth6.png" width="600px" /></a>%BR%%BR%      
+   1 In case some of the fields graphuri, subject, object or predicate are invalid, an error handler message will be presented:
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth7.png" target="_blank"><img src="%ATTACHURLPATH%/dauth7.png" width="600px" /></a>%BR%%BR%      
+   1 In case the user has provided wrong credentials or has no rights to update the Quad Store, a message as per bellow will be presented:
+%BR%%BR%<a href="%ATTACHURLPATH%/dauth8.png" target="_blank"><img src="%ATTACHURLPATH%/dauth8.png" width="600px" /></a>%BR%%BR%      
+
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VOSSparqlProtocol][Virtuoso SPARQL Query Service]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]
+
+   
+   

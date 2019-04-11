@@ -1,0 +1,153 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%--><p> <br></p><!--End of %META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%--><p> <br></p><h3><a name="Session Rules Books"></a>Session Rules Books</h3>
+<p>The following text highlights sections of the Rulebook that need attention or cause problems:<br></p><pre>[Request Broker]
+BinaryDirectory  = c:\openlink\openlink software\uda\multi-tier\v5.1\bin
+CommandLine		=	 ;+debug
+Protocols		  = tcp
+;MaxAgents	= 0				 ; if &gt;0, max. # of processes spawned by broker
+;MaxConnections	= 0				 ; if &gt;0, max. # of connections from clients
+HostNameResolver = Yes	; Resolve IP addresses to hostnames
+LingerTimeout	 = 0	; if &gt;0, time in seconds a disconnected agent wil linger
+</pre><p> <br><strong><nop></nop>BinaryDirectory</strong> can cause problems on machines with multiple installations.
+ Insure that <nop></nop>BinaryDirectory passes the correct path.</p><p><strong><nop></nop>CommandLine</strong> can cause problems by overriding Broker startup options passed on the command line.
+ For instance, you may start the Broker with <tt>oplrqb +loglevel 7 +logfile oplrqb.log</tt>.
+ This causes the Broker to run in the background and write debug output to a file.
+ However, if <tt>-dv</tt> is passed to <nop></nop>CommandLine, the Broker will run in foreground mode and write diagnostic output to the screen.</p><p><strong><nop></nop>HostNameResolver</strong> may need to be disabled to prevent &quot;unable to authorize shutdown&quot; errors associated with the Request Broker.</p><p>Set <strong><nop></nop>LingerTimeout</strong> to reduce overhead associated with fresh agent spawns.
+ Use of <nop></nop>LingerTimeout insures agents  persist after disconnect.
+ This allows new connections to utilize old agents.
+ Thus, problems associated with resources are reduced or eliminated.<br></p><pre>[Protocol TCP]
+PingWatchdog = No	; Send check-alive packets
+PingInterval = 600	;	every &lt;PingInterval&gt; seconds
+;IPAddress		= 127.0.0.1		 ; Overrules found interface address
+PortLow		= 5025
+PortHigh	= 6000
+Listen		 = 5025
+</pre><p> <br>Use <strong><nop></nop>PingWatchDog</strong> sparingly.
+ It is associated with problems.
+ Additionally, know that <nop></nop>PingWatchDog only terminates connections when an entire client machine is unpingable.
+ It does not reap connections when a specific client application dies.</p><p>Set <strong>IPAddress</strong> to one IP address, when a server has multiple addresses.
+ Then, pass the specific IP address in client data source names.
+ This presents &quot;Remote System&quot; errors that occur when a Broker runs on one address, and a canonical hostname--passed in a client data source--resolves to another IP.</p><p>Insure that both <strong><nop></nop>PortLow</strong> and <strong><nop></nop>PortHigh</strong> are set.
+ This insures that the Request Broker will have a definitive port range that it can utilize for database agent connections.
+ Failure to set <nop></nop>PortHigh results in &quot;Remote System&quot; and other errors that occur when a Broker hits an occupied port and fails to search for a new one.</p><p><strong>Listen</strong> is the TCP port that users reference in their client Data Source Names.
+ (<nop></nop>OpenLink 1.x and 3.x Brokers do not have Listen.
+ Substitute <nop></nop>PortLow instead.)<br></p><pre>[Communications]
+SendSize		 = 16000	; Send buffer size
+ReceiveSize	 = 4096	; Receive buffer size
+DataEncryption = No	; Crypting of outgoing packets
+BrokerTimeout  = 30	; Timeout for utilities to contact the broker
+ReceiveTimeout = 10	; Maximum time allowed for for OpenLink Service Agents
+RetryTimeout	= 5	; Initial retry interval -- doubles on failure
+</pre><p> <br>You should not modify these values, unless a support problem mandates a change.
+ Consult the FAQ associated with the use and meaning of these particular settings.<br></p><pre>[Security]
+StartupBy	  = .*	; users who can startup oplrqb
+ShutdownBy	 = .*	; users who can shutdown oplrqb
+ShutdownFrom  = NKHATAM,localhost.*,127.0.0.1
+ValidUidRange = 0, 50000	; Valid range for OpSysLogin
+;TraceRulebook  = debug.bk		; Write merged rulebook (debug)
+;IncludeRulebook= samplesv.bk	; Default location in BinaryDirectory
+</pre><p> <br>These parameters are associated with &quot;You are not authorized to initiate shutdown&quot; errors.
+ If this error occurs, you can take the following action: <br></p><ul><li> Comment out <strong><nop></nop>ShutdownBy</strong> and <strong><nop></nop>ShutdownFrom</strong>.
+<br></li>
+<li> Forcibly terminate the Broker.
+<br></li>
+<li> Restart the Broker and test normal shutdown.
+<br></li>
+<li> Uncomment <strong><nop></nop>ShutdownBy</strong> and <strong><nop></nop>ShutdownFrom</strong>.
+<br></li>
+<li> Insure * and your specific uid is passed to <strong><nop></nop>ShutdownBy</strong>.
+<br></li>
+<li> Insure *,  127.0.0.1, and the specific IP address are passed to <strong><nop></nop>ShutdownFrom</strong>.
+<br></li>
+<li> Forcibly terminate the Broker.
+<br></li>
+<li> Restart the Broker and test normal shutdown.
+<br></li>
+<li> Set <strong><nop></nop>HostNameResolver</strong><tt>=</tt>No <br></li>
+<li> Forcibly terminate the Broker.
+<br></li>
+<li> Restart the Broker and test normal shutdown.</li>
+</ul><br><pre>[Environment INFORMIX2000]
+INFORMIXSERVER	  = alpha
+INFORMIXDIR		  = C:\Informix
+Path					= C:\Informix\BIN;C:\WINNT\System32
+ONCONFIG			  = ONCONFIG
+DELIMIDENT			= Y	; Allow quoted identifiers
+OPL_INF_MULTISESS  = Y	; Allow multiple sessions
+OPL_SPACEPADCHAR	= Y	; Pad CHAR fields with spaces
+CURSOR_SENSITIVITY = LOW	; Set to HIGH after loading oplrvc.sql
+;FET_BUF_SIZE			 = 65535			 ; Size of the fetch buffer
+;FORCE_ONLINE_DATABASE = 1		; Force mode to (0) SE or (1) ONLINE
+</pre><p> <br>Insure that the appropriate environment variables are set in the Environment section that pertains to the <nop></nop>OpenLink database agent.
+ Failure to set environment variables will produce &quot;Server Handle&quot; or variable specific error messages.<br></p><pre>[Domain Aliases]
+Informix 2000						 = inf2000
+</pre><p> <br>Insure that the value passed in the DSN&#39;s &quot;Domain&quot; or &quot;ServerType<a href="http://wikis.openlinksw.com:80/dataspace/owiki/wiki/UdaWikiWeb/ServerType&parent=TroubleshootingUDARulesBooks" class="wikiword">?</a>&quot; field appears in the Rules Book&#39;s Domain Aliases section.
+ Otherwise, &quot;Broker is unable to resolve your request&quot; errors will occur.
+ (JDBC users must check the value passed to SVT.) If you choose to add an alias, you must also insure that corresponding Mapping Rules, Database Agent configuration sections, and Environment sections are present and configured, as well.<br></p><pre>[Mapping Rules]
+;*:*:blank:*:*:*:rw	  = reject You should specify a username and password
+*:*:Admin:msdos:*:jet:* = reject Admin user account is not registered
+inf2000:*:*:*:*:*:*	  = reject The Informix 2000 Database Agent is not configured
+inf2000:*:*:*:*:jet:*	= reject The Informix 2000 Database Agent is not configured for jet
+</pre><p> <br>Insure that one or more Mapping Rules correspond to the domain alias.
+ The first field of the Mapping Rules passes the value that appears on the right hand side of the Domain Aliases pair.
+ Absence of Mapping Rules will produce &quot;Mapping Not Found&quot; errors.<br></p><pre>[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program	  = inf9_mv.exe
+Environment = INFORMIX2000
+OpsysLogin  = Yes
+ReUse		 = always
+;Directory	 = c:\temp
+;ConnectOptions =
+;ReadOnly	=
+;CommandLine	=
+;Database	=
+;Userid		=
+;Password	=
+</pre><p> <br>The Database Agent configuration sections hardcode values that will be enforced during every connection that uses the section.
+ (DSN settings will be overriden by values hardcoded in the Rules Book.) Environment, Program, and <nop></nop>ReUse variables should be set.
+ However, other parameters should not be set to insure flexibility.</p><p>Take note of the Opsyslogin, Database, and Userid and Password parameters:</p><ul><li> <strong>Opsyslogin</strong> substitutes database level authentication with operating system level authentication.
+ This eradicates problems associated with security flaws in certain Ingres and Informix databases.
+ Suspect problems with Opsyslogin if authentication errors reference /etc/shadow, /etc/password, or other operating system files.
+ Be advised - product flaws may occur if the drivers&#39; security routines are written to o/s specific security modules and ported to other machines.
+ Suspect this problem, if no amount of configuration will remedy problems associated with Opsyslogin.</li>
+</ul><ul><li> <strong>Database</strong> must be used to pass the full path to Progress databases when JDBC Type 3 connections are employed.
+ Type 3 JDBC connection URLs cannot parse the slashes in paths.</li>
+</ul><ul><li> <strong>Userid</strong> and <strong>Password</strong> are often uncommented to enforce passage of blank usernames and passwords to unsecured Progress databases.
+ However, this can cause problems, if usernames and passwords are subsequently added to Progress _User tables.
+ Suspect Userid and Password if Progress SQL89 agents produce inexplicable authentication errors.</li>
+</ul><br><pre>[generic_inf2000_jet]
+Description = Default settings for Informix 2000 agent for jet
+Program	  = inf9_mv.exe
+Environment = INFORMIX2000
+OpsysLogin  = Yes
+ReUse		 = always
+;Directory	 = c:\temp
+;ConnectOptions =
+;ReadOnly	=
+CommandLine = +jetfix
+;Database	=
+;Userid		=
+;Password	=
+</pre><p> <br>The preceding Database Agent configuration section is specific to connections involving Microsoft Access client connections.
+ The fundamental difference is the enabling of +jetfix.
+ Be advised - Problems can occur when users edit the Access configuration section when modification needs to be made to the general section.<br></p><pre>[Zero Config]
+SQLServer (NKHATAM) = &quot;ServerType=SQLServer&quot;
+Sybase (NKHATAM)	 = &quot;ServerType=Sybase&quot;
+ODBC (NKHATAM)		= &quot;ServerType=Odbc&quot;
+JDBC 1.2 (NKHATAM)  = &quot;ServerType=Jdbc 1.2&quot;
+JDBC 1.3 (NKHATAM)  = &quot;ServerType=Jdbc 1.3&quot;
+JDBC 1.4 (NKHATAM)  = &quot;ServerType=Jdbc 1.4&quot;
+</pre><p> <br>Zero Config broadcasts pre-configured sets of connection options over the network.
+ You can easily configure DSNs by choosing the name of the Zero Config section that passes the desired parameters.<br></p><pre>[Persistent Services]
+Configurator = www_sv
+
+[www_sv]
+Program	  = w3config/www_sv.exe
+Directory	= w3config
+CommandLine = 
+
+[Environment WWW_SV]
+</pre><p> <br>The preceding section pertains to the Admin Assistant.
+ You can place a semicolon in front of *Configurator* to disable the Admin Assistant.
+ You can also pass +loglevel 7 to <strong><nop></nop>CommandLine</strong> to produce debug level Admin Assistant logs.
+ Finally, interested parties should review ~/openlink/bin/w3config/www_sv.ini for additional Admin Assistant configuration settings.
+<br></p></div></body></html>

@@ -1,0 +1,42 @@
+%META:TOPICPARENT{name="UDATroubleshootingAppProblems"}%
+= FAQ: Can I use <nop>OpenLink Drivers to connect to a <nop>FileMaker database? =
+
+We do not curently offer a driver for direct connections to <nop>FileMaker databases.  Such a driver may be produced if and when <nop>FileMaker supplies the client API and/or networking components that we would need for its development. 
+
+Currently, most users find that their best method of ODBC connections to <nop>FileMaker is use of the our [[http://uda.openlinksw.com/odbc-jdbc/| ODBC Driver for JDBC Data Sources]] (also known as the "ODBC-JDBC Bridge") in conjunction with the JDBC Driver supplied by <nop>FileMaker, which is an OEMed multi-tier client for the <nop>DataDirect <nop>SequeLink product.
+
+//This is a suboptimal solution.// The <nop>DataDirect forums include discussion of some of the issues with this driver:  [[http://forums.datadirect.com/ddforums/thread.jspa?threadID=511&tstart=0| Problem: DECIMALS are returned as java.lang. Double and BLOBS are returned as VARCHAR java.lang.String]].
+
+To proceed with the connection described above, take the following action:
+# Obtain the JDBC Client Driver for <nop>FileMaker Pro ({{{sljc.jar}}}). This driver is included in the xDBC Plug-In installer. 
+# Move the JDBC Client Driver into the <code>/Library/Java/Extensions/</code> directory, or create an appropriate soft-link from there. This has the same effect as setting the <code>$CLASSPATH</code> environment variable (which is challenging to work with directly, on Mac OS X).
+# Install the xDBC Plug-In on your target <nop>FileMaker instance, and ensure that sharing via JDBC is enabled. Consult <nop>FileMaker documentation and support for explicit instructions.
+# Open a Terminal.app instance.
+# Use the {{{java -version}}} command to obtain your JRE version.  For example:
+{{{
+% java -version
+java version "1.4.1_01" Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.1_01-69.1) Java HotSpot(TM) Client VM (build 1.4.1_01-24, mixed mode)
+}}}
+# Use the <code>java &lt;classname&gt;</code> command to obtain your <nop>SequeLink driver version. For example:
+{{{
+java com.ddtek.jdbc.sequelink.SequeLinkDriver 
+[DataDirect][SequeLink JDBC Driver]Driver Version: 5.4.0034
+}}}
+# Install our [[http://uda.openlinksw.com/odbc-jdbc-st/|Single-Tier ODBC Driver for JDBC Data Sources]] on the client machine. 
+# You will receive a 14-day evaluation license for the ODBC-JDBC Bridge ({{{jdbc_lt.lic}}}) when you download the product. [[http://support.openlinksw.com/supportweb/ApplyingLicenseFiles| Follow the appropriate instructions]] to apply this license file.
+# Launch the **<nop>OpenLink ODBC Administrator.app** ({{{/Applications/Utilities/}}}).
+# Ensure that you have the classname for the FMPro JDBC Client Driver. This may be found in the `<nop>FileMaker ODBC and JDBC Developer's Guide`. At the time of writing, this classname is:
+{{{
+com.ddtek.jdbc.sequelink.SequeLinkDriver
+}}}
+# Ensure that you have a functioning JDBC URL that connects to <nop>FileMaker via <nop>SequeLink. The full syntax for this URL is also discussed in the `<nop>FileMaker ODBC and JDBC Developer's Guide,` but the basic form is provided here for your convenience:
+{{{
+jdbc:sequelink://&lt;hostname&gt;:&lt;port&gt;[;serverdatasource=databasename][;serverdataname=databasename][;DBUser=databaseusername[;DBPassword=databasepassword]]
+}}}
+# Pass the Java Classname and JDBC URL in the appropriate fields of your ODBC DSN.
+# Test your DSN.
+
+== Notes ==
+* The {{{serverdatasource}}} and {{{serverdataname}}} keywords are not optional. Pass the same value to both keywords. 
+* The {{{DBUser}}} and {{{DBPassword}}} keywords are optional in the JDBC URL, but if left out of the URL, these values //must// be passed through the ODBC Dialog. If no {{{DBUser}}} or {{{DBPassword}}} values are passed, the connection will fail.
+* Even if you have configured FMPro to require no password, you must still provide a value for this when prompted. You can generally pass an empty set of quotation marks, which <nop>FileMaker interprets as a NULL password and so permits the connection.

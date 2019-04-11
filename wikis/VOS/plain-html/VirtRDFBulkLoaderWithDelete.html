@@ -1,0 +1,54 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtBulkRDFLoader"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtBulkRDFLoader"}%--><p> </p>
+<h1><a name="Delta-aware bulk loading of datasets into Virtuoso"></a> Delta-aware bulk loading of datasets into Virtuoso</h1>
+ <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Why">Why</a></li> <li><a href="#What">What</a></li> <li><a href="#How">How</a></li>
+<ul><li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Basic%20usage">Basic usage</a></li> <li><a href="#Diagnostics">Diagnostics</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Why"></a> Why</h2>
+<p>High performance bulk-revision of existing data, on a par with simple bulk insertion of similar data, is best achieved by finding the difference (the &quot;delta&quot;) between an existing graph or dataset and the new graph or dataset being loaded, and then applying that differential or &quot;graph delta&quot; to the quad store.</p>
+<h2><a name="What"></a> What</h2>
+<p>Given an existing dataset hosted by Virtuoso, identified by a named graph IRI, and one that&#39;s being loaded from N-Quad files in the filesystem, Virtuoso&#39;s bulk load process can automatically determine the differences between the two datasets and quickly apply relevant <code>INSERTs</code>, <code>UPDATEs</code>, and <code>DELETEs</code> to the existing dataset.</p>
+<p>The Virtuoso RDF Bulk Loader is told to use this &quot;graph delta&quot; load process with a special option called <b><code>with_delete</code></b>, applied in the <code><a href="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html" class="absuri">ld_dir()</a></code> or <code><a href="http://docs.openlinksw.com/virtuoso/fn_ld_dir_all.html" class="absuri">ld_dir_all()</a></code> commands.</p>
+<h2><a name="How"></a> How</h2>
+<h3><a name="Prerequisites"></a>Prerequisites</h3>
+<ul><li>The <code>with_delete</code> option is available in <ul><li>Virtuoso Enterprise Edition Release 6.x, version 06.04.3134 or greater, only in cluster mode </li>
+<li>Virtuoso Enterprise Edition Release 7.0 and later, in both cluster and single-server mode </li>
+<li><i><b>Note:</b> <code>with_delete</code> functionality is not available in Virtuoso Open Source Edition (VOS).</i><br><br> </li>
+</ul></li>
+<li>N-Quad datasets where every graph name is specified within the dataset.
+<ul><li>Graphs may be in any order.
+ Multiple graphs may be in one file, however all triples from each graph must be together; triples from different graphs cannot be intermingled.
+ (In SQL terms, <code>GROUP BY graphname</code>; no <code>ORDER BY</code> is  necessary.) </li>
+<li>All triples from any given graph must be in the same file as all other triples from that graph.
+ No graph may have triples in multiple files, else the triples from the last file loaded will comprise the entirety of the updated graph.
+ <br><br> </li>
+</ul></li>
+<li>Virtuoso must be allocated at least 200 bytes of RAM per quad in the dataset being loaded.
+ As may be obvious, loading large graphs with this option can have a significant impact on Virtuoso&#39;s memory use.<br><br> </li>
+<li>The Virtuoso server must be running with a <a href="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#configsrvstupfiles" class="absuri">default transaction isolation level</a> of 2, <code>READ COMMITTED</code>.
+ Ensure that the <code>[Parameters]</code> section of the Virtuoso configuration file (default, <code>virtuoso.ini</code>) includes the following entry, and restart the Virtuoso server.
+<br><pre><br>DefaultIsolation = 2
+</pre><br></li>
+<li>The following lock mode settings should be set before using the <code>with_delete</code> option: <br><pre><br>cl_exec (&#39;__dbf_set (&#39;&#39;lock_escalation_pct&#39;&#39;, 200)&#39;);
+cl_exec (&#39;__dbf_set (&#39;&#39;enable_distinct_key_dup_no_lock&#39;&#39;, 1)&#39;);
+</pre><br></li>
+<li>The dataset files must not contain multiple graphs which have the same name but contain different triples.
+ Doing so will result in unpredictable triple counts, depending on which dataset file is being loaded on a given thread, which is non-deterministic.<br><br></li>
+</ul><h3><a name="Basic usage"></a> Basic usage</h3>
+<p>Using the <code><a href="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html" class="absuri">ld_dir()</a></code> or <code><a href="http://docs.openlinksw.com/virtuoso/fn_ld_dir_all.html" class="absuri">ld_dir_all()</a></code> commands as usual, set the <code>target_graph</code> argument to <code>&#39;with_delete&#39;</code> for each dataset file specified in <code>ll_file</code> that is known to require an update/reload.</p>
+<p>For example -- </p>
+<br><pre>ld_dir (&#39;/data8/2848260&#39;, &#39;%.gz&#39;, &#39;with_delete&#39;);
+ld_dir_all (&#39;/data8/&#39;, &#39;%.gz&#39;, &#39;with_delete&#39;);
+</pre><p> Once all are set run the <code>rdf_loader_run()</code> or <code>cl_exec(&#39;rdf_ld_srv()&#39;)</code> commands to enable the update/reload to commence.</p>
+<p>As many <code>rdf_loader_run()</code> or <code>cl_exec(&#39;rdf_ld_srv()&#39;)</code> commands can be invoked as threads/cores are available across the machines the Virtuoso cluster is being run on for fast parallel loading of the datasets, as would typically be done for the initial bulk load of the datasets.</p>
+<p>Note that all RDF loader threads can be stopped using the following command at which point all currently running threads will be allowed to complete and then exit: </p>
+<br><pre>rdf_load_stop()
+</pre><p> </p>
+<h3><a name="Diagnostics"></a> Diagnostics</h3>
+<p>A diagnostic log of the <code>with_delete</code> activity may be written to a file called <code>g_log.txt</code> on each cluster instance.</p>
+<ul><li>To enable this log, run the following command: <br><pre><br>cl_exec (&#39;__dbf_set (&#39;&#39;enable_g_replace_log&#39;&#39;,1)&#39;)
+</pre><br></li>
+<li>To disable this log, run the following command: <br><pre><br>cl_exec (&#39;__dbf_set (&#39;&#39;enable_g_replace_log&#39;&#39;,0)&#39;)
+</pre><br> </li>
+</ul><h2><a name="Related"></a> Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtBulkRDFLoader" class="wikiword">Virtuoso RDF Bulk Loader</a> </li>
+</ul></div></body></html>

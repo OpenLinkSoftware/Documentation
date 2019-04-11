@@ -1,0 +1,97 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+---+ What  free-text options can I use with <code>bif:contains</code>?
+
+Virtuoso supports use of several free-text options with <code>bif:contains</code>.
+%TOC%
+
+---++ OFFBAND
+
+See description for <code>OFFBAND</code> in [[http://docs.openlinksw.com/virtuoso/creatingtxtidxs.html#offbanddata][this document]].
+
+<i><b>Note</b>: <code>OFFBAND</code> is useful only if data comes via an Linked Data View and the source relational table uses this trick.</i>
+
+
+---++ SCORE
+
+<code>SCORE</code> is calculated as described in [[http://docs.openlinksw.com/virtuoso/creatingtxtidxs.html#hitscores][this document]].
+<verbatim>
+SQL> SPARQL 
+     SELECT ?s1 AS ?c1   , 
+                   ?sc   , 
+                   ?rank 
+     WHERE 
+       {
+         {
+           {
+             SELECT                                             ?s1   , 
+                                                (?sc * 3e-1) AS ?sc   , 
+                                                                ?o1   , 
+                    (sql:rnk_scale (<LONG::IRI_RANK> (?s1))) AS ?rank  
+             WHERE 
+               { 
+                 ?s1  ?s1textp      ?o1        . 
+                 ?o1  bif:contains  '"CNET"'  
+                      OPTION ( SCORE ?sc )
+               } 
+             ORDER BY DESC (?sc * 3e-1 + sql:rnk_scale (<LONG::IRI_RANK> (?s1)))  
+             LIMIT 20  
+             OFFSET 0 
+           }
+         }
+       };
+
+c1                                                sc      rank
+_________________________________________________________________________
+http://www.mixx.com/stories/45003360/justi...     3 	  5.881291583872891e-14
+http://www.mixx.com/stories/45099313/bing_...     2.7     5.881291583872891e-14
+http://dbpedia.org/resource/CBS_Interactive 	  1.5 	  5.881291583872891e-14
+http://dbpedia.org/resource/CBS_Interactive 	  1.5 	  5.881291583872891e-14
+
+
+4 Rows. -- 1 msec.
+</verbatim>
+
+
+[[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT+%3Fs1+AS+%3Fc1+++%2C+%0D%0A+++++++++++++++++++%3Fsc+++%2C+%0D%0A+++++++++++++++++++%3Frank+%0D%0A+++++WHERE+%0D%0A+++++++%7B%0D%0A+++++++++%7B%0D%0A+++++++++++%7B%0D%0A+++++++++++++SELECT+++++++++++++++++++++++++++++++++++++++++++++%3Fs1+++%2C+%0D%0A++++++++++++++++++++++++++++++++++++++++++++++++%28%3Fsc+*+3e-1%29+AS+%3Fsc+++%2C+%0D%0A++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++%3Fo1+++%2C+%0D%0A++++++++++++++++++++%28sql%3Arnk_scale+%28%3CLONG%3A%3AIRI_RANK%3E+%28%3Fs1%29%29%29+AS+%3Frank++%0D%0A+++++++++++++WHERE+%0D%0A+++++++++++++++%7B+%0D%0A+++++++++++++++++%3Fs1++%3Fs1textp++++++%3Fo1++++++++.+%0D%0A+++++++++++++++++%3Fo1++bif%3Acontains++%27%22CNET%22%27++%0D%0A++++++++++++++++++++++OPTION+%28+SCORE+%3Fsc+%29%0D%0A+++++++++++++++%7D+%0D%0A+++++++++++++ORDER+BY+DESC+%28%3Fsc+*+3e-1+%2B+sql%3Arnk_scale+%28%3CLONG%3A%3AIRI_RANK%3E+%28%3Fs1%29%29%29++%0D%0A+++++++++++++LIMIT+20++%0D%0A+++++++++++++OFFSET+0+%0D%0A+++++++++++%7D%0D%0A+++++++++%7D%0D%0A+++++++%7D&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on][View the results]] of the query execution on the [[http://lod.openlinksw.com][LOD]] instance.
+
+
+---++ SCORE_LIMIT
+<code>SCORE_LIMIT</code> works as it does in plain SQL free-text. [[http://docs.openlinksw.com/virtuoso/queryingftcols.html][See more details]]. 
+<verbatim>
+SQL> SPARQL 
+     SELECT  ?s   ,
+             ?sc 
+     WHERE 
+       { 
+         ?s  ?p            ?o . 
+         ?o  bif:contains  "tree" 
+             OPTION ( SCORE        ?sc , 
+                      SCORE_LIMIT  20
+                    )
+       };
+  
+s                                                                      sc
+VARCHAR                                                                INTEGER
+________________________________________________________________________________   
+
+                                                                      
+http://www.openlinksw.com/virtrdf-data-formats#default                 24
+http://www.openlinksw.com/virtrdf-data-formats#default                 24
+http://www.openlinksw.com/virtrdf-data-formats#sql-longvarbinary       21
+http://www.openlinksw.com/virtrdf-data-formats#sql-varchar-dt          20
+http://www.openlinksw.com/virtrdf-data-formats#sql-nvarchar-dt         20
+http://www.openlinksw.com/virtrdf-data-formats#sql-varchar-lang        20
+http://www.openlinksw.com/virtrdf-data-formats#sql-nvarchar-lang       20
+
+7 Rows. -- 2 msec.
+</verbatim>
+
+
+[[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT++%3Fs+++%2C%0D%0A+++++++++++++%3Fsc+%0D%0A+++++WHERE+%0D%0A+++++++%7B+%0D%0A+++++++++%3Fs++%3Fp++++++++++++%3Fo+.+%0D%0A+++++++++%3Fo++bif%3Acontains++%22tree%22+%0D%0A+++++++++++++OPTION+%28+SCORE++++++++%3Fsc+%2C+%0D%0A++++++++++++++++++++++SCORE_LIMIT++20%0D%0A++++++++++++++++++++%29%0D%0A+++++++%7D&should-sponge=&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=15000&debug=on][View the results]] of the query execution on the [[http://lod.openlinksw.com][LOD]] instance.
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfpredicatessparql][Query Constructs]]

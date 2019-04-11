@@ -1,0 +1,42 @@
+%META:TOPICPARENT{name="ErrorMessagesC"}%
+= Error Message: {{{Cannot support multiple connections over shared memory (-27000)}}} =
+
+This message occurs when a single instance of a multi-threaded Multi-Tier Database Agent for Informix (e.g., {{{inf9_mv}}}) is making multiple connections to a target {{{$INFORMIXSERVER}}} which is configured to accept shared memory connections.
+
+Multiple database connections from a single Agent instance to a single {{{$INFORMIXSERVER}}} will succeed only if Informix is configured to accept sockets-based connections.
+    
+There are a few solutions to this error message.  In order of preference for optimal performance and resource conservation --  
+
+# Reconfigure Informix to accept sockets-based connections, and adjust the Rulebook configuration to match.  This may require configuring an alias for the {{{$INFORMIXSERVER}}}.  If done properly, this will cause no disruption to any other connections being made via shared memory.%BR%
+# Adjust the Rulebook's **{{{reuse}}}** rule(s) for the multi-threaded Database Agent(s) to specify **{{{never}}}** (so only one connection to Informix will ever be made by a single Agent instance). For example --
+{{{
+[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program     = inf9_mv
+Environment = INFORMIX2000
+OpsysLogin  = No
+ReUse       = never
+;CommandLine 	=
+;ConnectOptions =
+;Directory 	= /tmp
+;Database 	=
+;Userid		=
+;Password 	=
+;ReadOnly	= Yes
+}}}
+# Adjust the Rulebook to specify the **single-threaded Database Agent(s)** instead of the multi-threaded.  This requires that the **{{{inf##_sv}}}** corresponding to the currently configured {{{inf##_mv}}} executable also be present in the {{{.../openlink/bin/}}} directory.  Any **{{{reuse}}}** rules must **also** be adjusted to specify **{{{never}}}**, so this option is more work than option #2, above.  For example --
+{{{
+[generic_inf2000]
+Description = Default settings for Informix 2000 agent
+Program     = inf9_sv
+Environment = INFORMIX2000
+OpsysLogin  = No
+ReUse       = never
+;CommandLine 	=
+;ConnectOptions =
+;Directory 	= /tmp
+;Database 	=
+;Userid		=
+;Password 	=
+;ReadOnly	= Yes
+}}}

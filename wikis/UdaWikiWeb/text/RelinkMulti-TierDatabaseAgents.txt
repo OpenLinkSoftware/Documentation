@@ -1,0 +1,113 @@
+%META:TOPICPARENT{name="ConfigureUDAFeatures"}%
+
+= Relinking Multi-Tier Database Agents for any DBMS =
+
+It is sometimes necessary to link or re-link your Multi-Tier Database Agents.  Typical reasons include:
+* The existing Database Agent executable has some incompatibility with database or operating system libraries on your Broker host.
+* No Database Agent executable was installed on your Broker host.
+
+The files described below should all be part of all current agent installations.  If the files discussed below are not found in your installation, you may have an older version of the software. In that case, [[http://support.openlinksw.com/support/online-support.vsp|please contact us for additional assistance.]]
+
+We provide a relink script for each Database Agent. These scripts are named using the form -- **{{{<ld><XXXX><NN>[mv]}}}**.
+* **{{{ld}}}** - indicates a link script
+* **{{{XXXX}}}** - first 3 or 4 letters of database name
+* **{{{NN}}}** - database version number, to the same specificity as the corresponding Database Agents
+* **{{{mv}}}** - if the agent is multi-threaded.
+
+Examples: 
+* **{{{ldora81mv}}}** is for the multi-threaded agent for Oracle 8i. 
+* **{{{ldoig2}}}** is for the single-threaded agent for Ingres II.
+
+We have attempted to provide a set of generic link scripts for every version of Progress we support, to enable you to relink most easily.  In some cases, you may need to [[CreateCustomRelinkScripts|create a custom relink script for Progress Agents]].  //**Note:** Relinking Progress Agents is typically necessary only if you are running a version of Progress with a different patch level the one originally used for linking the agents shipped **and** you are connecting a SQL-89 Agent in shared memory mode.//
+
+
+%TOC%
+
+== Pre-requisites for relinking Database Agents ==
+
+=== Requirements for all Database Agents === 
+* Make a **backup copy of your existing Agent(s).**
+* Insure that you have a **{{{C}}} compiler and library linker** installed on your database server.
+* **Set key <nop>OpenLink linking-script environment variables**, which themselves reference key database environment variables required for making native connections to your database engine.  You may prefer to adjust these values in the "{{{dbpaths}}}" file situated in the same directory as your database agent link script.
+#* DB2
+{{{
+DB2DIR=$DB2INST
+}}}
+#* Informix
+{{{
+INFORMIX5DIR=$INFORMIXDIR
+INFORMIX6DIR=$INFORMIXDIR
+INFORMIX7DIR=$INFORMIXDIR
+}}}
+#* Ingres
+{{{
+INGRES6DIR=$II_SYSTEM/ingres
+INGRES7DIR=$II_SYSTEM/ingres
+}}}
+#*Oracle
+{{{
+ORACLE6DIR=$ORACLE_HOME
+ORACLE7DIR=$ORACLE_HOME
+ORACLE8DIR=$ORACLE_HOME
+}}}
+#*Progress / OpenEdge
+{{{
+export PROGRES8DIR=$DLC
+export PROGRES9DIR=$DLC
+export PROGRES10DIR=$DLC
+}}}
+#*Solid
+{{{
+SOLIDDIR=$SOLID                                             
+}}}
+#*Sybase
+{{{
+SYBASE10DIR=$SYBASE
+SYBASE11DIR=$SYBASE
+SYBASE4DIR=$SYBASE
+}}}
+#*Unify
+{{{
+UNIFYDIR=$UNIFY../lib
+}}}
+#*Velocis
+{{{
+VELOCISDIR=$VELOCIS
+}}}
+#*Virtuoso
+{{{
+VIRTUOSODIR=$VIRTUOSO
+}}}
+* The "{{{.../openlink/lib}}}" (or similar) subdirectory that you are working with should be included in your system {{{PATH}}}.  If it is not already, add this directory to the system {{{PATH}}} now.
+
+=== Additional Informix-specific requirements === 
+* Informix users must have an {{{$INFORMIXDIR/lib/esql/}}} directory for successful relinking.  This may be obtained and installed as part of the freely downloadable Informix Client SDK, available from IBM, if not already present as part of your installation.
+
+=== Additional Progress-specific requirements ===
+* All Progress users must have a {{{$DLC/probuild/4gl/}}} directory, which requires a development license from Progress. 
+* All Progress users must set and export {{{DLC}}} and {{{PROLOAD}}} environment variables. {{{DLC}}} points to the root of the Progress installation. {{{PROLOAD}}} points to the {{{$DLC/probuild/}}} directory.
+* Progress 6 users must have an **HLI/C license from Progress.** For Progress 7, 8, and 9, this is not required
+
+
+== Relinking Database Agents for all DBMS ==
+
+# Ensure that all pre-requisites listed above have been addressed.
+# Navigate to the "{{{lib}}}" sub-directory of your <nop>OpenLink server components installation directory, e.g., "{{{/usr/openlink/lib}}}". 
+# If relinking a SQL-89 Agent for Progress (proNNN_sv) --
+## Confirm that the Progress environment variable {{{DLC}}} is set correctly.
+## Confirm that the Progress environment variable {{{PROLOAD}}} is set correctly.
+## Run the appropriate {{{mkdlcX}}} script, where {{{X}}} is the major version number of your Progress installation (i.e., 6, 7, 8, or 9).  This will produce a file called {{{dlcX.o}}}.
+## If you receive an error stating that any Progress library cannot be found, edit the {{{mkdlcX}}} script and remove the reference(s) to that file; then re-run the {{{mkdlcX}}} script.  Repeat this step as needed.
+# Run the appropriate link script ({{{ldXXXNN}}}) which will attempt to build a new database agent. 
+# At the end of the relink process, the new database agent executable will be automatically placed in the "{{{bin}}}" subdirectory directory of your <nop>OpenLink server components installation. The new database agent binary will be named according to the typical OpenLink conventions, i.e., {{{XXXNN_sv}}} or {{{XXXNN_mv}}}. 
+# Navigate to the "{{{lib}}}" sub-directory of your <nop>OpenLink server components installation; typically -- 
+{{{
+cd ../bin
+}}}
+# Locate your newly linked agent. If it has a different name than the original agent, you can rename both so that the new one takes the place of the old, or you can edit your Broker Rulebook ({{{oplrqb.ini}}}) and change all occurrences of the old database agent name to the new agent name. 
+# Restart your Broker.
+# Test.
+
+== Related ==
+
+* [[CreateCustomRelinkScripts|  Creating Custom Relink Scripts for Drivers and Agents for Progress/OpenEdge ]]

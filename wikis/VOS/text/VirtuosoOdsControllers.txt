@@ -1,0 +1,428 @@
+%VOSWARNING%
+
+
+%TOC%
+
+---+ ODS Controllers
+
+The ODS provide an controllers (API) to manipulate the user accounts as well as 
+instances, and instances specific data.
+The controllers can be accessed via REST using authentication based on OAuth, 
+sessions or password hash. The details are presented bellow. 
+
+---++ Access point
+
+The API can be accessed via REST using 
+<code><nowiki>http://host:port/ods/api/[method]</nowiki></code>.  Parameters 
+specific to each method are given as URL parameters if using 
+<code><nowiki>GET</nowiki></code>, as <code><nowiki>www-url-encoded</nowiki></code> 
+or <code><nowiki>multipart/form-data</nowiki></code> if using 
+<code><nowiki>POST</nowiki></code>. 
+
+The API can be accessed via UI page using 
+<code><nowiki>http://host:port/ods/oauth_test.vsp</nowiki></code>.
+
+---++ Authentication
+
+Most API calls which modify data, i.e., IUD operations, need authentication; thus 
+the request should contain OAuth authentication, or session or password hash. The 
+user account used to authenticate in either case MUST have relevant access to the 
+ODS object. This is done by having owner or author membership to the given application. 
+
+---+++ OAuth 
+
+The user account for authentication must have OAuth tokens generated via ODS -> 
+Settings -> OAuth keys. This UI provides a list of all applications to which the 
+user has access (i.e., he is member or owner). If an instance needs to be accessed 
+with OAuth, user simply selects the instance from the list and clicks 'generate keys'. 
+The generated consumer key & token will be associated to the active ODS user account 
+and selected application instance. 
+
+Once a consumer token is available, the sequence below must be done in order to 
+establish an authorized session:
+
+   1. client uses <code>request_token</code> to get a token/secret pair for 
+establishing session using consumer token
+   2. client asks OAuth server to authorize the token from step 1
+   3. using authorized token from step 1, client asks OAuth server for 
+authentication token 
+   4. with authentication token from step 3, clients can access instance data 
+associated with the consumer token from step 1
+
+
+To demonstrate the above, we supply a simple client written in VSP:
+
+<verbatim>
+&lt;html>
+&lt;?vsp
+    declare consumer_key, consumer_secret, oauth_token, oauth_secret, signature, timest, nonce varchar;
+    declare srv, res, signature_base, ret_url, url, tmp, sid varchar;
+    declare meth, pars any;
+    consumer_key := {?'key'};
+    srv := sprintf ('http://localhost:%s/OAuth/', server_http_port ());
+    sid := null;
+    res := '';
+
+    sid :=  {?'sid'};
+    if (sid = '')
+      sid := null;  
+    else
+      {
+        -- if selected token is not same as one from the session we need to get new authentication token
+        if (consumer_key &lt;> OAUTH..get_consumer_key (sid))
+     {
+       OAUTH..session_terminate (sid);
+            sid := null;
+     }
+      }
+
+    meth := get_keyword ('meth', params, 'weblog.post.new');;
+    pars := get_keyword ('pars', params, 'inst_id=15&title=testing&description=Some test post');;
+
+    if ({?'rt'} is not null and sid is null) -- request new token for the session
+      {
+   url := srv||'request_token';
+   url := OAUTH..sign_request ('GET', url, '', consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+   OAUTH..set_session_data (sid, params);
+   ret_url := sprintf ('http://localhost:%s/oauth/oauth_client.vsp?ready=%U', server_http_port (), sid);
+   -- call authorize
+        url := sprintf ('%sauthorize?oauth_token=%U&oauth_callback=%U', srv, OAUTH..get_auth_token (sid), ret_url);
+   http_status_set (301);
+        http_header (sprintf ('Location: %s\r\n', url));
+        return;
+      }
+    else if ({?'ready'} is not null) -- get access token
+      {
+   -- we go here when token above is authorized
+        sid := {?'ready'};
+   url := srv||'access_token';
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request ('GET', url, '', consumer_key, sid);
+        res := http_get (url);
+   sid := OAUTH..parse_response (sid, consumer_key, res);
+
+      }
+    if (sid is not null) -- access token is ready, and we can call API
+      {
+        -- here we are ready to call service
+   if ({?'rt'} is null)
+          {
+            tmp := OAUTH..get_session_data (sid);
+            pars := get_keyword ('pars', tmp, pars);
+       meth := get_keyword ('meth', tmp, meth);
+     }
+   url := sprintf ('http://localhost:%s/ods/api/%s', server_http_port (), meth);
+   tmp := split_and_decode (pars);
+   params := '';
+   for (declare i,l int, l:=length (tmp); i &lt; l; i := i + 2)
+      {
+        params := params || sprintf ('%U=%U&', tmp[i], tmp[i+1]);
+      }
+   --params := sprintf ('inst_id=%d&description=%U&title=%U', 15, 'Some test post', 'testing');
+   consumer_key := OAUTH..get_consumer_key (sid);
+   url := OAUTH..sign_request ('GET', url, params, consumer_key, sid);
+        res := http_get (url);
+        --dbg_obj_print (res);
+      }
+?>
+    &lt;head>&lt;title>OAuth Client&lt;/title>&lt;/head>
+    &lt;body>
+   &lt;h1>OAuth client for ODS Controllers&lt;/h1>
+   &lt;form method="POST" action="oauth_client.vsp">
+   &lt;input type="hidden" name="sid" value="&lt;?V sid ?>"/>
+   APPLICATION : &lt;br/> &lt;select name="key">
+   &lt;?vsp for select a_name, a_key from OAUTH..APP_REG do { ?>
+            &lt;option value="&lt;?V a_key ?>" &lt;?vsp if (consumer_key = a_key) http ('selected'); ?>>&lt;?V a_name ?>&lt;/option>
+   &lt;?vsp } ?>
+              &lt;/select>
+   &lt;?vsp
+   if (sid is not null) http (sprintf (' TOKEN: %s', OAUTH..get_auth_token (sid)));
+   ?>
+   &lt;br/>
+   ODS API: &lt;br/>&lt;input type="text" name="meth" value="&lt;?V meth ?>" size=50/> &lt;br/>
+   PARAMETERS: &lt;br/> &lt;textarea name="pars" rows="5" cols="50">&lt;?V pars ?>&lt;/textarea> &lt;br/>
+        &lt;input type="submit" value="Execute" name="rt"/>&lt;br/>
+   &lt;/form>
+   RESULT:
+   &lt;hr/>
+   &lt;pre>&lt;?V res ?>&lt;/pre>
+    &lt;/body>
+&lt;/html>
+</verbatim>
+
+The following is a sample session recorded with the client above :
+
+<verbatim>
+GET /OAuth/request_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607ed
+c5f36&oauth_nonce=b8f1089077cbce6e&oauth_signature_method=HMAC-SHA1&oauth_times
+tamp=1211212829&oauth_version=1.0&oauth_signature=V1zmk757LBHcmqVJ6obMhNX5hKA%3
+D HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF>
+oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&oauth_token_secret=M...
+</verbatim>
+
+
+<verbatim>
+GET /OAuth/authorize?oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&oauth
+_callback=http%3A//localhost%3A8890/oauth/oauth_client.vsp%3Fready%3D00c874b2fa
+b2f6424008b5064fe83e88 HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 301 Moved
+Location: /ods/oauth_authorize.vspx?....
+</verbatim>
+
+
+<verbatim>
+GET /OAuth/access_token?oauth_consumer_key=50082d0fb861b0e6e67d5d986b8333607edc
+5f36&oauth_nonce=242cc4875a0059f6&oauth_signature_method=HMAC-SHA1&oauth_timest
+amp=1211212831&oauth_token=86da75079d3aee0fab57a36fcffbf900768e4de3&oauth_versi
+on=1.0&oauth_signature=sqs/8nmNNnNJiZ/eBa688uNeg9o%3D HTTP/1.1
+Host: localhost:8890
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF>
+oauth_token=N..&oauth_token_secret=M...
+</verbatim>
+
+<verbatim>
+GET /ods/api/weblog.post.new?description=Some%20test%20post&inst_id=15&oauth_co
+nsumer_key=50082d0fb861b0e6e67d5d986b8333607edc5f36&oauth_nonce=2f4765d20664e69
+6&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1211213321&oauth_token=db83a
+37d74faf53edc8ed56d418ded3a70fcc0bc&oauth_version=1.0&title=testing&oauth_signa
+ture=oocIyr6kgoEQkC3WVwzvl6w62W4%3D HTTP/1.1
+Host: localhost:8890
+
+
+HTTP/1.1 200 Ok
+Content-Length: NNN
+&lt;CR/LF>
+&lt;result>&lt;code>1&lt/code>&lt;/result>
+</verbatim>
+
+---+++ Session based
+
+The request to the API in this type of authentication must have 'sid' & 'realm'
+via 'user.authenticate' method:
+
+To get session id:
+<verbatim>
+curl -i "http://localhost:8890/ods/api/user.authenticate?user_name=demo&passwor
+d_hash=fe1774cfea9f7b402796751a4616c04a6f010ecb"
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset="UTF-8"
+Content-Length: 32
+
+bfb2b13e4218a99f65b956eb6ba657cb << SID
+
+</verbatim>
+
+Perform weblog.post.new  API call:
+<verbatim>
+curl -i "http://localhost:8890/ods/api/weblog.post.new?title=test&description=S
+ome%20test%20post&inst_id=15&sid=bfb2b13e4218a99f65b956eb6ba657cb&realm=wa"
+HTTP/1.1 200 OK
+Connection: Keep-Alive
+Content-Type: text/xml; charset="UTF-8"
+Content-Length: 53
+&lt;CR/LF>
+&lt;result>&lt;code>1&lt/code>&lt;/result>
+</verbatim>
+
+---+++ password hash
+
+This approach is similar to above, but instead of sid and realm we just pass as
+parameters to request the user_name & password_hash .
+
+---++ Response format
+
+---+++ IUD operations
+
+The IUD methods return an XML response with code & message format follows:
+
+---++++ On success
+
+&lt;result>&lt;code>NNN&lt;/code>&lt;message>human readable explanation if applicable&lt;/message>&lt;/result>
+
+---++++ On failure
+
+&lt;failed>&lt;code>NNN&lt;/code>&lt;failed>human readable explanation&lt;/message>&lt;/failed>
+
+---+++ Search (get)
+
+The search methods returns results in RDF format according to FOAF, SIOC and SIOC
+types module ontology. See ODS RDF model.
+
+---++ API methods
+
+All APIs are acting on behalf of the user who established authentication, i.e.,
+the user which is authorized. The APIs where user is subject of removal or freeze
+as well as registration the user name is passed as parameter. Therefore user.register,
+user.delete would need user name as input parameter where user.update, instance.create
+will use the user from authentication information.
+
+---+++ Framework
+
+<verbatim>
+user.register (
+    name varchar,
+    password varchar,
+    email varchar
+    )
+user.authenticate (
+    user_name varchar,
+    password_hash varchar
+    )
+user.update (user_info any)
+user.password_change (new_password varchar)
+user.delete (name varchar)
+user.enable (name varchar)
+user.disable (name varchar)
+user.get (name varchar)
+user.search (pattern varchar)
+user.invite (
+    friends_email varchar,
+    custom_message varchar default ''
+    )
+user.invitation (
+    invitation_id varchar,
+    approve int
+    )
+user.invitations.get ()
+user.relation_terminate (friend varchar)
+user.tagging_rules.add (
+    rulelist_name varchar,
+    rules any,
+    is_public int default 1
+    )
+user.tagging_rules.delete (rulelist_name varchar)
+user.tagging_rules.update (
+    rulelist_name varchar,
+    rules any
+    )
+user.hyperlinking_rules.add (rules any)
+user.hyperlinking_rules.update (rules any)
+user.hyperlinking_rules.delete (rules any)
+user.annotation.add (
+    claimIri varchar,
+    claimRelation varchar,
+    claimValue varchar
+    )
+user.annotation.delete (
+    claimIri varchar,
+    claimRelation varchar,
+    claimValue varchar
+    )
+
+instance.create (
+    type varchar,
+    name varchar,
+    description varchar,
+    model int,
+    public int
+    )
+instance.update (
+    inst_id int,
+    name varchar,
+    description varchar,
+    model int,
+    public int
+    )
+instance.delete (inst_id int)
+instance.freeze (name varchar)
+instance.unfreeze (name varchar)
+instance.join (inst_id int)
+instance.disjoin (inst_id int)
+instance.join_approve (
+    inst_id int,
+    uname varchar
+    )
+instance.notification.services ()
+instance.notification.set (
+    inst_id int,
+    services any
+    )
+instance.notification.cancel (
+    inst_id int,
+    services any
+    )
+instance.notification.log (inst_id int)
+instance.get (inst_id int)
+instance.get.id (name varchar)
+
+site.search (
+    pattern varchar,
+    options any
+    )
+</verbatim>
+
+---+++ Briefcase
+   * [[VirtuosoOdsControllersBriefcase][Briefcase Controllers]]
+
+---+++ Weblog
+   * [[VirtuosoOdsControllersWeblog][Weblog Controllers]]
+   * [[OdsWeblogProgrammersGuide][Weblog's Programmers Guide]]
+
+---+++ Addressbook
+   * [[VirtuosoOdsControllersAddressbook][Addressbook Controllers]]
+   * [[OdsAddressbookProgrammersGuide][Addressbook's Programmers Guide]]
+
+---+++ Bookmarks
+   * [[VirtuosoOdsControllersBookmarks][Bookmarks Controllers]]
+   * [[OdsBookmarkManager][Bookmarks Programmers Guide]]
+
+---+++ Polls
+   * [[VirtuosoOdsControllersPolls][Polls Controllers]]
+   * [[OdsPollsProgrammersGuide][Poll's Programmers Guide]]
+
+
+---+++ Calendar
+   * [[VirtuosoOdsControllersCalendar][Calendar Controllers]]
+   * [[OdsCalendarProgrammersGuide][Calendar's Programmers Guide]]
+
+---+++ Feed Manager
+   * [[VirtuosoOdsControllersFeeds][Feed Manager Controllers]]
+   * [[OdsFeedManagerProgrammersGuide][Feed Manager's Programmers Guide]]
+
+---+++ Webmail
+   * [[VirtuosoOdsControllersWebmail][Webmail Controllers]]
+   * [[OdsWebmailProgrammersGuide][Webmail's Programmers Guide]]
+
+---+++ Discussion
+   * [[VirtuosoOdsControllersDiscussion][Discussion Controllers]]
+   * [[OdsDiscussionsProgrammersGuide][Discussions 's Programmers Guide]]
+
+---+++ Gallery
+   * [[VirtuosoOdsControllersGallery][Gallery Controllers]]
+
+---+++ Wiki
+   * [[VirtuosoOdsControllersWiki][Wiki Controllers]]
+
+---+++ Messenger
+   * [[VirtuosoOdsControllersMessenger][Messenger Controllers]]
+
+---++References
+
+   * [[OAuth][OpenLink's explanation of OAuth]]
+   * [[VirtuosoOAuthServer][Virtuoso OAuth server]]
+   * [[VirtOAuthControllers][Using OAuth with ODS]]
+   * [[VirtuosoOdsUbiquity][ODS Ubiquity Commands]]
+   * [[VirtOAuth][Virtuoso OAuth Implementation]]
+   * [[VirtODSOAuthQA][Testing Virtuoso OAuth with 3rd Party OAuth Clients]]
+   * [[VirtuosoOdsUbiquityTutorialsOAuth][OAuth Ubiquity Tutorial]]
+   * [[VirtOAuthTestTool][Virtuoso OAuth Test Tool for ODS Controllers]]
+   * [[VirtOAuthSPARQL][Virtuoso SPARQL OAuth Tutorial]]
+   * [[VirtuosoOdsUbiquityTutorials][ODS Ubiquity Tutorials]]
+   * [[VirtOAuthExamples][OAuth Applications Authentication examples]]
+   * [[http://oauth.net/core/1.0/][OAuth API]]
+
+
+
+CategoryODS CategoryVirtuoso 

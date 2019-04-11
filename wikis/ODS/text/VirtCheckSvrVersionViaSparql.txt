@@ -1,0 +1,27 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Interrogating attributes of a Virtuoso Server instance via SPARQL 
+
+Sometimes you need to know the version or other details about the Virtuoso instance you're running SPARQL queries against, and only have access to the SPARQL interface, possibly through a proxy page that strips out the server version information included on the default <code>/sparql</code> page.
+
+You can leverage Virtuoso's built-in-functions, such as <a href="http://docs.openlinksw.com/virtuoso/fn_sys_stat/"><code><nowiki>sys_stat</nowiki></code></a>, and the associated <code>bif:</code> SPARQL prefix, to interrogate the server for various details, such as --
+<verbatim>
+SELECT
+  ( bif:sys_stat('st_dbms_name')          AS ?name )
+  ( bif:sys_stat('st_dbms_ver')           AS ?version )
+  ( bif:sys_stat('st_build_thread_model') AS ?thread )
+  ( bif:sys_stat('st_build_opsys_id')     AS ?opsys )
+  ( bif:sys_stat('st_build_date')         AS ?date )
+# ( bif:sys_stat('st_lic_owner')          AS ?owner )
+# ( bif:sys_stat('st_lic_serial_number')  AS ?serial )
+
+WHERE
+  {  ?s  ?p  ?o  }
+LIMIT 1
+</verbatim>
+The <code><nowiki>st_lic_owner</nowiki></code> and <code><nowiki>st_lic_serial_number</nowiki></code> arguments are only valid on the Commercial Edition, and will produce a SPARQL error on the Open Source Edition 
+
+
+The [[http://lod.openlinksw.com/sparql?default-graph-uri=&qtxt=SELECT%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_name%27%29++++++++++AS+%3Fname+%29%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_ver%27%29+++++++++++AS+%3Fversion+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_thread_model%27%29+AS+%3Fthread+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_opsys_id%27%29+++++AS+%3Fopsys+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_date%27%29+++++++++AS+%3Fdate+%29%0D%0A++%28+bif%3Asys_stat%28%27st_lic_owner%27%29++++++++++AS+%3Fowner+%29%0D%0A++%28+bif%3Asys_stat%28%27st_lic_serial_number%27%29++AS+%3Fserial+%29%0D%0A%0D%0AWHERE%0D%0A++%7B++%3Fs+%3Fp+%3Fo++%7D%0D%0ALIMIT+1&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on][query above]] will produce [[http://lod.openlinksw.com/sparql?default-graph-uri=&query=SELECT%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_name%27%29++++++++++AS+%3Fname+%29%0D%0A++%28+bif%3Asys_stat%28%27st_dbms_ver%27%29+++++++++++AS+%3Fversion+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_thread_model%27%29+AS+%3Fthread+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_opsys_id%27%29+++++AS+%3Fopsys+%29%0D%0A++%28+bif%3Asys_stat%28%27st_build_date%27%29+++++++++AS+%3Fdate+%29%0D%0A++%28+bif%3Asys_stat%28%27st_lic_owner%27%29++++++++++AS+%3Fowner+%29%0D%0A++%28+bif%3Asys_stat%28%27st_lic_serial_number%27%29++AS+%3Fserial+%29%0D%0A%0D%0AWHERE%0D%0A++%7B++%3Fs+%3Fp+%3Fo++%7D%0D%0ALIMIT+1&format=text%2Fhtml&CXML_redir_for_subjs=121&CXML_redir_for_hrefs=&timeout=30000&debug=on][output akin to the following]] --
+|  *name*  |  *version*  |  *thread*  |  *opsys*  |  *date*  |  *owner*  |  *serial*  |
+|  <code><nowiki>OpenLink</nowiki> Virtuoso  VDB Server</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>07.20.3217</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>-pthreads</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>Linux</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>May  8 2016</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code><nowiki>OpenLink</nowiki> Software Web Site</code> &nbsp; &nbsp;  |  &nbsp; &nbsp; <code>openlink-www</code> &nbsp; &nbsp;  |

@@ -1,0 +1,33 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="Running an aggregate like"></a> Running an aggregate like <code>COUNT</code> over multiple columns in SPARQL 1.1</h1>
+<p>SPARQL 1.1 added aggregates, but <a href="https://www.w3.org/TR/sparql11-query/#rAggregate" class="absuri">it only permits them to be run over a single column, or over all columns in the result set</a>.</p>
+<p>For instance, this query gets a <a href="http://live.dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&qtxt=SELECT+%0D%0A+++DISTINCT++%3Fs+%3Fp+%3Fo+%0D%0AWHERE%0D%0A++%7B+%0D%0A++++VALUES+%3Fs+%7B+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTreaty_of_Bern%3E+%7D+%0D%0A++++%3Fs+%3Fp+%3Fo%0D%0A++++OPTIONAL+%7B+%3Fs+a+%3Ftype+%7D+.%0D%0A++++FILTER+%28+BOUND+%28+%3Ftype+%29+%29+.%0D%0A++%7D%0D%0A&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=30000&amp;signal_void=on&amp;signal_unconnected=on&run=+Run+Query+" class="absuri">large number of rows</a>, and you might want to know how many without running the full query --</p>
+<br><pre>SELECT 
+   DISTINCT  ?s ?p ?o 
+WHERE
+  { 
+    VALUES ?s { &lt;http://dbpedia.org/resource/Treaty_of_Bern&gt; } 
+    ?s ?p ?o
+    OPTIONAL { ?s a ?type } .
+    FILTER ( BOUND ( ?type ) ) .
+  }
+</pre><p> A simple <code>COUNT(DISTINCT *)</code> includes all variables bound in the WHERE clause -- which here means a Cartesian result set, <a href="http://live.dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&qtxt=SELECT+%0D%0A+++%28+COUNT%28+DISTINCT+*+%29+AS+%3FHowManyTriples+%29%0D%0AWHERE%0D%0A++%7B+%0D%0A++++VALUES+%3Fs+%7B+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTreaty_of_Bern%3E+%7D+%0D%0A++++%3Fs+%3Fp+%3Fo%0D%0A++++OPTIONAL+%7B+%3Fs+a+%3Ftype+%7D+.%0D%0A++++FILTER+%28+BOUND+%28+%3Ftype+%29+%29+.%0D%0A++%7D%0D%0A&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=30000&amp;signal_void=on&amp;signal_unconnected=on&run=+Run+Query+" class="absuri">multiplying the count</a> of <code>DISTINCT ?s ?p ?o</code> by the count of <code>DISTINCT ?type</code>.</p>
+<p>A workaround is to wrap the aggregate around a sub-query.
+ <a href="http://live.dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&qtxt=SELECT+%0D%0A+++%28+COUNT%28+*+%29+AS+%3FHowManyTriples+%29%0D%0AWHERE%0D%0A++%7B+%0D%0A++++%7B+SELECT+%0D%0A+++++++++DISTINCT++%3Fs+%3Fp+%3Fo+%0D%0A++++++WHERE%0D%0A+++++++%7B+%0D%0A+++++++++VALUES+%3Fs+%7B+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FTreaty_of_Bern%3E+%7D+%0D%0A+++++++++%3Fs+%3Fp+%3Fo%0D%0A+++++++++OPTIONAL+%7B+%3Fs+a+%3Ftype+%7D+.%0D%0A+++++++++FILTER+%28+BOUND+%28+%3Ftype+%29+%29+.%0D%0A+++++++%7D%0D%0A++++%7D%0D%0A++%7D%0D%0A%0D%0A%0D%0A&format=text%2Fhtml&amp;CXML_redir_for_subjs=121&amp;CXML_redir_for_hrefs=&timeout=30000&amp;signal_void=on&amp;signal_unconnected=on&run=+Run+Query+" class="absuri">The query below returns an accurate count</a> of <code>DISTINCT ?s ?p ?o</code> rows.</p>
+<br><pre>SELECT 
+   ( COUNT( DISTINCT * ) AS ?HowManyTriples )
+WHERE
+  { 
+    { 
+      SELECT 
+         DISTINCT ?s ?p ?o 
+      WHERE
+       { 
+         VALUES ?s { &lt;http://dbpedia.org/resource/Treaty_of_Bern&gt; } 
+         ?s ?p ?o
+         OPTIONAL { ?s a ?type } .
+         FILTER ( BOUND ( ?type ) ) .
+       }
+    }
+  }
+</pre></div></body></html>

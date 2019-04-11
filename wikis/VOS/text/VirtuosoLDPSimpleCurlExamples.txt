@@ -1,0 +1,486 @@
+%META:TOPICPARENT{name="VirtRWWInteractionACLcURL"}%
+
+---+ LDP in Virtuoso - Simple Curl Examples
+
+Simple curl examples showing Virtuoso's support for  LDP (Linked Data Platform) Basic Containers.
+
+Changes to resources made through the LDP REST interface are mirrored in the Conductor <nowiki>WebDAV</nowiki> UI.
+
+<b>Contents</b>
+%TOC%
+
+---
+
+---++ 1: Basic container lookup  (GET on an LDP-BC)
+
+---+++ Request - Basic container retrieval
+
+<verbatim>
+curl -iH "Accept: text/turtle, */*;q=0.1" -u {username}:{password} "http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/"
+</verbatim>
+
+---+++ Response - Basic container retrieval
+
+<i><b>Note:</b> The container was created prior to these tests and so was not empty.</i>
+
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Mon, 21 Jul 2014 13:57:27 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle
+MS-Author-Via: DAV, SPARQL
+Allow: GET,HEAD,POST,PUT,DELETE,OPTIONS,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK,TRACE,PATCH
+Accept-Patch: application/sparql-update
+Accept-Post: text/turtle,text/n3,text/nt
+Vary: Accept,Origin,If-Modified-Since,If-None-Match
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"
+Link: <?p=1>; rel="first"
+Link: <?p=1>; rel="last"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test,meta>; rel="meta"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test,acl>; rel="acl"
+ETag: a260c996d5e4c845ba49d29a21fcc754
+X-SPARQL-default-graph: http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/
+Content-Length: 705
+
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix ldp:    <http://www.w3.org/ns/ldp#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/foaf.ttl>
+    rdf:type    foaf:PersonalProfileDocument , ldp:Resource , rdfs:Resource .
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/>
+    rdf:type    ldp:Container , ldp:BasicContainer ;
+    ldp:contains    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/foaf.ttl> , <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos/> .
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos/>
+    rdf:type    ldp:Container , ldp:BasicContainer .
+</verbatim>
+
+---+++ Basic container lookup in SPARQL - Querying the LDP-BC graph
+
+<verbatim>
+sparql SELECT * FROM <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/> WHERE { ?s ?p ?o }
+</verbatim>
+returns
+<verbatim>
+http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/     http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://www.w3.org/ns/ldp#Container
+http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/     http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://www.w3.org/ns/ldp#BasicContainer
+http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/     http://www.w3.org/ns/ldp#contains     http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/foaf.ttl
+http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/     http://www.w3.org/ns/ldp#contains     http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos/
+</verbatim>
+---
+
+---++ 2: Creating an RDF resource (POST an RDF resource to an LDP-BC)
+
+---+++ Request - Creating an RDF resource
+
+<verbatim>
+curl -iX POST --data-binary @ldp-test-data/alice_foaf_profile.ttl -u {username}:{password} -H 'Content-Type: text/turtle' -H 'Slug:alice_foaf' 'http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/'
+</verbatim>
+
+---+++ Request Data - Creating an RDF resource
+
+<b>File:</b> <code><nowiki>alice_foaf_profile.ttl</nowiki></code>
+
+<verbatim>
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<> a foaf:PersonalProfileDocument;
+    foaf:primaryTopic <#me> ;
+    dc:title 'Alice?s FOAF file' .
+
+<#me> a foaf:Person;
+    foaf:name 'Alice Smith'  . 
+</verbatim>
+
+---+++ Response - Creating an RDF resource
+
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Mon, 21 Jul 2014 14:01:18 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/alice_foaf
+MS-Author-Via: DAV, SPARQL
+Allow: GET,HEAD,POST,PUT,DELETE,OPTIONS,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK,TRACE,PATCH
+Accept-Patch: application/sparql-update
+Accept-Post: text/turtle,text/n3,text/nt
+Vary: Accept,Origin,If-Modified-Since,If-None-Match
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/alice_foaf,meta>; rel="meta"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/alice_foaf,acl>; rel="acl"
+Content-Type: text/turtle
+Content-Length: 194
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><HTML><HEAD><TITLE>201 Created</TITLE></HEAD><BODY><H1>Created</H1>Resource /DAV/home/imitko/ldp-test/alice_foaf has been created.</BODY></HTML>
+</verbatim>
+
+Note: A second resource <code>&lt;<nowiki>http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf</nowiki>&gt;</code> was then created in the same way using:
+<verbatim>
+curl -iX POST --data-binary @ldp-test-data/bob_foaf_profile.ttl -u {username}:{password} -H 'Content-Type: text/turtle' -H 'Slug: bob_foaf' 'http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/'
+</verbatim>
+with data file <code><nowiki>bob_foaf_profile.ttl</nowiki></code>
+
+<verbatim>
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<> a foaf:PersonalProfileDocument;
+    foaf:primaryTopic <#me> ;
+    dc:title 'Bob?s FOAF file' .
+
+<#me> a foaf:Person;
+    foaf:name 'Bob Tate'  .
+</verbatim>
+
+---
+---++ 3: Request - Basic container retrieval after resource creation
+
+---+++ Request
+
+<verbatim>
+curl -iH "Accept: text/turtle, */*;q=0.1" -u {username}:{password} "http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/"
+</verbatim>
+
+---+++ Response
+
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Mon, 21 Jul 2014 15:35:15 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle
+MS-Author-Via: DAV, SPARQL
+Allow: GET,HEAD,POST,PUT,DELETE,OPTIONS,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK,TRACE,PATCH
+Accept-Patch: application/sparql-update
+Accept-Post: text/turtle,text/n3,text/nt
+Vary: Accept,Origin,If-Modified-Since,If-None-Match
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"
+Link: <?p=1>; rel="first"
+Link: <?p=1>; rel="last"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test,meta>; rel="meta"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test,acl>; rel="acl"
+ETag: a260c996d5e4c845ba49d29a21fcc754
+X-SPARQL-default-graph: http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/
+Content-Length: 929
+
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix ldp:    <http://www.w3.org/ns/ldp#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns4:    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/> .
+
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/foaf.ttl>
+    rdf:type    foaf:PersonalProfileDocument , ldp:Resource , rdfs:Resource .
+ns4:
+    rdf:type    ldp:Container , ldp:BasicContainer ;
+    ldp:contains    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/foaf.ttl> , ns4:alice_foaf , <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos/> , ns4:bob_foaf .
+ns4:alice_foaf
+    rdf:type    foaf:PersonalProfileDocument , ldp:Resource , rdfs:Resource .
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos/>
+    rdf:type    ldp:Container , ldp:BasicContainer .
+ns4:bob_foaf
+    rdf:type    foaf:PersonalProfileDocument , ldp:Resource , rdfs:Resource .
+</verbatim>
+
+Both resources created by Test 2 are listed, confirming the resource creation was successful.
+
+---
+
+---++ 4: Updating a resource with PATCH and Sparql-Update
+
+---+++ Pre-update - Resource description
+
+<verbatim>
+curl -H -"Accept: text/turtle" -u {username}:{password} http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf
+</verbatim>
+
+---+++ Response - Resource description
+
+<verbatim>
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns4:    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/> .
+@prefix ldp:    <http://www.w3.org/ns/ldp#> .
+@prefix dcterms:    <http://purl.org/dc/terms/> .
+@prefix ns7:    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf#> .
+
+foaf:PersonalProfileDocument
+    rdf:type    owl:Class , rdfs:Class .
+rdfs:Resource
+    rdf:type    owl:Class , rdfs:Class .
+foaf:Person
+    rdf:type    owl:Class , rdfs:Class .
+ns4:bob_foaf
+    rdf:type    foaf:PersonalProfileDocument , ldp:Resource , rdfs:Resource ;
+    dcterms:title    "Bob\u2019s FOAF file" ;
+    foaf:primaryTopic    ns7:me .
+ns7:me
+    rdf:type    foaf:Person ;
+    foaf:name    "Bob Tate" .
+</verbatim>
+
+---+++ Request - Resource update
+
+<verbatim>
+curl -iX PATCH --data-binary @ldp-test-data/bob_foaf_profile_update.sparul -u {username}:{password} -H "Content-Type: application/sparql-update" http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf
+</verbatim>
+
+---+++ Request Data - Resource update
+
+<b>File:</b> <code><nowiki>bob_foaf_profile_update.sparul</nowiki></code>
+
+<verbatim>
+prefix foaf: <http://xmlns.com/foaf/0.1/> 
+INSERT DATA {
+  <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf#me> foaf:img <http://example.org/bob/avatar> .
+}   
+
+</verbatim>
+
+---+++ Response - Resource update
+
+<verbatim>
+HTTP/1.1 204 No Content
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Mon, 21 Jul 2014 15:41:30 GMT
+Accept-Ranges: bytes
+X-SPARQL-default-graph: http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf
+Content-Type: application/sparql-results+xml; charset=UTF-8
+Content-Length: 489
+</verbatim>
+
+---+++ Post-update - Resource description
+
+<verbatim>
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ns4:    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/> .
+@prefix ldp:    <http://www.w3.org/ns/ldp#> .
+@prefix dcterms:    <http://purl.org/dc/terms/> .
+@prefix ns7:    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf#> .
+@prefix ns8:    <http://example.org/bob/> .
+
+foaf:PersonalProfileDocument
+    rdf:type    owl:Class , rdfs:Class .
+rdfs:Resource
+    rdf:type    owl:Class , rdfs:Class .
+foaf:Person
+    rdf:type    owl:Class , rdfs:Class .
+ns4:bob_foaf
+    rdf:type    foaf:PersonalProfileDocument , ldp:Resource , rdfs:Resource ;
+    dcterms:title    "Bob\u2019s FOAF file" ;
+    foaf:primaryTopic    ns7:me .
+ns7:me
+    rdf:type    foaf:Person ;
+    foaf:img    ns8:avatar ;
+    foaf:name    "Bob Tate" .
+</verbatim>
+
+---
+
+---++ 5: Creating a non-RDF (binary) resource (POST an image to an LDP-BC)
+
+ Test without slug header, using full target resource path
+
+---+++ Request - LDP-NR creation
+
+<verbatim>
+curl -iX PUT --data-binary @ldp-test-data/bob_avatar.png -u {username}:{password} -H "Content-Type: image/png" 'http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_avatar'
+</verbatim>
+
+Note: Using a slug header to suggest the resource name when creating a resource is not supported. The full resource URL must be provided.
+
+---+++ Response - LDP-NR creation
+
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: close
+Date: Tue, 22 Jul 2014 11:28:44 GMT
+Accept-Ranges: bytes
+Content-Type: image/png
+Content-Length: 194
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><HTML><HEAD><TITLE>201 Created</TITLE></HEAD><BODY><H1>Created</H1>Resource /DAV/home/imitko/ldp-test/bob_avatar has been created.</BODY></HTML>
+</verbatim>
+
+---
+
+---++ 6: Creating a child container
+
+---+++ Request - Child container creation (Method 1)
+
+<verbatim>
+curl -iH "Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel=?type?" -d '' -X POST -HSlug:photos_of_bob -HContent-Type:text/turtle -u {username}:{password} "http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/"
+</verbatim>
+
+---+++ Response - Child container creation (Method 1)
+
+<verbatim>
+HTTP/1.1 201 Created
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Mon, 21 Jul 2014 16:02:52 GMT
+Accept-Ranges: bytes
+Location: http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_bob/
+MS-Author-Via: DAV, SPARQL
+Allow: GET,HEAD,POST,PUT,DELETE,OPTIONS,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK,TRACE,PATCH
+Accept-Patch: application/sparql-update
+Accept-Post: text/turtle,text/n3,text/nt
+Vary: Accept,Origin,If-Modified-Since,If-None-Match
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_bob,meta>; rel="meta"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_bob,acl>; rel="acl"
+Content-Type: text/turtle
+Content-Length: 198
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><HTML><HEAD><TITLE>201 Created</TITLE></HEAD><BODY><H1>Created</H1>Resource /DAV/home/imitko/ldp-test/photos_of_bob/ has been created.
+</verbatim>
+
+---+++ Post-creation: Parent container description - Request
+
+<verbatim>
+curl -iH "Accept: text/turtle, */*;q=0.1" -u {username}:{password} "http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/"
+</verbatim>
+
+---+++ Post-creation: Parent container description - Response
+
+The response includes:
+<verbatim>
+@prefix ns4:    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/> .
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_bob/>
+    rdf:type    ldp:Container , ldp:BasicContainer .
+ns4:
+    rdf:type    ldp:Container , ldp:BasicContainer ;
+    ldp:contains    <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_bob/> , <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/foaf.ttl> , ns4:alice_foaf , <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos/> , ns4:bob_foaf .
+</verbatim>
+
+---+++ Request - Child container creation (Method 2)
+
+<verbatim>
+curl --silent -iX POST --data-binary @ldp-test-data/alice_photo_container_creation.ttl -u {username}:{password} -H "Content-Type: text/turtle" -H "Slug: photos_of_alice" -H "Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel='type'" "http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/"
+</verbatim>
+
+---+++ Request Data - Child container creation (Method 2)
+
+<b>File:</b> <code><nowiki>alice_photo_container_creation.ttl</nowiki></code>
+
+<verbatim>
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+ 
+<> a ldp:Container, ldp:BasicContainer;
+   dcterms:title "Photos of Alice" ; 
+   dcterms:description "This container will contain photos of Alice." .
+</verbatim>
+
+---+++ Post-creation: Child container description - Request
+
+<verbatim>
+curl -iH "Accept: text/turtle, */*;q=0.1" -u {username}:{password} "http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_alice/"
+</verbatim>
+
+---+++ Post-creation: Child container description - Response
+
+<verbatim>
+HTTP/1.1 200 OK
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Date: Mon, 21 Jul 2014 16:24:41 GMT
+Accept-Ranges: bytes
+Content-Type: text/turtle
+MS-Author-Via: DAV, SPARQL
+Allow: GET,HEAD,POST,PUT,DELETE,OPTIONS,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK,TRACE,PATCH
+Accept-Patch: application/sparql-update
+Accept-Post: text/turtle,text/n3,text/nt
+Vary: Accept,Origin,If-Modified-Since,If-None-Match
+Link: <http://www.w3.org/ns/ldp#Resource>; rel="type"
+Link: <http://www.w3.org/ns/ldp#BasicContainer>; rel="type"
+Link: <?p=1>; rel="first"
+Link: <?p=1>; rel="last"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_alice,meta>; rel="meta"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_alice,acl>; rel="acl"
+ETag: 55e21d87c87434c647ac893badd6bbce
+X-SPARQL-default-graph: http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_alice/
+Content-Length: 377
+
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ldp:    <http://www.w3.org/ns/ldp#> .
+@prefix dcterms:    <http://purl.org/dc/terms/> .
+
+<http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/photos_of_alice/>
+    rdf:type    ldp:Container , ldp:BasicContainer ;
+    dcterms:title    "Photos of Alice" ;
+    dcterms:description    "This container will contain photos of Alice." .
+</verbatim>
+
+---
+---++ 7: Deleting a resource
+
+---+++ Request - Resource deletion
+
+<verbatim>
+curl -iX DELETE -u {username}:{password} 'http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf'
+</verbatim>
+
+---+++ Response - Resource deletion
+
+<verbatim>
+HTTP/1.1 204 No Content
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 25 Jul 2014 12:25:30 GMT
+Accept-Ranges: bytes
+MS-Author-Via: DAV, SPARQL
+Allow: GET,HEAD,POST,PUT,DELETE,OPTIONS,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK,TRACE,PATCH
+Accept-Patch: application/sparql-update
+Accept-Post: text/turtle,text/n3,text/nt
+Vary: Accept,Origin,If-Modified-Since,If-None-Match
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf,meta>; rel="meta"
+Link: <http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf,acl>; rel="acl"
+Content-Length: 0
+</verbatim>
+
+---+++ Post-deletion: Resource description - Request
+
+<verbatim>
+curl -iH -"Accept: text/turtle" -u {username}:{password} 'http://ods-qa.openlinksw.com/DAV/home/imitko/ldp-test/bob_foaf'
+</verbatim>
+
+---+++ Post-deletion: Resource description - Response
+
+<verbatim>
+HTTP/1.1 404 Not Found
+Server: Virtuoso/07.10.3211 (Linux) x86_64-redhat-linux-gnu  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Fri, 25 Jul 2014 12:27:08 GMT
+Accept-Ranges: bytes
+Content-Length: 218
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+  <head>
+    <title>404 Not Found</title>
+  </head>
+  <body>
+    <h1>Not found</h1>
+    Resource /DAV/home/imitko/ldp-test/bob_foaf not found.
+  </body>
+</verbatim>
+

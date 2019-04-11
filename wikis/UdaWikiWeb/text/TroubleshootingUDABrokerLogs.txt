@@ -1,0 +1,113 @@
+%META:TOPICPARENT{name="TroubleshootingUDAUsingEvidence"}%
+= Interpreting Request Broker Logs =
+
+Use the following guidelines to interpret Request Broker Log files.
+
+{{{
+					 Tue Oct 15 2002
+}}}
+Make sure the log date corresponds to the occurrence of the problem. 
+
+{{{
+12:25:46 using rulebook /home/openlink/32bit/v42/bin/oplrqb.ini
+}}}
+
+Check the path to {{{oplrqb.ini}}}. If you have multiple, MultiTier installations, you need to ensure that the correct agents are spawned and the correct environment variables are employed.
+
+{{{
+12:25:46 bound UDP protocol to 0.0.0.0.60001
+}}}
+
+Check for UDP and "address in use" errors. Use {{{netstat -a}}} and the {{{/etc/services}}} file to debug any problems that occur with the UDP port. Likewise, insure that UDP is enabled on the client and server machines that produce UDP broadcast errors.
+
+{{{
+12:25:46 bound TCP protocol to 0.0.0.0.5000
+}}}
+
+Check for "address already in use" and other TCP port problems. Use {{{netstat -a}}} and the {{{/etc/services}}} file to debug any problems that may occur. In the event of a port conflict, you may change the Broker's {{{Listen}}} port. You will find the {{{Listen}}} parameter in the {{{[Protocol TCP]}}} section of {{{oplrqb.ini}}}. (Use {{{PortLow}}} in place of {{{Listen}}} in if running Multi-Tier Release 1.x or 3.x components; {{{Listen}}} did not exist in these versions.)
+
+{{{
+12:25:46 using UDP address 192.168.11.116.0 for IPC
+}}}
+
+Check for UDP and "address in use" errors. Use {{{netstat -a}}} and the {{{/etc/services}}} file to debug any problems that occur with the UDP port. Likewise, insure that UDP is enabled on the client and server machines that produce UDP broadcast errors.
+
+{{{
+12:25:46 request broker started by openlink
+}}}
+
+Brokers started by {{{root}}} may cause resource problems or Progress {{{login by batch}}} errors. Search for "batch" and resource related problems later in the file.
+
+{{{
+12:25:46 spawning /home/openlink/32bit/v42/bin/w3config/www_sv www_sv
+}}}
+
+{{{www_sv}}} powers the Admin Assistant. It uses the {{{HttpPort}}} set in the {{{www_sv.ini}}} file. If "address" or other TCP port usage problems occur, run {{{netstat -a}}} and {{{/etc/services}}} to debug port conflicts.
+
+If necessary, change the {{{HttpPort}}} in {{{~/openlink/bin/w3config/www_sv.ini}}} file.
+
+{{{
+12:25:46 started persistent www_sv (pid=12219)
+12:25:53 oplushp2.usnet.private called (192.168.11.116.57431)
+12:25:53 request: domain=Progress 91C database=demo.db serveropts=
+12:25:53 connectopts=-S pro91c -N tcp -H oplushp2 user= opsys=unix readonly=0
+}}}
+
+These parameters are read from the Data Source Name. Check for inappropriate values. Additionally, watch for "{{{Broker cannot resolve your request}}}" errors. "Request" errors occur when the Domain name passed in this parameter list does not appear in the {{{[Domain Aliases]}}} section of {{{oplrqb.ini}}}. You must create the appropriate alias in {{{oplrqb.ini}}}, or choose an existing alias.
+
+{{{
+12:25:53 application=odbctest processid=12220
+12:25:53 solve mapping: pro91c:demo:blank:other:oplushp2.usnet.private:odbctest:rw
+12:25:53 using mapping: pro91c:*:*:*:*:*:*
+}}}
+
+The Broker takes the abbreviated form of the domain alias and searches for matches in the {{{[Mapping Rules]}}} section of {{{oplrqb.ini}}}. The Broker will use the appropriate rule to prohibit or permit access to the database. You may encounter "{{{Mapping not found}}}" errors, if your alias does not have an associated rule. Additionally, you may inadvertently create complex rules, which restrict your ability to connect.
+
+{{{
+12:25:53 using [generic_pro91c] ServerProgram=pro91c_sv
+}}}
+
+Most mapping rules will point the Broker to a {{{[generic_...]}}} agent configuration section. This section passes the name of the database agent that is written to use the database's CLI. It passes the location of database-specific environment variables, and it passes hard-coded connection parameters. Problems may occur on this line, if the agent configuration section does not exist in {{{oplrqb.ini}}}.
+
+{{{
+12:25:53 connect params: domain=Progress 91C db=demo.db serveropts=-T /tmp -d mdy -TB 31 -TM 31 -q -NL readonly=0
+12:25:53 connectopts=-S pro91c -N tcp -H oplushp2 user= opsys=unix machine=oplushp2.usnet.private application=odbctest
+}}}
+
+This line shows the final list of parameters that will be used to establish the connection. In essence, the Broker tosses out specific Data Source Name parameters if corresponding parameters are hard-coded in {{{oplrqb.ini}}}. These hard-coded parameters can result in problems, if you forget they exist. Typically, you will discover that you are connected to the wrong database, you are authenticated as the wrong user, or you are restricted to read-only access. You may also experience authentication problems, which arise when {{{OpsysLogin}}} is enabled. {{{OpsysLogin}}} uses operating system parameters to authenticate. It does not recognize the typical database username and password.
+
+{{{
+12:25:53 spawning /home/openlink/32bit/v42/bin/pro91c_sv generic_pro91c
+}}}
+
+This line shows the agent that is spawned for the connection. Problems occur if permissions prohibit spawning. Problems also occur when the agent is not compatible with the operating system or the agent cannot be found.
+
+{{{
+12:25:53 setting Environment PROGRESS91C
+12:25:53 change environment 'CURSOR_SENSITIVITY' -> 'LOW'
+12:25:53 change environment 'DLC' -> '/dbs2/progress/v91c'
+12:25:53 change environment 'PROCFG' -> '/dbs2/progress/v91c/progress.cfg'
+}}}
+
+The {{{[generic_...]}}} agent configuration section contains an {{{Environment}}} parameter. This parameter passes the location of an {{{[Environment ...]}}} section. This {{{[Environment ...]}}} section passes database-specific environment variables that are needed to establish the connection. Problems arise when the {{{[Environment ...]}}} section does not exist in {{{oplrqb.ini}}}.
+
+{{{
+12:25:53 asking agent for server handle
+}}}
+
+"{{{Server handle}}}" errors occur when the preceding environment variables are incorrect. If environment variables are correct, consult the knowledgebase for additional information.
+
+{{{
+12:25:53 got it!
+12:25:53 asking agent for connection handle
+}}}
+
+"{{{Connection handle}}}" errors occur when connection parameters are incorrect. If the parameters are correct, consult the knowledgebase for additional information.
+
+{{{
+12:25:53 got it!
+12:25:53 accepted blank@oplushp2.usnet.private.odbctest
+}}}
+
+At this point, you are connected to the database. However, a wide array of produce and database errors may occur at this point. Consult the knowledgebase for the nature and description of these errors.
+

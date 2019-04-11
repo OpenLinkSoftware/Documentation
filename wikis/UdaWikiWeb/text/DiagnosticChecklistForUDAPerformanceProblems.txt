@@ -1,0 +1,24 @@
+%META:TOPICPARENT{name="UDATroubleshootingPerformance"}%
+=Diagnostic Checklist for UDA performance problems=
+
+
+Consistently poor performance may involve the following --
+
+* Ensure that ODBC (or other mechanism) and driver-native diagnostic tracing and logging is off, especially on the [[GeneratingClientsideODBCTracesAllDrivers |Single-Tier or Multi-Tier Client host]], but possibly on the [[GeneratingRequestBrokerTraces |Multi-Tier Server host]].
+* Our Single-Tier software is often faster than our Multi-Tier software, depending somewhat on configuration. You may want to perform parallel performance testing with these drivers.
+* We made substantial enhancements to our Multi-Tier communications layer in Release 5.0. For best results, ensure that you are using Release 5.2 or newer components.
+* If your result sets contain large, binary objects, enabling the "Defer fetching of long data" feature in the Driver Setup can improve effective performance by returning all smaller data types before any large data types. 
+* The Row Buffer Size setting in your DSN can be used to tweak performance.  Acceptable settings range from 1 to 999.  For performance tuning, we suggest starting with this set to 1. Then, use one application to perform a query with a large result set (for this test, something over 1000 rows is best). Next, set this value to 99 (and later, to 999). Then, use the same application to perform the same query. Take note of effective performance. If the first test is faster, your result sets may include some explicitly requested large data types (which cannot be deferred with the above setting), and you may be able to improve performance by adjusting your queries. If the later tests are faster, your network may have some latency issues. Optimal values for this setting depend on your overall query makeup and deployment environment; experimentation is the best way to find your local optimal setting.
+* Sockets-based connections to Progress SQL-89 databases may perform more slowly than "shared memory" connectivity.
+* You may have sub-optimal index, cursor usage, or table structuring.
+
+
+If performance problems have arisen that did not exist when your application was initially deployed, these are common contributing factors --
+
+* **Tracing** -- Ensure that ODBC (or other mechanism) and driver-native diagnostic tracing and logging is off, especially on the [[GeneratingClientsideODBCTracesAllDrivers |Single-Tier or Multi-Tier Client host]], but possibly on the [[GeneratingRequestBrokerTraces |Multi-Tier Server host]].
+* **DBMS** -- Factors to check with your DBA would be database version, database schema changes, table indexing properties.
+* **DBMS server** -- Factors to check with your system administrator would be server operating system changes, server hardware changes.
+* **Network** -- Factors to check with your network administrator would be any kind of network change including LAN settings, network cards on either the client PC or the server, introduction of firewall into your network infrastructure.
+* **Application changes** -- If anything changed in the way the application executes database queries, this could be a factor.
+* **Application use changes** --  This problem might be introduced if application users began to execute queries to the database differently than before.
+* **Result set size** -- Changes in the quantity of data being returned can impact all clients, not just the ones executing the queries with large result sets!

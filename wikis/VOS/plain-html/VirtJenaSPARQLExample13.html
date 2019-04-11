@@ -1,0 +1,184 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><!--Begin of %META:TOPICPARENT{name="VirtJenaProvider"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtJenaProvider"}%--><h1><a name="Virtuoso Jena Provider - SPARQL Example 13"></a> Virtuoso Jena Provider - SPARQL Example 13</h1>
+<br><pre>import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.graph.test.*;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import java.util.*;
+
+import virtuoso.jena.driver.*;
+
+public class VirtuosoSPARQLExample13 {
+
+    /**
+     * Executes a SPARQL query against a virtuoso url and prints results.
+     */
+    public static void main(String[] args) 
+    {
+	String url;
+	if(args.length == 0)
+	    url = &quot;jdbc:virtuoso://localhost:1111&quot;;
+	else
+	    url = args[0];
+
+/*** LOADING data to http://exmpl13 graph  ***/
+        
+        VirtModel mdata = VirtModel.openDatabaseModel(&quot;http://exmpl13&quot;, url, &quot;dba&quot;, &quot;dba&quot;);
+        mdata.removeAll();
+
+        Statement st;
+
+        st = statement(mdata, &quot;http://localhost:8890/dataspace http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://rdfs.org/sioc/ns#Space&quot; );
+       	mdata.add(st);
+
+        st = statement(mdata, &quot;http://localhost:8890/dataspace http://rdfs.org/sioc/ns#link http://localhost:8890/ods&quot;);
+       	mdata.add(st);
+
+
+        st = statement(mdata, &quot;http://localhost:8890/dataspace/test2/weblog/test2tWeblog http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://rdfs.org/sioc/types#Weblog&quot;);
+       	mdata.add(st);
+        st = statement(mdata, &quot;http://localhost:8890/dataspace/test2/weblog/test2tWeblog http://rdfs.org/sioc/ns#link http://localhost:8890/dataspace/test2/weblog/test2tWeblog&quot;);
+       	mdata.add(st);
+
+        st = statement(mdata, &quot;http://localhost:8890/dataspace/discussion/oWiki-test1Wiki http://www.w3.org/1999/02/22-rdf-syntax-ns#type http://rdfs.org/sioc/types#MessageBoard&quot;);
+       	mdata.add(st);
+        st = statement(mdata, &quot;http://localhost:8890/dataspace/discussion/oWiki-test1Wiki http://rdfs.org/sioc/ns#link http://localhost:8890/dataspace/discussion/oWiki-test1Wiki&quot;);
+       	mdata.add(st);
+
+
+        // Query string.
+        String queryString = &quot;SELECT * WHERE {?s ?p ?o}&quot; ; 
+        System.out.println(&quot;Execute query=\n&quot;+queryString) ;
+        System.out.println() ;
+
+
+        QueryExecution qexec = VirtuosoQueryExecutionFactory.create(queryString, mdata) ;
+        try {
+            ResultSet rs = qexec.execSelect() ;
+            for ( ; rs.hasNext() ; ) {
+		QuerySolution result = rs.nextSolution();
+		    RDFNode s = result.get(&quot;s&quot;);
+		    RDFNode p = result.get(&quot;p&quot;);
+		    RDFNode o = result.get(&quot;o&quot;);
+		    System.out.println(&quot; { &quot; + s + &quot; &quot; + p + &quot; &quot; + o + &quot; . }&quot;);
+            }
+        } finally {
+            qexec.close() ;
+        }
+
+        mdata.removeRuleSet(&quot;exmpl13_rules&quot;,&quot;http://:exmpl13_schema&quot;);
+
+
+/*** LOADING rule to http://exmpl13_schema graph  ***/
+
+        VirtModel mrule = VirtModel.openDatabaseModel(&quot;http://exmpl13_schema&quot;, url, &quot;dba&quot;, &quot;dba&quot;);
+        mrule.removeAll();
+
+        Resource r1 = mrule.createResource(&quot;http://rdfs.org/sioc/ns#Space&quot;) ;
+        r1.addProperty(RDFS.subClassOf, rdfNode(mrule, &quot;http://www.w3.org/2000/01/rdf-schema#Resource&quot;));
+
+        r1 = mrule.createResource(&quot;http://rdfs.org/sioc/ns#Container&quot;) ;
+        r1.addProperty(RDFS.subClassOf, rdfNode(mrule, &quot;http://rdfs.org/sioc/ns#Space&quot;));
+
+        r1 = mrule.createResource(&quot;http://rdfs.org/sioc/ns#Forum&quot;) ;
+        r1.addProperty(RDFS.subClassOf, rdfNode(mrule, &quot;http://rdfs.org/sioc/ns#Container&quot;));
+
+        r1 = mrule.createResource(&quot;http://rdfs.org/sioc/types#Weblog&quot;) ;
+        r1.addProperty(RDFS.subClassOf, rdfNode(mrule, &quot;http://rdfs.org/sioc/ns#Forum&quot;));
+
+        r1 = mrule.createResource(&quot;http://rdfs.org/sioc/types#MessageBoard&quot;) ;
+        r1.addProperty(RDFS.subClassOf, rdfNode(mrule, &quot;http://rdfs.org/sioc/ns#Forum&quot;));
+
+        r1 = mrule.createResource(&quot;http://rdfs.org/sioc/ns#link&quot;) ;
+        r1.addProperty(RDFS.subPropertyOf, rdfNode(mrule, &quot;http://rdfs.org/sioc/ns&quot;));
+
+        mrule.close();
+
+        mdata.createRuleSet(&quot;exmpl13_rules&quot;,&quot;http://exmpl13_schema&quot;);
+        mdata.close();
+
+
+
+        VirtInfGraph infGraph = new VirtInfGraph(&quot;exmpl13_rules&quot;, false, 
+        				&quot;http://exmpl13&quot;, url, &quot;dba&quot;, &quot;dba&quot;);
+        InfModel model = ModelFactory.createInfModel(infGraph);
+        
+        
+        queryString = &quot;SELECT ?s &quot;+
+                      &quot;FROM &lt;http://exmpl13&gt; &quot;+
+                      &quot;WHERE {?s &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;  &lt;http://rdfs.org/sioc/ns#Space&gt; } &quot;;
+        System.out.println(&quot;\n\nExecute query=\n&quot;+queryString) ;
+        System.out.println() ;
+
+        qexec = VirtuosoQueryExecutionFactory.create(queryString, model) ;
+        try {
+            ResultSet rs = qexec.execSelect() ;
+            for ( ; rs.hasNext() ; ) {
+		QuerySolution result = rs.nextSolution();
+		    RDFNode s = result.get(&quot;s&quot;);
+		    System.out.println(&quot; &quot; + s);
+            }
+        } finally {
+            qexec.close() ;
+        }
+
+
+
+        queryString = &quot;SELECT * &quot;+
+                      &quot;FROM &lt;http://exmpl13&gt; &quot;+
+                      &quot;WHERE &quot;+
+                      &quot;{ &quot;+
+                      &quot; ?s ?p &lt;http://rdfs.org/sioc/ns#Space&gt; . &quot;+
+                      &quot; ?s ?p1 &lt;http://localhost:8890/dataspace/test2/weblog/test2tWeblog&gt; . &quot;+
+                      &quot;} &quot;;
+        
+        System.out.println(&quot;\n\nExecute query=\n&quot;+queryString) ;
+        System.out.println() ;
+
+        qexec = VirtuosoQueryExecutionFactory.create(queryString, model) ;
+        try {
+            ResultSet rs = qexec.execSelect() ;
+            for ( ; rs.hasNext() ; ) {
+		QuerySolution result = rs.nextSolution();
+		    RDFNode s = result.get(&quot;s&quot;);
+		    RDFNode p = result.get(&quot;p&quot;);
+		    RDFNode p1 = result.get(&quot;p1&quot;);
+		    System.out.println(&quot; &quot; + s + &quot; &quot; + p + &quot; &quot; + p1);
+            }
+        } finally {
+            qexec.close() ;
+        }
+
+        model.close();
+    }
+
+
+
+    public static Statement statement( Model m, String fact )
+         {
+         StringTokenizer st = new StringTokenizer( fact );
+         Resource sub = resource( m, st.nextToken() );
+         Property pred = property( m, st.nextToken() );
+         RDFNode obj = rdfNode( m, st.nextToken() );
+         return m.createStatement( sub, pred, obj );    
+         }    
+
+    public static Resource resource( Model m, String s )
+        { return (Resource) rdfNode( m, s ); }
+
+    public static Property property( Model m, String s )
+        { return (Property) rdfNode( m, s ).as( Property.class ); }
+
+    public static RDFNode rdfNode( Model m, String s )
+        { return m.asRDFNode( NodeCreateUtils.create( m, s ) ); }
+
+
+
+}
+</pre><p> </p>
+</div></body></html>

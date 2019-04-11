@@ -1,0 +1,31 @@
+# Edit the file {{{.../bin/openlink.ini}}} (or whatever file is specified by {{{$OPENLINKINI}}}), and make sure the environment section for the driver contains the right entries. For the SQL Server "Lite" Driver, this section looks like this:
+{{{
+[Environment SQLServer 2000]
+FREETDSCONF        = /home/openlink/bin/freetds.conf
+DSQUERY            = SQLSERVER   ; Load this section from freetds.conf
+TDSHOST            = host.domain ; Point this to your SQLServer machine
+TDSPORT            = 1433
+TDSVER             = 7.0
+SQLSERVER_CATALOG  = Y
+CURSOR_SENSITIVITY = LOW         ; Set to HIGH after loading oplrvc.sql
+}}}          
+These environment variable values are database specific and are described in detail later in this section.  These settings are over-ridden by values in the ODBC connect string or the DSN configuration (in the {{{$ODBCINI}}}).  The {{{FREETDSCONF}}} variable is automatically set by the installer. Under normal conditions, you should not have to modify the {{{freetds.conf}}} file nor the {{{DSQUERY}}} variable, and in most cases you will not have to modify the {{{$OPENLINKINI}}} file contents, either.
+# Edit the file bin/odbc.ini and add the correct settings to the sample DSN that is created:
+{{{
+[sql_lite]
+Driver          = /home/openlink/lib/sql_mt_lt.so
+Description     = Sample SQLServer 2000 Lite Connection
+ServerType      = SQLServer 2000
+Username        =
+Password        =
+Database        =
+ReadOnly        = no
+FetchBufferSize = 60
+}}}
+In the case of SQLServer Driver, you only need to modify Username, Password and Database. All modifications except the Driver keyword will be saved when reinstalling this or any other Lite Driver.
+# For most Lite drivers, the {{{$LD_LIBRARY_PATH}}} (or {{{$SHLIB_PATH}}} or {{{$LIBPATH}}}, depending on operating system) environment variable must be set before you can load the driver. Therefore you will not find any mention of them in the {{{openlink.ini}}} file, as these settings are set by the driver after it is properly loaded.
+# If the installer finds the right environment variables (e.g., {{{$INFORMIXDIR}}}), it will note the appropriate {{{$LD_LIBRARY_PATH}}} settings, and add them automatically to the {{{openlink.sh}}} script. This file must therefore be run before you can do anything with the Lite Drivers, e.g.:
+{{{
+. ./openlink.sh
+}}}          
+If this does not execute properly, then when the driver is tested, the system library loader will give an error message stating it cannot find some dependent shared libraries to load.

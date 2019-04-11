@@ -1,0 +1,103 @@
+%META:TOPICPARENT{name="NewUDAFeatures"}%
+=New Features in our Universal Data Access Components=
+
+== New Features in UDA v6.0 ==
+
+=== In components for all databases ===
+* Distributed Transaction Support
+* PAM, LDAP, & Active Directory support
+* Support for XML Types
+
+=== In Oracle-related components ===
+
+* [[ConfigureOracleRAC|Real Application Cluster (RAC) Support]]
+* [[ConfigureOraclePooling|Connection-Pooling]]
+* Direct Connectivity to Oracle without Net8|9|10 or SQL*Net (Single Tier Drivers)
+
+=== In Ingres-related components ===
+
+* Ingres Native ADO.Net Provider
+
+
+==New Features in  UDA v5.2==
+
+The following new features are in Universal Data Access Suite version 5.2:
+
+* 64-bit ODBC Drivers for Windows, Linux, <nop>FreeBSD, Solaris, AIX, HP-UX, Tru64 Linux, and IRIX, across Itanium, Opteron, PA-RISC, IBM RISC, and <nop>PowerPC processors
+* Addition of SSL support to the existing data encryption functionality in our Multi-Tier Drivers
+* New ADO.NET managed providers for all supported databases
+* New ODBC.NET provider that facilitates compatibility between ADO.NET clients and third-party ODBC Drivers
+* Enhanced ODBC-to-JDBC Bridge Driver that enables any ODBC or ADO.NET client application to make use of JDBC drivers
+* JDBC-to-ODBC Bridge Driver that enables Java applications to make use of ODBC drivers
+* A compatibility layer for Microsoft <nop>InfoPath that provides connectivity to non-SQL Server and non-ACCESS databases via ODBC
+* JDBC 3.0-compliant Drivers for version 1.5 of the Java Virtual Machine and SDK
+
+
+===Unicode Driver support===
+
+Database agents support the latest releases of all supported database engines, including:
+* Oracle 8i & 9i
+* Microsoft SQL Server 2000
+* DB/2 v7
+* ODBC v3.5
+* JDBC v3
+* Informix 9
+* Sybase Adaptive Server 12.5
+* Progress 9 (SQL-92)
+
+Note that there are now two Multi-Tier Generic Client ODBC Drivers:
+* "<nop>OpenLink Generic ODBC Driver" -- without Unicode support, {{{olod5032.dll}}}
+* "<nop>OpenLink Generic ODBC Driver (Unicode)" -- with Unicode support, {{{olod5032u.dll}}}
+
+Both of these ODBC clients can be used with Unicode-enabled Database Agents.
+    
+=== Zero Configuration ===
+
+The  Request Broker can now be configured to Broadcast <nop>ZeroConfig services of available Database agents on the network, which then can be discovered by the the Multi-Tier ODBC client. Enabling ODBC Datasources to be configured and/or connections made with no knowledge of network topology.
+
+===Significant SQL Server and SYBASE Driver Enhancements===
+
+Our Drivers are now built to communicate directly with Microsoft SQL Server and SYBASE ASE and ASA using TDS, the native wire protocol for these database servers. This now means that no additional software is required for our ODBC Drivers to communicate with these Databases. The switch to using TDS has also enabled us to double the performance of all our Drivers for these databases, relative to the older drivers based on the CT-Lib and DB-Lib libraries.
+    
+===Array Optimisations on Select Queries===
+
+All drivers now support the {{{SQLSetStmtAttr(SQL_ARRAY_SIZE)}}} call for batch select statements, providing improved performance when re-execute select statements with bound parameters.
+    
+===Deferred Fetching===
+
+The Release 4 driver family brings marked communications layer improvements. Central to these are improved implementation of the {{{SQLGetData()}}} and {{{SQLPutData()}}} ODBC function calls.
+
+==== Wholesale vs. Piecemeal Data Transfer==== 
+
+In previous releases of the drivers, parameter data at query execution was assembled in our driver's client component and transferred to its server component as a single package. (The client and server components apply to both the Single- and Multi-Tier drivers; they refer to different layers within the driver entity.) Similarly, when fetching from a "long" or large binary data column, data was transferred from the driver's server component to the client component in a single package. The only way data could be manipulated in a piecemeal fashion, was within the ODBC application from the driver's client component (client side only).
+
+The Release 4 driver family now allow transferring parameter data in parts over the network between the client and server driver components. Once transferred, the fragmented column data are re-pieced together in their entirety within the client and server portions of the driver.
+
+==== Deferred Fetching==== 
+
+When fetching, data from columns with "long" data are only transferred between the server and client components if one of the following applies to that column:
+
+* It has been "bound" by the application via the <nop>SQLBindCol API call
+* It has been retrieved via the <nop>SQLGetData API call
+
+This mechanism is referred to as deferred fetching. In this method, as "long" column data is not reassembled within the ODBC Generic Client itself (rather, within the application), driver memory overhead incurred is dramatically reduced. Deferred fetching applies to the following "long" database column types:
+
+* **ODBC agent**
+#* {{{SQL_LONGVARCHAR}}}
+#* {{{SQL_LONGVARBINARY}}}
+* **DB/2 agent**
+#* {{{SQL_BLOB}}}
+#* {{{SQL_CLOB}}}
+#* {{{SQL_DBCLOB}}}
+#* If the long data compatibility option has been specified in the DB2 database
+##* {{{SQL_LONGVARCHAR}}}
+##* {{{SQL_LONGVARBINARY}}}
+##* {{{SQL_LONGVARGRAPHIC}}}
+* **Oracle agent**
+#* {{{SQLT_BLOB}}}
+#* {{{SQLT_CLOB}}}
+* **Sybase agent**
+#* {{{CS_IMAGE_TYPE}}}
+#* {{{CS_TEXT_TYPE}}}
+
+If a table contains a column defined as one of these "long" types, but the actual data stored in the column only fills a small proportion of the available space, deferred fetching is of no benefit. In such cases, performance may be improved by switching off the deferred fetching mechanism using the control in the Generic Client DSN Setup dialog.

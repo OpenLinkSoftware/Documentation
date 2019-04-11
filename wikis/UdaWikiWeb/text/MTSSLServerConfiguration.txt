@@ -1,0 +1,76 @@
+==Advanced Server Components Configuration (Multi-Tier)==
+
+===Server-side Configuration for SSL===
+
+In order to make use of this functionality, you need to create a certificate on the server running the request broker. On Unix platforms we have provided a bin/mkcert.sh script as part of the installation. On other platforms you may have to run openssl by hand or use another system to generate the PEM file (such as generating it on a unix server and copying the files across).
+
+A sample run of the mkcert.sh script, showing the various questions it asks to identify your organization, follows:
+
+{{{
+bash$ cd /usr/openlink/bin/
+bash$ ./mkcert.sh mykey
+Checking OpenSSL: OpenSSL 0.9.7d 17 Mar 2004
+Generating a 512 bit RSA private key
+.++++++++++++
+.......++++++++++++
+writing new private key to 'mykey.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Host name (externally visible) [host.example.com]:purple
+Organization (eg. company) [OpenLink Software]:
+Organizational Unit [Research & Development]:Product Development
+State or Province Name (full name) []:Surrey
+Locality Name (eg. city) []:Croydon
+Country Name (2 letter code) [US]:UK
+1024 semi-random bytes loaded
+Generating DH parameters, 512 bit long safe prime, generator 2
+This is going to take a long time
+..+........................+...........................+.......+...........
+[]
+.+.....++*++*++*++*++*++*
+subject= /CN=purple/O=OpenLink Software/OU=Product Development/ST=Surrey/L=Croydon/C=UK
+notBefore=Nov 12 10:43:14 2004 GMT
+notAfter=Nov 10 10:43:14 2014 GMT
+MD5 Fingerprint=E0:DB:53:E7:E7:68:21:53:1C:2B:1E:8E:D9:BF:25:F0
+
+Created private key parameters in mykey.key
+Created public key parameters in mykey.cer
+bash$
+}}}
+
+Having created the key-pair, you now need to tell the request broker to use them. This requires the following lines to be present in the rulebook (oplrqb.ini):
+
+{{{
+[Request Broker]
+....
+SSLKeyFile = mykey.pem
+SSLRequired = No            
+}}}
+
+The <nop>SSLKeyFile is the filename of the key you just created; to deny connections without SSL, set SSLRequired=Yes instead.
+
+You can also put these options in the individual database agent sections, such that one key is used for e.g. Ingres, and another for SQL Server, or one for your sales database and another for people coming in from VPN IP#s (by editing the mapping rules to match on a per-IP# basis). For example:
+
+{{{
+[generic_sqlserver]
+.....
+SSLKeyFile = mykey-sqlserver.pem
+SSLRequired = Yes                  ; All SQLServer connections
+MUST use SSL
+}}}
+
+As an alternative to editing oplrqb.ini by hand, you can use the web-based Administrator GUI, either the form or wizards, to set the SSL Key File and SSL Required fields, thus:
+
+Figure: 1. Server-side SSL Configuration of Request Broker via Web Assistant %BR%
+%BR%
+<img src="%ATTACHURLPATH%/SSL1.png" style="wikiautogen"/>
+
+Figure: 2. Server-side SSL Configuration at the database agent level via Web Assistant %BR%
+%BR%
+<img src="%ATTACHURLPATH%/SSL2.png" style="wikiautogen"/>

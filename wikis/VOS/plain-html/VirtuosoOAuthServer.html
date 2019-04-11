@@ -1,0 +1,126 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><p> <!--Begin of %META:TOPICPARENT{name="OAuth"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="OAuth"}%--> <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#General">General</a></li> <li><a href="#API">API</a></li>
+<ul><li><a href="#Request%20token">Request token</a></li><ul><li><a href="#Example">Example</a></li> </ul><li><a href="#Authorization">Authorization</a></li><ul><li><a href="#Example">Example</a></li> </ul><li><a href="#Access%20token">Access token</a></li><ul><li><a href="#Example">Example</a></li> </ul><li><a href="#Authentication%20verification">Authentication verification</a></li><ul><li><a href="#Sample%20code">Sample code</a></li> <li><a href="#Sample%20request">Sample request</a></li> <li><a href="#Sample%20response">Sample response</a></li> </ul></ul><li><a href="#References">References</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--></p>
+<h1><a name="OAuth server"></a> OAuth server</h1>
+<h2><a name="General"></a> General</h2>
+<p>The <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OAuth" class="wikiword">OAuth</a> protocol enables web services consumers to access protected resources via an API without requiring users to supply the service credentials to the consumers.
+It&#39;s a generic methodology for unobtrusive, wire protocol level authenticated data access over HTTP.</p>
+<h2><a name="API"></a> API</h2>
+<p>Virtuoso implements the OAuth Core 1.0 specification, and exposes the following API endpoints:</p>
+<h3><a name="Request token"></a> Request token</h3>
+<b>Endpoint:</b> <code>http://server-cname/OAuth/request_token</code><p> <b>Parameters</b> </p>
+<ul><li><b><code>oauth_consumer_key</code></b> — The Consumer Key.
+</li>
+<li><b><code>oauth_signature_method</code></b> — The signature method the Consumer used to sign the request.
+</li>
+<li><b><code>oauth_signature</code></b> — The signature as defined in Signing Requests (Signing Requests).
+</li>
+<li><b><code>oauth_timestamp</code></b> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</li>
+<li><b><code>oauth_nonce</code></b> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</li>
+<li><b><code>oauth_version</code></b> — OPTIONAL.
+ If present, value MUST be 1.0 .</li>
+</ul><h4><a name="Example"></a> Example</h4>
+<b>Request:</b> <br><pre>http://localhost:8890/OAuth/request_token?oauth_version=1.0&amp;oauth_nonce
+=dad4cb071e2169cbcaa051d404ac61a3&amp;oauth_timestamp=1201873644&amp;oauth_cons
+umer_key=f756023be5ff1f20881cf8fe398069f3976b2304&amp;oauth_signature_metho
+d=HMAC-SHA1&amp;oauth_signature=z76k5fQ0msFsQzCmhO%2FJZ329ZUE%3D
+</pre><p> <i><b>Note:</b> all long lines in example texts are split, i.e., the <code>GET</code> request is single line.</i></p>
+<b>Response:</b> <br><pre>oauth_token=b4e22daa117b0bebf60ab6ba6e401edc7addd78c&amp;oauth_token_secret
+=4de6e3ab17553a0a385ebf6a3b4dd30f
+</pre><p> </p>
+<h3><a name="Authorization"></a> Authorization</h3>
+<b>Endpoint:</b> <code>http://server-cname/OAuth/authorize</code><p> <b>Parameters:</b> </p>
+<ul><li><b><code>oauth_token</code></b> — The Request Token obtained in the previous step.
+ The current implementation of the Service Provider declare this parameter as REQUIRED.
+</li>
+<li><b><code>oauth_callback</code></b> — OPTIONAL.
+ The Consumer MAY specify a URL the Service Provider will use to redirect the User back to the Consumer when Obtaining User Authorization (Obtaining User Authorization) is complete.</li>
+</ul><h4><a name="Example"></a> Example</h4>
+<b>Request:</b> <br><pre>http://localhost:8890/OAuth/authorize?oauth_token=b4e22daa117b0bebf60ab
+6ba6e401edc7addd78c&amp;oauth_callback=http%3A%2F%2Flocalhost%3A8890%2Foaut
+h%2Fexample%2Fclient.php%3Fkey%3Df756023be5ff1f20881cf8fe398069f3976b23
+04%26secret%3Dcc249bfb732039d8ecba9e4f94fdead7%26token%3Db4e22daa117b0b
+ebf60ab6ba6e401edc7addd78c%26token_secret%3D4de6e3ab17553a0a385ebf6a3b4
+dd30f%26endpoint%3Dhttp%253A%252F%252Flocalhost%253A8890%252FOAuth%252F
+authorize
+</pre><p> The User will be asked via web page to accept or decline the token.</p>
+<h3><a name="Access token"></a> Access token</h3>
+<b>Endpoint:</b> <code>http://server-cname/OAuth/access_token</code><p> <b>Parameters:</b> </p>
+<ul><li><b><code>oauth_consumer_key</code></b> — The Consumer Key.
+</li>
+<li><b><code>oauth_token</code></b> — The Request Token obtained previously.
+</li>
+<li><b><code>oauth_signature_method</code></b> — The signature method the Consumer used to sign the request.
+</li>
+<li><b><code>oauth_signature</code></b> — The signature as defined in Signing Requests (Signing Requests).
+</li>
+<li><b><code>oauth_timestamp</code></b> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</li>
+<li><b><code>oauth_nonce</code></b> — As defined in Nonce and Timestamp (Nonce and Timestamp).
+</li>
+<li><b><code>oauth_version</code></b> — OPTIONAL.
+ If present, value MUST be 1.0 .</li>
+</ul><h4><a name="Example"></a> Example</h4>
+<b>Request:</b> <br><pre>http://localhost:8890/OAuth/access_token?oauth_version=1.0&amp;oauth_nonce=
+8ad75091a66bdd741472be42149c828e&amp;oauth_timestamp=1201873800&amp;oauth_consu
+mer_key=f756023be5ff1f20881cf8fe398069f3976b2304&amp;oauth_token=b4e22daa11
+7b0bebf60ab6ba6e401edc7addd78c&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_s
+ignature=tCxy0Lod4%2Bp%2FCBPV7Ph7RrsHXe4%3D
+</pre><p> <b>Response:</b> </p>
+<br><pre>oauth_token=8c03b3da93480ca4728cc1194d6d03962f3bb5bb&amp;oauth_token_secret
+=854fd29c00adcedff4fbeaeb96584911
+</pre><p> In addition to the endpoints, it defines an API for PL applications to check authentication:</p>
+<h3><a name="Authentication verification"></a> Authentication verification</h3>
+<br><pre>OAUTH.DBA.check_authentication (in params any, in lines any)
+</pre><p> <b>Parameters:</b> </p>
+<ul><li><b>params</b> — an array of strings representing the HTTP parameters </li>
+<li><b>lines</b> — an array of HTTP request headers</li>
+</ul><b>Result:</b> <ul><li>on success, it returns integer 1.
+</li>
+<li>on failure, it signals an SQL error.</li>
+</ul><p> </p>
+<h4><a name="Sample code"></a>Sample code</h4>
+<p>A sample service (<code>oauth.vsp</code>): </p>
+<br><pre>&lt;html&gt;
+&lt;body&gt;
+&lt;?vsp
+  OAUTH..check_authentication (params, lines);
+?&gt;
+An OAuth testing page
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p> </p>
+<h4><a name="Sample request"></a>Sample request</h4>
+<br><pre>http://localhost:8890/admin/oauth.vsp?oauth_version=1.0&amp;oauth_nonce=d57
+640869b994b2d51bf9800229c4997&amp;oauth_timestamp=1201873935&amp;oauth_consumer
+_key=f756023be5ff1f20881cf8fe398069f3976b2304&amp;oauth_token=8c03b3da93480
+ca4728cc1194d6d03962f3bb5bb&amp;oauth_signature_method=HMAC-SHA1&amp;oauth_sign
+ature=X3K4lr9bJVz5YLnnyJDkykQZivY%3D
+</pre><p> </p>
+<h4><a name="Sample response"></a>Sample response</h4>
+<br><pre>&lt;html&gt;
+&lt;body&gt;
+An OAuth testing page
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><p> </p>
+<h2><a name="References"></a>References</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OAuth" class="wikiword">OpenLink&#39;s explanation of OAuth</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthControllers" class="absuri">Using OAuth with ODS</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquity" class="absuri">ODS Ubiquity Commands</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuth" class="wikiword">Virtuoso OAuth Implementation</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsControllers" class="absuri">ODS Controllers</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtODSOAuthQA" class="absuri">Testing Virtuoso OAuth with 3rd Party OAuth Clients</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquityTutorialsOAuth" class="absuri">OAuth Ubiquity Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthTestTool" class="absuri">Virtuoso OAuth Test Tool for ODS Controllers</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtOAuthSPARQL" class="wikiword">Virtuoso SPARQL OAuth Tutorial</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtuosoOdsUbiquityTutorials" class="absuri">ODS Ubiquity Tutorials</a> </li>
+<li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/VirtOAuthExamples" class="absuri">OAuth Applications Authentication examples</a> </li>
+<li><a href="http://oauth.net/core/1.0/" class="absuri">OAuth API</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Virtuoso Authentication Server UI</a></li>
+</ul><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryODS" class="wikiword">CategoryODS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryOAuth" class="wikiword">CategoryOAuth</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVOS" class="wikiword">CategoryVOS</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryDocumentation" class="wikiword">CategoryDocumentation</a> </p>
+</div></body></html>

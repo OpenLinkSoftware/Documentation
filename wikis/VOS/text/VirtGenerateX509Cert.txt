@@ -1,0 +1,32 @@
+---+ X.509 Certificate Generation
+
+The <nowiki>WebID</nowiki> Protocol consumer needs an x509 certificate with v3 extension "Subject Alternate Name". 
+This attribute is used for the owner's <nowiki>WebID</nowiki>.  For testing purposes, we used the <nowiki>OpenSSL</nowiki> demo CA 
+to generate such certificates.  If you are not using the <nowiki>OpenSSL</nowiki> demo CA, you must first set up  
+a self-signed CA; refer to [[https://www.openssl.org/docs/][the OpenSSL documentation]] for how to do this.  
+
+   1 Add the following line to the <code>[usr_cert]</code> section of the <code>openssl.cnf</code> 
+file &mdash;
+<verbatim>
+subjectAltName=$ENV::ALTNAME
+</verbatim>
+   1 Set the environment variable <code>ALTNAME</code> to the owner's <nowiki>WebID</nowiki>, e.g., 
+<verbatim>
+export ALTNAME=URI:http://localhost/dataspace/person/myname#this
+</verbatim>
+   1 Make a self-signed certificate, e.g., 
+<verbatim>
+$ CA.pl -newreq (follow the dialog) 
+$ CA.pl -sign
+</verbatim> 
+   1 When asked to commit the certificate, make sure you see several lines above, like &mdash;
+<verbatim> 
+X509v3 Subject Alternative Name: 
+    URI:http://localhost/dataspace/person/myname#this 
+</verbatim> 
+   1 If your browser wants a <code>PKCS#12</code> bundle, you must make one &mdash;
+<verbatim> 
+$ openssl pkcs12 -export -in newcert.pem -inkey newkey.pem -out mycert.p12 
+</verbatim> 
+   1 Rename <code>newcert.pem</code> and <code>newkey.pem</code>; for example, to <code>mycert.pem</code> 
+and <code>mykey.pem</code>.

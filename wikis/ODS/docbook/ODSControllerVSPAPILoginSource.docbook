@@ -1,0 +1,1069 @@
+<docbook><section><title>ODSControllerVSPAPILoginSource</title><bridgehead class="http://www.w3.org/1999/xhtml:h2">ODS Controller for VSP API Login Source Code</bridgehead>
+<para>The following source code represents the ODS Controller for VSP API Login users.vsp file:</para>
+<programlisting>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;!--
+ -
+ -  $Id: users.vsp,v 1.1 2009/12/30 16:00:57 ddimitrov Exp $
+ -
+ -  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+ -  project.
+ -
+ -  Copyright (C) 1998-2008 OpenLink Software
+ -
+ -  This project is free software; you can redistribute it and/or modify it
+ -  under the terms of the GNU General Public License as published by the
+ -  Free Software Foundation; only version 2 of the License, dated June 1991.
+ -
+ -  This program is distributed in the hope that it will be useful, but
+ -  WITHOUT ANY WARRANTY; without even the implied warranty of
+ -  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ -  General Public License for more details.
+ -
+ -  You should have received a copy of the GNU General Public License along
+ -  with this program; if not, write to the Free Software Foundation, Inc.,
+ -  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+ -
+ -
+--&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Virtuoso Web Applications&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/ods/default.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/ods/ods-bar.css&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/users.css&quot; /&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/oid_login.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/users.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/common.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/CalendarPopup.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      // OAT
+      var toolkitPath=&quot;/ods/oat&quot;;
+      var featureList = [&quot;dom&quot;, &quot;ajax2&quot;, &quot;ws&quot;, &quot;json&quot;, &quot;tab&quot;, &quot;dimmer&quot;, &quot;combolist&quot;];
+    &lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;/ods/oat/loader.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      // publics
+      var cPopup;
+      function myInit()
+      {
+        // CalendarPopup
+        if ($(&quot;cDiv&quot;))
+        {
+          cPopup = new CalendarPopup(&quot;cDiv&quot;);
+          cPopup.isShowYearNavigation = true;
+        }
+
+        OAT.Preferences.imagePath = &quot;/ods/images/oat/&quot;;
+        OAT.Preferences.stylePath = &quot;/ods/oat/styles/&quot;;
+        OAT.Preferences.showAjax = false;
+
+        if ($(&#39;pf&#39;))
+        {
+          var tab = new OAT.Tab (&quot;content&quot;);
+          tab.add (&quot;tab_0&quot;, &quot;page_0&quot;);
+          tab.add (&quot;tab_1&quot;, &quot;page_1&quot;);
+          tab.add (&quot;tab_2&quot;, &quot;page_2&quot;);
+          tab.add (&quot;tab_3&quot;, &quot;page_3&quot;);
+          tab.add (&quot;tab_4&quot;, &quot;page_4&quot;);
+          tab.go (0);
+        }
+      }
+      OAT.MSG.attach(OAT, OAT.MSG.OAT_LOAD, myInit);
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;?vsp
+    declare vHostUrl, vUrl, vResult, vRequest, vRespond any;
+    declare vSid, vRealm, vError, vForm, vXml, vLists, vList, items any;
+
+    declare exit handler for sqlstate &#39;*&#39; { goto _default; };
+
+    if (is_http_ctx ())
+    {
+      vHostUrl := http_request_header (http_request_header () , &#39;Host&#39; , null , sys_connected_server_address ());
+      if (isstring (vHostUrl) and strchr (vHostUrl , &#39;:&#39;) is null)
+      {
+        declare hp varchar;
+        declare hpa any;
+
+        hp := sys_connected_server_address ();
+        hpa := split_and_decode ( hp , 0 , &#39;\0\0:&#39;);
+        if (hpa [1] &lt;&gt; &#39;80&#39;)
+          vHostUrl := vHostUrl || &#39;:&#39; || hpa [1];
+      }
+      goto _exit;
+    }
+
+  _default:;
+    vHostUrl := cfg_item_value (virtuoso_ini_path (), &#39;URIQA&#39;, &#39;DefaultHost&#39;);
+    if (vHostUrl is null)
+    {
+      vHostUrl := sys_stat (&#39;st_host_name&#39;);
+      if (server_http_port () &lt;&gt; &#39;80&#39;)
+        vHostUrl := vHostUrl || &#39;:&#39; || server_http_port ();
+    }
+
+  _exit:;
+    if (vHostUrl not like &#39;http://%&#39;)
+      vHostUrl := &#39;http://&#39; || vHostUrl;
+
+    vHostUrl := vHostUrl || &#39;/ods/api&#39;;
+    vRequest := null;
+    vRespond := null;
+
+    declare exit handler for sqlstate &#39;*&#39;
+    {
+      dbg_obj_print (&#39;&#39;, __SQL_STATE, __SQL_MESSAGE);
+      vForm := &#39;login&#39;;
+      goto _end;
+    };
+
+    vError := &#39;&#39;;
+    vForm := get_keyword (&#39;form&#39;, params, &#39;login&#39;);
+    vSid := get_keyword (&#39;sid&#39;, params);
+    vRealm := &#39;wa&#39;;
+
+    if (vForm = &#39;login&#39;)
+    {
+      if (get_keyword (&#39;lf_login&#39;, params, &#39;&#39;) &lt;&gt; &#39;&#39;)
+      {
+        declare vUser, vPassword any;
+
+        vUser := get_keyword (&#39;lf_uid&#39;, params, &#39;&#39;);
+        vPassword := get_keyword (&#39;lf_password&#39;, params, &#39;&#39;);
+        vUrl := sprintf (&#39;%s/user.authenticate?user_name=%s&amp;password_hash=%s&#39;, vHostUrl, vUser, ODS.._hex_sha1_digest (vUser || vPassword));
+        commit work;
+        vResult := http_client_ext (
+                     vUrl,
+                     http_method=&gt;&#39;GET&#39;,
+                     http_headers=&gt;vRequest,
+                     headers=&gt;vRespond
+                   );
+        if (vRespond[0] like &#39;HTTP/1._ 4__ %&#39; or vRespond[0] like &#39;HTTP/1._ 5__ %&#39;)
+        {
+          vError := vRespond[0];
+        }
+        else
+        {
+          vSid := vResult;
+          vForm := &#39;user&#39;;
+        }
+      }
+    }
+
+    if (vForm = &#39;profile&#39;)
+    {
+      if (get_keyword (&#39;pf_update&#39;, params, &#39;&#39;) &lt;&gt; &#39;&#39;)
+      {
+        vUrl := vHostUrl ||                   &#39;/user.update.fields&#39; ||
+                &#39;?sid=&#39; ||                    vSid ||
+                &#39;&amp;realm=&#39; ||                  vRealm ||
+                &#39;&amp;mail=&#39; ||                   sprintf (&#39;%U&#39;, get_keyword (&#39;pf_mail&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;title=&#39; ||                  sprintf (&#39;%U&#39;, get_keyword (&#39;pf_title&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;firstName=&#39; ||              sprintf (&#39;%U&#39;, get_keyword (&#39;pf_firstName&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;lastName=&#39; ||               sprintf (&#39;%U&#39;, get_keyword (&#39;pf_lastName&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;fullName=&#39; ||               sprintf (&#39;%U&#39;, get_keyword (&#39;pf_fullName&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;gender=&#39; ||                 sprintf (&#39;%U&#39;, get_keyword (&#39;pf_gender&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;birthday=&#39; ||               sprintf (&#39;%U&#39;, get_keyword (&#39;pf_birthday&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;icq=&#39; ||                    sprintf (&#39;%U&#39;, get_keyword (&#39;pf_icq&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;skype=&#39; ||                  sprintf (&#39;%U&#39;, get_keyword (&#39;pf_skype&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;yahoo=&#39; ||                  sprintf (&#39;%U&#39;, get_keyword (&#39;pf_yahoo&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;aim=&#39; ||                    sprintf (&#39;%U&#39;, get_keyword (&#39;pf_aim&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;msn=&#39; ||                    sprintf (&#39;%U&#39;, get_keyword (&#39;pf_msn&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeDefaultMapLocation=&#39; || sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homeDefaultMapLocation&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeCountry=&#39; ||            sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homecountry&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeState=&#39; ||              sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homestate&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeCity=&#39; ||               sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homecity&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeCode=&#39; ||               sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homecode&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeAddress1=&#39; ||           sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homeaddress1&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeAddress2=&#39; ||           sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homeaddress2&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeTimezone=&#39; ||           sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homeTimezone&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeLatitude=&#39; ||           sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homelat&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeLongitude=&#39; ||          sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homelng&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homePhone=&#39; ||              sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homePhone&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;homeMobile=&#39; ||             sprintf (&#39;%U&#39;, get_keyword (&#39;pf_homeMobile&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessIndustry=&#39; ||       sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessIndustry&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessOrganization=&#39; ||   sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessOrganization&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessHomePage=&#39; ||       sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessHomePage&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessJob=&#39; ||            sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessJob&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessCountry=&#39; ||        sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businesscountry&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessState=&#39; ||          sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessstate&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessCity=&#39; ||           sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businesscity&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessCode=&#39; ||           sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businesscode&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessAddress1=&#39; ||       sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessaddress1&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessAddress2=&#39; ||       sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessaddress2&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessTimezone=&#39; ||       sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessTimezone&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessLatitude=&#39; ||       sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businesslat&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessLongitude=&#39; ||      sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businesslng&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessPhone=&#39; ||          sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessPhone&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessMobile=&#39; ||         sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessMobile&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessRegNo=&#39; ||          sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessRegNo&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessCareer=&#39; ||         sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessCareer&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessEmployees=&#39; ||      sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessEmployees&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessVendor=&#39; ||         sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessVendor&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessService=&#39; ||        sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessService&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessOther=&#39; ||          sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessOther&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessNetwork=&#39; ||        sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessNetwork&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;businessResume=&#39; ||         sprintf (&#39;%U&#39;, get_keyword (&#39;pf_businessResume&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;securitySecretQuestion=&#39; || sprintf (&#39;%U&#39;, get_keyword (&#39;pf_securitySecretQuestion&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;securitySecretAnswer=&#39; ||   sprintf (&#39;%U&#39;, get_keyword (&#39;pf_securitySecretAnswer&#39;, params, &#39;&#39;)) ||
+                &#39;&amp;securitySiocLimit=&#39; ||      sprintf (&#39;%U&#39;, get_keyword (&#39;pf_securitySiocLimit&#39;, params, &#39;&#39;));
+        commit work;
+        vResult := http_client_ext (
+                     vUrl,
+                     http_method=&gt;&#39;GET&#39;,
+                     http_headers=&gt;vRequest,
+                     headers=&gt;vRespond
+                   );
+        if (vRespond[0] like &#39;HTTP/1._ 4__ %&#39; or vRespond[0] like &#39;HTTP/1._ 5__ %&#39;)
+        {
+          vError := vRespond[0];
+          vForm := &#39;login&#39;;
+        }
+        else
+        {
+          vXml := xml_tree_doc (vResult);
+          if (xpath_eval (&#39;/failed/message&#39;, vXml))
+          {
+            vError := xpath_eval (&#39;string (/failed/message)&#39;, vXml);
+            vForm := &#39;login&#39;;
+          } else {
+            vForm := &#39;user&#39;;
+          }
+        }
+      }
+      else if (get_keyword (&#39;pf_cancel&#39;, params, &#39;&#39;) &lt;&gt; &#39;&#39;)
+      {
+        vForm := &#39;user&#39;;
+      }
+    }
+
+    if (vForm = &#39;user&#39;)
+    {
+      if (get_keyword (&#39;uf_profile&#39;, params, &#39;&#39;) &lt;&gt; &#39;&#39;)
+        vForm := &#39;profile&#39;;
+    }
+
+    if ((vForm = &#39;user&#39;) or (vForm = &#39;profile&#39;))
+    {
+      vUrl := sprintf (&#39;%s/user.info?sid=%s&amp;realm=%s&#39;, vHostUrl, vSid, vRealm);
+      if (vForm = &#39;profile&#39;)
+        vUrl := vUrl || &#39;&amp;short=1&#39;;
+
+      commit work;
+      vResult := http_client_ext (
+                   vUrl,
+                   http_method=&gt;&#39;GET&#39;,
+                   http_headers=&gt;vRequest,
+                   headers=&gt;vRespond
+                 );
+      if (vRespond[0] like &#39;HTTP/1._ 4__ %&#39; or vRespond[0] like &#39;HTTP/1._ 5__ %&#39;)
+      {
+        vError := vRespond[0];
+        vForm := &#39;login&#39;;
+      }
+      else
+      {
+        vXml := xml_tree_doc (vResult);
+        if (xpath_eval (&#39;/failed/message&#39;, vXml))
+        {
+          vError := xpath_eval (&#39;string (/failed/message)&#39;, vXml);
+          vForm := &#39;login&#39;;
+        }
+        else if (vForm = &#39;profile&#39;)
+        {
+          declare tmp, listItems any;
+
+          items := vector (vector (&#39;Industry&#39;, &#39;&#39;),
+                           vector (&#39;Country&#39;, &#39;&#39;)
+                          );
+          vLists := vector ();
+          foreach (any item in items) do
+          {
+            vUrl := sprintf (&#39;%s/lookup.list?key=%s&amp;param=%s&#39;, vHostUrl, item[0], item[1]);
+            commit work;
+            vResult := http_client_ext (
+                         vUrl,
+                         http_method=&gt;&#39;GET&#39;,
+                         http_headers=&gt;vRequest,
+                         headers=&gt;vRespond
+                       );
+            if (vRespond[0] like &#39;HTTP/1._ 4__ %&#39; or vRespond[0] like &#39;HTTP/1._ 5__ %&#39;)
+            {
+              vError := vRespond[0];
+              vForm := &#39;login&#39;;
+              goto _end;
+            }
+            vList := vector ();
+            tmp := xml_tree_doc (vResult);
+            listItems := xpath_eval (&#39;/items/item&#39;, tmp, 0);
+            foreach (any listItem in listItems) do
+            {
+              vList := vector_concat (vList, vector (cast (listItem as varchar)));
+            }
+            vLists := vector_concat (vLists, vector (vList));
+          }
+        }
+      }
+    }
+  _end:;
+    if (vForm = &#39;login&#39;)
+    {
+      vSid := &#39;&#39;;
+      vRealm := &#39;&#39;;
+    }
+  ?&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;cDiv&quot; style=&quot;position: absolute; visibility: hidden; background-color: white; z-index: 10;&quot;&gt;
+    &lt;/div&gt;
+    &lt;form name=&quot;page_form&quot; method=&quot;post&quot; action=&quot;users.vsp&quot;&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; id=&quot;sid&quot; value=&quot;&lt;?V vSid ?&gt;&quot; /&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;realm&quot; id=&quot;realm&quot; value=&quot;&lt;?V vRealm ?&gt;&quot; /&gt;
+      &lt;input type=&quot;hidden&quot; name=&quot;form&quot; id=&quot;form&quot; value=&quot;&lt;?V vForm ?&gt;&quot; /&gt;
+      &lt;div id=&quot;ob&quot;&gt;
+        &lt;div id=&quot;ob_left&quot;&gt;&lt;a href=&quot;/ods/?sid=&lt;?V vSid ?&gt;&amp;realm=&lt;?V vRealm ?&gt;&quot;&gt;ODS Home&lt;/a&gt; &gt; &lt;?V vForm ?&gt;&lt;/div&gt;
+        &lt;?vsp
+          if (vForm &lt;&gt; &#39;login&#39;)
+          {
+        ?&gt;
+        &lt;div id=&quot;ob_right&quot;&gt;&lt;a href=&quot;#&quot; onclick=&quot;javascript: return logoutSubmit2();&quot;&gt;Logout&lt;/a&gt;&lt;/div&gt;
+        &lt;?vsp
+          }
+        ?&gt;
+      &lt;/div&gt;
+      &lt;div id=&quot;MD&quot;&gt;
+        &lt;table cellspacing=&quot;0&quot;&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;img style=&quot;margin: 60px;&quot; src=&quot;/ods/images/odslogo_200.png&quot; /&gt;&lt;br /&gt;
+              &lt;div id=&quot;ob_links&quot; style=&quot;display: none; margin-left: 60px;&quot;&gt;
+                &lt;a id=&quot;ob_links_foaf&quot; href=&quot;#&quot;&gt;
+                  &lt;img border=&quot;0&quot; alt=&quot;FOAF&quot; src=&quot;/ods/images/foaf.gif&quot;/&gt;
+                &lt;/a&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+              &lt;?vsp
+              if (vForm = &#39;login&#39;)
+              {
+              ?&gt;
+              &lt;div id=&quot;lf&quot; class=&quot;form&quot;&gt;
+                &lt;?vsp
+                  if (vError &lt;&gt; &#39;&#39;)
+                    http (&#39;&lt;div class=&quot;error&quot;&gt;&#39; || vError || &#39;&lt;/div&gt;&#39;);
+                ?&gt;
+                &lt;div class=&quot;header&quot;&gt;
+                  Enter your Member ID and Password
+                &lt;/div&gt;
+                &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                  &lt;tr&gt;
+                    &lt;th width=&quot;30%&quot;&gt;
+                      &lt;label for=&quot;lf_uid&quot;&gt;Member ID&lt;/label&gt;
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;input type=&quot;text&quot; name=&quot;lf_uid&quot; value=&quot;&quot; id=&quot;lf_uid&quot; /&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      &lt;label for=&quot;lf_password&quot;&gt;Password&lt;/label&gt;
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;input type=&quot;password&quot; name=&quot;lf_password&quot; value=&quot;&quot; id=&quot;lf_password&quot; /&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      or
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot; /&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      &lt;label for=&quot;lf_openID&quot;&gt;Login with OpenID&lt;/label&gt;
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;input type=&quot;text&quot; name=&quot;lf_openID&quot; value=&quot;&quot; id=&quot;lf_openID&quot; class=&quot;openID&quot; size=&quot;40&quot;/&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                &lt;/table&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;lf_login&quot; value=&quot;Login&quot; id=&quot;lf_login&quot; onclick=&quot;javascript: return lfLoginSubmit2();&quot; /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;?vsp
+              }
+              if (vForm = &#39;user&#39;)
+              {
+              ?&gt;
+              &lt;div id=&quot;uf&quot; class=&quot;form&quot;&gt;
+                &lt;div class=&quot;header&quot;&gt;
+                  User profile
+                &lt;/div&gt;
+                &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                  &lt;tr&gt;
+                    &lt;th width=&quot;30%&quot;&gt;
+                      Login Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_name&quot;&gt;&lt;?V xpath_eval (&#39;string (/user/name)&#39;, vXml) ?&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      E-mail
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_mail&quot;&gt;&lt;?V xpath_eval (&#39;string (/user/mail)&#39;, vXml) ?&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      Title
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_title&quot;&gt;&lt;?V xpath_eval (&#39;string (/user/title)&#39;, vXml) ?&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      First Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_firstName&quot;&gt;&lt;?V xpath_eval (&#39;string (/user/firstName)&#39;, vXml) ?&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      Last Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_lastName&quot;&gt;&lt;?V xpath_eval (&#39;string (/user/lastName)&#39;, vXml) ?&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr&gt;
+                    &lt;th&gt;
+                      Full Name
+                    &lt;/th&gt;
+                    &lt;td nowrap=&quot;nowrap&quot;&gt;
+                      &lt;span id=&quot;uf_fullName&quot;&gt;&lt;?V xpath_eval (&#39;string (/user/fullName)&#39;, vXml) ?&gt;&lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                &lt;/table&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;uf_profile&quot; value=&quot;Edit Profile&quot; /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;?vsp
+              }
+              if (vForm = &#39;profile&#39;)
+              {
+              ?&gt;
+              &lt;div id=&quot;pf&quot; class=&quot;form&quot; style=&quot;width: 800px;&quot;&gt;
+                &lt;?vsp
+                  if (vError &lt;&gt; &#39;&#39;)
+                    http (&#39;&lt;div class=&quot;error&quot;&gt;&#39; || vError || &#39;&lt;/div&gt;&#39;);
+                ?&gt;
+                &lt;div class=&quot;header&quot;&gt;
+                  Update user profile
+                &lt;/div&gt;
+                &lt;ul id=&quot;tabs&quot;&gt;
+                  &lt;li id=&quot;tab_0&quot; title=&quot;Personal&quot;&gt;Personal&lt;/li&gt;
+                  &lt;li id=&quot;tab_1&quot; title=&quot;Contact&quot;&gt;Contact&lt;/li&gt;
+                  &lt;li id=&quot;tab_2&quot; title=&quot;Home&quot;&gt;Home&lt;/li&gt;
+                  &lt;li id=&quot;tab_3&quot; title=&quot;Business&quot;&gt;Business&lt;/li&gt;
+                  &lt;li id=&quot;tab_4&quot; title=&quot;Security&quot;&gt;Security&lt;/li&gt;
+                &lt;/ul&gt;
+                &lt;div style=&quot;min-height: 180px; border: 1px solid #aaa; margin: -13px 5px 5px 5px;&quot;&gt;
+                  &lt;div id=&quot;content&quot;&gt;&lt;/div&gt;
+
+                  &lt;div id=&quot;page_0&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_title&quot;&gt;Title&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_title&quot; id=&quot;pf_title&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;?vsp
+                              items := vector (&#39;Mr&#39;, &#39;Mrs&#39;, &#39;Dr&#39;, &#39;Ms&#39;);
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/title)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_firstName&quot;&gt;First Name&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_firstName&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/firstName)&#39;, vXml) ?&gt;&quot; id=&quot;pf_firstName&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_lastName&quot;&gt;Last Name&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_lastName&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/lastName)&#39;, vXml) ?&gt;&quot; id=&quot;pf_lastName&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_fullName&quot;&gt;Full Name&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_fullName&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/fullName)&#39;, vXml) ?&gt;&quot; id=&quot;pf_fullName&quot; size=&quot;60&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_mail&quot;&gt;E-mail&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_mail&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/mail)&#39;, vXml) ?&gt;&quot; id=&quot;pf_mail&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_gender&quot;&gt;Gender&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_gender&quot; value=&quot;&quot; id=&quot;pf_gender&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;?vsp
+                              items := vector (&#39;Male&#39;, &#39;Female&#39;);
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/gender)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_birthday&quot;&gt;Birthday&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input name=&quot;pf_birthday&quot; id=&quot;pf_birthday&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/birthday)&#39;, vXml) ?&gt;&quot; onclick=&quot;cPopup.select ($(&#39;pf_birthday&#39;), &#39;pf_birthday_select&#39;, &#39;yyyy-MM-dd&#39;);&quot;/&gt;
+                          &lt;a href=&quot;#&quot; name=&quot;pf_birthday_select&quot; id=&quot;pf_birthday_select&quot; onclick=&quot;cPopup.select ($(&#39;pf_birthday&#39;), &#39;pf_birthday_select&#39;, &#39;yyyy-MM-dd&#39;); return false;&quot;&gt; &lt;/a&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_1&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_icq&quot;&gt;ICQ&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_icq&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/icq)&#39;, vXml) ?&gt;&quot; id=&quot;pf_icq&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_skype&quot;&gt;Skype&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_skype&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/skype)&#39;, vXml) ?&gt;&quot; id=&quot;pf_skype&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_yahoo&quot;&gt;Yahoo&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_yahoo&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/yahoo)&#39;, vXml) ?&gt;&quot; id=&quot;pf_yahoo&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_aim&quot;&gt;AIM&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_aim&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/aim)&#39;, vXml) ?&gt;&quot; id=&quot;pf_aim&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_msn&quot;&gt;MSN&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_msn&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/msn)&#39;, vXml) ?&gt;&quot; id=&quot;pf_msn&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_2&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_homecountry&quot;&gt;Country&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;select name=&quot;pf_homecountry&quot; id=&quot;pf_homecountry&quot; onchange=&quot;javascript: return updateState(&#39;pf_homecountry&#39;, &#39;pf_homestate&#39;);&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;?vsp
+                              items := vLists[1];
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/homeCountry)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeState&quot;&gt;State/Province&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;span id=&quot;span_pf_homestate&quot;&gt;
+                            &lt;script type=&quot;text/javascript&quot;&gt;
+                              OAT.MSG.attach(OAT, OAT.MSG.OAT_LOAD, function (){updateState(&quot;pf_homecountry&quot;, &quot;pf_homestate&quot;, &quot;&lt;?V xpath_eval (&#39;string (/user/homeState)&#39;, vXml) ?&gt;&quot;);});
+                            &lt;/script&gt;
+                          &lt;/span&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeCity&quot;&gt;City/Town&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeCity&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeCity)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homeCity&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeCode&quot;&gt;Zip/Postal Code&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeCode&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeCode)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homeCode&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeAddress1&quot;&gt;Address1&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeAddress1&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeAddress1)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homeAddress1&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeAddress2&quot;&gt;Address2&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeAddress2&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeAddress2)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homeAddress2&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeTimezone&quot;&gt;Time-Zone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_homeTimezone&quot; id=&quot;pf_homeTimezone&quot;&gt;
+                            &lt;?vsp
+                              declare N integer;
+                              for (N := -12; N &lt;= 12; N := N + 1)
+                              {
+                                http (sprintf (&#39;&lt;option value=&quot;%d&quot; %s&gt;GMT %d:00&lt;/option&gt;&#39;, N, case when (cast (N as varchar) = xpath_eval (&#39;string (/user/homeTimezone)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, N));
+                              }
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homelat&quot;&gt;Latitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homelat&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeLatitude)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homelat&quot; /&gt;
+                          &lt;label&gt;
+                            &lt;input type=&quot;checkbox&quot; name=&quot;pf_homeDefaultMapLocation&quot; id=&quot;pf_homeDefaultMapLocation&quot; onclick=&quot;javascript: setDefaultMapLocation(&#39;home&#39;, &#39;business&#39;);&quot; /&gt;
+                            Default Map Location
+                          &lt;/label&gt;
+                        &lt;td&gt;
+                      &lt;tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homelng&quot;&gt;Longitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homelng&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeLongitude)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homelng&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homePhone&quot;&gt;Phone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homePhone&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homePhone)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homePhone&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_homeMobile&quot;&gt;Mobile&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_homeMobile&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/homeMobile)&#39;, vXml) ?&gt;&quot; id=&quot;pf_homeMobile&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_3&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot;&gt;
+                          &lt;label for=&quot;pf_businessIndustry&quot;&gt;Industry&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessIndustry&quot; id=&quot;pf_businessIndustry&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;?vsp
+                              items := vLists[0];
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/businessIndustry)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessOrganization&quot;&gt;Organization&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessOrganization&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessOrganization)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessOrganization&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessHomePage&quot;&gt;Organization Home Page&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessHomePage&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessHomePage)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessNetwork&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessJob&quot;&gt;Job Title&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessJob&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessJob)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessJob&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesscountry&quot;&gt;Country&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businesscountry&quot; id=&quot;pf_businesscountry&quot; onchange=&quot;javascript: return updateState(&#39;pf_businesscountry&#39;, &#39;pf_businessstate&#39;);&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option&gt;&lt;/option&gt;
+                            &lt;?vsp
+                              items := vLists[1];
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/businessCountry)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessstate&quot;&gt;State/Province&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;span id=&quot;span_pf_businessstate&quot;&gt;
+                            &lt;script type=&quot;text/javascript&quot;&gt;
+                              OAT.MSG.attach(OAT, OAT.MSG.OAT_LOAD, function (){updateState(&quot;pf_businesscountry&quot;, &quot;pf_businessstate&quot;, &quot;&lt;?V xpath_eval (&#39;string (/user/businessState)&#39;, vXml) ?&gt;&quot;);});
+                            &lt;/script&gt;
+                          &lt;/span&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesscity&quot;&gt;City/Town&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesscity&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessCity)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businesscity&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessCode&quot;&gt;Zip/Postal Code&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessCode&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessCode)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessCode&quot;  style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessAddress1&quot;&gt;Address1&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessAddress1&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessAddress1)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessAddress1&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessAddress2&quot;&gt;Address2&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessAddress2&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessAddress2)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessAddress2&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessTimezone&quot;&gt;Time-Zone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessTimezone&quot; id=&quot;pf_businessTimezone&quot;&gt;
+                            &lt;?vsp
+                              declare N integer;
+                              for (N := -12; N &lt;= 12; N := N + 1)
+                                http (sprintf (&#39;&lt;option value=&quot;%d&quot; %s&gt;GMT %d:00&lt;/option&gt;&#39;, N, case when (N = xpath_eval (&#39;string (/user/businessTimezone)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, N));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesslat&quot;&gt;Latitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesslat&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessLatitude)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businesslat&quot; /&gt;
+                          &lt;label&gt;
+                            &lt;input type=&quot;checkbox&quot; name=&quot;pf_businessDefaultMapLocation&quot; id=&quot;pf_businessDefaultMapLocation&quot; onclick=&quot;javascript: setDefaultMapLocation(&#39;business&#39;, &#39;home&#39;);&quot; /&gt;
+                            Default Map Location
+                          &lt;/label&gt;
+                        &lt;td&gt;
+                      &lt;tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businesslng&quot;&gt;Longitude&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businesslng&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessLongitude)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businesslng&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessPhone&quot;&gt;Phone&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessPhone&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessPhone)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessPhone&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessMobile&quot;&gt;Mobile&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessMobile&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessMobile)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessMobile&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessRegNo&quot;&gt;VAT Reg number (EU only) or Tax ID&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessRegNo&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessRegNo)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessRegNo&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessCareer&quot;&gt;Career / Organization Status&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessCareer&quot; id=&quot;pf_businessCareer&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;?vsp
+                              items := vector (&#39;Job seeker-Permanent&#39;, &#39;Job seeker-Temporary&#39;, &#39;Job seeker-Temp/perm&#39;, &#39;Employed-Unavailable&#39;, &#39;Employer&#39;, &#39;Agency&#39;, &#39;Resourcing supplier&#39;);
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/businessCareer)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessEmployees&quot;&gt;No. of Employees&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessEmployees&quot; id=&quot;pf_businessEmployees&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;?vsp
+                              items := vector (&#39;1-100&#39;, &#39;101-250&#39;, &#39;251-500&#39;, &#39;501-1000&#39;, &#39;&gt;1000&#39;);
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/businessEmployees)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessVendor&quot;&gt;Are you a technology vendor&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessVendor&quot; id=&quot;pf_businessVendor&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;?vsp
+                              items := vector (&#39;Not a Vendor&#39;, &#39;Vendor&#39;, &#39;VAR&#39;, &#39;Consultancy&#39;);
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/businessVendor)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessService&quot;&gt;If so, what technology and/or service do you provide?&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;select name=&quot;pf_businessService&quot; id=&quot;pf_businessService&quot; style=&quot;width: 220px;&quot;&gt;
+                            &lt;option /&gt;
+                            &lt;?vsp
+                              items := vector (&#39;Enterprise Data Integration&#39;, &#39;Business Process Management&#39;, &#39;Other&#39;);
+                              foreach (any item in items) do
+                                http (sprintf(&#39;&lt;option %s&gt;%s&lt;/option&gt;&#39;, case when (item = xpath_eval (&#39;string (/user/businessService)&#39;, vXml)) then &#39;selected=&quot;selected&quot;&#39; else &#39;&#39; end, item));
+                            ?&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessOther&quot;&gt;Other Technology service&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessOther&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessOther)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessOther&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessNetwork&quot;&gt;Importance of OpenLink Network for you&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_businessNetwork&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/businessNetwork)&#39;, vXml) ?&gt;&quot; id=&quot;pf_businessNetwork&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_businessResume&quot;&gt;Resume&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td&gt;
+                          &lt;textarea name=&quot;pf_businessResume&quot; id=&quot;pf_businessResume&quot; style=&quot;width: 220px;&quot;&gt;&lt;?vsp xpath_eval (&#39;string (/user/businessResume)&#39;, vXml); ?&gt;&lt;/textarea&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                  &lt;div id=&quot;page_4&quot; style=&quot;display:none;&quot;&gt;
+                    &lt;table class=&quot;form&quot; cellspacing=&quot;5&quot;&gt;
+                      &lt;tr&gt;
+                        &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+                          &lt;span id=&quot;pf_change_txt&quot;&gt;&lt;/span&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th style=&quot;text-align: left; background-color: #F6F6F6;&quot; colspan=&quot;2&quot;&gt;
+                          Password Settings
+                        &lt;/th&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th width=&quot;30%&quot; nowrap=&quot;nowrap&quot;&gt;
+                          &lt;label for=&quot;pf_oldPassword&quot;&gt;Old Password&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;password&quot; name=&quot;pf_oldPassword&quot; value=&quot;&quot; id=&quot;pf_oldPassword&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_newPassword&quot;&gt;New Password&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;password&quot; name=&quot;pf_newPassword&quot; value=&quot;&quot; id=&quot;pf_newPassword&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_password&quot;&gt;Repeat Password&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;password&quot; name=&quot;pf_newPassword2&quot; value=&quot;&quot; id=&quot;pf_newPassword2&quot; /&gt;
+                          &lt;input type=&quot;button&quot; name=&quot;pf_change&quot; value=&quot;Change&quot; onclick=&quot;javascript: return pfChangeSubmit();&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th style=&quot;text-align: left; background-color: #F6F6F6;&quot; colspan=&quot;2&quot;&gt;
+                          Password Recovery
+                        &lt;/th&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_securitySecretQuestion&quot;&gt;Secret Question&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_securitySecretQuestion&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/securitySecretQuestion)&#39;, vXml) ?&gt;&quot; id=&quot;pf_securitySecretQuestion&quot; style=&quot;width: 220px;&quot; /&gt;
+                          &lt;select name=&quot;pf_secretQuestion_select&quot; value=&quot;&quot; id=&quot;pf_secretQuestion_select&quot; onchange=&quot;setSecretQuestion ();&quot;&gt;
+                            &lt;option value=&quot;&quot;&gt;~pick predefined~&lt;/option&gt;
+                            &lt;option value=&quot;First Car&quot;&gt;First Car&lt;/option&gt;
+                            &lt;option value=&quot;Mothers Maiden Name&quot;&gt;Mothers Maiden Name&lt;/option&gt;
+                            &lt;option value=&quot;Favorite Pet&quot;&gt;Favorite Pet&lt;/option&gt;
+                            &lt;option value=&quot;Favorite Sports Team&quot;&gt;Favorite Sports Team&lt;/option&gt;
+                          &lt;/select&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_securitySecretAnswer&quot;&gt;Secret Answer&lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_securitySecretAnswer&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/securitySecretAnswer)&#39;, vXml) ?&gt;&quot; id=&quot;pf_securitySecretAnswer&quot; style=&quot;width: 220px;&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th style=&quot;text-align: left; background-color: #F6F6F6;&quot; colspan=&quot;2&quot;&gt;
+                          Applications restrictions
+                        &lt;/th&gt;
+                      &lt;/tr&gt;
+                      &lt;tr&gt;
+                        &lt;th&gt;
+                          &lt;label for=&quot;pf_securitySiocLimit&quot;&gt;SIOC Query Result Limit  &lt;/label&gt;
+                        &lt;/th&gt;
+                        &lt;td nowrap=&quot;nowrap&quot;&gt;
+                          &lt;input type=&quot;text&quot; name=&quot;pf_securitySiocLimit&quot; value=&quot;&lt;?V xpath_eval (&#39;string (/user/securitySiocLimit)&#39;, vXml) ?&gt;&quot; id=&quot;pf_securitySiocLimit&quot; /&gt;
+                        &lt;/td&gt;
+                      &lt;/tr&gt;
+                    &lt;/table&gt;
+                  &lt;/div&gt;
+
+                &lt;/div&gt;
+                &lt;div class=&quot;footer&quot;&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;pf_update&quot; value=&quot;Update&quot; /&gt;
+                  &lt;input type=&quot;submit&quot; name=&quot;pf_cancel&quot; value=&quot;Cancel&quot; /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;?vsp
+              }
+              ?&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+    &lt;div id=&quot;FT&quot;&gt;
+      &lt;div id=&quot;FT_L&quot;&gt;
+        &lt;a href=&quot;http://www.openlinksw.com/virtuoso&quot;&gt;&lt;img alt=&quot;Powered by OpenLink Virtuoso Universal Server&quot; src=&quot;/ods/images/virt_power_no_border.png&quot; border=&quot;0&quot; /&gt;&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;div id=&quot;FT_R&quot;&gt;
+        &lt;a href=&quot;/ods/faq.html&quot;&gt;FAQ&lt;/a&gt; | &lt;a href=&quot;/ods/privacy.html&quot;&gt;Privacy&lt;/a&gt; | &lt;a href=&quot;/ods/rabuse.vspx&quot;&gt;Report Abuse&lt;/a&gt;
+        &lt;div&gt;
+          Copyright © 1999-2009 OpenLink Software
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</programlisting></section></docbook>

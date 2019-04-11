@@ -1,0 +1,226 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How can I insert binary data to Virtuoso RDF storage in plain queries and with parameter binding via ADO.NET calls?"></a>How can I insert binary data to Virtuoso RDF storage in plain queries and with parameter binding via ADO.NET calls?</h1>
+<p>The following example shows different methods for insert binary data to Virtuoso RDF storage in plain queries and with parameter binding via ADO.NET calls.</p>
+<br><pre># Test_Bin.cs
+
+
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Data;
+using OpenLink.Data.Virtuoso;
+
+#if ODBC_CLIENT
+namespace OpenLink.Data.VirtuosoOdbcClient
+#elif CLIENT
+namespace OpenLink.Data.VirtuosoClient
+#else
+namespace OpenLink.Data.VirtuosoTest
+#endif
+{
+    class Test_Bin
+    {
+        [STAThread]
+        static void Main(string[] args)
+        {
+            IDataReader myread = null;
+            IDbConnection c;
+
+            c = new VirtuosoConnection(&quot;HOST=localhost:1111;UID=dba;PWD=dba;&quot;);
+
+            IDbCommand cmd = c.CreateCommand();
+            int ros;
+
+            try
+            {
+                c.Open();
+
+                cmd.CommandText = &quot;sparql clear graph &lt;ado.bin&gt;&quot;;
+                cmd.ExecuteNonQuery();
+
+//insert binary as base64Binary
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.bin&gt; { &lt;res1&gt; &lt;attr&gt; \&quot;GpM7\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#base64Binary&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+//insert binary as hexBinary
+                cmd.CommandText = &quot;sparql insert into graph &lt;ado.bin&gt; { &lt;res2&gt; &lt;attr&gt; \&quot;0FB7\&quot;^^&lt;http://www.w3.org/2001/XMLSchema#hexBinary&gt; }&quot;;
+                cmd.ExecuteNonQuery();
+
+
+//prepare for insert with parameter binding
+                cmd.CommandText = &quot;sparql define output:format &#39;_JAVA_&#39; insert into graph &lt;ado.bin&gt; { `iri($?)` &lt;attr&gt; `bif:__rdf_long_from_batch_params($?,$?,$?)` }&quot;;
+
+//bind parameters for insert binary as base64Binary
+                IDbDataParameter param = cmd.CreateParameter();
+                param.ParameterName = &quot;p1&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;res3&quot;;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p2&quot;;
+                param.DbType = DbType.Int32;
+                param.Value = 4;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p3&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;GpM7&quot;;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p4&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;http://www.w3.org/2001/XMLSchema#base64Binary&quot;;
+                cmd.Parameters.Add(param);
+
+                cmd.ExecuteNonQuery();
+
+                cmd.Parameters.Clear();
+
+//bind parameters for insert binary as hexBinary
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p1&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;res4&quot;;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p2&quot;;
+                param.DbType = DbType.Int32;
+                param.Value = 4;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p3&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;0FB7&quot;;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p4&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;http://www.w3.org/2001/XMLSchema#hexBinary&quot;;
+                cmd.Parameters.Add(param);
+
+                cmd.ExecuteNonQuery();
+
+                cmd.Parameters.Clear();
+
+//bind parameters for insert binary as byte[]
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p1&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = &quot;res5&quot;;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p2&quot;;
+                param.DbType = DbType.Int32;
+                param.Value = 3;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p3&quot;;
+                param.DbType = DbType.Binary;
+                byte[] bin_val = {0x01, 0x02, 0x03, 0x04, 0x05};
+                param.Value = bin_val;
+                cmd.Parameters.Add(param);
+
+                param = cmd.CreateParameter();
+                param.ParameterName = &quot;p4&quot;;
+                param.DbType = DbType.AnsiString;
+                param.Value = System.DBNull.Value; 
+                cmd.Parameters.Add(param);
+
+                cmd.ExecuteNonQuery();
+
+                cmd.Parameters.Clear();
+
+//execute select and check the results
+                cmd.CommandText = &quot;sparql SELECT ?s ?o FROM &lt;ado.bin&gt; WHERE {?s ?p ?o}&quot;; ;
+                myread = cmd.ExecuteReader();
+                int r = 0;
+
+                while (myread.Read())
+                {
+                    Console.WriteLine(&quot;=== ROW === &quot;+r);
+                    for (int i = 0; i &lt; myread.FieldCount; i++)
+                    {
+                        string s;
+                        if (myread.IsDBNull(i))
+                            Console.Write(&quot;N/A|\n&quot;);
+                        else
+                        {
+                            object o = myread.GetValue(i);
+                            Type t = myread.GetFieldType(i);
+
+                            s = myread.GetString(i);
+                            Console.Write(s + &quot;[&quot;);
+                            if (o is SqlExtendedString)
+                            {
+                                SqlExtendedString se = (SqlExtendedString)o;
+                                Console.Write(&quot;IriType=&quot; + se.IriType + &quot;;StrType=&quot; + se.StrType + &quot;;Value=&quot; + se.ToString());
+                                Console.Write(&quot;;ObjectType=&quot; + o.GetType() + &quot;]|\n&quot;);
+                            }
+                            else if (o is SqlRdfBox)
+                            {
+                                SqlRdfBox se = (SqlRdfBox)o;
+                                Console.Write(&quot;Lang=&quot; + se.StrLang + &quot;;Type=&quot; + se.StrType + &quot;;Value=&quot; + se.Value);
+                                Console.Write(&quot;;ObjectType=&quot; + o.GetType() + &quot;]|\n&quot;);
+                                object v = se.Value;
+                                if (v is System.Byte[])
+                                {
+                                    byte[] vb = (byte[])v;
+                                    for (int z = 0; z &lt; vb.Length; z++)
+                                    {
+                                        Console.WriteLine(&quot;&quot;+z+&quot;=&quot;+vb[z]);
+                                    }
+                                }
+                            }
+                            else
+                                Console.Write(o.GetType() + &quot;]|\n&quot;);
+                        }
+                    }
+                    r++;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(&quot;{0} Exception caught.&quot;, e);
+            }
+            finally
+            {
+                //		  if (myread != null)
+                //		    myread.Close();
+
+                if (c.State == ConnectionState.Open)
+                    c.Close();
+
+            }
+
+        }
+    }
+}
+</pre><p> Output log for example is in the log.txt:</p>
+<br><pre># log.txt
+=== ROW === 0
+res1[IriType=IRI;StrType=IRI;Value=res1;ObjectType=OpenLink.Data.Virtuoso.SqlExtendedString]|
+GpM7[Lang=;Type=http://www.w3.org/2001/XMLSchema#base64Binary;Value=GpM7;ObjectType=OpenLink.Data.Virtuoso.SqlRdfBox]|
+=== ROW === 1
+res2[IriType=IRI;StrType=IRI;Value=res2;ObjectType=OpenLink.Data.Virtuoso.SqlExtendedString]|
+0FB7[Lang=;Type=http://www.w3.org/2001/XMLSchema#hexBinary;Value=0FB7;ObjectType=OpenLink.Data.Virtuoso.SqlRdfBox]|
+=== ROW === 2
+res3[IriType=IRI;StrType=IRI;Value=res3;ObjectType=OpenLink.Data.Virtuoso.SqlExtendedString]|
+GpM7[Lang=;Type=http://www.w3.org/2001/XMLSchema#base64Binary;Value=GpM7;ObjectType=OpenLink.Data.Virtuoso.SqlRdfBox]|
+=== ROW === 3
+res4[IriType=IRI;StrType=IRI;Value=res4;ObjectType=OpenLink.Data.Virtuoso.SqlExtendedString]|
+0FB7[Lang=;Type=http://www.w3.org/2001/XMLSchema#hexBinary;Value=0FB7;ObjectType=OpenLink.Data.Virtuoso.SqlRdfBox]|
+=== ROW === 4
+res5[IriType=IRI;StrType=IRI;Value=res5;ObjectType=OpenLink.Data.Virtuoso.SqlExtendedString]|
+0102030405[System.Byte[]]|
+
+</pre><h3><a name="Related"></a>Related</h3>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+</ul></div></body></html>

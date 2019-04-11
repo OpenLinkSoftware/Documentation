@@ -1,0 +1,92 @@
+%META:TOPICPARENT{name="InstallConfigADONETProviders"}%
+= Call Tracing with our ADO.NET Providers =
+
+To enable tracing using any of our ADO.Net Providers, create an environment variable called {{{OPL.NET.TRACE.CONFIG}}}, which targets a text file (which you'll create shortly); for example, on Windows: 
+{{{
+set OPL.NET.TRACE.CONFIG=C:\Program Files\OpenLink Software\UDA\adotrace.cfg
+}}}
+
+This text file will contain structured XML as described (and with examples) below, with three key elements:
+
+* <b>provider</b> -- specified by classname, as shown in the examples below
+* <b>tracelevel</b> -- specified by values shown, in increasing level of detail; defaults to none if omitted
+{{{
+tracelevel ::= None | Exception | Warning | Info | Call | InternalCall | Debug
+}}}
+* <b>tracefile</b> -- filename prefix for tracefile.  If omitted, trace output will be directed to the console.  The filename prefix can include a path, either absolute or relative to the client application's working directory.
+
+The output tracefile will be named in this form --
+{{{
+<filename prefix>_<application domain name>_<process id>_<application domain id>_<provider name>.log
+}}}
+
+Trace output will be written to the specified log file in the form --
+{{{
+<time> [<thread id>:<stack depth>] <object name>.<method>: <context>
+}}}
+-- where context may be --
+* <b>ENTRY</b> -- method entry
+* <b>EXIT</b> -- method exit
+* <b>EXCEPTION</b> -- exception thrown
+* <b>MESSAGE</b> -- general trace message
+
+A thread's exit from a method is not shown unless the method has a non-void return type or output parameters (e.g., <code>ref</code> or <code>out</code> parameters in C#). When not shown, the method will have exited before the first subsequent entry in the trace output where the thread's stack depth is less than its stack depth when the method was entered.
+
+The following sample {{{%OPL.NET.TRACE.CONFIG%}}} would trace calls from all <nop>OpenLink ADO.NET Providers --
+{{{
+<providers>
+
+  <!-- Single-Tier ADO.NET Provider for ODBC Data Sources -->
+  <provider name="OpenLink.Data.OdbcClient">
+    <tracelevel>
+        Debug
+    </tracelevel>
+    <tracefile>
+        c:\trace_odbc
+    </tracefile>
+  </provider>
+
+  <!-- Single-Tier ADO.NET Provider for Microsoft SQL Server Data Sources -->
+  <provider name="OpenLink.Data.SQLServer">
+    <tracelevel>
+        Debug
+    </tracelevel>
+    <tracefile>
+        c:\trace_sql
+    </tracefile>
+  </provider>
+
+  <!-- Single-Tier ADO.NET Provider for Sybase Data Sources -->
+  <provider name="OpenLink.Data.Sybase">
+    <tracelevel>
+        Debug
+    </tracelevel>
+    <tracefile>
+        c:\trace_syb
+    </tracefile>
+  </provider>
+
+  <!-- Multi-Tier Generic Client ADO.NET Provider -->
+  <provider name="OpenLink.Data.GenericClient">
+    <tracelevel>
+        Debug
+    </tracelevel>
+    <tracefile>
+        c:\trace_generic
+    </tracefile>
+  </provider>
+
+  <!-- Single-Tier ADO.NET Provider for Virtuoso -->
+  <provider name="OpenLink.Data.Virtuoso">
+    <tracelevel>
+        Debug
+    </tracelevel>
+    <tracefile>
+        c:\trace_virtuoso
+    </tracefile>
+  </provider>
+
+</providers>
+}}}
+
+

@@ -1,0 +1,185 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection"}%--><h1><a name="Virtuoso SPARQL 1.1.&#10; Update Examples"></a>Virtuoso SPARQL 1.1.
+ Update Examples</h1>
+<p> <!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%3F">What?</a></li> <li><a href="#Why%3F">Why?</a></li> <li><a href="#How%3F">How?</a></li>
+<ul><li><a href="#Delete%20and%20Add%20a%20Triple%20to%20a%20Graph%20Example">Delete and Add a Triple to a Graph Example</a></li> <li><a href="#DELETE%2FInsert%20WITH%20Clause%20Usage%20Example">DELETE/Insert WITH Clause Usage Example</a></li> <li><a href="#DELETE%2FInsert%20WITH%20MODIFY%20Usage%20Example">DELETE/Insert WITH MODIFY Usage Example</a></li> </ul><li><a href="#Related">Related</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--></p>
+<h2><a name="What?"></a>What?</h2>
+ This guide contains Virtuoso SPARQL 1.1.
+ Update Usage example queries which you can run against any SPARQL endpoint that supports SPARQL 1.1 and the ability to allow a verified user perform INSERT operations.<h2><a name="Why?"></a>Why?</h2>
+ Change existing graphs in the Quad Store.<h2><a name="How?"></a>How?</h2>
+<p>SPARQL 1.1 Update provides these graph update operations ( <a href="http://www.w3.org/TR/2012/PR-sparql11-update-20121108/#graphUpdate" class="absuri">See more from the specification</a> ):</p>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksSPARQL11Insert" class="wikiword">INSERT DATA</a> -- adds some triples, given inline in the request, into a graph.
+ This SHOULD create the destination graph if it does not exist.
+ If the graph does not exist and it can not be created for any reason, then a failure MUST be returned.
+</li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksSPARQL11Delete" class="wikiword">DELETE DATA</a> -- removes some triples, given inline in the request, if the respective graph contains those.
+</li>
+<li>The fundamental pattern-based actions for graph updates are INSERT and DELETE.
+ These actions consist of groups of triples to be deleted and groups of triples to be added based on query patterns.
+ The difference between INSERT / DELETE and INSERT DATA / DELETE DATA is that INSERT DATA and DELETE DATA do not substitute bindings into a template from a pattern.
+</li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksSPARQL11Load" class="wikiword">LOAD</a> -- reads the contents of a document representing a graph into a graph in the Graph Store.
+</li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksSPARQL11Clear" class="wikiword">CLEAR</a> -- removes all the triples in (one or more) graphs.</li>
+</ul><p>Here are some examples showcasing Virtuoso&#39;s support for this functionality:</p>
+<h3><a name="Delete and Add a Triple to a Graph Example"></a>Delete and Add a Triple to a Graph Example</h3>
+<p> This example demonstrates two operations -- delete a triple and add a triple in the named graph identified by the IRI &lt;urn:sparql:tests:update&gt; :</p>
+<ol><li>Assume the following Raw Data Representation in Turtle: <br><pre><br>&lt;#book1&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; &quot;Fundamentals of Compiler Desing&quot; .
+</pre><br></li>
+<li>Load the sample data: <br><pre><br>INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:tests:update&gt;
+      { 
+        &lt;#book1&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; &quot;Fundamentals of Compiler Design&quot; .
+      } 
+  }
+</pre><br></li>
+<li>Delete the triple from the graph: <br><pre><br>DELETE DATA
+  { 
+    GRAPH &lt;urn:sparql:tests:update&gt; 
+      { 
+        &lt;#book1&gt;  &lt;http://purl.org/dc/elements/1.1/title&gt;  &quot;Fundamentals of Compiler Design&quot; 
+      } 
+  }  
+</pre><br></li>
+<li>Insert a new triple to the graph: <br><pre><br>INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:tests:update&gt;
+      { 
+        &lt;#book2&gt;  &lt;http://purl.org/dc/elements/1.1/title&gt;  &quot;Fundamentals of Compiler Design&quot; 
+      } 
+  }
+</pre><br></li>
+<li>Query the graph data: <br><pre><br>SELECT * 
+FROM &lt;urn:sparql:tests:update&gt; 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</pre><br></li>
+<li><a href="http://bit.ly/Ua3MHI" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/UKCANo" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ol><p> </p>
+<h3><a name="DELETE/Insert WITH Clause Usage Example"></a>DELETE/Insert WITH Clause Usage Example</h3>
+<p>This example demonstrates how to rename all people with the given name &quot;Bill&quot; to &quot;William&quot;:</p>
+<p> </p>
+<ol><li>Assume the following Raw Data Representation in Turtle: <br><pre><br>&lt;#president25&gt; &lt;http://xmlns.com/foaf/0.1/givenName&gt;       &quot;Bill&quot; . 
+&lt;#president25&gt; &lt;http://xmlns.com/foaf/0.1/foaf:familyName&gt; &quot;McKinley&quot; . 
+&lt;#president27&gt; &lt;http://xmlns.com/foaf/0.1/foaf:givenName&gt;  &quot;Bill&quot; . 
+&lt;#president27&gt; &lt;http://xmlns.com/foaf/0.1/foaf:familyName&gt; &quot;Taft&quot; . 
+&lt;#president42&gt; &lt;http://xmlns.com/foaf/0.1/foaf:givenName&gt;  &quot;Bill&quot; . 
+&lt;#president42&gt; &lt;http://xmlns.com/foaf/0.1/foaf:familyName&gt; &quot;Clinton&quot; .  
+</pre><br></li>
+<li>Load the sample data: <br><pre><br>INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:tests:update:insert:delete:with&gt; 
+      { 
+        &lt;#president25&gt; &lt;http://xmlns.com/foaf/0.1/givenName&gt;       &quot;Bill&quot; . 
+        &lt;#president25&gt; &lt;http://xmlns.com/foaf/0.1/foaf:familyName&gt; &quot;McKinley&quot; . 
+        &lt;#president27&gt; &lt;http://xmlns.com/foaf/0.1/foaf:givenName&gt;  &quot;Bill&quot; . 
+        &lt;#president27&gt; &lt;http://xmlns.com/foaf/0.1/foaf:familyName&gt; &quot;Taft&quot; . 
+        &lt;#president42&gt; &lt;http://xmlns.com/foaf/0.1/foaf:givenName&gt;  &quot;Bill&quot; . 
+        &lt;#president42&gt; &lt;http://xmlns.com/foaf/0.1/foaf:familyName&gt; &quot;Clinton&quot; .    
+      } 
+  }
+</pre><br></li>
+<li>Rename all people with the given name &quot;Bill&quot; to &quot;William&quot;: <br><pre><br>WITH &lt;urn:sparql:tests:update:insert:delete:with&gt;
+DELETE { ?person &lt;http://xmlns.com/foaf/0.1/givenName&gt; &#39;Bill&#39; }
+INSERT { ?person &lt;http://xmlns.com/foaf/0.1/givenName&gt; &#39;William&#39; }
+WHERE
+  { 
+    ?person &lt;http://xmlns.com/foaf/0.1/givenName&gt; &#39;Bill&#39;
+  } 
+</pre><br></li>
+<li>Query the graph data: <br><pre><br>SELECT * 
+FROM &lt;urn:sparql:tests:update:insert:delete:with&gt; 
+WHERE 
+  {
+    ?s ?p ?o
+  }
+</pre><br></li>
+<li><a href="http://bit.ly/WZVZbV" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/11uJAgW" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ol><h3><a name="DELETE/Insert WITH MODIFY Usage Example"></a>DELETE/Insert WITH MODIFY Usage Example</h3>
+<p>This example demonstrates use of MODIFY to alter the objects of a <code>schema:WebPage<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebPage&parent=VirtTipsAndTricksSPARQL11Update" class="wikiword">?</a></code> relation using objects of a <code>foaf:homePage</code> relation.
+ In this example, we have a constant relation subject identified the HTTP URI &lt;<a href="http://example.com/product/Sample1#this>" class="absuri">http://example.com/product/Sample1#this&gt;</a> .</p>
+<p> </p>
+<ol><li>Assume the following Raw Data Representation in Turtle: <br><pre><br>&lt;http://example.com/product/Sample1#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample1.com/index1&gt; . 
+&lt;http://example.com/product/Sample2#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample2.com/index2&gt; . 
+&lt;http://example.com/product/Sample3#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample3.com/index3&gt; . 
+&lt;http://example.com/product/Sample4#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample4.com/index4&gt; . 
+&lt;http://example.com/product/Sample5#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample5.com/index5&gt; .  
+</pre><br></li>
+<li>Load the sample data: <br><pre><br>INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:tests:update:insert:delete:modify:graph1&gt; 
+      { 
+        &lt;http://example.com/product/Sample1#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample1.com/index1&gt; . 
+        &lt;http://example.com/product/Sample2#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample2.com/index2&gt; . 
+        &lt;http://example.com/product/Sample3#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample3.com/index3&gt; . 
+        &lt;http://example.com/product/Sample4#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample4.com/index4&gt; . 
+        &lt;http://example.com/product/Sample5#this&gt; &lt;http://schema.org/WebPage&gt; &lt;http://sample5.com/index5&gt; . 
+      } 
+  }
+</pre><br></li>
+<li>Assume the following Raw Data Representation in Turtle: <br><pre><br>&lt;http://sample1.com/index1&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample1.com/&gt; . 
+&lt;http://sample2.com/index2&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample2.com/&gt; .
+&lt;http://sample3.com/index3&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample3.com/&gt; . 
+&lt;http://sample4.com/index4&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample4.com/&gt; . 
+&lt;http://sample5.com/index5&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample5.com/&gt; . 
+</pre><br></li>
+<li>Load the sample data: <br><pre><br>INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:tests:update:insert:delete:modify:graph2&gt; 
+      { 
+        &lt;http://sample1.com/index1&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample1.com/&gt; . 
+        &lt;http://sample2.com/index2&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample2.com/&gt; .
+        &lt;http://sample3.com/index3&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample3.com/&gt; . 
+        &lt;http://sample4.com/index4&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample4.com/&gt; . 
+        &lt;http://sample5.com/index5&gt; &lt;http://xmlns.com/foaf/0.1/homepage&gt; &lt;http://sample5.com/&gt; . 
+      } 
+  }
+</pre><br></li>
+<li>Replace schema:WebPage<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebPage&parent=VirtTipsAndTricksSPARQL11Update" class="wikiword">?</a> objects with foaf:home objects values: <br><pre><br>PREFIX schema: &lt;http://schema.org/&gt;
+PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt; 
+MODIFY &lt;urn:sparql:tests:update:insert:delete:modify:graph1&gt;
+DELETE 
+  {
+    &lt;http://example.com/product/Sample1#this&gt; schema:WebPage ?s .
+  }
+INSERT 
+  {
+    &lt;http://example.com/product/Sample1#this&gt; schema:WebPage ?ns .
+  }
+WHERE 
+  {
+    GRAPH &lt;urn:sparql:tests:update:insert:delete:modify:graph1&gt; 
+      {
+      &lt;http://example.com/product/Sample1#this&gt; schema:WebPage ?s .
+      }
+    GRAPH &lt;urn:sparql:tests:update:insert:delete:modify:graph2&gt; 
+      {
+      ?s foaf:homepage ?ns .
+      }   
+  }    
+</pre><br></li>
+<li>Query the graph data: <br><pre><br>SELECT * 
+FROM &lt;urn:sparql:tests:update:insert:delete:modify:graph1&gt; 
+WHERE 
+  {
+    ?s ?p ?o .
+    FILTER (?s = &lt;http://example.com/product/Sample1#this&gt;) .
+  }
+</pre><br></li>
+<li><a href="http://bit.ly/1EuDfaP" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/1srjQyX" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ol><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://www.w3.org/TR/2012/PR-sparql11-update-20121108/#graphUpdate" class="absuri">SPARQL 1.1 Update</a> </li>
+<li><a href="http://www.w3.org/TR/2012/PR-sparql11-update-20121108/#deleteInsert" class="absuri">SPARQL 1.1. DELETE/INSERT + WITH clause</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksSPARQL11FeaturesExamplesCollection" class="wikiword">Virtuoso SPARQL 1.1 Usage Examples Collection</a> </li>
+<li><a href="http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_9/SPARQL_Tutorials_Part_9.html" class="absuri">Virtuoso SPARQL 1.1 Syntax Tutorial</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso Documentation</a> </li>
+</ul></div></body></html>

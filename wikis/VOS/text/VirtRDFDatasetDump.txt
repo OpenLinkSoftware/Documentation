@@ -1,0 +1,143 @@
+%META:TOPICPARENT{name="VOSIndex"}%
+
+---+ Producing RDF dumps from the Virtuoso Triple-/Quad-Store
+
+%TOC%
+
+---++What?
+How to export RDF model data from Virtuoso's Quad Store.
+
+---++Why?
+Every DBMS needs to offer a mechanism for bulk export and import of data.
+
+Virtuoso supports dumping and reloading graph model data (e.g., RDF), as well as relational data (e.g., SQL) (discussed elsewhere).
+
+---++ How?
+
+We have created stored procedures for the task. The dump procedures leverage SPARQL to facilitate selective data dump(s) from one or more Named Graphs, each denoted by an IRI.
+
+---+++ Dump One Graph
+
+The procedure <b><code><nowiki>dump_one_graph</nowiki></code></b> can be used to dump any single Named Graph.
+
+---++++ Parameters
+
+   * <code>IN <b>srcgraph</b> VARCHAR</code> -- source graph
+   * <code>IN <b>out_file</b> VARCHAR</code> -- output file
+   * <code>IN <b><nowiki>file_length_limit</nowiki></b> INTEGER</code> -- maximum length of dump files 
+
+---++++ Procedure source
+
+<verbatim>
+CREATE PROCEDURE dump_one_graph 
+  ( IN  srcgraph           VARCHAR
+  , IN  out_file           VARCHAR
+  , IN  file_length_limit  INTEGER  := 1000000000
+  )
+  {
+    DECLARE  file_name     VARCHAR
+  ; DECLARE  env
+          ,  ses           ANY
+  ; DECLARE  ses_len
+          ,  max_ses_len
+          ,  file_len
+          ,  file_idx      INTEGER
+  ; SET ISOLATION = 'uncommitted'
+  ; max_ses_len  := 10000000
+  ; file_len     := 0
+  ; file_idx     := 1
+  ; file_name    := sprintf ('%s%06d.ttl', out_file, file_idx)
+  ; string_to_file ( file_name || '.graph', 
+                     srcgraph, 
+                     -2
+                   );
+    string_to_file ( file_name, 
+                     sprintf ( '# Dump of graph <%s>, as of %s\n@base <> .\n', 
+                               srcgraph, 
+                               CAST (NOW() AS VARCHAR)
+                             ), 
+                     -2
+                   )
+  ; env := vector (dict_new (16000), 0, '', '', '', 0, 0, 0, 0, 0)
+  ; ses := string_output ()
+  ; FOR (SELECT * FROM ( SPARQL DEFINE input:storage "" 
+                         SELECT ?s ?p ?o { GRAPH `iri(?:srcgraph)` { ?s ?p ?o } } 
+                       ) AS sub OPTION (LOOP)) DO
+      {
+        http_ttl_triple (env, "s", "p", "o", ses);
+        ses_len := length (ses);
+        IF (ses_len > max_ses_len)
+          {
+            file_len := file_len + ses_len;
+            IF (file_len > file_length_limit)
+              {
+                http (' .\n', ses);
+                string_to_file (file_name, ses, -1);
+		gz_compress_file (file_name, file_name||'.gz');
+		file_delete (file_name);
+                file_len := 0;
+                file_idx := file_idx + 1;
+                file_name := sprintf ('%s%06d.ttl', out_file, file_idx);
+                string_to_file ( file_name, 
+                                 sprintf ( '# Dump of graph <%s>, as of %s (part %d)\n@base <> .\n', 
+                                           srcgraph, 
+                                           CAST (NOW() AS VARCHAR), 
+                                           file_idx), 
+                                 -2
+                               );
+                 env := VECTOR (dict_new (16000), 0, '', '', '', 0, 0, 0, 0, 0);
+              }
+            ELSE
+              string_to_file (file_name, ses, -1);
+            ses := string_output ();
+          }
+      }
+    IF (LENGTH (ses))
+      {
+        http (' .\n', ses);
+        string_to_file (file_name, ses, -1);
+	gz_compress_file (file_name, file_name||'.gz');
+	file_delete (file_name);
+      }
+  }
+;
+</verbatim>
+
+To load the procedure into Virtuoso, it can simply be copied and pasted into the Virtuoso "isql" command line tool or Interactive SQL UI of the Conductor and execute.
+
+---++++ Example
+
+   1. Call the <code><nowiki><nowiki>dump_one_graph</nowiki></nowiki></code> procedure with appropriate arguments:
+<verbatim>
+$ pwd 
+/Applications/OpenLink Virtuoso/Virtuoso 6.1/database
+
+$ grep DirsAllowed virtuoso.ini
+DirsAllowed              = ., ../vad,
+
+$ /opt/virtuoso/bin/isql 1111
+Connected to OpenLink Virtuoso
+Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+Type HELP; for help and EXIT; to exit.
+SQL&gt; dump_one_graph ('http://daas.openlinksw.com/data#', './data_', 1000000000); 
+Done. -- 1438 msec.
+</verbatim>
+   1. As a result, a dump of the graph &lt;[[http://daas.openlinksw.com/data#][http://daas.openlinksw.com/data#]]&gt; will be found in the files <code>data_XX</code> (located in your Virtuoso db folder):
+<verbatim>
+$ ls
+data_000001.ttl
+data_000002.ttl
+....
+data_000001.ttl.graph
+</verbatim>
+
+---+++ Dump Multiple Graphs
+
+See the following documentation on [[VirtRDFDumpNQuad][dumping Virtuoso RDF Quad store hosted data into NQuad datasets]].
+
+---++ Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtRDFDumpNQuad][RDF dumps from Virtuoso Quad store hosted data into NQuad dumps]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfperformancetuning.html#rdfperfdumpandreloadgraphs][Virtuoso Documentation]]

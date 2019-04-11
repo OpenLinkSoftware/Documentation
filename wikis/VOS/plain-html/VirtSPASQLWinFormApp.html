@@ -1,0 +1,266 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtAdoNet35Provider"}%--><h1><a name="Creating a Windows Forms Application To Access RDF Data Using The Virtuoso ADO.Net Provider"></a> Creating a Windows Forms Application To Access RDF Data Using The Virtuoso ADO.Net Provider</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li> <li><a href="#Creating%20the%20Application">Creating the Application</a></li>
+<ul><li><a href="#Step%201%20-%20Create%20a%20view%20of%20the%20RDF%20data">Step 1 - Create a view of the RDF data</a></li> <li><a href="#Step%202%20-%20Create%20a%20simple%20grid%20form%20in%20Visual%20Studio">Step 2 - Create a simple grid form in Visual Studio</a></li> <li><a href="#Step%203%20-%20Change%20the%20mapping%20of%20the%20DataSet">Step 3 - Change the mapping of the DataSet<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DataSet&parent=VirtSPASQLWinFormApp" class="wikiword">?</a></a></li> <li><a href="#Step%204%20-%20Create%20the%20on_click%20event%20handler%20for%20the%20cells%20in%20the%20DataGridView">Step 4 - Create the on_click event handler for the cells in the DataGridView<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DataGridView&parent=VirtSPASQLWinFormApp" class="wikiword">?</a></a></li> <li><a href="#Step%205%20-%20Create%20a%20class%20to%20handle%20exploring%20the%20RDF%20data">Step 5 - Create a class to handle exploring the RDF data</a></li> <li><a href="#Step%206%20-%20Add%20a%20new%20Data%20Set%20to%20hold%20the%20query%20results">Step 6 - Add a new Data Set to hold the query results</a></li> <li><a href="#Step%207%20-%20Build%20and%20run%20the%20application">Step 7 - Build and run the application</a></li> </ul><li><a href="#Next%20Steps">Next Steps</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>This document will guide you through creating a simple application that allows you to access RDF data in a Virtuoso database as an Entity DataSet and explore that RDF data in an intuitive way by clicking on dereferenceable <a href="http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype" class="absuri">IRIs</a>.</p>
+<h2><a name="Prerequisites"></a> Prerequisites</h2>
+<ol><li>Microsoft Visual Studio 2008 </li>
+<li>The Virtuoso ADO.Net provider for .Net 3.5 and the Entity Framework </li>
+<li>The example assumes that you have a local Virtuoso server with the Northwind demo database installed.
+ If the demo database is not already installed then download the <a href="https://virtuoso.openlinksw.com/download/" class="absuri">demo database VAD package</a> (<code>demo_dav.vad</code>) and install it.
+ The VAD package will create a new database in Virtuoso called demo containing the familiar Northwind tables.
+ It will also creates <a href="http://docs.openlinksw.com/virtuoso/rdfsparqlintegrationmiddleware.html#rdfviews" class="absuri">Linked Data Views</a> of the Northwind tables.
+ In the example we assume the database is accessible on a hostname of &quot;<code>demo.openlinksw.com</code>&quot; on the default port <code>80</code>, where an actually live instance of the Virtuoso Demo database is hosted.
+ Users would use the appropriate hostname and port number of their Virtuoso installation to create the sample application, and would be <code>localhost:8890</code> for a default installation or whatever the <code><a href="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#ini_URIQA" class="absuri">URIQA DefaultHost</a></code> Virtuoso configuration parameter is set to when the demo database VAD package is installed.</li>
+</ol><h2><a name="Creating the Application"></a> Creating the Application</h2>
+<h3><a name="Step 1 - Create a view of the RDF data"></a> Step 1 - Create a view of the RDF data</h3>
+<p>We want to be able to access the RDF data in Visual Studio and the easiest way to do this is to create a view of the data that we are interested in and bind that view to a DataSet.
+ This can be considered as using server side <a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">SPARQL</a>.
+ Virtuoso supports an extension to standard SQL that allows execution of <a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsparqlinline" class="absuri">SPARQL within a SQL statement</a>.
+If a SQL query begins with the keyword SPARQL then the rest of the query is interpreted by as SPARQL.
+ If a SPARQL query is used as the definition of a view then that view can be manipulated using SQL like any other view.
+ In this way the result set from a SPARQL query can be easily accessed from Visual Studio using ADO.Net and the Entity Framework.</p>
+<ol><li>To create a view of the customers in the Northwind, first open the Virtuoso Conductor and log in as dba.
+<ul><li><b>Note:</b> <ul><li>If the view is added to the Visual Studio project as user &quot;demo&quot; (or any other than &quot;dba&#39;), then it must be ensured that the &quot;SPARQL_SELECT&quot; and &quot;SPARQL_SPONGE&quot; roles are assigned to this user, which can be done via the Virtuoso Conductor in the &quot;System Admin&quot; -&gt; &quot;User Accounts&quot; tab.
+</li>
+<li>Execute permissions will also need to be granted to the following procedure: <br><pre><br>GRANT  EXECUTE 
+  ON  DB.DBA.RDF_MAKE_LONG_OF_SQLVAL 
+  TO  &quot;demo&quot;
+</pre><br></li>
+</ul></li>
+</ul></li>
+<li>Then open iSQL from the menu on the left and execute the following statement -- <br><pre><br>CREATE VIEW Demo.demo.sparqlview AS
+  SPARQL
+  PREFIX  nwind:  &lt;http://demo.openlinksw.com/schemas/northwind#&gt;
+  SELECT DISTINCT  ?s  
+    FROM  &lt;http://demo.openlinksw.com/Northwind&gt;
+    WHERE  { ?s  a  nwind:Customer }
+</pre><br><br><br><img src="VirtSPASQLWinFormApp/CreateView.png" style="wikiautogen"><br><br></li>
+</ol><h3><a name="Step 2 - Create a simple grid form in Visual Studio"></a> Step 2 - Create a simple grid form in Visual Studio</h3>
+<ol><li>Open <b>Visual Studio</b> and create a new <b>Windows Forms Application</b> called RDFDemo.
+</li>
+<li>In the <b>Form Designer</b> drag a <b>DataGridView</b> on to the form.
+</li>
+<li>Click the <b>Choose Data Source</b> drop down and select <b>Add Project Data Source</b>.
+<br><br><img src="VirtSPASQLWinFormApp/AddDataSource.png" style="wikiautogen"><br><br> </li>
+<li>In the <b>Data</b> <b>Source</b> <b>Configuration Wizard</b> choose <b>Database</b> and then set up a connection to the demo database on your local Virtuoso server.
+</li>
+<li>On the <b>Choose Your Data Objects</b> page expand the <b>Views</b> and select sparqlview.
+<br><br><img src="VirtSPASQLWinFormApp/ChooseDataSourceObject.png" style="wikiautogen"><br><br> </li>
+<li>Click <b>Finish</b>.
+</li>
+<li>In the <b>Form</b> <b>Designer</b> select dataGridView1 and change the <b>AutoSizeColumnsMode</b> to AllCellsExceptHeader.
+</li>
+<li>Select the <b>DefaultCellStyle</b> and click on the ellipsis.
+ This will open the <b>CellStyleBuilder</b>.
+ Change the <b>ForeColor</b> to Blue.
+<br><br><img src="VirtSPASQLWinFormApp/CellStyleBuilder.png" style="wikiautogen"><br><br> </li>
+<li>Expand <b>Font</b> and change <b>Underline</b> to True.
+ Click <b>OK</b>.</li>
+</ol><h3><a name="Step 3 - Change the mapping of the DataSet"></a> Step 3 - Change the mapping of the DataSet</h3>
+<ol><li>In the <b>Solution Explorer</b> you will now have a <b>DataSet</b> called DemoDataSet.xsd.
+</li>
+<li>If you double click on this it opens the <b>DataSet Designer</b>.
+</li>
+<li>Select the column called s in the sparqlview table, and in the <b>Properties</b> pane, change the <b>DataType</b> from System.String to System.Object.
+<ul><li>The data returned by a SPARQL query can either be an <a href="http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype" class="absuri">IRI</a> or a literal value.
+ In order to distinguish between the two the Virtuoso ADO.Net provider defines an additional data type, SQLExtendedString.
+ By setting the column type to System.Object we can cast the fetched data back to SQLExtendedString and find out if an individual value is an IRI or a literal and handle it appropriately.</li>
+</ul></li>
+</ol><h3><a name="Step 4 - Create the on_click event handler for the cells in the DataGridView"></a> Step 4 - Create the on_click event handler for the cells in the DataGridView</h3>
+<ol><li>Return to the <b>Form</b> <b>Designer</b> and double click on the cell of the <b>DataGridView</b>.
+ This creates the <b>dataGridView1_CellContentClick</b> method in Form1.cs.
+This is the method that handles clicking on IRI objects in the grid.
+</li>
+<li>Paste the following block of code into the body of the <b>dataGridView1_CellContentClick</b> method.
+<br><pre><br>int column = e.ColumnIndex;
+ object o = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+ Type t = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].ValueType;
+
+ if (o is SqlExtendedString)
+ {   
+     SqlExtendedString se = (SqlExtendedString) o;                
+     ExtendedStringHandler seHandler = new ExtendedStringHandler(se, this.sparqlviewTableAdapter.Connection);
+     seHandler.displayData();
+ }
+ else if (o is SqlRdfBox)
+ {   
+     //doesn&#39;t do anything at the moment
+ }
+</pre><br></li>
+<li>As we are using the SQLExtendedString extension from the Virtuoso ADO.Net provider you will also need to add <br><pre><br>using OpenLink.Data.Virtuoso;
+</pre><br>at the top of the file.</li>
+</ol><h3><a name="Step 5 - Create a class to handle exploring the RDF data"></a> Step 5 - Create a class to handle exploring the RDF data</h3>
+<ol><li>Add a new C# class to the project called ExtendedStringHandler, by right-clicking on RDFDemo in the <b>Solution</b> <b>Explorer</b> and <b>Add</b> a <b>Class</b>.
+</li>
+<li>Add the following using statements to the top of the file <br><pre><br>using OpenLink.Data.Virtuoso;
+using System.Data;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data.Mapping;
+using System.Data.Common;
+</pre><br></li>
+<li>Paste the following block of code into the class definition.
+<br><pre><br>StringBuilder DescribeCommand;
+VirtuosoConnection ParentConnection;
+List&lt;Label&gt; labelList = new List&lt;Label&gt;();
+List&lt;TextBox&gt; textBoxList = new List&lt;TextBox&gt;();
+DescribeDataSet describeDataSet = new DescribeDataSet();
+Boolean isIRI = false;
+ 
+       public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnetion)
+{   
+    ParentConnection = parentConnetion;
+    if (iri.IriType == SqlExtendedStringType.IRI)
+    {   
+        isIRI = true;
+        DescribeCommand = new StringBuilder(&quot;sparql SELECT * FROM &lt;http://demo.openlinksw.com/Northwind&gt; WHERE {&lt;&quot; + iri.ToString() + &quot;&gt; ?p ?o}&quot;); 
+                  // Replace demo.openlinksw.com in line above with your URIQA DefaultHost setting
+    }
+}
+
+public string describeCommandText
+{
+    get
+    {   
+        return DescribeCommand.ToString();
+    }
+}
+
+public void getDescribeData()
+{
+     VirtuosoCommand myCommand = new VirtuosoCommand(this.describeCommandText, this.ParentConnection);
+    VirtuosoDataAdapter myAdapter = new VirtuosoDataAdapter();
+    myAdapter.SelectCommand = myCommand;
+    myAdapter.Fill(describeDataSet.DataTable1);
+}
+
+public void displayData()
+{   
+    if (isIRI)
+    {   
+        getDescribeData();
+        Form describeForm = new Form();
+        describeForm.AutoScroll = true;
+        describeForm.Width = 840;
+
+        Label label1 = new Label();
+        label1.AutoSize = true;
+        label1.Font = new Font(label1.Font.FontFamily, label1.Font.Size + 3.0F, label1.Font.Style | FontStyle.Bold, label1.Font.Unit);
+        describeForm.Controls.Add(label1);
+
+        DataTable table1 = describeDataSet.Tables[0];
+        if (table1.Rows.Count == 0)
+            label1.Text = &quot;No Details Available&quot;;
+        else
+        {
+            foreach (DataRow row in table1.Rows)
+                if (row[0].ToString() == &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&quot;)
+                {
+                    StringBuilder title = new StringBuilder(row[1].ToString() + &quot; details&quot;);
+                    label1.Text = title.ToString();
+                    break;
+                }
+
+            foreach (DataRow row in table1.Rows)
+            {
+                Label propertyLabel = new Label();
+                TextBox valueBox = new TextBox();
+                valueBox.Width = 400;
+
+                object property = row[0];
+                object value = row[1];
+
+                if (value is SqlExtendedString)
+                {
+                    valueBox.ForeColor = Color.Blue;
+                    valueBox.Font = new Font(valueBox.Font.FontFamily, valueBox.Font.Size, valueBox.Font.Style | FontStyle.Underline, valueBox.Font.Unit);
+                }
+                propertyLabel.Text = row[0].ToString();
+                propertyLabel.AutoEllipsis = true;
+                propertyLabel.AutoSize = false;
+                propertyLabel.Width = propertyLabel.PreferredWidth &gt; 380 ? 380 : propertyLabel.PreferredWidth;
+
+                Binding bind = new Binding(&quot;Text&quot;, row[1], &quot;&quot;);
+                valueBox.DataBindings.Add(bind);
+
+                labelList.Add(propertyLabel);
+                textBoxList.Add(valueBox);
+            }
+
+            for (int i = 0; i &lt; table1.Rows.Count; i++)
+            {
+                textBoxList[i].Click += new EventHandler(this.iri_Click);
+                labelList[i].Location = new Point(10, i * 20 + 50);
+                textBoxList[i].Location = new Point(400, i * 20 + 50);
+                describeForm.Controls.Add(labelList[i]);
+                describeForm.Controls.Add(textBoxList[i]);
+            }
+
+            describeForm.Height = labelList.Count * 20 + 100 &gt; 500 ? 500 : labelList.Count * 20 + 100;
+        }
+        describeForm.ShowDialog();
+    }
+    else
+    {
+        Form blankForm = new Form();
+        Label label1 = new Label();
+        label1.Text = &quot;Blank Node&quot;;
+        label1.Font = new Font(label1.Font.FontFamily, label1.Font.Size + 3.0F, label1.Font.Style | FontStyle.Bold, label1.Font.Unit);
+        blankForm.ShowDialog();
+    }
+}
+
+public void iri_Click(object sender, EventArgs e)
+{
+    int boxNum = 0;
+   
+    for (int i = 0; i &lt; textBoxList.Count; i++)
+    {
+        if (sender == textBoxList[i])
+        {
+            boxNum = i;
+            break;
+        }
+    }
+    
+   Object o = describeDataSet.DataTable1.Rows[boxNum][1];
+    if (o is SqlExtendedString)
+    {
+        SqlExtendedString se = (SqlExtendedString)o;
+        ExtendedStringHandler seHandler = new ExtendedStringHandler(se, ParentConnection);
+        seHandler.displayData();
+    }
+    else if (o is SqlRdfBox)
+    { 
+       //doesn&#39;t do anything at the moment 
+   }
+}
+</pre><br></li>
+<li>The ExtendedStringHandler class creates a new SPARQL query based on the IRI that was clicked.
+ This query is executed against Virtuoso using the ADO.Net connection in the same way that any SQL statement would be executed across an ADO.Net connection.
+ This can be considered as Client Side SPARQL.
+ The result set from the query describes the selected object and is returned as an ADO.Net DataAdapter.
+ The DataAdapter  is used to fill a DataTable which is displayed on a new form.
+ We now need to add the new DataSet to the project and define the DataTable that will hold the query results.</li>
+</ol><h3><a name="Step 6 - Add a new Data Set to hold the query results"></a> Step 6 - Add a new Data Set to hold the query results</h3>
+<ol><li>Right click RDFDemo in the <b>Solution</b> <b>Explorer</b> and add a new <b>DataSet</b>.
+ Call the new <b>DataSet</b> DescribeDataSet.
+<br><br><img src="VirtSPASQLWinFormApp/NewDataSet.png" style="wikiautogen"><br><br> </li>
+<li>Double click on DescribeDataSet in the <b>Solution Explorer</b> to open the  <b>DataSet Designer</b> and  drag a <b>DataTable</b> from the <b>Toolbox</b> into it.
+</li>
+<li>Add two columns, p and o, to the <b>DataTable</b> and set the <b>DataType</b> of each column to System.Object.
+<br><br><img src="VirtSPASQLWinFormApp/NewDataTable.png" style="wikiautogen"><br><br></li>
+</ol><h3><a name="Step 7 - Build and run the application"></a> Step 7 - Build and run the application</h3>
+<ol><li>You should see a form displaying all the Northwind customers, like this.
+<br><br><img src="VirtSPASQLWinFormApp/Form1.png" style="wikiautogen"><br><br> </li>
+<li>When any customer is clicked it opens a new form showing customer details.
+<br><br><img src="VirtSPASQLWinFormApp/CustomerDetails.png" style="wikiautogen"><br><br> </li>
+<li>Clicking on the links in the new form allows you to drill down further to get order, product, location details etc.
+<br><br><img src="VirtSPASQLWinFormApp/OrderDetails.png" style="wikiautogen"><br><br> <br><br><img src="VirtSPASQLWinFormApp/OrderLineDetails.png" style="wikiautogen"><br><br></li>
+</ol><h2><a name="Next Steps"></a> Next Steps</h2>
+<p>You will notice if you keep clicking on the links that this application will only display data that is held in the Northwind graph.
+ Clicking on an external link, for example the link to Berlin in dbpedia, http://dbpedia.org/resource/Berlin, results in a empty window and an error message.
+ The next step is to <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtSPASQLRDFDemoExternalDereferencing" class="wikiword">extend this application so that it can handle dereferencing external IRIs</a>.</p>
+</div></body></html>

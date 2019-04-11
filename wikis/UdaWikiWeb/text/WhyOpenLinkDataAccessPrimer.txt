@@ -1,0 +1,156 @@
+%META:TOPICPARENT{name="UDAWhitePapers"}%
+= Understanding <nop>OpenLink Software's Data Access & Connectivity Technology -- A Primer
+
+%TOC%
+
+== A Pioneering Solution Provider ==
+
+[[http://www.openlinksw.com/| OpenLink Software]] was born in the early 90s, shortly after ODBC 1.0 itself emerged from Microsoft's skunkworks.  
+
+Our first shipping product was an [[http://uda.openlinksw.com/odbc-progress-mt/| ODBC Driver for the Progress RDBMS]] (since version 9.x, rebranded as <nop>OpenEdge), produced for its version 6.x before their own programmers believed an ODBC Driver could be produced against the SQL client API they had produced.
+
+We developed and continue to maintain and support [[http://iodbc.org/| iODBC]], the cross-platform and open source Independent ODBC project which was the first ODBC SDK and driver manager for non-Windows environments (initially under the banner UDBC), including both 32-bit and 64-bit deployments of Linux, Mac (Classic and OS X), Solaris, AIX, HP-UX, <nop>FreeBSD, <nop>OpenVMS, and others.  This has enabled us to provide DBMS-optimized data access drivers/providers for all these platforms, whether or not the RDBMS vendor directly supported the platform as a client.
+
+Twenty years on, we've been first to market with high-performance and secure solutions for each new data access mechanism -- JDBC, OLE DB, ADO.NET, XMLA -- supporting both the latest DBMS version as shipped by Progress, and (often still unlike Progress themselves) the mission-critical user-deployed applications running on the older DBMS versions shipped over years and decades past.
+
+While expanding our data access mechanism support, we also broadened our DBMS support, adding (in no particular order) Oracle, DB2, Informix, Ingres, <nop>PostgreSQL, <nop>MySQL, Sybase, Microsoft SQL Server.  These DBMS-specific solutions are supplemented by Bridge Drivers, enabling applications produced for one data access mechanism, to work against drivers produced for another (e.g., ODBC Drivers, JDBC Drivers, OLE DB Providers, and ADO.NET Providers for ODBC Data Sources; ODBC Drivers, JDBC Drivers, and ADO.NET Providers for JDBC Data Sources).
+
+Over the years, we've learned, and tried to teach, some things.
+
+== Why Do I Need To Pay For Data Access Drivers? ==
+
+Payment is based on pain alleviation, or more properly, on monetization of opportunity cost savings.
+
+There are real pains associated with the misconception that Data Access Drivers (ODBC, JDBC, ADO.NET, OLE DB, etc.) cost $0.00.
+
+=== Basic Pains of Data Access ===
+
+In the most basic sense, there are some fundamental aspects of data access that are complex to implement and are rarely (if ever) implemented by free drivers.  These include --
+
+* Escape Syntaxes for Dates and Functions -- which enable client tools to be DBMS agnostic, rather than writing DBMS-specific routines for each datetime data type and/or function call.
+* Metadata Calls -- which enable ODBC-compliant applications to work smarter, adapting to the capabilities of their environment. This feature is typically missing in Drivers, and, when present, abused by  developers who make their "ODBC-compliant" Client Applications DBMS-specific by testing for specific DBMS names, rather than testing for required features and functionality (cf., Escape Syntaxes, above).
+* Scrollable Cursors -- which provide Client Applications with change sensitivity. Most drivers actually get away with faking this support, due to the shortage of applications that actually test for and/or require proper cursor types (Static, Forward-Only, Key-Set, Dynamic, and Mixed models).
+
+=== The Pains of Security ===
+
+Once (most) drivers have reached a level of sophistication that includes implementation of all basic critical features, we up the ante by veering into the area of security. 
+
+At the most basic level, it's extremely important to understand that all data access driver types provide full read-and-write access to your databases.  It is thus imperative that these data access drivers provide a configurable data access rules/policy system by which to scope Access, Read-Only or Read-and-Write, based on any or all of --
+
+* the connecting User;
+* the connecting User's Group;
+* the requested Database Names (typically, schema or catalog);
+* the connecting ODBC compliant application;
+* the connecting ODBC client host operating system; and/or
+* the connecting ODBC client host IP address (or ranges thereof).
+
+=== The Pains of Data Access and Data Flow Management  ===
+
+Then, when security has been addressed, thorny issues of data access and data flow management begin to emerge. In a nutshell, data access drivers should:
+
+* Protect against network flooding -- commonly due to queries, both accidental and malicious, that generate Cartesian Products or other Very Large Result Sets (e.g., a user clicks on the "Customer" table in an ODBC-compliant application, without comprehending the back-end implications);
+* Enable (or Disable) key DBMS engine data access optimization features (e.g., DBMS-specific extensions which may be exposed via Environment Variables or SQL Command-based Settings); and
+* Conditionally Pool Connections -- based on User, User Group, Application, Host Operating System, and/or IP Address connection attributes.
+
+=== The Pains of Enforcement ===
+
+Even if all of the above have been handled on one machine or for one team, you then have to address their enforcement across a myriad of ODBC client hosts, operating systems, deployment environments, offices and departments, etc.  
+
+This is where <nop>ZeroConfig and Centralized Administration comes into play -- i.e., configure once (locally) and enforce globally.
+
+=== Easing the Pains ===
+
+When <nop>OpenLink Software entered the ODBC Driver market in 1992, these issues were at the philosophical heart of our Multi-Tier Drivers. Thus, although our high performance, stability, and adherence to the open standards and specifications distinguished us from our competition, our fundamental engineering focus has always been skewed towards security, scalability, and configurability.
+
+Now twenty years later, the security issues that pervade Data Access Drivers -- whether "Native," ODBC, JDBC, ADO.NET, OLE DB, or any other API -- have only increased, courtesy of ubiquitous computing.  Sadly though, there remains a fundamental illusion that all Data Access Drivers do is connect you to DBMS back-ends, and since most DBMS vendors provide these drivers for $0.00, they can't be that important.
+
+To put it simply, "free" ODBC Drivers offer nothing, when it comes to the real issues of Open Data Access. If they did, they wouldn't be worth only $0.00!
+
+Note: wondering if this has anything to do with Linked Data (my current data access focal point)? Well, remember, the Linked Data meme is fundamentally about REST based Open Data Access & Integration via HTTP; thus, what applies to Relational Model databases naturally applies to their more granular Graph Model relatives. Basically, data access security never goes away, it just gets more granular, complex, and ultimately, mercurial.
+
+== From Open Database Connectivity to Open Data Connectivity ==
+
+Agility is the timeless pursuit of individuals and enterprises alike, en route to optimizing their survival probability within an ecosystem. Agility's fundamental essence boils down to:
+
+# data creation and discovery;
+# perceptive presentation of data, in the form of information; and
+# comprehension of data, in the form of knowledge.
+
+Unfortunately, pursuit of this agility, on both individual and enterprise bases, has remained mercurial at best, due to underlying problems with actual access to data.
+
+Prior to the Web Era, RDBMS products monopolized the realm of data management and, in effect, data access. All attempts at "open data access" basically boiled down to "open database connectivity" (through several acronyms/mechanisms) which led us to standards such as:
+
+* the SQL Access Group's Call Level Interface (SAG CLI) -- a standard 'C' API for SQL-based data access across RDBMS engines;
+* Open Database Connectivity (ODBC) -- a Microsoft "embrace and extend" initiative built on the SAG CLI and delivered (initially) as a Windows feature, before it was ported to other platforms (Linux, <nop>FreeBSD, Mac OS X, Solaris, AIX, HP-UX, etc.) by OpenLink Software and others;
+* Java Database Connectivity (JDBC) -- Sun's variant of ODBC for Java.
+
+Even as the industry started to realize the inherent myopia of "open database connectivity" (as opposed to "open data access"), the initiatives that followed veered further toward platform specificity, via implementation as frameworks. Examples include:
+
+* OLE DB -- Microsoft's attempt at extending data access beyond RDBMS data sources as part of its Common Object Management (COM) effort;
+* ADO.NET and Entity Frameworks -- Microsoft's attempt at extending data access beyond RDBMS data sources as part of its .NET effort;
+* Java Data Objects (JDO) -- Sun's equivalent of ADO for Java.
+
+While "open data access"-oriented initiatives continued to evolve in the wrong direction, the World Wide Web (WWW) project started to gain momentum on a different front. Its initial bootstrap leveraged a loosely-coupled fusion of networking (LAN and WAN scales), data access protocols, hyperlinks, structured documents (e.g., HTML pages), and structured data representations, radically opening up access to information. Basically, the WWW unleashed an open and globally-accessible Information Space which has changed the production and dissemination of information forever.
+
+Unbeknownst to most, the WWW was never a "one trick pony," due to the loosely-coupled nature of its underlying architecture. Fundamentally, the WWW is much more than an global Information Space; it's actually an open and globally-accessible Linked Data Space, lacking all of the "open database connectivity" and "open data access" shortcomings of yore.
+
+=== The Good & Bad of Open Database Connectivity (ODBC) ===
+
+Over time, ODBC has outlived JDBC and all the other framework-specific attempts at "open data access," due to its relative ubiquity across platforms. The number of 'C'-based applications still significantly dwarfs the numbers of Java, ADO.NET, OLE DB, and JDO applications; even more so, when you hone into the realm of desktop productivity.
+
+The power and success of ODBC lies in the use of X.500 style Data Source Names (DSNs) as an identification and binding mechanism for RDBMS data access. As an ODBC-compliant application developer, you write once to the generic API, and then leverage the fact that other developers have implemented RDBMS-specific access libraries in the form of ODBC Drivers. As an end-user of an ODBC compliant application, all you have to do is point the application at an ODBC DSN, en route to interacting with the backend RDBMS of your choice. When done right, users don't think in terms of Oracle, SQL Server, DB2, <nop>MySQL, or any other RDBMS; instead, they connect to <i>names</i> such as 'Accounts,' 'Marketing,' 'HR,' etc.
+
+The distinct development and end-user modalities of ODBC ensured a massive ecosystem of ODBC-compliant applications and database connectivity drivers. Unfortunately, RDBMS vendors -- the same ones that collectively created the SQL CLI and inspired its evolution into ODBC -- also sought to undermine its inherent RDBMS agnosticism. The net effect has been that RDBMS independence took second place to RDBMS-specific data access, albeit via a new API, in this ecosystem.
+
+=== How Linked Data Fixes the Data Access Problem ===
+
+Unlike ODBC, Linked Data is about:
+
+# the use of <i>hyperlinks</i> as <i>data source names;</i>
+# the separation of data access protocol from data representation -- courtesy of URI abstraction;
+# a conceptually-oriented (as opposed to an application-logic-oriented) data model for structured data representation -- records describe a uniquely identified subject via description-oriented entity-attribute-value (EAV) graphs; and
+# the representation of structured data as hyperlink-based Linked Data graphs, which serve as content for WWW-accessible and WWW-addressable data-object/descriptor resources.
+
+=== Simple Example ===
+
+Today, Microsoft Query, Microsoft Access, Microsoft Excel, Crystal Reports, Business Objects, SAS, and many similar tools can be connected to any RDBMS -- as long as users can obtain, install, and configure a suitable ODBC Driver.
+
+Unfortunately, even when all the pains described earlier have been addressed, ODBC has some fundamental flaws regarding the "separation of powers," which prevent execution of some simple tasks with those tools.
+
+* You cannot easily share queries and/or query results across applications -- because everyone has to have a functional copy of the same ODBC driver.
+* You cannot effectively "mix and match" ODBC-compliant application across RDBMS engines -- because most of the time you are using an RDBMS-specific ODBC driver that was bundled with the application as a $0.00 afterthought, where the primary goal of the RDBMS vendor was retaining control over their specific silo.
+* You cannot effectively "mix and match" products across operating systems -- because an ODBC compliant application on one platform (e.g., Windows) may not exist on other platforms (Mac, Linux, etc.). Even when the application exists, the other platforms may not have ODBC drivers that implement ODBC APIs consistently with those on the original platform, or which support the necessary target DBMS.
+
+On the other hand, Linked Data, courtesy of its use of URIs as DSNs, addresses all of the shortcomings above while taking you to dizzying new heights of "open data access," limited only by your imagination. In addition, inherent shortcomings of RDBMS technology do not impede your agility when dealing with the exponential growth of:
+
+* Data Volume;
+* Data Velocity (Volatility);
+* Data Variety (Heterogeneity);
+* Data Dispersion (Locality).
+
+You also don't suffer from the inflexibility introduced by tightly coupling data and schema. When working with Linked Data, the coupling of data and schema is both late and loose -- allowing your work to be more flexible.
+
+And this is where [[http://virtuoso.openlinksw.com/| OpenLink Virtuoso]], the Universal Server middleware platform we've been shipping since circa 2000, comes in.
+
+== Related Links ==
+
+=== Pains of Data Access ===
+
+* [[http://uda.openlinksw.com/features-benefits/| OpenLink Universal Data Access Drivers Overview]] - clickable diagram exposing features and benefits
+* [[http://uda.openlinksw.com/mt/| OpenLink Multi-Tier Data Access -- ODBC Drivers, JDBC Drivers, ADO.NET Providers]]
+* [[http://www.openlinksw.com/info/docs/odbcwhp/mtarc.htm|Multi-Tier Data Access Overview]] (1993 White Paper excerpt)
+* [[http://www.openlinksw.com/info/docs/odbcwhp/tableof.htm#Table%20of%20Contents|OpenLink ODBC White Paper]] (actual 1993 White Paper)
+* [[http://www.dba-oracle.com/t_auditing4_horror_stories_inside_jobs.htm|Oracle Security Auditing Horror Stories]] -- Social Dimensions of Security compounded by Value (literal username and password) Based User Identity
+* [[http://searchoracle.techtarget.com/news/2240015728/Database-security-strategies-need-to-grow-up-in-2010?|Database Security Strategies Need to Grow Up in 2010]]
+* [[http://www.dataflux.com/dfblog/?p=1458|First Law of Data Quality]]
+* [[http://walkingoncoals.blogspot.com/2009/12/whos-data-is-it-part-1.html|Who's Data is it? Part 1]]
+* [[http://walkingoncoals.blogspot.com/2009/12/whos-data-is-it-part-2.html|Who's Data is it? Part 2]]
+
+=== Open Data Connectivity ===
+
+* [[http://virtuoso.openlinksw.com/| OpenLink Virtuoso]] -- which provides a Virtual Conceptual Model (via HTTP, RDF, based Linked Data) Layer above ODBC or JDBC accessible Data Sources
+* [[http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1519|The Time for RDBMS Primacy Downgrade is Nigh!]]
+* [[http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1644|7 Things Brought to You by HTTP-based Hypermedia]]
+* [[http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1364|ODBC and "Webby ODBC" (Linked Data), compared and contrasted]]
+* [[http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1591|5 Very Important Things to Note about HTTP-based Linked Data]]
+* [[https://plus.google.com/s/odbc%20%22linked%20data%22%20dsn%20idehen|A fuzzy search for various Google+ posts about Data Source Names, ODBC, and Linked Data]]

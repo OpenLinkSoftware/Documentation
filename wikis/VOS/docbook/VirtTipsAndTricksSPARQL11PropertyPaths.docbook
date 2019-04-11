@@ -1,0 +1,188 @@
+<docbook><section><title>VirtTipsAndTricksSPARQL11PropertyPaths</title><title> Using SPARQL 1.1 Property Paths in Virtuoso</title> Using SPARQL 1.1 Property Paths in Virtuoso
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> What are Property Paths?</bridgehead>
+<para>A property path is a possible route through a graph between two graph nodes.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Why use SPARQL 1.1 Property Paths?</bridgehead>
+<para>SPARQL 1.1 Property Paths are syntactic sugar, allowing for more concise expression of some SPARQL basic graph patterns, and adding the ability to match paths of arbitrary length.
+ They are not necessary nor required, but they can make queries shorter and easier to both write and read.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> How can I use SPARQL 1.1 Property Paths with Virtuoso?</bridgehead>
+<para>Here are some examples demonstrating Virtuoso&#39;s support of SPARQL 1.1 Property Paths.
+ These example queries should work against any SPARQL endpoint that supports SPARQL 1.1 and has the ability to allow a verified user to perform INSERT operations.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Basic Usage</bridgehead>
+<programlisting>## Basic
+SELECT DISTINCT ?x ?name 
+ WHERE 
+   {
+     ?x             foaf:mbox  &lt;mailto:kidehen@openlinksw.com&gt; 
+      ;  foaf:knows/foaf:name  ?name 
+   }
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/1fqlgGl">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/1fql7CM">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Usage of Sequence</bridgehead>
+<programlisting>SELECT DISTINCT ?x 
+                ?name 
+ WHERE 
+   {
+     ?x                        foaf:mbox  &lt;mailto:kidehen@openlinksw.com&gt;
+      ;  foaf:knows/foaf:knows/foaf:name  ?name
+   }
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/1bLsYtQ">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/1crUpFN">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Usage of Inverse</bridgehead>
+<programlisting>## Mutual foaf:knows relationships: ?x knows someone who knows ?x
+
+SELECT DISTINCT ?x 
+                ?name 
+ WHERE 
+   {
+     ?x               foaf:mbox  &lt;mailto:kidehen@openlinksw.com&gt;
+      ;  foaf:knows/^foaf:knows  ?y 
+   . ?y               foaf:name  ?name
+     FILTER ( ?x != ?y )
+   }
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/UmERvA">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/RzOVVm">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Usage of Negation of a Unary Operator</bridgehead>
+<programlisting>SELECT DISTINCT * 
+ WHERE 
+   {
+     ?x  !rdf:type  foaf:Person 
+   }
+ LIMIT 10 
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/SvKQP1">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/VyqogS">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Constructing an Object using Terms from vCard, FOAF, and OWL</bridgehead>
+<orderedlist spacing="compact"><listitem>Assume the following Raw Data Representation in Turtle of a Address Book Data Object constructed using terms from the vCard vocabulary: <programlisting>&lt;#vcardRick&gt;  &lt;http://www.w3.org/2006/vcard/ns#given-name&gt;   &quot;Richard&quot;
+  ;           &lt;http://www.w3.org/2006/vcard/ns#family-name&gt;  &quot;Mutt&quot;
+  ;           &lt;http://www.w3.org/2006/vcard/ns#email&gt;        &lt;mailto:rick@selavy.org&gt; 
+  .
+
+&lt;#vcardAl&gt;    &lt;http://www.w3.org/2006/vcard/ns#given-name&gt;   &quot;Alan&quot;
+  ;           &lt;http://www.w3.org/2006/vcard/ns#family-name&gt;  &quot;Smithee&quot;
+  ;           &lt;http://www.w3.org/2006/vcard/ns#email&gt;        &lt;mailto:alan@paramount.com&gt; 
+  .
+</programlisting></listitem>
+<listitem>Load the sample data: <programlisting>PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:fed:vcard:addressbook:demo&gt;
+      { 
+        &lt;#vcardRick&gt;  &lt;http://www.w3.org/2006/vcard/ns#given-name&gt;   &quot;Richard&quot;
+          ;           &lt;http://www.w3.org/2006/vcard/ns#family-name&gt;  &quot;Mutt&quot;
+          ;           &lt;http://www.w3.org/2006/vcard/ns#email&gt;        &lt;mailto:rick@selavy.org&gt; 
+        .
+
+        &lt;#vcardAl&gt;    &lt;http://www.w3.org/2006/vcard/ns#given-name&gt;   &quot;Alan&quot;
+          ;           &lt;http://www.w3.org/2006/vcard/ns#family-name&gt;  &quot;Smithee&quot;
+          ;           &lt;http://www.w3.org/2006/vcard/ns#email&gt;        &lt;mailto:alan@paramount.com&gt; 
+  }   } 
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/14FAx04">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/WQKi9i">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Assume the following Raw Data Representation in Turtle of a Address Book Data Object constructed using terms from the FOAF vocabulary: <programlisting>&lt;#foafBill&gt;  &lt;http://xmlns.com/foaf/0.1/givenName&gt;   &quot;Billy&quot; 
+  ;          &lt;http://xmlns.com/foaf/0.1/familyName&gt;  &quot;Shears&quot; 
+  ;          &lt;http://xmlns.com/foaf/0.1/mbox&gt;        &lt;mailto:bill@northernsongs.org&gt;
+. 
+
+&lt;#foafNate&gt;  &lt;http://xmlns.com/foaf/0.1/givenName&gt;   &quot;Nanker&quot; 
+  ;          &lt;http://xmlns.com/foaf/0.1/familyName&gt;  &quot;Phelge&quot; 
+  ;          &lt;http://xmlns.com/foaf/0.1/mbox&gt;        &lt;mailto:nate@abkco.com&gt;
+. 
+</programlisting></listitem>
+<listitem>Load the sample data: <programlisting>PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:fed:foaf:addressbook:demo&gt;
+      { 
+        &lt;#foafBill&gt;  &lt;http://xmlns.com/foaf/0.1/givenName&gt;   &quot;Billy&quot; 
+          ;          &lt;http://xmlns.com/foaf/0.1/familyName&gt;  &quot;Shears&quot; 
+          ;          &lt;http://xmlns.com/foaf/0.1/mbox&gt;        &lt;mailto:bill@northernsongs.org&gt;
+          . 
+
+        &lt;#foafNate&gt;  &lt;http://xmlns.com/foaf/0.1/givenName&gt;   &quot;Nanker&quot; 
+          ;          &lt;http://xmlns.com/foaf/0.1/familyName&gt;  &quot;Phelge&quot; 
+          ;          &lt;http://xmlns.com/foaf/0.1/mbox&gt;        &lt;mailto:nate@abkco.com&gt;
+  }   } 
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/UDTwaG">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/12vEk1w">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Assume the following Raw Data Representation in Turtle of a mapping oriented Data Object constructed using terms from the OWL Ontology that describe entity relationship semantics: <programlisting># This data object is comprised of statements (triples) that map certain 
+# properties across the vCard and FOAF vocabularies.
+#
+# These mappings express machine readable entity relationship semantics 
+# usable by a Reasoner to produce (by inference) smart query results.
+
+&lt;http://xmlns.com/foaf/0.1/givenName&gt; 
+   &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; 
+      &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; 
+         . 
+
+&lt;http://xmlns.com/foaf/0.1/familyName&gt; 
+   &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; 
+      &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; 
+         . 
+
+&lt;http://xmlns.com/foaf/0.1/mbox&gt; 
+   &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; 
+      &lt;http://www.w3.org/2006/vcard/ns#email&gt; 
+         . 
+</programlisting></listitem>
+<listitem>Load the sample data: <programlisting>PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+INSERT DATA
+  { 
+    GRAPH &lt;urn:sparql:fed:owl:addressbook:demo&gt;
+      { 
+        &lt;http://xmlns.com/foaf/0.1/givenName&gt; 
+           &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; 
+              &lt;http://www.w3.org/2006/vcard/ns#given-name&gt; 
+                 . 
+
+        &lt;http://xmlns.com/foaf/0.1/familyName&gt; 
+           &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; 
+              &lt;http://www.w3.org/2006/vcard/ns#family-name&gt; 
+                 . 
+
+        &lt;http://xmlns.com/foaf/0.1/mbox&gt; 
+           &lt;http://www.w3.org/2002/07/owl#equivalentProperty&gt; 
+              &lt;http://www.w3.org/2006/vcard/ns#email&gt; 
+  }   }
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/Xnawyj">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/14Uvmut">View the SPARQL Query Results via SPARQL Protocol URL</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem>Query the graphs: <programlisting>PREFIX owl: &lt;http://www.w3.org/2002/07/owl#&gt;
+
+SELECT bif:sprintf ( &quot;&lt;%s&gt; = %s\t&lt;%s&gt; = %s&quot;
+                   , str(?givenNameProp)
+                   , ?fn
+                   , str(?lastNameProp)
+                   , ?ln
+                   )
+  FROM &lt;urn:sparql:fed:vcard:addressbook:demo&gt; 
+  FROM &lt;urn:sparql:fed:foaf:addressbook:demo&gt; 
+  FROM &lt;urn:sparql:fed:owl:addressbook:demo&gt; 
+ WHERE  
+   { 
+     &lt;http://xmlns.com/foaf/0.1/givenName&gt; 
+        (owl:equivalentProperty|^owl:equivalentProperty)*  ?givenNameProp 
+   . &lt;http://xmlns.com/foaf/0.1/familyName&gt; 
+        (owl:equivalentProperty|^owl:equivalentProperty)*  ?lastNameProp 
+   . ?s 
+         ?givenNameProp  ?fn 
+      ;  ?lastNameProp   ?ln 
+   } 
+LIMIT 10
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/Pw5KjO">View the SPARQL Query Definition via SPARQL Protocol URL</ulink> </listitem>
+<listitem><ulink url="http://bit.ly/1hnpbRY">View the SPARQL Query Results via SPARQL Protocol URL</ulink></listitem>
+</itemizedlist></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.w3.org/TR/sparql11-property-paths/">W3 documentation of SPARQL 1.1. Property Paths</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksSPARQL11FeaturesExamplesCollection">Examples of SPARQL 1.1 Feature Usage in Virtuoso</ulink> </listitem>
+</itemizedlist></listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_9/SPARQL_Tutorials_Part_9.html">Virtuoso SPARQL 1.1 Syntax Tutorial</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/rdfsparql.html">Virtuoso Documentation</ulink></listitem>
+</itemizedlist><para> </para>
+</section></docbook>

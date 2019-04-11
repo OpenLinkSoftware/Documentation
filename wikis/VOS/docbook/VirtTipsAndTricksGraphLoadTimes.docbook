@@ -1,0 +1,25 @@
+<docbook><section><title>VirtTipsAndTricksGraphLoadTimes</title><title>How can I determine the time taken to load datasets with RDF Bulk Loader</title>How can I determine the time taken to load datasets with RDF Bulk Loader
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">What</bridgehead>
+<para>To determine the time taken to load the triples into a RDF graph when it is comprised of multiple datasets using the Virtuoso RDF Bulk Loader functions.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Why</bridgehead>
+<para>If loading datasets from multiple files at the same time and/or running multiple rdf_loader_run() functions for faster parallel loading of datasets on a multi-core machine.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">How</bridgehead>
+<para>The Virtuoso rdf_loader_run() is used for loading RDF datasets, and records the results of loading these datasets in the load_list, including the load times for each physical files and the graph name it is loaded into with the ll_start and ll_done columns.
+ A SQL query of the following form can be used to determine the time taken to load the datasets for a given graph:</para>
+<programlisting>select min(ll_started) as start, max(ll_done) as finish, datediff(&#39;second&#39;, min(ll_started), max(ll_done)) as delta from load_list where ll_graph like &#39;&lt;graph-name&gt;&#39;;
+</programlisting><para> where graph-name is the name of the graph the load time is required for, with the delta return value being the time taken in seconds.</para>
+<para>For example, the time taken to load the Freebase dataset into the <ulink url="http://lod.openlinksw.com">Virtuoso LOD Cloud Cluster</ulink> instance was 6135 seconds i.e.
+ about 1.7hrs:</para>
+<programlisting>SQL&gt; select min(ll_started) as start, max(ll_done) as finish, datediff(&#39;second&#39;, min(ll_started), max(ll_done)) as delta from load_list where ll_graph like &#39;http://commondatastorage.googleapis.com/freebase-public/rdf/freebase-rdf-2013-11-17-00-00.gz&#39;;
+start                finish               delta
+TIMESTAMP            TIMESTAMP            INTEGER
+_______________________________________________________________________________
+
+2013.12.2 22:34.9 0  2013.12.3 0:16.24 0  6135
+
+1 Rows. -- 74 msec.
+SQL&gt;
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtBulkRDFLoader">Virtuoso RDF Bulk Loader</ulink> </listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,98 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtRDFViews"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtRDFViews"}%--><h3><a name="RDF View for ODS Discussions"></a>RDF View for ODS Discussions</h3>
+<strong>IMPORTANT!</strong> The following code is part of the ODS global VIEW regarding the Discussions part, it is not a separate VIEW and is strongly recommended NOT to be executed directly.
+ Instead, you should use the code from <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtRDFViewODSGlobal" class="wikiword">ODS RDF Views Deployment and Demo Scripts</a>.<br><pre>sparql prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+	# NNTPF
+	create iri class ods:nntp_forum &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U&quot;
+		( in forum_name varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U&quot;).
+	create iri class ods:nntp_post &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U&quot;
+		( in group_name varchar not null, in message_id varchar not null)
+		option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U&quot; ) .
+	create iri class ods:nntp_post_text &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U/text&quot;
+		( in group_name varchar not null, in message_id varchar not null)
+		option (returns  &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U/text&quot;) .
+	create iri class ods:nntp_role &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U#reader&quot;
+		(in forum_name varchar not null)
+		option (returns &quot;http://^{URIQADefaultHost}^/dataspace/discussion/%U#reader&quot;) .
+</pre><p> </p>
+<br><pre>sparql
+    prefix sioc: &lt;http://rdfs.org/sioc/ns#&gt;
+    prefix sioct: &lt;http://rdfs.org/sioc/types#&gt;
+    prefix atom: &lt;http://atomowl.org/ontologies/atomrdf#&gt;
+    prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+    prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+    prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+    prefix dct: &lt;http://purl.org/dc/terms/&gt;
+    prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+    prefix geo: &lt;http://www.w3.org/2003/01/geo/wgs84_pos#&gt;
+    prefix bm: &lt;http://www.w3.org/2002/01/bookmark#&gt;
+    prefix exif: &lt;http://www.w3.org/2003/12/exif/ns/&gt;
+    prefix ann: &lt;http://www.w3.org/2000/10/annotation-ns#&gt;
+    prefix wikiont: &lt;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&gt;
+    prefix calendar: &lt;http://www.w3.org/2002/12/cal#&gt;
+    prefix ods: &lt;http://www.openlinksw.com/virtuoso/ods/&gt;
+
+   alter quad storage virtrdf:DefaultQuadStorage
+       
+      from DB.DBA.ODS_NNTP_GROUPS as nntp_groups
+      from DB.DBA.ODS_NNTP_POSTS as nntp_posts
+      from DB.DBA.ODS_NNTP_USERS as nntp_users
+      where (^{nntp_users.}^.U_NAME = ^{users.}^.U_NAME)
+      from DB.DBA.ODS_NNTP_LINKS as nntp_links
+
+{
+	create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
+	  {
+	    #----
+	    # NNTP
+	    ods:nntp_forum (nntp_groups.NG_NAME) a sioct:MessageBoard ;
+	    sioc:id nntp_groups.NG_NAME ;
+	    sioc:description nntp_groups.NG_DESC .
+
+	    ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.NM_ID) a sioct:BoardPost ;
+	    sioc:content nntp_posts.NM_BODY ;
+	    dc:title nntp_posts.FTHR_SUBJ ;
+	    dct:created  nntp_posts.REC_DATE ;
+	    dct:modified nntp_posts.REC_DATE ;
+	    foaf:maker ods:proxy (nntp_posts.MAKER) ;
+	    sioc:reply_of ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.FTHR_REFER) ;
+	    sioc:has_container ods:nntp_forum (nntp_posts.NG_NAME) .
+
+	    ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.FTHR_REFER)
+	    sioc:has_reply
+	    ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.NM_ID) .
+
+	    ods:nntp_forum (nntp_posts.NG_NAME)
+	    sioc:container_of
+	    ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.NM_ID) .
+
+
+	    ods:nntp_role (nntp_groups.NG_NAME)
+	    sioc:has_scope
+	    ods:nntp_forum (nntp_groups.NG_NAME) .
+
+	    ods:nntp_forum (nntp_groups.NG_NAME)
+	    sioc:scope_of
+	    ods:nntp_role (nntp_groups.NG_NAME) .
+
+	    ods:user (nntp_users.U_NAME)
+	    sioc:has_function
+	    ods:nntp_role (nntp_users.NG_NAME) .
+
+	    ods:nntp_role (nntp_users.NG_NAME)
+	    sioc:function_of
+	    ods:user (nntp_users.U_NAME) .
+
+	    ods:nntp_post (nntp_links.NG_NAME, nntp_links.NML_MSG_ID)
+	    sioc:links_to
+	    ods:proxy (nntp_links.NML_URL) .
+	    # end NNTP
+
+            #---
+	  } .
+    } .
+;
+</pre><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryRDF" class="wikiword">CategoryRDF</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryDiscussions" class="wikiword">CategoryDiscussions</a></p>
+</div></body></html>

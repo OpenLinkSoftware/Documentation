@@ -1,0 +1,53 @@
+%META:TOPICPARENT{name="ErrorMessagesE"}%
+= Error Message: {{{Exceeded maximum number of allowed connections}}} =
+
+There are a few causes for this error.
+
+%TOC%
+
+
+== Exceeding Multi-Tier configuration limits ==
+
+This error can occur when client applications try to open more concurrent database sessions than are permitted by the current Rulebook.
+
+These are the relevant settings --
+
+{{{
+[Request Broker]
+...
+;MaxAgents      = 0   ; if >0, max. # of processes spawned by broker
+;MaxConnections = 0   ; if >0, max. # of connections from clients
+}}}
+
+These configuration options are generally best used only with a very large license, when resources on the Broker host are being exhausted by too many client connections.  Such situations are rare, and thus the default and our general recommendation is to leave these options commented out (with the leading ";"), or set to their default ("0", meaning no limit).
+
+
+== Exceeding license limits (any product) ==
+
+This error can occur when client applications try to open more concurrent database sessions than are permitted by the current license.
+
+For example, if a 5-session Multi-Tier license is active, a sixth concurrent connection attempt may trigger this error.
+
+You can monitor the active connections on the server in several ways, including --
+* At a DOS prompt (Windows) or Unix command prompt (Unix/Linux/Darwin), navigate to the <nop>OpenLink "bin" directory and type:
+{{{
+./oplshut -s
+}}}
+* Open up your HTML-based Admin Assistant (by default, at &lt;[[http://broker-host.example.com:8000| http://broker-host.example.com:8000]]&gt;) on the server, then drill down to **Server Components Administration** -> **Request Broker Administration** -> **List of Current Connections**.
+
+
+== Old Apache instances in an ODBC deployment ==
+
+This error message may be seen when an old version of the Apache web server is part of your ODBC client deployment.
+
+Among other issues, Apache 1.3.2.7 and previous versions leaked file descriptors to child processes, such as CGI, PHP, and Perl scripts, which may make calls to our ODBC Driver. When these leaks happen, rather than releasing the file descriptor for our ODBC Driver, the script keeps a hold on the driver, which in turn continues to use up a license. 
+
+These leaks were resolved in Apache version 1.3.2.8, and we strongly recommend that all Apache users upgrade to this version or later.
+
+
+== Evidence ==
+
+* ODBC Client Trace
+* Output of {{{oplshut -s}}}
+* Request Broker Log
+* Request Broker Rulebook

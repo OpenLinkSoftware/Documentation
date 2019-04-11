@@ -1,0 +1,57 @@
+%META:TOPICPARENT{name="ConfigTroubleshootORA"}%
+==Configuring Oracle for XA support ==
+
+XA support has been tested against Oracle version 9i and 10g
+
+===Granting SELECT Privilege on V$XATRANS$ & DBA_PENDING_TRANSACTIONS Views===
+
+You must grant SELECT privilege to the V$XATRANS$ view for all Oracle accounts that XA applications will use. Otherwise, xa_recover will fail, in the event that TM needs to perform a recovery. If the view does not already exist in your Oracle installation, it can be manually loaded using the following SQL script which should be included in your Oracle installation:
+
+{{{
+$ORACLE_HOME/rdbms/admin/xaview.sql
+}}}
+
+The example below shows an extract from an Oracle XA Library trace file. Oracle returns error **ORA-00942 : table or view does not exist**, because user scott does not have the necessary SELECT privilege on the V$XATRANS$ view.
+
+{{{
+ORACLE XA: Version 10.1.0.0.0. RM name = 'Oracle_XA'.
+
+113956.2352:536.536.1:
+xaoopen: xa_info=ORACLE_XA+Threads=true+SesTm=60+Acc=P/scott/tiger+DB=DB01BA5BF8+SQLNET=ORCL+DbgFl=0x1+LogDir=c:/,rmid=1,flags=0x0
+
+113956.2352:536.536.1:
+xaolgn_help: version#: 168821248 banner: Personal Oracle Database 10g Release 10.1.0.2.0 - Production
+With the Partitioning, OLAP and Data Mining options
+
+113956.2352:536.536.1:
+xaoopen: return 0
+
+113959.2352:536.536.1:
+xaorecover: xids=0xf8f8f8, count=10, rmid=1, flags=0x1000000
+
+113959.2352:536.536.1:
+ORA-00942: table or view does not exist
+
+113959.2352:536.536.1:
+xaorecover: xaofetch rtn -3.
+
+113959.2352:536.536.1:
+xaoclose: xa_info=DSN=au49-ora10-carlv;UID=scott;PWD=tiger;+DB=DB01BA5BF8, rmid=1769209857, flags=0x0
+
+113959.2352:536.536.1:
+xaoclose: rtn 0
+}}}
+
+The syntax for adding the grant privilege to the 'scott' user is:
+
+{{{
+grant select on V$XATRANS$ to scott;
+}}}
+
+In addition, the "ORA-00942: table or view does not exist" error also occurs if select privileges are not granted on the {{{DBA_PENDING_TRANSACTIONS}}} view, requiring the following command to be executed as a DBA user:
+
+{{{ 
+GRANT SELECT ON DBA_PENDING_TRANSACTIONS TO PUBLIC
+    }}}      
+
+%RED%Note: The V$XATRANS$ did not exist nor did the DBA_PENDING_TRANSACTIONS view have appropriate select privileges in Unix Oracle installations, although they are included in Windows installations by default.%ENDCOLOR%

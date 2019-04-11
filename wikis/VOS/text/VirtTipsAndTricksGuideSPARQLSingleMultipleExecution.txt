@@ -1,0 +1,128 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+SPARQL/SPARUL/SPARQL-BI Operations Guide for Executing Queries Combined in Single or Multiple Statements 
+
+%TOC%
+
+The following guide presents various operations lists depending on either is allowed multiple or single execution of the statements.
+
+
+---++Items that could be listed one after other with and without semicolon
+
+   * SPARQL 1.1:
+      * [[VirtTipsAndTricksSPARQL11Create][CREATE]]
+      * [[VirtTipsAndTricksSPARQL11Drop][DROP]]
+      * [[VirtTipsAndTricksSPARQL11Clear][CLEAR]]
+      * [[VirtTipsAndTricksSPARQL11Load][LOAD]]
+      * [[VirtTipsAndTricksSPARQL11RefDataINSTCONST][INSERT]]
+      * [[VirtTipsAndTricksSPARQL11Insert][INSERT DATA]]
+      * [[VirtTipsAndTricksSPARQL11Update][INSERT/DELETE DATA]]
+      * [[VirtTipsAndTricksSPARQL11Delete][DELETE DATA]]
+      * [[VirtTipsAndTricksSPARQL11Copy][COPY]]
+      * [[VirtTipsAndTricksSPARQL11Move][MOVE]]
+      * [[VirtTipsAndTricksSPARQL11Add][ADD]] 
+   * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparul][SPARUL]]:
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples2][CREATE]]   
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples2][DROP]]
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples10][CLEAR]]
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples8][LOAD]]
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples4][INSERT]]
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples3][DELETE]]
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparulexamples13][MODIFY]]
+   * SPARQL-BI:
+      * LOAD SERVICE DATA
+    
+
+---+++Example
+
+<verbatim>
+
+DELETE from <http://semantica.globo.com/tvg/> { 
+<http://semantica.globo.com/tvg/programa/11> ?p ?o . 
+} 
+WHERE { 
+<http://semantica.globo.com/tvg/programa/11> ?p ?o . 
+}  
+
+INSERT DATA INTO <http://semantica.globo.com/tvg/> { 
+<http://semantica.globo.com/tvg/programa/11>
+<http://semantica.globo.com/tvg/cor_hover_tvg> "#d39016" . 
+} 
+</verbatim>
+
+---++Items that could not be combined with others
+
+   * SPARQL
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfdefaultgraph][SELECT]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#anytimequeriessparqlex][CONSTRUCT]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsqlfromsparqldescribe][DESCRIBE]]
+      * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlaggregateexamples6][ASK]]
+   * SPARQL-BI 
+      * DROP MACRO LIBRARY
+      * QUAD MAP CONFIGURATION
+
+
+---++Single Quad Map Configuration Operator 
+
+A single quad map configuration operator can consist of many parts separated by dots:
+
+   * [[http://docs.openlinksw.com/virtuoso/rdfviewsrdbms.html#rdfviewiriclasses][CREATE IRI CLASS]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfviewsrdbms.html#rdfviewbijandreturns][CREATE LITERAL CLASS]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfviewsrdbms.html#rdfviewsubclasses][CREATE LITERAL SUBCLASS]]
+   * [[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfviewsandfreetext][CREATE QUAD STORAGE]] (with tree of dot-delimited declarations inside)
+   * [[http://docs.openlinksw.com/virtuoso/rdfviewsrdbms.html#splitrdfview][ALTER QUAD STORAGE]] (with tree of dot-delimited declarations inside)
+   * [[http://docs.openlinksw.com/virtuoso/rdfviewsrdbms.html#rdfviewconfiguringrdfstorages][DROP QUAD STORAGE]]
+   * [[http://docs.openlinksw.com/virtuoso/r2rml.html#r2rmlgenlviewisql][DROP QUAD MAP]]
+   
+---+++Example
+
+<verbatim>   
+CREATE IRI CLASS oplsioc:grantee_iri using
+  function DB.DBA.GRANTEE_URI (in id integer)
+    returns varchar,
+  function DB.DBA.GRANTEE_URI_INVERSE (in id_iri varchar)
+    returns integer .
+
+CREATE IRI CLASS oplsioc:user_iri "http://myhost/sys/user?id=%d"
+  (in uid integer not null) .
+  
+CREATE LITERAL CLASS example:isbn_ref "%s" (in isbn varchar not null)
+  option ( bijection, returns "%u-%u-%u-%u" union "%u-%u-%u-X" )
+  
+MAKE oplsioc:user_iri SUBCLASS OF oplsioc:grantee_iri .    
+
+ALTER QUAD STORAGE virtrdf:DefaultQuadStorage
+  :
+  FROM isports_rdf.prs10_isports_rdf.VRef_Call      as Ref_Call_tbl
+  FROM isports_rdf.prs10_isports_rdf.VRef_Call      as Ref_Call_tbl_1
+  :
+{
+  :
+  refcall:ref-call_iri (Ref_Call_tbl.Call_Num) a refcall:Ref-Call as
+virtrdf:ref-call_pk ;
+  :
+  refcall:has_parent  refcall:ref-call_iri (Ref_Call_tbl_1.Call_Num)
+where  ( ^{Ref_Call_tbl.}^.Parent    = ^{Ref_Call_tbl_1.}^.Call_Num )   as
+virtrdf:Ref-Call_has_parent .
+
+</verbatim>     
+
+   
+   
+---++Related   
+
+
+   * [[VirtTipsAndTricksSPARQL11FeaturesExamplesCollection][SPARQL 1.1. Features Examples Collection]]
+   * [[VOSArticleBISPARQL2][Business Intelligence Extensions for SPARQL]]  
+   * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_11/SPARQL_Tutorials_Part_11.html][Virtuoso SPARQL-BI Examples Collection]] 
+   * [[VirtSPARQLReasoningTutorial][Tutorial Demonstrating Reasoning via SPARQL]]
+   * [[http://www.w3.org/TR/2010/WD-sparql11-property-paths-20100126/][SPARQL 1.1. Property Paths]]
+   * [[http://www.w3.org/TR/sparql11-query/#inline-data][SPARQL inline data via use of VALUES clause]]
+   * [[http://virtuoso.openlinksw.com/tutorials/sparql/SPARQL_Tutorials_Part_9/SPARQL_Tutorials_Part_9.html][Virtuoso SPARQL 1.1 Syntax Tutorial]]
+   * [[http://www.w3.org/TR/2010/WD-sparql11-query-20100126/#subqueries][SPARQL 1.1 Subqueries]]
+   * [[http://www.w3.org/TR/sparql11-query/][SPARQL 1.1 Specification]]
+   * [[http://www.w3.org/TR/rdf-sparql-protocol/][SPARQL Protocol (HTTP based Query Service)]]  
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtTipsAndTricksGuideRenameGraph][Rename RDF Graph Example]]   

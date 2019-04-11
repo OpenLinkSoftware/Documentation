@@ -1,0 +1,181 @@
+%META:TOPICPARENT{name="ODSIndex"}%
+
+---+ Using Virtuoso's WebID Identity Provider (IdP) Proxy Service with an X.509 certificate bearing an LDAP scheme WebID
+
+%TOC%
+
+---++What?
+A callback supporting service that enables third parties verify WebIDs via RESTful interaction patterns.
+
+---++Why?
+Most Web Developers and Users prefer to do plumbing as opposed to wholesale development in the course of web exploitation. Thus, federated services to which responsibilities can be delegated are always beneficial.
+
+---++How?
+
+This verification service offers a user-friendly alternative to manually querying SPARQL endpoints; i.e., checking whether a WebID and Public Key are related within a profile graph.
+
+The service currently supports WebIDs based on the <code>ldap:</code>, <code>http:</code>, <code>mailto:</code>, <code>acct:</code> URI schemes. Other URI schemes will be added over time.
+
+
+
+---+++ Example Using the Service Endpoint
+
+---++++ Prerequisites
+
+If you want to use your own Virtuoso instance for this exercise, please ensure the following steps are performed:
+
+
+   1 Start Virtuoso server instance (locally, remote, EC2 AMI, etc. );
+   1 Configure an [[ODSSetupSSL][HTTPS Listener]] for handling HTTPS requests from HTTP user agents (clients);
+   1 Install the [[https://virtuoso.openlinksw.com/download/][ODS Framework VAD package]];
+   1 Install the [[https://virtuoso.openlinksw.com/download/][HTML based Certificate Generator VAD package]];
+   1 Create an [[ODSGenerateX509Certificate][X.509 Certificate]] with WebID watermark. Otherwise, simply use the live certificate generation service at: http://id.myopenlink.net/certgen/.
+
+---++++ Steps
+
+   1 Access the service endpoint: <code>https://&lt;Virtuoso host or IP address&gt;[:&lt;ssl-port&gt;]/ods/webid_check.vsp</code>, e.g., [[https://id.myopenlink.net:443/ods/webid_check.vsp][https://id.myopenlink.net:443/ods/webid_check.vsp]]
+   1 The browser should prompt for identification. Select the certificate generated above, and click "OK".
+%BR%%BR%<img src="%ATTACHURLPATH%/ldap2.png" />%BR%%BR%
+   1 The WebID Identity Provider UI should be presented:
+%BR%%BR%<img src="%ATTACHURLPATH%/ldap3.png" />%BR%%BR%
+   1 Enter a Requesting service endpoint, for example:
+<verbatim>
+https://id.myopenlink.net/ods/
+</verbatim>
+%BR%%BR%<img src="%ATTACHURLPATH%/ldap4.png" />%BR%%BR%
+   1 Click "Go".
+   1 When prompted for verification, again the certificate generated above and click "OK":
+%BR%%BR%<img src="%ATTACHURLPATH%/ldap2.png" />%BR%%BR%
+   1 You should now be redirected to a log in page which has recognized the certificate's WebID, and a "WebID Login" should be offered:
+%BR%%BR%<img src="%ATTACHURLPATH%/ldap5.png" />%BR%%BR%
+   1 Click the "WebID Login" button.
+   1 You should now be successfully logged in:
+%BR%%BR%<img src="%ATTACHURLPATH%/ldap6.png" />%BR%%BR%
+
+
+
+
+---+++ Examples Using cURL 
+
+---++++ Prerequisites
+
+---+++++ Using Your Own Virtuoso Instance
+
+If you want to use your own Virtuoso instance for this exercise, please ensure the following steps are performed:
+
+   1 Start Virtuoso server instance (locally, remote, EC2 AMI, etc. );
+   1 Configure an [[ODSSetupSSL][HTTPS Listener]] for handling HTTPS requests from HTTP user agents (clients);
+   1 Install the [[https://virtuoso.openlinksw.com/download/][ODS Framework VAD package]];
+   1 Install the [[https://virtuoso.openlinksw.com/download/][HTML based Certificate Generator VAD package]];
+   1 Create an [[ODSGenerateX509Certificate][X.509 Certificate]] with WebID watermark. Otherwise, simply use the live certificate generation service at: http://id.myopenlink.net/certgen/.
+   1 Using the service at: http://id.myopenlink.net/certgen/, export the generated X.509 Certificate and its associated private key to a local PKCS#12 (.p12 of .pfx) file system e.g., the file: "demo.p12" and password: "test"; or simply export to a PEM file.
+   1 Alternatively, you can achieve the same using OpenSSL utilities by executing the following from the command line:
+<verbatim>
+openssl pkcs12 -in demo.p12 -out demo.pem -nodes
+</verbatim>
+
+
+---+++++ Using A Live Instance
+
+If don't already have an X.509 certificate with a WebID watermark, simply use the live certificate generation service at: http://id.myopenlink.net/certgen/ . You can also use this service to export your certificate in PEM and other formats. 
+
+---++++Example 1: Call the Service with Certificate
+
+   1 Execute the following command:
+<verbatim>
+$ curl -i -k --cert demo.pem  https://id.myopenlink.net/ods/webid_check.vsp?callback=http://id.myopenlink.net/myapp/
+Enter PEM pass phrase:
+HTTP/1.1 302 Found
+Server: Virtuoso/06.03.3131 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Thu, 05 Jan 2012 16:08:13 GMT
+Accept-Ranges: bytes
+Location: http://id.myopenlink.net/myapp/?webid=http%3A%2F%2Fid.myopenlink.net%2Fdataspace%2Fperson%2Fdemo%23this&ts=2012-01-05T11%3A08%3A13.000004-05
+%3A00&signature=a17coYTjgrPnz%2FmEi9OVRwiTEa8%3D
+Content-Length: 0
+</verbatim>
+   1 In case of successful WebID verification, the WebID should be returned, as above: 
+<verbatim>
+webid=http%3A%2F%2Fid.myopenlink.net%2Fdataspace%2Fperson%2Fdemo%23this 
+</verbatim>
+   1 Additionally a timestamp in ISO 8601 format should be returned, as above: 
+<verbatim>
+ts=2012-01-05T11%3A08%3A13.000004-05
+</verbatim> 
+
+---++++Example 2: Call the Service without Certificate
+
+   1 Execute the following command:
+<verbatim>
+$ curl -i -k   https://id.myopenlink.net/ods/webid_check.vsp?callback=http://id.myopenlink.net/myapp/
+HTTP/1.1 302 Found
+Server: Virtuoso/06.03.3131 (Linux) x86_64-generic-linux-glibc25-64  VDB
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+Date: Thu, 05 Jan 2012 15:02:16 GMT
+Accept-Ranges: bytes
+Location: http://id.myopenlink.net/myapp/?error=noCert&ts=2012-01-05T10%3A02%3A16-05%3A00&signature=TLNskapgUg75%2FzJSRe154RloH%2FE%3D
+Content-Length: 0
+</verbatim>
+   1 The service returns "<code>error=..</code>" as it is in our example showing there is no certificate:
+<verbatim> 
+error=noCert  
+</verbatim>
+
+
+---++Related
+   
+   * [[ODSWebIDIdP][Using Virtuoso's Delegated WebID Verification Service]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLEndpointProtection][Safeguarding your Virtuoso-hosted SPARQL Endpoint]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpointProtection][SPARQL Endpoint Protection Methods Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/][Virtuoso documentation]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint][SPARQL Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri][Service Endpoint Security]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl][Managing a SPARQL Web Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][SPARQL]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLDET][SPARQL Endpoint DET Configuration Guide]]       
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSecurityWebID][WebID Protocol & SPARQL Endpoint ACLs Tutorial]]
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtOAuthSPARQL][SPARQL OAuth Tutorial]]
+      * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtTipsAndTricksGuideSPARQLEndpoints][Securing SPARQL endpoints]]
+   * [[OdsSPARQLAuth][SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtAuthServerUI][Virtuoso Authentication Server UI]]
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSPARQLSSL][Manage a SPARQL-WebID based Endpoint]]
+   * [[VirtODSSecurityWebID][WebID Protocol Support in OpenLink Data Spaces]].
+   * Manage ODS Datadspaces Objects WebID Access Control Lists (ACLs):
+      * [[ODSBriefcaseWebID][ODS Briefcase WebID based ACL Guide]]
+         * [[ODSBriefcaseWebIDPerson][Person Entity WebID based ACL Guide]]
+         * [[ODSBriefcaseWebIDGroup][Group Entity WebID based ACL Guide]]
+         * [[ODSBriefcaseWebIDPublic][Public WebID based ACL Guide]]      
+      * [[ODSFeedManagerWebIDACL][ODS Feed Manager WebID based ACL Guide]]
+         * [[ODSFeedManagerWebIDACLPerson][Person Entity Specific ACL]]
+         * [[ODSFeedManagerWebIDACLGroup][Group Entity Specific ACL]]
+         * [[ODSFeedManagerWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[ODSCalendarWebIDACL][ODS Calendar WebID based ACL Guide]]
+         * [[ODSCalendarWebIDACLPerson][Person Entity Specific ACL]]
+         * [[ODSCalendarWebIDACLGroup][Group Entity Specific ACL]]
+         * [[ODSCalendarWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[ODSBookmarksWebIDACL][ODS Bookmark Manager WebID based ACL Guide]]
+         * [[ODSBookmarksWebIDACLPerson][Person Entity Specific ACL]]
+         * [[ODSBookmarksWebIDACLGroup][Group Entity Specific ACL]]
+         * [[ODSBookmarksWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+      * [[ODSAddressBookWebIDACL][ODS Addressbook  WebID based ACL Guide]]
+         * [[ODSAddressBookWebIDACLPerson][Person Entity Specific ACL]]
+         * [[ODSAddressBookWebIDACLGroup][Group Entity Specific ACL]]
+         * [[ODSAddressBookWebIDACLPublic][Public Specific ACL for anyone with a WebID]]
+   * [[ODSPkiSetup][Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates]]
+   * [[ODSSetupSSL][Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener]]        
+   * [[http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSetupSSL][Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener]]
+   * [[VirtODSPubSubHub][Setting up PubSubHub in ODS]]
+   * [[VirtPubSubHub][PubSubHubBub Demo Client Example]]
+   * [[VirtFeedPubSubHub][Feed subscription via PubSubHub protocol Example ]]
+   * [[VirtPubSubHubACL][Setting Up PubSubHub to use WebID Protocol or IP based control lists]]
+   * [[OdsKeyImport][CA Keys Import using Conductor]]
+   * [[ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID Guide]]
+   * [[ODSGenerateWebIDX509CertOSKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore]]
+   * [[ODSGenerateWebIDX509CertBrsKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore]]
+   * [[ODSBriefcaseWebIDShareFile][ODS Briefcase WebID Protocol Share File Guide]]
+   * [[http://esw.w3.org/topic/foaf+ssl][WebID Protocol Specification]]
+   * [[https://foaf.me/simpleLogin.php][Test WebID Protocol Certificate page]]
+   * [[http://test.foafssl.org/cert/][WebID Protocol Certificate Generation page]]

@@ -1,0 +1,81 @@
+<docbook><section><title>BadFileDescriptorError</title><title> Error Message: Internal RPC call failed (Bad file descriptor) </title> Error Message: <computeroutput>Internal RPC call failed (Bad file descriptor)</computeroutput> 
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Background </bridgehead>
+<para>Historically, <emphasis><computeroutput>Bad file descriptor</computeroutput></emphasis> errors were fairly rare, and were exclusively associated with Sybase and SQL Server database agents based on the DB-LIB and CT-LIB client libraries.
+ <emphasis><computeroutput>RPC: Timed Out</computeroutput></emphasis> variants of the file descriptor error appeared when our components unsuccessfully tried to obtain a socket.
+ Sometimes these errors were permissions related.
+ And, there was little that users could do to configure around this problem.</para><para>Today&#39;s <emphasis><computeroutput>Bad file descriptor</computeroutput></emphasis> errors are significantly different in nature.
+ They are intermittent errors that tend to appear suddenly, after long periods of stability.
+ When users encounter this type of error, configuration changes have often been made to the machine hosting the server-side Multi-Tier components.
+ Most commonly, Anti-Virus Software, Windows Updates, and/or SQL Server patches have affected hostname resolution and/or TCP port usage on the affected machine.</para><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Common Solutions </bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> With Any Database Agent </bridgehead>
+<para>To resolve such errors when using any Database Agent, start by checking the <ulink url="ConfiguringMTCommunicationsAttributes">Multi-Tier communications settings, particularly the timeouts, on both Generic Client and Broker host</ulink>.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3"> With a Database Agent for Sybase or Microsoft SQL Server </bridgehead>
+<para>If you are receiving these errors when connecting to Sybase or Microsoft SQL Server, and adjusting the communications settings doesn&#39;t resolve them, take the following action:</para><orderedlist spacing="compact"><listitem> Ensure that you are using our TDS-based database agents.
+ These agents are typically named sql_mv or sql_sv.
+ (The older DB-LIB and CT-LIB agents can not bypass this problem.) </listitem>
+<listitem> Use a text editor to open the active Rulebook file, typically <computeroutput>$OPENLINK_INSTALL/bin/oplrqb.ini</computeroutput> on the Broker host.
+</listitem>
+<listitem> Locate the <computeroutput>[generic_sql]</computeroutput> section.
+</listitem>
+<listitem> Build an argument string based on the following ConnectOptions: <itemizedlist mark="bullet" spacing="compact"><listitem> <emphasis><computeroutput>-H &lt;FQDN&gt;</computeroutput></emphasis> - Fully-qualified domain name (i.e., DNS-resolvable hostname) or IP address of the SQL Server host machine </listitem>
+<listitem> <emphasis><computeroutput>-P &lt;port number&gt;</computeroutput></emphasis> - TCP Port at which the target SQL Server instance is listening </listitem>
+<listitem> <emphasis><computeroutput>-V &lt;version&gt;</computeroutput></emphasis> - SQL Server version.
+ Acceptable values are <emphasis><computeroutput>10.0</computeroutput></emphasis> for SQL Server 2008, <emphasis><computeroutput>9.0</computeroutput></emphasis> for SQL Server 2005, <emphasis><computeroutput>8.0</computeroutput></emphasis> for SQL Server 2000, <emphasis><computeroutput>7.0</computeroutput></emphasis> for SQL Server 7.x.
+</listitem>
+<listitem> <emphasis><computeroutput>-I &lt;instance&gt;</computeroutput></emphasis> - SQL Server instance name on the specified host machine (-H).
+ This option can be used in preference to the &quot;-S&quot; SQL Server name option above for connecting to a SQL Server instance name </listitem>
+<listitem> <emphasis><computeroutput>-S &lt;server-name&gt;</computeroutput></emphasis> - <emphasis>Not recommended.
+ <computeroutput>-H</computeroutput> and <computeroutput>-I</computeroutput> are preferred.</emphasis>  Specifies a target SQL Server instance by combining the host and instance names as &quot;<computeroutput>&lt;FQDN&gt;\\&lt;instance&gt;</computeroutput>&quot;, e.g., &quot;<computeroutput>sql-host.example.com\\demo-instance</computeroutput>&quot;.
+ Note the double backslash (<computeroutput>\\</computeroutput>) between the SQLServerName and InstanceName.
+</listitem>
+<listitem> <emphasis><computeroutput>-F &lt;fail-over server name&gt;</computeroutput></emphasis> - Specify Fail over server name for Database Mirroring </listitem>
+<listitem> <emphasis><computeroutput>-N &lt;size&gt;</computeroutput></emphasis> - Network Packet size, which is a value that determines the number of bytes per network packet transferred from the database server to the client.
+ The correct setting of this attribute can improve performance.
+ When set to 0, the initial default, the driver uses the default packet size as specified in the Sybase server configuration.
+ When set to -1, the driver computes the maximum allowable packet size on the first connect to the data source and saves the value in the system information.
+</listitem>
+<listitem> <emphasis><computeroutput>-O &lt;value&gt;</computeroutput></emphasis>  Prepared Method, which is a value that determines whether stored procedures are created on the server for every call to SQLPrepare.
+ When set to Full (2), stored procedures are created for every call to SQLPrepare, which can decrease performance when processing static statements.
+ When set to Partial(1), the initial default, the driver creates stored procedures only if the statement contains parameters.
+ Otherwise, the statement is cached and executed directly at SQLExecute time.
+ When set to None (0), the driver never creates stored procedures.
+</listitem>
+<listitem> <emphasis><computeroutput>-L &lt;language&gt;</computeroutput></emphasis> - The name of a Microsoft SQL Server supported national language.
+ The default language is English.
+</listitem>
+<listitem> <emphasis><computeroutput>-C &lt;character set&gt;</computeroutput></emphasis> - The name of an installed character set on the server.
+ By default it is the setting on the Microsoft SQL Server.
+</listitem>
+<listitem> <emphasis><computeroutput>-A</computeroutput></emphasis> - Turn Off ANSI NULL handling </listitem>
+<listitem> <emphasis><computeroutput>-E</computeroutput></emphasis> - Turn On SSL Strong Data Encryption </listitem>
+<listitem> <emphasis><computeroutput>-R</computeroutput></emphasis> - Turn On SSL Server Certificate Verification </listitem>
+<listitem> <emphasis><computeroutput>-D &lt;filename&gt;</computeroutput></emphasis> - Specify Name of Certificate Authority file to be used for SSL Certificate Verification </listitem>
+<listitem> <emphasis><computeroutput>-Z</computeroutput></emphasis> - Turn On Snapshot Serializable Isolation </listitem>
+<listitem> <emphasis><computeroutput>-M</computeroutput></emphasis> - Turn On Multiple Active Result Sets (MARS) </listitem>
+</itemizedlist></listitem>
+<listitem> Uncomment the <computeroutput>ConnectOptions =</computeroutput> parameter by removing the leading semicolon (if present), and put the string you just built as the value.
+ For example: <programlisting>ConnectOptions = -S mysqlserver.company.com -P 1433 -V 8.0
+</programlisting></listitem>
+<listitem> Save your changes and exit the file.
+</listitem>
+<listitem> Restart the Request Broker Service.
+</listitem>
+<listitem> Test.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> For Persistent Cases </bridgehead>
+<para>If the problem persists, take the following action:</para><orderedlist spacing="compact"><listitem> Obtain the database agent version string.
+</listitem>
+<listitem> Note the mapscode.c line on which the error occurs.
+ This will be helpful for development.
+ For example: <programlisting>12:11:21 ERROR (f:\devel\openlink\binsrc\oplrqb\mapscode.c:594): internal rpc call failed (Bad file descriptor): RPC: Timed out 
+</programlisting></listitem>
+<listitem> Get the precise version of the operating system on which the failure occurs.
+</listitem>
+<listitem> Ascertain whom the user is logged in as.
+ Perhaps Administrative access may alleviate the problem.
+</listitem>
+<listitem> Insure that unnecessary processes are terminated on the server that is associated with this problem.
+ This alleviates resource use, which may contribute to the problem.
+</listitem>
+<listitem> Attempt a 3-Tier connection to another SQL Server DBMS.
+</listitem>
+<listitem> Attempt a Single-Tier connection to the same SQL Server instance.</listitem>
+</orderedlist><para> </para></section></docbook>

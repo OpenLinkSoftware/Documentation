@@ -1,0 +1,224 @@
+<html><body><div class="topic-text"><!--Begin of %VOSWARNING{}%--><div id="warning" style="display: none; color: red; background-color: #eaeaea; font-size: 120%; border: solid 1px silver; padding: 0.1em; margin-top: 1em; margin-bottom: 1em">WARNING! This URL (in the Main cluster) is no longer the authoritative source for this page; it has been moved to the VOS or ODS cluster as appropriate instead.
+ See Tim Haynes in case of confusion.</div> <script type="text/javascript"> if(window.location.href.match(//Main//)) { document.getElementById('warning').style.display='block'; } else { document.getElementById('warning').style.display='none'; } </script><!--End of %VOSWARNING{}%--><!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--><h1><a name="Building on Windows"></a> Building on Windows</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Introduction">Introduction</a></li> <li><a href="#Prerequisites">Prerequisites</a></li>
+<ul><li><a href="#Building%20the%20openssl%20library">Building the openssl library</a></li> <li><a href="#Microsoft%20Visual%20Studio%20settings">Microsoft Visual Studio settings</a></li> <li><a href="#Known%20issues">Known issues</a></li> </ul><li><a href="#Build%20targets">Build targets</a></li><ul><li><a href="#Core%20components">Core components</a></li> <li><a href="#Optional%20components">Optional components</a></li> </ul><li><a href="#Building%20Virtuoso%20Open%20Source%20with%20Microsoft%20Visual%20Studio">Building Virtuoso Open Source with Microsoft Visual Studio</a></li> <li><a href="#Building%20optional%20components">Building optional components</a></li><ul><li><a href="#PHP4%20library%20notes">PHP4 library notes</a></li> <li><a href="#Building%20the%20Virtuoso%20Open-Source%20Java%20hosting%20binary%20under%20Microsoft%20Visual%20Studio%202003">Building the Virtuoso Open-Source Java hosting binary under Microsoft Visual Studio 2003</a></li> <li><a href="#Building%20the%20Virtuoso%20Open-Source%20Perl%20hosting%20plugin">Building the Virtuoso Open-Source Perl hosting plugin</a></li> <li><a href="#Building%20the%20Virtuoso%20Open-Source%20Python%20hosting%20plugin">Building the Virtuoso Open-Source Python hosting plugin</a></li> <li><a href="#Building%20the%20Virtuoso%20Open-Source%20Imagemagick%20plugin">Building the Virtuoso Open-Source Imagemagick plugin</a></li> </ul><li><a href="#Testing%20your%20build">Testing your build</a></li> <li><a href="#Installation">Installation</a></li><ul><li><a href="#ODBC%20Driver%20registration">ODBC Driver registration</a></li> <li><a href="#Running%20the%20Demo%20Database">Running the Demo Database</a></li> <li><a href="#.NET%20CLR%20hosting%20server">.NET CLR hosting server</a></li> <li><a href="#Java%20hosting%20server">Java hosting server</a></li> </ul><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="Introduction"></a> Introduction</h2>
+<p>This page gives instructions for building Virtuoso Open-Source Edition on Windows 32- or 64-bit platforms.</p>
+<blockquote><i><b>Note:</b> The build process on Windows is rather more complex than on other platforms, so we make pre-built Windows packages available <a href="http://sourceforge.net/projects/virtuoso/files/virtuoso/" class="absuri">in the SourceForge Project</a>.
+ We recommend you use the latest build available for your platform.
+ As of 2018-02-01, the latest available VOS binaries for Windows are <a href="https://sourceforge.net/projects/virtuoso/files/virtuoso/7.2.4.2/virtuoso-opensource-win-x64-20160425.zip/download" class="absuri">64-bit (x86_64) version 7.2.4.2 (built 2016-04-25)</a> and <a href="https://sourceforge.net/projects/virtuoso/files/virtuoso/6.1.8/virtuoso-opensource-x86-20131211.zip/download" class="absuri">32-bit (x86) version 6.1.8 (built 2013-12-11)</a>.</i></blockquote><h2><a name="Prerequisites"></a> Prerequisites</h2>
+<p>You must have the following development tools and software installed:</p>
+<ul><li>Microsoft Visual Studio 2003 or later for 32-bit builds; 2005 or later for 64-bit builds <br><i><b>Note:</b> The Virtuoso projects and solution are maintained under VS 2003, so they must be converted to the VS 2005 format if you are using VS 2005 or later.
+ To do this, just open the solution with your VS, and you will be asked to confirm project conversion.
+ Then follow the instructions on screen.</i> </li>
+<li>Cygwin bash with developer tools (gawk, flex, bison) installed.
+<ul><li>Bison must be version 1.875b; newer versions (2.x+) are not compatible.
+</li>
+</ul></li>
+<li>Active Perl, available from <a href="http://www.activestate.com/ActivePerl" class="absuri">http://www.activestate.com/ActivePerl</a> </li>
+<li>OpenSSL version 0.97 static libraries for Windows and header files.</li>
+</ul><p>Optionally, you may want to also install:</p>
+<ul><li>Java Development Kit (JDK) for Windows version 1.4 or above, available from <a href="http://java.com/" class="absuri">http://java.com/</a> </li>
+<li>PHP library for Windows version 4 and header files.
+</li>
+<li>Active Python, available from <a href="http://www.activestate.com/ActivePython" class="absuri">http://www.activestate.com/ActivePython</a> </li>
+<li>ImageMagick library, available from <a href="http://www.imagemagick.org/" class="absuri">http://www.imagemagick.org/</a></li>
+</ul><h3><a name="Building the openssl library"></a> Building the openssl library</h3>
+<p>The OpenSSL library must be built as a static library using Visual Studio.
+ Detailed instructions for this build can be found in the <code>INSTALL.W32</code> document in the OpenSSL source distribution.</p>
+<i><b>IMPORTANT:</b> by default the OpenSSL library is built using MSVCRT compile flags, which lead to conflicts when linking the Virtuoso Open-Source binaries.</i> To resolve these conflicts, after unpacking the OpenSSL source tarball, you must edit the <code>&lt;OpenSSL dir&lt;/util/pl/VC-32.pl</code> and change the &quot;<code>cflags</code>&quot; to use the &quot;<code>/MT</code>&quot; and &quot;<code>/MTd</code>&quot; compiler switches instead of &quot;<code>/MD</code>&quot; and &quot;<code>/MDd</code>&quot;.<p>Finally, the <code>libeay32.lib</code> and <code>ssleay32.lib</code> from <code>&lt;OpenSSL dir&gt;/out32</code> and files from <code>&lt;OpenSSL dir&gt;/inc32/openssl<code> must be copied to <code>&lt;Virtuoso Open Source dir&gt;/win32/openssl/</code>.</code></code></p>
+<h3><a name="Microsoft Visual Studio settings"></a> Microsoft Visual Studio settings</h3>
+<p>For Visual Studio to find the Cygwin developer tools (gawk, bison, flex), the path to the Cygwin programs (e.g., <code>c:\cygwin\bin</code>) must be added to standard settings.</p>
+<p>To do this, execute the following steps:</p>
+<ol><li>Open the IDE </li>
+<li>Open &quot;Tools&quot;, then &quot;Options&quot; </li>
+<li>In the &quot;Options&quot; menu select &quot;Projects&quot; settings </li>
+<li>From &quot;Projects&quot; settings select &quot;VC++ Directories&quot; </li>
+<li>Add the Cygwin programs path to the list for &quot;Executable files&quot;, before <code>&lt;WIN&gt;/system32</code>, so VS will use cygwin&#39;s &quot;<code>find</code>&quot; command </li>
+<li>Confirm the changes.</li>
+</ol><h3><a name="Known issues"></a> Known issues</h3>
+<ul><li>Bison version 2.1 that comes with Cygwin bash generates buggy code.
+ To resolve this, you must either <ul><li>install an older version of bison (1.875b is recommended) or </li>
+<li>edit the generated files (<code>sql3.c</code> and <code>turtle_p.c</code> in <code>&lt;Virtuoso Open Source dir&gt;/libsrc/Wi</code>) and remove the &#39;;&#39; after the start of the &#39;<code>yyparse</code>&#39; function: <br><pre><br>...
+#else
+int 
+yyparse ()
+;                       &lt;-- remove this 
+#endif
+#endif
+...
+</pre><br> </li>
+</ul></li>
+<li>The OLE DB Provider for Virtuoso cannot be built under VS 2005; it should be disabled.</li>
+</ul><p> </p>
+<h2><a name="Build targets"></a> Build targets</h2>
+<h3><a name="Core components"></a> Core components</h3>
+<ul><li><code>virtuoso_t</code> - the Virtuoso Server </li>
+<li><code>isql</code>, <code>isqlo</code> - SQL command line tools </li>
+<li><code>virtoledb</code> - Virtuoso OLEDB provider </li>
+<li><code>wi</code>, <code>wic</code>, <code>dk1t</code>, <code>dksrv</code>, <code>threads</code>, <code>threadw</code>, <code>xml</code>, <code>zlib</code>, <code>tidy</code>, <code>util</code> - library modules</li>
+</ul><h3><a name="Optional components"></a> Optional components</h3>
+<ul><li><code>tpcc</code>, <code>blobs</code>, <code>scroll</code>, <code>burstoff</code>, <code>cutter</code>, <code>cursor</code> - test suite programs </li>
+<li><code>libvirtuoso_t</code> - the Virtuoso server shared object, needed for hosting servers </li>
+<li><code>virtodbc</code> - Virtuoso ODBC Driver </li>
+<li><code>virtuoso_clr_t</code> - .NET CLR-hosting server (requires .NET Framework SDK v1.1) </li>
+<li><code>virtuoso_javavm_t</code> - Java hosting server (requires Java SDK) </li>
+<li><code>virtuoso_php_t</code> - PHP4 hosting server (requires PHP4 library) </li>
+<li><code>virtuoso_sample_t</code> - sample of the Virtuoso server with extensions </li>
+<li><code>hosting_perl</code> - Perl hosting plugin (requires Active Perl) </li>
+<li><code>hosting_python</code> - Python hosting plugin (requires Active Python) </li>
+<li><code>wikiv</code> - Virtuoso Wiki plugin </li>
+<li><code>im</code> - <code>ImageMagick<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ImageMagick&parent=VOSMakeWindows" class="wikiword">?</a></code> plugin (requires <code>ImageMagick<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ImageMagick&parent=VOSMakeWindows" class="wikiword">?</a></code> library)</li>
+</ul><p> </p>
+<h2><a name="Building Virtuoso Open Source with Microsoft Visual Studio"></a> Building Virtuoso Open Source with Microsoft Visual Studio</h2>
+<ol><li>Open the IDE.
+</li>
+<li>Open the appropriate solution file <ul><li>For 32-bit, from <code>&lt;Virtuoso Open Source dir&gt;/win32/virtuoso-opensource.sln</code>.
+</li>
+<li>For 64-bit, from <code>&lt;Virtuoso Open Source dir&gt;/win64/virtuoso-opensource.sln</code>.
+</li>
+</ul></li>
+<li>Select desired configuration (Debug or Release).
+</li>
+<li>Build the solution.</li>
+</ol><h2><a name="Building optional components"></a> Building optional components</h2>
+<h3><a name="PHP4 library notes"></a> PHP4 library notes</h3>
+<p>The following directories with the header files from the PHP4 source tree need to be placed under <code>&lt;Virtuoso Open Source dir&gt;/win32/php4/</code>:</p>
+<ul><li><code>ext/</code> </li>
+<li><code>main/</code> </li>
+<li><code>regex/</code> </li>
+<li><code>TSRM/</code> </li>
+<li><code>win32/</code> </li>
+<li><code>Zend/</code></li>
+</ul><p>To the same directory (<code>&lt;Virtuoso Open Source dir&gt;/win32/php4/</code>), you should also copy the following:</p>
+<ul><li><code>php4ts.dll</code> </li>
+<li><code>php4ts.lib</code> </li>
+<li><code>php_version.h</code></li>
+</ul><p> </p>
+<h3><a name="Building the Virtuoso Open-Source Java hosting binary under Microsoft Visual Studio 2003"></a> Building the Virtuoso Open-Source Java hosting binary under Microsoft Visual Studio 2003</h3>
+<ol><li>Make sure that JDK 1.4 or later is installed.
+ (A JRE is not sufficient.) </li>
+<li>Add environment setting <code>JDK_PATH</code> with value of JDK installation directory (e.g., <code>c:\jdk1.5</code>).
+</li>
+<li>Start the Visual Studio IDE and enable the <code>virtuoso_javavm_t</code> target in the solution.
+</li>
+<li>Build the <code>virtuoso_javavm_t</code> target.</li>
+</ol><h3><a name="Building the Virtuoso Open-Source Perl hosting plugin"></a> Building the Virtuoso Open-Source Perl hosting plugin</h3>
+<ol><li>Make sure Active Perl is installed.
+</li>
+<li>From the VS.NET 2003 command prompt, go to <code>&lt;Virtuoso Open Source dir&gt;/win32</code>.
+</li>
+<li>Run &#39;<code>perl mkperlenv.pl</code>&#39;; this should produce output like: <br><pre><br>PERL_CFLAGS=...
+PERL_LDFLAGS=...
+</pre><br></li>
+<li>Add the <code>PERL_CFLAGS</code> and <code>PERL_LDFLAGS</code> in the environment with values printed from the step above.
+</li>
+<li>Start the Visual Studio IDE and enable the <code>hosting_perl</code> target in the solution.
+</li>
+<li>Build the <code>hosting_perl</code> plugin.</li>
+</ol><p> </p>
+<h3><a name="Building the Virtuoso Open-Source Python hosting plugin"></a> Building the Virtuoso Open-Source Python hosting plugin</h3>
+<ol><li>Make sure Active Python is installed </li>
+<li>From the VS.NET 2003 command prompt, go to <code>&lt;Virtuoso Open Source dir&gt;/win32</code>.
+</li>
+<li>Run &#39;<code>python mkpythonenv.py</code>&#39;; this should produce output like: <br><pre><br>PYTHON_CFLAGS=...
+PYTHON_LDFLAGS=...
+</pre><br></li>
+<li>add the <code>PYTHON_CFLAGS</code> and <code>PYTHON_LDFLAGS</code> in the environment with values printed from the step above </li>
+<li>Start the Visual Studio IDE and enable the <code>hosting_python</code> target in the solution.
+</li>
+<li>Build the <code>hosting_python</code> plugin</li>
+</ol><h3><a name="Building the Virtuoso Open-Source Imagemagick plugin"></a> Building the Virtuoso Open-Source Imagemagick plugin</h3>
+<ol><li>Install the ImageMagick library, available from <a href="http://www.imagemagick.org/" class="absuri">http://www.imagemagick.org/</a> </li>
+<li>add the <code>IM_PATH</code> in the environment with a value of ImageMagick installation directory </li>
+<li>Start the Visual Studio IDE and enable the <code>im</code> target in the solution </li>
+<li>Build the ImageMagick plugin</li>
+</ol><h2><a name="Testing your build"></a> Testing your build</h2>
+<p> </p>
+<ol><li>Make sure that following binaries exist in <code>&lt;Virtuoso Open Source dir&gt;/win32/[Release|Debug]</code>: <ul><li><code>virtuoso-t.exe</code> </li>
+<li><code>isql.exe</code> </li>
+<li><code>blobs.exe</code> </li>
+<li><code>ins.exe</code> </li>
+<li><code>scroll.exe</code> </li>
+</ul></li>
+<li>Open a Cygwin bash shell </li>
+<li>Change directory to <code>&lt;Virtuoso Open Source dir&gt;/</code> </li>
+<li>Execute the following commands <i><b>(Note:</b> replace in $PATH the &#39;Release&#39; with &#39;Debug&#39; if you are going to run the tests using debug binaries.)</i> <br><pre><br>export HOME=`pwd`
+export PATH=$HOME/win32/Release:$PATH
+export BLOBS=blobs.exe
+export INS=ins.exe
+export ISQL=isql.exe
+export PORT=5555
+export ENABLE_MTS_TEST=0
+export SCROLL=scroll.exe
+export GETDATA=getdata.exe
+</pre><br></li>
+<li>Change directory to <code>&lt;Virtuoso Open Source dir&gt;/binsrc/tests/suite</code> </li>
+<li>Run the tests: <br><pre><br>./test_server virtuoso-t
+</pre><br></li>
+</ol><h2><a name="Installation"></a> Installation</h2>
+<h3><a name="ODBC Driver registration"></a> ODBC Driver registration</h3>
+<p>   Perform the following steps to register the ODBC Driver for Virtuoso:</p>
+<ol><li>Open a Command prompt </li>
+<li>Navigate to the directory where the <code>virtodbc.dll</code> (Virtuoso Open Source ODBC Driver) is built.
+</li>
+<li>execute: <br><pre><br>regsvr32 virtodbc.dll
+</pre><br></li>
+<li>A confirmation dialog stating that the driver was registered should be displayed.</li>
+</ol><p> </p>
+<h3><a name="Running the Demo Database"></a> Running the Demo Database</h3>
+<ol><li>Make a folder, e.g., <code>c:\dbs\virtuoso</code>.
+</li>
+<li>Copy the Demo database (<code>demo.db<code>) and default <code>demo.ini</code> file to the new directory.
+<br><pre><br>cd c:
+cd \dbs\virtuoso
+copy &lt;Virtuoso Open Source dir&gt;\binsrc\samples\demo\demo.db
+copy &lt;Virtuoso Open Source dir&gt;\binsrc\samples\demo\demo.ini
+</pre><br></code></code></li>
+<li>Create a Windows service to run the Virtuoso Open-Source server: <br><pre><br>SET PATH=%PATH%;&lt;irtuoso Open Source dir&gt;\win32\Release
+virtuoso-t -c demo -I Demo -S create
+virtuoso-t -c demo -I Demo -S start
+</pre><br> To connect with the command line SQL tool, <br><pre><br>    isql 1112 dba dba
+</pre><br>gives a <code>SQL&gt;</code> prompt.</li>
+</ol><p>To switch to the demo database, containing the Microsoft Northwind sample tables, type: </p>
+<br><pre>    SQL&gt; use Demo;
+</pre><p>The help command in iSQL can give further instructions.</p>
+<p>To use a web admin interface, point the browser to <a href="http://localhost:8890/conductor" class="absuri">http://localhost:8890/conductor</a> .</p>
+<p>To read the online documentation: <a href="http://localhost:8890/doc/html" class="absuri">http://localhost:8890/doc/html</a></p>
+<p>To experiment with online tutorials, <a href="http://localhost:8890/tutorial" class="absuri">http://localhost:8890/tutorial</a></p>
+<p>For VAD Packages, read the README file for Linux.</p>
+<h3><a name=".NET CLR hosting server"></a> .NET CLR hosting server</h3>
+<p>In order to run the .NET CLR hosting server (<code>virtuoso-clr-t</code>),</p>
+<ol><li>Make a folder, e.g., <code>c:\dbs\virtuoso</code> </li>
+<li>Copy the Demo database (<code>demo.db<code>) and default <code>demo.ini</code> file to the new directory.
+<br><pre><br>cd c:
+cd \dbs\virtuoso
+copy &lt;Virtuoso Open Source dir&gt;\binsrc\samples\demo\demo.db
+copy &lt;Virtuoso Open Source dir&gt;\binsrc\samples\demo\demo.ini
+</pre><br></code></code></li>
+<li>Register the <code>virt_http.dll</code> in the GAC: <br><pre><br>   gacutil /i &lt;Virtuoso Open Source dir&gt;\win32\Release\virt_http.dll
+</pre><br></li>
+<li>Make sure <code>virtclr.dll</code> and <code>virtuoso-clr-t</code> are in the search path.
+</li>
+<li>To try the tutorial examples, <code>Point.dll</code> and <code>tax.dll</code>must be copied from <code>&lt;Virtuoso Open Source dir&gt;\binsrc\tutorial\hosting\ho_s_2</code> to <code>&lt;Virtuoso Open Source dir&gt;\win32\Release\</code>: <br><pre><br>SET PATH=%PATH%;&lt;Virtuoso Open Source dir&gt;\win32\Release
+virtuoso-clr-t -c demo -I Demo -S create
+virtuoso-clr-t -c demo -I Demo -S start
+</pre><br> <i><b>IMPORTANT:</b> The current version of the .NET CLR hosting server is supported in .NET Framework v1.1 environment.</i></li>
+</ol><h3><a name="Java hosting server"></a> Java hosting server</h3>
+<p>In order to run the Java hosting server (<code>virtuoso-javavm-t</code>),</p>
+<ol><li>Make a folder, e.g., <code>c:\dbs\virtuoso</code> </li>
+<li>Copy the Demo database (<code>demo.db<code>) and default <code>demo.ini</code> file to the new directory.
+<br><pre><br>cd c:
+cd \dbs\virtuoso
+copy &lt;Virtuoso Open Source dir&gt;\binsrc\samples\demo\demo.db
+copy &lt;Virtuoso Open Source dir&gt;\binsrc\samples\demo\demo.ini
+</pre><br></code></code></li>
+<li>Set the <code>CLASSPATH</code> to the place where Java classes are.
+</li>
+<li>Make sure <code>virtuoso-javavm-t</code> is in the search path <br><pre><br>set CLASSPATH=&lt;Virtuoso Open Source dir&gt;\binsrc\tutorial\hosting\ho_s_1;%CLASSPATH%
+SET PATH=%PATH%;&lt;Virtuoso Open Source dir&gt;\win32\Release
+virtuoso-javavm-t -c demo -I Demo -S create
+virtuoso-javavm-t -c demo -I Demo -S start
+</pre><br></li>
+</ol></div></body></html>

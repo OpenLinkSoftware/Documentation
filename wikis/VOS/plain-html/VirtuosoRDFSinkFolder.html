@@ -1,0 +1,107 @@
+<html><body><div class="topic-text"><!--Begin of %VOSNAV{}%--><p> </p>
+<!--End of %VOSNAV{}%--><h1><a name="How to use Virtuoso's RDF Sink Folder"></a> How to use Virtuoso&#39;s RDF Sink Folder</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#What%20is%20the%20RDF%20Sink%20Folder%3F">What is the RDF Sink Folder?</a></li>
+<ul><li><a href="#Notes%20for%20Virtuoso%20upgraders">Notes for Virtuoso upgraders</a></li> </ul><li><a href="#HTTP%20Content%20Negotiation">HTTP Content Negotiation</a></li> <li><a href="#Examples">Examples</a></li><ul><li><a href="#Example%201">Example 1</a></li> <li><a href="#Example%202">Example 2</a></li> </ul><li><a href="#See%20Also">See Also</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><h2><a name="What is the RDF Sink Folder?"></a> What is the RDF Sink Folder?</h2>
+<p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> supports a special folder type for RDF uploads, called <b><code>rdf_sink</code></b>.
+This folder can be used to uploads RDF files from any <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> client.</p>
+<p>When a new user is created, a new <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> folder with name <code>rdf_sink</code> is automatically created in the user&#39;s home directory.</p>
+<p>The <code>rdf_sink</code> folder has two special properties - <b><code>virt:rdf_graph</code></b> and <b><code>virt:rdf_sponger</code></b>.
+ <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> property names are prefixed with <b><code>virt:</code></b>, and these are not shown as resource/collection properties in the ODS Briefcase; they can only be seen in the Conductor.
+ The properties of other <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DynamicFolder" class="wikiword">DET folders</a> are prefixed in the same way.
+</p>
+<ul><li>The property <b><code>virt:rdf_graph</code></b> contains the name of the graph into which triples parsed from the uploaded files will be loaded.
+</li>
+<li>The property <b><code>virt:rdf_sponger</code></b> holds the upload method.
+
+<table class="wikitable"><tr><th id="0"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoRDFSinkFolder?sort=0&col=1">Setting  </a></th><th id="1"><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtuosoRDFSinkFolder?sort=1&col=2">Effect  </a></th></tr><tr><td align="center">  on  </td><td> The content of <i>every file uploaded to that folder</i> will be added to the RDF store using the Sponger method.  </td></tr><tr><td align="center">  off  </td><td> The content of <i>only files with special MIME types</i> will be added to RDF store.  </td></tr></table>
+</li>
+</ul><p>After the first upload into the folder, a new file is created with a name based on the RDF graph name.
+ This file is dynamic, and contains all uploaded triples.</p>
+<p>Resources stored to the <code>rdf_sink</code> folder don&#39;t have any special properties.</p>
+<p>A user may see the properties of this folder through the Conductor UI, using the <b>Properties</b> button found to the right of the folder name.
+ That page will include two <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> properties, for instance --</p>
+<ul><li><b><code>virt:rdf_graph</code></b>: <code>http://demo.openlinksw.com/DAV/home/demo/rdf_sink</code> </li>
+<li><b><code>virt:rdf_sponger</code></b>:  <code>on</code></li>
+</ul><p>Users may change these values as other <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> properties.</p>
+<h3><a name="Notes for Virtuoso upgraders"></a> Notes for Virtuoso upgraders</h3>
+<p>When a Virtuoso DB is upgraded from a version which lacked the RDF Sink feature, to a version which includes it -- </p>
+<ol><li>A procedure is added to automatically create the <code>rdf_sink</code>  folder in the home directory of existing users.
+</li>
+<li>The <b>Add Users</b> page of the Conductor is changed so that when any new user created with a <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/WebDAV" class="wikiword">WebDAV</a> home directory, then the <code>rdf_sink</code> folder is created too.</li>
+</ol><h2><a name="HTTP Content Negotiation"></a> HTTP Content Negotiation</h2>
+<p>How does it work?</p>
+<ol><li>When a file is uploaded to the <code>rdf_sink</code> folder, it is parsed for RDF data, which is then stored in 2 graphs: <ul><li>In the Public Graph specified as parameter for the <code>rdf_sink</code> folder, containing RDF data from all files stored there; </li>
+<li>In a Private Graph, containing only RDF data from this file; </li>
+</ul></li>
+<li>A rewrite rule is added for the virtual path &quot;/DAV&quot; especially for the <code>rdf_sink</code> folder.
+</li>
+<li>When the file is dereferenced and the user agent specifies one of the following content types in its <code>Accept:</code> header, then the parsed content of the file is returned from the private graph in accepted type.
+<ul><li><code>application/rdf+xml</code> </li>
+<li><code>application/foaf+xml</code> </li>
+<li><code>text/rdf+n3</code> </li>
+<li><code>text/rdf+ttl</code> </li>
+<li><code>application/rdf+n3</code> </li>
+<li><code>application/rdf+turtle</code> </li>
+<li><code>application/turtle</code> </li>
+<li><code>application/x-turtle</code></li>
+</ul></li>
+</ol><h2><a name="Examples"></a> Examples</h2>
+<h3><a name="Example 1"></a> Example 1</h3>
+<p>User <code>demo</code> uploads an RDF file to the <code>rdf_sink</code> folder at <code><a href="http://demo.openlinksw.com/ods" class="absuri">http://demo.openlinksw.com/ods</a></code>: </p>
+<ol><li>Go to <code>demo</code> user&#39;s Briefcase instance home page.
+</li>
+<li>Upload the RDF file (e.g., &quot;<code>TimBLcard.rdf</code>&quot;) to the <code>rdf_sink</code> folder.
+</li>
+<li>After upload, &quot;<code>http___demo.openlinksw.com_DAV_home_demo_rdf_sink_.RDF</code>&quot; DET file is created.
+</li>
+<li>The RDF data will then be loaded into the graph name specified in the <code>virt:rdf_graph</code> property for the <code>rdf_sink</code> folder, i.e., <code>http://demo.openlinksw.com/DAV/home/demo/rdf_sink</code>.</li>
+</ol><p> </p>
+<h3><a name="Example 2"></a> Example 2</h3>
+<p>Suppose there is myfoaf.rdf file with the following content:</p>
+<br><pre>&lt;rdf:RDF xmlns=&quot;http://www.example/jose/foaf.rdf#&quot;
+    xmlns:foaf=&quot;http://xmlns.com/foaf/0.1/&quot;
+    xmlns:log=&quot;http://www.w3.org/2000/10/swap/log#&quot;
+    xmlns:myfoaf=&quot;http://www.example/jose/foaf.rdf#&quot;
+    xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+
+    &lt;foaf:Person rdf:about=&quot;http://www.example/jose/foaf.rdf#jose&quot;&gt;
+        &lt;foaf:homepage rdf:resource=&quot;http://www.example/jose/&quot;/&gt;
+        &lt;foaf:knows rdf:resource=&quot;http://www.example/jose/foaf.rdf#juan&quot;/&gt;
+        &lt;foaf:name&gt;Jose Jimen~ez&lt;/foaf:name&gt;
+        &lt;foaf:nick&gt;Jo&lt;/foaf:nick&gt;
+        &lt;foaf:workplaceHomepage rdf:resource=&quot;http://www.corp.example/&quot;/&gt;
+    &lt;/foaf:Person&gt;
+
+    &lt;foaf:Person rdf:about=&quot;http://www.example/jose/foaf.rdf#juan&quot;&gt;
+        &lt;foaf:mbox rdf:resource=&quot;mailto:juan@mail.example&quot;/&gt;
+    &lt;/foaf:Person&gt;
+
+    &lt;foaf:Person rdf:about=&quot;http://www.example/jose/foaf.rdf#julia&quot;&gt;
+        &lt;foaf:mbox rdf:resource=&quot;mailto:julia@mail.example&quot;/&gt;
+    &lt;/foaf:Person&gt;
+
+    &lt;rdf:Description rdf:about=&quot;http://www.example/jose/foaf.rdf#kendall&quot;&gt;
+        &lt;foaf:knows rdf:resource=&quot;http://www.example/jose/foaf.rdf#edd&quot;/&gt;
+    &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+</pre><p> Now let&#39;s upload the <code>myfoaf.rdf</code> file to destination server <code>demo.openlinksw.com</code>, for user <code>demo</code>:</p>
+<br><pre>File: myfoaf.rdf
+Destination Server: demo.openlinksw.com
+
+curl -T myfoaf.rdf http://demo.openlinksw.com/DAV/home/demo/rdf_sink/myfoaf.rdf -u demo:demo
+&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+  &lt;TITLE&gt;201 Created&lt;/TITLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+  &lt;H1&gt;Created&lt;/H1&gt;
+  Resource /DAV/home/demo/rdf_sink/ myfoaf.rdf has been created.
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</pre><p> </p>
+<h2><a name="See Also"></a> See Also</h2>
+<ul><li><a href="http://ods.openlinksw.com/dataspace/dav/wiki/ODS/ODSRDFSinkFolder" class="absuri">ODS RDF Sink Folder</a></li>
+</ul><p><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryVirtuoso" class="wikiword">CategoryVirtuoso</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategoryDAV" class="wikiword">CategoryDAV</a> <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/CategorySpec" class="wikiword">CategorySpec</a></p>
+</div></body></html>

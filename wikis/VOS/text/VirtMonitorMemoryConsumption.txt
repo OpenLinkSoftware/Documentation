@@ -1,0 +1,62 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ Monitoring Virtuoso Memory Consumption
+
+%TOC%
+
+---++ What
+
+Like any other process, Virtuoso consumes system resources, including memory.  Here we describe one way to monitor the memory consumption of a Virtuoso server instance.
+
+---++ Why monitor memory consumption?
+
+In a mission critical application, running 24/7, memory consumption should be fairly consistent when the server is in use. A server should not consume all system memory, which may result in it hanging or being terminated by the operating system.
+
+---++ How to monitor Virtuoso's memory consumption
+
+On a Linux or other Unix-like system, you can use a script like this, which we've called <code>memcheck-virtuoso.sh</code>, which checks the memory consumption directly at the process level:
+<verbatim>
+#!/bin/bash
+# saved to /tmp/memcheck-virtuoso.sh
+
+pid=$(pidof virtuoso-t);
+log=/tmp/mem-trace-virtuoso.txt;
+
+echo $(printf "%s   %s   %s" $(date +%FT%R) $(cat /proc/${pid}/status |grep VmSize) ${pid}) | tee -a ${log}
+</verbatim>
+
+This script outputs 3 columns:
+   1 <code>date-timestamp</code>
+   2 <code><nowiki>VmSize</nowiki></code>: the actual memsize of the Virtuoso instance  (from the <code>cat -> grep</code> for that process id)
+   3 the process id (or <code>PID</code>) of the Virtuoso instance
+
+
+Here is a sample:
+<verbatim>
+$ cat /tmp/memcheck-virtuoso.txt
+2014-11-14T17:22   VmSize: 15724332kB   3974
+2014-11-14T17:46   VmSize: 15874064kB   3974
+2014-11-14T17:55   VmSize: 15874064kB   3974
+2014-11-14T18:52   VmSize: 15878076kB   3974
+2014-11-14T18:52   VmSize: 15878076kB   3974
+2014-11-14T22:29   VmSize: 15878076kB   3974
+2014-11-14T22:30   VmSize: 15878076kB   3974
+2014-11-14T22:56   VmSize: 15878076kB   3974
+2014-11-14T22:56   VmSize: 15878076kB   3974
+2014-11-14T23:33   VmSize: 15878076kB   3974
+2014-11-14T23:33   VmSize: 15878076kB   3974
+2014-11-14T23:52   VmSize: 15878076kB   3974
+2014-11-14T23:53   VmSize: 15878076kB   3974
+$
+</verbatim>
+
+The script can be run manually as required.  It can also be set up as a cron job to run at a specified internal, e.g., 4 hours in the sample below:
+<verbatim>
+$ crontab -l |grep mem
+0 */4 * * * /tmp/memcheck-virtuoso.sh
+</verbatim>
+
+---++ Also See
+
+   * Technical discussion about [[http://locklessinc.com/articles/memory_usage/][Measuring Memory Usage]]
+

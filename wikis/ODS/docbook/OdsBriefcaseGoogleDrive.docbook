@@ -1,0 +1,112 @@
+<docbook><section><title>OdsBriefcaseGoogleDrive</title><para> </para>
+<title> Using ODS-Briefcase to mediate access to data stored in Google Drive</title> Using ODS-Briefcase to mediate access to data stored in Google Drive
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Introduction</bridgehead>
+<para>Google Drive is a way to store your files on Google&#39;s servers, or in the Cloud.
+ If you run the <ulink url="https://tools.google.com/dlpage/drive">free Google Drive application</ulink>, then you get a folder on your computer (Windows or Mac OS X) that looks just like a directory on your hard disk that you can drag your files in to.
+ Anything stored in that folder is kept on your hard disk and is also copied to your account in the cloud.
+ You can access those files through drive.google.com or from other computers, including mobile devices.</para>
+<para>Google Drive file storage offers users a number of features:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>flexibility: the synchronization can be performed from different devices or using the web version.
+</listitem>
+<listitem>free 5 MB storage by default: can be extended with pay option </listitem>
+<listitem>usable as backup service </listitem>
+<listitem>your resources are encrypted</listitem>
+</itemizedlist><para>ODS Briefcase offers a new &quot;GDrive&quot; folder type which provides several additional features, once the ODS system is configured with a registered Google API key and secret pair:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Specify credentials for authentication against Google Drive, enabling retrieval of any or all of your folders and files, including any associated metadata </listitem>
+<listitem>Specify which Sponger Extractor Cartridges and Sponger Meta Cartridges should be run against your GDrive data </listitem>
+<listitem>Save fetched data, metadata, and Sponger output, into a newly created GDrive-specific RDF Graph in the Virtuoso RDF Quad Store </listitem>
+<listitem>Specify other ODS Users or WebID-based ACLs which should be granted access to your GDrive data through ODS Briefcase</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Example</bridgehead>
+<para>Here is a sample scenario showing the whole process, from setting the Google Drive API key and secret pair in ODS, to retrieving all Google Drive content to ODS Briefcase.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>A <ulink url="https://mail.google.com/">Google user account</ulink>, configured with <ulink url="http://drive.google.com/start">Google Drive access</ulink> </listitem>
+<listitem>Files and folders (data) stored in your <ulink url="https://drive.google.com/">Google Drive Space</ulink> </listitem>
+<listitem>Administrative (DBA) access to a <ulink url="http://virtuoso.openlinksw.com/">Virtuoso Server</ulink> instance, on which the following have been installed -- <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="https://virtuoso.openlinksw.com/download/">ODS-Framework VAD package</ulink> </listitem>
+<listitem><ulink url="https://virtuoso.openlinksw.com/download/">ODS-Briefcase VAD package</ulink> </listitem>
+<listitem><ulink url="https://virtuoso.openlinksw.com/download/">Virtuoso RDF Mappers VAD package</ulink></listitem>
+</itemizedlist></listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Steps</bridgehead>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 1 - Get a Google Drive API key and secret pair for use with ODS-Briefcase</bridgehead>
+<emphasis>Note that at present, each Virtuoso + ODS instance can only be configured with a single Google Drive API key, which will then be used by all ODS-Briefcase users when targeting Google Drive from that instance.
+ Google imposes limitations on the API key&#39;s use (currently set to 500,000 requests/day).
+ This limitation is outside the scope of OpenLink or Virtuoso control.</emphasis><orderedlist spacing="compact"><listitem>Browse to &lt;<ulink url="http://code.google.com/apis/console">the Google APIs Console</ulink>&gt;, and log in with your existing Google user credentials: <ulink url="OdsBriefcaseGoogleDrive/step1-01.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-01.png" /></figure></ulink> </listitem>
+<listitem>If this is your first Google API Project, click the big <emphasis>Create Project</emphasis> button: <ulink url="OdsBriefcaseGoogleDrive/step1-02.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-02.png" /></figure></ulink> </listitem>
+<listitem>If you already have some Google API Projects, select <emphasis>Create Project</emphasis> from the Project menu.
+</listitem>
+<listitem>You should now be on the Services tab for your new API Project (or you can click to it).
+ Click the <emphasis>Drive API</emphasis> switch, to change it from <emphasis>OFF</emphasis> to <emphasis>ON</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step1-03.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-03.png" /></figure></ulink> </listitem>
+<listitem>If prompted, agree to the <emphasis>Google APIs Terms of Service</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step1-04.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-04.png" /></figure></ulink> </listitem>
+<listitem>The <emphasis>Drive API</emphasis> switch should now show <emphasis>ON</emphasis>.
+ Click <emphasis>API Access</emphasis> in the upper-left navigation area: <ulink url="OdsBriefcaseGoogleDrive/step1-05.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-05.png" /></figure></ulink> </listitem>
+<listitem>Click <emphasis>Create an OAuth 2.0 client ID...</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step1-06.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-06.png" /></figure></ulink> </listitem>
+<listitem>On the <emphasis>Branding Information</emphasis> pane, enter a &quot;Product name&quot; for your GDrive client application (i.e., your ODS-Briefcase instance) to be known by, e.g., &quot;MyODSGoogleDrive&quot;.
+ You can also associate an logo with it, if you like.
+ Then click <emphasis>Next</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step1-07.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-07.png" /></figure></ulink> </listitem>
+<listitem>On the <emphasis>Client ID Settings</emphasis> pane, leave the default <emphasis>Web application</emphasis> for <emphasis>Application type</emphasis>.
+ Click the <emphasis>more options</emphasis> link for <emphasis>Your site or hostname</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step1-08.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-08.png" /></figure></ulink> </listitem>
+<listitem>For <emphasis>Authorized Redirect URIs</emphasis>, put your ODS instance&#39;s Google interface URL, http://&lt;host&gt;[:&lt;port&gt;]/ods/access_google.vsp, e.g., &lt;<ulink url="http://example.com/ods/access_google.vsp">http://example.com/ods/access_google.vsp</ulink>&gt;.
+ For <emphasis>Authorized <ulink url="JavaScript">JavaScript</ulink> Origins</emphasis>, put the root URI of your Virtuoso instance, &lt;<ulink url="http://example.com">http://example.com</ulink>&gt;.
+ For best results, include URLs using both http and https schemes.
+ Click <emphasis>Create client ID</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step1-09.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-09.png" /></figure></ulink> </listitem>
+<listitem>Your new OAuth 2.0 ID will now be displayed, in a new <emphasis>Client ID for web applications</emphasis> section.
+ The <emphasis>Email address</emphasis> and <emphasis>Client secret</emphasis> shown here are your Google API Key and Secret: <ulink url="OdsBriefcaseGoogleDrive/step1-10.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-10.png" /></figure></ulink> </listitem>
+<listitem>You may wish to use the <emphasis>API Project</emphasis> menu&#39;s <emphasis>Rename...</emphasis> option to change this project&#39;s name -- especially if you may create more than one project over time.
+<ulink url="OdsBriefcaseGoogleDrive/step1-11.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-11.png" /></figure></ulink> </listitem>
+<listitem>This example project, renamed: <ulink url="OdsBriefcaseGoogleDrive/step1-12.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step1-12.png" /></figure></ulink></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 2 - Configure ODS to use your Google API key and secret</bridgehead>
+<orderedlist spacing="compact"><listitem>Browse to your Virtuoso + ODS instance, http://&lt;cname&gt;[:&lt;port&gt;]/ods, e.g., &lt;<ulink url="http://example.com/ods/">http://example.com/ods/</ulink>&gt;, and click <emphasis>Sign In</emphasis>.
+<ulink url="OdsBriefcaseGoogleDrive/step2-1.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step2-1.png" /></figure></ulink> </listitem>
+<listitem>Log in as a Virtuoso+ODS user with Administrator privileges, e.g., dba.
+<ulink url="OdsBriefcaseGoogleDrive/step2-2.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step2-2.png" /></figure></ulink> </listitem>
+<listitem>Click on <emphasis>Site Settings</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step2-3.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step2-3.png" /></figure></ulink> </listitem>
+<listitem>Click on <emphasis>Login Authentication Keys</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step2-4.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step2-4.png" /></figure></ulink> </listitem>
+<listitem>Select <emphasis>Google API</emphasis> in the <emphasis>API Name</emphasis> menu, provide the <emphasis>Email address</emphasis> and <emphasis>Client secret</emphasis> from the new <emphasis>Client ID for web applications</emphasis> you created above, and click <emphasis>Add</emphasis>.
+<ulink url="OdsBriefcaseGoogleDrive/step2-5.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step2-5.png" /></figure></ulink> </listitem>
+<listitem>ODS-Briefcase is now configured to use the Google API.
+<ulink url="OdsBriefcaseGoogleDrive/step2-6.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step2-6.png" /></figure></ulink></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h4"> 3 - Access files stored on Google Drive through ODS-Briefcase</bridgehead>
+<orderedlist spacing="compact"><listitem>Browse to your Virtuoso + ODS instance, http://&lt;cname&gt;[:&lt;port&gt;]/ods, e.g., &lt;<ulink url="http://example.com/ods/">http://example.com/ods/</ulink>&gt;.
+<ulink url="OdsBriefcaseGoogleDrive/step3-01.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-01.png" /></figure></ulink> </listitem>
+<listitem>Log in as a Virtuoso+ODS user with normal privileges, e.g., demo.
+<ulink url="OdsBriefcaseGoogleDrive/step3-02.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-02.png" /></figure></ulink> </listitem>
+<listitem>Click to the <emphasis>ODS-Briefcase</emphasis> application: <ulink url="OdsBriefcaseGoogleDrive/step3-03.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-03.png" /></figure></ulink> </listitem>
+<listitem>Click <emphasis>New Folder</emphasis> from the main Briefcase control strip: <ulink url="OdsBriefcaseGoogleDrive/step3-04.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-04.png" /></figure></ulink> </listitem>
+<listitem>In the New Folder form, specify a <emphasis>Folder Name</emphasis>, e.g., <emphasis>MyGoogleDriveFolder</emphasis>, and set the <emphasis>Folder type</emphasis> to <emphasis>Google Drive</emphasis>: <ulink url="OdsBriefcaseGoogleDrive/step3-05.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-05.png" /></figure></ulink> </listitem>
+<listitem>Click to the newly visible <emphasis>Google Drive</emphasis> tab: <ulink url="OdsBriefcaseGoogleDrive/step3-06.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-06.png" /></figure></ulink> </listitem>
+<listitem>All RDF data extracted from and otherwise collected about your Google Drive files will be saved to a named graph, where the default name is constructed from the host ODS instance, the ODS username, and the Briefcase folder name -- http://&lt;host&gt;[:&lt;port&gt;]/DAV/home/&lt;user-name&gt;/&lt;folder-name&gt;#this -- so, in this example, the default graph would be named &lt;<ulink url="http://example.com/ods/demo/MyGoogleDriveFolder#this">http://example.com/ods/demo/MyGoogleDriveFolder#this</ulink>&gt;.
+ Expert users may wish to change this graph name, but the default is suitable for most users.
+<ulink url="OdsBriefcaseGoogleDrive/step3-07.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-07.png" /></figure></ulink> </listitem>
+<listitem>You can also turn on the <ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger">Virtuoso Sponger</ulink>, to process your Google Drive files more comprehensively.
+ When the Sponger is enabled for your folder, you can specify which &quot;Sponger Extractor Cartridges&quot; and &quot;Sponger Meta Cartridges&quot; will be run over the files in your Google Drive.
+ You can enable all cartridges, but this will introduce some processing overhead.
+ It&#39;s generally best to enable only those cartridges which will be applicable to your files and their content.
+ For instance, you may know that you&#39;ll only be storing Microsoft and Open Office documents here.
+ Then, click &quot;Authenticate&quot;, to connect your new folder to your Google Drive: <ulink url="OdsBriefcaseGoogleDrive/step3-08.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-08.png" /></figure></ulink> </listitem>
+<listitem>You&#39;ll be prompted to enter your Google Drive user&#39;s credentials.
+ Note that this Google Drive user need not be the application owner/&quot;developer&quot; who got the API key earlier.
+<ulink url="OdsBriefcaseGoogleDrive/step3-09.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-09.png" /></figure></ulink> </listitem>
+<listitem>Google will prompt for confirmation that you intend to let your application (&quot;<ulink url="MyODSGoogleDrive">MyODSGoogleDrive</ulink>&quot;) have access to your Google Drive content.
+ Click <emphasis>Allow access</emphasis>.
+<ulink url="OdsBriefcaseGoogleDrive/step3-10.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-10.png" /></figure></ulink> </listitem>
+<listitem>Your Google user name and associated email address will now be displayed.
+ Click <emphasis>Create</emphasis> to finish the folder creation process.
+<ulink url="OdsBriefcaseGoogleDrive/step3-11.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-11.png" /></figure></ulink> </listitem>
+<listitem>Your new Google Drive-linked folder should now be displayed in your Briefcase resources list: <ulink url="OdsBriefcaseGoogleDrive/step3-12.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-12.png" /></figure></ulink> </listitem>
+<listitem>Click the folder name to see the resources ODS-Briefcase has found in your Google Drive Dataspace: <ulink url="OdsBriefcaseGoogleDrive/step3-13.png"><figure><graphic fileref="OdsBriefcaseGoogleDrive/step3-13.png" /></figure></ulink></listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://bit.ly/SK7WAI">How Linked Data &amp; WebID Deliver Controlled Access to Resources in Google Drive, Microsoft OneDrive (formerly SkyDrive), DropBox, Box.Net, and Amazon S3</ulink> </listitem>
+<listitem><ulink url="https://developers.google.com/drive/register">Guide how to register Google Application</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseAmazonS3">Using ODS-Briefcase to mediate access to data stored on Amazon S3</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseBoxNet">Using ODS-Briefcase to mediate access to data stored on Box (a/k/a box.com or box.net)</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseDropBox">Using ODS-Briefcase to mediate access to data stored on DropBox</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseSkyDrive">Using ODS-Briefcase to mediate access to data stored on Microsoft OneDrive (formerly SkyDrive)</ulink> </listitem>
+<listitem><ulink url="OdsBriefcaseFolders">Manage different Briefcase type folders in Briefcase</ulink> </listitem>
+<listitem><ulink url="OdsBriefcase">ODS-Briefcase</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSponger">Virtuoso Sponger</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSources">OpenLink-supplied Virtuoso Sponger Cartridges</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMeta">Supported Meta Cartridges in Virtuoso</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaREST">Meta Cartridges Usage via REST Request</ulink> </listitem>
+<listitem><ulink url="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples">Parameterized Examples of Meta Cartridge Usage via REST Request</ulink></listitem>
+</itemizedlist></section></docbook>

@@ -1,0 +1,151 @@
+<html><body><div class="topic-text"><h1><a name="Git Quickstart"></a> Git Quickstart</h1>
+<!--Begin of %TOC{}%--><p> </p><div class="MACRO_TOC">  <div class="wikitoc">   <ul> <li><a href="#Cloning%20the%20repository">Cloning the repository</a></li> <li><a href="#Working%20With%20Branches">Working With Branches</a></li> <li><a href="#Committing%20Changes">Committing Changes</a></li> <li><a href="#Viewing%20What%20You%27ve%20Changed">Viewing What You&#39;ve Changed</a></li> <li><a href="#Stashing%20Changes">Stashing Changes</a></li> <li><a href="#A%20convenient%20git%20setup%20-%20tips%20%26%20tricks">A convenient git setup - tips &amp; tricks</a></li>
+<ul><li><a href="#Setup%20git%20command%20shortcuts">Setup git command shortcuts</a></li> <li><a href="#Git%20commit%20template">Git commit template</a></li> <li><a href="#Bash%20shell%20magic">Bash shell magic</a></li> </ul><li><a href="#Fix%20Screw-ups">Fix Screw-ups</a></li><ul><li><a href="#Split%20a%20commit">Split a commit</a></li> </ul><li><a href="#Keep%20In%20Mind">Keep In Mind</a></li><p>  </p></ul>  </div> </div>
+<!--End of %TOC{}%--><p>In order to get started with developing follow the simple steps below.
+ To learn more about the git policies used for VOS read <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VOSGitUsage" class="wikiword">Git and VOS</a>.</p>
+<h2><a name="Cloning the repository"></a> Cloning the repository</h2>
+<p>Git is a decentralized VCS.
+ As such one maintains a complete local copy of the repository - a clone.</p>
+<br><pre>&gt; git clone git://github.com/openlink/virtuoso-opensource.git
+</pre><p> This will clone the repository into sub-folder <tt>virtuoso-opensource</tt>.</p>
+<h2><a name="Working With Branches"></a> Working With Branches</h2>
+<p>Git&#39;s main concept is the branch which is essentially just a label for a commit.
+The default branch is called <code>master</code> and (following the VOS git policies, other projects may use different policies) always points to the latest stable release.</p>
+<p>List the remote and local branches with </p>
+<br><pre>&gt; git branch -a
+</pre><p> In order to start developing we need to checkout another branch.
+ Here we use the main development branch of Virtuoso 6, &quot;devel/6&quot;.
+ Since this is the first time we check the branch out locally we need to tell git that we want to track the remote branch.</p>
+<br><pre>&gt; git checkout -t remotes/origin/devel/6
+</pre><p>This creates a new local branch &quot;devel/6&quot; which tracks remote branch &quot;remotes/origin/devel/6&quot;.</p>
+<p>From here we create a new branch in which we will do our actual development.
+Depending on the type of development this branch is prefixed with <code>feature</code> or  <code>bugfix</code>:</p>
+<br><pre>&gt; git checkout -b feature/myFancyFeature
+</pre><p> </p>
+<h2><a name="Committing Changes"></a> Committing Changes</h2>
+<p>Now we do our development and regularly commit to the local branch.
+ We try to create nice self-contained commits with good commit messages.
+ There are several ways of commiting code.
+ The easiest is to specify the files and folders to commit directly.
+ However, caution should be taken with commiting whole folders - every file in the folder will be part of the commit, independent of its state.</p>
+<br><pre>&gt; git commit &lt;fileA&gt; &lt;fileB&gt; &lt;dirA&gt;
+</pre><p> Alternatively we can first mark files to include in the commit and files to be removed:</p>
+<br><pre>&gt; git add &lt;fileA&gt; &lt;fileB&gt; &lt;dirA&gt;
+&gt; git remove &lt;fileC&gt;
+</pre><p> Verify that all is in order: </p>
+<br><pre>&gt; git status
+# On branch feature/myFancyFeature
+# Changes to be committed:
+#   (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+#
+#       modified:   fileA
+#                   fileB
+#                   dirA/fileX
+#
+# Changed but not updated:
+#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+#
+#       modified:   fileZ
+</pre><p> And finally commit the files: </p>
+<br><pre>&gt; git commit
+</pre><p> </p>
+<h2><a name="Viewing What You've Changed"></a> Viewing What You&#39;ve Changed</h2>
+<p>To see the difference between your tracked but unstaged changes and the current branch (including your not-yet-pushed commits) </p>
+<br><pre>&gt; git diff
+&gt; git diff &lt;filename&gt;
+</pre><p> To see the difference between your staged changes and the current branch (including your not-yet-pushed commits): </p>
+<br><pre>&gt; git diff --staged
+&gt; git diff --staged &lt;filename&gt;
+</pre><p> To see a list of commits to a branch: </p>
+<br><pre>&gt; git log
+</pre><p> To see the details and diff for a commit </p>
+<br><pre>&gt; git show &lt;commit&gt;
+</pre><h2><a name="Stashing Changes"></a> Stashing Changes</h2>
+<p>If you have changes you don&#39;t wish to commit but don&#39;t want to lose either while you do something else, you can temporarily &#39;stash&#39; the changes away.
+ This could be some frequently used debug code,or just some work in progress you need to move to another branch without committing.
+ If the code is just WIP for the current branch we recommend using an interim commit instead.</p>
+<p>The stash is a temporary store that holds a stack of uncommitted changes at a repository level.
+ Commands given below work by default with the stash at the top of the stack, or you can optionally provide the stack reference.</p>
+<p>To store your current changes at the top of the stash stack: </p>
+<br><pre>&gt; git stash &lt;optional comment&gt;
+</pre><p> To see all your stashed items in the stash stack: </p>
+<br><pre>&gt; git stash list
+</pre><p> This will show something like: </p>
+<br><pre>stash@{0}: WIP on master: 6ebd0e2... My debug code
+stash@{1}: WIP on master: 9cc0589... My stashed changes
+</pre><p> To see the details of an individual stash (use bash-completion for ease of use): </p>
+<br><pre>&gt; git stash show &lt;optional stash ref&gt;
+</pre><p> To see the changes in a stash: </p>
+<br><pre>&gt; git stash show -p &lt;optional stash ref&gt;
+</pre><p> To restore a stash while keeping a copy in the stack: </p>
+<br><pre>&gt; git stash apply &lt;optional stash ref&gt;
+</pre><p> To restore a stash and remove it from the stack: </p>
+<br><pre>&gt; git stash pop &lt;optional stash ref&gt;
+</pre><p> To remove a single stash from the stack without applying it: </p>
+<br><pre>&gt; git stash drop &lt;optional stash ref&gt;
+</pre><p> To clear out your entire stash stack: </p>
+<br><pre>&gt; git stash clear
+</pre><h2><a name="A convenient git setup - tips &amp; tricks"></a> A convenient git setup - tips &amp; tricks</h2>
+<h3><a name="Setup git command shortcuts"></a> Setup git command shortcuts</h3>
+<p>Git supports a lot of commands like <code>checkout</code> or <code>status</code>.
+ It also allows to define shortcuts which makes working on the command line faster.
+ And isn&#39;t that what we all want?</p>
+<p>To set them up simply edit the git config file (typically ~/.gitconfig but it could also be defined globally) and add an <code>alias</code> section like so:</p>
+<br><pre>[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+    ch = cherry-pick
+</pre><p> Now you can use the shortcuts like any other git command.
+ Example: <code>git st</code> as a shortcut for <code>git status</code>.</p>
+<p> </p>
+<h3><a name="Git commit template"></a> Git commit template</h3>
+<p>It is customary to use a specific format for commit messages.
+ Git allows to specify a template which reminds the committer of these policies.
+ A typical template could look as follows:</p>
+<br><pre>#  Please enter the commit message for your changes. Lines starting
+#  with &#39;#&#39; will be ignored, and an empty message aborts the commit.
+#
+#  You MUST wrap all lines at 72 characters.
+#
+# ==[ Subject: One line only short meaningful description for logs ]===|
+
+# ==[ Blank: Follow the Subject with a blank line, do NOT remove ]=====|
+
+# ==[ Details: Describe what changed and explain why it changed]=======|
+</pre><p> The template could also contain hints to special fields which are supported like keywords to close bug reports or to CC the commit to a certain email address and so on (the KDE project uses a variety of git commit hooks like these).</p>
+<p>To use the template add a new section <code>commit</code> into the git config file (typically ~/.gitconfig but it could also be defined globally):</p>
+<br><pre>[commit]
+        template = /home/user/dev/git.commit-template
+</pre><p> </p>
+<h3><a name="Bash shell magic"></a> Bash shell magic</h3>
+<p>For those of us who like to work on the shell there is a little command prompt treat available.
+ In addition to all the fancy coloring and whatever you want to do with your command prompt you can include information about the git repository in the current folder.</p>
+<p>For that you need the git bash completion to be installed (this depends on your system setup and if left as an <a href="http://git.kernel.org/?p=git/git.git;a=blob_plain;f=contrib/completion/git-completion.bash;hb=HEAD" class="absuri">exercise</a> for the interested reader).
+ Then the &quot;__git_ps1&quot; function will be available for you to play with.</p>
+<p>Example prompt: </p>
+<br><pre>PS1=&quot;\[\033[01;31m\]\u\[\033[00m\]:\[\033[01;34m\]\w \[\033[0;33m\]$(__git_ps1 &quot;(%s)&quot;)\[\033[00m\] \$ \[\033[00m\]&quot;
+</pre><p> The result can be seen here (without colors): </p>
+<br><pre>trueg:~/kde/dev/kde/src/nepomuk-core (libnepomukcore/query/optimization/subQueries) $
+</pre><p> </p>
+<h2><a name="Fix Screw-ups"></a> Fix Screw-ups</h2>
+<h3><a name="Split a commit"></a> Split a commit</h3>
+ Imagine you committed a set of changes and realize that you actually wanted to split that into several commits.
+ That is no problem at all if nothing has been pushed to a public repo yet.
+ We simple need to do a mixed reset and then do the separate commits:<br><pre>&gt; git reset HEAD^
+</pre><p> This will reset the index to the previous commit and keep the current working dir unchanged.
+ Now you can continue with creating your commits the way you originally intended (&quot;git add -p&quot; is your friend).</p>
+<h2><a name="Keep In Mind"></a> Keep In Mind</h2>
+ <ul><li>Never pull after a merge! It will mess with your history.
+</li>
+<li>Never branch from master.
+ Branch from a devel or stable branch instead.</li>
+</ul><p> </p>
+</div></body></html>

@@ -1,0 +1,131 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ HTTP Service Configuration on Subordinate Nodes of a Virtuoso Elastic Cluster
+
+---++ What
+
+This document details how to configure the Subordinate (also called Slave) Nodes of a Virtuoso Elastic Cluster to service HTTP clients.
+
+--++ Why
+
+By default, only the Primary (also called Master) instance of a Virtuoso Elastic Cluster is configured 
+to provide HTTP services. 
+
+The Subordinate (also called Slave) nodes of the cluster may also be configured to provide HTTP services, 
+enabling load balancing by spreading HTTP requests across the cluster's nodes.
+
+---++ How
+
+---+++ Step 1 - Set up each instance as a HTTP Server
+
+Each node can be configured to provide HTTP services as follows:
+
+   1 Copy the <code>[HTTP Server]</code> section from the Primary instance's configuration file (by default, 
+<code>virtuoso.ini</code>) to the configuration file of each Subordinate instance:
+<verbatim>
+[HTTPServer]
+ServerPort                  = 8890
+ServerRoot                  = ../vsp
+DavRoot                     = DAV
+EnabledDavVSP               = 0
+HTTPProxyEnabled            = 0
+TempASPXDir                 = 0
+DefaultMailServer           = localhost:25
+MaxClientConnections        = 5
+MaxKeepAlives               = 10
+KeepAliveTimeout            = 10
+MaxCachedProxyConnections   = 10
+ProxyConnectionCacheTimeout = 15
+HTTPThreadSize              = 280000
+HttpPrintWarningsInOutput   = 0
+Charset                     = UTF-8
+;HTTPLogFile                 = logs/http.log
+MaintenancePage             = atomic.html
+EnabledGzipContent          = 1
+</verbatim>
+   1 Edit the <code><nop>ServerPort</code> parameter to make it unique on the machine hosting this instance; i.e., 
+if a subordinate instance is running on same physical node as the primary instance, then the subordinate's HTTP port 
+must to be changed (from 8890, for instance) to a unique port (e.g., 8891). 
+%BR%%BR%
+   1 Install the Virtuoso Conductor to enable HTTP Administration of the instance being configured. <i><b>Note:</b> 
+if the subordinate instance is not on the same machine as the primary instance, then the <code>vad</code> directory 
+may also need to be copied from the primary instance to the subordinate instance.</i>
+<verbatim>
+SQL> vad_install ('../vad/conductor_dav.vad', 0);
+SQL_STATE  SQL_MESSAGE
+VARCHAR  VARCHAR
+_______________________________________________________________________________
+
+00000    No errors detected
+00000    Installation of "Virtuoso Conductor" is complete.
+00000    Now making a final checkpoint.
+00000    Final checkpoint is made.
+00000    SUCCESS
+         
+
+6 Rows. -- 10263 msec.
+SQL>
+</verbatim>
+
+---+++ Step 2 - Install and configure HTTP services on each instance
+
+Any HTTP services required on the subordinate instance will need to specifically installed or configured on that 
+physical node.  For example, the Virtuoso default SPARQL endpoint (<code>/sparql</code>) may be configured by:
+   1 Log in into the Virtuoso Conductor <code>http://hostname:port/conductor </code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/cluster1.jpg" target="_blank"><img src="%ATTACHURLPATH%/cluster1.jpg" width="600px" /></a>%BR%%BR%
+   1 Go the the <code>Web Application Server -> Virtual Domains & Directories</code> tab.
+%BR%%BR%<a href="%ATTACHURLPATH%/cluster2.jpg" target="_blank"><img src="%ATTACHURLPATH%/cluster2.jpg" width="600px" /></a>%BR%%BR%
+   1 Select the <code>New Directory</code>  Action for the <code> Default Web Site</code> HTTP host.
+%BR%%BR%<a href="%ATTACHURLPATH%/cluster3.jpg" target="_blank"><img src="%ATTACHURLPATH%/cluster3.jpg" width="600px" /></a>%BR%%BR%
+   1 Select the <code>Type</code> radio button and <code>SPARQL access point</code> item from the drop down list box:
+%BR%%BR%<a href="%ATTACHURLPATH%/cluster4.jpg" target="_blank"><img src="%ATTACHURLPATH%/cluster4.jpg" width="600px" /></a>%BR%%BR%
+   1 Click "Next".
+%BR%%BR%
+   1 Enter <code>/sparql</code> as the <code>Path</code> param in the Virtual Directory Information section and click <code>Save Changes</code>.
+%BR%%BR%<a href="%ATTACHURLPATH%/cluster5.jpg" target="_blank"><img src="%ATTACHURLPATH%/cluster5.jpg" width="600px" /></a>%BR%%BR%
+   1 The SPARQL endpoint will not be accessible on <code>http://hostname:port/sparql </code> the the newly configured slave nodes:
+%BR%%BR%<a href="%ATTACHURLPATH%/cluster6.jpg" target="_blank"><img src="%ATTACHURLPATH%/cluster6.jpg" width="600px" /></a>%BR%%BR%
+   1 Further details on SPARQL endpoint configuration can be found in the [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint][Online documentation]].
+%BR%%BR%
+   1 Typical Virtuoso server log output from a slave node when started, showing the HTTP server running on port <code>8890</code>, being:
+<verbatim>
+20:12:49 OpenLink Virtuoso Universal Server
+20:12:49 Version 07.10.3209-pthreads for Linux as of Apr 26 2014
+20:12:49 uses parts of OpenSSL, PCRE, Html Tidy
+20:12:49 Registered to OpenLink Virtuoso (Internal Use)
+20:12:49 Personal Edition license for 500 connections
+20:12:49 Issued by OpenLink Software
+20:12:49 This license will expire on Sun May 17 06:18:35 2015 GMT
+20:12:49 Enabled Cluster Extension
+20:12:49 Enabled Column Store Extension
+20:12:57 Database version 3126
+20:12:57 SQL Optimizer enabled (max 1000 layouts)
+20:12:58 Compiler unit is timed at 0.000208 msec
+20:12:58 Roll forward started
+20:12:58 Roll forward complete
+20:12:59 Checkpoint started
+20:12:59 Checkpoint finished, log reused
+20:12:59 HTTP/WebDAV server online at 8890
+20:12:59 Server online at 12202 (pid 15969)
+</verbatim>
+
+---+++ Step 3 - Configure load balancing
+
+A reverse-proxy service (like Nginx or Apache) can then be configured such that requests are proxied across as any 
+or all nodes of the cluster, to provide the desired load balancing.
+
+---++Additional Information
+
+   * Only the Primary Node of an Elastic Cluster may be configured as a Publisher for Virtuoso Replication Cluster purposes.
+%BR%%BR%
+   * The [[http://virtuoso.openlinksw.com/whitepapers/LOD2_D2.1.5_LOD_Cloud_Hosted_On_The_LOD2_Knowledge_Store_Cluster_500B_Triples.pdf][Virtuoso 500 billion triple Berlin SPARQL Benchmark (BSBM) dataset]] 
+runs were performed on a 24-node Elastic Cluster.  Each node was configured to provide HTTP services and a SPARQL endpoint, 
+and the query load was spread over the entire cluster.  
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/clusterstcnf.html][Virtuoso Cluster Installation]]
+   
+   
+ 

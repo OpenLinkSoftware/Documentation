@@ -1,0 +1,131 @@
+%META:TOPICPARENT{name="VirtSPASQLWinFormApp"}%
+
+---+Extending RDFDemo to Allow Dereferencing of External IRIs
+This document will guide you through extending the application created in [[VirtSPASQLWinFormApp][Creating a Windows Forms Application To Access RDF Data Using The Virtuoso ADO.Net Provider]] so that it will dereference external [[http://docs.openlinksw.com/virtuoso/rdfdatarepresentation.html#rdfiriidtype][IRIs]].  
+
+---+++Pre-requisites
+   1. A working copy of the RDFDemo application created in [[SPASQLStepByStep][Creating a Windows Forms Application To Access RDF Data Using The Virtuoso ADO.Net Provider]].
+
+---++Extending the Application.
+
+In RDFDemo when the sparql endpoint is queried to get the description of the selected item it executes a query that is restricted to the local Northwind
+dataset.   The query is something like
+<verbatim>
+SPARQL
+PREFIX nwind: <http://demo.openlinksw.com/schemas/northwind#>
+SELECT DISTINCT  ?s  
+FROM <http://demo.openlinksw.com/Northwind>
+WHERE {?s a nwind:Customer}
+</verbatim>
+
+If you examine the <nowiki>ExtendedStringHandler</nowiki> class you will see that the dataset clause, <nowiki>from &lt;http://localhost:8890/Northwind&gt;</nowiki>, is hard coded.  This means that when when the selected IRI is a link to an external data store, such as dbpedia, there is no matching data and an error is displayed.  If the application is to be able to dereference external IRIs then the hard coded dataset clause needs to be removed and then we can use a Virtuoso extension to SPARQL, get:soft, that tells Virtuoso that it needs to go and look elsewhere for the graph.   However, this will result in a loss of performance when exploring the local Northwind dataset.  To minimize the impact on performance we will first query the local Northwind dataset and if there are no matching triples returned then we will use a more generic query that will look elsewhere for matching data.
+
+---+++Step 1 -  Add the alternative query to the <nowiki>ExtendedString</nowiki> Class.
+
+   * Open the <nowiki>RDFDemo</nowiki> project in Visual Studio
+   * Open the <nowiki>ExtendedStringHandler</nowiki> class.
+   * Remove <nowiki>DescribeCommand</nowiki> by removing the line
+<verbatim>
+        StringBuilder DescribeCommand;
+</verbatim>
+and substitute the following:
+<verbatim>
+        StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+</verbatim>
+   * In the <nowiki>ExtendedStringHandler</nowiki> constructor the sparql query that was <nowiki>DescribeCommand</nowiki> becomes <nowiki>DescribeCommandSimple</nowiki> and we define a new query for <nowiki>DescribeCommandGeneral</nowiki>.
+<pre style="overflow: auto;"> <nowiki>
+                DescribeCommandSimple = new StringBuilder("sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {<" + iri.ToString() + "> ?p ?o}");       // Replace demo.openlinksw.com with your  URIQA DefaultHost setting
+                DescribeCommandGeneral = new StringBuilder("sparql define get:soft " + '"'.ToString() + "soft" + '"'.ToString() + " select * from <" + iri.ToString() + "> where { <" + iri.ToString() + "> ?p ?o }");
+</nowiki></pre>
+   * The single <nowiki>describeCommand</nowiki> property needs to be replaced with the two new properties, <nowiki>DescribeCommandSimple</nowiki> and <nowiki>DescribeCommandGeneral</nowiki>
+<verbatim>
+        public string describeCommandSimpleText
+        {
+            get
+            {
+                return DescribeCommandSimple.ToString();
+            }
+        }
+        public string describeCommandGeneralText
+        {
+            get
+            {
+                return DescribeCommandGeneral.ToString();
+            }
+        }
+</verbatim>
+   * Finally, the <nowiki>getDescribeData</nowiki> method needs changing to:
+<pre style="overflow: auto;"> <nowiki>
+       public void getDescribeData()
+        {
+            VirtuosoCommand myCommand = new VirtuosoCommand(this.describeCommandSimpleText, this.ParentConnection);
+            VirtuosoDataAdapter myAdapter = new VirtuosoDataAdapter();
+            myAdapter.SelectCommand = myCommand;
+            myAdapter.Fill(describeDataSet.DataTable1);
+            // Tried the simple version if fails to get the data try 
+            // to look elsewhere.
+            if (describeDataSet.DataTable1.Rows.Count == 0)
+            {
+                myCommand.CommandText = describeCommandGeneralText;
+                myAdapter.Fill(describeDataSet.DataTable1);
+            }
+        }
+</nowiki></pre>
+---+++Step 2 - Build and Run the Application
+You will see the same starting form:
+
+    <img src="%ATTACHURLPATH%/Form1.png" style="wikiautogen"/>
+
+Select a Customer and then select the link to the City in dbpedia.  This will now open up another window displaying information about the city from dbpedia.  Be patient as it may take a little while to open.
+
+    <img src="%ATTACHURLPATH%/BerlinDetails.png" style="wikiautogen"/>
+
+---+++Step 3 - Changing the Form Title
+Notice that in displayData method that we look for a <nowiki>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</nowiki> and create a title for the form from it.
+<verbatim>
+                   foreach (DataRow row in table1.Rows)
+                        if (row[0].ToString() == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+                        {
+                            StringBuilder title = new StringBuilder(row[1].ToString() + " details");
+                            label1.Text = title.ToString();
+                            break;
+                        }
+</verbatim> 
+This worked well for the Northwind subjects but less well now we are getting data from other graphs.  To change the title of the forms used to display the data:
+   * Add an new member variable to hold the IRI that we exploring to the bock of member variables 
+<verbatim>
+        StringBuilder DescribeCommandSimple, DescribeCommandGeneral;
+        VirtuosoConnection ParentConnection;
+        List<Label> labelList = new List<Label>();
+        List<TextBox> textBoxList = new List<TextBox>();
+        DescribeDataSet describeDataSet = new DescribeDataSet();
+        Boolean isIRI = false;
+        SqlExtendedString ParentIRI;
+</verbatim>
+   * Assign a value to <nowiki>ParentIRI</nowiki> in the constructor
+<pre style="overflow: auto;"> <nowiki>
+        public ExtendedStringHandler(SqlExtendedString iri, VirtuosoConnection parentConnetion)
+        {
+            ParentConnection = parentConnetion;
+            if (iri.IriType == SqlExtendedStringType.IRI)
+            {
+                ParentIRI = iri;
+                isIRI = true;
+                DescribeCommandSimple = new StringBuilder("sparql select * from &lt;http://demo.openlinksw.com/Northwind&gt; where {<" + iri.ToString() + "> ?p ?o}");      // Replace demo.openlinksw.com with your  URIQA DefaultHost setting
+                DescribeCommandGeneral = new StringBuilder("sparql define get:soft " + '"'.ToString() + "soft" + '"'.ToString() + " select * from <" + iri.ToString() + "> where { <" + iri.ToString() + "> ?p ?o }");
+            }
+        }
+</nowiki></pre>
+   * Remove the existing foreach block that sets the form title and replace with the following lines:
+<verbatim>
+                    StringBuilder title = new StringBuilder(ParentIRI.ToString() + " details");
+                    label1.Text = title.ToString();
+</verbatim>
+   * Build and run the application.  
+
+   <img src="%ATTACHURLPATH%/BerlinDetails2.png" style="wikiautogen"/>
+
+---++Next Steps
+The application now allows you to explore data and follow links from your locally held data into the external web of data.  Looking at the data displayed in the form it would be nice to make the labels for the properties more compact.  The label <nowiki>http://dbpedia.org/property/population</nowiki> is a very precise definition but for our purposes it would be clearer to label the property just population.  In the next step will be to modify the application so that it displays more readable labels.
+
+[[VirtSPASQLRDFDemoLabels][Extending RDFDemo to Display More Compact Labels.]]

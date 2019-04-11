@@ -1,0 +1,93 @@
+<docbook><section><title>VirtTipsAndTricksRecording</title><title> HTTP Logging and Recording in Virtuoso</title> HTTP Logging and Recording in Virtuoso
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> HTTP Logging</bridgehead>
+<para>Virtuoso can keep HTTP logs with all the requests that are made to the HTTP endpoint.
+ Here are the steps:</para>
+<para> </para>
+<orderedlist spacing="compact"><listitem>Edit your INI file (default, virtuoso.ini) and add the <ulink url="http://docs.openlinksw.com/virtuoso/dbadm/#ini_httpserver_httplogfile">HTTPLogFile</ulink> setting: <programlisting>[HTTPServer]
+HTTPLogFile                = logs/http15022012.log
+</programlisting></listitem>
+<listitem>Restart Virtuoso.
+</listitem>
+<listitem>Virtuoso will now maintain a http log in the logs subdirectory, with one line per request as in: <programlisting>180.76.5.87 - - [15/Feb/2012:21:50:44 +0100] &quot;GET /data/Wilton_power_stations.json HTTP/1.0&quot; 200 8014 &quot;&quot; 
+&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;
+180.76.5.87 - - [15/Feb/2012:21:50:45 +0100] &quot;POST /sparql HTTP/1.0&quot; 200 3012 &quot;&quot; &quot;&quot;
+</programlisting></listitem>
+<listitem>The first request after midnight will start a new logfile, to make sure one logfile does not grow to infinite size.
+ Old logfiles can be gzipped or removed by hand to conserve disk space.</listitem>
+</orderedlist><para>The HTTP log files that Virtuoso produces can be processed by programs like <ulink url="http://www.webalizer.org/">Webalizer</ulink> or <ulink url="http://awstats.sourceforge.net/">AWstats</ulink> to accurately measure site usage.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> HTTP Logging Format</bridgehead>
+<para>Virtuoso supports HTTP Logging format string like <ulink url="http://httpd.apache.org/docs/2.2/mod/mod_log_config.html">Apache Module mod_log_config</ulink>.
+ That string can be set in the &quot;HTTPLogFormat&quot; INI file parameter which works in conjunction with the &quot;HTTPLogFile&quot; INI file parameter.
+ For example: </para>
+<programlisting>[HTTPServer]
+HTTPLogFormat = %h %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; &quot;%{User-agent}i&quot; &quot;%{NetId}e&quot;
+</programlisting><para> In this example we have %{User-Agent}i which means to log the HTTP header for user-agent.
+ We can log other HTTP request headers in similar fashion.
+ &quot;e&quot; modifier is for environment variables; NetId, in this case.</para>
+<para>Note that not all escapes from <ulink url="http://httpd.apache.org/docs/2.2/mod/mod_log_config.html">Apache Module mod_log_config</ulink> are supported.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> HTTP Recording</bridgehead>
+<para>Virtuoso can also record the complete HTTP request for both GET and POST requests, including all incoming headers, POST parameters, etc.
+ This is a very useful tool for debugging, but it will cost performance and disk space, so it should not be left on for long periods of time.
+ Each request will be written to a separate file.</para>
+<emphasis><emphasis>Note</emphasis>: Some filesystem types like ext2 and earlier versions of ext3 on Linux cannot handle huge amounts of files in a single directory without slowing down the whole system.</emphasis><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Sample Log of a GET request</bridgehead>
+<programlisting>GET /sparql?query=DESCRIBE%20%3CnodeID%3A%2F%2Fb15481%3E&amp;output=text%2Fcxml     HTTP/1.1
+Host: localhost:8890
+Connection: Keep-alive
+Accept: */*
+From: googlebot(at)googlebot.com
+User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+Accept-Encoding: gzip,deflate
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Sample Log of a POST request</bridgehead>
+<programlisting>POST /ods_services/Http/usersGetInfo HTTP/1.1
+User-Agent: Opera/9.80 (Macintosh; Intel Mac OS X 10.5.8; U; en) Presto/2.9.168 Version/11.51
+Host: localhost:8890
+Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/webp, image/jpeg, image/gif, 
+ image/x-xbitmap, */*;q=0.1
+Accept-Language: en,en-US;q=0.9,ja;q=0.8,fr;q=0.7,de;q=0.6,es;q=0.5,it;q=0.4,pt;q=0.3,pt-  
+ PT;q=0.2,nl;q=0.1,sv;q=0.1,nb;q=0.1,da;q=0.1,fi;q=0.1,ru;q=0.1,pl;q=0.1,zh-CN;q=0.1,zh-TW;q=0.1,ko;q=0.1
+Accept-Encoding: gzip, deflate
+Referer: https://localhost:8890/ods/
+Cookie: interface=js; oatSecurityCookie=0123456878794576; sid=b3fae40reb78bc4babab3cb2a70fb111
+Connection: Keep-Alive
+Content-Length: 77
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic bnQacPPuhhxs
+Content-Transfer-Encoding: binary
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Enabling Recording of HTTP Activity</bridgehead>
+<orderedlist spacing="compact"><listitem>Navigate to the directory holding the INI file, and execute the following shell commands: <programlisting>mkdir sys_http_recording
+chmod 777 sys_http_recording
+</programlisting></listitem>
+<listitem>Edit your INI file (default, virtuoso.ini) and set: <programlisting>[HTTPServer]
+EnableRequestTrap          = 1
+</programlisting></listitem>
+<listitem>Next connect to your database with isql, and execute the following SQL commands: <programlisting>registry_set (&#39;__save_http_history_on_disk&#39;, &#39;1&#39;);
+registry_set (&#39;__save_http_history&#39;, &#39;/&#39;);
+</programlisting></listitem>
+<listitem>Finally, restart Virtuoso.
+</listitem>
+<listitem>At this point, every HTTP GET and POST request will be logged with all the parameters, headers, and settings.</listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> Disabling Recording of HTTP Activity</bridgehead>
+<orderedlist spacing="compact"><listitem>To temporary disable recording, edit your INI file (default, virtuoso.ini) and set: <programlisting>[HTTPServer]
+EnableRequestTrap          = 0
+</programlisting></listitem>
+<listitem>Next, remove the two Virtuoso registry items: <programlisting>registry_remove (&#39;__save_http_history_on_disk&#39;);
+registry_remove (&#39;__save_http_history&#39;);
+</programlisting></listitem>
+<listitem>Finally, restart Virtuoso.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Restricting Recording of HTTP Activity</bridgehead>
+<para>HTTP recording can be made to ignore certain types of HTTP activity (for example, the loading of images) by listing exceptions in the &quot;WS.WS.HTTP_SES_TRAP_DISABLE&quot; table:</para>
+<programlisting>insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;css&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;js&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;png&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;jpg&#39;);
+insert into WS.WS.HTTP_SES_TRAP_DISABLE values (&#39;gif&#39;);
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/dbadm/#ini_httpserver_httplogfile">HTTPLogFile</ulink> INI file setting </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/loggingandrecording/">1.5.66. How can I make HTTP Logging and Recording in Virtuoso?</ulink></listitem>
+</itemizedlist></section></docbook>

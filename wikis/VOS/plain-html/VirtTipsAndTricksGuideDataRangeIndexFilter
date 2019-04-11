@@ -1,0 +1,54 @@
+<html><body><div class="topic-text"><!--Begin of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><p> </p>
+<!--End of %META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%--><h1><a name="How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?"></a>How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?</h1>
+<h2><a name="What?"></a>What?</h2>
+ Index-friendly filter for Date range ( bif:dateadd ) optimization within SPARQL query.<h2><a name="Why?"></a>Why?</h2>
+ Achieve fast results and better performance.<h2><a name="How?"></a>How?</h2>
+<p>Assume the following SPARQL query:</p>
+<br><pre>SELECT ?wiki, 
+       ?dbp, 
+       bif:datediff(&#39;second&#39;,  xsd:DateTime(?extracted), now()) AS ?secondsAgo
+ FROM &lt;http://nl.dbpedia.org&gt;
+WHERE 
+  {
+    ?wiki foaf:primaryTopic ?dbp .
+    ?dbp dcterms:modified ?extracted .
+    FILTER ( bif:datediff(&#39;minute&#39;, now(), xsd:DateTime(?extracted)) &lt;= 10 )
+  }  
+ORDER BY DESC(?extracted)
+LIMIT 30
+</pre><p> Let&#39;s take a look at the calculation of: </p>
+<br><pre>FILTER ( bif:datediff(&#39;minute&#39;, now(),  xsd:DateTime(?extracted)) &lt;= 10 ) . 
+</pre><p> For each &quot;is modified&quot; triple we:   1 Convert <code>?extracted</code> to <code>xsd:dateTime</code> ,   1 Calculate <code>datediff</code>,   1 Make a comparison and know whether we hit or miss 10 minutes interval.</p>
+<p>Written so, this will lead to a potentially long loop, because even if the optimizer will realize that the filter is selective, it can&#39;t discover <code> <u>why</u></code> is it so selective.</p>
+<p>Now let&#39;s change the filter to: </p>
+<br><pre>FILTER ( ?extracted &gt; bif:dateadd(&#39;minute&#39;, -10, now())) . 
+</pre><p> <code>now()</code> can be calculated once at the very beginning of the query execution because it does not depend on any rows in a given table.
+ Then <code>bif:dateadd</code> has all arguments known and thus the whole <code>bif:dateadd(&#39;minute&#39;, -10, now())</code> can be calculated only once and produce some value.
+ Therefor <code>FILTER ( ?extracted &gt; some_known_value )</code> can be represented as a single search step: look at index and get triples with known P, known G, O greater than the given one and any S.
+ That&#39;s pretty fast and predictable step, good for both optimizer and the runtime.</p>
+<p>We can rephrase the query to filter index-friendly:</p>
+<br><pre>SELECT ?wiki, 
+       ?dbp, 
+        bif:datediff(&#39;second&#39;,  xsd:DateTime(?extracted) ,
+        now()) AS ?secondsAgo
+ FROM &lt;http://nl.dbpedia.org&gt;
+WHERE 
+  {
+    ?wiki foaf:primaryTopic ?dbp .
+    ?dbp dcterms:modified ?extracted .
+     FILTER ( ?extracted &gt; bif:dateadd(&#39;minute&#39;, -10, now()))
+  } 
+ORDER BY DESC (?extracted) 
+LIMIT 30
+</pre><p>In this case the presence or the absence of the order by does not matter too much, because the query is way more straightforward: selective index-friendly filter first, and the selection could be ordered naturally via hot index used by the filter.</p>
+<p>Note also that if you know the datatype of an object literal, there&#39;s no need to write a cast like xsd:dateTime --- it can make an expression index-unfriendly even if it will always return the argument unchanged on your specific data.</p>
+<p> </p>
+<ul><li><a href="http://bit.ly/13xefMl" class="absuri">View the SPARQL Query Definition via SPARQL Protocol URL</a> </li>
+<li><a href="http://bit.ly/18rI9VA" class="absuri">View the SPARQL Query Results via SPARQL Protocol URL</a></li>
+</ul><p> </p>
+<h2><a name="Related"></a>Related</h2>
+<ul><li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuideDataRangeQueries" class="wikiword">How can I manage Date Range SPARQL queries?</a> </li>
+<li><a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtTipsAndTricksGuide" class="wikiword">Virtuoso Tips and Tricks Collection</a> </li>
+<li><a href="http://docs.openlinksw.com/virtuoso/rdfsparql.html" class="absuri">Virtuoso Documentation</a></li>
+</ul><p> </p>
+</div></body></html>

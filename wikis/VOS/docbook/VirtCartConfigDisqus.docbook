@@ -1,0 +1,70 @@
+<docbook><section><title>VirtCartConfigDisqus</title><title>Disqus Cartridge - Configuration Guidelines and Implementation Notes</title>Disqus Cartridge - Configuration Guidelines and Implementation Notes
+<para>Virtuoso&#39;s Sponger cartridge for Disqus allows you to fetch a Disqus user&#39;s profile, their posts, and data from discussion threads and forums they have participated in.
+ These notes, intended for a &#39;Sponger Administrator&#39;, provide brief configuration guidelines for the cartridge.</para>
+<emphasis>Contents</emphasis> <bridgehead class="http://www.w3.org/1999/xhtml:h2">Obtaining a Disqus API Key</bridgehead>
+<para>The cartridge is written to the <ulink url="http://disqus.com/api/docs/">Disqus Web API</ulink>.
+ The API supports three methods for making authenticated API requests: </para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>OAuth 2 </listitem>
+<listitem>Admin / API key authentication </listitem>
+<listitem>Single sign-on</listitem>
+</itemizedlist><para>At the current time (May 2012) the cartridge uses an API key.
+ To obtain an API key, you must <ulink url="http://disqus.com/api/applications/">register your Sponger instance as a Disqus application</ulink> via the Applications panel on the Disqus &quot;API Resources&quot; page.
+ Follow these steps to obtain an API key:</para>
+<itemizedlist mark="bullet" spacing="compact"><listitem>Go to the  <ulink url="http://disqus.com/api/applications/">Application panel on the &quot;API Resources&quot; page</ulink> </listitem>
+<listitem>After logging into Disqus, click on the &#39;Register new application&#39; button.</listitem>
+</itemizedlist><figure><graphic fileref="VirtCartConfigDisqus/disqus_api_key_1.png" /></figure><itemizedlist mark="bullet" spacing="compact"><listitem>Enter a label / name for your Virtuoso instance, a description of the Sponger application, your company name and the URI of the Sponger host (which must be dereferenceable).
+</listitem>
+<listitem>Click on the &#39;Register my application&#39; button.</listitem>
+</itemizedlist><figure><graphic fileref="VirtCartConfigDisqus/disqus_api_key_2.png" /></figure><itemizedlist mark="bullet" spacing="compact"><listitem>You should then be taken to the next screen, &#39;Application Details&#39;, where you should see a confirmation message confirming that &#39;Your application has been registered!&#39; </listitem>
+<listitem>Under the &#39;Settings&#39; section, set the domain as &#39;disqus.com&#39; </listitem>
+<listitem>Set the &#39;Authentication&#39; radio button to &#39;Inherit permissions from {<emphasis>your Disqus username</emphasis>}&#39; </listitem>
+<listitem>Save the changes</listitem>
+</itemizedlist><figure><graphic fileref="VirtCartConfigDisqus/disqus_api_key_3.png" /></figure><itemizedlist mark="bullet" spacing="compact"><listitem>The confirmation message at the top of the screen will change to &#39;Your application has been updated&#39;.
+</listitem>
+<listitem>Under the &#39;Application Details&#39; heading, click on the &#39;Details&#39; menu option.
+ There you will see your public and secret API keys.
+</listitem>
+<listitem>Make a note of the public API key before logging out of Disqus.</listitem>
+</itemizedlist><figure><graphic fileref="VirtCartConfigDisqus/disqus_api_key_4.png" /></figure><itemizedlist mark="bullet" spacing="compact"><listitem>Log into the Conductor UI of your Virtuoso instance.
+</listitem>
+<listitem>Navigate to the Linked Data &gt; Sponger &gt; Extractor Cartridges tab.
+</listitem>
+<listitem>Click on the entry for the &#39;Disqus V2&#39; cartridge and, in the cartridge configuration panel at the bottom of the screen, enter your Disqus API public key.
+</listitem>
+<listitem>The Disqus V2 cartridge should now be ready to use.</listitem>
+</itemizedlist><figure><graphic fileref="VirtCartConfigDisqus/disqus_api_key_5.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h2">Supported URI Patterns</bridgehead>
+<para>The cartridge is configured to trigger on the URI pattern http://disqus.com/.* .
+ The expected starting point for sponging a Disqus user&#39;s profile is a URL of the form http://disqus.com/{<emphasis>username</emphasis>}.
+ For example: <ulink url="http://disqus.com/kidehen">http://disqus.com/kidehen</ulink></para>
+<figure><graphic fileref="VirtCartConfigDisqus/disqus_api_key_6.png" /></figure><bridgehead class="http://www.w3.org/1999/xhtml:h2">Disqus Pseudo URIs</bridgehead>
+<para>With the exception of Disqus users, the Disqus API does not return RESTful URIs to the objects in their data space.
+ All other objects are identified by a numeric ID, with no associated URI.
+ Consequently, Disqus user profile URIs, of the form http://disqus.com/{username},  are the only entry points which can be used to initiate sponging.
+ When a user&#39;s Disqus profile is first sponged, the cartridge initially materializes only the user&#39;s posts and partial descriptions of the threads they have been active in.</para>
+<para>Each active thread is identified by a <emphasis>pseudo-URI</emphasis> of the form http://disqus.com/?@dsq_id@=thread:{thread_id}.
+ These pseudo-URIs are Sponger constructs which allow the descriptions of Disqus discussion threads to reside in their own graphs and to allow incremental sponging.
+ To be spongeable, the pseudo-URI must be dereferenceable.
+ Disqus conveniently ignores the pseudo-URI query string which gets passed through to the Disqus cartridge.</para>
+<para>By following these active thread pseudo-URIs, exposed in a user&#39;s sponged Disqus profile as oplbase:threads_participated_in property values, all the posts belonging to a thread can be retrieved.
+ The full discussion thread and all the posts it contains are materialized in a separate sponge of http://disqus.com/?@dsq_id@=thread:{thread_id}.
+ Forums are identified and sponged in a similar way, using pseudo-URIs like http://disqus.com/?@dsq_id@=forum:{forum_id}.
+ Each thread and forum is contained in its own graph rather than being contained in the starting user&#39;s graph.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">Paging Options</bridgehead>
+<para>Because some Disqus collections can include hundreds of items (e.g.
+ threads in a forum, or posts in a thread), the following cartridge options are available to set configurable limits on the number of items returned.</para>
+max_batches: <itemizedlist mark="bullet" spacing="compact"><listitem>Limits the number of pages of items returned for a particular collection.
+ (Default: 20 pages) <itemizedlist mark="bullet" spacing="compact"><listitem>The maximum number of items per page is 100 - the maximum allowed by the Disqus API </listitem>
+</itemizedlist></listitem>
+<listitem>A value of 0 indicates no limit; all available Disqus items will be returned.</listitem>
+</itemizedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2">Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSponger">Virtuoso Sponger</ulink> </listitem>
+<listitem><ulink url="VirtConfigureCartridges">Configure Sponger Cartridges Guide</ulink> </listitem>
+<listitem><ulink url="http://ode.openlinksw.com/">The OpenLink Data Explorer Extension</ulink> </listitem>
+<listitem><ulink url="http://delicious.com/kidehen/goodrelations">Meshups (links and lookups across Web 2.0 Services and LOD Cloud</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSources">OpenLink-supplied Virtuoso Sponger Cartridges</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSpongerCartridgeSupportedDataSourcesVendorNonRDF">Complete list of supported Vendor-specific Non-RDF Data Formats</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSourcesNonRDF">Complete list of supported Standard Non-RDF Data Formats</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSourcesMeta">Complete list of supported Meta Cartridges</ulink> <itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtSpongerCartridgeSupportedDataSourcesMetaREST">Meta Cartridge Usage via REST Request</ulink> </listitem>
+<listitem><ulink url="VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples">Parametrized Examples of Meta Cartridge Usage via REST Request</ulink> </listitem>
+</itemizedlist></listitem>
+</itemizedlist></listitem>
+</itemizedlist></section></docbook>

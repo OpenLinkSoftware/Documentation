@@ -1,0 +1,146 @@
+%META:TOPICPARENT{name="CodeSamples"}%
+
+{{{
+#!/usr/bin/perl 
+
+#------------------------------------------------------------------------------- 
+# The DBI module is the interface to the database, and the strict module 
+# forces us to declare variables so we don't get burned by a global variable 
+# with the same name. 
+#------------------------------------------------------------------------------- 
+
+#require DBI; 
+use DBI; 
+use strict; 
+
+#------------------------------------------------------------------------------- 
+# declare local variables 
+#------------------------------------------------------------------------------- 
+
+
+my $dbh; 
+my $sth; 
+
+my $data_source; 
+my $username; 
+my $password; 
+my %dbOptions; 
+
+my $rc; 
+my $rowCount; 
+my $empno; 
+my $ename; 
+my @resultRow; 
+
+
+#------------------------------------------------------------------------------- 
+# declare variables with database connection information 
+#------------------------------------------------------------------------------- 
+
+
+$data_source = "dbi:ODBC:ORA8I_SOLARIS"; 
+$username ='scott'; 
+$password = 'tiger'; 
+%dbOptions = {PrintError => 1, AutoCommit => 2}; 
+
+#------------------------------------------------------------------------------- 
+# connect to the database 
+#------------------------------------------------------------------------------- 
+
+$dbh = DBI->connect("$data_source", '', '') or die "$DBI::errstr\n"; 
+$dbh->{PrintError} = 0; 
+$dbh->{AutoCommit} = 0; 
+$dbh->{LongReadLen} = 64000; 
+
+if ( defined($DBI::err) ) { 
+    if ( $DBI::err != 0 ) { 
+        printf( STDERR "$0: Connect to Oracle server failed with the following 
+error:\n"); 
+        printf( STDERR "    %s\n\n", $DBI::errstr); 
+        exit(1); 
+    } 
+} 
+
+#------------------------------------------------------------------------------- 
+# set up the SQL statement to be sent 
+#------------------------------------------------------------------------------- 
+
+$rc = $dbh->do("create table foo (id int)"); 
+
+if ( !defined($rc) ) { 
+    printf( STDERR "$0: Create table failed with the following error:\n"); 
+    printf( STDERR "    %s\n\n", $DBI::errstr); 
+} 
+else { 
+    printf( STDERR "$0: Create table succeeded.\n"); 
+} 
+
+#------------------------------------------------------------------------------- 
+# commit 
+#------------------------------------------------------------------------------- 
+
+$rc = $dbh->commit; 
+
+#------------------------------------------------------------------------------- 
+# set up the SQL statement to be sent 
+#------------------------------------------------------------------------------- 
+
+$sth = $dbh->prepare("select empno, ename from emp order by empno"); 
+
+if ( $DBI::err != 0 ) { 
+    printf(STDERR "Error parsing SQL:\n"); 
+    printf(STDERR "%s\n\n", $DBI::errstr); 
+    exit(-1); 
+} 
+
+#------------------------------------------------------------------------------- 
+# execute the SQL statement 
+#------------------------------------------------------------------------------- 
+
+$rc = $sth->execute; 
+
+# rc is useless for select statements 
+
+if ( defined($DBI::err) ) { 
+    if ( $DBI::err != 0 ) { 
+        printf( STDERR "$0: Select from emp table failed with the following error:\n"); 
+        printf( STDERR "    %s\n\n", $DBI::errstr); 
+    } 
+} 
+
+#------------------------------------------------------------------------------- 
+# fetch each row of data from the database and process it 
+#------------------------------------------------------------------------------- 
+
+for ( @resultRow = $sth->fetchrow_array; 
+      @resultRow != (); 
+      @resultRow = $sth->fetchrow_array ) { 
+        ($empno, $ename) = @resultRow; 
+        printf("%8d %1s\n", $empno, $ename); 
+} 
+
+#------------------------------------------------------------------------------- 
+# free resources from the select cursor 
+#------------------------------------------------------------------------------- 
+
+$rc = $sth->finish; 
+
+#------------------------------------------------------------------------------- 
+# Get the row count (THIS ONLY WORKS IF YOU FETCH ALL OF THE ROWS) 
+#------------------------------------------------------------------------------- 
+
+$rowCount = $sth->rows; 
+printf("\n%d rows processed.\n\n", $rowCount); 
+
+#------------------------------------------------------------------------------- 
+# disconnect from the database 
+#------------------------------------------------------------------------------- 
+
+$rc  = $dbh->disconnect; 
+
+#------------------------------------------------------------------------------- 
+# return success to the OS 
+#------------------------------------------------------------------------------- 
+
+exit(0); 
+}}}

@@ -1,0 +1,159 @@
+---+Mail Installation instructions for UNIX 
+
+%TOC%
+
+---++Replacing procmail as default handler in sendmail configurations
+
+   1 Copy virt_mail to /usr/bin/virt_mail
+   1 Copy odbc_mail.default.ini to /etc/odbc_mail.ini
+      * IMPORTANT: Make sure /etc/odbc_mail.ini is NOT GROUP/WORLD writable. virt_mail will fail to run if it is.
+   1. Edit /etc/odbc_mail.ini and change the login settings to match your current database installation.
+      * If you don't have or want to use procmail, comment out the "Fallback" setting in the [Deliver] section.
+   1. Edit /etc/sendmail.cf.
+<verbatim>
+-- Change
+  Mlocal,	P=/usr/bin/procmail, F=lsDFMAw5:/|@qSPfhn9, S=10/30, R=20/40,
+		  T=DNS/RFC822/X-Unix,
+		  A=procmail -Y -a $h -d $u
+-- into:
+  Mlocal,	P=/usr/bin/virt_mail, F=lsDFMA5:/|@qSPhn9, S=10/30, R=20/40,
+		  T=DNS/RFC822/X-Unix,
+		  A=virt_mail -c /etc/odbc_mail.ini -l $u -h $h -s $g
+</verbatim>
+      * NOTE: The changes to the F= setting involve removing both the 'w' and 'f' flags.
+      * The removal of the 'w' flag affects lookups in /etc/passwd, which are no longer required if all mail drops go into the database.
+      * The default ini file is set up to maildrop to procmail, which will perform this check correctly.
+ 
+---++per-user database maildrops under sendmail
+
+   1. Copy odbc_mail.default.ini to ~the_user_name/.odbc_mail.ini
+      * IMPORTANT: Make sure the .odbc_mail.ini is NOT GROUP/WORLD writable. virt_mail will fail to run if it is.
+   1. Put at the end of ~the_user_name/.procmailrc something like the below code for replacing the_user_name with the user you're setting up.
+<verbatim>
+:0:
+| /usr/bin/virt_mail -c .odbc_mail.ini -l the_user_name -h your.domain.com
+</verbatim>
+      * Note: the '-l ..' parameter is used to relate the local recipient to the database user for which the maildrop is done. See the remarks in the odbc_mail.default.ini file.
+   1. Adjust the parameters in .odbc_mail.ini to match your configuration
+   1 Disable Fallback delivery in .odbc_mail.ini 
+   1 Comment out the "Fallback =" entry in the .odbc_mail.ini or set it to something that doesn't involve procmail. Otherwise, this could lead to drop loops.
+
+
+---++per-user database maildrops under qmail
+
+   1. Copy odbc_mail.default.ini to ~the_user_name/.odbc_mail.ini
+      * IMPORTANT: Make sure the .odbc_mail.ini is NOT GROUP/WORLD writable. virt_mail will fail to run if it is.
+   1.  If you're setting up a .qmail, simply do something like:
+<verbatim>
+| /usr/bin/virt_mail -m qmail -c .odbc_mail.ini
+</verbatim>
+      * If you're setting up .qmail-default or .qmail-&lt;some_alias_name&gt;, make sure you adjust the RemovePrefix accordingly in the odbc_mail.ini.
+      * This also works if a single user is receiving mail for an entire (virtual) domain.
+   1 If you want to configure qmail so that user 'db' gets all mail for example.com, do this:
+      1. create a new user db in /etc/passwd etc.
+      2. remove example.com from /var/qmail/control/locals
+      3. add to /var/qmail/controls/virtualdomains:
+<verbatim>
+example.com:db
+</verbatim>
+      4. adjust /var/qmail/users/assign accordingly:
+<verbatim>
+	=db:db:<uid>:<gid>:<home>:::
+	+db-:db:<uid>:<gid>:<home>:-::
+</verbatim>
+      5. Or run: 
+<verbatim>
+qmail-pw2u < /etc/passwd > /var/qmail/users/assign
+</verbatim>
+      6. And finally run qmail-newu and restart qmail
+   1. In ~db/.qmail-default, put:
+<verbatim>
+| /usr/bin/virt_mail -m qmail -c .odbc_mail.ini
+</verbatim>
+   1. In .odbc_mail.ini, set 
+<verbatim>
+RemovePrefix=db-
+</verbatim>
+   1 As result now, mail to info@example.com will be delivered to the qmail alias db-info@example.com and is stored into the database for user 'info'.
+   1. Adjust the parameters in .odbc_mail.ini to match your configuration
+
+
+---++per-user database maildrops under courier
+
+   1. Copy odbc_mail.default.ini to ~the_user_name/.odbc_mail.ini
+      * IMPORTANT: Make sure the .odbc_mail.ini is NOT GROUP/WORLD writable. virt_mail will fail to run if it is.
+   1.  If you're setting up a .courier, simply do something like
+<verbatim>
+| /usr/bin/virt_mail -mcourier -c .odbc_mail.ini
+</verbatim>
+      * If you're setting up .courier-default or .courier-&lt;some_alias_name&gt;, make sure you adjust the RemovePrefix accordingly in the .odbc_mail.ini.
+      * Note 1: although courier is very similar to qmail in this respect, it is different from qmail in how it handles exit codes. If you use -mqmail while running under courier, you'll get the wrong exit codes, so mail is bounced instead of retried.
+      * Note 2: If delivering to multiple recipients in a .courier file, make sure the virt_mail is specified first. This is because if the virt_mail fails with a temporary error, the other recipients will get another drop when courier re-attempts to deliver the mail.
+<verbatim>
+-- Right:
+| /usr/bin/virt_mail -mcourier -c .odbc_mail.ini
+./Maildir
+
+-- Wrong:
+./Maildir
+| /usr/bin/virt_mail -mcourier -c .odbc_mail.ini
+</verbatim>
+   1. Adjust the parameters in .odbc_mail.ini to match your configuration
+
+
+---++EXIM
+
+Here are a code snippets for Exim that perform maildrops into the odbc database.
+
+<verbatim>
+## IN TRANSPORT SECTION
+
+# Delivers into the database
+odbc:
+  driver = pipe
+  command = /usr/bin/virt_mail \
+	-c /etc/odbc_mail.ini \
+	-s "${if def:return_path{$return_path}{MAILER-DAEMON}}" \
+	-l "$local_part" -h "$domain"
+  user = USERNAME
+  return_path_add
+  delivery_date_add
+  prefix =
+  suffix =
+  temp_errors = 73 : 74 : 75
+  return_fail_output
+</verbatim>
+
+   * Note: Make sure the USERNAME in the 'user = USERNAME' setting matches the owner of /etc/odbc_mail.ini, because this file must have mode 0600.
+Consider creating a new user account for this delivery only. You should specify 'user = root' here only if Fallback delivery is configured in /etc/odbc_mail.ini (for procmail fallback delivery for instance)
+
+
+<verbatim>
+## IN DIRECTORS SECTION
+
+# Attempts delivery of all mail into the database
+to_db:
+  driver = smartuser
+  transport = odbc
+  require_files = /etc/odbc_mail.ini
+  #
+  # uncomment line below to deliver all mail to db-XXX into the database, for any
+  # value of XXX. For this to work, set "RemovePrefix = db-" in
+  # the [Translate] section in /etc/odbc_mail.ini
+  #prefix = db-
+</verbatim>
+
+
+
+---++Related
+
+   * [[OdsMail][ODS-Mail]]
+   * [[OdsMailInstallGuide][ODS-Mail's Installation Guide]]
+   * [[OdsMailInstallGuideWindows][Installation instructions for Windows]]
+   * [[OdsMailSpamFilterGuide][ODS-Mail's Spam Filter Setting Guide]]
+   * [[ODSMailPop3External][ODS-Mail's Manage External POP3 Account Guide]]
+   * [[ODSMailWebIDSMIME][ODS-Mail's SMIME + WebID Support Guide]]      
+   * [[OdsWebmailProgrammersGuide][ODS-Mail's Programmers Guide]]
+
+
+CategoryMail CategoryODS CategoryOpenSource CategoryHowTo CategoryOdsMail

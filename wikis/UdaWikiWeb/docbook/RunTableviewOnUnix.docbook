@@ -1,0 +1,198 @@
+<docbook><section><title>RunTableviewOnUnix</title><para>The OpenLink Data Access Drivers for Progress (SQL-89 Engine) support Distributed Databases, Database Triggers, and Array Fields through a custom &quot;Data Dictionary File&quot;.
+ This file is created by running the OpenLink-provided Progress Program File <computeroutput>setup.p</computeroutput>, found in the <computeroutput>~/openlink/bin/</computeroutput> or <computeroutput>~/openlink/scripts/Progress/</computeroutput> directory.</para><blockquote><emphasis>Note: The Progress SQL-92 Engine, available in Progress 9.1 and later, does not support tableview functionality.
+ Thus, OpenLink Data Access Drivers built for this Engine cannot support these features.
+ The SQL-89 Engine remains a default element of all Progress 9.x installations, and appears as of this writing to be present in Progress 10.x, although Progress has announced its deprecation.
+ OpenLink Software will continue to build and provide Drivers for the SQL-89 Engine, supporting these features and functions, as long as possible.</emphasis></blockquote>
+<para>Once the script has been run, modify the OpenLink Rulebook, <computeroutput>oplrqb.ini</computeroutput>, following the guidelines displayed when the <computeroutput>setup.p</computeroutput> program completes.</para><para>After installing an OpenLink Driver for Progress, you will find the following files in the <computeroutput>~/openlink/bin/</computeroutput> or <computeroutput>~/openlink/scripts/Progress/</computeroutput> directory: </para><programlisting>setup.p
+setup.i
+oplrvc1.p
+oplrvc2.p
+</programlisting><emphasis><computeroutput>setup.p</computeroutput></emphasis> is a Progress script program.
+ When the program runs it will ask you what databases you wish to connect to.
+ Based on your responses, it will generate a catalog of all the databases and tables found within, which will be stored in a tableview file (<computeroutput>.dat</computeroutput>), and an associated parameter file (<computeroutput>.pf</computeroutput>).
+<para>Use of these files will allow you to connect to multiple databases, see all tables in all databases through <computeroutput>SQLTables()</computeroutput>, and use array fields through ODBC.</para><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Prerequisites </bridgehead>
+<orderedlist spacing="compact"><listitem> Most importantly, you must have a <emphasis>4GL Development System license</emphasis> to run this script.
+ Client Networking alone is not sufficient.
+ This script does not need to be run on the client host which will use the resulting tableview files, however -- the script may be run on any host which has the licensed 4GL Development System, and the same versions of the Client Networking libraries as will be used on the ODBC client host(s).
+</listitem>
+<listitem> Before running this program, <emphasis>all the databases you wish to include must be accessible</emphasis> -- that their database servers are running -- because the program will need to connect to them.
+</listitem>
+<listitem> Make sure that your <emphasis><computeroutput>$DLC</computeroutput> environment variable is set correctly to point to your Progress DLC directory</emphasis>.
+<programlisting>DLC=/dbs/dlc7.3E
+export DLC
+</programlisting></listitem>
+<listitem> The <emphasis><computeroutput>PROPATH</computeroutput> environment variable may need to include the current working directory and the directory containing the <computeroutput>setup.p</computeroutput> utility files</emphasis>.</listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Steps </bridgehead>
+<orderedlist spacing="compact"><listitem> Navigate to the directory holding your <computeroutput>setup.p</computeroutput> file (<computeroutput>~/openlink/bin/</computeroutput> or <computeroutput>~/openlink/scripts/Progress/</computeroutput>), and execute this command -- <programlisting>$DLC/bin/pro -p setup.p
+</programlisting><blockquote><emphasis>Note: This may vary between versions.
+ In Progress 6, <computeroutput>pro</computeroutput> is in <computeroutput>$DLC</computeroutput>, not <computeroutput>$DLC/bin</computeroutput>.
+ </emphasis></blockquote> </listitem>
+<listitem> You should see the following screen: <programlisting>       @@@@@@   @@@@@@   @@@@@@@   @@@@@   @@@@@@   @@@@@@@   @@@@@    @@@@@
+       @     @  @     @  @     @  @     @  @     @  @        @     @  @     @
+      @     @  @     @  @     @  @        @     @  @        @        @
+     @@@@@@   @@@@@@   @     @  @  @@@@  @@@@@@   @@@@@     @@@@@    @@@@@
+    @        @   @    @     @  @     @  @   @    @              @        @
+   @        @    @   @     @  @     @  @    @   @        @     @  @     @
+  @        @     @  @@@@@@@   @@@@@   @     @  @@@@@@@   @@@@@    @@@@@
+
+                           Progress Software Corporation
+                                    14 Oak Park
+                            Bedford, Massachusetts 01730
+                                    617-280-4000
+
+       PROGRESS is a registered trademark of Progress Software Corporation
+      Copyright 1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995
+                        by Progress Software Corporation
+                             All Rights Reserved
+
+PROGRESS Version 7.3C as of Thu Jun 29 15:05:14 EDT 1995
+</programlisting></listitem>
+<listitem> Press any key, to get to the next screen: <programlisting>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 ______________________________ ________________________________________ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+
+
+Enter data or press PF4 to end.
+</programlisting></listitem>
+<listitem> At this point, you will need to give the program information to contact the databases you want to include here.
+ First, type the full path to your Progress database.
+ For instance: <programlisting>/users/progress/dbs/pro7test
+</programlisting><blockquote><emphasis>Note: To make use of Progress Database Triggers, the Logical Database name to which the Triggers have been compiled must match the value that you provide for the <computeroutput>-ld</computeroutput> parameter when setting your Progress Database Connect options through <computeroutput>setup.p</computeroutput>.
+ </emphasis> <emphasis><emphasis>Example:</emphasis></emphasis> <emphasis>If the triggers have been compiled against a database physically identified as <computeroutput>/usr/progress/demo.db</computeroutput>, and logically identified as <computeroutput>mydemo</computeroutput>, your <computeroutput>setup.p</computeroutput> Database Connection String should be: </emphasis> <programlisting>/usr/progress/demo -ld mydemo
+</programlisting></blockquote> </listitem>
+<listitem> Hit enter, to shift to the next field.
+</listitem>
+<listitem> If your database is running in sockets (recommended), type the -SNH parameters.
+ For example: <programlisting>-S pro82a -N tcp -H myserver
+</programlisting></listitem>
+<listitem> When you are done, hit Enter.
+<programlisting>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+
+
+Enter data or press PF4 to end.
+</programlisting></listitem>
+<listitem> After entering the line of information, press return.
+ There will be a brief pause while the program checks that the database server is running and can be contacted.
+ Once verified, <computeroutput>OK</computeroutput> will appear at the end of the line.
+<programlisting>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ OK|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+
+
+Enter data or press PF4 to end.
+</programlisting></listitem>
+<listitem> The cursor will move to the next line.
+ Repeat the above procedure for each database.
+</listitem>
+<listitem> Press <computeroutput>PF4</computeroutput> when finished.
+ You will then need to supply the name for the <computeroutput>.dat</computeroutput> and <computeroutput>.pf</computeroutput> files.
+ The default is simply <computeroutput>tableview</computeroutput>, but you can choose a more meaningful name if you prefer.
+ If given the option to select a location for the files, pass the full path to your <computeroutput>~/openlink/bin/</computeroutput> directory.
+<programlisting>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ OK|
+| 2 ______________________________ ________________________________________ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+Basename for .pf and .dat files_____________________ 
+
+Enter data or press PF4 to end.
+</programlisting></listitem>
+<listitem> After a brief period the program will finish: <programlisting>+-----------------------------------------------------+
+| Enter a number of databases you want to connect to. |
+| The first database is your master database.         |
++-----------------------------------------------------+
++-----------------------------------------------------------------------------+
+| # DbName                         Connect String                           OK|
+|-- ------------------------------ ---------------------------------------- --|
+| 1 /users/progress/dbs/pro7test__ -N tcp -H 194.152.95.26 -S pro7test_____ OK|
+| 2 ______________________________ ________________________________________ __|
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+
+Creating .pf file to use
+Creating .dat file with table information 
+
+Procedure Complete. Press space bar to continue.
+</programlisting></listitem>
+</orderedlist></section></docbook>

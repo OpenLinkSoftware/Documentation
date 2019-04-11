@@ -1,0 +1,173 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+Sponger Resource Allocation and WebID ACLS
+
+---++What?
+
+How to control user agent usage of sponger resources. In this case, HTTP connections to Linked Data transformation URLs.
+
+---++Why?
+
+More often than not, you would like to control access to your Sponger instance.
+
+---++How?
+Leverage the power of Vrtuoso's in-built WebID based ACLs which enables you apply basic and sophisticated rules that control user agent access.
+
+---+++Sample INI setting
+
+<verbatim>
+...
+[HTTPServer]
+ServerThreads = 100
+MaxRestrictedThreads = 50 
+...
+</verbatim>
+
+This value sets an HTTP connection threshold for URLs consumed by user agents over <code>http:</code> . The remainder are 
+exclusively accessible to user agents that present WebID watermarked X.509 certificates.
+
+---+++Simple Example
+
+
+---++++ Prerequisites
+
+   1 Make sure the following packages are installed:
+      * [[https://virtuoso.openlinksw.com/download/][conductor_dav.vad]]
+      * [[https://virtuoso.openlinksw.com/download/][policy_manager_dav.vad]]
+      * [[https://virtuoso.openlinksw.com/download/][cartridges_dav.vad]]
+   1 Make sure [[VirtSetupSSL][Virtuoso HTTPS Listener is set up]]
+   1 Make sure the  <code>cartridges</code> package is configured to use the HTTPS Listener from above:
+      1 Go to Conductor -> Security Admin -> Packages:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacls1.png" target="_blank"><img src="%ATTACHURLPATH%/sacls1.png" width="600px" /></a>%BR%%BR%
+      1 Click "Configure" for the <code>cartridges</code> package
+      1 Select HTTPS Listener and click "Set":
+%BR%%BR%<a href="%ATTACHURLPATH%/sacls2.png" target="_blank"><img src="%ATTACHURLPATH%/sacls2.png" width="600px" /></a>%BR%%BR%
+
+
+---++++ Steps
+
+   1 Assume a demo user with WebID:
+<verbatim>
+http://id.myopenlink.net/dataspace/person/demo#this
+</verbatim>
+   1. Generate  X.509 certificate with WebID watermarks for the WebID from above ex.:
+      * Using [[http://id.myopenlink.net/certgen/][Virtuoso X.509 Certificate Generator]] or 
+      * [[http://id.myopenlink.net/ods][Using the generator built into ODS]]. See more details [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate][here]].
+   1. Go to Conductor -> Linked Data Security -> Access Control:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl1.png" target="_blank"><img src="%ATTACHURLPATH%/sacl1.png" width="600px" /></a>%BR%%BR%
+   1. Go to Groups:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl2.png" target="_blank"><img src="%ATTACHURLPATH%/sacl2.png" width="600px" /></a>%BR%%BR%
+   1 Click "Add New":
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl3.png" target="_blank"><img src="%ATTACHURLPATH%/sacl3.png" width="600px" /></a>%BR%%BR%
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl4.png" target="_blank"><img src="%ATTACHURLPATH%/sacl4.png" width="600px" /></a>%BR%%BR%
+   1 Fill out the presented form with the following values respectively:
+      * <b>Group URI</b>: for ex. "urn:webid:acl:mygroup"
+      * <b>WebID</b>: for ex. the demo's user WebID from above: 
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl5.png" target="_blank"><img src="%ATTACHURLPATH%/sacl5.png" width="600px" /></a>%BR%%BR%
+   1 Click "Add New" so to add the WebID to the Group WebID's List:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl6.png" target="_blank"><img src="%ATTACHURLPATH%/sacl6.png" width="600px" /></a>%BR%%BR%
+   1 You can add as many as you want new WebIDs following the steps from above.
+   1 Finally click "Save"
+   1 The WebID Group should be created:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl7.png" target="_blank"><img src="%ATTACHURLPATH%/sacl7.png" width="600px" /></a>%BR%%BR%
+   1 Go to "WebID ACLs" tab:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl8.png" target="_blank"><img src="%ATTACHURLPATH%/sacl8.png" width="600px" /></a>%BR%%BR%
+   1 Add WebID ACL associated with the group created from above:
+      1 Change <b>Type</b> to "Group";
+      1 Enter for <b>WebID/Group</b> the name of the group, i.e.: "urn:webid:acl:mygroup"
+      1 Change <b>Realm</b> to "Virtuoso Sponger". Note, the "<i>Virtuoso Sponger</i>" Realm name is obligatory to be entered exactly as "Virtuoso Sponger" to serve the needs of Virtuoso Sponger Resource Allocation with WebID ACLS:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl9.png" target="_blank"><img src="%ATTACHURLPATH%/sacl9.png" width="600px" /></a>%BR%%BR%
+   1 Click "Register"
+   1 The "WebID/Group" ACL should be created:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl10.png" target="_blank"><img src="%ATTACHURLPATH%/sacl10.png" width="600px" /></a>%BR%%BR%
+   1 Go to "Cartridges" tab and click "Add New":
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl11.png" target="_blank"><img src="%ATTACHURLPATH%/sacl11.png" width="600px" /></a>%BR%%BR%
+   1 Should be presented the list of all supported Virtuoso Cartridges:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl12.png" target="_blank"><img src="%ATTACHURLPATH%/sacl12.png" width="600px" /></a>%BR%%BR%
+   1 Set for "<b>WebID/Group URI pattern</b>" the group created from above and select all cartridges:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl13.png" target="_blank"><img src="%ATTACHURLPATH%/sacl13.png" width="600px" /></a>%BR%%BR%
+   1 Click "Save":
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl14.png" target="_blank"><img src="%ATTACHURLPATH%/sacl14.png" width="600px" /></a>%BR%%BR%
+   1 The Cartridges WebId/GroupID URI is configured:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl15.png" target="_blank"><img src="%ATTACHURLPATH%/sacl15.png" width="600px" /></a>%BR%%BR%
+   1 Next we are going to sponge a url, for ex.: <code> http://google.com/ </code>
+   1 Let's make sure there is no data locally in graph <code> http://google.com/ </code>:
+<verbatim>
+SPARQL 
+SELECT * 
+  FROM <http://google.com/> 
+ WHERE
+  {
+    ?s ?p ?o
+  };
+s                 p              o
+VARCHAR           VARCHAR        VARCHAR
+________________________________________________________
+
+
+0 Rows. -- 0 msec.
+</verbatim>
+   1 Attempt to sponge our example URL i.e. by accessing: 
+<verbatim>
+http://host:port/about/html/http://google.com/
+</verbatim>
+   1 In this case there should be no retrieved data:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl16.png" target="_blank"><img src="%ATTACHURLPATH%/sacl16.png" width="600px" /></a>%BR%%BR%   
+   1 Next perform sponge by accessing the following URL:
+<verbatim>
+https://host:ssl-port/about/html/http://google.com/
+</verbatim>
+   1 Should be asked for certificate, choose the one generated from above:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl20.png" target="_blank"><img src="%ATTACHURLPATH%/sacl20.png" width="600px" /></a>%BR%%BR%   
+   1 In case of "This Connection is Untrusted" message is shown:
+      1 Click "I Understand the Risks":
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl17.png" target="_blank"><img src="%ATTACHURLPATH%/sacl17.png" width="600px" /></a>%BR%%BR%   
+      1 Click "Add Exception"
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl18.png" target="_blank"><img src="%ATTACHURLPATH%/sacl18.png" width="600px" /></a>%BR%%BR% 
+      1 Click "Get Certificate" and then "Confirm Security Exception"
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl19.png" target="_blank"><img src="%ATTACHURLPATH%/sacl19.png" width="600px" /></a>%BR%%BR% 
+      1 Should be prompted for valid certificate. Select the generated from above:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl20.png" target="_blank"><img src="%ATTACHURLPATH%/sacl20.png" width="600px" /></a>%BR%%BR% 
+   1 The retrieved remote data should be shown:
+%BR%%BR%<a href="%ATTACHURLPATH%/sacl21.png" target="_blank"><img src="%ATTACHURLPATH%/sacl21.png" width="600px" /></a>%BR%%BR% 
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[VirtSponger][Virtuoso Sponger]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMetaRESTExamples][Parametrized Examples of Meta Cartridge Usage via REST Request]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMetaREST][Meta Cartridges Usage via REST Request]]
+   * [[VirtSpongerCartridgeSupportedDataSourcesMeta][OpenLink-supplied Virtuoso Sponger Meta Cartridges]]
+   * [[VirtSpongerCartridgeSupportedDataSources][OpenLink-supplied Virtuoso Sponger Cartridges]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdpProxy][Using Virtuoso's Delegated WebID Identity Provider Proxy Service]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSWebIDIdP][Using Virtuoso's Delegated WebID Verification Service]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateX509Certificate][Generate an X.509 Certificate hosted WebID Guide]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertOSKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by host operating system keystore]]
+      * [[http://ods.openlinksw.com/wiki/ODS/ODSGenerateWebIDX509CertBrsKeystore][Generate an X.509 Certificate (with a WebID watermark) to be managed by a browser-based keystore]]
+   * [[VirtSPARQLEndpointProtection][Safeguarding your Virtuoso-hosted SPARQL Endpoint]]
+   * [[VirtTipsAndTricksGuideSPARQLEndpointProtection][SPARQL Endpoint Protection Methods Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/][Virtuoso documentation]]
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpoint][SPARQL Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#rdfsupportedprotocolendpointuri][Service Endpoint Security]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html#sparqwebservicetbl][Managing a SPARQL Web Service Endpoint]] 
+      * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][SPARQL]]
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+      * [[VirtSPARQLDET][SPARQL Endpoint DET Configuration Guide]]       
+      * [[VirtSPARQLSecurityWebID][WebID Protocol & SPARQL Endpoint ACLs Tutorial]]
+      * [[VirtOAuthSPARQL][SPARQL OAuth Tutorial]]
+      * [[VirtTipsAndTricksGuideSPARQLEndpoints][Securing SPARQL endpoints]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsSPARQLAuth][SPARUL over SPARQL using the http://cname:port/sparql-auth endpoint]]
+   * [[VirtAuthServerUI][Virtuoso Authentication Server UI]]
+   * [[VirtSPARQLSSL][Manage a SPARQL-WebID based Endpoint]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSSecurityWebID][WebID Protocol Support in OpenLink Data Spaces]].
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSPkiSetup][Guide for Set up a X.509 certificate issuer and HTTPS listener and generate ODS user certificates]]
+   * [[http://ods.openlinksw.com/wiki/ODS/ODSSetupSSL][Configure Virtuoso+ODS instance as an X.509 Certificate Authority and HTTPS listener]]        
+   * [[VirtSetupSSL][Configure Virtuoso instance as an X.509 Certificate Authority and HTTPS listener]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtODSPubSubHub][Setting up PubSubHub in ODS]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHub][PubSubHubBub Demo Client Example]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtFeedPubSubHub][Feed subscription via PubSubHub protocol Example ]]
+   * [[http://ods.openlinksw.com/wiki/ODS/VirtPubSubHubACL][Setting Up PubSubHub to use WebID Protocol or IP based control lists]]
+   * [[http://ods.openlinksw.com/wiki/ODS/OdsKeyImport][CA Keys Import using Conductor]]

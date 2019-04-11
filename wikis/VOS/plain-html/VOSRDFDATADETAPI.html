@@ -1,0 +1,748 @@
+<html><body><div class="topic-text"><br><pre>--
+--  $Id: DET_RDFData.sql,v 1.22 2009/03/03 17:48:57 mitko Exp $
+--
+--  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
+--  project.
+--
+--  Copyright (C) 1998-2006 OpenLink Software
+--
+--  This project is free software; you can redistribute it and/or modify it
+--  under the terms of the GNU General Public License as published by the
+--  Free Software Foundation; only version 2 of the License, dated June 1991.
+--
+--  This program is distributed in the hope that it will be useful, but
+--  WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+--  General Public License for more details.
+--
+--  You should have received a copy of the GNU General Public License along
+--  with this program; if not, write to the Free Software Foundation, Inc.,
+--  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+--
+
+use DB
+;
+
+create procedure DB.DBA.RDFData_log_message (in x varchar)
+{
+  if (0)
+  log_message (cast (x as varchar));
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_AUTHENTICATE&quot; (in id any, in what char(1), in req varchar, in auth_uname varchar, in auth_pwd varchar, in auth_uid integer)
+{
+  RDFData_log_message (current_proc_name ());
+  --log_message (sprintf (&#39;RDFData_DAV_AUTHENTICATE req=%s uname=%s uid=%d&#39;, req, auth_uname, auth_uid));
+--  dbg_obj_princ (&#39;RDFData_DAV_AUTHENTICATE (&#39;, id, what, req, auth_uname, auth_pwd, auth_uid, &#39;)&#39;);
+  if (not (&#39;110&#39; like req))
+  {
+    return -13;
+  }
+  if (&#39;100&#39; like req and auth_uid &gt;= 0)
+    return auth_uid;
+
+  if ((auth_uid &lt;&gt; id[3]) and (auth_uid &lt;&gt; http_dav_uid()))
+  {
+    -- dbg_obj_princ (&#39;a_uid is &#39;, auth_uid, &#39;, id[3] is &#39;, id[3], &#39; mismatch&#39;);
+    return -13;
+  }
+  if (auth_uid &gt;= 0)
+    return auth_uid;
+  return -12;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_AUTHENTICATE_HTTP&quot; (in id any, in what char(1), in req varchar, in can_write_http integer, inout a_lines any, inout a_uname varchar, inout a_pwd varchar, inout a_uid integer, inout a_gid integer, inout _perms varchar) returns integer
+{
+  RDFData_log_message (current_proc_name ());
+--  dbg_obj_print (current_proc_name (), id, what, _perms);
+  declare rc integer;
+  declare puid, pgid integer;
+  declare u_password, pperms varchar;
+  declare allow_anon integer;
+  if (length (req) &lt;&gt; 3)
+    return -15;
+
+  whenever not found goto nf_col_or_res;
+  puid := http_dav_uid();
+  pgid := coalesce (
+    ( select G_ID from WS.WS.SYS_DAV_GROUP
+      where G_NAME = &#39;RDFData_&#39; || coalesce ((select COL_NAME from WS.WS.SYS_DAV_COL where COL_ID=id[1] and COL_DET=&#39;RDFData&#39;), &#39;&#39;)
+      ), puid+1);
+  pperms := &#39;110100100NN&#39;;
+  if ((what &lt;&gt; &#39;R&#39;) and (what &lt;&gt; &#39;C&#39;))
+    return -14;
+  allow_anon := WS.WS.PERM_COMP (substring (cast (pperms as varchar), 7, 3), req);
+  if (a_uid is null)
+    {
+      if ((not allow_anon) or (&#39;&#39; &lt;&gt; WS.WS.FINDPARAM (a_lines, &#39;Authorization:&#39;)))
+      rc := WS.WS.GET_DAV_AUTH (a_lines, allow_anon, can_write_http, a_uname, u_password, a_uid, a_gid, _perms);
+      if (rc &lt; 0)
+        return rc;
+    }
+  if (isinteger (a_uid))
+    {
+      if (a_uid &lt; 0)
+	return a_uid;
+     if (a_uid = 1) -- Anonymous FTP
+	{
+          a_uid := http_nobody_uid ();
+          a_gid := http_nogroup_gid ();
+	}
+    }
+  if (DAV_CHECK_PERM (pperms, req, a_uid, a_gid, pgid, puid))
+    return a_uid;
+  return -13;
+
+nf_col_or_res:
+  return -1;
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_GET_PARENT&quot; (in id any, in st char(1), in path varchar) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_COL_CREATE&quot; (in detcol_id any, in path_parts any, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_COL_MOUNT&quot; (in detcol_id any, in path_parts any, in full_mount_path varchar, in mount_det varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_COL_MOUNT_HERE&quot; (in parent_id any, in full_mount_path varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_DELETE&quot; (in detcol_id any, in path_parts any, in what char(1), in silent integer, in auth_uid integer) returns integer
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_RES_UPLOAD&quot; (in detcol_id any, in path_parts any, inout content any, in type varchar, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  -- dbg_obj_princ (&#39;RDFData_DAV_RES_UPLOAD (&#39;, detcol_id, path_parts, &#39;, [content], &#39;, type, permissions, uid, gid, auth_uid, &#39;)&#39;);
+  return -20;
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_PROP_REMOVE&quot; (in id any, in what char(0), in propname varchar, in silent integer, in auth_uid integer) returns integer
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_PROP_SET&quot; (in id any, in what char(0), in propname varchar, in propvalue any, in overwrite integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  if (propname[0] = 58)
+    {
+      return -16;
+    }
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_PROP_GET&quot; (in id any, in what char(0), in propname varchar, in auth_uid integer)
+{
+  RDFData_log_message (current_proc_name ());
+  return -11;
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_PROP_LIST&quot; (in id any, in what char(0), in propmask varchar, in auth_uid integer)
+{
+  RDFData_log_message (current_proc_name ());
+  return vector ();
+}
+;
+
+create function DB.DBA.&quot;RDFData_ACCESS_PARAMS&quot; (in detcol_id any, out access varchar, out gid integer, out uid integer)
+{
+  declare access_tmp varchar;
+  whenever not found goto ret;
+  access := &#39;000100100N&#39;;
+  gid := http_nogroup_gid ();
+  uid := http_nobody_uid ();
+  if (isinteger (detcol_id))
+  {
+    select COL_PERMS, COL_GROUP, COL_OWNER into access_tmp, gid, uid from WS.WS.SYS_DAV_COL where COL_ID = detcol_id;
+  }
+  access[0] := access_tmp[0];
+  access[1] := access_tmp[1];
+ret:
+  ;
+}
+;
+
+create procedure DB.DBA.RDFData_cast_dt_silent (in d any)
+{
+  if (__tag (d) = 211)
+    return d;
+  else
+    {
+      declare exit handler for sqlstate &#39;*&#39;
+	{
+	  return now ();
+	};
+      return cast (d as datetime);
+    }
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_DIR_SINGLE&quot; (in id any, in what char(0), in path any, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+--  dbg_obj_princ (&#39;RDFData_DAV_DIR_SINGLE (&#39;, id, what, path, auth_uid, &#39;)&#39;);
+  declare path_parts any;
+  declare access, ownergid, owner_uid, mime any;
+  declare len int;
+
+  DB.DBA.&quot;RDFData_ACCESS_PARAMS&quot; (id[1], access, ownergid, owner_uid);
+
+  if (isstring (path))
+    path_parts := split_and_decode (path, 0, &#39;\0\0/&#39;);
+  else
+    path_parts := path;
+  len := length (path_parts);
+  if (what = &#39;C&#39;)
+    return vector (DAV_CONCAT_PATH (path, &#39;&#39;), &#39;C&#39;, 0, now (), id, access, ownergid, owner_uid, now (), &#39;dav/unix-directory&#39;, path_parts [len - 2]);
+  mime := &#39;application/rdf+xml&#39;;
+  if (is_http_ctx ())
+    {
+      declare lpath varchar;
+      lpath := http_path ();
+      if (lpath like &#39;%.ttl&#39; or lpath like &#39;%.n3&#39;)
+        mime := &#39;text/rdf+n3&#39;;
+    }
+  return vector (DAV_CONCAT_PATH (path, &#39;&#39;), &#39;R&#39;, 0, now (), id, access, ownergid, owner_uid, now (), mime, path_parts [len - 1]);
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_DIR_LIST&quot; (in detcol_id any, in path_parts any, in detcol_path varchar, in name_mask varchar, in recursive integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  declare top_davpath varchar;
+  declare res any;
+  declare top_id, descnames any;
+  declare what char (1);
+  declare access, filt_lg varchar;
+  declare ownergid, owner_uid, dn_ctr, dn_count integer;
+  declare gr, u_name any;
+
+  vectorbld_init (res);
+
+  DB.DBA.&quot;RDFData_ACCESS_PARAMS&quot; (detcol_id, access, ownergid, owner_uid);
+
+--  dbg_obj_princ (&#39;RDFData_DAV_DIR_LIST (&#39;, detcol_id, path_parts, detcol_path, name_mask, recursive, auth_uid, &#39;)&#39;);
+
+  if ((0 = length (path_parts)) or (&#39;&#39; = path_parts[length (path_parts) - 1]))
+    what := &#39;C&#39;;
+  else
+    what := &#39;R&#39;;
+  if (&#39;C&#39; = what and 1 = length(path_parts))
+    top_id := vector (UNAME&#39;RDFData&#39;, detcol_id, null, owner_uid, null, null); -- may be a fake id because top_id[4] may be NULL
+  else
+    top_id := DB.DBA.&quot;RDFData_DAV_SEARCH_ID&quot; (detcol_id, path_parts, what);
+  if (DAV_HIDE_ERROR (top_id) is null)
+    {
+      return vector();
+    }
+  top_davpath := DAV_CONCAT_PATH (detcol_path, path_parts);
+  if (&#39;R&#39; = what)
+    {
+      return vector (DB.DBA.&quot;RDFData_DAV_DIR_SINGLE&quot; (top_id, what, top_davpath, auth_uid));
+    }
+  gr := DAV_PROP_GET_INT (detcol_id, &#39;C&#39;, &#39;virt:rdfdata_graph&#39;, 0);
+  filt_lg := DAV_PROP_GET_INT (detcol_id, &#39;C&#39;, &#39;virt:rdfdata_lang&#39;, 0);
+  if (not isstring (gr) or length (gr) = 0)
+    {
+      u_name := (select p.COL_NAME from WS.WS.SYS_DAV_COL p, WS.WS.SYS_DAV_COL c
+      where c.COL_ID = detcol_id and p.COL_ID = c.COL_PARENT);
+      gr := sioc..user_doc_iri (u_name);
+    }
+  if (not isstring (filt_lg))
+    filt_lg := &#39;&#39;;
+  if (is_http_ctx () and filt_lg = &#39;*http*&#39;)
+    {
+      filt_lg := http_request_header (http_request_header (), &#39;Accept-Language&#39;, null, &#39;&#39;);
+    }
+--  dbg_obj_print (detcol_id, gr);
+  if (top_id[2] is null)
+    {
+--	vectorbld_acc (res,
+--	    	vector (
+--		   DAV_CONCAT_PATH (top_davpath, &#39;All&#39;) || &#39;/&#39;,
+--		   &#39;C&#39;,
+--		   0,
+--		   now (),
+--                   vector (UNAME&#39;RDFData&#39;, detcol_id, -1),
+--                   access,
+--		   ownergid,
+--		   owner_uid,
+--		   now (),
+--		   &#39;dav/unix-directory&#39;,
+--		   &#39;All&#39;)
+--		 );
+      FOR SELECT CLS FROM (
+		    sparql
+		    select distinct ?CLS
+		    where {
+		      graph `iri(?:gr)`
+		      {
+		      	?x a ?CLS .
+		      } } ) sub do
+      {
+	declare tmp, tit, pref any;
+	declare p1, p2, p3, pos int;
+	p1 := coalesce (strrchr (cls, &#39;#&#39;), -1);
+	p2 := coalesce (strrchr (cls, &#39;/&#39;), -1);
+	p3 := coalesce (strrchr (cls, &#39;:&#39;), -1);
+	pos := __max (p1, p2, p3);
+	if (pos &gt; 0)
+	  {
+	    tit := subseq (CLS, pos + 1);
+            tmp := subseq (CLS, 0, pos + 1);
+	    pref := RDFData_std_pref (tmp);
+	    if (pref is not null)
+	      tit := pref || &#39;:&#39; || tit;
+	    else
+              tit := CLS;
+	  }
+	else
+	  tit := CLS;
+        tit := replace (tit, &#39;/&#39;, &#39;^2f&#39;);
+        tit := replace (tit, &#39;#&#39;, &#39;^23&#39;);
+	--tit := sprintf (&#39;%U&#39;, tit);
+	vectorbld_acc (res,
+	    	vector (
+		   DAV_CONCAT_PATH (top_davpath, tit) || &#39;/&#39;,
+		   &#39;C&#39;,
+		   0,
+		   now (),
+                   vector (UNAME&#39;RDFData&#39;, detcol_id, iri_to_id (CLS)),
+                   access,
+		   ownergid,
+		   owner_uid,
+		   now (),
+		   &#39;dav/unix-directory&#39;,
+		   tit)
+		 );
+      }
+    }
+  else if (top_id[2] is not null and length (top_id) = 4)
+    {
+      declare cs any;
+      declare qr, rset, mdta, h, dict, is_all any;
+      declare inc, limit int;
+
+      limit := 1000;
+      inc := 0;
+      is_all := 0;
+      cs := top_id[2];
+      cs := id_to_iri (cs);
+      if (cs = &#39;All&#39;)
+	{
+	  is_all := 1;
+	  cs := &#39;?cls&#39;;
+	  return vector ();
+	}
+      else
+        cs := sprintf (&#39;&lt;%S&gt;&#39;, cs);
+      --dbg_obj_print (top_id[2]);
+
+      qr := sprintf (&#39;sparql
+          define output:valmode &quot;LONG&quot;
+	  prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+	  prefix dct: &lt;http://purl.org/dc/terms/&gt;
+	  prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+	  prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+	  SELECT ?X ?L ?T ?PL ?CR ?MOD
+	  where
+	  {
+	    graph &lt;%S&gt;
+	    {
+	      ?X a %s
+	      optional { ?X rdfs:label ?L } .
+	      optional { ?X dc:title ?T } .
+	      optional { ?X skos:prefLabel ?PL } .
+	      optional { ?X dct:created ?CR } .
+	      optional { ?X dct:modified ?MOD } .
+	    }
+	  }&#39;, gr, cs);
+
+	dict := dict_new ();
+	exec (qr, null, null, vector (), 0, null, null, h);
+        while (0 = exec_next (h, null, null, rset))
+	{
+	  declare tit, lg any;
+	  declare X,L,T,PL,CR,MOD any;
+	  --dbg_obj_print (rset);
+	  X := rset[0];
+	  L := rset[1];
+	  T := rset[2];
+	  PL := rset[3];
+	  CR := rset[4];
+	  MOD := rset[5];
+
+	  cr := coalesce (cr, now ());
+	  mod := coalesce (mod, now ());
+	  cr := RDFData_cast_dt_silent (cr);
+	  mod := RDFData_cast_dt_silent (mod);
+	  --dbg_obj_print (cr, mod);
+	  tit := coalesce (L, T, PL);
+
+	  lg := &#39;&#39;;
+	  if (is_all)
+	    tit := &#39;iid&#39;;
+	  else if (tit is null)
+	    tit := &#39;~unnamed~&#39;;
+	  else
+	    {
+	      lg := DB.DBA.RDF_LANGUAGE_OF_LONG (tit, &#39;&#39;);
+              tit := DB.DBA.RDF_SQLVAL_OF_LONG (tit);
+	    }
+	  --dbg_obj_print (filt_lg, lg, strstr (filt_lg, lg));
+	  if (filt_lg &lt;&gt; &#39;&#39; and lg &lt;&gt; &#39;&#39; and strstr (filt_lg, lg) is null)
+	    goto next_row;
+	  if (dict_get (dict, X) = 1)
+	    goto next_row;
+	  tit := sprintf (&#39;%s (%i).rdf&#39;, tit, iri_id_num (iri_to_id (X)));
+	  --tit := replace (sprintf (&#39;%U&#39;, x), &#39;/&#39;, &#39;%252F&#39;);
+	  --dbg_obj_print (tit, lg);
+	  vectorbld_acc (res,
+	    	vector (
+		   DAV_CONCAT_PATH (top_davpath, tit),
+		   &#39;R&#39;,
+		   0,
+		   mod,
+                   vector (UNAME&#39;RDFData&#39;, detcol_id, cs, iri_to_id (X)),
+                   access,
+		   ownergid,
+		   owner_uid,
+		   cr,
+		   &#39;application/rdf+xml&#39;,
+		   tit)
+		 );
+	  dict_put (dict, X, 1);
+	  inc := inc + 1;
+	  if (inc &gt; limit)
+	    goto end_loop;
+	  next_row:;
+	}
+	end_loop:;
+	exec_close (h);
+    }
+finalize_res:
+  vectorbld_final (res);
+  return res;
+}
+;
+
+
+create function RDFData_std_pref (in iri varchar, in rev int := 0)
+{
+  declare v any;
+  v := vector (
+  &#39;http://xmlns.com/foaf/0.1/&#39;, &#39;foaf&#39;,
+  &#39;http://rdfs.org/sioc/ns#&#39;, &#39;sioc&#39;,
+  &#39;http://www.w3.org/1999/02/22-rdf-syntax-ns#&#39;, &#39;rdf&#39;,
+  &#39;http://www.w3.org/2000/01/rdf-schema#&#39;, &#39;rdfs&#39;,
+  &#39;http://www.w3.org/2003/01/geo/wgs84_pos#&#39;, &#39;geo&#39;,
+  &#39;http://atomowl.org/ontologies/atomrdf#&#39;, &#39;aowl&#39;,
+  &#39;http://purl.org/dc/elements/1.1/&#39;, &#39;dc&#39;,
+  &#39;http://purl.org/dc/terms/&#39;, &#39;dct&#39;,
+  &#39;http://www.w3.org/2004/02/skos/core#&#39;, &#39;skos&#39;,
+  &#39;http://rdfs.org/sioc/types#&#39;, &#39;sioct&#39;,
+  &#39;http://sw.deri.org/2005/04/wikipedia/wikiont.owl#&#39;, &#39;wiki&#39;,
+  &#39;http://www.w3.org/2002/01/bookmark#&#39;, &#39;bm&#39;,
+  &#39;http://www.w3.org/2003/12/exif/ns/&#39;, &#39;exif&#39;,
+  &#39;http://www.w3.org/2000/10/annotation-ns#&#39;, &#39;ann&#39;,
+  &#39;http://purl.org/vocab/bio/0.1/&#39;, &#39;bio&#39;,
+  &#39;http://www.w3.org/2001/vcard-rdf/3.0#&#39;, &#39;vcard&#39;,
+  &#39;http://www.w3.org/2002/12/cal#&#39;, &#39;vcal&#39;,
+  &#39;http://www.w3.org/2002/07/owl#&#39;, &#39;owl&#39;,
+  &#39;http://web.resource.org/cc/&#39;, &#39;cc&#39;,
+  &#39;http://dbpedia.org/class/yago/&#39;, &#39;dbp&#39;
+
+  );
+  if (rev)
+    {
+      declare nv, l any;
+      nv := make_array (length (v), &#39;any&#39;);
+      for (declare i, j int, j := 0, i := length (v) - 1; i &gt;= 0; i := i - 2, j := j + 2)
+        {
+	   nv[j] := v[i];
+	   nv[j+1] := v[i-1];
+	}
+      return get_keyword (iri, nv, null);
+    }
+  else
+   return get_keyword (iri, v, null);
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_DIR_FILTER&quot; (in detcol_id any, in path_parts any, in detcol_path varchar, inout compilation any, in recursive integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+--  dbg_obj_princ (&#39;RDFData_DAV_DIR_FILTER (&#39;, detcol_id, path_parts, detcol_path, compilation, recursive, auth_uid, &#39;)&#39;);
+  return vector();
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_SEARCH_ID&quot; (in detcol_id any, in path_parts any, in what char(1)) returns any
+{
+  RDFData_log_message (current_proc_name ());
+--  dbg_obj_princ (&#39;RDFData_DAV_SEARCH_ID (&#39;, detcol_id, path_parts, what, &#39;)&#39;);
+  declare orig_id, ctr, len integer;
+  declare r_id, cl_id, cl any;
+  declare access, ownergid, owner_uid any;
+  DB.DBA.&quot;RDFData_ACCESS_PARAMS&quot; (detcol_id, access, ownergid, owner_uid);
+
+  if (path_parts[0] = &#39;&#39; or path_parts[0] is null)
+    return -1;
+  if (path_parts[0] &lt;&gt; &#39;&#39;)
+    {
+      declare x, pos, pref, url any;
+      cl := path_parts[0];
+      pos := strchr (cl, &#39;:&#39;);
+      pref := subseq (cl, 0, pos);
+      url := RDFData_std_pref (pref, 1);
+      if (url is null)
+        {
+	  cl := replace (cl, &#39;^2f&#39;, &#39;/&#39;);
+	  cl := replace (cl, &#39;^23&#39;, &#39;#&#39;);
+          cl_id := iri_to_id (cl);
+	  --dbg_obj_print (&#39;cl:&#39;,cl);
+	}
+      else
+        {
+	  cl := subseq (cl, pos + 1);
+	  cl := url || cl;
+	  cl_id := iri_to_id (cl);
+        }
+    }
+  if (length (path_parts) = 2 and what = &#39;C&#39;)
+    {
+      return vector (UNAME&#39;RDFData&#39;, detcol_id, cl_id, owner_uid);
+    }
+  else if (length (path_parts) = 2 and path_parts[1] &lt;&gt; &#39;&#39; and what = &#39;R&#39;)
+    {
+      declare t, arr any;
+      t := path_parts[1];
+      arr := sprintf_inverse (t, &#39;%s (%d).%s&#39;, 1);
+      if (3 &gt; length (arr))
+        return -1;
+      r_id := iri_id_from_num (arr [1]);
+--      dbg_obj_print (arr, r_id);
+      return vector (UNAME&#39;RDFData&#39;, detcol_id, cl_id, owner_uid, r_id);
+    }
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_SEARCH_PATH&quot; (in id any, in what char(1)) returns any
+{
+  declare col_path varchar;
+  declare ret any;
+  RDFData_log_message (current_proc_name ());
+--  dbg_obj_princ (&#39;RDFData_DAV_SEARCH_PATH (&#39;, id, what, &#39;)&#39;);
+  col_path := WS.WS.COL_PATH (id[1]);
+  ret := sprintf (&#39;%s%s/iid (%d).rdf&#39;, col_path, id_to_iri (id[2]), iri_id_num (id[4]));
+--  dbg_obj_print (ret);
+  return ret;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_RES_UPLOAD_COPY&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite_flags integer, in permissions varchar, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_RES_UPLOAD_MOVE&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite_flags integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_RES_CONTENT&quot; (in id any, inout content any, out type varchar, in content_mode integer) returns integer
+{
+  RDFData_log_message (current_proc_name ());
+  declare iri, url, qr, _from any;
+  declare path, params, lines, ses, gr any;
+--  dbg_obj_princ (&#39;RDFData_DAV_RES_CONTENT (&#39;, id, &#39;, [content], [type], &#39;, content_mode, &#39;)&#39;);
+  if (id [4] is null)
+    return -20;
+  type := &#39;application/rdf+xml&#39;;
+  if (is_http_ctx ())
+    {
+      declare lpath varchar;
+      lpath := http_path ();
+      if (lpath like &#39;%.rdf&#39;)
+	type := &#39;application/rdf+xml&#39;;
+      else
+        type := &#39;text/rdf+n3&#39;;
+    }
+  iri := id_to_iri (id [4]);
+--  dbg_obj_print (iri);
+  _from := &#39;&#39;;
+  gr := DAV_PROP_GET_INT (id[1], &#39;C&#39;, &#39;virt:rdfdata_graph&#39;, 0);
+  if (__proc_exists (&#39;sioc.DBA.get_graph&#39;) is not null and gr = sioc.DBA.get_graph ())
+    {
+      declare pg any;
+      declare tmp, uname any;
+      declare pos int;
+      pg := http_param (&#39;page&#39;);
+      if (not isstring (pg))
+	pg := &#39;0&#39;;
+      pg := atoi (pg);
+
+      -- take data from ODS graph
+      if (regexp_match (&#39;https?://([^/]*)/dataspace/(person|organization)/(.*)&#39;, iri) is not null and iri not like &#39;%/online_account/%&#39;)
+        {
+	  tmp := sprintf_inverse (iri, &#39;http%s://%s/dataspace/%s/%s&#39;, 0);
+	  tmp := tmp[3];
+	  pos := coalesce (strchr (tmp, &#39;#&#39;), strchr (tmp, &#39;/&#39;));
+	  if (pos is not null)
+	    uname := subseq (tmp, 0, pos);
+          else
+	    uname := tmp;
+          ses := sioc..compose_foaf (uname, type, pg);
+	  goto ret_place2;
+	}
+      else if (regexp_match (&#39;https?://([^/]*)/dataspace/([^/]*)(#this|/sioc.rdf|/sioc.n3)?\x24&#39;, iri) is not null
+	  and __proc_exists (&#39;sioc.DBA.ods_sioc_obj_describe&#39;) is not null)
+	{
+	  tmp := sprintf_inverse (iri, &#39;http%s://%s/dataspace/%s&#39;, 0);
+	  tmp := tmp[2];
+	  pos := coalesce (strchr (tmp, &#39;#&#39;), strchr (tmp, &#39;/&#39;));
+	  if (pos is not null)
+	    uname := subseq (tmp, 0, pos);
+          else
+	    uname := tmp;
+          ses := sioc..ods_sioc_obj_describe (uname, type, pg);
+	  goto ret_place2;
+	}
+      if (__proc_exists (&#39;sioc.DBA.ods_sioc_container_obj_describe&#39;) is not null)
+	{
+	  ses := sioc..ods_sioc_container_obj_describe (iri, type, pg);
+	  goto ret_place2;
+	}
+      else
+	{
+	  DB.DBA.OdsIriDescribe (iri, type);
+	  goto ret_place;
+	}
+    }
+  if (isstring (gr) and length (gr))
+    _from := sprintf (&#39; FROM &lt;%s&gt;&#39;, gr);
+
+  qr := sprintf (&#39;describe &lt;%s&gt; %s&#39;, iri, _from);
+  path := vector ();
+  --dbg_obj_print (qr);
+  params := vector (&#39;query&#39;, qr, &#39;format&#39;, &#39;application/rdf+xml&#39;);
+  lines := vector ();
+  WS.WS.&quot;/!sparql/&quot; (path, params, lines);
+ret_place:
+  ses := http_get_string_output (1);
+ret_place2:
+  --dbg_obj_print (string_output_string (ses));
+  http_rewrite ();
+  if (content_mode = 1)
+   http (ses, content);
+  else
+   content := string_output_string (ses);
+  return 0;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_SYMLINK&quot; (in detcol_id any, in path_parts any, in source_id any, in what char(1), in overwrite integer, in uid integer, in gid integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_DEREFERENCE_LIST&quot; (in detcol_id any, inout report_array any) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_RESOLVE_PATH&quot; (in detcol_id any, inout reference_item any, inout old_base varchar, inout new_base varchar) returns any
+{
+  return -20;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_LOCK&quot; (in path any, in id any, in type char(1), inout locktype varchar, inout scope varchar, in token varchar, inout owner_name varchar, inout owned_tokens varchar, in depth varchar, in timeout_sec integer, in auth_uid integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return -20;
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_UNLOCK&quot; (in id any, in type char(1), in token varchar, in auth_uid integer)
+{
+  RDFData_log_message (current_proc_name ());
+  return -27;
+}
+;
+
+create function DB.DBA.&quot;RDFData_DAV_IS_LOCKED&quot; (inout id any, inout type char(1), in owned_tokens varchar) returns integer
+{
+  RDFData_log_message (current_proc_name ());
+  return 0;
+}
+;
+
+
+create function DB.DBA.&quot;RDFData_DAV_LIST_LOCKS&quot; (in id any, in type char(1), in recursive integer) returns any
+{
+  RDFData_log_message (current_proc_name ());
+  return vector ();
+}
+;
+
+create procedure DB.DBA.&quot;RDFData_MAKE_DET_COL&quot; (in path varchar, in gr varchar := null, in lg varchar := null)
+{
+  declare colid int;
+  colid := DAV_MAKE_DIR (path, http_dav_uid (), null, &#39;110100100N&#39;);
+  if (colid &lt; 0)
+    signal (&#39;42000&#39;, &#39;Unable to create RDFData DET collection&#39;);
+  update WS.WS.SYS_DAV_COL set COL_DET=&#39;RDFData&#39; where COL_ID = colid;
+  if (gr is not null)
+    DAV_PROP_SET_INT (path, &#39;virt:rdfdata_graph&#39;, gr, null, null, 0, 0, 1, http_dav_uid ());
+  if (lg is not null)
+    DAV_PROP_SET_INT (path, &#39;virt:rdfdata_lang&#39;, lg, null, null, 0, 0, 1, http_dav_uid ());
+}
+;
+
+</pre></div></body></html>

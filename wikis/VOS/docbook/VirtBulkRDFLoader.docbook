@@ -1,0 +1,113 @@
+<docbook><section><title>VirtBulkRDFLoader</title><title> Bulk Loading RDF Source Files into one or more Graph IRIs</title> Bulk Loading RDF Source Files into one or more Graph IRIs
+<para>This document details how large RDF data set files can be bulk loaded into Virtuoso.
+ The data sets may consist of multiple files, which may be loaded into one or several graphs.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Prerequisites</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem>The Virtuoso Bulk Loader functions must be present.
+ They are pre-loaded starting with commercial version 06.02.3129 and open source version 6.1.3, but must be <ulink url="VirtBulkRDFLoaderScript">manually loaded into older versions</ulink>.
+</listitem>
+<listitem>The directory containing the data set files must be included in the <emphasis><ulink url="http://docs.openlinksw.com/virtuoso/databaseadmsrv.html#fp_acliniallowed">DirsAllowed</ulink></emphasis> parameter defined in the virtuoso INI file, after which the Virtuoso server must be restarted.
+</listitem>
+<listitem>The Virtuoso Server should be appropriately configured to use sufficient memory and other system resources as detailed in the <ulink url="VirtRDFPerformanceTuning">Virtuoso RDF Performance Tuning Guide</ulink>, or the load may take an unacceptably long time, approaching forever.
+</listitem>
+<listitem>The file formats and file name extensions of the files to be loaded must be among the following, which the <ulink url="http://docs.openlinksw.com/virtuoso/fn_rdf_loader_run.html">rdf_loader_run()</ulink> function understands.
+ Any of these may be compressed in gzip (i.e., with the additional .gz file name extension), bz2 or xz compression formats to save space; in such case, they will be automatically expanded by the bulk loader.
+
+<table><title /><tgroup><thead /><tbody>
+<row><entry> <emphasis>.grdf</emphasis>  </entry><entry> Geospatial RDF  </entry></row>
+<row><entry> <emphasis>.nq</emphasis>    </entry><entry> <ulink url="http://dbpedia.org/resource/N-Quads">N-Quads</ulink>  </entry></row>
+<row><entry> <emphasis>.nt</emphasis>    </entry><entry> <ulink url="http://dbpedia.org/resource/N-Triples">N-Triples</ulink>  </entry></row>
+<row><entry> <emphasis>.owl</emphasis>   </entry><entry> <ulink url="http://dbpedia.org/resource/Web_Ontology_Language">OWL</ulink>  </entry></row>
+<row><entry> <emphasis>.rdf</emphasis>   </entry><entry> <ulink url="http://dbpedia.org/resource/RDF/XML">RDF/XML</ulink>  </entry></row>
+<row><entry> <emphasis>.trig</emphasis>  </entry><entry> <ulink url="http://dbpedia.org/resource/TriG_(syntax)">TriG</ulink>  </entry></row>
+<row><entry> <emphasis>.ttl</emphasis>   </entry><entry> <ulink url="http://dbpedia.org/resource/Turtle_(syntax)">Turtle</ulink>  </entry></row>
+<row><entry> <emphasis>.xml</emphasis>   </entry><entry> <ulink url="http://dbpedia.org/resource/RDF/XML">RDF/XML</ulink>  </entry></row>
+</tbody></tgroup></table>
+</listitem>
+</itemizedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Bulk loading process</bridgehead>
+<orderedlist spacing="compact"><listitem>The name of the RDF graph into which the data set(s) should be loaded can be specified through a text file placed in the same source directory as the source data files.
+ This file&#39;s contents will override any options specified in the <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html">ld_dir()</ulink> or <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir_all.html">ld_dir_all()</ulink> function call.
+ The content of a file with the same name as a data file plus the <emphasis>.graph</emphasis> filename extension will be used for that data file (e.g., my_data.n3.graph will be used with my_data.n3).
+ The content of a file named <emphasis>global.graph</emphasis> will be used for any and all <emphasis>other</emphasis> data files in that directory.
+ <emphasis><emphasis>Note:</emphasis> if the third parameter (graph_iri) of <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html">ld_dir()</ulink> or <ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir_all.html">ld_dir_all()</ulink> is <emphasis>NULL</emphasis>, any data files that do not have a corresponding .graph file will not be loaded.</emphasis>.
+ If datasets are  <emphasis>NQUAD</emphasis> or  <emphasis>TRIG</emphasis> then the graph name specified in such dataset files in quad format will <emphasis>always</emphasis> be used.
+<programlisting>&lt;source-file&gt;.&lt;ext&gt;
+&lt;source-file&gt;.&lt;ext&gt;.graph
+global.graph
+</programlisting>— e.g., — <programlisting>myfile.n3          ;; RDF data
+myfile.n3.graph    ;; Contains Graph IRI name into which RDF data from myfile.n3 will be loaded
+global.graph       ;; Contains Graph IRI name into which RDF data from any files that do not have a specific graph name file will be loaded
+</programlisting></listitem>
+<listitem>Place the graph IRI, , e.g., <emphasis><ulink url="http://dbpedia.org">http://dbpedia.org</ulink></emphasis>, in the *.graph file.
+</listitem>
+<listitem>Use <emphasis>isql</emphasis> to register the file(s) to be loaded by running the appropriate function, e.g.
+ -- <programlisting>SQL&gt; ld_dir (&#39;/path/to/files&#39;, &#39;*.n3&#39;, &#39;http://dbpedia.org&#39;);
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><emphasis><ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html">ld_dir()</ulink></emphasis> to load only from the specified directory, excluding any subdirectories -- <programlisting>SQL&gt; ld_dir (&#39;&lt;source-filename-or-directory&gt;&#39;, &#39;&lt;file name pattern&gt;&#39;, &#39;graph iri&#39;);
+</programlisting></listitem>
+<listitem><emphasis><ulink url="http://docs.openlinksw.com/virtuoso/fn_ld_dir.html">ld_dir_all()</ulink></emphasis> to load from the specified directory, including any and all subdirectories -- <programlisting>SQL&gt; ld_dir_all (&#39;&lt;source-filename-or-directory&gt;&#39;, &#39;&lt;file name pattern&gt;&#39;, &#39;graph iri&#39;);
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>The table <emphasis>DB.DBA.load_list</emphasis> can be used to check the list of data sets registered for loading, and the graph IRIs into which they will be or have been loaded.
+ The <emphasis>ll_state</emphasis> field can have three values: <emphasis>0</emphasis> indicating the data set is to be loaded; <emphasis>1</emphasis> the data set load is in progress; or <emphasis>2</emphasis> the data set load is complete: <programlisting>SQL&gt; select * from DB.DBA.load_list;
+ll_file               ll_graph        ll_state    ll_started              ll_done                 ll_host    ll_work_time    ll_error
+VARCHAR NOT NULL      VARCHAR         INTEGER     TIMESTAMP               TIMESTAMP               INTEGER    INTEGER         VARCHAR
+_____________________________________________________________________________________________________________________________________
+
+./dump/d1/file1.n3    http://file1    2           2010.10.20 9:21.18 0    2010.10.20 9:21.18 0    0          NULL            NULL
+./dump/d2/file2.n3    http://file2    2           2010.10.20 9:21.18 0    2010.10.20 9:21.18 0    0          NULL            NULL
+./dump/file.n3        http://file     2           2010.10.20 9:21.18 0    2010.10.20 9:21.18 0    0          NULL            NULL
+
+3 Rows. -- 1 msec.
+SQL&gt; 
+</programlisting></listitem>
+<listitem>Finally, perform the bulk load of all data by executing the <ulink url="http://docs.openlinksw.com/virtuoso/fn_rdf_loader_run.html">rdf_loader_run()</ulink> function: <programlisting>SQL&gt; rdf_loader_run();
+</programlisting><itemizedlist mark="bullet" spacing="compact"><listitem><emphasis>Note:</emphasis> the <emphasis>rdf_loader_run()</emphasis> function prototype is: <programlisting>rdf_loader_run 
+  (  IN  max_files   INTEGER := NULL
+  ,  IN  log_enable  INT     := 2
+  )
+</programlisting>One of the side effects of the default log_enable = 2 setting is that triggers are disabled, to speed the loading of data.
+ If triggers are required (e.g., for RDF Graph replication between nodes), then the log_enable mode should be set to <emphasis>3</emphasis> when calling the rdf_loader_run() function as follows: <programlisting>rdf_loader_run (log_enable=&gt;3);
+</programlisting></listitem>
+</itemizedlist></listitem>
+<listitem>Note at the end of the Bulk Load process the checkpoint command <emphasis>MUST</emphasis> be run to commit the bulk loaded data to the Virtuoso database file.
+ This is because the default log_enable = 2 mode used by the bulk loader turns off transaction logging, thus if the database is shutdown before a checkpoint is run all the bulk loaded data would be lost.
+<programlisting>checkpoint;
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h3"> Running multiple Loaders</bridgehead>
+<para>On a multi-core machine, it is recommended that data sets be split into multiple files, and that these be registered in the <emphasis>DB.DBA.load_list</emphasis> table with the ld_dir() function.
+ Once registered for load, the rdf_loader_run() function can be run multiple times, it is recommended a maximum of no cores / 2.5, to optimally parallelize the data load and hence maximize load speed.
+ A typical script that can be run from command line (e.g., bulk_load.sh) might look like -- </para>
+<programlisting>. /opt/openlink/virtuoso/virtuoso-enterprise.sh
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp; 
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp; 
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp; 
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp; 
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp; 
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp; 
+isql 1111 dba dba exec=&quot;rdf_loader_run();&quot; &amp;  
+wait 
+isql 1111 dba dba exec=&quot;checkpoint;&quot; 
+</programlisting><para> and be run with the command: </para>
+<programlisting>sh /opt/openlink/virtuoso/bin/bulk_load.sh
+</programlisting><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Stopping the bulk load process</bridgehead>
+<orderedlist spacing="compact"><listitem>All RDF loader threads can be stopped using the command <ulink url="http://docs.openlinksw.com/virtuoso/fn_rdf_load_stop.html">rdf_load_stop()</ulink>, at which point all currently running threads will be allowed to complete and then exit: <programlisting>SQL&gt; rdf_load_stop();
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Checking bulk load status</bridgehead>
+<orderedlist spacing="compact"><listitem>Once the rdf_loader_run() is complete, you can check the <emphasis>DB.DBA.load_list</emphasis> to confirm all data sets were loaded successfully.
+ This is indicated by an <emphasis>ll_state</emphasis> value of <emphasis>2</emphasis> and an <emphasis>ll_error</emphasis> value of <emphasis>NULL</emphasis>.
+ <emphasis>Note:</emphasis> The following query can be used to check if any errors occurred when loading datasets file during the bulk load: <programlisting>select * from DB.DBA.LOAD_LIST where ll_error IS NOT NULL
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Cluster-specific details</bridgehead>
+<orderedlist spacing="compact"><listitem>On a Virtuoso Clustered Server the &quot;cl_exec(&#39;rdf_ld_srv(log_enable)&#39;)&quot; commands (where log_enable is 2 or 3, as with the rdf_loader_run() function) can be used to invoke a single &quot;rdf_loader_run()&quot; on each node of the cluster: <programlisting>SQL&gt; cl_exec(&#39;rdf_ld_srv()&#39;); 
+
+Done. -- 265956 msec.
+SQL&gt;
+</programlisting> </listitem>
+</orderedlist><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="VirtBulkRDFLoaderExampleSingle">Example of single file load</ulink> </listitem>
+<listitem><ulink url="VirtBulkRDFLoaderExampleMultiple">Example of multiple file load</ulink> </listitem>
+<listitem><ulink url="VirtBulkRDFLoaderExampleDbpedia">Example of Dbpedia datasets load</ulink> </listitem>
+<listitem><ulink url="VirtRDFBulkLoaderWithDelete">Virtuoso RDF Bulk Update &quot;with_delete&quot; option</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGraphLoadTimes">How can I determine the time taken to load datasets with RDF Bulk Loader</ulink> </listitem>
+</itemizedlist></section></docbook>

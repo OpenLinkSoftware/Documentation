@@ -1,0 +1,60 @@
+<docbook><section><title>VirtTipsAndTricksDBMSBackupCrashDump</title><title> How can I move a Virtuoso database from one hardware and/or software platform to another?</title> How can I move a Virtuoso database from one hardware and/or software platform to another?
+<para>Sometimes your preferred Virtuoso-hosting hardware (e.g., Alpha, IA_64, <ulink url="PowerPC">PowerPC</ulink>, SPARC, x86, x86_64) or operating system (e.g., AIX, HP-UX, Linux, Mac OS X, Solaris, Windows) changes.</para>
+<para>Different OS and processor architectures may use incompatible database file formats -- so your Virtuoso database cannot simply be copied from one machine to the other, but requires some structural changes.</para>
+<para>Virtuoso offers some powerful, but still easy to use, features for such migrations.
+ More details on these features are in the <ulink url="http://docs.openlinksw.com/virtuoso/backup.html">main product manual</ulink>.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> General procedure</bridgehead>
+<para>Simply put, the current Virtuoso instance must be told to produce a &quot;dump&quot; file (basically, a special form of transaction log) from the current database.
+ This file may be created on, subsequently moved to, or made accessible from, the new Virtuoso host.
+ The new Virtuoso instance must then be told to restore the dump file (through a special form of transaction replay).</para>
+<para>Adding an extra command argument (+log6) enables the upgrade and migration from Virtuoso 5 to Virtuoso 6 or Virtuoso 7.
+ This argument must be added to both the &quot;dump&quot; and the &quot;restore&quot; commands.</para>
+<para>There are two Virtuoso command arguments which will produce a &quot;dump&quot; file.
+ Both of these write to the INI-file (e.g., virtuoso.ini) specified transaction log (e.g., virtuoso.trx), so you may need to edit your INI file before proceeding further.</para>
+<para>The first dump-producing command argument, +backup-dump, will only work when your database is in good health.</para>
+<para>The second dump-producing command argument, +crash-dump, may be used when your database is in good health, but is intended for use when recovering from many forms of database corruption.</para>
+<para>If you&#39;re starting with a Virtuoso 5 server, and migrating to a Virtuoso 6 or later server, append +log6 after +backup-dump or +crash-dump.
+<emphasis><emphasis>Note:</emphasis> The extra +log6 argument is <emphasis>not</emphasis> needed, and may have unexpected effect, so please leave it off if starting with a Virtuoso 6 server and moving to Virtuoso 6 or later.</emphasis></para>
+<para>In the following examples, we demonstrate moving a Virtuoso database from Solaris running on SPARC, to Solaris running on x86_64.
+ The Virtuoso commands will follow the same form on any platform.
+ The methods and commands used to mount, write to, and/or read from remote filesystems may vary with the operating system and filesharing tools.
+ NFS (used here) should work in most cases.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2"> Sample execution</bridgehead>
+<orderedlist spacing="compact"><listitem>Stop db; </listitem>
+<listitem>(Optional) mount remote filesystem; </listitem>
+<listitem>Edit INI; </listitem>
+<listitem>Create the dump file with one of these commands -- <programlisting>virtuoso-iodbc-t [+backup-dump] [+log6]
+virtuoso-iodbc-t [+crash-dump] [+crash-dump-data-ini arg] [+log6]
+</programlisting></listitem>
+<listitem>(Optional) copy dump file to remote filesystem; </listitem>
+<listitem>(Optional) mount dump host filesystem from restoration host; </listitem>
+<listitem>Replay dump file with the command <programlisting>+restore-crash-dump
+</programlisting><emphasis><emphasis>Important note:</emphasis> You MUST use the +restore-crash-dump argument, NOT the +restore-backup argument, or the restoration will not succeed.
+ +restore-backup applies only to <ulink url="http://docs.openlinksw.com/virtuoso/backup.html#onlinebackups">online backups</ulink>.</emphasis></listitem>
+</orderedlist><para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h2">NFS Notes</bridgehead>
+<para>This is based on Solaris hosts on both ends.
+ There will be some variation across platforms.</para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> On NFS Server (where the files really will be)</bridgehead>
+<programlisting>svcadm -v enable -r network/nfs/server
+
+/etc/init.d/nfs.server start
+
+share -F nfs -o rw &lt;path_to_shared_directory&gt;
+
+share
+</programlisting><para> In at least one case, the above sequence had to be repeated after a server-side reboot, before the client-side would work.</para>
+<para> </para>
+<bridgehead class="http://www.w3.org/1999/xhtml:h3"> On NFS Client (where the applications/users are)</bridgehead>
+<programlisting>mkdir &lt;local_mount_point&gt;
+
+chmod 777 &lt;local_mount_point&gt;
+
+mount -F nfs &lt;server_FQDN&gt;:&lt;path_to_shared_directory&gt; &lt;local_mount_point&gt;
+</programlisting><bridgehead class="http://www.w3.org/1999/xhtml:h2"> Related</bridgehead>
+<itemizedlist mark="bullet" spacing="compact"><listitem><ulink url="http://www.sunhelp.org/faq/nfs.html">NFS FAQ on SunHelp</ulink> </listitem>
+<listitem><ulink url="http://unix-middleware.com/pages/solaris/nfs-tb.htm">Troubleshooting NFS in Solaris</ulink> </listitem>
+<listitem><ulink url="VirtTipsAndTricksGuide">Virtuoso Tips and Tricks Collection</ulink> </listitem>
+<listitem><ulink url="http://docs.openlinksw.com/virtuoso/backup.html">Virtuoso documentation on Backup and Restore</ulink>.
+</listitem>
+</itemizedlist></section></docbook>

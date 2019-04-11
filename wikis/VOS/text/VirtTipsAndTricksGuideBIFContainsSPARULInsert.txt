@@ -1,0 +1,83 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+---+ How can I adjust the frequency of RDF text indexing?
+
+---++ What
+
+You may want to change the frequency of Virtuoso's RDF text index updates.
+
+You can decrease the frequency, if your queries are usually made some time after data inserts/updates.  
+
+You can also increase the frequency to real-time, if you need inserts/updates to be immediately available for queries.
+
+---++ Why
+
+Virtuoso's RDF text indexes (that is, the indexes on literal object values, which are distinct from the indexes of URIs in any position) are updated periodically as a batch operation; by default, the interval is one (1) minute.
+
+This means that typed literals (<code>xsd:string</code>s, XML, <code>BLOB</code>s/<code>CLOB</code>s, etc.) which are inserted or changed by SPARUL or other methods may not be immediately available to <code>[[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext][bif:contains]]</code>, <code>[[http://docs.openlinksw.com/virtuoso/queryingxmldata.html#xcontainspredicate][bif:xcontains]]</code>, or other functions that depend on the text index.  
+
+---++ How
+
+   1 First, force a synchronization of the RDF text index:
+<verbatim>   
+SQL> DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
+</verbatim>
+   1 Next, set the text index to your desired frequency, using the <code>[[http://docs.openlinksw.com/virtuoso/fn_vt_batch_update.html][VT_BATCH_UPDATE()]]</code> function.
+      * To update the index in real time, immediately after every change, use --
+<verbatim>
+SQL> DB.DBA.VT_BATCH_UPDATE ( 'DB.DBA.RDF_OBJ', 'OFF', NULL );
+</verbatim>
+      * To decrease the frequency, use this form (changing the "1" below to your preferred interval, in minutes) --
+<verbatim>   
+SQL> DB.DBA.VT_BATCH_UPDATE ( 'DB.DBA.RDF_OBJ', 'ON', 1 );
+</verbatim>
+   1 Insert some example data:
+<verbatim>   
+SQL> SPARQL 
+INSERT INTO <http://example.com> 
+  { 
+    <http://www.worldcat.org/Book_11>  <http://schema.org/name>  "Kalimero"  .
+  };
+  
+Query result:
+callret-0
+ANY
+Insert into <http://example.com>, 1 (or less) triples -- done
+No. of rows in result: 1 
+</verbatim>  
+   1 Check the inserted triples:
+<verbatim>   
+SQL> SELECT *
+FROM  <http://example.com> 
+WHERE 
+  {
+    <http://www.worldcat.org/Book_11>  ?p  ?o
+  };
+
+Query result:
+p                        o
+ANY                      ANY
+http://schema.org/name	 Kalimero
+No. of rows in result: 1 
+</verbatim>
+   1 Check the inserted triples using <code>bif:contains</code>:
+<verbatim>    
+SQL> SELECT * 
+WHERE 
+  { <http://www.worldcat.org/Book_11>  ?p            ?o 
+  . ?o                                 bif:contains  "Kalimero" 
+  };
+
+Query result:
+p                        o
+ANY                      ANY
+http://schema.org/name	 Kalimero
+No. of rows in result: 1 	
+</verbatim>	
+	
+---++Related
+
+   * <code><a href="http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext">bif:contains</a></code> documentation
+   * <code><a href="http://docs.openlinksw.com/virtuoso/queryingxmldata.html#xcontainspredicate">bif:xcontains</a></code> documentation
+   * Virtuoso <code>[[http://docs.openlinksw.com/virtuoso/sparqlextensions.html#rdfsparqlrulefulltext][DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ() ]]</code> function usage example
+   * [[VirtTipsAndTricksGuideBIFContainsOptions][What free-text options can I use with <code>bif:contains</code>? ]]   

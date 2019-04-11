@@ -1,0 +1,139 @@
+%META:TOPICPARENT{name="VirtTipsAndTricksGuide"}%
+
+
+---+Virtuoso SPARQL LOAD Service
+
+---++What?
+
+Using SPARQL LOAD service to get remote endpoint's description.
+
+---++Why?
+
+Provides additional data that might be useful such as: if a local server knows what syntax extensions are supported by the remote SPARQL endpoint for ex.: <code> http://example.com/sparql </code> then it can improve the compilation of SPARQL queries that contain clauses like:
+<verbatim>
+SERVICE <http://example.com/sparql> {...} .
+</verbatim>
+
+
+---++How?
+
+To get the description of remote endpoint, one should run the following statement at its local server:
+
+<verbatim> 
+SPARQL LOAD SERVICE <http://example.com/sparql> DATA;
+</verbatim>
+
+The retrieved description will be stored in local RDF storage as a part of "<code> System Metadata" graph </code>, so the user calling this statement should have appropriate write permissions.
+
+
+---+++Example
+
+   1 Suppose the following query:
+<verbatim>
+INSERT INTO <http://voc.wkd.de> 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE 
+  {
+    GRAPH <http://voc.wkd.de> { ?s rdf:type skos:Concept.} 
+    SERVICE <http://de.dbpedia.org/sparql> 
+      {
+        SELECT ?o 
+        WHERE 
+          { 
+            ?s <http://www.w3.org/2002/07/owl#sameAs> ?o . 
+            FILTER REGEX(str(?o), "^http://dbpedia.org") .
+          } 
+        LIMIT 10
+      }
+  }
+</verbatim>
+   1 Next we will bound the ?s in the graph part and the ?s in the scope of
+the service part: For every concept ?s in the graph &lt;http://voc.wkd.de&gt; we want to retrieve the <code> owl:sameAs </code> elements in the service <code> &lt;http://de.dbpedia.org/sparql&gt; </code> , so for ex: 
+      * Locally there is the following triple:
+<verbatim>
+  {
+    dbpedia:A a skos:Concept
+  }
+</verbatim>
+      * In dbpedia there are the following triples:
+<verbatim>
+  {
+    dbpedia:B owl:sameAs dbpedia:C.
+    dbpedia:A owl:sameAs dbpedia:D.
+  }
+</verbatim>
+      * The expected result we want to be:
+<verbatim>
+  {
+    dbpedia:A owl:sameAs dbpedia D.
+  }
+</verbatim>
+   1 The simplest way to make ?s interrelated is to alter the select statement and to add <code> ?s </code> into its result set:
+<verbatim>
+INSERT INTO <http://voc.wkd.de> 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE 
+  {
+    GRAPH <http://voc.wkd.de> { ?s rdf:type skos:Concept.} 
+    SERVICE <http://de.dbpedia.org/sparql> 
+    {
+      SELECT ?s ?o 
+      WHERE 
+        { 
+          ?s <http://www.w3.org/2002/07/owl#sameAs> ?o . 
+          FILTER REGEX(str(?o), "^http://dbpedia.org") .
+        } 
+      LIMIT 10
+    }
+  }
+</verbatim>
+   1 The change will affect to the following:
+      1 <code> ?s from service </code> and <code> ?s from graph &lt;&gt; {} </code> will both appear at the same scope and the equality between them will be required by the semantics.
+      1 The optimizer will understand that it's better to pass the <code> ?s </code> as parameter to the service instead of selecting all pairs of <code> ?s </code> and <code> ?o </code> and filter them at the main query server.
+      1 The code generator will try to write a code for sending a query to <code> http://de.dbpedia.org/sparql </code> but it may fail if it are not known the capabilities of SPARQL compiler at <code> http://de.dbpedia.org/sparql </code> , so before the first compilation, one should execute the following statement:
+<verbatim>
+SPARQL LOAD SERVICE <http://de.dbpedia.org/sparql> DATA;
+</verbatim>
+         * The effect of executing the <code> SPARQL LOAD SERVICE </code> statement will be:
+            1 Recognize what syntax extensions are supported by the compiler inside
+<code> http://de.dbpedia.org/sparql </code> service endpoint. E.g., whether that endpoint can deal with external parameters.
+            1 Will write small description of the endpoint to local metadata but will not try to copy any data stored remotely to the local storage.
+   1 <b>Important Note</b>: that if the graph <code> &lt;http://voc.wkd.de&gt; { ?s rdf:type skos:Concept.} </code > will produce many values for <code>?s</code>, there will be many requests to dbpedia, and the sum of round-trip latencies will be high. In some cases it may be faster to get
+one big list of <code> ?s ?o pairs </code> from <b>dbpedia</b> and then search in local graph.
+To change the order of execution to "remote first" variant, the order of clauses should be changed to:
+<verbatim>
+INSERT INTO <http://voc.wkd.de> 
+  { 
+    ?s owl:sameAs ?o. 
+  } 
+WHERE
+  {
+    SERVICE <http://de.dbpedia.org/sparql> 
+      {
+        SELECT ?s ?o 
+        WHERE 
+          { 
+            ?s <http://www.w3.org/2002/07/owl#sameAs> ?o . 
+            FILTER REGEX(str(?o), "^http://dbpedia.org") .
+          } 
+        LIMIT 10
+      }
+    GRAPH <http://voc.wkd.de> { ?s rdf:type skos:Concept.} 
+  }
+</verbatim>
+
+
+
+---++Related
+
+   * [[VirtTipsAndTricksGuide][Virtuoso Tips and Tricks Collection]]
+   * [[http://docs.openlinksw.com/virtuoso/rdfsparql.html][Virtuoso Documentation]]
+
+
+
+
+

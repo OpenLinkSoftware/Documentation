@@ -1,0 +1,86 @@
+<html><body><div class="topic-text"><h1><a name="FOAF+SSL Support in OpenLink Data Spaces"></a>FOAF+SSL Support in OpenLink Data Spaces</h1>
+<h2><a name="What?"></a>What?</h2>
+<b>FOAF+SSL</b> is an authentication and authorization protocol that links a &#39;&#39;[Web ID]&#39;&#39; or &quot;<a href="http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/GetAPersonalURIIn5MinutesOrLess" class="absuri">Personal URI</a>&quot; to a public key to create a global, decentralized, distributed, and secure authentication system that functions with existing browsers.<p>FOAF+SSL uses PKI standards ? usually thought of as hierarchical trust management tools ? <a href="http://blogs.sun.com/bblfish/entry/foaf_ssl_pki_and_the" class="absuri">in a decentralized web-of-trust way</a>.
+The web of trust is built using semantic web vocabularies (particularly <a href="http://www.foaf-project.org/" class="absuri">FOAF</a>) published in RESTful manner to form [Linked Data].</p>
+<p>Based on well known existing standards, FOAF+SSL is currently in development, and is being discussed on the <a href="http://lists.foaf-project.org/mailman/listinfo/foaf-protocols" class="absuri">FOAF protocols mailing list</a>.</p>
+<p>For the most recent description of the protocol, read the one-page &#39;&#39;<a href="http://blogs.sun.com/bblfish/entry/foaf_ssl_adding_security_to" class="absuri">FOAF+SSL: Adding Security to Open Distributed Social Networks</a>&#39;&#39;.
+For a more detailed explanation of how the authentication works, see &#39;&#39;<a href="http://blogs.sun.com/bblfish/entry/more_on_authorization_in_foaf" class="absuri">FOAF+SSL: Creating a Web of Trust without Key Signing Parties</a>&#39;&#39;.</p>
+<h2><a name="Why?"></a>Why?</h2>
+<p>Automatic discovery of interpersonal trust relationships enables automatic application of appropriate permissions.</p>
+<p>In other words, data owners can set fuzzy permissions like &quot;only let my friends see this&quot; or &quot;only let my family edit this.&quot;  Applications can discover the relationships between the data owner and the data requester/user, and permit (or disallow) any attempted actions, without needing the data owner to explicitly set permissions for each potential user.</p>
+<p>One example might be a parent setting permissions on a photo gallery, to permit viewing only by &quot;immediate family&quot;.
+ The parent need not list each and every such relative specifically for this application -- and need not add new permissions for a new family member (whether by marriage, birth, or otherwise), though they <b>do</b> need to be added to the owner&#39;s FOAF.
+When a new user comes and asks to see the pictures, the gallery application would check the relationships declared by each person (the owner and the visitor), and if they matched up (in other words, the visitor could not get in simply by <b>claiming</b> a family relationship; the relationship must be confirmed by the owner&#39;s FOAF data), the pictures would be shown.</p>
+<h2><a name="How?"></a>How?</h2>
+<h3><a name="x.509 certificate"></a> x.509 certificate</h3>
+<p>The FOAF+SSL consumer needs an x509 certificate with v3 extension &quot;Subject Alternate Name&quot;.
+This attribute is used for the owner&#39;s Web ID.
+ For testing purposes we used OpenSSL<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenSSL&parent=VirtODSFOAFSSL" class="wikiword">?</a> demo CA to generate such certificates.
+ If you are not using the OpenSSL<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenSSL&parent=VirtODSFOAFSSL" class="wikiword">?</a> demo CA, you must first setup a self-signed CA; read OpenSSL<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/OpenSSL&parent=VirtODSFOAFSSL" class="wikiword">?</a> documents on how to do this.</p>
+<ol><li>Add the following line to the <code>[usr_cert]</code> section of the <code>openssl.cnf</code> file — <br><pre><br>subjectAltName=$ENV::ALTNAME
+</pre><br></li>
+<li>Set the environment variable <code>ALTNAME</code> to the owner&#39;s Web ID, e.g., <br><pre><br>export ALTNAME=URI:http://localhost/dataspace/person/myname#this
+</pre><br></li>
+<li>Make a self-signed certificate, e.g., <br><pre><br>$ CA.pl -newreq (follow the dialog) 
+$ CA.pl -sign
+</pre><br></li>
+<li>When asked to commit the certificate, make sure you see several lines above, like — <br><pre><br>           X509v3 Subject Alternative Name: 
+                URI:http://localhost/dataspace/person/myname#this 
+</pre><br></li>
+<li>If your browser wants a <code>PKCS#12</code> bundle, you must make one — <br><pre><br>$ openssl pkcs12 -export -in newcert.pem -inkey newkey.pem -out mycert.p12 
+</pre><br></li>
+<li>Rename <code>newcert.pem</code> and <code>newkey.pem</code>, to <code>mycert.pem</code> and <code>mykey.pem</code> for example.
+ The PEM format of the certificate will be needed below.</li>
+</ol><h3><a name="Setting up Virtuoso HTTPS"></a> Setting up Virtuoso HTTPS</h3>
+<p>To enable the HTTPS listener, you will need another certificate.
+ Existing certificates may not have Subject Alternate Name, so you may want to generate one as in the previous section.</p>
+<ol><li>The next step is to move <code>newcert.pem</code>, <code>newkey.pem</code>, and <code>cacert.pem</code> into the server&#39;s working directory.
+ In our test case, we put the keys in a &#39;<code>keys</code>&#39; sub-directory, and added the following lines to the <code>[HTTPServer]<code> section of the Virtuoso INI file, <code>virtuoso.ini<code>: <br><pre><br>SSLPort                     = 4443
+SSLCertificate              = ./keys/localhost.cert.pem
+SSLPrivateKey               = ./keys/localhost.key.pem
+X509ClientVerifyCAFile      = ./keys/localhost.ca.pem
+X509ClientVerify            = 1
+X509ClientVerifyDepth       = 15
+</pre><br></code></code></code></code></li>
+<li>Also in the Virtuoso INI file, in the <code>[URIQA]<code> section, <code>DefaultHost<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DefaultHost&parent=VirtODSFOAFSSL" class="wikiword">?</a></code> (<code>localhost:8890</code> below) must be edited to correspond to the DNS-resolvable host name (&quot;CNAME&quot;) of the Virtuoso host, combined with the <code>ServerPort<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ServerPort&parent=VirtODSFOAFSSL" class="wikiword">?</a></code> as set in the <code>[HTTPServer]<code> section of the same INI file.
+<br><pre><br>[URIQA]
+DynamicLocal = 1
+DefaultHost  = localhost:8890
+</pre><br>For instance, if the CNAME of the host is <code>virtuoso.example.com</code>, and the <code>ServerPort<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/ServerPort&parent=VirtODSFOAFSSL" class="wikiword">?</a></code> is <code>4321</code>, the <code>DefaultHost<a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/DefaultHost&parent=VirtODSFOAFSSL" class="wikiword">?</a></code> should be set to <code>virtuoso.example.com:4321</code> <br><pre><br>[URIQA]
+DynamicLocal = 1
+DefaultHost  = virtuoso.example.com:4321
+</pre><br></code></code></code></code></li>
+<li>Start the Virtuoso server, and look at the log file.
+ Once HTTPS is up, you should see something like — <br><pre><br>HTTPS Using X509 Client CA ....
+HTTPS/X509 server online at 4443
+</pre><br> </li>
+</ol><h3><a name="Setting Up Firefox"></a> Setting Up Firefox</h3>
+<ol><li>In the Preferences dialog, open the Advanced tab, and click the &quot;View certificates&quot; button.
+<br><br><img src="VirtODSFOAFSSL/Picture_1.png" style="wikiautogen"><br><br> </li>
+<li>Click the &quot;Add exception&quot; button ,and enter the address of the HTTPS server you&#39;ve just configured, i.e., <a href="https://virtuoso.example.com:4443/" class="absuri">https://virtuoso.example.com:4443/</a> </li>
+<li>Click OK, and confirm the exception.
+<br><br><img src="VirtODSFOAFSSL/Picture_2.png" style="wikiautogen"><br><br> </li>
+<li>Click to the &quot;Your Certificates&quot; tab, and import <code>mycert.p12</code>.</li>
+</ol><h3><a name="Configuring ODS Account to use FOAF+SSL"></a> Configuring ODS Account to use FOAF+SSL</h3>
+<ol><li>Log in to your ODS account, and edit your profile.
+</li>
+<li>Click to the Security Tab, and scroll to the bottom, where you will find the X.509 certificate entry area.
+</li>
+<li>Copy &amp; paste the PEM format of the certificate (i.e., the content of <code>mykey.pem</code>, from earlier).
+</li>
+<li>Press &quot;Save Certificate&quot; button, and you are set.</li>
+</ol><h3><a name="Testing the setup"></a> Testing the setup</h3>
+<p>To test, we recommend <a href="http://www.mozilla.com/firefox/" class="absuri">Firefox</a> v3 with the <a href="https://addons.mozilla.org/en-US/firefox/addon/5596" class="absuri">Tabulator extension</a>.
+Firefox must be set to ask for RDF, as instructed in the <a href="http://dig.csail.mit.edu/2007/tab/" class="absuri">Tabulator documentation</a>.</p>
+<ol><li>Enter an ODS user&#39;s URI in the address bar, and the fun begins.
+</li>
+<li>You should see a protected document&#39;s URI.
+ Note that there is no specific &quot;address&quot; data seen: <br><br><img src="VirtODSFOAFSSL/Picture_3.png" style="wikiautogen"><br><br> </li>
+<li>When clicked, the browser will ask the user to select a certificate (note: certificate details are erased in picture below).
+<br><br><img src="VirtODSFOAFSSL/Picture_4.png" style="wikiautogen"><br><br> </li>
+<li>Now the protected document includes the private address data alongside the previously visible public data! <br><br><img src="VirtODSFOAFSSL/Picture_5.png" style="wikiautogen"><br><br></li>
+</ol><h3><a name="FOAF+SSL ACLs"></a> FOAF+SSL ACLs</h3>
+<p>You can set FOAF+SSL ACLs from the <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthServerUI" class="wikiword">Virtuoso Authentication Server UI</a>.
+ A sample tutorial can be viewed <a href="http://vos.openlinksw.com:80/dataspace/owiki/wiki/VOS/VirtAuthFOAFSSLACL" class="wikiword">here</a>.
+</p>
+</div></body></html>
