@@ -272,284 +272,8 @@ preserve your existing data and configuration files:
     address) or *Free Pilot License* (30 day duration, requires some
     additional personal and business information).
     
-    ![Installing the Virtuoso Universal Server on Windows -- Obtain a
-    License File](ui/win_obtain_license.jpg)
 
-2.  Fill out the relevant form, and download the license file when
-    presented.
-    
-    *Note*
-    
-    : the file must be named `virtuoso.lic` for use. Some browsers may
-    rename the file during download; you can simply rename the file on
-    your machine.
-
-### Run the Virtuoso Installer
-
-1.  Double-click the installer archive, `wavpz2zz.msi` , to start the
-    process with the Installer Program Introduction.
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Run the
-    Virtuoso Installer](ui/win_installer_program.jpg)
-
-2.  Click
-    
-    *Next*
-    
-    , and you'll be presented with the License Agreement:
-    
-    ![Installing the Virtuoso Universal Server on Windows -- License
-    Agreement](ui/win_license_agreement.jpg)
-
-3.  Tick the box for
-    
-    *I accept*
-    
-    , and click
-    
-    *Next*
-    
-    . You'll be asked to locate your license file:
-    
-    ![Installing the Virtuoso Universal Server on Windows -- License
-    Agreement Accept](ui/win_install_folder.jpg)
-
-4.  Use the
-    
-    *Browse*
-    
-    button to locate the license file you obtained earlier, or click the
-    
-    *Try and Buy*
-    
-    button to obtain a new one now, or tick the box for
-    
-    *I don't want to install a license file now*
-    
-    . Then, click
-    
-    *Next*
-    
-    . You'll be prompted to select an Installation Type:
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Choose
-    Installation Type](ui/win_install_type.jpg)
-
-5.  Select the desired option:
-    
-      - *Typical*
-        
-        \-- installs to the default filesystem location, may not include
-        all components
-    
-      - *Complete*
-        
-        \-- installs to the default filesystem location, includes all
-        components
-    
-      - *Custom*
-        
-        \-- to install to any filesystem location, and select which
-        components will be installed
-
-6.  Click
-    
-    *Next*
-    
-    , and if you chose
-    
-    *Typical*
-    
-    or
-    
-    *Complete*
-    
-    , skip this and the next step; if you chose
-    
-    **
-    
-    Custom, you'll be prompted to choose a destination folder:
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Choose
-    Destination Folder](ui/win_destination_folder.jpg)
-
-7.  Click
-    
-    *Next*
-    
-    , and if you chose
-    
-    *Custom*
-    
-    , you'll be prompted for Feature Selection:
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Feature
-    Selection](ui/win_feature_selection.jpg.)
-
-8.  Click
-    
-    *Next*
-    
-    , and the installer will indicate it's ready to begin:
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Read to
-    install](ui/win_file_copystart.jpg)
-
-9.  Click install, and wait for notification of completion.
-
-### Start the Virtuoso Service Manager, and Locate it in the Task Bar
-
-1.  Launch the Virtuoso Service Manager from your
-    
-    *Start*
-    
-    menu.
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Launch the
-    Virtuoso Service Manager.](ui/win_locate_manager.jpg)
-
-2.  Look for an icon to appear in the Task Bar at the bottom right of
-    your screen.
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Look for an
-    icon](win_launch_manager.jpg)
-
-### Start and Administer your Virtuoso Instance
-
-1.  Right-click on the Virtuoso Service Manager icon in the Task Bar,
-    and click on
-    
-    *OpenLink Virtuoso Server - Start*
-    
-    :
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Start your
-    Virtuoso Instance](win_start_service.jpg)
-
-2.  Open the
-    
-    *Virtuoso Conductor*
-    
-    , Virtuoso's HTTP-based administration tool, by loading this URL in
-    your Web Browser: [http://example.com/conductor](#) .
-    
-    ![Installing the Virtuoso Universal Server on Windows -- Virtuoso
-    Conductor](win_virt_admin.jpg)
-
-3.  Use the Conductor to configure your Virtuoso instance for future
-    use. For example, it is
-    
-    *strongly*
-    
-    advised that you change the default passwords for the
-    
-    *dba*
-    
-    and
-    
-    *dav*
-    
-    super-user accounts (drill down to
-    
-    *System Admin*
-    
-    \-\<
-    
-    *User Accounts*
-    
-    ).
-
-### Optional - Restore your old Data and Configuration Files
-
-If you preserved existing data and configuration files at the start of
-this process, now is the time to bring them back into play.
-
-1.  If you used Virtuoso's online backup feature, [the
-    documentation](#onlinebackups) will walk you through the restoration
-    process.
-
-2.  If you simply copied the INI and DB files elsewhere, and if they
-    were Virtuoso 7.x files, you can just stop the current Virtuoso
-    instance, and replace the newly created INI and DB with the old
-    ones. For best results, we do advise that you compare the content of
-    the old INI with the new, and add any new settings from the new to
-    the old, adjust as may be appropriate to your deployment.
-
-3.  If you simply copied the INI and DB files elsewhere, and if they
-    were Virtuoso 6.x or older files, there are some extra steps that
-    must be taken.
-
-## Post Installation
-
-### Post-Installation Sanity Check
-
-A quick way to check that the database is running, is to point a browser
-to the http port. The following example URLs will show the System
-Manager for the default, and the demo Virtuoso databases:
-
-    http://example.com
-    http://example.com:8890
-
-### Troubleshooting DB Startup Failures
-
-*Install failure*
-
-Check the .log file in your Virtuoso installation db location, for ex:
-
-``` 
-    C:\Program Files\OpenLink Software\Virtuoso 7.2\db\virtuoso.log
-```
-
-which is for the database and log files etc. in order to review the
-installed files binaries and databases (defaults) for issues if install
-fails.
-
-*.lck existance*
-
-Check .log in case of .lck issue
-
-Delete the .lck file and repeat the steps from above.
-
-*.trx incompatiblity issue*
-
-Check .log in case of .trx incompatiblity issue
-
-*oplmgr issue*
-
-See [Troubleshooting License Problems](#oplmngrdlptl)
-
-## Starting Your Virtuoso Server
-
-Due to subtle differences between the Windows 95 family (including
-Windows 98 and Windows ME) and the Windows NT family (including Windows
-2000, Windows XP, Vista, Windows 7, Windows 2000 Server, Windows Server
-2003, and Windows Server 2008), specific instructions for starting and
-stopping your Virtuoso server are supplied for each Windows family.
-
-### Windows NT family
-
-You can start your Virtuoso server in one of two ways, automatically or
-manually, the default mode configured by your installer is Automatic.
-
-#### Automatic Startup
-
-Your Virtuoso servers (default and demonstration databases) are
-configured at installation time as "Automatic Startup" services. Thus,
-rebooting your machine after installation is all that is required in
-order for your Virtuoso servers to be ready to start receiving
-connections from client applications. The service is actually started
-during the installation, however some files may be locked, so a reboot
-is required to complete the install.
-
-#### Manual Startup
-
-You can manually start your Virtuoso server in one of two ways, either
-via the "services" control panel applet or from within a DOS shell. When
-doing this via the "Services" control panel Applet you need to simply
-open up your control panel and click on the "services" applet. This will
-present you with a screen similar to the one below:
-
-![Services Applet](virtinst12.gif)
+![Services Applet](./images/virtinst12.gif)
 
 Click the "Start" or "Stop" button in order to start or stop a
 highlighted Virtuoso Server.
@@ -811,18 +535,18 @@ process is ready to commence.
     license file for use with the installation; if a license file is
     already in place, you can "Skip" this task with the obvious button:
     
-    ![License file](inst/v50-pe-unx-00.png)
+    ![License file](./images/inst/v50-pe-unx-00.png)
 
   - It is strongly advised that the standard "dba" and "dav" user
     account password be changed using the post installation page
     provided:
     
-    ![DAV/DBA authentication Setting page](inst/v50-pe-unx-01.png)
+    ![DAV/DBA authentication Setting page](./images/inst/v50-pe-unx-01.png)
 
   - The post installation page is now complete and the Virtuoso Welcome
     page is presented:
     
-    ![Post installation page](inst/v50-pe-unx-02.png)
+    ![Post installation page](./images/inst/v50-pe-unx-02.png)
 
   - The installation is now ready for use.
 
@@ -850,18 +574,18 @@ Leopard (10.6.x).
     
     , to start the installation.
     
-    ![Mac OS X installer: Start installation](mac/v7pe1.png)
+    ![Mac OS X installer: Start installation](./images/mac/v7pe1.png)
 
 2.  Drag the Virtuoso application icon to your Applications folder
     (recommended) or any preferred location on your Mac.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe2.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe2.png)
 
 3.  Double-click the Virtuoso application (e.g., Virtuoso 7.1.app) to
     launch the Virtuoso Application Manager Menu Extra, which will
     display as a V symbol in the menu bar.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe6.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe6.png)
 
 4.  Select
     
@@ -873,12 +597,12 @@ Leopard (10.6.x).
     
     menu.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe7.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe7.png)
 
 5.  If this is a first time installation of OpenLink components, a
     dialog will be prompt you to install the OpenLink License Manager.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe8.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe8.png)
     
     1.  Click the
         
@@ -886,11 +610,11 @@ Leopard (10.6.x).
         
         button to start the installation.
         
-        ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe9.png)
+        ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe9.png)
     
     2.  Select the disk the installation should be performed on.
         
-        ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe10.png)
+        ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe10.png)
     
     3.  Click
         
@@ -898,20 +622,20 @@ Leopard (10.6.x).
         
         to commence the installation of the License Manager components.
         
-        ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe11.png)
+        ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe11.png)
     
     4.  The following dialog will be displayed to confirm successful
         installation of the License Manager, which will be automatically
         started and ready for use upon installation.
         
-        ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe12.png)
+        ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe12.png)
 
 6.  If a license file is not already in place, you will be prompted to
     locate an available license file or to purchase one for
     installation. Click the Install button to install the license file
     of your choice.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe13.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe13.png)
     
     1.  Navigate to the location of the license file to be installed,
         and click the
@@ -924,12 +648,12 @@ Leopard (10.6.x).
         
         folder.
         
-        ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe14.png)
+        ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe14.png)
     
     2.  A dialog confirming the successful installation of the license
         file will be displayed.
         
-        ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe15.png)
+        ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe15.png)
 
 7.  The Default database instance can now be started by clicking the
     
@@ -937,7 +661,7 @@ Leopard (10.6.x).
     
     button.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe16.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe16.png)
 
 8.  The Virtuoso server is now ready for use, and the browser-based
     Virtuoso Conductor administration interface may be accessed by
@@ -951,14 +675,14 @@ Leopard (10.6.x).
     
     menu.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe17.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe17.png)
 
 9.  The Virtuoso Conductor may also be accessed by manually loading the
     URL \<http://example.com/conductor\> (or
     \<http://full-hostname.example.com:8890/conductor\> from a remote
     host) into any web browser.
     
-    ![Mac OS X installer: Drag Virtuoso Application](mac/v7pe18.png)
+    ![Mac OS X installer: Drag Virtuoso Application](./images/mac/v7pe18.png)
 
 ### Troubleshooting
 
@@ -966,7 +690,7 @@ Many issues may be quickly diagnosed and resolved by reviewing
 Virtuoso's `.log` file, typically located alongside the active `.db`
 file.
 
-![Mac OS X installer: Troubleshooting](mac/v7pe19.png)
+![Mac OS X installer: Troubleshooting](./images/mac/v7pe19.png)
 
 The default instance log file may be opened in Mac OS X's Console.app
 by:
@@ -993,7 +717,7 @@ by:
     
     *Contents -\> virtuoso -\> database -\> virtuoso.log*
     
-    ![Mac OS X installer: Troubleshooting](mac/v7pe20.png)
+    ![Mac OS X installer: Troubleshooting](./images/mac/v7pe20.png)
 
   - executing the following command in
     
@@ -1045,55 +769,55 @@ either double clicking on the DMG file in the Finder windows or using
 the "open" command from a Terminal window, to mount the Disk Image
 containing the VirtuosoPersonalEdition.mpkg installer.
 
-![Mounting the Disk Image](mac/v50pe00.png)
+![Mounting the Disk Image](./images/mac/v50pe00.png)
 
 The installer will load the Introduction page.
 
-![Installer Introduction Page](mac/v50pe01.png)
+![Installer Introduction Page](./images/mac/v50pe01.png)
 
 Review the Readme page for any important information concerning the
 product installation.
 
-![Important Information](mac/v50pe02.png)
+![Important Information](./images/mac/v50pe02.png)
 
 Read the license agreement and "agree" to the terms.
 
-![Software License Agreement](mac/v50pe03.png)
+![Software License Agreement](./images/mac/v50pe03.png)
 
 Select the Destination volume the software is to be installed on.
 
-![Select Destination](mac/v50pe04.png)
+![Select Destination](./images/mac/v50pe04.png)
 
 Choose to perform and Easy(default) installation or click on the
 "customize" button to perform a Custom installation.
 
-![Selecting the Type of Installation](mac/v50pe05.png)
+![Selecting the Type of Installation](./images/mac/v50pe05.png)
 
 If the "Custom" option was selected in the previous step then select the
 packages to be installed.
 
-![Customizing the Installation](mac/v50pe06.png)
+![Customizing the Installation](./images/mac/v50pe06.png)
 
 The software must be install by a user with Administrative privileges on
 the machine.
 
-![Identifying yourself as Administrator](mac/v50pe07.png)
+![Identifying yourself as Administrator](./images/mac/v50pe07.png)
 
 The software components will be installed the status of which is
 indicated by the progress bar.
 
-![Preparing ...](mac/v50pe08.png)
+![Preparing ...](./images/mac/v50pe08.png)
 
 The Virtuoso Server is started at the end of this process. A Web page is
 loaded to enable you to obtain a trial or full license from the OpenLink
 online shop:
 
-![Admin Assistant](mac/v50pe09.png)
+![Admin Assistant](./images/mac/v50pe09.png)
 
 Choose to obtain a Trial license for an evaluation or enter the shop
 site to purchase a full license.
 
-![The Trial license page](mac/v50pe10.png)
+![The Trial license page](./images/mac/v50pe10.png)
 
 Click on the "Download License" button on the right to obtain the
 license file immediately. An e-mail will also be sent to your registered
@@ -1105,22 +829,22 @@ Once a license file is available on your Mac, use the "Browse" button to
 locate it. Then, use the "Set License" button to initialize the Virtuoso
 server with it:
 
-![Download license](mac/v50pe11.png)
+![Download license](./images/mac/v50pe11.png)
 
 Change the "dba" and "dav" user passwords from their default of "dba"
 and "dav" to a value of your choice:
 
-![Change passwords](mac/v50pe12.png)
+![Change passwords](./images/mac/v50pe12.png)
 
 The Virtuoso Server Welcome page will now be displayed. The server is
 online. This Web based page can be used for general configuration and
 usage of the Virtuoso Server:
 
-![Welcome](mac/v50pe13.png)
+![Welcome](./images/mac/v50pe13.png)
 
 The Installation is now complete.
 
-![Installation complete](mac/v50pe14.png)
+![Installation complete](./images/mac/v50pe14.png)
 
 ## Configuration
 
@@ -1128,19 +852,19 @@ Click on the "Conductor" link in the left frame of the Welcome page to
 load the Virtuoso Conductor which is the Administration interface for
 the installation. Enter the "dba" username and password to login.
 
-![Configuration](mac/v50pe15.png)
+![Configuration](./images/mac/v50pe15.png)
 
 Once logged into the conductor click on any of the "Tabs" along the top
 to Administer the various features of the Virtuoso Universal Server
 installation.
 
-![Various features using Conductor Tabs](mac/v50pe16.png)
+![Various features using Conductor Tabs](./images/mac/v50pe16.png)
 
 Apple scripts for starting and stopping your Virtuoso Universal Server
 installation are located in the "/Application/OpenLink Virtuoso" folder
 of the machine.
 
-![Location of apple scripts](mac/v50pe17.png)
+![Location of apple scripts](./images/mac/v50pe17.png)
 
 ## Post Installation
 
@@ -1163,7 +887,7 @@ Check the .log file in oplmgr (License Manager) location:
 and log files etc. in order to review the installed files binaries and
 databases (defaults) for issues if install fails.
 
-![The .log file](ui/instmac.png)
+![The .log file](./images/ui/instmac.png)
 
 *.lck existance*
 
@@ -1182,7 +906,7 @@ commands:
 
     /Library/Application Support/openlink/bin/oplmgr +start | +stop | +reload
 
-![The .log file](ui/instmac2.png)
+![The .log file](./images/ui/instmac2.png)
 
 > **Tip**
 > 
@@ -1201,33 +925,33 @@ Once the iODBC Administrator window has appeared you can press the *Add*
 button on the either the *User DSN* or the *System DSN* panel to add a
 new Data Source entry.
 
-![ODBC Administrator](mac/config01.jpg)
+![ODBC Administrator](./images/mac/config01.jpg)
 
 Choose the driver that you wish to create a Data Source for, in this
 case the Virtuoso Driver (3.0).
 
-![ODBC Administrator - Choose Virtuoso Driver](mac/config03.jpg)
+![ODBC Administrator - Choose Virtuoso Driver](./images/mac/config03.jpg)
 
 Provide all required details in the fields provided by the setup panel.
 
-![ODBC Administrator - Configure Virtuoso DSN](mac/config04.jpg)
+![ODBC Administrator - Configure Virtuoso DSN](./images/mac/config04.jpg)
 
 The server can be picked from the list of Zero Configuration Datasources
 that is discovered.
 
-![Pick Zero Config](mac/osximage23.gif)
+![Pick Zero Config](./images/mac/osximage23.gif)
 
 Alternatively a manual selection can be made for the server.
 
-![Pick manual mode](mac/osximage25.gif)
+![Pick manual mode](./images/mac/osximage25.gif)
 
 In this case enter the hostname (or IP) and port number.
 
-![Manual Server Entry](mac/osximage34.gif)
+![Manual Server Entry](./images/mac/osximage34.gif)
 
-![ODBC Administrator - Configure Virtuoso DSN](mac/config05.jpg)
+![ODBC Administrator - Configure Virtuoso DSN](./images/mac/config05.jpg)
 
-![ODBC Administrator - Configure Virtuoso DSN](mac/config06.jpg)
+![ODBC Administrator - Configure Virtuoso DSN](./images/mac/config06.jpg)
 
 Press the *Finish* button to save the Data Source information.
 
@@ -1238,7 +962,7 @@ Select the Data Source from the DSN list, and press the *Test* button.
 You will be prompted for a username and password to establish a
 connection with the Data Source.
 
-![Login - Identity Tab](mac/config07.jpg)
+![Login - Identity Tab](./images/mac/config07.jpg)
 
 The login dialogue also allows you to alter the configuration if
 required.
@@ -1246,20 +970,20 @@ required.
 Under the Connection Tab are the fields for the remote server, and the
 authentication method. Typically the defaults are used.
 
-![Login - Connection Tab](mac/osximage30.gif)
+![Login - Connection Tab](./images/mac/osximage30.gif)
 
 The Options page has Database, Charset and daylight savings
 configuration. Typically the defaults are used.
 
-![Login - Options Tab](mac/osximage31.gif)
+![Login - Options Tab](./images/mac/osximage31.gif)
 
 The About page shows the software details.
 
-![Login - About](mac/osximage32.gif)
+![Login - About](./images/mac/osximage32.gif)
 
 The result of the test is shown in a popup window.
 
-![Test Result](mac/osximage33.gif)
+![Test Result](./images/mac/osximage33.gif)
 
 ## Default passwords
 
@@ -1401,39 +1125,39 @@ Briefcase](#oplmngrlflb) via the OpenLink Web site.
 
 1.  Click the Login link that appears on the OpenLink Web page.
     
-    ![ODS Briefcase](ui/ODSA.png)
+    ![ODS Briefcase](./images/ui/ODSA.png)
 
 2.  Click the "Login Here" button that appears in the Registered Users
     box.
     
-    ![ODS Briefcase](ui/ODSB.png)
+    ![ODS Briefcase](./images/ui/ODSB.png)
 
 3.  Click the "Check my profile" link that appears in the Welcome box.
     
-    ![ODS Briefcase](ui/ODSC.png)
+    ![ODS Briefcase](./images/ui/ODSC.png)
 
 4.  Click the ODS Service URL that appears in the lower right hand
     corner of the My Details dialog.
     
-    ![ODS Briefcase](ui/ODS3.png)
+    ![ODS Briefcase](./images/ui/ODS3.png)
 
 5.  Allow the My OpenLink Web page to load in a Web browser.
     
-    ![ODS Briefcase](ui/ODS4.png)
+    ![ODS Briefcase](./images/ui/ODS4.png)
 
 6.  Login to your OpenLink Data Space using your OpenLink login.
     
-    ![ODS Briefcase](ui/ODS5.png)
+    ![ODS Briefcase](./images/ui/ODS5.png)
 
 7.  Click the Briefcase link that appears in the ODS menu bar at the top
     of the page.
     
-    ![ODS Briefcase](ui/ODS6.png)
+    ![ODS Briefcase](./images/ui/ODS6.png)
 
 8.  Your license will appear as a Resource Item under the Briefcase
     Summary.
     
-    ![ODS Briefcase](ui/ODS7.png)
+    ![ODS Briefcase](./images/ui/ODS7.png)
 
 Click the license link to download your license. Provide your OpenLink
 username and password if prompted for a DAV login.
@@ -1863,7 +1587,7 @@ displaying data in selected tables from a Virtuoso database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio](ui/insg1.png)
+    ![Visual Studio](./images/ui/insg1.png)
 
 2.  Create a Web Application project by going to the File menu in Visual
     Studio and choosing New Project.
@@ -1877,97 +1601,97 @@ displaying data in selected tables from a Virtuoso database.
 5.  Choose a name for the project, for example VirtuosoDataGridApp, and
     click OK.
     
-    ![name for the project](ui/insg5.png)
+    ![name for the project](./images/ui/insg5.png)
 
 6.  From the Data, menu select the Show Data Sources menu item to
     display a list of available Data sources.
     
-    ![Show Data Sources](ui/insg6.png)
+    ![Show Data Sources](./images/ui/insg6.png)
 
 7.  Click on the Add New Data Source link to add a new data source.
     
-    ![Add New Data Source](ui/insg7.png)
+    ![Add New Data Source](./images/ui/insg7.png)
 
 8.  In the Data Source Configuration Wizard dialog Choose Data Source
     Type page, select the Database data source type and click Next.
     
-    ![Data Source Configuration Wizard](ui/insg8.png)
+    ![Data Source Configuration Wizard](./images/ui/insg8.png)
 
 9.  In the Data Source Configuration Wizard dialog Choose your Data
     Connection page, select the New Connection button.
     
-    ![Data Connection page](ui/insg9.png)
+    ![Data Connection page](./images/ui/insg9.png)
 
 10. In the Choose Data Source dialog, select OpenLink Virtuoso Data
     Source from the list and click Continue.
     
-    ![OpenLink Virtuoso Data Source](ui/insg10.png)
+    ![OpenLink Virtuoso Data Source](./images/ui/insg10.png)
 
 11. In the Add Connection dialog, specify the hostname, portno,
     username, and password for the target Virtuoso Server and check the
     Save Password check box.
     
-    ![Add Connection dialog](ui/insg11.png)
+    ![Add Connection dialog](./images/ui/insg11.png)
 
 12. Select the Select Database From List radio button and choose School
     from the drop down list of available databases.
     
-    ![Select Database From List](ui/insg12.png)
+    ![Select Database From List](./images/ui/insg12.png)
 
 13. Click the Test Connection button to verify the connection is
     successful and then click OK to add the connection.
     
-    ![Test Connection](ui/insg13.png)
+    ![Test Connection](./images/ui/insg13.png)
 
 14. Select the Yes, include sensitive data in the connect string radio
     button and click Next to continue.
     
-    ![connect string](ui/insg14.png)
+    ![connect string](./images/ui/insg14.png)
 
 15. In the Choose your Database Objects dialog select the table and
     columns to be queried, the shippers table is used in this example.
     
-    ![Choose your Database Objects](ui/insg15.png)
+    ![Choose your Database Objects](./images/ui/insg15.png)
 
 16. A DataSet for the shippers database object is created
     
-    ![shippers database](ui/insg16.png)
+    ![shippers database](./images/ui/insg16.png)
 
 17. From the drop down list box next to the Shippers table ensure the
     DataGridView item is selected
     
-    ![DataGridView](ui/insg17.png)
+    ![DataGridView](./images/ui/insg17.png)
 
 18. Drag the Shippers DataSet item onto the Form to create a scrollable
     and editable association of the Shippers table object with the Data
     Grid View automatically.
     
-    ![Drag](ui/insg18.png)
+    ![Drag](./images/ui/insg18.png)
 
 19. From the Debug Menu select the Start Debugging menu item to run the
     application.
     
-    ![Debug](ui/insg19.png)
+    ![Debug](./images/ui/insg19.png)
 
 20. The data in the Shippers table will be displayed in the DataGrid
     application created.
     
-    ![DataGrid](ui/insg20.png)
+    ![DataGrid](./images/ui/insg20.png)
 
 21. A new row can be inserted (updated or deleted) as indicated for the
     new DHL record inserted below and the save button clicked to save
     the change to the database.
     
-    ![new row](ui/insg21.png)
+    ![new row](./images/ui/insg21.png)
 
 22. The Virtuoso Interactive SQL tab of the Conductor can be used to run
     the query select \* from Demo..Shippers.
     
-    ![Interactive SQL tab](ui/insg22.png)
+    ![Interactive SQL tab](./images/ui/insg22.png)
 
 23. To verify the change has been successfully made in the database.
     
-    ![verify](ui/insg23.png)
+    ![verify](./images/ui/insg23.png)
 
 The task is now complete.
 
@@ -2004,7 +1728,7 @@ environment you will need:
     
     tab of the Virtuoso Conductor.
     
-    ![Conductor Packages](ui/uado1.png)
+    ![Conductor Packages](./images/ui/uado1.png)
 
 3.  Scroll down to the
     
@@ -2024,7 +1748,7 @@ environment you will need:
     
     .
     
-    ![Install package](ui/uado2.png)
+    ![Install package](./images/ui/uado2.png)
 
 4.  Click the
     
@@ -2032,7 +1756,7 @@ environment you will need:
     
     button to begin the installation process.
     
-    ![Install package.](ui/uado3.png)
+    ![Install package.](./images/ui/uado3.png)
 
 5.  Once complete return to the
     
@@ -2041,13 +1765,13 @@ environment you will need:
     tab and scroll down to confirm the \*schools\_db\* package is listed
     as installed.
     
-    ![Install package](ui/uado4.png)
+    ![Install package](./images/ui/uado4.png)
 
 *Create the Course Manager application using Visual Studio*
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/uados1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/uados1.png)
 
 2.  On the
     
@@ -2093,7 +1817,7 @@ environment you will need:
     
     .
     
-    ![Create project](ui/uado5.png)
+    ![Create project](./images/ui/uado5.png)
 
 *Create the Course Viewer form*
 
@@ -2105,7 +1829,7 @@ environment you will need:
 3.  In *Solution Explorer* , double-click *CourseViewer.vb* or
     *CourseViewer.cs* to open the form.
     
-    ![CourseViewer.vb](ui/uado6.png)
+    ![CourseViewer.vb](./images/ui/uado6.png)
 
 4.  In the *Toolbox* , expand *Common Controls* , drag the *ComboBox*
     control to the form, and change the name of the control to
@@ -2119,7 +1843,7 @@ environment you will need:
     to the form, and change the *Name* of the control to
     *courseGridView* .
     
-    ![DataGridView](ui/uado7.png)
+    ![DataGridView](./images/ui/uado7.png)
 
 7.  Double-click the *closeForm* button control. This opens the code
     page for the form and creates the closeForm\_Click event handler
@@ -2150,7 +1874,7 @@ environment you will need:
 3.  Type School.edmx for the model name and click Add. The opening page
     of the Entity Data Model Wizard is displayed.
     
-    ![School.edmx](ui/uado8.png)
+    ![School.edmx](./images/ui/uado8.png)
 
 *Generate the EDM*
 
@@ -2168,7 +1892,7 @@ environment you will need:
     
     .
     
-    ![Model Contents](ui/uado9.png)
+    ![Model Contents](./images/ui/uado9.png)
 
 2.  Click the
     
@@ -2176,7 +1900,7 @@ environment you will need:
     
     button.
     
-    ![New Connection](ui/uado10.png)
+    ![New Connection](./images/ui/uado10.png)
 
 3.  Choose the OpenLink
     
@@ -2188,7 +1912,7 @@ environment you will need:
     
     .
     
-    ![Virtuoso Data Source](ui/uado11.png)
+    ![Virtuoso Data Source](./images/ui/uado11.png)
 
 4.  In the
     
@@ -2204,7 +1928,7 @@ environment you will need:
     
     button.
     
-    ![Connection Properties](ui/uado12.png)
+    ![Connection Properties](./images/ui/uado12.png)
 
 5.  In the
     
@@ -2220,7 +1944,7 @@ environment you will need:
     
     and click OK.
     
-    ![Advanced Properties](ui/uado13.png)
+    ![Advanced Properties](./images/ui/uado13.png)
 
 6.  Press the
     
@@ -2228,7 +1952,7 @@ environment you will need:
     
     dialog to verify the database is accessible.
     
-    ![Test Connection](ui/uado14.png)
+    ![Test Connection](./images/ui/uado14.png)
 
 7.  Set the
     
@@ -2244,7 +1968,7 @@ environment you will need:
     
     .
     
-    ![entity connect string name](ui/uado15.png)
+    ![entity connect string name](./images/ui/uado15.png)
 
 8.  In the
     
@@ -2272,7 +1996,7 @@ environment you will need:
     
     .
     
-    ![Database Objects](ui/uado16.png)
+    ![Database Objects](./images/ui/uado16.png)
 
 *View the EDM in the ADO.NET Entity Data Model Designer*
 
@@ -2287,7 +2011,7 @@ environment you will need:
     file. This displays the School model in the ADO.NET Entity Data
     Model Designer window.
     
-    ![Solution Explorer](ui/uado17.png)
+    ![Solution Explorer](./images/ui/uado17.png)
 
 2.  From the
     
@@ -2317,7 +2041,7 @@ environment you will need:
     
     nodes to view conceptual and store definitions, respectively.
     
-    ![SchoolModel](ui/uado20.png)
+    ![SchoolModel](./images/ui/uado20.png)
 
 4.  From the
     
@@ -2337,7 +2061,7 @@ environment you will need:
 5.  This displays the Entity Mapping Details window with information
     about the object-relational mapping for the selected object.
     
-    ![View menu](ui/uado21.png)
+    ![View menu](./images/ui/uado21.png)
 
 ## Querying Entities and Associations
 
@@ -2659,7 +2383,7 @@ Course Manager application.
     
     control to display the courses that belong to that department.
     
-    ![ComboBox](ui/uado18.png)
+    ![ComboBox](./images/ui/uado18.png)
 
 3.  In the
     
@@ -2672,7 +2396,7 @@ Course Manager application.
     to save changes to the database and displays a message box that
     declares the number of saved changes.
     
-    ![DataGridView](ui/uado19.png)
+    ![DataGridView](./images/ui/uado19.png)
 
 The process is now complete
 
@@ -2748,7 +2472,7 @@ database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE.](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE.](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -2794,7 +2518,7 @@ database:
     
     .
     
-    ![Name project](ui/eora2.png)
+    ![Name project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -2802,7 +2526,7 @@ database:
     
     .
     
-    ![Create project](ui/eora3.png)
+    ![Create project](./images/ui/eora3.png)
 
 7.  Right click on the
     
@@ -2814,7 +2538,7 @@ database:
     
     menu options.
     
-    ![New Item](ui/einf4.png)
+    ![New Item](./images/ui/einf4.png)
 
 8.  The
     
@@ -2834,7 +2558,7 @@ database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Entity Model](ui/eora5.png)
+    ![Entity Model](./images/ui/eora5.png)
 
 9.  In the
     
@@ -2854,7 +2578,7 @@ database:
     
     .
     
-    ![Model Contents](ui/eora6.png)
+    ![Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -2870,7 +2594,7 @@ database:
     
     button
     
-    ![Data Connection](ui/ados7.png)
+    ![Data Connection](./images/ui/ados7.png)
 
 11. In the
     
@@ -2886,7 +2610,7 @@ database:
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -2902,7 +2626,7 @@ database:
     
     check box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -2915,7 +2639,7 @@ database:
     from the drop down list, assuming the Virtuoso Demo Database is
     installed.
     
-    ![Advanced Properties](ui/ados10.png)
+    ![Advanced Properties](./images/ui/ados10.png)
 
 14. Click the
     
@@ -2924,7 +2648,7 @@ database:
     button to verify the connection is successful and then click OK to
     add the connection.
     
-    ![Test Connection](ui/ados11.png)
+    ![Test Connection](./images/ui/ados11.png)
 
 15. Set the
     
@@ -2940,7 +2664,7 @@ database:
     
     .
     
-    ![entity connect string](ui/ados12.png)
+    ![entity connect string](./images/ui/ados12.png)
 
 16. In the
     
@@ -2965,7 +2689,7 @@ database:
     
     .
     
-    ![Database Objects](ui/ados13.png)
+    ![Database Objects](./images/ui/ados13.png)
 
 17. The
     
@@ -2974,7 +2698,7 @@ database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/ados14.png)
+    ![Virtuoso.edmx](./images/ui/ados14.png)
 
 18. Right click on the
     
@@ -2990,7 +2714,7 @@ database:
     
     menu options.
     
-    ![New Item](ui/ados4.png)
+    ![New Item](./images/ui/ados4.png)
 
 19. The
     
@@ -3010,7 +2734,7 @@ database:
     
     to create the ADO.Net Data Service.
     
-    ![ADO.NET Data Service](ui/ados15.png)
+    ![ADO.NET Data Service](./images/ui/ados15.png)
 
 20. In the
     
@@ -3054,7 +2778,7 @@ database:
             }
         }
     
-    ![Data Service](ui/ados16.png)
+    ![Data Service](./images/ui/ados16.png)
 
 21. To test the Data Service, simply hit
     
@@ -3065,7 +2789,7 @@ database:
     displaying the list of available tables/entities of the Demo
     database.
     
-    ![test the Data Service](ui/ados17.png)
+    ![test the Data Service](./images/ui/ados17.png)
 
 22. To access a specific entity instance like the
     
@@ -3078,7 +2802,7 @@ database:
     record, this would be specified as
     http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
     
-    ![Access a specific entity instance](ui/ados18.png)
+    ![Access a specific entity instance](./images/ui/ados18.png)
 
 *NOTES*
 
@@ -3197,7 +2921,7 @@ WHERE {?s a nwind:Customer}
 which can be done via the Virtuoso Conductor in the "System Admin" -\>
 "User Accounts" tab.
 
-![SPARQL\_SPONGE](ui/sparqlwinf1.png)
+![SPARQL\_SPONGE](./images/ui/sparqlwinf1.png)
 
 *Step 2 - Create a simple grid form in Visual Studio*
 
@@ -3231,7 +2955,7 @@ which can be done via the Virtuoso Conductor in the "System Admin" -\>
     
     .
     
-    ![Data Source](ui/sparqlwinf2.png)
+    ![Data Source](./images/ui/sparqlwinf2.png)
 
 4.  In the
     
@@ -3250,7 +2974,7 @@ which can be done via the Virtuoso Conductor in the "System Admin" -\>
     
     and select sparqlview.
     
-    ![Data Source Configuration Wizard](ui/sparqlwinf3.png)
+    ![Data Source Configuration Wizard](./images/ui/sparqlwinf3.png)
 
 6.  Click
     
@@ -3282,7 +3006,7 @@ which can be done via the Virtuoso Conductor in the "System Admin" -\>
     
     to Blue.
     
-    ![CellStyleBuilder](ui/sparqlwinf4.png)
+    ![CellStyleBuilder](./images/ui/sparqlwinf4.png)
 
 9.  Expand
     
@@ -3534,7 +3258,7 @@ the query results.
     
     DescribeDataSet.
     
-    ![Add a new DataSet](ui/sparqlwinf5.png)
+    ![Add a new DataSet](./images/ui/sparqlwinf5.png)
 
 2.  Double click on DescribeDataSet in the
     
@@ -3564,27 +3288,27 @@ the query results.
     
     of each column to System.Object.
     
-    ![Add two columns](ui/sparqlwinf6.png)
+    ![Add two columns](./images/ui/sparqlwinf6.png)
 
 *Step 7 - Build and run the application.*
 
 You should see a form displaying all the Northwind customers, like this.
 
-![Northwind customers](ui/sparqlwinf7.png)
+![Northwind customers](./images/ui/sparqlwinf7.png)
 
 When any customer is clicked it opens a new form showing customer
 details.
 
-![Customer details](ui/sparqlwinf8.png)
+![Customer details](./images/ui/sparqlwinf8.png)
 
 Clicking on the links in the new form allows you to drill down further
 to get order, product, location details etc.
 
-![Order, product, location details](ui/sparqlwinf9.png)
+![Order, product, location details](./images/ui/sparqlwinf9.png)
 
 and
 
-![Order, product, location details](ui/sparqlwinf10.png)
+![Order, product, location details](./images/ui/sparqlwinf10.png)
 
 *Next Steps*
 
@@ -3694,13 +3418,13 @@ matching data.
 
 You will see the same starting form:
 
-![Build and Run the Application](ui/sparqlwinf11.png)
+![Build and Run the Application](./images/ui/sparqlwinf11.png)
 
 Select a Customer and then select the link to the City in dbpedia. This
 will now open up another window displaying information about the city
 from dbpedia. Be patient as it may take a little while to open.
 
-![Customer](ui/sparqlwinf12.png)
+![Customer](./images/ui/sparqlwinf12.png)
 
 *Step 3 - Changing the Form Title*
 
@@ -3753,7 +3477,7 @@ display the data:
 
   - Build and run the application.
     
-    ![Build and run the application](ui/sparqlwinf13.png)
+    ![Build and run the application](./images/ui/sparqlwinf13.png)
 
 *Next Steps*
 
@@ -3856,7 +3580,7 @@ customer details are also the same. It is only when you start exploring
 data outside the Northwind graph that you will see the labels in the
 form change.
 
-![Northwind graph](ui/sparqlwinf14.png)
+![Northwind graph](./images/ui/sparqlwinf14.png)
 
 *Next Steps*
 
@@ -4021,7 +3745,7 @@ Northwind data and searches that graph for the predicate details:
 4.  Build and run, the Northwind resources should now be correctly and
     concisely labeled
     
-    ![Northwind resources](ui/sparqlwinf15.png)
+    ![Northwind resources](./images/ui/sparqlwinf15.png)
 
 *Improving The Appearance of the Form*
 
@@ -4049,14 +3773,14 @@ appearance of the form:
         describeForm.Controls.Add(labelList[i]);
         describeForm.Controls.Add(textBoxList[i]);
     
-    ![Alter the positioning](ui/sparqlwinf16.png)
+    ![Alter the positioning](./images/ui/sparqlwinf16.png)
 
 *Next Steps*
 
 The image below shows some of the information about an employee in the
 Northwind dataset.
 
-![employee](ui/sparqlwinf17.png)
+![employee](./images/ui/sparqlwinf17.png)
 
 In the next step we will extend the application so the images and web
 pages can be viewed and long text fields are displayed in full.
@@ -4100,7 +3824,7 @@ complete text will be displayed in a separate window.
     
       - Add a new class called MoreButton.cs.
         
-        ![Add a new class](ui/sparqlwinf18.png)
+        ![Add a new class](./images/ui/sparqlwinf18.png)
     
       - The following using statement goes at the top of the file:
         
@@ -4166,7 +3890,7 @@ complete text will be displayed in a separate window.
     to it. If you click on that button the text from the Notes field is
     displayed in a new window.
     
-    ![Notes](ui/sparqlwinf19.png)
+    ![Notes](./images/ui/sparqlwinf19.png)
 
 *Displaying Images and Web Pages*
 
@@ -4247,7 +3971,7 @@ window.
     Open next to it. If you click on that button the image is opened in
     your default browser.
     
-    ![Image](ui/sparqlwinf20.png)
+    ![Image](./images/ui/sparqlwinf20.png)
 
 *Next Steps*
 
@@ -4357,7 +4081,7 @@ use basically the same code as is used to make the values clickable.
     page. If you then select one of the Customers you will notice the
     property labels now look like hyperlinks.
     
-    ![hyperlinks](ui/sparqlwinf21.png)
+    ![hyperlinks](./images/ui/sparqlwinf21.png)
     
     If you click on one of the label hyperlinks you will see a new form
     showing detailed information about the property which can itself be
@@ -4401,7 +4125,7 @@ Details*
     
       - Add a new class called IRILabel.cs.
         
-        ![Add a new class](ui/sparqlwinf23.png)
+        ![Add a new class](./images/ui/sparqlwinf23.png)
 
 2.  We need to reference System.Windows.Forms, System.Data and
     OpenLink.Data.Virtuoso so add
@@ -4588,7 +4312,7 @@ Details*
     find descriptions of the properties used to describe the entities in
     the Northwind dataset:
     
-    ![Northwind dataset](ui/sparqlwinf24.png)
+    ![Northwind dataset](./images/ui/sparqlwinf24.png)
 
 # Creating a Web Browser Application to Access RDF Data Using The Virtuoso ADO.Net Provider
 
@@ -4647,7 +4371,7 @@ Note:
     
         grant execute on DB.DBA.RDF_MAKE_LONG_OF_SQLVAL to "demo"
 
-![create a view](ui/sparqlwinf25.png)
+![create a view](./images/ui/sparqlwinf25.png)
 
 *Step 2 - Create the Visual Studio Project and Add the Model*
 
@@ -4661,7 +4385,7 @@ Note:
     
     called RDFWebDemo.
     
-    ![create new application](ui/sparqlwinf26.png)
+    ![create new application](./images/ui/sparqlwinf26.png)
 
 2.  Right click RDFWebDemo in the
     
@@ -4705,7 +4429,7 @@ Note:
     and select sparqlview. Check that the Model Namespace is DemoModel
     and click Finish.
     
-    ![Model Namespace](ui/sparqlwinf27.png)
+    ![Model Namespace](./images/ui/sparqlwinf27.png)
 
 *Step 3 - Add the Web Service*
 
@@ -4786,7 +4510,7 @@ http://example.com/WebDataService1.svc/
     
     called RDFWebApp.
     
-    ![New Web Application](ui/sparqlwinf28.png)
+    ![New Web Application](./images/ui/sparqlwinf28.png)
 
 2.  Create client side entities with datasvcutil.exe
     
@@ -4847,13 +4571,13 @@ Compile and run RDFWebApp (ensuring that the service created above is
 still running). This will launch a browser and display the IRIs from
 sparqlview as a list of hyperlinks.
 
-![list of hyperlinks](ui/sparqlwinf29.png)
+![list of hyperlinks](./images/ui/sparqlwinf29.png)
 
 With the [Cartridges VAD package](#) installed in Virtuoso, clicking on
 these links will take you to a description page of the referenced
 resource. The description page is created using [description.vsp](#) .
 
-![Description page](ui/sparqlwinf30.png)
+![Description page](./images/ui/sparqlwinf30.png)
 
 ## Deploy With IIS
 
@@ -4961,7 +4685,7 @@ http://example.com/RDFWebApp/Default.aspx and can also be accessed using
 the hostname or IP address of you server e.g.
 http://192.168.7.129/RDFWebApp/Default.aspx
 
-![Default.aspx](ui/sparqlwinf31.png)
+![Default.aspx](./images/ui/sparqlwinf31.png)
 
 ### Next Steps
 
@@ -5017,7 +4741,7 @@ Virtuoso ADO.Net Provider.](#installcrweb)
     
     dialog.
     
-    ![Add Silverlight Application](ui/sparqlwinf32.png)
+    ![Add Silverlight Application](./images/ui/sparqlwinf32.png)
 
 4.  Select
     
@@ -5033,7 +4757,7 @@ Virtuoso ADO.Net Provider.](#installcrweb)
     
     .
     
-    ![Add a test page](ui/sparqlwinf33.png)
+    ![Add a test page](./images/ui/sparqlwinf33.png)
 
 5.  In Solution Explorer, select RDFWebDemo, open the Project menu and
     select Properties.
@@ -5143,11 +4867,11 @@ Virtuoso ADO.Net Provider.](#installcrweb)
     . This will launch the browser and open
     SilverlightApplication1TestPage.aspx.
     
-    ![SilverlightApplication1TestPage.aspx](ui/sparqlwinf34.png)
+    ![SilverlightApplication1TestPage.aspx](./images/ui/sparqlwinf34.png)
 
 Clicking on one of the IRIs will open the page using description.vsp.
 
-![using description.vsp](ui/sparqlwinf35.png)
+![using description.vsp](./images/ui/sparqlwinf35.png)
 
 # Creating A Simple .NET RIA Services Application To Display Data From Virtuoso
 
@@ -5214,7 +4938,7 @@ starting point for exploring the linked data.
     
     button.
     
-    ![.NET RIA Services Application](ui/ria1.png)
+    ![.NET RIA Services Application](./images/ui/ria1.png)
 
 At this point a skeleton solution is created that consists of a client
 project called DemoApplication and a server project called
@@ -5282,7 +5006,7 @@ ADO.NET entity data model to the server project.
     
     .
 
-![.NET RIA Services Application](ui/ria2.png)
+![.NET RIA Services Application](./images/ui/ria2.png)
 
 We want to make the entities in the model available to both the client
 and server parts of the solution. To do this we need to add a
@@ -5323,7 +5047,7 @@ solution.
     
     . Tick the box next to Employees. and click OK.
 
-![.NET RIA Services Application](ui/ria3.png)
+![.NET RIA Services Application](./images/ui/ria3.png)
 
 This will create the DomainService class and generated code in both the
 client and server parts of the application. The Silverlight client can
@@ -5385,7 +5109,7 @@ project. At this point you need to build the solution again.
 3.  Build and run the application. Internet Explorer will be launched
     and you will see the data displayed on the page as a grid.
 
-![.NET RIA Services Application](ui/ria4.png)
+![.NET RIA Services Application](./images/ui/ria4.png)
 
 ## Displaying RDF Data
 
@@ -5424,13 +5148,13 @@ the Demo RDF data in Virtuoso.
 1.  Delete the existing Employee model and add a new one that comprises
     this new view.
     
-    ![.NET RIA Services Application](ui/ria5.png)
+    ![.NET RIA Services Application](./images/ui/ria5.png)
 
 2.  Delete the DomainService. Build the solution and add a new
     DomainService called EmployeeService. Select the sparqlview entity.
     Build the solution.
     
-    ![.NET RIA Services Application](ui/ria6.png)
+    ![.NET RIA Services Application](./images/ui/ria6.png)
 
 3.  Modify the code in mainpage.xaml.cs so it uses the sparqview entity.
     It should look like this:
@@ -5467,7 +5191,7 @@ the Demo RDF data in Virtuoso.
 4.  Build and run the application. You will see a list of IRIs that
     identify the Northwind employees.
     
-    ![.NET RIA Services Application](ui/ria7.png)
+    ![.NET RIA Services Application](./images/ui/ria7.png)
 
 To realize the power of linked data we would now liked to begin
 exploring this data by clicking on these IRIs.
@@ -5513,16 +5237,16 @@ exploring this data by clicking on these IRIs.
 2.  If we build and run the project now each IRI in the list appears as
     a hyperlink.
     
-    ![.NET RIA Services Application](ui/ria8.png)
+    ![.NET RIA Services Application](./images/ui/ria8.png)
 
 3.  Clicking on each of the links takes you to a new document that
     contains further links to information about each Employee. The Demo
     dataset can be explored further by following the dereferenceable
     IRIs in the description pages.
     
-    ![.NET RIA Services Application](ui/ria9.png)
+    ![.NET RIA Services Application](./images/ui/ria9.png)
     
-    ![.NET RIA Services Application](ui/ria10.png)
+    ![.NET RIA Services Application](./images/ui/ria10.png)
 
 ## Next Steps
 
@@ -5577,7 +5301,7 @@ create a new on.
     
     .
     
-    ![.NET RIA Services Application](ui/riad1.png)
+    ![.NET RIA Services Application](./images/ui/riad1.png)
 
 4.  Update MainPage.xaml.cs to use EmployeeService2 the new domain
     service rather than EmployeeContext.
@@ -5632,7 +5356,7 @@ will add a pager so only 5 records are displayed at a time.
 7.  Build and run the application. The data should be displayed 5 rows
     at a time.
     
-    ![.NET RIA Services Application](ui/riad2.png)
+    ![.NET RIA Services Application](./images/ui/riad2.png)
 
 We now need to add a DataForm to display the details.
 
@@ -5704,7 +5428,7 @@ We now need to add a DataForm to display the details.
 4.  Build and run the application. As each employee is selected the data
     form fill with their details
     
-    ![.NET RIA Services Application](ui/riad3.png)
+    ![.NET RIA Services Application](./images/ui/riad3.png)
 
 By clicking on the pencil symbol in the top right hand corner the data
 in the form can be edited but it is not propagated back to the database.
@@ -5729,7 +5453,7 @@ in the form can be edited but it is not propagated back to the database.
 3.  Build and run the application. If you now edit data in the form and
     click the submit button the data in Virtuoso will be updated.
     
-    ![.NET RIA Services Application](ui/riad4.png)
+    ![.NET RIA Services Application](./images/ui/riad4.png)
 
 # Cluster Installation and Configuration
 
@@ -6836,35 +6560,26 @@ the Virtuoso default SPARQL endpoint (`/sparql` ) may be configured by:
 
 1.  Log in into the Virtuoso Conductor http://hostname:port/conductor :
     
-    ![Configure SPARQL Endpoint: log in](ui/cluster1.jpg)
+    ![Configure SPARQL Endpoint: log in](./images/ui/cluster1.jpg)
 
 2.  Go the the Web Application Server -\> Virtual Domains & Directories
     tab:
     
-    ![Configure SPARQL Endpoint: Virtual Domains and
-    Directories](ui/cluster2.jpg)
-
-3.  Select the New Directory Action for the Default Web Site HTTP host:
     
-    ![Configure SPARQL Endpoint: new directory](ui/cluster3.jpg)
+    ![Configure SPARQL Endpoint: new directory](./images/ui/cluster3.jpg)
 
 4.  Select the Type radio button and SPARQL access point item from the
     drop down list box:
     
-    ![Configure SPARQL Endpoint: set type SPARQL](ui/cluster4.jpg)
+    ![Configure SPARQL Endpoint: set type SPARQL](./images/ui/cluster4.jpg)
 
 5.  Click "Next".
 
 6.  Enter /sparql as the Path param in the Virtual Directory Information
     section and click Save Changes:
     
-    ![Configure SPARQL Endpoint: set /sparql virtual
-    directory](ui/cluster5.jpg)
-
-7.  The SPARQL endpoint will not be accessible on
-    http://hostname:port/sparql the the newly configured slave nodes:
     
-    ![Configure SPARQL Endpoint: SPARQL Endpoint](ui/cluster6.jpg)
+    ![Configure SPARQL Endpoint: SPARQL Endpoint](./images/ui/cluster6.jpg)
 
 8.  Further details on SPARQL endpoint configuration can be found in
     [Service Endpoint](#rdfsupportedprotocolendpoint) documentation

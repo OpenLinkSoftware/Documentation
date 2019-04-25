@@ -79,7 +79,7 @@ Database User Account
 
 \- User account name, on behalf of which active content will be executed
 
-![HTTP Server Conceptual Diagram](httpconcept.jpg)
+![HTTP Server Conceptual Diagram](./images/httpconcept.jpg)
 
 Incoming requests are also checked against the HTTP access control
 lists. These lists rely on the following attributes of the connection to
@@ -254,7 +254,7 @@ the first step does not succeed then the server will try resolving the
 interface and logical path. Failing that, the default step will attempt
 to resolve the path directly to a physical location.
 
-![HTTP Virtual Directory Matching](virtualdirectories.jpg)
+![HTTP Virtual Directory Matching](./images/virtualdirectories.jpg)
 
 > **Note**
 > 
@@ -1330,7 +1330,7 @@ for either setup.
     1.  In the Preferences dialog, open the Advanced tab, and click the
         "View certificates" button.
         
-        ![HTTPS Listener](ui/htps1.png)
+        ![HTTPS Listener](./images/ui/htps1.png)
     
     2.  Click the "Add exception" button ,and enter the address of the
         HTTPS server you've just configured, i.e.
@@ -1338,7 +1338,7 @@ for either setup.
     
     3.  Click OK, and confirm the exception.
         
-        ![HTTPS Listener](ui/htps2.png)
+        ![HTTPS Listener](./images/ui/htps2.png)
     
     4.  Click to the "Your Certificates" tab, and import `mycert.p12` .
 
@@ -1347,31 +1347,31 @@ for either setup.
 1.  Go to the `http://cname:port/conductor` URL, enter the DBA user
     credentials.
     
-    ![HTTPS Listener](ui/htps3.png)
+    ![HTTPS Listener](./images/ui/htps3.png)
 
 2.  Go to System Admin-\>Security
     
-    ![HTTPS Listener](ui/htps4.png)
+    ![HTTPS Listener](./images/ui/htps4.png)
 
 3.  Enter the Issuer details:
     
-    ![HTTPS Listener](ui/htps5.png)
+    ![HTTPS Listener](./images/ui/htps5.png)
 
 4.  Click Generate
     
-    ![HTTPS Listener](ui/htps6.png)
+    ![HTTPS Listener](./images/ui/htps6.png)
 
 5.  Click Configure HTTPS Listeners
     
-    ![HTTPS Listener](ui/htps7.png)
+    ![HTTPS Listener](./images/ui/htps7.png)
 
 6.  Edit the new listener, and click "Generate New" key.
     
-    ![HTTPS Listener](ui/htps8.png)
+    ![HTTPS Listener](./images/ui/htps8.png)
 
 7.  Click Save
     
-    ![HTTPS Listener](ui/htps9.png)
+    ![HTTPS Listener](./images/ui/htps9.png)
 
 8.  Setting Up Firefox:
     
@@ -1384,7 +1384,7 @@ for either setup.
     
     3.  Click OK, and confirm the exception.
         
-        ![HTTPS Listener](ui/htps10.png)
+        ![HTTPS Listener](./images/ui/htps10.png)
 
 # Web Services ACL (Access Control List)
 
@@ -1561,7 +1561,7 @@ following steps.
     
     is installed.
     
-    ![Access Control](ui/admacl.png)
+    ![Access Control](./images/ui/admacl.png)
 
   - New ACLs can be added by entering a list name and clicking "Add"
     button.
@@ -1682,7 +1682,7 @@ The Virtuoso Server Pages subsystem is an integral part of the Virtuoso
 server. A VSP page is a file system or DAV resident resource that
 contains Virtuoso/PL code intermixed with HTML or other static content.
 
-![VSP Conceptual Diagram](vspconcept.jpg)
+![VSP Conceptual Diagram](./images/vspconcept.jpg)
 
 Virtuoso can serve Web pages to HTTP 1.0 and HTTP 1.1 clients. The HTTP
 document root is set by the ServerRoot parameter in the \[HTTPServer\]
@@ -2887,7 +2887,7 @@ with HTML children are called templates, as these will process their
 HTML contents at run time, typically modifying these based on run time
 data.
 
-![VSPX Conceptual Diagram](vspxconcept.jpg)
+![VSPX Conceptual Diagram](./images/vspxconcept.jpg)
 
 When the page is requested, the system checks whether it is already
 compiled and compiles it if the compilation is absent or older than the
@@ -14052,7 +14052,7 @@ without compromising your development platform.
 
 The Virtuoso CLR hosting is implemented using the VSEI.
 
-![The HTTP ASP.Net handler](http_handler_aspx.jpg)
+![The HTTP ASP.Net handler](./images/http_handler_aspx.jpg)
 
 > **Tip**
 > 
@@ -14086,7 +14086,7 @@ tree of controls and classes. The CodeBehind is compiled into an object
 on this tree when the page is requested. The Web Form must inherit from
 a "base-class" defined in the CodeBehind class file.
 
-![ASPX Web Form class hierarchy](rth/writeaspx001.jpg)
+![ASPX Web Form class hierarchy](./images/rth/writeaspx001.jpg)
 
 Now we will create a new Web Form containing an HTML heading and an
 ASP.Net DataGrid control that will display results from the local
@@ -14314,7 +14314,7 @@ table of data in a web page from a database.
     Once Visual Studio has been launch it present you with the start
     page that lets you create a New Project.
     
-    ![Databound Examples using MS Visual Studio](rth/vs001.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs001.jpg)
 
 2.  **Create a new <span class="menuchoice">Empty Web Project</span>.**
     
@@ -14322,14 +14322,14 @@ table of data in a web page from a database.
     Visual Basic Projects type. You must also select a location on an
     IIS web server.
     
-    ![Databound Examples using MS Visual Studio](rth/vs002.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs002.jpg)
 
 3.  **Wait for IIS application to be set-up.**
     
     You will be shown a progress dialogue as Visual Studio contacts your
     web server creating a new web application there.
     
-    ![Databound Examples using MS Visual Studio](rth/vs003.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs003.jpg)
 
 4.  **Add New Web Form.**
     
@@ -14338,7 +14338,7 @@ table of data in a web page from a database.
     create our page. Right-click on the project name in the Solution
     Explorer and select Add New Web Form.
     
-    ![Databound Examples using MS Visual Studio](rth/vs004.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs004.jpg)
 
 5.  **New Web Form.**
     
@@ -14346,7 +14346,7 @@ table of data in a web page from a database.
     automatically selecting the "Web Form" item to add. Supply a name
     for the page and click Open to begin.
     
-    ![Databound Examples using MS Visual Studio](rth/vs005.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs005.jpg)
 
 6.  **Add a SqlDataAdapter Control.**
     
@@ -14364,7 +14364,7 @@ table of data in a web page from a database.
     OLEDB dialogues for creating a new datasource. Once a data
     connection has been selected press Next to continue.
     
-    ![Databound Examples using MS Visual Studio](rth/vs006.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs006.jpg)
 
 7.  **Choose a Query Type.**
     
@@ -14372,7 +14372,7 @@ table of data in a web page from a database.
     database. For simplicity we will stick with the default of Use SQL
     Statements. Press Next.
     
-    ![Databound Examples using MS Visual Studio](rth/vs007.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs007.jpg)
 
 8.  **Generate SQL Statements.**
     
@@ -14383,7 +14383,7 @@ table of data in a web page from a database.
     Customers table using a simple query:`select * from
                     Customers` .
     
-    ![Databound Examples using MS Visual Studio](rth/vs008.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs008.jpg)
 
 9.  **Advanced Options.**
     
@@ -14393,14 +14393,14 @@ table of data in a web page from a database.
     upon return to the main dialogue press the Next button to continue
     onwards.
     
-    ![Databound Examples using MS Visual Studio](rth/vs009.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs009.jpg)
 
 10. **View Wizard Results.**
     
     The next panel confirms all the options selected leaving us to
     simply complete the wizard.
     
-    ![Databound Examples using MS Visual Studio](rth/vs010.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs010.jpg)
 
 11. **Back to the main window....**
     
@@ -14409,7 +14409,7 @@ table of data in a web page from a database.
     Form. The connection control has been automatically generated to
     support the Data Adapter.
     
-    ![Databound Examples using MS Visual Studio](rth/vs011.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs011.jpg)
 
 12. **Generate Dataset.**
     
@@ -14419,7 +14419,7 @@ table of data in a web page from a database.
     are all sufficient. After verifying them click the OK button to
     generate the dataset.
     
-    ![Databound Examples using MS Visual Studio](rth/vs015.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs015.jpg)
 
 13. **Add a DataGrid Control.**
     
@@ -14429,14 +14429,14 @@ table of data in a web page from a database.
     This add the control to the page and will display a table on the web
     page view.
     
-    ![Databound Examples using MS Visual Studio](rth/vs012.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs012.jpg)
 
 14. **Table Properties.**
     
     Configure the DataGrid control by right-clicking on the table and
     selecting <span class="menuchoice">Property Builder</span> .
     
-    ![Databound Examples using MS Visual Studio](rth/vs013.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs013.jpg)
 
 15. **DataGrid Properties.**
     
@@ -14446,7 +14446,7 @@ table of data in a web page from a database.
     results per page. For now we only want to adjust the most important
     aspects of the table, where the data comes from.
     
-    ![Databound Examples using MS Visual Studio](rth/vs014.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs014.jpg)
 
 16. **DataGrid Bindings.**
     
@@ -14457,14 +14457,14 @@ table of data in a web page from a database.
     you to select the now-familiar controls configured earlier. Once
     configured, press the OK button to save the changes.
     
-    ![Databound Examples using MS Visual Studio](rth/vs016.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs016.jpg)
 
 17. **Preview.**
     
     Once the details have been saved the view of the table in the page
     will be updated to reflect the dataset details.
     
-    ![Databound Examples using MS Visual Studio](rth/vs017.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs017.jpg)
 
 18. **Page Initialization.**
     
@@ -14485,7 +14485,7 @@ table of data in a web page from a database.
     You will find that Visual Studio will offer some assistance in the
     form of intellisense command-completion while you are typing.
     
-    ![Databound Examples using MS Visual Studio](rth/vs018.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs018.jpg)
 
 19. **The End Result.**
     
@@ -14497,7 +14497,7 @@ table of data in a web page from a database.
     automatically. Admire your results. When finished, on closing the
     browser windows you will automatically return to Visual Studio.
     
-    ![Databound Examples using MS Visual Studio](rth/vs019.jpg)
+    ![Databound Examples using MS Visual Studio](./images/rth/vs019.jpg)
 
 ### Migrating ASP.Net Applications to Virtuoso
 
@@ -14517,7 +14517,7 @@ application deployment.
     WebDAV. We will copy the application to a location in WebDAV for a
     local Virtuoso server.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig001.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig001.jpg)
 
 2.  **Add a Network Place to DAV.**
     
@@ -14525,13 +14525,13 @@ application deployment.
     double-click on the <span class="menuchoice"></span> shortcut to
     start the wizard.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig002.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig002.jpg)
 
 3.  **Network service provider.**
     
     Select the default option. Click next to continue.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig003.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig003.jpg)
 
 4.  **Internet or Network Address.**
     
@@ -14539,14 +14539,14 @@ application deployment.
     Virtuoso on the local machine but this could be anywhere on the
     Internet. Click next to continue.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig004.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig004.jpg)
 
 5.  **Name the Network Place.**
     
     Provide the network place with a meaningful name so we can easily
     find this location in the future. Click on next to continue.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig005.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig005.jpg)
 
 6.  **Open the Network Place.**
     
@@ -14554,7 +14554,7 @@ application deployment.
     network place when I click Finish" that we will leave checked. Click
     Finish to continue and open the DAV directory.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig006.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig006.jpg)
 
 7.  **Connect to DAV.**
     
@@ -14563,21 +14563,21 @@ application deployment.
     installation, possibly both dav, in which case type dav in both
     fields and press the OK button to continue.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig007.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig007.jpg)
 
 8.  **Copy the ASPX application to DAV.**
     
     Once the explorer opens up on the DAV network place we can copy the
     `aspxdemo1` application directory to it.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig008.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig008.jpg)
 
 9.  **Configure Virtual Directory.**
     
     Now we have to configure a Virtuoso virtual directory. Go to
     Conductor / Web Application Server / HTTP Hosts & Directories.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig009.png)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig009.png)
 
 10. **Add Virtual Directory.**
     
@@ -14585,14 +14585,14 @@ application deployment.
     currently present for the Virtuoso server. Click on the "New
     Directory" link to continue.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig010.png)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig010.png)
 
 11. **Select DAV Domain template.**
     
     On the next page select for "Type" the DAV Domain template and click
     "Next".
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig011.png)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig011.png)
 
 12. **Configure the Virtual Directory parameters.**
     
@@ -14605,7 +14605,7 @@ application deployment.
     VSP Execution user to `dba` using the drop down. To save the changes
     click on the "Save Changes" button at the bottom of the page.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig012.png)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig012.png)
 
 13. **View the ASPX page hosted in Virtuoso DAV.**
     
@@ -14614,7 +14614,7 @@ application deployment.
     `http://example.com/aspxdemo1/WebForm1.aspx` , we will see the same
     output as before.
     
-    ![Migrating ASP.Net Applications to Virtuoso](rth/mig013.jpg)
+    ![Migrating ASP.Net Applications to Virtuoso](./images/rth/mig013.jpg)
 
 > **Note**
 > 
@@ -14764,7 +14764,7 @@ text searchable - a simple exploit of the Virtuoso free-text engine.
 Virtuoso can provide the blog client, server or relay for blogs or any
 RSS or XML-feed based channel or information.
 
-![Virtuoso Blogging Conceptual Diagram](VirtuosoBlog.jpg)
+![Virtuoso Blogging Conceptual Diagram](./images/VirtuosoBlog.jpg)
 
 ### Syndication to your Blog - RSS & RDF
 
@@ -17105,13 +17105,13 @@ Mobile blogging (Moblog) can be configured via the Virtuoso blog UI by
 selecting the Moblog link under the Configuration section as indicated
 in the diagram below:
 
-![Blog page](moblog.gif)
+![Blog page](./images/moblog.gif)
 
 The Moblog configuration page enables the details of the POP3 server
 from which messages are to be retrieved from is located as indicated in
 the diagram below:
 
-![Blog page](moblogconfig.gif)
+![Blog page](./images/moblogconfig.gif)
 
   - *Server Address and Port*
     
@@ -17345,7 +17345,7 @@ The PHP server extension allows Virtuoso to execute PHP (v4) pages
 stored in the file system or in Virtuoso's WebDAV repository. PHP pages
 run inside the Virtuoso process.
 
-![The HTTP PHP handler](http_handler_php.jpg)
+![The HTTP PHP handler](./images/http_handler_php.jpg)
 
 The VSE \_\_http\_handler\_php() has been implemented so that the file
 extension '.php' is recognized by Virtuoso to switch between 'normal'
@@ -17576,7 +17576,7 @@ provide such an engine that can be hosted inside Virtuoso with Java
 support. This section describes how JSP's can be executed using Jakarta
 Tomcat JSP implementation.
 
-![The HTTP JSP handler using Jakarta Tomcat](http_handler_jsp.jpg)
+![The HTTP JSP handler using Jakarta Tomcat](./images/http_handler_jsp.jpg)
 
 ## Environment Setup & Verification
 

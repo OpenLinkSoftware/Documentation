@@ -2701,7 +2701,7 @@ want to generate one as in the previous section.
 
 3.  Click OK, and confirm the exception.
     
-    ![Setting Up Firefox](ui/foafssl2.png)
+    ![Setting Up Firefox](./images/ui/foafssl2.png)
 
 4.  Click to the "Your Certificates" tab, and import mycert.p12.
 
@@ -2728,17 +2728,17 @@ documentation](#) .
 2.  You should see a protected document's URI. Note that there is no
     specific "address" data seen:
     
-    ![Testing the setup](ui/foafssl3.png)
+    ![Testing the setup](./images/ui/foafssl3.png)
 
 3.  When clicked, the browser will ask the user to select a certificate
     (note: certificate details are erased in the picture below).
     
-    ![Testing the setup](ui/foafssl4.png)
+    ![Testing the setup](./images/ui/foafssl4.png)
 
 4.  Now the protected document includes the private address data
     alongside the previously visible public data\!
     
-    ![Testing the setup](ui/foafssl5.png)
+    ![Testing the setup](./images/ui/foafssl5.png)
 
 ## WebID Protocol ACLs
 
@@ -2768,7 +2768,7 @@ with name id\_rsa. The process takes the following steps:
 3.  The site certificate is imported with name id\_rsa for user dba
     using the Conductor.
     
-    ![Conductor CA Keys Import](ui/foafssl27.png)
+    ![Conductor CA Keys Import](./images/ui/foafssl27.png)
 
 4.  As a result, the ODS user certificates can be authenticated against
     the site certificate.
@@ -2790,100 +2790,100 @@ certificates.
 
 1.  Install [ODS](#) and [Virtuoso Conductor](#) VAD packages.
     
-    ![Setting-Up issuer CA](ui/foafssl6.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl6.png)
 
 2.  Go to the http://cname:port/identity\_manager URL, enter the DBA
     user credentials in the dialog presented.
     
-    ![Setting-Up issuer CA](ui/foafssl7.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl7.png)
 
 3.  Enter the Issuer details and click generate.
     
-    ![Setting-Up issuer CA](ui/foafssl8.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl8.png)
 
 4.  Go to Conductor -\> Web Application Server -\> Virtual Domains &
     Directories, and add a new listener.
     
-    ![Setting-Up issuer CA](ui/foafssl9.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl9.png)
 
 5.  Edit the new listener, and generate new key.
     
-    ![Setting-Up issuer CA](ui/foafssl10.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl10.png)
 
 6.  Go to Packages list and select Configure for ODS Framework.
     
-    ![Setting-Up issuer CA](ui/foafssl11.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl11.png)
 
 7.  Select Create New Endpoint.
     
-    ![Setting-Up issuer CA](ui/foafssl12.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl12.png)
 
 8.  Enter the home path for ODS, and save.
     
-    ![Setting-Up issuer CA](ui/foafssl13.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl13.png)
 
 9.  The new endpoint should now appear in the endpoint list.
     
-    ![Setting-Up issuer CA](ui/foafssl14.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl14.png)
 
 10. Go to the HTTPS site, e.g., https://cname:port/ods; in our example,
     https://localhost:4433/ods/. If Firefox is used, it will complain
     that the certificate is not valid, so we must register the site's
     certificate.
     
-    ![Setting-Up issuer CA](ui/foafssl15.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl15.png)
 
 11. In Firefox certificate manager, in Site's certificates, add an
     exception.
     
-    ![Setting-Up issuer CA](ui/foafssl16.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl16.png)
 
 12. Confirm exception.
     
-    ![Setting-Up issuer CA](ui/foafssl17.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl17.png)
 
 13. Return to ODS site, and register new user.
     
-    ![Setting-Up issuer CA](ui/foafssl18.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl18.png)
 
 14. Edit the user's profile and enter his/her name(s). If this step is
     skipped, the certificate will not have a human readable name.
     
-    ![Setting-Up issuer CA](ui/foafssl19.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl19.png)
 
 15. Open the Security tab in the Profile Editor, and generate the client
     key.
     
-    ![Setting-Up issuer CA](ui/foafssl20.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl20.png)
 
 16. If all is set up correctly, you should see this message. It means
     Firefox has the private key, and has obtained a new certificate from
     the server.
     
-    ![Setting-Up issuer CA](ui/foafssl21.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl21.png)
 
 17. Refresh the Security tab by clicking on same tab.
     
-    ![Setting-Up issuer CA](ui/foafssl22.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl22.png)
 
 18. Select automatic login option, and save.
     
-    ![Setting-Up issuer CA](ui/foafssl23.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl23.png)
 
 19. Log out from ODS and refresh browser to simulate opening the ODS
     site. The browser will ask for a certificate; select the one
     generated in the steps above.
     
-    ![Setting-Up issuer CA](ui/foafssl24.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl24.png)
 
 20. ODS presents your card, and asks to login with certificate. Confirm
     it.
     
-    ![Setting-Up issuer CA](ui/foafssl25.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl25.png)
 
 21. You should now be logged in to ODS via WebID Protocol.
     
-    ![Setting-Up issuer CA](ui/foafssl26.png)
+    ![Setting-Up issuer CA](./images/ui/foafssl26.png)
 
 ## WebID Protocol ODBC Login
 
@@ -3343,7 +3343,7 @@ The following steps describe how to Setup Application OAuth keys in ODS:
 
 2.  Go to Settings -\> OAuth keys
     
-    ![OAuth Generate Keys](ui/keys1.png)
+    ![OAuth Generate Keys](./images/ui/keys1.png)
 
 3.  Select Application name from the drop-down list and click the
     "Generate Keys" button.
@@ -3351,7 +3351,7 @@ The following steps describe how to Setup Application OAuth keys in ODS:
 4.  The generated Token and Secret values for the selected application
     will be shown as a result.
     
-    ![OAuth Generate Keys](ui/keys2.png)
+    ![OAuth Generate Keys](./images/ui/keys2.png)
 
 ## ODS Ubiquity Commands
 
@@ -3422,41 +3422,41 @@ server. More information and simple scenario how to be done you can find
         -- for ex.:
         ods-oauth-host http://demo.openlinksw.com/OAuth
     
-    ![OAuth Authentication](ui/keys3.png)
+    ![OAuth Authentication](./images/ui/keys3.png)
 
 2.  Execute the command:
     
         ods-set-mode oauth
     
-    ![OAuth Authentication](ui/keys4.png)
+    ![OAuth Authentication](./images/ui/keys4.png)
 
 3.  Obtain the OAuth Generated Key:
     
     1.  Go to http://cname:port/ods/oauth\_sid.vsp . For ex.
         http://demo.openlinksw.com/ods/oauth\_sid.vsp
         
-        ![OAuth Authentication](ui/keys5.png)
+        ![OAuth Authentication](./images/ui/keys5.png)
     
     2.  In the shown form enter user demo and choose the application
         "mybookmarks". Click the "Execute" button.
         
-        ![OAuth Authentication](ui/keys6.png)
+        ![OAuth Authentication](./images/ui/keys6.png)
 
 4.  As result will be shown a form where you need to enter the user
     password.
 
 5.  Enter for user demo its password and click the "Login" button.
     
-    ![OAuth Authentication](ui/keys7.png)
+    ![OAuth Authentication](./images/ui/keys7.png)
 
 6.  Click the "Authorize" button.
     
-    ![OAuth Authentication](ui/keys8.png)
+    ![OAuth Authentication](./images/ui/keys8.png)
 
 7.  Copy the obtains OAuth SID value for ex.:
     7ef4dcf23869488823b771b09b952cc9
     
-    ![OAuth Authentication](ui/keys9.png)
+    ![OAuth Authentication](./images/ui/keys9.png)
 
 8.  Execute the following command:
     
@@ -3466,7 +3466,7 @@ server. More information and simple scenario how to be done you can find
         
         ods-set-addressbook-oauth 7ef4dcf23869488823b771b09b952cc9
     
-    ![OAuth Authentication](ui/keys10.png)
+    ![OAuth Authentication](./images/ui/keys10.png)
 
 9.  You can also execute the command(s) depending on the application
     type:
@@ -3533,7 +3533,7 @@ Test Tool.
 
 3.  Go to Settings-\>OAuth Keys
     
-    ![Weblog OAuth](ui/keys11.png)
+    ![Weblog OAuth](./images/ui/keys11.png)
 
 4.  Copy the Token value for an Weblog instance or create such in not
     existing. For ex.:
@@ -3564,19 +3564,19 @@ Test Tool.
     
     5.  Select for Query options: "Generate URI and Submit".
         
-        ![Weblog OAuth](ui/keys12.png)
+        ![Weblog OAuth](./images/ui/keys12.png)
     
     6.  Click the "Execute" button.
     
     7.  In the shown authorization form click the "Authorize" button.
         
-        ![Weblog OAuth](ui/keys13.png)
+        ![Weblog OAuth](./images/ui/keys13.png)
     
     8.  As result will be shown the generated URI and the output message
         of executing the ODS REST API. In our case, the id of the new
         created post will be: 37
         
-        ![Weblog OAuth](ui/keys14.png)
+        ![Weblog OAuth](./images/ui/keys14.png)
     
     9.  Now let's get the data for the created post. In the form enter:
         
@@ -3591,7 +3591,7 @@ Test Tool.
     11. As result in the "Response Body" text-area will be shown the
         retrieved details for the posts with the given above id.
         
-        ![Weblog OAuth](ui/keys15.png)
+        ![Weblog OAuth](./images/ui/keys15.png)
 
 ## OAuth QA
 
@@ -3632,7 +3632,7 @@ domain:
 6.  Once the file is put in the correct server root, you should get the
     confirmation page:
     
-    ![Google OAuth](ui/keys16.png)
+    ![Google OAuth](./images/ui/keys16.png)
 
 7.  Click the "Agree .." buttons.
 
@@ -3640,7 +3640,7 @@ domain:
     in for "Target URL path prefix:":
     http://ec2-67-202-42-146.compute-1.amazonaws.com/ods
     
-    ![Google OAuth](ui/keys17.png)
+    ![Google OAuth](./images/ui/keys17.png)
 
 9.  Click the "Save" button.
 
@@ -3657,7 +3657,7 @@ domain:
 
 13. Click the "Grant Access" button.
     
-    ![Google OAuth](ui/keys18.png)
+    ![Google OAuth](./images/ui/keys18.png)
 
 14. As result will be redirected to
     http://ec2-67-202-42-146.compute-1.amazonaws.com/ods/
@@ -3667,7 +3667,7 @@ domain:
 
 16. Note that already is shown for the domain that is "Active":
     
-    ![Google OAuth](ui/keys19.png)
+    ![Google OAuth](./images/ui/keys19.png)
 
 #### The Playground Tool qa steps
 
@@ -3688,7 +3688,7 @@ Let's try the playground tool:
 
 7.  As result will get Response with Status Ok
     
-    ![Google OAuth](ui/keys20.png)
+    ![Google OAuth](./images/ui/keys20.png)
     
       - the Signature base string:
         
@@ -3721,21 +3721,21 @@ Let's try the playground tool:
 8.  And also in the "Get the Token" section now will be active the
     "Authorize" button. Click it.
     
-    ![Google OAuth](ui/keys21.png)
+    ![Google OAuth](./images/ui/keys21.png)
 
 9.  As result will be shown the authentication page where you need to
     click the "Grant Access" button:
     
-    ![Google OAuth](ui/keys22.png)
+    ![Google OAuth](./images/ui/keys22.png)
 
 10. As result now in the "Get the Token" section will be active the
     "Access token" button. Click it.
     
-    ![Google OAuth](ui/keys23.png)
+    ![Google OAuth](./images/ui/keys23.png)
 
 11. As result the access\_token will be obtained:
     
-    ![Google OAuth](ui/keys24.png)
+    ![Google OAuth](./images/ui/keys24.png)
 
 12. Click the "available feeds" button marked as 6.
 
@@ -3752,7 +3752,7 @@ Let's try the playground tool:
 
 16. As result will find your blogs, post, info at Blogger:
     
-    ![Google OAuth](ui/keys25.png)
+    ![Google OAuth](./images/ui/keys25.png)
 
 # WS-Security (WSS) Support in Virtuoso SOAP Server
 
@@ -7893,17 +7893,17 @@ create a valid data source that leads to a connection to that database.
 Once verified proceed to the Remote Procedures page. Select the "Link
 objects" link for a data source.
 
-![Linking Procedures from Remote Data Sources](ui/admrmtprocs001.png)
+![Linking Procedures from Remote Data Sources](./images/ui/admrmtprocs001.png)
 
 Select the check-box "Store Procedures". Click the "Apply" button. As
 result will be shown the list of available procedures.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs002.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs002.png)
 
 Select the check-boxes for the procedures you want to link and click the
 "Link" button.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs003.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs003.png)
 
 You will be presented with a new page listing the chosen procedures and
 their data type information. This gives you an opportunity to alter the
@@ -7911,7 +7911,7 @@ data type mappings that Virtuoso will use both internally and for any
 future interactions with the SOAP server. If you do not want to specify
 any special type information the details can be left as default.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs004.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs004.png)
 
 For each remote procedure you may change how they will be referenced
 within Virtuoso by making changes to the fields for *Catalog* , *Owner*
@@ -7939,25 +7939,25 @@ Server/Virtual Domains & Directories* you make a new URL Mappings. Click
 on the *New Directory* link for the {Default Web Site} line to begin
 defining a new SOAP mapping.
 
-![Virtual Directories](ui/admvirtdir001.png)
+![Virtual Directories](./images/ui/admvirtdir001.png)
 
 Select for "Type" from the list the value "SOAP access point" and click
 the "Next" button.
 
-![Virtual Directories Mappings](ui/admvirtdir003.png)
+![Virtual Directories Mappings](./images/ui/admvirtdir003.png)
 
 You will then be presented with the following tabs: "Virtual Directory
 Information", "Authentication", "Web Service Option", "WS Security" and
 "Publish Objects". Particular options to note are "Virtual Directory
 Information" and "Publish Objects".
 
-![Virtual Directories](ui/admvirtdir004.png)
+![Virtual Directories](./images/ui/admvirtdir004.png)
 
 In *Publish Objects* you can select Virtuoso stored procedures, or
 remotely linked procedures to be published as SOAP web services. Also
 you can publish Pl Modules, User Defined Types, or Saved Queries.
 
-![Publish Objects](ui/admvirtdir005.png)
+![Publish Objects](./images/ui/admvirtdir005.png)
 
 > **Tip**
 > 
@@ -7974,12 +7974,12 @@ mappings, from which you can select the mapping that you want to edit by
 pressing on its *Edit* link. Note, the virtual directory should have
 type "SOAP".
 
-![Virtual Directories](ui/admvirtdir006.png)
+![Virtual Directories](./images/ui/admvirtdir006.png)
 
 Go to tab "publish Objects" to expose/hide your procedures, Pl Modules,
 User Defined Types and Saved Queries.
 
-![Publish Objects](ui/admvirtdir008.png)
+![Publish Objects](./images/ui/admvirtdir008.png)
 
 The "Procedures" tab presents the list of available procedures. You can
 select a catalogue in order to list the procedures you want to publish.
@@ -7987,7 +7987,7 @@ When the procedures to be published are selected, you can either click
 the "Publish Selected" button, or before this to click the "Edit
 Description" button.
 
-![Choosing Procedure aPublish](ui/admvirtdir007.png)
+![Choosing Procedure aPublish](./images/ui/admvirtdir007.png)
 
 ### Testing SOAP Services Using VSMX
 
@@ -8001,9 +8001,9 @@ http://example.com/mysoap/services.wsdl
 
 http://example.com/mysoap/services.vsmx
 
-![Services.wsdl](ui/admvirtdir009.png)
+![Services.wsdl](./images/ui/admvirtdir009.png)
 
-![Services.vsmx](ui/admvirtdir010.png)
+![Services.vsmx](./images/ui/admvirtdir010.png)
 
 The WSDL description is a standards-based description of the Web
 Services available from /mysoap. The VSMX page is a Virtuoso generated
@@ -8128,7 +8128,7 @@ demo database contains samples that can be found as:
 
     http://[host:port]/SOAP/services.vsmx
 
-![VSMX Test Page](ui/vsmx001.png)
+![VSMX Test Page](./images/ui/vsmx001.png)
 
 The page shows all the operations that are available. Click on the link
 that corresponds to the operation to test and the services details and

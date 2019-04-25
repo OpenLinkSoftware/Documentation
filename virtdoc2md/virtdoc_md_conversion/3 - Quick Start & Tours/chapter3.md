@@ -67,7 +67,7 @@ From the ISQL prompt enter the following SQL command:
 This should produce a resultset containing one record if everything has
 been implemented correctly to this point.
 
-![ISQL in Telnet](ln-inst3.gif)
+![ISQL in Telnet](./images/ln-inst3.gif)
 
 ### Verify by HTTP
 
@@ -84,7 +84,7 @@ Conductor* in the OpenLink Virtuoso program group.
 
 You will be presented with the OpenLink Virtuoso Conductor screen:
 
-![Virtuoso Conductor](ln-inst4.png)
+![Virtuoso Conductor](./images/ln-inst4.png)
 
 ### Verify by web based SQL query
 
@@ -93,11 +93,11 @@ Administration Conductor Interface. You will be presented with a login
 form, type in the correct details for the database DBA user, by default
 this is username=dba; password=dba.
 
-![Virtuoso Conductor - Login Form](ln-inst-login.png)
+![Virtuoso Conductor - Login Form](./images/ln-inst-login.png)
 
 Got to tab "Database" and then go to tab "Interactive SQL".
 
-![Virtuoso Conductor - Interactive SQL](ln-inst-isql.png)
+![Virtuoso Conductor - Interactive SQL](./images/ln-inst-isql.png)
 
 Enter the SQL Statement command "SELECT \* FROM SYS\_USERS" in the SQL
 Statement text area. Note that only valid SQL can be supplied, so you
@@ -106,7 +106,7 @@ cannot type a database command such as "tables;". Also, note that the
 
 You should see the SQL results, as shown below.
 
-![Virtuoso Conductor - SQL Results](ln-inst-isql2.png)
+![Virtuoso Conductor - SQL Results](./images/ln-inst-isql2.png)
 
 ## Administering Your Virtuoso Installation
 
@@ -125,7 +125,7 @@ installed. The URL that you will want to point your browser may be:
 Note that that trailing / is important and may be required for older
 browsers
 
-![Visual Server Administration Interface](ln-inst4.png)
+![Visual Server Administration Interface](./images/ln-inst4.png)
 
 The "Conductor" link will take you to the Visual Server Administration
 Interface. Information about Visual Server Administration Interface can
@@ -221,38 +221,33 @@ go to Administrative Tools and then click the Data Sources (ODBC) icon.
 This first datasource uses OpenLink Generic ODBC Driver V6.0 to create
 DSN to a MySQL 5.x database.
 
-![OpenLink Mutli Tier DSN Configuration with database MySQL
-5.x](virttour1.png)
 
-The next example is an Informix 7 datasource using the driver from
-Informix Software, Inc.
-
-![Informix Driver DSN Configuration](virttour2.gif)
+![Informix Driver DSN Configuration](./images/virttour2.gif)
 
 The next few images show a Microsoft SQL Server 6.5 datasource using the
 Microsoft Corporation SQL Server driver.
 
-![MS SQL Server DSN Configuration](virttour3.gif)
+![MS SQL Server DSN Configuration](./images/virttour3.gif)
 
-![MS SQL Server DSN Configuration](virttour4.gif)
+![MS SQL Server DSN Configuration](./images/virttour4.gif)
 
-![MS SQL Server DSN Configuration](virttour5.gif)
+![MS SQL Server DSN Configuration](./images/virttour5.gif)
 
-![MS SQL Server DSN Configuration](virttour6.gif)
+![MS SQL Server DSN Configuration](./images/virttour6.gif)
 
-![MS SQL Server DSN Configuration](virttour7.gif)
+![MS SQL Server DSN Configuration](./images/virttour7.gif)
 
 Finally, review the configuration information for your default local
 Virtuoso datasource, named "*Local Virtuoso* ".
 
-![OpenLink Virtuoso DSN Configuration](virttour8.png)
+![OpenLink Virtuoso DSN Configuration](./images/virttour8.png)
 
 DSNs can be created and configured within the Virtuoso Conductor. Go to
 "Database", then to "External Data Sources" and then go to "Configure
 Data Sources" tab. Click the "Add System DSN", or "Add User DSN", or
 "Add File DSN" button.
 
-![Creating a new DSN](newdsn.png)
+![Creating a new DSN](./images/newdsn.png)
 
 ## Datasource Check
 
@@ -277,7 +272,7 @@ SQL". Enter a SQL statement and click the button "Execute". For example:
 
     SELECT * FROM DEMO..products WHERE UnitPrice < 7
 
-![Demo Database Query](demoquery.png)
+![Demo Database Query](./images/demoquery.png)
 
 ## Linking Remote Tables Into Virtuoso
 
@@ -288,17 +283,17 @@ Conductor, for ex. http://example.com:8890/conductor/. Go to tab
 Specify the remote datasource that you wish to link to Virtuoso. For
 example, click the link "connect" for DSN "VirtuosoDemoTest".
 
-![Enter login name and password.](conndsn1a.png)
+![Enter login name and password.](./images/conndsn1a.png)
 
 As result should be shown for DSN "VirtuosoDemoTest" the links "Link
 objects", "Change Credentials", "Disconnect". Click the "Link objects"
 link.
 
-![Connected to datasource.](conndsn1b.png)
+![Connected to datasource.](./images/conndsn1b.png)
 
 Pick the tables to be linked, and define the names to use.
 
-![Define tables to link](rmtadd.png)
+![Define tables to link](./images/rmtadd.png)
 
 ## Listing or Unlinking Tables
 
@@ -306,7 +301,7 @@ To list the tables that have been linked into Virtuoso, from Conductor
 go to *Databases/ External Data Sources/ External Linked Objects* . A
 table may be unlinked by pressing its "Unlink" icon.
 
-![List of Connected Data Sources](conndsn2.png)
+![List of Connected Data Sources](./images/conndsn2.png)
 
 ## Querying Linked Tables
 
@@ -318,7 +313,7 @@ such as: SELECT \* FROM Demo.VirtuosoDemoTest.CustomersLinked. Click the
 
 Press the Execute button and review the results.
 
-![Remote Table Query](rmtdsnqry.png)
+![Remote Table Query](./images/rmtdsnqry.png)
 
 # Web Server
 
@@ -346,27 +341,27 @@ will point to the directory /departments/support/
 1.  From the Conductor UI go to Web Application Server/ Virtual Domains
     & Directories.
     
-    ![Http Hosts and Directories](ui/virtdir1.png)
+    ![Http Hosts and Directories](./images/ui/virtdir1.png)
 
 2.  Open the "folder" icon for your {Default Web Site}.
     
-    ![Edit URL mappings](ui/virtdir2.png)
+    ![Edit URL mappings](./images/ui/virtdir2.png)
 
 3.  Click the link "New Directory" to add a new virtual directory.
     
-    ![Add virtual directory](ui/virtdir3.png)
+    ![Add virtual directory](./images/ui/virtdir3.png)
 
 4.  Select for "Type" File system, as this mapping example will be from
     one directory to another, and click "Next".
     
-    ![Use File system template](ui/virtdir4.png)
+    ![Use File system template](./images/ui/virtdir4.png)
 
 5.  Enter details in the form to define the mapping. Most of the fields
     are optional. In this example, only the logical and physical paths
     and the default page name are required. Click finally the button
     "Save Changes".
     
-    ![Mapping details](ui/virtdir5.png)
+    ![Mapping details](./images/ui/virtdir5.png)
 
 6.  The following URLs will then be equivalent:
     
@@ -402,29 +397,29 @@ http://www.ahelp.com/ to the server www.a.com and directory
 2.  From the Conductor UI go to Web Application Server/ Virtual Domains
     & Directories.
     
-    ![Http Hosts and Directories.](ui/virtdir1.png)
+    ![Http Hosts and Directories.](./images/ui/virtdir1.png)
 
 3.  To add a new host definition, enter for "Port" 80, enter for "HTTP
     Host" www.ahelp.com and select the "Add" button.
     
-    ![Add new site](ui/virthost2.png)
+    ![Add new site](./images/ui/virthost2.png)
 
 4.  Click for the new defined site the "Edit" link in order to define
     the mapping between the virtual host and the actual listening host
     domain names.
     
-    ![New site mapping](ui/virthost3.png)
+    ![New site mapping](./images/ui/virthost3.png)
 
 5.  Click the "folder" icon for the new defined site and then click the
     "Edit" link for the Logical Path "/".
     
-    ![Set Logical Path](ui/virthost3a.png)
+    ![Set Logical Path](./images/ui/virthost3a.png)
 
 6.  Enter details in the form to define the mapping. Most of the fields
     are optional. In this example, only the logical and physical paths
     and the default page name are required.
     
-    ![Mapping details](ui/virthost4.png)
+    ![Mapping details](./images/ui/virthost4.png)
 
 7.  The following URLs will then be equivalent:
     
@@ -465,12 +460,12 @@ normal drag-and-drop methods.
 1.  To create a Web Folder open the *Windows Explorer* and navigate to
     *My Network Places* .
     
-    ![My Network Places](ui/qs-dav001.png)
+    ![My Network Places](./images/ui/qs-dav001.png)
 
 2.  You will find an icon or option to *Add Network Place* which when
     double-clicked will lead you to the wizard.
     
-    ![Web Folder Wizard](ui/qs-dav002.png)
+    ![Web Folder Wizard](./images/ui/qs-dav002.png)
 
 3.  The first screen encourages you to type the location of the network
     place, for connecting to a Virtuoso DAV you will need to know the
@@ -480,23 +475,23 @@ normal drag-and-drop methods.
     
         http://example.com:8889/DAV/
     
-    ![WebDAV location](ui/qs-dav003.png)
+    ![WebDAV location](./images/ui/qs-dav003.png)
 
 4.  You will then be asked for authentication information which will
     require a username and a password. If defaults are taken then this
     would simply be dav and dav for both.
     
-    ![WebDAV authentication](ui/qs-dav004.png)
+    ![WebDAV authentication](./images/ui/qs-dav004.png)
 
 5.  To complete the creation of a Web Folder you be asked to supply a
     name for the network place.
     
-    ![Name of your WebDAV Web Folder](ui/qs-dav005.png)
+    ![Name of your WebDAV Web Folder](./images/ui/qs-dav005.png)
 
 6.  Once provided Explorer will automatically open a new Window over
     looking the new location.
     
-    ![Files contained in your DAV](ui/qs-dav006.png)
+    ![Files contained in your DAV](./images/ui/qs-dav006.png)
 
 7.  You can find your new Web Folder again from My Network Places where
     the link will be saved.
@@ -581,17 +576,17 @@ create a valid data source that leads to a connection to that database.
 Once verified proceed to the Remote Procedures page. Select the "Link
 objects" link for a data source.
 
-![Linking Procedures from Remote Data Sources](ui/admrmtprocs001.png)
+![Linking Procedures from Remote Data Sources](./images/ui/admrmtprocs001.png)
 
 Select the check-box "Store Procedures". Click the "Apply" button. As
 result will be shown the list of available procedures.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs002.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs002.png)
 
 Select the check-boxes for the procedures you want to link and click the
 "Link" button.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs003.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs003.png)
 
 You will be presented with a new page listing the chosen procedures and
 their data type information. This gives you an opportunity to alter the
@@ -599,7 +594,7 @@ data type mappings that Virtuoso will use both internally and for any
 future interactions with the SOAP server. If you do not want to specify
 any special type information the details can be left as default.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs004.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs004.png)
 
 For each remote procedure you may change how they will be referenced
 within Virtuoso by making changes to the fields for *Catalog* , *Owner*
@@ -627,25 +622,25 @@ Server/Virtual Domains & Directories* you make a new URL Mappings. Click
 on the *New Directory* link for the {Default Web Site} line to begin
 defining a new SOAP mapping.
 
-![Virtual Directories](ui/admvirtdir001.png)
+![Virtual Directories](./images/ui/admvirtdir001.png)
 
 Select for "Type" from the list the value "SOAP access point" and click
 the "Next" button.
 
-![Virtual Directories Mappings](ui/admvirtdir003.png)
+![Virtual Directories Mappings](./images/ui/admvirtdir003.png)
 
 You will then be presented with the following tabs: "Virtual Directory
 Information", "Authentication", "Web Service Option", "WS Security" and
 "Publish Objects". Particular options to note are "Virtual Directory
 Information" and "Publish Objects".
 
-![Virtual Directories](ui/admvirtdir004.png)
+![Virtual Directories](./images/ui/admvirtdir004.png)
 
 In *Publish Objects* you can select Virtuoso stored procedures, or
 remotely linked procedures to be published as SOAP web services. Also
 you can publish Pl Modules, User Defined Types, or Saved Queries.
 
-![Publish Objects](ui/admvirtdir005.png)
+![Publish Objects](./images/ui/admvirtdir005.png)
 
 > **Tip**
 > 
@@ -662,12 +657,12 @@ mappings, from which you can select the mapping that you want to edit by
 pressing on its *Edit* link. Note, the virtual directory should have
 type "SOAP".
 
-![Virtual Directories](ui/admvirtdir006.png)
+![Virtual Directories](./images/ui/admvirtdir006.png)
 
 Go to tab "publish Objects" to expose/hide your procedures, Pl Modules,
 User Defined Types and Saved Queries.
 
-![Publish Objects](ui/admvirtdir008.png)
+![Publish Objects](./images/ui/admvirtdir008.png)
 
 The "Procedures" tab presents the list of available procedures. You can
 select a catalogue in order to list the procedures you want to publish.
@@ -675,7 +670,7 @@ When the procedures to be published are selected, you can either click
 the "Publish Selected" button, or before this to click the "Edit
 Description" button.
 
-![Choosing Procedure aPublish](ui/admvirtdir007.png)
+![Choosing Procedure aPublish](./images/ui/admvirtdir007.png)
 
 ### Testing SOAP Services Using VSMX
 
@@ -689,9 +684,9 @@ http://example.com:8890/mysoap/services.wsdl
 
 http://example.com:8890/mysoap/services.vsmx
 
-![Services.wsdl](ui/admvirtdir009.png)
+![Services.wsdl](./images/ui/admvirtdir009.png)
 
-![Services.vsmx](ui/admvirtdir010.png)
+![Services.vsmx](./images/ui/admvirtdir010.png)
 
 The WSDL description is a standards-based description of the Web
 Services available from /mysoap. The VSMX page is a Virtuoso generated
@@ -786,7 +781,7 @@ demo database contains samples that can be found as:
 
     http://[host:port]/SOAP/services.vsmx
 
-![VSMX Test Page](ui/vsmx001.png)
+![VSMX Test Page](./images/ui/vsmx001.png)
 
 > **Tip**
 > 
@@ -848,7 +843,7 @@ Administration Interface section.
 From Conductor *XML/SQL\_XML* you can execute SQL query with options on
 how to produce XML structures from the results.
 
-![SQL to XML](ui/qssql2xml001.png)
+![SQL to XML](./images/ui/qssql2xml001.png)
 
 The illustration above depicts the fact that only minor changes to
 standard SQL are required in order to create powerful dynamic XML
@@ -858,13 +853,13 @@ WebDAV storage is all achieved without any programming. The XML document
 extract below is a depiction of the XML document tree produced using the
 "FOR XML" AUTO option.
 
-![SQL to XML results](ui/qssql2xml002.png)
+![SQL to XML results](./images/ui/qssql2xml002.png)
 
 The Virtuoso Demo database provides a set of sample tables in the Demo
 catalogue, and some sample XML views that use them. The "StoredQueries"
 tab lists saved XML Views as shown below.
 
-![SQL to XML save views](ui/qssql2xml003.png)
+![SQL to XML save views](./images/ui/qssql2xml003.png)
 
 You can press *Edit* to edit them, or *Delete* to remove them or click
 on the XML FILE itself to see the results in your default browser, a
@@ -898,7 +893,7 @@ that will simply enable us to supply SQL and return XML using the
     enclosed in a ROW element and each column is either an attribute or
     child element.
     
-    ![SQL to XML using FOR XML RAW mode](ui/qssql2xml103.png)
+    ![SQL to XML using FOR XML RAW mode](./images/ui/qssql2xml103.png)
     
     The same SQL statement containing the FOR XML syntax is used in the
     visual interface shown above, and in the programmatical version
@@ -951,7 +946,7 @@ that will simply enable us to supply SQL and return XML using the
     are closed and a new element is started, with children filled out
     from other columns of the result set.
     
-    ![SQL to XML using FOR XML AUTO mode](ui/qssql2xml102.png)
+    ![SQL to XML using FOR XML AUTO mode](./images/ui/qssql2xml102.png)
     
     The same SQL statement containing the FOR XML syntax is used in the
     visual interface shown above, and in the programmatical version
@@ -1009,7 +1004,7 @@ that will simply enable us to supply SQL and return XML using the
     tree it will be placed are determined by the values of the 2 first
     columns, TAG and PARENT.
     
-    ![SQL to XML using FOR XML EXPLICIT mode](ui/qssql2xml101.png)
+    ![SQL to XML using FOR XML EXPLICIT mode](./images/ui/qssql2xml101.png)
     
     The same SQL statement containing the FOR XML syntax is used in the
     visual interface shown above, and in the programmatical version
@@ -1588,7 +1583,7 @@ the virtuoso directory. You can check if virtuoso is running from the
 Task Manager, and you can shut it down using the command "*virtuoso
 +service stop* ".
 
-![Command Prompt](virttour32.gif)
+![Command Prompt](./images/virttour32.gif)
 
 ## Case Mode
 
@@ -1630,4 +1625,4 @@ property in the virtuoso.ini file:
     procedure code becoming invalid if it relies on specific case
     conventions.
 
-![Virtuoso.ini file in notepad](virttour33.gif)
+![Virtuoso.ini file in notepad](./images/virttour33.gif)

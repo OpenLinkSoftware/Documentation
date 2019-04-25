@@ -347,7 +347,7 @@ Replication Manager enables a VDB Engine offer automated bi-directional
 data, and metadata transformation services across heterogeneous data
 sources without end-user or developer intervention.
 
-![Virtual Database Engine Architecture & Components](wpImage19.gif)
+![Virtual Database Engine Architecture & Components](./images/wpImage19.gif)
 
 ### VDB Implementation Approaches
 
@@ -389,7 +389,7 @@ native, proprietary, and data source specific low-level data access
 interfaces. This category of VDB does not possess a complete set of
 traditional database engine components.
 
-![Type 1 VDB Engine Architecture](wpImage20.gif)
+![Type 1 VDB Engine Architecture](./images/wpImage20.gif)
 
 #### Type 2 VDB Engine
 
@@ -399,7 +399,7 @@ achieved via native, proprietary, and data source specific low-level
 data access interfaces. This category of VDB possesses a complete set of
 traditional database engine components.
 
-![Type 2 VDB Engine Architecture](wpImage21.gif)
+![Type 2 VDB Engine Architecture](./images/wpImage21.gif)
 
 #### Type 3 VDB Engine
 
@@ -409,7 +409,7 @@ Open, Standards based, and Database Independent low-level data access
 interfaces. This category of VDB does not possess a complete set of
 traditional database engine components.
 
-![Type 3 VDB Engine Architecture](wpImage22.gif)
+![Type 3 VDB Engine Architecture](./images/wpImage22.gif)
 
 #### Type 4 VDB Engine
 
@@ -419,7 +419,7 @@ achieved via Open, Standards based, and Database Independent low-level
 data access interfaces. This category of VDB possesses a complete set of
 traditional database engine components.
 
-![Type 4 VDB Architecture](wpImage23.gif)
+![Type 4 VDB Architecture](./images/wpImage23.gif)
 
 #### Type 5 VDB Engine
 
@@ -429,7 +429,7 @@ via native, proprietary, and data source specific low-level interfaces.
 This category of VDB does not possess a complete set of traditional
 database engine components.
 
-![Type 5 VDB Engine Architecture](wpImage24.gif)
+![Type 5 VDB Engine Architecture](./images/wpImage24.gif)
 
 #### Type 6 VDB Engine
 
@@ -439,7 +439,7 @@ native, proprietary, and data source specific low-level interfaces. This
 category of VDB possesses a complete set of traditional database engine
 components.
 
-![Type 6 - VDB Engine Architecture](wpImage25.gif)
+![Type 6 - VDB Engine Architecture](./images/wpImage25.gif)
 
 #### Type 7 VDB Engine
 
@@ -449,7 +449,7 @@ Standards based, and Database Independent low-level data access
 interfaces. This category of VDB does not possess a complete set of
 traditional database engine components.
 
-![Type 7 VDB Engine Architecture](wpImage26.gif)
+![Type 7 VDB Engine Architecture](./images/wpImage26.gif)
 
 #### Type 8 VDB Engine
 
@@ -459,7 +459,7 @@ Standards based, and Database Independent low-level data access
 interfaces. This category of VDB does possess a complete set of
 traditional database engine components.
 
-![Type 8 VDB Engine Architecture](wpImage27.gif)
+![Type 8 VDB Engine Architecture](./images/wpImage27.gif)
 
 #### Type 9 VDB Engine
 
@@ -470,7 +470,7 @@ interfaces or Native, Proprietary, and Database Specific low-level data
 access interfaces. This category of VDB does not possess a complete set
 of traditional database engine components.
 
-![Type 9 VDB Architecture](wpImage28.gif)
+![Type 9 VDB Architecture](./images/wpImage28.gif)
 
 #### Type 10 VDB Engine
 
@@ -481,7 +481,7 @@ data access interfaces or Native, Proprietary, and Database Specific
 low-level data access interfaces. This category of VDB possesses a
 complete set of traditional database engine components.
 
-![Type 10 VDB Architecture](wpImage29.gif)
+![Type 10 VDB Architecture](./images/wpImage29.gif)
 
 # Using Microsoft Entity Frameworks to Access Oracle Schema Objects with Virtuoso
 
@@ -577,49 +577,49 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/lora3.png)
+    ![Databases](./images/ui/lora3.png)
 
 4.  Select the "Connect" button for the "ora10ma" Oracle DSN.
     
-    ![Connect](ui/lora4.png)
+    ![Connect](./images/ui/lora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/lora5.png)
+    ![Link Objects](./images/ui/lora5.png)
 
 6.  Select all the tables that are part of the "HR" catalog.
     
-    ![Select all tables](ui/lora6.png)
+    ![Select all tables](./images/ui/lora6.png)
 
 7.  Change the Catalog for each table to be "HR" using the "Set All"
     button.
     
-    ![Catalog](ui/lora7.png)
+    ![Catalog](./images/ui/lora7.png)
 
 8.  Ensure a primary key is assigned to all table that are to be used in
     the EDM generation phase.
     
-    ![Primary Key](ui/lora8.png)
+    ![Primary Key](./images/ui/lora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/lora9.png)
+    !["Link" button](./images/ui/lora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/lora10.png)
+    ![Completion](./images/ui/lora10.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     "Local Name" column of the "External Linked Objects" tab above,
@@ -627,17 +627,17 @@ available from:
     required SQL "Select" for retrieving the remote table data . We
     shall use the "HR.ora10ma.COUNTRIES" table to demonstrate this.
     
-    ![Querying](ui/lora11.png)
+    ![Querying](./images/ui/lora11.png)
 
 12. Then click the "Execute" button to run the query and retrieve the
     results from the remote table.
     
-    ![Execute](ui/lora12.png)
+    ![Execute](./images/ui/lora12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "HR" catalog name.
     
-    ![SQL Schema Objects](ui/lora13.png)
+    ![SQL Schema Objects](./images/ui/lora13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -649,7 +649,7 @@ the Oracle Human Resources database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -665,7 +665,7 @@ the Oracle Human Resources database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -697,7 +697,7 @@ the Oracle Human Resources database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -705,11 +705,11 @@ the Oracle Human Resources database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -729,7 +729,7 @@ the Oracle Human Resources database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -749,7 +749,7 @@ the Oracle Human Resources database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -763,7 +763,7 @@ the Oracle Human Resources database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -779,7 +779,7 @@ the Oracle Human Resources database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -792,7 +792,7 @@ the Oracle Human Resources database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -804,7 +804,7 @@ the Oracle Human Resources database:
     
     database from the drop down list.
     
-    ![Add connection](ui/eora10.png)
+    ![Add connection](./images/ui/eora10.png)
 
 14. Press the
     
@@ -812,11 +812,11 @@ the Oracle Human Resources database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Click OK to add the connection.
     
-    ![Test Connection](ui/eora11.png)
+    ![Test Connection](./images/ui/eora11.png)
 
 16. Set the
     
@@ -833,7 +833,7 @@ the Oracle Human Resources database:
     
     .
     
-    ![entity connect string](ui/eora12.png)
+    ![entity connect string](./images/ui/eora12.png)
 
 17. In the
     
@@ -858,7 +858,7 @@ the Oracle Human Resources database:
     
     .
     
-    ![Database Objects](ui/eora13.png)
+    ![Database Objects](./images/ui/eora13.png)
 
 18. The
     
@@ -867,7 +867,7 @@ the Oracle Human Resources database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/eora14.png)
+    ![Virtuoso.edmx](./images/ui/eora14.png)
 
 Creation for the Entity Data Model for the Oracle Human Resources
 database is now complete.
@@ -893,7 +893,7 @@ section](#vdbenginemccrvs) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -913,7 +913,7 @@ section](#vdbenginemccrvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fora2.png)
+    ![Add New Item](./images/ui/fora2.png)
 
 4.  In the newly created
     
@@ -958,7 +958,7 @@ section](#vdbenginemccrvs) .
             }
         }
 
-    ![Virtuoso.svc.cs](ui/fora3.png)
+    ![Virtuoso.svc.cs](./images/ui/fora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -969,7 +969,7 @@ section](#vdbenginemccrvs) .
     displaying the list of available tables/entities for the HR database
     catalog.
     
-    ![Data Service test](ui/fora4.png)
+    ![Data Service test](./images/ui/fora4.png)
 
 6.  To access a specific entity instance like the
     
@@ -982,7 +982,7 @@ section](#vdbenginemccrvs) .
     record, use this convention
     http://host/vdir/Virtuoso.svc/EMPLOYEES(100) .
     
-    ![EMPLOYEES](ui/fora5.png)
+    ![EMPLOYEES](./images/ui/fora5.png)
 
 *Notes:*
 
@@ -1045,7 +1045,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -1061,7 +1061,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -1093,7 +1093,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -1109,7 +1109,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -1125,7 +1125,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -1133,7 +1133,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -1141,7 +1141,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -1161,7 +1161,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -1177,7 +1177,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -1193,7 +1193,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -1206,7 +1206,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -1218,11 +1218,11 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/dora11.png)
+    ![Add connection](./images/ui/dora11.png)
 
 15. Click OK to add the connection.
     
-    ![Add connection](ui/dora11i.png)
+    ![Add connection](./images/ui/dora11i.png)
 
 16. Press the
     
@@ -1230,7 +1230,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 17. Leave the default connect string
     
@@ -1240,7 +1240,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![HRConnectionString](ui/dora13.png)
+    ![HRConnectionString](./images/ui/dora13.png)
 
 18. From the list of available tables returned for the HR database,
     select the
@@ -1253,17 +1253,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![HR database](ui/dora14.png)
+    ![HR database](./images/ui/dora14.png)
 
 19. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/dora15.png)
+    ![DataGridView](./images/ui/dora15.png)
 
 20. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/dora16.png)
+    ![Resize the Form and DataGridView](./images/ui/dora16.png)
 
 21. To test the application, simply hit
     
@@ -1279,7 +1279,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 22. The data from the
     
@@ -1291,7 +1291,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/dora18.png)
+    ![DataGrid](./images/ui/dora18.png)
 
 The task is now complete.
 
@@ -1399,48 +1399,48 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/lpro3.png)
+    ![Databases](./images/ui/lpro3.png)
 
 4.  Select the "Connect" button for the "prs10ma" Oracle DSN.
     
-    ![Connect](ui/lpro4.png)
+    ![Connect](./images/ui/lpro4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/lpro5.png)
+    ![Link Objects](./images/ui/lpro5.png)
 
 6.  Select all the tables that are part of the "isports" catalog.
     
-    ![Select all tables](ui/lpro6.png)
+    ![Select all tables](./images/ui/lpro6.png)
 
 7.  Change the Catalog for each table to be "isports" using the "Set
     All" button.
     
-    ![Catalog](ui/lpro7.png)
+    ![Catalog](./images/ui/lpro7.png)
 
 8.  All the catalog names are changed to be "isports".
     
-    ![Catalog names](ui/lpro8.png)
+    ![Catalog names](./images/ui/lpro8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/lpro9.png)
+    !["Link" button](./images/ui/lpro9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/lpro10.png)
+    ![Completion](./images/ui/lpro10.png)
 
 11. At this point you can test the remotely linked tables by clicking on
     the link that accompanies each table. e.g. isports.prs101c.Customer.
@@ -1448,16 +1448,16 @@ available from:
     This will display the Interactive ISQL interface which will have
     been already populated with a suitable SQL statement.
     
-    ![Querying](ui/lpro11.png)
+    ![Querying](./images/ui/lpro11.png)
 
 12. Select Execute to see data from the remotely linked table.
     
-    ![Execute](ui/lpro12.png)
+    ![Execute](./images/ui/lpro12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "isports" catalog name.
     
-    ![SQL Schema Objects](ui/lpro13.png)
+    ![SQL Schema Objects](./images/ui/lpro13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -1469,7 +1469,7 @@ the Progress isports database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -1485,7 +1485,7 @@ the Progress isports database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -1517,7 +1517,7 @@ the Progress isports database:
     
     .
     
-    ![Name for the project](ui/epro3.png)
+    ![Name for the project](./images/ui/epro3.png)
 
 6.  This will create a new project called
     
@@ -1525,11 +1525,11 @@ the Progress isports database:
     
     .
     
-    ![create a new project](ui/epro4.png)
+    ![create a new project](./images/ui/epro4.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![New Item](ui/einf4.png)
+    ![New Item](./images/ui/einf4.png)
 
 8.  The
     
@@ -1549,7 +1549,7 @@ the Progress isports database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/epro6.png)
+    ![Add New Item](./images/ui/epro6.png)
 
 9.  In the
     
@@ -1569,7 +1569,7 @@ the Progress isports database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -1583,7 +1583,7 @@ the Progress isports database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -1599,7 +1599,7 @@ the Progress isports database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -1612,7 +1612,7 @@ the Progress isports database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -1624,7 +1624,7 @@ the Progress isports database:
     
     database from the drop down list.
     
-    ![Add connection](ui/epro11.png)
+    ![Add connection](./images/ui/epro11.png)
 
 14. Press the
     
@@ -1632,7 +1632,7 @@ the Progress isports database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -1649,7 +1649,7 @@ the Progress isports database:
     
     .
     
-    ![entity connect string](ui/epro13.png)
+    ![entity connect string](./images/ui/epro13.png)
 
 16. In the
     
@@ -1674,7 +1674,7 @@ the Progress isports database:
     
     .
     
-    ![Database Objects](ui/epro14.png)
+    ![Database Objects](./images/ui/epro14.png)
 
 17. The
     
@@ -1683,7 +1683,7 @@ the Progress isports database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE.
     
-    ![Virtuoso.edmx](ui/epro15.png)
+    ![Virtuoso.edmx](./images/ui/epro15.png)
 
 Creation for the Entity Data Model for the Progress isports database is
 now complete.
@@ -1704,16 +1704,16 @@ following steps.
     property Cust\_Num in both entities. This is a one-to-many
     relationship, as a Customer may have any number of Invoices.
     
-    ![Association](ui/mpro1.png)
+    ![Association](./images/ui/mpro1.png)
 
 2.  To add the Association, right click on the Customer entity then Add
     -\> Association.
     
-    ![add the Association](ui/mpro2.png)
+    ![add the Association](./images/ui/mpro2.png)
 
 3.  You will now see the Add Association dialog.
     
-    ![Add Association dialog](ui/mpro3.png)
+    ![Add Association dialog](./images/ui/mpro3.png)
 
 4.  For this association the only thing that needs changing from the
     default, is the name of the Navigation Property from Invoice to
@@ -1722,7 +1722,7 @@ following steps.
     This better reflects the multiplicity of the association such that a
     Customer is associated with zero or many Invoices (plural).
     
-    ![Navigation Property name](ui/mpro4.png)
+    ![Navigation Property name](./images/ui/mpro4.png)
     
     Typically, here is where you will:
     
@@ -1736,52 +1736,52 @@ following steps.
 5.  Once you then hit OK the diagram is refreshed to include the newly
     created association.
     
-    ![diagram](ui/mpro5.png)
+    ![diagram](./images/ui/mpro5.png)
 
 6.  You now need to edit the mappings associated with the newly created
     association, so right-click the association on the diagram, and
     select Table Mapping to display the Mapping Details pane.
     
-    ![Table Mapping](ui/mpro6.png)
+    ![Table Mapping](./images/ui/mpro6.png)
 
 7.  Click that line reading \<Add a Table or View\> to reveal a drop
     down list of all entities.
     
-    ![Add a Table or View](ui/mpro7.png)
+    ![Add a Table or View](./images/ui/mpro7.png)
 
 8.  Here you need to select the entity on the right/far side of the
     association (the entity where the foreign key exists). In this
     example, it is the Invoice entity.
     
-    ![Entity](ui/mpro8.png)
+    ![Entity](./images/ui/mpro8.png)
 
 9.  The Mapping Details pane now refreshes to display both ends of the
     association, requiring that you provide relevant target store data
     types in the Column column for the key fields, as depicted here.
     
-    ![Mapping Details](ui/mpro9.png)
+    ![Mapping Details](./images/ui/mpro9.png)
     
-    ![Mapping Details](ui/mpro10.png)
+    ![Mapping Details](./images/ui/mpro10.png)
     
-    ![Mapping Details](ui/mpro11.png)
+    ![Mapping Details](./images/ui/mpro11.png)
 
 10. Once the mapping is complete, you can build the project using Build
     -\> Build Solution. NOTE: It is worthwhile building as each
     association is made, since the error messages can be a little
     confusing.
     
-    ![Build the project](ui/mpro12.png)
+    ![Build the project](./images/ui/mpro12.png)
 
 11. This should result in the following error:
     
-    ![Error](ui/mpro13.png)
+    ![Error](./images/ui/mpro13.png)
     
     This error indicates that there are two source columns - in this
     case, the Invoice entity's Scalar Property Cust\_Num and Navigation
     Property Customer, which are both mapped to the same target column -
     the Progress column Invoice.Cust\_Num - and this is not supported.
     
-    ![Error](ui/mpro14.png)
+    ![Error](./images/ui/mpro14.png)
 
 12. The solution is simple\! Simply delete the mapping of the Scalar
     Property Invoice.Cust\_Num, since its only purpose is to hold data
@@ -1791,24 +1791,24 @@ following steps.
     
     Right click on Invoice.Cust\_Num then Delete.
     
-    ![delete the mapping](ui/mpro15.png)
+    ![delete the mapping](./images/ui/mpro15.png)
 
 13. The model diagram will refresh to reflect this change.
     
-    ![Model Diagram](ui/mpro16.png)
+    ![Model Diagram](./images/ui/mpro16.png)
 
 14. Build the project, again, using Build -\> Build Solution.
     
-    ![Build project](ui/mpro17.png)
+    ![Build project](./images/ui/mpro17.png)
 
 15. The project should now be fine.
     
-    ![Build Project](ui/mpro18.png)
+    ![Build Project](./images/ui/mpro18.png)
 
 You will need to repeat these steps for each association until you have
 a completed Entity Data Model.
 
-![Entity Data Model](ui/mpro19.png)
+![Entity Data Model](./images/ui/mpro19.png)
 
 ## Using EDM to create Entity Framework based applications
 
@@ -1831,7 +1831,7 @@ section](#vdbengineprcrem) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -1851,7 +1851,7 @@ section](#vdbengineprcrem) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fpro2.png)
+    ![Add New Item](./images/ui/fpro2.png)
 
 4.  In the
     
@@ -1896,7 +1896,7 @@ section](#vdbengineprcrem) .
             }
         }
 
-    ![WebDataService1.svc.cs](ui/fpro3.png)
+    ![WebDataService1.svc.cs](./images/ui/fpro3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -1907,7 +1907,7 @@ section](#vdbengineprcrem) .
     displaying the list of available tables/entities for the isports
     database catalog.
     
-    ![Data Service test](ui/fpro4.png)
+    ![Data Service test](./images/ui/fpro4.png)
 
 6.  To access a specific entity instance like the
     
@@ -1920,7 +1920,7 @@ section](#vdbengineprcrem) .
     record, use this convention
     http://host/vdir/Virtuoso.svc/EMPLOYEES(100) .
     
-    ![EMPLOYEES](ui/fpro5.png)
+    ![EMPLOYEES](./images/ui/fpro5.png)
 
 *Notes:*
 
@@ -1983,7 +1983,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -1999,7 +1999,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -2031,7 +2031,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -2047,7 +2047,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -2063,7 +2063,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -2071,7 +2071,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -2079,7 +2079,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -2099,7 +2099,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -2115,7 +2115,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -2131,7 +2131,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -2144,7 +2144,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -2156,7 +2156,7 @@ displaying data in selected tables from the target database.
     
     from the drop down list.
     
-    ![Add conneciton](ui/dora11p.png)
+    ![Add conneciton](./images/ui/dora11p.png)
 
 15. Press the
     
@@ -2164,7 +2164,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Leave the default connect string
     
@@ -2174,7 +2174,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![isportsConnectionString](ui/dora13p.png)
+    ![isportsConnectionString](./images/ui/dora13p.png)
 
 17. From the list of available tables returned for the isports database,
     select the
@@ -2187,17 +2187,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![isports database](ui/dora14p.png)
+    ![isports database](./images/ui/dora14p.png)
 
 18. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/dora15p.png)
+    ![DataGridView](./images/ui/dora15p.png)
 
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/dora16p.png)
+    ![Resize the Form and DataGridView](./images/ui/dora16p.png)
 
 20. To test the application, simply hit
     
@@ -2213,7 +2213,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 21. The data from the
     
@@ -2225,35 +2225,35 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/dora18p.png)
+    ![DataGrid](./images/ui/dora18p.png)
 
 22. To make the DataGridView updateable, you will need to manually add
     some code to the project along with a suitable control to invoke the
     code. Drag a Button control onto the form.
     
-    ![DataGrid](ui/dora19p.png)
+    ![DataGrid](./images/ui/dora19p.png)
 
 23. Right click on the Button and select Properties.
     
-    ![DataGrid](ui/dora20p.png)
+    ![DataGrid](./images/ui/dora20p.png)
 
 24. In the Properties view, edit the buttons Text property to read Save
     Changes and its (Name) property to read saveChanges.
     
-    ![DataGrid](ui/dora21p.png)
+    ![DataGrid](./images/ui/dora21p.png)
 
 25. The button will now update to reflect these changes.
     
     NOTE: You will need to resize the button to make the new text
     visible.
     
-    ![DataGrid](ui/dora22p.png)
+    ![DataGrid](./images/ui/dora22p.png)
 
 26. Double click the new button to generate the required event handler.
     It should take you directly to the area of code that will execute
     when the button is clicked.
     
-    ![DataGrid](ui/dora23p.png)
+    ![DataGrid](./images/ui/dora23p.png)
 
 27. Edit the saveChanges\_Click event handler code to include the
     following line.
@@ -2263,7 +2263,7 @@ displaying data in selected tables from the target database.
           this.msgsTableAdapter.Update(this.isportsDataSet.msgs);
         }
     
-    ![DataGrid](ui/dora24p.png)
+    ![DataGrid](./images/ui/dora24p.png)
 
 28. Now test the application again by hitting Ctrl+F5.
     
@@ -2273,13 +2273,13 @@ displaying data in selected tables from the target database.
     
     Updates and deletes can be performed similarly.
     
-    ![DataGrid](ui/dora25p.png)
+    ![DataGrid](./images/ui/dora25p.png)
 
 29. You can use Interactive ISQL to test that the changes that have been
     written. Interactive ISQL Interface is detailed in the [Linking
     Progress tables](#vdbengineprlnk) section.
     
-    ![DataGrid](ui/dora26p.png)
+    ![DataGrid](./images/ui/dora26p.png)
 
 The task is now complete.
 
@@ -2377,47 +2377,47 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/iora3.png)
+    ![Databases](./images/ui/iora3.png)
 
 4.  Select the "Connect" button for the "Ing10ma" Ingres DSN.
     
-    ![Connect](ui/iora4.png)
+    ![Connect](./images/ui/iora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/iora5.png)
+    ![Link Objects](./images/ui/iora5.png)
 
 6.  Select all the tables that are part of the "TUT" catalog and press
     the "Link" button to commence the linking process
     
-    ![Select all tables](ui/iora6.png)
+    ![Select all tables](./images/ui/iora6.png)
 
 7.  Change the Catalog for each table to be "TUT" using the "Set All"
     button.
     
-    ![Catalog](ui/iora7.png)
+    ![Catalog](./images/ui/iora7.png)
 
 8.  All the catalog names are changed to be "TUT".
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/iora8.png)
+    !["Link" button](./images/ui/iora8.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/iora9.png)
+    ![Completion](./images/ui/iora9.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     "Local Name" column of the "External Linked Objects" tab above,
@@ -2425,17 +2425,17 @@ available from:
     required SQL "Select" for retrieving the remote table data. We shall
     use the "TUT.ingma.book\_list" table to demonstrate this.
     
-    ![Querying](ui/iora10.png)
+    ![Querying](./images/ui/iora10.png)
 
 12. Then click the "Execute" button to run the query and retrieve the
     results from the remote table.
     
-    ![Execute](ui/iora11.png)
+    ![Execute](./images/ui/iora11.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "TUT" catalog name.
     
-    ![SQL Schema Objects](ui/iora12.png)
+    ![SQL Schema Objects](./images/ui/iora12.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -2447,7 +2447,7 @@ the Ingres Tutorial database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -2463,7 +2463,7 @@ the Ingres Tutorial database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -2495,7 +2495,7 @@ the Ingres Tutorial database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -2503,11 +2503,11 @@ the Ingres Tutorial database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -2527,7 +2527,7 @@ the Ingres Tutorial database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -2547,7 +2547,7 @@ the Ingres Tutorial database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -2561,7 +2561,7 @@ the Ingres Tutorial database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -2577,7 +2577,7 @@ the Ingres Tutorial database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -2590,7 +2590,7 @@ the Ingres Tutorial database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -2602,7 +2602,7 @@ the Ingres Tutorial database:
     
     database from the drop down list.
     
-    ![Add conneciton](ui/eora10i.png)
+    ![Add conneciton](./images/ui/eora10i.png)
 
 14. Press the
     
@@ -2610,11 +2610,11 @@ the Ingres Tutorial database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Click OK to add the connection.
     
-    ![Test Connection](ui/dora12i.png)
+    ![Test Connection](./images/ui/dora12i.png)
 
 16. Set the
     
@@ -2631,7 +2631,7 @@ the Ingres Tutorial database:
     
     .
     
-    ![entity connect string](ui/eora12i.png)
+    ![entity connect string](./images/ui/eora12i.png)
 
 17. In the
     
@@ -2656,7 +2656,7 @@ the Ingres Tutorial database:
     
     .
     
-    ![Database Objects](ui/eora13i.png)
+    ![Database Objects](./images/ui/eora13i.png)
 
 18. The
     
@@ -2665,7 +2665,7 @@ the Ingres Tutorial database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/eora14i.png)
+    ![Virtuoso.edmx](./images/ui/eora14i.png)
 
 Creation for the Entity Data Model for the Ingres Tutorial database is
 now complete.
@@ -2687,16 +2687,16 @@ one-to-many, etc.).
     mpmprelationship, as an entry in a customer order may only be
     associated with one customer's information.
     
-    ![Association](ui/ming1.png)
+    ![Association](./images/ui/ming1.png)
 
 2.  To add the Association, right click on the Customer entity then Add
     -\> Association.
     
-    ![add the Association](ui/ming2.png)
+    ![add the Association](./images/ui/ming2.png)
 
 3.  You will now see the Add Association dialog.
     
-    ![Add Association dialog](ui/ming3.png)
+    ![Add Association dialog](./images/ui/ming3.png)
 
 4.  Once you then hit OK the diagram is refreshed to include the newly
     created association.
@@ -2713,35 +2713,35 @@ one-to-many, etc.).
     
     pane.
     
-    ![Navigation Property name](ui/ming4.png)
+    ![Navigation Property name](./images/ui/ming4.png)
 
 6.  Click that line reading \<Add a Table or View\> to reveal a drop
     down list of all entities.
     
-    ![Add a Table or View](ui/ming5.png)
+    ![Add a Table or View](./images/ui/ming5.png)
 
 7.  Here you need to select the entity on the right/far side of the
     association (the entity where the foreign key exists). In this
     example, it is the cust\_orders entity.
     
-    ![Entity](ui/ming6.png)
+    ![Entity](./images/ui/ming6.png)
 
 8.  The Mapping Details pane now refreshes to display both ends of the
     association, requiring that you provide relevant target store data
     types in the Column column for the key fields, as depicted here.
     
-    ![Mapping Details](ui/ming7.png)
+    ![Mapping Details](./images/ui/ming7.png)
 
 9.  Once the mapping is complete, you can build the project using Build
     -\> Build Solution. NOTE: It is worthwhile building as each
     association is made, since the error messages can be a little
     confusing.
     
-    ![Build the project](ui/ming8.png)
+    ![Build the project](./images/ui/ming8.png)
 
 10. This should result in the following error:
     
-    ![Error](ui/ming9.png)
+    ![Error](./images/ui/ming9.png)
     
     This error indicates that there are two sources - in this case, the
     cust\_orders entity's Scalar Property cust\_no and the Navigation
@@ -2749,7 +2749,7 @@ one-to-many, etc.).
     column - the Ingres column cust\_orders.cust\_no - which is not
     supported.
     
-    ![Error](ui/ming10.png)
+    ![Error](./images/ui/ming10.png)
 
 11. The solution is simple\! Simply delete the mapping for Scalar
     Property cust\_orders.cust\_no since its only purpose is to hold
@@ -2759,24 +2759,24 @@ one-to-many, etc.).
     
     Right-click on cust\_orders.cust\_no then Delete.
     
-    ![delete the mapping](ui/ming11.png)
+    ![delete the mapping](./images/ui/ming11.png)
 
 12. The model diagram will refresh to reflect this change.
     
-    ![Model Diagram](ui/ming12.png)
+    ![Model Diagram](./images/ui/ming12.png)
 
 13. Build the project, again, using Build -\> Build Solution.
     
-    ![Build project](ui/ming13.png)
+    ![Build project](./images/ui/ming13.png)
 
 14. The project should now be fine.
     
-    ![Build Project](ui/ming14.png)
+    ![Build Project](./images/ui/ming14.png)
 
 You will need to repeat these steps for each association until you have
 a completed Entity Data Model.
 
-![Entity Data Model](ui/ming15.png)
+![Entity Data Model](./images/ui/ming15.png)
 
 ## Using EDM to create Entity Framework based applications
 
@@ -2799,7 +2799,7 @@ section](#vdbengineingcre) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -2819,7 +2819,7 @@ section](#vdbengineingcre) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fora2.png)
+    ![Add New Item](./images/ui/fora2.png)
 
 4.  In the newly created
     
@@ -2864,7 +2864,7 @@ section](#vdbengineingcre) .
             }
         }
 
-    ![Virtuoso.svc.cs](ui/fora3.png)
+    ![Virtuoso.svc.cs](./images/ui/fora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -2875,13 +2875,13 @@ section](#vdbengineingcre) .
     displaying the list of available tables/entities for the Ingres
     Tutorial database catalog.
     
-    ![Data Service test](ui/fora4i.png)
+    ![Data Service test](./images/ui/fora4i.png)
 
 6.  To access a specific entity instance like the cust\_orders table
     order number 5500 record, use this convention:
     http://host/vdir/Virtuoso.svc/cust\_orders(5500) .
     
-    ![Orders](ui/fora5i.png)
+    ![Orders](./images/ui/fora5i.png)
 
 *Notes:*
 
@@ -2944,7 +2944,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -2960,7 +2960,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -2992,7 +2992,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -3008,7 +3008,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -3024,7 +3024,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -3032,7 +3032,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -3040,7 +3040,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -3060,7 +3060,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -3076,7 +3076,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -3092,7 +3092,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -3105,7 +3105,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -3117,7 +3117,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/indora11.png)
+    ![Add connection](./images/ui/indora11.png)
 
 15. Press the
     
@@ -3125,11 +3125,11 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Click OK to add the connection.
     
-    ![Test Connection](ui/indora12.png)
+    ![Test Connection](./images/ui/indora12.png)
 
 17. Leave the name of the connect string to the default of
     
@@ -3139,7 +3139,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![TUTConnectionString](ui/indora13.png)
+    ![TUTConnectionString](./images/ui/indora13.png)
 
 18. From the list of available tables returned for the TUT database,
     select the
@@ -3152,17 +3152,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![TUT database](ui/indora14.png)
+    ![TUT database](./images/ui/indora14.png)
 
 19. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/indora15.png)
+    ![DataGridView](./images/ui/indora15.png)
 
 20. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/indora16.png)
+    ![Resize the Form and DataGridView](./images/ui/indora16.png)
 
 21. To test the application, simply hit
     
@@ -3178,7 +3178,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/mqdora17.png)
+    ![Start Debugging](./images/ui/mqdora17.png)
 
 22. The data from the
     
@@ -3190,7 +3190,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/indora18.png)
+    ![DataGrid](./images/ui/indora18.png)
 
 The task is now complete.
 
@@ -3301,48 +3301,48 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/infinf3.png)
+    ![Databases](./images/ui/infinf3.png)
 
 4.  Select the "Connect" button for the "inf10ma" Informix DSN.
     
-    ![Connect](ui/infinf4.png)
+    ![Connect](./images/ui/infinf4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/infinf5.png)
+    ![Link Objects](./images/ui/infinf5.png)
 
 6.  Select all the tables that are part of the "stores\_demo" catalog.
     
-    ![Select all tables](ui/infinf6.png)
+    ![Select all tables](./images/ui/infinf6.png)
 
 7.  Change the Catalog for each table to be "stores\_demo" using the
     "Set All" button.
     
-    ![Catalog](ui/infinf7.png)
+    ![Catalog](./images/ui/infinf7.png)
 
 8.  All the catalog names are changed to be "stores\_demo".
     
-    ![catalog names](ui/infinf8.png)
+    ![catalog names](./images/ui/infinf8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/infinf9.png)
+    !["Link" button](./images/ui/infinf9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/infinf10.png)
+    ![Completion](./images/ui/infinf10.png)
 
 11. At this point you can test the remotely linked tables by clicking on
     the link that accompanies each table. e.g.
@@ -3351,16 +3351,16 @@ available from:
     This will display the Interactive ISQL interface which will have
     been already populated with a suitable SQL statement.
     
-    ![Querying](ui/infinf11.png)
+    ![Querying](./images/ui/infinf11.png)
 
 12. Select Execute to see data from the remotely linked table.
     
-    ![Execute](ui/infinf12.png)
+    ![Execute](./images/ui/infinf12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "stores\_demo" catalog name.
     
-    ![SQL Schema Objects](ui/infinf13.png)
+    ![SQL Schema Objects](./images/ui/infinf13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -3372,7 +3372,7 @@ the Informix stores\_demo database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -3388,7 +3388,7 @@ the Informix stores\_demo database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -3420,7 +3420,7 @@ the Informix stores\_demo database:
     
     .
     
-    ![name for the project](ui/einf2.png)
+    ![name for the project](./images/ui/einf2.png)
 
 6.  This will create a new project called
     
@@ -3428,11 +3428,11 @@ the Informix stores\_demo database:
     
     .
     
-    ![create a new project](ui/einf3.png)
+    ![create a new project](./images/ui/einf3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![New Item](ui/einf4.png)
+    ![New Item](./images/ui/einf4.png)
 
 8.  The
     
@@ -3452,7 +3452,7 @@ the Informix stores\_demo database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/einf5.png)
+    ![Add New Item](./images/ui/einf5.png)
 
 9.  In the
     
@@ -3472,7 +3472,7 @@ the Informix stores\_demo database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -3486,7 +3486,7 @@ the Informix stores\_demo database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -3502,7 +3502,7 @@ the Informix stores\_demo database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -3515,7 +3515,7 @@ the Informix stores\_demo database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -3527,7 +3527,7 @@ the Informix stores\_demo database:
     
     database from the drop down list.
     
-    ![Add connection](ui/einf10.png)
+    ![Add connection](./images/ui/einf10.png)
 
 14. Press the
     
@@ -3535,7 +3535,7 @@ the Informix stores\_demo database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -3552,7 +3552,7 @@ the Informix stores\_demo database:
     
     .
     
-    ![entity connect string](ui/einf12.png)
+    ![entity connect string](./images/ui/einf12.png)
 
 16. In the
     
@@ -3577,7 +3577,7 @@ the Informix stores\_demo database:
     
     .
     
-    ![Database Objects](ui/einf13.png)
+    ![Database Objects](./images/ui/einf13.png)
 
 17. The
     
@@ -3586,7 +3586,7 @@ the Informix stores\_demo database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/einf14.png)
+    ![Virtuoso.edmx](./images/ui/einf14.png)
 
 Creation for the Entity Data Model for the Informix stores\_demo
 database is now complete.
@@ -3612,7 +3612,7 @@ section](#vdbengineinfcre) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -3632,7 +3632,7 @@ section](#vdbengineinfcre) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/finf2.png)
+    ![Add New Item](./images/ui/finf2.png)
 
 4.  In the newly created
     
@@ -3677,7 +3677,7 @@ section](#vdbengineinfcre) .
             }
         }
 
-    ![WebDataService1.svc.cs](ui/finf3.png)
+    ![WebDataService1.svc.cs](./images/ui/finf3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -3688,7 +3688,7 @@ section](#vdbengineinfcre) .
     displaying the list of available tables/entities for the
     stores\_demo database catalog.
     
-    ![Data Service test](ui/finf4.png)
+    ![Data Service test](./images/ui/finf4.png)
 
 6.  To access a specific entity instance like the
     
@@ -3701,7 +3701,7 @@ section](#vdbengineinfcre) .
     record, use this convention
     http://host/vdir/WebDataService1.svc/customer(101).
     
-    ![custmers](ui/finf5.png)
+    ![custmers](./images/ui/finf5.png)
 
 *Notes:*
 
@@ -3764,7 +3764,7 @@ control for displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -3780,7 +3780,7 @@ control for displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -3812,7 +3812,7 @@ control for displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -3828,7 +3828,7 @@ control for displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -3844,7 +3844,7 @@ control for displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -3852,7 +3852,7 @@ control for displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -3860,7 +3860,7 @@ control for displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -3880,7 +3880,7 @@ control for displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -3896,7 +3896,7 @@ control for displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -3912,7 +3912,7 @@ control for displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -3928,7 +3928,7 @@ control for displaying data in selected tables from the target database.
     
     check box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the Select Database From List radio button and choose the
     
@@ -3936,7 +3936,7 @@ control for displaying data in selected tables from the target database.
     
     from the drop down list.
     
-    ![Add connection](ui/dora11in.png)
+    ![Add connection](./images/ui/dora11in.png)
 
 15. Press the
     
@@ -3944,7 +3944,7 @@ control for displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Leave the default connect string
     
@@ -3954,7 +3954,7 @@ control for displaying data in selected tables from the target database.
     
     *Next*
     
-    ![stores\_demoConnectionString](ui/dora13in.png)
+    ![stores\_demoConnectionString](./images/ui/dora13in.png)
 
 17. From the list of available tables returned for the stores\_demo
     database, select the
@@ -3967,17 +3967,17 @@ control for displaying data in selected tables from the target database.
     
     control.
     
-    ![stores\_demo database](ui/dora14in.png)
+    ![stores\_demo database](./images/ui/dora14in.png)
 
 18. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/dora15in.png)
+    ![DataGridView](./images/ui/dora15in.png)
 
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/dora16in.png)
+    ![Resize the Form and DataGridView](./images/ui/dora16in.png)
 
 20. To test the application, simply hit
     
@@ -3993,35 +3993,35 @@ control for displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 21. To make the DataGridView updateable, you will need to manually add
     some code to the project along with a suitable control to invoke the
     code. Drag a Button control onto the form.
     
-    ![DataGrid](ui/dora19in.png)
+    ![DataGrid](./images/ui/dora19in.png)
 
 22. Right click on the Button and select Properties.
     
-    ![DataGrid](ui/dora20in.png)
+    ![DataGrid](./images/ui/dora20in.png)
 
 23. In the Properties view, edit the buttons Text property to read Save
     Changes and its (Name) property to read saveChanges.
     
-    ![DataGrid](ui/dora21in.png)
+    ![DataGrid](./images/ui/dora21in.png)
 
 24. The button will now update to reflect these changes.
     
     NOTE: You will need to resize the button to make the new text
     visible.
     
-    ![DataGrid](ui/dora22in.png)
+    ![DataGrid](./images/ui/dora22in.png)
 
 25. Double click the new button to generate the required event handler.
     It should take you directly to the area of code that will execute
     when the button is clicked.
     
-    ![DataGrid](ui/dora23in.png)
+    ![DataGrid](./images/ui/dora23in.png)
 
 26. Edit the saveChanges\_Click event handler code to include the
     following line.
@@ -4031,7 +4031,7 @@ control for displaying data in selected tables from the target database.
           this.msgsTableAdapter.Update(this.stores_demoDataSet.msgs);
         }
     
-    ![DataGrid](ui/dora24in.png)
+    ![DataGrid](./images/ui/dora24in.png)
 
 27. Now test the application again by hitting Ctrl+F5.
     
@@ -4041,13 +4041,13 @@ control for displaying data in selected tables from the target database.
     
     Updates and deletes can be performed similarly.
     
-    ![DataGrid](ui/dora25in.png)
+    ![DataGrid](./images/ui/dora25in.png)
 
 28. You can use Interactive ISQL to test that the changes that have been
     written. Interactive ISQL Interface is detailed in the [Linking
     Informix tables](#vdbengineinflink) section.
     
-    ![DataGrid](ui/dora26in.png)
+    ![DataGrid](./images/ui/dora26in.png)
 
 The task is now complete.
 
@@ -4143,48 +4143,48 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/bora3.png)
+    ![Databases](./images/ui/bora3.png)
 
 4.  Select the "Connect" button for the "db2v8ma" DB2 DSN.
     
-    ![Connect](ui/bora4.png)
+    ![Connect](./images/ui/bora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/bora5.png)
+    ![Link Objects](./images/ui/bora5.png)
 
 6.  Select the tables that you would like to link.
     
-    ![Select tables](ui/bora6.png)
+    ![Select tables](./images/ui/bora6.png)
 
 7.  Change the Catalog for each table to be "SAMPLE" using the "Set All"
     button.
     
-    ![Catalog](ui/bora7.png)
+    ![Catalog](./images/ui/bora7.png)
 
 8.  All the catalog names are changed to be "SAMPLE".
     
-    ![catalog names](ui/bora8.png)
+    ![catalog names](./images/ui/bora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/bora9.png)
+    !["Link" button](./images/ui/bora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/bora10.png)
+    ![Completion](./images/ui/bora10.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     Local Name column of the External Linked Objects tab above. This
@@ -4192,17 +4192,17 @@ available from:
     Select for retrieving the remote table data . We shall use the
     SAMPLE.db2v8ma.EMPLOYEE table to demonstrate this.
     
-    ![view tables](ui/bora13.png)
+    ![view tables](./images/ui/bora13.png)
 
 12. Click the Execute button to run the query and retrieve the results
     from the remote table.
     
-    ![Execute](ui/bora12.png)
+    ![Execute](./images/ui/bora12.png)
 
 13. The tables can also be viewed as part of the Virtuoso SQL Schema
     Objects under the SAMPLE catalog name.
     
-    ![SQL Schema Objects](ui/bora11.png)
+    ![SQL Schema Objects](./images/ui/bora11.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -4214,7 +4214,7 @@ the DB2 Samples database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -4230,7 +4230,7 @@ the DB2 Samples database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -4262,7 +4262,7 @@ the DB2 Samples database:
     
     .
     
-    ![name for the project](ui/ebora2.png)
+    ![name for the project](./images/ui/ebora2.png)
 
 6.  This will create a new project called
     
@@ -4270,11 +4270,11 @@ the DB2 Samples database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -4294,7 +4294,7 @@ the DB2 Samples database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -4314,7 +4314,7 @@ the DB2 Samples database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -4328,7 +4328,7 @@ the DB2 Samples database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -4344,7 +4344,7 @@ the DB2 Samples database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -4357,12 +4357,12 @@ the DB2 Samples database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the Select Database From List radio button and choose SAMPLE
     from the drop down list. Click OK.
     
-    ![Add connection](ui/ebora10.png)
+    ![Add connection](./images/ui/ebora10.png)
 
 14. Press the
     
@@ -4370,7 +4370,7 @@ the DB2 Samples database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -4387,7 +4387,7 @@ the DB2 Samples database:
     
     .
     
-    ![entity connect string](ui/ebora12.png)
+    ![entity connect string](./images/ui/ebora12.png)
 
 16. In the
     
@@ -4412,7 +4412,7 @@ the DB2 Samples database:
     
     .
     
-    ![Database Objects](ui/ebora13.png)
+    ![Database Objects](./images/ui/ebora13.png)
 
 17. The
     
@@ -4421,7 +4421,7 @@ the DB2 Samples database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/ebora14.png)
+    ![Virtuoso.edmx](./images/ui/ebora14.png)
 
 Creation for the Entity Data Model for the DB2 Samples database is now
 complete.
@@ -4447,7 +4447,7 @@ section](#vdbenginedb2crvs) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -4467,7 +4467,7 @@ section](#vdbenginedb2crvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fora2.png)
+    ![Add New Item](./images/ui/fora2.png)
 
 4.  In the newly created
     
@@ -4512,7 +4512,7 @@ section](#vdbenginedb2crvs) .
             }
         }
     
-    ![Virtuoso.svc.cs](ui/fora3.png)
+    ![Virtuoso.svc.cs](./images/ui/fora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -4523,7 +4523,7 @@ section](#vdbenginedb2crvs) .
     displaying the list of available tables/entities for the SAMPLE
     database catalog.
     
-    ![Data Service test](ui/fbora4.png)
+    ![Data Service test](./images/ui/fbora4.png)
 
 6.  To access a specific entity instance like the
     
@@ -4536,7 +4536,7 @@ section](#vdbenginedb2crvs) .
     record, use this convention
     http://host/vdir/Virtuoso.svc/EMPLOYEES("000010") .
     
-    ![EMPLOYEES](ui/fbora5.png)
+    ![EMPLOYEES](./images/ui/fbora5.png)
 
 *Notes:*
 
@@ -4599,7 +4599,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dbgrid1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dbgrid1.png)
 
 2.  Create a
     
@@ -4615,7 +4615,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -4647,7 +4647,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dbgrid2.png)
+    ![Web Application](./images/ui/dbgrid2.png)
 
 6.  In the
     
@@ -4663,7 +4663,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dbgrid3.png)
+    ![Toolbox](./images/ui/dbgrid3.png)
 
 7.  Click on the little
     
@@ -4679,7 +4679,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dbgrid4.png)
+    ![DataGridView Task](./images/ui/dbgrid4.png)
 
 8.  Click on the
     
@@ -4687,7 +4687,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dbgrid5.png)
+    ![Choose Data Source](./images/ui/dbgrid5.png)
 
 9.  Click on the
     
@@ -4695,7 +4695,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dbgrid6.png)
+    ![Add Project Data Source](./images/ui/dbgrid6.png)
 
 10. In the
     
@@ -4715,7 +4715,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dbgrid7.png)
+    ![Data Source Type](./images/ui/dbgrid7.png)
 
 11. In the
     
@@ -4731,7 +4731,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -4747,7 +4747,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -4760,7 +4760,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dbgrid10.png)
+    ![Connection Properties](./images/ui/dbgrid10.png)
 
 14. Select the
     
@@ -4772,7 +4772,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/dbgrid11.png)
+    ![Add connection](./images/ui/dbgrid11.png)
 
 15. Press the
     
@@ -4780,7 +4780,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Leave the default connect string
     
@@ -4790,7 +4790,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![SAMPLEConnectionString](ui/dbgrid13.png)
+    ![SAMPLEConnectionString](./images/ui/dbgrid13.png)
 
 17. From the list of available tables returned for the SAMPLE database
     select the
@@ -4803,17 +4803,17 @@ displaying data in selected tables from the target database.
     
     control
     
-    ![SAMPLE database](ui/dbgrid14.png)
+    ![SAMPLE database](./images/ui/dbgrid14.png)
 
 18. The columns names of the select table will be displayed in the
     DataGridView
     
-    ![DataGridView](ui/dbgrid15.png)
+    ![DataGridView](./images/ui/dbgrid15.png)
 
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/dbgrid16.png)
+    ![Resize the Form and DataGridView](./images/ui/dbgrid16.png)
 
 20. To test the application, simply hit
     
@@ -4829,7 +4829,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/mqdora17.png)
+    ![Start Debugging](./images/ui/mqdora17.png)
 
 21. The data from the
     
@@ -4841,7 +4841,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/dbgrid18.png)
+    ![DataGrid](./images/ui/dbgrid18.png)
 
 The task is now complete.
 
@@ -4939,53 +4939,53 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/sora3.png)
+    ![Databases](./images/ui/sora3.png)
 
 4.  Select the "Connect" button for the "syb15ma" Sybase DSN.
     
-    ![Connect](ui/sora4.png)
+    ![Connect](./images/ui/sora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/sora5.png)
+    ![Link Objects](./images/ui/sora5.png)
 
 6.  Select all the tables that are part of the "pubs2" catalog.
     
-    ![Select tables](ui/sora6.png)
+    ![Select tables](./images/ui/sora6.png)
 
 7.  Change the Catalog for each table to be "P2" using the "Set All"
     button.
     
-    ![Catalog](ui/sora7.png)
+    ![Catalog](./images/ui/sora7.png)
 
 8.  All the catalog names are changed to be "P2".
     
-    ![catalog names](ui/sora8.png)
+    ![catalog names](./images/ui/sora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/sora9.png)
+    !["Link" button](./images/ui/sora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/sora10.png)
+    ![Completion](./images/ui/sora10.png)
 
 11. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "P2" catalog name.
     
-    ![view tables](ui/sora11.png)
+    ![view tables](./images/ui/sora11.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -4997,7 +4997,7 @@ the Sybase pubs2 database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -5013,7 +5013,7 @@ the Sybase pubs2 database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -5045,7 +5045,7 @@ the Sybase pubs2 database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -5053,11 +5053,11 @@ the Sybase pubs2 database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -5077,7 +5077,7 @@ the Sybase pubs2 database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -5097,7 +5097,7 @@ the Sybase pubs2 database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -5111,7 +5111,7 @@ the Sybase pubs2 database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -5127,7 +5127,7 @@ the Sybase pubs2 database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -5140,7 +5140,7 @@ the Sybase pubs2 database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -5152,7 +5152,7 @@ the Sybase pubs2 database:
     
     database from the drop down list.
     
-    ![Add connection](ui/esora10.png)
+    ![Add connection](./images/ui/esora10.png)
 
 14. Press the
     
@@ -5160,7 +5160,7 @@ the Sybase pubs2 database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -5177,7 +5177,7 @@ the Sybase pubs2 database:
     
     .
     
-    ![entity connect string](ui/esora12.png)
+    ![entity connect string](./images/ui/esora12.png)
 
 16. In the
     
@@ -5202,7 +5202,7 @@ the Sybase pubs2 database:
     
     .
     
-    ![Database Objects](ui/esora13.png)
+    ![Database Objects](./images/ui/esora13.png)
 
 17. The
     
@@ -5211,7 +5211,7 @@ the Sybase pubs2 database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/esora14.png)
+    ![Virtuoso.edmx](./images/ui/esora14.png)
 
 Creation for the Entity Data Model for the Sybase pubs2 database is now
 complete.
@@ -5232,7 +5232,7 @@ following steps.
     property pub\_id in both entities. This is a one-to-many
     relationship, as a Customer may have any number of Invoices.
     
-    ![Association](ui/spro1.png)
+    ![Association](./images/ui/spro1.png)
     
     This is a one to many relationship insomuch that publishers may have
     zero or many titles.
@@ -5240,11 +5240,11 @@ following steps.
 2.  To add the Association, right click on the publishers entity then
     Add -\> Association.
     
-    ![add the Association](ui/spro2.png)
+    ![add the Association](./images/ui/spro2.png)
 
 3.  You will now see the Add Association dialog.
     
-    ![Add Association dialog](ui/spro3.png)
+    ![Add Association dialog](./images/ui/spro3.png)
 
 4.  For this association the only thing that needs changing is the name
     of the Navigation Property from publishers to publisher on the
@@ -5254,46 +5254,46 @@ following steps.
     such that a publisher is associated with zero or many titles
     (plural).
     
-    ![Navigation Property name](ui/spro4.png)
+    ![Navigation Property name](./images/ui/spro4.png)
 
 5.  Once you then hit OK the diagram is refreshed to include the newly
     created association.
     
-    ![diagram](ui/spro5.png)
+    ![diagram](./images/ui/spro5.png)
 
 6.  You now need to edit the mappings associated with the newly created
     association, so right-click the association on the diagram, and
     select Table Mapping to display the Mapping Details pane.
     
-    ![Table Mapping](ui/spro6.png)
+    ![Table Mapping](./images/ui/spro6.png)
 
 7.  Click that line reading \<Add a Table or View\> to reveal a drop
     down list of all entities.
     
-    ![Add a Table or View](ui/spro7.png)
+    ![Add a Table or View](./images/ui/spro7.png)
 
 8.  Here you need to select the entity on the right/far side of the
     association (the entity where the foreign key exists). In this
     example, it is the titles entity.
     
-    ![Entity](ui/spro8.png)
+    ![Entity](./images/ui/spro8.png)
 
 9.  The Mapping Details pane now refreshes to display both ends of the
     association, requiring that you provide relevant target store data
     types in the Column column for the key fields, as depicted here.
     
-    ![Mapping Details](ui/spro9.png)
+    ![Mapping Details](./images/ui/spro9.png)
 
 10. Once the mapping is complete, you can build the project using Build
     -\> Build Solution. NOTE: It is worthwhile building as each
     association is made, since the error messages can be a little
     confusing.
     
-    ![Build the project](ui/spro10.png)
+    ![Build the project](./images/ui/spro10.png)
 
 11. This should result in the following error:
     
-    ![Error](ui/spro11.png)
+    ![Error](./images/ui/spro11.png)
     
     It seems that this error is attempting to say that there are two
     mappings which map to the same target source column.
@@ -5304,7 +5304,7 @@ following steps.
     publishers in the Invoice entity, both map to the Sybase table
     column titles.pub\_id - which is not supported
     
-    ![Error](ui/spro12.png)
+    ![Error](./images/ui/spro12.png)
 
 12. The solution is simple\! Simply delete the scalar property
     titles.pub\_id since its purpose is only to hold data representing a
@@ -5314,24 +5314,24 @@ following steps.
     
     Right click on titles.pub\_id then Delete.
     
-    ![delete the mapping](ui/spro13.png)
+    ![delete the mapping](./images/ui/spro13.png)
 
 13. The model diagram will refresh to reflect this change.
     
-    ![Model Diagram](ui/spro14.png)
+    ![Model Diagram](./images/ui/spro14.png)
 
 14. Build the project, again, using Build -\> Build Solution.
     
-    ![Build project](ui/spro15.png)
+    ![Build project](./images/ui/spro15.png)
 
 15. The project should now be fine.
     
-    ![Build Project](ui/spro16.png)
+    ![Build Project](./images/ui/spro16.png)
 
 You will need to repeat these steps for each association until you have
 a completed Entity Data Model.
 
-![Entity Data Model](ui/spro17.png)
+![Entity Data Model](./images/ui/spro17.png)
 
 ## Using EDM to create Entity Framework based applications
 
@@ -5354,7 +5354,7 @@ section](#vdbenginesybcrvs) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -5374,7 +5374,7 @@ section](#vdbenginesybcrvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fora2.png)
+    ![Add New Item](./images/ui/fora2.png)
 
 4.  In the newly created
     
@@ -5419,7 +5419,7 @@ section](#vdbenginesybcrvs) .
             }
         }
     
-    ![Virtuoso.svc.cs](ui/fora3.png)
+    ![Virtuoso.svc.cs](./images/ui/fora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -5430,7 +5430,7 @@ section](#vdbenginesybcrvs) .
     displaying the list of available tables/entities for the P2 database
     catalog.
     
-    ![Data Service test](ui/fsora4.png)
+    ![Data Service test](./images/ui/fsora4.png)
 
 6.  To access a specific entity instance like the
     
@@ -5443,7 +5443,7 @@ section](#vdbenginesybcrvs) .
     record, use this convention
     http://host/vdir/Virtuoso.svc/publishers("0736") .
     
-    ![publisher](ui/fsora5.png)
+    ![publisher](./images/ui/fsora5.png)
 
 *Notes:*
 
@@ -5506,7 +5506,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -5522,7 +5522,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -5554,7 +5554,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -5570,7 +5570,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -5586,7 +5586,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -5594,7 +5594,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -5602,7 +5602,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -5622,7 +5622,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -5638,7 +5638,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -5654,7 +5654,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -5667,7 +5667,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -5679,7 +5679,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/vsdora11.png)
+    ![Add connection](./images/ui/vsdora11.png)
 
 15. Press the
     
@@ -5687,7 +5687,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Leave the default connect string
     
@@ -5697,7 +5697,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![P2ConnectionString](ui/vsdora13.png)
+    ![P2ConnectionString](./images/ui/vsdora13.png)
 
 17. From the list of available tables returned for the P2 database,
     select the
@@ -5710,17 +5710,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![P2 database](ui/vsdora14.png)
+    ![P2 database](./images/ui/vsdora14.png)
 
 18. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/vsdora15.png)
+    ![DataGridView](./images/ui/vsdora15.png)
 
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/vsdora16.png)
+    ![Resize the Form and DataGridView](./images/ui/vsdora16.png)
 
 20. To test the application, simply hit
     
@@ -5736,7 +5736,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/mqdora17.png)
+    ![Start Debugging](./images/ui/mqdora17.png)
 
 21. The data from the
     
@@ -5748,7 +5748,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/vsdora18.png)
+    ![DataGrid](./images/ui/vsdora18.png)
 
 The task is now complete.
 
@@ -5846,47 +5846,47 @@ available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/msora3.png)
+    ![Databases](./images/ui/msora3.png)
 
 4.  Select the "Connect" button for the "mysqlma" MySQL DSN.
     
-    ![Connect](ui/msora4.png)
+    ![Connect](./images/ui/msora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/msora5.png)
+    ![Link Objects](./images/ui/msora5.png)
 
 6.  Select all the tables that are part of the "mysql" catalog.
     
-    ![Select tables](ui/msora6.png)
+    ![Select tables](./images/ui/msora6.png)
 
 7.  Ensure a primary key is assigned to all table that are to be used in
     the EDM generation phase.
     
-    ![Catalog](ui/msora7.png)
+    ![Catalog](./images/ui/msora7.png)
 
 8.  Change the Catalog for each table to be "mysql" using the "Set All"
     button.
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/msora8.png)
+    !["Link" button](./images/ui/msora8.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/msora9.png)
+    ![Completion](./images/ui/msora9.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     "Local Name" column of the "External Linked Objects" tab above,
@@ -5894,17 +5894,17 @@ available from:
     required SQL "Select" for retrieving the remote table data . We
     shall use the "mysql.mysqlma.artist" table to demonstrate this.
     
-    ![Completion](ui/msora10.png)
+    ![Completion](./images/ui/msora10.png)
 
 12. Then click the "Execute" button to run the query and retrieve the
     results from the remote table.
     
-    ![Completion](ui/msora11.png)
+    ![Completion](./images/ui/msora11.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "mysql" catalog name.
     
-    ![view tables](ui/sora11.png)
+    ![view tables](./images/ui/sora11.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -5916,7 +5916,7 @@ the MySQL Northwind database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -5932,7 +5932,7 @@ the MySQL Northwind database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -5964,7 +5964,7 @@ the MySQL Northwind database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -5972,11 +5972,11 @@ the MySQL Northwind database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -5996,7 +5996,7 @@ the MySQL Northwind database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -6016,7 +6016,7 @@ the MySQL Northwind database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -6030,7 +6030,7 @@ the MySQL Northwind database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -6046,7 +6046,7 @@ the MySQL Northwind database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -6059,7 +6059,7 @@ the MySQL Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -6071,7 +6071,7 @@ the MySQL Northwind database:
     
     database from the drop down list.
     
-    ![Add connection](ui/mesora10.png)
+    ![Add connection](./images/ui/mesora10.png)
 
 14. Press the
     
@@ -6079,11 +6079,11 @@ the MySQL Northwind database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Click OK to add the connection.
     
-    ![Test Connection](ui/mesora11.png)
+    ![Test Connection](./images/ui/mesora11.png)
 
 16. Set the
     
@@ -6100,7 +6100,7 @@ the MySQL Northwind database:
     
     .
     
-    ![entity connect string](ui/mesora12.png)
+    ![entity connect string](./images/ui/mesora12.png)
 
 17. In the
     
@@ -6125,7 +6125,7 @@ the MySQL Northwind database:
     
     .
     
-    ![Database Objects](ui/mesora13.png)
+    ![Database Objects](./images/ui/mesora13.png)
 
 18. The
     
@@ -6134,7 +6134,7 @@ the MySQL Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/mesora14.png)
+    ![Virtuoso.edmx](./images/ui/mesora14.png)
 
 Creation for the Entity Data Model for the MySQL Northwind database is
 now complete.
@@ -6160,7 +6160,7 @@ section](#vdbenginemsqlcrvs) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -6180,7 +6180,7 @@ section](#vdbenginemsqlcrvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fora2.png)
+    ![Add New Item](./images/ui/fora2.png)
 
 4.  In the newly created
     
@@ -6225,7 +6225,7 @@ section](#vdbenginemsqlcrvs) .
             }
         }
     
-    ![Virtuoso.svc.cs](ui/fora3.png)
+    ![Virtuoso.svc.cs](./images/ui/fora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -6236,13 +6236,13 @@ section](#vdbenginemsqlcrvs) .
     displaying the list of available tables/entities for the mysql
     Northwind database catalog.
     
-    ![Data Service test](ui/fmsora4.png)
+    ![Data Service test](./images/ui/fmsora4.png)
 
 6.  To access a specific entity instance like the Customers table ALFKI
     record, use this convention:
     http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
     
-    ![Customers](ui/fmsora5.png)
+    ![Customers](./images/ui/fmsora5.png)
 
 *Notes:*
 
@@ -6305,12 +6305,12 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a *Web Application* project by going to the *File* menu in
     Visual Studio and choosing *New Project* .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -6322,92 +6322,92 @@ displaying data in selected tables from the target database.
 5.  Choose a name for the project, for example
     *VirtWindowsFormApplication* , and click *OK* .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the *Toolbox* , expand *Data Controls* , and drag the
     *DataGridView* control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little *arrow* in the top right of the *DataGridView*
     control. This loads the *DataGridView Task* menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the *Choose Data Source* list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the *Add Project Data Source* link to connect to a data
     source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the *Data Source Configuration Wizard* dialog *Choose Data Source
     Type* page select the *Database* data source type and click *Next* .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the *Data Source Configuration Wizard* dialog *Choose your Data
     Connection* page, select the *New Connection* button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the *Choose Data Source* dialog, select the OpenLink *Virtuoso
     Data Source* from the list and click *Continue* .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the *Add Connection* dialog, specify the *hostname, portno,
     username and password* for the target Virtuoso Server and check the
     Save Password check box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the *Select Database From List* radio button and choose the
     *mysql* database from the drop down list.
     
-    ![Add connection](ui/mqdora11.png)
+    ![Add connection](./images/ui/mqdora11.png)
 
 15. Press the *Test Connection* dialog to verify that the database is
     accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Click OK to add the connection.
     
-    ![Test Connection](ui/mqdora12.png)
+    ![Test Connection](./images/ui/mqdora12.png)
 
 17. Leave the default connect string name*mysqlConnectionString* and
     click *Next* .
     
-    ![mysqlConnectionString](ui/mqdora13.png)
+    ![mysqlConnectionString](./images/ui/mqdora13.png)
 
 18. From the list of available tables returned for the mysql database,
     select the *Shippers* table to be associated with the *DataGridView*
     control.
     
-    ![mysql database](ui/mqdora14.png)
+    ![mysql database](./images/ui/mqdora14.png)
 
 19. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/mqdora15.png)
+    ![DataGridView](./images/ui/mqdora15.png)
 
 20. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/mqdora16.png)
+    ![Resize the Form and DataGridView](./images/ui/mqdora16.png)
 
 21. To test the application, simply hit *Ctrl+F5* within Visual Studio
     or select *Start Debugging* from the *Debug* menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 22. The data from the *Shippers* table will be displayed in the
     *DataGrid* .
     
-    ![DataGrid](ui/mqdora18.png)
+    ![DataGrid](./images/ui/mqdora18.png)
 
 The task is now complete.
 
@@ -6505,48 +6505,48 @@ are available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/pslora3.png)
+    ![Databases](./images/ui/pslora3.png)
 
 4.  Select the "Connect" button for the "pg7ma" PostgreSQL DSN.
     
-    ![Connect](ui/pslora4.png)
+    ![Connect](./images/ui/pslora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/pslora5.png)
+    ![Link Objects](./images/ui/pslora5.png)
 
 6.  Select all the tables that you would like to link.
     
-    ![Select all tables](ui/pslora6.png)
+    ![Select all tables](./images/ui/pslora6.png)
 
 7.  Change the Catalog for each table to be "Northwind" using the "Set
     All" button.
     
-    ![Catalog](ui/pslora7.png)
+    ![Catalog](./images/ui/pslora7.png)
 
 8.  All the catalog names are changed to be "Northwind".
     
-    ![Catalog](ui/pslora8.png)
+    ![Catalog](./images/ui/pslora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/lora9.png)
+    !["Link" button](./images/ui/lora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/pslora10.png)
+    ![Completion](./images/ui/pslora10.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     "Local Name" column of the "External Linked Objects" tab above,
@@ -6554,17 +6554,17 @@ are available from:
     required SQL "Select" for retrieving the remote table data . We
     shall use the "Northwind.pg7ma.Customers" table to demonstrate this.
     
-    ![Querying](ui/pslora11.png)
+    ![Querying](./images/ui/pslora11.png)
 
 12. Then click the "Execute" button to run the query and retrieve the
     results from the remote table.
     
-    ![Execute](ui/pslora12.png)
+    ![Execute](./images/ui/pslora12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "Northwind" catalog name.
     
-    ![SQL Schema Objects](ui/pslora13.png)
+    ![SQL Schema Objects](./images/ui/pslora13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -6576,7 +6576,7 @@ the PostgreSQL Northwind database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -6592,7 +6592,7 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -6624,7 +6624,7 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -6632,11 +6632,11 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -6656,7 +6656,7 @@ the PostgreSQL Northwind database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -6676,7 +6676,7 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -6690,7 +6690,7 @@ the PostgreSQL Northwind database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -6706,7 +6706,7 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -6719,7 +6719,7 @@ the PostgreSQL Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -6731,7 +6731,7 @@ the PostgreSQL Northwind database:
     
     database from the drop down list.
     
-    ![Add connection](ui/pseora10.png)
+    ![Add connection](./images/ui/pseora10.png)
 
 14. Press the
     
@@ -6739,7 +6739,7 @@ the PostgreSQL Northwind database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -6756,7 +6756,7 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![entity connect string](ui/pseora12.png)
+    ![entity connect string](./images/ui/pseora12.png)
 
 16. In the
     
@@ -6781,7 +6781,7 @@ the PostgreSQL Northwind database:
     
     .
     
-    ![Database Objects](ui/pseora13.png)
+    ![Database Objects](./images/ui/pseora13.png)
 
 17. The
     
@@ -6790,7 +6790,7 @@ the PostgreSQL Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/pseora14.png)
+    ![Virtuoso.edmx](./images/ui/pseora14.png)
 
 Creation for the Entity Data Model for the PostgreSQL Northwind database
 is now complete.
@@ -6809,7 +6809,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -6825,7 +6825,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -6857,7 +6857,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -6873,7 +6873,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -6889,7 +6889,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -6897,7 +6897,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -6905,7 +6905,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -6925,7 +6925,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -6941,7 +6941,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -6957,7 +6957,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -6970,7 +6970,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -6982,7 +6982,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/psdora11.png)
+    ![Add connection](./images/ui/psdora11.png)
 
 15. Press the
     
@@ -6990,7 +6990,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Leave the default connect string
     
@@ -7000,7 +7000,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![NorthwindConnectionString](ui/psdora13.png)
+    ![NorthwindConnectionString](./images/ui/psdora13.png)
 
 17. From the list of available tables returned for the Northwind
     database, select the
@@ -7013,17 +7013,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![Northwind database](ui/psdora14.png)
+    ![Northwind database](./images/ui/psdora14.png)
 
 18. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/psdora15.png)
+    ![DataGridView](./images/ui/psdora15.png)
 
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/psdora16.png)
+    ![Resize the Form and DataGridView](./images/ui/psdora16.png)
 
 20. To test the application, simply hit
     
@@ -7039,7 +7039,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 21. The data from the
     
@@ -7051,7 +7051,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/psdora18.png)
+    ![DataGrid](./images/ui/psdora18.png)
 
 The task is now complete.
 
@@ -7153,50 +7153,50 @@ Bridge are available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/jbora3.png)
+    ![Databases](./images/ui/jbora3.png)
 
 4.  Select the "Connect" button for the "jdbcma" ODBC to JDBC Bridge
     DSN.
     
-    ![Connect](ui/jbora4.png)
+    ![Connect](./images/ui/jbora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/jbora5.png)
+    ![Link Objects](./images/ui/jbora5.png)
 
 6.  Select all the tables that are part of the "JDBC" catalog.
     
-    ![Select tables](ui/jbora6.png)
+    ![Select tables](./images/ui/jbora6.png)
 
 7.  Select all the "JDBC" Catalog tables to be linked into the database
     and select "Link" button.
     
-    !["Link" button](ui/jbora7.png)
+    !["Link" button](./images/ui/jbora7.png)
 
 8.  Change the Catalog for each table to be "JDBC" using the "Set All"
     button.
     
-    !["Link" button](ui/jbora8.png)
+    !["Link" button](./images/ui/jbora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/jbora9.png)
+    !["Link" button](./images/ui/jbora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/jbora10.png)
+    ![Completion](./images/ui/jbora10.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     "Local Name" column of the "External Linked Objects" tab above,
@@ -7204,17 +7204,17 @@ Bridge are available from:
     required SQL "Select" for retrieving the remote table data. We shall
     use the "JDBC.jdbcma.Artist" table to demonstrate this.
     
-    ![Completion](ui/jbora11.png)
+    ![Completion](./images/ui/jbora11.png)
 
 12. Then click the "Execute" button to run the query and retrieve the
     results from the remote table.
     
-    ![Completion](ui/jbora12.png)
+    ![Completion](./images/ui/jbora12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "JDBC" catalog name.
     
-    ![view tables](ui/jbora13.png)
+    ![view tables](./images/ui/jbora13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -7226,7 +7226,7 @@ the ODBC to JDBC Bridge Northwind database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -7242,7 +7242,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -7274,7 +7274,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -7282,11 +7282,11 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -7306,7 +7306,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -7326,7 +7326,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -7340,7 +7340,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -7356,7 +7356,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -7369,7 +7369,7 @@ the ODBC to JDBC Bridge Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -7381,7 +7381,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     database from the drop down list.
     
-    ![Add connection](ui/jbsora10.png)
+    ![Add connection](./images/ui/jbsora10.png)
 
 14. Press the
     
@@ -7389,11 +7389,11 @@ the ODBC to JDBC Bridge Northwind database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Click OK to add the connection.
     
-    ![Test Connection](ui/jbsora11.png)
+    ![Test Connection](./images/ui/jbsora11.png)
 
 16. Set the
     
@@ -7410,7 +7410,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![entity connect string](ui/jbsora12.png)
+    ![entity connect string](./images/ui/jbsora12.png)
 
 17. In the
     
@@ -7435,7 +7435,7 @@ the ODBC to JDBC Bridge Northwind database:
     
     .
     
-    ![Database Objects](ui/jbsora13.png)
+    ![Database Objects](./images/ui/jbsora13.png)
 
 18. The
     
@@ -7444,7 +7444,7 @@ the ODBC to JDBC Bridge Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/jbsora14.png)
+    ![Virtuoso.edmx](./images/ui/jbsora14.png)
 
 Creation for the Entity Data Model for the ODBC to JDBC Bridge Northwind
 database is now complete.
@@ -7470,7 +7470,7 @@ Visual Studio 2008 section](#vdbengineodtjdcrvs) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 3.  The
     
@@ -7490,7 +7490,7 @@ Visual Studio 2008 section](#vdbengineodtjdcrvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fora2.png)
+    ![Add New Item](./images/ui/fora2.png)
 
 4.  In the newly created
     
@@ -7535,7 +7535,7 @@ Visual Studio 2008 section](#vdbengineodtjdcrvs) .
             }
         }
     
-    ![Virtuoso.svc.cs](ui/fora3.png)
+    ![Virtuoso.svc.cs](./images/ui/fora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -7546,13 +7546,13 @@ Visual Studio 2008 section](#vdbengineodtjdcrvs) .
     displaying the list of available tables/entities for the Northwind
     Demo database catalog.
     
-    ![Data Service test](ui/jmsora4.png)
+    ![Data Service test](./images/ui/jmsora4.png)
 
 6.  To access a specific entity instance like the Customers table ALFKI
     record, use this convention
     http://host/vdir/Virtuoso.svc/Customers('ALFKI') .
     
-    ![Customers](ui/jmsora5.png)
+    ![Customers](./images/ui/jmsora5.png)
 
 *Notes:*
 
@@ -7615,7 +7615,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -7631,7 +7631,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -7663,7 +7663,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -7679,7 +7679,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -7695,7 +7695,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -7703,7 +7703,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -7711,7 +7711,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -7731,7 +7731,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -7747,7 +7747,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -7763,7 +7763,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -7776,7 +7776,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -7788,7 +7788,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/ojdora11.png)
+    ![Add connection](./images/ui/ojdora11.png)
 
 15. Press the
     
@@ -7796,11 +7796,11 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Click OK to add the connection.
     
-    ![Test Connection](ui/ojdora13i.png)
+    ![Test Connection](./images/ui/ojdora13i.png)
 
 17. Leave the default connect string
     
@@ -7810,7 +7810,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![JDBCConnectionString](ui/ojdora13.png)
+    ![JDBCConnectionString](./images/ui/ojdora13.png)
 
 18. From the list of available tables returned for the JDBC database,
     select the
@@ -7823,17 +7823,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![JDBC database](ui/ojdora14.png)
+    ![JDBC database](./images/ui/ojdora14.png)
 
 19. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/mqdora15.png)
+    ![DataGridView](./images/ui/mqdora15.png)
 
 20. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/mqdora16.png)
+    ![Resize the Form and DataGridView](./images/ui/mqdora16.png)
 
 21. To test the application, simply hit
     
@@ -7849,7 +7849,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/mqdora17.png)
+    ![Start Debugging](./images/ui/mqdora17.png)
 
 22. The data from the
     
@@ -7861,7 +7861,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/mqdora18.png)
+    ![DataGrid](./images/ui/mqdora18.png)
 
 The task is now complete.
 
@@ -7962,47 +7962,47 @@ Bridge are available from: [Product Installation & Basic Configuration
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/obora3.png)
+    ![Databases](./images/ui/obora3.png)
 
 4.  Select the "Connect" button for the "odbcma" ODBC to ODBC Bridge
     DSN.
     
-    ![Connect](ui/obora4.png)
+    ![Connect](./images/ui/obora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/obora5.png)
+    ![Link Objects](./images/ui/obora5.png)
 
 6.  Select all the tables that are part of the "Northwind" catalog.
     
-    ![Select tables](ui/obora6.png)
+    ![Select tables](./images/ui/obora6.png)
 
 7.  Change the Catalog for each table to be "NWIND" using the "Set All"
     button.
     
-    !["Link" button](ui/obora7.png)
+    !["Link" button](./images/ui/obora7.png)
 
 8.  All the catalog names are changed to be "NWIND".
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/obora8.png)
+    !["Link" button](./images/ui/obora8.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/obora9.png)
+    ![Completion](./images/ui/obora9.png)
 
 11. The linked tables can be queried by clicking on the hyperlink in the
     "Local Name" column of the "External Linked Objects" tab above,
@@ -8010,17 +8010,17 @@ Bridge are available from: [Product Installation & Basic Configuration
     required SQL "Select" for retrieving the remote table data. We shall
     use the "NWIND.odbcma.Customers" table to demonstrate this.
     
-    ![Completion](ui/obora10.png)
+    ![Completion](./images/ui/obora10.png)
 
 12. Then click the "Execute" button to run the query and retrieve the
     results from the remote table.
     
-    ![Completion](ui/obora11.png)
+    ![Completion](./images/ui/obora11.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "NWIND" catalog name.
     
-    ![view tables](ui/obora12.png)
+    ![view tables](./images/ui/obora12.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -8032,7 +8032,7 @@ the Microsoft Access Northwind database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -8048,7 +8048,7 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -8080,7 +8080,7 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -8088,11 +8088,11 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -8112,7 +8112,7 @@ the Microsoft Access Northwind database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -8132,7 +8132,7 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -8146,7 +8146,7 @@ the Microsoft Access Northwind database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -8162,7 +8162,7 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -8175,7 +8175,7 @@ the Microsoft Access Northwind database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -8187,7 +8187,7 @@ the Microsoft Access Northwind database:
     
     database from the drop down list.
     
-    ![Add connection](ui/obsora10.png)
+    ![Add connection](./images/ui/obsora10.png)
 
 14. Press the
     
@@ -8195,7 +8195,7 @@ the Microsoft Access Northwind database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -8212,7 +8212,7 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![entity connect string](ui/obsora12.png)
+    ![entity connect string](./images/ui/obsora12.png)
 
 16. In the
     
@@ -8237,7 +8237,7 @@ the Microsoft Access Northwind database:
     
     .
     
-    ![Database Objects](ui/obsora13.png)
+    ![Database Objects](./images/ui/obsora13.png)
 
 17. The
     
@@ -8246,7 +8246,7 @@ the Microsoft Access Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/obsora14.png)
+    ![Virtuoso.edmx](./images/ui/obsora14.png)
 
 Creation for the Entity Data Model for the Microsoft Access Northwind
 database is now complete.
@@ -8265,7 +8265,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -8281,7 +8281,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -8313,7 +8313,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/dora2.png)
+    ![Web Application](./images/ui/dora2.png)
 
 6.  In the
     
@@ -8329,7 +8329,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -8345,7 +8345,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -8353,7 +8353,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -8361,7 +8361,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -8381,7 +8381,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -8397,7 +8397,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -8413,7 +8413,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -8426,7 +8426,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -8438,7 +8438,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/odora11.png)
+    ![Add connection](./images/ui/odora11.png)
 
 15. Press the
     
@@ -8446,7 +8446,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 16. Leave the default connect string
     
@@ -8456,7 +8456,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![NWINDConnectionString](ui/odora13.png)
+    ![NWINDConnectionString](./images/ui/odora13.png)
 
 17. From the list of available tables returned for the NWIND database,
     select the
@@ -8469,17 +8469,17 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![Northwind database](ui/odora14.png)
+    ![Northwind database](./images/ui/odora14.png)
 
 18. The columns names of the select table will be displayed in the
     DataGridView.
     
-    ![DataGridView](ui/odora15.png)
+    ![DataGridView](./images/ui/odora15.png)
 
 19. Resize the Form and DataGridView to allow all columns to be visible,
     if possible.
     
-    ![Resize the Form and DataGridView](ui/odora16.png)
+    ![Resize the Form and DataGridView](./images/ui/odora16.png)
 
 20. To test the application, simply hit
     
@@ -8495,7 +8495,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 21. The data from the
     
@@ -8507,7 +8507,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/odora18.png)
+    ![DataGrid](./images/ui/odora18.png)
 
 The task is now complete.
 
@@ -8598,48 +8598,48 @@ DSN for connecting to the target database.
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/fblora3.png)
+    ![Databases](./images/ui/fblora3.png)
 
 4.  Select the "Connect" button for the "fire" Firebird DSN.
     
-    ![Connect](ui/fblora4.png)
+    ![Connect](./images/ui/fblora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/fblora5.png)
+    ![Link Objects](./images/ui/fblora5.png)
 
 6.  Select all the tables that are part of the "employee" catalog.
     
-    ![Select all tables](ui/fblora6.png)
+    ![Select all tables](./images/ui/fblora6.png)
 
 7.  Change the Catalog for each table to be "employee" using the "Set
     All" button.
     
-    ![Catalog](ui/fblora7.png)
+    ![Catalog](./images/ui/fblora7.png)
 
 8.  All the catalog names are changed to be "employee".
     
-    ![catalog names](ui/fblora8.png)
+    ![catalog names](./images/ui/fblora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/lora9.png)
+    !["Link" button](./images/ui/lora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/fblora10.png)
+    ![Completion](./images/ui/fblora10.png)
 
 11. At this point you can test the remotely linked tables by clicking on
     the link that accompanies each table. e.g. employee.fire.COUNTRY.
@@ -8647,16 +8647,16 @@ DSN for connecting to the target database.
     This will display the Interactive ISQL interface which will have
     been already populated with a suitable SQL statement.
     
-    ![remotely linked tables](ui/fblora11.png)
+    ![remotely linked tables](./images/ui/fblora11.png)
 
 12. Select Execute to see data from the remotely linked table.
     
-    ![Execute](ui/fblora12.png)
+    ![Execute](./images/ui/fblora12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "employee" catalog name.
     
-    ![SQL Schema Objects](ui/fblora13.png)
+    ![SQL Schema Objects](./images/ui/fblora13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -8668,7 +8668,7 @@ the Firebird employee database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -8684,7 +8684,7 @@ the Firebird employee database:
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -8716,7 +8716,7 @@ the Firebird employee database:
     
     .
     
-    ![name for the project](ui/fbeora2.png)
+    ![name for the project](./images/ui/fbeora2.png)
 
 6.  This will create a new project called
     
@@ -8724,11 +8724,11 @@ the Firebird employee database:
     
     .
     
-    ![create a new project](ui/fbeora3.png)
+    ![create a new project](./images/ui/fbeora3.png)
 
 7.  Select the Project -\> Add New Item menu option.
     
-    ![employee](ui/einf4.png)
+    ![employee](./images/ui/einf4.png)
 
 8.  The
     
@@ -8748,7 +8748,7 @@ the Firebird employee database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/fbeora5.png)
+    ![Add New Item](./images/ui/fbeora5.png)
 
 9.  In the
     
@@ -8768,7 +8768,7 @@ the Firebird employee database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -8782,7 +8782,7 @@ the Firebird employee database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -8798,7 +8798,7 @@ the Firebird employee database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -8811,7 +8811,7 @@ the Firebird employee database:
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Select the
     
@@ -8823,7 +8823,7 @@ the Firebird employee database:
     
     database from the drop down list.
     
-    ![Add connection](ui/fbdora11.png)
+    ![Add connection](./images/ui/fbdora11.png)
 
 14. Press the
     
@@ -8831,7 +8831,7 @@ the Firebird employee database:
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -8848,7 +8848,7 @@ the Firebird employee database:
     
     .
     
-    ![entity connect string](ui/fbeora12.png)
+    ![entity connect string](./images/ui/fbeora12.png)
 
 16. In the
     
@@ -8873,7 +8873,7 @@ the Firebird employee database:
     
     .
     
-    ![Database Objects](ui/fbeora13.png)
+    ![Database Objects](./images/ui/fbeora13.png)
 
 17. The
     
@@ -8882,7 +8882,7 @@ the Firebird employee database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Model1.edmx](ui/fbeora14.png)
+    ![Model1.edmx](./images/ui/fbeora14.png)
 
 Creation for the Entity Data Model for the Firebird employee database is
 now complete.
@@ -8909,7 +8909,7 @@ section](#vdbenginefirebdcrvs) .
 2.  Right click on the employee project name in the Solution Explorer
     pane, then select the Project -\> Add New Item menu option.
     
-    ![employee](ui/fbfora1.png)
+    ![employee](./images/ui/fbfora1.png)
 
 3.  The
     
@@ -8929,7 +8929,7 @@ section](#vdbenginefirebdcrvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/fbfora2.png)
+    ![Add New Item](./images/ui/fbfora2.png)
 
 4.  In the newly created
     
@@ -8974,7 +8974,7 @@ section](#vdbenginefirebdcrvs) .
             }
         }
     
-    ![WebDataService1.svc.cs](ui/fbfora3.png)
+    ![WebDataService1.svc.cs](./images/ui/fbfora3.png)
 
 5.  To test the Data Service, simply hit
     
@@ -8985,7 +8985,7 @@ section](#vdbenginefirebdcrvs) .
     displaying the list of available tables/entities for the employee
     database catalog.
     
-    ![Data Service test](ui/fbfora4.png)
+    ![Data Service test](./images/ui/fbfora4.png)
 
 6.  To access a specific entity instance like the
     
@@ -8998,7 +8998,7 @@ section](#vdbenginefirebdcrvs) .
     record, use this convention
     http://host/vdir/WebDataService1.svc/EMPLOYEE(2) .
     
-    ![EMPLOYEES](ui/fbfora5.png)
+    ![EMPLOYEES](./images/ui/fbfora5.png)
 
 *Notes:*
 
@@ -9061,7 +9061,7 @@ displaying data in selected tables from the target database.
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -9077,7 +9077,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/epro2.png)
+    ![Web Application](./images/ui/epro2.png)
 
 3.  When the New Project window appears, choose either
     
@@ -9109,7 +9109,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Web Application](ui/fbdora2.png)
+    ![Web Application](./images/ui/fbdora2.png)
 
 6.  In the
     
@@ -9125,7 +9125,7 @@ displaying data in selected tables from the target database.
     
     control onto the form.
     
-    ![Toolbox](ui/dora3.png)
+    ![Toolbox](./images/ui/dora3.png)
 
 7.  Click on the little
     
@@ -9141,7 +9141,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![DataGridView Task](ui/dora4.png)
+    ![DataGridView Task](./images/ui/dora4.png)
 
 8.  Click on the
     
@@ -9149,7 +9149,7 @@ displaying data in selected tables from the target database.
     
     list box.
     
-    ![Choose Data Source](ui/dora5.png)
+    ![Choose Data Source](./images/ui/dora5.png)
 
 9.  Click on the
     
@@ -9157,7 +9157,7 @@ displaying data in selected tables from the target database.
     
     link to connect to a data source.
     
-    ![Add Project Data Source](ui/dora6.png)
+    ![Add Project Data Source](./images/ui/dora6.png)
 
 10. In the
     
@@ -9177,7 +9177,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source Type](ui/dora7.png)
+    ![Data Source Type](./images/ui/dora7.png)
 
 11. In the
     
@@ -9193,7 +9193,7 @@ displaying data in selected tables from the target database.
     
     button
     
-    ![Data Source Configuration Wizard](ui/dora8.png)
+    ![Data Source Configuration Wizard](./images/ui/dora8.png)
 
 12. In the
     
@@ -9209,7 +9209,7 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![Data Source](ui/dora9.png)
+    ![Data Source](./images/ui/dora9.png)
 
 13. In the
     
@@ -9222,7 +9222,7 @@ displaying data in selected tables from the target database.
     for the target Virtuoso Server and check the Save Password check
     box.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 14. Select the
     
@@ -9234,7 +9234,7 @@ displaying data in selected tables from the target database.
     
     database from the drop down list.
     
-    ![Add connection](ui/fbdora11.png)
+    ![Add connection](./images/ui/fbdora11.png)
 
 15. Click OK to add the connection.
 
@@ -9244,7 +9244,7 @@ displaying data in selected tables from the target database.
     
     dialog to verify that the database is accessible.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 17. Leave the default connect string
     
@@ -9254,7 +9254,7 @@ displaying data in selected tables from the target database.
     
     *Next*
     
-    ![employeeConnectionString](ui/dora13.png)
+    ![employeeConnectionString](./images/ui/dora13.png)
 
 18. From the list of available tables returned for the employee
     database, select the
@@ -9267,22 +9267,22 @@ displaying data in selected tables from the target database.
     
     control.
     
-    ![employee database](ui/fbdora14.png)
+    ![employee database](./images/ui/fbdora14.png)
 
 19. A DataSet for the employee database object is created
     
-    ![DataSet](ui/fbdora15.png)
+    ![DataSet](./images/ui/fbdora15.png)
 
 20. From the drop down list box next to the COUNTRY table ensure the
     DataGridView item is selected
     
-    ![DataGridView](ui/fbdora16.png)
+    ![DataGridView](./images/ui/fbdora16.png)
 
 21. Drag the COUNTRY DataSet item onto the Form to create a scrollable
     and editable association of the COUNTRY table object with the Data
     Grid View automatically.
     
-    ![association](ui/fbdora17.png)
+    ![association](./images/ui/fbdora17.png)
 
 22. To test the application, simply hit
     
@@ -9298,7 +9298,7 @@ displaying data in selected tables from the target database.
     
     menu.
     
-    ![Start Debugging](ui/dora17.png)
+    ![Start Debugging](./images/ui/dora17.png)
 
 23. The data from the
     
@@ -9310,22 +9310,22 @@ displaying data in selected tables from the target database.
     
     .
     
-    ![DataGrid](ui/fbdora18.png)
+    ![DataGrid](./images/ui/fbdora18.png)
 
 24. A new row can be inserted (updated or deleted) as indicated for the
     new "1111" record inserted below and the Save button clicked to save
     the change to the database.
     
-    ![new row](ui/fbdora19.png)
+    ![new row](./images/ui/fbdora19.png)
 
 25. The Virtuoso Interactive SQL tab of the Conductor can be used to run
     the query select \* from "employee"."fire"."COUNTRY"
     
-    ![Interactive SQL](ui/fbdora20.png)
+    ![Interactive SQL](./images/ui/fbdora20.png)
 
 26. To verify the change has been successfully made in the database.
     
-    ![verify](ui/fbdora21.png)
+    ![verify](./images/ui/fbdora21.png)
 
 The task is now complete.
 
@@ -9424,65 +9424,65 @@ Server are available from:
 
 1.  Start the Virtuoso Web User Interface
     
-    ![Start](ui/lora1.png)
+    ![Start](./images/ui/lora1.png)
 
 2.  Select the "Conductor" link in the Left Frame and Login as the "dba"
     user.
     
-    ![Conductor](ui/lora2.png)
+    ![Conductor](./images/ui/lora2.png)
 
 3.  Select the "Databases" -\> "External Data Source" -\> "Data Sources"
     tab menu items
     
-    ![Databases](ui/slora3.png)
+    ![Databases](./images/ui/slora3.png)
 
 4.  Select the "Connect" button for the "sql2k5ma" Microsoft SQL Server
     DSN.
     
-    ![Connect](ui/slora4.png)
+    ![Connect](./images/ui/slora4.png)
 
 5.  On successful connection Select the "Link Objects" button to obtain
     a list of available tables
     
-    ![Link Objects](ui/slora5.png)
+    ![Link Objects](./images/ui/slora5.png)
 
 6.  Select all the tables that are part of the "Northwind" catalog.
     
-    ![Select all tables](ui/slora6.png)
+    ![Select all tables](./images/ui/slora6.png)
 
 7.  Change the Catalog for each table to be "Northwind" using the "Set
     All" button.
     
-    ![Catalog](ui/slora7.png)
+    ![Catalog](./images/ui/slora7.png)
 
 8.  All the catalog names are changed to be "NWIND"
     
-    ![catalog names](ui/slora8.png)
+    ![catalog names](./images/ui/slora8.png)
 
 9.  Select the "Link" button to link the selected tables into Virtuoso
     
-    !["Link" button](ui/slora9.png)
+    !["Link" button](./images/ui/slora9.png)
 
 10. On completion of the Link process the tables will be displayed in
     the "External Linked Objects" tab.
     
-    ![Completion](ui/slora10.png)
+    ![Completion](./images/ui/slora10.png)
 
 11. At this point, you can test the remotely linked tables by clicking
     on the link that accompanies each table, e.g. NWIND.NWIND.Customer.
     This will display the Interactive ISQL interface which will have
     been already populated with a suitable SQL statement.
     
-    ![Querying](ui/slora11.png)
+    ![Querying](./images/ui/slora11.png)
 
 12. Select Execute to see data from the remotely linked table.
     
-    ![Execute](ui/slora12.png)
+    ![Execute](./images/ui/slora12.png)
 
 13. The tables can also be viewed as part of the Virtuoso "SQL Schema
     Objects" under the "Northwind" catalog name.
     
-    ![SQL Schema Objects](ui/slora13.png)
+    ![SQL Schema Objects](./images/ui/slora13.png)
     
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
@@ -9494,7 +9494,7 @@ the Microsoft SQL Server Northwind database:
 
 1.  Launch the Visual Studio 2008 SP1 IDE.
     
-    ![Visual Studio 2008 SP1 IDE](ui/dora1.png)
+    ![Visual Studio 2008 SP1 IDE](./images/ui/dora1.png)
 
 2.  Create a
     
@@ -9540,7 +9540,7 @@ the Microsoft SQL Server Northwind database:
     
     .
     
-    ![name for the project](ui/eora2.png)
+    ![name for the project](./images/ui/eora2.png)
 
 6.  This will create a new project called
     
@@ -9548,12 +9548,12 @@ the Microsoft SQL Server Northwind database:
     
     .
     
-    ![create a new project](ui/eora3.png)
+    ![create a new project](./images/ui/eora3.png)
 
 7.  Right click on the VirtuosoDataService project name of the Solution
     Explorer pane, then select the Add -\> New Item menu options.
     
-    ![VirtuosoDataService](ui/einf4.png)
+    ![VirtuosoDataService](./images/ui/einf4.png)
 
 8.  The
     
@@ -9573,7 +9573,7 @@ the Microsoft SQL Server Northwind database:
     
     to start the creation of the ADO.Net Entity Data Model.
     
-    ![Add New Item](ui/eora5.png)
+    ![Add New Item](./images/ui/eora5.png)
 
 9.  In the
     
@@ -9593,7 +9593,7 @@ the Microsoft SQL Server Northwind database:
     
     .
     
-    ![Choose Model Contents](ui/eora6.png)
+    ![Choose Model Contents](./images/ui/eora6.png)
 
 10. In the
     
@@ -9607,7 +9607,7 @@ the Microsoft SQL Server Northwind database:
     
     *New Connection button*
     
-    ![Entity Data Model Wizard](ui/dora8.png)
+    ![Entity Data Model Wizard](./images/ui/dora8.png)
 
 11. In the
     
@@ -9623,7 +9623,7 @@ the Microsoft SQL Server Northwind database:
     
     .
     
-    ![Choose Data Source](ui/dora9.png)
+    ![Choose Data Source](./images/ui/dora9.png)
 
 12. In the
     
@@ -9635,12 +9635,12 @@ the Microsoft SQL Server Northwind database:
     
     for the target Virtuoso Server and click the Advanced button.
     
-    ![Connection Properties](ui/dora10.png)
+    ![Connection Properties](./images/ui/dora10.png)
 
 13. Use the Select Database From List dialog to select the NWIND
     catalog.
     
-    ![Add connection](ui/seora10.png)
+    ![Add connection](./images/ui/seora10.png)
 
 14. Press the
     
@@ -9650,7 +9650,7 @@ the Microsoft SQL Server Northwind database:
     persist the connection attributes, after a successful connection is
     verified.
     
-    ![Test Connection](ui/dora12.png)
+    ![Test Connection](./images/ui/dora12.png)
 
 15. Set the
     
@@ -9667,7 +9667,7 @@ the Microsoft SQL Server Northwind database:
     
     .
     
-    ![entity connect string](ui/seora12.png)
+    ![entity connect string](./images/ui/seora12.png)
 
 16. In the
     
@@ -9692,7 +9692,7 @@ the Microsoft SQL Server Northwind database:
     
     .
     
-    ![Database Objects](ui/seora13.png)
+    ![Database Objects](./images/ui/seora13.png)
 
 17. The
     
@@ -9701,7 +9701,7 @@ the Microsoft SQL Server Northwind database:
     EDM will be created with the tables and relationships displayed in
     the Visual Studio IDE
     
-    ![Virtuoso.edmx](ui/seora14.png)
+    ![Virtuoso.edmx](./images/ui/seora14.png)
 
 Creation for the Entity Data Model for the Microsoft SQL Server
 Northwind database is now complete.
@@ -9727,7 +9727,7 @@ Visual Studio 2008 section](#vdbenginemsqlscrvs) .
 
 2.  Select the Project -\> Add New Item menu option.
     
-    ![VirtuosoDataService](ui/meinf4.png)
+    ![VirtuosoDataService](./images/ui/meinf4.png)
 
 3.  The
     
@@ -9747,7 +9747,7 @@ Visual Studio 2008 section](#vdbenginemsqlscrvs) .
     
     to create the ADO.Net Data Service.
     
-    ![Add New Item](ui/mfora2.png)
+    ![Add New Item](./images/ui/mfora2.png)
 
 4.  In the newly created
     
@@ -9792,7 +9792,7 @@ Visual Studio 2008 section](#vdbenginemsqlscrvs) .
             }
         }
 
-    ![Virtuoso.svc.cs](ui/mfora4.png)
+    ![Virtuoso.svc.cs](./images/ui/mfora4.png)
 
 5.  To test the Data Service, simply hit
     
@@ -9803,7 +9803,7 @@ Visual Studio 2008 section](#vdbenginemsqlscrvs) .
     displaying the list of available tables/entities for the Northwind
     database catalog.
     
-    ![Data Service test](ui/mfora3.png)
+    ![Data Service test](./images/ui/mfora3.png)
 
 6.  To access a specific entity instance like the
     
@@ -9812,7 +9812,7 @@ Visual Studio 2008 section](#vdbenginemsqlscrvs) .
     table ALFKI record, use this convention
     http://host/vdir/Virtuoso.svc/Customers('ALFKI').
     
-    ![EMPLOYEES](ui/mfora5.png)
+    ![EMPLOYEES](./images/ui/mfora5.png)
 
 *Notes:*
 

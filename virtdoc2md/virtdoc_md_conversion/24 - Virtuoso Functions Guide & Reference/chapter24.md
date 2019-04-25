@@ -59787,7 +59787,7 @@ Endpoint:
     
         SQL> SELECT xenc_pem_export ('https_key_localhost');
     
-    ![iSQL Export Web Server Sertificate Output](ui/export_srv_cert.png)
+    ![iSQL Export Web Server Sertificate Output](./images/ui/export_srv_cert.png)
 
 # See Also
 

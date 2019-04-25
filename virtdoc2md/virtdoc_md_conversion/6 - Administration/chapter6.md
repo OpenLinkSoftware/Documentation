@@ -7483,54 +7483,54 @@ request.
 The Main Navigation Bar provides different tabs that allow you to
 administrate your Virtuoso server or use one of the provided samples.
 
-![Navigation](menu-cutout.png)
+![Navigation](./images/menu-cutout.png)
 
 From "System Admin" you can view and change the Conductor Dashboard,
 manage user accounts; scheduler; Virtuoso Server parameter and Access
 Control Settings. You can also install /upgrade /uninstall Virtuoso
 packages and Monitor Virtuoso Server Statistics.
 
-![System Administration](systemadmin.png)
+![System Administration](./images/systemadmin.png)
 
 From "Database" you can administrate your database, manage the Virtuoso
 Relational Database System, administrate views, tables, stored
 procedures, trigger definitions, user define types, backups.
 
-![Database Administration](database.png)
+![Database Administration](./images/database.png)
 
 From "Replication" you can create Snapshot Replications to copy sections
 of the Database to remote locations or use Transactional Replication to
 keep Virtuoso Servers in sync over a definable interval.
 
-![Replication](replication.png)
+![Replication](./images/replication.png)
 
 From "Web Application Server" you can configure Virtuoso's WebDAV, and
 HTTP Server functionality, which includes management of Virtual Domains
 & Directories.
 
-![Web Application Server Administration](webdav.png)
+![Web Application Server Administration](./images/webdav.png)
 
 From "XML" you can query Relational and XML Data using SQL, XQUERY,
 XPATH, and FREE TEXT.
 
-![Query Tools](querytools.png)
+![Query Tools](./images/querytools.png)
 
 From "Web Services" you can add/ edit/ remove Web Services Endpoints,
 perform WSDL Import/Export, manage your BPEL processes.
 
-![Web Services](webservices.png)
+![Web Services](./images/webservices.png)
 
 From "Linked Data" tab you can execute/save/load SPARQL queries,
 add/edit RDF Mapping, make statistics, manage graphs, import schemas and
 define namespaces, generated Linked Data Views, upload to the Quad
 Store:
 
-![RDF](rdf.png)
+![RDF](./images/rdf.png)
 
 Virtuoso's NNTP support which includes linking third-party NNTP servers
 into Virtuoso and controlling access to these servers.
 
-![NNTP Administration](nntp.png)
+![NNTP Administration](./images/nntp.png)
 
 ## Runtime Hosting
 
@@ -7542,21 +7542,21 @@ servers.
 You can view Loaded Modules list and each Module you can "Unload". Also
 you can browse for Module and examine its content.
 
-![Loaded Modules](ui/rth001.png)
+![Loaded Modules](./images/ui/rth001.png)
 
 ### Import Files
 
 To import files click the "Browse" button and select the class you want
 to import. Then click the "Add to list" button.
 
-![Import Files](ui/rth002.png)
+![Import Files](./images/ui/rth002.png)
 
 ### Modules Grants
 
 In order to change grants to a particular Module, select the desired
 grant value from the "Grant to" list and click the "Add" button.
 
-![Modules Grants](ui/rth003.png)
+![Modules Grants](./images/ui/rth003.png)
 
 ## Web Services
 
@@ -7568,9 +7568,9 @@ Some of the supported features are:
     external web sites and host it in its own WebDAV repository via this
     page.
     
-    ![Web Robot - Crawl Job](ui/dav_rbt_trgt_01.png)
+    ![Web Robot - Crawl Job](./images/ui/dav_rbt_trgt_01.png)
     
-    ![Web Robot - Crawl Job](ui/dav_rbt_trgt_02.png)
+    ![Web Robot - Crawl Job](./images/ui/dav_rbt_trgt_02.png)
     
       - *Target description* lets you provide a friendly name for the
         target that you are defining.
@@ -7686,13 +7686,13 @@ Some of the supported features are:
     updates taking place by pressing the Stop link. To reset the details
     of the web copy item press the Reset link.
     
-    ![Web Robot - Queues](ui/dav_rbt_que_01.png)
+    ![Web Robot - Queues](./images/ui/dav_rbt_que_01.png)
 
   - *Retrieved Sites* : You can view a list of the links retrieved from
     the web copy from this page. You are also able to remove some of the
     content from this page by following the Edit link.
     
-    ![Web Robot - Retrieved Links](ui/dav_rbt_rtrd_01.png)
+    ![Web Robot - Retrieved Links](./images/ui/dav_rbt_rtrd_01.png)
 
   - *Export* : You can export content from the WebDAV repository. Note
     that you can only export content that has been retrieved using
@@ -7707,7 +7707,7 @@ Some of the supported features are:
     Finally press the *Export* button to export. A confirmation will be
     supplied once the operation is complete.
     
-    ![Web Robot - Exporting Content](ui/dav_rbt_expt_02.png)
+    ![Web Robot - Exporting Content](./images/ui/dav_rbt_expt_02.png)
     
     > **Note**
     > 
@@ -7753,15 +7753,15 @@ content of a basic Sitemap where the source includes RDFa.
 
 2.  Go to the "Web Application Server" tab.
     
-    ![Setting up a Content Crawler Job to Retrieve Sitemaps](ui/cr1.png)
+    ![Setting up a Content Crawler Job to Retrieve Sitemaps](./images/ui/cr1.png)
 
 3.  Go to the "Content Imports" tab.
     
-    ![Setting up a Content Crawler Job to Retrieve Sitemaps](ui/cr2.png)
+    ![Setting up a Content Crawler Job to Retrieve Sitemaps](./images/ui/cr2.png)
 
 4.  Click on the "New Target" button.
     
-    ![Setting up a Content Crawler Job to Retrieve Sitemaps](ui/cr3.png)
+    ![Setting up a Content Crawler Job to Retrieve Sitemaps](./images/ui/cr3.png)
 
 5.  In the form displayed:
     
@@ -7788,376 +7788,12 @@ content of a basic Sitemap where the source includes RDFa.
       - Optionally you can select "Convert Links" to make all HREFs in
         the local stored content relative.
     
-    ![Setting up a Content Crawler Job to Retrieve
-    Sitemaps](ui/cr11.png)
     
-    ![Setting up a Content Crawler Job to Retrieve
-    Sitemaps](ui/cr11a.png)
-
-6.  Click the "Create" button to create the import.
-    
-    ![Setting up a Content Crawler Job to Retrieve
-    Sitemaps](ui/cr11ab.png)
-
-7.  Click the "Import Queues" button.
-    
-    ![Setting up a Content Crawler Job to Retrieve
-    Sitemaps](ui/cr12.png)
-
-8.  For the "Robot targets" with label "Virtuoso Sample Example" click
-    the "Run" button.
-
-9.  This will result in the Target site being crawled and the retrieved
-    pages stored locally in DAV and any network resource triples being
-    fetched in the RDF Quad store.
-    
-    ![Setting up a Content Crawler Job to Retrieve
-    Sitemaps](ui/cr12a.png)
-
-10. Go to the "Web Application Server" -\> "Content Management" tab and
-    navigate to the location of newly created DAV collection:
-    
-        /DAV/home/demo/VirtSample/
-
-11. The retrieved content will be shown:
-    
-    ![Setting up a Content Crawler Job to Retrieve
-    Sitemaps](ui/cr15.png)
-
-##### Setting up a Content Crawler Job to Retrieve Semantic Sitemaps (a variation of the standard sitemap)
-
-The following section describes how to set up crawler job for getting
-Semantic Sitemap's content: a variation of standard sitemap:
-
-1.  From the Virtuoso Conductor User Interface i.e.
-    http://cname:port/conductor, login as the "dba" user.
-
-2.  Go to "Web Application Server".
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr1.png)
-
-3.  Go to "Content Imports".
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr2.png)
-
-4.  Click "New Target".
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr3.png)
-
-5.  In the shown form:
-    
-      - Enter for "Target description":
-        
-            Semantic Web Sitemap Example
-    
-      - Enter for "Target URL":
-        
-            http://virtuoso.openlinksw.com/sitemap-semantic.xml
-    
-      - Enter the location in the Virtuoso WebDAV repository the crawled
-        should stored in the "Copy to local DAV collection" text box,
-        for example, if user demo is available, then:
-        
-            /DAV/home/demo/semantic_sitemap/
-    
-      - Choose the "Local resources owner" for the collection from the
-        list box available, for ex: user demo.
-    
-      - Hatch "Semantic Web Crawling"
-        
-          - Note: when you select this option, you can either:
-            
-            1.  Leave the Store Function and Extract Function empty - in
-                this case the system Store and Extract functions will be
-                used for the Semantic Web Crawling Process, or:
-            
-            2.  You can select your own Store and Extract Functions, for
-                ex:
-                
-                    -- Example of Extract Function
-                    use WS;
-                    
-                    create procedure WS.WS.SITEMAP_BB_PARSE (
-                      in _host varchar,
-                      in _url varchar,
-                      in _root varchar,
-                      inout _content varchar,
-                      in _c_type varchar := null,
-                      in lev int := 0))
-                    {
-                      --pl_debug+
-                      declare xt, xp, graph any;
-                      declare inx int;
-                    
-                    --  dbg_obj_print ('WS.WS.GET_URLS_SITEMAP', _url);
-                    
-                      declare exit handler for sqlstate '*'
-                        {
-                    --      dbg_obj_print (__SQL_MESSAGE);
-                          return;
-                        };
-                    
-                      if (_url like '%.xml.gz')
-                        {
-                          _content := gzip_uncompress (_content);
-                        }
-                    
-                      if (_url like '%.xml' or _url like '%.xml.gz' or _url like '%.rdf')
-                        {
-                          xt := xtree_doc (_content);
-                          if (xpath_eval ('/urlset/dataset', xt) is not null)
-                        {
-                          xp := xpath_eval ('/urlset/dataset/dataDumpLocation/text()', xt, 0);
-                          graph := cast (xpath_eval ('/urlset/dataset/datasetURI/text()', xt) as varchar);
-                          if (length (graph))
-                            update VFS_SITE set VS_UDATA = serialize (vector ('graph', graph)) where VS_HOST = _host and VS_ROOT = _root;
-                          inx := 0;
-                          foreach (any u in xp) do
-                            {
-                              declare hf, host, url varchar;
-                    
-                              u := cast (u as varchar);
-                              hf := WS.WS.PARSE_URI (u);
-                              host := hf[1];
-                              --dbg_obj_print ('WS.WS.GET_URLS_SITEMAP PARSE', u);
-                              url := hf[2];
-                              insert soft VFS_QUEUE (VQ_HOST, VQ_TS, VQ_URL, VQ_STAT, VQ_ROOT, VQ_OTHER)
-                              values (host, now (), url, 'waiting', _root, NULL);
-                              if (row_count () = 0)
-                            update VFS_QUEUE set VQ_STAT = 'waiting', VQ_TS = now () where VQ_HOST = host and VQ_ROOT = _root and VQ_URL = url;
-                              inx := inx + 1;
-                            }
-                        }
-                          if (xpath_eval ('/sitemapindex/sitemap/loc', xt) is not null)
-                        {
-                          xp := xpath_eval ('/sitemapindex/sitemap/loc/text()', xt, 0);
-                          inx := 0;
-                          foreach (any u in xp) do
-                            {
-                              declare hf, host, url varchar;
-                    
-                              u := trim (cast (u as varchar));
-                              hf := WS.WS.PARSE_URI (u);
-                              host := hf[1];
-                    --        dbg_obj_print ('WS.WS.GET_URLS_SITEMAP', host, _host);
-                              url := hf[2];
-                              if (url <> '')
-                            {
-                              insert soft VFS_QUEUE (VQ_HOST, VQ_TS, VQ_URL, VQ_STAT, VQ_ROOT, VQ_OTHER)
-                                  values (host, now (), url, 'waiting', _root, NULL);
-                              if (row_count () = 0)
-                                update VFS_QUEUE set VQ_STAT = 'waiting', VQ_TS = now () where VQ_HOST = host and VQ_ROOT = _root and VQ_URL = url;
-                              inx := inx + 1;
-                            }
-                            }
-                        }
-                        }
-                      commit work;
-                    }
-                    ;
-                    
-                    -- Example of Store Function
-                    use WS;
-                    
-                    create procedure WS.WS.SITEMAP_BB_STORE (
-                      in _host varchar,
-                      in _url varchar,
-                      in _root varchar,
-                      inout _content varchar,
-                      in _s_etag varchar,
-                      in _c_type varchar,
-                      in store_flag int := 1,
-                      in udata any := null,
-                      in lev int := 0)
-                    {
-                      --pl_debug+
-                      declare graph varchar;
-                    
-                    --  dbg_obj_print ('WS.WS.SITEMAP_BB_STORE', _url, udata);
-                      if (isarray (udata))
-                        graph := get_keyword ('graph', udata);
-                      else
-                        graph := null;
-                    
-                      if (graph is not null and _url like '%.rdf')
-                        {
-                          DB.DBA.RDF_LOAD_RDFXML (_content, graph, graph);
-                          DB.DBA.VT_INC_INDEX_DB_DBA_RDF_OBJ ();
-                        }
-                      insert soft VFS_URL (VU_HOST, VU_URL, VU_CHKSUM, VU_CPTIME, VU_ETAG, VU_ROOT)
-                          values (_host, _url, md5 (_content), now (), _s_etag, _root);
-                      if (row_count () = 0)
-                        update VFS_URL set VU_CHKSUM = md5 (_content), VU_CPTIME = now (), VU_ETAG = _s_etag where
-                        VU_HOST = _host and VU_URL = _url and VU_ROOT = _root;
-                      commit work;
-                    }
-                    ;
-
-6.  Optionally you can select "Convert Link" to make all HREFs in the
-    local stored content relative.
-
-7.  Hatch "Accept RDF"
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr16.png)
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr17.png)
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr17b.png)
-
-8.  Optionally you can hatch "Store metadata \*" and specify which RDF
-    Cartridges to be included from the Sponger:
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr17a.png)
-
-9.  Click the button "Create".
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr18.png)
-
-10. Click "Import Queues".
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr19.png)
-
-11. For "Robot target" with label "Semantic Web Sitemap Example" click
-    "Run".
-
-12. As result should be shown the number of the pages retrieved.
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr20.png)
-
-13. Check the retrieved RDF data from your Virtuoso instance sparql
-    endpoint http://cname:port/sparql with the following query selecting
-    all the retrieved graphs for ex:
-    
-        SELECT ?g
-        FROM <http://host:port/>
-        WHERE
-          {
-            graph ?g { ?s ?p ?o } .
-            FILTER ( ?g LIKE <http://virtuoso.openlinksw.com/%> )
-          }
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr21.png)
-    
-    ![Setting up a Content Crawler Job to Retrieve Semantic Sitemap
-    content](ui/cr22.png)
-
-##### Setting up a Content Crawler Job to Retrieve Content from Specific Directories
-
-The following section describes how to set up crawler job for getting
-directories using Conductor.
-
-1.  From the Virtuoso Conductor User Interface i.e.
-    http://cname:port/conductor, login as the "dba" user.
-
-2.  Go to "Web Application Server".
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/cr1.png)
-
-3.  Go to "Content Imports".
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/cr2.png)
-
-4.  Click "New Target".
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/cr3.png)
-
-5.  In the shown form:
-    
-      - Enter for "Target description":
-        
-            UDA WebSite
-    
-      - Enter for "Target URL":
-        
-            http://uda.openlinksw.com/
-    
-      - Enter for "Copy to local DAV collection" for available user, for
-        ex. demo:
-        
-            /DAV/home/demo/uda/
-    
-      - Choose from the available list "Local resources owner" an user,
-        for ex. demo.
-        
-        ![Setting up a Content Crawler Job to Retrieve Content from
-        Specific Directories](ui/d1.png)
-        
-        ![Setting up a Content Crawler Job to Retrieve Content from
-        Specific Directories](ui/d1a.png)
-    
-      - Optionally you can select "Convert Link" to make all HREFs in
-        the local stored content relative.
-    
-      - Click the button "Create".
-
-6.  As result the Robot target will be created:
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/d2.png)
-
-7.  Click "Import Queues".
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/d3.png)
-
-8.  Click "Run" and go to "Retrieved Sites".
-
-9.  As result should be shown the number of the total pages retrieved.
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/d5.png)
-
-10. Go to "Web Application Server" -\> "Content Management" and go to
-    path:
-    
-        DAV/home/demo/uda/
-
-11. As result the retrieved content will be shown:
-    
-    ![Setting up a Content Crawler Job to Retrieve Content from Specific
-    Directories](ui/d7.png)
-
-##### Setting up a Content Crawler Job to Retrieve Content from ATOM feed
-
-This section demonstrates populating the Virtuoso Quad Store using ATOM
-feed.
-
-Populating the Virtuoso Quad Store can be done in different ways
-Virtuoso supports. The Conductor -\> Content Import UI offers plenty of
-options, one of which is the XPath expression for crawling RDF resources
-URLs and this feature is a powerful and easy-to-use for managing the
-Quad Store.
-
-To populate the Virtuoso Quad Store, in this Guide we will use a XPAth
-expression for the URLs of the RDF resources references in a given ATOM
-feed. For ex. this one of the "National Bibliography" Store.
-
-1.  Go to http://cname/conductor
-
-2.  Enter dba credentials
-
-3.  Go to Web Application Server -\> Content Management -\> Content
-    Imports:
-    
-    ![Crawling ATOM feed](ui/cra1.png)
+    ![Crawling ATOM feed](./images/ui/cra1.png)
 
 4.  Click "New Target":
     
-    ![Crawling ATOM feed](ui/cr3.png)
+    ![Crawling ATOM feed](./images/ui/cr3.png)
 
 5.  In the presented form specify respectively:
     
@@ -8190,31 +7826,31 @@ feed. For ex. this one of the "National Bibliography" Store.
       - "RDF Cartridge": hatch this check-box and specify what
         cartridges will be used.
         
-        ![Crawling ATOM feed](ui/cra3.png)
+        ![Crawling ATOM feed](./images/ui/cra3.png)
         
-        ![Crawling ATOM feed](ui/cra4.png)
+        ![Crawling ATOM feed](./images/ui/cra4.png)
 
 6.  Click "Create".
 
 7.  The new created target should be displayed in the list of available
     Targets:
     
-    ![Crawling ATOM feed](ui/cra7.png)
+    ![Crawling ATOM feed](./images/ui/cra7.png)
 
 8.  Click "Import Queues":
     
-    ![Crawling ATOM feed](ui/cra8.png)
+    ![Crawling ATOM feed](./images/ui/cra8.png)
 
 9.  Click for "National Bibliography" target the "Run" link from the
     very-right "Action" column.
 
 10. Should be presented list of Top pending URLs:
     
-    ![Crawling ATOM feed](ui/cra9.png)
+    ![Crawling ATOM feed](./images/ui/cra9.png)
 
 11. Go to "Retrieved Sites" to check the total URLs that were processed:
     
-    ![Crawling ATOM feed](ui/cra10.png)
+    ![Crawling ATOM feed](./images/ui/cra10.png)
 
 12. To view the imported RDF data, go to http://example.com/sparql and
     enter a simple query for ex.:
@@ -8226,13 +7862,13 @@ feed. For ex. this one of the "National Bibliography" Store.
             ?s ?p ?o
           }
     
-    ![Crawling ATOM feed](ui/cra14.png)
+    ![Crawling ATOM feed](./images/ui/cra14.png)
 
 13. Click "Run Query".
 
 14. The imported RDF data triples should be shown:
     
-    ![Crawling ATOM feed](ui/cra15.png)
+    ![Crawling ATOM feed](./images/ui/cra15.png)
 
 ##### Setting up a Content Crawler Job to Retrieve Content from SPARQL endpoint
 
@@ -8306,11 +7942,11 @@ The following step-by section walks you through the process of:
 5.  Go to "Web Application Server"-\> "Content Management" -\> "Content
     Imports"
     
-    ![Crawling SPARQL Endpoints](ui/cra1.png)
+    ![Crawling SPARQL Endpoints](./images/ui/cra1.png)
 
 6.  Click "New Target":
     
-    ![Crawling SPARQL Endpoints](ui/cr3.png)
+    ![Crawling SPARQL Endpoints](./images/ui/cr3.png)
 
 7.  In the presented form enter for ex.:
     
@@ -8347,39 +7983,39 @@ The following step-by section walks you through the process of:
     
     10. Hatch "Run "Sponger" and "Accept RDF"
         
-        ![Crawling SPARQL Endpoints](ui/scp4.png)
+        ![Crawling SPARQL Endpoints](./images/ui/scp4.png)
         
-        ![Crawling SPARQL Endpoints](ui/scp5.png)
+        ![Crawling SPARQL Endpoints](./images/ui/scp5.png)
 
 8.  Click "Create";
 
 9.  The target should be created and presented in the list of available
     targets:
     
-    ![Crawling SPARQL Endpoints](ui/scp7.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp7.png)
 
 10. Click "Import Queues":
     
-    ![Crawling SPARQL Endpoints](ui/scp8.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp8.png)
 
 11. Click "Run" for the imported target:
     
-    ![Crawling SPARQL Endpoints](ui/scp9.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp9.png)
 
 12. To check the retrieved content go to "Web Application Server"-\>
     "Content Management" -\> "Content Imports" -\> "Retrieved Sites":
     
-    ![Crawling SPARQL Endpoints](ui/scp11.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp11.png)
 
 13. Click "voiD store" -\> "Edit":
     
-    ![Crawling SPARQL Endpoints](ui/scp12.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp12.png)
 
 14. To check the imported URLs go to "Web Application Server"-\>
     "Content Management" -\> "Repository" path
     DAV/void.rkbexplorer.com/content/:
     
-    ![Crawling SPARQL Endpoints](ui/scp10.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp10.png)
 
 15. To check the inserted into the RDF QUAD data go to
     http://cname/sparql and execute the following query:
@@ -8391,9 +8027,9 @@ The following step-by section walks you through the process of:
             ?s ?p ?o
           }
     
-    ![Crawling SPARQL Endpoints](ui/scp13.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp13.png)
     
-    ![Crawling SPARQL Endpoints](ui/scp14.png)
+    ![Crawling SPARQL Endpoints](./images/ui/scp14.png)
 
 ### Access Control
 
@@ -8402,18 +8038,18 @@ Rules and ACL respectively for HTTP, News, Proxy. The tabs PSH and
 PSH-SSL are available only when the [pubsubhub\_dav.vad](#) is
 installed.
 
-![Access Control Lists](ui/acl001.png)
+![Access Control Lists](./images/ui/acl001.png)
 
 For each of the tabs "HTTP", "NEWS", "PROXY" the created rules will be
 shown in a list with Filter, Access, Destination, Object, Mode, Rate
 values. You can also add/delete rules, re-arrange rules order.
 
-![Access Control List for HTTP](ui/acl002.png)
+![Access Control List for HTTP](./images/ui/acl002.png)
 
 Click the link "Edit" for a rule. Then specify the filter and access
 values.
 
-![Access Control Lists](ui/acl003.png)
+![Access Control Lists](./images/ui/acl003.png)
 
 ### Import WSDL
 
@@ -8424,7 +8060,7 @@ user-defined types that are callable within Virtuoso while the
 processing and mechanics of the services are actually handled at the
 source.
 
-![WSDL Import](ui/wsdlimp001.png)
+![WSDL Import](./images/ui/wsdlimp001.png)
 
 After Virtuoso examines the supplied URL to a WSDL you are presented
 with the source code for the PL wrappers and Virtuoso user-defined types
@@ -8432,7 +8068,7 @@ to be created. You have the chance to edit the code for more specific
 needs and then you can either save this to a file for later work, or
 execute it in Virtuoso to create the procedures and types.
 
-![WSDL Import](ui/wsdlimp002.png)
+![WSDL Import](./images/ui/wsdlimp002.png)
 
 Any errors in the code will be highlighted if you try and execute it.
 
@@ -8460,7 +8096,7 @@ used with that file a list or file types are maintained in the server.
 This list is used when sending any content via the HTTP server which
 include content in DAV and under VSP.
 
-![DAV Resource Types](ui/dav_resrctyp_01.png)
+![DAV Resource Types](./images/ui/dav_resrctyp_01.png)
 
 The Web Application Server/Content Management/Resource Types page shows
 the list of currently defined resource types in the Virtuoso server. You
@@ -8480,7 +8116,7 @@ upload or remove files, or edit documents.
 The Repository tab lists the current location within the tree and the
 current login name. The root of the repository is usually `/DAV/` .
 
-![Content Management](webdav.png)
+![Content Management](./images/webdav.png)
 
 #### Resource Names
 
@@ -8533,7 +8169,7 @@ properties of a resource, other than its name, by selecting the resource
 via the checkbox to the left of the icon, and pressing the "Properties"
 button.
 
-![Edit Resource Properties](ui/editres.png)
+![Edit Resource Properties](./images/ui/editres.png)
 
 XML documents also permit you to edit their XML properties specifically.
 This can be done on any document of type text/xml by clicking on the
@@ -8549,13 +8185,13 @@ The owner, group, permissions, and indexing controls on this form apply
 to the appropriate properties of resources, as documented above. Changes
 to the type of a collection (folder) are ignored.
 
-![Multiple Resources Edit Properties](ui/meditres.png)
+![Multiple Resources Edit Properties](./images/ui/meditres.png)
 
 The "Property" control permits you to change or add additional
 properties. There is a pulldown of predefined XML-related properties, or
 you may create your own property.
 
-![Multiple Resources Edit Properties](ui/meditres2.png)
+![Multiple Resources Edit Properties](./images/ui/meditres2.png)
 
 ##### WebDAV Properties
 
@@ -8581,7 +8217,7 @@ name of the collection (folder), its owner and group, and the initial
 permissions. You may also turn on indexing for the folder's contents at
 this point.
 
-![Create Folder](ui/cfolder.png)
+![Create Folder](./images/ui/cfolder.png)
 
 The "Upload File" button brings up a form in which you can specify the
 name and location of a file on your local computer that is to be copied
@@ -8589,7 +8225,7 @@ into the DAV repository. You need to specify the name of the resource in
 the repository and give it a type. You can also set the basic repository
 properties here.
 
-![Upload File](ui/ufile.png)
+![Upload File](./images/ui/ufile.png)
 
 ### Free Text
 
@@ -8605,7 +8241,7 @@ consuming if you frequently insert or update text files. For this reason
 Virtuoso can be set to index in batch mode at a particular interval in
 minutes.
 
-![DAV Free Text Index Configuration](ui/dav_idxprprty_01.png)
+![DAV Free Text Index Configuration](./images/ui/dav_idxprprty_01.png)
 
 To change the free-text index mode to batch mode check the check-box and
 provide a non-zero time interval (in minutes). Press the *Accept* button
@@ -8628,12 +8264,12 @@ directories available to Virtuoso through the file system or DAV.
 You can also publish stored procedures to a SOAP defined directory
 during the virtual directory definition.
 
-![Virtual Directories](ui/admvirtdir001.png)
+![Virtual Directories](./images/ui/admvirtdir001.png)
 
 Click on the *Add New Site* button to start adding a new Virtual Web
 Site and its directories.
 
-![Virtual Directories: Site Details](ui/admvirtdir002.png)
+![Virtual Directories: Site Details](./images/ui/admvirtdir002.png)
 
 When adding or editing a web site you must supply a host.domain name,
 which will be used to match again incoming requests to produce the
@@ -8646,7 +8282,7 @@ specified in the request. This provides the virtual site.
 
 Click on "New Directory" to continue.
 
-![Virtual Directories Mappings](ui/admvirtdir003.png)
+![Virtual Directories Mappings](./images/ui/admvirtdir003.png)
 
 Before the directory settings are configured you can select from a few
 types to help configure the details to follow quicker and easier. For
@@ -8654,7 +8290,7 @@ SOAP virtual directories this step is particular useful.
 
 Select "Type" and then click "Next" to continue.
 
-![Virtual Directories](ui/admvirtdir004.png)
+![Virtual Directories](./images/ui/admvirtdir004.png)
 
 The "Virtual Directory Information" tab lets you configure most aspects
 of the virtual directory.
@@ -8716,7 +8352,7 @@ rules for the Virtual Directory.
 Once the form details have been completed press on the Add button to
 save the them and proceed to configure mappings for the directory.
 
-![Virtual Directories Mappings](ui/admvirtdir006.png)
+![Virtual Directories Mappings](./images/ui/admvirtdir006.png)
 
 This screen lists mappings that have been defined for the virtual site.
 If you have just created a fresh site then only one line will be
@@ -8763,14 +8399,14 @@ FS folder to DAV:
 
 5.  Go to Web Application Server -\> Virtual Domains & Directories.
     
-    ![Mount FS to DAV](ui/admvirtdir011.png)
+    ![Mount FS to DAV](./images/ui/admvirtdir011.png)
 
 6.  For your {Default Web Site} click the link "New Directory".
 
 7.  Check the check-box "Type" and select from the drop-down list
     "Filesystem".
     
-    ![Mount FS to DAV](ui/admvirtdir012.png)
+    ![Mount FS to DAV](./images/ui/admvirtdir012.png)
 
 8.  Click "Next"
 
@@ -8781,13 +8417,13 @@ FS folder to DAV:
 
 10. Click "Save Changes"
     
-    ![Mount FS to DAV](ui/admvirtdir013.png)
+    ![Mount FS to DAV](./images/ui/admvirtdir013.png)
 
 11. From your browser access the url: http://host:port/mytest/
 
 12. As result the content of the index.html file will be shown:
     
-    ![Mount FS to DAV](ui/admvirtdir014.png)
+    ![Mount FS to DAV](./images/ui/admvirtdir014.png)
 
 ## XML Services
 
@@ -8802,7 +8438,7 @@ SQL-XML Query* text-area:
       "Demo"."demo"."Products" as "product"
     FOR XML AUTO ELEMENT
 
-![SQL-XML Statements](ui/sql_xml_mng_01.png)
+![SQL-XML Statements](./images/ui/sql_xml_mng_01.png)
 
 Type the root XML element name into the *Root Element* field. The
 results of the query will be contained within this root element.
@@ -8851,7 +8487,7 @@ XQuery Document Search applies the XPATH expression to every realized
 XML contained within the Query Scope to qualify search hit results. Note
 that this does not include XML Views unless persistent.
 
-![XPATH Query of DAV](ui/dav_xpath_01.png)
+![XPATH Query of DAV](./images/ui/dav_xpath_01.png)
 
 Choose the *Scope of Query* from within the WebDAV repository. You may
 define the scope as either No Context, DAV Resource (file), DAV
@@ -8861,7 +8497,7 @@ to make a selection. The query will then be confined to the selected
 resource or collection and its children. Then Click the button "Next" in
 order to continue.
 
-![XPATH Query of DAV](ui/dav_xpath_02.png)
+![XPATH Query of DAV](./images/ui/dav_xpath_02.png)
 
 Enter that XPATH query expression into the text area that you wish to
 interrogate your WebDAV XML documents with. e.g. *//\** or *//title*
@@ -8891,14 +8527,14 @@ XML Template, fill in the "Create as XML Template Description" field.
 
 Click the button "Save".
 
-![XPATH Query of DAV](ui/dav_xpath_03.png)
+![XPATH Query of DAV](./images/ui/dav_xpath_03.png)
 
-![XPATH Query of DAV](ui/dav_xpath_04.png)
+![XPATH Query of DAV](./images/ui/dav_xpath_04.png)
 
 If for location you have chosen /DAV/xmlsql/xquery.xml, you can view the
 saved file accessing the url: http://host:port/DAV/xmlsql/xquery.xml
 
-![XPATH Query of DAV](ui/dav_xpath_05.png)
+![XPATH Query of DAV](./images/ui/dav_xpath_05.png)
 
 ## Query Tools
 
@@ -8911,14 +8547,14 @@ query in the SQL Statement box click on the *Execute* for the results
 which will in the "Base" tab with option to return back to the query
 area. The *Clear* clears the SQL Statement text box.
 
-![Querying Relational Database Using SQL](ui/qry_sql_01.png)
+![Querying Relational Database Using SQL](./images/ui/qry_sql_01.png)
 
-![Results](ui/qry_sql_01a.png)
+![Results](./images/ui/qry_sql_01a.png)
 
 Specify the location for the file to be saved to by selecting the
 "WebDAV source" or "Local file" check-box.
 
-![Saving SQL in an XML Template](ui/qry_sql_02.png)
+![Saving SQL in an XML Template](./images/ui/qry_sql_02.png)
 
 Click the "Browse" button. As result will be opened the Virtuoso
 WebDAV/File Browser where you should define the XML template based on
@@ -8985,7 +8621,7 @@ column.
        }
     </bib>
 
-![XQuery Test File Results](ui/qry_sql_02a.png)
+![XQuery Test File Results](./images/ui/qry_sql_02a.png)
 
 ## Replication & Synchronization
 
@@ -9011,7 +8647,7 @@ The Transaction Publication screen lists publications. You can add, edit
 or remove publications as necessary, each time using the guide-lines of
 the wizard.
 
-![Transaction Replication - Publications](ui/repltranspub001.png)
+![Transaction Replication - Publications](./images/ui/repltranspub001.png)
 
 Add a new publication by clicking on the
 
@@ -9033,30 +8669,10 @@ you have the option to create an updateable publication - see the
 more details - which allows updates to come from subscribers rather than
 being limited to originating from the publisher only.
 
-![Transaction Replication - New Publication](ui/repltranspub002.png)
+![Transaction Replication - New Publication](./images/ui/repltranspub002.png)
 
-![Transaction Replication - List of
-Publications](ui/repltranspub002a.png)
 
-Once a new publication has been made you can add database objects to it
-using the *Add ...* buttons, or remove them by selecting their checkbox
-and using the *Remove* button. To add a new table to the publication
-click on *Add Table/Procedure* . Follow the wizard by choosing the
-appropriate database/catalog by clicking on its name, you will then be
-presented with the tables within it.
-
-![Transaction Replication - Publish Tables and
-Procedures](ui/repltranspub003.png)
-
-Select the tables to publish using the checkboxes and press *Add to
-Publication* to add the tables and continue.
-
-Once returned the publication screen, the published tables will be
-listed. Updatable publication will need conflict resolvers in case of
-conflicting data arriving from a subscriber. Click on the table name to
-manage the resolvers list.
-
-![Transaction Replication - Published Items](ui/repltranspub004.png)
+![Transaction Replication - Published Items](./images/ui/repltranspub004.png)
 
 Use the *Add* /*Remove* to add or remove selected resolvers.
 
@@ -9115,12 +8731,12 @@ have the following details to contend with:
     This should specify the column name if `class` is not one of
     'pub\_wins', 'sub\_wins' or 'custom'.
 
-![Transaction Replication - Resolvers](ui/repltranspub006.png)
+![Transaction Replication - Resolvers](./images/ui/repltranspub006.png)
 
 Click on Publication -\> *Advanced Options* to set additional settings
 such as split size, default copy mode of publication item, etc.
 
-![Transaction Replication - Advanced](ui/repltranspub005.png)
+![Transaction Replication - Advanced](./images/ui/repltranspub005.png)
 
 #### Subscriptions
 
@@ -9137,9 +8753,9 @@ such as split size, default copy mode of publication item, etc.
 
   - To load image file click at Load image button and follow the wizard.
 
-![Transaction Replication - Subscription](ui/replt_trans_sub_01.png)
+![Transaction Replication - Subscription](./images/ui/replt_trans_sub_01.png)
 
-![Transaction Replication - Subscription](ui/replt_trans_sub_02.png)
+![Transaction Replication - Subscription](./images/ui/replt_trans_sub_02.png)
 
 ## Database Administration
 
@@ -9168,7 +8784,7 @@ You can import users by adding LDAP Servers(s) from the "LDAP Servers"
 tab, and then from the "LDAP Import" to specify from which LDAP server
 the import should be done:
 
-![Users Accounts](ui/admtables_01a.png)
+![Users Accounts](./images/ui/admtables_01a.png)
 
 #### Configuring and import from LDAP server
 
@@ -9181,7 +8797,7 @@ import user(s) using the Conducor UI:
 
 3.  Go to System Admin -\> User Accounts -\> LDAP Servers
     
-    ![LDAP Servers Configure and Import](ui/ldap1.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap1.png)
 
 4.  Enter in the LDAP servers form respectively:
     
@@ -9203,29 +8819,29 @@ import user(s) using the Conducor UI:
 
 5.  Check the connection by pressing "Test":
     
-    ![LDAP Servers Configure and Import](ui/ldap2.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap2.png)
 
 6.  If the test connection is successful, click "Add".
     
-    ![LDAP Servers Configure and Import](ui/ldap3.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap3.png)
 
 7.  Next you can import various data from your LDAP server.
 
 8.  Go to System Admin -\> User Accounts -\> LDAP Import
     
-    ![LDAP Servers Configure and Import](ui/ldap3a.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap3a.png)
 
 9.  Select the LDAP server added from above:
     
-    ![LDAP Servers Configure and Import](ui/ldap4.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap4.png)
 
 10. Click "Search".
     
-    ![LDAP Servers Configure and Import](ui/ldap5.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap5.png)
 
 11. Click "Next".
     
-    ![LDAP Servers Configure and Import](ui/ldap6.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap6.png)
 
 12. Select the desired profiles to be imported and set prefered "LDAP
     Authentication" for selected user:
@@ -9240,7 +8856,7 @@ import user(s) using the Conducor UI:
         on the LDAP server. If yes, then the user logs in successfully
         in Virtuoso.
     
-    ![LDAP Servers Configure and Import](ui/ldap7.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap7.png)
 
 13. Click "Import".
     
@@ -9270,7 +8886,7 @@ import user(s) using the Conducor UI:
 
 15. The imported profile(s) should be displayed in the Users tab:
     
-    ![LDAP Servers Configure and Import](ui/ldap8.png)
+    ![LDAP Servers Configure and Import](./images/ui/ldap8.png)
 
 ### Databases
 
@@ -9279,36 +8895,18 @@ Databases /Schema Objects. For each catalog you will be able to view and
 in some cases edit details about the tables, views, triggers, and store
 procedures stored within that catalog.
 
-![Viewing Tables details for the Demo catalogue in the Demo
-Database](ui/admtables_01.png)
 
-![Viewing Views details for the Demo catalogue in the Demo
-Database](ui/admviews_01.png)
-
-#### Demo Database Installation
-
-The Virtuoso Demonstration database can be installed with the Conductor
-by navigating to the "System Admin" -\> "Packages" tab where a list of
-available Virtuoso applications are displayed, one of which is for the
-"Demo" database package as shown below:
-
-![Install Demo db using Conductor UI: "System Admin" -\>
-"Packages"](ui/demodbinstall_01.png)
-
-Select the "Demo" package and click on the "Install" button to commence
-the installation process:
-
-![Install Demo db: confirmation](ui/demodbinstall_02.png)
+![Install Demo db: confirmation](./images/ui/demodbinstall_02.png)
 
 Click on the "proceed" button to install the indicated "Demo Database"
 application package:
 
-![Install Demo db: proceed](ui/demodbinstall_03.png)
+![Install Demo db: proceed](./images/ui/demodbinstall_03.png)
 
 Once installed the demo database schema can be viewed from the
 "Database" -\> "Schema Objects" tab of the Conductor:
 
-![Install Demo db: view schema objects](ui/demodbinstall_04.png)
+![Install Demo db: view schema objects](./images/ui/demodbinstall_04.png)
 
 #### Editing Triggers
 
@@ -9333,30 +8931,8 @@ or drop them. Adding new stored procedures can be done via the ISQL
 command-line interface or from the "Create Procedure" link shown above
 the list of objects for the relevant database.
 
-![Viewing Stored Procedures details for the DB
-catalogue](ui/admprocedures_01.png)
 
-Stored procedures may also refer to modules that contain a group of
-related stored procedures. These are created and edited as a group,
-rather than individually. An example of this is the module
-DB.DBA.AmazonSearchService, which contains procedures such as
-KeywordSearchRequest() and BrowseNodeSearchRequest().
-
-### External Data Sources
-
-From Database / External Data Sources you will be able to manage the
-Virtual Database feature of Virtuoso. You are able to administer ODBC
-Data Sources, how to link remote tables and view, and already linked
-remote connections.
-
-#### Data Sources
-
-This tab shows you the available Data Sources. For these one, to which
-there is no connection, will be shown the link"Connect". For the
-datasource for which there is already established connection, will be
-shown the links "Link objects", "Change Credentials" and "Disconnect".
-
-![Remote Datasources connected to Virtuoso](ui/rmtconnected_01.png)
+![Remote Datasources connected to Virtuoso](./images/ui/rmtconnected_01.png)
 
 If you need to alter the authentication details of a particular Data
 Source then select the "Change Credentials" link. If you want to link
@@ -9371,12 +8947,12 @@ either User or System data sources, however, Virtuoso will only be able
 to use the User data sources that belong to the user that started the
 Virtuoso Server.
 
-![Configuring ODBC Datasources](ui/odbcadm_01.png)
+![Configuring ODBC Datasources](./images/ui/odbcadm_01.png)
 
 Follow the buttons on the screen as to how you want to manage a data
 source. You can create new, edit or remove existing data sources.
 
-![Configuring A Virtuoso ODBC Datasources](ui/virtdsn_01.png)
+![Configuring A Virtuoso ODBC Datasources](./images/ui/virtdsn_01.png)
 
 The Virtuoso Server can make use of File Data Sources too. This provides
 the usual associated conveniences. These enable you to migrate a
@@ -9402,7 +8978,7 @@ This page will allow you to manage the remote objects that are linked
 into Virtuoso. You can unlink objects by selecting them and pressing the
 "Unlink selected" button.
 
-![Linking Tables from Remote Datasources](ui/admrmttbls_01.png)
+![Linking Tables from Remote Datasources](./images/ui/admrmttbls_01.png)
 
 To link new tables into Virtuoso select "Link objects" link or go to the
 "Data Sources" tab. Click the "Connect" link for a data source. If this
@@ -9456,13 +9032,13 @@ catalog/owner combination to refine the search list of procedures on the
 remote datasource. Check the check-box "Stored procedures" and click the
 "Apply" button to list the available stored procedures.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs002.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs002.png)
 
 When the page returns you will be presented with a list of available
 remote procedures. You should be able to link any of the listed
 procedures into Virtuoso.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs003.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs003.png)
 
 Select the procedures that you want to link into the Virtuoso Server by
 checking the check box on the left most column of the list for the
@@ -9476,7 +9052,7 @@ internally and for any future interactions with the SOAP server. If you
 do not want to specify any special type information the details can be
 left as default.
 
-![Linking Procedures from Remote Datasources](ui/admrmtprocs004.png)
+![Linking Procedures from Remote Datasources](./images/ui/admrmtprocs004.png)
 
 For each remote procedure you have the option to change how they will be
 referenced within Virtuoso by making changes to the fields for *Local
@@ -9515,7 +9091,7 @@ The System Admin / Scheduler tab allows you to view, edit and remove
 events that can be scheduled to run from a particular time at a defined
 interval.
 
-![Event Scheduler](ui/admevt_01.png)
+![Event Scheduler](./images/ui/admevt_01.png)
 
 To add a new scheduled event click the "Create New Event" link in tha
 last column of the shown form. The Event Name is a unique name required
@@ -9526,7 +9102,7 @@ the event again. SQL is a valid piece of SQL that you want to schedule
 to run. You can also check for "Enable Error Notification" and enter
 E-Mail for error notification.
 
-![Event Scheduler](ui/admevt_01a.png)
+![Event Scheduler](./images/ui/admevt_01a.png)
 
 Events write possible error messages into the Virtuoso log file.
 
@@ -9535,19 +9111,19 @@ Events write possible error messages into the Virtuoso log file.
 From System Admin/Parameters you can change the Virtuoso Configuration
 settings:
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_01.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_01.png)
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_02.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_02.png)
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_03.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_03.png)
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_04.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_04.png)
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_05.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_05.png)
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_06.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_06.png)
 
-![Virtuoso (virtuoso.ini) Configuration File Editor](ui/db_strtp_07.png)
+![Virtuoso (virtuoso.ini) Configuration File Editor](./images/ui/db_strtp_07.png)
 
 ### Dashboard and Monitor
 
@@ -9555,18 +9131,18 @@ The System Admin/Dashboard consists of a collection of statistical
 information about your Virtuoso server. This includes general licensing
 information, locking, webserver hits statistics and more.
 
-![Dashboard](ui/sts_dsk_01.png)
+![Dashboard](./images/ui/sts_dsk_01.png)
 
 The System Admin/Monitor shows in details statistical information about
 your server.
 
-![Monitor - General Information](ui/sts_gen_01.png)
+![Monitor - General Information](./images/ui/sts_gen_01.png)
 
-![Monitor - HTTP Usage](ui/sts_httpsvr_01.png)
+![Monitor - HTTP Usage](./images/ui/sts_httpsvr_01.png)
 
-![Monitor - Index Usage](ui/sts_idx_01.png)
+![Monitor - Index Usage](./images/ui/sts_idx_01.png)
 
-![Monitor - Profiling](ui/sts_profile_01.png)
+![Monitor - Profiling](./images/ui/sts_profile_01.png)
 
 ## Conductor Linked Data Administration
 
@@ -9581,18 +9157,18 @@ Linked Data Views and to upload to the Quad Store.
 
 "SPARQL -\> Query" offers form form SPARQL query execution:
 
-![RDF](rdf.png)
+![RDF](./images/rdf.png)
 
 Also you can save the results in a query or load such:
 
-![RDF](rdf1.png)
+![RDF](./images/rdf1.png)
 
 #### Saved Queries
 
 "SPARQL -\> Saved Queries" offers list of saved queries, which can be
 opened in the "Query" tab in order to be executed:
 
-![RDF](rdf2.png)
+![RDF](./images/rdf2.png)
 
 ### Sponger
 
@@ -9601,22 +9177,22 @@ opened in the "Query" tab in order to be executed:
 Shows list of available extractor cartridges. They can be re-ordered by
 place of appearance, edit or deleted:
 
-![RDF](rdf3.png)
+![RDF](./images/rdf3.png)
 
 You can also add a new extractor cartridge:
 
-![RDF](rdf4.png)
+![RDF](./images/rdf4.png)
 
 #### Meta Cartridges
 
 Shows list of available meta cartridges. They can be re-ordered by place
 of appearance, edit or deleted:
 
-![RDF](rdf5.png)
+![RDF](./images/rdf5.png)
 
 You can also add a new meta cartridge:
 
-![RDF](rdf6.png)
+![RDF](./images/rdf6.png)
 
 #### Stylesheets
 
@@ -9624,20 +9200,20 @@ Shows list of available stylesheets for processing cartridges. From here
 you can manage these stylesheets by adding new, editing existing ones or
 deleting them:
 
-![RDF](rdf7.png)
+![RDF](./images/rdf7.png)
 
 #### Console
 
 Offers tracking cartridges exection. By default is off. When enabled,
 shows list of sessions per cartridge:
 
-![RDF](rdf8.png)
+![RDF](./images/rdf8.png)
 
 #### Configuration
 
 Offers creation of secure endpoints for pre-defiend vitual host:
 
-![RDF](rdf9.png)
+![RDF](./images/rdf9.png)
 
 ### Statistics
 
@@ -9645,30 +9221,30 @@ Offers interface for [`DB.DBA.RDF_VOID_STORE(graph,
 to_graph)`](#fn_rdf_void_store) . In the new graph ( field "Publish to")
 will be saved the VoID statistics data when generated:
 
-![RDF](rdf14.png)
+![RDF](./images/rdf14.png)
 
-![RDF](rdf15.png)
+![RDF](./images/rdf15.png)
 
 ### Graphs
 
 "Graphs" tab shows list of current graphs in the RDF Quad Store. From
 here day can be renamed or deleted:
 
-![RDF](rdf10.png)
+![RDF](./images/rdf10.png)
 
 ### Schemas
 
 Shows list of available schemas IRI-s and offers a new schema IRI to be
 imported:
 
-![RDF](rdf11.png)
+![RDF](./images/rdf11.png)
 
 ### Namespaces
 
 Shows list of namespace prefixes and offers a new namespace prefix to be
 imported:
 
-![RDF](rdf12.png)
+![RDF](./images/rdf12.png)
 
 ### Access Control
 
@@ -9679,7 +9255,7 @@ Manage Sponger rules by adding new ones, deleting, re-ordering, etc.
 This tab is available only when the [cartridges\_dav.vad](#) is
 installed.
 
-![RDF](rdf19.png)
+![RDF](./images/rdf19.png)
 
 #### SPARQL-WebID
 
@@ -9689,7 +9265,7 @@ SPARQL Roles such as "SELECT", "UPDATE", "SPONGE":
 This tab is available only when the [policy\_\_manager\_dav.vad](#) is
 installed.
 
-![RDF](rdf18.png)
+![RDF](./images/rdf18.png)
 
 > **Tip**
 > 
@@ -9718,7 +9294,7 @@ or "Object" position of a SPARQL graph pattern, en route to building a
 set of SQL compiler rules and optimizations for translating SPARQL
 queries into SQL on the fly.
 
-![RDF](rdf13.png)
+![RDF](./images/rdf13.png)
 
 > **Tip**
 > 
@@ -9735,7 +9311,7 @@ queries into SQL on the fly.
 
 Offers upload to Quad Store from file or Resource URL:
 
-![RDF](rdf16.png)
+![RDF](./images/rdf16.png)
 
 ### Subscriptions (PHSB)
 
@@ -9745,7 +9321,7 @@ installed.
 Offers Virtuoso's implementation of the [PubSubHubBub Protocol](#) to
 handle Linked Data by subscribing to Linked Data resource URIs.
 
-![Subscriptions (PHSB)](rdf17.png)
+![Subscriptions (PHSB)](./images/rdf17.png)
 
 Note: the Hub endpoint should be defined ACL in System Admin -\>
 Security -\> Access Control -\> PSH-SLL
@@ -9775,17 +9351,17 @@ The Virtuoso News server component will need to be enabled in the
 
 The tab "NNTP Servers" shows list of the registered News servers.
 
-![News Server Administration](ui/news_adm_01.png)
+![News Server Administration](./images/ui/news_adm_01.png)
 
 Click the "Edit" link to change the news server settings, or click the
 "Delete" link to remove the news server.
 
-![Edit News Server Properties](ui/news_adm_01a.png)
+![Edit News Server Properties](./images/ui/news_adm_01a.png)
 
 Click the "Edit Groups" link for a current News Server in order to
 manage the list of available newsgroups.
 
-![News Groups List](ui/news_adm_01b.png)
+![News Groups List](./images/ui/news_adm_01b.png)
 
 You can also *update* the cache list of newsgroups. Newsgroup names are
 (re)fetched in a batch background scheduled task. This is because the
@@ -9799,7 +9375,7 @@ messages fetched, view and edit the *Properties* of the group, or
 or to get new messages by clicking the links at the bottom of the form
 shown below.
 
-![Manage subscribed for Newsgroup](ui/news_adm_01c.png)
+![Manage subscribed for Newsgroup](./images/ui/news_adm_01c.png)
 
 #### Add Newsgroup
 
@@ -9807,7 +9383,7 @@ From the "NNTP Servers" tab click on the "Edit Groups" link for a
 registered News Server. Then click the *Subscribe to newsgroups* link to
 subscribe to newsgroups on the server.
 
-![Add Newsgroup](ui/news_addgrp_01.png)
+![Add Newsgroup](./images/ui/news_addgrp_01.png)
 
 Once groups are selected you can use the *Subscribe Selected* button to
 add the groups.
@@ -9829,7 +9405,7 @@ By default news servers listen on port 119.
 *Username* and *Password* allow you to provide login credentials if the
 server requires them.
 
-![News Server Administration](ui/news_add_01.png)
+![News Server Administration](./images/ui/news_add_01.png)
 
 #### Viewing Newsgroups
 
@@ -9841,1629 +9417,3 @@ installed. Then you can go from ODS to tab "Discussions" where will be
 shown the list of available newsgroups. Each one has shown as link its
 name, which leads to page where are listed its messages.
 
-![View of messages in a newsgroup in ODS
-Discussions.](ui/news_lclsrvr_01.png)
-
-### News Message Free Text Search
-
-You can perform Free Text Search using the ODS search option.
-
-# Virtuoso Cluster Operation
-
-## General
-
-Virtuoso can be run in cluster mode where one logical database is served
-by a collection of server processes spread over a cluster of machines.
-
-The cluster's composition is declared in a cluster.ini file which is to
-be in the starting directory of each of the servers composing the
-cluster. This file declares the hosts and listening ports of all
-processes composing the cluster and which of these processes is the
-local process and which the master.
-
-A cluster has a single master process which is the only one allowed to
-run DDL operations and which is responsible for distributed deadlock
-resolution. In all other respects, all server processes of the cluster
-are interchangeable.
-
-The set of processes declared in the cluster.ini files is called the
-physical cluster.
-
-Each cluster server process has its own database and log files and is
-solely responsible for these. All configuration fields in virtuoso.ini
-and related files apply to the process whose ini file this is and their
-meaning is not modified by clustering.
-
-Specifically, the SQL client and HTTP and other listening ports of each
-process are declared as usual and are used as usual. A cluster server
-process has additionally a cluster listening port that is used for
-cluster communications. This may not be connected to by anything except
-other processes of the same physical cluster. The cluster listener ports
-of all processes are declared in cluster.ini and all processes must
-specify the same information.
-
-### cluster.ini fields
-
-The below is a sample cluster.ini file declaring a physical cluster of 4
-processes.
-
-    [Cluster]
-    Threads = 100
-    ThisHost = Host1
-    Master = Host1
-    ReqBatchSize = 100
-    BatchesPerRPC = 4
-    BatchBufferBytes = 20000
-    LocalOnly = 2
-    
-    Host1 = box1:2222
-    Host2 = box2:2223
-    Host3 = box3:2224
-    Host4 = box4:2225
-    
-    Host1-1 = box1-1:12222
-    Host2-1 = box2-1:12223
-    Host3-1 = box3-1:12224
-    Host4-1 = box4-1:12225
-
-The lines Host1 ... Host4 declare the listening ports of each process.
-The line ThisHost = 1 declares that this process is Host1, hence cluster
-listener at box1:2222 box1 - box4 and box1-1 - box4-1 are machine names
-that must be resolvable in the local context. IP numbers can also be
-used. Mentioning a host several times declares additional interfaces for
-the host. Any of these interfaces may be used for cluster connection to
-the Virtuoso server at the host. Thus Host1 = gives the first interface,
-Host1-1 the second and so on. This is useful since servers most often
-have multiple network interfaces and Virtuoso balances the traffic among
-these interfaces if multiple interfaces are provided. Each host will
-listen at all the host:port numbers mentioned and other hosts will
-decide which interface to use based on load.
-
-The Threads line gives the maximum number of threads that will be made
-for serving requests from other hosts of the cluster. This is in
-addition to any other threads reserved in any other ini files.
-
-The Threads line gives the maximum number of threads that will be made
-for serving requests from other hosts of the cluster. This is in
-addition to any other threads reserved in any other ini files.
-
-The other fields should be left at the values shown.
-
-## Setting up a Cluster
-
-To make a new empty clustered Virtuoso database, set up the individual
-instances. The processes must be of exactly the same version, the
-operating systems, byte orders or word lengths of the participating
-machines do not have to match.
-
-Each individual database is assigned its database files and other
-configuration by editing its virtuoso.ini file. No installation besides
-having the Virtuoso executable and the virtuoso.ini file is needed.
-
-If there is a Virtuoso installation on the machine, use the executable
-from that and set up an empty directory with the virtuoso.ini file.
-
-Once the individual database directories are set up, write the
-cluster.ini file as shown above. Copy this into each running directory
-beside the virtuoso.ini file. Edit each to specify which host the file
-belongs to. Set ThisHost to point to the host which the this file
-belongs. Set Master to point to one of the hosts and make sure each file
-has the same master and a distinct ThisHost.
-
-Start the server processes. This will initialize the empty databases.
-
-Connect to the master host's SQL port with a SQL client to continue. The
-initial default user and password is dba. To verify that the cluster
-nodes can connect to each other, do status (''); twice. The second
-status should have a line beginning with Cluster xx nodes.
-
-## Using Clustering with an Existing Database
-
-The procedure for converting a single server database into a clustered
-one will be specified later. For 6.0, there is no automatic way of doing
-this.
-
-One can take an existing database and convert it to clustered operation
-by copying the initial database to each node of the cluster. Set up the
-database so that each node would run an identical copy. Then make the
-cluster.ini files.
-
-Start the servers. Connect to the master and run the partitioning
-statements for all keys of all tables that are to be managed by the
-cluster.
-
-At this point, each database will also hold rows that are not its
-responsibility, unless of course all tables are declared as replicated.
-The rows that are present and do not fall in the partition managed by
-the host should be deleted.
-
-This can be done with a stored procedure to be supplied later
-
-## Partitioning
-
-All databases in a cluster share precisely the same schema. Any DDL
-operations take effect on all nodes simultaneously.
-
-The tables can be of one of three types:
-
-  - Partitioned: A row of a partitioned table resides in exactly one
-    partition, according to the values of its partitioning columns. Each
-    partition is stored at least once in the cluster but may be kept in
-    multiple replicas if so configured. All indices of a partitioned
-    table must specify partitioning but need not be partitioned in the
-    same way. The data tables of an application will typically be
-    partitioned.
-
-  - Replicated: The table and its contents exist in identical form on
-    all nodes. Queries are answered from local data and updates go to
-    all nodes. This is the case with schema tables, for example but can
-    be used for application tables also.
-
-  - Local: The table exists on all nodes but each node has purely local
-    content and all queries and updates to the table refer only to local
-    content. This is the case for some configuration tables with only
-    local scope, such as specifying web service end points.
-
-Partitioning an index means that different hosts store different parts
-of the index. For each partitioned index one or more partitioning
-columns must be declared. Also each partitioned index is always held in
-its totality in a logical cluster. A logical cluster is a subset of the
-machines composing the physical cluster declared in cluster.ini. Usually
-the logical and physical cluster are the same.
-
-The logical cluster additionally declares how partitions are to be
-replicated. It is namely possible to declare that a specific partition
-be stored in multiple identical copies.
-
-There are two predefined logical clusters: REPLICATED and \_\_ALL. If a
-table's indices specify the REPLICATED cluster in their partitioning
-declaration, the data will be maintained in identical copies on all
-nodes.
-
-The \_\_ALL cluster is the default logical cluster for any partitioned
-table. Using this, each row will go to exactly one place, balanced over
-the set of nodes declared in the cluster.ini file.
-
-Basic applications do not need to declare their own cluster since the
-default one is most often applicable.
-
-### CREATE CLUSTER Statement
-
-    CREATE CLUSTER <name> DEFAULT <group>[ [,...]
-    
-    group: GROUP (<host>[,...])
-
-A logical cluster has a single global name and it consists of one or
-more host groups. Each host group is given a partition of whatever
-object that is stored in the logical cluster. Each host of a host group
-replicates the partition assigned to this host group.
-
-One logical cluster is predefined. It is called replicated and it
-consists of one group which has all the hosts of the physical cluster.
-The replicated logical cluster is used for storing any schema tables.
-This causes all schema information to be identically stored on all nodes
-of the physical cluster.
-
-If a table is created on a clustered Virtuoso and no partitioning is
-declared, the table exists on all nodes with independent content on
-each. This is generally not desirable since the same query will return
-different data depending on which host runs it.
-
-For performance, it is best to replicate any short, seldom changing
-lookup tables on all hosts.
-
-*Example*
-
-    create cluster C2 default group ("Host1"), group ("Host2"), group ("Host3"), group ("Host4") ;
-
-This would declare a logical cluster identical to the default \_\_ALL
-cluster if the cluster.ini specified hosts 1 - 4.
-
-The REPLICATED cluster could be declared as follows:
-
-    create cluster C3 default group ("Host1", "Host2", "Host3", Host4");
-
-### ALTER INDEX and CREATE INDEX Statements and Partitioning
-
-The ALTER INDEX statement is used for declaring the partitioning of an
-index. For a non-primary key index, the corresponding CREATE INDEX can
-also declare the partitioning. If one index of a table is partitioned,
-all indices of the table must be partitioned. If no partitioning is
-declared, the table will exist on all nodes but will have independent
-content on each. Partitioning of a key must be set when the key is
-empty. Thus, to create a partitioned table, first create the table and
-declare partitioning for its primary key.
-
-The name of the primary key index is the same as that of the table. If
-the table has no explicit primary key, it has an implicit one, named
-after the table and having the invisible \_IDN column as single key
-part. This may be used as a partitioning key.
-
-If clustering is not enabled, partitioning can still be declared but it
-will have no effect. Thus a single application DDL file can be used for
-clustered and single process versions of the application schema.
-
-    ALTER INDEX <index-name> ON <table-name> PARTITION [CLUSTER <cluster-name>] (<col-spec>[,...])
-    
-    col-spec : <column-name> <type> [<options>]
-    
-    type: INT | VARCHAR
-    
-    options: (<mask>) | (<length>, <mask>)
-
-The PARTITION declaration may occur at the end of a create index
-statement. This causes the index to be created, partitioned and then
-filled. Otherwise it would not be possible to add indices to non-empty
-tables.
-
-All or part of a partitioning column's value can be used for calculating
-a index entry hash which then determines which host group of the logical
-cluster gets to store the index entry. There are two types of hashing,
-integer and varchar. Integer applies to integer like types such as
-integer and bigint and iri id and varchar applies to anything else.
-Floating point columns or decimals should not be used for partitioning.
-Large objects or UDT's cannot be used for partitioning.
-
-For an integer partitioning, the mask is a bitmask applied to the number
-before extracting the part that is used for the hash. A mask of
-0hexffff00 will use the second and third least significant bytes for
-hashing, thus values 0-255 will hash to the same, values 256-512 to the
-same and so on. The value 0hex1000000 will again hash to the same as 0.
-
-Having consecutive integers hash to the same will cause them to go to
-the same host group and become physically adjacently which is good for
-key compression. If no mask is specified 0hexffff is used, meaning that
-each consecutive number gets a different hash, based on the low 16 bits
-of the number.
-
-For a varchar partitioned column, the default is to calculate a hash
-based on all bytes of the string. For purposes of key compression, it
-may be good to put strings with a common prefix in the same partition.
-
-The option consists of two integers, the length and the mask. If the
-length is positive, the length first characters are used for the hash.
-If the string is shorter than length, all characters are used. If the
-length is negative, we take the absolute value of the length and use all
-bytes of the string except the length last ones. If the string is
-shorter than -length, all the bytes are used. A length of -1 means to
-use all bytes except the last one, a length of 2 means to use the 2
-first characters only.
-
-The string's hash value is a large integer. The mask controls how many
-bits of this hash are used for the hash of the index entry.
-
-*Example*
-
-    create table part (id int, code int, str varchar);
-    alter index part on part partition (id int (0hexffff00));
-    
-    create index str on part (str) partition (str varchar (-1));
-    -- for the primary key, hash all values differing in the low byte together.
-    -- for str, hash all values differing only in the last character together.
-    
-    create table part_code (code int primary key, description varchar);
-    alter index part_code on part_code cluster replicated;
-
-This declares a lookup table for describing the values of the code
-column of the part table. This is replicated on all nodes of the
-cluster. Note that no partitioning columns need be specified since no
-matter the partition key the row would end up on all nodes regardless.
-
-## Transactions
-
-A Virtuoso cluster is fully transactional and supports the 4 isolation
-levels identically with a single server Virtuoso. Transactions are
-committed using single to two phase commit as may be appropriate and
-this is transparent to the application program.
-
-Distributed deadlocks are detected and one of the deadlocking
-transactions is killed, just as with a single process.
-
-Transactions are logged on the cluster nodes which perform updates
-pertaining to the transaction.
-
-A transaction has a single owner connection. Each client connection has
-a distinct transaction. From the application program's viewpoint there
-is a single thread per transaction. Any parallelization of queries is
-transparent.
-
-For roll forward recovery, each node is independent. If a transaction is
-found in the log for which a prepare was received but no final commit or
-rollback, the recovering node will ask the owner of the transaction
-whether the transaction did commit. Virtuoso server processes can
-provide this information during roll forward, hence a simultaneous
-restart of cluster nodes will not deadlock.
-
-### Performance Considerations
-
-A lock wait in a clustered database requires an asynchronous
-notification to a monitor node. This is done so that a distributed
-deadlock can be detected. Thus the overhead of waiting is slightly
-larger than with a single process.
-
-We recommend that read committed be set as the default isolation since
-this avoids most waiting. A read committed transaction will show the
-last committed state of rows that have exclusive locks and uncommitted
-state. This is set as DefaultIsolation = 2.
-
-In the parameters section of each virtuoso.ini file.
-
-### Row Autocommit Mode
-
-Virtuoso has a mode where insert/update/delete statements commit after
-each row. This is called row autocommit mode and is useful for bulk
-operations that need no transactional semantic.
-
-The row autocommit mode is set by executing log\_enable (2) or
-log\_enable (3), for no logging and logging respectively. The setting
-stays in effect until set again or for the duration of the connection.
-Do not confuse this with the autocommit mode of SQL client connection.
-
-In a clustered database the row autocommit mode is supported but it will
-commit at longer intervals in order to save on message latency.
-Statements are guaranteed to commit at least once, at the end of the
-statement.
-
-A searched update or delete statement in row autocommit mode processes a
-few thousand keys between commits, all in a distributed transaction with
-2PC. These are liable to deadlock. Since the transaction boundary is not
-precisely defined for the application, a row autocommit batch update
-must be such that one can distinguish between updated and non-updated if
-one must restart after a deadlock. This is of course not an issue if
-updating several times makes no difference to the application.
-
-Naturally, since a row can be deleted only once, the problem does not
-occur with deletes. Both updates and deletes in row autocommit mode are
-guaranteed to keep row integrity, i.e. all index entries of one row will
-be in the same transaction.
-
-Naturally, since a row can be deleted only once, the problem does not
-occur with deletes. Both updates and deletes in row autocommit mode are
-guaranteed to keep row integrity, i.e. all index entries of one row will
-be in the same transaction.
-
-A row autocommit insert sends all keys of the row at once and each
-commit independently. Hence, a checkpoint may for example cause a
-situation where one index of a row is in the checkpoint state and the
-other is not.
-
-Thus, a row autocommit insert on a non-empty application table with
-transactional semantic is not recommended. This will be useful for bulk
-loads into empty tables and the like, though.
-
-## Administration
-
-### The cl\_exec function
-
-All administrative operations other than data definition take effect on
-the node to which they are issued.
-
-    cl_exec (in cmd varchar, in params any := NULL, in is_txn := 0)
-
-The [cl\_exec()](#fn_cl_exec) SQL function can be used for executing
-things on all nodes of a cluster.
-
-The cmd is a SQL string. If it contains parameter markers (?), the
-params array is used for assigning values, left to right. If is\_txn is
-1, the cl\_exec makes a distributed transaction and does not
-automatically commit on locally on each node. Thus
-[cl\_exec()](#fn_cl_exec) can be used as part of a containing
-distributed transaction.
-
-*Example*
-
-    cl_exec ('shutdown')
-    --will shut all nodes.
-    
-    cl_exec ('dbg_obj_print (?)', vector ('hello'));
-    --will print hello to the standard output of all the processes of the cluster.
-
-Any recovery, integrity checking, crash dump or similar can be done node
-by node as with single processes.
-
-> **Tip**
-> 
->   - [Cluster Installation and Config](#clusterstcnf)
-> 
->   - [Backup and Restore Example](#clusterstcnfbackuprestore)
-
-### Status Display
-
-The status () function has a cluster line right below the database
-version information. This line shows cluster event counts and statistics
-between the present and previous calls to status. Calling status
-('cluster') will show this line only. Calling status ('cluster\_d')
-shows this line and below it the same line with data on each individual
-host in the cluster.
-
-If cluster nodes are off-line, the nodes concerned are mentioned above
-the cluster status line.
-
-The line consists of the following fields.
-
-    Cluster 4 nodes, 4 s. 9360 m/s 536 KB/s 117% cpu 0% read 44% clw threads 2r 0w 1i buffers 1939 766 d 0 w 0 pfs
-    Cluster 4 nodes, 4 s. 9360 m/s 536 KB/s
-
-This first group gives the network status. The count of nodes online
-(4), the measurement interval, number of seconds since the last status
-command (4 seconds). The m/s is the messages per second, i.e. 9360
-single messages sent for intra-cluster purposes per second over the last
-4s. The KB/s is the aggregate throughput, i.e. the count of bytes sent
-divided by the length of the measure,measurement interval. This allows
-calculating an average message length. Only intra-cluster traffic is
-counted, SQL client server and HTTP connections are not included.
-
-    117% cpu 0% read 44% clw threads 2r 0w 1i
-
-This group gives the process status. The CPU% is at 100% if one thread
-is running at one full CPU. The maximum CPU% is 100 times the number of
-CPU's in the cluster. Differences between CPU's are not considered. The
-read % is the sum of real time spent waiting for disk divided by the
-time elapsed. The maximum number is 100 times the peak number of threads
-running during the interval. 500% would mean an average of five threads
-waiting for disk times during the interval. The clw% is the sum of real
-time a thread has waited for cluster request responses during the
-period. The maximum is 100% times the peak number of threads running.
-
-The threads section (2r 0w 1i) is a snapshot of thread state and means
-that 2 threads are involved with processing, 0 of these is waiting for a
-lock and 1 is waiting for network I/O.
-
-    buffers 1939 766 d 0 w 0 pfs
-
-This is a snapshot of the database buffers summed over all nodes. 1939
-used for disk caching, 766 dirty 0 wired down.
-
-The pfs number is the total number of page faults during the interval
-summed over the cluster. This provides a warning about swapping and
-should be 0 or close at ll times.
-
-## Cluster Network Diagnostics and Metrics
-
-Proper cluster operation requires that each process in the cluster be
-capable of initiating a connection to any other process. This may be
-prevented by firewall settings or the like. If a connection can be
-initiated from host 1 to host 2, it does not follow that host 2 can
-initiate a connection to host 1. These situations can lead to
-intermittent errors. These errors can be difficult to pinpoint since
-operations from host 2 to host 1 can work for most of the time if there
-is a connection available that was already established by the other
-host.
-
-To check point to point connectivity, do the following on each host in
-turn, with no other activity on the cluster:
-
-Log in to the SQL port of the host.
-
-    SQL> cl_reset ();
-    SQL status ('cluster');
-    SQL status ('cluster');
-
-The first status ('cluster') may show no samples if this is the first
-time it is called. At the second call you should see a status line that
-does not contain mentions of any host being down.
-
-The cl\_reset function disconnects any connections to other cluster
-hosts from this host. This makes sure that a fresh connection will be
-started for the status command.
-
-### net\_meter utility
-
-The net\_meter utility is a SQL stored procedure that measures the
-aggregate throughput of a cluster network with different types of
-workload.
-
-First load the netmeter.sql file on the master node of the cluster.
-
-    SQL> load netmeter.sql;
-
-Then run
-
-    SQL> net_meter (1, 1000, 1000, 1);
-
-This returns a single result row with two numbers: The count of round
-trips per second and the throughput in megabytes per second.
-
-    net_meter ( in n_threads int,
-                in n_batches int,
-                in bytes int,
-                in ops_per_batch int)
-
-This SQL procedure runs a network test procedure on every host of the
-cluster. The network test procedure sends a message to every other host
-of the cluster and waits for the replies from each host. After the last
-reply is received the action is repeated. This results in a symmetrical
-load of the network, all points acting as both clients and servers to
-all other points.
-
-The parameters have the following meaning:
-
-  - *n\_threads*
-    
-    \- The number of network test instances started on each host. A
-    value of 4 on a cluster of 4 hosts would result in a total of 16
-    network test procedures spread over 4 processes.
-
-  - *n\_batches*
-    
-    \- The number of message exchanges done by each network test
-    procedure. A message exchange consists of sending one request to
-    every other host of the cluster and of waiting for all to have
-    replied.
-
-  - *bytes*
-    
-    \- The number of bytes sent to each host in each message exchange.
-    The reply from each host has the same number of bytes.
-
-  - *ops\_per\_batch*
-    
-    \- This causes each message batch to contain several operations. In
-    practice this is a multiplier on the number of bytes.
-
-### cl\_ping
-
-    cl_ping ( in target_host int,
-              in n_pings int,
-              in bytes_per_ping int)
-
-This built-in function measures raw point to point network throughput.
-Whereas net\_meter includes a more complex n to n point traffic pattern
-and scheduling of functions on multiple threads, cl\_ping does not
-involve anything except a process to process connection and no thread
-switching, transaction contexts or other overhead.
-
-### cl\_io\_report
-
-This built in function prints out a summary of the cluster connections
-of the host on which it is run. The output goes to the server process'
-standard output. This lists the bytes in and out as well as the file
-descriptor numbers of any connections this host has with any other host.
-
-## Elastic Cluster Operations
-
-### Initializing
-
-When a set of Virtuoso servers configured as a cluster is first started,
-the elastic cluster setup is automatically performed if the cluster.ini
-of each host contains the \[ELASTIC\] section as described below. This
-is the normal way in which an elastic cluster is initialized.
-
-The *\_\_elastic* option of the create cluster statement is used for
-creating an elastic logical cluster.
-
-    create cluster ELASTIC __elastic 2048 4 group (Host1), group (Host2), group (Host3), group (Host4);
-
-or:
-
-    create cluster ELASTIC __elastic 2048 4 ALL;
-
-This creates an elastic cluster called ELASTIC which initially consists
-of 4 host groups. Each host group has a single copy of the data
-allocated to the host group. The data is partitioned among the host
-groups so that each host group has a separate fraction of the data. The
-second variant defaults the host groups from the cluster.ini, so that
-each host mentioned is in a host group of its own. The first number
-after the *\_\_elastic* clause is the maximum number of physical slices
-in the cluster. The second number is the number of physical slices
-initially created per host group. In general each host group should have
-as many slices as there are hardware threads on the CPU (s) running the
-host(s) in the host group.
-
-The name ELASTIC is specially known. If a logical cluster of this name
-exists, it is the default logical cluster instead of the non-elastic
-*\_\_ALL* cluster in create or alter statements that specify
-partitioning.
-
-Database files for an elastic cluster are created in a directory and
-striping set that is specified in the cluster.ini file of each host. The
-cluster.ini file of each participating host must have this section at
-the time of executing the create cluster statement. The section of the
-ini file has the name as in the create cluster statement, e.g.:
-
-    [ELASTIC]
-    Slices = 16
-    Segment1 = 1024, /data6/dbs/btc1-el.db = q1
-    Segment2 = 1024, /data2/dbs/btc1-el.db = q2
-    Segment3 = 1024, /data8/btc1-1/btc1-el.db = q3
-    
-    [ELASTIC_1]
-    Segment1 = 1024, /data2/dbs/btc1-d-el.db = q2
-
-Note that an elastic cluster may specify multiple segments. Each segment
-has an independent striping, as in other segments. When initialized, one
-segment is created for each of the slices hostted by the host in
-question. The segment may consist of multiple files if striping is
-specified. The database files for the segments are named as per the path
-and file name in the segment clause, with the slice number appended at
-the end, prefixed with a '.'. The files are initially created in the
-first segment of the logical cluster. If one wishes to move the files,
-one can do so between the segments declared for the cluster when the
-server is not running. At the next startup, it will look in all the
-segments for slices matching the path name plus .\[0-9\]\*.
-
-Specifying distinct IO queues for distinct devices is useful, as with
-other file system layouts.
-
-To move slices between servers, more steps are necessary, see following
-sections.
-
-In the example at hand, we specify two sets of files, one labeled
-ELASTIC\_1. This is useful if one wishes to divide objects among
-different types of storage, e.g. disk and ssd. If two cluster names
-differ only by having \_\[0-9\]\* tagged at the end or having
-\_\[0-9\]\* with different numbers at the end while the rest of the name
-is the same, the system will manage these as twins so as to keep the
-slices belonging to either collocated. So slice movement and splitting
-will be mirrored between the two. If an If two objects share a
-partitioning key between such twin clusters operations are assumed to be
-colocatable.
-
-The Slices setting specifies how many physical slices are initially
-created per host group. For example if a server has 2 CPU sockets with a
-8 core 16 thread CPU on each, and two Virtuoso processes are run on each
-server, one per NUMA node (CPU socket), it is practical to specify 16
-slices per host group. In this way there will be up to 32 threads per
-query on the machine, leading to full platform utilization.
-
-After creation, the cluster can be used in the cluster clause of create
-index and alter index for specifying that the object in question is to
-be created in the elastic cluster.
-
-    create table TE ( row_no int,
-                      string1 varchar,
-                      string2 varchar,
-                      primary key (row_no));
-    alter index TE on TE partition cluster ELASTIC (row_no int (0hexffff00));
-
-The table TE is now allocated in the cluster ELASTIC. Due to default
-behavior, the cluster ELASTIC is redundant since objects preferentially
-get created in it if it exists. The table is now ready for use. Note
-that the bit mask in the partitioning clause of the partitioning key
-row\_no must specify enough bits to cover the number of logical slices
-in the cluster, 2048 in the present case. If this is not the case, some
-logical slices will never be used, as there will be less distinct
-partitioning hash values than logical slices.
-
-### Adding and Removing Hosts
-
-The number of server processes (hosts) used for managing an elastic
-cluster may vary during the cluster's lifetime. If the elastic cluster
-keeps partitions in multiple copies, i.e. host groups in the initial
-create cluster statement have more than one host, any new host groups
-that are added must have the same number of hosts. Each new host of a
-new host group must be identically initialized to contain a copy of the
-REPLICATED logical cluster of the cluster into which the hosts are
-added. This is done by simply copying the non-elastic database file(s)
-of any host of the existing cluster. The copy can be made while the
-cluster is running.
-
-    cl_add_host_group (in cl_name varchar, in hosts any array) returns int
-
-This function adds a host group to an elastic cluster. The host group
-must contain the same number of hosts as all the other host groups and
-the hosts must not be part of any other host group in this cluster.
-
-The new hosts must be assigned IP addresses in the cluster.ini file of
-all presently running hosts. At the time of being added, the hosts in
-the new host group must be running and must be initialized to share a
-copy of the REPLICATED cluster shared by all hosts of the physical
-cluster.
-
-After successful addition:
-
-    cl_remove_host_group (in cl_name varchar, in host varchar)
-
-## Setting CPU Affinity
-
-If one runs multiple Virtuoso processes on a physical machine it may be
-advantageous to bind the processes to a physical CPU. In this way one
-may be certain that memory allocated for the processes is local to the
-CPU on which the process runs. This is specially important for servers
-with more than 2 CPU sockets, as there can be high variability in memory
-access latency Even with dual-socket Intel servers there caan be
-performance gains of up to 20% from setting CPU affinity if the workload
-is well balanced. On the other hand if the workload is not balanced,
-binding a process to a CPU may lead to less platform utilization than
-not specifying affinity.
-
-There are two settings in the virtuoso.ini for affinity:
-
-1.  *Affinity*
-    
-    is the overall affinity for threads of the server process and is
-    specified by comma-separated CPU numbers or ranges of numbers.
-
-2.  *ListenerAffinity*
-    
-    is the affinity of the thread handling incoming cluster traffic. In
-    the interest of low latency, it may be advantageous to bind the
-    listener thread to a core of its own, so that it will never be
-    preempted. This can decrease the incidence of blocking on write for
-    other processes since incoming messages will be read at full
-    interface speed all the time.
-
-For example:
-
-    ...
-    Affinity = 1-7, 16-23
-    ListenerAffinity = 0
-    ...
-
-specifies that the process is bound to CPU 0 of a dual socket 16 core 32
-thread system.
-
-See numactl -- hardware for the actual numbers of the cores on each CPU.
-CPU 0, i.e. first thread of first core is here exclusively allocated to
-network traffic and canbnot be preempted by any other thread running for
-the server process.
-
-# Virtuoso Cluster Fault Tolerance
-
-  - Setting up a fault tolerant logical cluster inside a physical
-    cluster. Creating tables and indices for fault tolerance.
-
-  - Interpreting status and error messages and managing failures and
-    recovery.
-
-  - Optimizing a schema for fault tolerance: For read-intensive
-    workloads, the work can be profitably split among many copies of the
-    same partition.
-
-  - RDF specifics relating to fault tolerance.
-
-  - Splitting a cluster so that one copy of the partitions does bulk
-    load while another serves online queries.
-
-## Introduction
-
-Virtuoso Cluster supports optional fault tolerance by storing partitions
-in more than one copy if desired. This is a cluster-only feature,
-providing for transparent fail-over with fully transactional semantics.
-This feature is in no way related to the other forms of replication
-discussed in the Virtuoso documentation. This feature can be used for
-load balancing of read-intensive workloads and for fault tolerance of
-arbitrary workloads in a tightly coupled cluster. This feature is not
-suited for synchronizing geographically distributed copies.
-
-Fault tolerance is enabled at the level of logical cluster. Making the
-logical cluster \_\_ALL fault tolerant has the effect of making all the
-normally non fault tolerant database objects into fault tolerant ones.
-
-## Sample Configuration
-
-We will take a minimal example of a fault tolerant setup with 4 server
-processes, grouped in two groups of two mutually mirroring servers. The
-word host here refers to a single server process. How these are
-distributed over physical hardware is a separate question. Each host
-(i.e. server process) has exclusive control over its database files. Two
-processes may not share files.
-
-    create cluster DUP default group ("Host1", "Host2"), group ("Host3", "Host4");
-
-Each group clause in the statement defines a set of mutually
-replicating, interchangeable processes. The cluster is operational as
-long as at least one process for each group is available. If all the
-processes in one group are down, the tables created in the cluster will
-not be available in their entirety. Even if some fragment of a table
-were unavailable, the remaining fragments are still available for
-transactions that concern only them.
-
-For all tables or indices created in a cluster with fault tolerance,
-partitioning is applied for determining which group of the groups listed
-in the create cluster statement gets which individual entry. After this,
-all the hosts that make up the group are guaranteed to hold a copy of
-said entry at the commit of each transaction.
-
-Regardless of the definition of logical clusters, there are global
-functions at the level of the physical cluster which need to be
-replicated for fault tolerance. For these functions include resolving
-distributed deadlocks and allocating sequence ranges. See the discussion
-of sequences in the cluster programming guide for more on this. These
-global functions are handled by a single process called the master. To
-keep a standby master that is synchronously kept in sync with the first
-master, one can define multiple master processes, as follows:
-
-    Master = Host1
-    Master2 = Host2
-
-These lines in the cluster.ini files of the servers constituting the
-cluster mean that if Host1 is available, it will perform the functions
-of the master and if it is not available, these functions go to Host2.
-If both are available, then Host1 does the work and synchronously
-updates Host2 before returning the results to the requesting host.
-
-To create a table or index in a specific logical cluster, one uses the
-cluster option in alter index or create index. For example:
-
-    create table T1 (row_no int primary key, string1 varchar);
-    alter index  t1 on t1 partition cluster DUP (row_no int (0hexffff00));
-    create index string1 on t1 partition cluster DUP (string1 varchar (5));
-
-These statements define that t1 will be kept in duplicate copies spread
-as declared for logical cluster DUP. Partitioning can be altered only
-when the table concerned is empty. To make an existing non-replicated
-table into a replicated one, use alter table rename, as follows:
-
-    create table T1 (row_no int primary key, string1 varchar);
-    alter index  t1 on t1 partition (row_no int (0hexffff00));
-    create index string1 on t1 partition  (string1 varchar (5));
-
-The table is created in the default logical cluster, which by default is
-not replicated. Now fill the table with a large amount of data. Then do
-the move over to replicated storage with minimum effect on overall
-server availability, follow the below steps:
-
-    drop index string2;
-    alter table t1 rename t1_old;
-    
-    create table T1 (row_no int primary key, string1 varchar);
-    alter index  t1 on t1 partition cluster DUP (row_no int (0hexffff00));
-    create index string1 on t1 partition cluster DUP (string1 varchar (5));
-    
-    log_enable (2);
-
-This turns on row autocommit and disables logging for the session. This
-is necessary, as otherwise the statements below will abort due to
-running out of rollback space if the table is large. Disabling logging
-also saves some extra time.
-
-    insert into t1 select * from t1_old;
-    delete from t1_old;
-    drop table t1_old;
-
-First deleting the contents and then dropping the table shortens the
-global atomic section that corresponds to dropping the table. Otherwise
-all servers would be unavailable also for the time of deleting the
-content, which might take long.
-
-Finally:
-
-    cl_exec (checkpoint');
-
-Makes the operation permanent. All the above work would be lost in the
-event of any failure since it was done without logging.
-
-    log_enable (1);
-
-Restores default transaction and logging behavior to the session.
-
-If T1 were very large, e.g. 100's of G or more, then one could do
-checkpoint after each step so as not to keep a full copy of all indices
-of t1 in the old and new versions simultaneously. Dropping an index or
-deleting rows actually frees the space at the next checkpoint. One could
-also write a procedure for copying the table in parts and run many such
-copies in parallel for different parts of the table. This would have
-obvious advantages for moving terabytes of data.
-
-## Transactions
-
-Replication of partitions is entirely synchronous and transactional,
-with two phase commit. Replicated partitions show serializable semantics
-insofar the transactions dealing with replicated partitions are in
-serializable isolation.
-
-These processes are transparent to the developer and administrator. One
-can program as one would in the case of a non-clustered database. The
-below has bearing mostly on optimization.
-
-A read with read committed isolation can be done in any copy of a
-partition. Read committed reads make no locks nor do they wait for
-locks. For uncommitted updated rows, they show the pre-update state.
-Thus read committed can be freely load balanced over all copies of a
-partition.
-
-A read with repeatable or serializable isolation will always be done on
-the first copy of a partition. This is done so as to have proper
-serialization of locking. If a row is locked for repeatable read and
-another transaction wishes to lock it for update, the latter will wait.
-Thus, transactions with locking resolve locking issues on the first copy
-of each partition. The first copy is the copy of the partition held by
-the first process mentioned in the partition's group clause of a create
-cluster. If the process is not available, the role of the first copy
-falls on the second, third and so on. If no host of the hosts mentioned
-in the group clause is available, the operation cannot be performed. We
-will later define what we mean by available.
-
-Updates to replicated partitions are performed concurrently on all the
-copies of the partition. Updates are replicated as they are made, not at
-time of commit, hence there is almost no added latency arising from
-keeping replicated partitions: When one is ready to commit, all are.
-
-Distributed deadlock detection is handled by the master host. In the
-event of its failure, the function is taken over by the first node to be
-available in the sequence of master succession, as indicated above.
-
-## Dividing Virtuoso Hosts Over Physical Machines
-
-This section describes how Virtuoso hosts should be placed on actual
-machines for optimal balance and fault tolerance.
-
-All hosts (Virtuoso processes) constituting a cluster should be of the
-same size. This means that most importantly they should have an equal
-amount of memory allocated in virtuoso.ini.
-
-The situation is simplest if all physical machines are of the same spec.
-This is not necessary though since a larger machine can host more
-Virtuoso hosts (processes). For balanced resource use, the machines
-should however have an equal amount of memory per core.
-
-Naturally, all hosts mentioned in the same group clause in a create
-cluster statement must reside on different physical hardware. This is
-also true of the master host list in the cluster.ini file. Putting them
-on the same machine or a different virtual machine on the same machine
-defeats the whole point of fault tolerance. If VM's are automatically
-balanced on a data center network, one should keep the above in mind. It
-is recommended to use real machines with real network interfaces for
-database.
-
-In each host group, the first host gets some more load than the other
-hosts. This is because serializable reading always must go to the first
-in the group. Thus, the first hosts should be evenly spread over the
-hardware, so do not put all the group firsts on the same machine.
-
-Supposing 2 machines with 8 cores each, one would have hosts 1-16, 1-8
-on the first, and 9-16 on the second. For analytics, have one core per
-host, for OLTP, one can have two or four cores per host.
-
-In this case, one would write the create cluster as follows:
-
-    create cluster XX group ("Host1", "Host9"), group ("Host10", "Host2"), group ("Host3", "Host11"), group ("Host12", "Host4"),
-      group ("Host5", "Host13"), group ("Host14", "Host6"), group ("Host7", "Host15"), group ("Host16", "Host8");
-
-Both machines have 4 firsts and four seconds. One could vary the memory
-allocation per process so as to have maybe 20% more RAM per host for a
-first of group than for the others in the group. This may optimize the
-situation when all are online and will not excessively penalize the
-fallback position.
-
-Varying the amount of memory depending on whether a host is first or
-second makes sense only for read intensive workloads. Dividing firsts
-and seconds evenly over the hardware makes sense for all workloads.
-
-## Managing Availability
-
-This section concerns prerelease 3117 amd onwards and is not final.
-Later versions have higher level management features but the primitives
-discussed here continue to apply.
-
-In its normal state, a cluster has all the constituent processes up and
-all state is kept synchronous.
-
-When a host unexpectedly disconnects, the following takes place:
-
-  - All transactions which have a write affecting this host become
-    uncommittable. The application will see this immediately, as soon as
-    it does anything within the transaction.
-
-  - All work proceeding at the request of the failed host on other hosts
-    is aborted.
-
-  - All remaining network connections to the failed host are
-    disconnected.
-
-If a query was proceeding and it had state on the failing host, the
-failure will be reported to the client of the query and the query will
-be aborted. A subsequent query, if in read committed isolation, will
-automatically avoid the failed host and use surviving ones. Thus, the
-application sees a failure as a retryable abort of a transaction or
-query.
-
-For update transactions, if all copies of a partition are not online,
-the update cannot be made. In order to allow proceeding with updates
-even after a failure, the failed host must be declared removed. This
-means that if it were to come back on, it would not get any updates or
-queries from the other hosts until it was explicitly admitted back into
-the cluster.
-
-In version 6.00,3116, enabling updates when all hosts are not online
-must be done manually. In other words, read only work will proceed
-uninterrupted but updates will be prohibited if all hosts are not
-online. Read balancing and re-enabling updates when all hosts have
-rejoined the cluster is done automatically.
-
-In order to declare that a host has for the time being left the cluster
-or has returned to the cluster after having left it, one uses the
-function cl\_host\_enable ().
-
-For example, suppose a hardware failure that takes multiple processes
-(hosts) offline. As long as for each there is at least one surviving
-host of the same group (as per create cluster), read operations proceed
-normally. But to re-enable writes for the time the failed hardware is
-replaced, the operator must inform the cluster that the failed hosts are
-not expected to return immediately and that no further reference to them
-should be made, specifically, the rest should not attempt to keep them
-up to date.
-
-This is done with cl\_host\_enable. This is a SQL stored procedure. Log
-in as dba on a surviving master host and do:
-
-    SQL> cl_host_enable (1, 0);
-
-This will abort all the transactions pending at the time and declare
-host 1 to be off limits to the rest of the cluster. If Host1 was playing
-the role of the master, the master role is automatically transferred to
-the next one in the succession.
-
-The succession of master hosts is declared in the cluster.ini with the
-settings of Master, Master2, Master3 and so on. All cluster.ini files
-must agree.
-
-After this, even though Host1 is now acknowledged offline, updates can
-proceed.
-
-To rejoin a recovered host into a cluster, so as to again have an
-additional copy of the formerly incompletely replicated partition, one
-can do
-
-    SQL>cl_host_enable (1, 1);
-
-This states that Host1 is again part of the cluster. This statement must
-be executed on an online master node of the cluster, thus not on Host1
-itself.
-
-Supposing that the database files of Host1 have been lost in the failure
-and that Host1 and Host2 were in the same group. The restore would go by
-taking the cluster offline, copying the database files of Host1 to Host1
-and starting the database again. Then the dba would issue
-cl\_host\_enable (1) and Host1 would again be available.
-
-To do this without downtime, one may do the following:
-
-  - Disable checkpoints on Host2: checkpoint\_interval (0); Operations
-    continue. Copy the database files of host2 to host1.
-
-  - Start host1.
-
-  - Put host2 and all hosts with which host2 occurs in the same group in
-    read-only mode: cl\_read\_only (2, 1)
-
-  - copy the transaction file of host2 to host1 and replay it with
-    replay ().
-
-  - rejoin host1 to the cluster with cl\_host\_enable (1, 1);
-
-  - Re-enable updates with cl\_read\_only (2, 0);
-
-  - re-enable checkpoint on host2 with checkpoint\_interval (), setting
-    it to its previous value. See virtuoso.ini.
-
-Further versions perform these operations automatically. The above
-procedure is error prone. Do not try it unless you understand exactly
-why each step is made and what its effects are supposed to be.
-
-## Optimizing Schema for Fault Tolerance
-
-Having the working set in memory is the single most important factor of
-database performance. When storing partitions in duplicate, one in
-principle also requires double the memory to keep adequate working set
-during write operations.
-
-However, most web and data warehouse workloads are read-intensive. In
-this situation, the reading load can be balanced over the replicated
-copies. If this balancing were done at random or round robin, all copies
-would eventually maintain the same working set. In other words, 64G of
-RAM spread over two machines would behave like 32G. If the data volune
-is larger than memory, it makes sense to have the different replicas
-cache different parts of the partition they share.
-
-Consider, using the example of cluster DUP mentioned above:
-
-    create table customer (c_id int primary key, c_name varchar, c_state varchar);
-    alter index customer on customer partition cluster DUP (c_id int (0hexffff0000));
-    
-    create table orders (o_id int primary key, o_c_id  int, o_date datetime, o_value numeric);
-    alter index orders on orders partition cluster DUP (o_id int (0hexffff0000));
-    create index o_c_id on orders (o_c_id) partition cluster DUP (o_c_id (0hexffff0000));
-
-This has the effect of saying that the 16 low bits of c\_id or o\_id do
-not participate in the partition hash. The hash is made from bits 32-16.
-Thus c\_id 0-64K will be in one partition, 64K-128K in another,
-128K-192K in a third and so on, these partitions are then spread by hash
-over the host groups listed in the create cluster.
-
-Now, doing the join
-
-    select sum (o_value) from customer, orders where c_state = 'MA' and c_id = o_c_id;
-
-will take o\_c\_id's 0-32K from the first copy of the first partition,
-id's 32K-64K from the second copy of the first partition, c\_o\_id's
-64K-96K from the first copy of the second partition and so forth.
-
-The load is split by applying range partition on the low bits of id's,
-so that a system with 64G split over two replicas behaves like 64G RAM
-for read committed reading but as 32G of RAM for writing. This is
-enabled by leaving low bits of id's outside of the partition hash by
-specifying a mask, as shown above.
-
-## Interpreting Status Messages
-
-There are special error codes and status reports dealing with cluster
-failures.
-
-The status function with an argument of 'cluster\_d' shows a host by
-host report of the cluster:
-
-    SQL> status ('cluster_d');
-
-If all is normal, the message is as described in the cluster
-administration section. If some hosts are down, meaning that they do not
-accept network connections at the cluster port, these are first listed
-as being down. Then follows the summary status line and a status line
-for all the hosts that can be connected to.
-
-A host being contactable over the cluster protocol does not mean that it
-is online or in sync with the rest.
-
-If a physical cluster has no logical clusters that are in duplicate,
-there is no redundancy, except for the built in redundancy of schema.
-
-If a host is not in the online state, an extra line in the cluster
-status report describes the state in more detail. The state can be one
-of:
-
-  - roll forward - The host is recovering from log. The count of
-    transactions replayed to date is shown after this.
-
-  - removed - The host is considered down and no attempt is made to
-    contact it until it explicitly rejoins the cluster. This is
-    controlled with the cl\_host\_enable function.
-
-It is possible that the host considers itself in one state and the host
-showing the report thinks that it is in some other state. If this is so,
-the status report mentions it.
-
-Applications see cluster failures through the following SQL states:
-
-  - 08C01 - A host cannot be contacted or can be contacted but is not in
-    the online state
-
-  - 08C02 - An operation that previously had a connection to a host
-    finds that it no longer has the connection.
-
-  - 08C03 - A master only operation was tried on a non-master. Indicates
-    possibility of divergent understanding of master succession. This is
-    expected to reset itself.
-
-  - 08C04 - A write was attempted on a partition that is flagged read
-    only, as per cl\_read\_only.
-
-  - 08C05 - A request was refused because the host serving the request
-    thinks the requesting host is not admitted to cluster as per
-    cl\_host\_enable, i.e. was removed and not reintroduced.
-
-  - 08C06 - A cluster operation was not made because the host thinks it
-    is not joined to the cluster either because it has not finished roll
-    forward or because it is marked removed by ch\_host\_enable.
-
-## Administration API
-
-This section documents the SQL procedures used for managing failures and
-setting hosts on and off line. These are stored procedures for DBA group
-users only, all in the DB.DBA. qualifier/owner. The dba will typically
-not call these directly. These are intended for use by management
-scripts and internal functions.
-
-    cl_host_enable (in host_no int, in flag int)
-
-The host\_no is the number as in the cluster.ini Host\<nn\> entries. The
-flag is 1 for joined and 0 for removed.
-
-This controls whether a host is excluded from operations. Only a
-previously excluded host can be rejoined to the cluster with this
-function. This is not for adding new hosts. A host will be excluded from
-operations if it is long term unavailable,e.g. is running on failed
-hardware. If the unavailability is only for the time of a restart,
-removing the host is not generally practical.
-
-If a host is rejoined to its cluster, then the caller of this function
-asserts that the joining host is up to date. If it were not up to date
-one could get discrepancy between copies of partitions, which is a loss
-of integrity and can be hard to detect. Being up to date means, for all
-objects of all replicated logical clusters where this host participates,
-having the exact same logical content in the host's (i.e. server
-process') database files as in the databases of the hosts which are in
-the same group as the rejoining host.
-
-This function must be called on a master host that is itself in the
-online state. The setting is recorded on all master hosts. All
-non-master hosts update their copy of this setting from the first
-available master in the master succession. There is always at least one
-master node that is in the online state. If they all are offline, then
-the cluster in general is unavailable and the last one cannot be removed
-from online state with cl\_host\_enable.
-
-This function aborts all pending transactions, so that the whole cluster
-has no uncommitted state. This puts all the hosts that can be reached
-into an atomic state where they only accept operations from the master
-who initiated the atomic state. If the atomic state cannot be obtained
-within a timeout, the operation fails and can be retried. This is
-possible if two hosts attempt to get an atomic state and deadlock or if
-rollback of pending state takes longer than the timeout. Once in atomic
-state, all masters record the change in cluster join status and all
-non-masters get a notification of the change. Once all these are
-acknowledge and logged, the atomic section ends.
-
-An application whose transaction was aborted in this manner will see
-this as a deadlock, with the 40001 SQL state and a message mentioning
-global atomic state.
-
-    cl_read_only (in host_no int, in flag int)
-
-This sets the partitions of which host host\_no has a copy into read
-only state. A flag of 1 means read only, 0 means read write. This does
-not abort transactions but will prevent any new updates touching the
-partition. Transactions with existing uncommitted state in the partition
-can commit. To abort all transactions first, use this with \_\_atomic
-(1) first and then \_\_atomic (0) to finish the atomic state. This is a
-volatile state and does not survive server restart. This is intended for
-use in bringing copies of partitions up to date, which is a process that
-would have to be retried anyway if interrupted by failure.
-
-    __atomic (in flag int)
-
-This places the cluster in global atomic mode. A flag of 1 starts this
-and a flag of 0 finishes this. Row autocommit is also implicitly
-enabled. During such time, no host of the cluster accepts connection
-through web or SQL ports and only serves requests made by the
-transaction which started the atomic section with \_\_atomic (1). When
-an atomic section starts, all transactions are aborted and are
-guaranteed to all be rolled back upon successful completion of
-\_\_atomic (1). New transactions will also not start until \_\_atomic
-(0) is called. Starting an atomic section may fail by timeout if
-rollback takes too long or if two competing \_\_atomic(1) requests
-deadlock with each other.
-
-    cl_control (in host_no int, in op varchar, in new_value any := null)
-
-This returns the value associated with cluster related settings. If a
-new value is specified the old value is returned and the new value is
-set.
-
-The op specifies the setting. It is one of:
-
-  - cl\_master\_list - succession of master hosts as an array of host
-    numbers. Read only.
-
-  - cl\_host\_list- Array of all host numbers. Read only.
-
-  - ch\_group\_list - List of host numbers of hosts which occur in the
-    same group with host no. These are the hosts which share a partition
-    with host no according to at least one create cluster statement.
-    Read only.
-
-  - cl\_host\_map - String with a character per each host number up to
-    the maximum existing host number. The character is represents the
-    status as known by the host on which thus function is called. The
-    new\_value argument can be specified for changing this setting.
-
-  - ch\_status - Returns/sets the status of host no as known by this
-    host.
-
-  - cl\_master\_host - Return/set the host number used by this host for
-    master only requests.
-
-The status of a host is one of:
-
-  - 0 - online
-
-  - 1 - removed
-
-  - 2 - temporarily offline
-
-  - 4 - pending roll forward
-
-  - 7 - host number is not used
-
-### Cluster Control Utility
-
-A Virtuoso cluster does not per se require a separate administration
-utility. It will be online and usable when all the constituent servers
-are online. In the event of using fault tolerance, the *clctl utility*
-should however be used for managing servers going offline and rejoining
-the cluster. This is needed in order to ensure that the operation
-sequences for marking a server process as failed and for bringing a
-failed server process back online are correctly carried out. In the
-following section, we use the word host to mean an individual database
-server process. Several of these may exist on a single computer.
-
-*clctl* has a configuration file named *cl.cfg* , which it reads from
-its working directory. This file describes the layout of the Virtuoso
-cluster being managed.
-
-This file can be filled in manually after the cluster has been set up.
-It is only used by *clctl* .
-
-Before using clctl, the cl.cfg file must be created, see the [cl.cfg
-Configuration File](#faultfaulttoleradmapiutilityconf) section below.
-Note that ssh is used for executing commands on remote machines. This
-requires ssh to be set up so as not to require manual login.
-
-The database file names for the database files of two hosts that are
-each others' online replicas must be the same and there must be an equal
-number of stripes.
-
-*Note* : *clctl* can presently be used only if the database consists of
-a single file plus transaction log file in the same directory. These
-must be named *virtuoso.db* and *virtuoso.trx* . The hostname and
-directory is given separately for each host in *cl.cfg* .
-
-*clctl* has the following subcommands:
-
-    clctl start
-
-Starts all the hosts of the cluster.
-
-    clctl start <host>
-
-Starts all a given node of the cluster.
-
-    clctl stop
-
-Shuts down all the hosts of the cluster.
-
-    clctl stop <host>
-
-Shuts down a given node of the cluster.
-
-    clctl status
-
-Displays a one line status summary for each host.
-
-    clctl ro <host>
-
-Sets a node of the cluster in a read-only mode
-
-    clctl rw <host>
-
-Sets a node of the cluster in a read-write mode
-
-    clctl disable <host>
-
-This notifies the cluster that \<host\> identified by its number in the
-cl.cfg file has failed and that the cluster will continue normal
-operation without this host.
-
-The host will have to be rebuilt based on the state of its replica
-before it can rejoin the cluster. This is done with the clctl rebuild
-command.
-
-If there is a transient failure like an unplugged network cable or a
-reboot, disabling the temporarily failed host does not always make sense
-because rebuilding it may involve copying hundreds of GB of data which
-can take significant time.
-
-After the failure, the cluster is available for reading but is not
-available for writing until the failed host is either back online or
-disabled with this command.
-
-*Example:*
-
-    clctl disable 3
-
-Means that Host3 as defined in cl.cfg is removed and will have to be
-rejoined to the cluster with:
-
-    clctl rebuild 3
-
-    clctl rebuild <host>
-
-Once a host has been removed from the cluster with clctl disable, it can
-be brought back online with this command. The host is identified by its
-number in the cl.cfg file. This command automates the following
-operations:
-
-  - Make a log checkpoint on the online replica of the host being
-    rebuilt. This allows the database files to be copied to serve as a
-    basis of the database of the recovering host. During this copy the
-    replica will not do log checkpoints, so that the database file copy
-    is clean. During this time the cluster is available for writing.
-
-  - After the database files are copied, the recovering host is started.
-    At this point, there is a read only window while the recovering host
-    replays the transactions its online replica has accumulated while
-    its database was being copied. When the replay of the replica's
-    transaction log is complete, the recovering host is marked to be a
-    part of the cluster and writing is re-enabled.
-
-  - To ensure integrity of the recovered cluster, these operations have
-    to be performed in this exact sequence, hence the clctl utility
-    should be used for this.
-
-<!-- end list -->
-
-    clctl enable <host>
-
-Enable a node of the cluster.
-
-#### The cl.cfg Configuration File
-
-The *cl.cfg* file contains a description of the layout of the cluster.
-It specifies a remote exec command for starting servers and gives the
-locations of database files used by these servers. The database file
-locations are needed for copying the database for restoring a failed
-host.
-
-    [Global]
-    Exec     = ssh
-    # command for remote execution. ssh must be set up so that the machine
-    # from which clctl is run can connect without login prompt to the
-    # machines hosting the databases.
-    
-    Copy     = rsync -zvP
-    # command for copying files between the hosts. This is executed on the
-    # host receiving the copy.
-    
-    BinDir   = /usr/bin
-    # Directory for the isql and other Virtuoso commands on the host
-    # running clctl
-    
-    Password = dba
-    # The Virtuoso password for the dba account. All hosts of the cluster
-    # have the same dba password since all login and user account information
-    # is replicated on all hosts. This is a Virtuoso account and no operating
-    # system account corresponds to it.
-    
-    Master   = Host1
-    # The cluster master information as given in each cluster.ini file
-    
-    Master2  = Host2
-    # Fallback master as given in each cluster.ini file.
-
-For each host the following fields are given:
-
-``` 
-
-[Host1]
-Host      = localhost
-# DNS Name of the machine hosting  the Virtuoso host in question
-
-DBDir     = /home/v6/binsrc/tests/suite/clflt/cl1
-# The absolute path of the directory containing the database files
-# of this host
-
-BinDir    = /home/v6/bin
-# Absolute path of the Virtuoso binaries
-
-SpareHost = 2
-# Online replica of this host. The rebuild command uses this
-# information to decide which database files to copy when
-# rebuilding this host after failure.
-
-SqlPort   = 1111
-# Port for SQL listener of this host. Corresponds to the
-# ServrPort setting in this host's virtuoso.ini file.
-```
-
-Below is a sample of a full cl.cfg file for a cluster of 4 hosts all on
-the same machine (localhost):
-
-*Example:*
-
-    [Global]
-    Exec     = ssh
-    Copy     = rsync -zvP
-    BinDir   = /usr/bin
-    Password = dba
-    Master   = Host1
-    Master2  = Host2
-    
-    [Host1]
-    Host      = localhost
-    DBDir     = /home/v6/binsrc/tests/suite/clflt/cl1
-    BinDir    = /home/v6/bin
-    SpareHost = 2
-    SqlPort   = 1111
-    
-    [Host2]
-    Host      = localhost
-    DBDir     = /home/v6/binsrc/tests/suite/clflt/cl2
-    BinDir    = /home/v6/bin
-    SpareHost = 1
-    SqlPort   = 1311
-    
-    [Host3]
-    Host      = localhost
-    DBDir     = /home/v6/binsrc/tests/suite/clflt/cl3
-    BinDir    = /home/v6/bin
-    SpareHost = 4
-    SqlPort   = 1312
-    
-    [Host4]
-    Host      = localhost
-    DBDir     = /home/v6/binsrc/tests/suite/clflt/cl4
-    BinDir    = /home/v6/bin
-    SpareHost = 3
-    SqlPort   = 1313
-
-## RDF Specifics
-
-To set up fault tolerant RDF storage, one can use the template provided
-in the clrdfdup.sql file in the distribution.
-
-The below applies to testing with prerelease 06.00.3116.The fault
-tolerance function in 6.00.3116 is provided as a demonstration of
-concept exclusively and is not intended for production use and has not
-been tested in production. The below steps will demonstrate the basic
-capability but one should not try things not explicitly mentioned.
-
-The test starts with an empty database. Edit the create cluster
-statement in the clrdfdup.sql file to correspond to the setup at hand.
-Then load the file:
-
-    SQL> load clrdfdup.sql;
-    SQL> cl_exec ('checkpoint');
-
-Now load data. The load will be non-transactional but now will keep two
-copies of each partition. Use log\_enable (2) and ttlp or
-rdf\_load\_db..rdfxml as described in the relevant documentation.
-
-After some data is loaded, do another checkpoint.
-
-    SQL> cl_exec ('checkpoint');
-
-You may query the data. Now shut down one of the servers. Querying
-should remain possible as long as one host in each group is online.
-Start the previously stopped host and stop of another from the same
-group. Querying remains possible.
-
-Do not try non-transactional loading when all hosts are not online. This
-produces incorrect results. Do not stop hosts during non-transactional
-loading. This also produces inconsistent results.
-
-Transactional loading is safe for stopping servers during loading but
-will stop the loading with an error. The removed host must be either
-brought back online or removed with cl\_host\_enable for the loading to
-proceed.
-
-Do not test transactional RDF loading with 6.00.3116. This version is
-tested for duplicate partitions with SQL data but incompletely with RDF.
-
-## Fault Tolerance Programming
-
-This section describes aspects of fault tolerance in writing cluster
-aware SQL applications. Specifically, partitioned functions, which are a
-way of explicitly dividing procedural execution among hosts of a
-cluster, have issues and features that are specific to fault tolerance
-and must be treated separately.
-
-In using a daq or dpipe, one can specify whether the function is to be
-partitioned like:
-
-1.  Read committed read - low bits not used for partition can be used
-    for intra partition balancing, as described in the schema
-    optimization section.
-
-2.  The function is called on all replicas, as an update.
-
-3.  The function is called on the first replica, like a read for update
-
-4.  The function is called on all but the first copy of the partition.
-
-Combinations of 3 and 4 can be used if the function, for example,
-allocates sequence numbers which must be then replicated over the
-remaining copies. Thus the function that allocates the new sequence
-number is called with in mode 3 and another function that uses this
-number is called in mode 4.
-
-For a daq\_call call, these options are specified in the 5th argument,
-flags.
-
-  - 0 - read committed
-
-  - 1 - write all
-
-  - 2 - write first
-
-  - 3 - write all but first
-
-For dpipes, this is stated in the dpipe\_define call's flags argument.
-The values to be or'ed over the flags are:
-
-  - 0 - read committed
-
-  - 1 - update all
-
-  - 4 - update first copy
-
-  - 8 - update all but first copy.

@@ -1372,7 +1372,7 @@ granted "SPARQL\_UPDATE" privileges. To grant this role:
 
 3.  Go to System Admin-\>User Accounts-\>Users
     
-    ![Conductor UI](ui/usr1.png)
+    ![Conductor UI](./images/ui/usr1.png)
 
 4.  Click the link "Edit"
 
@@ -1478,7 +1478,7 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
 
 5.  Go to Linked Data -\> Access Controls -\> SPARQL-WebID:
     
-    ![SPARQL-WebID](ui/auth1.png)
+    ![SPARQL-WebID](./images/ui/auth1.png)
 
 6.  Enter in the presented form Web ID for ex.:
     
@@ -1486,28 +1486,28 @@ Data -\> Access Control -\> SPARQL-WebID. Here is sample scenario:
     
     and select "SPARQL Role" for ex. "Sponge".
     
-    ![SPARQL-WebID](ui/auth3.png)
+    ![SPARQL-WebID](./images/ui/auth3.png)
 
 7.  Click the "Register" button.
 
 8.  As result the WebID Protocol ACLs will be created:
     
-    ![SPARQL-WebID](ui/auth4.png)
+    ![SPARQL-WebID](./images/ui/auth4.png)
 
 9.  Go to the SPARQL-WebID endpoint
     https://\<cname\>:\<port\>/sparql-webid
 
 10. Select the user's certificate from above:
     
-    ![SPARQL-WebID](ui/auth5.png)
+    ![SPARQL-WebID](./images/ui/auth5.png)
 
 11. As result the SPARQL Query UI will be presented:
     
-    ![SPARQL-WebID](ui/auth6.png)
+    ![SPARQL-WebID](./images/ui/auth6.png)
 
 12. Execute sample query and view the results:
     
-    ![SPARQL-WebID](ui/auth6a.png)
+    ![SPARQL-WebID](./images/ui/auth6a.png)
 
 #### SPARQL OAuth Endpoint
 
@@ -1537,11 +1537,11 @@ Here is a sample scenario:
 
 5.  Go to System Admin-\>User Accounts:
     
-    ![SPARQL OAuth Endpoint](ui/so1.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so1.png)
 
 6.  Click "Create New Account":
     
-    ![SPARQL OAuth Endpoint](ui/so2.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so2.png)
 
 7.  In the presented form enter respectively:
     
@@ -1552,30 +1552,30 @@ Here is a sample scenario:
     
     3.  Account role: SPARQL\_UPDATE
         
-        ![SPARQL OAuth Endpoint](ui/so3.png)
+        ![SPARQL OAuth Endpoint](./images/ui/so3.png)
 
 8.  Click the "Save" button.
 
 9.  The created user should be shown in the list of registered users:
     
-    ![SPARQL OAuth Endpoint](ui/so4.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so4.png)
 
 10. Go to http://\<cname\>:\<port\>/oauth/, where \<cname\>:\<port\> are
     replaced by your local server values.
     
-    ![SPARQL OAuth Endpoint](ui/so5.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so5.png)
 
 11. Click the "OAuth keys" link:
     
-    ![SPARQL OAuth Endpoint](ui/so6.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so6.png)
 
 12. Log in as user demo1:
     
-    ![SPARQL OAuth Endpoint](ui/so7.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so7.png)
 
 13. The OAuth application registration form will be shown.
     
-    ![SPARQL OAuth Endpoint](ui/so8.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so8.png)
 
 14. Select SPARQL from the "Application name" list, and click the
     "Generate Keys" button.
@@ -1584,7 +1584,7 @@ Here is a sample scenario:
     
         90baa79108b1d972525bacc76c0279c02d6421e8
     
-    ![SPARQL OAuth Endpoint](ui/so9.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so9.png)
 
 16. Click the "Back to main menu" link.
 
@@ -1592,9 +1592,9 @@ Here is a sample scenario:
 
 18. The OpenLink Virtuoso SPARQL Query form will be displayed.
     
-    ![SPARQL OAuth Endpoint](ui/so11.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so11.png)
     
-    ![SPARQL OAuth Endpoint](ui/so12.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so12.png)
 
 19. Enter a simple query, for ex:
     
@@ -1609,23 +1609,23 @@ Here is a sample scenario:
     
         90baa79108b1d972525bacc76c0279c02d6421e8
     
-    ![SPARQL OAuth Endpoint](ui/so13.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so13.png)
 
 21. Click the "Run Query" button.
 
 22. In the OAuth Authorization Service form enter the password for user
     demo1 and click the "Login" button.
     
-    ![SPARQL OAuth Endpoint](ui/so16.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so16.png)
 
 23. Next you should authorize the request:
     
-    ![SPARQL OAuth Endpoint](ui/so15.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so15.png)
 
 24. On successful authentication and authorization, the query results
     should be shown:
     
-    ![SPARQL OAuth Endpoint](ui/so14.png)
+    ![SPARQL OAuth Endpoint](./images/ui/so14.png)
 
 #### WebID Protocol ACLs
 
@@ -1639,7 +1639,7 @@ VAD package. Once installed, to access the WebID Protocol ACLs UI, go to
 URL http://cname:port/conductor -\> Linked Data -\> Access Controls -\>
 SPARQL-WebID .
 
-![WebID](ui/auth4.png)
+![WebID](./images/ui/auth4.png)
 
 Configuring WebID Protocol ACLs is with a WebID Protocol certificate and
 a Web ID allows secure SPARQL queries to be performed against a Virtuoso
@@ -1773,21 +1773,21 @@ SPARQL-SSL is alias of SPARQL-WebID.
     
     1.  Go to Conductor -\> System Admin-\>User Accounts
         
-        ![Import key it via Conductor UI](ui/fsp1.png)
+        ![Import key it via Conductor UI](./images/ui/fsp1.png)
     
     2.  Click "Edit" for your user
         
-        ![Import key it via Conductor UI](ui/fsp2.png)
+        ![Import key it via Conductor UI](./images/ui/fsp2.png)
     
     3.  Change "User type" to: SQL/ODBC and WebDAV
         
-        ![Import key it via Conductor UI](ui/fsp3.png)
+        ![Import key it via Conductor UI](./images/ui/fsp3.png)
     
     4.  Enter your ODS user WebID:
         
             http://cname:port/dataspace/person/username#this
         
-        ![Import key it via Conductor UI](ui/fsp4.png)
+        ![Import key it via Conductor UI](./images/ui/fsp4.png)
     
     5.  Click "Save"
     
@@ -1799,13 +1799,13 @@ SPARQL-SSL is alias of SPARQL-WebID.
     
     9.  Enter key password
         
-        ![Import key it via Conductor UI](ui/fsp5.png)
+        ![Import key it via Conductor UI](./images/ui/fsp5.png)
     
     10. Click "Import Key"
     
     11. As result the key will be stored with name for ex. cli\_key
         
-        ![Import key it via Conductor UI](ui/fsp6.png)
+        ![Import key it via Conductor UI](./images/ui/fsp6.png)
     
     12. Click "Save"
 
@@ -1896,25 +1896,25 @@ SPARQL-SSL is alias of SPARQL-WebID.
 
 3.  Go to "Web Application Server" -\> "Virtual Domains & Directories".
     
-    ![Disable SPARQL Endpoint](ui/s1.png)
+    ![Disable SPARQL Endpoint](./images/ui/s1.png)
 
 4.  Find the logical path "/sparql".
     
-    ![Disable SPARQL Endpoint](ui/s2.png)
+    ![Disable SPARQL Endpoint](./images/ui/s2.png)
 
 5.  Click "Edit" from the "Action" column.
     
-    ![Disable SPARQL Endpoint](ui/s3.png)
+    ![Disable SPARQL Endpoint](./images/ui/s3.png)
 
 6.  Change "VSP User" to "nobody".
     
-    ![Disable SPARQL Endpoint](ui/s4.png)
+    ![Disable SPARQL Endpoint](./images/ui/s4.png)
 
 7.  Click "Save Changes".
 
 8.  As result the SPARQL Endpoint should be shown as disabled:
     
-    ![Disable SPARQL Endpoint](ui/s5.png)
+    ![Disable SPARQL Endpoint](./images/ui/s5.png)
 
 ### Request Methods
 
@@ -3036,13 +3036,13 @@ The SPARQL endpoint offers an Excel MIME type output option.
 From http://cname:host/sparql, select "Spreadsheet" for the "Display
 Results As:" option and click the "Run Query" button.
 
-![SPARQL Endpoint with Excel MIME type output](ui/Excel1.png)
+![SPARQL Endpoint with Excel MIME type output](./images/ui/Excel1.png)
 
 The resulting query string contains a format parameter value of
 *"application/vnd.ms-excel"* . For example, [A URL such as this one](#)
 will be generated, and can be opened directly with Excel.
 
-![SPARQL Endpoint with Excel MIME type output](ui/Excel2.png)
+![SPARQL Endpoint with Excel MIME type output](./images/ui/Excel2.png)
 
 ### SPARQL Endpoint with RDF+JSON Output: SPARQL UI Example
 
@@ -3051,13 +3051,13 @@ The SPARQL endpoint also offers a RDF+JSON output option.
 From http://cname:host/sparql select "JSON" for "Display Results As:"
 and click the "Run Query" button.
 
-![SPARQL Endpoint with RDF+JSON output](ui/JSON1.png)
+![SPARQL Endpoint with RDF+JSON output](./images/ui/JSON1.png)
 
 As result URL containing as parameter the format
 *application/sparql-results+json* will be generated and the content
 should look like:
 
-![SPARQL Endpoint with JSON+RDF](ui/JSON2.png)
+![SPARQL Endpoint with JSON+RDF](./images/ui/JSON2.png)
 
 ### SPARQL Endpoint with JSON/P Output Option: Curl Example
 
@@ -4958,7 +4958,7 @@ instance (http://lod.openlinksw.com):
     comparison, if the option (transitive) is ommitted, then only 2 rows
     will be returned in our example query:
     
-    ![Transitive option](ui/trs1.png)
+    ![Transitive option](./images/ui/trs1.png)
 
 #### Inference Rule example using transitive properties from SKOS vocabulary: Variant II
 
@@ -5017,7 +5017,7 @@ concept scheme hierarchy:
 
 4.  You will get 22 rows returned from the query.
     
-    ![Transitive option](ui/trs2.png)
+    ![Transitive option](./images/ui/trs2.png)
 
 ## Supported SPARQL-BI "define" pragmas
 
@@ -7615,7 +7615,7 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 4.  Go to System Admin -\> Linked Data -\> Access Control -\>
     SPARQL-WebID
     
-    ![Conductor SPARQL-WebID](ui/si1.png)
+    ![Conductor SPARQL-WebID](./images/ui/si1.png)
 
 5.  In the displayed form:
     
@@ -7629,13 +7629,13 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
         
         ".
         
-        ![Conductor SPARQL-WebID](ui/si2.png)
+        ![Conductor SPARQL-WebID](./images/ui/si2.png)
 
 6.  Click the "Register" button.
 
 7.  The WebID Protocol ACL will be created:
     
-    ![Conductor SPARQL-WebID](ui/si3.png)
+    ![Conductor SPARQL-WebID](./images/ui/si3.png)
 
 8.  Go to the SPARQL-WebID endpoint,
     https://\<cname\>:\<port\>/sparql-webid, where \<cname\>:\<port\>
@@ -7643,11 +7643,11 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
 
 9.  Select the user's certificate:
     
-    ![Conductor SPARQL-WebID](ui/si4.png)
+    ![Conductor SPARQL-WebID](./images/ui/si4.png)
 
 10. The SPARQL Query UI will be displayed:
     
-    ![Conductor SPARQL-WebID](ui/si5.png)
+    ![Conductor SPARQL-WebID](./images/ui/si5.png)
 
 11. Execute the query:
     
@@ -7657,9 +7657,9 @@ Protocol ACLs using the Virtuoso Authentication Server UI:
           <s3> <p3> <o3>
         }
     
-    ![Conductor SPARQL-WebID](ui/si6.png)
+    ![Conductor SPARQL-WebID](./images/ui/si6.png)
     
-    ![Conductor SPARQL-WebID](ui/si7.png)
+    ![Conductor SPARQL-WebID](./images/ui/si7.png)
 
 Note: If the SPARQL Role "Sponge" is set instead, in order to be able to
 execute DELETE/INSERT statements over the protected SPARQL Endpoint, the
@@ -11512,7 +11512,7 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
 
 3.  Follow menu path Linked Data -\> Views;
     
-    ![Linked Data Views](ui/rd1.png)
+    ![Linked Data Views](./images/ui/rd1.png)
 
 4.  In the form presented, perform the following steps:
     
@@ -11527,7 +11527,7 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
     
     4.  Click the "Generate & Publish" button
     
-    ![Linked Data Views Generate and Publish](ui/rd2.png)
+    ![Linked Data Views Generate and Publish](./images/ui/rd2.png)
 
 5.  Virtuoso will perform the entire process of ontology generation,
     instance data generation, and linked data deployment (re-write rules
@@ -11538,33 +11538,8 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
     and Linked Data publishing activities will have completed
     successfully.
     
-    ![Linked Data View declarations and Linked Data publishing
-    activities](ui/rd13.png)
-
-7.  Optionally, you could also perform one of the following tasks:
     
-    1.  Save Data Mappings: when clicked, offers to save the generated
-        Definitions to local file system
-    
-    2.  Save Ontology Mappings: when clicked, offers to save the
-        generated Ontology to local file system
-    
-    3.  Click on the "Cancel" should you want to return to the initial
-        Linked Data View Generation form.
-
-## Manual Linked Data Generation & Deployment using the Conductor's HTML-based wizard
-
-The following step-by guide will lead you through manually publishing
-ODBC- or JDBC-accessible RDBMS data in RDF Linked Data form, using the
-Conductor's HTML-based wizard:
-
-1.  Go to http://\<cname\>:port/conductor
-
-2.  Log in as user dba (or another user with DBA privileges)
-
-3.  Follow menu path Linked Data -\> Views
-    
-    ![Linked Data Views](ui/rd1.png)
+    ![Linked Data Views](./images/ui/rd1.png)
 
 4.  In the form presented, perform the following steps:
     
@@ -11579,13 +11554,13 @@ Conductor's HTML-based wizard:
     
     4.  Click the "Generate via Wizard" button
         
-        ![Generate via Wizard](ui/rd2.png)
+        ![Generate via Wizard](./images/ui/rd2.png)
 
 5.  At this point, you are presented with the option to edit your column
     selection. Select the "Edit" link, for example, for table
     Demo.demo.Products.
     
-    ![Column Selection](ui/rd3.png)
+    ![Column Selection](./images/ui/rd3.png)
 
 6.  For images or other binary data in MIME formats to be revealed as
     anything other than generic "binary objects", you must map large
@@ -11601,7 +11576,7 @@ Conductor's HTML-based wizard:
     3.  Select the binary object value in order for the column to be
         referenced as binary.
     
-    ![Binding/MIME Types](ui/rd14.png)
+    ![Binding/MIME Types](./images/ui/rd14.png)
 
 7.  After finishing with your changes click the Save button, or cancel
     the changes and go back by clicking the Cancel button.
@@ -11617,7 +11592,7 @@ Conductor's HTML-based wizard:
     
     3.  VoID statistic
     
-    ![Generation Targets options](ui/rd15.png)
+    ![Generation Targets options](./images/ui/rd15.png)
 
 10. Make sure you click the "Next" button.
 
@@ -11628,12 +11603,12 @@ Conductor's HTML-based wizard:
     
     2.  Instance Data Rules
     
-    ![Generation Targets options](ui/rd4.png)
+    ![Generation Targets options](./images/ui/rd4.png)
 
 12. Select the desired option(s) and click the "Prepare to Execute"
     button which unveils a generated Instance Data and/or Ontology form.
     
-    ![Instance Data and/or Ontology](ui/rd5.png)
+    ![Instance Data and/or Ontology](./images/ui/rd5.png)
 
 13. Click the Execute button and Virtuoso will:
     
@@ -11643,7 +11618,7 @@ Conductor's HTML-based wizard:
     2.  Publish / Deploy declarations that expose the Wizard-generated
         Rewrite Rules and associated endpoints.
         
-        ![Publishing / Deployment declarations](ui/rd6.png)
+        ![Publishing / Deployment declarations](./images/ui/rd6.png)
 
 14. Optionally, you can also perform one of the following tasks:
     
@@ -11660,7 +11635,7 @@ Conductor's HTML-based wizard:
         
         2.  Enter a WebDAV resource and click the "Select" button.
         
-        ![WebDAV resource](ui/rd7.png)
+        ![WebDAV resource](./images/ui/rd7.png)
     
     Note, the WebDAV resource path value will be shown in the WebDAV
     location field.
@@ -11669,573 +11644,38 @@ Conductor's HTML-based wizard:
     button, to complete the option task of saving your generated (or
     edited) view declarations.
     
-    ![WebDAV resource](ui/rd8.png)
+    ![WebDAV resource](./images/ui/rd8.png)
 
 16. Error messages will be presented if the Wizard encounters problems.
     If there are no error messages, your Linked Data View declarations
     and Linked Data publishing activities will have completed
     successfully.
     
-    ![Linked Data View declarations and Linked Data publishing
-    activities Finish](ui/rd9.png)
-
-17. Click on Cancel to return to the initial Linked Data View Generation
-    form.
-
-## Manual Linked Data Generation & Deployment using iSQL command-line
-
-To generate data synchronization triggers and/or actual RDF quad store
-data from transient Linked Data views, one can use the Virtuoso built-in
-[`RDF_VIEW_SYNC_TO_PHYSICAL()`](#fn_rdf_view_sync_to_physical) function
-calling it from the iSQL command-line. See [`more details and usage
-examples.`](#fn_rdf_view_sync_to_physical)
-
-# Virtuoso R2RML Support
-
-## What is R2RML?
-
-[R2RML](#) is a language for expressing customized mappings from
-relational databases to RDF data sets. Such mappings provide the ability
-to view existing relational data in the RDF data model, expressed in a
-structure and target vocabulary of the mapping author's choice.
-
-R2RML mappings are themselves RDF graphs written in Turtle syntax.
-
-## Why use it?
-
-As a W3C working draft, R2RML is becoming the generic standard adopted
-by most vendors of tools mapping relational data to RDF, enabling the
-interoperability of R2RML scripts, whether created with such tools or by
-hand.
-
-## How do I use it with Virtuoso?
-
-Virtuoso has its own previously-developed proprietary equivalent of
-R2RML called [Linked Data Views](#rdfviewsrdbms) , which uses Virtuoso's
-[Meta Schema Mapping Language](#) to map relational data to RDF.
-
-R2RML support is achieved by the inclusion of a simple translator which
-basically translates R2RML syntax to Virtuoso's own Linked Data Views
-syntax, which can then be executed to create the Linked Data Views
-themselves.
-
-### Install R2RML VAD package
-
-First you will need to ensure you have the R2RML VAD package
-([rdb2rdf\_dav.vad](#) ) installed.
-
-### Test with simple test script (basic.sql)
-
-Having installed the R2RML VAD package, to test R2RML functionality, the
-easiest way is by executing a basic.sql script via the command line isql
-tool:
-
-``` 
-
-CREATE TABLE "R2RML"."TEST"."PRODUCT"(
-  id integer primary key,
-  name VARCHAR(100)
-);
-
-INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES (1, 'Virtuoso');
-
-SPARQL CLEAR GRAPH <http://temp/product>;
-SPARQL CLEAR GRAPH <http://example.com/>;
-
-DB.DBA.TTLP ('
-@prefix rr: <http://www.w3.org/ns/r2rml#> .
-@prefix exa: <http://example.com/ns#> .
-@prefix product: <http://example.com/product#> .
-
-<http://example.com/ns#TriplesMap1>
-    a rr:TriplesMap;
-
-    rr:logicalTable
-    [
-      rr:tableSchema "R2RML";
-      rr:tableOwner "TEST";
-      rr:tableName  "PRODUCT"
-    ];
-
-    rr:subjectMap
-    [
-      rr:template "http://example.com/product/{id}";
-      rr:class exa:product;
-      rr:graph <http://example.com/>;
-    ];
-
-    rr:predicateObjectMap
-    [
-      rr:predicate product:id;
-      rr:objectMap [ rr:column "id" ];
-    ];
-
-    rr:predicateObjectMap
-    [
-      rr:predicate product:name;
-      rr:objectMap [ rr:column "name" ];
-    ];
-.
-', 'http://temp/product', 'http://temp/product' )
-;
-
---select DB.DBA.R2RML_TEST ('http://temp/product');
-
---DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL');
-
--- Running the validation in order to find error in name of R2RML description graph
---DB.DBA.OVL_VALIDATE ('http://temp/product-nosuch', 'http://www.w3.org/ns/r2rml#OVL');
-
--- Running the validation in order to find error in name of R2RML metadata graph
---DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL-nosuch');
-
---select DB.DBA.R2RML_EXECUTE ('http://temp/product');
-
-exec ('sparql ' || DB.DBA.R2RML_MAKE_QM_FROM_G ('http://temp/product'));
-
---sparql select distinct ?g where { graph ?g { ?s a ?t }};
-
-SPARQL
-SELECT * FROM <http://example.com/>
-WHERE {?s ?p ?o .};
-```
-
-1.  First, copy basic.sql into:
     
-        <VIRTUOSO_INSTALL>/bin/
-
-2.  Next, open Unix session or Windows Command Prompt and execute:
-    
-    ``` 
-    
-    cd <OPENLINK_INSTALL>/bin
-    
-    ./isql     (Unix)
-    isql.exe   (Windows)
-    
-    OpenLink Interactive SQL (Virtuoso), version 0.9849b.
-    Type HELP; for help and EXIT; to exit.
-    SQL>
-    ```
-
-3.  Then, within isql execute:
-    
-        SQL> load basic.sql;
-
-4.  Execution should finish with a simple SPARQL query that will return
-    Linked Data for the test table created at the start of the script:
-    
-        s                               p                                                  o
-        VARCHAR                         VARCHAR                                            VARCHAR
-        ________________________________________________________________________________________________________________
-        
-        http://example.com/product/1    http://example.com/product#id                      1
-        http://example.com/product/1    http://example.com/product#name                    Virtuoso
-        http://example.com/product/1    http://www.w3.org/1999/02/22-rdf-syntax-ns#type    http://example.com/ns#product
-        3 Rows. -- 0 msec.
-
-*Note* : Subsequent executions of basic.sql will return an error since
-the test table will already exist. However, the remainder of the script
-will execute fine.
-
-### Examining basic.sql
-
-1.  We start by creating and populating the test table:
-    
-        CREATE TABLE "R2RML"."TEST"."PRODUCT"
-          (
-            id   INTEGER PRIMARY KEY ,
-            name VARCHAR(100)
-          );
-        
-        INSERT SOFT "R2RML"."TEST"."PRODUCT"
-          VALUES
-            (
-              1, 'Virtuoso'
-            );
-
-2.  Next we clear any graphs (temporary or permanent) that are to be
-    used during this process:
-    
-        SPARQL CLEAR GRAPH <http://temp/product> ;
-        SPARQL CLEAR GRAPH <http://example.com/> ;
-
-3.  Next we use the [`DB.DBA.TTLP()`](#fn_ttlp) procedure to insert the
-    R2RML into a temporary graph, \<http://temp/product\>:
-    
-        DB.DBA.TTLP
-          (
-            ' @prefix       rr:  <http://www.w3.org/ns/r2rml#>    .
-              @prefix      exa:  <http://example.com/ns#>         .
-              @prefix  product:  <http://example.com/product#>    .
-        
-              <http://example.com/ns#TriplesMap1>
-                  a                              rr:TriplesMap  ;
-        
-                  rr:logicalTable
-                    [
-                      rr:tableSchema  "R2RML"    ;
-                      rr:tableOwner   "TEST"     ;
-                      rr:tableName    "PRODUCT"
-                    ];
-        
-                  rr:subjectMap
-                    [
-                      rr:template  "http://example.com/product/{id}" ;
-                      rr:class     exa:product                       ;
-                      rr:graph     <http://example.com/>
-                    ];
-        
-                  rr:predicateObjectMap
-                    [
-                      rr:predicate  product:id  ;
-                      rr:objectMap
-                        [
-                          rr:column  "id"
-                        ];
-                    ];
-        
-                  rr:predicateObjectMap
-                    [
-                      rr:predicate  product:name  ;
-                      rr:objectMap
-                        [
-                          rr:column "name"
-                        ];
-                    ];
-                 .
-            ',
-            'http://temp/product',
-            'http://temp/product'
-          );
-
-4.  Next, there is a series of commented out lines that can be used for
-    sanity checking:
-    
-        --SELECT DB.DBA.R2RML_TEST ('http://temp/product');
-        
-        --DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL');
-        
-        -- Running the validation in order to find error in name of R2RML description graph
-        --DB.DBA.OVL_VALIDATE ('http://temp/product-nosuch', 'http://www.w3.org/ns/r2rml#OVL');
-        
-        -- Running the validation in order to find error in name of R2RML metadata graph
-        --DB.DBA.OVL_VALIDATE ('http://temp/product', 'http://www.w3.org/ns/r2rml#OVL-nosuch');
-        
-        --SELECT DB.DBA.R2RML_EXECUTE ('http://temp/product');
-
-5.  Next, DB.DBA.R2RML\_MAKE\_QM\_FROM\_G() is used to perform the
-    conversion from R2RML into Virtuoso's own Linked Data Views script.
-    The output is then prepended with the keyword 'SPARQL' and a space,
-    and executed using [`exec()`](#fn_exec) :
-    
-        EXEC ('SPARQL ' || DB.DBA.R2RML_MAKE_QM_FROM_G ('http://temp/product'));
-    
-    *Note* : The final triples are placed in the graph defined in the
-    R2RML script itself (\<http://example.com/\>)
-    
-    Alternatively, the destination graph can be specified as an optional
-    second parameter of DB.DBA.R2RML\_MAKE\_QM\_FROM\_G():
-    
-        DB.DBA.R2RML_MAKE_QM_FROM_G
-          (
-            (
-              IN g VARCHAR
-           [, IN target_graph VARCHAR := NULL]
-            )
-          )
-
-6.  Finally, a simple SPARQL statement is executed to prove data is
-    returned:
-    
-        SPARQL
-          SELECT *
-          FROM <http://example.com/>
-          WHERE {?s ?p ?o .};
-
-## Known Limitations
-
-*rr:sqlQuery* is not currently supported, due to limitations in the
-optimizer used for Virtuoso's native implementation of Linked Data
-Views.
-
-## Generating an R2RML based Linked Data View from iSQL command-line
-
-Using Virtuoso you can programmatically generate Linked Data Views atop
-Relational Data Sources, using R2RML via the built-in function:
-*R2RML\_GENERATE\_LINKED\_VIEW* function. In order to use this function,
-you need to have the [rdb2rdf\_dav.vad](#) package installed.
-
-    R2RML_GENERATE_LINKED_VIEW
-      (
-        in source varchar,
-        in destination_graph varchar,
-        in graph_type int default 0,
-        in clear_source_graph int default 1
-      )
-
-Here is detailed description of the funcion's parameter:
-
-  - *source*
-    
-    : The source R2RMLdocument URI. Acceptable schemes include: file:,
-    dav:, http: and https:. These are also acceptable as source graph
-    URI;
-
-  - *destination graph*
-    
-    : This is a default graph name (an IRI) applicable to either virtual
-    or physical graph.
-
-  - *graph\_type*
-    
-    : 0 - virtual; 1 - physical graph which sets the actual graph type;
-
-  - *clear\_source\_graph*
-    
-    : Determines if existing R2RML source graphs (those holding view
-    declarations) are replaced as part of processing pipeline.
-
-*Note* : The R2RML mapping script may have a triples like:
-
-    [] rr:graph <graph_name>
-
-and in this case they take precedence and virtual graph would be defined
-as in the R2RML. If so, then if destination graph is specified as
-physical, all virtual graphs found in the R2RML would go in the
-destination\_graph.
-
-### Usage Example
-
-1.  Ensure the R2RML VAD package [rdb2rdf\_dav.vad](#) is installed.
-
-2.  To clear out existing mappings execute:
-    
-        SQL> SELECT RDF_VIEW_DROP_STMT_BY_GRAPH ('http://example.com');
-        VARCHAR
-        _______________________________________________________________________________
-        
-        SPARQL drop silent quad map <http://demo.openlinksw.com/r2rmldemo.n3> .;
-        
-        1 Rows. -- 16 msec.
-        
-        SQL> SPARQL DROP SILENT QUAD MAP <http://demo.openlinksw.com/r2rmldemo.n3> ;
-        
-        STATE    MESSAGE
-        VARCHAR  VARCHAR
-        _______________________________________________________________________________
-        
-        00000    Quad map <http://demo.openlinksw.com/r2rmldemo.n3> is no longer used in storage <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage
-        >
-        00000    Quad map <http://demo.openlinksw.com/r2rmldemo.n3> is deleted
-        00000    Transaction committed, SPARQL compiler re-configured
-        00000    2 RDF metadata manipulation operations done
-        
-        4 Rows. -- 406 msec.
-        
-        SQL> SPARQL CLEAR <http://demo.openlinksw.com/r2rmldemo.n3>;
-        
-        callret-0
-        VARCHAR
-        _______________________________________________________________________________
-        
-        Clear <http://demo.openlinksw.com/r2rmldemo.n3> -- done
-        
-        1 Rows. -- 15 msec.
-        
-        SQL> DROP TABLE "R2RML"."TEST"."PRODUCT" ;
-        
-        Done. -- 0 msec.
-        
-        SQL> CREATE TABLE "R2RML"."TEST"."PRODUCT"
-        (
-          "id" INTEGER,
-          "name" VARCHAR(100),
-          PRIMARY KEY ("id")
-        );
-        Done. -- 16 msec.
-
-3.  Insert sample data into a Table by executing:
-    
-        SQL> INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES(1, 'Virtuoso');
-        Done. -- 0 msec.
-
-4.  Locate or create your R2RML mapping document, for example: .n3 file
-    with the following content:
-    
-        @prefix rr: <http://www.w3.org/ns/r2rml#> .
-        @prefix exa: <http://example.com/ns#> .
-        @prefix product: <http://example.com/product#> .
-        
-        <http://example.com/ns#TriplesMap1>
-            a rr:TriplesMap;
-        
-            rr:logicalTable
-            [
-              rr:tableSchema "R2RML";
-              rr:tableOwner "TEST";
-              rr:tableName  "PRODUCT"
-            ];
-        
-            rr:subjectMap
-            [
-              rr:template "http://example.com/product/{id}";
-              rr:class exa:product;
-            ];
-        
-            rr:predicateObjectMap
-            [
-              rr:predicate product:id;
-              rr:objectMap [ rr:column "id" ];
-            ];
-        
-            rr:predicateObjectMap
-            [
-              rr:predicate product:name;
-              rr:objectMap [ rr:column "name" ];
-            ];
-        .
-
-5.  Generate a Linked Data View from the R2RML document that applies to
-    the sample data (created earlier) by executing the statement:
-    
-        SQL> DB.DBA.R2RML_GENERATE_LINKED_VIEW('http://demo.openlinksw.com/r2rmldemo.n3', 'http://example.com', 0);
-        STATE    MESSAGE
-        VARCHAR  VARCHAR
-        _______________________________________________________________________________
-        
-        00000    IRI class <r2rml:virt02-8513ca7e0ce41d2e38f0c750fd552139> has been defined (inherited from rdfdf:sql-integer-uri-nullable)
-        00000    Literal class <r2rml:virt02-daca9ceddea29d53dbbdb6bd0f3dee68> has been defined (inherited from rdfdf:sql-integer-literal-nullable)
-        00000    Quad storage <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage> is flagged as being edited
-        00000    Quad map <http://demo.openlinksw.com/r2rmldemo.n3> has been created and added to the <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
-        orage>
-        00000    Quad map <sys:qm-1be5dbd931459cf9e2df2338428f418d> has been created and added to the <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
-        orage>
-        00000    Quad map <sys:qm-c5f81d7126efa3e7a93f7e903fd5fa93> has been created and added to the <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
-        orage>
-        00000    Quad map <sys:qm-25c4599111b9f07fbd8fc60ce0b42eaf> has been created and added to the <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadSt
-        orage>
-        00000    Quad storage <http://www.openlinksw.com/schemas/virtrdf#DefaultQuadStorage> is unflagged and can be edited by other transactions
-        00000    Transaction committed, SPARQL compiler re-configured
-        00000    9 RDF metadata manipulation operations done
-        
-        10 Rows. -- 1109 msec.
-        SQL>
-
-6.  Verify successful creation of the Linked Data View by executing the
-    following SPARQL query via iSQL or Conductor interface:
-    
-        SQL> SPARQL
-        SELECT *
-        FROM <http://example.com>
-        WHERE {?s ?p ?o} ;
-        
-        s                                p                                                   o
-        VARCHAR                          VARCHAR                                             VARCHAR
-        _______________________________________________________________________________
-        
-        http://example.com/product/1     http://example.com/product#id                       1
-        http://example.com/product/1     http://example.com/product#name                     Virtuoso
-        http://example.com/product/1     http://www.w3.org/1999/02/22-rdf-syntax-ns#type     http://example.com/ns#product
-        
-        3 Rows. -- 15 msec.
-
-## Virtuoso Conductor R2RML Import Wizard
-
-The Virtuoso Conductor can be used for importing existing R2RML scripts
-into Virtuoso and generate the necessary RDF Linked Data Views for
-Virtuoso hosting and deployment.
-
-### Usage Example
-
-1.  Ensure the R2RML [rdb2rdf\_dav.vad](#) and latest Conductor
-    [conductor\_dav.vad](#) VAD packages are installed.
-
-2.  Create a test table with sample data:
-    
-        SQL> CREATE TABLE "R2RML"."TEST"."PRODUCT"
-        (
-          "id" INTEGER,
-          "name" VARCHAR(100),
-          PRIMARY KEY ("id")
-        );
-        Done. -- 16 msec.
-        SQL> INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES(1, 'Virtuoso');
-        Done. -- 0 msec.
-        SQL> INSERT SOFT "R2RML"."TEST"."PRODUCT" VALUES(2, 'UDA');
-        Done. -- 0 msec.
-        SQL>
-
-3.  Grant select privileges on the "R2RML"."TEST"."PRODUCT" table to the
-    SPARQL user to enable execution via SPARQL endpoint:
-    
-        SQL> GRANT SELECT ON R2RML.TEST.PRODUCT  TO "SPARQL", "SPARQL_UPDATE"
-        Done. -- 1 msec.
-
-4.  Create the following R2RML mapping script for the
-    "R2RML"."TEST"."PRODUCT" table:
-    
-        $ cat demo.n3
-        @prefix rr: <http://www.w3.org/ns/r2rml#> .
-        @prefix exa: <http://example.com/ns#> .
-        @prefix product: <http://example.com/product#> .
-        
-        <http://example.com/ns#TriplesMap1>
-            a rr:TriplesMap;
-        
-            rr:logicalTable
-            [
-              rr:tableSchema "R2RML";
-              rr:tableOwner "TEST";
-              rr:tableName  "PRODUCT"
-            ];
-        
-            rr:subjectMap
-            [
-              rr:template "http://example.com/product/{id}";
-              rr:class exa:product;
-            ];
-        
-            rr:predicateObjectMap
-            [
-              rr:predicate product:id;
-              rr:objectMap [ rr:column "id" ];
-            ];
-        
-            rr:predicateObjectMap
-            [
-              rr:predicate product:name;
-              rr:objectMap [ rr:column "name" ];
-            ];
-        .
-        $
-
-5.  Got to the Linked Data -\> R2RML tab of the Virtuoso Conductor:
-    
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport01.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport01.png)
 
 6.  Select the Choose File button and select the R2RML file to load:
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport02.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport02.png)
 
 7.  Select the Validate button to verify the R2RML mapping script:
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport03.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport03.png)
 
 8.  Select the Generate button to generate the RDF Linked Data Views
     mappings for the R2RML mapping script:
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport04.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport04.png)
 
 9.  Select the Execute button to create the RDF Linked Data Views
     mapping the the Quad Store:
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport05.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport05.png)
 
 10. The RDF Linked Data View creation is complete and status is
     displayed:
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport06.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport06.png)
 
 11. The Default Graph Name (transient) specified
     http://demo.openlinksw.com/r2rml\# can now be used to run a SPARQL
@@ -12245,11 +11685,11 @@ Virtuoso hosting and deployment.
     specified urn:demo.openlinksw.com/r2rml\# can be used to run a
     SPARQL query against the materialized triples in the Quad Store.
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport07.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport07.png)
 
 12. The results set for the Linked Data View graph are displayed:
     
-    ![Conductor R2RML Import Wizard](ui/VirtConductorR2RMLImport08.png)
+    ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport08.png)
 
 ## Generate Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources Using Conductor
 
@@ -12265,12755 +11705,15 @@ Data Views, using the Virtuoso Conductor ODBC or JDBC accessible.
 
 4.  Go to Linked Data -\> Views:
     
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r0.png)
-
-5.  Select Qualifier Demo:
     
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r00.png)
-
-6.  Select table(s) by hatching the check-box to the left of the table
-    name; for example, select the following tables from the Northwind
-    DB: Categories, Customers, Employees, Order\_Details, Orders,
-    Products .
-    
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r1g.png)
-
-7.  Click Generate via Wizard:
-    
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r2g.png)
-
-8.  Click Prepare to Execute.
-
-9.  The R2RML script for the selected table(s) will be generated and
-    displayed in the R2RML Graph text-area:
-    
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r3g.png)
-    
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r4g.png)
-    
-    ![Generating Transient and/or Persistent Linked Data
-    Views](ui/r5g.png)
-
-10. As result the following R2RML script should be generated for the
-    Northwind DB collection:
-    
-        @prefix rr: <http://www.w3.org/ns/r2rml#> .
-        @prefix Demo: <http://demo.openlinksw.com/schemas/Demo/> .
-        @prefix demo-stat: <http://demo.openlinksw.com/Demo/stat#> .
-        @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-        @prefix void: <http://rdfs.org/ns/void#> .
-        @prefix scovo: <http://purl.org/NET/scovo#> .
-        @prefix aowl: <http://bblfish.net/work/atom-owl/2006-06-06/> .
-        
-        <#TriplesMapCategories> a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Categories" ];
-        rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/categories/{CategoryID}"; rr:class Demo:Categories; ];
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:categoryid ] ; rr:objectMap [ rr:column "CategoryID" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:categoryname ] ; rr:objectMap [ rr:column "CategoryName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:description ] ; rr:objectMap [ rr:column "Description" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:picture ] ; rr:objectMap [ rr:column "Picture" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:categories_of_products ] ; rr:objectMap [ rr:parentTriplesMap <#TriplesMapProducts>;  rr:joinCondition [ rr:child "CategoryID" ; rr:parent "CategoryID" ] ; ]; ] .
-        
-        <#TriplesMapCustomers> a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Customers" ];
-        rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/customers/{CustomerID}"; rr:class Demo:Customers; ];
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:customerid ] ; rr:objectMap [ rr:column "CustomerID" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:companyname ] ; rr:objectMap [ rr:column "CompanyName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:contactname ] ; rr:objectMap [ rr:column "ContactName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:contacttitle ] ; rr:objectMap [ rr:column "ContactTitle" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:address ] ; rr:objectMap [ rr:column "Address" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:city ] ; rr:objectMap [ rr:column "City" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:region ] ; rr:objectMap [ rr:column "Region" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:postalcode ] ; rr:objectMap [ rr:column "PostalCode" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:country ] ; rr:objectMap [ rr:column "Country" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:countrycode ] ; rr:objectMap [ rr:column "CountryCode" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:phone ] ; rr:objectMap [ rr:column "Phone" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:fax ] ; rr:objectMap [ rr:column "Fax" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:customers_of_orders ] ; rr:objectMap [ rr:parentTriplesMap <#TriplesMapOrders>;  rr:joinCondition [ rr:child "CustomerID" ; rr:parent "CustomerID" ] ; ]; ] .
-        
-        <#TriplesMapEmployees> a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Employees" ];
-        rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/employees/{EmployeeID}"; rr:class Demo:Employees; ];
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:employeeid ] ; rr:objectMap [ rr:column "EmployeeID" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:lastname ] ; rr:objectMap [ rr:column "LastName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:firstname ] ; rr:objectMap [ rr:column "FirstName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:title ] ; rr:objectMap [ rr:column "Title" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:titleofcourtesy ] ; rr:objectMap [ rr:column "TitleOfCourtesy" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:birthdate ] ; rr:objectMap [ rr:column "BirthDate" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:hiredate ] ; rr:objectMap [ rr:column "HireDate" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:address ] ; rr:objectMap [ rr:column "Address" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:city ] ; rr:objectMap [ rr:column "City" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:region ] ; rr:objectMap [ rr:column "Region" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:postalcode ] ; rr:objectMap [ rr:column "PostalCode" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:country ] ; rr:objectMap [ rr:column "Country" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:countrycode ] ; rr:objectMap [ rr:column "CountryCode" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:homephone ] ; rr:objectMap [ rr:column "HomePhone" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:extension ] ; rr:objectMap [ rr:column "Extension" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:photo ] ; rr:objectMap [ rr:column "Photo" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:notes ] ; rr:objectMap [ rr:column "Notes" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:reportsto ] ; rr:objectMap [ rr:column "ReportsTo" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:employees_of_orders ] ; rr:objectMap [ rr:parentTriplesMap <#TriplesMapOrders>;  rr:joinCondition [ rr:child "EmployeeID" ; rr:parent "EmployeeID" ] ; ]; ] .
-        
-        <#TriplesMapOrder_Details> a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Order_Details" ];
-        rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/order_details/{OrderID}/{ProductID}"; rr:class Demo:Order_Details; ];
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitprice ] ; rr:objectMap [ rr:column "UnitPrice" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:quantity ] ; rr:objectMap [ rr:column "Quantity" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:discount ] ; rr:objectMap [ rr:column "Discount" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:order_details_has_orders ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/orders/{OrderID}" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:order_details_has_products ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/products/{ProductID}" ]; ] .
-        
-        <#TriplesMapOrders> a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Orders" ];
-        rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/orders/{OrderID}"; rr:class Demo:Orders; ];
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orderid ] ; rr:objectMap [ rr:column "OrderID" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orderdate ] ; rr:objectMap [ rr:column "OrderDate" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:requireddate ] ; rr:objectMap [ rr:column "RequiredDate" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shippeddate ] ; rr:objectMap [ rr:column "ShippedDate" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:freight ] ; rr:objectMap [ rr:column "Freight" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipname ] ; rr:objectMap [ rr:column "ShipName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipaddress ] ; rr:objectMap [ rr:column "ShipAddress" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipcity ] ; rr:objectMap [ rr:column "ShipCity" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipregion ] ; rr:objectMap [ rr:column "ShipRegion" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shippostalcode ] ; rr:objectMap [ rr:column "ShipPostalCode" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipcountry ] ; rr:objectMap [ rr:column "ShipCountry" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:shipcountrycode ] ; rr:objectMap [ rr:column "ShipCountryCode" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:rowguid ] ; rr:objectMap [ rr:column "ROWGUID" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_has_customers ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/customers/{CustomerID}" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_has_employees ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/employees/{EmployeeID}" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_has_shippers ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/shippers/{ShipVia}" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:orders_of_order_details ] ; rr:objectMap [ rr:parentTriplesMap <#TriplesMapOrder_Details>;  rr:joinCondition [ rr:child "OrderID" ; rr:parent "OrderID" ] ; ]; ] .
-        
-        <#TriplesMapProducts> a rr:TriplesMap; rr:logicalTable [ rr:tableSchema "Demo" ; rr:tableOwner "demo" ; rr:tableName "Products" ];
-        rr:subjectMap [ rr:termtype "IRI"  ; rr:template "http://demo.openlinksw.com/Demo/products/{ProductID}"; rr:class Demo:Products; ];
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:productid ] ; rr:objectMap [ rr:column "ProductID" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:productname ] ; rr:objectMap [ rr:column "ProductName" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:quantityperunit ] ; rr:objectMap [ rr:column "QuantityPerUnit" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitprice ] ; rr:objectMap [ rr:column "UnitPrice" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitsinstock ] ; rr:objectMap [ rr:column "UnitsInStock" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:unitsonorder ] ; rr:objectMap [ rr:column "UnitsOnOrder" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:reorderlevel ] ; rr:objectMap [ rr:column "ReorderLevel" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:discontinued ] ; rr:objectMap [ rr:column "Discontinued" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:products_has_categories ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/categories/{CategoryID}" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:products_has_suppliers ] ; rr:objectMap [ rr:termtype "IRI" ; rr:template "http://demo.openlinksw.com/Demo/suppliers/{SupplierID}" ]; ] ;
-        rr:predicateObjectMap [ rr:predicateMap [ rr:constant Demo:products_of_order_details ] ; rr:objectMap [ rr:parentTriplesMap <#TriplesMapOrder_Details>;  rr:joinCondition [ rr:child "ProductID" ; rr:parent "ProductID" ] ; ]; ] .
-
-# Examples of Linked Data Views
-
-## Simple Mapping Example -- Northwind Linked Data View
-
-Here is example of the basic Northwind Linked Data Views deployment. The
-sequence of operations is very common for adding SPARQL access to
-existing application.
-
-There exist few important questions to answer. Who should have access to
-data behind Linked Data View? Should someone have access to other sorts
-of RDF data but not to the new View? What are applications that should
-be interoperable with the new RDF data source? Are there any
-applications that produce similar data but that data sould be kept apart
-from data made by view? How to ensure that deployment the view will not
-cause problems for other applications?
-
-First of all, we decide whether the default web service endpoint should
-have access to the data in question. If it should then we have to grant
-SELECT privileges to the account "SPARQL" that is used for the default
-endpoint; if it should not but some custom edpoint should then grant to
-the owner account of that account. Granting access is less trivial that
-it is usual. On one hand, those who can make SQL SELECT statements on
-application's tables can also make SPARQL queries on Linked Data View
-over that tables, because it makes SQL inside. On the other hand, those
-who do not intend to query that data at all may get unexpected
-"permission denied" errors on queries that worked fine before adding an
-Linked Data View. If SPARQL compiler can not prove that the query can
-not access data from the view then it will generate SQL code that will
-access tables behind the view. In some cases permission problems should
-be resolved by creating Linked Data View in a separate [RDF
-storage](#rdfviewconfiguringrdfstorages) . In this example, data are
-public:
-
-    use DB;
-    
-    GRANT SELECT ON "Demo"."demo"."Products" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Suppliers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Shippers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Categories" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Customers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Employees" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Orders" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Order_Details" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Countries" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Provinces" TO "SPARQL";
-
-Interoperability is the next question. The example is not interoperable
-with anything so in can provide data of any form, a real application
-will probably use some ontology from external source. Sometimes data
-should be converted from internal application's representation to
-something different (such as metric to imperial or ATT country code to
-two-character country id); sometimes composed IRIs should follow special
-rules; [function-based IRI classes](#rdfviewiriusingfunction) may help
-in that cases. As this is the first example, only plain
-format-string-based IRI classes are used.
-
-We should also ensure that data generated by the new view will not be
-accidentally mixed with other data of the database. For that purpose the
-example will use a unique graph name that includes both application name
-and host name. In addition, the script will drop declarations that might
-remain from a previous run of the same script. The script is executed
-many times during the development so erasing previous version is worth
-writing. It will report an error if there's nothing to erase but it's
-better than unpredictable errors due to writing new declarations over
-existing ones.
-
-> **Note**
-> 
-> Making graph name unique for every host is not needed if the
-> application is supposed to be "local" and nobody will access more than
-> one installation of the application. If this is the case, use some
-> fixed graph IRI, not necessarily starting with hostname at all; this
-> is much more convenient for querying because you don't have to
-> calculate the graph name in each query. With fixed graph in use, it is
-> still possible to clone the Linked Data View to map to a unique graph
-> as soon as the application become "public" and requires merging data
-> from many installations.
-
-    SPARQL drop quad map graph iri("http://^{URIQADefaultHost}^/Northwind")
-    ;
-    SPARQL drop quad map virtrdf:NorthwindDemo
-    ;
-
-The *{URIQADefaultHost}* macro is replaced with the value of
-*DefaultHost* parameter of [\[URIQA\]](#ini_uriqa) section of
-configuration file. The IRI is written as
-*iri("http://^{URIQADefaultHost}^/Northwind")* , not as
-*\<http://^{URIQADefaultHost}^/Northwind\>* because macro of this sort
-works only inside SPARQL string values.
-
-Now it's safe to create IRI classes needed for the view. If these
-classes are used only in the view we define then it is safe to create
-all of them in a single statement. If some of them are used across
-multiple declarations then errors may occur. it is impossible to
-redefine an IRI class that is in use; the compiler will try to avoid
-reporting errors by checking whether the new declaration is identical to
-the existing one and by trying garbage collection in hope that the IRI
-class is used only in garbage, but errors may occur anyway. Thus it is
-better to declare "shared" IRI classes by individual statements and
-group together only "private" IRI classes of a view. If a "class
-redefinition" error occurs in the middle of a group then "undefined
-class" errors may occur after because the processing of the group was
-interrupted before rest of group was not executed. When in trouble, try
-[`DB.DBA.RDF_AUDIT_METADATA`](#fn_rdf_audit_metadata) procedure.
-
-    SPARQL
-    create iri class northwind:Category "http://^{URIQADefaultHost}^/Northwind/Category/%d#this" (in category_id integer not null) .
-    create iri class northwind:Shipper "http://^{URIQADefaultHost}^/Northwind/Shipper/%d#this" (in shipper_id integer not null) .
-    create iri class northwind:Supplier "http://^{URIQADefaultHost}^/Northwind/Supplier/%d#this" (in supplier_id integer not null) .
-    create iri class northwind:Product   "http://^{URIQADefaultHost}^/Northwind/Product/%d#this" (in product_id integer not null) .
-    create iri class northwind:Customer "http://^{URIQADefaultHost}^/Northwind/Customer/%U#this" (in customer_id varchar not null) .
-    create iri class northwind:Employee "http://^{URIQADefaultHost}^/Northwind/Employee/%U%U%d#this" (in employee_firstname varchar not null, in employee_lastname varchar not null, in employee_id integer not null) .
-    create iri class northwind:Order "http://^{URIQADefaultHost}^/Northwind/Order/%d#this" (in order_id integer not null) .
-    create iri class northwind:CustomerContact "http://^{URIQADefaultHost}^/Northwind/CustomerContact/%U#this" (in customer_id varchar not null) .
-    create iri class northwind:OrderLine "http://^{URIQADefaultHost}^/Northwind/OrderLine/%d/%d#this" (in order_id integer not null, in product_id integer not null) .
-    create iri class northwind:Province "http://^{URIQADefaultHost}^/Northwind/Province/%U/%U#this" (in country_name varchar not null, in province_name varchar not null) .
-    create iri class northwind:Country "http://^{URIQADefaultHost}^/Northwind/Country/%U#this" (in country_name varchar not null) .
-    create iri class northwind:Flag "http://^{URIQADefaultHost}^%U#this" (in flag_path varchar not null) .
-    create iri class northwind:dbpedia_iri "http://dbpedia.org/resource/%U" (in uname varchar not null) .
-    create iri class northwind:EmployeePhoto "http://^{URIQADefaultHost}^/DAV/VAD/demo/sql/EMP%d#this" (in emp_id varchar not null) .
-    create iri class northwind:CategoryPhoto "http://^{URIQADefaultHost}^/DAV/VAD/demo/sql/CAT%d#this" (in category_id varchar not null) .
-    ;
-
-One IRI class per subject type; format strings begin with same host but
-different directory names so this will let the compiler to guess the
-type of subject by the text of IRI. Most of declarations are
-[bijections](#rdfviewbijandreturns) and may get *option (bijection)*
-hint but these format strings are so simple that the compiler may
-understand it by itself. (*northwind:Employee* is not a bijection
-because [`sprintf_inverse`](#fn_sprintf_inverse) will be unable to split
-the tail of IRI string and find the boundary between first and last
-name.)
-
-The final operation is extending the default quad storage with new tree
-of quad map patterns.
-
-    SPARQL
-    prefix northwind: <http://demo.openlinksw.com/schemas/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-    from Demo.demo.Products as products
-    from Demo.demo.Suppliers as suppliers
-    from Demo.demo.Shippers as shippers
-    from Demo.demo.Categories as categories
-    from Demo.demo.Customers as customers
-    from Demo.demo.Employees as employees
-    from Demo.demo.Orders as orders
-    from Demo.demo.Order_Details as order_lines
-    from Demo.demo.Countries as countries
-    from Demo.demo.Provinces as provinces
-    where (^{suppliers.}^.Country = ^{countries.}^.Name)
-    where (^{customers.}^.Country = ^{countries.}^.Name)
-    where (^{employees.}^.Country = ^{countries.}^.Name)
-    where (^{orders.}^.ShipCountry = ^{countries.}^.Name)
-    {
-            create virtrdf:NorthwindDemo as graph iri ("http://^{URIQADefaultHost}^/Northwind") option (exclusive)
-            {
-                    northwind:CustomerContact (customers.CustomerID)
-                            a foaf:Person
-                                    as virtrdf:CustomerContact-foaf_Person .
-    
-                    northwind:CustomerContact (customers.CustomerID)
-                            a northwind:CustomerContact
-                                    as virtrdf:CustomerContact-CustomerContact;
-                            foaf:name customers.ContactName
-                                    as virtrdf:CustomerContact-contact_name ;
-                            foaf:phone customers.Phone
-                                    as virtrdf:CustomerContact-foaf_phone ;
-                            northwind:is_contact_at northwind:Customer (customers.CustomerID)
-                                    as virtrdf:CustomerContact-is_contact_at ;
-                            northwind:country northwind:Country (customers.Country)
-                                    as virtrdf:CustomerContact-country ;
-                            rdfs:isDefinedBy northwind:customercontact_iri (customers.CustomerID) ;
-                            rdfs:isDefinedBy northwind:CustomerContact (customers.CustomerID) .
-    
-                    northwind:Country (customers.Country)
-                            northwind:is_country_of
-                    northwind:CustomerContact (customers.CustomerID) as virtrdf:CustomerContact-is_country_of .
-    
-                    northwind:Product (products.ProductID)
-                            a northwind:Product
-                                    as virtrdf:Product-ProductID ;
-                            northwind:has_category northwind:Category (products.CategoryID)
-                                    as virtrdf:Product-product_has_category ;
-                            northwind:has_supplier northwind:Supplier (products.SupplierID)
-                                    as virtrdf:Product-product_has_supplier ;
-                            northwind:productName products.ProductName
-                                    as virtrdf:Product-name_of_product ;
-                            northwind:quantityPerUnit products.QuantityPerUnit
-                                    as virtrdf:Product-quantity_per_unit ;
-                            northwind:unitPrice products.UnitPrice
-                                    as virtrdf:Product-unit_price ;
-                            northwind:unitsInStock products.UnitsInStock
-                                    as virtrdf:Product-units_in_stock ;
-                            northwind:unitsOnOrder products.UnitsOnOrder
-                                    as virtrdf:Product-units_on_order ;
-                            northwind:reorderLevel products.ReorderLevel
-                                    as virtrdf:Product-reorder_level ;
-                            northwind:discontinued products.Discontinued
-                                    as virtrdf:Product-discontinued ;
-                            rdfs:isDefinedBy northwind:product_iri (products.ProductID) ;
-                            rdfs:isDefinedBy northwind:Product (products.ProductID) .
-    
-                    northwind:Category (products.CategoryID)
-                            northwind:category_of northwind:Product (products.ProductID) as virtrdf:Product-category_of .
-    
-                    northwind:Supplier (products.SupplierID)
-                            northwind:supplier_of northwind:Product (products.ProductID) as virtrdf:Product-supplier_of .
-    
-                    northwind:Supplier (suppliers.SupplierID)
-                            a northwind:Supplier
-                                    as virtrdf:Supplier-SupplierID ;
-                            northwind:companyName suppliers.CompanyName
-                                    as virtrdf:Supplier-company_name ;
-                            northwind:contactName suppliers.ContactName
-                                    as virtrdf:Supplier-contact_name ;
-                            northwind:contactTitle suppliers.ContactTitle
-                                    as virtrdf:Supplier-contact_title ;
-                            northwind:address suppliers.Address
-                                    as virtrdf:Supplier-address ;
-                            northwind:city suppliers.City
-                                    as virtrdf:Supplier-city ;
-                            northwind:dbpedia_city northwind:dbpedia_iri(suppliers.City)
-                                    as virtrdf:Supplier-dbpediacity ;
-                            northwind:region suppliers.Region
-                                    as virtrdf:Supplier-region ;
-                            northwind:postalCode suppliers.PostalCode
-                                    as virtrdf:Supplier-postal_code ;
-                            northwind:country northwind:Country(suppliers.Country)
-                                    as virtrdf:Supplier-country ;
-                            northwind:phone suppliers.Phone
-                                    as virtrdf:Supplier-phone ;
-                            northwind:fax suppliers.Fax
-                                    as virtrdf:Supplier-fax ;
-                            northwind:homePage suppliers.HomePage
-                                    as virtrdf:Supplier-home_page ;
-                            rdfs:isDefinedBy northwind:supplier_iri (suppliers.SupplierID) ;
-                            rdfs:isDefinedBy northwind:Supplier (suppliers.SupplierID) .
-    
-                    northwind:Country (suppliers.Country)
-                            northwind:is_country_of
-                    northwind:Supplier (suppliers.SupplierID) as virtrdf:Supplier-is_country_of .
-    
-                    northwind:Category (categories.CategoryID)
-                            a northwind:Category
-                                    as virtrdf:Category-CategoryID ;
-                            northwind:categoryName categories.CategoryName
-                                    as virtrdf:Category-home_page ;
-                            northwind:description categories.Description
-                                    as virtrdf:Category-description ;
-                            foaf:img northwind:CategoryPhoto(categories.CategoryID)
-                                    as virtrdf:Category-categories.CategoryPhoto ;
-                            rdfs:isDefinedBy northwind:category_iri (categories.CategoryID) ;
-                            rdfs:isDefinedBy northwind:Category (categories.CategoryID) .
-    
-                    northwind:CategoryPhoto(categories.CategoryID)
-                            a northwind:CategoryPhoto
-                                    as virtrdf:Category-categories.CategoryPhotoID ;
-                            rdfs:isDefinedBy northwind:categoryphoto_iri (categories.CategoryID) ;
-                            rdfs:isDefinedBy northwind:CategoryPhoto(categories.CategoryID) .
-    
-                    northwind:Shipper (shippers.ShipperID)
-                            a northwind:Shipper
-                                    as virtrdf:Shipper-ShipperID ;
-                            northwind:companyName shippers.CompanyName
-                                    as virtrdf:Shipper-company_name ;
-                            northwind:phone shippers.Phone
-                                    as virtrdf:Shipper-phone ;
-                            rdfs:isDefinedBy northwind:shipper_iri (shippers.ShipperID) ;
-                            rdfs:isDefinedBy northwind:Shipper (shippers.ShipperID) .
-    
-                    northwind:Customer (customers.CustomerID)
-                            a  northwind:Customer
-                                    as virtrdf:Customer-CustomerID2 ;
-                            a  foaf:Organization
-                                    as virtrdf:Customer-CustomerID ;
-                            foaf:name customers.CompanyName
-                                    as virtrdf:Customer-foaf_name ;
-                            northwind:companyName customers.CompanyName
-                                    as virtrdf:Customer-company_name ;
-                            northwind:has_contact northwind:CustomerContact (customers.CustomerID)
-                                    as virtrdf:Customer-contact ;
-                            northwind:country northwind:Country (customers.Country)
-                                    as virtrdf:Customer-country ;
-                            northwind:contactName customers.ContactName
-                                    as virtrdf:Customer-contact_name ;
-                            northwind:contactTitle customers.ContactTitle
-                                    as virtrdf:Customer-contact_title ;
-                            northwind:address customers.Address
-                                    as virtrdf:Customer-address ;
-                            northwind:city customers.City
-                                    as virtrdf:Customer-city ;
-                            northwind:dbpedia_city northwind:dbpedia_iri(customers.City)
-                                    as virtrdf:Customer-dbpediacity ;
-                            northwind:region customers.Region
-                                    as virtrdf:Customer-region ;
-                            northwind:PostalCode customers.PostalCode
-                                    as virtrdf:Customer-postal_code ;
-                            foaf:phone customers.Phone
-                                    as virtrdf:Customer-foaf_phone ;
-                            northwind:phone customers.Phone
-                                    as virtrdf:Customer-phone ;
-                            northwind:fax customers.Fax
-                                    as virtrdf:Customer-fax ;
-                            rdfs:isDefinedBy northwind:customer_iri (customers.CustomerID) ;
-                            rdfs:isDefinedBy northwind:Customer (customers.CustomerID) .
-    
-                    northwind:Country (customers.Country)
-                            northwind:is_country_of
-                    northwind:Customer (customers.CustomerID) as virtrdf:Customer-is_country_of .
-    
-                    northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID)
-                            a northwind:Employee
-                                    as virtrdf:Employee-EmployeeID2 ;
-                            a foaf:Person
-                                    as virtrdf:Employee-EmployeeID ;
-                            foaf:surname employees.LastName
-                                    as virtrdf:Employee-foaf_last_name ;
-                            northwind:lastName employees.LastName
-                                    as virtrdf:Employee-last_name ;
-                            foaf:firstName employees.FirstName
-                                    as virtrdf:Employee-foaf_first_name ;
-                            northwind:firstName employees.FirstName
-                                    as virtrdf:Employee-first_name ;
-                            foaf:title employees.Title
-                                    as virtrdf:Employee-title ;
-                            northwind:titleOfCourtesy employees.TitleOfCourtesy
-                                    as virtrdf:Employee-title_of_courtesy ;
-                            foaf:birthday employees.BirthDate
-                                    as virtrdf:Employee-foaf_birth_date ;
-                            northwind:birthday employees.BirthDate
-                                    as virtrdf:Employee-birth_date ;
-                            northwind:hireDate employees.HireDate
-                                    as virtrdf:Employee-hire_date ;
-                            northwind:address employees.Address
-                                    as virtrdf:Employee-address ;
-                            northwind:city employees.City
-                                    as virtrdf:Employee-city ;
-                            northwind:dbpedia_city northwind:dbpedia_iri(employees.City)
-                                    as virtrdf:Employee-dbpediacity ;
-                            northwind:region employees.Region
-                                    as virtrdf:Employee-region ;
-                            northwind:postalCode employees.PostalCode
-                                    as virtrdf:Employee-postal_code ;
-                            northwind:country northwind:Country(employees.Country)
-                                    as virtrdf:Employee-country ;
-                            foaf:phone employees.HomePhone
-                                    as virtrdf:Employee-home_phone ;
-                            northwind:extension employees.Extension
-                                    as virtrdf:Employee-extension ;
-                            northwind:notes employees.Notes
-                                    as virtrdf:Employee-notes ;
-                            northwind:reportsTo northwind:Employee(employees.FirstName, employees.LastName, employees.ReportsTo) where (^{employees.}^.ReportsTo = ^{employees.}^.EmployeeID)
-                                    as virtrdf:Employee-reports_to ;
-                            foaf:img northwind:EmployeePhoto(employees.EmployeeID)
-                                    as virtrdf:Employee-employees.EmployeePhoto ;
-                            rdfs:isDefinedBy northwind:employee_iri (employees.EmployeeID) ;
-                            rdfs:isDefinedBy northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID) .
-    
-                    northwind:EmployeePhoto(employees.EmployeeID)
-                            a northwind:EmployeePhoto
-                                    as virtrdf:Employee-employees.EmployeePhotoId ;
-                            rdfs:isDefinedBy northwind:employeephoto_iri (employees.EmployeeID) ;
-                            rdfs:isDefinedBy northwind:EmployeePhoto (employees.EmployeeID) .
-    
-                    northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID)
-                            northwind:is_salesrep_of
-                    northwind:Order (orders.OrderID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID) as virtrdf:Order-is_salesrep_of .
-    
-                    northwind:Country (employees.Country)
-                            northwind:is_country_of
-                    northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID) as virtrdf:Employee-is_country_of .
-    
-                    northwind:Order (orders.OrderID)
-                            a northwind:Order
-                                    as virtrdf:Order-Order ;
-                            northwind:has_customer northwind:Customer (orders.CustomerID)
-                                    as virtrdf:Order-order_has_customer ;
-                            northwind:has_salesrep northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID)
-                                    as virtrdf:Customer-has_salesrep ;
-                            northwind:has_employee northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID)
-                                    as virtrdf:Order-order_has_employee ;
-                            northwind:orderDate orders.OrderDate
-                                    as virtrdf:Order-order_date ;
-                            northwind:requiredDate orders.RequiredDate
-                                    as virtrdf:Order-required_date ;
-                            northwind:shippedDate orders.ShippedDate
-                                    as virtrdf:Order-shipped_date ;
-                            northwind:order_ship_via northwind:Shipper (orders.ShipVia)
-                                    as virtrdf:Order-order_ship_via ;
-                            northwind:freight orders.Freight
-                                    as virtrdf:Order-freight ;
-                            northwind:shipName orders.ShipName
-                                    as virtrdf:Order-ship_name ;
-                            northwind:shipAddress orders.ShipAddress
-                                    as virtrdf:Order-ship_address ;
-                            northwind:shipCity orders.ShipCity
-                                    as virtrdf:Order-ship_city ;
-                            northwind:dbpedia_shipCity northwind:dbpedia_iri(orders.ShipCity)
-                                    as virtrdf:Order-dbpediaship_city ;
-                            northwind:shipRegion orders.ShipRegion
-                                    as virtrdf:Order-ship_region ;
-                            northwind:shipPostal_code orders.ShipPostalCode
-                                    as virtrdf:Order-ship_postal_code ;
-                            northwind:shipCountry northwind:Country(orders.ShipCountry)
-                                    as virtrdf:ship_country ;
-                            rdfs:isDefinedBy northwind:order_iri (orders.OrderID) ;
-                            rdfs:isDefinedBy northwind:Order (orders.OrderID) .
-    
-                    northwind:Country (orders.ShipCountry)
-                            northwind:is_ship_country_of
-                    northwind:Order (orders.OrderID) as virtrdf:Order-is_country_of .
-    
-                    northwind:Customer (orders.CustomerID)
-                            northwind:has_order northwind:Order (orders.OrderID) as virtrdf:Order-has_order .
-    
-                    northwind:Shipper (orders.ShipVia)
-                            northwind:ship_order northwind:Order (orders.OrderID) as virtrdf:Order-ship_order .
-    
-                    northwind:OrderLine (order_lines.OrderID, order_lines.ProductID)
-                            a northwind:OrderLine
-                                    as virtrdf:OrderLine-OrderLines ;
-                            northwind:has_order_id northwind:Order (order_lines.OrderID)
-                                    as virtrdf:order_lines_has_order_id ;
-                            northwind:has_product_id northwind:Product (order_lines.ProductID)
-                                    as virtrdf:order_lines_has_product_id ;
-                            northwind:unitPrice order_lines.UnitPrice
-                                    as virtrdf:OrderLine-unit_price ;
-                            northwind:quantity order_lines.Quantity
-                                    as virtrdf:OrderLine-quantity ;
-                            northwind:discount order_lines.Discount
-                                    as virtrdf:OrderLine-discount ;
-                            rdfs:isDefinedBy northwind:orderline_iri (order_lines.OrderID, order_lines.ProductID) ;
-                            rdfs:isDefinedBy northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) .
-    
-                    northwind:Order (orders.OrderID)
-                            northwind:is_order_of
-                    northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) where (^{orders.}^.OrderID = ^{order_lines.}^.OrderID) as virtrdf:Order-is_order_of .
-    
-                    northwind:Product (products.ProductID)
-                            northwind:is_product_of
-                    northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) where (^{products.}^.ProductID = ^{order_lines.}^.ProductID) as virtrdf:Product-is_product_of .
-    
-                    northwind:Country (countries.Name)
-                            a northwind:Country
-                                    as virtrdf:Country-Type2 ;
-                            a wgs:SpatialThing
-                                    as virtrdf:Country-Type ;
-                            owl:sameAs northwind:dbpedia_iri (countries.Name) ;
-                            northwind:name countries.Name
-                                    as virtrdf:Country-Name ;
-                            northwind:code countries.Code
-                                    as virtrdf:Country-Code ;
-                            northwind:smallFlagDAVResourceName countries.SmallFlagDAVResourceName
-                                    as virtrdf:Country-SmallFlagDAVResourceName ;
-                            northwind:largeFlagDAVResourceName countries.LargeFlagDAVResourceName
-                                    as virtrdf:Country-LargeFlagDAVResourceName ;
-                            northwind:smallFlagDAVResourceURI northwind:Flag(countries.SmallFlagDAVResourceURI)
-                                    as virtrdf:Country-SmallFlagDAVResourceURI ;
-                            northwind:largeFlagDAVResourceURI northwind:Flag(countries.LargeFlagDAVResourceURI)
-                                    as virtrdf:Country-LargeFlagDAVResourceURI ;
-                            wgs:lat countries.Lat
-                                    as virtrdf:Country-Lat ;
-                            wgs:long countries.Lng
-                                    as virtrdf:Country-Lng ;
-                            rdfs:isDefinedBy northwind:country_iri (countries.Name) ;
-                            rdfs:isDefinedBy northwind:Country (countries.Name) .
-    
-                    northwind:Country (countries.Name)
-                            northwind:has_province
-                    northwind:Province (provinces.CountryCode, provinces.Province) where (^{provinces.}^.CountryCode = ^{countries.}^.Code) as virtrdf:Country-has_province .
-    
-                    northwind:Province (provinces.CountryCode, provinces.Province)
-                            a northwind:Province
-                                    as virtrdf:Province-Provinces ;
-                            northwind:has_country_code provinces.CountryCode
-                                    as virtrdf:has_country_code ;
-                            northwind:provinceName provinces.Province
-                                    as virtrdf:Province-ProvinceName ;
-                            rdfs:isDefinedBy northwind:province_iri (provinces.CountryCode, provinces.Province) ;
-                            rdfs:isDefinedBy northwind:Province (provinces.CountryCode, provinces.Province) .
-    
-                    northwind:Province (provinces.CountryCode, provinces.Province)
-                            northwind:is_province_of
-                    northwind:Country (countries.Name) where  (^{countries.}^.Code = ^{provinces.}^.CountryCode) as virtrdf:Province-country_of .
-            }.
-    }.
-    ;
-
-The created Linked Data View is sufficient for querying relational data
-via SPARQL but not for accessing data by dereferencing IRIs of subjects.
-Making IRIs dereferenceable requires configuring HTTP server; that is
-explained in [second part of the
-example](#rdfsparqlexnpointnorthwindexample) .
-
-## BSBM to RDF
-
-This section includes example mapping SQL Data to RDF for BSBM.
-
-Each BSBM installation includes a demonstration database that includes a
-simple management system schema and instance data. This sample database
-provides an easy route for introducing BSBM users and developers to the
-virtues of RDF based Linked Data Views built atop existing BSBM
-relational databases.
-
-    use DB;
-    
-    CREATE TABLE DB.DBA.ProductFeature (
-      nr integer primary key,
-      label varchar(100) not null,
-      comment varchar(1500) not null,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.ProductFeature to public
-    ;
-    
-    CREATE TABLE DB.DBA.ProductType (
-      nr integer primary key,
-      label varchar(100) not null,
-      comment varchar(1500) not null,
-      parent integer,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.ProductType to public
-    ;
-    
-    CREATE TABLE DB.DBA.Producer (
-      nr integer primary key,
-      label varchar(100) not null,
-      comment varchar(1500) not null,
-      homepage varchar(100) not null,
-      country char(2) not null,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.Producer to public
-    ;
-    create index producer_homepage on DB.DBA.Producer (homepage)
-    ;
-    
-    CREATE TABLE DB.DBA.Product (
-      nr integer primary key,
-      label varchar(100) not null,
-      comment varchar not null,
-      producer integer not null,
-      propertyNum1 integer,
-      propertyNum2 integer,
-      propertyNum3 integer,
-      propertyNum4 integer,
-      propertyNum5 integer,
-      propertyNum6 integer,
-      propertyTex1 varchar(200),
-      propertyTex2 varchar(200),
-      propertyTex3 varchar(200),
-      propertyTex4 varchar(200),
-      propertyTex5 varchar(200),
-      propertyTex6 varchar(200),
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.Product to public
-    ;
-    
-    create index product_lbl on DB.DBA.Product (label)
-    ;
-    create unique index product_producer_nr on DB.DBA.Product (producer, nr)
-    ;
-    create index product_pn1 on DB.DBA.Product (propertyNum1)
-    ;
-    create index product_pn2 on DB.DBA.Product (propertyNum2)
-    ;
-    create index product_pn3 on DB.DBA.Product (propertyNum3)
-    ;
-    
-    create text index on DB.DBA.Product (label) with key nr
-    ;
-    
-    CREATE TABLE DB.DBA.ProductTypeProduct (
-      product integer not null,
-      productType integer not null,
-      PRIMARY KEY (product, productType)
-    )
-    ;
-    
-    grant SELECT on DB.DBA.ProductTypeProduct to public
-    ;
-    
-    create index ptype_inv on DB.DBA.ProductTypeProduct (productType, product)
-    ;
-    
-    CREATE TABLE DB.DBA.ProductFeatureProduct (
-      product integer not null,
-      productFeature integer not null,
-      PRIMARY KEY (product, productFeature)
-    )
-    ;
-    
-    grant SELECT on DB.DBA.ProductFeatureProduct to public
-    ;
-    
-    create index pfeature_inv on DB.DBA.ProductFeatureProduct (productFeature, product)
-    ;
-    
-    CREATE TABLE DB.DBA.Vendor (
-      nr integer primary key,
-      label varchar(100) not null,
-      comment varchar not null,
-      homepage varchar(100) not null,
-      country char(2) not null,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.Vendor to public
-    ;
-    
-    create index vendor_country on DB.DBA.Vendor (country)
-    ;
-    create index vendor_homepage on DB.DBA.Vendor (homepage)
-    ;
-    
-    CREATE TABLE DB.DBA.Offer (
-      nr integer primary key,
-      product integer not null,
-      producer integer,
-      vendor integer not null,
-      price double precision not null,
-      validFrom date not null,
-      validTo date not null,
-      deliveryDays integer not null,
-      offerWebpage varchar(100) not null,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.Offer to public
-    ;
-    
-    create index offer_product on DB.DBA.Offer (product, deliveryDays)
-    ;
-    create unique index offer_producer_product on DB.DBA.Offer (producer, product, nr)
-    ;
-    create index offer_validto on DB.DBA.Offer (validTo)
-    ;
-    create index offer_vendor_product on DB.DBA.Offer (vendor, product)
-    ;
-    create index offer_webpage on DB.DBA.Offer (offerWebpage)
-    ;
-    
-    CREATE TABLE DB.DBA.Person (
-      nr integer primary key,
-      name varchar(30) not null,
-      mbox_sha1sum char(40) not null,
-      country char(2) not null,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.Person to public
-    ;
-    
-    CREATE TABLE DB.DBA.Review (
-      nr integer primary key,
-      product integer not null,
-      producer integer,
-      person integer not null,
-      reviewDate date not null,
-      title varchar(200) not null,
-      text long varchar not null,
-      textlang char(2) not null,
-      rating1 integer,
-      rating2 integer,
-      rating3 integer,
-      rating4 integer,
-      publisher integer not null,
-      publishDate date not null
-    )
-    ;
-    
-    grant SELECT on DB.DBA.Review to public
-    ;
-    
-    create unique index review_product on DB.DBA.Review (product, producer, nr)
-    ;
-    
-    create unique index review_producer_product on DB.DBA.Review (producer, product, nr)
-    ;
-    
-    create bitmap index review_textlang on DB.DBA.Review (textlang)
-    ;
-    
-    DB.DBA.XML_SET_NS_DECL ('foaf', 'http://xmlns.com/foaf/0.1/', 2)
-    ;
-    DB.DBA.XML_SET_NS_DECL ('dc', 'http://purl.org/dc/elements/1.1/', 2)
-    ;
-    DB.DBA.XML_SET_NS_DECL ('xsd', 'http://www.w3.org/2001/XMLSchema-datatypes/', 2)
-    ;
-    DB.DBA.XML_SET_NS_DECL ('rev', 'http://purl.org/stuff/rev#', 2)
-    ;
-    DB.DBA.XML_SET_NS_DECL ('bsbm', 'http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/', 2)
-    ;
-    DB.DBA.XML_SET_NS_DECL ('bsbm-inst', 'http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/', 2)
-    ;
-    
-    SPARQL drop quad map bsbm:SingleGraphView
-    ;
-    
-    SPARQL create iri class bsbm:ProductFeature-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature%d" (in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:ProductType-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType%d" (in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:Producer-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer%d/Producer%d" (in nr_ integer not null, in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:Product-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer%d/Product%d" (in producer integer not null, in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:Vendor-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromVendor%d/Vendor%d" (in nr_ integer not null, in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:Offer-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromVendor%d/Offer%d" (in vendor integer not null, in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:StdInst-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/StandardizationInstitution%d" (in publisher integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:Person-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromRatingSite%d/Person%d" (in publisher integer not null, in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:Review-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromRatingSite%d/Review%d" (in site integer, in nr integer not null)
-    ;
-    
-    SPARQL create iri class bsbm:ISO3166-country-iri "http://downlode.org/rdf/iso-3166/countries#%s" (in code varchar not null)
-    ;
-    
-    SPARQL create iri class bsbm:homepage-iri "%s" (in homepage varchar not null) option (returns "http://%s")
-    ;
-    
-    SPARQL create iri class bsbm:RatingSite-iri "http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromRatingSite%d/RatingSite%d" (in nr_ integer not null, in nr integer not null)
-    ;
-    
-    SPARQL
-    alter quad storage virtrdf:DefaultQuadStorage
-    FROM DB.DBA.ProductFeature as pfeature
-    FROM DB.DBA.ProductType as ptype
-    FROM DB.DBA.Producer as producer
-    FROM DB.DBA.Product as product text literal product.label
-    FROM DB.DBA.ProductTypeProduct as ptypeproduct
-    FROM DB.DBA.ProductFeatureProduct as pfeatureproduct
-    FROM DB.DBA.Vendor as vendor
-    FROM DB.DBA.Offer as offer
-    FROM DB.DBA.Person as person
-    FROM DB.DBA.Review as review
-    where (^{product.}^.nr = ^{ptypeproduct.}^.product)
-    where (^{product.}^.nr = ^{pfeatureproduct.}^.product)
-      {
-        create bsbm:SingleGraphView as graph <BSBM> option (exclusive)
-          {
-        bsbm:Product-iri (product.producer, product.nr)
-              a bsbm:Product ;
-          rdfs:label product.label ;
-              rdfs:comment product.comment ;
-              bsbm:producer bsbm:Producer-iri (product.producer, product.producer) ;
-              bsbm:productPropertyTextual1 product.propertyTex1 ;
-              bsbm:productPropertyTextual2 product.propertyTex2 ;
-              bsbm:productPropertyTextual3 product.propertyTex3 ;
-              bsbm:productPropertyTextual4 product.propertyTex4 ;
-              bsbm:productPropertyTextual5 product.propertyTex5 ;
-              bsbm:productPropertyTextual6 product.propertyTex6 ;
-              bsbm:productPropertyNumeric1 product.propertyNum1 ;
-              bsbm:productPropertyNumeric2 product.propertyNum2 ;
-              bsbm:productPropertyNumeric3 product.propertyNum3 ;
-              bsbm:productPropertyNumeric4 product.propertyNum4 ;
-              bsbm:productPropertyNumeric5 product.propertyNum5 ;
-              bsbm:productPropertyNumeric6 product.propertyNum6 ;
-              rdf:type bsbm:ProductType-iri (ptypeproduct.productType) ;
-              bsbm:productFeature bsbm:ProductFeature-iri (pfeatureproduct.productFeature) ;
-              dc:publisher bsbm:Producer-iri (product.publisher, product.publisher) ;
-              dc:date product.publishDate .
-    
-            bsbm:ProductType-iri (ptype.nr)
-              a bsbm:ProductType ;
-              rdfs:label ptype.label ;
-              rdfs:comment ptype.comment ;
-              rdfs:subClassOf bsbm:ProductType-iri (ptype.parent) ;
-              dc:publisher bsbm:StdInst-iri (ptype.publisher) ;
-              dc:date ptype.publishDate .
-    
-            bsbm:ProductFeature-iri (pfeature.nr)
-              a bsbm:ProductFeature ;
-              rdfs:label pfeature.label ;
-              rdfs:comment pfeature.comment ;
-              dc:publisher bsbm:StdInst-iri (pfeature.publisher) ;
-              dc:date pfeature.publishDate .
-    
-            bsbm:Producer-iri (producer.nr, producer.nr)
-              a bsbm:Producer ;
-              rdfs:label producer.label ;
-              rdfs:comment producer.comment ;
-              foaf:homepage bsbm:homepage-iri (producer.homepage) ;
-              bsbm:country bsbm:ISO3166-country-iri (producer.country) ;
-              dc:publisher bsbm:Producer-iri (producer.nr, producer.nr) ;
-              dc:date producer.publishDate .
-    
-            bsbm:Vendor-iri (vendor.nr, vendor.nr)
-              a bsbm:Vendor ;
-              rdfs:label vendor.label ;
-              rdfs:comment vendor.comment ;
-              foaf:homepage bsbm:homepage-iri (vendor.homepage) ;
-              bsbm:country bsbm:ISO3166-country-iri (vendor.country) ;
-              dc:publisher bsbm:Vendor-iri (vendor.publisher, vendor.publisher) ;
-              dc:date vendor.publishDate .
-    
-            bsbm:Offer-iri (offer.vendor, offer.nr)
-              a bsbm:Offer ;
-              bsbm:product bsbm:Product-iri (offer.producer, offer.product) ;
-              bsbm:vendor bsbm:Vendor-iri (offer.vendor, offer.vendor) ;
-              bsbm:vendor bsbm:Vendor-iri (offer.vendor, offer.vendor) ;
-              bsbm:price offer.price ;
-              bsbm:validFrom offer.validFrom ;
-              bsbm:validTo offer.validTo ;
-              bsbm:deliveryDays offer.deliveryDays ;
-              bsbm:offerWebpage bsbm:homepage-iri (offer.offerWebpage) ;
-              dc:publisher bsbm:Vendor-iri (offer.publisher, offer.publisher) ;
-              dc:date offer.publishDate .
-    
-            bsbm:Person-iri (person.publisher, person.nr)
-              a foaf:Person ;
-              foaf:name person.name ;
-              foaf:mbox_sha1sum person.mbox_sha1sum ;
-              bsbm:country bsbm:ISO3166-country-iri (person.country) ;
-              dc:publisher bsbm:RatingSite-iri (person.publisher, person.publisher) ;
-              dc:date person.publishDate .
-    
-            bsbm:Review-iri (review.publisher, review.nr)
-              a rev:Review ;
-              bsbm:reviewFor bsbm:Product-iri (review.producer, review.product) ;
-              bsbm:producer bsbm:Producer-iri (review.producer, review.producer) ;
-              rev:reviewer bsbm:Person-iri (review.publisher, review.person) ;
-              bsbm:reviewDate review.reviewDate ;
-              dc:title review.title ;
-              rev:text review.text lang review.textlang ;
-              bsbm:rating1 review.rating1 ;
-              bsbm:rating2 review.rating2 ;
-              bsbm:rating3 review.rating3 ;
-              bsbm:rating4 review.rating4 ;
-              dc:publisher bsbm:RatingSite-iri (review.publisher, review.publisher) ;
-              dc:date review.publishDate .
-          }
-      }
-    ;
-
-## TPCH to RDF
-
-    use DB;
-    
-    GRANT SELECT ON TPCH.DBA.PARTSUPP  TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.SUPPLIER  TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.CUSTOMER  TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.HISTORY   TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.PART      TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.LINEITEM  TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.ORDERS    TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.NATION    TO "SPARQL";
-    GRANT SELECT ON TPCH.DBA.REGION    TO "SPARQL";
-    
-    SPARQL
-    drop quad map virtrdf:TPCH
-    ;
-    
-    SPARQL
-    prefix tpch: <http://www.openlinksw.com/schemas/tpch#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    create iri class tpch:customer "http://^{URIQADefaultHost}^/tpch/customer/%U%d#this" (in custname varchar, in c_custkey integer not null) option (bijection, deref) .
-    create iri class tpch:lineitem "http://^{URIQADefaultHost}^/tpch/lineitem/%d/%d#this" (in l_orderkey integer not null, in l_linenumber integer not null) option (bijection, deref) .
-    create iri class tpch:nation "http://^{URIQADefaultHost}^/tpch/nation/%U%d#this" (in name varchar, in l_nationkey integer not null) option (bijection, deref) .
-    create iri class tpch:order "http://^{URIQADefaultHost}^/tpch/order/%d#this" (in o_orderkey integer not null) option (bijection, deref) .
-    create iri class tpch:part "http://^{URIQADefaultHost}^/tpch/part/%U%d#this" (in p_partname varchar, in p_partkey integer not null) option (bijection, deref) .
-    create iri class tpch:partsupp "http://^{URIQADefaultHost}^/tpch/partsupp/%d/%d#this" (in ps_partkey integer not null, in ps_suppkey integer not null) option (bijection, deref) .
-    create iri class tpch:region "http://^{URIQADefaultHost}^/tpch/region/%U%d#this" (in name varchar, in r_regionkey integer not null) option (bijection, deref) .
-    create iri class tpch:supplier "http://^{URIQADefaultHost}^/tpch/supplier/%U%d#this" (in name varchar, in s_supplierkey integer not null) option (bijection, deref) .
-    ;
-    
-    SPARQL
-    prefix tpch: <http://www.openlinksw.com/schemas/tpch#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    alter quad storage virtrdf:DefaultQuadStorage
-    FROM TPCH.DBA.LINEITEM as lineitems
-    FROM TPCH.DBA.CUSTOMER as customers
-    FROM TPCH.DBA.NATION as nations
-    FROM TPCH.DBA.ORDERS as orders
-    FROM TPCH.DBA.PART as parts
-    FROM TPCH.DBA.PARTSUPP as partsupps
-    FROM TPCH.DBA.REGION as regions
-    FROM TPCH.DBA.SUPPLIER as suppliers
-    where (^{suppliers.}^.S_NATIONKEY = ^{nations.}^.N_NATIONKEY)
-    where (^{customers.}^.C_NATIONKEY = ^{nations.}^.N_NATIONKEY)
-    {
-        create virtrdf:TPCH as graph iri ("http://^{URIQADefaultHost}^/tpch") option (exclusive)
-        {
-    # Customers
-            tpch:customer (customers.C_NAME, customers.C_CUSTKEY)
-                a  tpch:customer
-                    as virtrdf:customer-tpch-type ;
-                a  foaf:Organization
-                    as virtrdf:customer-foaf-type ;
-                tpch:custkey customers.C_CUSTKEY
-                    as virtrdf:customer-c_custkey ;
-                foaf:name customers.C_NAME
-                    as virtrdf:customer-foaf_name ;
-                tpch:companyName customers.C_NAME
-                    as virtrdf:customer-c_name ;
-                tpch:has_nation tpch:nation (nations.N_NAME, customers.C_NATIONKEY)
-                    as virtrdf:customer-c_nationkey ;
-                tpch:address customers.C_ADDRESS
-                    as virtrdf:customer-c_address ;
-                foaf:phone customers.C_PHONE
-                    as virtrdf:customer-foaf_phone ;
-                tpch:phone customers.C_PHONE
-                    as virtrdf:customer-phone ;
-                tpch:acctbal customers.C_ACCTBAL
-                    as virtrdf:customer-acctbal ;
-                tpch:mktsegment customers.C_MKTSEGMENT
-                    as virtrdf:customer-c_mktsegment ;
-                tpch:comment customers.C_COMMENT
-                    as virtrdf:customer-c_comment .
-    
-    # Nations
-            tpch:nation (nations.N_NAME, customers.C_NATIONKEY)
-                tpch:nation_of tpch:customer (customers.C_NAME, customers.C_CUSTKEY)
-                as virtrdf:customer-nation_of .
-    
-            tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER)
-                a tpch:lineitem
-                    as virtrdf:lineitem-lineitems ;
-                tpch:has_order tpch:order (lineitems.L_ORDERKEY)
-                    as virtrdf:lineitem-l_orderkey ;
-                tpch:has_part tpch:part (parts.P_NAME, lineitems.L_PARTKEY)
-                    where (^{parts.}^.P_PARTKEY = ^{lineitems.}^.L_PARTKEY)
-                    as virtrdf:lineitem-l_partkey ;
-                tpch:has_supplier tpch:supplier (suppliers.S_NAME, lineitems.L_SUPPKEY)
-                    where (^{suppliers.}^.S_SUPPKEY = ^{lineitems.}^.L_SUPPKEY)
-                    as virtrdf:lineitem-l_suppkey ;
-                tpch:linenumber lineitems.L_LINENUMBER
-                    as virtrdf:lineitem-l_linenumber ;
-                tpch:linequantity lineitems.L_QUANTITY
-                    as virtrdf:lineitem-l_linequantity ;
-                tpch:lineextendedprice lineitems.L_EXTENDEDPRICE
-                    as virtrdf:lineitem-l_lineextendedprice ;
-                tpch:linediscount lineitems.L_DISCOUNT
-                    as virtrdf:lineitem-l_linediscount ;
-                tpch:linetax lineitems.L_TAX
-                    as virtrdf:lineitem-l_linetax ;
-                tpch:returnflag lineitems.L_RETURNFLAG
-                    as virtrdf:lineitem-l_returnflag ;
-                tpch:linestatus lineitems.L_LINESTATUS
-                    as virtrdf:lineitem-l_linestatus ;
-                tpch:shipdate lineitems.L_SHIPDATE
-                    as virtrdf:lineitem-l_shipdate ;
-                tpch:commitdate lineitems.L_COMMITDATE
-                    as virtrdf:lineitem-l_commitdate ;
-                tpch:receiptdate lineitems.L_RECEIPTDATE
-                    as virtrdf:lineitem-l_receiptdate ;
-                tpch:shipinstruct lineitems.L_SHIPINSTRUCT
-                    as virtrdf:lineitem-l_shipinstruct ;
-                tpch:shipmode lineitems.L_SHIPMODE
-                    as virtrdf:lineitem-l_shipmode ;
-                tpch:comment lineitems.L_COMMENT
-                    as virtrdf:lineitem-l_comment .
-    
-            tpch:part (parts.P_NAME, lineitems.L_PARTKEY)
-                tpch:part_of tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER)
-                where (^{parts.}^.P_PARTKEY = ^{lineitems.}^.L_PARTKEY)
-                as virtrdf:lineitem-part_of .
-    
-            tpch:order (lineitems.L_ORDERKEY)
-                tpch:order_of tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER) as virtrdf:lineitem-order_of .
-    
-            tpch:supplier (suppliers.S_NAME, lineitems.L_SUPPKEY)
-                tpch:supplier_of tpch:lineitem (lineitems.L_ORDERKEY, lineitems.L_LINENUMBER)
-                where (^{suppliers.}^.S_SUPPKEY = ^{lineitems.}^.L_SUPPKEY)
-                as virtrdf:lineitem-supplier_of .
-    
-    # Nation
-            tpch:nation (nations.N_NAME, nations.N_NATIONKEY)
-                a tpch:nation
-                    as virtrdf:nation-nations ;
-                tpch:name nations.N_NAME
-                    as virtrdf:nation-n_name ;
-                tpch:has_region tpch:region (regions.R_NAME, nations.N_REGIONKEY)
-                    where (^{regions.}^.R_REGIONKEY = ^{nations.}^.N_REGIONKEY)
-                    as virtrdf:nation-n_regionkey ;
-                tpch:comment nations.N_COMMENT
-                    as virtrdf:nation-n_comment .
-    
-            tpch:region (regions.R_NAME, nations.N_REGIONKEY)
-                tpch:region_of tpch:nation (nations.N_NAME, nations.N_NATIONKEY)
-                where (^{regions.}^.R_REGIONKEY = ^{nations.}^.N_REGIONKEY)
-                as virtrdf:nation-region_of .
-    
-    # Order
-            tpch:order (orders.O_ORDERKEY)
-                a tpch:order
-                    as virtrdf:order-orders ;
-                tpch:orderkey orders.O_ORDERKEY
-                    as virtrdf:order-o_orderkey ;
-                tpch:has_customer tpch:customer (customers.C_NAME, orders.O_CUSTKEY)
-                    where (^{orders.}^.O_CUSTKEY = ^{customers.}^.C_CUSTKEY)
-                    as virtrdf:order-o_custkey ;
-                tpch:orderstatus orders.O_ORDERSTATUS
-                    as virtrdf:order-o_orderstatus ;
-                tpch:ordertotalprice orders.O_TOTALPRICE
-                    as virtrdf:order-o_totalprice ;
-                tpch:orderdate orders.O_ORDERDATE
-                    as virtrdf:order-o_orderdate ;
-                tpch:orderpriority orders.O_ORDERPRIORITY
-                    as virtrdf:order-o_orderpriority ;
-                tpch:clerk orders.O_CLERK
-                    as virtrdf:order-o_clerk ;
-                tpch:shippriority orders.O_SHIPPRIORITY
-                    as virtrdf:order-o_shippriority ;
-                tpch:comment orders.O_COMMENT
-                    as virtrdf:order-o_comment .
-    
-            tpch:customer (customers.C_CUSTKEY, orders.O_CUSTKEY)
-                tpch:customer_of tpch:order (orders.O_ORDERKEY)
-                where (^{orders.}^.O_CUSTKEY = ^{customers.}^.C_CUSTKEY)
-                as virtrdf:order-customer_of .
-    
-    # Part
-            tpch:part (parts.P_NAME, parts.P_PARTKEY)
-                a tpch:part
-                    as virtrdf:part-parts ;
-                tpch:partkey parts.P_PARTKEY
-                    as virtrdf:part-p_partkey ;
-                tpch:name parts.P_NAME
-                    as virtrdf:part-p_name ;
-                tpch:mfgr parts.P_MFGR
-                    as virtrdf:part-p_mfgr ;
-                tpch:brand parts.P_BRAND
-                    as virtrdf:part-p_brand ;
-                tpch:type parts.P_TYPE
-                    as virtrdf:part-p_type ;
-                tpch:size parts.P_SIZE
-                    as virtrdf:part-p_size ;
-                tpch:container parts.P_CONTAINER
-                    as virtrdf:part-p_container ;
-                tpch:comment parts.P_COMMENT
-                    as virtrdf:part-p_comment .
-    
-    # Partsupp
-            tpch:partsupp (partsupps.PS_PARTKEY, partsupps.PS_SUPPKEY)
-                a tpch:partsupp
-                    as virtrdf:partsupp-partsupps ;
-                tpch:has_part tpch:part (parts.P_NAME, partsupps.PS_PARTKEY)
-                    where (^{parts.}^.P_PARTKEY = ^{partsupps.}^.PS_PARTKEY)
-                    as virtrdf:partsupp-ps_partkey ;
-                tpch:has_supplier tpch:supplier (suppliers.S_NAME, partsupps.PS_SUPPKEY)
-                    where (^{suppliers.}^.S_SUPPKEY = ^{partsupps.}^.PS_SUPPKEY)
-                    as virtrdf:partsupp-ps_suppkey ;
-                tpch:availqty partsupps.PS_AVAILQTY
-                    as virtrdf:partsupp-ps_availqty ;
-                tpch:supplycost partsupps.PS_SUPPLYCOST
-                    as virtrdf:partsupp-ps_supplycost ;
-                tpch:comment partsupps.PS_COMMENT
-                    as virtrdf:partsupp-ps_comment .
-    
-            tpch:part (parts.P_NAME, partsupps.PS_PARTKEY)
-                tpch:part_of tpch:partsupp (partsupps.PS_PARTKEY, partsupps.PS_SUPPKEY)
-                where (^{parts.}^.P_PARTKEY = ^{partsupps.}^.PS_PARTKEY)
-                as virtrdf:partsupp-part_of .
-    
-            tpch:supplier (suppliers.S_NAME, partsupps.PS_SUPPKEY)
-                tpch:supplier_of tpch:partsupp (partsupps.PS_PARTKEY, partsupps.PS_SUPPKEY)
-                where (^{suppliers.}^.S_SUPPKEY = ^{partsupps.}^.PS_SUPPKEY)
-                as virtrdf:partsupp-supplier_of .
-    
-    # Region
-            tpch:region (regions.R_NAME, regions.R_REGIONKEY)
-                a tpch:region
-                    as virtrdf:region-regions ;
-                tpch:name regions.R_NAME
-                    as virtrdf:region-r_name ;
-                tpch:comment regions.R_COMMENT
-                    as virtrdf:region-r_comment .
-    
-    # Supplier
-            tpch:supplier (suppliers.S_NAME, suppliers.S_SUPPKEY)
-                a tpch:supplier
-                    as virtrdf:supplier-suppliers ;
-                tpch:name suppliers.S_NAME
-                    as virtrdf:supplier-s_name ;
-                tpch:address suppliers.S_ADDRESS
-                    as virtrdf:supplier-s_address ;
-                tpch:has_nation tpch:nation (nations.N_NAME, suppliers.S_NATIONKEY)
-                    where (^{nations.}^.N_NATIONKEY = ^{suppliers.}^.S_NATIONKEY)
-                    as virtrdf:supplier-s_nationkey ;
-                foaf:phone suppliers.S_PHONE
-                    as virtrdf:supplier-foaf_phone ;
-                tpch:phone suppliers.S_PHONE
-                    as virtrdf:supplier-s_phone ;
-                tpch:acctbal suppliers.S_ACCTBAL
-                    as virtrdf:supplier-s_acctbal ;
-                tpch:comment suppliers.S_COMMENT
-                    as virtrdf:supplier-s_comment .
-    
-            tpch:nation (nations.N_NAME, suppliers.S_NATIONKEY)
-                tpch:nation_of tpch:supplier (suppliers.S_NAME, suppliers.S_SUPPKEY)
-                where (^{nations.}^.N_NATIONKEY = ^{suppliers.}^.S_NATIONKEY)
-                as virtrdf:supplier-nation_of .
-        } .
-    } .
-    ;
-    
-    DELETE FROM db.dba.url_rewrite_rule_list WHERE urrl_list like 'tpch_rule%';
-    DELETE FROM db.dba.url_rewrite_rule WHERE urr_rule like 'tpch_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tpch_rule2',
-        1,
-        '([^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/tpch%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tpch_rule1',
-        1,
-        '([^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s%%23this',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tpch_rule3',
-        1,
-        '(/[^#]*)/\x24',
-        vector('path'),
-        1,
-        '%s',
-        vector('path'),
-        null,
-        null,
-        0,
-        null
-        );
-    
-    create procedure DB.DBA.REMOVE_TPCH_RDF_DET()
-    {
-      declare colid int;
-      colid := DAV_SEARCH_ID('/DAV/home/demo/tpch', 'C');
-      if (colid < 0)
-        return;
-      update WS.WS.SYS_DAV_COL set COL_DET=null where COL_ID = colid;
-    }
-    ;
-    
-    DB.DBA.REMOVE_TPCH_RDF_DET();
-    
-    drop procedure DB.DBA.REMOVE_TPCH_RDF_DET;
-    
-    create procedure DB.DBA.TPCH_MAKE_RDF_DET()
-    {
-        declare uriqa_str varchar;
-        uriqa_str := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-        uriqa_str := 'http://' || uriqa_str || '/tpch';
-        DB.DBA."RDFData_MAKE_DET_COL" ('/DAV/home/demo/tpch/RDFData/', uriqa_str, NULL);
-        VHOST_REMOVE (lpath=>'/tpch/data/rdf');
-        DB.DBA.VHOST_DEFINE (lpath=>'/tpch/data/rdf', ppath=>'/DAV/home/demo/tpch/RDFData/All/', is_dav=>1, vsp_user=>'dba');
-    }
-    ;
-    
-    DB.DBA.TPCH_MAKE_RDF_DET();
-    
-    drop procedure DB.DBA.TPCH_MAKE_RDF_DET;
-    
-    create procedure DB.DBA.TPCH_DET_REF (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare res, iri any;
-      declare uriqa_str varchar;
-      uriqa_str := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-      uriqa_str := 'http://' || uriqa_str || '/tpch';
-      iri := uriqa_str || val;
-      res := sprintf ('iid (%d).rdf', iri_id_num (iri_to_id (iri)));
-      return sprintf (fmt, res);
-    }
-    ;
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('tpch_rdf', 1,
-        '/tpch/(.*)', vector('path'), 1,
-        '/tpch/data/rdf/%U', vector('path'),
-        'DB.DBA.TPCH_DET_REF',
-        'application/rdf.xml',
-        2,
-        303);
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'tpch_rule_list1',
-        1,
-        vector (
-                    'tpch_rule1',
-                    'tpch_rule2',
-                    'tpch_rule3',
-                    'tpch_rdf'
-              ));
-    
-    DB.DBA.VHOST_REMOVE (lpath=>'/tpch');
-    DB.DBA.VHOST_DEFINE (lpath=>'/tpch', ppath=>'/DAV/home/demo/tpch/', vsp_user=>'dba', is_dav=>1,
-              is_brws=>0, opts=>vector ('url_rewrite', 'tpch_rule_list1'));
-    
-    DB.DBA.VHOST_REMOVE (lpath=>'/tpch/linkeddata');
-    DB.DBA.VHOST_DEFINE (lpath=>'/tpch/linkeddata', ppath=>'/DAV/home/demo/tpch/', vsp_user=>'dba', is_dav=>1,
-              is_brws=>1);
-
-## TPCD to RDF
-
-Please load \~\\binsrc\\dav\\DET\_RDFData.sql before loadding this
-script (tpc-d has no vad to do this automatic)
-
-    use DB;
-    
-    create procedure DB.DBA.exec_no_error (in expr varchar) {
-      declare state, message, meta, result any;
-      exec(expr, state, message, vector(), 0, meta, result);
-    }
-    ;
-    
-    DB.DBA.exec_no_error('GRANT \"SPARQL_UPDATE\" TO \"SPARQL\"')
-    ;
-    GRANT SELECT ON tpcd.DBA.partsupp  TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.supplier  TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.customer  TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.history   TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.part      TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.lineitem  TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.orders    TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.nation    TO "SPARQL";
-    GRANT SELECT ON tpcd.DBA.region    TO "SPARQL";
-    
-    --SPARQL
-    --prefix tpcd: <http://demo.openlinksw.com/schemas/tpcd#>
-    --prefix sioc: <http://rdfs.org/sioc/ns#>
-    --prefix foaf: <http://xmlns.com/foaf/0.1/>
-    --prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    --drop quad map graph iri("http://^{URIQADefaultHost}^/tpcd") .
-    --;
-    
-    SPARQL
-    prefix tpcd: <http://demo.openlinksw.com/schemas/tpcd#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    drop silent quad map virtrdf:TpcdDemo .
-    ;
-    
-    SPARQL
-    prefix tpcd: <http://demo.openlinksw.com/schemas/tpcd#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    create iri class tpcd:customer "http://^{URIQADefaultHost}^/tpcd/customer/%d#this" (in c_custkey integer not null) .
-    create iri class tpcd:lineitem "http://^{URIQADefaultHost}^/tpcd/lineitem/%d/%d#this" (in l_orderkey integer not null, in l_linenumber integer not null) .
-    create iri class tpcd:nation "http://^{URIQADefaultHost}^/tpcd/nation/%d#this" (in l_nationkey integer not null) .
-    create iri class tpcd:order "http://^{URIQADefaultHost}^/tpcd/order/%d#this" (in o_orderkey integer not null) .
-    create iri class tpcd:part "http://^{URIQADefaultHost}^/tpcd/part/%d#this" (in p_partkey integer not null) .
-    create iri class tpcd:partsupp "http://^{URIQADefaultHost}^/tpcd/partsupp/%d/%d#this" (in ps_partkey integer not null, in ps_suppkey integer not null) .
-    create iri class tpcd:region "http://^{URIQADefaultHost}^/tpcd/region/%d#this" (in r_regionkey integer not null) .
-    create iri class tpcd:supplier "http://^{URIQADefaultHost}^/tpcd/supplier/%d#this" (in s_supplierkey integer not null) .
-    ;
-    
-    SPARQL
-    prefix tpcd: <http://demo.openlinksw.com/schemas/tpcd#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    alter quad storage virtrdf:DefaultQuadStorage
-    from tpcd.DBA.lineitem as lineitems
-    from tpcd.DBA.customer as customers
-    from tpcd.DBA.nation as nations
-    from tpcd.DBA.orders as orders
-    from tpcd.DBA.part as parts
-    from tpcd.DBA.partsupp as partsupps
-    from tpcd.DBA.region as regions
-    from tpcd.DBA.supplier as suppliers
-    where (^{suppliers.}^.s_nationkey = ^{nations.}^.n_nationkey)
-    where (^{customers.}^.c_nationkey = ^{nations.}^.n_nationkey)
-    {
-        create virtrdf:TpcdDemo as graph iri ("http://^{URIQADefaultHost}^/tpcd") option (exclusive)
-        {
-    # Customers
-            tpcd:customer (customers.c_custkey)
-                a  tpcd:customer
-                    as virtrdf:tpcdcustomer-type ;
-                a  foaf:Organization
-                    as virtrdf:tpcdcustomer-foaf-type ;
-                tpcd:custkey customers.c_custkey
-                    as virtrdf:tpcdcustomer-c_custkey ;
-                foaf:name customers.c_name
-                    as virtrdf:tpcdcustomer-foaf_name ;
-                tpcd:companyName customers.c_name
-                    as virtrdf:tpcdcustomer-c_name ;
-                tpcd:has_nation tpcd:nation (customers.c_nationkey)
-                    as virtrdf:tpcdcustomer-c_nationkey ;
-                tpcd:address customers.c_address
-                    as virtrdf:tpcdcustomer-c_address ;
-                foaf:phone customers.c_phone
-                    as virtrdf:tpcdcustomer-foaf_phone ;
-                tpcd:phone customers.c_phone
-                    as virtrdf:tpcdcustomer-phone ;
-                tpcd:acctbal customers.c_acctbal
-                    as virtrdf:tpcdcustomer-acctbal ;
-                tpcd:mktsegment customers.c_mktsegment
-                    as virtrdf:tpcdcustomer-c_mktsegment ;
-                tpcd:comment customers.c_comment
-                    as virtrdf:tpcdcustomer-c_comment .
-    
-    # Nations
-            tpcd:nation (customers.c_nationkey)
-                tpcd:nation_of tpcd:customer (customers.c_custkey) as virtrdf:tpcdcustomer-nation_of .
-    
-    # Lineitems
-            tpcd:lineitem (lineitems.l_orderkey, lineitems.l_linenumber)
-                a tpcd:lineitem
-                    as virtrdf:tpcdlineitem-lineitems ;
-                tpcd:has_order tpcd:order (lineitems.l_orderkey)
-                    as virtrdf:tpcdlineitem-l_orderkey ;
-                tpcd:has_part tpcd:part (lineitems.l_partkey)
-                    as virtrdf:tpcdlineitem-l_partkey ;
-                tpcd:has_supplier tpcd:supplier (lineitems.l_suppkey)
-                    as virtrdf:tpcdlineitem-l_suppkey ;
-                tpcd:linenumber lineitems.l_linenumber
-                    as virtrdf:tpcdlineitem-l_linenumber ;
-                tpcd:linequantity lineitems.l_quantity
-                    as virtrdf:tpcdlineitem-l_linequantity ;
-                tpcd:lineextendedprice lineitems.l_extendedprice
-                    as virtrdf:tpcdlineitem-l_lineextendedprice ;
-                tpcd:linediscount lineitems.l_discount
-                    as virtrdf:tpcdlineitem-l_linediscount ;
-                tpcd:linetax lineitems.l_tax
-                    as virtrdf:tpcdlineitem-l_linetax ;
-                tpcd:returnflag lineitems.l_returnflag
-                    as virtrdf:tpcdlineitem-l_returnflag ;
-                tpcd:linestatus lineitems.l_linestatus
-                    as virtrdf:tpcdlineitem-l_linestatus ;
-                tpcd:shipdate lineitems.l_shipdate
-                    as virtrdf:tpcdlineitem-l_shipdate ;
-                tpcd:commitdate lineitems.l_commitdate
-                    as virtrdf:tpcdlineitem-l_commitdate ;
-                tpcd:receiptdate lineitems.l_receiptdate
-                    as virtrdf:tpcdlineitem-l_receiptdate ;
-                tpcd:shipinstruct lineitems.l_shipinstruct
-                    as virtrdf:tpcdlineitem-l_shipinstruct ;
-                tpcd:shipmode lineitems.l_shipmode
-                    as virtrdf:tpcdlineitem-l_shipmode ;
-                tpcd:comment lineitems.l_comment
-                    as virtrdf:tpcdlineitem-l_comment .
-    
-            tpcd:part (lineitems.l_partkey)
-                tpcd:part_of tpcd:lineitem (lineitems.l_orderkey, lineitems.l_linenumber) as virtrdf:tpcdlineitem-part_of .
-    
-            tpcd:order (lineitems.l_orderkey)
-                tpcd:order_of tpcd:lineitem (lineitems.l_orderkey, lineitems.l_linenumber) as virtrdf:tpcdlineitem-order_of .
-    
-            tpcd:supplier (lineitems.l_suppkey)
-                tpcd:supplier_of tpcd:lineitem (lineitems.l_orderkey, lineitems.l_linenumber) as virtrdf:tpcdlineitem-supplier_of .
-    
-    # Nation
-            tpcd:nation (nations.n_nationkey)
-                a tpcd:nation
-                    as virtrdf:tpcdnation-nations ;
-                tpcd:name nations.n_name
-                    as virtrdf:tpcdnation-n_name ;
-                tpcd:has_region tpcd:region (nations.n_regionkey)
-                    as virtrdf:tpcdnation-n_regionkey ;
-                tpcd:comment nations.n_comment
-                    as virtrdf:tpcdnation-n_comment .
-    
-            tpcd:region (nations.n_regionkey)
-                tpcd:region_of tpcd:nation (nations.n_nationkey) as virtrdf:tpcdnation-region_of .
-    
-    # Order
-            tpcd:order (orders.o_orderkey)
-                a tpcd:order
-                    as virtrdf:tpcdorder-orders ;
-                tpcd:orderkey orders.o_orderkey
-                    as virtrdf:tpcdorder-o_orderkey ;
-                tpcd:has_customer tpcd:customer (orders.o_custkey)
-                    as virtrdf:tpcdorder-o_custkey ;
-                tpcd:orderstatus orders.o_orderstatus
-                    as virtrdf:tpcdorder-o_orderstatus ;
-                tpcd:ordertotalprice orders.o_totalprice
-                    as virtrdf:tpcdorder-o_totalprice ;
-                tpcd:orderdate orders.o_orderdate
-                    as virtrdf:tpcdorder-o_orderdate ;
-                tpcd:orderpriority orders.o_orderpriority
-                    as virtrdf:tpcdorder-o_orderpriority ;
-                tpcd:clerk orders.o_clerk
-                    as virtrdf:tpcdorder-o_clerk ;
-                tpcd:shippriority orders.o_shippriority
-                    as virtrdf:tpcdorder-o_shippriority ;
-                tpcd:comment orders.o_comment
-                    as virtrdf:tpcdorder-o_comment .
-    
-            tpcd:customer (orders.o_custkey)
-                tpcd:customer_of tpcd:order (orders.o_orderkey) as virtrdf:tpcdorder-customer_of .
-    
-    # Part
-            tpcd:part (parts.p_partkey)
-                a tpcd:part
-                    as virtrdf:tpcdpart-parts ;
-                tpcd:partkey parts.p_partkey
-                    as virtrdf:tpcdpart-p_partkey ;
-                tpcd:name parts.p_name
-                    as virtrdf:tpcdpart-p_name ;
-                tpcd:mfgr parts.p_mfgr
-                    as virtrdf:tpcdpart-p_mfgr ;
-                tpcd:brand parts.p_brand
-                    as virtrdf:tpcdpart-p_brand ;
-                tpcd:type parts.p_type
-                    as virtrdf:tpcdpart-p_type ;
-                tpcd:size parts.p_size
-                    as virtrdf:tpcdpart-p_size ;
-                tpcd:container parts.p_container
-                    as virtrdf:tpcdpart-p_container ;
-                tpcd:comment parts.p_comment
-                    as virtrdf:tpcdpart-p_comment .
-    
-    # Partsupp
-            tpcd:partsupp (partsupps.ps_partkey, partsupps.ps_suppkey)
-                a tpcd:partsupp
-                    as virtrdf:tpcdpartsupp-partsupps ;
-                tpcd:has_part tpcd:part (partsupps.ps_partkey)
-                    as virtrdf:tpcdpartsupp-ps_partkey ;
-                tpcd:has_supplier tpcd:supplier (partsupps.ps_suppkey)
-                    as virtrdf:tpcdpartsupp-ps_suppkey ;
-                tpcd:availqty partsupps.ps_availqty
-                    as virtrdf:tpcdpartsupp-ps_availqty ;
-                tpcd:supplycost partsupps.ps_supplycost
-                    as virtrdf:tpcdpartsupp-ps_supplycost ;
-                tpcd:comment partsupps.ps_comment
-                    as virtrdf:tpcdpartsupp-ps_comment .
-    
-            tpcd:part (partsupps.ps_partkey)
-                tpcd:part_of tpcd:partsupp (partsupps.ps_partkey, partsupps.ps_suppkey) as virtrdf:tpcdpartsupp-part_of .
-    
-            tpcd:supplier (partsupps.ps_suppkey)
-                tpcd:supplier_of tpcd:partsupp (partsupps.ps_partkey, partsupps.ps_suppkey) as virtrdf:tpcdpartsupp-supplier_of .
-    
-    # Region
-            tpcd:region (regions.r_regionkey)
-                a tpcd:region
-                    as virtrdf:tpcdregion-regions ;
-                tpcd:name regions.r_name
-                    as virtrdf:tpcdregion-r_name ;
-                tpcd:comment regions.r_comment
-                    as virtrdf:tpcdregion-r_comment .
-    
-    # Supplier
-            tpcd:supplier (suppliers.s_suppkey)
-                a tpcd:supplier
-                    as virtrdf:tpcdsupplier-suppliers ;
-                tpcd:name suppliers.s_name
-                    as virtrdf:tpcdsupplier-s_name ;
-                tpcd:address suppliers.s_address
-                    as virtrdf:tpcdsupplier-s_address ;
-                tpcd:has_nation tpcd:nation (suppliers.s_nationkey)
-                    as virtrdf:tpcdsupplier-s_nationkey ;
-                foaf:phone suppliers.s_phone
-                    as virtrdf:tpcdsupplier-foaf_phone ;
-                tpcd:phone suppliers.s_phone
-                    as virtrdf:tpcdsupplier-s_phone ;
-                tpcd:acctbal suppliers.s_acctbal
-                    as virtrdf:tpcdsupplier-s_acctbal ;
-                tpcd:comment suppliers.s_comment
-                    as virtrdf:tpcdsupplier-s_comment .
-    
-            tpcd:nation (suppliers.s_nationkey)
-                tpcd:nation_of tpcd:supplier (suppliers.s_suppkey) as virtrdf:tpcdsupplier-nation_of .
-        }
-    }
-    ;
-    
-    create procedure tcpd_rdf_doc (in path varchar)
-    {
-      declare r any;
-      r := regexp_match ('[^/]*\x24', path);
-      return r||'#this';
-    };
-    
-    create procedure tcpd_html_doc (in path varchar)
-    {
-      declare r any;
-      r := regexp_match ('[^/]*#', path);
-      return subseq (r, 0, length (r)-1);
-    };
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tcpd_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/tpcd%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tcpd_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/rdfbrowser/index.html?uri=http%%3A//^{URIQADefaultHost}^%U%%23this',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tcpd_rule3',
-        1,
-        '(/[^#]*)/\x24',
-        vector('path'),
-        1,
-        '%s',
-        vector('path'),
-        null,
-        null,
-        0,
-        null
-        );
-    
-    DB.DBA."RDFData_MAKE_DET_COL" ('/DAV/home/tpcd/RDFData/', 'http://^{URIQADefaultHost}^/tpcd', NULL);
-    VHOST_REMOVE (lpath=>'/tpcd/data/rdf');
-    DB.DBA.VHOST_DEFINE (lpath=>'/tpcd/data/rdf', ppath=>'/DAV/home/tpcd/RDFData/All/', is_dav=>1, vsp_user=>'dba');
-    
-    -- procedure to convert path to DET resource name
-    create procedure DB.DBA.TPCD_DET_REF (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare res, iri any;
-      iri := 'http://^{URIQADefaultHost}^/tpcd' || val;
-      res := sprintf ('iid (%d).rdf', iri_id_num (iri_to_id (iri)));
-      return sprintf (fmt, res);
-    }
-    ;
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('tpcd_rdf', 1,
-        '/tpcd/(.*)', vector('path'), 1,
-        '/tpcd/data/rdf/%U', vector('path'),
-        'DB.DBA.TPCD_DET_REF',
-        'application/rdf.xml',
-        2,
-        303);
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'tpcd_rule_list1',
-        1,
-        vector (
-                    'tcpd_rule1',
-                    'tcpd_rule2',
-                    'tcpd_rule3',
-                    'tpcd_rdf'
-              ));
-    
-    VHOST_REMOVE (lpath=>'/tpcd');
-    DB.DBA.VHOST_DEFINE (lpath=>'/tpcd', ppath=>'/DAV/home/', vsp_user=>'dba', is_dav=>1, def_page=>'sfront.vspx',
-        is_brws=>0, opts=>vector ('url_rewrite', 'tpcd_rule_list1'));
-    
-    create procedure DB.DBA.LOAD_TPCD_ONTOLOGY_FROM_DAV()
-    {
-        declare content, urihost varchar;
-        select cast (RES_CONTENT as varchar) into content from WS.WS.SYS_DAV_RES where RES_FULL_PATH = '/DAV/VAD/tpcd/tpcd.owl';
-        DB.DBA.RDF_LOAD_RDFXML (content, 'http://demo.openlinksw.com/schemas/tpcd#', 'http://demo.openlinksw.com/schemas/TPCDOntology/1.0/');
-        urihost := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-        if (urihost = 'demo.openlinksw.com')
-        {
-            DB.DBA.VHOST_REMOVE (lpath=>'/schemas/tpcd');
-            DB.DBA.VHOST_DEFINE (lpath=>'/schemas/tpcd', ppath=>'/DAV/VAD/tpcd/tpcd.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-        }
-    }
-    ;
-    DB.DBA.LOAD_TPCD_ONTOLOGY_FROM_DAV()
-    ;
-    drop procedure DB.DBA.LOAD_TPCD_ONTOLOGY_FROM_DAV
-    ;
-    
-    XML_SET_NS_DECL ('virt-tpcd', 'http://demo.openlinksw.com/schemas/tpcd#', 2)
-    ;
-
-## Thalia to RDF
-
-``` 
-
-use DB
-;
-
-SPARQL drop quad map virtrdf:ThaliaDemo
-;
-
-create procedure DB.DBA.SPARQL_THALIA_RUN (in txt varchar)
-{
-  declare REPORT, stat, msg, sqltext varchar;
-  declare metas, rowset any;
-  result_names (REPORT);
-  sqltext := string_output_string (sparql_to_sql_text (txt));
-  stat := '00000';
-  msg := '';
-  rowset := null;
-  exec (sqltext, stat, msg, vector (), 1000, metas, rowset);
-}
-;
-
-create procedure DB.DBA.exec_no_error(in expr varchar)
-{
-    declare state, message, meta, result any;
-    exec(expr, state, message, vector(), 0, meta, result);
-}
-;
-
-DB.DBA.exec_no_error('drop View thalia.Demo.asu_v');
-DB.DBA.exec_no_error('create View thalia.Demo.asu_v as select left(Title,3) code,* from thalia.Demo.asu');
-DB.DBA.exec_no_error('drop View thalia.Demo.gatech_v');
-DB.DBA.exec_no_error('create View thalia.Demo.gatech_v as select *, Room||\' \'||Building Place from thalia.Demo.gatech');
-DB.DBA.SPARQL_THALIA_RUN('drop quad map graph iri("http://^{URIQADefaultHost}^/Thalia") .
-')
-;
-
-GRANT SELECT ON thalia.Demo.asu TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.asu_v TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.brown TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.cmu TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.gatech TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.gatech_v TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.toronto TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.ucsd TO "SPARQL"
-;
-GRANT SELECT ON thalia.Demo.umd TO "SPARQL"
-;
-
-DB.DBA.SPARQL_THALIA_RUN('drop quad map graph iri("http://^{URIQADefaultHost}^/thalia") .
-');
-
-DB.DBA.SPARQL_THALIA_RUN('drop quad map virtrdf:ThaliaDemo .
-');
-
-DB.DBA.SPARQL_THALIA_RUN('
-prefix sioc: <http://rdfs.org/sioc/ns#>
-prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix owl: <http://www.w3.org/2002/07/owl#>
-prefix dc: <http://purl.org/dc/elements/1.1/>
-prefix time: <http://www.w3.org/2006/time#>
-prefix event: <http://purl.org/NET/c4dm/event.owl#>
-prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-prefix foaf: <http://xmlns.com/foaf/0.1/>
-prefix skos: <http://www.w3.org/2004/02/skos/core#>
-prefix th: <http://demo.openlinksw.com/schemas/thalia#>
-
-create iri class th:Asu "http://^{URIQADefaultHost}^/thalia/asu/course/%U#this" (in code varchar not null) .
-create iri class th:Brown "http://^{URIQADefaultHost}^/thalia/brown/course/%U#this" (in Code varchar not null) .
-create iri class th:BrownInstructor "http://^{URIQADefaultHost}^/thalia/brown/instructor/%U#this" (in Code varchar not null) .
-create iri class th:BrownLecture "http://^{URIQADefaultHost}^/thalia/brown/lecture/%U#this" (in Code varchar not null) .
-create iri class th:BrownPlace "http://^{URIQADefaultHost}^/thalia/brown/place/%U#this" (in Code varchar not null) .
-
-create iri class th:Cmu "http://^{URIQADefaultHost}^/thalia/cmu/course/%U/%U#this" (in Code varchar not null, in Sec varchar) .
-create iri class th:CmuInstructor "http://^{URIQADefaultHost}^/thalia/cmu/instructor/%U/%U#this" (in Code varchar not null, in Sec varchar) .
-create iri class th:CmuLecture "http://^{URIQADefaultHost}^/thalia/cmu/lecture/%U/%U#this" (in Code varchar not null, in Sec varchar) .
-create iri class th:CmuPlace "http://^{URIQADefaultHost}^/thalia/cmu/place/%U/%U#this" (in Code varchar not null, in Sec varchar) .
-create iri class th:CmuEventTime "http://^{URIQADefaultHost}^/thalia/cmu/eventtime/%U/%U#this" (in Code varchar not null, in Sec varchar) .
-create iri class th:CmuDatetime "http://^{URIQADefaultHost}^/thalia/cmu/datetime/%U/%U#this" (in Code varchar not null, in Sec varchar) .
-
-create iri class th:Gatech "http://^{URIQADefaultHost}^/thalia/gatech/course/%U/%d/%U#this" (in Department varchar, in Code integer, in Section varchar) .
-create iri class th:GatechInstructor "http://^{URIQADefaultHost}^/thalia/gatech/instructor/%U/%d/%U#this" (in Department varchar, in Code integer, in Section varchar) .
-create iri class th:GatechLecture "http://^{URIQADefaultHost}^/thalia/gatech/lecture/%U/%d/%U#this" (in Department varchar, in Code integer, in Section varchar) .
-create iri class th:GatechEventTime "http://^{URIQADefaultHost}^/thalia/gatech/eventtime/%U/%d/%U#this" (in Department varchar, in Code integer, in Section varchar) .
-create iri class th:GatechDatetime "http://^{URIQADefaultHost}^/thalia/gatech/datetime/%U/%d/%U#this" (in Department varchar, in Code integer, in Section varchar) .
-create iri class th:GatechPlace "http://^{URIQADefaultHost}^/thalia/gatech/place/%U/%d/%U#this" (in Department varchar, in Code integer, in Section varchar) .
-
-create iri class th:Toronto "http://^{URIQADefaultHost}^/thalia/toronto/course/%U#this" (in No_ varchar) .
-create iri class th:TorontoInstructor "http://^{URIQADefaultHost}^/thalia/toronto/instructor/%U#this" (in No_ varchar) .
-create iri class th:TorontoLecture "http://^{URIQADefaultHost}^/thalia/toronto/lecture/%U#this" (in No_ varchar) .
-create iri class th:TorontoPlace "http://^{URIQADefaultHost}^/thalia/toronto/place/%U#this" (in No_ varchar) .
-
-create iri class th:Ucsd "http://^{URIQADefaultHost}^/thalia/ucsd/course/%U#this" (in Number varchar) .
-create iri class th:UcsdInstructor1 "http://^{URIQADefaultHost}^/thalia/ucsd/instructor1/%U#this" (in Number varchar) .
-create iri class th:UcsdInstructor2 "http://^{URIQADefaultHost}^/thalia/ucsd/instructor2/%U#this" (in Number varchar) .
-create iri class th:UcsdInstructor3 "http://^{URIQADefaultHost}^/thalia/ucsd/instructor3/%U#this" (in Number varchar) .
-
-create iri class th:Umd "http://^{URIQADefaultHost}^/thalia/umd/course/%U#this" (in Code varchar) .
-create iri class th:UmdLecture "http://^{URIQADefaultHost}^/thalia/umd/lecture/%U#this" (in Code varchar) .
-create iri class th:UmdEventTime "http://^{URIQADefaultHost}^/thalia/umd/eventtime/%U#this" (in Code varchar) .
-create iri class th:UmdDatetime "http://^{URIQADefaultHost}^/thalia/umd/datetime/%U#this" (in Code varchar) .
-')
-;
-
-DB.DBA.SPARQL_THALIA_RUN('prefix sioc: <http://rdfs.org/sioc/ns#>
-prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix owl: <http://www.w3.org/2002/07/owl#>
-prefix dc: <http://purl.org/dc/elements/1.1/>
-prefix time: <http://www.w3.org/2006/time#>
-prefix event: <http://purl.org/NET/c4dm/event.owl#>
-prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-prefix foaf: <http://xmlns.com/foaf/0.1/>
-prefix skos: <http://www.w3.org/2004/02/skos/core#>
-prefix th: <http://demo.openlinksw.com/schemas/thalia#>
-alter quad storage virtrdf:DefaultQuadStorage
-from thalia.demo.asu_v as asus
-from thalia.demo.brown as browns
-from thalia.demo.cmu as cmus
-from thalia.demo.gatech_v as gatechs
-from thalia.demo.toronto as torontos
-from thalia.demo.ucsd as ucsds
-from thalia.demo.umd as umds
-{
-        create virtrdf:ThaliaDemo as graph iri ("http://^{URIQADefaultHost}^/thalia") option (exclusive)
-        {
-                th:Asu (asus.code)
-                    a th:Course
-                        as virtrdf:Asu-Course ;
-                    dc:title asus.Title
-                        as virtrdf:Asu-Title ;
-                    dc:description asus.Description
-                        as virtrdf:Asu-Description ;
-                    rdfs:seeAlso asus.MoreInfoURL
-                        as virtrdf:Asu-MoreInfoURL ;
-                        th:forUniversity "http://purl.org/thalia/university/asu/university/asu"
-                            as virtrdf:Asu-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Asu-Subject
-                            .
-
-                th:Brown (browns.Code)
-                        a th:Course
-                                as virtrdf:Brown-Course ;
-                        dc:title browns.Title
-                            as virtrdf:Brown-Title ;
-                        th:hasInstructor th:BrownInstructor (browns.Code)
-                            as virtrdf:Brown-hasInstructor ;
-                        th:hasLecture th:BrownLecture(browns.Code)
-                            as virtrdf:Brown-hasLecture ;
-                        th:forUniversity "http://purl.org/thalia/university/brown"
-                            as virtrdf:Brown-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Brown-Subject
-                            .
-                th:BrownInstructor (browns.Code)
-                        a th:Instructor
-                                as virtrdf:Brown-Instructor ;
-                        dc:homepage browns.Instructor
-                            as virtrdf:Brown-Instructor-Homepage
-                            .
-                th:BrownLecture (browns.Code)
-                        a event:Event
-                                as virtrdf:Brown-Lecture ;
-                        event:place th:BrownPlace(browns.Code)
-                            as virtrdf:Brown-hasPlace
-                            .
-                th:BrownPlace (browns.Code)
-                        a geo:Point
-                                as virtrdf:Brown-Place;
-                        dc:title browns.Room
-                            as virtrdf:Brown-Room
-                            .
-
-                th:Cmu (cmus.Code, cmus.Sec)
-                    a th:Course
-                        as virtrdf:Cmu-Course ;
-                    dc:title cmus.CourseTitle
-                        as virtrdf:Cmu-CourseTitle ;
-                        th:hasInstructor th:CmuInstructor (cmus.Code, cmus.Sec)
-                            as virtrdf:Cmu-hasInstructor ;
-                        th:hasLecture th:CmuLecture(cmus.Code, cmus.Sec)
-                            as virtrdf:Cmu-hasLecture ;
-                        th:hasUnits cmus.Units
-                            as virtrdf:Cmu-hasUnits ;
-                        th:forUniversity "http://purl.org/thalia/university/cmu"
-                            as virtrdf:Cmu-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Cmu-Subject
-                        .
-        th:CmuInstructor (cmus.Code, cmus.Sec)
-                        a th:Instructor
-                                as virtrdf:Cmu-Instructor ;
-                    foaf:name cmus.Lecturer
-                        as virtrdf:Cmu-Lecturer
-                            .
-        th:CmuLecture (cmus.Code, cmus.Sec)
-                        a event:Event
-                                as virtrdf:Cmu-Lecture ;
-                        event:time th:CmuEventTime(cmus.Code, cmus.Sec)
-                            as virtrdf:Cmu-hasEventTime ;
-                        event:place th:CmuPlace(cmus.Code, cmus.Sec)
-                            as virtrdf:Cmu-hasPlace
-                            .
-        th:CmuPlace (cmus.Code, cmus.Sec)
-                        a geo:Point
-                                as virtrdf:Cmu-Place;
-                        dc:title cmus.Room
-                            as virtrdf:Cmu-Room
-                            .
-        th:CmuEventTime (cmus.Code, cmus.Sec)
-                        a time:Interval
-                                as virtrdf:Cmu-EventTime;
-                        time:inDateTime th:CmuDatetime(cmus.Code, cmus.Sec)
-                            as virtrdf:Cmu-inDateTime
-                            .
-        th:CmuDatetime (cmus.Code, cmus.Sec)
-                        a time:DateTimeDescription
-                                as virtrdf:Cmu-Datetime;
-                    time:dayOfWeek cmus.Day_
-                        as virtrdf:Cmu-Day ;
-                    time:hour cmus.Time_
-                        as virtrdf:Cmu-Time
-                            .
-
-                th:Gatech (gatechs.Department, gatechs.Code, gatechs.Section)
-                    a th:Course
-                        as virtrdf:Gatech-Course ;
-                    dc:title gatechs.Title
-                        as virtrdf:Gatech-Title ;
-                        th:hasInstructor th:GatechInstructor(gatechs.Department, gatechs.Code, gatechs.Section)
-                            as virtrdf:Gatech-hasInstructor ;
-                    dc:description gatechs.Description
-                        as virtrdf:Gatech-Description ;
-                        th:hasLecture th:GatechLecture(gatechs.Department, gatechs.Code, gatechs.Section)
-                            as virtrdf:Gatech-hasLecture ;
-                        th:forUniversity "http://purl.org/thalia/university/gatech"
-                            as virtrdf:Gatech-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Gatech-Subject
-                            .
-        th:GatechInstructor (gatechs.Department, gatechs.Code, gatechs.Section)
-                        a th:Instructor
-                                as virtrdf:Gatech-Instructor ;
-                    foaf:name gatechs.Instructor
-                        as virtrdf:Gatech-InstructorName
-                .
-        th:GatechLecture (gatechs.Department, gatechs.Code, gatechs.Section)
-                        a event:Event
-                                as virtrdf:Gatech-Lecture ;
-                        event:time th:GatechEventTime(gatechs.Department, gatechs.Code, gatechs.Section)
-                            as virtrdf:Gatech-hasEventTime ;
-                        event:place th:GatechPlace(gatechs.Department, gatechs.Code, gatechs.Section)
-                            as virtrdf:Gatech-hasPlace
-                .
-        th:GatechEventTime (gatechs.Department, gatechs.Code, gatechs.Section)
-                        a time:Interval
-                                as virtrdf:Gatech-EventTime ;
-                        time:inDateTime th:GatechDatetime(gatechs.Department, gatechs.Code, gatechs.Section)
-                            as virtrdf:Gatech-inDateTime
-                .
-        th:GatechDatetime (gatechs.Department, gatechs.Code, gatechs.Section)
-                        a time:DateTimeDescription
-                                as virtrdf:Gatech-Datetime ;
-                    time:dayOfWeek gatechs.Days
-                        as virtrdf:Gatech-Days ;
-                    time:hour gatechs.Time_
-                        as virtrdf:Gatech-Time_
-                .
-        th:GatechPlace (gatechs.Department, gatechs.Code, gatechs.Section)
-                        a geo:Point
-                                as virtrdf:Gatech-Place ;
-                        dc:title gatechs.Place
-                            as virtrdf:Gatech-RoomBuilding
-                .
-
-                th:Toronto (torontos.No_)
-                        a th:Course
-                                as virtrdf:Toronto-Course ;
-                        dc:title torontos.title
-                            as virtrdf:Toronto-Title ;
-                        dc:description torontos.text_
-                            as virtrdf:Toronto-Description ;
-                        th:hasInstructor th:TorontoInstructor(torontos.No_)
-                            as virtrdf:Toronto-hasInstructor ;
-                        th:hasLecture th:TorontoLecture(torontos.No_)
-                            as virtrdf:Toronto-hasLecture ;
-                        rdfs:seeAlso torontos.coursewebsite
-                            as virtrdf:Toronto-CourseWebSite ;
-                        th:hasPrerequisite torontos.prereq
-                            as virtrdf:Toronto-prereq ;
-                        th:text torontos.text_
-                            as virtrdf:Toronto-text;
-                        th:forUniversity "http://purl.org/thalia/university/toronto"
-                            as virtrdf:Toronto-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Toronto-Subject
-                            .
-        th:TorontoInstructor (torontos.No_)
-                        a th:Instructor
-                                as virtrdf:Toronto-Instructor ;
-                        foaf:name torontos.instructorName
-                            as virtrdf:Toronto-InstructorName ;
-                        foaf:mbox torontos.instructorEmail
-                            as virtrdf:Toronto-InstructorEmail
-                .
-        th:TorontoLecture (torontos.No_)
-                        a event:Event
-                                as virtrdf:Toronto-Lecture ;
-                        event:place th:TorontoPlace(torontos.No_)
-                            as virtrdf:Toronto-hasPlace
-                .
-        th:TorontoPlace (torontos.No_)
-                        a geo:Point
-                                as virtrdf:Toronto-Place ;
-                        dc:title torontos.location
-                            as virtrdf:Toronto-Location
-                .
-
-                th:Ucsd (ucsds.Number)
-                        a th:Course
-                                as virtrdf:Ucsd-Course ;
-                        dc:title ucsds.Title
-                            as virtrdf:Ucsd-Title ;
-                        th:hasInstructor1 th:UcsdInstructor1 (ucsds.Number)
-                            as virtrdf:Ucsd-hasInstructor1 ;
-                        th:hasInstructor2 th:UcsdInstructor2 (ucsds.Number)
-                            as virtrdf:Ucsd-hasInstructor2 ;
-                        th:hasInstructor3 th:UcsdInstructor3 (ucsds.Number)
-                            as virtrdf:Ucsd-hasInstructor3 ;
-                        th:forUniversity "http://purl.org/thalia/university/ucsd"
-                            as virtrdf:Ucsd-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Ucsd-Subject
-                            .
-                th:UcsdInstructor1 (ucsds.Number)
-                        a th:Instructor
-                                as virtrdf:Ucsd-Instructor1 ;
-                        foaf:name ucsds.Fall2003
-                            as virtrdf:Ucsd-Instructor-Fall2003
-                            .
-                th:UcsdInstructor2 (ucsds.Number)
-                        a th:Instructor
-                                as virtrdf:Ucsd-Instructor2 ;
-                        foaf:name ucsds.Winter2004
-                            as virtrdf:Ucsd-Instructor-Winter2004
-                            .
-                th:UcsdInstructor3 (ucsds.Number)
-                        a th:Instructor
-                                as virtrdf:Ucsd-Instructor3 ;
-                        foaf:name ucsds.Spring2004
-                            as virtrdf:Ucsd-Instructor-Spring2004
-                            .
-
-                th:Umd (umds.Code)
-                    a th:Course
-                        as virtrdf:Umd-Course ;
-                    dc:title umds.CourseName
-                        as virtrdf:Umd-Title ;
-                        th:hasSection th:SectionTitle
-                            as virtrdf:Umd-hasSection ;
-                        th:hasLecture th:UmdLecture(umds.Code)
-                            as virtrdf:Umd-hasLecture ;
-                        th:forUniversity "http://purl.org/thalia/university/umd"
-                            as virtrdf:Umd-University ;
-                        skos:subject "http://purl.org/subject/thalia/ComputerScience"
-                            as virtrdf:Umd-Subject
-                            .
-        th:UmdLecture (umds.Code)
-                        a event:Event
-                                as virtrdf:Umd-Lecture ;
-                        event:time th:UmdEventTime(umds.Code)
-                            as virtrdf:Umd-hasEventTime
-                .
-        th:UmdEventTime (umds.Code)
-                        a time:Interval
-                                as virtrdf:Umd-EventTime ;
-                        time:inDateTime th:UmdDatetime(umds.Code)
-                            as virtrdf:Umd-inDateTime
-                .
-        th:UmdDatetime (umds.Code)
-                        a time:DateTimeDescription
-                                as virtrdf:Umd-Datetime ;
-                    time:hour umds.SectionTime
-                        as virtrdf:Umd-SectionTime
-                .
-        }
-}
-')
-;
-
-delete from db.dba.url_rewrite_rule_list where urrl_list like 'tut_th_%';
-delete from db.dba.url_rewrite_rule where urr_rule like 'tut_th_%';
-
-DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-    'tut_th_rule1',
-    1,
-    '([^#]*)',
-    vector('path'),
-    1,
-    '/about/html/http/^{URIQADefaultHost}^%s%%01this',
-    vector('path'),
-    null,
-    '(text/html)|(\\*/\\*)',
-    0,
-    303
-    );
-
-DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-    'tut_th_rule2',
-    1,
-    '([^#]*)',
-    vector('path'),
-    1,
-    '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/thalia%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U',
-    vector('path', 'path', '*accept*'),
-    null,
-    '(text/rdf.n3)|(application/rdf.xml)',
-    0,
-    null
-    );
-
-DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-    'tut_th_rule3',
-    1,
-    '(/[^#]*)/\x24',
-    vector('path'),
-    1,
-    '%U',
-    vector('path'),
-    null,
-    null,
-    0,
-    null
-    );
-
-create procedure DB.DBA.REMOVE_THALIA_RDF_DET()
-{
-  declare colid int;
-  colid := DAV_SEARCH_ID('/DAV/Thalia', 'C');
-  if (colid < 0)
-    return;
-  update WS.WS.SYS_DAV_COL set COL_DET=null where COL_ID = colid;
-}
-;
-
-DB.DBA.REMOVE_THALIA_RDF_DET();
-
-drop procedure DB.DBA.REMOVE_THALIA_RDF_DET;
-
-create procedure DB.DBA.THALIA_MAKE_RDF_DET()
-{
-    declare uriqa_str varchar;
-    uriqa_str := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-    uriqa_str := 'http://' || uriqa_str || '/thalia';
-    DB.DBA."RDFData_MAKE_DET_COL" ('/DAV/Thalia/RDFData/', uriqa_str, NULL);
-    VHOST_REMOVE (lpath=>'/thalia/data/rdf');
-    DB.DBA.VHOST_DEFINE (lpath=>'/thalia/data/rdf', ppath=>'/DAV/Thalia/RDFData/All/', is_dav=>1, vsp_user=>'dba');
-}
-;
-
-DB.DBA.THALIA_MAKE_RDF_DET();
-
-drop procedure DB.DBA.THALIA_MAKE_RDF_DET;
-
--- procedure to convert path to DET resource name
-create procedure DB.DBA.THALIA_DET_REF (in par varchar, in fmt varchar, in val varchar)
-{
-  declare res, iri any;
-  declare uriqa_str varchar;
-  uriqa_str := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-  uriqa_str := 'http://' || uriqa_str || '/thalia';
-  iri := uriqa_str || replace(val, '/', '_');
-  res := sprintf ('iid (%d).rdf', iri_id_num (iri_to_id (iri)));
-  return sprintf (fmt, res);
-}
-;
-
-DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('tut_th_rdf', 1,
-    '/thalia/(.*)', vector('path'), 1,
-    '/thalia/data/rdf/%U', vector('path'),
-    'DB.DBA.THALIA_DET_REF',
-    'application/rdf.xml',
-    2,
-    303);
-
-DB.DBA.URLREWRITE_CREATE_RULELIST (
-    'tut_th_rule_list1',
-    1,
-    vector (
-                'tut_th_rule1',
-                'tut_th_rule2',
-                'tut_th_rule3',
-                'tut_th_rdf'
-          ));
-
-DB.DBA.VHOST_REMOVE (lpath=>'/thalia');
-DB.DBA.VHOST_DEFINE (lpath=>'/thalia', ppath=>'/DAV/Thalia/', vsp_user=>'dba', is_dav=>1,
-           is_brws=>0, opts=>vector ('url_rewrite', 'tut_th_rule_list1'));
-
-create procedure DB.DBA.LOAD_THALIA_ONTOLOGY_FROM_DAV()
-{
-    declare content, urihost varchar;
-    select cast (RES_CONTENT as varchar) into content from WS.WS.SYS_DAV_RES where RES_FULL_PATH = '/DAV/Thalia/thalia.owl';
-    DB.DBA.RDF_LOAD_RDFXML (content, 'http://demo.openlinksw.com/schemas/thalia#', 'http://demo.openlinksw.com/schemas/ThaliaOntology/1.0/');
-    urihost := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-    if (urihost = 'demo.openlinksw.com')
-    {
-        DB.DBA.VHOST_REMOVE (lpath=>'/schemas/thalia');
-        DB.DBA.VHOST_DEFINE (lpath=>'/schemas/thalia', ppath=>'/DAV/Thalia/thalia.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-    }
-}
-;
-DB.DBA.LOAD_THALIA_ONTOLOGY_FROM_DAV()
-;
-drop procedure DB.DBA.LOAD_THALIA_ONTOLOGY_FROM_DAV
-;
-
-DB.DBA.XML_SET_NS_DECL ('thalia', 'http://demo.openlinksw.com/schemas/thalia#', 2)
-;
-
-    * Demo : Thalia test queries
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?room
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?title;
-          th:hasLecture ?lecture.
-    ?lecture event:place [dc:title ?room].
-    FILTER regex(?title, "Software Engineering")
-}
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT ?day, ?hour ?course
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-    th:hasLecture [event:time ?time];
-    dc:title ?title.
-    ?time time:inDateTime [time:dayOfWeek ?day];
-    time:inDateTime [time:hour ?hour].
-    FILTER regex(?title, "Computer Networks")
-  }
-
-#service:/sparql
-#should-sponge:soft
-
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?course
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?Title;
-              th:hasLecture ?lecture.
-    ?lecture event:time [time:inDateTime ?dateTime].
-    ?dateTime time:hour ?hour.
-    FILTER regex(?Title, "Database System")
-    FILTER regex(?hour, "1:30 - 2:50")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?course ?instructor ?name
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              th:hasInstructor ?instructor.
-    ?instructor foaf:name ?name.
-
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?instructor
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-          th:hasInstructor ?instructor;
-          dc:title  ?title.
-    FILTER regex(?title, "Database")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?instructor
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?title;
-              th:hasInstructor ?instructor.
-    FILTER regex(?title, "Software")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT DISTINCT ?course
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?title;
-              th:forUniversity 'http://purl.org/thalia/university/umd'.
-    FILTER regex(?title, "Data Structures")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?course
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?Title;
-              th:hasUnits ?credits.
-    FILTER (xsd:integer(?credits) > 10)
-    FILTER regex(?Title, "Database")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?course
-FORM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?title;
-              th:forUniversity 'http://purl.org/thalia/university/umd'.
-    FILTER regex(?title, "Database")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?course
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:title ?Title;
-              th:hasUnits ?credits.
-    FILTER (xsd:integer(?credits) > 10)
-    FILTER regex(?Title, "Database")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX th: <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?text_
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-             dc:title ?title;
-             th:text ?text_.
-    FILTER regex(?title, "Verification")
-  }
-
-#service:/sparql
-#should-sponge:soft
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX time: <http://www.w3.org/2006/time#>
-PREFIX event: <http://purl.org/NET/c4dm/event.owl#>
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX : <http://purl.org/ontology/thalia/1.0/>
-
-SELECT distinct ?course
-FROM <http://demo.openlinksw.com/thalia>
-WHERE
-  {
-    ?course a th:Course;
-              dc:description ?description;
-              th:forUniversity 'http://purl.org/thalia/university/gatech'.
-    FILTER regex(?description, "JR")
-  }
-```
-
-## Musicbrainz to RDF
-
-The following code creates the Musicbrainz Linked Data Views Deployment
-and Demo Scripts:
-
-    create text index on ZITGIST.MO.artist ("name") with key id;
-    create text index on ZITGIST.MO.artistalias ("name") with key id;
-    create text index on ZITGIST.MO.album ("name") with key id;
-    create text index on ZITGIST.MO.track ("name") with key id;
-    vt_batch_update (fix_identifier_case ('ZITGIST.MO.artist'), 'ON', NULL);
-    vt_batch_update (fix_identifier_case ('ZITGIST.MO.artistalias'), 'ON', NULL);
-    vt_batch_update (fix_identifier_case ('ZITGIST.MO.album'), 'ON', NULL);
-    vt_batch_update (fix_identifier_case ('ZITGIST.MO.track'), 'ON', NULL);
-    VT_INC_INDEX_DB_MO_artist ();
-    VT_INC_INDEX_DB_MO_artistalias ();
-    VT_INC_INDEX_DB_MO_album ();
-    VT_INC_INDEX_DB_MO_track ();
-
-Note: Making sure that the graphs and views are deleting to clean
-Virtuoso from the old definitions
-
-    SPARQL
-    drop quad storage virtrdf:MBZROOT.
-    ;
-    
-    SPARQL
-    prefix mbz: <http://musibrainz.org/schemas/mbz#>
-    drop literal class mbz:duration
-    ;
-    
-    SPARQL
-    prefix mbz: <http://musibrainz.org/schemas/mbz#>
-    drop literal class mbz:created.
-    drop literal class mbz:official_iri.
-    drop literal class mbz:bootleg_iri.
-    drop literal class mbz:promotion_iri.
-    drop literal class mbz:album_iri.
-    drop literal class mbz:single_iri.
-    drop literal class mbz:ep_iri.
-    drop literal class mbz:compilation_iri.
-    drop literal class mbz:soundtrack_iri.
-    drop literal class mbz:spokenword_iri.
-    drop literal class mbz:interview_iri.
-    drop literal class mbz:audiobook_iri.
-    drop literal class mbz:live_iri.
-    drop literal class mbz:remix_iri.
-    ;
-
-The following SPARQL query will fix an issue Virtuoso has with its JSO
-system. Perform this query for now, the issue should be fixed in a
-future release
-
-    SPARQL define input:storage ""
-    DELETE FROM GRAPH (iri(bif:JSO_SYS_GRAPH NIL)) { ?s virtrdf:version ?o }
-    WHERE { graph `iri(bif:JSO_SYS_GRAPH NIL)` {?s virtrdf:version ?o}};
-    SPARQL_RELOAD_QM_GRAPH();
-
-Creation of IRIs classes.
-
-    SPARQL
-    
-    prefix mbz: <http://musibrainz.org/schemas/mbz#>
-    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    prefix dc: <http://purl.org/dc/elements/1.1/>
-    prefix bio: <http://vocab.org/bio/0.1/#>
-    prefix rel: <http://vocab.org/relationship/#>
-    prefix mo: <http://purl.org/ontology/mo/>
-    prefix timeline: <http://purl.org/NET/c4dm/timeline.owl#>
-    prefix event: <http://purl.org/NET/c4dm/event.owl#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix sim: <http://purl.org/ontology/sim/>
-    
-    create iri class mbz:artist_iri  "http://zitgist.com/music/artist/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:artist_birth_event_iri  "http://zitgist.com/music/artist/birth/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:artist_death_event_iri  "http://zitgist.com/music/artist/death/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:sim_link_iri  "http://zitgist.com/music/artist/simlink/%U" (in gid varchar not null) option (bijection) .
-    
-    #create iri class mbz:band_iri  "http://zitgist.com/music/band/%U" (in gid varchar not null) option (bijection) .
-    #create iri class mbz:band_birth_event_iri  "http://zitgist.com/music/band/birth/%U" (in gid varchar not null) option (bijection) .
-    #create iri class mbz:band_death_event_iri  "http://zitgist.com/music/band/death/%U" (in gid varchar not null) option (bijection) .
-    
-    create iri class mbz:record_iri  "http://zitgist.com/music/record/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:performance_iri  "http://zitgist.com/music/performance/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:composition_iri  "http://zitgist.com/music/composition/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:musicalwork_iri  "http://zitgist.com/music/musicalwork/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:sound_iri  "http://zitgist.com/music/sound/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:recording_iri  "http://zitgist.com/music/recording/%U" (in gid varchar not null) option (bijection) .
-    create iri class mbz:signal_iri  "http://zitgist.com/music/signal/%U" (in gid varchar not null) option (bijection) .
-    
-    create iri class mbz:track_iri  "http://zitgist.com/music/track/%U" (in gid varchar not null) option (bijection) .
-    
-    create iri class mbz:image_iri  "http://ec1.images-amazon.com/images/P/%U.01.MZZZZZZZ.jpg" (in image varchar not null) option (bijection) .
-    
-    create iri class mbz:amazon_asin_iri  "http://amazon.com/exec/obidos/ASIN/%U/searchcom07-20" (in gid varchar not null) option (bijection) .
-    
-    create literal class mbz:created using
-        function ZITGIST.MO.RECORD_CREATION_DATE (in datestring varchar) returns varchar,
-        function ZITGIST.MO.RECORD_CREATION_DATE_INVERSE (in datestring varchar) returns varchar .
-    
-    create iri class mbz:official_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_OFFICIAL (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/official') .
-    
-    create iri class mbz:promotion_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_PROMOTION (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/promotion') .
-    
-    create iri class mbz:bootleg_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_BOOTLEG (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/bootleg') .
-    
-    create iri class mbz:album_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_ALBUM (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/album') .
-    
-    create iri class mbz:single_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_SINGLE (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/single') .
-    
-    create iri class mbz:ep_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_EP (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/ep') .
-    
-    create iri class mbz:compilation_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_COMPILATION (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/compilation') .
-    
-    create iri class mbz:soundtrack_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_SOUNDTRACK (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/soundtrack') .
-    
-    create iri class mbz:spokenword_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_SPOKENWORD (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/spokenword') .
-    
-    create iri class mbz:interview_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_INTERVIEW (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/interview') .
-    
-    create iri class mbz:audiobook_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_AUDIOBOOK (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/audiobook') .
-    
-    create iri class mbz:live_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_LIVE (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/live') .
-    
-    create iri class mbz:remix_iri using
-        function ZITGIST.MO.RECORD_ATTRIBUTE_REMIX (in attributes varchar) returns varchar
-        option (returns 'http://purl.org/ontology/mo/remix') .
-    
-    create iri class mbz:duration_iri  "http://zitgist.com/music/track/duration/%U" (in gid varchar not null) .
-    
-    create literal class mbz:duration using
-        function ZITGIST.MO.TRACK_DURATION (in duration integer) returns varchar ,
-        function ZITGIST.MO.TRACK_DURATION_INVERSE (in durationXSD varchar) returns integer .
-    
-    create iri class mbz:geoname_country_iri  "http://www.geonames.org/countries/#%U" (in country varchar not null) .
-    
-    create iri class mbz:url_iri  "%s" (in url varchar not null) .
-    create iri class mbz:mbz_release_url_iri  "http://musicbrainz.org/release/%s.html" (in mbz_gid varchar not null) .
-    create iri class mbz:mbz_track_url_iri  "http://musicbrainz.org/track/%s.html" (in mbz_gid varchar not null) .
-    create iri class mbz:mbz_artist_url_iri  "http://musicbrainz.org/artist/%s.html" (in mbz_gid varchar not null) .
-    ;
-
-*List of functions used to compute some IRI classes:*
-
-Note:These functions have been developed to handle some weird user cases
-of the Musicbrainz data model (like the Attribute column of the album
-table, etc).
-
-    create function ZITGIST.MO.TRACK_DURATION_INVERSE(in durationXSD varchar)
-    {
-        return null;
-    };
-    
-    create function ZITGIST.MO.TRACK_DURATION(in duration integer)
-    {
-        declare minutes, seconds, milliseconds integer;
-    
-        minutes := ((duration / 1000) / 60);
-    
-        if(minutes >= 1)
-        {
-            minutes := cast(minutes as integer);
-        }
-        else
-        {
-            minutes := 0;
-        }
-    
-        seconds := (duration / 1000) - (minutes * 60);
-    
-        if(seconds >= 1)
-        {
-            seconds := cast(seconds as integer);
-        }
-    
-        milliseconds := duration - (seconds * 1000) - (minutes * 60000);
-    
-        return sprintf('PT%dM%dS', minutes, seconds);
-    }
-    ;
-    
-    create function ZITGIST.MO.RECORD_CREATION_DATE(in datestring varchar)
-    {
-        return sprintf('%sT00:00:00Z', datestring);
-    };
-    
-    create function ZITGIST.MO.RECORD_CREATION_DATE_INVERSE(in datestring varchar)
-    {
-        declare pos integer;
-        pos := locate('T00:00:00Z', datestring) - 1;
-        return substring(datestring, 1, pos);
-    };
-    
-    create function ZITGIST.MO.RECORD_ATTRIBUTE(in attribute integer, in attributes varchar)
-    {
-        declare attributes_array any;
-    
-        attributes_array := split_and_decode(ltrim(rtrim(attributes, '}'), '{'), 0, '\0\0,');
-    
-        foreach(int attr in attributes_array) do
-        {
-            attr := cast(attr as integer);
-            if(attr = attribute)
-            {
-                if(attr = 100) return 'http://purl.org/ontology/mo/official';
-                if(attr = 101) return 'http://purl.org/ontology/mo/promotion';
-                if(attr = 102) return 'http://purl.org/ontology/mo/bootleg';
-                if(attr = 1)   return 'http://purl.org/ontology/mo/album';
-                if(attr = 2)   return 'http://purl.org/ontology/mo/single';
-                if(attr = 3)   return 'http://purl.org/ontology/mo/ep';
-                if(attr = 4)   return 'http://purl.org/ontology/mo/compilation';
-                if(attr = 5)   return 'http://purl.org/ontology/mo/soundtrack';
-                if(attr = 6)   return 'http://purl.org/ontology/mo/spokenword';
-                if(attr = 7)   return 'http://purl.org/ontology/mo/interview';
-                if(attr = 8)   return 'http://purl.org/ontology/mo/audiobook';
-                if(attr = 9)   return 'http://purl.org/ontology/mo/live';
-                if(attr = 10)  return 'http://purl.org/ontology/mo/remix';
-            }
-        }
-        return null;
-    }
-    ;
-    
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_OFFICIAL(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(100, attributes); }
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_PROMOTION(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(101, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_BOOTLEG(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(102, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_ALBUM(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(1, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_SINGLE(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(2, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_EP(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(3, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_COMPILATION(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(4, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_SOUNDTRACK(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(5, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_SPOKENWORD(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(6, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_INTERVIEW(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(7, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_AUDIOBOOK(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(8, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_LIVE(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(9, attributes);}
-    ;
-    create function ZITGIST.MO.RECORD_ATTRIBUTE_REMIX(in attributes varchar)
-    {    return ZITGIST.MO.RECORD_ATTRIBUTE(10, attributes);}
-    ;
-
-*Definition of the quad map patterns*
-
-This what creates the RDF triples from the musicbrainz relational
-database schema.
-
-    SPARQL
-    prefix mbz: <http://musibrainz.org/schemas/mbz#>
-    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    prefix dc: <http://purl.org/dc/elements/1.1/>
-    prefix dcterms: <http://purl.org/dc/terms/>
-    prefix bio: <http://vocab.org/bio/0.1/#>
-    prefix rel: <http://vocab.org/relationship/#>
-    prefix mo: <http://purl.org/ontology/mo/>
-    prefix timeline: <http://purl.org/NET/c4dm/timeline.owl#>
-    prefix event: <http://purl.org/NET/c4dm/event.owl#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix sim: <http://purl.org/ontology/sim/>
-    
-    create quad storage virtrdf:MBZROOT
-    
-    #
-    # Definition of the source tables from the mbz relational database and their joints.
-    #########
-    
-    FROM ZITGIST.MO.track as track text literal name
-    FROM ZITGIST.MO.artist as track_artist
-    FROM ZITGIST.MO.puid as track_puid
-    FROM ZITGIST.MO.track as track_track
-    FROM ZITGIST.MO.url as track_url
-    
-    FROM ZITGIST.MO.artist as track_artist_creator where (^{track.}^.artist = ^{track_artist_creator.}^.id)
-    
-    FROM ZITGIST.MO.albumjoin as track_albumjoin where (^{track.}^.id = ^{track_albumjoin.}^.track)
-    
-    FROM ZITGIST.MO.l_artist_track as l_artist_track2 where (^{track.}^.id = ^{l_artist_track2.}^.link1)
-                                                          where (^{track_artist.}^.id = ^{l_artist_track2.}^.link0)
-    
-    FROM ZITGIST.MO.puidjoin as puidjoin where (^{track.}^.id = ^{puidjoin.}^.track)
-                                             where (^{puidjoin.}^.puid = ^{track_puid.}^.id)
-    
-    FROM ZITGIST.MO.l_track_track as l_track_track where (^{track.}^.id = ^{l_track_track.}^.link0)
-                                                       where (^{track_track.}^.id = ^{l_track_track.}^.link1)
-    
-    FROM ZITGIST.MO.l_track_url as l_track_url where (^{track.}^.id = ^{l_track_url.}^.link0)
-                                                   where (^{track_url.}^.id = ^{l_track_url.}^.link1)
-    
-    FROM ZITGIST.MO.album as album text literal name
-    FROM ZITGIST.MO.artist as album_artist
-    FROM ZITGIST.MO.album as album_album
-    FROM ZITGIST.MO.url as album_url
-    FROM ZITGIST.MO.country as album_release_country
-    FROM ZITGIST.MO.track as album_albumjoin_track
-    
-    FROM ZITGIST.MO.artist as album_artist_creator where (^{album.}^.artist = ^{album_artist_creator.}^.id)
-    
-    FROM ZITGIST.MO.album_amazon_asin as album_amazon_asin where (^{album.}^.id = ^{album_amazon_asin.}^.album)
-    
-    FROM ZITGIST.MO.albumjoin as album_albumjoin where (^{album.}^.id = ^{album_albumjoin.}^.album)
-                                                     where (^{album_albumjoin.}^.track = ^{album_albumjoin_track.}^.id)
-    
-    FROM ZITGIST.MO.l_album_artist as l_album_artist2 where (^{album.}^.id = ^{l_album_artist2.}^.link0)
-                                                          where (^{album_artist.}^.id = ^{l_album_artist2.}^.link1)
-    
-    FROM ZITGIST.MO.l_album_album as l_album_album where (^{album.}^.id = ^{l_album_album.}^.link0)
-                                                       where (^{album_album.}^.id = ^{l_album_album.}^.link1)
-    
-    FROM ZITGIST.MO.l_album_url as l_album_url where (^{album.}^.id = ^{l_album_url.}^.link0)
-                                                   where (^{album_url.}^.id = ^{l_album_url.}^.link1)
-    
-    FROM ZITGIST.MO.release as album_release where (^{album.}^.id = ^{album_release.}^.album)
-                                                 where (^{album_release.}^.country = ^{album_release_country.}^.id)
-    
-    FROM ZITGIST.MO.artist as sim_band
-    FROM ZITGIST.MO.artist as sim_artist
-    FROM ZITGIST.MO.url as band_url
-    FROM ZITGIST.MO.artist as band_member
-    FROM ZITGIST.MO.album as band_album
-    FROM ZITGIST.MO.track as band_track
-    FROM ZITGIST.MO.artist as band text literal name where (^{band.}^.type = 2)
-    #FROM ZITGIST.MO.artist as artist text literal name where (^{artist.}^.type <> 2)
-    FROM ZITGIST.MO.artist as artist text literal name where (__or (neq(^{artist.}^.type, 2), isnull (^{artist.}^.type)))
-    FROM ZITGIST.MO.artist as artist_untyped text literal name where (^{artist_untyped.}^.type <> 2)
-                                                          where (^{artist.}^.gid = ^{artist_untyped.}^.gid)
-    
-    FROM ZITGIST.MO.album as band_album_creatorOf where (^{band_album_creatorOf.}^.artist = ^{band.}^.id)
-    FROM ZITGIST.MO.track as band_track_creatorOf where (^{band_track_creatorOf.}^.artist = ^{band.}^.id)
-    
-    FROM ZITGIST.MO.artistalias as bandalias text literal name where (^{band.}^.id = ^{bandalias.}^."ref")
-    
-    FROM ZITGIST.MO.l_artist_artist as band_l_artist_artist where (^{band_member.}^.id = ^{band_l_artist_artist.}^.link0)
-                                                                where (^{band.}^.id = ^{band_l_artist_artist.}^.link1)
-                                                                where (^{band_l_artist_artist.}^.link_type = 2)
-    
-    FROM ZITGIST.MO.artist_relation as band_relation
-    where (^{artist.}^.id = ^{band_relation.}^.artist)
-    where (^{band.}^.id = ^{band_relation.}^.artist)
-    where (^{sim_band.}^.id = ^{band_relation.}^."ref")
-    
-    FROM ZITGIST.MO.artist_relation as artist_relation
-    where (^{artist.}^.id = ^{artist_relation.}^.artist)
-    where (^{band.}^.id = ^{artist_relation.}^.artist)
-    where (^{sim_artist.}^.id = ^{artist_relation.}^."ref")
-    
-    FROM ZITGIST.MO.l_artist_url as l_artist_url3 where (^{band.}^.id = ^{l_artist_url3.}^.link0)
-                                                      where (^{band_url.}^.id = ^{l_artist_url3.}^.link1)
-    
-    FROM ZITGIST.MO.l_album_artist as l_album_artist3 where (^{band.}^.id = ^{l_album_artist3.}^.link1)
-                                                          where (^{band_album.}^.id = ^{l_album_artist3.}^.link0)
-    
-    FROM ZITGIST.MO.l_artist_track as l_artist_track3 where (^{band.}^.id = ^{l_artist_track3.}^.link0)
-                                                          where (^{band_track.}^.id = ^{l_artist_track3.}^.link1)
-    
-    FROM ZITGIST.MO.url as artist_url
-    FROM ZITGIST.MO.artist as artist_artist
-    FROM ZITGIST.MO.track as artist_track
-    FROM ZITGIST.MO.album as artist_album
-    
-    FROM ZITGIST.MO.album as artist_album_creatorOf where (^{artist_album_creatorOf.}^.artist = ^{artist.}^.id)
-    FROM ZITGIST.MO.track as artist_track_creatorOf where (^{artist_track_creatorOf.}^.artist = ^{artist.}^.id)
-    
-    FROM ZITGIST.MO.artistalias as artistalias text literal name where (^{artist.}^.id = ^{artistalias.}^."ref")
-    FROM ZITGIST.MO.l_artist_url as l_artist_url where (^{artist.}^.id = ^{l_artist_url.}^.link0)
-                                                     where (^{artist_url.}^.id = ^{l_artist_url.}^.link1)
-    
-    FROM ZITGIST.MO.l_artist_artist as l_artist_artist where (^{artist.}^.id = ^{l_artist_artist.}^.link0)
-                                                           where (^{artist_artist.}^.id = ^{l_artist_artist.}^.link1)
-    
-    FROM ZITGIST.MO.l_artist_track as l_artist_track where (^{artist.}^.id = ^{l_artist_track.}^.link0)
-                                                         where (^{artist_track.}^.id = ^{l_artist_track.}^.link1)
-    FROM ZITGIST.MO.l_album_artist as l_album_artist where (^{artist.}^.id = ^{l_album_artist.}^.link1)
-                                                         where (^{artist_album.}^.id = ^{l_album_artist.}^.link0)
-    
-    {
-      create virtrdf:MBZ as graph iri ("http://musicbrainz.org/") option (exclusive)
-        {
-    
-            # Track Composition Event
-            mbz:composition_iri (track.gid)
-                a mo:Composition as mbz:track_is_composition;
-                dc:title track.name as mbz:title_of_track;
-                mo:composer mbz:artist_iri (track_artist_creator.gid) as mbz:creator_composer_of_track;
-                mo:composer mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 14) option (using l_artist_track2) as mbz:composer14_of_track;
-                mo:producesWork mbz:musicalwork_iri (track.gid) as mbz:track_producesWork.
-    
-            # Track Musical Work
-            mbz:musicalwork_iri (track.gid)
-                a mo:MusicalWork as mbz:track_is_mw;
-                dc:title track.name as mbz:name_of_mw;
-    
-                mo:productOfComposition mbz:composition_iri(track.gid) as mbz:mw_is_productOfComposition_of;
-                mo:usedInPerformance mbz:performance_iri(track.gid) as mbz:mw_usedInPerformance.
-    
-            # Track Performance Event
-            mbz:performance_iri (track.gid)
-                a mo:Performance;
-                dc:title track.name;
-                mo:performer mbz:artist_iri (track_artist_creator.gid);
-                mo:performer mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 2) option (using l_artist_track2);
-                mo:conductor mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 9) option (using l_artist_track2);
-    
-                mo:usesWork mbz:musicalwork_iri (track.gid);
-                mo:producesSound mbz:sound_iri (track.gid);
-    
-                mo:recordedAs mbz:signal_iri(track.gid).
-    
-            # Track Sound
-            mbz:sound_iri (track.gid)
-                a mo:Sound;
-                dc:title track.name;
-    
-                mo:productOfPerformance mbz:performance_iri (track.gid);
-                mo:usedInRecording mbz:recording_iri (track.gid).
-    
-            # Track Recording Event
-            mbz:recording_iri (track.gid)
-                a mo:Recording;
-                dc:title track.name;
-    
-                mo:recordsSound mbz:sound_iri (track.gid);
-                mo:producesSignal mbz:signal_iri (track.gid).
-    
-            # Track Signal (Musical Expression)
-            mbz:signal_iri (track.gid)
-                a mo:Signal;
-                dc:title track.name;
-    
-                mo:remixer mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 11) option (using l_artist_track2);
-                mo:sampler mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 12) option (using l_artist_track2);
-                mo:djmixed mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 40) option (using l_artist_track2);
-    
-                mo:djmix_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 13) option (using l_track_track);
-                mo:remix_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 6) option (using l_track_track);
-                mo:remix_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 11) option (using l_track_track);
-                mo:mashup_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 8) option (using l_track_track);
-                mo:mashup_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 4) option (using l_track_track);
-                mo:remaster_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 3) option (using l_track_track);
-                mo:compilation_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 10) option (using l_track_track);
-                mo:compilation_of mbz:track_iri (track_track.gid) where (^{l_track_track.}^.link_type = 12) option (using l_track_track);
-                mo:medley_of mbz:record_iri (track_track.gid) where (^{l_track_track.}^.link_type = 14) option (using l_track_track);
-    
-                mo:published_as mbz:track_iri (track.gid);
-                mo:signalTime mbz:duration_iri(track.gid);
-                mo:puid track_puid.puid option (using puidjoin).
-    
-            # Track duration
-            mbz:duration_iri(track.gid)
-                a timeline:Interval;
-                timeline:durationXSD mbz:duration(track.length).
-    
-            mbz:track_iri(track.gid)
-                a mo:Track;
-                dc:title track.name;
-    
-                mo:trackNum track_albumjoin.sequence;
-    
-                dc:creator mbz:artist_iri (track_artist_creator.gid);
-                dc:creator mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 14) option (using l_artist_track2);
-                mo:compiler mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 39) option (using l_artist_track2);
-                mo:producer mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 18) option (using l_artist_track2);
-                mo:publisher mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 35) option (using l_artist_track2);
-                mo:engineer mbz:artist_iri (track_artist.gid) where (^{l_artist_track2.}^.link_type = 19) option (using l_artist_track2);
-    
-                mo:licence mbz:url_iri(track_url.url) where (^{l_track_url.}^.link_type = 21) option (using l_track_url);
-                mo:paiddownload mbz:url_iri(track_url.url) where (^{l_track_url.}^.link_type = 16) option (using l_track_url);
-                mo:freedownload mbz:url_iri(track_url.url) where (^{l_track_url.}^.link_type = 17) option (using l_track_url);
-                mo:olga mbz:url_iri(track_url.url) where (^{l_track_url.}^.link_type = 19) option (using l_track_url);
-    
-                mo:musicbrainz mbz:mbz_track_url_iri(track.gid);
-    
-                mo:duration track.length.
-    
-            # Record Composition Event
-            mbz:composition_iri (album.gid)
-                a mo:Composition;
-                dc:title album.name;
-    
-                mo:composer mbz:artist_iri (album_artist_creator.gid);
-                mo:composer mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 14) option (using l_album_artist2);
-    
-                mo:producesWork mbz:musicalwork_iri (album.gid).
-    
-            # Record Musical Work
-            mbz:musicalwork_iri (album.gid)
-                a mo:MusicalWork;
-                dc:title album.name;
-    
-                mo:productOfComposition mbz:composition_iri(album.gid);
-                mo:usedInPerformance mbz:performance_iri(album.gid).
-    
-            # Record Performance Event
-            mbz:performance_iri (album.gid)
-                a mo:Performance;
-                dc:title album.name;
-                mo:performer mbz:artist_iri (album_artist_creator.gid);
-                mo:performer mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 2) option (using l_album_artist2);
-                mo:conductor mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 9) option (using l_album_artist2);
-    
-                mo:usesWork mbz:musicalwork_iri (album.gid);
-                mo:producesSound mbz:sound_iri (album.gid);
-    
-                mo:recordedAs mbz:record_iri(album.gid).
-    
-            # Record Sound
-            mbz:sound_iri (album.gid)
-                a mo:Sound;
-                dc:title album.name;
-    
-                mo:productOfPerformance mbz:performance_iri (album.gid);
-                mo:usedInRecording mbz:recording_iri (album.gid).
-    
-            # Record Recording Event
-            mbz:recording_iri (album.gid)
-                a mo:Recording;
-                dc:title album.name;
-    
-                mo:recordsSound mbz:sound_iri (album.gid);
-                mo:producesSignal mbz:signal_iri (album.gid).
-    
-            # Record Signal (Musical Expression)
-            mbz:signal_iri (album.gid)
-                a mo:Signal;
-                dc:title album.name;
-    
-                mo:djmix_of mbz:record_iri (album_album.gid) where (^{l_album_album.}^.link_type = 9) option (using l_album_album);
-                mo:remix_of mbz:record_iri (album_album.gid) where (^{l_album_album.}^.link_type = 7) option (using l_album_album);
-                mo:remix_of mbz:record_iri (album_album.gid) where (^{l_album_album.}^.link_type = 4) option (using l_album_album);
-                mo:mashup_of mbz:record_iri (album_album.gid) where (^{l_album_album.}^.link_type = 5) option (using l_album_album);
-                mo:remaster_of mbz:record_iri (album_album.gid) where (^{l_album_album.}^.link_type = 3) option (using l_album_album);
-                mo:tribute_to mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 44) option (using l_album_artist2);
-    
-                mo:remixer mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 11) option (using l_album_artist2);
-                mo:djmixed mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 38) option (using l_album_artist2);
-                mo:sampler mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 12) option (using l_album_artist2);
-    
-                mo:published_as mbz:record_iri (album.gid).
-    
-            # Record (Musical Manifestation)
-            mbz:record_iri (album.gid)
-                a mo:Record;
-                dc:title album.name;
-    
-                dc:date mbz:created(album_release.releasedate);
-                mo:image mbz:image_iri(album_amazon_asin.asin);
-    
-                #Empty for now.
-                mo:compilation_of mbz:record_iri (album_album.gid) where (^{l_album_album.}^.link_type = 8) option (using l_album_album);
-                mo:releaseStatus mbz:official_iri(album.attributes);
-                mo:releaseStatus mbz:promotion_iri(album.attributes);
-                mo:releaseStatus mbz:bootleg_iri(album.attributes);
-    
-                mo:releaseType mbz:album_iri(album.attributes);
-                mo:releaseType mbz:single_iri(album.attributes);
-                mo:releaseType mbz:ep_iri(album.attributes);
-                mo:releaseType mbz:compilation_iri(album.attributes);
-                mo:releaseType mbz:soundtrack_iri(album.attributes);
-                mo:releaseType mbz:spokenword_iri(album.attributes);
-                mo:releaseType mbz:interview_iri(album.attributes);
-                mo:releaseType mbz:audiobook_iri(album.attributes);
-                mo:releaseType mbz:live_iri(album.attributes);
-                mo:releaseType mbz:remix_iri(album.attributes);
-    
-                dc:creator mbz:artist_iri (album_artist_creator.gid);
-                dc:creator mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 14) option (using l_album_artist2);
-    
-                mo:compiler mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 41) option (using l_album_artist2);
-                mo:producer mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 18) option (using l_album_artist2);
-                mo:publisher mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 35) option (using l_album_artist2);
-                mo:engineer mbz:artist_iri (album_artist.gid) where (^{l_album_artist2.}^.link_type = 19) option (using l_album_artist2);
-    
-                mo:musicbrainz mbz:mbz_release_url_iri(album.gid);
-    
-                mo:musicmoz mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 25) option (using l_album_url);
-                mo:discogs mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 24) option (using l_album_url);
-                mo:wikipedia mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 23) option (using l_album_url);
-                mo:discography mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 1) option (using l_album_url);
-                mo:freedownload mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 21) option (using l_album_url);
-                mo:discography mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 16) option (using l_album_url);
-                mo:mailorder mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 19) option (using l_album_url);
-                mo:imdb mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 27) option (using l_album_url);
-                mo:paiddownload mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 20) option (using l_album_url);
-                mo:licence mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 32) option (using l_album_url);
-                mo:review mbz:url_iri(album_url.url) where (^{l_album_url.}^.link_type = 17) option (using l_album_url);
-    
-                mo:amazon_asin mbz:amazon_asin_iri(album_amazon_asin.asin);
-    
-                mo:has_track mbz:track_iri (album_albumjoin_track.gid) option (using album_albumjoin).
-    
-           # Music Group (Band)
-    #       mbz:band_iri(band.gid)
-            mbz:artist_iri(band.gid)
-                a mo:MusicArtist;
-                a mo:MusicGroup;
-                a foaf:Group;
-                foaf:name band.name;
-                foaf:nick bandalias.name;
-    
-    #           bio:event mbz:band_birth_event_iri(band.gid);
-    #           bio:event mbz:band_death_event_iri(band.gid);
-                bio:event mbz:artist_birth_event_iri(band.gid);
-                bio:event mbz:artist_death_event_iri(band.gid);
-    
-    #           mo:similar_to mbz:band_iri(sim_band.gid) option (using band_relation);
-                mo:similar_to mbz:artist_iri(sim_band.gid) option (using band_relation);
-                mo:similar_to mbz:artist_iri(sim_artist.gid) option (using artist_relation);
-    #            sim:link mbz:sim_link_iri(sim_band.gid)  option (using band_relation);
-    #            sim:link mbz:sim_link_iri(sim_artist.gid)  option (using artist_relation);
-    
-                foaf:member mbz:artist_iri(band_member.gid) option (using band_l_artist_artist);
-    
-                # l_artist_url
-                mo:myspace mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 19) option (using l_artist_url3);
-                mo:musicmoz mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 12) option (using l_artist_url3);
-                mo:discogs mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 11) option (using l_artist_url3);
-                mo:wikipedia mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 10) option (using l_artist_url3);
-                mo:discography mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 1) option (using l_artist_url3);
-                mo:freedownload mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 8) option (using l_artist_url3);
-                mo:fanpage mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 3) option (using l_artist_url3);
-                mo:biography mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 4) option (using l_artist_url3);
-                mo:discography mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 5) option (using l_artist_url3);
-                mo:mailorder mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 15) option (using l_artist_url3);
-                mo:imdb mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 17) option (using l_artist_url3);
-                mo:paiddownload mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 7) option (using l_artist_url3);
-                foaf:depiction mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 14) option (using l_artist_url3);
-                foaf:homepage mbz:url_iri(band_url.url) where (^{l_artist_url3.}^.link_type = 2) option (using l_artist_url3);
-    
-                mo:musicbrainz mbz:mbz_artist_url_iri(band.gid);
-    
-                # l_album_artist
-                mo:composed mbz:composition_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 14) option (using l_album_artist3);
-                mo:performed mbz:performance_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 14) option (using l_album_artist3);
-                mo:performed mbz:performance_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 2) option (using l_album_artist3);
-                mo:conducted mbz:performance_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 9) option (using l_album_artist3);
-                mo:compiled mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 41) option (using l_album_artist3);
-                mo:djmixed mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 38) option (using l_album_artist3);
-                mo:remixed mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 11) option (using l_album_artist3);
-                mo:sampled mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 12) option (using l_album_artist3);
-                mo:produced mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 18) option (using l_album_artist3);
-                mo:published mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 35) option (using l_album_artist3);
-                mo:engineered mbz:record_iri (band_album.gid) where (^{l_album_artist3.}^.link_type = 19) option (using l_album_artist3);
-    
-    #    #      mo:creatorOfRecord mbz:record_iri(band_album_creatorOf.gid);
-                foaf:made mbz:record_iri(band_album_creatorOf.gid);
-    
-                # l_artist_track
-                mo:composed mbz:composition_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 14) option (using l_artist_track3);
-                mo:performed mbz:performance_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 14) option (using l_artist_track3);
-                mo:performed mbz:performance_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 2) option (using l_artist_track3);
-                mo:conducted mbz:performance_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 9) option (using l_artist_track3);
-                mo:compiled mbz:record_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 39) option (using l_artist_track3);
-                mo:djmixed mbz:track_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 40) option (using l_artist_track3);
-                mo:remixed mbz:track_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 11) option (using l_artist_track3);
-                mo:sampled mbz:track_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 12) option (using l_artist_track3);
-                mo:produced mbz:track_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 18) option (using l_artist_track3);
-                mo:published mbz:track_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 35) option (using l_artist_track3);
-                mo:engineered mbz:track_iri (band_track.gid) where (^{l_artist_track3.}^.link_type = 19) option (using l_artist_track3).
-    
-    #    #      mo:creatorOfTrack mbz:track_iri(band_track_creatorOf.gid).
-    
-            # Music Group (Band)'s Birth Event
-    #       mbz:band_birth_event_iri(band.gid)
-            mbz:artist_birth_event_iri(band.gid)
-                a bio:Birth;
-                bio:date band.begindate.
-    
-            # Music Group (Band)'s Death Event
-    #       mbz:band_death_event_iri(band.gid)
-            mbz:artist_death_event_iri(band.gid)
-                a bio:Death;
-                bio:date band.enddate.
-    
-            # Similarity link
-            #mbz:sim_link_iri(sim_band.gid)
-            #    sim:relation mo:similar_to;
-            #    sim:level band_relation.weight;
-            #    sim:to sim_band.gid.
-    
-            # Music Artist
-            mbz:artist_iri (artist.gid)
-    
-                # artist
-                a mo:MusicArtist;
-                a mo:SoloMusicArtist where (^{artist_untyped.}^.gid is not null) option (using artist_untyped);
-                a foaf:Person where (^{artist_untyped.}^.gid is not null) option (using artist_untyped);
-                foaf:name artist.name;
-                foaf:nick artistalias.name;
-                bio:event mbz:artist_birth_event_iri(artist.gid);
-                bio:event mbz:artist_death_event_iri(artist.gid);
-    
-                mo:member_of mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 2) option (using l_artist_artist);
-    
-                # l_artist_artist
-                rel:siblingOf mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 7) option (using l_artist_artist);
-                rel:friendOf mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 5) option (using l_artist_artist);
-                rel:parentOf mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 6) option (using l_artist_artist);
-                rel:collaborated_with mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 11) option (using l_artist_artist);
-                rel:engagedTo mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 9) option (using l_artist_artist);
-                rel:spouseOf mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 8) option (using l_artist_artist);
-                mo:supporting_musician mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 13) option (using l_artist_artist);
-                mo:supporting_musician mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 14) option (using l_artist_artist);
-                mo:supporting_musician mbz:artist_iri(artist_artist.gid) where (^{l_artist_artist.}^.link_type = 15) option (using l_artist_artist);
-    
-                mo:similar_to mbz:artist_iri(sim_artist.gid) option (using artist_relation);
-    #           mo:similar_to mbz:band_iri(sim_band.gid) option (using band_relation);
-                mo:similar_to mbz:artist_iri(sim_band.gid) option (using band_relation);
-    
-    #            sim:link mbz:sim_link_iri(sim_band.gid)  option (using band_relation);
-    #            sim:link mbz:sim_link_iri(sim_artist.gid)  option (using artist_relation);
-    
-                # l_artist_url
-                mo:myspace mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 19) option (using l_artist_url);
-                mo:musicmoz mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 12) option (using l_artist_url);
-                mo:discogs mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 11) option (using l_artist_url);
-                mo:wikipedia mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 10) option (using l_artist_url);
-                mo:discography mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 1) option (using l_artist_url);
-                mo:freedownload mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 8) option (using l_artist_url);
-                mo:fanpage mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 3) option (using l_artist_url);
-                mo:biography mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 4) option (using l_artist_url);
-                mo:discography mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 5) option (using l_artist_url);
-                mo:mailorder mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 15) option (using l_artist_url);
-                mo:imdb mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 17) option (using l_artist_url);
-                mo:paiddownload mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 7) option (using l_artist_url);
-                foaf:depiction mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 14) option (using l_artist_url);
-                foaf:homepage mbz:url_iri(artist_url.url) where (^{l_artist_url.}^.link_type = 2) option (using l_artist_url);
-    
-                mo:musicbrainz mbz:mbz_artist_url_iri(artist.gid);
-    
-                # l_album_artist
-                mo:composed mbz:composition_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 14) option (using l_album_artist);
-                mo:performed mbz:performance_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 14) option (using l_album_artist);
-                mo:performed mbz:performance_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 2) option (using l_album_artist);
-                mo:conducted mbz:performance_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 9) option (using l_album_artist);
-                mo:compiled mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 41) option (using l_album_artist);
-                mo:djmixed mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 38) option (using l_album_artist);
-                mo:remixed mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 11) option (using l_album_artist);
-                mo:sampled mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 12) option (using l_album_artist);
-                mo:produced mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 18) option (using l_album_artist);
-                mo:published mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 35) option (using l_album_artist);
-                mo:engineered mbz:record_iri (artist_album.gid) where (^{l_album_artist.}^.link_type = 19) option (using l_album_artist);
-    
-         #      mo:creatorOfRecord mbz:record_iri(artist_album_creatorOf.gid);
-                foaf:made mbz:record_iri(artist_album_creatorOf.gid);
-    
-                # l_artist_track
-                mo:composed mbz:composition_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 14) option (using l_artist_track);
-                mo:performed mbz:performance_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 14) option (using l_artist_track);
-                mo:performed mbz:performance_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 2) option (using l_artist_track);
-                mo:conducted mbz:performance_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 9) option (using l_artist_track);
-                mo:compiled mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 39) option (using l_artist_track);
-                mo:djmixed mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 40) option (using l_artist_track);
-                mo:remixed mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 11) option (using l_artist_track);
-                mo:sampled mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 12) option (using l_artist_track);
-                mo:produced mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 18) option (using l_artist_track);
-                mo:published mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 35) option (using l_artist_track);
-                mo:engineered mbz:track_iri (artist_track.gid) where (^{l_artist_track.}^.link_type = 19) option (using l_artist_track).
-    
-         #       mo:creatorOfTrack mbz:track_iri(artist_track_creatorOf.gid).
-    
-            # Music Artist''s Birth Event
-            mbz:artist_birth_event_iri(artist.gid)
-                a bio:Birth;
-                bio:date artist.begindate.
-    
-            # Music Artist''s Death Event
-            mbz:artist_death_event_iri(artist.gid)
-                a bio:Death;
-                bio:date artist.enddate.
-    
-            # Similarity link
-            #mbz:sim_link_iri(sim_artist.gid)
-            #    sim:relation mo:similar_to;
-            #    sim:level artist_relation.weight;
-            #    sim:to sim_artist.gid.
-    
-            }
-      }
-    ;
-    
-    grant execute on ZITGIST.MO.RECORD_CREATION_DATE to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_CREATION_DATE_INVERSE to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_OFFICIAL to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_PROMOTION to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_BOOTLEG to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_ALBUM to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_SINGLE to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_EP to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_COMPILATION to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_SOUNDTRACK to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_SPOKENWORD to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_INTERVIEW to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_AUDIOBOOK to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_LIVE to "SPARQL";
-    grant execute on ZITGIST.MO.RECORD_ATTRIBUTE_REMIX to "SPARQL";
-    grant execute on ZITGIST.MO.TRACK_DURATION to "SPARQL";
-    grant execute on ZITGIST.MO.TRACK_DURATION_INVERSE to "SPARQL";
-    grant execute on ZITGIST.MO.album_amazon_asin to "SPARQL";
-    grant execute on ZITGIST.MO.album_name_WORDS to "SPARQL";
-    grant execute on ZITGIST.MO.albumjoin to "SPARQL";
-    grant execute on ZITGIST.MO.albummeta to "SPARQL";
-    grant execute on ZITGIST.MO.artist to "SPARQL";
-    grant execute on ZITGIST.MO.artist_name_WORDS to "SPARQL";
-    grant execute on ZITGIST.MO.artist_relation to "SPARQL";
-    grant execute on ZITGIST.MO.artistalias to "SPARQL";
-    grant execute on ZITGIST.MO.artistalias_name_WORDS to "SPARQL";
-    grant execute on ZITGIST.MO.country to "SPARQL";
-    grant execute on ZITGIST.MO.l_album_album to "SPARQL";
-    grant execute on ZITGIST.MO.l_album_artist to "SPARQL";
-    grant execute on ZITGIST.MO.l_album_url to "SPARQL";
-    grant execute on ZITGIST.MO.l_artist_artist to "SPARQL";
-    grant execute on ZITGIST.MO.l_artist_track to "SPARQL";
-    grant execute on ZITGIST.MO.l_artist_url to "SPARQL";
-    grant execute on ZITGIST.MO.l_track_track to "SPARQL";
-    grant execute on ZITGIST.MO.l_track_url to "SPARQL";
-    grant execute on ZITGIST.MO."language" to "SPARQL";
-    grant execute on ZITGIST.MO.puid to "SPARQL";
-    grant execute on ZITGIST.MO.puidjoin to "SPARQL";
-    grant execute on ZITGIST.MO.release to "SPARQL";
-    grant execute on ZITGIST.MO.track to "SPARQL";
-    grant execute on ZITGIST.MO.track_name_WORDS to "SPARQL";
-    grant execute on ZITGIST.MO.url to "SPARQL";
-    
-    DB.DBA.XML_SET_NS_DECL ('mbz', 'http://musibrainz.org/schemas/mbz#', 2);
-
-## Virtuoso ODS to RDF
-
-*Linked Data View for ODS (the consolidated Graph)*
-
-    SPARQL drop quad map virtrdf:ODS_DS . ;
-    
-    SPARQL prefix ods: <http://www.openlinksw.com/virtuoso/ods/>
-           create iri class ods:graph "http://^{URIQADefaultHost}^/dataspace/%U" (in uname varchar not null)
-                    option (returns "http://^{URIQADefaultHost}^/dataspace/%U") .
-           create iri class ods:user "http://^{URIQADefaultHost}^/dataspace/%U#user" (in uname varchar not null)
-                    option (returns "http://^{URIQADefaultHost}^/dataspace/%U#user") .
-           create iri class ods:user_group "http://^{URIQADefaultHost}^/dataspace/%U#group" (in uname varchar not null)
-                    option (returns "http://^{URIQADefaultHost}^/dataspace/%U#group") .
-           create iri class ods:person "http://^{URIQADefaultHost}^/dataspace/%U#this" (in uname varchar not null)
-                    option (returns "http://^{URIQADefaultHost}^/dataspace/%U#this") .
-           create iri class ods:mbox "mailto:%s" (in email varchar not null)
-                    option (returns "mailto:%s") .
-           create iri class ods:phone "tel:%s" (in tel varchar not null)
-                        option (returns "tel:%s") .
-           create iri class ods:geo_point "http://^{URIQADefaultHost}^/dataspace/%U#geo" (in uname varchar not null)
-                        option (returns "http://^{URIQADefaultHost}^/dataspace/%U#geo") .
-           create iri class ods:forum "http://^{URIQADefaultHost}^/dataspace/%U/%U/%U"
-            ( in uname varchar not null, in forum_type varchar not null, in forum_name varchar not null)
-                        option (returns "http://^{URIQADefaultHost}^/dataspace/%U/%U/%U") .
-           create iri class ods:proxy "http://^{URIQADefaultHost}^/proxy/%U" (in url varchar not null)
-                        option (returns  "http://^{URIQADefaultHost}^/proxy/%U") .
-           create iri class ods:site "http://^{URIQADefaultHost}^/dataspace/%U#site" (in uname varchar not null)
-                        option (returns "http://^{URIQADefaultHost}^/dataspace/%U#site") .
-           create iri class ods:role "http://^{URIQADefaultHost}^/dataspace/%U/%U/%U#%U"
-            (in uname varchar not null, in tp varchar not null, in inst varchar not null, in role_name varchar not null)
-                    option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/%U/%U#%U" ) .
-        # Blog
-        create iri class ods:blog_forum "http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U"
-            (in uname varchar not null, in forum_name varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U") .
-        create iri class ods:blog_post "http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U"
-            (in uname varchar not null, in forum_name varchar not null, in postid varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U" ) .
-        create iri class ods:blog_comment "http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U/%d"
-            (in uname varchar not null, in forum_name varchar not null, in postid varchar not null, in comment_id int not null)
-                option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/weblog/%U/%U/%d" ) .
-        create iri class ods:tag "http://^{URIQADefaultHost}^/dataspace/%U/concept#%U"
-            (in uname varchar not null, in tag varchar not null)
-                    option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/concept#%U") .
-        create iri class ods:blog_post_text "http://^{URIQADefaultHost}^/dataspace/%U/weblog-text/%U/%U"
-            (in uname varchar not null, in forum_name varchar not null, in postid varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/weblog-text/%U/%U" ) .
-        #Feeds
-        create iri class ods:feed "http://^{URIQADefaultHost}^/dataspace/feed/%d" (in feed_id integer not null)
-                option (returns "http://^{URIQADefaultHost}^/dataspace/feed/%d" ) .
-        create iri class ods:feed_item "http://^{URIQADefaultHost}^/dataspace/feed/%d/%d" (in feed_id integer not null, in item_id integer not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/feed/%d/%d" ) .
-        create iri class ods:feed_item_text "http://^{URIQADefaultHost}^/dataspace/feed/%d/%d/text" (in feed_id integer not null, in item_id integer not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/feed/%d/%d/text" ) .
-        create iri class ods:feed_mgr "http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U" (in uname varchar not null, in inst_name varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U" ) .
-        create iri class ods:feed_comment "http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U/%d/%d"
-            (in uname varchar not null, in inst_name varchar not null, in item_id integer not null, in comment_id integer not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/feeds/%U/%d/%d" ) .
-        #Bookmark
-        create iri class ods:bmk_post "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d"
-            (in uname varchar not null, in inst_name varchar not null, in bmk_id integer not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d") .
-        create iri class ods:bmk_post_text "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d/text"
-            (in uname varchar not null, in inst_name varchar not null, in bmk_id integer not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U/%d/text" ) .
-        create iri class ods:bmk_forum "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U"
-            ( in uname varchar not null, in forum_name varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/bookmark/%U") .
-        #Photo
-        create iri class ods:photo_forum "http://^{URIQADefaultHost}^/dataspace/%U/photos/%U"
-            (in uname varchar not null, in inst_name varchar not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/photos/%U") .
-        create iri class ods:photo_post "http://^{URIQADefaultHost}^%s"
-            (in path varchar not null) option (returns "http://^{URIQADefaultHost}^/DAV/%s") .
-        create iri class ods:photo_post_text "http://^{URIQADefaultHost}^%s/text"
-            (in path varchar not null) option (returns "http://^{URIQADefaultHost}^/DAV/%s/text") .
-        create iri class ods:photo_comment "http://^{URIQADefaultHost}^%s:comment_%d"
-            (in path varchar not null, in comment_id int not null)
-            option (returns "http://^{URIQADefaultHost}^/DAV/%s:comment_%d") .
-        # Community
-        create iri class ods:community_forum "http://^{URIQADefaultHost}^/dataspace/%U/community/%U"
-            (in uname varchar not null, in forum_name varchar not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/community/%U") .
-        # Briefcase
-        create iri class ods:odrive_forum "http://^{URIQADefaultHost}^/dataspace/%U/briefcase/%U"
-            (in uname varchar not null, in inst_name varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/briefcase/%U" ) .
-        create iri class ods:odrive_post "http://^{URIQADefaultHost}^%s"
-            (in path varchar not null) option (returns "http://^{URIQADefaultHost}^/DAV/%s") .
-        create iri class ods:odrive_post_text "http://^{URIQADefaultHost}^%s/text"
-            (in path varchar not null) option (returns "http://^{URIQADefaultHost}^/DAV/%s/text") .
-        # Wiki
-        create iri class ods:wiki_post "http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U"
-            (in uname varchar not null, in inst_name varchar not null, in topic_id varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U") .
-        create iri class ods:wiki_post_text "http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U/text"
-            (in uname varchar not null, in inst_name varchar not null, in topic_id varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U/%U/text" ) .
-        create iri class ods:wiki_forum "http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U"
-            ( in uname varchar not null, in forum_name varchar not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/wiki/%U" ) .
-        #Calendar
-        create iri class ods:calendar_event "http://^{URIQADefaultHost}^/dataspace/%U/calendar/%U/%d"
-            (in uname varchar not null, in inst_name varchar not null, in calendar_id integer not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/calendar/%U/%d" ) .
-        create iri class ods:calendar_event_text "http://^{URIQADefaultHost}^/dataspace/%U/calendar/%U/%d/text"
-            (in uname varchar not null, in inst_name varchar not null, in calendar_id integer not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/%U/calendar/%U/%d/text" ) .
-        create iri class ods:calendar_forum "http://^{URIQADefaultHost}^/dataspace/%U/calendar/%U"
-            ( in uname varchar not null, in forum_name varchar not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/%U/calendar/%U") .
-        # NNTPF
-        create iri class ods:nntp_forum "http://^{URIQADefaultHost}^/dataspace/discussion/%U"
-            ( in forum_name varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/discussion/%U").
-        create iri class ods:nntp_post "http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U"
-            ( in group_name varchar not null, in message_id varchar not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U" ) .
-        create iri class ods:nntp_post_text "http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U/text"
-            ( in group_name varchar not null, in message_id varchar not null)
-            option (returns  "http://^{URIQADefaultHost}^/dataspace/discussion/%U/%U/text") .
-        create iri class ods:nntp_role "http://^{URIQADefaultHost}^/dataspace/discussion/%U#reader"
-            (in forum_name varchar not null)
-            option (returns "http://^{URIQADefaultHost}^/dataspace/discussion/%U#reader") .
-           ;
-    
-    SPARQL
-        prefix sioc: <http://rdfs.org/sioc/ns#>
-        prefix sioct: <http://rdfs.org/sioc/types#>
-        prefix atom: <http://atomowl.org/ontologies/atomrdf#>
-        prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        prefix foaf: <http://xmlns.com/foaf/0.1/>
-        prefix dc: <http://purl.org/dc/elements/1.1/>
-        prefix dct: <http://purl.org/dc/terms/>
-        prefix skos: <http://www.w3.org/2004/02/skos/core#>
-        prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-        prefix bm: <http://www.w3.org/2002/01/bookmark#>
-        prefix exif: <http://www.w3.org/2003/12/exif/ns/>
-        prefix ann: <http://www.w3.org/2000/10/annotation-ns#>
-        prefix wikiont: <http://sw.deri.org/2005/04/wikipedia/wikiont.owl#>
-        prefix calendar: <http://www.w3.org/2002/12/cal#>
-        prefix ods: <http://www.openlinksw.com/virtuoso/ods/>
-    
-        alter quad storage virtrdf:DefaultQuadStorage
-          FROM DB.DBA.SIOC_USERS as users
-          FROM DB.DBA.SIOC_ODS_FORUMS as forums
-          FROM DB.DBA.SIOC_ROLES as roles
-          FROM DB.DBA.SIOC_ROLE_GRANTS as grants
-          FROM DB.DBA.SIOC_KNOWS as knows
-          FROM DB.DBA.ODS_FOAF_PERSON as person
-          where (^{person.}^.U_NAME = ^{users.}^.U_NAME)
-          where (^{forums.}^.U_NAME = ^{users.}^.U_NAME)
-          where (^{knows.}^.TO_NAME = ^{users.}^.U_NAME)
-          where (^{knows.}^.FROM_NAME = ^{users.}^.U_NAME)
-          where (^{grants.}^.U_NAME = ^{users.}^.U_NAME)
-          where (^{roles.}^.U_NAME = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_BLOG_POSTS as blog_posts
-          where (^{blog_posts.}^.B_OWNER = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_BLOG_POST_LINKS as blog_links
-          where (^{blog_links.}^.B_OWNER = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_BLOG_POST_ATTS as blog_atts
-          where (^{blog_atts.}^.B_OWNER = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_BLOG_POST_TAGS as blog_tags
-          where (^{blog_tags.}^.U_NAME = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_BLOG_COMMENTS as blog_comms
-          where (^{blog_comms.}^.U_NAME = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_BMK_POSTS as bmk_posts
-          where (^{bmk_posts.}^.U_NAME = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_BMK_TAGS as bmk_tags
-          where (^{bmk_tags.}^.U_NAME = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_ODRIVE_POSTS as odrv_posts
-          where (^{odrv_posts.}^.U_MEMBER = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_ODRIVE_TAGS as odrv_tags
-          where (^{odrv_tags.}^.U_OWNER = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_FEED_FEED_DOMAIN as feed_domain
-          where (^{feed_domain.}^.U_NAME = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_FEED_POSTS as feed_posts
-          where (^{feed_posts.}^.EFI_FEED_ID = ^{feed_domain.}^.EF_ID)
-          FROM DB.DBA.ODS_FEED_COMMENTS as feed_comments
-          where (^{feed_comments.}^.U_NAME = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_FEED_TAGS as feed_tags
-          where (^{feed_tags.}^.U_NAME = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_FEED_LINKS as feed_links
-          where (^{feed_links.}^.EFI_FEED_ID = ^{feed_domain.}^.EF_ID)
-          FROM DB.DBA.ODS_FEED_ATTS as feed_atts
-          where (^{feed_atts.}^.EFI_FEED_ID = ^{feed_domain.}^.EF_ID)
-    
-          FROM DB.DBA.ODS_PHOTO_POSTS as photo_posts
-          where (^{photo_posts.}^.U_MEMBER = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_PHOTO_COMMENTS as photo_comments
-          where (^{photo_comments.}^.U_MEMBER = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_PHOTO_TAGS as photo_tags
-          where (^{photo_tags.}^.U_MEMBER = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_WIKI_POSTS as wiki_posts
-          where (^{wiki_posts.}^.U_NAME = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_COMMUNITIES as community
-          where (^{community.}^.C_OWNER = ^{users.}^.U_NAME)
-    
-          FROM DB.DBA.ODS_NNTP_GROUPS as nntp_groups
-          FROM DB.DBA.ODS_NNTP_POSTS as nntp_posts
-          FROM DB.DBA.ODS_NNTP_USERS as nntp_users
-          where (^{nntp_users.}^.U_NAME = ^{users.}^.U_NAME)
-          FROM DB.DBA.ODS_NNTP_LINKS as nntp_links
-    
-        {
-        create virtrdf:ODS_DS as graph ods:graph (users.U_NAME) option (exclusive)
-          {
-            ods:user (users.U_NAME) a sioc:User ;
-                sioc:id users.U_NAME ;
-                sioc:name users.U_FULL_NAME ;
-                sioc:email ods:mbox (users.E_MAIL) ;
-                sioc:email_sha1 users.E_MAIL_SHA1 ;
-                sioc:account_of ods:person (users.U_NAME) .
-    
-            ods:person (person.U_NAME) a foaf:Person ;
-                foaf:nick person.U_NAME ;
-            foaf:name person.U_FULL_NAME ;
-            foaf:mbox ods:mbox (person.E_MAIL) ;
-                foaf:mbox_sha1sum person.E_MAIL_SHA1 ;
-                foaf:holdsAccount ods:user (person.U_NAME) ;
-                foaf:firstName person.FIRST_NAME ;
-                foaf:family_name person.LAST_NAME ;
-                foaf:gender person.GENDER ;
-                foaf:icqChatID person.ICQ ;
-                foaf:msnChatID person.MSN ;
-                foaf:aimChatID person.AIM ;
-                foaf:yahooChatID person.YAHOO ;
-                foaf:birthday person.BIRTHDAY ;
-                foaf:organization person.ORG ;
-                foaf:phone ods:phone (person.PHONE) ;
-            foaf:based_near ods:geo_point (person.U_NAME)
-            .
-    
-            ods:geo_point (person.U_NAME) a geo:Point ;
-             geo:lat person.LAT ;
-             geo:lng person.LNG .
-    
-            ods:person (knows.FROM_NAME) foaf:knows ods:person (knows.TO_NAME) .
-            ods:person (knows.TO_NAME) foaf:knows ods:person (knows.FROM_NAME) .
-    
-            ods:user_group (grants.G_NAME) a sioc:Usergroup ;
-                sioc:id grants.G_NAME ;
-            sioc:has_member ods:user (grants.U_NAME) .
-            ods:user (grants.U_NAME)  sioc:member_of ods:user_group (grants.G_NAME) .
-    
-            ods:role (roles.U_NAME, roles.APP_TYPE, roles.WAM_INST, roles.WMT_NAME)
-              sioc:has_scope ods:forum (roles.U_NAME, roles.APP_TYPE, roles.WAM_INST) ;
-              sioc:function_of ods:user (roles.U_NAME) .
-    
-                ods:forum (roles.U_NAME, roles.APP_TYPE, roles.WAM_INST)
-                sioc:scope_of ods:role (roles.U_NAME, roles.APP_TYPE, roles.WAM_INST, roles.WMT_NAME) .
-                ods:user (roles.U_NAME)
-                sioc:has_function ods:role (roles.U_NAME, roles.APP_TYPE, roles.WAM_INST, roles.WMT_NAME) .
-    
-            ods:forum (forums.U_NAME, forums.APP_TYPE, forums.WAM_INST) a sioc:Container ;
-                sioc:id forums.WAM_INST ;
-            sioc:type forums.APP_TYPE ;
-                sioc:description forums.WAI_DESCRIPTION ;
-                sioc:link ods:proxy (forums.LINK) ;
-                sioc:has_space ods:site (forums.U_NAME) .
-    
-                # Weblog
-            ods:blog_post (blog_posts.B_OWNER, blog_posts.B_INST, blog_posts.B_POST_ID) a sioct:BlogPost ;
-            sioc:link ods:proxy (blog_posts.B_LINK) ;
-            sioc:has_creator ods:user (blog_posts.B_CREATOR) ;
-            foaf:maker ods:person (blog_posts.B_CREATOR) ;
-            sioc:has_container ods:blog_forum (blog_posts.B_OWNER, blog_posts.B_INST) ;
-            dc:title blog_posts.B_TITLE ;
-            dct:created blog_posts.B_CREATED ;
-            dct:modified blog_posts.B_MODIFIED ;
-            sioc:content blog_posts.B_CONTENT .
-    
-            ods:blog_forum (blog_posts.B_OWNER, blog_posts.B_INST)
-            sioc:container_of
-            ods:blog_post (blog_posts.B_OWNER, blog_posts.B_INST, blog_posts.B_POST_ID) .
-    
-            ods:user (blog_posts.B_CREATOR)
-            sioc:creator_of
-            ods:blog_post (blog_posts.B_OWNER, blog_posts.B_INST, blog_posts.B_POST_ID) .
-    
-            ods:blog_post (blog_links.B_OWNER, blog_links.B_INST, blog_links.B_POST_ID)
-            sioc:links_to
-            ods:proxy (blog_links.PL_LINK) .
-            # end Weblog
-    
-                # Bookmark
-            ods:bmk_post (bmk_posts.U_NAME, bmk_posts.WAI_NAME, bmk_posts.BD_BOOKMARK_ID)
-                a bm:Bookmark ;
-            dc:title bmk_posts.BD_NAME;
-            dct:created bmk_posts.BD_CREATED ;
-            dct:modified bmk_posts.BD_LAST_UPDATE ;
-            dc:date bmk_posts.BD_LAST_UPDATE ;
-            ann:created bmk_posts.BD_CREATED ;
-            dc:creator bmk_posts.U_NAME ;
-            bm:recalls ods:proxy (bmk_posts.B_URI) ;
-            sioc:link ods:proxy (bmk_posts.B_URI) ;
-            sioc:content bmk_posts.BD_DESCRIPTION ;
-            sioc:has_creator ods:user (bmk_posts.U_NAME) ;
-            foaf:maker ods:person (bmk_posts.U_NAME) ;
-            sioc:has_container ods:bmk_forum (bmk_posts.U_NAME, bmk_posts.WAI_NAME) .
-    
-                ods:bmk_forum (bmk_posts.U_NAME, bmk_posts.WAI_NAME)
-            sioc:container_of
-            ods:bmk_post (bmk_posts.U_NAME, bmk_posts.WAI_NAME, bmk_posts.BD_BOOKMARK_ID) .
-    
-            ods:user (bmk_posts.U_NAME)
-            sioc:creator_of
-            ods:bmk_post (bmk_posts.U_NAME, bmk_posts.WAI_NAME, bmk_posts.BD_BOOKMARK_ID) .
-    
-            ods:bmk_post (bmk_tags.U_NAME, bmk_tags.WAM_INST, bmk_tags.ITEM_ID)
-            sioc:topic
-            ods:tag (bmk_tags.U_NAME, bmk_tags.BD_TAG) .
-    
-            ods:tag (bmk_tags.U_NAME, bmk_tags.BD_TAG) a skos:Concept ;
-            skos:prefLabel bmk_tags.BD_TAG ;
-            skos:isSubjectOf ods:bmk_post (bmk_tags.U_NAME, bmk_tags.WAM_INST, bmk_tags.ITEM_ID) .
-            # end Bookmark
-    
-                # Briefcase
-            ods:odrive_post (odrv_posts.RES_FULL_PATH) a foaf:Document ;
-            dc:title odrv_posts.RES_NAME ;
-            dct:created odrv_posts.RES_CREATED ;
-            dct:modified odrv_posts.RES_MODIFIED ;
-            sioc:content odrv_posts.RES_DESCRIPTION ;
-            sioc:has_creator ods:user (odrv_posts.U_OWNER) ;
-            foaf:maker ods:person (odrv_posts.U_OWNER) ;
-            sioc:has_container ods:odrive_forum (odrv_posts.U_MEMBER, odrv_posts.WAI_NAME) .
-    
-            ods:odrive_forum (odrv_posts.U_MEMBER, odrv_posts.WAI_NAME)
-            sioc:container_of
-            ods:odrive_post (odrv_posts.RES_FULL_PATH) .
-    
-            ods:user (odrv_posts.U_OWNER)
-            sioc:creator_of
-            ods:odrive_post (odrv_posts.RES_FULL_PATH) .
-    
-            ods:odrive_post (odrv_tags.RES_FULL_PATH)
-            sioc:topic
-            ods:tag (odrv_tags.U_OWNER, odrv_tags.TAG) .
-    
-            ods:tag (odrv_tags.U_OWNER, odrv_tags.TAG) a skos:Concept ;
-            skos:prefLabel odrv_tags.TAG ;
-            skos:isSubjectOf ods:odrive_post (odrv_tags.RES_FULL_PATH) .
-                # end Briefcase
-    
-                # Feeds
-            ods:feed (feed_domain.EF_ID) a atom:Feed ;
-            sioc:link ods:proxy (feed_domain.EF_URI) ;
-            atom:link ods:proxy (feed_domain.EF_URI) ;
-            atom:title feed_domain.EF_TITLE ;
-            sioc:has_parent ods:feed_mgr (feed_domain.U_NAME, feed_domain.WAI_NAME) .
-    
-            ods:feed_mgr (feed_domain.U_NAME, feed_domain.WAI_NAME)
-            sioc:parent_of ods:feed (feed_domain.EF_ID) .
-    
-            ods:feed_item (feed_tags.EFI_FEED_ID, feed_tags.EFID_ITEM_ID)
-            sioc:topic
-            ods:tag (feed_tags.U_NAME, feed_tags.EFID_TAG) .
-    
-            ods:tag (feed_tags.U_NAME, feed_tags.EFID_TAG) a skos:Concept ;
-            skos:prefLabel feed_tags.EFID_TAG ;
-            skos:isSubjectOf ods:feed_item (feed_tags.EFI_FEED_ID, feed_tags.EFID_ITEM_ID) .
-    
-            ods:feed_comment (feed_comments.U_NAME, feed_comments.WAI_NAME, feed_comments.EFIC_ITEM_ID, feed_comments.EFIC_ID)
-            a sioct:Comment ;
-            dc:title feed_comments.EFIC_TITLE ;
-            sioc:content feed_comments.EFIC_COMMENT ;
-            dct:modified feed_comments.LAST_UPDATE ;
-            dct:created feed_comments.LAST_UPDATE ;
-            sioc:link ods:proxy (feed_comments.LINK) ;
-            sioc:has_container ods:feed (feed_comments.EFI_FEED_ID) ;
-            sioc:reply_of ods:feed_item (feed_comments.EFI_FEED_ID, feed_comments.EFIC_ITEM_ID) ;
-            foaf:maker ods:proxy (feed_comments.EFIC_U_URL) .
-    
-            ods:proxy (feed_comments.EFIC_U_URL) a foaf:Person ;
-            foaf:name feed_comments.EFIC_U_NAME;
-            foaf:mbox ods:mbox (feed_comments.EFIC_U_MAIL) .
-    
-                ods:feed (feed_comments.EFI_FEED_ID)
-            sioc:container_of
-                ods:feed_comment (feed_comments.U_NAME, feed_comments.WAI_NAME, feed_comments.EFIC_ITEM_ID, feed_comments.EFIC_ID) .
-    
-                ods:feed_item (feed_comments.EFI_FEED_ID, feed_comments.EFIC_ITEM_ID)
-            sioc:has_reply
-            ods:feed_comment (feed_comments.U_NAME, feed_comments.WAI_NAME, feed_comments.EFIC_ITEM_ID, feed_comments.EFIC_ID) .
-    
-                ods:feed_item (feed_links.EFI_FEED_ID, feed_links.EFI_ID)
-            sioc:links_to
-            ods:proxy (feed_links.EFIL_LINK) .
-    
-            ods:feed_item (feed_atts.EFI_FEED_ID, feed_atts.EFI_ID)
-            sioc:attachment
-            ods:proxy (feed_atts.EFIE_URL) .
-    
-            ods:feed_item (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) a atom:Entry ;
-            sioc:has_container ods:feed (feed_posts.EFI_FEED_ID) ;
-            dc:title feed_posts.EFI_TITLE ;
-            dct:created feed_posts.PUBLISH_DATE ;
-            dct:modified feed_posts.PUBLISH_DATE ;
-            sioc:link ods:proxy (feed_posts.EFI_LINK) ;
-            sioc:content feed_posts.EFI_DESCRIPTION ;
-            atom:title feed_posts.EFI_TITLE ;
-            atom:source ods:feed (feed_posts.EFI_FEED_ID) ;
-            atom:published feed_posts.PUBLISH_DATE ;
-            atom:updated feed_posts.PUBLISH_DATE ;
-            atom:content ods:feed_item_text (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) .
-    
-            ods:feed (feed_posts.EFI_FEED_ID) sioc:container_of ods:feed_item (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) .
-    
-            ods:feed_item_text (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) a atom:Content ;
-            atom:type "text/xhtml" ;
-            atom:lang "en-US" ;
-            atom:body feed_posts.EFI_DESCRIPTION .
-    
-            ods:feed (feed_posts.EFI_FEED_ID)
-            atom:contains
-            ods:feed_item (feed_posts.EFI_FEED_ID, feed_posts.EFI_ID) .
-                # end Feeds
-    
-            # Photo
-            ods:photo_post (photo_posts.RES_FULL_PATH) a exif:IFD ;
-            dc:title photo_posts.RES_NAME ;
-            dct:created photo_posts.RES_CREATED ;
-            dct:modified photo_posts.RES_MODIFIED ;
-            sioc:content photo_posts.RES_DESCRIPTION ;
-            sioc:has_creator ods:user (photo_posts.U_OWNER) ;
-            foaf:maker ods:person (photo_posts.U_OWNER) ;
-            sioc:link ods:proxy (photo_posts.RES_LINK) ;
-            sioc:has_container ods:photo_forum (photo_posts.U_MEMBER, photo_posts.WAI_NAME) .
-    
-            ods:photo_forum (photo_posts.U_MEMBER, photo_posts.WAI_NAME)
-            sioc:container_of
-            ods:photo_post (photo_posts.RES_FULL_PATH) .
-    
-            ods:user (photo_posts.U_OWNER)
-            sioc:creator_of
-            ods:photo_post (photo_posts.RES_FULL_PATH) .
-    
-            ods:photo_post (photo_tags.RES_FULL_PATH)
-            sioc:topic
-            ods:tag (photo_tags.U_MEMBER, photo_tags.RES_TAG) .
-    
-            ods:tag (photo_tags.U_MEMBER, photo_tags.RES_TAG) a skos:Concept ;
-            skos:prefLabel photo_tags.RES_TAG ;
-            skos:isSubjectOf ods:photo_post (photo_tags.RES_FULL_PATH) .
-    
-            ods:photo_comment (photo_comments.RES_FULL_PATH, photo_comments.COMMENT_ID) a sioct:Comment ;
-            sioc:reply_of ods:photo_post (photo_comments.RES_FULL_PATH) ;
-            sioc:has_container ods:photo_forum (photo_comments.U_MEMBER, photo_comments.WAI_NAME) ;
-            dc:title photo_comments.RES_NAME ;
-            dct:created photo_comments.CREATE_DATE ;
-            dct:modified photo_comments.MODIFY_DATE ;
-            sioc:content photo_comments.TEXT ;
-            foaf:maker ods:person (photo_comments.U_MAKER) .
-    
-            ods:photo_post (photo_comments.RES_FULL_PATH)
-            sioc:has_reply
-            ods:photo_comment (photo_comments.RES_FULL_PATH, photo_comments.COMMENT_ID) .
-            # end Photo
-    
-            # Polls
-            # end Polls
-    
-            # Mail
-            # end Mail
-    
-            # Wiki
-                ods:wiki_post (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME, wiki_posts.LOCALNAME) a wikiont:Article ;
-            dc:title wiki_posts.LOCALNAME ;
-            dct:created wiki_posts.RES_CREATED ;
-            dct:modified wiki_posts.RES_MODIFIED ;
-            sioc:content wiki_posts.RES_CONTENT ;
-            sioc:has_creator ods:user (wiki_posts.U_NAME) ;
-            foaf:maker ods:person (wiki_posts.U_NAME) ;
-            sioc:has_container ods:wiki_forum (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME) .
-    
-            ods:wiki_forum (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME)
-            sioc:container_of
-            ods:wiki_post (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME, wiki_posts.LOCALNAME) .
-    
-            ods:user (wiki_posts.U_NAME)
-            sioc:creator_of
-            ods:wiki_post (wiki_posts.U_NAME, wiki_posts.CLUSTERNAME, wiki_posts.LOCALNAME) .
-    
-            # end Wiki
-    
-                # Community
-            ods:community_forum (community.C_OWNER, community.CM_COMMUNITY_ID) a sioc:Community ;
-            sioc:has_part ods:forum (community.A_OWNER, community.A_TYPE, community.CM_MEMBER_APP) .
-    
-            ods:forum (community.A_OWNER, community.A_TYPE, community.CM_MEMBER_APP)
-            sioc:part_of
-            ods:community_forum (community.C_OWNER, community.CM_COMMUNITY_ID) .
-                # end Community
-    
-            # NNTP
-            ods:nntp_forum (nntp_groups.NG_NAME) a sioct:MessageBoard ;
-            sioc:id nntp_groups.NG_NAME ;
-            sioc:description nntp_groups.NG_DESC .
-    
-            ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.NM_ID) a sioct:BoardPost ;
-            sioc:content nntp_posts.NM_BODY ;
-            dc:title nntp_posts.FTHR_SUBJ ;
-            dct:created  nntp_posts.REC_DATE ;
-            dct:modified nntp_posts.REC_DATE ;
-            foaf:maker ods:proxy (nntp_posts.MAKER) ;
-            sioc:reply_of ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.FTHR_REFER) ;
-            sioc:has_container ods:nntp_forum (nntp_posts.NG_NAME) .
-    
-            ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.FTHR_REFER)
-            sioc:has_reply
-            ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.NM_ID) .
-    
-            ods:nntp_forum (nntp_posts.NG_NAME)
-            sioc:container_of
-            ods:nntp_post (nntp_posts.NG_NAME, nntp_posts.NM_ID) .
-    
-            ods:nntp_role (nntp_groups.NG_NAME)
-            sioc:has_scope
-            ods:nntp_forum (nntp_groups.NG_NAME) .
-    
-            ods:nntp_forum (nntp_groups.NG_NAME)
-            sioc:scope_of
-            ods:nntp_role (nntp_groups.NG_NAME) .
-    
-            ods:user (nntp_users.U_NAME)
-            sioc:has_function
-            ods:nntp_role (nntp_users.NG_NAME) .
-    
-            ods:nntp_role (nntp_users.NG_NAME)
-            sioc:function_of
-            ods:user (nntp_users.U_NAME) .
-    
-            ods:nntp_post (nntp_links.NG_NAME, nntp_links.NML_MSG_ID)
-            sioc:links_to
-            ods:proxy (nntp_links.NML_URL) .
-            # end NNTP
-    
-          } .
-        } .
-    ;
-
-*URL Rewrite Rules for ODS*
-
-    create procedure DB.DBA.URL_REW_ODS_ACCEPT ()
-    {
-      declare accept, ret any;
-      accept := http_request_header (http_request_header (), 'Accept');
-      if (not isstring (accept))
-        return null;
-      ret := null;
-      if (regexp_match ('(application|text)/rdf.(xml|n3|turtle|ttl)', accept) is not null)
-        {
-          if (regexp_match ('application/rdf.xml', accept) is not null)
-        {
-          ret := 'rdf';
-        }
-          else if (regexp_match ('text/rdf.n3', accept) is not null)
-        {
-          ret := 'n3';
-        }
-          else if (regexp_match ('application/rdf.turtle', accept) is not null or
-            regexp_match ('application/rdf.ttl', accept) is not null)
-        {
-          ret := 'n3';
-        }
-        }
-      return ret;
-    };
-    
-    create procedure  DB.DBA.URL_REW_ODS_SPQ (in graph varchar, in iri varchar, in acc varchar)
-    {
-      declare q, ret any;
-      iri := replace (iri, '''', '%27');
-      iri := replace (iri, '<', '%3C');
-      iri := replace (iri, '>', '%3E');
-      q := sprintf ('define input:inference <%s> DESCRIBE <%s> FROM <%s>', graph, iri, graph);
-      ret := sprintf ('/sparql?query=%U&format=%U', q, acc);
-      return ret;
-    };
-    
-    create procedure DB.DBA.URL_REW_ODS_USER (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (current_proc_name ());
-      declare acc, ret any;
-      declare q, iri, graph any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          graph := sioc..get_graph ();
-          iri := sprintf ('%s/%U', graph, val);
-          if (val like 'person/%')
-        {
-          val := substring (val, 8, length (val));
-          ret := sprintf ('/ods/foaf.vsp?uname=%U&fmt=%U', val, acc);
-        }
-          else
-            ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-        }
-      else
-        {
-          http_header (http_header_get ()||sprintf ('X-XRDS-Location: %s\r\n',
-            DB.DBA.wa_link (1, '/dataspace/'||val||'/yadis.xrds')));
-    
-          if (val like 'person/%')
-        val := substring (val, 8, length (val));
-          ret := sprintf ('/ods/uhome.vspx?page=1&ufname=%s', val);
-        }
-      return ret;
-    };
-    
-    create procedure DB.DBA.URL_REW_ODS_USER_GEM (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (current_proc_name ());
-      declare acc, ret any;
-      declare q, iri, graph, path, is_person any;
-    
-      path := http_path ();
-      if (path like '%.rdf')
-        acc := 'rdf';
-      else if (path like '%.n3')
-        acc := 'n3';
-      else if (path like '%.ttl')
-        acc := 'n3';
-      else if (path like '%/yadis.xrds')
-        acc := 'yadis';
-      else
-        acc := 'rdf';
-    
-      if (acc <> 'yadis')
-        {
-          is_person := matches_like (path, '%/about.%');
-          graph := sioc..get_graph ();
-          if (is_person)
-        {
-              --iri := sprintf ('%s/person/%U', graph, val);
-          ret := sprintf ('/ods/foaf.vsp?uname=%U&fmt=%U', val, acc);
-        }
-          else
-        {
-              iri := sprintf ('%s/%U', graph, val);
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-        }
-        }
-      else
-        {
-          ret := sprintf ('/ods/yadis.vsp?uname=%U', val);
-        }
-      return ret;
-    };
-    
-    create procedure DB.DBA.URL_REW_ODS_GEM (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (current_proc_name ());
-      declare acc, ret any;
-      declare q, iri, graph, path, pos any;
-    
-      path := http_path ();
-      if (path like '%.rdf')
-        acc := 'rdf';
-      else if (path like '%.n3')
-        acc := 'n3';
-      else if (path like '%.ttl')
-        acc := 'n3';
-      else
-        acc := 'rdf';
-      graph := sioc..get_graph ();
-      pos := strrchr (path, '/');
-      path := subseq (path, 0, pos);
-    
-      if (val = 'person')
-        {
-          pos := strrchr (path, '/');
-          val := subseq (path, pos+1, length (path));
-          ret := sprintf ('/ods/foaf.vsp?uname=%U&fmt=%U', val, acc);
-        }
-      else
-        {
-          iri := sprintf ('http://%s%s', sioc..get_cname (), path);
-          ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-        }
-      return ret;
-    };
-    
-    create procedure DB.DBA.URL_REW_ODS_APP (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (current_proc_name (), val);
-      if (par = 'app')
-        return sprintf (fmt, wa_app_to_type (val));
-      return sprintf (fmt, val);
-    };
-    
-    create procedure DB.DBA.URL_REW_ODS_BLOG (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (par, fmt, val);
-    --  dbg_obj_print (current_proc_name (), val);
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'inst')
-        {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-        }
-          else
-        return '';
-        }
-      else if (par = 'inst')
-        {
-          declare url any;
-          val := split_and_decode (val)[0];
-          url := (SELECT WAM_HOME_PAGE FROM WA_MEMBER WHERE WAM_INST = val AND WAM_MEMBER_TYPE = 1);
-          if (url is not null)
-            val := url;
-          return sprintf (fmt, val);
-        }
-      else if (par = 'id' and val <> '')
-        {
-          if (atoi (val) = 0 and val <> '0')
-        fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    };
-    
-    create procedure DB.DBA.URL_REW_ODS_NNTP (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (par, fmt, val);
-    --  dbg_obj_print (current_proc_name (), val);
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-           declare q, iri, graph any;
-           graph := sioc..get_graph ();
-           iri := 'http://' || sioc..get_cname () || http_path ();
-    --       dbg_obj_print (iri);
-           ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-           return ret;
-        }
-      else if (par = 'grp')
-        {
-          declare gid int;
-          val := split_and_decode (val)[0];
-          gid := (SELECT NG_GROUP FROM DB.DBA.NEWS_GROUPS WHERE NG_NAME = val);
-          ret := sprintf ('/nntpf/nntpf_nthread_view.vspx?group=%d', gid);
-          return ret;
-        }
-      else if (par = 'post')
-        {
-          ret := sprintf ('/nntpf/nntpf_disp_article.vspx?id=%U', encode_base64 (val));
-          return ret;
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_XD (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (par, fmt, val);
-    --  dbg_obj_print (current_proc_name (), val);
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-           declare q, iri, graph any;
-           graph := sioc..get_graph ();
-           iri := 'http://' || sioc..get_cname () || http_path ();
-    --       dbg_obj_print (iri);
-           ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-           return ret;
-        }
-      else if (par = 'inst')
-        {
-          val := split_and_decode (val)[0];
-          ret := (SELECT WAM_HOME_PAGE FROM WA_MEMBER WHERE WAM_INST = val and WAM_MEMBER_TYPE = 1);
-          return ret;
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_WIKI (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (par, fmt, val);
-    --  dbg_obj_print (current_proc_name (), val);
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-           declare q, iri, graph any;
-           graph := sioc..get_graph ();
-           iri := 'http://' || sioc..get_cname () || http_path ();
-    --       dbg_obj_print (iri);
-           ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-           return ret;
-        }
-      else if (par = 'inst')
-        {
-          declare _inst DB.DBA.web_app;
-          _inst := (SELECT WAI_INST FROM WA_INSTANCE WHERE WAI_NAME = val);
-          ret := _inst.wa_post_url (null, null, val, val);
-    --      dbg_obj_print ('ret', ret);
-          return ret;
-        }
-      else if (par = 'post')
-        {
-          return '/'||val;
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_PHOTO (in par varchar, in fmt varchar, in val varchar)
-    {
-    --  dbg_obj_print (par, fmt, val);
-    --  dbg_obj_print (current_proc_name (), val);
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-           declare q, iri, graph any;
-           graph := sioc..get_graph ();
-           iri := 'http://' || sioc..get_cname () || http_path ();
-    --       dbg_obj_print (iri);
-           ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-           return ret;
-        }
-      else if (par = 'inst')
-        {
-          val := split_and_decode (val)[0];
-          ret := (SELECT WAM_HOME_PAGE FROM WA_MEMBER WHERE WAM_INST = val AND WAM_MEMBER_TYPE = 1);
-          return ret;
-        }
-      else if (par = 'post')
-        {
-          declare id int;
-          declare col, nam varchar;
-          declare exit handler for not found
-        {
-          signal ('22023', sprintf ('The resource %d doesn''t exists', id));
-        };
-          id := atoi(ltrim(val, '/'));
-          SELECT RES_FULL_PATH INTO nam FROM WS.WS.SYS_DAV_RES WHERE RES_ID = id;
-          return nam;
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_ADDRESSBOOK (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'instance')
-            {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-              }
-          else
-              return '';
-        }
-      else if (par = 'instance')
-        {
-          declare id, url any;
-          val := split_and_decode (val)[0];
-          id := AB.WA.domain_id (val);
-          if (id is not null) {
-            url := AB.WA.ab_url (id);
-            if (url is not null)
-              val := url;
-          }
-          return sprintf (fmt, val);
-        }
-      else if (par = 'params')
-        {
-          if (atoi (val) = 0 and val <> '0')
-            fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_BOOKMARK (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'instance')
-            {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-              }
-          else
-              return '';
-        }
-      else if (par = 'instance')
-        {
-          declare id, url any;
-          val := split_and_decode (val)[0];
-          id := BMK.WA.domain_id (val);
-          if (id is not null) {
-            url := BMK.WA.bookmark_url (id);
-            if (url is not null)
-              val := url;
-          }
-          return sprintf (fmt, val);
-        }
-      else if (par = 'params')
-        {
-          if (atoi (val) = 0 and val <> '0')
-            fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_BRIEFCASE (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'instance')
-            {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-              }
-          else
-              return '';
-        }
-      else if (par = 'instance')
-        {
-          declare id, url any;
-          val := split_and_decode (val)[0];
-          id := ODRIVE.WA.domain_id (val);
-          if (id is not null) {
-            url := ODRIVE.WA.odrive_url (id);
-            if (url is not null)
-              val := url;
-          }
-          return sprintf (fmt, val);
-        }
-      else if (par = 'params')
-        {
-          if (atoi (val) = 0 and val <> '0')
-            fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_CALENDAR (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'instance')
-            {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-              }
-          else
-              return '';
-        }
-      else if (par = 'instance')
-        {
-          declare id, url any;
-          val := split_and_decode (val)[0];
-          id := CAL.WA.domain_id (val);
-          if (id is not null) {
-            url := CAL.WA.calendar_url (id);
-            if (url is not null)
-              val := url;
-          }
-          return sprintf (fmt, val);
-        }
-      else if (par = 'params')
-        {
-          if (atoi (val) = 0 and val <> '0')
-            fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_FEEDS (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'instance')
-            {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-              }
-          else
-              return '';
-        }
-      else if (par = 'instance')
-        {
-          declare id, url any;
-          val := split_and_decode (val)[0];
-          id := ENEWS.WA.domain_id (val);
-          if (id is not null) {
-            url := ENEWS.WA.enews_url (id) || 'news.vspx';
-            if (url is not null)
-              val := url;
-          }
-          return sprintf (fmt, val);
-        }
-      else if (par = 'params')
-        {
-          if (atoi (val) = 0 and val <> '0')
-            fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_POLLS (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare acc, ret any;
-    
-      acc := DB.DBA.URL_REW_ODS_ACCEPT ();
-      if (acc is not null)
-        {
-          if (par = 'instance')
-            {
-              declare q, iri, graph any;
-              graph := sioc..get_graph ();
-              iri := 'http://' || sioc..get_cname () || http_path ();
-              ret := DB.DBA.URL_REW_ODS_SPQ (graph, iri, acc);
-              return ret;
-              }
-          else
-              return '';
-        }
-      else if (par = 'instance')
-        {
-          declare id, url any;
-          val := split_and_decode (val)[0];
-          id := POLLS.WA.domain_id (val);
-          if (id is not null) {
-            url := POLLS.WA.polls_url (id);
-            if (url is not null)
-              val := url;
-          }
-          return sprintf (fmt, val);
-        }
-      else if (par = 'params')
-        {
-          if (atoi (val) = 0 and val <> '0')
-            fmt := '%s';
-          else
-            fmt := '?id=%s';
-          return sprintf (fmt, val);
-        }
-    }
-    ;
-    
-    create procedure DB.DBA.URL_REW_ODS_FOAF_EXT (in par varchar, in fmt varchar, in val varchar)
-    {
-      if (par = '*accept*')
-        {
-          declare ext any;
-          ext := 'rdf';
-          if (val = 'text/rdf+n3')
-        ext := 'n3';
-          return sprintf (fmt, ext);
-        }
-      else
-        return sprintf (fmt, val);
-    }
-    ;
-    
-    create procedure ur_ods_rdf_doc (in path varchar)
-    {
-      declare r any;
-      r := regexp_match ('[^/]*\x24', path);
-      return r||'#this';
-    };
-    
-    create procedure ur_ods_html_doc (in path varchar)
-    {
-      declare pos, r any;
-      if (path like '%/foaf.%')
-        {
-          pos := strrchr (path, '/');
-        }
-      else if (path like '%#%')
-        {
-          pos := strrchr (path, '#');
-        }
-      if (pos > 0)
-        r := subseq (path, 0, pos);
-      else
-        r := '/';
-      return r;
-    };
-    -- ODS Rules
-    
-    -- http://cname/dataspace/uname
-    -- http://cname/dataspace/person/uname
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule1', 1,
-        '/dataspace/((person/)?[^/#]*)', vector('ufname'), 1,
-        '%s', vector('ufname'),
-        'DB.DBA.URL_REW_ODS_USER');
-    
-    -- http://cname/dataspace/uname with Accept will do 303 to the /sparql
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule2', 1,
-        '/dataspace/([^/]*)', vector('ufname'), 1,
-        '/sparql?query=define+input%%3Ainference+%%3Chttp%%3A//^{URIQADefaultHost}^/dataspace%%3E+DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^/dataspace/%U%%3E+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/dataspace%%3E&format=%U', vector('ufname', '*accept*'),
-        null,
-        '(application|text)/rdf.(xml|n3|turtle|ttl)',
-        0,
-        303);
-    
-    -- http://cname/dataspace/uname/app_type
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule3', 1,
-        '/dataspace/((?!person)[^/]*)/([^\\./]*)', vector('ufname', 'app'), 2,
-        '/ods/app_inst.vspx?app=%s&ufname=%s&l=1', vector('app', 'ufname'),
-        'DB.DBA.URL_REW_ODS_APP');
-    
-    -- http://cname/dataspace/uname/file.ext
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule4', 1,
-        '/dataspace/([^/]*)/(sioc|about|yadis)\\.(rdf|n3|ttl|xrds)', vector('ufname', 'file', 'fmt'), 3,
-        '%s', vector('ufname'),
-        'DB.DBA.URL_REW_ODS_USER_GEM');
-    
-    -- Rules for FOAF profile
-    
-    -- http://cname/dataspace/person/uname with Accept, do 303 to http://cname/dataspace/person/uname/foaf.ext
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule5', 1,
-        '/dataspace/person/([^/#]*)/?', vector('ufname'), 1,
-        '/dataspace/person/%U/foaf.%s', vector('ufname', '*accept*'),
-        'DB.DBA.URL_REW_ODS_FOAF_EXT',
-        '(application|text)/rdf.(xml|n3|turtle|ttl)',
-        2,
-        303);
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule6', 1,
-        '/dataspace/person/([^/]*)/page/([^/]*)/?', vector('ufname', 'page'), 1,
-        '/dataspace/person/%U/foaf.%s?page=%s', vector('ufname', '*accept*', 'page'),
-        'DB.DBA.URL_REW_ODS_FOAF_EXT',
-        '(application|text)/rdf.(xml|n3|turtle|ttl)',
-        2,
-        303);
-    
-    -- http://cname/dataspace/person/uname/foaf.ext
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_rule7', 1,
-        '/dataspace/person/([^/]*)/foaf.(rdf|n3|ttl)', vector('ufname', 'fmt'), 1,
-        '/ods/foaf.vsp?uname=%U&fmt=%U', vector('ufname', 'fmt'),
-        null,
-        null,
-        2,
-        null);
-    
-    -- App Instance Gem
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_post_gem_rule', 1,
-        '/dataspace/([^/]*)/([^/]*)/([^/]*/)?([^/]*/)?(sioc|about)\\.(rdf|n3|ttl)', vector('ufname', 'app', 'inst'), 4,
-        '%s', vector('ufname'),
-        'DB.DBA.URL_REW_ODS_GEM');
-    
-    -- Weblog Rules
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_blog_rule1', 1,
-        '/dataspace/([^/]*)/weblog/([^/]*)', vector('ufname', 'inst'), 2,
-        '%s', vector('inst'),
-        'DB.DBA.URL_REW_ODS_BLOG');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_blog_rule2', 1,
-        '/dataspace/([^/]*)/weblog/([^/]*)/([^/]*)', vector('ufname', 'inst', 'id'), 3,
-        '%s%s', vector('inst', 'id'),
-        'DB.DBA.URL_REW_ODS_BLOG');
-    
-    -- Discussion rules
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_nntp_rule1', 1,
-        '/dataspace/discussion/([^/]*)', vector('grp'), 1,
-        '%s', vector('grp'),
-        'DB.DBA.URL_REW_ODS_NNTP');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_nntp_rule2', 1,
-        '/dataspace/discussion/([^/]*)/((?!sioc)(?!about)[^/]*)', vector('grp', 'post'), 2,
-        '%s', vector('post'),
-        'DB.DBA.URL_REW_ODS_NNTP');
-    
-    -- Community
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_xd_rule1', 1,
-        '/dataspace/([^/]*)/community/([^/]*)', vector('ufname', 'inst'), 2,
-        '%s', vector('inst'),
-        'DB.DBA.URL_REW_ODS_XD');
-    
-    -- Wiki
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_wiki_rule1', 1,
-        '/dataspace/([^/]*)/wiki/([^/]*)', vector('ufname', 'inst'), 2,
-        '%s', vector('inst'),
-        'DB.DBA.URL_REW_ODS_WIKI');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_wiki_rule2', 1,
-        '/dataspace/([^/]*)/wiki/([^/]*)/([^/]*)', vector('ufname', 'inst', 'post'), 2,
-        '%s%s', vector('inst', 'post'),
-        'DB.DBA.URL_REW_ODS_WIKI');
-    
-    -- Gallery
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_photo_rule1', 1,
-        '/dataspace/([^/]*)/photos/([^/]*)', vector('ufname', 'inst'), 2,
-        '%s', vector('inst'),
-        'DB.DBA.URL_REW_ODS_PHOTO');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('ods_photo_rule2', 1,
-        '/dataspace/([^/]*)/photos/([^/]*)/([^/]*)', vector('ufname', 'inst', 'post'), 2,
-        '%s', vector('post'),
-        'DB.DBA.URL_REW_ODS_PHOTO');
-    
-    -- AddressBook
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_addressbook_rule1',
-        1,
-        '/dataspace/([^/]*)/addressbook/([^/]*)',
-        vector('uname', 'instance'),
-        2,
-        '%s', vector('instance'),
-        'DB.DBA.URL_REW_ODS_ADDRESSBOOK');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_addressbook_rule2',
-        1,
-        '/dataspace/([^/]*)/addressbook/([^/]*)/(.*)',
-        vector('uname', 'instance', 'params'),
-        3,
-        '%s%s',
-        vector('instance', 'params'),
-        'DB.DBA.URL_REW_ODS_ADDRESSBOOK');
-    
-    -- Bookmark
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_bookmark_rule1',
-        1,
-        '/dataspace/([^/]*)/bookmark/([^/]*)',
-        vector('uname', 'instance'),
-        2,
-        '%s', vector('instance'),
-        'DB.DBA.URL_REW_ODS_BOOKMARK');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_bookmark_rule2',
-        1,
-        '/dataspace/([^/]*)/bookmark/([^/]*)/(.*)',
-        vector('uname', 'instance', 'params'),
-        3,
-        '%s%s',
-        vector('instance', 'params'),
-        'DB.DBA.URL_REW_ODS_BOOKMARK');
-    
-    -- Briefcase
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_briefcase_rule1',
-        1,
-        '/dataspace/([^/]*)/briefcase/([^/]*)',
-        vector('uname', 'instance'),
-        2,
-        '%s', vector('instance'),
-        'DB.DBA.URL_REW_ODS_BRIEFCASE');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_briefcase_rule2',
-        1,
-        '/dataspace/([^/]*)/briefcase/([^/]*)/(.*)',
-        vector('uname', 'instance', 'params'),
-        3,
-        '%s%s',
-        vector('instance', 'params'),
-        'DB.DBA.URL_REW_ODS_BRIEFCASE');
-    
-    -- Calendar
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_calendar_rule1',
-        1,
-        '/dataspace/([^/]*)/calendar/([^/]*)',
-        vector('uname', 'instance'),
-        2,
-        '%s', vector('instance'),
-        'DB.DBA.URL_REW_ODS_CALENDAR');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_calendar_rule2',
-        1,
-        '/dataspace/([^/]*)/calendar/([^/]*)/(.*)',
-        vector('uname', 'instance', 'params'),
-        3,
-        '%s%s',
-        vector('instance', 'params'),
-        'DB.DBA.URL_REW_ODS_CALENDAR');
-    
-    -- Feeds
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_feeds_rule1',
-        1,
-        '/dataspace/([^/]*)/feeds/([^/]*)',
-        vector('uname', 'instance'),
-        2,
-        '%s', vector('instance'),
-        'DB.DBA.URL_REW_ODS_FEEDS');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_feeds_rule2',
-        1,
-        '/dataspace/([^/]*)/feeds/([^/]*)/(.*)',
-        vector('uname', 'instance', 'params'),
-        3,
-        '%s%s',
-        vector('instance', 'params'),
-        'DB.DBA.URL_REW_ODS_FEEDS');
-    
-    -- Polls
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_polls_rule1',
-        1,
-        '/dataspace/([^/]*)/polls/([^/]*)',
-        vector('uname', 'instance'),
-        2,
-        '%s', vector('instance'),
-        'DB.DBA.URL_REW_ODS_POLLS');
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ods_polls_rule2',
-        1,
-        '/dataspace/([^/]*)/polls/([^/]*)/(.*)',
-        vector('uname', 'instance', 'params'),
-        3,
-        '%s%s',
-        vector('instance', 'params'),
-        'DB.DBA.URL_REW_ODS_POLLS');
-    
-    -- ODS Base rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_base_rule_list1', 1,
-            vector(
-                'ods_rule1', 'ods_rule2', 'ods_rule3', 'ods_rule4'
-              ));
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_foaf_rule_list1', 1,
-            vector(
-                'ods_rule5', 'ods_rule6', 'ods_rule7'
-              ));
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_gems_rule_list1', 1,
-            vector(
-                'ods_post_gem_rule'
-              ));
-    
-    -- ODS Blog rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_blog_rule_list1', 1,
-            vector(
-            'ods_blog_rule1', 'ods_blog_rule2'
-              ));
-    
-    -- ODS Discussion rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_nntp_rule_list1', 1,
-            vector(
-            'ods_nntp_rule1', 'ods_nntp_rule2'
-              ));
-    
-    -- ODS Community rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_xd_rule_list1', 1,
-            vector(
-            'ods_xd_rule1'
-              ));
-    
-    -- ODS Wiki rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_wiki_rule_list1', 1,
-            vector(
-            'ods_wiki_rule1', 'ods_wiki_rule2'
-              ));
-    
-    -- ODS Gallery rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_photo_rule_list1', 1,
-            vector(
-            'ods_photo_rule1', 'ods_photo_rule2'
-              ));
-    
-    -- ODS AddressBook rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ods_addressbook_rule_list1',
-        1,
-        vector (
-            'ods_addressbook_rule1',
-            'ods_addressbook_rule2'
-          ));
-    
-    -- ODS Bookmark rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ods_bookmark_rule_list1',
-        1,
-        vector (
-            'ods_bookmark_rule1',
-            'ods_bookmark_rule2'
-          ));
-    
-    -- ODS Briefcase rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ods_briefcase_rule_list1',
-        1,
-        vector (
-            'ods_briefcase_rule1',
-            'ods_briefcase_rule2'
-          ));
-    
-    -- ODS Calendar rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ods_calendar_rule_list1',
-        1,
-        vector (
-            'ods_calendar_rule1',
-            'ods_calendar_rule2'
-          ));
-    
-    -- ODS Feeds rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ods_feeds_rule_list1',
-        1,
-        vector (
-            'ods_feeds_rule1',
-            'ods_feeds_rule2'
-          ));
-    
-    -- ODS Polls rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ods_polls_rule_list1',
-        1,
-        vector (
-            'ods_polls_rule1',
-            'ods_polls_rule2'
-          ));
-    
-    -- All ODS Rules
-    DB.DBA.URLREWRITE_CREATE_RULELIST ('ods_rule_list1', 1,
-            vector(
-          'ods_base_rule_list1',
-          'ods_foaf_rule_list1',
-          'ods_blog_rule_list1',
-          'ods_nntp_rule_list1',
-          'ods_xd_rule_list1',
-          'ods_wiki_rule_list1',
-          'ods_photo_rule_list1',
-          'ods_addressbook_rule_list1',
-          'ods_bookmark_rule_list1',
-          'ods_briefcase_rule_list1',
-          'ods_calendar_rule_list1',
-          'ods_feeds_rule_list1',
-          'ods_polls_rule_list1',
-          'ods_gems_rule_list1'
-              ));
-    
-    DB.DBA.XML_SET_NS_DECL ('ods', 'http://www.openlinksw.com/virtuoso/ods/', 2);
-
-## Sybase using demonstration 'pubs2' database
-
-    -- Setup script for Linked Data Views of Sybase 15 PUBS2 Sample Database --
-    
-    DB..vd_remote_data_source ('syb15ma-pubs2', '', '<uid>','<pwd>');
-    
-    ATTACH TABLE  "pubs2.dbo.au_pix"  PRIMARY KEY ("au_id")                  AS "pubs2"."syb"."au_pix"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.authors"  PRIMARY KEY ("au_id")                  AS "pubs2"."syb"."authors"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.discounts"  PRIMARY KEY ("stor_id")                  AS "pubs2"."syb"."discounts"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.publishers"  PRIMARY KEY ("pub_id")                  AS "pubs2"."syb"."publishers"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.roysched"  PRIMARY KEY ("title_id")                  AS "pubs2"."syb"."roysched"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.sales"  PRIMARY KEY ("stor_id", "ord_num")                  AS "pubs2"."syb"."sales"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.salesdetail"  PRIMARY KEY ("stor_id", "ord_num", "title_id")                   AS "pubs2"."syb"."salesdetail"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.stores"  PRIMARY KEY ("stor_id")                  AS "pubs2"."syb"."stores"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.titleauthor"  PRIMARY KEY ("au_id", "title_id")                  AS "pubs2"."syb"."titleauthor"  FROM 'syb15ma-pubs2';
-    ATTACH TABLE  "pubs2.dbo.titles"  PRIMARY KEY ("title_id", "pub_id")                  AS "pubs2"."syb"."titles"  FROM 'syb15ma-pubs2';
-    
-    COMMIT WORK;
-    
-    GRANT SELECT ON pubs2.syb.au_pix TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.authors TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.discounts TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.publishers TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.roysched TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.sales TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.salesdetail TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.stores TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.titleauthor TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON pubs2.syb.titles TO "SPARQL", "SPARQL_UPDATE";
-    
-    -------------------------------------------------------------------
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix syb: <http://example.com/schemas/sybasepubs2/> .
-    
-    syb:titles a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "titles" ;
-        rdfs:comment "Sybase Pubs2 titles table" .
-    
-    syb:title_id a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:string ;
-        rdfs:label "title id" .
-    
-    syb:title a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:string ;
-        rdfs:label "title" .
-    
-    syb:type a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:string ;
-        rdfs:label "type" .
-    
-    syb:pub_id a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range syb:publishers ;
-        rdfs:label "pub_id" .
-    
-    syb:advance a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "advance" .
-    
-    syb:price a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "price" .
-    
-    syb:total_sales a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:integer ;
-        rdfs:label "total_sales" .
-    
-    syb:notes a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:string ;
-        rdfs:label "notes" .
-    
-    syb:contract a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:integer ;
-        rdfs:label "contract" .
-    
-    syb:pubdate a rdf:Property ;
-        rdfs:domain syb:titles ;
-        rdfs:range xsd:dateTime ;
-        rdfs:label "publish date" .
-    
-    syb:authors a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "authors" ;
-        rdfs:comment "Sybase Pubs2 authors table" .
-    
-    syb:au_id a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "author id" .
-    
-    syb:au_lname a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "author last name" .
-    
-    syb:au_fname a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "author first name" .
-    
-    syb:phone a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "phone number" .
-    
-    syb:address a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "address" .
-    
-    syb:city a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "city" .
-    
-    syb:state a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "state" .
-    
-    syb:country a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "country" .
-    
-    syb:postalcode a rdf:Property ;
-        rdfs:domain syb:authors ;
-        rdfs:range xsd:string ;
-        rdfs:label "postalcode" .
-    
-    syb:stores a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "stores" ;
-        rdfs:comment "Sybase Pubs2 stores table" .
-    
-    syb:stor_id a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "store id" .
-    
-    syb:stor_name a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "store name" .
-    
-    syb:stor_address a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "store address" .
-    
-    syb:city a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "city" .
-    
-    syb:state a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "state" .
-    
-    syb:country a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "country" .
-    
-    syb:postalcode a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "postal code" .
-    
-    syb:payterms a rdf:Property ;
-        rdfs:domain syb:stores ;
-        rdfs:range xsd:string ;
-        rdfs:label "payment terms" .
-    
-    syb:au_pix a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "authors pictures" ;
-        rdfs:comment "Sybase Pubs2 au_pix table" .
-    
-    syb:au_id a rdf:Property ;
-        rdfs:domain syb:au_pix ;
-        rdfs:range syb:authors ;
-        rdfs:label "author id" .
-    
-    syb:format_type a rdf:Property ;
-        rdfs:domain syb:au_pix ;
-        rdfs:range xsd:string ;
-        rdfs:label "format type" .
-    
-    syb:bytesize a rdf:Property ;
-        rdfs:domain syb:au_pix ;
-        rdfs:range xsd:integer ;
-        rdfs:label "byte size" .
-    
-    syb:pixwidth_hor a rdf:Property ;
-        rdfs:domain syb:au_pix ;
-        rdfs:range xsd:string ;
-        rdfs:label "picture horizontal width" .
-    
-    syb:pixwidth_vert a rdf:Property ;
-        rdfs:domain syb:au_pix ;
-        rdfs:range xsd:string ;
-        rdfs:label "picture vertical width" .
-    
-    syb:discounts a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "discounts" ;
-        rdfs:comment "Sybase Pubs2 discount table" .
-    
-    syb:discounttype a rdf:Property ;
-        rdfs:domain syb:discounts ;
-        rdfs:range xsd:string ;
-        rdfs:label "discounttype" .
-    
-    syb:stor_id a rdf:Property ;
-        rdfs:domain syb:discounts ;
-        rdfs:range syb:stores ;
-        rdfs:label "store id" .
-    
-    syb:lowqty a rdf:Property ;
-        rdfs:domain syb:discounts ;
-        rdfs:range xsd:integer ;
-        rdfs:label "min quantity" .
-    
-    syb:highqty a rdf:Property ;
-        rdfs:domain syb:discounts ;
-        rdfs:range xsd:integer ;
-        rdfs:label "max quantity" .
-    
-    syb:discount a rdf:Property ;
-        rdfs:domain syb:discounts ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "min quantity" .
-    
-    syb:salesdetail a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "sales details" ;
-        rdfs:comment "Sybase Pubs2 sales detail table" .
-    
-    syb:store_id a rdf:Property ;
-        rdfs:domain syb:salesdetail ;
-        rdfs:range syb:stores ;
-        rdfs:label "store id" .
-    
-    syb:ord_num a rdf:Property ;
-        rdfs:domain syb:salesdetail ;
-        rdfs:range syb:sales ;
-        rdfs:label "order number" .
-    
-    syb:title_id a rdf:Property ;
-        rdfs:domain syb:salesdetail ;
-        rdfs:range syb:titles ;
-        rdfs:label "title id" .
-    
-    syb:qty a rdf:Property ;
-        rdfs:domain syb:salesdetail ;
-        rdfs:range xsd:integer ;
-        rdfs:label "quantity" .
-    
-    syb:discount a rdf:Property ;
-        rdfs:domain syb:salesdetail ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "discount" .
-    
-    syb:publishers a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "Publishers" ;
-        rdfs:comment "Sybase Pubs2 publishers table" .
-    
-    syb:pub_id a rdf:Property ;
-        rdfs:domain syb:publishers ;
-        rdfs:range xsd:string ;
-        rdfs:label "publisher id" .
-    
-    syb:pub_name a rdf:Property ;
-        rdfs:domain syb:publishers ;
-        rdfs:range xsd:string ;
-        rdfs:label "publisher name" .
-    
-    syb:city a rdf:Property ;
-        rdfs:domain syb:publishers ;
-        rdfs:range xsd:string ;
-        rdfs:label "city" .
-    
-    syb:state a rdf:Property ;
-        rdfs:domain syb:publishers ;
-        rdfs:range xsd:string ;
-        rdfs:label "state" .
-    
-    syb:titleauthor a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "title author" ;
-        rdfs:comment "Sybase Pubs2 titleauthor table" .
-    
-    syb:au_id a rdf:Property ;
-        rdfs:domain syb:titleauthor ;
-        rdfs:range syb:authors ;
-        rdfs:label "author id" .
-    
-    syb:title_id a rdf:Property ;
-        rdfs:domain syb:titleauthor ;
-        rdfs:range syb:titles ;
-        rdfs:label "title id" .
-    
-    syb:au_ord a rdf:Property ;
-        rdfs:domain syb:titleauthor ;
-        rdfs:range xsd:integer ;
-        rdfs:label "author order" .
-    
-    syb:royaltyper a rdf:Property ;
-        rdfs:domain syb:titleauthor ;
-        rdfs:range xsd:integer ;
-        rdfs:label "royalty per book" .
-    
-    syb:roysched a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "Royalty Schedule" ;
-        rdfs:comment "Sybase Pubs2 roysched table" .
-    
-    syb:title_id a rdf:Property ;
-        rdfs:domain syb:roysched ;
-        rdfs:range syb:titles ;
-        rdfs:label "title id" .
-    
-    syb:lorange a rdf:Property ;
-        rdfs:domain syb:roysched ;
-        rdfs:range xsd:integer ;
-        rdfs:label "low range" .
-    
-    syb:hirange a rdf:Property ;
-        rdfs:domain syb:roysched ;
-        rdfs:range xsd:integer ;
-        rdfs:label "high range" .
-    
-    syb:royalty a rdf:Property ;
-        rdfs:domain syb:roysched ;
-        rdfs:range xsd:integer ;
-        rdfs:label "royalty" .
-    
-    syb:sales a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/sybasepubs2> ;
-        rdfs:label "Sales" ;
-        rdfs:comment "Sybase Pubs2 sales table" .
-    
-    syb:stor_id a rdf:Property ;
-        rdfs:domain syb:sales ;
-        rdfs:range xsd:string ;
-        rdfs:label "store id" .
-    
-    syb:ord_num a rdf:Property ;
-        rdfs:domain syb:sales ;
-        rdfs:range xsd:string ;
-        rdfs:label "order number" .
-    
-    syb:date a rdf:Property ;
-        rdfs:domain syb:sales ;
-        rdfs:range xsd:dateTime ;
-        rdfs:label "date" .
-    ', '', 'http://example.com/schemas/sybasepubs2', 0);
-    
-    ---------------------------------------------------------------
-    
-    ----------- Create IRI Classes -------------
-    
-    SPARQL
-    
-        create iri class <http://example.com/schemas/sybasepubs2/titles_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/titles/%s_%s#this"
-            (in title_id varchar not null, in title varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/authors_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/authors/%s#this"
-            (in au_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/stores_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/stores/%s#this"
-            (in stor_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/au_pix_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/au_pix/%s#this"
-            (in au_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/discounts_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/discounts/%s#this"
-            (in discounttype varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/salesdetail_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/salesdetail/%s_%s_%s#this"
-            (in stor_id varchar not null, in ord_num varchar not null, in title_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/publishers_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/publishers/%s#this"
-            (in pub_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/titleauthor_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/titleauthor/%s_%s#this"
-            (in au_id varchar not null, in title_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/roysched_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/roysched/%s#this"
-            (in title_id varchar not null) .
-    
-        create iri class <http://example.com/schemas/sybasepubs2/sales_iri>
-        "http://^{URIQADefaultHost}^/sybasepubs2/sales/%s_%s#this"
-            (in stor_id varchar not null, in ord_num varchar not null) .
-    
-    ;
-    
-    --------------------------------------------------------------------
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix syb: <http://example.com/schemas/sybasepubs2/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      from pubs2.syb.au_pix as au_pix_tbl
-      from pubs2.syb.authors as authors_tbl
-      from pubs2.syb.discounts as discounts_tbl
-      from pubs2.syb.publishers as publishers_tbl
-      from pubs2.syb.roysched as roysched_tbl
-      from pubs2.syb.sales as sales_tbl
-      from pubs2.syb.salesdetail as salesdetail_tbl
-      from pubs2.syb.stores as stores_tbl
-      from pubs2.syb.titleauthor as titleauthor_tbl
-      from pubs2.syb.titles as titles_tbl
-    {
-      create virtrdf:sybasepubs2 as
-          graph <http://example.com/sybasepubs2>
-      {
-        syb:au_pix_iri (au_pix_tbl.au_id) a syb:au_pix as virtrdf:au_pix_id;
-        syb:au_id au_pix_tbl.au_id as virtrdf:au_pix_au_id;
-        syb:format_type au_pix_tbl.format_type as virtrdf:au_pix_format_type;
-        syb:bytesize au_pix_tbl.bytesize as virtrdf:au_pix_bytesize;
-        syb:pixwidth_hor au_pix_tbl.pixwidth_hor as virtrdf:au_pix_pixwidth_hor;
-        syb:pixwidth_vert au_pix_tbl.pixwidth_vert as virtrdf:au_pix_pixwidth_vert ;
-            syb:has_author syb:authors_iri(authors_tbl.au_id) where (^{authors_tbl.}^.au_id = ^{au_pix_tbl.}^.au_id) as virtrdf:au_pix_has_author .
-    
-            syb:authors_iri (authors_tbl.au_id) a syb:authors as virtrdf:authors_pk ;
-        syb:au_id authors_tbl.au_id as virtrdf:authors_au_id;
-            syb:au_lname authors_tbl.au_lname as virtrdf:authors_au_lname;
-            syb:au_fname authors_tbl.au_fname as virtrdf:authors_au_fname;
-            syb:phone authors_tbl.phone  as virtrdf:authors_phone;
-            syb:address authors_tbl.address  as virtrdf:authors_address;
-            syb:city authors_tbl.city as virtrdf:authors_city;
-            syb:state authors_tbl.state  as virtrdf:authors_state;
-            syb:country authors_tbl.country as virtrdf:authors_country;
-            syb:postalcode authors_tbl.postalcode as virtrdf:authors_postalcode;
-            syb:has_title syb:titleauthor_iri(titleauthor_tbl.au_id, titleauthor_tbl.title_id) where (^{titleauthor_tbl.}^.au_id = ^{authors_tbl.}^.au_id) as virtrdf:authors_has_title;
-            syb:has_pix syb:au_pix_iri(au_pix_tbl.au_id) where (^{au_pix_tbl.}^.au_id = ^{authors_tbl.}^.au_id) as virtrdf:authors_has_pix .
-    
-        syb:discounts_iri (discounts_tbl.stor_id) a syb:discounts as virtrdf:discounts_pk;
-        syb:discounttype discounts_tbl.discounttype as virtrdf:discounts_discounttype;
-        syb:stor_id syb:stores_iri(stores_tbl.stor_id) where (^{stores_tbl.}^.stor_id = ^{stores_tbl.}^.stor_id) as virtrdf:discounts_stor_id;
-        syb:lowqty discounts_tbl.lowqty as virtrdf:discounts_lowqty;
-        syb:highqty discounts_tbl.highqty as virtrdf:discounts_highqty;
-        syb:discount discounts_tbl.discount as virtrdf:discounts_discount .
-    
-        syb:publishers_iri (publishers_tbl.pub_id) a syb:publishers as virtrdf:publishers_pk;
-        syb:pub_id syb:titles_iri(titles_tbl.title_id, titles_tbl.pub_id) where (^{titles_tbl.}^.pub_id = ^{titles_tbl.}^.pub_id) as virtrdf:publisherss_pub_id;
-        syb:pub_name publishers_tbl.pub_name as virtrdf:publisherss_pub_name;
-        syb:city publishers_tbl.city as virtrdf:publisherss_city;
-        syb:state publishers_tbl.state as virtrdf:publisherss_state .
-    
-        syb:roysched_iri (roysched_tbl.title_id) a syb:roysched as virtrdf:roysched_pk;
-            syb:title_id syb:titleauthor_iri(titleauthor_tbl.au_id, titleauthor_tbl.title_id) where (^{titleauthor_tbl.}^.title_id = ^{roysched_tbl.}^.title_id) as virtrdf:roysched_title_id;
-        syb:lorange roysched_tbl.lorange as virtrdf:roysched_lorange;
-        syb:hirange roysched_tbl.hirange as virtrdf:roysched_hirange;
-        syb:royalty roysched_tbl.royalty as virtrdf:roysched_royalty .
-    
-        syb:sales_iri (sales_tbl.stor_id, sales_tbl.ord_num) a syb:sales as virtrdf:sales_pk;
-        syb:stor_id sales_tbl.stor_id as virtrdf:sales_stor_id;
-        syb:ord_num sales_tbl.ord_num as virtrdf:sales_ord_num;
-        syb:date sales_tbl.date as virtrdf:sales_date;
-            syb:has_salesdetail syb:salesdetail_iri(salesdetail_tbl.stor_id, salesdetail_tbl.ord_num, salesdetail_tbl.title_id) where (^{salesdetail_tbl.}^.stor_id = ^{sales_tbl.}^.stor_id and ^{salesdetail_tbl.}^.ord_num = ^{sales_tbl.}^.ord_num)  as virtrdf:sales_has_salesdetail;
-            syb:has_stores syb:stores_iri(stores_tbl.stor_id) where (^{stores_tbl.}^.stor_id = ^{sales_tbl.}^.stor_id)  as virtrdf:sales_has_stores .
-    
-        syb:salesdetail_iri (salesdetail_tbl.stor_id, salesdetail_tbl.ord_num, salesdetail_tbl.title_id) a syb:salesdetail as virtrdf:salesdetail_pk;
-        syb:stor_id salesdetail_tbl.stor_id as virtrdf:salesdetail_stor_id;
-        syb:ord_num salesdetail_tbl.ord_num as virtrdf:salesdetail_ord_num;
-        syb:title_id salesdetail_tbl.title_id as virtrdf:salesdetail_title_id;
-        syb:qty salesdetail_tbl.qty as virtrdf:salesdeail_qty;
-        syb:discount salesdetail_tbl.discount as virtrdf:salesdetail_discount;
-        syb:has_title  syb:titles_iri (titles_tbl.title_id, titles_tbl.pub_id) where (^{titles_tbl.}^.title_id = ^{salesdetail_tbl.}^.title_id) as virtrdf:salesdetail_has_title;
-            syb:has_sales syb:sales_iri(sales_tbl.stor_id, sales_tbl.ord_num) where (^{salesdetail_tbl.}^.stor_id = ^{sales_tbl.}^.stor_id and ^{salesdetail_tbl.}^.ord_num = ^{sales_tbl.}^.ord_num ) as virtrdf:salesdetail_has_sales .
-    
-        syb:stores_iri (stores_tbl.stor_id) a syb:stores as virtrdf:stores_pk;
-            syb:stor_id stores_tbl.stor_id as virtrdf:stores_stor_id;
-        syb:stor_name stores_tbl.stor_name as virtrdf:stores_stor_name;
-        syb:stor_address stores_tbl.stor_address as virtrdf:stores_stor_address;
-        syb:city stores_tbl.city as virtrdf:stores_city;
-        syb:state stores_tbl.state as virtrdf:stores_state;
-        syb:country stores_tbl.country as virtrdf:stores_country;
-        syb:postalcode stores_tbl.postalcode as virtrdf:stores_postalcode;
-        syb:payterms stores_tbl.payterms as virtrdf:stores_payterms;
-            syb:has_sales syb:sales_iri(sales_tbl.stor_id, sales_tbl.ord_num) where (^{sales_tbl.}^.stor_id = ^{stores_tbl.}^.stor_id) as virtrdf:stores_has_sales .
-    
-        syb:titleauthor_iri (titleauthor_tbl.au_id, titleauthor_tbl.title_id) a syb:titleauthor as virtrdf:titleauthor_pk;
-        syb:au_id titleauthor_tbl.au_id as virtrdf:titleauthor_au_id;
-        syb:title_id titleauthor_tbl.title_id as virtrdf:titleauthor_title_id;
-        syb:au_ord titleauthor_tbl.au_ord as virtrdf:titleauthor_au_ord;
-        syb:royaltyper titleauthor_tbl.royaltyper as virtrdf:titleauthor_royaltyper;
-        syb:has_author syb:authors_iri(authors_tbl.au_id) where (^{authors_tbl.}^.au_id = ^{titleauthor_tbl.}^.au_id) as virtrdf:titleauthor_has_author;
-        syb:has_titles syb:titles_iri(titles_tbl.title_id, titles_tbl.pub_id) where (^{titles_tbl.}^.title_id = ^{titleauthor_tbl.}^.title_id) as virtrdf:titleauthor_has_titles .
-    
-        syb:titles_iri (titles_tbl.title_id, titles_tbl.pub_id) a syb:titles as virtrdf:titles_pk;
-        syb:title_id titles_tbl.title_id as virtrdf:titles_title_idd;
-        syb:title titles_tbl.title as virtrdf:titles_title;
-        syb:type titles_tbl.type as virtrdf:titles_type;
-        syb:pub_id titles_tbl.pub_id as virtrdf:titles_pub_id;
-        syb:price titles_tbl.price as virtrdf:titles_price;
-        syb:advance titles_tbl.advance as virtrdf:titles_advance;
-        syb:total_sales titles_tbl.total_sales as virtrdf:titles_total_sales;
-        syb:notes titles_tbl.notes as virtrdf:titles_notes;
-        syb:pubdate titles_tbl.pubdate as virtrdf:titles_pubdate;
-        syb:contract titles_tbl.contract as virtrdf:titles_contract;
-            syb:has_titleauthor syb:titleauthor_iri(titleauthor_tbl.au_id, titleauthor_tbl.title_id) where (^{titleauthor_tbl.}^.title_id = ^{titles_tbl.}^.title_id) as virtrdf:titles_has_titleauthor;
-            syb:has_salesdetail syb:salesdetail_iri (salesdetail_tbl.stor_id, salesdetail_tbl.ord_num, salesdetail_tbl.title_id) where (^{salesdetail_tbl.}^.title_id = ^{titles_tbl.}^.title_id) as virtrdf:titles_has_salesdetail .
-    
-      } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'sybasepubs2_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'sybasepubs2_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'sybasepubs2_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'sybasepubs2_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/sybasepubs2%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'sybasepubs2_rule_list1',
-        1,
-        vector (
-            'sybasepubs2_rule1',
-            'sybasepubs2_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/sybasepubs2');
-    
-    VHOST_DEFINE (
-        lpath=>'/sybasepubs2',
-        ppath=>'/DAV/sybasepubs2/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'sybasepubs2_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'sybase_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'sybase_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'sybase_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'sybase_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/sybasepubs2%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'sybase_schemas_rule_list1',
-        1,
-        vector (
-            'sybase_schemas_rule1',
-            'sybase_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schema/sybasepubs2');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/sybasepubs2',
-        ppath=>'/DAV/schemas/sybasepubs2/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'sybase_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('hr', 'http://^{URIQADefaultHost}^/schemas/sybasepubs2', 2);
-
-## Virtuoso's Northwind based Demo Database (Tutorials variant) to RDF
-
-    use DB;
-    
-    DB.DBA.exec_no_error('UPDATE WS.WS.SYS_DAV_RES set RES_TYPE=\'image/jpeg\' where RES_FULL_PATH like \'/DAV/VAD/demo/sql/CAT%\'')
-    ;
-    
-    DB.DBA.exec_no_error('UPDATE WS.WS.SYS_DAV_RES set RES_TYPE=\'image/jpeg\' where RES_FULL_PATH like \'/DAV/VAD/demo/sql/EMP%\'')
-    ;
-    
-    GRANT SELECT ON "Demo"."demo"."Products" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Suppliers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Shippers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Categories" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Customers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Employees" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Orders" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Order_Details" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Countries" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Provinces" TO "SPARQL";
-    
-    SPARQL
-    prefix tut_northwind: <http://demo.openlinksw.com/schemas/tutorial/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    drop quad map graph iri("http://^{URIQADefaultHost}^/tutorial/Northwind") .
-    ;
-    
-    SPARQL
-    prefix tut_northwind: <http://demo.openlinksw.com/schemas/tutorial/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    drop quad map virtrdf:TutorialNorthwindDemo .
-    ;
-    
-    create function DB.DBA.TUT_NORTHWIND_ID_TO_IRI(in _prefix varchar,in _id varchar)
-    {
-      declare iri, uriqa_host any;
-      uriqa_host := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-      iri := 'http://' || uriqa_host || '/tutorial/Northwind/' || _prefix || '/' || _id || '#this';
-      return sprintf ('http://%s/DAV/VAD/tutorial/rdfview/rd_v_1/RDFData/All/iid%%20(%d).rdf', uriqa_host, iri_id_num (iri_to_id (iri)));
-    }
-    ;
-    
-    create function DB.DBA.TUT_NORTHWIND_IRI_TO_ID(in _iri varchar)
-    {
-        declare parts any;
-        parts := sprintf_inverse (_iri, 'http://%s/DAV/VAD/tutorial/rdfview/rd_v_1/RDFData/All/iid (%d).rdf', 1 );
-        if (parts is not null)
-        {
-            declare uriqa_host, iri any;
-            uriqa_host := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-            if (parts[0] = uriqa_host)
-            {
-                iri := id_to_iri(iri_id_from_num(parts[1]));
-                parts := sprintf_inverse (iri, 'http://%s/tutorial/Northwind/%s/%s#this', 1 );
-                if (parts[0] = uriqa_host)
-                {
-                    return parts[2];
-                }
-            }
-        }
-        return NULL;
-    }
-    ;
-    
-    create function DB.DBA.TUT_CATEGORY_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Category', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_CATEGORY_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_SHIPPER_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Shipper', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_SHIPPER_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_SUPPLIER_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Supplier', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_SUPPLIER_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_PRODUCT_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Product', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_PRODUCT_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_CUSTOMER_IRI (in _id varchar) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Customer', _id);
-    }
-    ;
-    
-    create function DB.DBA.TUT_CUSTOMER_IRI_INVERSE (in _iri varchar) returns varchar
-    {
-        return DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri);
-    };
-    
-    create function DB.DBA.TUT_EMPLOYEE_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Employee', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_EMPLOYEE_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_ORDER_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Order', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_ORDER_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_CUSTOMERCONTACT_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('CustomerContact', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_CUSTOMERCONTACT_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_ORDERLINE_IRI (in _id1 integer, in _id2 integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('OrderLine', sprintf('%d/%d', _id1, _id2));
-    }
-    ;
-    
-    create function DB.DBA.TUT_ORDERLINE_IRI_INV_1 (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_ORDERLINE_IRI_INV_2 (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_PROVINCE_IRI (in _id1 varchar, in _id2 varchar) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Province', sprintf('%s/%s', _id1, _id2));
-    }
-    ;
-    
-    create function DB.DBA.TUT_PROVINCE_IRI_INV_1 (in _iri varchar) returns varchar
-    {
-        return DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri);
-    };
-    
-    create function DB.DBA.TUT_PROVINCE_IRI_INV_2 (in _iri varchar) returns varchar
-    {
-        return DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri);
-    };
-    
-    create function DB.DBA.TUT_COUNTRY_IRI (in _id varchar) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Country', _id);
-    }
-    ;
-    
-    create function DB.DBA.TUT_COUNTRY_IRI_INVERSE (in _iri varchar) returns varchar
-    {
-        return DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri);
-    };
-    
-    create function DB.DBA.TUT_FLAG_IRI (in _id varchar) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('Flag', _id);
-    }
-    ;
-    
-    create function DB.DBA.TUT_FLAG_IRI_INVERSE (in _iri varchar) returns varchar
-    {
-        return DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri);
-    };
-    
-    create function DB.DBA.TUT_EMPLOYEEPHOTO_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('EmployeePhoto', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_EMPLOYEEPHOTO_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    create function DB.DBA.TUT_CATEGORYPHOTO_IRI (in _id integer) returns varchar
-    {
-        return TUT_NORTHWIND_ID_TO_IRI('CategoryPhoto', cast(_id as varchar));
-    }
-    ;
-    
-    create function DB.DBA.TUT_CATEGORYPHOTO_IRI_INVERSE (in _iri varchar) returns integer
-    {
-        return atoi(DB.DBA.TUT_NORTHWIND_IRI_TO_ID(_iri));
-    };
-    
-    grant execute on DB.DBA.TUT_CATEGORY_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_CATEGORY_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_SHIPPER_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_SHIPPER_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_SUPPLIER_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_SUPPLIER_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_PRODUCT_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_PRODUCT_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_CUSTOMER_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_CUSTOMER_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_EMPLOYEE_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_EMPLOYEE_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_ORDER_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_ORDER_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_CUSTOMERCONTACT_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_CUSTOMERCONTACT_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_ORDERLINE_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_ORDERLINE_IRI_INV_1 to "SPARQL";
-    grant execute on DB.DBA.TUT_ORDERLINE_IRI_INV_2 to "SPARQL";
-    grant execute on DB.DBA.TUT_PROVINCE_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_PROVINCE_IRI_INV_1 to "SPARQL";
-    grant execute on DB.DBA.TUT_PROVINCE_IRI_INV_2 to "SPARQL";
-    grant execute on DB.DBA.TUT_COUNTRY_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_COUNTRY_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_FLAG_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_FLAG_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_EMPLOYEEPHOTO_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_EMPLOYEEPHOTO_IRI_INVERSE to "SPARQL";
-    grant execute on DB.DBA.TUT_CATEGORYPHOTO_IRI to "SPARQL";
-    grant execute on DB.DBA.TUT_CATEGORYPHOTO_IRI_INVERSE to "SPARQL";
-    
-    SPARQL
-    prefix tut_northwind: <http://demo.openlinksw.com/schemas/tutorial/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    create iri class tut_northwind:Category "http://^{URIQADefaultHost}^/tutorial/Northwind/Category/%d#this" (in category_id integer not null) .
-    create iri class tut_northwind:Shipper "http://^{URIQADefaultHost}^/tutorial/Northwind/Shipper/%d#this" (in shipper_id integer not null) .
-    create iri class tut_northwind:Supplier "http://^{URIQADefaultHost}^/tutorial/Northwind/Supplier/%d#this" (in supplier_id integer not null) .
-    create iri class tut_northwind:Product   "http://^{URIQADefaultHost}^/tutorial/Northwind/Product/%d#this" (in product_id integer not null) .
-    create iri class tut_northwind:Customer "http://^{URIQADefaultHost}^/tutorial/Northwind/Customer/%U#this" (in customer_id varchar not null) .
-    create iri class tut_northwind:Employee "http://^{URIQADefaultHost}^/tutorial/Northwind/Employee/%U%U%d#this" (in employee_firstname varchar not null, in employee_lastname varchar not null, in employee_id integer not null) .
-    create iri class tut_northwind:Order "http://^{URIQADefaultHost}^/tutorial/Northwind/Order/%d#this" (in order_id integer not null) .
-    create iri class tut_northwind:CustomerContact "http://^{URIQADefaultHost}^/tutorial/Northwind/CustomerContact/%U#this" (in customer_id varchar not null) .
-    create iri class tut_northwind:OrderLine "http://^{URIQADefaultHost}^/tutorial/Northwind/OrderLine/%d/%d#this" (in order_id integer not null, in product_id integer not null) .
-    create iri class tut_northwind:Province "http://^{URIQADefaultHost}^/tutorial/Northwind/Province/%U/%U#this" (in country_name varchar not null, in province_name varchar not null) .
-    create iri class tut_northwind:Country "http://^{URIQADefaultHost}^/tutorial/Northwind/Country/%U#this" (in country_name varchar not null) .
-    create iri class tut_northwind:Flag "http://^{URIQADefaultHost}^%U#this" (in flag_path varchar not null) .
-    create iri class tut_northwind:dbpedia_iri "http://dbpedia.org/resource/%U" (in uname varchar not null) .
-    create iri class tut_northwind:EmployeePhoto "http://^{URIQADefaultHost}^/DAV/VAD/demo/sql/EMP%d#this" (in emp_id varchar not null) .
-    create iri class tut_northwind:CategoryPhoto "http://^{URIQADefaultHost}^/DAV/VAD/demo/sql/CAT%d#this" (in category_id varchar not null) .
-    ;
-    
-    SPARQL
-    prefix tut_northwind: <http://demo.openlinksw.com/schemas/tutorial/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    create iri class tut_northwind:customercontact_iri using
-        function DB.DBA.TUT_CUSTOMERCONTACT_IRI (in customer_id varchar) returns varchar,
-        function DB.DBA.TUT_CUSTOMERCONTACT_IRI_INVERSE (in customer_iri varchar) returns varchar.
-    create iri class tut_northwind:category_iri using
-        function DB.DBA.TUT_CATEGORY_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_CATEGORY_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:shipper_iri using
-        function DB.DBA.TUT_SHIPPER_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_SHIPPER_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:supplier_iri using
-        function DB.DBA.TUT_SUPPLIER_IRI (in customer_id varchar) returns varchar,
-        function DB.DBA.TUT_SUPPLIER_IRI_INVERSE (in customer_iri varchar) returns varchar.
-    create iri class tut_northwind:product_iri using
-        function DB.DBA.TUT_PRODUCT_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_PRODUCT_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:customer_iri using
-        function DB.DBA.TUT_CUSTOMER_IRI (in customer_id varchar) returns varchar,
-        function DB.DBA.TUT_CUSTOMER_IRI_INVERSE (in customer_iri varchar) returns varchar.
-    create iri class tut_northwind:employee_iri using
-        function DB.DBA.TUT_EMPLOYEE_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_EMPLOYEE_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:order_iri using
-        function DB.DBA.TUT_ORDER_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_ORDER_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:orderline_iri using
-        function DB.DBA.TUT_ORDERLINE_IRI (in customer_id integer, in customer_id2 integer) returns varchar,
-        function DB.DBA.TUT_ORDERLINE_IRI_INV_1 (in customer_iri varchar) returns integer,
-        function DB.DBA.TUT_ORDERLINE_IRI_INV_2 (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:province_iri using
-        function DB.DBA.TUT_PROVINCE_IRI (in customer_id varchar, in customer_id2 varchar) returns varchar,
-        function DB.DBA.TUT_PROVINCE_IRI_INV_1 (in customer_iri varchar) returns varchar,
-        function DB.DBA.TUT_PROVINCE_IRI_INV_2 (in customer_iri varchar) returns varchar.
-    create iri class tut_northwind:country_iri using
-        function DB.DBA.TUT_COUNTRY_IRI (in customer_id varchar) returns varchar,
-        function DB.DBA.TUT_COUNTRY_IRI_INVERSE (in customer_iri varchar) returns varchar.
-    create iri class tut_northwind:employeephoto_iri using
-        function DB.DBA.TUT_EMPLOYEEPHOTO_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_EMPLOYEEPHOTO_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:categoryphoto_iri using
-        function DB.DBA.TUT_CATEGORYPHOTO_IRI (in customer_id integer) returns varchar,
-        function DB.DBA.TUT_CATEGORYPHOTO_IRI_INVERSE (in customer_iri varchar) returns integer.
-    create iri class tut_northwind:flag_iri using
-        function DB.DBA.TUT_FLAG_IRI (in customer_id varchar) returns varchar,
-        function DB.DBA.TUT_FLAG_IRI_INVERSE (in customer_iri varchar) returns varchar.
-    ;
-    
-    SPARQL
-    prefix tut_northwind: <http://demo.openlinksw.com/schemas/tutorial/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    alter quad storage virtrdf:DefaultQuadStorage
-    from Demo.demo.Products as products
-    from Demo.demo.Suppliers as suppliers
-    from Demo.demo.Shippers as shippers
-    from Demo.demo.Categories as categories
-    from Demo.demo.Customers as customers
-    from Demo.demo.Employees as employees
-    from Demo.demo.Orders as orders
-    from Demo.demo.Order_Details as order_lines
-    from Demo.demo.Countries as countries
-    from Demo.demo.Provinces as provinces
-    where (^{suppliers.}^.Country = ^{countries.}^.Name)
-    where (^{customers.}^.Country = ^{countries.}^.Name)
-    where (^{employees.}^.Country = ^{countries.}^.Name)
-    where (^{orders.}^.ShipCountry = ^{countries.}^.Name)
-    {
-            create virtrdf:TutorialNorthwindDemo as graph iri ("http://^{URIQADefaultHost}^/tutorial/Northwind") option (exclusive)
-            {
-                    tut_northwind:CustomerContact (customers.CustomerID)
-                            a foaf:Person
-                                    as virtrdf:tutCustomerContact-foaf_Person .
-    
-                    tut_northwind:CustomerContact (customers.CustomerID)
-                            a tut_northwind:CustomerContact
-                                    as virtrdf:tutCustomerContact-CustomerContact;
-                            foaf:name customers.ContactName
-                                    as virtrdf:tutCustomerContact-contact_name ;
-                            foaf:phone customers.Phone
-                                    as virtrdf:tutCustomerContact-foaf_phone ;
-                            tut_northwind:is_contact_at tut_northwind:Customer (customers.CustomerID)
-                                    as virtrdf:tutCustomerContact-is_contact_at ;
-                            tut_northwind:country tut_northwind:Country (customers.Country)
-                                    as virtrdf:tutCustomerContact-country ;
-                            rdfs:isDefinedBy tut_northwind:customercontact_iri (customers.CustomerID) ;
-                            rdfs:isDefinedBy tut_northwind:CustomerContact (customers.CustomerID) .
-    
-                    tut_northwind:Country (customers.Country)
-                            tut_northwind:is_country_of
-                    tut_northwind:CustomerContact (customers.CustomerID) as virtrdf:tutCustomerContact-is_country_of .
-    
-                    tut_northwind:Product (products.ProductID)
-                            a tut_northwind:Product
-                                    as virtrdf:tutProduct-ProductID ;
-                            tut_northwind:has_category tut_northwind:Category (products.CategoryID)
-                                    as virtrdf:tutProduct-product_has_category ;
-                            tut_northwind:has_supplier tut_northwind:Supplier (products.SupplierID)
-                                    as virtrdf:tutProduct-product_has_supplier ;
-                            tut_northwind:productName products.ProductName
-                                    as virtrdf:tutProduct-name_of_product ;
-                            tut_northwind:quantityPerUnit products.QuantityPerUnit
-                                    as virtrdf:tutProduct-quantity_per_unit ;
-                            tut_northwind:unitPrice products.UnitPrice
-                                    as virtrdf:tutProduct-unit_price ;
-                            tut_northwind:unitsInStock products.UnitsInStock
-                                    as virtrdf:tutProduct-units_in_stock ;
-                            tut_northwind:unitsOnOrder products.UnitsOnOrder
-                                    as virtrdf:tutProduct-units_on_order ;
-                            tut_northwind:reorderLevel products.ReorderLevel
-                                    as virtrdf:tutProduct-reorder_level ;
-                            tut_northwind:discontinued products.Discontinued
-                                    as virtrdf:tutProduct-discontinued ;
-                            rdfs:isDefinedBy tut_northwind:product_iri (products.ProductID) ;
-                            rdfs:isDefinedBy tut_northwind:Product (products.ProductID).
-    
-                    tut_northwind:Category (products.CategoryID)
-                            tut_northwind:category_of tut_northwind:Product (products.ProductID) as virtrdf:tutProduct-category_of .
-    
-                    tut_northwind:Supplier (products.SupplierID)
-                            tut_northwind:supplier_of tut_northwind:Product (products.ProductID) as virtrdf:tutProduct-supplier_of .
-    
-                    tut_northwind:Supplier (suppliers.SupplierID)
-                            a tut_northwind:Supplier
-                                    as virtrdf:tutSupplier-SupplierID ;
-                            tut_northwind:companyName suppliers.CompanyName
-                                    as virtrdf:tutSupplier-company_name ;
-                            tut_northwind:contactName suppliers.ContactName
-                                    as virtrdf:tutSupplier-contact_name ;
-                            tut_northwind:contactTitle suppliers.ContactTitle
-                                    as virtrdf:tutSupplier-contact_title ;
-                            tut_northwind:address suppliers.Address
-                                    as virtrdf:tutSupplier-address ;
-                            tut_northwind:city suppliers.City
-                                    as virtrdf:tutSupplier-city ;
-                            tut_northwind:dbpedia_city tut_northwind:dbpedia_iri(suppliers.City)
-                                    as virtrdf:tutSupplier-dbpedia_city ;
-                            tut_northwind:region suppliers.Region
-                                    as virtrdf:tutSupplier-region ;
-                            tut_northwind:postalCode suppliers.PostalCode
-                                    as virtrdf:tutSupplier-postal_code ;
-                            tut_northwind:country tut_northwind:Country(suppliers.Country)
-                                    as virtrdf:tutSupplier-country ;
-                            tut_northwind:phone suppliers.Phone
-                                    as virtrdf:tutSupplier-phone ;
-                            tut_northwind:fax suppliers.Fax
-                                    as virtrdf:tutSupplier-fax ;
-                            tut_northwind:homePage suppliers.HomePage
-                                    as virtrdf:tutSupplier-home_page ;
-                            rdfs:isDefinedBy tut_northwind:supplier_iri (suppliers.SupplierID) ;
-                            rdfs:isDefinedBy tut_northwind:Supplier (suppliers.SupplierID).
-    
-                    tut_northwind:Country (suppliers.Country)
-                            tut_northwind:is_country_of
-                    tut_northwind:Supplier (suppliers.SupplierID) as virtrdf:tutSupplier-is_country_of .
-    
-                    tut_northwind:Category (categories.CategoryID)
-                            a tut_northwind:Category
-                                    as virtrdf:tutCategory-CategoryID ;
-                            tut_northwind:categoryName categories.CategoryName
-                                    as virtrdf:tutCategory-home_page ;
-                            tut_northwind:description categories.Description
-                                    as virtrdf:tutCategory-description ;
-                            foaf:img tut_northwind:CategoryPhoto(categories.CategoryID)
-                                    as virtrdf:tutCategory-categories.CategoryPhoto ;
-                            rdfs:isDefinedBy tut_northwind:category_iri (categories.CategoryID) ;
-                            rdfs:isDefinedBy tut_northwind:Category (categories.CategoryID).
-    
-                    tut_northwind:CategoryPhoto(categories.CategoryID)
-                            a tut_northwind:CategoryPhoto
-                                    as virtrdf:tutCategory-categories.CategoryPhotoID ;
-                            rdfs:isDefinedBy tut_northwind:categoryphoto_iri (categories.CategoryID) ;
-                            rdfs:isDefinedBy tut_northwind:CategoryPhoto(categories.CategoryID).
-    
-                    tut_northwind:Shipper (shippers.ShipperID)
-                            a tut_northwind:Shipper
-                                    as virtrdf:tutShipper-ShipperID ;
-                            tut_northwind:companyName shippers.CompanyName
-                                    as virtrdf:tutShipper-company_name ;
-                            tut_northwind:phone shippers.Phone
-                                    as virtrdf:tutShipper-phone ;
-                            rdfs:isDefinedBy tut_northwind:shipper_iri (shippers.ShipperID) ;
-                            rdfs:isDefinedBy tut_northwind:Shipper (shippers.ShipperID).
-    
-                    tut_northwind:Customer (customers.CustomerID)
-                            a  tut_northwind:Customer
-                                    as virtrdf:tutCustomer-CustomerID2 ;
-                            a  foaf:Organization
-                                    as virtrdf:tutCustomer-CustomerID ;
-                            foaf:name customers.CompanyName
-                                    as virtrdf:tutCustomer-foaf_name ;
-                            tut_northwind:companyName customers.CompanyName
-                                    as virtrdf:tutCustomer-company_name ;
-                            tut_northwind:has_contact tut_northwind:CustomerContact (customers.CustomerID)
-                                    as virtrdf:tutCustomer-contact ;
-                            tut_northwind:country tut_northwind:Country (customers.Country)
-                                    as virtrdf:tutCustomer-country ;
-                            tut_northwind:contactName customers.ContactName
-                                    as virtrdf:tutCustomer-contact_name ;
-                            tut_northwind:contactTitle customers.ContactTitle
-                                    as virtrdf:tutCustomer-contact_title ;
-                            tut_northwind:address customers.Address
-                                    as virtrdf:tutCustomer-address ;
-                            tut_northwind:city customers.City
-                                    as virtrdf:tutCustomer-city ;
-                            tut_northwind:dbpedia_city tut_northwind:dbpedia_iri(customers.City)
-                                    as virtrdf:tutCustomer-dbpedia_city ;
-                            tut_northwind:region customers.Region
-                                    as virtrdf:tutCustomer-region ;
-                            tut_northwind:PostalCode customers.PostalCode
-                                    as virtrdf:tutCustomer-postal_code ;
-                            foaf:phone customers.Phone
-                                    as virtrdf:tutCustomer-foaf_phone ;
-                            tut_northwind:phone customers.Phone
-                                    as virtrdf:tutCustomer-phone ;
-                            tut_northwind:fax customers.Fax
-                                    as virtrdf:tutCustomer-fax ;
-                            rdfs:isDefinedBy tut_northwind:customer_iri (customers.CustomerID) ;
-                            rdfs:isDefinedBy tut_northwind:Customer (customers.CustomerID).
-    
-                    tut_northwind:Country (customers.Country)
-                            tut_northwind:is_country_of
-                    tut_northwind:Customer (customers.CustomerID) as virtrdf:tutCustomer-is_country_of .
-    
-                    tut_northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID)
-                            a tut_northwind:Employee
-                                    as virtrdf:tutEmployee-EmployeeID2 ;
-                            a foaf:Person
-                                    as virtrdf:tutEmployee-EmployeeID ;
-                            foaf:surname employees.LastName
-                                    as virtrdf:tutEmployee-foaf_last_name ;
-                            tut_northwind:lastName employees.LastName
-                                    as virtrdf:tutEmployee-last_name ;
-                            foaf:firstName employees.FirstName
-                                    as virtrdf:tutEmployee-foaf_first_name ;
-                            tut_northwind:firstName employees.FirstName
-                                    as virtrdf:tutEmployee-first_name ;
-                            foaf:title employees.Title
-                                    as virtrdf:tutEmployee-title ;
-                            tut_northwind:titleOfCourtesy employees.TitleOfCourtesy
-                                    as virtrdf:tutEmployee-title_of_courtesy ;
-                            foaf:birthday employees.BirthDate
-                                    as virtrdf:tutEmployee-foaf_birth_date ;
-                            tut_northwind:birthday employees.BirthDate
-                                    as virtrdf:tutEmployee-birth_date ;
-                            tut_northwind:hireDate employees.HireDate
-                                    as virtrdf:tutEmployee-hire_date ;
-                            tut_northwind:address employees.Address
-                                    as virtrdf:tutEmployee-address ;
-                            tut_northwind:city employees.City
-                                    as virtrdf:tutEmployee-city ;
-                            tut_northwind:dbpedia_city tut_northwind:dbpedia_iri(employees.City)
-                                    as virtrdf:tutEmployee-dbpedia_city ;
-                            tut_northwind:region employees.Region
-                                    as virtrdf:tutEmployee-region ;
-                            tut_northwind:postalCode employees.PostalCode
-                                    as virtrdf:tutEmployee-postal_code ;
-                            tut_northwind:country tut_northwind:Country (employees.Country)
-                                    as virtrdf:tutEmployee-country ;
-                            foaf:phone employees.HomePhone
-                                    as virtrdf:tutEmployee-home_phone ;
-                            tut_northwind:extension employees.Extension
-                                    as virtrdf:tutEmployee-extension ;
-                            tut_northwind:notes employees.Notes
-                                    as virtrdf:tutEmployee-notes ;
-                            tut_northwind:reportsTo tut_northwind:Employee(employees.FirstName, employees.LastName, employees.ReportsTo) where (^{employees.}^.ReportsTo = ^{employees.}^.EmployeeID)
-                                    as virtrdf:tutEmployee-reports_to ;
-                            foaf:img tut_northwind:EmployeePhoto(employees.EmployeeID)
-                                    as virtrdf:tutEmployee-employees.EmployeePhoto ;
-                            rdfs:isDefinedBy tut_northwind:employee_iri (employees.EmployeeID) ;
-                            rdfs:isDefinedBy tut_northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID).
-    
-                    tut_northwind:EmployeePhoto(employees.EmployeeID)
-                            a tut_northwind:EmployeePhoto
-                                    as virtrdf:tut_Employee-employees.EmployeePhotoId ;
-                            rdfs:isDefinedBy tut_northwind:employeephoto_iri (employees.EmployeeID) ;
-                            rdfs:isDefinedBy tut_northwind:EmployeePhoto (employees.EmployeeID).
-    
-                    tut_northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID)
-                            tut_northwind:is_salesrep_of
-                    tut_northwind:Order (orders.OrderID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID) as virtrdf:tutOrder-is_salesrep_of .
-    
-                    tut_northwind:Country (employees.Country)
-                            tut_northwind:is_country_of
-                    tut_northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID) as virtrdf:tutEmployee-is_country_of .
-    
-                    tut_northwind:Order (orders.OrderID)
-                            a tut_northwind:Order
-                                    as virtrdf:tutOrder-Order ;
-                            tut_northwind:has_customer tut_northwind:Customer (orders.CustomerID)
-                                    as virtrdf:tutOrder-order_has_customer ;
-                            tut_northwind:has_salesrep tut_northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID)
-                                    as virtrdf:tutCustomer-has_salesrep ;
-                            tut_northwind:has_employee tut_northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID)
-                                    as virtrdf:tutOrder-order_has_employee ;
-                            tut_northwind:orderDate orders.OrderDate
-                                    as virtrdf:tutOrder-order_date ;
-                            tut_northwind:requiredDate orders.RequiredDate
-                                    as virtrdf:tutOrder-required_date ;
-                            tut_northwind:shippedDate orders.ShippedDate
-                                    as virtrdf:tutOrder-shipped_date ;
-                            tut_northwind:order_ship_via tut_northwind:Shipper (orders.ShipVia)
-                                    as virtrdf:tutOrder-order_ship_via ;
-                            tut_northwind:freight orders.Freight
-                                    as virtrdf:tutOrder-freight ;
-                            tut_northwind:shipName orders.ShipName
-                                    as virtrdf:tutOrder-ship_name ;
-                            tut_northwind:shipAddress orders.ShipAddress
-                                    as virtrdf:tutOrder-ship_address ;
-                            tut_northwind:shipCity orders.ShipCity
-                                    as virtrdf:tutOrder-ship_city ;
-                            tut_northwind:dbpedia_shipCity tut_northwind:dbpedia_iri(orders.ShipCity)
-                                    as virtrdf:tutOrder-ship_dbpedia_city ;
-                            tut_northwind:shipRegion orders.ShipRegion
-                                    as virtrdf:tutOrder-ship_region ;
-                            tut_northwind:shipPostal_code orders.ShipPostalCode
-                                    as virtrdf:tutOrder-ship_postal_code ;
-                            tut_northwind:shipCountry tut_northwind:Country(orders.ShipCountry)
-                                    as virtrdf:tutship_country ;
-                            rdfs:isDefinedBy tut_northwind:order_iri (orders.OrderID) ;
-                            rdfs:isDefinedBy tut_northwind:Order (orders.OrderID).
-    
-                    tut_northwind:Country (orders.ShipCountry)
-                            tut_northwind:is_ship_country_of
-                    tut_northwind:Order (orders.OrderID) as virtrdf:tutOrder-is_country_of .
-    
-                    tut_northwind:Customer (orders.CustomerID)
-                            tut_northwind:has_order tut_northwind:Order (orders.OrderID) as virtrdf:tutOrder-has_order .
-    
-                    tut_northwind:Shipper (orders.ShipVia)
-                            tut_northwind:ship_order tut_northwind:Order (orders.OrderID) as virtrdf:tutOrder-ship_order .
-    
-                    tut_northwind:OrderLine (order_lines.OrderID, order_lines.ProductID)
-                            a tut_northwind:OrderLine
-                                    as virtrdf:tutOrderLine-OrderLines ;
-                            tut_northwind:has_order_id tut_northwind:Order (order_lines.OrderID)
-                                    as virtrdf:tutorder_lines_has_order_id ;
-                            tut_northwind:has_product_id tut_northwind:Product (order_lines.ProductID)
-                                    as virtrdf:tutorder_lines_has_product_id ;
-                            tut_northwind:unitPrice order_lines.UnitPrice
-                                    as virtrdf:tutOrderLine-unit_price ;
-                            tut_northwind:quantity order_lines.Quantity
-                                    as virtrdf:tutOrderLine-quantity ;
-                            tut_northwind:discount order_lines.Discount
-                                    as virtrdf:tutOrderLine-discount ;
-                            rdfs:isDefinedBy tut_northwind:orderline_iri (order_lines.OrderID, order_lines.ProductID) ;
-                            rdfs:isDefinedBy tut_northwind:OrderLine (order_lines.OrderID, order_lines.ProductID).
-    
-                    tut_northwind:Order (orders.OrderID)
-                            tut_northwind:is_order_of
-                    tut_northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) where (^{orders.}^.OrderID = ^{order_lines.}^.OrderID) as virtrdf:tutOrder-is_order_of .
-    
-                    tut_northwind:Product (products.ProductID)
-                            tut_northwind:is_product_of
-                    tut_northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) where (^{products.}^.ProductID = ^{order_lines.}^.ProductID) as virtrdf:tutProduct-is_product_of .
-    
-                    tut_northwind:Country (countries.Name)
-                            a tut_northwind:Country
-                                    as virtrdf:tutCountry-Type2 ;
-                            a wgs:SpatialThing
-                                    as virtrdf:tutCountry-Type ;
-                            owl:sameAs tut_northwind:dbpedia_iri (countries.Name) ;
-                            tut_northwind:name countries.Name
-                                    as virtrdf:tutCountry-Name ;
-                            tut_northwind:code countries.Code
-                                    as virtrdf:tutCountry-Code ;
-                            tut_northwind:smallFlagDAVResourceName countries.SmallFlagDAVResourceName
-                                    as virtrdf:tutCountry-SmallFlagDAVResourceName ;
-                            tut_northwind:largeFlagDAVResourceName countries.LargeFlagDAVResourceName
-                                    as virtrdf:tutCountry-LargeFlagDAVResourceName ;
-                            tut_northwind:smallFlagDAVResourceURI tut_northwind:Flag(countries.SmallFlagDAVResourceURI)
-                                    as virtrdf:tutCountry-SmallFlagDAVResourceURI ;
-                            tut_northwind:largeFlagDAVResourceURI tut_northwind:Flag(countries.LargeFlagDAVResourceURI)
-                                    as virtrdf:tutCountry-LargeFlagDAVResourceURI ;
-                            wgs:lat countries.Lat
-                                    as virtrdf:tutCountry-Lat ;
-                            wgs:long countries.Lng
-                                    as virtrdf:tutCountry-Lng ;
-                            rdfs:isDefinedBy tut_northwind:country_iri (countries.Name) ;
-                            rdfs:isDefinedBy tut_northwind:Country (countries.Name).
-    
-                    tut_northwind:Country (countries.Name)
-                            tut_northwind:has_province
-                    tut_northwind:Province (provinces.CountryCode, provinces.Province) where (^{provinces.}^.CountryCode = ^{countries.}^.Code) as virtrdf:tutCountry-has_province .
-    
-                    tut_northwind:Province (provinces.CountryCode, provinces.Province)
-                            a tut_northwind:Province
-                                    as virtrdf:tutProvince-Provinces ;
-                            tut_northwind:has_country_code provinces.CountryCode
-                                    as virtrdf:tuthas_country_code ;
-                            tut_northwind:provinceName provinces.Province
-                                    as virtrdf:tutProvince-ProvinceName ;
-                            rdfs:isDefinedBy tut_northwind:province_iri (provinces.CountryCode, provinces.Province) ;
-                            rdfs:isDefinedBy tut_northwind:Province (provinces.CountryCode, provinces.Province).
-    
-                    tut_northwind:Province (provinces.CountryCode, provinces.Province)
-                            tut_northwind:is_province_of
-                    tut_northwind:Country (countries.Name) where  (^{countries.}^.Code = ^{provinces.}^.CountryCode) as virtrdf:tutProvince-country_of .
-            } .
-    } .
-    ;
-    
-    DELETE FROM db.dba.url_rewrite_rule_list where urrl_list like 'tut_nw%';
-    DELETE FROM db.dba.url_rewrite_rule where urr_rule like 'tut_nw%';
-    
-    create procedure DB.DBA.install_run ()
-    {
-            declare file_text, uriqa varchar;
-            uriqa := registry_get('URIQADefaultHost');
-            file_text := (SELECT blob_to_string (RES_CONTENT) FROM WS.WS.SYS_DAV_RES where RES_FULL_PATH='/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.isparql');
-            file_text := replace(file_text, 'URIQA_MACRO', concat('http://', uriqa, '/tutorial/Northwind'));
-            update WS.WS.SYS_DAV_RES set RES_CONTENT=file_text where RES_FULL_PATH='/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.isparql';
-    }
-    ;
-    
-    DB.DBA.install_run()
-    ;
-    
-    drop procedure DB.DBA.install_run
-    ;
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tut_nw_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/tutorial/Northwind%%3E+WHERE+{+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tut_nw_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/rdfbrowser/index.html?uri=http%%3A//^{URIQADefaultHost}^%U%%23this',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'tut_nw_rule3',
-        1,
-        '(/[^#]*)/\x24',
-        vector('path'),
-        1,
-        '%s',
-        vector('path'),
-        null,
-        null,
-        0,
-        null
-        );
-    
-    create procedure DB.DBA.REMOVE_TUT_DEMO_RDF_DET()
-    {
-      declare colid int;
-      colid := DAV_SEARCH_ID('/DAV/VAD/tutorial/rdfview/rd_v_1/', 'C');
-      if (colid < 0)
-        return;
-      update WS.WS.SYS_DAV_COL set COL_DET=null where COL_ID = colid;
-    }
-    ;
-    
-    DB.DBA.REMOVE_TUT_DEMO_RDF_DET();
-    
-    drop procedure DB.DBA.REMOVE_TUT_DEMO_RDF_DET;
-    
-    create procedure DB.DBA.TUT_NORTHWIND_MAKE_RDF_DET()
-    {
-        declare uriqa_str varchar;
-        uriqa_str := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-        uriqa_str := 'http://' || uriqa_str || '/tutorial/Northwind';
-        DB.DBA."RDFData_MAKE_DET_COL" ('/DAV/VAD/tutorial/rdfview/rd_v_1/RDFData/', uriqa_str, NULL);
-        VHOST_REMOVE (lpath=>'/tutorial/Northwind/data/rdf');
-        DB.DBA.VHOST_DEFINE (lpath=>'/tutorial/Northwind/data/rdf', ppath=>'/DAV/VAD/tutorial/rdfview/rd_v_1/RDFData/All/', is_dav=>1, vsp_user=>'dba');
-    }
-    ;
-    
-    DB.DBA.TUT_NORTHWIND_MAKE_RDF_DET();
-    
-    drop procedure DB.DBA.TUT_NORTHWIND_MAKE_RDF_DET;
-    
-    -- procedure to convert path to DET resource name
-    create procedure DB.DBA.TUT_NORTHWIND_DET_REF (in par varchar, in fmt varchar, in val varchar)
-    {
-      declare res, iri any;
-      declare uriqa_str varchar;
-      uriqa_str := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-      uriqa_str := 'http://' || uriqa_str || '/tutorial/Northwind';
-      iri := uriqa_str || val;
-      res := sprintf ('iid (%d).rdf', iri_id_num (iri_to_id (iri)));
-      return sprintf (fmt, res);
-    }
-    ;
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE ('tut_nw_rdf', 1,
-        '/tutorial/Northwind/(.*)', vector('path'), 1,
-        '/tutorial/Northwind/data/rdf/%U', vector('path'),
-        'DB.DBA.TUT_NORTHWIND_DET_REF',
-        'application/rdf.xml',
-        2,
-        303);
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'tut_nw_rule_list1',
-        1,
-        vector (
-                    'tut_nw_rule1',
-                    'tut_nw_rule2',
-                    'tut_nw_rule3',
-                    'tut_nw_rdf'
-              ));
-    
-    VHOST_REMOVE (lpath=>'/tutorial/Northwind');
-    DB.DBA.VHOST_DEFINE (lpath=>'/tutorial/Northwind', ppath=>'/DAV/VAD/tutorial/rdfview/rd_v_1/', vsp_user=>'dba', is_dav=>1, def_page=>'sfront.vspx',
-              is_brws=>0, opts=>vector ('url_rewrite', 'tut_nw_rule_list1'));
-    
-    create procedure DB.DBA.LOAD_TUTNW_ONTOLOGY_FROM_DAV()
-    {
-      declare content, urihost varchar;
-      whenever not found goto endpoint;
-      SELECT cast (RES_CONTENT as varchar) into content FROM WS.WS.SYS_DAV_RES where RES_FULL_PATH = '/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.owl';
-      if (content is null or content = '')
-        goto endpoint;
-      DB.DBA.RDF_LOAD_RDFXML (content, 'http://demo.openlinksw.com/schemas/tutorial/northwind#', 'http://demo.openlinksw.com/schemas/TutorialNorthwindOntology/1.0/');
-      if (urihost = 'demo.openlinksw.com')
-      {
-        DB.DBA.VHOST_REMOVE (lpath=>'/schemas/tutorial/northwind#');
-        DB.DBA.VHOST_DEFINE (lpath=>'/schemas/tutorial/northwind#', ppath=>'/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-        DB.DBA.VHOST_REMOVE (lpath=>'/schemas/tutorial/northwind');
-        DB.DBA.VHOST_DEFINE (lpath=>'/schemas/tutorial/northwind', ppath=>'/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-      }
-      endpoint:
-      ;
-    }
-    ;
-    
-    DB.DBA.LOAD_TUTNW_ONTOLOGY_FROM_DAV()
-    ;
-    
-    drop procedure DB.DBA.LOAD_TUTNW_ONTOLOGY_FROM_DAV
-    ;
-    
-    create procedure DB.DBA.LOAD_TUTNW_ONTOLOGY_FROM_DAV2()
-    {
-      declare urihost varchar;
-      sparql base <http://demo.openlinksw.com/schemas/tutorial/northwind#> load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.owl")
-       into graph <http://demo.openlinksw.com/schemas/TutorialNorthwindOntology/1.0/>;
-      urihost := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-      if (urihost = 'demo.openlinksw.com')
-      {
-        DB.DBA.VHOST_REMOVE (lpath=>'/tutorial/northwind#');
-        DB.DBA.VHOST_DEFINE (lpath=>'/tutorial/northwind#', ppath=>'/DAV/VAD/tutorial/rdfview/rd_v_1/rd_v_1.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-      }
-    }
-    ;
-    
-    --DB.DBA.LOAD_TUTNW_ONTOLOGY_FROM_DAV2();
-    
-    drop procedure DB.DBA.LOAD_TUTNW_ONTOLOGY_FROM_DAV2
-    ;
-    
-    DB.DBA.XML_SET_NS_DECL ('tut_northwind', 'http://demo.openlinksw.com/schemas/tutorial/northwind#', 2);
-
-## SQL Server's Northwind Demo Database
-
-    use DB;
-    
-    DB.DBA.exec_stmt ('UPDATE WS.WS.SYS_DAV_RES set RES_TYPE=\'image/jpeg\' where RES_FULL_PATH like \'/DAV/VAD/demo/sql/CAT%\'', 0)
-    ;
-    
-    DB.DBA.exec_stmt ('UPDATE WS.WS.SYS_DAV_RES set RES_TYPE=\'image/jpeg\' where RES_FULL_PATH like \'/DAV/VAD/demo/sql/EMP%\'', 0)
-    ;
-    
-    GRANT SELECT ON "Demo"."demo"."Products" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Suppliers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Shippers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Categories" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Customers" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Employees" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Orders" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Order_Details" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Countries" TO "SPARQL";
-    GRANT SELECT ON "Demo"."demo"."Provinces" TO "SPARQL";
-    
-    SPARQL drop quad map graph iri("http://^{URIQADefaultHost}^/Northwind") .
-    ;
-    
-    SPARQL drop quad map virtrdf:NorthwindDemo .
-    ;
-    
-    SPARQL
-    prefix northwind: <http://demo.openlinksw.com/schemas/northwind#>
-    drop iri class northwind:Category .
-    drop iri class northwind:CategoryDoc .
-    drop iri class northwind:Shipper .
-    drop iri class northwind:ShipperDoc .
-    drop iri class northwind:Supplier .
-    drop iri class northwind:SupplierDoc .
-    drop iri class northwind:Product .
-    drop iri class northwind:ProductDoc .
-    drop iri class northwind:Customer .
-    drop iri class northwind:CustomerDoc .
-    drop iri class northwind:Employee .
-    drop iri class northwind:EmployeeDoc .
-    drop iri class northwind:Order .
-    drop iri class northwind:OrderDoc .
-    drop iri class northwind:CustomerContact .
-    drop iri class northwind:CustomerContactDoc .
-    drop iri class northwind:OrderLine .
-    drop iri class northwind:OrderLineDoc .
-    drop iri class northwind:Province .
-    drop iri class northwind:ProvinceDoc .
-    drop iri class northwind:Country .
-    drop iri class northwind:CountryDoc .
-    drop iri class northwind:Flag .
-    drop iri class northwind:FlagDoc .
-    drop iri class northwind:dbpedia_iri2 .
-    drop iri class northwind:EmployeePhoto .
-    drop iri class northwind:CategoryPhoto .
-    
-    drop iri class northwind:category_iri .
-    drop iri class northwind:categorydoc_iri .
-    drop iri class northwind:shipper_iri .
-    drop iri class northwind:shipperdoc_iri .
-    drop iri class northwind:supplier_iri .
-    drop iri class northwind:supplierdoc_iri .
-    drop iri class northwind:product_iri .
-    drop iri class northwind:productdoc_iri .
-    drop iri class northwind:customer_iri .
-    drop iri class northwind:customerdoc_iri .
-    drop iri class northwind:employee_iri .
-    drop iri class northwind:employeedoc_iri .
-    drop iri class northwind:order_iri .
-    drop iri class northwind:orderdoc_iri .
-    drop iri class northwind:customercontact_iri .
-    drop iri class northwind:customercontactdoc_iri .
-    drop iri class northwind:orderline_iri .
-    drop iri class northwind:orderlinedoc_iri .
-    drop iri class northwind:province_iri .
-    drop iri class northwind:provincedoc_iri .
-    drop iri class northwind:country_iri .
-    drop iri class northwind:countrydoc_iri .
-    drop iri class northwind:employeephoto_iri .
-    drop iri class northwind:categoryphoto_iri .
-    drop iri class northwind:flag_iri .
-    drop iri class northwind:flagdoc_iri .
-    ;
-    
-    SPARQL
-    prefix northwind: <http://demo.openlinksw.com/schemas/northwind#>
-    
-    create iri class northwind:Category "http://^{URIQADefaultHost}^/Northwind/Category/%d#this" (in category_id integer not null) .
-    create iri class northwind:CategoryDoc "http://^{URIQADefaultHost}^/Northwind/Category/%d" (in category_id integer not null) .
-    create iri class northwind:Shipper "http://^{URIQADefaultHost}^/Northwind/Shipper/%d#this" (in shipper_id integer not null) .
-    create iri class northwind:ShipperDoc "http://^{URIQADefaultHost}^/Northwind/Shipper/%d" (in shipper_id integer not null) .
-    create iri class northwind:Supplier "http://^{URIQADefaultHost}^/Northwind/Supplier/%d#this" (in supplier_id integer not null) .
-    create iri class northwind:SupplierDoc "http://^{URIQADefaultHost}^/Northwind/Supplier/%d" (in supplier_id integer not null) .
-    create iri class northwind:Product   "http://^{URIQADefaultHost}^/Northwind/Product/%d#this" (in product_id integer not null) .
-    create iri class northwind:ProductDoc   "http://^{URIQADefaultHost}^/Northwind/Product/%d" (in product_id integer not null) .
-    create iri class northwind:Customer "http://^{URIQADefaultHost}^/Northwind/Customer/%U#this" (in customer_id varchar not null) .
-    create iri class northwind:CustomerDoc "http://^{URIQADefaultHost}^/Northwind/Customer/%U" (in customer_id varchar not null) .
-    create iri class northwind:Employee "http://^{URIQADefaultHost}^/Northwind/Employee/%U_%U_%d#this" (in employee_firstname varchar not null, in employee_lastname varchar not null, in employee_id integer not null) .
-    create iri class northwind:EmployeeDoc "http://^{URIQADefaultHost}^/Northwind/Employee/%U_%U_%d" (in employee_firstname varchar not null, in employee_lastname varchar not null, in employee_id integer not null) .
-    create iri class northwind:Order "http://^{URIQADefaultHost}^/Northwind/Order/%d#this" (in order_id integer not null) .
-    create iri class northwind:OrderDoc "http://^{URIQADefaultHost}^/Northwind/Order/%d" (in order_id integer not null) .
-    create iri class northwind:CustomerContact "http://^{URIQADefaultHost}^/Northwind/CustomerContact/%U#this" (in customer_id varchar not null) .
-    create iri class northwind:CustomerContactDoc "http://^{URIQADefaultHost}^/Northwind/CustomerContact/%U" (in customer_id varchar not null) .
-    create iri class northwind:OrderLine "http://^{URIQADefaultHost}^/Northwind/OrderLine/%d/%d#this" (in order_id integer not null, in product_id integer not null) .
-    create iri class northwind:OrderLineDoc "http://^{URIQADefaultHost}^/Northwind/OrderLine/%d/%d" (in order_id integer not null, in product_id integer not null) .
-    create iri class northwind:Province "http://^{URIQADefaultHost}^/Northwind/Province/%U/%U#this" (in country_name varchar not null, in province_name varchar not null) .
-    create iri class northwind:ProvinceDoc "http://^{URIQADefaultHost}^/Northwind/Province/%U/%U" (in country_name varchar not null, in province_name varchar not null) .
-    create iri class northwind:Country "http://^{URIQADefaultHost}^/Northwind/Country/%U#this" (in country_name varchar not null) .
-    create iri class northwind:CountryDoc "http://^{URIQADefaultHost}^/Northwind/Country/%U" (in country_name varchar not null) .
-    create iri class northwind:Flag "http://^{URIQADefaultHost}^%U#this" (in flag_path varchar not null) .
-    create iri class northwind:FlagDoc "http://^{URIQADefaultHost}^%U" (in flag_path varchar not null) .
-    create iri class northwind:dbpedia_iri2 "http://dbpedia.org/resource/%U" (in uname varchar not null) .
-    create iri class northwind:EmployeePhoto "http://^{URIQADefaultHost}^/DAV/VAD/demo/sql/EMP%d#this" (in emp_id varchar not null) .
-    create iri class northwind:CategoryPhoto "http://^{URIQADefaultHost}^/DAV/VAD/demo/sql/CAT%d#this" (in category_id varchar not null) .
-    create iri class northwind:Phone "tel:%s" (in phone_number varchar) .
-    create iri class northwind:Fax "fax:%s" (in fax_number varchar) .
-    ;
-    
-    SPARQL
-    prefix northwind: <http://demo.openlinksw.com/schemas/northwind#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    prefix sioc: <http://rdfs.org/sioc/ns#>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix owl: <http://www.w3.org/2002/07/owl#>
-    prefix wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-    FROM Demo.demo.Products as products
-    FROM Demo.demo.Suppliers as suppliers
-    FROM Demo.demo.Shippers as shippers
-    FROM Demo.demo.Categories as categories
-    FROM Demo.demo.Customers as customers
-    FROM Demo.demo.Employees as employees
-    FROM Demo.demo.Orders as orders
-    FROM Demo.demo.Order_Details as order_lines
-    FROM Demo.demo.Countries as countries
-    FROM Demo.demo.Provinces as provinces
-    where (^{suppliers.}^.Country = ^{countries.}^.Name)
-    where (^{customers.}^.Country = ^{countries.}^.Name)
-    where (^{employees.}^.Country = ^{countries.}^.Name)
-    where (^{orders.}^.ShipCountry = ^{countries.}^.Name)
-    {
-            create virtrdf:NorthwindDemo as graph iri ("http://^{URIQADefaultHost}^/Northwind") option (exclusive)
-            {
-                    northwind:CustomerContact (customers.CustomerID)
-                            a foaf:Person
-                                    as virtrdf:CustomerContact-foaf_Person .
-    
-                    northwind:CustomerContact (customers.CustomerID)
-                            a northwind:CustomerContact
-                                    as virtrdf:CustomerContact-CustomerContact;
-                            foaf:name customers.ContactName
-                                    as virtrdf:CustomerContact-contact_name ;
-                            foaf:phone northwind:Phone (customers.Phone)
-                                    as virtrdf:CustomerContact-foaf_phone ;
-                            northwind:is_contact_at northwind:Customer (customers.CustomerID)
-                                    as virtrdf:CustomerContact-is_contact_at ;
-                            northwind:country northwind:Country (customers.Country)
-                                    as virtrdf:CustomerContact-country ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:CustomerContactDoc (customers.CustomerID)
-                            a northwind:CustomerContactDoc
-                                    as virtrdf:CustomerContactDoc-CustomerID ;
-                            a foaf:Document
-                                    as virtrdf:CustomerContactDoc-foaf_DocCustomerID ;
-                            foaf:primaryTopic northwind:CustomerContact (customers.CustomerID)
-                                    as virtrdf:CustomerContactDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Country (customers.Country)
-                            northwind:is_country_of
-                    northwind:CustomerContact (customers.CustomerID) as virtrdf:CustomerContact-is_country_of .
-    
-                    northwind:Product (products.ProductID)
-                            a northwind:Product
-                                    as virtrdf:Product-ProductID ;
-                            northwind:has_category northwind:Category (products.CategoryID)
-                                    as virtrdf:Product-product_has_category ;
-                            northwind:has_supplier northwind:Supplier (products.SupplierID)
-                                    as virtrdf:Product-product_has_supplier ;
-                            northwind:productName products.ProductName
-                                    as virtrdf:Product-name_of_product ;
-                            northwind:quantityPerUnit products.QuantityPerUnit
-                                    as virtrdf:Product-quantity_per_unit ;
-                            northwind:unitPrice products.UnitPrice
-                                    as virtrdf:Product-unit_price ;
-                            northwind:unitsInStock products.UnitsInStock
-                                    as virtrdf:Product-units_in_stock ;
-                            northwind:unitsOnOrder products.UnitsOnOrder
-                                    as virtrdf:Product-units_on_order ;
-                            northwind:reorderLevel products.ReorderLevel
-                                    as virtrdf:Product-reorder_level ;
-                            northwind:discontinued products.Discontinued
-                                    as virtrdf:Product-discontinued ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:ProductDoc (products.ProductID)
-                            a northwind:ProductDoc
-                                    as virtrdf:ProductDoc-ProductID ;
-                            a foaf:Document
-                                    as virtrdf:ProductDoc-foaf_DocProductID ;
-                            foaf:primaryTopic northwind:Product (products.ProductID)
-                                    as virtrdf:ProductDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Category (products.CategoryID)
-                            northwind:category_of northwind:Product (products.ProductID) as virtrdf:Product-category_of .
-    
-                    northwind:Supplier (products.SupplierID)
-                            northwind:supplier_of northwind:Product (products.ProductID) as virtrdf:Product-supplier_of .
-    
-                    northwind:Supplier (suppliers.SupplierID)
-                            a northwind:Supplier
-                                    as virtrdf:Supplier-SupplierID ;
-                            northwind:companyName suppliers.CompanyName
-                                    as virtrdf:Supplier-company_name ;
-                            northwind:contactName suppliers.ContactName
-                                    as virtrdf:Supplier-contact_name ;
-                            northwind:contactTitle suppliers.ContactTitle
-                                    as virtrdf:Supplier-contact_title ;
-                            northwind:address suppliers.Address
-                                    as virtrdf:Supplier-address ;
-                            northwind:city northwind:dbpedia_iri2(suppliers.City)
-                                    as virtrdf:Supplier-dbpediacity ;
-                            northwind:region suppliers.Region
-                                    as virtrdf:Supplier-region ;
-                            northwind:postalCode suppliers.PostalCode
-                                    as virtrdf:Supplier-postal_code ;
-                            northwind:country northwind:Country(suppliers.Country)
-                                    as virtrdf:Supplier-country ;
-                            northwind:phone northwind:Phone (suppliers.Phone)
-                                    as virtrdf:Supplier-phone ;
-                            northwind:fax northwind:Fax (suppliers.Fax)
-                                    as virtrdf:Supplier-fax ;
-                            northwind:homePage suppliers.HomePage
-                                    as virtrdf:Supplier-home_page ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:SupplierDoc (suppliers.SupplierID)
-                            a northwind:SupplierDoc
-                                    as virtrdf:SupplierDoc-SupplierID ;
-                            a foaf:Document
-                                    as virtrdf:SupplierDoc-foaf_DocSupplierID ;
-                            foaf:primaryTopic northwind:Supplier (suppliers.SupplierID)
-                                    as virtrdf:SupplierDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Country (suppliers.Country)
-                            northwind:is_country_of
-                    northwind:Supplier (suppliers.SupplierID) as virtrdf:Supplier-is_country_of .
-    
-                    northwind:Category (categories.CategoryID)
-                            a northwind:Category
-                                    as virtrdf:Category-CategoryID ;
-                            northwind:categoryName categories.CategoryName
-                                    as virtrdf:Category-home_page ;
-                            northwind:description categories.Description
-                                    as virtrdf:Category-description ;
-                            foaf:img northwind:CategoryPhoto(categories.CategoryID)
-                                    as virtrdf:Category-categories.CategoryPhoto ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:CategoryDoc (categories.CategoryID)
-                            a northwind:CategoryDoc
-                                    as virtrdf:CategoryDoc-CategoryID ;
-                            a foaf:Document
-                                    as virtrdf:CategoryDoc-foaf_DocCategoryID ;
-                            foaf:primaryTopic northwind:Category (categories.CategoryID)
-                                    as virtrdf:CategoryDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:CategoryPhoto(categories.CategoryID)
-                            a northwind:CategoryPhoto
-                                    as virtrdf:Category-categories.CategoryPhotoID ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Shipper (shippers.ShipperID)
-                            a northwind:Shipper
-                                    as virtrdf:Shipper-ShipperID ;
-                            northwind:companyName shippers.CompanyName
-                                    as virtrdf:Shipper-company_name ;
-                            northwind:phone northwind:Phone (shippers.Phone)
-                                    as virtrdf:Shipper-phone ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:ShipperDoc (shippers.ShipperID)
-                            a northwind:ShipperDoc
-                                    as virtrdf:ShipperDoc-ShipperID ;
-                            a foaf:Document
-                                    as virtrdf:ShipperDoc-foaf_DocShipperID ;
-                            foaf:primaryTopic northwind:Shipper (shippers.ShipperID)
-                                    as virtrdf:ShipperDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Customer (customers.CustomerID)
-                            a  northwind:Customer
-                                    as virtrdf:Customer-CustomerID2 ;
-                            a  foaf:Organization
-                                    as virtrdf:Customer-CustomerID ;
-                            foaf:name customers.CompanyName
-                                    as virtrdf:Customer-foaf_name ;
-                            northwind:companyName customers.CompanyName
-                                    as virtrdf:Customer-company_name ;
-                            northwind:has_contact northwind:CustomerContact (customers.CustomerID)
-                                    as virtrdf:Customer-contact ;
-                            northwind:country northwind:Country (customers.Country)
-                                    as virtrdf:Customer-country ;
-                            northwind:contactName customers.ContactName
-                                    as virtrdf:Customer-contact_name ;
-                            northwind:contactTitle customers.ContactTitle
-                                    as virtrdf:Customer-contact_title ;
-                            northwind:address customers.Address
-                                    as virtrdf:Customer-address ;
-                            northwind:city northwind:dbpedia_iri2(customers.City)
-                                    as virtrdf:Customer-dbpediacity ;
-                            northwind:region customers.Region
-                                    as virtrdf:Customer-region ;
-                            northwind:PostalCode customers.PostalCode
-                                    as virtrdf:Customer-postal_code ;
-                            foaf:phone northwind:Phone (customers.Phone)
-                                    as virtrdf:Customer-foaf_phone ;
-                            northwind:phone northwind:Phone (customers.Phone)
-                                    as virtrdf:Customer-phone ;
-                            northwind:fax northwind:Fax (customers.Fax)
-                                    as virtrdf:Customer-fax ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:CustomerDoc (customers.CustomerID)
-                            a  northwind:CustomerDoc
-                                    as virtrdf:CustomerDoc-CustomerID2 ;
-                            a  foaf:Document
-                                    as virtrdf:CustomerDoc-CustomerID3 ;
-                            foaf:primaryTopic northwind:Customer (customers.CustomerID)
-                                    as virtrdf:CustomerDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Country (customers.Country)
-                            northwind:is_country_of
-                    northwind:Customer (customers.CustomerID) as virtrdf:Customer-is_country_of .
-    
-                    northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID)
-                            a northwind:Employee
-                                    as virtrdf:Employee-EmployeeID2 ;
-                            a foaf:Person
-                                    as virtrdf:Employee-EmployeeID ;
-                            foaf:surname employees.LastName
-                                    as virtrdf:Employee-foaf_last_name ;
-                            northwind:lastName employees.LastName
-                                    as virtrdf:Employee-last_name ;
-                            foaf:firstName employees.FirstName
-                                    as virtrdf:Employee-foaf_first_name ;
-                            northwind:firstName employees.FirstName
-                                    as virtrdf:Employee-first_name ;
-                            foaf:title employees.Title
-                                    as virtrdf:Employee-title ;
-                            northwind:titleOfCourtesy employees.TitleOfCourtesy
-                                    as virtrdf:Employee-title_of_courtesy ;
-                            foaf:birthday employees.BirthDate
-                                    as virtrdf:Employee-foaf_birth_date ;
-                            northwind:birthday employees.BirthDate
-                                    as virtrdf:Employee-birth_date ;
-                            northwind:hireDate employees.HireDate
-                                    as virtrdf:Employee-hire_date ;
-                            northwind:address employees.Address
-                                    as virtrdf:Employee-address ;
-                            northwind:city northwind:dbpedia_iri2(employees.City)
-                                    as virtrdf:Employee-dbpediacity ;
-                            northwind:region employees.Region
-                                    as virtrdf:Employee-region ;
-                            northwind:postalCode employees.PostalCode
-                                    as virtrdf:Employee-postal_code ;
-                            northwind:country northwind:Country(employees.Country)
-                                    as virtrdf:Employee-country ;
-                            foaf:phone employees.HomePhone
-                                    as virtrdf:Employee-home_phone ;
-                            northwind:extension employees.Extension
-                                    as virtrdf:Employee-extension ;
-                            northwind:notes employees.Notes
-                                    as virtrdf:Employee-notes ;
-                            northwind:reportsTo northwind:Employee(employees.FirstName, employees.LastName, employees.ReportsTo) where (^{employees.}^.ReportsTo = ^{employees.}^.EmployeeID)
-                                    as virtrdf:Employee-reports_to ;
-                            foaf:img northwind:EmployeePhoto(employees.EmployeeID)
-                                    as virtrdf:Employee-employees.EmployeePhoto ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:EmployeeDoc (employees.FirstName, employees.LastName, employees.EmployeeID)
-                            a  northwind:EmployeeDoc
-                                    as virtrdf:EmployeeDoc-EmployeeID2 ;
-                            a  foaf:Document
-                                    as virtrdf:EmployeeDoc-EmployeeID3 ;
-                            foaf:primaryTopic northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID)
-                                    as virtrdf:EmployeeDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:EmployeePhoto(employees.EmployeeID)
-                            a northwind:EmployeePhoto
-                                    as virtrdf:Employee-employees.EmployeePhotoId ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID)
-                            northwind:is_salesrep_of
-                    northwind:Order (orders.OrderID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID) as virtrdf:Order-is_salesrep_of .
-    
-                    northwind:Country (employees.Country)
-                            northwind:is_country_of
-                    northwind:Employee (employees.FirstName, employees.LastName, employees.EmployeeID) as virtrdf:Employee-is_country_of .
-    
-                    northwind:Order (orders.OrderID)
-                            a northwind:Order
-                                    as virtrdf:Order-Order ;
-                            northwind:has_customer northwind:Customer (orders.CustomerID)
-                                    as virtrdf:Order-order_has_customer ;
-                            northwind:has_salesrep northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID)
-                                    as virtrdf:Customer-has_salesrep ;
-                            northwind:has_employee northwind:Employee (employees.FirstName, employees.LastName, orders.EmployeeID) where (^{orders.}^.EmployeeID = ^{employees.}^.EmployeeID)
-                                    as virtrdf:Order-order_has_employee ;
-                            northwind:orderDate orders.OrderDate
-                                    as virtrdf:Order-order_date ;
-                            northwind:requiredDate orders.RequiredDate
-                                    as virtrdf:Order-required_date ;
-                            northwind:shippedDate orders.ShippedDate
-                                    as virtrdf:Order-shipped_date ;
-                            northwind:order_ship_via northwind:Shipper (orders.ShipVia)
-                                    as virtrdf:Order-order_ship_via ;
-                            northwind:freight orders.Freight
-                                    as virtrdf:Order-freight ;
-                            northwind:shipName orders.ShipName
-                                    as virtrdf:Order-ship_name ;
-                            northwind:shipAddress orders.ShipAddress
-                                    as virtrdf:Order-ship_address ;
-                            northwind:shipCity northwind:dbpedia_iri2(orders.ShipCity)
-                                    as virtrdf:Order-dbpediaship_city ;
-                            northwind:shipRegion orders.ShipRegion
-                                    as virtrdf:Order-ship_region ;
-                            northwind:shipPostal_code orders.ShipPostalCode
-                                    as virtrdf:Order-ship_postal_code ;
-                            northwind:shipCountry northwind:Country(orders.ShipCountry)
-                                    as virtrdf:ship_country ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:OrderDoc (orders.OrderID)
-                            a  northwind:OrderDoc
-                                    as virtrdf:OrderDoc-OrderID2 ;
-                            a  foaf:Document
-                                    as virtrdf:OrderDoc-OrderID3 ;
-                            foaf:primaryTopic northwind:Order (orders.OrderID)
-                                    as virtrdf:OrderDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Country (orders.ShipCountry)
-                            northwind:is_ship_country_of
-                    northwind:Order (orders.OrderID) as virtrdf:Order-is_country_of .
-    
-                    northwind:Customer (orders.CustomerID)
-                            northwind:has_order northwind:Order (orders.OrderID) as virtrdf:Order-has_order .
-    
-                    northwind:Shipper (orders.ShipVia)
-                            northwind:ship_order northwind:Order (orders.OrderID) as virtrdf:Order-ship_order .
-    
-                    northwind:OrderLine (order_lines.OrderID, order_lines.ProductID)
-                            a northwind:OrderLine
-                                    as virtrdf:OrderLine-OrderLines ;
-                            northwind:has_order_id northwind:Order (order_lines.OrderID)
-                                    as virtrdf:order_lines_has_order_id ;
-                            northwind:has_product_id northwind:Product (order_lines.ProductID)
-                                    as virtrdf:order_lines_has_product_id ;
-                            northwind:unitPrice order_lines.UnitPrice
-                                    as virtrdf:OrderLine-unit_price ;
-                            northwind:quantity order_lines.Quantity
-                                    as virtrdf:OrderLine-quantity ;
-                            northwind:discount order_lines.Discount
-                                    as virtrdf:OrderLine-discount ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:OrderLineDoc (order_lines.OrderID, order_lines.ProductID)
-                            a  northwind:OrderLineDoc
-                                    as virtrdf:OrderLineDoc-OrderLineID2 ;
-                            a  foaf:Document
-                                    as virtrdf:OrderLineDoc-OrderLineID3 ;
-                            foaf:primaryTopic northwind:OrderLine (order_lines.OrderID, order_lines.ProductID)
-                                    as virtrdf:OrderLineDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Order (orders.OrderID)
-                            northwind:is_order_of
-                    northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) where (^{orders.}^.OrderID = ^{order_lines.}^.OrderID) as virtrdf:Order-is_order_of .
-    
-                    northwind:Product (products.ProductID)
-                            northwind:is_product_of
-                    northwind:OrderLine (order_lines.OrderID, order_lines.ProductID) where (^{products.}^.ProductID = ^{order_lines.}^.ProductID) as virtrdf:Product-is_product_of .
-    
-                    northwind:Country (countries.Name)
-                            a northwind:Country
-                                    as virtrdf:Country-Type2 ;
-                            a wgs:SpatialThing
-                                    as virtrdf:Country-Type ;
-                            owl:sameAs northwind:dbpedia_iri2 (countries.Name) ;
-                            northwind:name countries.Name
-                                    as virtrdf:Country-Name ;
-                            northwind:code countries.Code
-                                    as virtrdf:Country-Code ;
-                            northwind:smallFlagDAVResourceName countries.SmallFlagDAVResourceName
-                                    as virtrdf:Country-SmallFlagDAVResourceName ;
-                            northwind:largeFlagDAVResourceName countries.LargeFlagDAVResourceName
-                                    as virtrdf:Country-LargeFlagDAVResourceName ;
-                            northwind:smallFlagDAVResourceURI northwind:Flag(countries.SmallFlagDAVResourceURI)
-                                    as virtrdf:Country-SmallFlagDAVResourceURI ;
-                            northwind:largeFlagDAVResourceURI northwind:Flag(countries.LargeFlagDAVResourceURI)
-                                    as virtrdf:Country-LargeFlagDAVResourceURI ;
-                            wgs:lat countries.Lat
-                                    as virtrdf:Country-Lat ;
-                            wgs:long countries.Lng
-                                    as virtrdf:Country-Lng ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:CountryDoc (countries.Name)
-                            a  northwind:CountryDoc
-                                    as virtrdf:CountryDoc-CountryID2 ;
-                            a  foaf:Document
-                                    as virtrdf:CountryDoc-CountryID3 ;
-                            foaf:primaryTopic northwind:Country (countries.Name)
-                                    as virtrdf:CountryDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Country (countries.Name)
-                            northwind:has_province
-                    northwind:Province (provinces.CountryCode, provinces.Province) where (^{provinces.}^.CountryCode = ^{countries.}^.Code) as virtrdf:Country-has_province .
-    
-                    northwind:Province (provinces.CountryCode, provinces.Province)
-                            a northwind:Province
-                                    as virtrdf:Province-Provinces ;
-                            owl:sameAs northwind:dbpedia_iri2 (provinces.Province) ;
-                            northwind:has_country_code provinces.CountryCode
-                                    as virtrdf:has_country_code ;
-                            northwind:provinceName provinces.Province
-                                    as virtrdf:Province-ProvinceName ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:ProvinceDoc (provinces.CountryCode, provinces.Province)
-                            a  northwind:ProvinceDoc
-                                    as virtrdf:ProvinceDoc-ProvinceID2 ;
-                            a  foaf:Document
-                                    as virtrdf:ProvinceDoc-ProvinceID3 ;
-                            foaf:primaryTopic northwind:Province (provinces.CountryCode, provinces.Province)
-                                    as virtrdf:ProvinceDoc-foaf_primarytopic ;
-                            rdfs:isDefinedBy northwind: .
-    
-                    northwind:Province (provinces.CountryCode, provinces.Province)
-                            northwind:is_province_of
-                    northwind:Country (countries.Name) where  (^{countries.}^.Code = ^{provinces.}^.CountryCode) as virtrdf:Province-country_of .
-            }.
-    }.
-    ;
-    
-    delete FROM DB.DBA.URL_REWRITE_RULE_LIST where urrl_list like 'demo_nw%';
-    delete FROM DB.DBA.URL_REWRITE_RULE where urr_rule like 'demo_nw%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'demo_nw_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%23this%%3E+%%3Chttp%%3A//^{URIQADefaultHost}^%U%%3E+FROM+%%3Chttp%%3A//^{URIQADefaultHost}^/Northwind%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'demo_nw_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'demo_nw_rule_list1',
-        1,
-        vector (
-                    'demo_nw_rule1',
-                    'demo_nw_rule2'
-              ));
-    
-    VHOST_REMOVE (lpath=>'/Northwind');
-    DB.DBA.VHOST_DEFINE (lpath=>'/Northwind', ppath=>'/DAV/home/demo/', vsp_user=>'dba', is_dav=>1,
-              is_brws=>0, opts=>vector ('url_rewrite', 'demo_nw_rule_list1'));
-    
-    create procedure DB.DBA.LOAD_NW_ONTOLOGY_FROM_DAV()
-    {
-      declare content1, urihost varchar;
-      SELECT cast (RES_CONTENT as varchar) into content1 FROM WS.WS.SYS_DAV_RES where RES_FULL_PATH = '/DAV/VAD/demo/sql/nw.owl';
-      DB.DBA.RDF_LOAD_RDFXML (content1, 'http://demo.openlinksw.com/schemas/northwind#', 'http://demo.openlinksw.com/schemas/NorthwindOntology/1.0/');
-      urihost := cfg_item_value(virtuoso_ini_path(), 'URIQA','DefaultHost');
-      if (urihost = 'demo.openlinksw.com')
-      {
-        DB.DBA.VHOST_REMOVE (lpath=>'/schemas/northwind');
-        DB.DBA.VHOST_DEFINE (lpath=>'/schemas/northwind', ppath=>'/DAV/VAD/demo/sql/nw.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-        DB.DBA.VHOST_REMOVE (lpath=>'/schemas/northwind#');
-        DB.DBA.VHOST_DEFINE (lpath=>'/schemas/northwind#', ppath=>'/DAV/VAD/demo/sql/nw.owl', vsp_user=>'dba', is_dav=>1, is_brws=>0);
-      }
-    };
-    
-    DB.DBA.LOAD_NW_ONTOLOGY_FROM_DAV();
-    drop procedure DB.DBA.LOAD_NW_ONTOLOGY_FROM_DAV;
-    
-    DB.DBA.XML_SET_NS_DECL ('northwind', 'http://demo.openlinksw.com/schemas/northwind#', 2);
-
-*Basic Northwind Ontology*
-
-    <?xml version="1.0" encoding="utf-8"?>
-    
-    <!--
-     -
-     -
-     -  This file is part of the OpenLink Software Virtuoso Open-Source (VOS)
-     -  project.
-     -
-     -  Copyright (C) 1998-2018 OpenLink Software
-     -
-     -  This project is free software; you can redistribute it and/or modify it
-     -  under the terms of the GNU General Public License as published by the
-     -  Free Software Foundation; only version 2 of the License, dated June 1991.
-     -
-     -  This program is distributed in the hope that it will be useful, but
-     -  WITHOUT ANY WARRANTY; without even the implied warranty of
-     -  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-     -  General Public License for more details.
-     -
-     -  You should have received a copy of the GNU General Public License along
-     -  with this program; if not, write to the Free Software Foundation, Inc.,
-     -  51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-     -
-    -->
-    
-    <rdf:RDF xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-             xmlns:owl ="http://www.w3.org/2002/07/owl#"
-             xmlns:virtrdf="http://www.openlinksw.com/schemas/virtrdf#"
-             xml:base="http://demo.openlinksw.com/schemas/northwind#">
-      <owl:Ontology rdf:about="http://demo.openlinksw.com/schemas/northwind#">
-            <rdfs:label>Northwind</rdfs:label>
-            <rdfs:comment>Northwind database classes and properties</rdfs:comment>
-            <virtrdf:catName>Northwind</virtrdf:catName>
-            <virtrdf:version>1.00</virtrdf:version>
-      </owl:Ontology>
-    
-      <rdfs:Class rdf:ID="Product">
-        <rdfs:label>Product</rdfs:label>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="has_category">
-        <rdfs:range rdf:resource="#Category"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Category</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="has_supplier">
-        <rdfs:range rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Supplier</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ProductName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ProductName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="QuantityPerUnit">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>QuantityPerUnit</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="UnitPrice">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:domain rdf:resource="#OrderLine"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>UnitPrice</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="UnitsInStock">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>UnitsInStock</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="UnitsOnOrder">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>UnitsOnOrder</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ReorderLevel">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ReorderLevel</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Discontinued">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:domain rdf:resource="#Product"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Discontinued</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="Supplier">
-        <rdfs:label>Supplier</rdfs:label>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="CompanyName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/name"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Shipper"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>CompanyName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ContactName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/name"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#CustomerContact"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ContactName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ContactTitle">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/title"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ContactTitle</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Address">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Address</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="City">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>City</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Region">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Region</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="PostalCode">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>PostalCode</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="CountryName">
-        <rdfs:range rdf:resource="#Country"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#CustomerContact"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Country</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Phone">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/phone"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Shipper"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#CustomerContact"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Phone</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Fax">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:domain rdf:resource="#Customer"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Fax</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="HomePage">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Supplier"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>HomePage</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="Category">
-        <rdfs:label>Category</rdfs:label>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="CategoryName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Category"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>CategoryName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Description">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Category"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Description</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="Shipper">
-        <rdfs:label>Shipper</rdfs:label>
-      </rdfs:Class>
-    
-      <rdfs:Class rdf:ID="CustomerContact">
-        <rdfs:label>CustomerContact</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
-      </rdfs:Class>
-    
-      <rdfs:Class rdf:ID="Customer">
-        <rdfs:label>Customer</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Organization"/>
-      </rdfs:Class>
-    
-      <rdfs:Class rdf:ID="Employee">
-        <rdfs:label>Employee</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="LastName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/surname"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>LastName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="FirstName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/firstName"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>FirstName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Title">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/title"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Title</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="TitleOfCourtesy">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>TitleOfCourtesy</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="BirthDate">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:subPropertyOf rdf:resource="http://xmlns.com/foaf/0.1/birthday"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>BirthDate</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="HireDate">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>HireDate</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Extension">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Extension</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Notes">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Notes</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ReportsTo">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:domain rdf:resource="#Employee"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ReportsTo</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="Order">
-        <rdfs:label>Order</rdfs:label>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="has_customer">
-        <rdfs:range rdf:resource="#Customer"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Customer</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="has_employee">
-        <rdfs:range rdf:resource="#Employee"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Employee</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="OrderDate">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>OrderDate</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="RequiredDate">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>RequiredDate</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShippedDate">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShippedDate</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="order_ship_via">
-        <rdfs:range rdf:resource="#Shipper"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Shipper</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Freight">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Freight</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShipName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShipName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShipAddress">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShipAddress</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShipCity">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShipCity</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShipRegion">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShipRegion</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShipPostalCode">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShipPostalCode</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ShipCountry">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Order"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ShipCountry</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="OrderLine">
-        <rdfs:label>OrderLine</rdfs:label>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="has_order_id">
-        <rdfs:range rdf:resource="#Order"/>
-        <rdfs:domain rdf:resource="#OrderLine"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Order</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="has_product_id">
-        <rdfs:range rdf:resource="#Product"/>
-        <rdfs:domain rdf:resource="#OrderLine"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Product</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Quantity">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-        <rdfs:domain rdf:resource="#OrderLine"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Quantity</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Discount">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
-        <rdfs:domain rdf:resource="#OrderLine"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Discount</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="Country">
-        <rdfs:label>Country</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"/>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="Name">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Name</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Code">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Code</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="SmallFlagDAVResourceName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>SmallFlagDAVResourceName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="LargeFlagDAVResourceName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>LargeFlagDAVResourceName</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="SmallFlagDAVResourceURI">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>SmallFlagDAVResourceURI</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="LargeFlagDAVResourceURI">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>LargeFlagDAVResourceURI</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Lat">
-        <rdfs:range rdf:resource="ttp://www.w3.org/2003/01/geo/wgs84_pos#lat"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Lat</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="Lng">
-        <rdfs:range rdf:resource="ttp://www.w3.org/2003/01/geo/wgs84_pos#lng"/>
-        <rdfs:domain rdf:resource="#Country"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Lng</rdfs:label>
-      </rdf:Property>
-    
-      <rdfs:Class rdf:ID="Province">
-        <rdfs:label>Province</rdfs:label>
-      </rdfs:Class>
-      <rdf:Property rdf:ID="has_country_code">
-        <rdfs:range rdf:resource="#Country"/>
-        <rdfs:domain rdf:resource="#Provinces"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>Country Code</rdfs:label>
-      </rdf:Property>
-      <rdf:Property rdf:ID="ProvinceName">
-        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-        <rdfs:domain rdf:resource="#Province"/>
-        <rdfs:cardinality>1</rdfs:cardinality>
-        <rdfs:label>ProvinceName</rdfs:label>
-      </rdf:Property>
-    
-    </rdf:RDF>
-
-## Oracle Demonstration 'HR' Database
-
-*Live links to a sample instance*
-
-  - [list all employee URIs](#)
-
-  - [description of employee 105](#)
-
-*Script to set up your own instance*
-
-    -- Setup script for Linked Data Views of Oracle 10 Human Resources Sample Database --
-    
-    GRANT SELECT ON HR.orama.COUNTRIES TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.REGIONS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.DEPARTMENTS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.LOCATIONS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.EMPLOYEES TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.JOBS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.JOB_HISTORY TO "SPARQL", "SPARQL_UPDATE";
-    
-    -------------------------------------------------------------------
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix hr: <http://example.com/schemas/oraclehr/> .
-    
-    hr:countries a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "COUNTRIES" ;
-        rdfs:comment "Oracle HR COUNTRIES table" .
-    
-    hr:country_id a rdf:Property ;
-        rdfs:domain hr:countries ;
-        rdfs:range xsd:string ;
-        rdfs:label "COUNTRY ID" .
-    
-    hr:country_name a rdf:Property ;
-        rdfs:domain hr:countries ;
-        rdfs:range xsd:string ;
-        rdfs:label "COUNTRY NAME" .
-    
-    hr:region_id a rdf:Property ;
-        rdfs:domain hr:countries ;
-        rdfs:range hr:regions ;
-        rdfs:label "REGION ID" .
-    
-    hr:regions a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "REGIONS" ;
-        rdfs:comment "Oracle HR REGIONS table" .
-    
-    hr:region_id a rdf:Property ;
-        rdfs:domain hr:regions ;
-        rdfs:range xsd:integer ;
-            rdfs:label "REGION ID" .
-    
-    hr:region_name a rdf:Property ;
-        rdfs:domain hr:regions ;
-        rdfs:range xsd:string ;
-        rdfs:label "REGION NAME" .
-    
-    hr:departments a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "DEPARTMENTS" ;
-        rdfs:comment "Oracle HR DEPARTMENT table" .
-    
-    hr:department_id a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range xsd:integer ;
-        rdfs:label "DEPARTMENT ID" .
-    
-    hr:department_name a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range xsd:string ;
-        rdfs:comment "DEPARTMENT NAME" .
-    
-    hr:manager_id a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range hr:employees ;
-        rdfs:comment "MANAGER ID" .
-    
-    hr:location_id a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range hr:locations ;
-        rdfs:comment "LOCATION ID" .
-    
-    hr:employees a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "employees" ;
-        rdfs:comment "Oracle HR EMPLOYEES table" .
-    
-    hr:employee_id a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range xsd:integer ;
-        rdfs:label "EMPLOYEE ID" .
-    
-    hr:first_name a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range xsd:string ;
-        rdfs:label "FIRST NAME" .
-    
-    hr:last_name a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:string ;
-        rdfs:label "LAST NAME" .
-    
-    hr:email a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range xsd:string ;
-        rdfs:label "EMAIL" .
-    
-    hr:phone_number a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:string ;
-        rdfs:label "PHONE NUMBER" .
-    
-    hr:hire_date a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:date ;
-        rdfs:label "HIRE DATE" .
-    
-    hr:job_id a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range hr:jobs ;
-        rdfs:label "JOB ID" .
-    
-    hr:salary a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:integer ;
-        rdfs:label "SALARY" .
-    
-    hr:commission_pct a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:integer ;
-        rdfs:label "COMMISSION PCT" .
-    
-    hr:manager_id a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:string ;
-        rdfs:label "MANAGER ID" .
-    
-    hr:department_id a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range hr:departments ;
-        rdfs:label "DEPARTMENT ID" .
-    
-    hr:jobs a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "JOBS" ;
-        rdfs:comment "Oracle HR JOBS table" .
-    
-    hr:job_id a rdf:Property ;
-    
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:string ;
-        rdfs:label "JOB ID" .
-    
-    hr:job_title a rdf:Property ;
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:string ;
-        rdfs:label "JOB TITLE" .
-    
-    hr:min_salary a rdf:Property ;
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:number;
-        rdfs:label "MIN SALARY" .
-    
-    hr:max_salary a rdf:Property ;
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:number;
-        rdfs:label "MAXSALARY" .
-    
-    hr:job_history a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "JOB HISTORY" ;
-        rdfs:comment "Oracle HR JOB HISTORY table" .
-    
-    hr:employee_id a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range hr:employees ;
-        rdfs:label "EMPLOYEE ID" .
-    
-    hr:start_date a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range xsd:date ;
-        rdfs:label "START DATE" .
-    
-    hr:end_date a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range xsd:date ;
-        rdfs:label "END DATE" .
-    
-    hr:job_id a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range hr:jobs ;
-        rdfs:label "JOB ID" .
-    
-    hr:department_id a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range hr:departments ;
-        rdfs:label "DEPARTMENT ID" .
-    
-    hr:locations a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "LOCATIONS" ;
-        rdfs:comment "Oracle HR JOB LOCATIONS table" .
-    
-    hr:location_id a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:number ;
-        rdfs:label "LOCATION ID" .
-    
-    hr:street_address a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "STREET ADDRESS" .
-    
-    hr:postal_code a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "POSTAL CODE" .
-    
-    hr:city a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "CITY" .
-    
-    hr:state_province a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "STATE PROVINCE" .
-    
-    hr:country_id a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range hr:countries ;
-        rdfs:label "COUNTRY" .
-    ', '', 'http://example.com/schemas/oraclehr', 0);
-    
-    ---------------------------------------------------------------
-    
-    ----------- Create IRI Classes -------------
-    
-    create function DB.DBA.JOB_HISTORY (in EMPLOYEE_ID integer, in
-    START_DATE date) returns varchar
-    {
-      return sprintf_or_null
-    ('http://example.com/oraclehr/job_history/%d_%s#this',
-      EMPLOYEE_ID, cast (START_DATE as varchar) );
-    }
-    ;
-    
-    create function DB.DBA.JOB_HISTORY_INV_1 (in id varchar) returns integer
-    {
-      return sprintf_inverse (id,
-    'http://example.com/oraclehr/job_history/%d_%s#this',
-    2)[0];
-    }
-    ;
-    
-    create function DB.DBA.JOB_HISTORY_INV_2 (in id varchar) returns date
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      return cast (sprintf_inverse (id,
-    'http://example.com/oraclehr/job_history/%d_%s#this',
-    2)[1] as date);
-    }
-    ;
-    
-    GRANT EXECUTE ON DB.DBA.JOB_HISTORY TO "SPARQL", "SPARQL_UPDATE";
-    GRANT EXECUTE ON DB.DBA.JOB_HISTORY_URI_INV_1 TO "SPARQL", "SPARQL_UPDATE";
-    GRANT EXECUTE ON DB.DBA.JOB_HISTORY_URI_INV_2 TO "SPARQL", "SPARQL_UPDATE";
-    
-    SPARQL
-    
-        create iri class <http://example.com/schemas/oraclehr/countries_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/countries/%s#this"
-            (in COUNTRY_ID varchar not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/regions_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/regions/%d#this"
-            (in REGION_ID integer not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/departments_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/departments/%d#this"
-            (in DEPARTMENT_ID integer not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/employees_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/employees/%d#this"
-            (in EMPLOYEE_ID integer not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/jobs_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/jobs/%s#this"
-            (in JOB_ID varchar not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/job_history_iri>
-            using function DB.DBA.JOB_HISTORY (in EMPLOYEE_ID integer not null, in
-            START_DATE date not null) returns varchar not null,
-            function DB.DBA.JOB_HISTORY_INV_1 (in id varchar) returns integer,
-            function DB.DBA.JOB_HISTORY_INV_2 (in id varchar) returns date
-            option (bijection, returns
-            "http://example.com/oraclehr/job_history/%d_%s#this") .
-    
-        create iri class <http://example.com/schemas/oraclehr/locations_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/locations/%d#this"
-            (in LOCATION_ID integer not null) .
-    ;
-    
-    --------------------------------------------------------------------
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix hr: <http://example.com/schemas/oraclehr/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      FROM HR.orama.COUNTRIES as countries_tbl
-      FROM HR.orama.REGIONS as regions_tbl
-      FROM HR.orama.DEPARTMENTS as departments_tbl
-      FROM HR.orama.EMPLOYEES as employees_tbl
-      FROM HR.orama.EMPLOYEES as employees_tbl_1        ### alias required to represent recursive FK relationship (hr: has_manager ) below.
-      FROM HR.orama.JOBS as jobs_tbl
-      FROM HR.orama.JOB_HISTORY as job_history_tbl
-      FROM HR.orama.LOCATIONS as locations_tbl
-    {
-      create virtrdf:oraclehr as
-          graph <http://example.com/oraclehr>
-      {
-            hr:countries_iri(countries_tbl.COUNTRY_ID) a hr:countries  as virtrdf:countires_country_id ;
-            hr:country_name countries_tbl.COUNTRY_NAME  as virtrdf:countries_country_name ;
-            hr:region_id hr:regions_iri(regions_tbl.REGION_ID) where (^{countries_tbl.}^.REGION_ID = ^{regions_tbl.}^.REGION_ID)  as virtrdf:countries_region_id .
-    
-        hr:regions_iri(regions_tbl.REGION_ID) a hr:regions as virtrdf:regions_region_id ;
-        hr:region_name regions_tbl.REGION_NAME  as virtrdf:regions_region_name .
-    
-        hr:departments_iri(departments_tbl.DEPARTMENT_ID) a hr:departments as virtrdf:departments_department_id ;
-        hr:department_name departments_tbl.DEPARTMENT_NAME as virtrdf:departments_department_name ;
-        hr:location_id hr:locations_iri(locations_tbl.LOCATION_ID) where (^{departments_tbl.}^.LOCATION_ID = ^{locations_tbl.}^.LOCATION_ID) as virtrdf:departments_location_id ;
-        hr:manager_id hr:employees_iri(employees_tbl.EMPLOYEE_ID) where (^{departments_tbl.}^.MANAGER_ID = ^{employees_tbl.}^.EMPLOYEE_ID) as virtrdf:departments_manager_id .
-    
-        hr:employees_iri(employees_tbl.EMPLOYEE_ID) a hr:employees as virtrdf:employees_employee_id ;
-        hr:department_id hr:departments_iri(departments_tbl.DEPARTMENT_ID) where (^{employees_tbl.}^.DEPARTMENT_ID = ^{departments_tbl.}^.DEPARTMENT_ID) as virtrdf:employees_department_id ;
-        hr:job_id hr:jobs_iri(jobs_tbl.JOB_ID) where (^{employees_tbl.}^.JOB_ID = ^{jobs_tbl.}^.JOB_ID) as virtrdf:employees_job_id ;
-        hr:manager_id employees_tbl.MANAGER_ID as virtrdf:employees_manager_id ;
-        hr:commissin_pct employees_tbl.COMMISSION_PCT as virtrdf:employees_commission_pct ;
-        hr:email employees_tbl.EMAIL as virtrdf:employees_email ;
-        hr:first_name employees_tbl.FIRST_NAME as virtrdf:employees_first_name ;
-        hr:hire_date employees_tbl.HIRE_DATE as virtrdf:employees_hire_date ;
-        hr:last_name employees_tbl.LAST_NAME as virtrdf:employees_last_name ;
-        hr:phone_number employees_tbl.PHONE_NUMBER as virtrdf:employees_phone_number ;
-        hr:salary employees_tbl.SALARY as virtrdf:employees_salary ;
-        hr:has_job_history hr:job_history_iri(job_history_tbl.EMPLOYEE_ID, job_history_tbl.START_DATE) where (^{employees_tbl.}^.EMPLOYEE_ID = ^{job_history_tbl.}^.EMPLOYEE_ID) as virtrdf:employees_has_job_history;
-        hr:has_manager hr:employees_iri(employees_tbl_1.EMPLOYEE_ID) where (^{employees_tbl.}^.MANAGER_ID = ^{employees_tbl_1.}^.EMPLOYEE_ID) as virtrdf:employees_has_manager.
-    
-        hr:locations_iri(locations_tbl.LOCATION_ID) a hr:locations as virtrdf:locations_location_id ;
-        hr:country_id hr:countries_iri(countries_tbl.COUNTRY_ID) where (^{locations_tbl.}^.COUNTRY_ID = ^{countries_tbl.}^.COUNTRY_ID) as virtrdf:locations_country_id ;
-        hr:city locations_tbl.CITY as virtrdf:locations_city ;
-        hr:postal_code locations_tbl.POSTAL_CODE as virtrdf:locations_postal_code ;
-        hr:state_province locations_tbl.STATE_PROVINCE as virtrdf:locations_state_province ;
-        hr:street_address locations_tbl.STREET_ADDRESS as virtrdf:locations_street_address .
-    
-        hr:jobs_iri(jobs_tbl.JOB_ID) a hr:jobs as virtrdf:jobs_job_id ;
-        hr:job_title jobs_tbl.JOB_TITLE as virtrdf:jobs_job_title ;
-        hr:max_salary jobs_tbl.MAX_SALARY as virtrdf:jobs_max_salary ;
-        hr:min_salary jobs_tbl.MIN_SALARY as virtrdf:jobs_min_salary .
-    
-        hr:job_history_iri(job_history_tbl.EMPLOYEE_ID, job_history_tbl.START_DATE) a hr:job_history as virtrdf:job_history_pk ;
-        hr:employee_id hr:employees_iri(employees_tbl.EMPLOYEE_ID) where (^{job_history_tbl.}^.EMPLOYEE_ID = ^{employees_tbl.}^.EMPLOYEE_ID) as virtrdf:job_history_employee_id ;
-        hr:department_id hr:departments_iri(departments_tbl.DEPARTMENT_ID) where (^{job_history_tbl.}^.DEPARTMENT_ID = ^{departments_tbl.}^.DEPARTMENT_ID) as virtrdf:job_history_department_id ;
-        hr:job_id hr:jobs_iri(jobs_tbl.JOB_ID) where (^{job_history_tbl.}^.JOB_ID = ^{jobs_tbl.}^.JOB_ID) as virtrdf:job_history_job_id ;
-        hr:start_date job_history_tbl.START_DATE as virtrdf:job_history_start_date ;
-        hr:end_date job_history_tbl.END_DATE as virtrdf:job_history_end_date .
-    
-      } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'oraclehr_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'oraclehr_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oraclehr_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oraclehr_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/oraclehr%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'oraclehr_rule_list1',
-        1,
-        vector (
-            'oraclehr_rule1',
-            'oraclehr_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/oraclehr');
-    
-    VHOST_DEFINE (
-        lpath=>'/oraclehr',
-        ppath=>'/DAV/oraclehr/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'oraclehr_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'oracle_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'oracle_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oracle_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oracle_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/oraclehr%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'oracle_schemas_rule_list1',
-        1,
-        vector (
-            'oracle_schemas_rule1',
-            'oracle_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schema/oraclehr');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/oraclehr',
-        ppath=>'/DAV/schemas/oraclehr/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'oracle_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('hr', 'http://^{URIQADefaultHost}^/schemas/oraclehr/', 2);
-
-## Oracle using the demonstration 'Human Resources' database
-
-*Live links to a sample instance*
-
-  - [list all employee URIs](#)
-
-  - [description of employee 105](#)
-
-*Script to set up your own instance*
-
-    -- Setup script for Linked Data Views of Oracle 10 Human Resources Sample Database --
-    
-    GRANT SELECT ON HR.orama.COUNTRIES TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.REGIONS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.DEPARTMENTS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.LOCATIONS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.EMPLOYEES TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.JOBS TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON HR.orama.JOB_HISTORY TO "SPARQL", "SPARQL_UPDATE";
-    
-    -------------------------------------------------------------------
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix hr: <http://example.com/schemas/oraclehr/> .
-    
-    hr:countries a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "COUNTRIES" ;
-        rdfs:comment "Oracle HR COUNTRIES table" .
-    
-    hr:country_id a rdf:Property ;
-        rdfs:domain hr:countries ;
-        rdfs:range xsd:string ;
-        rdfs:label "COUNTRY ID" .
-    
-    hr:country_name a rdf:Property ;
-        rdfs:domain hr:countries ;
-        rdfs:range xsd:string ;
-        rdfs:label "COUNTRY NAME" .
-    
-    hr:region_id a rdf:Property ;
-        rdfs:domain hr:countries ;
-        rdfs:range hr:regions ;
-        rdfs:label "REGION ID" .
-    
-    hr:regions a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "REGIONS" ;
-        rdfs:comment "Oracle HR REGIONS table" .
-    
-    hr:region_id a rdf:Property ;
-        rdfs:domain hr:regions ;
-        rdfs:range xsd:integer ;
-            rdfs:label "REGION ID" .
-    
-    hr:region_name a rdf:Property ;
-        rdfs:domain hr:regions ;
-        rdfs:range xsd:string ;
-        rdfs:label "REGION NAME" .
-    
-    hr:departments a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "DEPARTMENTS" ;
-        rdfs:comment "Oracle HR DEPARTMENT table" .
-    
-    hr:department_id a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range xsd:integer ;
-        rdfs:label "DEPARTMENT ID" .
-    
-    hr:department_name a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range xsd:string ;
-        rdfs:comment "DEPARTMENT NAME" .
-    
-    hr:manager_id a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range hr:employees ;
-        rdfs:comment "MANAGER ID" .
-    
-    hr:location_id a rdf:Property ;
-        rdfs:domain hr:departments ;
-        rdfs:range hr:locations ;
-        rdfs:comment "LOCATION ID" .
-    
-    hr:employees a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "employees" ;
-        rdfs:comment "Oracle HR EMPLOYEES table" .
-    
-    hr:employee_id a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range xsd:integer ;
-        rdfs:label "EMPLOYEE ID" .
-    
-    hr:first_name a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range xsd:string ;
-        rdfs:label "FIRST NAME" .
-    
-    hr:last_name a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:string ;
-        rdfs:label "LAST NAME" .
-    
-    hr:email a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range xsd:string ;
-        rdfs:label "EMAIL" .
-    
-    hr:phone_number a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:string ;
-        rdfs:label "PHONE NUMBER" .
-    
-    hr:hire_date a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:date ;
-        rdfs:label "HIRE DATE" .
-    
-    hr:job_id a rdf:Property ;
-        rdfs:domain hr:employees;
-        rdfs:range hr:jobs ;
-        rdfs:label "JOB ID" .
-    
-    hr:salary a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:integer ;
-        rdfs:label "SALARY" .
-    
-    hr:commission_pct a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:integer ;
-        rdfs:label "COMMISSION PCT" .
-    
-    hr:manager_id a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range xsd:string ;
-        rdfs:label "MANAGER ID" .
-    
-    hr:department_id a rdf:Property ;
-        rdfs:domain hr:employees ;
-        rdfs:range hr:departments ;
-        rdfs:label "DEPARTMENT ID" .
-    
-    hr:jobs a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "JOBS" ;
-        rdfs:comment "Oracle HR JOBS table" .
-    
-    hr:job_id a rdf:Property ;
-    
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:string ;
-        rdfs:label "JOB ID" .
-    
-    hr:job_title a rdf:Property ;
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:string ;
-        rdfs:label "JOB TITLE" .
-    
-    hr:min_salary a rdf:Property ;
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:number;
-        rdfs:label "MIN SALARY" .
-    
-    hr:max_salary a rdf:Property ;
-        rdfs:domain hr:jobs ;
-        rdfs:range xsd:number;
-        rdfs:label "MAXSALARY" .
-    
-    hr:job_history a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "JOB HISTORY" ;
-        rdfs:comment "Oracle HR JOB HISTORY table" .
-    
-    hr:employee_id a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range hr:employees ;
-        rdfs:label "EMPLOYEE ID" .
-    
-    hr:start_date a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range xsd:date ;
-        rdfs:label "START DATE" .
-    
-    hr:end_date a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range xsd:date ;
-        rdfs:label "END DATE" .
-    
-    hr:job_id a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range hr:jobs ;
-        rdfs:label "JOB ID" .
-    
-    hr:department_id a rdf:Property ;
-        rdfs:domain hr:job_history ;
-        rdfs:range hr:departments ;
-        rdfs:label "DEPARTMENT ID" .
-    
-    hr:locations a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/oraclehr> ;
-        rdfs:label "LOCATIONS" ;
-        rdfs:comment "Oracle HR JOB LOCATIONS table" .
-    
-    hr:location_id a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:number ;
-        rdfs:label "LOCATION ID" .
-    
-    hr:street_address a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "STREET ADDRESS" .
-    
-    hr:postal_code a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "POSTAL CODE" .
-    
-    hr:city a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "CITY" .
-    
-    hr:state_province a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range xsd:string ;
-        rdfs:label "STATE PROVINCE" .
-    
-    hr:country_id a rdf:Property ;
-        rdfs:domain hr:locations ;
-        rdfs:range hr:countries ;
-        rdfs:label "COUNTRY" .
-    ', '', 'http://example.com/schemas/oraclehr', 0);
-    
-    ---------------------------------------------------------------
-    
-    ----------- Create IRI Classes -------------
-    
-    create function DB.DBA.JOB_HISTORY (in EMPLOYEE_ID integer, in
-    START_DATE date) returns varchar
-    {
-      return sprintf_or_null
-    ('http://example.com/oraclehr/job_history/%d_%s#this',
-      EMPLOYEE_ID, cast (START_DATE as varchar) );
-    }
-    ;
-    
-    create function DB.DBA.JOB_HISTORY_INV_1 (in id varchar) returns integer
-    {
-      return sprintf_inverse (id,
-    'http://example.com/oraclehr/job_history/%d_%s#this',
-    2)[0];
-    }
-    ;
-    
-    create function DB.DBA.JOB_HISTORY_INV_2 (in id varchar) returns date
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      return cast (sprintf_inverse (id,
-    'http://example.com/oraclehr/job_history/%d_%s#this',
-    2)[1] as date);
-    }
-    ;
-    
-    GRANT EXECUTE ON DB.DBA.JOB_HISTORY TO "SPARQL", "SPARQL_UPDATE";
-    GRANT EXECUTE ON DB.DBA.JOB_HISTORY_URI_INV_1 TO "SPARQL", "SPARQL_UPDATE";
-    GRANT EXECUTE ON DB.DBA.JOB_HISTORY_URI_INV_2 TO "SPARQL", "SPARQL_UPDATE";
-    
-    SPARQL
-    
-        create iri class <http://example.com/schemas/oraclehr/countries_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/countries/%s#this"
-            (in COUNTRY_ID varchar not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/regions_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/regions/%d#this"
-            (in REGION_ID integer not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/departments_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/departments/%d#this"
-            (in DEPARTMENT_ID integer not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/employees_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/employees/%d#this"
-            (in EMPLOYEE_ID integer not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/jobs_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/jobs/%s#this"
-            (in JOB_ID varchar not null) .
-    
-        create iri class <http://example.com/schemas/oraclehr/job_history_iri>
-            using function DB.DBA.JOB_HISTORY (in EMPLOYEE_ID integer not null, in
-            START_DATE date not null) returns varchar not null,
-            function DB.DBA.JOB_HISTORY_INV_1 (in id varchar) returns integer,
-            function DB.DBA.JOB_HISTORY_INV_2 (in id varchar) returns date
-            option (bijection, returns
-            "http://example.com/oraclehr/job_history/%d_%s#this") .
-    
-        create iri class <http://example.com/schemas/oraclehr/locations_iri>
-        "http://^{URIQADefaultHost}^/oraclehr/locations/%d#this"
-            (in LOCATION_ID integer not null) .
-    ;
-    
-    --------------------------------------------------------------------
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix hr: <http://example.com/schemas/oraclehr/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      from HR.orama.COUNTRIES as countries_tbl
-      from HR.orama.REGIONS as regions_tbl
-      from HR.orama.DEPARTMENTS as departments_tbl
-      from HR.orama.EMPLOYEES as employees_tbl
-      from HR.orama.EMPLOYEES as employees_tbl_1        ### alias required to represent recursive FK relationship (hr: has_manager ) below.
-      from HR.orama.JOBS as jobs_tbl
-      from HR.orama.JOB_HISTORY as job_history_tbl
-      from HR.orama.LOCATIONS as locations_tbl
-    {
-      create virtrdf:oraclehr as
-          graph <http://example.com/oraclehr>
-      {
-            hr:countries_iri(countries_tbl.COUNTRY_ID) a hr:countries  as virtrdf:countires_country_id ;
-            hr:country_name countries_tbl.COUNTRY_NAME  as virtrdf:countries_country_name ;
-            hr:region_id hr:regions_iri(regions_tbl.REGION_ID) where (^{countries_tbl.}^.REGION_ID = ^{regions_tbl.}^.REGION_ID)  as virtrdf:countries_region_id .
-    
-        hr:regions_iri(regions_tbl.REGION_ID) a hr:regions as virtrdf:regions_region_id ;
-        hr:region_name regions_tbl.REGION_NAME  as virtrdf:regions_region_name .
-    
-        hr:departments_iri(departments_tbl.DEPARTMENT_ID) a hr:departments as virtrdf:departments_department_id ;
-        hr:department_name departments_tbl.DEPARTMENT_NAME as virtrdf:departments_department_name ;
-        hr:location_id hr:locations_iri(locations_tbl.LOCATION_ID) where (^{departments_tbl.}^.LOCATION_ID = ^{locations_tbl.}^.LOCATION_ID) as virtrdf:departments_location_id ;
-        hr:manager_id hr:employees_iri(employees_tbl.EMPLOYEE_ID) where (^{departments_tbl.}^.MANAGER_ID = ^{employees_tbl.}^.EMPLOYEE_ID) as virtrdf:departments_manager_id .
-    
-        hr:employees_iri(employees_tbl.EMPLOYEE_ID) a hr:employees as virtrdf:employees_employee_id ;
-        hr:department_id hr:departments_iri(departments_tbl.DEPARTMENT_ID) where (^{employees_tbl.}^.DEPARTMENT_ID = ^{departments_tbl.}^.DEPARTMENT_ID) as virtrdf:employees_department_id ;
-        hr:job_id hr:jobs_iri(jobs_tbl.JOB_ID) where (^{employees_tbl.}^.JOB_ID = ^{jobs_tbl.}^.JOB_ID) as virtrdf:employees_job_id ;
-        hr:manager_id employees_tbl.MANAGER_ID as virtrdf:employees_manager_id ;
-        hr:commissin_pct employees_tbl.COMMISSION_PCT as virtrdf:employees_commission_pct ;
-        hr:email employees_tbl.EMAIL as virtrdf:employees_email ;
-        hr:first_name employees_tbl.FIRST_NAME as virtrdf:employees_first_name ;
-        hr:hire_date employees_tbl.HIRE_DATE as virtrdf:employees_hire_date ;
-        hr:last_name employees_tbl.LAST_NAME as virtrdf:employees_last_name ;
-        hr:phone_number employees_tbl.PHONE_NUMBER as virtrdf:employees_phone_number ;
-        hr:salary employees_tbl.SALARY as virtrdf:employees_salary ;
-        hr:has_job_history hr:job_history_iri(job_history_tbl.EMPLOYEE_ID, job_history_tbl.START_DATE) where (^{employees_tbl.}^.EMPLOYEE_ID = ^{job_history_tbl.}^.EMPLOYEE_ID) as virtrdf:employees_has_job_history;
-        hr:has_manager hr:employees_iri(employees_tbl_1.EMPLOYEE_ID) where (^{employees_tbl.}^.MANAGER_ID = ^{employees_tbl_1.}^.EMPLOYEE_ID) as virtrdf:employees_has_manager.
-    
-        hr:locations_iri(locations_tbl.LOCATION_ID) a hr:locations as virtrdf:locations_location_id ;
-        hr:country_id hr:countries_iri(countries_tbl.COUNTRY_ID) where (^{locations_tbl.}^.COUNTRY_ID = ^{countries_tbl.}^.COUNTRY_ID) as virtrdf:locations_country_id ;
-        hr:city locations_tbl.CITY as virtrdf:locations_city ;
-        hr:postal_code locations_tbl.POSTAL_CODE as virtrdf:locations_postal_code ;
-        hr:state_province locations_tbl.STATE_PROVINCE as virtrdf:locations_state_province ;
-        hr:street_address locations_tbl.STREET_ADDRESS as virtrdf:locations_street_address .
-    
-        hr:jobs_iri(jobs_tbl.JOB_ID) a hr:jobs as virtrdf:jobs_job_id ;
-        hr:job_title jobs_tbl.JOB_TITLE as virtrdf:jobs_job_title ;
-        hr:max_salary jobs_tbl.MAX_SALARY as virtrdf:jobs_max_salary ;
-        hr:min_salary jobs_tbl.MIN_SALARY as virtrdf:jobs_min_salary .
-    
-        hr:job_history_iri(job_history_tbl.EMPLOYEE_ID, job_history_tbl.START_DATE) a hr:job_history as virtrdf:job_history_pk ;
-        hr:employee_id hr:employees_iri(employees_tbl.EMPLOYEE_ID) where (^{job_history_tbl.}^.EMPLOYEE_ID = ^{employees_tbl.}^.EMPLOYEE_ID) as virtrdf:job_history_employee_id ;
-        hr:department_id hr:departments_iri(departments_tbl.DEPARTMENT_ID) where (^{job_history_tbl.}^.DEPARTMENT_ID = ^{departments_tbl.}^.DEPARTMENT_ID) as virtrdf:job_history_department_id ;
-        hr:job_id hr:jobs_iri(jobs_tbl.JOB_ID) where (^{job_history_tbl.}^.JOB_ID = ^{jobs_tbl.}^.JOB_ID) as virtrdf:job_history_job_id ;
-        hr:start_date job_history_tbl.START_DATE as virtrdf:job_history_start_date ;
-        hr:end_date job_history_tbl.END_DATE as virtrdf:job_history_end_date .
-    
-      } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'oraclehr_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'oraclehr_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oraclehr_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oraclehr_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/oraclehr%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'oraclehr_rule_list1',
-        1,
-        vector (
-            'oraclehr_rule1',
-            'oraclehr_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/oraclehr');
-    
-    VHOST_DEFINE (
-        lpath=>'/oraclehr',
-        ppath=>'/DAV/oraclehr/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'oraclehr_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'oracle_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'oracle_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oracle_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'oracle_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/oraclehr%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'oracle_schemas_rule_list1',
-        1,
-        vector (
-            'oracle_schemas_rule1',
-            'oracle_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schema/oraclehr');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/oraclehr',
-        ppath=>'/DAV/schemas/oraclehr/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'oracle_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('hr', 'http://^{URIQADefaultHost}^/schemas/oraclehr/', 2);
-
-## DB2 using the demonstration 'Sample' database
-
-*Version defined using explicit host - example.com*
-
-    -- $Id$
-    -- Setup script for Linked Data Views of portions of DB2 SAMPLE database included
-    -- in DB2 Express Edition v9.5
-    --
-    -- The script assumes external DB2 tables are linked into Virtuoso using
-    -- local schema name db2sample.
-    
-    DB..vd_remote_data_source ('db2ma-smpl', '', '<uid>','<pwd>);
-    
-    ATTACH TABLE  "DB2ADMIN"."ACT"      PRIMARY KEY ("ACTNO")              AS "DB"."db2sample"."ACT"      FROM 'db2ma-smpl';
-    ATTACH TABLE  "DB2ADMIN"."DEPARTMENT"      PRIMARY KEY ("DEPTNO")              AS "DB"."db2sample"."DEPARTMENT"      FROM 'db2ma-smpl';
-    ATTACH TABLE  "DB2ADMIN"."EMPLOYEE"      PRIMARY KEY ("EMPNO")              AS "DB"."db2sample"."EMPLOYEE"      FROM 'db2ma-smpl';
-    ATTACH TABLE  "DB2ADMIN"."EMPPROJACT"      PRIMARY KEY ("EMPNO", "PROJNO", "ACTNO", "EMSTDATE")              AS "DB"."db2sample"."EMPPROJACT"      FROM 'db2ma-smpl';
-    ATTACH TABLE  "DB2ADMIN"."EMP_RESUME"      PRIMARY KEY ("EMPNO", "RESUME_FORMAT)              AS "DB"."db2sample"."EMP_RESUME"      FROM 'db2ma-smpl';
-    ATTACH TABLE  "DB2ADMIN"."PROJACT"      PRIMARY KEY ("PROJNO", "ACTNO", "ACSTDATE")              AS "DB"."db2sample"."PROJACT"      FROM 'db2ma-smpl';
-    ATTACH TABLE  "DB2ADMIN"."PROJECT"      PRIMARY KEY ("PROJNO")              AS "DB"."db2sample"."PROJECT"      FROM 'db2ma-smpl';
-    
-    COMMIT WORK;
-    
-    GRANT SELECT ON DB.db2sample.ACT TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON DB.db2sample.DEPARTMENT TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON DB.db2sample.EMPLOYEE TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON DB.db2sample.EMPPROJACT TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON DB.db2sample.EMP_RESUME TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON DB.db2sample.PROJACT TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON DB.db2sample.PROJECT TO "SPARQL", "SPARQL_UPDATE";
-    
-    create function DB.DBA.PROJ_ACT_IRI (
-      in proj_no varchar,
-      in act_no integer,
-      in ac_st_date date
-      ) returns varchar
-    {
-      declare _act_no, _datetime, _date any;
-      _act_no := cast(act_no as varchar);
-      _datetime := cast(ac_st_date as varchar);
-      _date := left(_datetime, 10);
-      return sprintf('http://example.com/db2sample/proj_act/%s_%s_%s#this',
-        proj_no, _act_no, _date);
-    };
-    
-    create function
-    DB.DBA.PROJ_ACT_IRI_INV_1 (in proj_act_iri varchar) returns varchar
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (proj_act_iri,
-       'http://example.com/db2sample/proj_act/%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return parts[0];
-      }
-      return NULL;
-    };
-    
-    create function
-    DB.DBA.PROJ_ACT_IRI_INV_2 (in proj_act_iri varchar) returns integer
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (proj_act_iri,
-       'http://example.com/db2sample/proj_act/%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return cast(parts[1] as integer);
-      }
-      return NULL;
-    };
-    
-    create function
-    DB.DBA.PROJ_ACT_IRI_INV_3 (in proj_act_iri varchar) returns date
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (proj_act_iri,
-       'http://example.com/db2sample/proj_act/%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return cast(parts[2] as date);
-      }
-      return NULL;
-    };
-    
-    create function DB.DBA.EMP_PROJ_ACT_IRI (
-      in emp_no varchar,
-      in proj_no varchar,
-      in act_no integer,
-      in emp_start_date date
-      ) returns varchar
-    {
-      declare _act_no, _datetime, _date any;
-      _act_no := cast(act_no as varchar);
-      _datetime := cast(emp_start_date as varchar);
-      _date := left(_datetime, 10);
-      return sprintf(
-          'http://example.com/db2sample/emp_proj_act/%s_%s_%s_%s#this',
-        emp_no, proj_no, _act_no, _date);
-    };
-    
-    create function
-    DB.DBA.EMP_PROJ_ACT_IRI_INV_1 (in emp_proj_act_iri varchar) returns varchar
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (emp_proj_act_iri,
-       'http://example.com/db2sample/emp_proj_act/%s_%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return parts[0];
-      }
-      return NULL;
-    };
-    
-    create function
-    DB.DBA.EMP_PROJ_ACT_IRI_INV_2 (in emp_proj_act_iri varchar) returns varchar
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (emp_proj_act_iri,
-       'http://example.com/db2sample/emp_proj_act/%s_%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return parts[1];
-      }
-      return NULL;
-    };
-    
-    create function
-    DB.DBA.EMP_PROJ_ACT_IRI_INV_3 (in emp_proj_act_iri varchar) returns integer
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (emp_proj_act_iri,
-       'http://example.com/db2sample/emp_proj_act/%s_%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return cast(parts[2] as integer);
-      }
-      return NULL;
-    };
-    
-    create function
-    DB.DBA.EMP_PROJ_ACT_IRI_INV_4 (in emp_proj_act_iri varchar) returns date
-    {
-      declare exit handler for sqlstate '*' { return NULL; };
-      declare parts any;
-      parts := sprintf_inverse (emp_proj_act_iri,
-       'http://example.com/db2sample/emp_proj_act/%s_%s_%s_%s#this', 1);
-      if (parts is not null)
-      {
-        return cast(parts[3] as date);
-      }
-      return NULL;
-    };
-    
-    grant execute on DB.DBA.PROJ_ACT_IRI to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.PROJ_ACT_IRI_INV_1 to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.PROJ_ACT_IRI_INV_2 to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.PROJ_ACT_IRI_INV_3 to "SPARQL", "SPARQL_UPDATE";
-    
-    grant execute on DB.DBA.EMP_PROJ_ACT_IRI to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_1 to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_2 to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_3 to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.EMP_PROJ_ACT_IRI_INV_4 to "SPARQL", "SPARQL_UPDATE";
-    
-    SPARQL drop graph <http://example.com/schemas/db2sample> ;
-    SPARQL drop graph <http://example.com/db2sample> ;
-    
-    SPARQL drop quad map virtrdf:db2sample ;
-    
-    --------------------------
-    -- RDFS class definitions
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix opl: <http://example.com/schemas/db2sample/> .
-    
-    opl:Act a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "Act" ;
-        rdfs:comment "Activity" .
-    
-    # ACTNO SMALLINT PRIMARY KEY
-    opl:act_no a rdf:Property ;
-        rdfs:domain opl:Act ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Activity number" .
-    
-    # ACTKWD VARCHAR(6)
-    opl:act_kwd a rdf:Property ;
-        rdfs:domain opl:Act ;
-        rdfs:range xsd:string ;
-        rdfs:label "Activity keyword" .
-    
-    # ACTDESC VARCHAR(20)
-    opl:act_desc a rdf:Property ;
-        rdfs:domain opl:Act ;
-        rdfs:range xsd:string ;
-        rdfs:label "Activity description" .
-    
-    #####
-    opl:Department a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "Department" ;
-        rdfs:comment "Department" .
-    
-    # DEPTNO VARCHAR(3) PRIMARY KEY
-    opl:dept_no a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range xsd:string ;
-        rdfs:label "Department number" .
-    
-    # DEPTNAME VARCHAR(36)
-    opl:dept_name a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range xsd:string ;
-        rdfs:label "Department name" .
-    
-    # MGRNO CHAR(6)
-    opl:dept_manager a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range xsd:Employee ;
-        rdfs:label "Department manager" .
-    
-    # ADMRDEPT CHAR(3)
-    opl:supervising_dept a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range opl:Department ;
-        rdfs:label "Department reported to" .
-    
-    # LOCATION CHAR(6)
-    opl:location a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range xsd:string ;
-        rdfs:label "Location" .
-    
-    opl:employee_collection a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range opl:Employee ;
-        rdfs:label "Department employees" .
-    
-    opl:dept_project_collection a rdf:Property ;
-        rdfs:domain opl:Department ;
-        rdfs:range opl:Project ;
-        rdfs:label "Department projects" .
-    
-    #####
-    opl:Employee a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "Employee" ;
-        rdfs:comment "Employee" .
-    
-    # EMPNO VARCHAR(6) PRIMARY KEY
-    opl:emp_no a rdf:Property ;
-        rdfs:domain opl:Employee;
-        rdfs:range xsd:string ;
-        rdfs:label "Employee number" .
-    
-    # FIRSTNME VARCHAR(12)
-    opl:first_name a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:string ;
-        rdfs:label "First name" .
-    
-    # MIDINIT VARCHAR(1)
-    opl:middle_initial a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:string ;
-        rdfs:label "Middle initial" .
-    
-    # LASTNAME VARCHAR(15)
-    opl:last_name a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:string ;
-        rdfs:label "Last name" .
-    
-    # WORKDEPT VARCHAR(3)
-    opl:work_dept a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range opl:Department ;
-        rdfs:label "Work department" .
-    
-    # PHONENO VARCHAR(4)
-    opl:phone_no a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:string ;
-        rdfs:label "Phone number" .
-    
-    # HIREDATE DATE
-    opl:hire_date a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:date;
-        rdfs:label "Hire date" .
-    
-    # JOB VARCHAR(8)
-    opl:job a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:string ;
-        rdfs:label "Job" .
-    
-    # EDLEVEL SMALLINT
-    opl:education_level a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Education level" .
-    
-    # SEX VARCHAR(1)
-    opl:gender a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:string ;
-        rdfs:label "Gender" .
-    
-    # BIRTHDATE DATE
-    opl:date_of_birth a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:date ;
-        rdfs:label "Date of birth" .
-    
-    # SALARY DECIMAL(9,2)
-    opl:salary a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Salary" .
-    
-    # BONUS DECIMAL(9,2)
-    opl:bonus a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Bonus" .
-    
-    # COMM DECIMAL(9,2)
-    opl:commission a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Commission" .
-    
-    opl:resume_collection a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range opl:EmployeeResume ;
-        rdfs:label "Employee resumes" .
-    
-    opl:projects_responsible_for_collection a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range opl:Project ;
-        rdfs:label "responsible for project" .
-    
-    opl:activity_collection a rdf:Property ;
-        rdfs:domain opl:Employee ;
-        rdfs:range opl:EmpProjAct ;
-        rdfs:label "project activities" .
-    
-    #####
-    opl:EmpProjAct a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "EmpProjAct" ;
-        rdfs:comment "Employee project activity" .
-    
-    # EMPNO VARCHAR(6) PRIMARY KEY
-    opl:epa_emp_no a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range xsd:string ;
-        rdfs:label "Employee number" .
-    
-    # PROJNO VARCHAR(6) PRIMARY KEY
-    opl:epa_proj_no a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range xsd:string ;
-        rdfs:label "Project number" .
-    
-    # ACTNO SMALLINT PRIMARY KEY
-    opl:epa_act_no a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range xsd:string ;
-        rdfs:label "Activity number" .
-    
-    # EMSTDATE DATE PRIMARY KEY
-    opl:emp_start_date a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range xsd:date ;
-        rdfs:label "Employee activity start date" .
-    
-    # EMPTIME DECIMAL(5,2)
-    opl:emp_time a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Employee time" .
-    
-    # EMENDATE DATE PRIMARY KEY
-    opl:emp_end_date a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range xsd:date ;
-        rdfs:label "Employee activity end date" .
-    
-    opl:assigned_to a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range opl:Employee ;
-        rdfs:label "Assigned to" .
-    
-    opl:project_activity a rdf:Property ;
-        rdfs:domain opl:EmpProjAct ;
-        rdfs:range opl:ProjAct ;
-        rdfs:label "Project activity" .
-    
-    #####
-    opl:EmployeeResume a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "EmployeeResume" ;
-        rdfs:comment "Employee resume" .
-    
-    # EMPNO VARCHAR(6) PRIMARY KEY
-    opl:er_emp_no a rdf:Property ;
-        rdfs:domain opl:EmployeeResume ;
-        rdfs:range xsd:string ;
-        rdfs:label "Employee number" .
-    
-    # RESUME_FORMAT VARCHAR(10) PRIMARY KEY
-    opl:resume_format a rdf:Property ;
-        rdfs:domain opl:EmployeeResume ;
-        rdfs:range xsd:string ;
-        rdfs:label "Resume format" .
-    
-    # RESUME VARCHAR(5120)
-    opl:resume a rdf:Property ;
-        rdfs:domain opl:EmployeeResume ;
-        rdfs:range xsd:string ;
-        rdfs:label "Resume" .
-    
-    opl:resume_of a rdf:Property ;
-        rdfs:domain opl:EmployeeResume ;
-        rdfs:range opl:Employee ;
-        rdfs:label "Resume subject" .
-    
-    #####
-    opl:ProjAct a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "ProjAct" ;
-        rdfs:comment "Project activity" .
-    
-    # PROJNO VARCHAR(6) PRIMARY KEY
-    opl:pa_proj_no a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range xsd:string ;
-        rdfs:label "Project number" .
-    
-    # ACTNO SMALLINT PRIMARY KEY
-    opl:pa_act_no a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range xsd:string ;
-        rdfs:label "Activity number" .
-    
-    # ACSTDATE DATE PRIMARY KEY
-    opl:ac_st_date a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range xsd:date ;
-        rdfs:label "Activity start date" .
-    
-    # ACSTAFF DECIMAL(5,2)
-    opl:ac_staff a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Acstaff" .
-    
-    # ACENDATE DATE
-    opl:ac_en_date a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range xsd:date ;
-        rdfs:label "Activity end date" .
-    
-    opl:project a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range opl:Project ;
-        rdfs:label "Project" .
-    
-    opl:activity a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range opl:Act ;
-        rdfs:label "Activity" .
-    
-    opl:employee_activity_collection a rdf:Property ;
-        rdfs:domain opl:ProjAct ;
-        rdfs:range opl:EmpProjAct ;
-        rdfs:label "Employee activity collection" .
-    
-    #####
-    opl:Project a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/db2sample> ;
-        rdfs:label "Project" ;
-        rdfs:comment "Project" .
-    
-    # PROJNO VARCHAR(6) PRIMARY KEY
-    opl:proj_no a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range xsd:string ;
-        rdfs:label "Project number" .
-    
-    # PROJNAME VARCHAR(24)
-    opl:proj_name a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range xsd:string ;
-        rdfs:label "Project name" .
-    
-    # DEPTNO CHAR(3)
-    opl:is_project_of_department a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range opl:Department ;
-        rdfs:label "is project of department" .
-    
-    # RESPEMP VARCHAR(6)
-    opl:resp_emp a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range opl:Employee ;
-        rdfs:label "Employee responsible" .
-    
-    # PRSTAFF DECIMAL(5,2)
-    opl:pr_staff a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "PrStaff" .
-    
-    # PRSTDATE DATE
-    opl:pr_st_date a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range xsd:date ;
-        rdfs:label "Project start date" .
-    
-    # PRENDATE DATE
-    opl:pr_en_date a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range xsd:date ;
-        rdfs:label "Project end date" .
-    
-    # MAJPROJ VARCHAR(6)
-    opl:maj_proj a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range xsd:string ;
-        rdfs:label "MajProj" .
-    
-    opl:proj_activity_collection a rdf:Property ;
-        rdfs:domain opl:Project ;
-        rdfs:range opl:ProjAct ;
-        rdfs:label "Project activities" .
-    
-    ', '', 'http://example.com/schemas/db2sample', 0);
-    
-    --------------------------
-    
-    SPARQL
-    prefix opl: <http://example.com/schemas/db2sample/>
-    
-    create iri class
-    <http://example.com/schemas/db2sample/act_iri>
-        "http://example.com/db2sample/act/%d#this"
-        (
-         in act_no integer not null
-        ) .
-    
-    create iri class
-    <http://example.com/schemas/db2sample/department_iri>
-        "http://example.com/db2sample/department/%s#this"
-        (
-         in dept_no varchar not null
-        ) .
-    
-    create iri class
-    <http://example.com/schemas/db2sample/employee_iri>
-        "http://example.com/db2sample/employee/%s#this"
-        (
-         in emp_no varchar not null
-        ) .
-    
-    create iri class opl:emp_proj_act_iri using
-        function DB.DBA.EMP_PROJ_ACT_IRI (
-            in emp_no varchar,
-            in proj_no varchar,
-            in act_no integer,
-            in emp_start_date date
-            ) returns varchar,
-        function DB.DBA.EMP_PROJ_ACT_IRI_INV_1 (in emp_proj_act_iri varchar)
-            returns varchar ,
-        function DB.DBA.EMP_PROJ_ACT_IRI_INV_2 (in emp_proj_act_iri varchar)
-            returns varchar ,
-        function DB.DBA.EMP_PROJ_ACT_IRI_INV_3 (in emp_proj_act_iri varchar)
-            returns integer ,
-        function DB.DBA.EMP_PROJ_ACT_IRI_INV_4 (in emp_proj_act_iri varchar)
-            returns date
-        option (bijection, returns
-          "http://example.com/db2sample/emp_proj_act/%s_%s_%s_%s#this")
-        .
-    
-    create iri class
-    <http://example.com/schemas/db2sample/employee_resume_iri>
-        "http://example.com/db2sample/employee_resume/%s_%s#this"
-        (
-         in emp_no varchar not null,
-         in resume_format varchar not null
-        ) .
-    
-    create iri class opl:proj_act_iri using
-        function DB.DBA.PROJ_ACT_IRI (
-            in proj_no varchar,
-            in act_no integer,
-            in ac_st_date date
-            ) returns varchar,
-        function DB.DBA.PROJ_ACT_IRI_INV_1 (in proj_act_iri varchar)
-            returns varchar ,
-        function DB.DBA.PROJ_ACT_IRI_INV_2 (in proj_act_iri varchar)
-            returns integer ,
-        function DB.DBA.PROJ_ACT_IRI_INV_3 (in proj_act_iri varchar)
-            returns date
-        option (bijection, returns
-            "http://example.com/db2sample/proj_act/%s_%s_%s#this")
-        .
-    
-    create iri class
-    <http://example.com/schemas/db2sample/project_iri>
-        "http://example.com/db2sample/project/%s#this"
-        (
-         in proj_no varchar not null
-        ) .
-    ;
-    
-    SPARQL
-    prefix opl: <http://example.com/schemas/db2sample/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-    from DB.db2sample.ACT as act_tbl
-    from DB.db2sample.DEPARTMENT as dept_tbl
-    from DB.db2sample.EMPLOYEE as emp_tbl
-    from DB.db2sample.EMPPROJACT as emp_proj_act_tbl
-    from DB.db2sample.EMP_RESUME as emp_resume_tbl
-    from DB.db2sample.PROJACT as proj_act_tbl
-    from DB.db2sample.PROJECT as project_tbl
-    {
-        create virtrdf:db2sample as
-            graph <http://example.com/db2sample>
-        {
-        opl:act_iri(act_tbl.ACTNO) a opl:Act
-            as virtrdf:act_id ;
-        opl:act_no act_tbl.ACTNO
-            as virtrdf:act_act_no ;
-        opl:act_kwd act_tbl.ACTKWD
-            as virtrdf:act_act_kwd ;
-        opl:act_desc act_tbl.ACTDESC
-            as virtrdf:act_act_desc .
-    
-        opl:department_iri(dept_tbl.DEPTNO) a opl:Department
-            as virtrdf:dept_id ;
-        opl:dept_no dept_tbl.DEPTNO
-            as virtrdf:dept_dept_no ;
-        opl:dept_name dept_tbl.DEPTNAME
-            as virtrdf:dept_dept_name ;
-        opl:dept_manager opl:employee_iri(dept_tbl.MGRNO)
-            as virtrdf:dept_mgr_no ;
-        opl:supervising_dept opl:department_iri(dept_tbl.ADMRDEPT)
-            as virtrdf:dept_supervising_dept ;
-        opl:location dept_tbl.LOCATION
-            as virtrdf:dept_location ;
-        opl:employee_collection opl:employee_iri(emp_tbl.EMPNO)
-            where (^{emp_tbl.}^.WORKDEPT = ^{dept_tbl.}^.DEPTNO)
-            as virtrdf:dept_employee_collection ;
-        opl:dept_project_collection opl:project_iri(project_tbl.PROJNO)
-            where (^{project_tbl.}^.DEPTNO = ^{dept_tbl.}^.DEPTNO)
-            as virtrdf:dept_project_collection .
-    
-        opl:employee_iri(emp_tbl.EMPNO) a opl:Employee
-            as virtrdf:employee_id ;
-        opl:emp_no emp_tbl.EMPNO
-            as virtrdf:employee_emp_no ;
-        opl:first_name emp_tbl.FIRSTNME
-            as virtrdf:employee_first_name ;
-        opl:middle_initial emp_tbl.MIDINIT
-            as virtrdf:employee_middle_initial ;
-        opl:last_name emp_tbl.LASTNAME
-            as virtrdf:employee_last_name ;
-        opl:work_dept opl:department_iri(emp_tbl.WORKDEPT)
-            as virtrdf:employee_work_dept ;
-        opl:phone_no emp_tbl.PHONENO
-            as virtrdf:employee_phone_no ;
-        opl:hire_date emp_tbl.HIREDATE
-            as virtrdf:employee_hire_date ;
-        opl:job emp_tbl.JOB
-            as virtrdf:employee_job ;
-        opl:education_level emp_tbl.EDLEVEL
-            as virtrdf:employee_education_level ;
-        opl:gender emp_tbl.SEX
-            as virtrdf:employee_gender ;
-        opl:date_of_birth emp_tbl.BIRTHDATE
-            as virtrdf:employee_date_of_birth ;
-        opl:salary emp_tbl.SALARY
-            as virtrdf:employee_salary ;
-        opl:bonus emp_tbl.BONUS
-            as virtrdf:employee_bonus ;
-        opl:commission emp_tbl.COMM
-            as virtrdf:employee_commission ;
-        opl:resume_collection opl:employee_resume_iri(
-            emp_resume_tbl.EMPNO,
-            emp_resume_tbl.RESUME_FORMAT
-            )
-            where (^{emp_tbl.}^.EMPNO = ^{emp_resume_tbl.}^.EMPNO)
-            as virtrdf:employee_resume_collection ;
-        opl:projects_responsible_for_collection
-            opl:project_iri(project_tbl.PROJNO)
-            where (^{project_tbl.}^.RESPEMP = ^{emp_tbl.}^.EMPNO)
-            as virtrdf:employee_projects_responsible_for_collection ;
-        opl:activity_collection opl:emp_proj_act_iri(
-            emp_proj_act_tbl.EMPNO,
-            emp_proj_act_tbl.PROJNO,
-            emp_proj_act_tbl.ACTNO,
-            emp_proj_act_tbl.EMSTDATE
-            )
-            where (^{emp_tbl.}^.EMPNO = ^{emp_proj_act_tbl.}^.EMPNO)
-            as virtrdf:employee_activity_collection .
-    
-        opl:emp_proj_act_iri(
-            emp_proj_act_tbl.EMPNO,
-            emp_proj_act_tbl.PROJNO,
-            emp_proj_act_tbl.ACTNO,
-            emp_proj_act_tbl.EMSTDATE
-            ) a opl:EmpProjAct
-            as virtrdf:empprojact_id ;
-        opl:epa_emp_no emp_proj_act_tbl.EMPNO
-            as virtrdf:empprojact_emp_no ;
-        opl:epa_proj_no emp_proj_act_tbl.PROJNO
-            as virtrdf:empprojact_proj_no ;
-        opl:epa_act_no emp_proj_act_tbl.ACTNO
-            as virtrdf:empprojact_act_no ;
-        opl:emp_start_date emp_proj_act_tbl.EMSTDATE
-            as virtrdf:empprojact_emp_start_date ;
-        opl:emp_time emp_proj_act_tbl.EMPTIME
-            as virtrdf:empprojact_emp_time ;
-        opl:emp_end_date emp_proj_act_tbl.EMENDATE
-            as virtrdf:empprojact_emp_end_date ;
-        opl:assigned_to opl:employee_iri(emp_proj_act_tbl.EMPNO)
-            as virtrdf:empprojact_assigned_to ;
-        opl:project_activity opl:proj_act_iri(
-            emp_proj_act_tbl.PROJNO,
-            emp_proj_act_tbl.ACTNO,
-            emp_proj_act_tbl.EMSTDATE
-            )
-            as virtrdf:empprojact_project_activity .
-    
-        opl:employee_resume_iri(
-            emp_resume_tbl.EMPNO,
-            emp_resume_tbl.RESUME_FORMAT
-            ) a opl:EmployeeResume
-            as virtrdf:employee_resume_id ;
-        opl:er_emp_no emp_resume_tbl.EMPNO
-            as virtrdf:employee_resume_emp_no ;
-        opl:resume_format emp_resume_tbl.RESUME_FORMAT
-            as virtrdf:employee_resume_resume_format ;
-        opl:resume emp_resume_tbl.RESUME
-            as virtrdf:employee_resume_resume ;
-        opl:resume_of opl:employee_iri(emp_resume_tbl.EMPNO)
-            as virtrdf:employee_resume_resume_of .
-    
-        opl:proj_act_iri(
-            proj_act_tbl.PROJNO,
-            proj_act_tbl.ACTNO,
-            proj_act_tbl.ACSTDATE
-            ) a opl:ProjAct
-            as virtrdf:projact_id;
-        opl:pa_proj_no proj_act_tbl.PROJNO
-            as virtrdf:projact_proj_no ;
-        opl:pa_act_no proj_act_tbl.ACTNO
-            as virtrdf:projact_act_no ;
-        opl:ac_st_date proj_act_tbl.ACSTDATE
-            as virtrdf:projact_ac_st_date ;
-        opl:ac_staff proj_act_tbl.ACSTAFF
-            as virtrdf:projact_ac_staff ;
-        opl:ac_en_date proj_act_tbl.ACENDATE
-            as virtrdf:projact_ac_en_date ;
-        opl:project opl:project_iri(proj_act_tbl.PROJNO)
-            as virtrdf:projact_project ;
-        opl:activity opl:act_iri(proj_act_tbl.ACTNO)
-            as virtrdf:projact_activity ;
-        opl:employee_activity_collection opl:emp_proj_act_iri(
-            emp_proj_act_tbl.EMPNO,
-            emp_proj_act_tbl.PROJNO,
-            emp_proj_act_tbl.ACTNO,
-            emp_proj_act_tbl.EMSTDATE
-            )
-            where (
-            ^{proj_act_tbl.}^.PROJNO = ^{emp_proj_act_tbl.}^.PROJNO AND
-                ^{proj_act_tbl.}^.ACTNO = ^{emp_proj_act_tbl.}^.ACTNO AND
-                ^{proj_act_tbl.}^.ACSTDATE = ^{emp_proj_act_tbl.}^.EMSTDATE
-                )
-            as virtrdf:project_employee_activity_collection .
-    
-        opl:project_iri(project_tbl.PROJNO) a opl:Project
-            as virtrdf:project_id ;
-        opl:proj_no project_tbl.PROJNO
-            as virtrdf:project_proj_no ;
-        opl:proj_name project_tbl.PROJNAME
-            as virtrdf:project_proj_name ;
-        opl:is_project_of_department opl:department_iri(project_tbl.DEPTNO)
-            as virtrdf:project_is_project_of_department ;
-        opl:resp_emp opl:employee_iri(project_tbl.RESPEMP)
-            as virtrdf:project_resp_emp ;
-        opl:pr_staff project_tbl.PRSTAFF
-            as virtrdf:project_pr_staff ;
-        opl:pr_st_date project_tbl.PRSTDATE
-            as virtrdf:project_pr_st_date ;
-        opl:pr_en_date project_tbl.PRENDATE
-            as virtrdf:project_pr_en_date ;
-        opl:maj_proj project_tbl.MAJPROJ
-            as virtrdf:project_maj_proj ;
-        opl:proj_activity_collection opl:proj_act_iri(
-            proj_act_tbl.PROJNO,
-            proj_act_tbl.ACTNO,
-            proj_act_tbl.ACSTDATE
-            )
-            where (^{project_tbl.}^.PROJNO = ^{proj_act_tbl.}^.PROJNO)
-            as virtrdf:project_activity_collection .
-        } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'db2sample_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'db2sample_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'db2sample_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/example.com%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'db2sample_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/db2sample%%3E&format=%U',
-    
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'db2sample_rule_list1',
-        1,
-        vector (
-            'db2sample_rule1',
-            'db2sample_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/db2sample');
-    
-    VHOST_DEFINE (
-        lpath=>'/db2sample',
-        ppath=>'/DAV/db2sample/',
-        vsp_user=>'dba',
-            is_dav=>1,
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'db2sample_rule_list1')
-        );
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'db2sample_schema_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'db2sample_schema_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'db2sample_schema_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/example.com%U',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'db2sample_schema_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/db2sample%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'db2sample_schema_rule_list1',
-        1,
-        vector (
-            'db2sample_schema_rule1',
-            'db2sample_schema_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schemas/db2sample');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/db2sample',
-        ppath=>'/DAV/schemas_db2sample/',
-        vsp_user=>'dba',
-            is_dav=>1,
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'db2sample_schema_rule_list1')
-        );
-
-## Informix using demonstration 'Stores' database
-
-    DB..vd_remote_data_source ('inf10_stores_demo_rdf', '', '<uid>','<pwd>');
-    
-    ATTACH TABLE  "informix"."call_type"  PRIMARY KEY ("call_code")                  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."call_type"  FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."catalog"    PRIMARY KEY ("catalog_num")                AS "stores_demo_rdf"."inf10_stores_demo_rdf"."catalog"    FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."cust_calls" PRIMARY KEY ("customer_num", "call_dtime") AS "stores_demo_rdf"."inf10_stores_demo_rdf"."cust_calls" FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."customer"   PRIMARY KEY ("customer_num")               AS "stores_demo_rdf"."inf10_stores_demo_rdf"."customer"   FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."items"      PRIMARY KEY ("item_num", "order_num")      AS "stores_demo_rdf"."inf10_stores_demo_rdf"."items"      FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."manufact"   PRIMARY KEY ("manu_code")                  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."manufact"   FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."msgs"       PRIMARY KEY ("lang", "number", "message")  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."msgs"       FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."orders"     PRIMARY KEY ("order_num")                  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."orders"     FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."state"      PRIMARY KEY ("code", "sname")              AS "stores_demo_rdf"."inf10_stores_demo_rdf"."state"      FROM 'inf10_stores_demo_rdf';
-    ATTACH TABLE  "informix"."stock"      PRIMARY KEY ("stock_num", "manu_code")     AS "stores_demo_rdf"."inf10_stores_demo_rdf"."stock"      FROM 'inf10_stores_demo_rdf';
-    
-    COMMIT WORK;
-    
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.items      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.catalog    TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.msgs       TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.state      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.orders     TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.stock      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.customer   TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.call_type  TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.manufact   TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.cust_calls TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SPARQL_UPDATE to "SPARQL";
-    
-    create function DB.DBA.CUST_CALLS_IRI (in customer_num integer, in call_dtime datetime) returns varchar
-    {
-        declare _call_dtime any;
-        _call_dtime := cast(call_dtime as varchar);
-        return sprintf('http://example.com/informix/stores_demo/cust_calls/%d_%U#this', customer_num, _call_dtime);
-    };
-    
-    create function DB.DBA.CUST_CALLS_IRI_INV_1 (in cust_calls_iri varchar) returns integer
-    {
-        declare parts any;
-        parts := sprintf_inverse(cust_calls_iri, 'http://example.com/informix/stores_demo/cust_calls/%d_%U#this', 1);
-        if(parts is not null)
-        {
-            return parts[0];
-        }
-        return NULL;
-    };
-    
-    create function DB.DBA.CUST_CALLS_IRI_INV_2 (in cust_calls_iri varchar) returns datetime
-    {
-        declare parts any;
-        parts := sprintf_inverse(cust_calls_iri, 'http://example.com/informix/stores_demo/cust_calls/%d_%U#this', 1);
-        if(parts is not null)
-        {
-            return parts[1];
-        }
-        return NULL;
-    };
-    
-    grant execute on DB.DBA.CUST_CALLS_IRI to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.CUST_CALLS_IRI_INV_1 to "SPARQL", "SPARQL_UPDATE";
-    grant execute on DB.DBA.CUST_CALLS_IRI_INV_2 to "SPARQL", "SPARQL_UPDATE";
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix items:   <http://example.com/schemas/informix/stores_demo/items/> .
-    @prefix catalog: <http://example.com/schemas/informix/stores_demo/catalog/> .
-    @prefix stock:   <http://example.com/schemas/informix/stores_demo/stock/> .
-    @prefix msgs:    <http://example.com/schemas/informix/stores_demo/msgs/> .
-    @prefix state:   <http://example.com/schemas/informix/stores_demo/state/> .
-    @prefix orders:  <http://example.com/schemas/informix/stores_demo/orders/> .
-    @prefix manuf:   <http://example.com/schemas/informix/stores_demo/manufact/> .
-    @prefix cust:    <http://example.com/schemas/informix/stores_demo/customer/> .
-    @prefix callt:   <http://example.com/schemas/informix/stores_demo/call_type/> .
-    @prefix custc:   <http://example.com/schemas/informix/stores_demo/cust_calls/> .
-    
-    items:Items a rdfs:Class ;
-        rdfs:label "Items" ;
-        rdfs:comment "Informix SD items table" .
-    
-    items:item_num a rdf:Property ;
-        rdfs:domain items:Items ;
-        rdfs:range xsd:integer ;
-        rdfs:label "ITEM NUMBER" .
-    
-    items:quantity a rdf:Property ;
-        rdfs:domain items:Items ;
-        rdfs:range xsd:integer ;
-        rdfs:label "QUANTITY" .
-    
-    items:total_price a rdf:Property ;
-        rdfs:domain items:Items ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "TOTAL PRICE" .
-    
-    items:order_num_fk a rdf:Property ;
-        rdfs:domain items:Items ;
-        rdfs:range orders:Orders ;
-        rdfs:label "ORDER NUMBER" .
-    
-    items:stock_num_fk a rdf:Property ;
-        rdfs:domain items:Items ;
-        rdfs:range stock:Stock ;
-        rdfs:label "STOCK NUMBER" .
-    
-    items:manu_code_fk a rdf:Property ;
-        rdfs:domain items:Items ;
-        rdfs:range stock:Stock ;
-        rdfs:label "MANUAL CODE" .
-    
-    catalog:Catalog a rdfs:Class ;
-        rdfs:label "Catalog" ;
-        rdfs:comment "Informix SD catalog table" .
-    
-    catalog:manu_code a rdf:Property ;
-        rdfs:domain catalog:Catalog ;
-        rdfs:range xsd:integer ;
-        rdfs:label "MANUAL CODE" .
-    
-    catalog:cat_descr a rdf:Property ;
-        rdfs:domain catalog:Catalog ;
-        rdfs:range xsd:string ;
-        rdfs:label "CATALOG DESCRIPTION" .
-    
-    catalog:cat_picture a rdf:Property ;
-        rdfs:domain catalog:Catalog ;
-        rdfs:range xsd:byte ;
-        rdfs:label "CATALOG PICTURE" .
-    
-    catalog:cat_advert a rdf:Property ;
-        rdfs:domain catalog:Catalog ;
-        rdfs:range xsd:string ;
-        rdfs:label "CATALOG ADVERT" .
-    
-    catalog:catalog_num_fk a rdf:Property ;
-        rdfs:domain catalog:Catalog ;
-        rdfs:range stock:Stock ;
-        rdfs:label "CATALOG NUMBER" .
-    
-    catalog:stock_num_fk a rdf:Property ;
-        rdfs:domain catalog:Catalog ;
-        rdfs:range stock:Stock ;
-        rdfs:label "STOCK NUMBER" .
-    
-    msgs:Msgs a rdfs:Class ;
-        rdfs:label "Msgs" ;
-        rdfs:comment "Informix SD msgs table" .
-    
-    msgs:lang a rdf:Property ;
-        rdfs:domain msgs:Msgs ;
-        rdfs:range xsd:string ;
-        rdfs:label "LANGUAGE" .
-    
-    msgs:number a rdf:Property ;
-        rdfs:domain msgs:Msgs ;
-        rdfs:range xsd:integer ;
-        rdfs:label "NUMBER" .
-    
-    msgs:message a rdf:Property ;
-        rdfs:domain msgs:Msgs ;
-        rdfs:range xsd:string ;
-        rdfs:label "MESSAGE" .
-    
-    state:State a rdfs:Class ;
-        rdfs:label "State" ;
-        rdfs:comment "Informix SD state table" .
-    
-    state:code a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "STATE CODE" .
-    
-    state:sname a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "STATE NAME" .
-    
-    orders:Orders a rdfs:Class ;
-        rdfs:label "Orders" ;
-        rdfs:comment "Informix SD orders table" .
-    
-    orders:order_num a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:integer ;
-        rdfs:label "ORDER NUMBER" .
-    
-    orders:order_date a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:date ;
-        rdfs:label "ORDER DATE" .
-    
-    orders:ship_instruct a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:string ;
-        rdfs:label "SHIPPING INSTRUCTION" .
-    
-    orders:backlog a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:string ;
-        rdfs:label "BACKLOG" .
-    
-    orders:po_num a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:string ;
-        rdfs:label "PURCHASE ORDER NUMBER" .
-    
-    orders:ship_date a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:date ;
-        rdfs:label "SHIPPING DATE" .
-    
-    orders:ship_weight a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "SHIPPING WEIGHT" .
-    
-    orders:ship_charge a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "SHIPPING CHARGE" .
-    
-    orders:paid_date a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range xsd:date ;
-        rdfs:label "PAID DATE" .
-    
-    orders:customer_num_fk a rdf:Property ;
-        rdfs:domain orders:Orders ;
-        rdfs:range cust:Customer ;
-        rdfs:label "CUSTOMER NUMBER" .
-    
-    stock:Stock a rdfs:Class ;
-        rdfs:label "Stock" ;
-        rdfs:comment "Informix SD stock table" .
-    
-    stock:stock_num a rdf:Property ;
-        rdfs:domain stock:Stock ;
-        rdfs:range xsd:integer ;
-        rdfs:label "STOCK NUMBER" .
-    
-    stock:description a rdf:Property ;
-        rdfs:domain stock:Stock ;
-        rdfs:range xsd:string ;
-        rdfs:label "DESCRIPTION" .
-    
-    stock:unit_price a rdf:Property ;
-        rdfs:domain stock:Stock ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "UNIT PRICE" .
-    
-    stock:unit a rdf:Property ;
-        rdfs:domain stock:Stock ;
-        rdfs:range xsd:string ;
-        rdfs:label "UNIT" .
-    
-    stock:unit_descr a rdf:Property ;
-        rdfs:domain stock:Stock ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "UNIT DESCRIPTION" .
-    
-    stock:manu_code_fk a rdf:Property ;
-        rdfs:domain stock:Stock ;
-        rdfs:range manuf:Manufact ;
-        rdfs:label "MANUAL CODE" .
-    
-    cust:Customer a rdfs:Class ;
-        rdfs:label "Customer" ;
-        rdfs:comment "Informix SD customer table" .
-    
-    cust:customer_num a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:integer ;
-        rdfs:label "CUSTOMER NUMBER" .
-    
-    cust:fname a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "FIRST NAME" .
-    
-    cust:lname a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "LAST NAME" .
-    
-    cust:company a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "COMPANY" .
-    
-    cust:address1 a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "ADDRESS1" .
-    
-    cust:address2 a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "ADDRESS2" .
-    
-    cust:city a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "CITY" .
-    
-    cust:state a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "STATE" .
-    
-    cust:zipcode a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "ZIP CODE" .
-    
-    cust:phone a rdf:Property ;
-        rdfs:domain cust:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "PHONE NUMBER" .
-    
-    callt:Call_type a rdfs:Class ;
-        rdfs:label "Call_type" ;
-        rdfs:comment "Informix SD call_type table" .
-    
-    callt:call_code a rdf:Property ;
-        rdfs:domain callt:Call_type ;
-        rdfs:range xsd:string ;
-        rdfs:label "CALL CODE" .
-    
-    callt:code_descr a rdf:Property ;
-        rdfs:domain callt:Call_type ;
-        rdfs:range xsd:string ;
-        rdfs:label "CODE DESCRIPTION" .
-    
-    manuf:Manufact a rdfs:Class ;
-        rdfs:label "Manufact" ;
-        rdfs:comment "Informix SD manufact table" .
-    
-    manuf:manu_code a rdf:Property ;
-        rdfs:domain manuf:Manufact ;
-        rdfs:range xsd:string ;
-        rdfs:label "MANUFACTURE CODE" .
-    
-    manuf:manu_name a rdf:Property ;
-        rdfs:domain manuf:Manufact ;
-        rdfs:range xsd:string ;
-        rdfs:label "MANUFACTURE NAME" .
-    
-    manuf:lead_time a rdf:Property ;
-        rdfs:domain manuf:Manufact ;
-        rdfs:range xsd:integer ;
-        rdfs:label "LEAD TIME" .
-    
-    custc:Cust_calls a rdfs:Class ;
-        rdfs:label "Cust_calls" ;
-        rdfs:comment "Informix SD cust_calls table" .
-    
-    custc:call_dtime a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range xsd:datetime ;
-        rdfs:label "CALL TIME" .
-    
-    custc:user_id a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range xsd:string ;
-        rdfs:label "USER ID" .
-    
-    custc:call_descr a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range xsd:string ;
-        rdfs:label "CALL DESCRIPTION" .
-    
-    custc:res_dtime a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range xsd:datetime ;
-        rdfs:label "RES TIME" .
-    
-    custc:res_descr a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range xsd:string ;
-        rdfs:label "RES DESCRIPTION" .
-    
-    custc:customer_num_fk a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range cust:Customer ;
-        rdfs:label "CUSTOMER NUM" .
-    
-    custc:call_code_fk a rdf:Property ;
-        rdfs:domain manuf:Cust_calls ;
-        rdfs:range callt:Call_type ;
-        rdfs:label "CALL CODE" .
-    
-    ', '', 'http://example.com/schemas/informix/stores_demo', 0);
-    
-    ----------- Create IRI Classes -------------
-    
-    SPARQL
-    
-    prefix items:   <http://example.com/schemas/informix/stores_demo/items/>
-    prefix catalog: <http://example.com/schemas/informix/stores_demo/catalog/>
-    prefix stock:   <http://example.com/schemas/informix/stores_demo/stock/>
-    prefix msgs:    <http://example.com/schemas/informix/stores_demo/msgs/>
-    prefix state:   <http://example.com/schemas/informix/stores_demo/state/>
-    prefix orders:  <http://example.com/schemas/informix/stores_demo/orders/>
-    prefix manuf:   <http://example.com/schemas/informix/stores_demo/manufact/>
-    prefix cust:    <http://example.com/schemas/informix/stores_demo/customer/>
-    prefix callt:   <http://example.com/schemas/informix/stores_demo/call_type/>
-    prefix custc:   <http://example.com/schemas/informix/stores_demo/cust_calls/>
-    
-    create iri class items:items_iri
-        "http://example.com/informix/stores_demo/items/%d_%d#this"
-        (in item_num integer not null, in order_num integer not null) .
-    
-    create iri class catalog:catalog_iri
-        "http://example.com/informix/stores_demo/catalog/%d#this"
-            (in catalog_num integer not null) .
-    
-    create iri class msgs:msgs_iri
-        "http://example.com/informix/stores_demo/msgs/%U_%d_%U#this"
-            (in _lang varchar not null, in number integer not null, in message varchar not null) .
-    
-    create iri class state:state_iri
-        "http://example.com/informix/stores_demo/state/%U#this"
-            (in code varchar not null) .
-    
-    create iri class orders:orders_iri
-        "http://example.com/informix/stores_demo/orders/%d#this"
-            (in order_num integer not null) .
-    
-    create iri class stock:stock_iri
-        "http://example.com/informix/stores_demo/stock/%d_%U#this"
-            (in stock_num integer not null, in manu_code varchar not null) .
-    
-    create iri class cust:customer_iri
-        "http://example.com/informix/stores_demo/customer/%d#this"
-            (in customer_num integer not null) .
-    
-    create iri class callt:call_type_iri
-        "http://example.com/informix/stores_demo/call_type/%U#this"
-            (in call_code varchar not null) .
-    
-    create iri class manuf:manufact_iri
-        "http://example.com/informix/stores_demo/manufact/%U#this"
-            (in manu_code varchar not null) .
-    
-    create iri class custc:cust_calls_iri using
-        function DB.DBA.CUST_CALLS_IRI (in customer_num integer, in call_dtime datetime) returns varchar,
-        function DB.DBA.CUST_CALLS_IRI_INV_1 (in cust_calls_iri varchar) returns integer,
-            function DB.DBA.CUST_CALLS_IRI_INV_2 (in cust_calls_iri varchar) returns datetime .
-    ;
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix items:   <http://example.com/schemas/informix/stores_demo/items/>
-    prefix catalog: <http://example.com/schemas/informix/stores_demo/catalog/>
-    prefix stock:   <http://example.com/schemas/informix/stores_demo/stock/>
-    prefix msgs:    <http://example.com/schemas/informix/stores_demo/msgs/>
-    prefix state:   <http://example.com/schemas/informix/stores_demo/state/>
-    prefix orders:  <http://example.com/schemas/informix/stores_demo/orders/>
-    prefix manuf:   <http://example.com/schemas/informix/stores_demo/manufact/>
-    prefix cust:    <http://example.com/schemas/informix/stores_demo/customer/>
-    prefix callt:   <http://example.com/schemas/informix/stores_demo/call_type/>
-    prefix custc:   <http://example.com/schemas/informix/stores_demo/cust_calls/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      from stores_demo_rdf.inf10_stores_demo_rdf.items      as items_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.catalog    as catalog_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.msgs       as msgs_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.state      as state_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.orders     as orders_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.stock      as stock_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.customer   as customer_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.call_type  as call_type_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.manufact   as manufact_tbl
-      from stores_demo_rdf.inf10_stores_demo_rdf.cust_calls as cust_calls_tbl
-    {
-      create virtrdf:informix_stores_demo as graph <http://example.com/informix/stores_demo>
-      {
-        items:items_iri (items_tbl.item_num, items_tbl.order_num) a items:Items as virtrdf:items_pk ;
-        items:item_num    items_tbl.item_num       as virtrdf:items_item_num ;
-        items:order_num   items_tbl.order_num      as virtrdf:items_order_num ;
-        items:stock_num   items_tbl.stock_num      as virtrdf:items_stock_num ;
-        items:manu_code   items_tbl.manu_code      as virtrdf:items_manu_code ;
-        items:quantity    items_tbl.quantity       as virtrdf:items_quantity ;
-        items:total_price items_tbl.total_price    as virtrdf:items_total_price ;
-        items:from_order  orders:orders_iri (orders_tbl.order_num) where (^{items_tbl.}^.order_num = ^{orders_tbl.}^.order_num) as virtrdf:Items-from_order ;
-        items:has_stock   stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) where (^{items_tbl.}^.stock_num = ^{stock_tbl.}^.stock_num and ^{items_tbl.}^.manu_code = ^{stock_tbl.}^.manu_code)  as virtrdf:Item-has_stock .
-    
-        catalog:catalog_iri (catalog_tbl.catalog_num) a catalog:Catalog as virtrdf:catalog_num;
-        catalog:stock_num   catalog_tbl.stock_num    as virtrdf:catalog_stock_num ;
-        catalog:manu_code   catalog_tbl.manu_code    as virtrdf:catalog_manu_code ;
-        catalog:cat_descr   catalog_tbl.cat_descr    as virtrdf:catalog_cat_descr ;
-        catalog:cat_picture catalog_tbl.cat_picture  as virtrdf:catalog_cat_picture ;
-        catalog:cat_advert  catalog_tbl.cat_advert   as virtrdf:catalog_cat_advert ;
-        catalog:has_stock   stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) where (^{catalog_tbl.}^.stock_num = ^{stock_tbl.}^.stock_num and ^{catalog_tbl.}^.manu_code = ^{stock_tbl.}^.manu_code)  as virtrdf:Catalog-has_stock .
-    
-        msgs:msgs_iri (msgs_tbl.lang, msgs_tbl.number, msgs_tbl.message) a msgs:Msgs as virtrdf:msgs_pk ;
-        msgs:lang     msgs_tbl.lang    as virtrdf:msgs_lang ;
-        msgs:number   msgs_tbl.number  as virtrdf:msgs_number ;
-        msgs:message  msgs_tbl.message as virtrdf:msgs_message .
-    
-        state:state_iri (state_tbl.code) a state:State as virtrdf:code ;
-        state:code   state_tbl.code   as virtrdf:state_code ;
-        state:sname  state_tbl.sname  as virtrdf:state_sname .
-    
-        orders:orders_iri (orders_tbl.order_num) a orders:Orders as virtrdf:order_num ;
-        orders:order_num     orders_tbl.order_num     as virtrdf:orders_order_num ;
-        orders:order_date    orders_tbl.order_date    as virtrdf:orders_order_date ;
-        orders:customer_num  orders_tbl.customer_num  as virtrdf:orders_customer_num ;
-        orders:ship_instruct orders_tbl.ship_instruct as virtrdf:orders_ship_instruct ;
-        orders:backlog       orders_tbl.backlog       as virtrdf:orders_backlog ;
-        orders:po_num        orders_tbl.po_num        as virtrdf:orders_po_num ;
-        orders:ship_date     orders_tbl.ship_date     as virtrdf:orders_ship_date ;
-        orders:ship_weight   orders_tbl.ship_weight   as virtrdf:orders_ship_weight ;
-        orders:ship_charge   orders_tbl.ship_charge   as virtrdf:orders_ship_charge ;
-        orders:paid_date     orders_tbl.paid_date     as virtrdf:orders_paid_date ;
-        orders:has_customer cust:customer_iri (customer_tbl.customer_num) where (^{orders_tbl.}^.customer_num = ^{customer_tbl.}^.customer_num) as virtrdf:Orders-has_customer ;
-        orders:has_item     items:items_iri (items_tbl.item_num, items_tbl.order_num) where (^{orders_tbl.}^.order_num = ^{items_tbl.}^.order_num) as virtrdf:Orders-has_item .
-    
-        stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) a stock:Stock as virtrdf:stock_pk ;
-        stock:stock_num    stock_tbl.stock_num    as virtrdf:stock_stock_num ;
-        stock:manu_code    stock_tbl.manu_code    as virtrdf:stock_manu_code ;
-        stock:description  stock_tbl.description  as virtrdf:stock_description ;
-        stock:unit_price   stock_tbl.unit_price   as virtrdf:stock_unit_price ;
-        stock:unit         stock_tbl.unit         as virtrdf:stock_unit ;
-        stock:unit_descr   stock_tbl.unit_descr   as virtrdf:stock_unit_descr ;
-        stock:manufactured_by manuf:manufact_iri (manufact_tbl.manu_code) where (^{stock_tbl.}^.manu_code = ^{manufact_tbl.}^.manu_code) as virtrdf:Stock-manufactured_by ;
-        stock:in_catalog  catalog:catalog_iri (catalog_tbl.catalog_num) where (^{stock_tbl.}^.stock_num = ^{catalog_tbl.}^.stock_num and ^{stock_tbl.}^.manu_code = ^{catalog_tbl.}^.manu_code) as virtrdf:Stock-in_catalog ;
-        stock:in_item     items:items_iri (items_tbl.item_num, items_tbl.order_num) where (^{stock_tbl.}^.stock_num = ^{items_tbl.}^.stock_num and ^{stock_tbl.}^.manu_code = ^{items_tbl.}^.manu_code) as virtrdf:Stock-in_items .
-    
-        cust:customer_iri (customer_tbl.customer_num) a cust:Customer as virtrdf:customer_num ;
-        cust:customer_num  customer_tbl.customer_num  as virtrdf:customer_customer_num ;
-        cust:fname         customer_tbl.fname         as virtrdf:customer_fname ;
-        cust:lname         customer_tbl.lname         as virtrdf:customer_lname ;
-        cust:company       customer_tbl.company       as virtrdf:customer_company ;
-        cust:address1      customer_tbl.address1      as virtrdf:customer_address1 ;
-        cust:address2      customer_tbl.address2      as virtrdf:customer_address2 ;
-        cust:city          customer_tbl.city          as virtrdf:customer_city ;
-        cust:state         customer_tbl.state         as virtrdf:customer_state ;
-        cust:zipcode       customer_tbl.zipcode       as virtrdf:customer_zipcode ;
-        cust:phone         customer_tbl.phone         as virtrdf:customer_phone ;
-        cust:placed_order orders:orders_iri (orders_tbl.order_num) where (^{customer_tbl.}^.customer_num = ^{orders_tbl.}^.customer_num) as virtrdf:Customer-placed_order ;
-        cust:made_call    custc:cust_calls_iri (cust_calls_tbl.customer_num, cust_calls_tbl.call_dtime ) where (^{customer_tbl.}^.customer_num = ^{cust_calls_tbl.}^.customer_num) as virtrdf:Cust_calls-made_call .
-    
-        callt:call_type_iri (call_type_tbl.call_code) a callt:Call_type as virtrdf:call_code ;
-        callt:call_code   call_type_tbl.call_code as virtrdf:call_type_call_code ;
-        callt:code_descr  call_type_tbl.code_descr as virtrdf:call_type_code_descr ;
-        callt:call_is_type  custc:cust_calls_iri (cust_calls_tbl.customer_num, cust_calls_tbl.call_dtime) where (^{call_type_tbl.}^.call_code = ^{cust_calls_tbl.}^.call_code) as virtrdf:Call_type-call_is_type .
-    
-        manuf:manufact_iri (manufact_tbl.manu_code) a manuf:Manufact as virtrdf:manu_code ;
-        manuf:manu_code     manufact_tbl.manu_code   as virtrdf:manufact_tbl_manu_code ;
-        manuf:manu_name     manufact_tbl.manu_name   as virtrdf:manufact_tbl_manu_name ;
-        manuf:lead_time     manufact_tbl.lead_time   as virtrdf:manufact_tbl_lead_time ;
-        manuf:manufactures stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) where (^{manufact_tbl.}^.manu_code = ^{stock_tbl.}^.manu_code) as virtrdf:Manufact-manufactures .
-    
-        custc:cust_calls_iri  (cust_calls_tbl.customer_num, cust_calls_tbl.call_dtime) a custc:Cust_calls as virtrdf:cust_calls_pk ;
-        custc:user_id    cust_calls_tbl.user_id      as virtrdf:cust_calls_user_id ;
-        custc:call_code  cust_calls_tbl.call_code    as virtrdf:cust_calls_call_code ;
-        custc:call_descr cust_calls_tbl.call_descr   as virtrdf:cust_calls_call_descr ;
-        custc:res_dtime  cust_calls_tbl.res_dtime    as virtrdf:cust_calls_res_dtime ;
-        custc:res_descr  cust_calls_tbl.res_descr    as virtrdf:cust_calls_res_descr ;
-        custc:made_by_customer cust:customer_iri   (customer_tbl.customer_num) where (^{cust_calls_tbl.}^.customer_num = ^{customer_tbl.}^.customer_num) as virtrdf:Cust_calls-made_by_customer ;
-        custc:is_call_type     callt:call_type_iri (call_type_tbl.call_code)   where (^{cust_calls_tbl.}^.call_code    = ^{call_type_tbl.}^.call_code)   as virtrdf:Cust_calls-is_call_type .
-    
-      } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'informix_sd_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'informix_sd_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'informix_sd_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'informix_sd_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/informix/stores_demo%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'informix_sd_rule_list1',
-        1,
-        vector (
-            'informix_sd_rule1',
-            'informix_sd_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/informix/stores_demo');
-    
-    VHOST_DEFINE (
-        lpath=>'/informix/stores_demo',
-        ppath=>'/DAV/informix/stores_demo/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'informix_sd_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'informix_sd_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'informix_sd_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'informix_sd_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'informix_sd_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/informix/stores_demo%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'informix_sd_schemas_rule_list1',
-        1,
-        vector (
-            'informix_sd_schemas_rule1',
-            'informix_sd_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schemas/informix/stores_demo');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/informix/stores_demo',
-        ppath=>'/DAV/schemas/informix/stores_demo/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'informix_sd_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('items',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/items/', 2);
-    DB.DBA.XML_SET_NS_DECL ('catalog', 'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/catalog/', 2);
-    DB.DBA.XML_SET_NS_DECL ('stock',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/stock/', 2);
-    DB.DBA.XML_SET_NS_DECL ('msgs',    'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/msgs/', 2);
-    DB.DBA.XML_SET_NS_DECL ('state',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/state/', 2);
-    DB.DBA.XML_SET_NS_DECL ('orders',  'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/orders/', 2);
-    DB.DBA.XML_SET_NS_DECL ('manuf',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/manufact/', 2);
-    DB.DBA.XML_SET_NS_DECL ('cust',    'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/customer/', 2);
-    DB.DBA.XML_SET_NS_DECL ('callt',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/call_type/', 2);
-    DB.DBA.XML_SET_NS_DECL ('custc',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/cust_calls/', 2);
-
-## Ingres using demonstration 'Tutorial' database
-
-    -- Setup script for Linked Data Views of Ingres R3 Tutorial Sample Database --
-    
-    DB..vd_remote_data_source ('ingiima-tut', '', '<uid>','<pwd>');
-    
-    ATTACH TABLE  "ingres"."book_list"      PRIMARY KEY ("book_no")              AS "TUT"."ingiima"."book_list"      FROM 'ingiima-tut';
-    ATTACH TABLE  "ingres"."book_orders"      PRIMARY KEY ("order_no")              AS "TUT"."ingiima"."book_orders"      FROM 'ingiima-tut';
-    ATTACH TABLE  "ingres"."cust_info"      PRIMARY KEY ("cust_no")              AS "TUT"."ingiima"."cust_info"      FROM 'ingiima-tut';
-    ATTACH TABLE  "ingres"."cust_orders"      PRIMARY KEY ("order_no")              AS "TUT"."ingiima"."cust_orders"      FROM 'ingiima-tut';
-    
-    COMMIT WORK;
-    
-    GRANT SELECT ON TUT.ingiima.book_list TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON TUT.ingiima.book_orders TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON TUT.ingiima.cust_info TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON TUT.ingiima.cust_orders TO "SPARQL", "SPARQL_UPDATE";
-    
-    -------------------------------------------------------------------
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix tut: <http://example.com/schemas/ingrestut/> .
-    
-    tut:book_list a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/ingrestut> ;
-        rdfs:label "book_list" ;
-        rdfs:comment "Ingres Tutorial Database book_list table" .
-    
-    tut:book_no a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Book No" .
-    
-    tut:title a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:string ;
-        rdfs:label "Title" .
-    
-    tut:author a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:string ;
-        rdfs:label "Author" .
-    
-    tut:price a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:money;
-        rdfs:label "Price" .
-    
-    tut:category a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:string ;
-        rdfs:label "Category" .
-    
-    tut:stock a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Stock" .
-    
-    tut:dist_no a rdf:Property ;
-        rdfs:domain tut:book_list ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Dist No" .
-    
-    tut:book_orders a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/ingrestut> ;
-        rdfs:label "Book Orders" ;
-        rdfs:comment "Ingres Tutorial Database book_orders table" .
-    
-    tut:order_no a rdf:Property ;
-        rdfs:domain tut:book_orders ;
-        rdfs:range xsd:integer ;
-             rdfs:label "Order No" .
-    
-    tut:book_no_no a rdf:Property ;
-        rdfs:domain tut:book_orders ;
-        rdfs:range tut:book_list ;
-             rdfs:label "Book No" .
-    
-    tut:sale_price a rdf:Property ;
-        rdfs:domain tut:book_orders ;
-        rdfs:range xsd:money ;
-             rdfs:label "Sale Price" .
-    
-    tut:quantity a rdf:Property ;
-        rdfs:domain tut:book_orders ;
-        rdfs:range xsd:integer ;
-             rdfs:label "Quantity" .
-    
-    tut:extension a rdf:Property ;
-        rdfs:domain tut:book_orders ;
-        rdfs:range xsd:money ;
-             rdfs:label "Extension" .
-    
-    tut:cust_info a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/ingrestut> ;
-        rdfs:label "Customer Information" ;
-        rdfs:comment "Ingres Tutorial Database cust_info table" .
-    
-    tut:cust_no a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:integer ;
-             rdfs:label "Customer No" .
-    
-    tut:name a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string ;
-             rdfs:label "Name" .
-    
-    tut:company a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string ;
-             rdfs:label "Company" .
-    
-    tut:street a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "Street" .
-    
-    tut:city a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "City" .
-    
-    tut:state a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "State" .
-    
-    tut:city a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "City" .
-    
-    tut:state a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "State" .
-    
-    tut:zip a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "Zip Code" .
-    
-    tut:card_no a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "Card No" .
-    
-    tut:exp_date a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:date;
-             rdfs:label "Expire Date" .
-    
-    tut:ship_to a rdf:Property ;
-        rdfs:domain tut:cust_info ;
-        rdfs:range xsd:string;
-             rdfs:label "Ship To" .
-    
-    tut:cust_orders a rdfs:Class ;
-        rdfs:isDefinedBy <http://example.com/schemas/ingrestut> ;
-        rdfs:label "Customer Orders" ;
-        rdfs:comment "Ingres Tutorial Database cust_orders table" .
-    
-    tut:order_no a rdf:Property ;
-        rdfs:domain tut:cust_orders ;
-        rdfs:range tut:book_orders ;
-             rdfs:label "Order No" .
-    
-    tut:book_no a rdf:Property ;
-        rdfs:domain tut:cust_orders ;
-        rdfs:range tut:cust_info ;
-             rdfs:label "Book No" .
-    
-    tut:order_date a rdf:Property ;
-        rdfs:domain tut:cust_orders ;
-        rdfs:range xsd:date ;
-             rdfs:label "Order Date" .
-    
-    tut:status a rdf:Property ;
-        rdfs:domain tut:cust_orders ;
-        rdfs:range xsd:string ;
-             rdfs:label "Status" .
-    
-    tut:order_total a rdf:Property ;
-        rdfs:domain tut:cust_orders ;
-        rdfs:range xsd:money ;
-             rdfs:label "Order Total" .
-    ', '', 'http://example.com/schemas/ingrestut', 0);
-    
-    ---------------------------------------------------------------
-    
-    ----------- Create IRI Classes -------------
-    
-    SPARQL
-    
-        create iri class <http://example.com/schemas/ingrestut/book_list_iri>
-        "http://^{URIQADefaultHost}^/ingrestut/book_list/%d#this"
-            (in book_no integer not null) .
-    
-        create iri class <http://example.com/schemas/ingrestut/book_orders_iri>
-        "http://^{URIQADefaultHost}^/ingrestut/book_orders/%d_%d#this"
-         (in order_no integer not null, in book_no integer not null ) .
-    
-        create iri class <http://example.com/schemas/ingrestut/cust_info_iri>
-        "http://^{URIQADefaultHost}^/ingrestut/cust_info/%d#this"
-            (in cust_no integer not null) .
-    
-        create iri class <http://example.com/schemas/ingrestut/cust_orders_iri>
-        "http://^{URIQADefaultHost}^/ingrestut/cust_orders/%d#this"
-            (in order_no integer not null) .
-    
-        ;
-    
-    --------------------------------------------------------------------
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix tut: <http://example.com/schemas/ingrestut/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      from TUT.ingiima.book_list as book_list_tbl
-      from TUT.ingiima.book_orders as book_orders_tbl
-      from TUT.ingiima.cust_info as cust_info_tbl
-      from TUT.ingiima.cust_orders as cust_orders_tbl
-    {
-      create virtrdf:ingrestut as
-          graph <http://example.com/ingrestut>
-      {
-            tut:book_list_iri(book_list_tbl.book_no) a tut:book_list
-                   as virtrdf:book_list_book_no ;
-            tut:title book_list_tbl.title
-             as virtrdf:book_list_title;
-            tut:author book_list_tbl.author
-                  as virtrdf:book_list_author;
-            tut:price book_list_tbl.price
-                  as virtrdf:book_list_price;
-            tut:category book_list_tbl.category
-                  as virtrdf:book_list_category;
-            tut:stock book_list_tbl.stock
-                  as virtrdf:book_list_stock;
-            tut:dist_no book_list_tbl.dist_no
-                  as virtrdf:book_list_dist_no .
-    
-        tut:book_orders_iri(book_orders_tbl.order_no, book_orders_tbl.book_no) a tut:book_orders
-            as virtrdf:book_orders_pk;
-        tut:order_no book_orders_tbl.order_no
-            as virtrdf:book_orders_order_no;
-        tut:book_no tut:book_list_iri(book_list_tbl.book_no)
-            where(^{book_orders_tbl.}^.book_no = ^{book_list_tbl.}^.book_no)
-            as virtrdf:book_orders_book_no;
-        tut:sale_price book_orders_tbl.sale_price
-            as virtrdf:book_orders_sale_price;
-        tut:quantity book_orders_tbl.quantity
-            as virtrdf:book_orders_quantity;
-        tut:extension book_orders_tbl.extension
-            as virtrdf:book_orders_extension .
-    
-        tut:cust_info_iri(cust_info_tbl.cust_no) a tut:cust_info
-            as virtrdf:cust_info_cust_no;
-        tut:name cust_info_tbl.name
-            as virtrdf:cust_info_name;
-        tut:company cust_info_tbl.company
-            as virtrdf:cust_info_company;
-        tut:street cust_info_tbl.street
-            as virtrdf:cust_info_street;
-        tut:city cust_info_tbl.city
-            as virtrdf:cust_info_city;
-        tut:state cust_info_tbl.state
-            as virtrdf:cust_info_state;
-        tut:zip cust_info_tbl.zip
-            as virtrdf:cust_info_zip;
-        tut:card_no cust_info_tbl.card_no
-            as virtrdf:cust_info_card_no;
-        tut:exp_date cust_info_tbl.exp_date
-            as virtrdf:cust_info_exp_date;
-        tut:ship_to cust_info_tbl.ship_to
-            as virtrdf:cust_info_ship_to .
-    
-        tut:cust_orders_iri(cust_orders_tbl.order_no) a tut:cust_orders
-            as virtrdf:cust_orders_order_no;
-    
-        tut:cust_no tut:cust_info_iri(cust_info_tbl.cust_no)
-            where (^{cust_orders_tbl.}^.cust_no = ^{cust_info_tbl.}^.cust_no)
-            as virtrdf:cust_orders_cust_no;
-        tut:order_date cust_orders_tbl.order_date
-            as virtrdf:cust_orders_order_date;
-        tut:status cust_orders_tbl.status
-            as virtrdf:cust_orders_status;
-        tut:order_total cust_orders_tbl.order_total
-            as virtrdf:cust_orders_order_total   .
-      } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'ingrestut_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'ingrestut_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ingrestut_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ingrestut_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/ingrestut%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ingrestut_rule_list1',
-        1,
-        vector (
-            'ingrestut_rule1',
-            'ingrestut_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/ingrestut');
-    
-    VHOST_DEFINE (
-        lpath=>'/ingrestut',
-        ppath=>'/DAV/ingrestut/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'ingrestut_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'ingres_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'ingres_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ingres_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'ingres_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/ingrestut%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'ingres_schemas_rule_list1',
-        1,
-        vector (
-            'ingres_schemas_rule1',
-            'ingres_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schema/ingrestut');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/ingrestut',
-        ppath=>'/DAV/schemas/ingrestut/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'ingres_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('tut', 'http://^{URIQADefaultHost}^/schemas/ingrestut/', 2);
-
-## Progress (SQL-89) using demonstration 'iSports' database
-
-    ATTACH TABLE  "ISPORTS_RDF"."Customer" PRIMARY KEY ("Cust-Num")
-    AS "isports_rdf"."pro91_isports_rdf"."Customer"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Invoice" PRIMARY KEY ("Invoice-Num")
-    AS "isports_rdf"."pro91_isports_rdf"."Invoice"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Item" PRIMARY KEY ("Item-num")
-    AS "isports_rdf"."pro91_isports_rdf"."Item"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Local-Default" PRIMARY KEY ("Country")
-    AS "isports_rdf"."pro91_isports_rdf"."Local-Default"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Order" PRIMARY KEY ("Order-num")
-    AS "isports_rdf"."pro91_isports_rdf"."Order"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Order-Line"  PRIMARY KEY ("Order-num", "Line-num")
-    AS "isports_rdf"."pro91_isports_rdf"."Order-Line"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Ref-Call" PRIMARY KEY ("Call-Num")
-    AS "isports_rdf"."pro91_isports_rdf"."Ref-Call"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."Salesrep" PRIMARY KEY ("Sales-Rep")
-    AS "isports_rdf"."pro91_isports_rdf"."Salesrep"
-    FROM 'pro91_isports_rdf';
-    
-    ATTACH TABLE  "ISPORTS_RDF"."State" PRIMARY KEY ("State")
-    AS "isports_rdf"."pro91_isports_rdf"."State"
-    FROM 'pro91_isports_rdf';
-    
-    COMMIT WORK;
-    
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.Customer        TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf."Order"         TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.Item            TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf."Order-Line"    TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.Invoice         TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf."Local-Default" TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf."Ref-Call"      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.Salesrep        TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.State           TO "SPARQL", "SPARQL_UPDATE";
-    
-    GRANT SPARQL_UPDATE to "SPARQL";
-    
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VCustomer      AS SELECT "Cust-Num" AS Cust_Num, Name, Address, Address2, City, State, Country, Phone, Contact, "Sales-Rep" AS Sales_Rep, Comments, "Credit-Limit" AS Credit_Limit, Balance, Terms, Discount, "Postal-Code" AS Postal_Code FROM "isports_rdf"."pro91_isports_rdf"."Customer";
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VOrder         AS SELECT "Order-num" AS Order_num, "Cust-Num" AS Cust_Num, "Order-Date" AS Order_Date, "Ship-Date" AS Ship_Date, "Promise-Date" AS Promise_Date, Carrier, Instructions, PO, Terms, "Sales-Rep" AS Sales_Rep FROM isports_rdf.pro91_isports_rdf."Order";
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VItem          AS SELECT "Item-num" AS Item_num, "Item-Name" AS Item_Name, "Cat-Page" AS Cat_Page, Price, "Cat-Description" AS Cat_Description, "On-hand" AS On_hand, Allocated, "Re-Order" AS Re_Order, "On-Order" AS On_Order FROM isports_rdf.pro91_isports_rdf.Item;
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VOrder_Line    AS SELECT "Order-num" AS Order_num, "Line-num" AS Line_num, "Item-num" AS Item_num, Price, Qty, Discount, "Extended-Price" AS Extended_Price, Backorder FROM isports_rdf.pro91_isports_rdf."Order-Line";
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VInvoice       AS SELECT "Invoice-Num" AS Invoice_Num, "Cust-Num" AS Cust_Num, "Invoice-Date" AS Invoice_Date, Amount, "Total-Paid" AS Total_Paid, Adjustment, "Order-Num" AS Order_Num, "Ship-Charge" AS Ship_Charge FROM isports_rdf.pro91_isports_rdf.Invoice;
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VLocal_Default AS SELECT Country, "Region1-Label" AS Region1_Label, "Region2-Label" AS Region2_Label, "Postal-Label" AS Postal_Label, "Postal-Format" AS Postal_Format, "Tel-Format" AS Tel_Format, "Date-Format" AS Date_Format, "Currency-Symbol" AS Currency_Symbol FROM isports_rdf.pro91_isports_rdf."Local-Default";
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VRef_Call      AS SELECT "Call-Num" AS Call_Num, "Cust-Num" AS Cust_Num, "Call-Date" AS Call_Date, "Sales-Rep" AS Sales_Rep, Parent, Txt FROM isports_rdf.pro91_isports_rdf."Ref-Call";
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VSalesrep      AS SELECT "Rep-Name" AS Rep_Name, Region, "Sales-Rep" AS Sales_Rep, "Month-Quota@1" AS Month_Quota_1, "Month-Quota@2" AS Month_Quota_2, "Month-Quota@3" AS Month_Quota_3, "Month-Quota@4" AS Month_Quota_4, "Month-Quota@5" AS Month_Quota_5, "Month-Quota@6" AS Month_Quota_6, "Month-Quota@7" AS Month_Quota_7, "Month-Quota@8" AS Month_Quota_8, "Month-Quota@9" AS Month_Quota_9, "Month-Quota@10" AS Month_Quota_10, "Month-Quota@11" AS Month_Quota_11, "Month-Quota@12" AS Month_Quota_12 FROM isports_rdf.pro91_isports_rdf.Salesrep;
-    CREATE VIEW isports_rdf.pro91_isports_rdf.VState         AS SELECT State, "State-Name" AS State_Name, Region FROM isports_rdf.pro91_isports_rdf.State;
-    
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VCustomer      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VOrder         TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VItem          TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VOrder_Line    TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VInvoice       TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VLocal_Default TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VRef_Call      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VSalesrep      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.pro91_isports_rdf.VState         TO "SPARQL", "SPARQL_UPDATE";
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix customer:     <http://example.com/schemas/progress/isports/customer/> .
-    @prefix order:        <http://example.com/schemas/progress/isports/order/> .
-    @prefix item:         <http://example.com/schemas/progress/isports/item/> .
-    @prefix orderline:    <http://example.com/schemas/progress/isports/order_line/> .
-    @prefix invoice:      <http://example.com/schemas/progress/isports/invoice/> .
-    @prefix localdefault: <http://example.com/schemas/progress/isports/local_default/> .
-    @prefix refcall:      <http://example.com/schemas/progress/isports/ref_call/> .
-    @prefix salesrep:     <http://example.com/schemas/progress/isports/salesrep/> .
-    @prefix state:        <http://example.com/schemas/progress/isports/state/> .
-    
-    customer:Customer a rdfs:Class ;
-        rdfs:label "Customer" ;
-        rdfs:comment "Progress isports Customer table" .
-    
-    customer:Cust-Num a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    customer:Name a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Name" .
-    
-    customer:Address a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Address" .
-    
-    customer:Address2 a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Address2" .
-    
-    customer:City a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "City" .
-    
-    customer:State a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "State" .
-    
-    customer:Country a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Country" .
-    
-    customer:Phone a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Phone" .
-    
-    customer:Contact a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Contact" .
-    
-    customer:Sales-Rep a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    customer:Comments a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Comments" .
-    
-    customer:Credit-Limit a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Credit-Limit" .
-    
-    customer:Balance a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Balance" .
-    
-    customer:Terms a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Terms" .
-    
-    customer:Discount a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Discount" .
-    
-    customer:Postal-Code a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Postal-Code" .
-    
-    order:Order a rdfs:Class ;
-        rdfs:label "Order" ;
-        rdfs:comment "Progress isports Order table" .
-    
-    order:Order-num a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Order-num" .
-    
-    order:Cust-Num a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    order:Order-Date a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:date ;
-        rdfs:label "Order-Date" .
-    
-    order:Ship-Date a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:date ;
-        rdfs:label "Ship-Date" .
-    
-    order:Promise-Date a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:date ;
-        rdfs:label "Promise-Date" .
-    
-    order:Carrier a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Carrier" .
-    
-    order:Instructions a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Instructions" .
-    
-    order:PO a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "PO" .
-    
-    order:Terms a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Terms" .
-    
-    order:Sales-Rep a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    item:Item a rdfs:Class ;
-        rdfs:label "Item" ;
-        rdfs:comment "Progress isports Item table" .
-    
-    item:Item-num a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Item-num" .
-    
-    item:Item-Name a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:string ;
-        rdfs:label "Item-Name" .
-    
-    item:Cat-Page a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cat-Page" .
-    
-    item:Price a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Price" .
-    
-    item:Cat-Description a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:string ;
-        rdfs:label "Cat-Description" .
-    
-    item:On-hand a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "On-hand" .
-    
-    item:Allocated a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Allocated" .
-    
-    item:Re-Order a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Re-Order" .
-    
-    item:On-Order a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "On-Order" .
-    
-    orderline:Order-Line a rdfs:Class ;
-        rdfs:label "Order-Line" ;
-        rdfs:comment "Progress isports Order-Line table" .
-    
-    orderline:Order-num a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Order-num" .
-    
-    orderline:Line-num a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Line-num" .
-    
-    orderline:Item-num a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Item-num" .
-    
-    orderline:Price a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Price" .
-    
-    orderline:Qty a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Qty" .
-    
-    orderline:Discount a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Discount" .
-    
-    orderline:Extended-Price a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Extended-Price" .
-    
-    orderline:Backorder a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:byte ;
-        rdfs:label "Backorder" .
-    
-    invoice:Invoice a rdfs:Class ;
-        rdfs:label "Invoice" ;
-        rdfs:comment "Progress isports Invoice table" .
-    
-    invoice:Invoice-Num a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Invoice-Num" .
-    
-    invoice:Cust-Num a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    invoice:Invoice-Date a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:date ;
-        rdfs:label "Invoice-Date" .
-    
-    invoice:Amount a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Amount" .
-    
-    invoice:Total-Paid a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Total-Paid" .
-    
-    invoice:Adjustment a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Adjustment" .
-    
-    invoice:Order-Num a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Order-Num" .
-    
-    invoice:Ship-Charge a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Ship-Charge" .
-    
-    localdefault:Local-Default a rdfs:Class ;
-        rdfs:label "Local-Default" ;
-        rdfs:comment "Progress isports Local-Default table" .
-    
-    localdefault:Country a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Country" .
-    
-    localdefault:Region1-Label a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region1-Label" .
-    
-    localdefault:Region2-Label a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region2-Label" .
-    
-    localdefault:Postal-Label a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Postal-Label" .
-    
-    localdefault:Postal-Format a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Postal-Format" .
-    
-    localdefault:Tel-Format a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Tel-Format" .
-    
-    localdefault:Date-Format a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Date-Format" .
-    
-    localdefault:Currency-Symbol a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Currency-Symbol" .
-    
-    refcall:Ref-Call a rdfs:Class ;
-        rdfs:label "Ref-Call" ;
-        rdfs:comment "Progress isports Ref-Call table" .
-    
-    refcall:Call-Num a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Call-Num" .
-    
-    refcall:Cust-Num a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    refcall:Call-Date a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:date ;
-        rdfs:label "Call-Date" .
-    
-    refcall:Sales-Rep a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    refcall:Parent a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Parent" .
-    
-    refcall:Txt a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Txt" .
-    
-    salesrep:Salesrep a rdfs:Class ;
-        rdfs:label "Salesrep" ;
-        rdfs:comment "Progress isports Salesrep table" .
-    
-    salesrep:Sales-Rep a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    salesrep:Rep-Name a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Rep-Name" .
-    
-    salesrep:Region a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region" .
-    
-    salesrep:Month-Quota-1 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@1" .
-    
-    salesrep:Month-Quota-2 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@2" .
-    
-    salesrep:Month-Quota-3 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@3" .
-    
-    salesrep:Month-Quota-4 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@4" .
-    
-    salesrep:Month-Quota-5 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@5" .
-    
-    salesrep:Month-Quota-6 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@6" .
-    
-    salesrep:Month-Quota-7 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@7" .
-    
-    salesrep:Month-Quota-8 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@8" .
-    
-    salesrep:Month-Quota-9 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@9" .
-    
-    salesrep:Month-Quota-10 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@10" .
-    
-    salesrep:Month-Quota-11 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@11" .
-    
-    salesrep:Month-Quota-12 a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota@12" .
-    
-    state:State a rdfs:Class ;
-        rdfs:label "State" ;
-        rdfs:comment "Progress isports State table" .
-    
-    state:State_ a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "State" .
-    
-    state:State-Name a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "State-Name" .
-    
-    state:Region a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region" .
-    
-    ', '', 'http://example.com/schemas/progress/isports', 0);
-    
-    ----------- Create IRI Classes -------------
-    
-    SPARQL
-    
-    prefix customer:     <http://example.com/schemas/progress/isports/customer/>
-    prefix order:        <http://example.com/schemas/progress/isports/order/>
-    prefix item:         <http://example.com/schemas/progress/isports/item/>
-    prefix orderline:    <http://example.com/schemas/progress/isports/order_line/>
-    prefix invoice:      <http://example.com/schemas/progress/isports/invoice/>
-    prefix localdefault: <http://example.com/schemas/progress/isports/local_default/>
-    prefix refcall:      <http://example.com/schemas/progress/isports/ref_call/>
-    prefix salesrep:     <http://example.com/schemas/progress/isports/salesrep/>
-    prefix state:        <http://example.com/schemas/progress/isports/state/>
-    
-    create iri class customer:customer_iri
-        "http://example.com/progress/isports/customer/%d#this"
-        (in Cust_Num integer not null) .
-    
-    create iri class order:order_iri
-        "http://example.com/progress/isports/order/%d#this"
-        (in Order_Num integer not null) .
-    
-    create iri class item:item_iri
-        "http://example.com/progress/isports/item/%d#this"
-        (in Item_num integer not null) .
-    
-    create iri class orderline:order-line_iri
-        "http://example.com/progress/isports/order-line/%d_%d#this"
-        (in Order_num integer not null, in Line_num integer not null) .
-    
-    create iri class invoice:invoice_iri
-        "http://example.com/progress/isports/invoice/%d#this"
-        (in Invoice_Num integer not null) .
-    
-    create iri class localdefault:local-default_iri
-        "http://example.com/progress/isports/local-default/%U#this"
-        (in Country varchar not null) .
-    
-    create iri class refcall:ref-call_iri
-        "http://example.com/progress/isports/ref-call/%U#this"
-        (in Call_Num varchar not null) .
-    
-    create iri class salesrep:salesrep_iri
-        "http://example.com/progress/isports/salesrep/%U#this"
-        (in Sales_Rep varchar not null) .
-    
-    create iri class state:state_iri
-        "http://example.com/progress/isports/state/%U#this"
-        (in State varchar not null) .
-    
-    ;
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix customer:     <http://example.com/schemas/progress/isports/customer/>
-    prefix order:        <http://example.com/schemas/progress/isports/order/>
-    prefix item:         <http://example.com/schemas/progress/isports/item/>
-    prefix orderline:    <http://example.com/schemas/progress/isports/order_line/>
-    prefix invoice:      <http://example.com/schemas/progress/isports/invoice/>
-    prefix localdefault: <http://example.com/schemas/progress/isports/local_default/>
-    prefix refcall:      <http://example.com/schemas/progress/isports/ref_call/>
-    prefix salesrep:     <http://example.com/schemas/progress/isports/salesrep/>
-    prefix state:        <http://example.com/schemas/progress/isports/state/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      from isports_rdf.pro91_isports_rdf.VCustomer      as Customer_tbl
-      from isports_rdf.pro91_isports_rdf.VOrder         as Order_tbl
-      from isports_rdf.pro91_isports_rdf.VItem          as Item_tbl
-      from isports_rdf.pro91_isports_rdf.VOrder_Line    as Order_Line_tbl
-      from isports_rdf.pro91_isports_rdf.VInvoice       as Invoice_tbl
-      from isports_rdf.pro91_isports_rdf.VRef_Call      as Ref_Call_tbl
-      from isports_rdf.pro91_isports_rdf.VRef_Call      as Ref_Call_tbl_1
-      from isports_rdf.pro91_isports_rdf.VLocal_Default as Local_Default_tbl
-      from isports_rdf.pro91_isports_rdf.VSalesrep      as Salesrep_tbl
-      from isports_rdf.pro91_isports_rdf.VState         as State_tbl
-    {
-      create virtrdf:progress_isports as graph <http://example.com/progress/isports>
-      {
-        customer:customer_iri (Customer_tbl.Cust_Num) a customer:Customer as virtrdf:customer_pk ;
-        customer:Cust-Num     Customer_tbl.Cust_Num     as virtrdf:Customer_cust-num ;
-        customer:Name         Customer_tbl.Name         as virtrdf:Customer_name ;
-        customer:Address      Customer_tbl.Address      as virtrdf:Customer_address ;
-        customer:Address2     Customer_tbl.Address2     as virtrdf:Customer_address2 ;
-        customer:City         Customer_tbl.City         as virtrdf:Customer_city ;
-        customer:State        Customer_tbl.State        as virtrdf:Customer_state ;
-        customer:Country      Customer_tbl.Country      as virtrdf:Customer_country ;
-        customer:Phone        Customer_tbl.Phone        as virtrdf:Customer_phone ;
-        customer:Contact      Customer_tbl.Contact      as virtrdf:Customer_contact ;
-        customer:Sales-Rep    Customer_tbl.Sales_Rep    as virtrdf:Customer_sales_rep ;
-        customer:Comments     Customer_tbl.Comments     as virtrdf:Customer_comments ;
-        customer:Credit-Limit Customer_tbl.Credit_Limit as virtrdf:Customer_credit-limit ;
-        customer:Balance      Customer_tbl.Balance      as virtrdf:Customer_balance ;
-        customer:Terms        Customer_tbl.Terms        as virtrdf:Customer_terms ;
-        customer:Discount     Customer_tbl.Discount     as virtrdf:Customer_discount ;
-        customer:Postal-Code  Customer_tbl.Postal_Code  as virtrdf:Customer_postal-code ;
-        customer:from_state        state:state_iri (State_tbl.State)                           where ( ^{Customer_tbl.}^.State     = ^{State_tbl.}^.State )           as virtrdf:Customer_from_state ;
-        customer:has_sales_rep     salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)              where ( ^{Customer_tbl.}^.Sales_Rep = ^{Salesrep_tbl.}^.Sales_Rep )    as virtrdf:Customer_has_sales_rep ;
-        customer:has_local_default localdefault:local-default_iri (Local_Default_tbl.Country)  where ( ^{Customer_tbl.}^.Country   = ^{Local_Default_tbl.}^.Country ) as virtrdf:Customer_has_local_default ;
-        customer:placed_order      order:order_iri (Order_tbl.Order_num)                       where ( ^{Customer_tbl.}^.Cust_Num  = ^{Order_tbl.}^.Cust_Num )        as virtrdf:Customer_placed_order ;
-        customer:has_invoice       invoice:invoice_iri (Invoice_tbl.Invoice_Num)               where ( ^{Customer_tbl.}^.Cust_Num  = ^{Invoice_tbl.}^.Cust_Num )      as virtrdf:Customer_has_invoice ;
-        customer:ref_call          refcall:ref-call_iri (Ref_Call_tbl.Call_Num)                where ( ^{Customer_tbl.}^.Cust_Num  = ^{Ref_Call_tbl.}^.Cust_Num )     as virtrdf:Customer_ref-call .
-    
-        order:order_iri (Order_tbl.Order_num) a order:Order as virtrdf:order_pk ;
-        order:Order-num    Order_tbl.Order_num    as virtrdf:Order_order-num ;
-        order:Cust-Num     Order_tbl.Cust_Num     as virtrdf:Order_cust_num ;
-        order:Order-Date   Order_tbl.Order_Date   as virtrdf:Order_order-date ;
-        order:Ship-Date    Order_tbl.Ship_Date    as virtrdf:Order_ship-date ;
-        order:Promise-Date Order_tbl.Promise_Date as virtrdf:Order_promise-date ;
-        order:Carrier      Order_tbl.Carrier      as virtrdf:Order_carrier ;
-        order:Instructions Order_tbl.Instructions as virtrdf:Order_instructions ;
-        order:PO           Order_tbl.PO           as virtrdf:Order_po ;
-        order:Terms        Order_tbl.Terms        as virtrdf:Order_terms ;
-        order:placed_by    customer:customer_iri (Customer_tbl.Cust_Num)                                 where ( ^{Order_tbl.}^.Cust_Num  = ^{Customer_tbl.}^.Cust_Num )    as virtrdf:Order_placed_by ;
-        order:Sales-Rep    salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)                                where ( ^{Order_tbl.}^.Sales_Rep = ^{Salesrep_tbl.}^.Sales_Rep )   as virtrdf:Order_sales_rep ;
-        order:invoiced_on  invoice:invoice_iri (Invoice_tbl.Invoice_Num)                                 where ( ^{Order_tbl.}^.Order_num = ^{Invoice_tbl.}^.Order_Num )    as virtrdf:Order_invoiced_on ;
-        order:has_lines    orderline:order-line_iri (Order_Line_tbl.Order_num, Order_Line_tbl.Line_num)  where ( ^{Order_tbl.}^.Order_num = ^{Order_Line_tbl.}^.Order_num ) as virtrdf:Order_has_lines .
-    
-        item:item_iri (Item_tbl.Item_num) a item:Item as virtrdf:item_pk ;
-        item:Item-num        Item_tbl.Item_num        as virtrdf:item_item-num ;
-        item:Item-Name       Item_tbl.Item_Name       as virtrdf:Item_item-Name ;
-        item:Cat-Page        Item_tbl.Cat_Page        as virtrdf:Item_cat-page ;
-        item:Price           Item_tbl.Price           as virtrdf:Item_price ;
-        item:Cat-Description Item_tbl.Cat_Description as virtrdf:Item_cat-description ;
-        item:On-hand         Item_tbl.On_hand         as virtrdf:Item_on-hand ;
-        item:Allocated       Item_tbl.Allocated       as virtrdf:Item_allocated ;
-        item:Re-Order        Item_tbl.Re_Order        as virtrdf:Item_re-order ;
-        item:On-Order        Item_tbl.On_Order        as virtrdf:Item_on-order ;
-        item:order_line  orderline:order-line_iri (Order_Line_tbl.Order_num, Order_Line_tbl.Line_num)  where ( ^{Item_tbl.}^.Item_num  = ^{Order_Line_tbl.}^.Item_num )   as virtrdf:Item_order_line .
-    
-        orderline:order-line_iri (Order_Line_tbl.Order_num, Order_Line_tbl.Line_num) a orderline:Order-Line as virtrdf:order-line_pk ;
-        orderline:Line-num       Order_Line_tbl.Line_num       as virtrdf:Order-Line_line-num ;
-        orderline:Price          Order_Line_tbl.Price          as virtrdf:Order-Line_price ;
-        orderline:Qty            Order_Line_tbl.Qty            as virtrdf:Order-Line_qty ;
-        orderline:Discount       Order_Line_tbl.Discount       as virtrdf:Order-Line_discount ;
-        orderline:Extended-Price Order_Line_tbl.Extended_Price as virtrdf:Order-Line_extended-price ;
-        orderline:Backorder      Order_Line_tbl.Backorder      as virtrdf:Order-Line_backorder ;
-        orderline:Order-num  order:order_iri (Order_tbl.Order_num)  where ( ^{Order_Line_tbl.}^.Order_num = ^{Order_tbl.}^.Order_num ) as virtrdf:Order_Line_order_num ;
-        orderline:Item-num   item:item_iri (Item_tbl.Item_num)      where ( ^{Order_Line_tbl.}^.Item_num  = ^{Item_tbl.}^.Item_num )   as virtrdf:Order_Line_item_num .
-    
-        invoice:invoice_iri (Invoice_tbl.Invoice_Num) a invoice:Invoice as virtrdf:invoice_pk ;
-        invoice:Invoice-Num  Invoice_tbl.Invoice_Num  as virtrdf:Invoice_invoice-num ;
-        invoice:Cust-Num     Invoice_tbl.Cust_Num    as virtrdf:Invoice_cust_num ;
-        invoice:Invoice-Date Invoice_tbl.Invoice_Date as virtrdf:Invoice_invoice-date ;
-        invoice:Amount       Invoice_tbl.Amount       as virtrdf:Invoice_amount ;
-        invoice:Total-Paid   Invoice_tbl.Total_Paid   as virtrdf:Invoice_total-paid ;
-        invoice:Adjustment   Invoice_tbl.Adjustment   as virtrdf:Invoice_adjustment ;
-        invoice:Order-Num    Invoice_tbl.Order_Num    as virtrdf:Invoice_order-num ;
-        invoice:Ship-Charge  Invoice_tbl.Ship_Charge  as virtrdf:Invoice_ship-charge ;
-        invoice:invoiced_to  customer:customer_iri (Customer_tbl.Cust_Num)  where ( ^{Invoice_tbl.}^.Cust_Num  = ^{Customer_tbl.}^.Cust_Num ) as virtrdf:Invoice_invoiced_to ;
-        invoice:Order-Num    order:order_iri (Order_tbl.Order_num)          where ( ^{Invoice_tbl.}^.Order_Num = ^{Order_tbl.}^.Order_num )   as virtrdf:Invoice_order_num .
-    
-        localdefault:local-default_iri (Local_Default_tbl.Country) a localdefault:Local-Default as virtrdf:local-default_pk ;
-        localdefault:Country         Local_Default_tbl.Country as virtrdf:local-default_country ;
-        localdefault:Region1-Label   Local_Default_tbl.Region1_Label   as virtrdf:Local-Default_region1-label ;
-        localdefault:Region2-Label   Local_Default_tbl.Region2_Label   as virtrdf:Local-Default_region2-label ;
-        localdefault:Postal-Label    Local_Default_tbl.Postal_Label    as virtrdf:Local-Default_postal-label ;
-        localdefault:Postal-Format   Local_Default_tbl.Postal_Format   as virtrdf:Local-Default_postal-format ;
-        localdefault:Tel-Format      Local_Default_tbl.Tel_Format      as virtrdf:Local-Default_tel-format ;
-        localdefault:Date-Format     Local_Default_tbl.Date_Format     as virtrdf:Local-Default_date-format ;
-        localdefault:Currency-Symbol Local_Default_tbl.Currency_Symbol as virtrdf:Local-Default_currency-symbol ;
-        localdefault:has_customer customer:customer_iri (Customer_tbl.Cust_Num) where ( ^{Local_Default_tbl.}^.Country = ^{Customer_tbl.}^.Country ) as virtrdf:Local-Default_has_customer .
-    
-        refcall:ref-call_iri (Ref_Call_tbl.Call_Num) a refcall:Ref-Call as virtrdf:ref-call_pk ;
-        refcall:Call-Num   Ref_Call_tbl.Call_Num   as virtrdf:Ref-Call_call-num ;
-        refcall:Cust-Num   Ref_Call_tbl.Cust_Num   as virtrdf:Ref-Call_cust-num ;
-        refcall:Call-Date  Ref_Call_tbl.Call_Date  as virtrdf:Ref-Call_call-date ;
-        refcall:Sales-Rep  Ref_Call_tbl.Sales_Rep  as virtrdf:Ref-sales-rep ;
-        refcall:Parent     Ref_Call_tbl.Parent     as virtrdf:Ref-Call_parent ;
-        refcall:Txt        Ref_Call_tbl.Txt        as virtrdf:Ref-Call_txt ;
-        refcall:made_to     customer:customer_iri (Customer_tbl.Cust_Num)   where  ( ^{Ref_Call_tbl.}^.Cust_Num  = ^{Customer_tbl.}^.Cust_Num )   as virtrdf:Ref-Call_made_to ;
-        refcall:made_by     salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)  where  ( ^{Ref_Call_tbl.}^.Sales_Rep = ^{Salesrep_tbl.}^.Sales_Rep )  as virtrdf:Ref-Call_made-by ;
-        refcall:has_parent  refcall:ref-call_iri (Ref_Call_tbl_1.Call_Num)    where  ( ^{Ref_Call_tbl.}^.Parent    = ^{Ref_Call_tbl_1.}^.Call_Num )   as virtrdf:Ref-Call_has_parent .
-    
-        salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep) a salesrep:Salesrep as virtrdf:salesrep_pk ;
-        salesrep:Sales-Rep      Salesrep_tbl.Sales_Rep       as virtrdf:Salesrep_sales-rep ;
-        salesrep:Region         Salesrep_tbl.Region          as virtrdf:Salesrep_region ;
-        salesrep:Rep-Name       Salesrep_tbl.Rep_Name        as virtrdf:Salesrep_rep-name ;
-        salesrep:Month-Quota-1  Salesrep_tbl.Month_Quota_1   as virtrdf:Salesrep_month-quota-1 ;
-        salesrep:Month-Quota-2  Salesrep_tbl.Month_Quota_2   as virtrdf:Salesrep_month-quota-2 ;
-        salesrep:Month-Quota-3  Salesrep_tbl.Month_Quota_3   as virtrdf:Salesrep_month-quota-3 ;
-        salesrep:Month-Quota-4  Salesrep_tbl.Month_Quota_4   as virtrdf:Salesrep_month-quota-4 ;
-        salesrep:Month-Quota-5  Salesrep_tbl.Month_Quota_5   as virtrdf:Salesrep_month-quota-5 ;
-        salesrep:Month-Quota-6  Salesrep_tbl.Month_Quota_6   as virtrdf:Salesrep_month-quota-6 ;
-        salesrep:Month-Quota-7  Salesrep_tbl.Month_Quota_7   as virtrdf:Salesrep_month-quota-7 ;
-        salesrep:Month-Quota-8  Salesrep_tbl.Month_Quota_8   as virtrdf:Salesrep_month-quota-8 ;
-        salesrep:Month-Quota-9  Salesrep_tbl.Month_Quota_9   as virtrdf:Salesrep_month-quota-9 ;
-        salesrep:Month-Quota-10 Salesrep_tbl.Month_Quota_10  as virtrdf:Salesrep_month-quota-10 ;
-        salesrep:Month-Quota-11 Salesrep_tbl.Month_Quota_11  as virtrdf:Salesrep_month-quota-11 ;
-        salesrep:Month-Quota-12 Salesrep_tbl.Month_Quota_12  as virtrdf:Salesrep_month-quota-12 ;
-        salesrep:is_sales_rep_for customer:customer_iri (Customer_tbl.Cust_Num) where ( ^{Salesrep_tbl.}^.Sales_Rep = ^{Customer_tbl.}^.Sales_Rep ) as virtrdf:Salesrep_is_sales_rep_for ;
-        salesrep:has_order        order:order_iri (Order_tbl.Order_num)         where ( ^{Salesrep_tbl.}^.Sales_Rep = ^{Order_tbl.}^.Sales_Rep )    as virtrdf:Salesrep_has_order ;
-        salesrep:manages_region   state:state_iri (State_tbl.State)             where ( ^{Salesrep_tbl.}^.Region    = ^{State_tbl.}^.Region )       as virtrdf:Salesrep_manages_region ;
-        salesrep:made_call        refcall:ref-call_iri (Ref_Call_tbl.Call_Num)  where ( ^{Salesrep_tbl.}^.Sales_Rep = ^{Ref_Call_tbl.}^.Sales_Rep ) as virtrdf:Ref-Call_made_call .
-    
-        state:state_iri (State_tbl.State) a state:State as virtrdf:state_pk ;
-        state:State_     State_tbl.State        as virtrdf:State_state ;
-        state:State-Name State_tbl.State_Name   as virtrdf:State_state-name ;
-        state:Region     State_tbl.Region       as virtrdf:State_region ;
-        state:has_customer   customer:customer_iri (Customer_tbl.Cust_Num)   where ( ^{State_tbl.}^.State  = ^{Customer_tbl.}^.State )  as virtrdf:State_has_customer ;
-        state:has_sales_rep  salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)  where ( ^{State_tbl.}^.Region = ^{Salesrep_tbl.}^.Region ) as virtrdf:State_has_sales_rep .
-    
-      } .
-    } .
-    ;
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'progress_isports_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'progress_isports_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/progress/isports%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'progress_isports_rule_list1',
-        1,
-        vector (
-            'progress_isports_rule1',
-            'progress_isports_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/progress/isports');
-    
-    VHOST_DEFINE (
-        lpath=>'/progress/isports',
-        ppath=>'/DAV/progress/isports/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'progress_isports_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'progress_isports_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'progress_isports_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/progress/isports%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'progress_isports_schemas_rule_list1',
-        1,
-        vector (
-            'progress_isports_schemas_rule1',
-            'progress_isports_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schemas/progress/isports');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/progress/isports',
-        ppath=>'/DAV/schemas/progress/isports/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'progress_isports_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('customer',     'http://^{URIQADefaultHost}^/schemas/progress/isports/customer/', 2);
-    DB.DBA.XML_SET_NS_DECL ('order',        'http://^{URIQADefaultHost}^/schemas/progress/isports/order/', 2);
-    DB.DBA.XML_SET_NS_DECL ('item',         'http://^{URIQADefaultHost}^/schemas/progress/isports/item/', 2);
-    DB.DBA.XML_SET_NS_DECL ('orderline',    'http://^{URIQADefaultHost}^/schemas/progress/isports/order_line/', 2);
-    DB.DBA.XML_SET_NS_DECL ('invoice',      'http://^{URIQADefaultHost}^/schemas/progress/isports/invoice/', 2);
-    DB.DBA.XML_SET_NS_DECL ('localdefault', 'http://^{URIQADefaultHost}^/schemas/progress/isports/local_default/', 2);
-    DB.DBA.XML_SET_NS_DECL ('refcall',      'http://^{URIQADefaultHost}^/schemas/progress/isports/ref_call/', 2);
-    DB.DBA.XML_SET_NS_DECL ('salesrep',     'http://^{URIQADefaultHost}^/schemas/progress/isports/salesrep/', 2);
-    DB.DBA.XML_SET_NS_DECL ('state',        'http://^{URIQADefaultHost}^/schemas/progress/isports/state/', 2);
-
-## Progress (SQL-92) using demonstration 'iSports' database
-
-    ATTACH TABLE  "PUB"."Customer"      PRIMARY KEY ("Cust-Num")              AS "isports_rdf"."prs10_isports_rdf"."Customer"      FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Invoice"       PRIMARY KEY ("Invoice-Num")           AS "isports_rdf"."prs10_isports_rdf"."Invoice"       FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Item"          PRIMARY KEY ("Item-num")              AS "isports_rdf"."prs10_isports_rdf"."Item"          FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Local-Default" PRIMARY KEY ("Country")               AS "isports_rdf"."prs10_isports_rdf"."Local-Default" FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Order"         PRIMARY KEY ("Order-num")             AS "isports_rdf"."prs10_isports_rdf"."Order"         FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Order-Line"    PRIMARY KEY ("Order-num", "Line-num") AS "isports_rdf"."prs10_isports_rdf"."Order-Line"    FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Ref-Call"      PRIMARY KEY ("Call-Num")              AS "isports_rdf"."prs10_isports_rdf"."Ref-Call"      FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."Salesrep"      PRIMARY KEY ("Sales-Rep")             AS "isports_rdf"."prs10_isports_rdf"."Salesrep"      FROM 'prs10_isports_rdf';
-    ATTACH TABLE  "PUB"."State"         PRIMARY KEY ("State")                 AS "isports_rdf"."prs10_isports_rdf"."State"         FROM 'prs10_isports_rdf';
-    
-    COMMIT WORK;
-    
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.Customer        TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf."Order"         TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.Item            TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf."Order-Line"    TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.Invoice         TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf."Local-Default" TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf."Ref-Call"      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.Salesrep        TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.State           TO "SPARQL", "SPARQL_UPDATE";
-    
-    GRANT SPARQL_UPDATE to "SPARQL";
-    
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VCustomer      AS SELECT "Cust-Num" AS Cust_Num, Name, Address, Address2, City, State, Country, Phone, Contact, "Sales-Rep" AS Sales_Rep, Comments, "Credit-Limit" AS Credit_Limit, Balance, Terms, Discount, "Postal-Code" AS Postal_Code FROM isports_rdf.prs10_isports_rdf.Customer;
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VOrder         AS SELECT "Order-num" AS Order_num, "Cust-Num" AS Cust_Num, "Order-Date" AS Order_Date, "Ship-Date" AS Ship_Date, "Promise-Date" AS Promise_Date, Carrier, Instructions, PO, Terms, "Sales-Rep" AS Sales_Rep FROM isports_rdf.prs10_isports_rdf."Order";
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VItem          AS SELECT "Item-num" AS Item_num, "Item-Name" AS Item_Name, "Cat-Page" AS Cat_Page, Price, "Cat-Description" AS Cat_Description, "On-hand" AS On_hand, Allocated, "Re-Order" AS Re_Order, "On-Order" AS On_Order FROM isports_rdf.prs10_isports_rdf.Item;
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VOrder_Line    AS SELECT "Order-num" AS Order_num, "Line-num" AS Line_num, "Item-num" AS Item_num, Price, Qty, Discount, "Extended-Price" AS Extended_Price, Backorder FROM isports_rdf.prs10_isports_rdf."Order-Line";
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VInvoice       AS SELECT "Invoice-Num" AS Invoice_Num, "Cust-Num" AS Cust_Num, "Invoice-Date" AS Invoice_Date, Amount, "Total-Paid" AS Total_Paid, Adjustment, "Order-Num" AS Order_Num, "Ship-Charge" AS Ship_Charge FROM isports_rdf.prs10_isports_rdf.Invoice;
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VLocal_Default AS SELECT Country, "Region1-Label" AS Region1_Label, "Region2-Label" AS Region2_Label, "Postal-Label" AS Postal_Label, "Postal-Format" AS Postal_Format, "Tel-Format" AS Tel_Format, "Date-Format" AS Date_Format, "Currency-Symbol" AS Currency_Symbol FROM isports_rdf.prs10_isports_rdf."Local-Default";
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VRef_Call      AS SELECT "Call-Num" AS Call_Num, "Cust-Num" AS Cust_Num, "Call-Date" AS Call_Date, "Sales-Rep" AS Sales_Rep, Parent, Txt FROM isports_rdf.prs10_isports_rdf."Ref-Call";
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VSalesrep      AS SELECT "Rep-Name" AS Rep_Name, Region, "Sales-Rep" AS Sales_Rep, "Month-Quota" AS Month_Quota FROM isports_rdf.prs10_isports_rdf.Salesrep;
-    CREATE VIEW isports_rdf.prs10_isports_rdf.VState         AS SELECT State, "State-Name" AS State_Name, Region FROM isports_rdf.prs10_isports_rdf.State;
-    
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VCustomer      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VOrder         TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VItem          TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VOrder_Line    TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VInvoice       TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VLocal_Default TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VRef_Call      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VSalesrep      TO "SPARQL", "SPARQL_UPDATE";
-    GRANT SELECT ON isports_rdf.prs10_isports_rdf.VState         TO "SPARQL", "SPARQL_UPDATE";
-    
-    -------- Create rdfs:Class definitions ----------------------------
-    
-    ttlp (
-    '
-    @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-    
-    @prefix customer:     <http://example.com/schemas/progress/isports/customer/> .
-    @prefix order:        <http://example.com/schemas/progress/isports/order/> .
-    @prefix item:         <http://example.com/schemas/progress/isports/item/> .
-    @prefix orderline:    <http://example.com/schemas/progress/isports/order_line/> .
-    @prefix invoice:      <http://example.com/schemas/progress/isports/invoice/> .
-    @prefix localdefault: <http://example.com/schemas/progress/isports/local_default/> .
-    @prefix refcall:      <http://example.com/schemas/progress/isports/ref_call/> .
-    @prefix salesrep:     <http://example.com/schemas/progress/isports/salesrep/> .
-    @prefix state:        <http://example.com/schemas/progress/isports/state/> .
-    
-    customer:Customer a rdfs:Class ;
-        rdfs:label "Customer" ;
-        rdfs:comment "Progress isports Customer table" .
-    
-    customer:Cust-Num a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    customer:Name a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Name" .
-    
-    customer:Address a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Address" .
-    
-    customer:Address2 a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Address2" .
-    
-    customer:City a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "City" .
-    
-    customer:State a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "State" .
-    
-    customer:Country a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Country" .
-    
-    customer:Phone a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Phone" .
-    
-    customer:Contact a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Contact" .
-    
-    customer:Sales-Rep a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    customer:Comments a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Comments" .
-    
-    customer:Credit-Limit a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Credit-Limit" .
-    
-    customer:Balance a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Balance" .
-    
-    customer:Terms a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Terms" .
-    
-    customer:Discount a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Discount" .
-    
-    customer:Postal-Code a rdf:Property ;
-        rdfs:domain customer:Customer ;
-        rdfs:range xsd:string ;
-        rdfs:label "Postal-Code" .
-    
-    order:Order a rdfs:Class ;
-        rdfs:label "Order" ;
-        rdfs:comment "Progress isports Order table" .
-    
-    order:Order-num a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Order-num" .
-    
-    order:Cust-Num a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    order:Order-Date a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:date ;
-        rdfs:label "Order-Date" .
-    
-    order:Ship-Date a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:date ;
-        rdfs:label "Ship-Date" .
-    
-    order:Promise-Date a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:date ;
-        rdfs:label "Promise-Date" .
-    
-    order:Carrier a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Carrier" .
-    
-    order:Instructions a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Instructions" .
-    
-    order:PO a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "PO" .
-    
-    order:Terms a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Terms" .
-    
-    order:Sales-Rep a rdf:Property ;
-        rdfs:domain order:Order ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    item:Item a rdfs:Class ;
-        rdfs:label "Item" ;
-        rdfs:comment "Progress isports Item table" .
-    
-    item:Item-num a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Item-num" .
-    
-    item:Item-Name a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:string ;
-        rdfs:label "Item-Name" .
-    
-    item:Cat-Page a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cat-Page" .
-    
-    item:Price a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Price" .
-    
-    item:Cat-Description a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:string ;
-        rdfs:label "Cat-Description" .
-    
-    item:On-hand a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "On-hand" .
-    
-    item:Allocated a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Allocated" .
-    
-    item:Re-Order a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Re-Order" .
-    
-    item:On-Order a rdf:Property ;
-        rdfs:domain item:Item ;
-        rdfs:range xsd:integer ;
-        rdfs:label "On-Order" .
-    
-    orderline:Order-Line a rdfs:Class ;
-        rdfs:label "Order-Line" ;
-        rdfs:comment "Progress isports Order-Line table" .
-    
-    orderline:Order-num a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Order-num" .
-    
-    orderline:Line-num a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Line-num" .
-    
-    orderline:Item-num a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Item-num" .
-    
-    orderline:Price a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Price" .
-    
-    orderline:Qty a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Qty" .
-    
-    orderline:Discount a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Discount" .
-    
-    orderline:Extended-Price a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Extended-Price" .
-    
-    orderline:Backorder a rdf:Property ;
-        rdfs:domain orderline:Order-Line ;
-        rdfs:range xsd:byte ;
-        rdfs:label "Backorder" .
-    
-    invoice:Invoice a rdfs:Class ;
-        rdfs:label "Invoice" ;
-        rdfs:comment "Progress isports Invoice table" .
-    
-    invoice:Invoice-Num a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Invoice-Num" .
-    
-    invoice:Cust-Num a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    invoice:Invoice-Date a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:date ;
-        rdfs:label "Invoice-Date" .
-    
-    invoice:Amount a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Amount" .
-    
-    invoice:Total-Paid a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Total-Paid" .
-    
-    invoice:Adjustment a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Adjustment" .
-    
-    invoice:Order-Num a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Order-Num" .
-    
-    invoice:Ship-Charge a rdf:Property ;
-        rdfs:domain invoice:Invoice ;
-        rdfs:range xsd:decimal ;
-        rdfs:label "Ship-Charge" .
-    
-    localdefault:Local-Default a rdfs:Class ;
-        rdfs:label "Local-Default" ;
-        rdfs:comment "Progress isports Local-Default table" .
-    
-    localdefault:Country a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Country" .
-    
-    localdefault:Region1-Label a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region1-Label" .
-    
-    localdefault:Region2-Label a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region2-Label" .
-    
-    localdefault:Postal-Label a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Postal-Label" .
-    
-    localdefault:Postal-Format a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Postal-Format" .
-    
-    localdefault:Tel-Format a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Tel-Format" .
-    
-    localdefault:Date-Format a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Date-Format" .
-    
-    localdefault:Currency-Symbol a rdf:Property ;
-        rdfs:domain localdefault:Local-Default ;
-        rdfs:range xsd:string ;
-        rdfs:label "Currency-Symbol" .
-    
-    refcall:Ref-Call a rdfs:Class ;
-        rdfs:label "Ref-Call" ;
-        rdfs:comment "Progress isports Ref-Call table" .
-    
-    refcall:Call-Num a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Call-Num" .
-    
-    refcall:Cust-Num a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:integer ;
-        rdfs:label "Cust-Num" .
-    
-    refcall:Call-Date a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:date ;
-        rdfs:label "Call-Date" .
-    
-    refcall:Sales-Rep a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    refcall:Parent a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Parent" .
-    
-    refcall:Txt a rdf:Property ;
-        rdfs:domain refcall:Ref-Call ;
-        rdfs:range xsd:string ;
-        rdfs:label "Txt" .
-    
-    salesrep:Salesrep a rdfs:Class ;
-        rdfs:label "Salesrep" ;
-        rdfs:comment "Progress isports Salesrep table" .
-    
-    salesrep:Sales-Rep a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Sales-Rep" .
-    
-    salesrep:Rep-Name a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Rep-Name" .
-    
-    salesrep:Region a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region" .
-    
-    salesrep:Month-Quota a rdf:Property ;
-        rdfs:domain salesrep:Salesrep ;
-        rdfs:range xsd:string ;
-        rdfs:label "Month-Quota" .
-    
-    state:State a rdfs:Class ;
-        rdfs:label "State" ;
-        rdfs:comment "Progress isports State table" .
-    
-    state:State_ a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "State" .
-    
-    state:State-Name a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "State-Name" .
-    
-    state:Region a rdf:Property ;
-        rdfs:domain state:State ;
-        rdfs:range xsd:string ;
-        rdfs:label "Region" .
-    
-    ', '', 'http://example.com/schemas/progress/isports', 0);
-    
-    ----------- Create IRI Classes -------------
-    
-    SPARQL
-    
-    prefix customer:     <http://example.com/schemas/progress/isports/customer/>
-    prefix order:        <http://example.com/schemas/progress/isports/order/>
-    prefix item:         <http://example.com/schemas/progress/isports/item/>
-    prefix orderline:    <http://example.com/schemas/progress/isports/order_line/>
-    prefix invoice:      <http://example.com/schemas/progress/isports/invoice/>
-    prefix localdefault: <http://example.com/schemas/progress/isports/local_default/>
-    prefix refcall:      <http://example.com/schemas/progress/isports/ref_call/>
-    prefix salesrep:     <http://example.com/schemas/progress/isports/salesrep/>
-    prefix state:        <http://example.com/schemas/progress/isports/state/>
-    
-    create iri class customer:customer_iri
-        "http://example.com/progress/isports/customer/%d#this"
-        (in Cust_Num integer not null) .
-    
-    create iri class order:order_iri
-        "http://example.com/progress/isports/order/%d#this"
-        (in Order_Num integer not null) .
-    
-    create iri class item:item_iri
-        "http://example.com/progress/isports/item/%d#this"
-        (in Item_num integer not null) .
-    
-    create iri class orderline:order-line_iri
-        "http://example.com/progress/isports/order-line/%d_%d#this"
-        (in Order_num integer not null, in Line_num integer not null) .
-    
-    create iri class invoice:invoice_iri
-        "http://example.com/progress/isports/invoice/%d#this"
-        (in Invoice_Num integer not null) .
-    
-    create iri class localdefault:local-default_iri
-        "http://example.com/progress/isports/local-default/%U#this"
-        (in Country varchar not null) .
-    
-    create iri class refcall:ref-call_iri
-        "http://example.com/progress/isports/ref-call/%U#this"
-        (in Call_Num varchar not null) .
-    
-    create iri class salesrep:salesrep_iri
-        "http://example.com/progress/isports/salesrep/%U#this"
-        (in Sales_Rep varchar not null) .
-    
-    create iri class state:state_iri
-        "http://example.com/progress/isports/state/%U#this"
-        (in State varchar not null) .
-    
-    ;
-    
-    ------------- Create Quad Store ------------------------------------
-    
-    SPARQL
-    
-    prefix customer:     <http://example.com/schemas/progress/isports/customer/>
-    prefix order:        <http://example.com/schemas/progress/isports/order/>
-    prefix item:         <http://example.com/schemas/progress/isports/item/>
-    prefix orderline:    <http://example.com/schemas/progress/isports/order_line/>
-    prefix invoice:      <http://example.com/schemas/progress/isports/invoice/>
-    prefix localdefault: <http://example.com/schemas/progress/isports/local_default/>
-    prefix refcall:      <http://example.com/schemas/progress/isports/ref_call/>
-    prefix salesrep:     <http://example.com/schemas/progress/isports/salesrep/>
-    prefix state:        <http://example.com/schemas/progress/isports/state/>
-    
-    alter quad storage virtrdf:DefaultQuadStorage
-      from isports_rdf.prs10_isports_rdf.VCustomer      as Customer_tbl
-      from isports_rdf.prs10_isports_rdf.VOrder         as Order_tbl
-      from isports_rdf.prs10_isports_rdf.VItem          as Item_tbl
-      from isports_rdf.prs10_isports_rdf.VOrder_Line    as Order_Line_tbl
-      from isports_rdf.prs10_isports_rdf.VInvoice       as Invoice_tbl
-      from isports_rdf.prs10_isports_rdf.VRef_Call      as Ref_Call_tbl
-      from isports_rdf.prs10_isports_rdf.VRef_Call      as Ref_Call_tbl_1  -- Additional Ref_Call_tbl_1 alias required to represent recursive FK relationship (refcall:has_parent) below.
-      from isports_rdf.prs10_isports_rdf.VLocal_Default as Local_Default_tbl
-      from isports_rdf.prs10_isports_rdf.VSalesrep      as Salesrep_tbl
-      from isports_rdf.prs10_isports_rdf.VState         as State_tbl
-    {
-      create virtrdf:progress_isports as graph <http://example.com/progress/isports>
-      {
-        customer:customer_iri (Customer_tbl.Cust_Num) a customer:Customer as virtrdf:customer_pk ;
-        customer:Cust-Num     Customer_tbl.Cust_Num     as virtrdf:Customer_cust-num ;
-        customer:Name         Customer_tbl.Name         as virtrdf:Customer_name ;
-        customer:Address      Customer_tbl.Address      as virtrdf:Customer_address ;
-        customer:Address2     Customer_tbl.Address2     as virtrdf:Customer_address2 ;
-        customer:City         Customer_tbl.City         as virtrdf:Customer_city ;
-        customer:State        Customer_tbl.State        as virtrdf:Customer_state ;
-        customer:Country      Customer_tbl.Country      as virtrdf:Customer_country ;
-        customer:Phone        Customer_tbl.Phone        as virtrdf:Customer_phone ;
-        customer:Contact      Customer_tbl.Contact      as virtrdf:Customer_contact ;
-        customer:Sales-Rep    Customer_tbl.Sales_Rep    as virtrdf:Customer_sales_rep ;
-        customer:Comments     Customer_tbl.Comments     as virtrdf:Customer_comments ;
-        customer:Credit-Limit Customer_tbl.Credit_Limit as virtrdf:Customer_credit-limit ;
-        customer:Balance      Customer_tbl.Balance      as virtrdf:Customer_balance ;
-        customer:Terms        Customer_tbl.Terms        as virtrdf:Customer_terms ;
-        customer:Discount     Customer_tbl.Discount     as virtrdf:Customer_discount ;
-        customer:Postal-Code  Customer_tbl.Postal_Code  as virtrdf:Customer_postal-code ;
-        customer:from_state        state:state_iri (State_tbl.State)                           where ( ^{Customer_tbl.}^.State     = ^{State_tbl.}^.State )           as virtrdf:Customer_from_state ;
-        customer:has_sales_rep     salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)              where ( ^{Customer_tbl.}^.Sales_Rep = ^{Salesrep_tbl.}^.Sales_Rep )    as virtrdf:Customer_has_sales_rep ;
-        customer:has_local_default localdefault:local-default_iri (Local_Default_tbl.Country)  where ( ^{Customer_tbl.}^.Country   = ^{Local_Default_tbl.}^.Country ) as virtrdf:Customer_has_local_default ;
-        customer:placed_order      order:order_iri (Order_tbl.Order_num)                       where ( ^{Customer_tbl.}^.Cust_Num  = ^{Order_tbl.}^.Cust_Num )        as virtrdf:Customer_placed_order ;
-        customer:has_invoice       invoice:invoice_iri (Invoice_tbl.Invoice_Num)               where ( ^{Customer_tbl.}^.Cust_Num  = ^{Invoice_tbl.}^.Cust_Num )      as virtrdf:Customer_has_invoice ;
-        customer:ref_call          refcall:ref-call_iri (Ref_Call_tbl.Call_Num)                where ( ^{Customer_tbl.}^.Cust_Num  = ^{Ref_Call_tbl.}^.Cust_Num )     as virtrdf:Customer_ref-call .
-    
-        order:order_iri (Order_tbl.Order_num) a order:Order as virtrdf:order_pk ;
-        order:Order-num    Order_tbl.Order_num    as virtrdf:Order_order-num ;
-        order:Cust-Num     Order_tbl.Cust_Num     as virtrdf:Order_cust_num ;
-        order:Order-Date   Order_tbl.Order_Date   as virtrdf:Order_order-date ;
-        order:Ship-Date    Order_tbl.Ship_Date    as virtrdf:Order_ship-date ;
-        order:Promise-Date Order_tbl.Promise_Date as virtrdf:Order_promise-date ;
-        order:Carrier      Order_tbl.Carrier      as virtrdf:Order_carrier ;
-        order:Instructions Order_tbl.Instructions as virtrdf:Order_instructions ;
-        order:PO           Order_tbl.PO           as virtrdf:Order_po ;
-        order:Terms        Order_tbl.Terms        as virtrdf:Order_terms ;
-        order:placed_by    customer:customer_iri (Customer_tbl.Cust_Num)                                 where ( ^{Order_tbl.}^.Cust_Num  = ^{Customer_tbl.}^.Cust_Num )    as virtrdf:Order_placed_by ;
-        order:Sales-Rep    salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)                                where ( ^{Order_tbl.}^.Sales_Rep = ^{Salesrep_tbl.}^.Sales_Rep )   as virtrdf:Order_sales_rep ;
-        order:invoiced_on  invoice:invoice_iri (Invoice_tbl.Invoice_Num)                                 where ( ^{Order_tbl.}^.Order_num = ^{Invoice_tbl.}^.Order_Num )    as virtrdf:Order_invoiced_on ;
-        order:has_lines    orderline:order-line_iri (Order_Line_tbl.Order_num, Order_Line_tbl.Line_num)  where ( ^{Order_tbl.}^.Order_num = ^{Order_Line_tbl.}^.Order_num ) as virtrdf:Order_has_lines .
-    
-        item:item_iri (Item_tbl.Item_num) a item:Item as virtrdf:item_pk ;
-        item:Item-num        Item_tbl.Item_num        as virtrdf:item_item-num ;
-        item:Item-Name       Item_tbl.Item_Name       as virtrdf:Item_item-Name ;
-        item:Cat-Page        Item_tbl.Cat_Page        as virtrdf:Item_cat-page ;
-        item:Price           Item_tbl.Price           as virtrdf:Item_price ;
-        item:Cat-Description Item_tbl.Cat_Description as virtrdf:Item_cat-description ;
-        item:On-hand         Item_tbl.On_hand         as virtrdf:Item_on-hand ;
-        item:Allocated       Item_tbl.Allocated       as virtrdf:Item_allocated ;
-        item:Re-Order        Item_tbl.Re_Order        as virtrdf:Item_re-order ;
-        item:On-Order        Item_tbl.On_Order        as virtrdf:Item_on-order ;
-        item:order_line  orderline:order-line_iri (Order_Line_tbl.Order_num, Order_Line_tbl.Line_num)  where ( ^{Item_tbl.}^.Item_num  = ^{Order_Line_tbl.}^.Item_num )   as virtrdf:Item_order_line .
-    
-        orderline:order-line_iri (Order_Line_tbl.Order_num, Order_Line_tbl.Line_num) a orderline:Order-Line as virtrdf:order-line_pk ;
-        orderline:Line-num       Order_Line_tbl.Line_num       as virtrdf:Order-Line_line-num ;
-        orderline:Price          Order_Line_tbl.Price          as virtrdf:Order-Line_price ;
-        orderline:Qty            Order_Line_tbl.Qty            as virtrdf:Order-Line_qty ;
-        orderline:Discount       Order_Line_tbl.Discount       as virtrdf:Order-Line_discount ;
-        orderline:Extended-Price Order_Line_tbl.Extended_Price as virtrdf:Order-Line_extended-price ;
-        orderline:Backorder      Order_Line_tbl.Backorder      as virtrdf:Order-Line_backorder ;
-        orderline:Order-num  order:order_iri (Order_tbl.Order_num)  where ( ^{Order_Line_tbl.}^.Order_num = ^{Order_tbl.}^.Order_num ) as virtrdf:Order_Line_order_num ;
-        orderline:Item-num   item:item_iri (Item_tbl.Item_num)      where ( ^{Order_Line_tbl.}^.Item_num  = ^{Item_tbl.}^.Item_num )   as virtrdf:Order_Line_item_num .
-    
-        invoice:invoice_iri (Invoice_tbl.Invoice_Num) a invoice:Invoice as virtrdf:invoice_pk ;
-        invoice:Invoice-Num  Invoice_tbl.Invoice_Num  as virtrdf:Invoice_invoice-num ;
-        invoice:Cust-Num     Invoice_tbl.Cust_Num    as virtrdf:Invoice_cust_num ;
-        invoice:Invoice-Date Invoice_tbl.Invoice_Date as virtrdf:Invoice_invoice-date ;
-        invoice:Amount       Invoice_tbl.Amount       as virtrdf:Invoice_amount ;
-        invoice:Total-Paid   Invoice_tbl.Total_Paid   as virtrdf:Invoice_total-paid ;
-        invoice:Adjustment   Invoice_tbl.Adjustment   as virtrdf:Invoice_adjustment ;
-        invoice:Order-Num    Invoice_tbl.Order_Num    as virtrdf:Invoice_order-num ;
-        invoice:Ship-Charge  Invoice_tbl.Ship_Charge  as virtrdf:Invoice_ship-charge ;
-        invoice:invoiced_to  customer:customer_iri (Customer_tbl.Cust_Num)  where ( ^{Invoice_tbl.}^.Cust_Num  = ^{Customer_tbl.}^.Cust_Num ) as virtrdf:Invoice_invoiced_to ;
-        invoice:Order-Num    order:order_iri (Order_tbl.Order_num)          where ( ^{Invoice_tbl.}^.Order_Num = ^{Order_tbl.}^.Order_num )   as virtrdf:Invoice_order_num .
-    
-        localdefault:local-default_iri (Local_Default_tbl.Country) a localdefault:Local-Default as virtrdf:local-default_pk ;
-        localdefault:Country         Local_Default_tbl.Country as virtrdf:local-default_country ;
-        localdefault:Region1-Label   Local_Default_tbl.Region1_Label   as virtrdf:Local-Default_region1-label ;
-        localdefault:Region2-Label   Local_Default_tbl.Region2_Label   as virtrdf:Local-Default_region2-label ;
-        localdefault:Postal-Label    Local_Default_tbl.Postal_Label    as virtrdf:Local-Default_postal-label ;
-        localdefault:Postal-Format   Local_Default_tbl.Postal_Format   as virtrdf:Local-Default_postal-format ;
-        localdefault:Tel-Format      Local_Default_tbl.Tel_Format      as virtrdf:Local-Default_tel-format ;
-        localdefault:Date-Format     Local_Default_tbl.Date_Format     as virtrdf:Local-Default_date-format ;
-        localdefault:Currency-Symbol Local_Default_tbl.Currency_Symbol as virtrdf:Local-Default_currency-symbol ;
-        localdefault:has_customer customer:customer_iri (Customer_tbl.Cust_Num) where ( ^{Local_Default_tbl.}^.Country = ^{Customer_tbl.}^.Country ) as virtrdf:Local-Default_has_customer .
-    
-        refcall:ref-call_iri (Ref_Call_tbl.Call_Num) a refcall:Ref-Call as virtrdf:ref-call_pk ;
-        refcall:Call-Num   Ref_Call_tbl.Call_Num   as virtrdf:Ref-Call_call-num ;
-        refcall:Cust-Num   Ref_Call_tbl.Cust_Num   as virtrdf:Ref-Call_cust-num ;
-        refcall:Call-Date  Ref_Call_tbl.Call_Date  as virtrdf:Ref-Call_call-date ;
-        refcall:Sales-Rep  Ref_Call_tbl.Sales_Rep  as virtrdf:Ref-sales-rep ;
-        refcall:Parent     Ref_Call_tbl.Parent     as virtrdf:Ref-Call_parent ;
-        refcall:Txt        Ref_Call_tbl.Txt        as virtrdf:Ref-Call_txt ;
-        refcall:made_to     customer:customer_iri (Customer_tbl.Cust_Num)   where  ( ^{Ref_Call_tbl.}^.Cust_Num  = ^{Customer_tbl.}^.Cust_Num )    as virtrdf:Ref-Call_made_to ;
-        refcall:made_by     salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)  where  ( ^{Ref_Call_tbl.}^.Sales_Rep = ^{Salesrep_tbl.}^.Sales_Rep )   as virtrdf:Ref-Call_made-by ;
-        refcall:has_parent  refcall:ref-call_iri (Ref_Call_tbl_1.Call_Num)  where  ( ^{Ref_Call_tbl.}^.Parent    = ^{Ref_Call_tbl_1.}^.Call_Num )  as virtrdf:Ref-Call_has_parent .
-    
-        salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep) a salesrep:Salesrep as virtrdf:salesrep_pk ;
-        salesrep:Sales-Rep   Salesrep_tbl.Sales_Rep   as virtrdf:Salesrep_sales-rep ;
-        salesrep:Region      Salesrep_tbl.Region      as virtrdf:Salesrep_region ;
-        salesrep:Rep-Name    Salesrep_tbl.Rep_Name    as virtrdf:Salesrep_rep-name ;
-        salesrep:Month-Quota Salesrep_tbl.Month_Quota as virtrdf:Salesrep_month-quota ;
-        salesrep:is_sales_rep_for customer:customer_iri (Customer_tbl.Cust_Num) where ( ^{Salesrep_tbl.}^.Sales_Rep = ^{Customer_tbl.}^.Sales_Rep ) as virtrdf:Salesrep_is_sales_rep_for ;
-        salesrep:has_order        order:order_iri (Order_tbl.Order_num)         where ( ^{Salesrep_tbl.}^.Sales_Rep = ^{Order_tbl.}^.Sales_Rep )    as virtrdf:Salesrep_has_order ;
-        salesrep:manages_region   state:state_iri (State_tbl.State)             where ( ^{Salesrep_tbl.}^.Region    = ^{State_tbl.}^.Region )       as virtrdf:Salesrep_manages_region ;
-        salesrep:made_call        refcall:ref-call_iri (Ref_Call_tbl.Call_Num)  where ( ^{Salesrep_tbl.}^.Sales_Rep = ^{Ref_Call_tbl.}^.Sales_Rep ) as virtrdf:Ref-Call_made_call .
-    
-        state:state_iri (State_tbl.State) a state:State as virtrdf:state_pk ;
-        state:State_     State_tbl.State        as virtrdf:State_state ;
-        state:State-Name State_tbl.State_Name   as virtrdf:State_state-name ;
-        state:Region     State_tbl.Region       as virtrdf:State_region ;
-        state:has_customer   customer:customer_iri (Customer_tbl.Cust_Num)   where ( ^{State_tbl.}^.State  = ^{Customer_tbl.}^.State )  as virtrdf:State_has_customer ;
-        state:has_sales_rep  salesrep:salesrep_iri (Salesrep_tbl.Sales_Rep)  where ( ^{State_tbl.}^.Region = ^{Salesrep_tbl.}^.Region ) as virtrdf:State_has_sales_rep .
-    
-      } .
-    } .
-    ;
-    
-    -- Setup re-write rules that enable de-referencing of RDF based descriptions of
-    -- iSports Entities
-    
-    -- Cleanup old rules
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'progress_isports_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'progress_isports_rule%';
-    
-    -- Create rules for handling HTML representation of Entity (resource) description requests
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    -- Create rules for handling RDF based representations (N3 or RDF/XML) of Entity (resource) descriptions
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/progress/isports%%3E&format=%U',
-        vector('path', 'path', '*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'progress_isports_rule_list1',
-        1,
-        vector (
-            'progress_isports_rule1',
-            'progress_isports_rule2'
-          ));
-    
-    -- Setup OWL ontology data space that describes iSports entities
-    
-    -- Create Virtual Directory access point
-    
-    VHOST_REMOVE (lpath=>'/progress/isports');
-    
-    VHOST_DEFINE (
-        lpath=>'/progress/isports',
-        ppath=>'/DAV/progress/isports/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'progress_isports_rule_list1')
-        );
-    
-    delete from db.dba.url_rewrite_rule_list where urrl_list like 'progress_isports_schemas_rule%';
-    delete from db.dba.url_rewrite_rule where urr_rule like 'progress_isports_schemas_rule%';
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_schemas_rule1',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/about/html/http/^{URIQADefaultHost}^%s',
-        vector('path'),
-        null,
-        '(text/html)|(\\*/\\*)',
-        0,
-        303
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
-        'progress_isports_schemas_rule2',
-        1,
-        '(/[^#]*)',
-        vector('path'),
-        1,
-        '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/progress/isports%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
-        vector('path','path','*accept*'),
-        null,
-        '(text/rdf.n3)|(application/rdf.xml)',
-        0,
-        null
-        );
-    
-    DB.DBA.URLREWRITE_CREATE_RULELIST (
-        'progress_isports_schemas_rule_list1',
-        1,
-        vector (
-            'progress_isports_schemas_rule1',
-            'progress_isports_schemas_rule2'
-          ));
-    
-    -- ensure a VD for the IRIs which begins with /
-    VHOST_REMOVE (lpath=>'/schemas/progress/isports');
-    
-    VHOST_DEFINE (
-        lpath=>'/schemas/progress/isports',
-        ppath=>'/DAV/schemas/progress/isports/',
-            is_dav=>1,
-        vsp_user=>'dba',
-        is_brws=>0,
-        opts=>vector ('url_rewrite', 'progress_isports_schemas_rule_list1')
-        );
-    
-    DB.DBA.XML_SET_NS_DECL ('customer',     'http://^{URIQADefaultHost}^/schemas/progress/isports/customer/', 2);
-    DB.DBA.XML_SET_NS_DECL ('order',        'http://^{URIQADefaultHost}^/schemas/progress/isports/order/', 2);
-    DB.DBA.XML_SET_NS_DECL ('item',         'http://^{URIQADefaultHost}^/schemas/progress/isports/item/', 2);
-    DB.DBA.XML_SET_NS_DECL ('orderline',    'http://^{URIQADefaultHost}^/schemas/progress/isports/order_line/', 2);
-    DB.DBA.XML_SET_NS_DECL ('invoice',      'http://^{URIQADefaultHost}^/schemas/progress/isports/invoice/', 2);
-    DB.DBA.XML_SET_NS_DECL ('localdefault', 'http://^{URIQADefaultHost}^/schemas/progress/isports/local_default/', 2);
-    DB.DBA.XML_SET_NS_DECL ('refcall',      'http://^{URIQADefaultHost}^/schemas/progress/isports/ref_call/', 2);
-    DB.DBA.XML_SET_NS_DECL ('salesrep',     'http://^{URIQADefaultHost}^/schemas/progress/isports/salesrep/', 2);
-    DB.DBA.XML_SET_NS_DECL ('state',        'http://^{URIQADefaultHost}^/schemas/progress/isports/state/', 2);
-
-# RDF Insert Methods in Virtuoso
-
-## Using API functions
-
-  - [Using the DB.DBA.TTLP() function](#rdfapidataimportttlp)
-    
-      - Note: use this function for loading Turtle
-
-  - [Using the DB.DBA.TTLP\_MT() function](#rdfapidataimportttlpmt)
-    
-      - Note: use this function for loading triples from file on
-        multiple threads
-
-  - [Using the DB.DBA.RDF\_LOAD\_RDFXML\_MT()
-    function](#rdfapidataimportxmlttlpmt)
-    
-      - Note: Use this function for loading large resources when
-        transactional integrity is not important (loading of a single
-        resource may take more than one transaction)
-
-  - [Using the DB.DBA.RDF\_TTL2HASH()
-    function](#rdfapidataimportttlphash)
-    
-      - Note: use this function to get dictionary of triples in 'long
-        valmode'.
-
-  - [Using the DB.DBA.RDF\_LOAD\_RDFXML()
-    function](#rdfapidataimportloadrdfxml)
-    
-      - For loading RDF/XML, the best way is to split the data to be
-        loaded into multiple streams and load these in parallel using
-        this function.
-
-See [more details](#rdfperfloading) for loading Performance Tuning
-specifics.
-
-## SPARQL endpoint REST API
-
-With POST can be accomplished SPARQL Insert/Update etc.
-
-The result is in the rdf\_quad.
-
-With GET Methods you can get the triples which are saved.
-
-*Examples:*
-
-*Example 1:*
-
-Create a DAV collection xx for user demo with password demo.
-
-Execute the following command:
-
-    curl -i -d "INSERT {<http://demo.openlinksw.com/DAV/home/demo_about.rdf>
-    <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/ns#User>}" -u "demo:demo"
-    -H "Content-Type: application/sparql-query" http://example.com/DAV/xx/yy
-
-The response should be:
-
-    HTTP/1.1 201 Created
-    Server: Virtuoso/05.00.3023 (Win32) i686-generic-win-32  VDB
-    Connection: Keep-Alive
-    Content-Type: text/html; charset=ISO-8859-1
-    Date: Fri, 28 Dec 2007 12:50:12 GMT
-    Accept-Ranges: bytes
-    MS-Author-Via: SPARQL
-    Content-Length: 0
-
-The result in the DAV/xx location will be a new WebDAV resource with
-name "yy" containing the inserted RDF:
-
-    <?xml version="1.0" encoding="utf-8" ?>
-    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <rdf:Description
-    rdf:about="http://demo.openlinksw.com/DAV/home/demo_about.rdf">
-    <ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    rdf:resource="http://rdfs.org/sioc/ns#User"/>
-    </rdf:Description>
-    </rdf:RDF>
-
-*Example 2:*
-
-Create a DAV collection, for ex. with name "test" for user ( for ex.
-demo).
-
-Execute the following command:
-
-    curl -i -d "INSERT IN GRAPH <http://mygraph.com>
-    { <http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this>
-      <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
-      <http://rdfs.org/sioc/ns#User> .
-      <http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this>
-      <http://www.w3.org/2000/01/rdf-schema#label>
-      <Kingsley Uyi Idehen> .
-      <http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this>
-      <http://rdfs.org/sioc/ns#creator_of>
-    
-    <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300>
-      } " -u "demo:demo" -H "Content-Type: application/sparql-query" http://example.com/DAV/home/demo/test/myrq
-
-As result the response will be:
-
-    HTTP/1.1 201 Created
-    Server: Virtuoso/05.00.3023 (Win32) i686-generic-win-32  VDB
-    Connection: Keep-Alive
-    Content-Type: text/html; charset=ISO-8859-1
-    Date: Thu, 20 Dec 2007 16:25:25 GMT
-    Accept-Ranges: bytes
-    MS-Author-Via: SPARQL
-    Content-Length: 0
-
-Now let's check the inserted triples. Go to the sparql endpoint, i.e.
-http://example.com/sparql and:
-
-1.  Enter for Default Graph URI:
-    
-        http://mygraph.com
-
-2.  Enter in the Query area:
-    
-        SELECT * WHERE {?s ?p ?o}
-
-3.  Click the button "Run Query"
-
-4.  As result will be shown the inserted triples:
-    
-        s                                                             p                                                 o
-        http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this   http://www.w3.org/1999/02/22-rdf-syntax-ns#type   http://rdfs.org/sioc/ns#User
-        http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this   http://www.w3.org/2000/01/rdf-schema#label           Kingsley
-        http://www.openlinksw.com/dataspace/person/kidehen@openlinksw.com#this   http://rdfs.org/sioc/ns#creator_of                http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300
-
-## HTTP PUT using Content-Type: application/rdf+xml
-
-The URI in a PUT request identifies the entity enclosed with the
-request. Therefore using HTTP PUT is a more useful and meaningful
-command than using POST (which is more about submitting data to a
-script).
-
-*Example:*
-
-Suppose there is myfoaf.rdf file with the following content:
-
-    <rdf:RDF xmlns="http://www.example/jose/foaf.rdf#"
-        xmlns:foaf="http://xmlns.com/foaf/0.1/"
-        xmlns:log="http://www.w3.org/2000/10/swap/log#"
-        xmlns:myfoaf="http://www.example/jose/foaf.rdf#"
-        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    
-        <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#jose">
-            <foaf:homepage rdf:resource="http://www.example/jose/"/>
-            <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#juan"/>
-            <foaf:name>Jose Jimen~ez</foaf:name>
-            <foaf:nick>Jo</foaf:nick>
-            <foaf:workplaceHomepage rdf:resource="http://www.corp.example/"/>
-        </foaf:Person>
-    
-        <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#juan">
-            <foaf:mbox rdf:resource="mailto:juan@mail.example"/>
-        </foaf:Person>
-    
-        <foaf:Person rdf:about="http://www.example/jose/foaf.rdf#julia">
-            <foaf:mbox rdf:resource="mailto:julia@mail.example"/>
-        </foaf:Person>
-    
-        <rdf:Description rdf:about="http://www.example/jose/foaf.rdf#kendall">
-            <foaf:knows rdf:resource="http://www.example/jose/foaf.rdf#edd"/>
-        </rdf:Description>
-    </rdf:RDF>
-
-Now let's upload the myfoaf.rdf file to destination server
-demo.openlinksw.com for user demo:
-
-    curl -T myfoaf.rdf http://demo.openlinksw.com/DAV/home/demo/rdf_sink/myfoaf.rdf -u demo:demo
-
-As result the response should be:
-
-    <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-    <HTML>
-    <HEAD>
-      <TITLE>201 Created</TITLE>
-    </HEAD>
-    <BODY>
-      <H1>Created</H1>
-      Resource /DAV/home/demo/rdf_sink/ myfoaf.rdf has been created.
-    </BODY>
-    </HTML>
-
-Then you can execute:
-
-    curl -F "query=SELECT DISTINCT ?p FROM <http://demo.openlinksw.com/DAV/home/demo/rdf_sink/> WHERE {?s ?p ?o}" http://demo.openlinksw.com/sparql
-
-The result should be:
-
-    <?xml version="1.0" ?>
-    <sparql xmlns="http://www.w3.org/2005/sparql-results#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
-     <head>
-      <variable name="p"/>
-     </head>
-     <results distinct="false" ordered="true">
-      <result>
-       <binding name="p"><uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri></binding>
-      </result>
-      <result>
-       <binding name="p"><uri>http://xmlns.com/foaf/0.1/nick</uri></binding>
-      </result>
-      <result>
-       <binding name="p"><uri>http://xmlns.com/foaf/0.1/name</uri></binding>
-      </result>
-      <result>
-       <binding name="p"><uri>http://xmlns.com/foaf/0.1/homepage</uri></binding>
-      </result>
-      <result>
-       <binding name="p"><uri>http://xmlns.com/foaf/0.1/knows</uri></binding>
-      </result>
-      <result>
-       <binding name="p"><uri>http://xmlns.com/foaf/0.1/workplaceHomepage</uri></binding>
-      </result>
-      <result>
-       <binding name="p"><uri>http://xmlns.com/foaf/0.1/mbox</uri></binding>
-      </result>
-     </results>
-    </sparql>
-
-Other examples with curl:
-
-    curl -F "query=SELECT distinct ?Concept FROM <http://dbpedia.org> WHERE {?s a ?Concept} limit 10" http://dbpedia.org/sparql
-
-    curl -F "query=SELECT distinct ?Concept FROM <http://example.com/dataspace/person/kidehen> WHERE {?s a ?Concept} limit 10" http://demo.openlinksw.com/sparql
-
-    curl -F "query=SELECT distinct ?Concept FROM <http://data.openlinksw.com/oplweb/product_family/virtuoso> WHERE {?s a ?Concept} limit 10" http://demo.openlinksw.com/sparql
-
-    curl -F "query=SELECT distinct ?Concept FROM <http://openlinksw.com/dataspace/organization/openlink> WHERE {?s a ?Concept} limit 10" http://demo.openlinksw.com/sparql
-
-## SPARQL Insert using LOAD
-
-SPARQL INSERT operation can be done using the LOAD features:
-
-``` 
-
-SPARQL INSERT INTO <..> { .... } [[FROM ...] { ... }]
-
-SPARQL LOAD <x> [INTO <y>]
-
--- <ResourceURL> will be the Graph IRI of the loaded data:
-SPARQL LOAD <ResourceURL>
-```
-
-Examples:
-
-1.  Load from ISQL:
-    
-        SPARQL insert in graph <http://mygraph.com>
-        {
-          <http://example.com/dataspace/Kingsley#this>
-          <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
-          <http://rdfs.org/sioc/ns#User> .
-        
-          <http://example.com/dataspace/Kingsley#this>
-          <http://rdfs.org/sioc/ns#id>
-          <Kingsley> .
-        
-          <http://example.com/dataspace/Caroline#this>
-          <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
-          <http://rdfs.org/sioc/ns#User> .
-        
-         <http://example.com/dataspace/Caroline#this>
-          <http://rdfs.org/sioc/ns#id>
-          <Caroline> .
-        
-           <http://example.com/dataspace/Matt#this>
-          <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
-          <http://rdfs.org/sioc/ns#User> .
-        
-          <http://example.com/dataspace/Matt#this>
-          <http://rdfs.org/sioc/ns#id>
-          <Matt> .
-        
-           <http://example.com/dataspace/demo#this>
-          <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
-          <http://rdfs.org/sioc/ns#User> .
-        
-          <http://example.com/dataspace/demo#this>
-          <http://rdfs.org/sioc/ns#id>
-          <demo> .};
-
-2.  Load from .rq file:
-    
-    1.  Create DAV collection which is visible to public, for ex:
-        http://example.com/DAV/tmp
-    
-    2.  Upload to the DAV collection the following file for ex. with
-        name listall.rq and with the following content:
-        
-            SPARQL
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            PREFIX sioc: <http://rdfs.org/sioc/ns#>
-            SELECT ?x ?p ?o
-            FROM <http://mygraph.com>
-            WHERE
-              {
-                ?x rdf:type sioc:User .
-                ?x ?p ?o.
-                ?x sioc:id ?id .
-                FILTER REGEX(str(?id), "^King")
-              }
-            ORDER BY ?x
-    
-    3.  Execute from ISQL the following command:
-        
-            SQL>SPARQL
-            load bif:concat ("http://", bif:registry_get("URIQADefaultHost"), "/DAV/tmp/listall.rq") into graph <http://myNewGraph.com>;
-        
-        As result should be shown:
-        
-            callret-0
-            VARCHAR
-            _______________________________________________________________________________
-            
-            Load <http://example.com/DAV/tmp/listall.rq> into graph <http://myNewGraph.com> -- done
-            
-            1 Rows. -- 321 msec.
-
-3.  Load from Resource URL:
-    
-        SQL> SPARQL LOAD <http://www.w3.org/People/Berners-Lee/card#i>;
-        callret-0
-        VARCHAR
-        _______________________________________________________________________________
-        
-        Load <http://www.w3.org/People/Berners-Lee/card#i> into graph <http://www.w3.org/People/Berners-Lee/card#i> -- done
-        
-        1 Rows. -- 703 msec.
-        SQL>
-
-## SPARQL Insert via /sparql endpoint
-
-SPARQL INSERT operation can be sent to a web service endpoint as a
-single statement and executed in sequence.
-
-*Example:*
-
-Using the Virtuoso ISQL tool or using the /sparql UI at
-http://host:port/sparql, execute the following:
-
-1.  Insert into graph http://BookStore.com 3 triples:
-    
-        SQL>SPARQL insert in graph <http://BookStore.com>
-        { <http://www.dajobe.org/foaf.rdf#i> <http://purl.org/dc/elements/1.1/date> <1999-04-01T00:00:00> .
-          <http://www.w3.org/People/Berners-Lee/card#i> <http://purl.org/dc/elements/1.1/date> <1998-05-03T00:00:00> .
-          <http://www.w3.org/People/Connolly/#me> <http://purl.org/dc/elements/1.1/date> <2001-02-08T00:00:00> };
-
-2.  As result will be shown the message:
-    
-        SQL>Insert into <http://BookStore.com>
-        3 triples -- done
-
-3.  Next we will select all triples from the graph http://BookStore.com:
-    
-        SQL>SPARQL SELECT * FROM <http://BookStore.com> WHERE {?s ?p ?o};
-
-4.  As result will be shown:
-    
-        s                                              p                                       o
-        VARCHAR                                        VARCHAR                                 VARCHAR
-        _______________________________________________________________________________
-        
-        http://www.w3.org/People/Berners-Lee/card#i    http://purl.org/dc/elements/1.1/date    1998-05-03T00:00:00
-        http://www.w3.org/People/Connolly/#me          http://purl.org/dc/elements/1.1/date    2001-02-08T00:00:00
-        http://www.dajobe.org/foaf.rdf#i               http://purl.org/dc/elements/1.1/date    1999-04-01T00:00:00
-        
-        3 Rows. -- 0 msec.
-
-5.  Now let's insert into graph another http://NewBookStore.com graph's
-    values:
-    
-        SQL>SPARQL
-        PREFIX dc:  <http://purl.org/dc/elements/1.1/>
-        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-        INSERT INTO GRAPH <http://NewBookStore.com> { ?book ?p ?v }
-        WHERE
-          { GRAPH  <http://BookStore.com>
-           { ?book dc:date ?date
-             FILTER ( xsd:dateTime(?date) < xsd:dateTime("2000-01-01T00:00:00")).
-             ?book ?p ?v.
-           }
-          };
-
-6.  As result will be shown:
-    
-        callret-0
-        VARCHAR
-        _______________________________________________________________________________
-        
-        Insert into <http://NewBookStore.com>, 2 triples -- done
-
-7.  Finally we will check the triples from the graph NewBookStore.com:
-    
-        SQL> SPARQL
-        SELECT *
-        FROM <http://NewBookStore.com>
-        WHERE {?s ?p ?o};
-
-8.  As result will be shown:
-    
-        s                                             p                                      o
-        VARCHAR                                       VARCHAR                                VARCHAR
-        _______________________________________________________________________________
-        
-        http://www.w3.org/People/Berners-Lee/card#i   http://purl.org/dc/elements/1.1/date   1998-05-03T00:00:00
-        http://www.dajobe.org/foaf.rdf#i              http://purl.org/dc/elements/1.1/date   1999-04-01T00:00:00
-        
-        2 Rows. -- 10 msec.
-
-## SPARQL Insert via SPARQL endpoint REST API and ODS wiki
-
-With HTTP Post and ODS wiki can be written an rdf document and
-respectively to be performed over it INSERT/UPDATE action.
-
-You can write to a file using SIOC terms for ODS-Wiki
-
-You can check with sparql the inserted / updated triples in the Quad
-Store.
-
-*Example:*
-
-Suppose there is ODS user test3 with ODS password 1, which has testWiki
-wiki instance.
-
-Execute the following:
-
-    curl -i -d "INSERT {<http://example.com/dataspace/test3/wiki/testWiki> <http://atomowl.org/ontologies/atomrdf#contains> <http://example.com/dataspace/test3/wiki/testWiki/MyTest> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#has_container> <http://example.com/dataspace/test3/wiki/testWiki> . <http://example.com/dataspace/test3/wiki/testWiki> <http://atomowl.org/ontologies/atomrdf#entry> <http://example.com/dataspace/test3/wiki/testWiki/MyTest> . <http://example.com/dataspace/test3/wiki/testWiki> <http://rdfs.org/sioc/ns#container_of> <http://example.com/dataspace/test3/wiki/testWiki/MyTest> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#topic>  <http://example.com/dataspace/test3/wiki/testWiki> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://atomowl.org/ontologies/atomrdf#source> <http://example.com/dataspace/test3/wiki/testWiki> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://rdfs.org/sioc/types#Comment> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://atomowl.org/ontologies/atomrdf#Entry> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/2000/01/rdf-schema#label> 'MyTest' . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://atomowl.org/ontologies/atomrdf#Link> . <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#content> <test>}" -u "test3:1" -H "Content-Type: application/sparql-query" http://example.com/DAV/home/test3/wiki/testWiki/MyTest
-
-As result we should have 2 files created:
-
-  - In the user DAV folder "DAV/home/test3/wiki/testWiki/" will be
-    created a file "MyTest" with type "application/sparql-query". You
-    can view the content of this file from the Conductor UI or from the
-    user's Briefcase UI, path "DAV/home/test3/wiki/testWiki". Its
-    content will be:
-    
-        <?xml version="1.0" encoding="utf-8" ?>
-        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki"><ns0pred:entry xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://example.com/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:label xmlns:ns0pred="http://www.w3.org/2000/01/rdf-schema#">MyTest</ns0pred:label></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://atomowl.org/ontologies/atomrdf#Link"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://rdfs.org/sioc/types#Comment"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:type xmlns:ns0pred="http://www.w3.org/1999/02/22-rdf-syntax-ns#" rdf:resource="http://atomowl.org/ontologies/atomrdf#Entry"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:has_container xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://example.com/dataspace/test3/wiki/testWiki"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki"><ns0pred:container_of xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://example.com/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki"><ns0pred:contains xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://example.com/dataspace/test3/wiki/testWiki/MyTest"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:content xmlns:ns0pred="http://rdfs.org/sioc/ns#">test</ns0pred:content></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:topic xmlns:ns0pred="http://rdfs.org/sioc/ns#" rdf:resource="http://example.com/dataspace/test3/wiki/testWiki"/></rdf:Description>
-        <rdf:Description rdf:about="http://example.com/dataspace/test3/wiki/testWiki/MyTest"><ns0pred:source xmlns:ns0pred="http://atomowl.org/ontologies/atomrdf#" rdf:resource="http://example.com/dataspace/test3/wiki/testWiki"/></rdf:Description>
-        </rdf:RDF>
-
-  - To the user's wiki instance will be added a new WikiWord "MyTest"
-    with content the value of the SIOC term attribute "content":
-    
-        <http://example.com/dataspace/test3/wiki/testWiki/MyTest> <http://rdfs.org/sioc/ns#content> <test>
-        i.e. the content will be "test".
-
-Now let's check what data was inserted in the Quad Store:
-
-1.  Go to the sparql endpoint, i.e. for ex. to http://example.com/sparql
-
-2.  Enter for Default Graph URI:
-    
-        http://example.com/DAV/home/test3/wiki/testWiki/MyTest
-
-3.  Enter for Query text:
-    
-        SELECT * WHERE {?s ?p ?o}
-
-4.  Click the "Run Query" button.
-
-5.  As result will be shown the inserted triples:
-    
-        s                                                       p                                                o
-        http://example.com/dataspace/test3/wiki/testWiki        http://rdfs.org/sioc/ns#container_of         http://example.com/dataspace/test3/wiki/testWiki/MyTest
-        http://example.com/dataspace/test3/wiki/testWiki        http://atomowl.org/ontologies/atomrdf#entry      http://example.com/dataspace/test3/wiki/testWiki/MyTest
-        http://example.com/dataspace/test3/wiki/testWiki        http://atomowl.org/ontologies/atomrdf#contains   http://example.com/dataspace/test3/wiki/testWiki/MyTest
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  http://rdfs.org/sioc/types#Comment
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  http://atomowl.org/ontologies/atomrdf#Entry
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/1999/02/22-rdf-syntax-ns#type  http://atomowl.org/ontologies/atomrdf#Link
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://www.w3.org/2000/01/rdf-schema#label          MyTest
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://rdfs.org/sioc/ns#has_container       http://example.com/dataspace/test3/wiki/testWiki
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://rdfs.org/sioc/ns#content                 test
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://rdfs.org/sioc/ns#topic               http://example.com/dataspace/test3/wiki/testWiki
-        http://example.com/dataspace/test3/wiki/testWiki/MyTest  http://atomowl.org/ontologies/atomrdf#source     http://example.com/dataspace/test3/wiki/testWiki
-
-## Using WebDAV
-
-Example using WebDAV (mount folder to DAV and dump; if this is the
-rdf\_sink the Quad Store is updated automatically, or you can load from
-DAV manually to quad store)
-
-*Example:*
-
-*Example 1: Using ODS Briefcase*
-
-1.  Go to your ods location, for ex. http://example.com/ods
-
-2.  Register user, for ex. user test1
-
-3.  Login if not already in ods
-
-4.  Go to ODS -\> Briefcase
-
-5.  Go to ODS -\> Briefcase
-
-6.  Click the "New folder" icon from the Main Briefcase horizontal
-    navigation
-
-7.  Enter for name for ex. "mytest" and click the "Create" button.
-    
-    ![Using Briefcase UI](ui/uc6.png)
+    ![Using Briefcase UI](./images/ui/uc6.png)
 
 8.  Go to folder "mytest" and click the click the "Upload" icon from the
     Main Briefcase horizontal navigation
 
 9.  Enter for name for ex. "mytest" and click the "Create" button.
     
-    ![Using Briefcase UI](ui/uc7.png)
+    ![Using Briefcase UI](./images/ui/uc7.png)
 
 10. In the shown form set:
     
@@ -25086,16 +11786,16 @@ As result should be shown:
 
 3.  Go to Linked Data -\> Quad Store Upload
     
-    ![Quad Store Upload](ui/uc1.png)
+    ![Quad Store Upload](./images/ui/uc1.png)
 
 4.  In the shown form click the "Browse" button in order to select a
     file, for ex. the file jose.rdf and set the "RDF IRI\*"
     
-    ![Quad Store Upload](ui/uc2.png)
+    ![Quad Store Upload](./images/ui/uc2.png)
 
 5.  Click the "Upload" button.
     
-    ![Quad Store Upload](ui/uc3.png)
+    ![Quad Store Upload](./images/ui/uc3.png)
 
 ## Using Virtuoso Crawler
 
@@ -25106,23 +11806,23 @@ non-RDF but get RDF and this can go to the Quad Store).
 
 1.  Go to Conductor UI. For ex. at http://example.com/conductor :
     
-    ![Using Virtuoso Crawler](ui/rdfinsert11.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert11.png)
 
 2.  Enter admin user credentials:
     
-    ![Using Virtuoso Crawler](ui/rdfinsert12.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert12.png)
 
 3.  Go to tab Web Application Server:
     
-    ![Using Virtuoso Crawler](ui/rdfinsert13.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert13.png)
 
 4.  Go to tab Content Imports:
     
-    ![Using Virtuoso Crawler](ui/rdfinsert14.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert14.png)
 
 5.  Click the "New Target" button:
     
-    ![Using Virtuoso Crawler](ui/rdfinsert15.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert15.png)
 
 6.  In the shown form set respectively:
     
@@ -25148,24 +11848,24 @@ non-RDF but get RDF and this can go to the Quad Store).
     8.  Note: when selected "Convert Link", then all HREFs in the local
         stored content will be relative.
     
-    ![Using Virtuoso Crawler](ui/rdfinsert16.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert16.png)
     
-    ![Using Virtuoso Crawler](ui/rdfinsert17.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert17.png)
 
 7.  Click the button "Create":
     
-    ![Using Virtuoso Crawler](ui/rdfinsert19.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert19.png)
 
 8.  Click the button "Import Queues":
     
-    ![Using Virtuoso Crawler](ui/rdfinsert20.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert20.png)
 
 9.  For "Robot target" with label "Tim Berners-Lee's electronic Business
     Card" click "Run".
 
 10. As result should be shown the number of the pages retrieved.
     
-    ![Using Virtuoso Crawler](ui/rdfinsert2.png)
+    ![Using Virtuoso Crawler](./images/ui/rdfinsert2.png)
 
 *Example: Use of schedular to interface Virtuoso Quad Store with PTSW
 using the following program:*
@@ -25472,522 +12172,20 @@ products supports a number of routes for creating or consuming Linked
 Data. The Sponger provides a key platform for developers to generate
 quality data meshes from unstructured or semi-structured data sources.
 
-![OpenLink Linked Data generation
-options](Sponger_LinkedDataGenOptions_2014_v3.png)
 
-Architecturally, the Sponger is comprised of a number of Cartridges two
-types of cartridges: Extractor and Meta Cartridges. Extractor Cartridges
-focus on data extraction and transformation services while the Meta
-Cartridges provide lookups and joins across other linked data spaces and
-Web 2.0 APIs. Both cartridge types are themselves comprised of a data
-extractors and RDF Schema/Ontology Mapper components.
-
-Cartridges are is highly customizable. Custom cartridges can be
-developed using any language supported by the Virtuoso Server Extensions
-API enabling structured linked data generation from resource types not
-available in the default Sponger Cartridge collection bundled -- as part
-of the Virtuoso [Cartridges VAD package](#) .
-
-![Virtuoso metadata extraction & RDF structured data
-generation](linked_data_gen_opts4.png)
-
-![Virtuoso metadata extraction & RDF structured data
-generation](linked_data_gen_opts4.png)
-
-## Why is it Important?
-
-A majority of the worlds data naturally resides in non RDF form at the
-current time. The Sponger delivers middleware that accelerates the
-bootstrap of the Semantic Data Web by generating RDF from non RDF data
-sources, unobtrusively. This "Swiss army knife" for on-the-fly Linked
-Data generation provides a bridge between the traditional Document Web
-and the Linked Data Web ("Data Web").
-
-Sponging data from non-RDF Web sources and converting it to RDF exposes
-the data in a canonical form for querying and inference, and enables
-fast and easy construction of linked data driven mesh-ups as opposed to
-code driven Web 2.0 mash-ups.
-
-The RDF extraction and instance data generation products that offer
-functionality demonstrated by the Sponger are also commonly referred to
-as RDFizers.
-
-## How Does It Work?
-
-When an RDF aware client requests data from a network accessible
-resource via the Sponger the following events occur:
-
-  - A requests in made for data in RDF form, and if RDF is returned
-    nothing further happens
-
-  - If RDF isn't returned, then the Sponger passes the data through a
-    Metadata Extraction Pipeline process (using Metadata Extractors)
-
-  - The extracted data is transformed to RDF via a Mapping Pipeline
-    process (RDF is extracted by way of Ontology matching and mapping)
-    that results in RDF Entities (instance data) generation
-
-  - RDF Entities are returned to the client
-
-The imported data forms a local cache and its invalidation rules conform
-to those of traditional HTTP clients (Web Browsers). Thus, expiration
-time is determined based on subsequent data fetches of the same resource
-(note: the first data load will record the 'expires' header) with
-current time compared to expiration time stored in the local cache. If
-HTTP 'expires' header data isn't returned by the source data server,
-then the "Sponger" will derive it's own invalidation time frame by
-evaluating the 'date' header and 'last-modified' HTTP headers.
-Irrespective of path taken, local cache invalidation is driven by an
-assessment of current time relative to recorded expiration time.
-
-To manage the cache expiration, set the *MinExpiration* parameter in
-your Virtuoso.ini file.
-
-Read full description of the parameter in the [\[SPARQL\] ini
-section](#ini_sparql) .
-
-Designed with a pluggable architecture, the Sponger's core functionality
-is provided by Cartridges. Each cartridge includes Data Extractors which
-extract data from one or more data sources, and Ontology Mappers which
-map the extracted data to one or more ontologies/schemas, and route to
-producing RDF Linked Data.
-
-The Schema Mappers are typically XSLT (e.g. GRDDL and other OpenLink
-Mapping Schemas) or Virtuoso PL based. The Metadata Extractors may be
-developed in Virtuoso PL, C/C++, Java, or any other language that can be
-integrated into the Virtuoso via it's server extensions APIs.
-
-The Sponger also includes a pluggable name resolution mechanism that
-enables the development of Custom Resolvers for naming schemes (e.g.
-URNs) associated with protocols beyond HTTP. Examples of custom
-resolvers include:
-
-  - [LSID](#)
-
-  - [DOI](#)
-
-## Installation Steps
-
-1.  Download the [Cartridges VAD package](#) .
-
-2.  Install the cartridges\_dav.vad package by using the Conductor UI or
-    by using iSQL:
-    
-        SQL> DB.DBA.VAD_INSTALL('tmp/cartridges_dav.vad',0);
-        SQL_STATE  SQL_MESSAGE
-        VARCHAR  VARCHAR
-        _______________________________________________________________________________
-        
-        00000    No errors detected
-        00000    Installation of "Linked Data Cartridges" is complete.
-        00000    Now making a final checkpoint.
-        00000    Final checkpoint is made.
-        00000    SUCCESS
-        
-        6 Rows. -- 1078 msec.
-
-3.  [Cartridge Configuration](#virtuosospongercreatecustcartrrgst)
-    
-      - [Extractor Cartridges](#virtuosospongercartridgesextr)
-    
-      - [Meta Cartridges](#virtuosospongercartridgesmeta)
-
-See Also: [Cartridges Package content
-description.](#virtuosospongerrdfmapperspackage)
-
-## Using The Sponger
-
-The Sponger can be invoked via the following mechanisms:
-
-1.  [Virtuoso SPARQL query processor](#virtuosospongerusageprocessor)
-
-2.  [RDF Proxy Service](#virtuosospongerusageproxy)
-
-3.  [OpenLink RDF client applications](#virtuosospongerusageclapp)
-
-4.  [ODS-Briefcase (Virtuoso WebDAV)](#virtuosospongerusagebrief)
-    
-    \- a component of the OpenLink Data Spaces distributed collaborative
-    application platform
-
-5.  [Directly via Virtuoso PL](#virtuosospongerusagedirect)
-
-### SPARQL Query Processor IRI Dereferencing
-
-The Sponger is transparently integrated into the Virtuoso SPARQL query
-processor, where it supports IRI dereferencing.
-
-Virtuoso extends the SPARQL Query Language such that it is possible to
-download RDF resources from a given IRI, parse, and then store the
-resulting triples in a graph, with all three operations performed during
-the SPARQL query-execution process. The IRI/URI of the graph used to
-store the triples is usually equal to the URL where the resources are
-downloaded from, consequently the feature is known as "IRI/URI
-dereferencing". If a SPARQL query instructs the SPARQL processor to
-retrieve the target graph into local storage, then the SPARQL sponger
-will be invoked.
-
-The SPARQL extensions for IRI dereferencing are described below.
-Essentially these enable downloading and local storage of selected
-triples either from one or more named graphs, or based on a proximity
-search from a starting URI for entities matching the select criteria and
-also related by the specified predicates, up to a given depth. For full
-details see section [Linked Data - IRI
-Dereferencing](#rdfiridereferencing) .
-
-Note: For brevity, any reference to URI/IRIs above or in subsequent
-sections implies an HTTP URI/IRI, where IRI is an internationalized URI.
-Similarly, in the context of the Sponger, the term IRI in the Virtuoso
-reference documentation should be taken to mean an HTTP IRI.
-
-#### SPARQL Extensions for IRI Dereferencing of FROM Clauses
-
-In addition to the "define get:..." SPARQL extensions for IRI
-dereferencing in FROM clauses, Virtuoso supports dereferencing SPARQL
-IRIs used in the WHERE clause (graph patterns) of a SPARQL query via a
-set of "define input:grab-..." pragmas.
-
-Consider an RDF resource which describes a member of a contact list,
-user1, and also contains statements about other users, user2 anduser3 ,
-known to him. Resource user3 in turn contains statements about user4 and
-so on. If all the data relating to these users were loaded into
-Virtuoso's RDF database, the query to retrieve the details of all the
-users could be quite simple. e.g.:
-
-    sparql
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    select ?id ?firstname ?nick
-    where
-      {
-        graph ?g
-          {
-            ?id rdf:type foaf:Person .
-            ?id foaf:firstName ?firstname .
-            ?id foaf:knows ?fn .
-            ?fn foaf:nick ?nick .
-          }
-       }
-    limit 10;
-
-But what if some or all of these resources were not present in
-Virtuoso's quad store? The highly distributed nature of the Linked Data
-Web makes it highly likely that these interlinked resources would be
-spread across several data spaces. Virtuoso's 'input:grab-...'
-extensions to SPARQL enable IRI dereferencing in such a way that all
-appropriate Network resources are loaded, i.e. "being fetched", during
-query execution, even if some of the Network resources are not known
-beforehand. For any particular resource matched, and if necessary
-downloaded, by the query, it is possible to download related resources
-via a designated predicate path(s) to a specifiable depth i.e. number of
-'hops', distance, or degrees of separation (i.e compute Transitive
-Closures in SPARQL).
-
-Using Virtuoso's 'input:grab-' pragmas to enable sponging, the above
-query might be recast to:
-
-    sparql
-    define input:grab-var "?more"
-    define input:grab-depth 10
-    define input:grab-limit 100
-    define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    
-    select ?id ?firstname ?nick
-    where {
-        graph ?g {
-                   ?id rdf:type foaf:Person .
-                   ?id foaf:firstName ?firstname .
-                   ?id foaf:knows ?fn .
-                   ?fn foaf:nick ?nick .
-                   optional { ?id rdfs:SeeAlso ?more }
-                }
-    }
-    limit 10;
-
-Another example showing a designated predicate traversal path via the
-input:grab-seealso extension is:
-
-    sparql
-    define input:grab-iri <http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/sioc.ttl>
-    define input:grab-var "id"
-    define input:grab-depth 10
-    define input:grab-limit 100
-    define input:grab-base "http://www.openlinksw.com/dataspace/kidehen@openlinksw.com/weblog/kidehen@openlinksw.com%27s%20BLOG%20%5B127%5D/1300"
-    define input:grab-seealso <foaf:maker>
-    prefix foaf: <http://xmlns.com/foaf/0.1/>
-    
-    select ?id
-    where
-      {
-        graph ?g
-          {
-            ?id a foaf:Person .
-          }
-      }
-    limit 10;
-
-A list of the input:grab pragmas is given below:
-
-  - input:grab-var specifies the name of the SPARQL variable whose
-    values should be used as IRIs of resources that should be
-    downloaded.
-
-  - input:grab-iri specifies an IRI that should be retrieved before
-    executing the rest of the query, if it is not in the quad store
-    already. (This pragma can be included multiple times).
-
-  - input:grab-seealso (or its synonym input:grab-follow-predicate)
-    specifies a predicate IRI to be used when traversing a graph. (This
-    pragma can be included multiple times).
-
-  - input:grab-limit sets the maximum number of resources (graph subject
-    or object nodes) to be retrieved from a target graph.
-
-  - input:grab-depth sets the maximum 'degrees of separation' or links
-    (predicates) between nodes in the target graph.
-
-  - input:grab-all "yes" instructs the SPARQL processor to dereference
-    everything related to the query. All variables and literal IRIs in
-    the query become values for input:grab-var and input:grab-iri. The
-    resulting performance may be very bad.
-
-  - input:grab-base specifies the base IRI to use when converting
-    relative IRIs to absolute. (Default: empty string).
-
-  - input:grab-destination overrides the default IRI dereferencing and
-    forces all retrieved triples to be stored in the specified graph.
-
-  - input:grab-loader identifies the procedure used to retrieve each
-    resource via HTTP, parse and store it. (Default:
-    DB.DBA.RDF\_SPONGE\_UP)
-
-  - input:grab-resolver identifies the procedure that resolves IRIs and
-    determines the HTTP method of retrieval. (Default:
-    DB.DBA.RDF\_GRAB\_RESOLVER\_DEFAULT)
-
-#### SPARQL Processor Usage Example
-
-Network Resource Fetch can be performed directly from within the SPARQL
-processor.
-
-After logging into Virtuoso's Conductor interface, the following query
-can be issued from the Interactive SQL (iSQL) panel:
-
-    sparql
-    define get:uri "http://www.ivan-herman.net/foaf.html"
-    define get:soft "soft"
-    select * from <http://mygraph> where {?s ?p ?o}
-
-Here the sparql keyword invokes the SPARQL processor from the SQL
-interface and the RDF data fetched from page
-http://www.ivan-herman.net/foaf.html is loaded into the local RDF quad
-store as graph http://mygraph .
-
-The new graph can then be queried using the basic SPARQL client normally
-available in a default Virtuoso installation at
-http://example.com/sparql/. e.g.:
-
-    select * from <http://mygraph> where {?s ?p ?o}
-
-### RDF Proxy Service
-
-The Sponger's functionality is also exposed via an in-built REST style
-Web service. This web service takes a target URL and either returns the
-content "as is" or tries to transform (by sponging) to RDF. Thus, the
-proxy service can be used as a 'pipe' for RDF browsers to browse non-RDF
-sources.
-
-When the cartridges package is installed, Virtuoso reserves the path
-'/about/\[id|data|rdf|html\]/http/' for Sponger Proxy URI Service. For
-example, if a Virtuoso installation on host example.com listens for HTTP
-requests on port 8080 then client applications should use a 'service
-endpoint' string equal to
-'http://example.com:8080/about/\[id|data|rdf|html\]/http/'. If the
-cartridges package is not installed, then the service uses the path
-'/proxy/rdf/'.
-
-Note: The old Sponger Proxy URI Service pattern '/proxy/' is now
-deprecated.
-
-#### Example 1
-
-The following URLs return information about musician John Cale, gleaned
-from the MusicBrainz music metadatabase, rendered as RDF or HTML
-respectively. (The Network Resource fetched data is available in the
-HTML rendering through the foaf:primaryTopic property.)
-
-  - http://demo.openlinksw.com/about/rdf/http://musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html
-
-  - http://demo.openlinksw.com/about/html/http/musicbrainz.org/artist/72c090b6-a68e-4cb9-b330-85278681a714.html
-
-#### Example 2
-
-The file http://www.ivan-herman.net/foaf.html contains a short profile
-of the W3C Semantic Web Activity Lead Ivan Herman. This XHTML file
-contains RDF embedded as RDFa. Running the file through the Sponger via
-Virtuoso's RDF proxy service extracts the embedded FOAF data as pure
-RDF, as can be seen by executing:
-
-    $ curl -L -H "Accept:application/rdf+xml" http://linkeddata.uriburner.com/about/id/entity/http/www.ivan-herman.net/foaf.html
-    <?xml version="1.0" encoding="utf-8" ?>
-    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-      <rdf:Description rdf:about="http://linkeddata.uriburner.com/about/id/http/www.ivan-herman.net/foaf.html#Person1Stat"><scovo:dimension xmlns:scovo="http://purl.org/NET/scovo#" rdf:resource="http://rdfs.org/ns/void#numberOfResources"/></rdf:Description>
-      <rdf:Description rdf:nodeID="b145981159"><rdf:rest rdf:nodeID="b145981158"/></rdf:Description>
-      <rdf:Description rdf:about="http://linkeddata.uriburner.com/about/id/entity/http/www.mendeley.com/profiles/ivan-herman"><foaf:accountName xmlns:foaf="http://xmlns.com/foaf/0.1/">ivan-herman</foaf:accountName></rdf:Description>
-      etc ..
-      <rdf:Description rdf:nodeID="b145981130"><http-voc:elementName xmlns:http-voc="http://www.w3.org/2006/http#">text/html</http-voc:elementName></rdf:Description>
-    </rdf:RDF>
-
-(linkeddata.uriburner.com hosts a public Virtuoso instance.) Though this
-example demonstrates the action of the /about/id/entity/ service quite
-transparently, it is a basic and unwieldy way to view RDF. As described
-earlier, the OpenLink Data Explorer uses the same proxy service to
-provide a more polished means to extract and view fetched RDF data.
-
-#### Usage of the Sponger Middleware via REST patterns
-
-Delegation and proxies are part of the Internet and Web's federated
-architecture. Thus, developers of RESTful applications benefit immensely
-from the ability to leverage Sponger functionality via delegation to it
-as a proxy.
-
-The following table presents list of the supported URL parameters:
-
-| Parameter     | Value   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               | Example                                                                             |
-| ------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| *refresh*     | clean   | *Usage* : for overwriting. The 'clean' usage explicitly clears the graph i.e. will cause the Sponger to drop cache even if it is marked to be in the fly. Thus, if fetched cache by some reason is left in some inconsistent state like shutdown during Network Resource fetching, then 'clean' is required as it doesn't check cache state. *Note* : must be used with caution as other threads may be doing fetching of network resources at same time. | [Explicitly clear the graph](#)                                                     |
-| *sponger:get* | add     | *Usage* : Add new triples to named graphs, progressively. This is the default value for the parameter sponger:get. May be used together with refresh=\<seconds\> to overwrite the expiration in the cache.                                                                                                                                                                                                                                                | [Add new triples and refresh on every 10 seconds](#)                                |
-| *sponger:get* | soft    | *Usage* : Network Resource Fetch data subject to cache invalidation mode and associated rules of instance. May be used together with refresh=\<seconds\> to overwrite the expiration in the cache.                                                                                                                                                                                                                                                        | [Network Resource Fetch data with option *soft* and refresh on every 10 seconds](#) |
-| *sponger:get* | replace | *Usage* : Replace subject to cache invalidation mode and rules, but coverage includes non fetched triples if such exist in a given named graph. may be used together with refresh=\<seconds\> to overwrite the expiration in the cache.                                                                                                                                                                                                                   | [Replace data and refresh on every 10 seconds](#)                                   |
-
-### OpenLink RDF Client Applications
-
-OpenLink currently provides two main RDF client applications:
-
-  - [OpenLink Data Explorer](#) (ODE)
-
-  - [iSPARQL](#)
-
-ODE is a Linked Data explorer packaged as a Firefox plugin (support for
-other browsers is planned). iSPARQL is an interactive AJAX-based SPARQL
-query builder with support for SPARQL QBE, bundled as part of the
-[OpenLink Ajax Toolkit](#) (OAT). Both RIA clients utilise sponging
-extensively.
-
-The ODE plugin is dual faceted - RDF data can be viewed and explored
-natively, through its integral RDF browser, or, as described above,
-rendered as HTML through ODE's 'View Page Metadata' option. The
-screenshots below show ODE's RDF browser being launched through the
-'View Linked Data Sources' popup menu.
-
-![Launching ODE's RDF browser](twitter_home.png)
+![Launching ODE's RDF browser](./images/twitter_home.png)
 
 The RDF browser then displays RDF data fetched via the Crunchbase
 cartridge.
 
-![ODE RDF browser displaying Crunchbase network resource fetched
-data](twitter_ode_rdf.png)
 
-iSPARQL directs queries to the configured SPARQL endpoint. When
-targetting a Virtuoso /sparql service, Virtuoso specific sponging
-options can be enabled through the 'Preferences' dialog box.
+![Conductor's content import configuration panel](./images/fig2_top.png)
 
-The iSPARQL sponger settings are appended to SPARQL queries through the
-'should-sponge' query parameter. These are translated to IRI
-dereferencing pragmas on the server as follows:
+![Conductor's content import configuration panel](./images/fig2_bottom.png)
 
-| iSPARQL sponging setting                                                               | /sparql endpoint: "should-sponge" query parameter value | SPARQL processor directives                                                                                                                                                                                                                                        |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Use only local data                                                                    | N/A                                                     | N/A                                                                                                                                                                                                                                                                |
-| Retrieve remote RDF data for all missing source graphs                                 | soft                                                    | define get:soft "soft"                                                                                                                                                                                                                                             |
-| Retrieve all missing remote RDF data that might be useful                              | grab-all                                                | define input:grab-all "yes" define input:grab-depth 5 define input:grab-limit 100                                                                                                                                                                                  |
-| Retrieve all missing remote RDF data that might be useful including seeAlso references | grab-seealso                                            | define input:grab-all "yes" define input:grab-depth 5 define input:grab-limit 200 define input:grab-seealso \<http://www.w3.org.2000/01/rdf-schema\#seeAlso\> define input:grab-seealso \<http://xmlns.com/foaf/0.1/seeAlso\>                                      |
-| Try to download all referenced resources                                               | grab-everything                                         | define input:grab-all "yes" define input:grab-intermediate "yes" define input:grab-depth 5 define input:grab-limit 500 define input:grab-seealso \<http://www.w3.org.2000/01/rdf-schema\#seeAlso\> define input:grab-seealso \<http://xmlns.com/foaf/0.1/seeAlso\> |
+![Conductor's content import configuration panel](./images/fig2_bottom2.png)
 
-### ODS-Briefcase (Virtuoso WebDAV)
-
-ODS-Briefcase is a component of [OpenLink Data Spaces](#) (ODS), a new
-generation distributed collaborative application platform for creating
-Semantic Web presence via Data Spaces derived from weblogs, wikis, feed
-aggregators, photo galleries, shared bookmarks, discussion forums and
-more. It is also a high level interface to the Virtuoso WebDAV
-repository.
-
-ODS-Briefcase offers file-sharing functionality that includes the
-following features:
-
-  - Web brower-based interactions
-
-  - Web Services (direct use of the HTTP based WebDAV protocol)
-
-  - SPARQL query language support - all WebDAV resources are exposed as
-    SIOC ontology instance data (RDF data sets)
-
-When resources or documents are put into the ODS Briefcase and are made
-publicly readable (via a Unix-style +r permission or ACL setting) and
-the resource in question is of a supported content type, metadata is
-automatically extracted at file upload time.
-
-Note: ODS-Briefcase extracts metadata from a wide array of file formats,
-automatically.
-
-The extracted metadata is available in two forms, pure WebDAV and RDF
-(with RDF/XML or N3/Turtle serialization options), that is optionally
-synchronized with the underlying Virtuoso Quad Store.
-
-All public readable resources in WebDAV have their owner, creation time,
-update time, size and tags published, plus associated content type
-dependent metadata. This WebDAV metadata is also available in RDF form
-as a SPARQL queriable graph accessible via the SPARQL protocol endpoint
-using the WebDAV location as the RDF data set URI (graph or data source
-URI).
-
-You can also use a special RDF\_Sink folder to automate the process of
-uploading RDF resources files into the Virtuoso Quad Store via WebDAV or
-raw HTTP. The properties of the special folder control whether sponging
-(RDFization) occurs. Of course, by default, this feature is enabled
-across all Virtuoso and ODS installations (with an ODS-Briefcase Data
-Space instance enabled).
-
-#### Raw HTTP Example for Extracting Metadata using CURL
-
-    Username: demo
-    Password: demo
-    Source File: wine.rdf
-    Destination Folder:
-    http://demo.openlinksw.com/DAV/home/demo/rdf_sink/
-    Content Type: application/rdf+xml
-    
-    $ curl -v -T wine.rdf -H content-type:application/rdf+xml http://demo.openlinksw.com/DAV/home/demo/rdf_sink/ -u demo:demo
-
-Finally, you can also get RDF data into Virtuoso's Quad Store via WebDAV
-using the Virtuoso Web Crawler utility (configurable via the Virtuoso
-Conductor UI). This feature also provides the ability to enable or
-disable Sponging as depicted below.
-
-#### Sponger and ODS-Briefcase Structured Data Extractor Interrelationship
-
-As the Sponger and ODS-Briefcase both extract structured data, what is
-the relationship between these two facilities?
-
-The principal difference between the two is that the Sponger is anRDF
-data crawler & generator, whereas Briefcase's structured data extractor
-is a WebDAV resourcefilter. The Briefcase structured data extractor is
-aimed at providing RDF data from WebDAV resources. Thus, if none of the
-available Sponger cartridges are able to extract metadata and produce
-RDF structured data, the Sponger calls upon the Briefcase extractor as
-the last resort in the RDF structured data generation pipeline.
-
-![Conductor's content import configuration panel](fig2_top.png)
-
-![Conductor's content import configuration panel](fig2_bottom.png)
-
-![Conductor's content import configuration panel](fig2_bottom2.png)
-
-![Conductor's content import configuration panel](fig2_bottom3.png)
+![Conductor's content import configuration panel](./images/fig2_bottom3.png)
 
 ### Directly via Virtuoso PL
 
@@ -26669,7 +12867,7 @@ additional information gleaned from 'lookup' data sources and web
 services. Meta-cartridges are described in more detail in a later
 section.
 
-![Meta-Cartridges](ui/spong1.png)
+![Meta-Cartridges](./images/ui/spong1.png)
 
 ### Cartridges Bundled with Virtuoso
 
@@ -26684,7 +12882,7 @@ To see which cartridges are available, look at the 'Linked Data' screen
 in Conductor. This can be reached through the Linked Data -\> Sponger
 -\> Extractor Cartridges and Meta Cartridges menu items.
 
-![RDF Cartridges](ui/spong2.png)
+![RDF Cartridges](./images/ui/spong2.png)
 
 To check which version of the cartridges VAD is installed, or to upgrade
 it, refer to Conductor's 'VAD Packages' screen, reachable through the
@@ -27226,7 +13424,7 @@ container into the generated graph constituting the RDF description.
 
 The template is depicted below:
 
-![Template](ui/spong3.png)
+![Template](./images/ui/spong3.png)
 
 To generate an RDF description corresponding to the wrapper template, a
 stylesheet containing the following block of instructions is used. This
@@ -27360,7 +13558,7 @@ mapper to be tried if no preceding cartridge has been successful.
 Cartridges can be added manually using the 'Add' panel of the 'RDF
 Cartridges' screen.
 
-![RDF Cartridges](ui/spong4.png)
+![RDF Cartridges](./images/ui/spong4.png)
 
 ##### Installing Stylesheets
 
@@ -27369,7 +13567,7 @@ configured to be accessible by Virtuoso, the simplest option is to
 upload them to the DAV/VAD/cartridges/xslt folder using the WebDAV
 browser accessible from the Conductor UI.
 
-![WebDAV browser](ui/spong6.png)
+![WebDAV browser](./images/ui/spong6.png)
 
 Should you wish to locate your stylesheets elsewhere, ensure that the
 DirsAllowed setting in the virtuoso.ini file is configured
@@ -27384,7 +13582,7 @@ the list provided, entering the API Account and API Key in the dialog at
 the bottom of the page and click update to save, as indicated in the
 screenshot below:
 
-![Registering API Key](ui/cartrapikey.png)
+![Registering API Key](./images/ui/cartrapikey.png)
 
 For example, for the service Flickr developers must register to obtain a
 key. See http://developer.yahoo.com/flickr/. In order to cater for
@@ -27485,7 +13683,7 @@ describing music on the Semantic Web. Part of the subset used is
 depicted in the following RDF graph (representing in this case a John
 Cale album).
 
-![RDF graph](ui/spong7.png)
+![RDF graph](./images/ui/spong7.png)
 
 With the prefix mo: denoting the Music Ontology at
 http://purl.org/ontology/mo/, it can be seen that artists are
@@ -29720,20 +15918,16 @@ quoted sentence.
 
   - Nanotation based RDF statement that describes Nannotation:
     
-    ![Faceted Browser Nanotation RDF](ui/nano1.png)
+    ![Faceted Browser Nanotation RDF](./images/ui/nano1.png)
 
   - Nanotation that represents a "Hat Tip" relationship type:
     
-    ![Faceted Browser Nanotation Hat Tip Type](ui/nano2.png)
+    ![Faceted Browser Nanotation Hat Tip Type](./images/ui/nano2.png)
 
   - Nanotation generated RDF statements aggregated by Subject:
     
-    ![Faceted Browser Nanotation RDF Aggregation by
-    Subject](ui/nano3.png)
-
-  - Nanotation generated RDF statements by Subject:
     
-    ![Faceted Browser Nanotation Generation by Subject](ui/nano4.png)
+    ![Faceted Browser Nanotation Generation by Subject](./images/ui/nano4.png)
 
 ### 
 
@@ -29817,7 +16011,7 @@ already in your Quad Store.
 1.  Download and install the [Virtuoso Faceted Browser VAD](#) package
     using the Conductor System Admin - \> Packages tab.
     
-    ![Install the FCT package](ui/fb1.png)
+    ![Install the FCT package](./images/ui/fb1.png)
 
 2.  The HTML interface of the Faceted Browser Engine is exposed at:
     
@@ -29826,7 +16020,7 @@ already in your Quad Store.
     , where "cname" is the hostname:portno your Virtuoso instance is
     running on.
     
-    ![FCT HTML interface](ui/fb2.png)
+    ![FCT HTML interface](./images/ui/fb2.png)
 
 3.  The Faceted Browser Engine exposes a REST API at the endpoint:
     
@@ -29890,25 +16084,25 @@ already in your Quad Store.
     
         http://cname/about/html/http/news.cnet.com
     
-    ![Network Resource Fetch data](ui/fb3.png)
+    ![Network Resource Fetch data](./images/ui/fb3.png)
     
-    ![Network Resource Fetch data](ui/fb4.png)
+    ![Network Resource Fetch data](./images/ui/fb4.png)
 
 5.  Use the Faceted Browser Search and Find User Interface to search for
     information on "CNET":
     
-    ![Faceted Browser Search](ui/fb5.png)
+    ![Faceted Browser Search](./images/ui/fb5.png)
 
 6.  Results of the following form should be returned for the network
     resource data being fetched.
     
-    ![Faceted Browser Search Results](ui/fb6.png)
+    ![Faceted Browser Search Results](./images/ui/fb6.png)
 
 7.  Click "Types" link shown at the right vertical Navigation
 
 8.  Results of the classes/properties should be returned:
     
-    ![Results of the classes/properties](ui/fb7.png)
+    ![Results of the classes/properties](./images/ui/fb7.png)
 
 9.  To get Type description, click "Describe" link for a given type, for
     ex. "Person".
@@ -29917,20 +16111,20 @@ already in your Quad Store.
     resource. Note that automatically is generated QRCode image for the
     described entity.
     
-    ![Results of the classes/properties](ui/fb8.png)
+    ![Results of the classes/properties](./images/ui/fb8.png)
 
 11. Return back to the Attributes list from above by going to the
     "Facets" tab.
 
 12. To exclude a type, un-tick the checkbox associated with the type:
     
-    ![Exclude Type(s)](ui/fb9.png)
+    ![Exclude Type(s)](./images/ui/fb9.png)
 
 13. Click the Type URI link
 
 14. Results of excluding the Type(s) should be shown:
     
-    ![Results of Excluded Type(s)](ui/fb10.png)
+    ![Results of Excluded Type(s)](./images/ui/fb10.png)
 
 15. The Faceted Browser Web service endpoint can also be queried to
     obtain the same results:
@@ -30054,35 +16248,35 @@ already in your Quad Store.
 16. Click "New search" from the Entity Relations Navigation and go to
     "Entity Label Lookup" tab:
     
-    ![Query Faceted Browser Web service endpoint](ui/fb11.png)
+    ![Query Faceted Browser Web service endpoint](./images/ui/fb11.png)
 
 17. In the Label auto-complete text box of the Entity Label Lookup tab,
     enter the name of an rdfs label to be Described:
     
-    ![Select a URI from the list of available Labels](ui/fb12.png)
+    ![Select a URI from the list of available Labels](./images/ui/fb12.png)
 
 18. Select a URI from the list of available Labels to obtain a
     description of the URI:
     
-    ![Select a URI from the list of available Labels](ui/fb13.png)
+    ![Select a URI from the list of available Labels](./images/ui/fb13.png)
     
-    ![Select a URI from the list of available Labels](ui/fb14.png)
+    ![Select a URI from the list of available Labels](./images/ui/fb14.png)
 
 19. Click "Facets" and go to "Entity URI Lookup" tab:
     
-    ![Enter URI](ui/fb15.png)
+    ![Enter URI](./images/ui/fb15.png)
 
 20. In the URI auto-complete text box of the Entity URI Lookup tab enter
     the name URI to be Described:
     
-    ![Enter URI](ui/fb16.png)
+    ![Enter URI](./images/ui/fb16.png)
 
 21. Select a URI from the list of available Labels to obtain a
     description of the URI:
     
-    ![Obtain a description of the URI](ui/fb17.png)
+    ![Obtain a description of the URI](./images/ui/fb17.png)
     
-    ![Obtain a description of the URI](ui/fb18.png)
+    ![Obtain a description of the URI](./images/ui/fb18.png)
 
 22. If data is loaded into the quad store via DML functions (TTLP,
     RDF\_LOAD\_RDFXML etc.) the following procedure needs to run from
@@ -30100,12 +16294,12 @@ already in your Quad Store.
 2.  Enter a free text search pattern (for example, "Camcorder" as
     consumer product), and click Search:
     
-    ![URI Labels](ui/fb19.png)
+    ![URI Labels](./images/ui/fb19.png)
 
 3.  Your initial query results page will display a list of literal value
     snippets where for each URL will be displayed a label:
     
-    ![URI Labels](ui/fb20.png)
+    ![URI Labels](./images/ui/fb20.png)
 
 4.  Click for ex. on the URL link of the first row result.
 
@@ -30113,35 +16307,35 @@ already in your Quad Store.
     Attributes and Values will be presented. An URL label of the product
     also will be shown: "Charges Lithium Ion 800 series batteries":
     
-    ![URI Labels](ui/fb21.png)
+    ![URI Labels](./images/ui/fb21.png)
     
-    ![URI Labels](ui/fb22.png)
+    ![URI Labels](./images/ui/fb22.png)
     
-    ![URI Labels](ui/fb23.png)
+    ![URI Labels](./images/ui/fb23.png)
 
 ## Usage Statistics
 
 1.  Use the Faceted Browser Search and Find User Interface to search for
     information on "Michael Jackson":
     
-    ![Usage Statistics](ui/fb24.png)
+    ![Usage Statistics](./images/ui/fb24.png)
 
 2.  Results of the following form should be returned for the network
     resource data being fetched.
     
-    ![Usage Statistics](ui/fb25.png)
+    ![Usage Statistics](./images/ui/fb25.png)
 
 3.  Click the "Types" link under "Entity Relations Navigation".
 
 4.  Results about "Michael Jackson" as Type/Label/Count list should be
     displayed:
     
-    ![Usage Statistics](ui/fb26.png)
+    ![Usage Statistics](./images/ui/fb26.png)
 
 5.  You can navigate amongst the search results pages by using the
     "Prev" and "Next" buttons. Click for ex. "Next":
     
-    ![Usage Statistics](ui/fb27.png)
+    ![Usage Statistics](./images/ui/fb27.png)
 
 6.  Click a type link, for ex.:
     
@@ -30154,7 +16348,7 @@ already in your Quad Store.
         Entity1 has any Attribute with Value "Michael Jackson" Drop.
         Entity1 is a yago:Artist109812338 . Drop
     
-    ![Usage Statistics](ui/fb28.png)
+    ![Usage Statistics](./images/ui/fb28.png)
 
 8.  Click the link:
     
@@ -30163,20 +16357,20 @@ already in your Quad Store.
 9.  Results about "Michael Jackson" as Attribute/Value list should be
     presented:
     
-    ![Usage Statistics](ui/fb29.png)
+    ![Usage Statistics](./images/ui/fb29.png)
     
-    ![Usage Statistics](ui/fb30.png)
+    ![Usage Statistics](./images/ui/fb30.png)
     
-    ![Usage Statistics](ui/fb31.png)
+    ![Usage Statistics](./images/ui/fb31.png)
     
-    ![Usage Statistics](ui/fb32.png)
+    ![Usage Statistics](./images/ui/fb32.png)
 
 10. You can navigate amongst the search results pages by using the
     "First", "Prev", "Next" and "Last" buttons. Click for ex. "Last":
     
-    ![Usage Statistics](ui/fb33.png)
+    ![Usage Statistics](./images/ui/fb33.png)
     
-    ![Usage Statistics](ui/fb34.png)
+    ![Usage Statistics](./images/ui/fb34.png)
 
 11. "Metadata" tab.
 
@@ -30196,7 +16390,7 @@ already in your Quad Store.
             order by desc 2
             limit 20
         
-        ![Usage Statistics](ui/fb35.png)
+        ![Usage Statistics](./images/ui/fb35.png)
     
     2.  Source Graphs: shows how many times the URI is found as object
         in the relevant graph(s):
@@ -30211,7 +16405,7 @@ already in your Quad Store.
             order by desc 2
             limit 20
         
-        ![Usage Statistics](ui/fb36.png)
+        ![Usage Statistics](./images/ui/fb36.png)
     
     3.  Direct co-references: shows results as subject and calculated
         rank, based on running transitive closure over owl:sameAs of the
@@ -30232,7 +16426,7 @@ already in your Quad Store.
             order by desc 2
             limit 20
         
-        ![Usage Statistics](ui/fb37.png)
+        ![Usage Statistics](./images/ui/fb37.png)
     
     4.  Indirect co-references: shows expanded results for objects
         concur with the URI by IFP:
@@ -30246,7 +16440,7 @@ already in your Quad Store.
             order by desc 4
             limit 20
         
-        ![Usage Statistics](ui/fb38.png)
+        ![Usage Statistics](./images/ui/fb38.png)
 
 ## Examples
 
@@ -30258,31 +16452,31 @@ Faceted Browser hosted on LOD.
 
 1.  Go to http://lod.openlinksw.com/fct/
     
-    ![Faceted Navigation Example](ui/fb2.png)
+    ![Faceted Navigation Example](./images/ui/fb2.png)
 
 2.  Enter a free text search pattern (for example, "Kingsley Idehen"),
     and click Search
     
-    ![Faceted Navigation Example](ui/f1.png)
+    ![Faceted Navigation Example](./images/ui/f1.png)
 
 3.  Your initial query results page will display a list of literal value
     snippets from property values associated with the query text pattern
     
-    ![Faceted Navigation Example](ui/f2.png)
+    ![Faceted Navigation Example](./images/ui/f2.png)
 
 4.  Using the Navigation section on the right, click on "Types", which
     alters the contents of the query results area by presenting CURIE
     based hyperlinks for each of the Entity Types associated with
     Property values that contains the query text pattern
     
-    ![Faceted Navigation Example](ui/f3.png)
+    ![Faceted Navigation Example](./images/ui/f3.png)
 
 5.  You can perform *Describe* for a given found type, by clicking the
     "Describe" link in the "Type" column. For ex, for "atom:Entry" the
     produced describe type page would show a list of Attributes and
     Values + automatically generated QRCode image:
     
-    ![Faceted Navigation Example](ui/f4.png)
+    ![Faceted Navigation Example](./images/ui/f4.png)
 
 6.  Click "Facets" tab to return to the Types content page from the
     previous step.
@@ -30291,14 +16485,14 @@ Faceted Browser hosted on LOD.
     Entities of this Type, un-hatch the checkbox beside this link for
     Negation (filtering out) based on this Entity Type
     
-    ![Faceted Navigation Example](ui/f7.png)
+    ![Faceted Navigation Example](./images/ui/f7.png)
     
       - For Negation (filtering out) based on this Entity Type un-hatch
         the check-box shown besides the link:
         
-        ![Faceted Navigation Example](ui/f5.png)
+        ![Faceted Navigation Example](./images/ui/f5.png)
         
-        ![Faceted Navigation Example](ui/f6.png)
+        ![Faceted Navigation Example](./images/ui/f6.png)
     
       - You can filter further, by switching (pivoting) to the a
         Property based view, by returning to the Navigation section and
@@ -30307,21 +16501,21 @@ Faceted Browser hosted on LOD.
         combination of Properties and Entities where Entities in the
         result-set contain values matching the query text pattern
         
-        ![Faceted Navigation Example](ui/f8.png)
+        ![Faceted Navigation Example](./images/ui/f8.png)
 
 8.  From "Entity Relations Navigation" click "Attributes".
     
-    ![Faceted Navigation Example](ui/f9.png)
+    ![Faceted Navigation Example](./images/ui/f9.png)
 
 9.  You can navigate amongst the search results pages by using the
     "Prev" and "Next" buttons. Click for ex. "Next":
     
-    ![Faceted Navigation Example](ui/f10.png)
+    ![Faceted Navigation Example](./images/ui/f10.png)
 
 10. From the list of Property Types, click on the "foaf:interest" link
     to filter further, based on the values of this property:
     
-    ![Faceted Navigation Example](ui/f11.png)
+    ![Faceted Navigation Example](./images/ui/f11.png)
 
 11. From the list of "foaf:interest" Values, click on "About:Linked
     Data", which filters the result-set further to display reveal Entity
@@ -30329,7 +16523,7 @@ Faceted Browser hosted on LOD.
     "foaf:Person" associated with the property "foaf:interest", in the
     LOD data space:
     
-    ![Faceted Navigation Example](ui/f12.png)
+    ![Faceted Navigation Example](./images/ui/f12.png)
 
 12. Click on one of the HTTP URIs in the filtered results-set to obtain
     a detailed structured description of a given Entity i.e. about the
@@ -30341,47 +16535,47 @@ Faceted Browser hosted on LOD.
     descriptions. Additionally, a QRCode image will be produced
     automatically for the given entity:
     
-    ![Faceted Navigation Example](ui/f13.png)
+    ![Faceted Navigation Example](./images/ui/f13.png)
     
-    ![Faceted Navigation Example](ui/f14.png)
+    ![Faceted Navigation Example](./images/ui/f14.png)
     
-    ![Faceted Navigation Example](ui/f15.png)
+    ![Faceted Navigation Example](./images/ui/f15.png)
     
-    ![Faceted Navigation Example](ui/f16.png)
+    ![Faceted Navigation Example](./images/ui/f16.png)
 
 13. You can navigate amongst the search results pages by using the
     "First", "Prev", "Next" and "Last" buttons. Click for ex. "Last":
     
-    ![Faceted Navigation Example](ui/f17.png)
+    ![Faceted Navigation Example](./images/ui/f17.png)
     
-    ![Faceted Navigation Example](ui/f18.png)
+    ![Faceted Navigation Example](./images/ui/f18.png)
 
 14. Click on " *Metadata* " link to get a summary view of this Linked
     Data Space, "Source" and "Reference" graphs are akin to saying
     "Table X" and "Table Y" where each table is the container of Records
     re. RDBMS or Worksheet re. Spreadsheet.:
     
-    ![Faceted Navigation Example](ui/f19.png)
+    ![Faceted Navigation Example](./images/ui/f19.png)
     
-    ![Faceted Navigation Example](ui/f20.png)
+    ![Faceted Navigation Example](./images/ui/f20.png)
 
 15. "Direct" and "InDirect" coreferences show other references
     (Identifiers) that relate associated with Kingsley Idehen (like
     saying: here are his other names or his know by this name in this
     other place):
     
-    ![f21 Navigation Example](ui/f21.png)
+    ![f21 Navigation Example](./images/ui/f21.png)
     
-    ![Faceted Navigation Example](ui/f22.png)
+    ![Faceted Navigation Example](./images/ui/f22.png)
 
 16. Click on "Settings" check "owl:sameAs" and it sets a context mode
     for the session (meaning: a set of rules to take place):
     
-    ![Faceted Navigation Example](ui/f23.png)
+    ![Faceted Navigation Example](./images/ui/f23.png)
 
 17. Go back to the "Direct Co-reference" tab:
     
-    ![Faceted Navigation Example](ui/f24.png)
+    ![Faceted Navigation Example](./images/ui/f24.png)
 
 18. As result each link will unveil a union (combination) of all the the
     data associated with all Kingsley Idehen's other Identifiers (other
@@ -30393,12 +16587,12 @@ Faceted Browser hosted on LOD.
 20. Enter a free text search pattern (for example, " `Camcorder` " as
     consumer product), and click Search:
     
-    ![Faceted Navigation Example](ui/fb19.png)
+    ![Faceted Navigation Example](./images/ui/fb19.png)
 
 21. Your initial query results page will display a list of literal value
     snippets where for each URI will be displayed a label:
     
-    ![Faceted Navigation Example](ui/fb20.png)
+    ![Faceted Navigation Example](./images/ui/fb20.png)
 
 22. Click for ex. on the URL link ofthe first row result.
 
@@ -30406,11 +16600,11 @@ Faceted Browser hosted on LOD.
     Attributes and Values will be presented. An URI label of the product
     also will be shown: "CG-800":
     
-    ![Faceted Navigation Example](ui/fb21.png)
+    ![Faceted Navigation Example](./images/ui/fb21.png)
     
-    ![Faceted Navigation Example](ui/fb22.png)
+    ![Faceted Navigation Example](./images/ui/fb22.png)
     
-    ![Faceted Navigation Example](ui/fb23.png)
+    ![Faceted Navigation Example](./images/ui/fb23.png)
 
 # Virtuoso Faceted Web Service
 
@@ -31274,7 +17468,7 @@ sample below to search for text known to exist).
 
 3.  The result of executing the fct\_example.vsp should be:
     
-    ![Faceted API Example](ui/fcapiex1.png)
+    ![Faceted API Example](./images/ui/fcapiex1.png)
 
 ### SOAP interface
 
@@ -32233,7 +18427,7 @@ are as follows:
   - Then save and exit the Conductor, and test your rules with curl or
     any other User Agent.
 
-![URL-rewrite UI using Conductor](ui/urlrw1.png)
+![URL-rewrite UI using Conductor](./images/ui/urlrw1.png)
 
 ### Enabling URL Rewriting via Virtuoso PL
 
@@ -38749,7 +24943,7 @@ Web applications written using the Jena RDF Frameworks to directly query
 the Virtuoso RDF Quad Store. Providers are available for the latest
 [Jena](#) 2.6.x and 2.10.x versions.
 
-![Virtuoso Jena RDF Data Provider](ui/VirtJenaProvider.png)
+![Virtuoso Jena RDF Data Provider](./images/ui/VirtJenaProvider.png)
 
 ### Setup
 
@@ -39591,7 +25785,7 @@ been tested against the two latest currently available versions,
 [Sesame](#) 2.6.x, 2.7.x, 2.8.x and the new Sesame 4.x release, for
 which a new Provider is available.
 
-![Fig. 1 Sesame Component Stack](ui/VirtSesame2Provider.png)
+![Fig. 1 Sesame Component Stack](./images/ui/VirtSesame2Provider.png)
 
 If you need more information about how to set up your environment for
 working with the Sesame APIs, take a look at Chapter 2 of the Sesame
@@ -40421,370 +26615,8 @@ Virtuoso HTTP Sesame Repository.
     Repositories, loading " [http://example.com/openrdf-workbench](#) "
     will enable the default "SYSTEM" repository to be accessed.
     
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss1.png)
 
-7.  Click on the "New Repository" link in the left frame to create a new
-    Sesame Repository.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss2.png)
-
-8.  Select the "Virtuoso RDF Store" from the "Type" drop down list box
-    presented.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss3.png)
-
-9.  Choose suitable repository "ID" and "Title" for the Virtuoso
-    repository to be created and click "Next".
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss4.png)
-
-10. Fill in the connection parameters for the target Virtuoso sever the
-    repository is to be created for and click the "create" button. The
-    minimum required are the hostname, port number, username and
-    password of the Virtuoso Server.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss5.png)
-
-11. The new Virtuoso respository will be created and its summary page
-    displayed.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss6.png)
-
-12. Click on the "Namespaces" link in the left frame to obtain a list of
-    the available namespaces in the Virtuoso repository.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss7.png)
-
-13. Click on the "Context" link in the left frame to obtain a list of
-    the available contexts in the Virtuoso repository.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss8.png)
-
-14. Click on the "Types" link in the left frame to obtain a list of the
-    available types in the Virtuoso repository.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss9.png)
-
-15. Click on the "Query" link in the left frame, enter a suitable SPARQL
-    query to execute against the Virtuoso repository and click the
-    "execute" button.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss10.png)
-
-16. The results of the SPARQL query are returned.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss11.png)
-
-17. Click on the "Repositories" link in the left frame and the newly
-    created Virtuoso repository entry is displayed along side the
-    default SYSTEM repository.
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss12.png)
-
-##### Setup Sesame Console Repository
-
-This section details the steps required for configuring and testing a
-Virtuoso Sesame Console Repository:
-
-1.  Extract Sesame 2.3.1 or higher archive to a location of choice and
-    place the virt\_sesame2.jar or virt\_sesame4.jar and virtjdbc4.jar
-    files to the sesame "lib" directory
-
-2.  Start the [sesame console application](#) by running the
-    "console.bat" script in the sesame "bin" directory and then "exit."
-    the program
-    
-        $ sh console.sh
-        SLF4J: Class path contains multiple SLF4J bindings.
-        SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/logback-classic-0.9.18.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-        SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/slf4j-jdk14-1.5.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-        SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-        10:32:38.317 [main] DEBUG info.aduna.platform.PlatformFactory - os.name <http://os.name> <http://os.name> = mac os x
-        10:32:38.351 [main] DEBUG info.aduna.platform.PlatformFactory - Detected Mac OS X platform
-        Connected to default data directory
-        Commands end with '.' at the end of a line
-        Type 'help.' for help
-        exit.
-
-3.  This will create the necessary sesame application data directories
-    as detailed in the sesame [data directory configuration](#)
-    documentation.
-    
-        Windows - C:\Documents and Settings\LocalService\Application Data\Aduna\
-        Mac OS X - /Users/myuser/Library/Application Support/Aduna/
-        Linux - $HOME/.aduna/
-
-4.  If you do not want to use the default sesame data directory location
-    the Sesame console application can be started by specifying a custom
-    data directory location with the "-d" option. Note in this case the
-    directory "OpenRDF Sesame console" always has to be manually
-    appended to the directory as Sesame assumes the data file will
-    reside in a sub directory of this name.
-    
-        $ sh console.sh -d /Users/myuser/OpenRDF Sesame console
-
-5.  Add the virtuoso.ttl file to the \~/OpenRDF Sesame console/templates
-    folder, to enable the Virtuoso repository default configuration
-    parameters to be located.
-
-6.  Start the sesame console application with the required data
-    directory location and create a Virtuoso repository as detailed in
-    the steps below, the key parameters to be specified being the target
-    Virtuoso server hostname, port number, username, password and a
-    unique "Repository ID".
-    
-        $ sh console.sh
-        SLF4J: Class path contains multiple SLF4J bindings.
-        SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/logback-classic-0.9.18.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-        SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/slf4j-jdk14-1.5.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-        SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-        10:32:38.317 [main] DEBUG info.aduna.platform.PlatformFactory - os.name <http://os.name> <http://os.name> = mac os x
-        10:32:38.351 [main] DEBUG info.aduna.platform.PlatformFactory - Detected Mac OS X platform
-        Connected to default data directory
-        Commands end with '.' at the end of a line
-        Type 'help.' for help
-        create virtuoso .
-        Please specify values for the following variables:
-        Host list [localhost:1111]:
-        Username [dba]:
-        Password [dba]:
-        Default graph name [sesame:nil]:
-        Enable using batch optimization (false|true) [false]:
-        Use RoundRobin for connection (false|true) [false]:
-        Buffer fetch size [200]:
-        Inference RuleSet name [null]:
-        Repository ID [virtuoso]: myvirt
-        Repository title [Virtuoso repository]:
-        Repository created
-        show r .
-        +----------
-        |SYSTEM
-        |myvirt ("Virtuoso repository")
-        +----------
-        open myvirt .
-        Opened repository 'myvirt'
-        myvirt> show n .
-        +----------
-        |bif  bif:
-        |dawgt  http://www.w3.org/2001/sw/DataAccess/tests/test-dawg#
-        |dbpedia  http://dbpedia.org/resource/
-        |dbpprop  http://dbpedia.org/property/
-        |dc  http://purl.org/dc/elements/1.1/
-        |foaf  http://xmlns.com/foaf/0.1/
-        |geo  http://www.w3.org/2003/01/geo/wgs84_pos#
-        |go  http://purl.org/obo/owl/GO#
-        |math  http://www.w3.org/2000/10/swap/math#
-        |mesh  http://purl.org/commons/record/mesh/
-        |mf  http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#
-        |nci  http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#
-        |obo  http://www.geneontology.org/formats/oboInOwl#
-        |owl  http://www.w3.org/2002/07/owl#
-        |protseq  http://purl.org/science/protein/bysequence/
-        |rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-        |rdfdf  http://www.openlinksw.com/virtrdf-data-formats#
-        |rdfs  http://www.w3.org/2000/01/rdf-schema#
-        |sc  http://purl.org/science/owl/sciencecommons/
-        |scovo  http://purl.org/NET/scovo#
-        |skos  http://www.w3.org/2004/02/skos/core#
-        |sql  sql:
-        |vcard  http://www.w3.org/2001/vcard-rdf/3.0#
-        |virtrdf  http://www.openlinksw.com/schemas/virtrdf#
-        |void  http://rdfs.org/ns/void#
-        |xf  http://www.w3.org/2004/07/xpath-functions
-        |xml  http://www.w3.org/XML/1998/namespace
-        |xsd  http://www.w3.org/2001/XMLSchema#
-        |xsl10  http://www.w3.org/XSL/Transform/1.0
-        |xsl1999  http://www.w3.org/1999/XSL/Transform
-        |xslwd  http://www.w3.org/TR/WD-xsl
-        |yago  http://dbpedia.org/class/yago/
-        +----------
-        exit.
-
-##### Connection to Sesame HTTP repository from Console repository
-
-The Sesame Console repository can connect to a Sesame HTTP repository
-and vice-versa, enabling access to remote Sesame HTTP repositories from
-a local server.
-
-1.  The Sesame Console repository can connect to a Sesame HTTP
-    repository and query it as if local using the "connect" command.
-    
-        $ sh console.sh
-        SLF4J: Class path contains multiple SLF4J bindings.
-        SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/logback-classic-0.9.18.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-        SLF4J: Found binding in [jar:file:/Users/myuser/openrdf-sesame-2.3.1/lib/slf4j-jdk14-1.5.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
-        SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
-        10:32:38.317 [main] DEBUG info.aduna.platform.PlatformFactory - os.name <http://os.name> <http://os.name> = mac os x
-        10:32:38.351 [main] DEBUG info.aduna.platform.PlatformFactory - Detected Mac OS X platform
-        Connected to default data directory
-        Commands end with '.' at the end of a line
-        Type 'help.' for help
-        > connect http://localhost:8080/openrdf-sesame.
-        Connected to http://localhost:8080/openrdf-sesame
-        > show r.
-        +----------
-        |SYSTEM ("System configuration repository")
-        |VirtSesRep ("Virtuoso Sesame HTTP Repository")
-        +----------
-        > open VirtSesRep.
-        Opened repository 'VirtSesRep'
-        VirtSesRep> sparql select * from <http://localhost:8890/Northwind> where {?s ?p ?o} Limit 10.
-        Evaluating query...
-        +------------------------+------------------------+------------------------+
-        | s                      | p                      | o                      |
-        +------------------------+------------------------+------------------------+
-        | <http://localhost:8890/Northwind/CustomerContact/ALFKI#this>| rdf:type  | foaf:Person            |
-        | <http://localhost:8890/Northwind/CustomerContact/ALFKI#this>| rdf:type  | northwind:CustomerContact|
-        | <http://localhost:8890/Northwind/CustomerContact/ALFKI#this>| opl:isDescribedUsing   | northwind:             |
-        | <http://localhost:8890/Northwind/CustomerContact/ANATR#this>| rdf:type | foaf:Person            |
-        | <http://localhost:8890/Northwind/CustomerContact/ANATR#this>| rdf:type | northwind:CustomerContact|
-        | <http://localhost:8890/Northwind/CustomerContact/ANATR#this>| opl:isDescribedUsing   | northwind:             |
-        | <http://localhost:8890/Northwind/CustomerContact/ANTON#this>| rdf:type  | foaf:Person            |
-        | <http://localhost:8890/Northwind/CustomerContact/ANTON#this>| rdf:type  | northwind:CustomerContact|
-        | <http://localhost:8890/Northwind/CustomerContact/ANTON#this>| opl:isDescribedUsing   | northwind:             |
-        | <http://localhost:8890/Northwind/CustomerContact/AROUT#this>| rdf:type  | foaf:Person            |
-        +------------------------+------------------------+------------------------+
-        10 result(s) (530 ms)
-        VirtSesRep> show n.
-        +----------
-        |SearchResults  http://www.zillow.com/static/xsd/SearchResults.xsd
-        |UpdatedPropertyDetails  http://www.zillow.com/static/xsd/UpdatedPropertyDetails.xsd
-        |a  http://www.w3.org/2005/Atom
-        |aapi  http://rdf.alchemyapi.com/rdf/v1/s/aapi-schema#
-        |address  http://schemas.talis.com/2005/address/schema#
-        |admin  http://webns.net/mvcb/
-        |amz  http://webservices.amazon.com/AWSECommerceService/2005-10-05
-        |atom  http://atomowl.org/ontologies/atomrdf#
-        |audio  http://purl.org/media/audio#
-        |awol  http://bblfish.net/work/atom-owl/2006-06-06/#
-        |aws  http://soap.amazon.com/
-        |b3s  http://b3s.openlinksw.com/
-
-2.  Conversely the Sesame HTTP repository can be configured to access
-    the repository created by the Sesame console. To do this the
-    location of the data directory for both needs to be reconfigured
-    using the Java system property info.aduna.platform.appdata.basedir
-    (does not include "OpenRDF Sesame console directory) to point to the
-    same location. When you are using Tomcat as the servlet container
-    then you can set this property using the JAVA\_OPTS parameter. Note,
-    if you are using Apache Tomcat as a Windows Service you should use
-    the Windows Services configuration tool to set this property. Other
-    users can either edit the Tomcat startup script or set the property
-    some other way.
-    
-    ``` 
-      * set JAVA_OPTS=-Dinfo.aduna.platform.appdata.basedir=\path\to\other\dir\ (on Windows)
-      * export JAVA_OPTS='-Dinfo.aduna.platform.appdata.basedir=/path/to/other/dir/' (on Linux/UNIX/Mac OS X)
-    ```
-    
-    ![Virtuoso Sesame HTTP Repository Configuration and
-    Usage](ui/ss13.png)
-
-##### Remote Sesame HTTP Repository Connections
-
-There are two methods of making a remote Sesame HTTP connection to a
-Virtuoso repository:
-
-  - *Sesame Remote Repository Manager*
-    
-    class - A manager for Repositorys that reside on a remote server,
-    allowing one to access repositories over HTTP similar to how local
-    repositories are accessed using the LocalRepositoryManager?. A
-    connection via this method is made via the Virtuoso Sesame provider
-    which will be faster and provide better support for transactions,
-    than making a direct connection to the SPARQL endpoint using the
-    HTTPRepository class. This is analogous to the ODBC Driver Manager
-    in the ODBC realm for generic access to a data store via a suitable
-    ODBC Driver.
-
-  - *Sesame HTTP Repository*
-    
-    class - A repository that serves as a proxy for a remote repository
-    on a Sesame server or directly to a SPARQL endpoint. This method
-    does not make use of the Virtuoso Sesame Provider, using instead the
-    HTTP protocol to make requests directly Sesame server or other
-    SPARQL endpoint.
-
-###### Using the Sesame Remote Repository Manager class
-
-If a Sesame HTTP Repository endpoint, as detailed above already exists,
-the [Remote Repository Manager](#) class can be used to make a remote
-connection as follows by specify the URL to the remote Sesame HTTP
-Server and the RepositoryID for the repository the connection is to be
-made to:
-
-    //Initialize Remote Repository Manager
-    RepositoryManager repositoryManager = new RemoteRepositoryManager( "http://hostname:portno/openrdf-sesame" );
-    repositoryManager.initialize();
-    
-    //Set Virtuoso (or any other) repositoryID on http://hostname:portno/openrdf-sesame
-    Repository repository = repositoryManager.getRepository("RepositoryID");
-    
-    // Open a connection to this repository
-    con = repository.getConnection();
-    
-    // ... do something
-
-###### Using the Sesame HTTP Repository class
-
-A direct connection to the default built-in Virtuoso SPARQL Endpoint can
-be made using the [Sesame HTTP Repository class](#) by simply specifying
-the URL to the Virtuoso SPARQL Endpoint i.e.
-http://{hostname}:{port}/sparql as follows:
-
-    // Initialize Direct SPARQL Endpoint HTTP Repository connection
-    String endpointURL = "http://hostname:portno/sparql";
-    HTTPRepository sparqlEndpoint = new HTTPRepository(endpointURL, "");
-    sparqlEndpoint.initialize();
-    
-    // Open a connection to this repository
-    con = sparqlEndpoint.getConnection();
-    
-    // ... do something
-
-### Javadoc API Documentation
-
-[Sesame Provider Javadoc API Documentation](#) is available enabling the
-complete set of classes, interfaces and methods implemented for the
-provider to be viewed.
-
-## Virtuoso Redland Provider
-
-### What is Redland
-
-[Redland](#) is a set of free software 'C' libraries that provide
-support for the Resource Description Framework (RDF), providing modular,
-object based libraries and APIs for manipulating the RDF graph, triples,
-URIs and Literals. Redland includes several high-level language APIs
-providing RDF manipulation and storage and requires the [Raptor](#) RDF
-parser and [Rasqal](#) RDF syntax and query library for its use.
-
-### What is the Virtuoso Redland Provider
-
-The Virtuoso Redland RDF Provider is an implementation of the Storage
-API, Model and Query interfaces of the Redland framework for RDF. This
-provider enables the execution of queries via the Redland Rasqal query
-engine or via Virtuoso query engine directly against the Virtuoso Quad
-store. The Virtuoso Redland Provider uses ODBC as the data access
-mechanism for communicating the Virtuoso Quad Store and requires the
-Virtuoso ODBC Driver be installed on the Redland client and a suitable
-ODBC DSN be configured for connecting to the target Virtuoso Quad Store
-instance. The provider has been tested against the [Redland 1.0.8](#)
-version currently available for download.
-
-![Redland Component Stack](ui/VirtRedLand.png)
+![Redland Component Stack](./images/ui/VirtRedLand.png)
 
 As indicated in the above diagram the Virtuoso Provider can be used to
 execute RDF queries either directly against the Virtuoso graph storage
@@ -41109,438 +26941,8 @@ The basic outline:
 
 ## Replication Scenarios
 
-![](ui/topo-scenario.png)
 
-### Introduction
-
-In this section we will examine a proposed setup for a back-end server
-called MASTER which publishes a number of graphs to a set of front-end
-machines called FARM-1 .. FARM-n and discuss a couple of common
-scenarios like adding an extra machine to the farm, or replacing a
-broken instance of MASTER.
-
-In this example we will assume each virtuoso instance running on its own
-machine, so they can use the same port numbers for both the main server
-(default 1111) as well as the http port (default 8890) as each machine
-has an unique IP addresses. In the example we use MASTER-IP and
-FARM-x-IP which should be replaced by either the real IP address or the
-DNS name of the machine in question.
-
-Since there will be a reverse-proxy service in front of the farm, all
-virtuoso instances should have the URIQA Default host set to the outside
-name for this service. In this example we will use
-http://test.example.com as the web service we are trying to setup.
-
-### Setup
-
-#### Installing Virtuoso
-
-All machines in this setup should be installed with similar installation
-paths like:
-
-  - /opt/virtuoso
-
-  - /dbs/virtuoso
-
-  - /virtuoso
-
-  - ...
-
-The partition should be big enough to have room for the Virtuoso
-binaries and libraries, the transaction logs, backups and, if you do not
-want to use the striping feature of Virtuoso, it will need to have room
-for the main database files as well.
-
-Here are the quick installation steps:
-
-1.  Login as root.
-
-2.  Create local user called virtuoso using the chosen installation path
-    as home direcotory.
-
-3.  Login as virtuoso.
-
-4.  Extract virtuoso-universal-server-6.1.tar in home directory.
-
-5.  Run sh install.sh to install Virtuoso.
-
-6.  Remove the file install.sh virtuoso-universal-server-6.1.tar
-    virtuoso-server.taz if not otherwise needed.
-
-7.  Run bin/virtuoso-stop.sh to shutdown this Virtuoso instance.
-
-8.  Install virtuoso.lic for this system in $HOME/bin directory.
-
-As the replication process needs to make an ODBC connection to the
-MASTER machine, all machines should have the following information in
-the $HOME/bin/odbc.ini:
-
-    [ODBC Data Sources]
-    ..
-    MASTER_DSN = OpenLink Virtuoso
-    
-    ..
-    [MASTER_DSN]
-    Driver = OpenLink Virtuoso
-    Address = MASTER_IP:1111
-
-#### Setting up MASTER
-
-The MASTER machine is the back-end server machine. Various applications
-feed SPARQL data into this machine it publishes a set of graphs using
-RDF Replication.
-
-The MASTER machine should ideally be equipped with multiple redundant
-disks in RAID-1 or RAID-6 mode to minimize the risk that a single bad
-disk takes down the system. From a Virtuoso point of view we will use a
-combination of online backups combined with checkpoint audit trail to
-backup the content of the database in a safe way. The online backups,
-the checkpoint audit trail as well as the replication logs can also be
-copied to secondary storage using the rsync command and can be easily
-scripted as a cron job.
-
-Changes to database/virtuoso.ini:
-
-    ...
-    [Parameters]
-    SchedulerInterval    = 1     ; run the internal scheduler every minute
-    CheckpointAuditTrail = 1     ; enable audit trail on transaction logs
-    CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
-    ...
-    [URIQA]
-    DefaultHost = test.example.com
-    ...
-    [Replication]
-    ServerName   = MASTER
-    ServerEnable = 1
-    QueueMax     = 5000000
-    ...
-
-Once the MASTER is started using the bin/virtuoso-start.sh script we
-must enable RDF replication before we start add data to the graphs we
-wish to replicate, so every record is accounted for by the replication
-process. If there is existing data in the graphs to be published, then
-this data would need to be added to a subscriber manually since the
-replication process creates a delta set of changes since publishing was
-enabled.
-
-To enable publishing of the graph we use the isql program to connect to
-the MASTER instance:
-
-    $ isql MASTER-IP:1111
-    
-    -- and run the following commands:
-    
-    -- enable this instance as a publisher
-    rdf_repl_start();
-    
-    -- add graphs to replication list
-    rdf_repl_graph_ins('http://test.example.com');
-
-Next we create a backup directory inside the database directory and
-setup the online backup, again using the isql program:
-
-    $ cd database
-    $ mkdir backup
-    $ isql MASTER_IP:1111
-    
-    -- and run the following commands:
-    
-    -- clear any previous context
-    backup_context_clear();
-    
-    -- start the backup
-    backup_online ('bkup-#', 1000000, 0, vector ('backup'));
-
-The following files can now be backed up using rsync or similar tool to
-another machine:
-
-| Files                          | Description                                                                                                                   |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| database/backup/\*.bp          | the incremental backup files                                                                                                  |
-| database/virtuoso.trx          | the main transaction log containing the most recent updates to the database that have not been checkpointed into the database |
-| database/virtuosoTIMESTAMP.trx | all the previous transaction logs which can be used to reconstruct the database                                               |
-| database/\_\_rdf\_repl\*.log   | all the replication logs containing the changes to the published graph                                                        |
-
-Files that can be backed up using rsync or similar tool to another
-machine
-
-NOTE: Since the database is constantly modified during operation, it is
-of NO use to backup the virtuoso.db using an rsync script unless the
-virtuoso instance was shutdown beforehand, or certain extra precautions
-are taken which we will explain later on.
-
-#### Setup SPARE master
-
-The SPARE machine is a replica of the MASTER machine. This machine
-subscribes to the publication of the MASTER to keep an exact match of
-the RDF graphs, but also publishes this data without any initial
-subscribers.
-
-The SPARE machine should ideally be equipped similar to the MASTER
-machine, with multiple redundant disks in RAID-1 or RAID-6 mode to
-minimize the risk that a single bad disk takes down the system. From a
-Virtuoso point of view we will use a combination of online backups
-combined with checkpoint audit trail to backup the content of the
-database in a safe way. The online backups, the checkpoint audit trail
-as well as the replication logs can also be copied to secondary storage
-using the rsync command and can be easily scripted as a cron job.
-
-Changes to database/virtuoso.ini:
-
-    ...
-    [Parameters]
-    SchedulerInterval    = 1     ; run the internal scheduler every minute
-    CheckpointAuditTrail = 1     ; enable audit trail on transaction logs
-    CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
-    ...
-    [URIQA]
-    DefaultHost = test.example.com
-    ...
-    [Replication]
-    ServerName   = SPARE
-    ServerEnable = 1
-    QueueMax     = 5000000
-    ...
-
-We must enable RDF replication before we start add data to the graphs we
-wish to replicate, so every record is accounted for by the replication
-process. If there is existing data in the graphs to be published, then
-this data would need to be added to a subscriber manually since the
-replication process creates a delta set of changes since publishing was
-enabled.
-
-To enable publishing of the graph, as well as subscribing to the MASTER,
-we first start up this Virtuoso instance with bin/virtuoso-start.sh and
-then use the isql program to connect to the SPARE instance:
-
-    $ bin/virtuoso-start.sh
-    $ isql SPARE-IP:1111
-    
-    -- and run the following commands:
-    
-    -- enable this instance as a publisher
-    rdf_repl_start();
-    
-    -- add graphs to replication list
-    rdf_repl_graph_ins('http://test.example.com');
-    
-    -- connect to master
-    repl_server ('MASTER', 'MASTER_DSN');
-    
-    -- start subscribing to __rdf_repl
-    repl_subscribe ('MASTER', '__rdf_repl', 'dav', 'dav', 'dba', 'dba');
-    
-    -- start initial replication
-    repl_sync_all ();
-    
-    -- add subscription to scheduler
-    DB.DBA.SUB_SCHEDULE ('MASTER', '__rdf_repl', 1);
-
-Next we create a backup directory inside the database directory and
-setup the online backup, again using the isql program:
-
-    $ cd database
-    $ mkdir backup
-    $ isql SPARE_IP:1111
-    
-    --and run the following commands:
-    
-    -- clear any previous context
-    backup_context_clear();
-    
-    -- start the backup
-    backup_online ('bkup-#', 1000000, 0, vector ('backup'));
-
-The following files can now be backed up using rsync or similar tool to
-another machine:
-
-| Files                          | Description                                                                                                                   |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| database/backup/\*.bp          | the incremental backup files                                                                                                  |
-| database/virtuoso.trx          | the main transaction log containing the most recent updates to the database that have not been checkpointed into the database |
-| database/virtuosoTIMESTAMP.trx | all the previous transaction logs which can be used to reconstruct the database                                               |
-| database/\_\_rdf\_repl\*.log   | all the replication logs containing the changes to the published graph                                                        |
-
-Files that can be backed up using rsync or similar tool to another
-machine
-
-Note: Since the database is constantly modified during operation, it is
-of NO use to backup the virtuoso.db using an rsync script unless the
-virtuoso instance was shutdown beforehand, or certain extra precautions
-are taken which we will explain later on.
-
-#### Setup FARM-1
-
-The FARM-1 machine is the first front-end server machine. It subscribes
-to the publication of the MASTER instance to keep up-to-date.
-
-The FARM-1 machine can be run on simpler hardware than the MASTER
-instance.It does not require the same level of redundancy in terms of
-hard disks etc, as there are a number of these machines running in
-parallel each capable of returning results to the proxy. If one FARM
-machine dies, it can simply be taken from the reverse-proxy list,
-repaired or replaced with a fresh machine before it is added to the list
-of servers in the reverse proxy. As such it does not need to be backed
-up separately, although we could make a backup of this installation to
-quickly install the rest of the identical FARM boxes.
-
-Change the database/virtuoso.ini file:
-
-    ...
-    [Parameters]
-    SchedulerInterval    = 1     ; run the internal scheduler every minute
-    CheckpointAuditTrail = 0     ; disable audit trail on transaction logs
-    CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
-    ...
-    [URIQA]
-    DefaultHost = test.example.com
-    ...
-    [Replication]
-    ServerName   = FARM-1        ; each FARM machine needs to have a unique replication name
-    ServerEnable = 1
-    QueueMax     = 5000000
-    ...
-
-Next we start up the Virtuoso instance using the bin/virtuoso-start.sh
-command and use the isql program to subscribe to the MASTER:
-
-    $ bin/virtuoso-start.sh
-    $ isql FARM-1-IP:1111
-    
-    -- connect to master
-    repl_server ('MASTER', 'MASTER_DSN');
-    
-    -- start subscribing to __rdf_repl
-    repl_subscribe ('MASTER', '__rdf_repl', 'dav', 'dav', 'dba', 'dba');
-    
-    -- start initial replication
-    repl_sync_all ();
-    
-    -- add subscription to scheduler
-    DB.DBA.SUB_SCHEDULE ('MASTER', '__rdf_repl', 1);
-
-At this point we can shutdown this Virtuoso instance using the
-bin/virtuoso-stop.sh command and make a copy of the whole virtuoso
-installation as a blueprint to copy to another FARM-x machine.
-
-#### Setup FARM-2 from scratch
-
-We can repeat the same steps we did for the FARM-1 machine, and just
-make sure we use FARM-2 as the replication name in the
-database/virtuoso.ini file and use FARM-2-IP:1111 as an argument to the
-isql program.
-
-Change bin/virtuoso.ini:
-
-    [Replication]
-    ServerName = FARM-2
-
-#### Setup FARM-3 using blueprint from FARM-1 installation
-
-Extract the tarred/zipped copy of the installation made at the end of
-the setup of FARM-1.
-
-Before starting up the instance, we only need to give this instance a
-unique name for replication:
-
-Change bin/virtuoso.ini:
-
-    [Replication]
-    ServerName = FARM-3
-
-Next we start up the Virtuoso instance using the bin/virtuoso-start.sh
-command and since the subscription records and schedule are already
-performed in the previous step, we just use the isql program to perform
-a sync against the MASTER:
-
-    $ bin/virtuoso-start.sh
-    $ isql FARM-3-IP:1111
-    
-    -- change replication name
-    DB.DBA.REPL_SERVER_RENAME ('FARM-1', 'FARM-3')
-    
-    -- sync against master
-    repl_sync_all();
-
-#### Setup FARM-4 using clone of FARM-1
-
-If the system has been running for some time, it may not be practical to
-do a replication from start, so there is an alternative way to setup a
-new FARM-4 machine.
-
-We can either restore the blue-print backup we make at the end of FARM-1
-installation, or we do a fresh installation of virtuoso on the FARM-4
-machine.
-
-In both cases we shutdown the virtuoso instance and remove the database,
-as we are going to replace this.
-
-    $ bin/virtuoso-stop.sh
-    $ cd database
-    $ rm virtuoso.db virtuoso.trx virtuoso.log virtuoso.pxa
-
-Change the database/virtuoso.ini file:
-
-    ...
-    [Parameters]
-    SchedulerInterval    = 1     ; run the internal scheduler every minute
-    CheckpointAuditTrail = 0     ; disable audit trail on transaction logs
-    CheckpointInterval   = 60    ; perform an automated checkpoint every 60 minutes
-    ...
-    [URIQA]
-    DefaultHost = test.example.com
-    ...
-    [Replication]
-    ServerName   = FARM-4        ; each FARM machine needs to have a unique replication name
-    ServerEnable = 1
-    QueueMax     = 5000000
-    ...
-
-Next we are going to temporarily disable checkpointing on FARM-1 machine
-so we can copy its database without risking corruption:
-
-    $ isql FARM-1-IP:1111
-    
-    -- disable automatic checkpointing
-    checkpoint_interval (-1);
-    
-    -- and do an explicit checkpoint
-    checkpoint;
-
-It is now safe to copy the database across using the rsync command:
-
-    $ rsync -avz virtuoso@FARM-1-IP:/path/to/virtuoso/database/virtuoso.db database/virtuoso.db
-
-Next we re-enable checkpoint interval on FARM-1:
-
-    $ isql FARM-1-IP:1111
-    
-    -- re-enable checkpointing
-    checkpoint_interval(60);
-
-The last step is to start the database:
-
-    $ bin/virtuoso-start.sh
-    $ isql FARM-4-IP:1111
-    
-    -- change replication name
-    DB.DBA.REPL_SERVER_RENAME ('FARM-1', 'FARM-4')
-    
-    -- sync against master
-    repl_sync_all();
-
-## Replication Topologies
-
-Typical replication topologies are Chains, Stars and Bi-directional.
-They can be achieved with Virtuoso, by repeating the "Publish" and/or
-"Subscribe" steps on each relevant node.
-
-### Star Replication Topology
-
-In a Star, there is one Publisher, and many Subscribers.
-
-![Star Replication Topology](ui/topo-star.png)
+![Star Replication Topology](./images/ui/topo-star.png)
 
 To set up a Star, follow the scenario:
 
@@ -41645,32 +27047,32 @@ package.
 
 1.  Go to Conductor -\> Replication -\> Transactional -\> Publications
     
-    ![Star Replication Topology](ui/r6.png)
+    ![Star Replication Topology](./images/ui/r6.png)
 
 2.  Click Enable RDF Publishing
 
 3.  A publication with the name RDF Publication should be created:
     
-    ![Star Replication Topology](ui/r7.png)
+    ![Star Replication Topology](./images/ui/r7.png)
 
 4.  Click the link which is the publication name.
 
 5.  You will be shown the publication items page:
     
-    ![Star Replication Topology](ui/r8.png)
+    ![Star Replication Topology](./images/ui/r8.png)
 
 6.  Enter for Graph IRI:
     
         http://example.org
     
-    ![Star Replication Topology](ui/r9.png)
+    ![Star Replication Topology](./images/ui/r9.png)
 
 7.  Click Add New
 
 8.  The item will be created and shown in the list of items for the
     currently viewed publication.
     
-    ![Star Replication Topology](ui/r10.png)
+    ![Star Replication Topology](./images/ui/r10.png)
 
 ##### Insert Data into a Named Graph on the Host Virtuoso Instance
 
@@ -41679,7 +27081,7 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
 
 1.  In the Virtuoso Conductor, go to Linked Data -\> Quad Store Upload:
     
-    ![Replication Topology](ui/uc1.png)
+    ![Replication Topology](./images/ui/uc1.png)
 
 2.  In the form:
     
@@ -41692,13 +27094,13 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
         
             http://example.org
     
-    ![Replication Topology](ui/r2.png)
+    ![Replication Topology](./images/ui/r2.png)
 
 3.  Click Upload
 
 4.  A successful upload will result in this message:
     
-    ![Star Replication Topology](ui/r3.png)
+    ![Star Replication Topology](./images/ui/r3.png)
 
 5.  Check the inserted triples by executing a query like the following
     against the SPARQL endpoint, http://cname:port/sparql:
@@ -41707,7 +27109,7 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
           FROM <http://example.org>
          WHERE { ?s ?p ?o }
     
-    ![Star Replication Topology](ui/r4.png)
+    ![Star Replication Topology](./images/ui/r4.png)
 
 6.  See how many triples have been inserted in your graph:
     
@@ -41715,38 +27117,38 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
           FROM <http://example.org>
          WHERE { ?s ?p ?o }
     
-    ![Star Replication Topology](ui/r5.png)
+    ![Star Replication Topology](./images/ui/r5.png)
 
 ##### Subscribe to the Publication on the a Destination Virtuoso Instance db2, db3, etc.
 
 1.  Go to Conductor -\> Replication -\> Transactional -\> Subscriptions
     
-    ![Star Replication Topology](ui/r11.png)
+    ![Star Replication Topology](./images/ui/r11.png)
 
 2.  Click New Subscription
     
-    ![Star Replication Topology](ui/r12.png)
+    ![Star Replication Topology](./images/ui/r12.png)
 
 3.  Specify a new Data Source Enter or selected target data source from
     the available connected Data Sources:
     
-    ![Star Replication Topology](ui/r13.png)
+    ![Star Replication Topology](./images/ui/r13.png)
     
-    ![Star Replication Topology](ui/r13a.png)
+    ![Star Replication Topology](./images/ui/r13a.png)
 
 4.  Click Publications list
     
-    ![Star Replication Topology](ui/r15.png)
+    ![Star Replication Topology](./images/ui/r15.png)
 
 5.  Select the RDF Publication and click List Items
     
-    ![Star Replication Topology](ui/r16.png)
+    ![Star Replication Topology](./images/ui/r16.png)
 
 6.  Click Subscribe
 
 7.  The subscription will be created
     
-    ![Star Replication Topology](ui/r18.png)
+    ![Star Replication Topology](./images/ui/r18.png)
 
 8.  Click Sync
 
@@ -41756,7 +27158,7 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
           FROM <http://example.org>
          WHERE {?s ?p ?o}
     
-    ![Star Replication Topology](ui/r19.png)
+    ![Star Replication Topology](./images/ui/r19.png)
 
 10. See how many triples have been inserted into your graph by executing
     the following query:
@@ -41765,7 +27167,7 @@ this example, we will use the Virtuoso Conductor's Import RDF feature:
           FROM <http://example.org>
          WHERE {?s ?p ?o}
     
-    ![Star Replication Topology](ui/r5.png)
+    ![Star Replication Topology](./images/ui/r5.png)
 
 These steps may be repeated for any number of Subscriber.
 
@@ -41800,9 +27202,9 @@ These steps may be repeated for any number of Subscriber.
             <http://dbpedia.org/resource/SPARQL>
           } ;
     
-    ![Star Replication Topology](ui/r22.png)
+    ![Star Replication Topology](./images/ui/r22.png)
     
-    ![Star Replication Topology](ui/r23.png)
+    ![Star Replication Topology](./images/ui/r23.png)
 
 3.  To confirm that the triple count has increased by the number of
     inserted triples, execute the following on the Destination Virtuoso
@@ -41812,7 +27214,7 @@ These steps may be repeated for any number of Subscriber.
           FROM <http://example.org>
          WHERE { ?s ?p ?o }
     
-    ![Star Replication Topology](ui/r24.png)
+    ![Star Replication Topology](./images/ui/r24.png)
 
 ### Chain Replication Topology
 
@@ -41821,7 +27223,7 @@ Subscriber. That Subscriber may also serve as a Publisher, again with
 only one Subscriber. The chain ends with a Subscriber which does not
 Publish.
 
-![Chain Replication Topology](ui/topo-chain.png)
+![Chain Replication Topology](./images/ui/topo-chain.png)
 
 To set up a Chain, follow the scenario:
 
@@ -41933,7 +27335,7 @@ package.
 2.  Go to Conductor - \> Replication - \> Transactional - \>
     Publications
     
-    ![Chain Replication Topology](ui/m1.png)
+    ![Chain Replication Topology](./images/ui/m1.png)
 
 3.  Click
     
@@ -41945,26 +27347,26 @@ package.
     
     should be created
     
-    ![Chain Replication Topology](ui/m2.png)
+    ![Chain Replication Topology](./images/ui/m2.png)
 
 5.  Click the link which is the publication name.
 
 6.  You will be shown the publication items page
     
-    ![Chain Replication Topology](ui/m3.png)
+    ![Chain Replication Topology](./images/ui/m3.png)
 
 7.  Enter for Graph IRI:
     
         http://example.org
     
-    ![Chain Replication Topology](ui/m4.png)
+    ![Chain Replication Topology](./images/ui/m4.png)
 
 8.  Click Add New
 
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
     
-    ![Chain Replication Topology](ui/m5.png)
+    ![Chain Replication Topology](./images/ui/m5.png)
 
 ##### Create subscription from db2 to db1's Publication
 
@@ -41972,21 +27374,21 @@ package.
 
 2.  Go to Replication - \> Transactional - \> Subscriptions
     
-    ![Chain Replication Topology](ui/m6.png)
+    ![Chain Replication Topology](./images/ui/m6.png)
 
 3.  Click
     
     *New Subscription*
     
-    ![Chain Replication Topology](ui/m7.png)
+    ![Chain Replication Topology](./images/ui/m7.png)
 
 4.  From the list of "Specify new data source" select Data Source db1
     
-    ![Chain Replication Topology](ui/m8.png)
+    ![Chain Replication Topology](./images/ui/m8.png)
 
 5.  Enter for db1 dba user credentials
     
-    ![Chain Replication Topology](ui/m9.png)
+    ![Chain Replication Topology](./images/ui/m9.png)
 
 6.  Click "Add Data Source"
 
@@ -41996,7 +27398,7 @@ package.
     
     will be shown in the "Connected Data Sources" list.
     
-    ![Chain Replication Topology](ui/m10.png)
+    ![Chain Replication Topology](./images/ui/m10.png)
 
 8.  Select
     
@@ -42004,28 +27406,28 @@ package.
     
     the "Connected Data Sources" list and click "Publications list"
     
-    ![Chain Replication Topology](ui/m11.png)
+    ![Chain Replication Topology](./images/ui/m11.png)
 
 9.  As result will be shown the list of available publications for the
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
     
-    ![Chain Replication Topology](ui/m12.png)
+    ![Chain Replication Topology](./images/ui/m12.png)
 
 10. As result will be shown the "Confirm subscription" page.
     
-    ![Chain Replication Topology](ui/m13.png)
+    ![Chain Replication Topology](./images/ui/m13.png)
 
 11. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
     
-    ![Chain Replication Topology](ui/m14.png)
+    ![Chain Replication Topology](./images/ui/m14.png)
 
 12. Click "Subscribe"
 
 13. The subscription will be created.
     
-    ![Chain Replication Topology](ui/m15.png)
+    ![Chain Replication Topology](./images/ui/m15.png)
 
 ##### Create Publication on db2
 
@@ -42034,7 +27436,7 @@ package.
 2.  Go to Conductor - \> Replication - \> Transactional - \>
     Publications
     
-    ![Chain Replication Topology](ui/m16.png)
+    ![Chain Replication Topology](./images/ui/m16.png)
 
 3.  Click
     
@@ -42046,26 +27448,26 @@ package.
     
     should be created
     
-    ![Chain Replication Topology](ui/m17.png)
+    ![Chain Replication Topology](./images/ui/m17.png)
 
 5.  Click the link which is the publication name.
 
 6.  You will be shown the publication items page
     
-    ![Chain Replication Topology](ui/m18.png)
+    ![Chain Replication Topology](./images/ui/m18.png)
 
 7.  Enter for Graph IRI:
     
         http://example.org
     
-    ![Chain Replication Topology](ui/m19.png)
+    ![Chain Replication Topology](./images/ui/m19.png)
 
 8.  Click Add New
 
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
     
-    ![Chain Replication Topology](ui/m20.png)
+    ![Chain Replication Topology](./images/ui/m20.png)
 
 ##### Create subscription from db3 to db2's Publication
 
@@ -42073,25 +27475,25 @@ package.
 
 2.  Go to Replication - \> Transactional - \> Subscriptions
     
-    ![Chain Replication Topology](ui/m21.png)
+    ![Chain Replication Topology](./images/ui/m21.png)
 
 3.  Click
     
     *New Subscription*
     
-    ![Chain Replication Topology](ui/m22.png)
+    ![Chain Replication Topology](./images/ui/m22.png)
 
 4.  From the list of "Specify new data source" select Data Source db2
     
-    ![Chain Replication Topology](ui/m23.png)
+    ![Chain Replication Topology](./images/ui/m23.png)
 
 5.  Enter for db2 dba user credentials
     
-    ![Chain Replication Topology](ui/m24.png)
+    ![Chain Replication Topology](./images/ui/m24.png)
 
 6.  Click "Add Data Source"
     
-    ![Chain Replication Topology](ui/m25.png)
+    ![Chain Replication Topology](./images/ui/m25.png)
 
 7.  As result
     
@@ -42100,28 +27502,28 @@ package.
     will be shown in the "Connected Data Sources" list. Select it and
     click "Publications list"
     
-    ![Chain Replication Topology](ui/m26.png)
+    ![Chain Replication Topology](./images/ui/m26.png)
 
 8.  As result will be shown the list of available publications for the
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
     
-    ![Chain Replication Topology](ui/m27.png)
+    ![Chain Replication Topology](./images/ui/m27.png)
 
 9.  As result will be shown the "Confirm subscription" page.
     
-    ![Chain Replication Topology](ui/m28.png)
+    ![Chain Replication Topology](./images/ui/m28.png)
 
 10. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
     
-    ![Chain Replication Topology](ui/m29.png)
+    ![Chain Replication Topology](./images/ui/m29.png)
 
 11. Click "Subscribe"
 
 12. The subscription will be created.
     
-    ![Chain Replication Topology](ui/m30.png)
+    ![Chain Replication Topology](./images/ui/m30.png)
 
 ##### Insert Data into a Named Graph on the db1 Virtuoso Instance
 
@@ -42129,7 +27531,7 @@ package.
 
 2.  Go to Linked Data -\> Quad Store Upload:
     
-    ![Chain Replication Topology](ui/uc1.png)
+    ![Chain Replication Topology](./images/ui/uc1.png)
 
 3.  In the shown form:
     
@@ -42145,13 +27547,13 @@ package.
         
             http://example.org
         
-        ![Chain Replication Topology](ui/m32.png)
+        ![Chain Replication Topology](./images/ui/m32.png)
 
 4.  Click Upload
 
 5.  A successful upload will result in a shown message.
     
-    ![Chain Replication Topology](ui/m33.png)
+    ![Chain Replication Topology](./images/ui/m33.png)
 
 6.  Check the count of the inserted triples by executing a query like
     the following against the SPARQL endpoint,
@@ -42161,7 +27563,7 @@ package.
            FROM <http://example.org>
         WHERE { ?s ?p ?o }
     
-    ![Chain Replication Topology](ui/m34.png)
+    ![Chain Replication Topology](./images/ui/m34.png)
 
 7.  Should return
     
@@ -42169,7 +27571,7 @@ package.
     
     as total.
     
-    ![Chain Replication Topology](ui/m35.png)
+    ![Chain Replication Topology](./images/ui/m35.png)
 
 ##### Check data on the Destination instances db2 and db3
 
@@ -42186,7 +27588,7 @@ package.
     
     as total.
     
-    ![Chain Replication Topology](ui/m35.png)
+    ![Chain Replication Topology](./images/ui/m35.png)
 
 ##### Add new data on db1
 
@@ -42214,13 +27616,13 @@ package.
             <http://dbpedia.org/resource/SPARQL>
           } ;
     
-    ![Chain Replication Topology](ui/m36.png)
+    ![Chain Replication Topology](./images/ui/m36.png)
 
 3.  Click "Execute"
 
 4.  As result the triples will be inserted
     
-    ![Chain Replication Topology](ui/m36a.png)
+    ![Chain Replication Topology](./images/ui/m36a.png)
 
 5.  Check the count of the destination instance graph's triples by
     executing the following query like against the SPARQL endpoint,
@@ -42236,7 +27638,7 @@ package.
     
     as total.
     
-    ![Chain Replication Topology](ui/m38.png)
+    ![Chain Replication Topology](./images/ui/m38.png)
 
 ##### Check data on the Destination instances db2 and db3
 
@@ -42256,7 +27658,7 @@ package.
     
     as total.
     
-    ![Chain Replication Topology](ui/m38.png)
+    ![Chain Replication Topology](./images/ui/m38.png)
 
 ### Bi-directional Replication Topology
 
@@ -42340,7 +27742,7 @@ package.
 
 2.  Go to Conductor -\> Replication -\> Transactional -\> Publications
     
-    ![Bi-directional Replication Topology](ui/bd1.png)
+    ![Bi-directional Replication Topology](./images/ui/bd1.png)
 
 3.  Click
     
@@ -42352,26 +27754,26 @@ package.
     
     should be created
     
-    ![Bi-directional Replication Topology](ui/bd2.png)
+    ![Bi-directional Replication Topology](./images/ui/bd2.png)
 
 5.  Click the link which is the publication name.
 
 6.  You will be shown the publication items page
     
-    ![Bi-directional Replication Topology](ui/bd3.png)
+    ![Bi-directional Replication Topology](./images/ui/bd3.png)
 
 7.  Enter for Graph IRI:
     
         http://example.org
     
-    ![Bi-directional Replication Topology](ui/bd4.png)
+    ![Bi-directional Replication Topology](./images/ui/bd4.png)
 
 8.  Click Add New
 
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
     
-    ![Bi-directional Replication Topology](ui/bd5.png)
+    ![Bi-directional Replication Topology](./images/ui/bd5.png)
 
 ##### Create subscription from db1 to db2's Publication
 
@@ -42379,21 +27781,21 @@ package.
 
 2.  Go to Replication -\> Transactional -\> Subscriptions
     
-    ![Bi-directional Replication Topology](ui/bd6.png)
+    ![Bi-directional Replication Topology](./images/ui/bd6.png)
 
 3.  Click
     
     *New Subscription*
     
-    ![Bi-directional Replication Topology](ui/bd7.png)
+    ![Bi-directional Replication Topology](./images/ui/bd7.png)
 
 4.  From the list of "Specify new data source" select Data Source db2
     
-    ![Bi-directional Replication Topology](ui/bd8.png)
+    ![Bi-directional Replication Topology](./images/ui/bd8.png)
 
 5.  Enter for db2 dba user credentials
     
-    ![Bi-directional Replication Topology](ui/bd9.png)
+    ![Bi-directional Replication Topology](./images/ui/bd9.png)
 
 6.  Click "Add Data Source"
 
@@ -42403,7 +27805,7 @@ package.
     
     will be shown in the "Connected Data Sources" list.
     
-    ![Bi-directional Replication Topology](ui/bd10.png)
+    ![Bi-directional Replication Topology](./images/ui/bd10.png)
 
 8.  Select
     
@@ -42411,28 +27813,28 @@ package.
     
     the "Connected Data Sources" list and click "Publications list"
     
-    ![Bi-directional Replication Topology](ui/bd11.png)
+    ![Bi-directional Replication Topology](./images/ui/bd11.png)
 
 9.  As result will be shown the list of available publications for the
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
     
-    ![Bi-directional Replication Topology](ui/bd12.png)
+    ![Bi-directional Replication Topology](./images/ui/bd12.png)
 
 10. As result will be shown the "Confirm subscription" page.
     
-    ![Bi-directional Replication Topology](ui/bd13.png)
+    ![Bi-directional Replication Topology](./images/ui/bd13.png)
 
 11. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
     
-    ![Bi-directional Replication Topology](ui/bd14.png)
+    ![Bi-directional Replication Topology](./images/ui/bd14.png)
 
 12. Click "Subscribe"
 
 13. The subscription will be created.
     
-    ![Bi-directional Replication Topology](ui/bd15.png)
+    ![Bi-directional Replication Topology](./images/ui/bd15.png)
 
 ##### Create Publication on db1
 
@@ -42440,7 +27842,7 @@ package.
 
 2.  Go to Conductor -\> Replication -\> Transactional -\> Publications
     
-    ![Bi-directional Replication Topology](ui/bd16.png)
+    ![Bi-directional Replication Topology](./images/ui/bd16.png)
 
 3.  Click
     
@@ -42452,26 +27854,26 @@ package.
     
     should be created
     
-    ![Bi-directional Replication Topology](ui/bd17.png)
+    ![Bi-directional Replication Topology](./images/ui/bd17.png)
 
 5.  Click the link which is the publication name.
 
 6.  You will be shown the publication items page
     
-    ![Bi-directional Replication Topology](ui/bd18.png)
+    ![Bi-directional Replication Topology](./images/ui/bd18.png)
 
 7.  Enter for Graph IRI:
     
         http://example.org
     
-    ![Bi-directional Replication Topology](ui/bd19.png)
+    ![Bi-directional Replication Topology](./images/ui/bd19.png)
 
 8.  Click Add New
 
 9.  The item will be created and shown in the list of items for the
     currently viewed publication.
     
-    ![Bi-directional Replication Topology](ui/bd20.png)
+    ![Bi-directional Replication Topology](./images/ui/bd20.png)
 
 ##### Create subscription from db2 to db1's Publication
 
@@ -42479,25 +27881,25 @@ package.
 
 2.  Go to Replication -\> Transactional -\> Subscriptions
     
-    ![Bi-directional Replication Topology](ui/bd21.png)
+    ![Bi-directional Replication Topology](./images/ui/bd21.png)
 
 3.  Click
     
     *New Subscription*
     
-    ![Bi-directional Replication Topology](ui/bd22.png)
+    ![Bi-directional Replication Topology](./images/ui/bd22.png)
 
 4.  From the list of "Specify new data source" select Data Source db1
     
-    ![Bi-directional Replication Topology](ui/bd23.png)
+    ![Bi-directional Replication Topology](./images/ui/bd23.png)
 
 5.  Enter for db1 dba user credentials
     
-    ![Bi-directional Replication Topology](ui/bd24.png)
+    ![Bi-directional Replication Topology](./images/ui/bd24.png)
 
 6.  Click "Add Data Source"
     
-    ![Bi-directional Replication Topology](ui/bd25.png)
+    ![Bi-directional Replication Topology](./images/ui/bd25.png)
 
 7.  As result
     
@@ -42506,28 +27908,28 @@ package.
     will be shown in the "Connected Data Sources" list. Select it and
     click "Publications list"
     
-    ![Bi-directional Replication Topology](ui/bd26.png)
+    ![Bi-directional Replication Topology](./images/ui/bd26.png)
 
 8.  As result will be shown the list of available publications for the
     selected data source. Select the one with name "RDF Publication" and
     click "List Items".
     
-    ![Bi-directional Replication Topology](ui/bd27.png)
+    ![Bi-directional Replication Topology](./images/ui/bd27.png)
 
 9.  As result will be shown the "Confirm subscription" page.
     
-    ![Bi-directional Replication Topology](ui/bd28.png)
+    ![Bi-directional Replication Topology](./images/ui/bd28.png)
 
 10. The sync interval by default is 10 minutes. For the testing
     purposes, we will change it to 1 minute.
     
-    ![Bi-directional Replication Topology](ui/bd29.png)
+    ![Bi-directional Replication Topology](./images/ui/bd29.png)
 
 11. Click "Subscribe"
 
 12. The subscription will be created.
     
-    ![Bi-directional Replication Topology](ui/bd30.png)
+    ![Bi-directional Replication Topology](./images/ui/bd30.png)
 
 ##### Insert Data into a Named Graph on the db2 Virtuoso Instance
 
@@ -42535,7 +27937,7 @@ package.
 
 2.  Go to Linked Data -\> Quad Store Upload:
     
-    ![Bi-directional Replication Topology](ui/uc1.png)
+    ![Bi-directional Replication Topology](./images/ui/uc1.png)
 
 3.  In the shown form:
 
@@ -42551,13 +27953,13 @@ package.
     
         http://example.org
     
-    ![Bi-directional Replication Topology](ui/bd32.png)
+    ![Bi-directional Replication Topology](./images/ui/bd32.png)
 
 6.  Click Upload
 
 7.  A successful upload will result in a shown message.
     
-    ![Bi-directional Replication Topology](ui/m33.png)
+    ![Bi-directional Replication Topology](./images/ui/m33.png)
 
 8.  Check the count of the inserted triples by executing a query like
     the following against the SPARQL endpoint,
@@ -42567,7 +27969,7 @@ package.
            FROM <http://example.org>
         WHERE { ?s ?p ?o }
     
-    ![Bi-directional Replication Topology](ui/bd34.png)
+    ![Bi-directional Replication Topology](./images/ui/bd34.png)
 
 9.  Should return
     
@@ -42575,7 +27977,7 @@ package.
     
     as total.
     
-    ![Bi-directional Replication Topology](ui/bd35.png)
+    ![Bi-directional Replication Topology](./images/ui/bd35.png)
 
 ##### Check data on the Destination instance db1
 
@@ -42591,7 +27993,7 @@ package.
     
     as total.
     
-    ![Bi-directional Replication Topology](ui/bd35.png)
+    ![Bi-directional Replication Topology](./images/ui/bd35.png)
 
 ##### Add new data on db2
 
@@ -42607,13 +28009,13 @@ package.
              <http://dbpedia.org/resource/Web_Services>
           } ;
     
-    ![Bi-directional Replication Topology](ui/bd36.png)
+    ![Bi-directional Replication Topology](./images/ui/bd36.png)
 
 3.  Click "Execute"
 
 4.  As result the triples will be inserted
     
-    ![Bi-directional Replication Topology](ui/bd37.png)
+    ![Bi-directional Replication Topology](./images/ui/bd37.png)
 
 5.  Check the count of the destination instance graph's triples by
     executing the following query like against the SPARQL endpoint,
@@ -42629,7 +28031,7 @@ package.
     
     as total.
     
-    ![Bi-directional Replication Topology](ui/bd38.png)
+    ![Bi-directional Replication Topology](./images/ui/bd38.png)
 
 ##### Check data on the Destination instance db1
 
@@ -42649,7 +28051,7 @@ package.
     
     as total.
     
-    ![Bi-directional Replication Topology](ui/bd38.png)
+    ![Bi-directional Replication Topology](./images/ui/bd38.png)
 
 ##### Add new data on db1
 
@@ -42671,13 +28073,13 @@ package.
             <http://dbpedia.org/resource/SPARQL>
           } ;
     
-    ![Bi-directional Replication Topology](ui/bd39.png)
+    ![Bi-directional Replication Topology](./images/ui/bd39.png)
 
 3.  Click "Execute"
 
 4.  As result the triples will be inserted
     
-    ![Bi-directional Replication Topology](ui/bd40.png)
+    ![Bi-directional Replication Topology](./images/ui/bd40.png)
 
 5.  Check the count of the destination instance graph's triples by
     executing the following query like against the SPARQL endpoint,
@@ -42693,7 +28095,7 @@ package.
     
     as total.
     
-    ![Bi-directional Replication Topology](ui/bd41.png)
+    ![Bi-directional Replication Topology](./images/ui/bd41.png)
 
 ##### Check data on the Destination instance db2
 
@@ -42713,7 +28115,7 @@ package.
     
     as total.
     
-    ![Bi-directional Replication Topology](ui/bd41.png)
+    ![Bi-directional Replication Topology](./images/ui/bd41.png)
 
 ## Set up RDF Replication via procedure calls
 
@@ -42722,7 +28124,7 @@ package.
 The following example shows how to use SQL procedures to set up Virtuoso
 RDF Graph Replication in a Chain Topology.
 
-![Chain Replication Topology](ui/topo-chain.png)
+![Chain Replication Topology](./images/ui/topo-chain.png)
 
 This can also be done [through the HTTP-based Virtuoso
 Conductor](#rdfgraphreplicationtoplchainex) .

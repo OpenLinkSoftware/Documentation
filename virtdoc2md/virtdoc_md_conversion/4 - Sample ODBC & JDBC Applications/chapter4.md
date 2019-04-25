@@ -145,14 +145,14 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
 1.  Go to the Virtuoso "Start Menu" item, then click on the "C++ Demo 32
     Bit" menu item.
     
-    ![C++ Demo](sampl001.gif)
+    ![C++ Demo](./images/sampl001.gif)
 
 2.  Follow the Environment-\>Open Connection menu path. Selecting the
     "Open Connection" menu item results in the ODBC Driver Manager
     presenting you with a list of ODBC DSNs on your machine as depicted
     by the screen capture below:
     
-    ![C++ Demo](sampl004.gif)
+    ![C++ Demo](./images/sampl004.gif)
 
 3.  Select the ODBC DSN that you want to be connecting to, in this case
     "Local Virtuoso Demo" has been chosen since this will connect you to
@@ -162,18 +162,18 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
     for ODBC, enter a valid user name and password (default being user:
     demo and password: demo) into the appropriate fields.
     
-    ![C++ Demo](sampl003.gif)
+    ![C++ Demo](./images/sampl003.gif)
 
 5.  At this point you will be connected to the Virtuoso demonstration
     database, you can now use the SQL--\>Execute SQL menu path to open
     up the Interactive SQL input dialog. Enter a valid SQL statement
     (see example in screen shot) and then click on the "OK" button.
     
-    ![C++ Demo](sampl006.gif)
+    ![C++ Demo](./images/sampl006.gif)
 
 6.  You will be presented with the results of your query.
     
-    ![C++ Demo](sampl007.gif)
+    ![C++ Demo](./images/sampl007.gif)
 
 7.  You exit this demo by following the Environment--\>Close Connection
     menu path.
@@ -184,7 +184,7 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
     Test 32 Bit" menu item. You will be presented with the "Bench Test"
     interface.
     
-    ![ODBC Bench](sampl008.gif)
+    ![ODBC Bench](./images/sampl008.gif)
 
 2.  Follow the File-Connect menu path which initializes the ODBC Driver
     Manager which in turn presents you with a list of ODBC DSN's
@@ -194,27 +194,27 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
     database engine that serves the ODBC Driver. Choose the "Local
     Virtuoso Demo" DSN if you want to benchmark Virtuoso.
     
-    ![ODBC Bench](sampl009.gif)
+    ![ODBC Bench](./images/sampl009.gif)
 
 3.  You will then be presented with a Login Dialog by the Virtuoso
     driver for ODBC, enter a valid user name and password (default being
     user: demo and password: demo for the Demo database) into the
     appropriate fields.
     
-    ![ODBC Bench](sampl010.gif)
+    ![ODBC Bench](./images/sampl010.gif)
 
 4.  Now follow the Bench--\>Load Tables menu path and you will be
     presented with a dialog that enables you to configure key elements
     of your benchmark. Click the "Execute" button to commence the
     process of setting up your database for the benchmark tests.
     
-    ![ODBC Bench](sampl011.gif)
+    ![ODBC Bench](./images/sampl011.gif)
 
 5.  As the process of loading data occurs, all the way up to completion,
     the benchmark program will provide status information into the
     benchmark output pane as shown below:
     
-    ![ODBC Bench](sampl012.gif)
+    ![ODBC Bench](./images/sampl012.gif)
 
 6.  Now that all the benchmark data has been loaded into your database,
     follow the Bench--\>Run Benchmark menu path and then configure your
@@ -223,7 +223,7 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
     These benchmark parameters fall into 3 categories, Timing Options,
     SQL Options, and Execution Options.
     
-    ![ODBC Bench](sampl013.gif)
+    ![ODBC Bench](./images/sampl013.gif)
     
     *Timing Options:* These setting allow you to configure the duration
     related aspects of this benchmark program
@@ -273,7 +273,7 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
 2.  When benchmark run complete benchmark data is written to the
     benchmark program's output pane.
     
-    ![ODBC Bench](sampl014.gif)
+    ![ODBC Bench](./images/sampl014.gif)
     
     The key pieces of benchmark data that you need to look out for are:
     
@@ -537,7 +537,7 @@ sqlc.ExecuteNonQuery();
     JDBC Samples--\>JDBCDemo (JDK1.1&1.2) menu path, this will execute a
     DOS batch program that initializes the Java demo application.
     
-    ![JDBC Demo](vjdemo1.gif)
+    ![JDBC Demo](./images/vjdemo1.gif)
 
 2.  Set the JDBC Driver Name and URL settings for your connection to the
     Virtuoso demonstration database. The "Driver Name" field identifies
@@ -545,14 +545,14 @@ sqlc.ExecuteNonQuery();
     "virtuoso.jdbc.Driver", which is the Virtuoso Driver for JDBC 1.0.
     The "Connection URL" field requires a valid Virtuoso JDBC URL.
     
-    ![JDBC Demo](vjdemo2.gif)
+    ![JDBC Demo](./images/vjdemo2.gif)
 
 3.  Enter a valid SQL statement and then click the "Query" button, the
     example below uses a fully qualified Virtuoso SQL statement
     requesting all records from the "Demo" database table "Customers"
     owned by the Virtuoso user "DBA".
     
-    ![JDBC Demo](vjdemo3.gif)
+    ![JDBC Demo](./images/vjdemo3.gif)
 
 ## ScrollDemo2 Java Application
 
@@ -561,7 +561,7 @@ sqlc.ExecuteNonQuery();
     execute a DOS batch program that initializes the Java demo
     application.
     
-    ![Scroll Demo 2](sampl015.gif)
+    ![Scroll Demo 2](./images/sampl015.gif)
 
 2.  Set the JDBC Driver Name and URL settings for your connection to the
     Virtuoso demonstration database. The "Driver Name" field identifies
@@ -569,14 +569,14 @@ sqlc.ExecuteNonQuery();
     "virtuoso.jdbc2.Driver", which is the Virtuoso Driver for JDBC 2.0.
     The "Connection URL" field requires a valid Virtuoso JDBC URL.
     
-    ![Scroll Demo 2](sampl016.gif)
+    ![Scroll Demo 2](./images/sampl016.gif)
 
 3.  Enter a valid SQL statement and then click the "Query" button, the
     example below uses a fully qualified Virtuoso SQL statement
     requesting all records from the "Demo" database table "Customers"
     owned by the Virtuoso user "DBA".
     
-    ![Scroll Demo 2](sampl017.gif)
+    ![Scroll Demo 2](./images/sampl017.gif)
 
 4.  You can now use the navigational buttons to Scroll backwards and
     forwards, each of these navigational buttons highlights Virtuoso's
@@ -588,7 +588,7 @@ sqlc.ExecuteNonQuery();
 1.  Start the Virtuoso Admin Assistant and then follow the Sample
     Applications--\>JDBC Applet Demos menu path.
     
-    ![Scroll Demo 2](sampl018.gif)
+    ![Scroll Demo 2](./images/sampl018.gif)
 
 2.  Click on the "ScrollDemo2" hyperlink which initializes the
     ScrollDemo2 applet, if you do not have a Java 1.2 or Java 2.0
@@ -604,7 +604,7 @@ sqlc.ExecuteNonQuery();
     depending on the JVM you have installed. This will execute a DOS
     batch program that initializes the JBench application.
     
-    ![JBench](sampl019.gif)
+    ![JBench](./images/sampl019.gif)
 
 2.  The follow the File--\>Connect menu path to make your initial
     connection. You will need to identify your JDBC Driver (by providing
@@ -613,7 +613,7 @@ sqlc.ExecuteNonQuery();
     a valid Virtuoso Driver for JDBC URL that points to the
     demonstration database listening at port 1112 as its default).
     
-    ![JBench](sampl020.gif)
+    ![JBench](./images/sampl020.gif)
 
 3.  Follow the Results--\>Table URL menu path, this is how you identify
     (using a JDBC URL) the location of the "Results" tables into which
@@ -632,7 +632,7 @@ sqlc.ExecuteNonQuery();
     not listed ANSI should suffice (as long as this is an ANSI SQL
     compliant database).
     
-    ![JBench](sampl021.gif)
+    ![JBench](./images/sampl021.gif)
 
 6.  Follow the TPC-A--\>Load Procedures menu path to Load the Virtuoso
     TPC-A stored procedures.
@@ -644,7 +644,7 @@ sqlc.ExecuteNonQuery();
     The benchmark parameters fall into 4 categories, Bench execution
     mode, Run Options, SQL Options, and Execution Options.
     
-    ![JBench](sampl022.gif)
+    ![JBench](./images/sampl022.gif)
     
     *Bench execution mode:* These setting allow you to configure the
     threads used for the benchmark.

@@ -8212,7 +8212,7 @@ compliance with the emerging [GeoSPARQL](#) and [OGC](#) standards.
 The table below outlines the common WKT (Well Known Text)
 representations for several types of geometric objects used in RDF:
 
-![Geo Spatial Geometry Data Types](ui/geosptypes.png)
+![Geo Spatial Geometry Data Types](./images/ui/geosptypes.png)
 
 The following queries "counts the number of items of each type whose
 coordinates fall within a bounded box shape" for the various RDF

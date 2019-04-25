@@ -1740,7 +1740,7 @@ services can be enhanced further with other Web and Internet protocols
 for the grand objective of making parts of useful information or ability
 consumable over the Internet as a Web Service.
 
-![Towards Web Services...](virtpyramid.jpg)
+![Towards Web Services...](./images/virtpyramid.jpg)
 
 # Architecture
 
@@ -1750,4 +1750,4 @@ local native and remote SQL and XML based resources. Web and Internet
 services and protocols then sit atop of this layer to expose Virtuoso to
 the Web and its users.
 
-![OpenLink Virtuoso Product Architecture](varch32.jpg)
+![OpenLink Virtuoso Product Architecture](./images/varch32.jpg)
