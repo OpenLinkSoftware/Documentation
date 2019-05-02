@@ -18,23 +18,5724 @@ expr
 
 any
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Description](#id1-description)
+  * [Parameters](#id2-parameters)
+    * [expr](#id3-expr)
+  * [Return Types](#id4-return-types)
+  * [See Also](#id5-see-also)
+  * [Description](#id6-description)
+  * [Parameters](#id7-parameters)
+    * [expr](#id8-expr)
+  * [Return Types](#id9-return-types)
+  * [See Also](#id10-see-also)
+  * [Description](#id11-description)
+  * [Parameters](#id12-parameters)
+    * [expr](#id13-expr)
+  * [Return Types](#id14-return-types)
+  * [See Also](#id15-see-also)
+  * [Description](#id16-description)
+  * [Parameters](#id17-parameters)
+    * [expr1](#id18-expr1)
+    * [expr2](#id19-expr2)
+  * [Return Types](#id20-return-types)
+  * [See Also](#id21-see-also)
+  * [Description](#id22-description)
+  * [Parameters](#id23-parameters)
+    * [expr](#id24-expr)
+  * [Return Types](#id25-return-types)
+  * [See Also](#id26-see-also)
+  * [Description](#id27-description)
+  * [Parameters](#id28-parameters)
+    * [expr](#id29-expr)
+  * [Return Types](#id30-return-types)
+  * [See Also](#id31-see-also)
+  * [Description](#id32-description)
+  * [Parameters](#id33-parameters)
+    * [expr1](#id34-expr1)
+    * [expr2](#id35-expr2)
+  * [Return Types](#id36-return-types)
+  * [See Also](#id37-see-also)
+  * [Description](#id38-description)
+  * [Parameters](#id39-parameters)
+    * [expr1](#id40-expr1)
+    * [expr2](#id41-expr2)
+  * [Return Types](#id42-return-types)
+  * [See Also](#id43-see-also)
+  * [Description](#id44-description)
+  * [Parameters](#id45-parameters)
+    * [expr1](#id46-expr1)
+    * [expr2](#id47-expr2)
+  * [Return Types](#id48-return-types)
+  * [See Also](#id49-see-also)
+  * [Description](#id50-description)
+  * [Parameters](#id51-parameters)
+    * [expr1](#id52-expr1)
+    * [expr2](#id53-expr2)
+  * [Return Types](#id54-return-types)
+  * [See Also](#id55-see-also)
+  * [Description](#id56-description)
+  * [Parameters](#id57-parameters)
+    * [expr1](#id58-expr1)
+    * [expr2](#id59-expr2)
+  * [Return Types](#id60-return-types)
+  * [See Also](#id61-see-also)
+  * [Description](#id62-description)
+  * [Parameters](#id63-parameters)
+    * [expr1](#id64-expr1)
+    * [expr2](#id65-expr2)
+  * [Return Types](#id66-return-types)
+  * [See Also](#id67-see-also)
+  * [Description](#id68-description)
+  * [Parameters](#id69-parameters)
+    * [expr1](#id70-expr1)
+    * [expr2](#id71-expr2)
+  * [Return Types](#id72-return-types)
+  * [See Also](#id73-see-also)
+  * [Description](#id74-description)
+  * [Parameters](#id75-parameters)
+    * [expr1](#id76-expr1)
+    * [expr2](#id77-expr2)
+  * [Return Types](#id78-return-types)
+  * [See Also](#id79-see-also)
+  * [Description](#id80-description)
+  * [Parameters](#id81-parameters)
+    * [expr1](#id82-expr1)
+    * [expr2](#id83-expr2)
+  * [Return Types](#id84-return-types)
+  * [See Also](#id85-see-also)
+  * [Description](#id86-description)
+  * [Parameters](#id87-parameters)
+    * [expr1](#id88-expr1)
+    * [expr2](#id89-expr2)
+  * [Return Types](#id90-return-types)
+  * [See Also](#id91-see-also)
+  * [Description](#id92-description)
+  * [Parameters](#id93-parameters)
+    * [expr1](#id94-expr1)
+    * [expr2](#id95-expr2)
+  * [Return Types](#id96-return-types)
+  * [See Also](#id97-see-also)
+  * [Description](#id98-description)
+  * [Parameters](#id99-parameters)
+    * [expr1](#id100-expr1)
+    * [expr2](#id101-expr2)
+  * [Return Types](#id102-return-types)
+  * [See Also](#id103-see-also)
+  * [Description](#id104-description)
+  * [Parameters](#id105-parameters)
+    * [value\_expression](#id106-value_expression)
+  * [Return Types](#id107-return-types)
+  * [See Also](#id108-see-also)
+  * [Description](#id109-description)
+  * [Parameters](#id110-parameters)
+    * [value\_expression](#id111-value_expression)
+  * [Return Types](#id112-return-types)
+  * [Examples](#id113-examples)
+  * [See Also](#id114-see-also)
+  * [Description](#id115-description)
+  * [Parameters](#id116-parameters)
+    * [value\_expression](#id117-value_expression)
+  * [Return Types](#id118-return-types)
+  * [Examples](#id119-examples)
+  * [See Also](#id120-see-also)
+  * [Description](#id121-description)
+  * [Parameters](#id122-parameters)
+    * [value\_expression](#id123-value_expression)
+  * [Return Types](#id124-return-types)
+  * [Examples](#id125-examples)
+  * [See Also](#id126-see-also)
+  * [Description](#id127-description)
+  * [Parameters](#id128-parameters)
+    * [value\_expression](#id129-value_expression)
+  * [Return Types](#id130-return-types)
+  * [Examples](#id131-examples)
+  * [See Also](#id132-see-also)
+  * [Description](#id133-description)
+  * [Parameters](#id134-parameters)
+    * [\_items](#id135-_items)
+  * [Return Types](#id136-return-types)
+  * [Examples](#id137-examples)
+  * [See Also](#id138-see-also)
+  * [Description](#id139-description)
+  * [Parameters](#id140-parameters)
+    * [value\_expression](#id141-value_expression)
+  * [Return Types](#id142-return-types)
+  * [Examples](#id143-examples)
+  * [See Also](#id144-see-also)
+  * [Description](#id145-description)
+  * [Parameters](#id146-parameters)
+    * [value\_expression](#id147-value_expression)
+  * [Return Types](#id148-return-types)
+  * [Examples](#id149-examples)
+  * [See Also](#id150-see-also)
+  * [Description](#id151-description)
+  * [Parameters](#id152-parameters)
+    * [value\_expression](#id153-value_expression)
+  * [Return Types](#id154-return-types)
+  * [Examples](#id155-examples)
+  * [See Also](#id156-see-also)
+  * [Description](#id157-description)
+  * [Parameters](#id158-parameters)
+    * [value\_expression](#id159-value_expression)
+  * [Return Types](#id160-return-types)
+  * [Examples](#id161-examples)
+  * [See Also](#id162-see-also)
+  * [Description](#id163-description)
+  * [Parameters](#id164-parameters)
+    * [\_items](#id165-_items)
+  * [Return Types](#id166-return-types)
+  * [Examples](#id167-examples)
+  * [See Also](#id168-see-also)
+  * [Description](#id169-description)
+  * [Parameters](#id170-parameters)
+    * [num](#id171-num)
+  * [Return Types](#id172-return-types)
+  * [Examples](#id173-examples)
+  * [Description](#id174-description)
+  * [Parameters](#id175-parameters)
+    * [tablename](#id176-tablename)
+  * [Return Types](#id177-return-types)
+  * [Errors](#id178-errors)
+  * [Examples](#id179-examples)
+  * [Description](#id180-description)
+  * [Parameters](#id181-parameters)
+    * [`arg](#id182-arg)
+    * [`nth](#id183-nth)
+  * [Return Values](#id184-return-values)
+  * [Errors](#id185-errors)
+  * [Examples](#id186-examples)
+  * [See Also](#id187-see-also)
+  * [Description](#id188-description)
+  * [Parameters](#id189-parameters)
+    * [`arg](#id190-arg)
+  * [Return Values](#id191-return-values)
+  * [Errors](#id192-errors)
+  * [Examples](#id193-examples)
+  * [See Also](#id194-see-also)
+  * [Description](#id195-description)
+  * [Parameters](#id196-parameters)
+    * [arg](#id197-arg)
+    * [nth](#id198-nth)
+    * [nelem](#id199-nelem)
+  * [Return Values](#id200-return-values)
+  * [Errors](#id201-errors)
+  * [Examples](#id202-examples)
+  * [See Also](#id203-see-also)
+  * [Description](#id204-description)
+  * [Parameters](#id205-parameters)
+    * [`arg](#id206-arg)
+  * [Return Types](#id207-return-types)
+  * [Examples](#id208-examples)
+  * [See Also](#id209-see-also)
+  * [Description](#id210-description)
+  * [Parameters](#id211-parameters)
+    * [`arg](#id212-arg)
+  * [Return Types](#id213-return-types)
+  * [Examples](#id214-examples)
+  * [See Also](#id215-see-also)
+  * [Description](#id216-description)
+  * [Parameters](#id217-parameters)
+    * [dsn](#id218-dsn)
+    * [table](#id219-table)
+  * [Return Types](#id220-return-types)
+  * [Examples](#id221-examples)
+  * [Description](#id222-description)
+    * [Full backup](#id223-full-backup)
+    * [Partial backups](#id224-partial-backups)
+  * [Parameters](#id225-parameters)
+    * [`file](#id226-file)
+    * [`backup_row](#id227-backup_row)
+  * [See Also](#id228-see-also)
+  * [Description](#id229-description)
+  * [Parameters](#id230-parameters)
+    * [file\_prefix](#id231-file_prefix)
+    * [pages](#id232-pages)
+    * [timeout](#id233-timeout)
+    * [dirs](#id234-dirs)
+  * [Return Types](#id235-return-types)
+  * [Errors](#id236-errors)
+  * [Examples](#id237-examples)
+  * [See Also](#id238-see-also)
+  * [Description](#id239-description)
+  * [See Also](#id240-see-also)
+  * [Description](#id241-description)
+  * [Parameters](#id242-parameters)
+    * [qst](#id243-qst)
+    * [args](#id244-args)
+    * [nth](#id245-nth)
+    * [func](#id246-func)
+  * [Return Values](#id247-return-values)
+  * [Examples](#id248-examples)
+  * [Description](#id249-description)
+  * [Return Types](#id250-return-types)
+  * [Examples](#id251-examples)
+  * [See Also](#id252-see-also)
+  * [Description](#id253-description)
+  * [Return Types](#id254-return-types)
+  * [Examples](#id255-examples)
+  * [See Also](#id256-see-also)
+  * [Description](#id257-description)
+  * [Return Types](#id258-return-types)
+  * [Examples](#id259-examples)
+  * [See Also](#id260-see-also)
+  * [Description](#id261-description)
+  * [Parameters](#id262-parameters)
+    * [value](#id263-value)
+    * [distance](#id264-distance)
+  * [Return Types](#id265-return-types)
+  * [Examples](#id266-examples)
+  * [See Also](#id267-see-also)
+  * [Description](#id268-description)
+  * [Return Types](#id269-return-types)
+  * [Examples](#id270-examples)
+  * [See Also](#id271-see-also)
+  * [Description](#id272-description)
+  * [Parameters](#id273-parameters)
+    * [`blob](#id274-blob)
+  * [Return Types](#id275-return-types)
+  * [Errors](#id276-errors)
+  * [Examples](#id277-examples)
+  * [See Also](#id278-see-also)
+  * [Description](#id279-description)
+  * [Parameters](#id280-parameters)
+    * [`blob](#id281-blob)
+  * [Return types](#id282-return-types)
+  * [Errors](#id283-errors)
+  * [Examples](#id284-examples)
+  * [See Also](#id285-see-also)
+  * [Description](#id286-description)
+  * [Parameters](#id287-parameters)
+    * [bookmark](#id288-bookmark)
+    * [cursor](#id289-cursor)
+  * [Return Types](#id290-return-types)
+  * [Errors](#id291-errors)
+  * [See Also](#id292-see-also)
+  * [Description](#id293-description)
+  * [Parameters](#id294-parameters)
+    * [x](#id295-x)
+  * [Return Values](#id296-return-values)
+  * [Examples](#id297-examples)
+  * [See Also](#id298-see-also)
+  * [Description](#id299-description)
+  * [Parameters](#id300-parameters)
+    * [path](#id301-path)
+    * [section](#id302-section)
+  * [Return Values](#id303-return-values)
+  * [Examples](#id304-examples)
+  * [See Also](#id305-see-also)
+  * [Description](#id306-description)
+  * [Parameters](#id307-parameters)
+    * [path](#id308-path)
+    * [section](#id309-section)
+    * [item\_index](#id310-item_index)
+  * [Return Values](#id311-return-values)
+  * [Examples](#id312-examples)
+  * [See Also](#id313-see-also)
+  * [Description](#id314-description)
+  * [Parameters](#id315-parameters)
+    * [path](#id316-path)
+    * [section](#id317-section)
+    * [item\_name](#id318-item_name)
+  * [Return Values](#id319-return-values)
+  * [Examples](#id320-examples)
+  * [See Also](#id321-see-also)
+  * [Description](#id322-description)
+  * [Parameters](#id323-parameters)
+    * [path](#id324-path)
+  * [Return Values](#id325-return-values)
+  * [Examples](#id326-examples)
+  * [See Also](#id327-see-also)
+  * [Description](#id328-description)
+  * [Parameters](#id329-parameters)
+    * [path](#id330-path)
+    * [index](#id331-index)
+  * [Return Values](#id332-return-values)
+  * [Examples](#id333-examples)
+  * [See Also](#id334-see-also)
+  * [Description](#id335-description)
+  * [Parameters](#id336-parameters)
+    * [path](#id337-path)
+    * [section](#id338-section)
+    * [item\_name](#id339-item_name)
+    * [item\_value](#id340-item_value)
+  * [Examples](#id341-examples)
+  * [See Also](#id342-see-also)
+  * [Description](#id343-description)
+  * [Parameters](#id344-parameters)
+    * [name](#id345-name)
+    * [charset\_string](#id346-charset_string)
+    * [aliases](#id347-aliases)
+  * [Return Types](#id348-return-types)
+  * [Errors](#id349-errors)
+  * [Examples](#id350-examples)
+  * [See Also](#id351-see-also)
+  * [Description](#id352-description)
+  * [Parameters](#id353-parameters)
+    * [`src_string](#id354-src_string)
+    * [`src_charset](#id355-src_charset)
+    * [dst\_charset](#id356-dst_charset)
+  * [Examples](#id357-examples)
+  * [See Also](#id358-see-also)
+  * [Description](#id359-description)
+  * [Parameters](#id360-parameters)
+    * [`gen_res_set](#id361-gen_res_set)
+  * [Return Types](#id362-return-types)
+  * [Errors](#id363-errors)
+  * [Examples](#id364-examples)
+  * [See Also](#id365-see-also)
+  * [Description](#id366-description)
+  * [Parameters](#id367-parameters)
+    * [minutes](#id368-minutes)
+  * [Return Types](#id369-return-types)
+  * [Errors](#id370-errors)
+  * [Examples](#id371-examples)
+  * [See Also](#id372-see-also)
+  * [Description](#id373-description)
+  * [Parameters](#id374-parameters)
+    * [`chr_code](#id375-chr_code)
+  * [Return Values](#id376-return-values)
+  * [Errors](#id377-errors)
+  * [Examples](#id378-examples)
+  * [See Also](#id379-see-also)
+  * [Parameters](#id380-parameters)
+    * [attr](#id381-attr)
+  * [Errors](#id382-errors)
+  * [Description](#id383-description)
+  * [Parameters](#id384-parameters)
+    * [COLLATION\_NAME](#id385-collation_name)
+    * [FILE\_PATH](#id386-file_path)
+    * [ADD\_TYPE](#id387-add_type)
+  * [Return Types](#id388-return-types)
+  * [Description](#id389-description)
+  * [Parameters](#id390-parameters)
+    * [tablename](#id391-tablename)
+    * [mode](#id392-mode)
+  * [Return Types](#id393-return-types)
+  * [Errors](#id394-errors)
+  * [Examples](#id395-examples)
+  * [Description](#id396-description)
+  * [Parameters](#id397-parameters)
+    * [`x](#id398-x)
+  * [Return Values](#id399-return-values)
+  * [Errors](#id400-errors)
+  * [Examples](#id401-examples)
+  * [See Also](#id402-see-also)
+  * [Description](#id403-description)
+  * [Parameters](#id404-parameters)
+    * [nth](#id405-nth)
+  * [Return types](#id406-return-types)
+  * [Errors](#id407-errors)
+  * [Examples](#id408-examples)
+  * [See Also](#id409-see-also)
+  * [Description](#id410-description)
+  * [Parameters](#id411-parameters)
+  * [Return types](#id412-return-types)
+  * [Errors](#id413-errors)
+  * [Examples](#id414-examples)
+  * [Description](#id415-description)
+  * [See Also](#id416-see-also)
+  * [Description](#id417-description)
+  * [Parameters](#id418-parameters)
+    * [name](#id419-name)
+  * [Return Values](#id420-return-values)
+  * [Examples](#id421-examples)
+  * [See Also](#id422-see-also)
+  * [Description](#id423-description)
+  * [Return Values](#id424-return-values)
+  * [Examples](#id425-examples)
+  * [Description](#id426-description)
+  * [Return Values](#id427-return-values)
+  * [Examples](#id428-examples)
+  * [See Also](#id429-see-also)
+  * [Description](#id430-description)
+  * [Parameters](#id431-parameters)
+    * [name](#id432-name)
+    * [value](#id433-value)
+  * [Return Values](#id434-return-values)
+  * [Errors](#id435-errors)
+  * [Examples](#id436-examples)
+  * [See Also](#id437-see-also)
+  * [Description](#id438-description)
+  * [Return Types](#id439-return-types)
+  * [Examples](#id440-examples)
+  * [See Also](#id441-see-also)
+  * [Description](#id442-description)
+  * [Parameters](#id443-parameters)
+    * [var\_array](#id444-var_array)
+  * [Examples](#id445-examples)
+  * [See Also](#id446-see-also)
+  * [Description](#id447-description)
+  * [Parameters](#id448-parameters)
+    * [`column](#id449-column)
+    * [`expression](#id450-expression)
+    * [`opt_or_value](#id451-opt_or_value)
+  * [Return Types](#id452-return-types)
+  * [Examples](#id453-examples)
+  * [See Also](#id454-see-also)
+  * [Description](#id455-description)
+  * [Parameters](#id456-parameters)
+    * [fname](#id457-fname)
+  * [Return Types](#id458-return-types)
+  * [See Also](#id459-see-also)
+  * [Description](#id460-description)
+  * [Parameters](#id461-parameters)
+    * [fname](#id462-fname)
+    * [outdir](#id463-outdir)
+  * [Return Types](#id464-return-types)
+  * [See Also](#id465-see-also)
+  * [Description](#id466-description)
+  * [Parameters](#id467-parameters)
+    * [fname](#id468-fname)
+    * [add\_comments](#id469-add_comments)
+  * [Return Types](#id470-return-types)
+  * [See Also](#id471-see-also)
+  * [Description](#id472-description)
+  * [Parameters](#id473-parameters)
+    * [src](#id474-src)
+    * [schema\_uri](#id475-schema_uri)
+    * [validated](#id476-validated)
+    * [wellformed](#id477-wellformed)
+  * [Return Types](#id478-return-types)
+  * [Examples](#id479-examples)
+  * [See Also](#id480-see-also)
+  * [Description](#id481-description)
+  * [Parameters](#id482-parameters)
+  * [Return Types](#id483-return-types)
+  * [Errors](#id484-errors)
+  * [Examples](#id485-examples)
+  * [See Also](#id486-see-also)
+  * [Description](#id487-description)
+  * [Parameters](#id488-parameters)
+    * [dt](#id489-dt)
+    * [ignore\_timezone](#id490-ignore_timezone)
+  * [Examples](#id491-examples)
+  * [See Also](#id492-see-also)
+  * [Description](#id493-description)
+  * [Parameters](#id494-parameters)
+    * [dt](#id495-dt)
+  * [Examples](#id496-examples)
+  * [See Also](#id497-see-also)
+  * [Description](#id498-description)
+  * [Parameters](#id499-parameters)
+    * [dt](#id500-dt)
+    * [tz\_offset](#id501-tz_offset)
+    * [ignore\_timezone](#id502-ignore_timezone)
+  * [Examples](#id503-examples)
+  * [See Also](#id504-see-also)
+  * [Description](#id505-description)
+  * [Parameters](#id506-parameters)
+    * [](#id507-)
+  * [Examples](#id508-examples)
+  * [See Also](#id509-see-also)
+  * [Description](#id510-description)
+  * [Parameters](#id511-parameters)
+  * [Return Types](#id512-return-types)
+  * [Errors](#id513-errors)
+  * [Examples](#id514-examples)
+  * [See Also](#id515-see-also)
+  * [Description](#id516-description)
+  * [Parameters](#id517-parameters)
+    * [fraction\_microseconds](#id518-fraction_microseconds)
+  * [Return Types](#id519-return-types)
+  * [Errors](#id520-errors)
+  * [Examples](#id521-examples)
+  * [See Also](#id522-see-also)
+  * [Description](#id523-description)
+  * [Parameters](#id524-parameters)
+    * [fraction\_microseconds](#id525-fraction_microseconds)
+  * [Return Types](#id526-return-types)
+  * [Errors](#id527-errors)
+  * [Examples](#id528-examples)
+  * [See Also](#id529-see-also)
+  * [Description](#id530-description)
+  * [Parameters](#id531-parameters)
+    * [fraction\_microseconds](#id532-fraction_microseconds)
+  * [Return Types](#id533-return-types)
+  * [Errors](#id534-errors)
+  * [Examples](#id535-examples)
+  * [See Also](#id536-see-also)
+  * [Description](#id537-description)
+  * [Parameters](#id538-parameters)
+    * [fraction\_microseconds](#id539-fraction_microseconds)
+  * [Return Types](#id540-return-types)
+  * [Errors](#id541-errors)
+  * [Examples](#id542-examples)
+  * [See Also](#id543-see-also)
+  * [Description](#id544-description)
+  * [Parameters](#id545-parameters)
+  * [Return Types](#id546-return-types)
+  * [Errors](#id547-errors)
+  * [Examples](#id548-examples)
+  * [See Also](#id549-see-also)
+  * [Description](#id550-description)
+  * [Parameters](#id551-parameters)
+    * [table\_name](#id552-table_name)
+    * [index\_name](#id553-index_name)
+  * [Examples](#id554-examples)
+  * [Description](#id555-description)
+  * [Parameters](#id556-parameters)
+    * [squery](#id557-squery)
+  * [Return Types](#id558-return-types)
+  * [Examples](#id559-examples)
+  * [See Also](#id560-see-also)
+  * [Description](#id561-description)
+  * [Parameters](#id562-parameters)
+    * [unit](#id563-unit)
+    * [number](#id564-number)
+    * [date](#id565-date)
+  * [Examples](#id566-examples)
+  * [See Also](#id567-see-also)
+  * [Description](#id568-description)
+  * [Parameters](#id569-parameters)
+    * [unit](#id570-unit)
+    * [date1](#id571-date1)
+    * [date2](#id572-date2)
+  * [Return Values](#id573-return-values)
+  * [Errors](#id574-errors)
+  * [Examples](#id575-examples)
+  * [See Also](#id576-see-also)
+  * [Description](#id577-description)
+  * [Parameters](#id578-parameters)
+    * [date](#id579-date)
+  * [Return values](#id580-return-values)
+  * [Examples](#id581-examples)
+  * [See Also](#id582-see-also)
+  * [Description](#id583-description)
+  * [Parameters](#id584-parameters)
+    * [dt](#id585-dt)
+  * [Return values](#id586-return-values)
+  * [Examples](#id587-examples)
+  * [See Also](#id588-see-also)
+  * [Description](#id589-description)
+  * [Parameters](#id590-parameters)
+    * [path](#id591-path)
+    * [content](#id592-content)
+    * [type](#id593-type)
+    * [permissions](#id594-permissions)
+    * [silent](#id595-silent)
+    * [uname](#id596-uname)
+    * [group name](#id597-group-name)
+    * [auth\_uname](#id598-auth_uname)
+    * [auth\_pwd](#id599-auth_pwd)
+  * [Errors](#id600-errors)
+  * [Examples](#id601-examples)
+  * [See Also](#id602-see-also)
+  * [Description](#id603-description)
+  * [Parameters](#id604-parameters)
+    * [path](#id605-path)
+    * [destination](#id606-destination)
+    * [overwrite](#id607-overwrite)
+    * [permissions](#id608-permissions)
+    * [propname](#id609-propname)
+    * [propvalue](#id610-propvalue)
+    * [silent](#id611-silent)
+    * [uname](#id612-uname)
+    * [gname](#id613-gname)
+    * [auth\_uname](#id614-auth_uname)
+    * [auth\_pwd](#id615-auth_pwd)
+  * [System Properties](#id616-system-properties)
+  * [Errors](#id617-errors)
+  * [Examples](#id618-examples)
+  * [See Also](#id619-see-also)
+  * [Description](#id620-description)
+  * [Parameters](#id621-parameters)
+    * [path](#id622-path)
+    * [locktype](#id623-locktype)
+    * [scope](#id624-scope)
+    * [token](#id625-token)
+    * [owner\_name](#id626-owner_name)
+    * [owned\_tokens](#id627-owned_tokens)
+    * [depth](#id628-depth)
+    * [timeout\_sec](#id629-timeout_sec)
+    * [auth\_uname](#id630-auth_uname)
+    * [auth\_pwd](#id631-auth_pwd)
+    * [id](#id632-id)
+  * [Examples](#id633-examples)
+  * [See Also](#id634-see-also)
+  * [Description](#id635-description)
+  * [Parameters](#id636-parameters)
+    * [path](#id637-path)
+    * [what](#id638-what)
+    * [id](#id639-id)
+    * [recursive](#id640-recursive)
+    * [auth\_uid](#id641-auth_uid)
+    * [auth\_pwd](#id642-auth_pwd)
+  * [Errors](#id643-errors)
+  * [Examples](#id644-examples)
+  * [See Also](#id645-see-also)
+  * [Description](#id646-description)
+  * [Parameters](#id647-parameters)
+    * [uid](#id648-uid)
+    * [pwd](#id649-pwd)
+    * [gid](#id650-gid)
+    * [perms](#id651-perms)
+    * [disable](#id652-disable)
+    * [home](#id653-home)
+    * [full\_name](#id654-full_name)
+    * [email](#id655-email)
+    * [auth\_uid](#id656-auth_uid)
+    * [auth\_pwd](#id657-auth_pwd)
+  * [Errors](#id658-errors)
+  * [Examples](#id659-examples)
+  * [See Also](#id660-see-also)
+  * [Description](#id661-description)
+  * [Parameters](#id662-parameters)
+    * [host](#id663-host)
+    * [url](#id664-url)
+    * [root](#id665-root)
+    * [dst](#id666-dst)
+  * [Return Types](#id667-return-types)
+  * [Errors](#id668-errors)
+  * [Examples](#id669-examples)
+  * [See Also](#id670-see-also)
+  * [Description](#id671-description)
+  * [Parameters](#id672-parameters)
+    * [`dt](#id673-dt)
+  * [Return Values](#id674-return-values)
+  * [Examples](#id675-examples)
+  * [See Also](#id676-see-also)
+  * [Description](#id677-description)
+  * [Parameters](#id678-parameters)
+    * [dt](#id679-dt)
+  * [Return Values](#id680-return-values)
+  * [Examples](#id681-examples)
+  * [See Also](#id682-see-also)
+  * [Description](#id683-description)
+  * [Parameters](#id684-parameters)
+    * [dt](#id685-dt)
+  * [Return Values](#id686-return-values)
+  * [Examples](#id687-examples)
+  * [See Also](#id688-see-also)
+  * [Description](#id689-description)
+  * [Parameters](#id690-parameters)
+    * [dt](#id691-dt)
+  * [Return Values](#id692-return-values)
+  * [Examples](#id693-examples)
+  * [See Also](#id694-see-also)
+  * [Description](#id695-description)
+  * [Parameters](#id696-parameters)
+  * [Return Values](#id697-return-values)
+  * [Errors](#id698-errors)
+  * [Examples](#id699-examples)
+  * [See Also](#id700-see-also)
+  * [Description](#id701-description)
+  * [Parameters](#id702-parameters)
+    * [format](#id703-format)
+    * [argn](#id704-argn)
+  * [Return Values](#id705-return-values)
+  * [Examples](#id706-examples)
+  * [See Also](#id707-see-also)
+  * [Description](#id708-description)
+  * [Parameters](#id709-parameters)
+  * [Return Values](#id710-return-values)
+  * [Examples](#id711-examples)
+  * [Description](#id712-description)
+  * [Parameters](#id713-parameters)
+    * [n\_seconds](#id714-n_seconds)
+  * [Return Types](#id715-return-types)
+  * [Examples](#id716-examples)
+  * [Description](#id717-description)
+  * [Parameters](#id718-parameters)
+    * [cmd](#id719-cmd)
+    * [params](#id720-params)
+    * [is\_txn](#id721-is_txn)
+  * [Examples](#id722-examples)
+  * [See Also](#id723-see-also)
+  * [Description](#id724-description)
+  * [Parameters](#id725-parameters)
+    * [dict](#id726-dict)
+    * [key](#id727-key)
+    * [value decrement](#id728-value-decrement)
+  * [Return Types](#id729-return-types)
+  * [See Also](#id730-see-also)
+  * [Description](#id731-description)
+  * [Parameters](#id732-parameters)
+    * [dcit](#id733-dcit)
+  * [Return Types](#id734-return-types)
+  * [See Also](#id735-see-also)
+  * [Description](#id736-description)
+  * [Parameters](#id737-parameters)
+    * [dict](#id738-dict)
+    * [key](#id739-key)
+    * [default\_value](#id740-default_value)
+  * [Return Types](#id741-return-types)
+  * [See Also](#id742-see-also)
+  * [Description](#id743-description)
+  * [Parameters](#id744-parameters)
+    * [dict](#id745-dict)
+    * [key](#id746-key)
+    * [value decrement](#id747-value-decrement)
+  * [Return Types](#id748-return-types)
+  * [Example](#id749-example)
+  * [See Also](#id750-see-also)
+  * [Description](#id751-description)
+  * [Parameters](#id752-parameters)
+    * [dict](#id753-dict)
+    * [ret\_key](#id754-ret_key)
+    * [ret\_value](#id755-ret_value)
+  * [Return Types](#id756-return-types)
+  * [Errors](#id757-errors)
+  * [Example](#id758-example)
+  * [See Also](#id759-see-also)
+  * [Description](#id760-description)
+  * [Parameters](#id761-parameters)
+    * [dict](#id762-dict)
+  * [Return Types](#id763-return-types)
+  * [Example](#id764-example)
+  * [See Also](#id765-see-also)
+  * [Description](#id766-description)
+  * [Parameters](#id767-parameters)
+    * [dict](#id768-dict)
+    * [destructive](#id769-destructive)
+  * [Return Types](#id770-return-types)
+  * [See Also](#id771-see-also)
+  * [Description](#id772-description)
+  * [Parameters](#id773-parameters)
+    * [dict](#id774-dict)
+    * [batch\_size](#id775-batch_size)
+  * [Return Types](#id776-return-types)
+  * [Example](#id777-example)
+  * [See Also](#id778-see-also)
+  * [Description](#id779-description)
+  * [Parameters](#id780-parameters)
+    * [size](#id781-size)
+  * [Return Types](#id782-return-types)
+  * [See Also](#id783-see-also)
+  * [Description](#id784-description)
+  * [Parameters](#id785-parameters)
+    * [dict](#id786-dict)
+    * [key](#id787-key)
+    * [value](#id788-value)
+  * [Return Types](#id789-return-types)
+  * [See Also](#id790-see-also)
+  * [Description](#id791-description)
+  * [Parameters](#id792-parameters)
+    * [dict](#id793-dict)
+    * [key](#id794-key)
+  * [Return Types](#id795-return-types)
+  * [See Also](#id796-see-also)
+  * [Description](#id797-description)
+  * [Parameters](#id798-parameters)
+    * [dict](#id799-dict)
+  * [Return Types](#id800-return-types)
+  * [See Also](#id801-see-also)
+  * [Description](#id802-description)
+  * [Parameters](#id803-parameters)
+    * [dict](#id804-dict)
+    * [destructive](#id805-destructive)
+  * [Return Types](#id806-return-types)
+  * [See Also](#id807-see-also)
+  * [Description](#id808-description)
+  * [Parameters](#id809-parameters)
+    * [dict](#id810-dict)
+    * [destructive](#id811-destructive)
+  * [Return Types](#id812-return-types)
+  * [See Also](#id813-see-also)
+  * [Description](#id814-description)
+  * [Parameters](#id815-parameters)
+    * [username\_pattern](#id816-username_pattern)
+  * [Return Values](#id817-return-values)
+  * [Errors](#id818-errors)
+  * [Examples](#id819-examples)
+  * [See Also:](#id820-see-also)
+  * [Description](#id821-description)
+  * [Parameters](#id822-parameters)
+    * [dt](#id823-dt)
+    * [tz](#id824-tz)
+  * [Return Types](#id825-return-types)
+  * [Description](#id826-description)
+  * [Description](#id827-description)
+  * [See Also](#id828-see-also)
+  * [Description](#id829-description)
+  * [Parameters](#id830-parameters)
+    * [cond](#id831-cond)
+    * [arg1](#id832-arg1)
+    * [arg2](#id833-arg2)
+  * [Return values](#id834-return-values)
+  * [Errors](#id835-errors)
+  * [Examples](#id836-examples)
+  * [Description](#id837-description)
+  * [Parameters](#id838-parameters)
+    * [encoding](#id839-encoding)
+    * [language](#id840-language)
+  * [Return Types](#id841-return-types)
+  * [Examples](#id842-examples)
+  * [See Also](#id843-see-also)
+  * [Description](#id844-description)
+  * [Parameters](#id845-parameters)
+    * [new\_handler](#id846-new_handler)
+  * [See Also](#id847-see-also)
+  * [Description](#id848-description)
+  * [Parameters](#id849-parameters)
+    * [`str](#id850-str)
+  * [Return Values](#id851-return-values)
+  * [Examples](#id852-examples)
+  * [See Also](#id853-see-also)
+  * [Description](#id854-description)
+  * [Parameters](#id855-parameters)
+    * [`arg1](#id856-arg1)
+  * [Return Values](#id857-return-values)
+  * [Examples](#id858-examples)
+  * [Description](#id859-description)
+  * [Parameters](#id860-parameters)
+    * [`str](#id861-str)
+    * [state](#id862-state)
+    * [message](#id863-message)
+    * [params](#id864-params)
+    * [maxrows](#id865-maxrows)
+    * [metadata](#id866-metadata)
+    * [rows](#id867-rows)
+    * [cursor\_handle](#id868-cursor_handle)
+  * [Examples](#id869-examples)
+  * [See Also](#id870-see-also)
+  * [Description](#id871-description)
+  * [Parameters](#id872-parameters)
+    * [cursor\_handle](#id873-cursor_handle)
+  * [See Also](#id874-see-also)
+  * [Description](#id875-description)
+  * [Parameters](#id876-parameters)
+    * [cursor\_handle](#id877-cursor_handle)
+    * [row\_array](#id878-row_array)
+    * [sql\_state](#id879-sql_state)
+    * [sql\_error](#id880-sql_error)
+  * [Return Values](#id881-return-values)
+  * [See Also](#id882-see-also)
+  * [Description](#id883-description)
+  * [Parameters](#id884-parameters)
+    * [res\_values\_array](#id885-res_values_array)
+  * [Return Types](#id886-return-types)
+  * [Examples](#id887-examples)
+  * [See Also](#id888-see-also)
+  * [Description](#id889-description)
+  * [Parameters](#id890-parameters)
+    * [res\_names\_array](#id891-res_names_array)
+  * [Return Types](#id892-return-types)
+  * [Examples](#id893-examples)
+  * [See Also](#id894-see-also)
+  * [Description](#id895-description)
+  * [Parameters](#id896-parameters)
+    * [`str](#id897-str)
+    * [state](#id898-state)
+    * [message](#id899-message)
+    * [metadata](#id900-metadata)
+  * [Errors](#id901-errors)
+  * [Examples](#id902-examples)
+  * [See Also](#id903-see-also)
+  * [Description](#id904-description)
+  * [Parameters](#id905-parameters)
+    * [`str](#id906-str)
+    * [state](#id907-state)
+    * [message](#id908-message)
+  * [Return Types](#id909-return-types)
+  * [Errors](#id910-errors)
+  * [Examples](#id911-examples)
+  * [See Also](#id912-see-also)
+  * [Description](#id913-description)
+  * [Parameters](#id914-parameters)
+    * [x](#id915-x)
+  * [Return Values](#id916-return-values)
+  * [Examples](#id917-examples)
+  * [See Also](#id918-see-also)
+  * [Description](#id919-description)
+  * [Parameters](#id920-parameters)
+    * [text](#id921-text)
+    * [cursor\_type](#id922-cursor_type)
+  * [Return Types](#id923-return-types)
+  * [Examples](#id924-examples)
+  * [See Also](#id925-see-also)
+  * [Description](#id926-description)
+  * [Parameters](#id927-parameters)
+    * [path](#id928-path)
+    * [silent](#id929-silent)
+  * [Errors](#id930-errors)
+  * [Description](#id931-description)
+  * [Parameters](#id932-parameters)
+    * [path](#id933-path)
+  * [Examples](#id934-examples)
+  * [See Also](#id935-see-also)
+  * [Description](#id936-description)
+  * [Parameters](#id937-parameters)
+    * [tb](#id938-tb)
+    * [fname](#id939-fname)
+    * [delimiter](#id940-delimiter)
+    * [newline](#id941-newline)
+    * [esc](#id942-esc)
+    * [skip\_rows](#id943-skip_rows)
+  * [Examples](#id944-examples)
+  * [See Also](#id945-see-also)
+  * [Description](#id946-description)
+  * [Parameters](#id947-parameters)
+    * [path](#id948-path)
+    * [what](#id949-what)
+    * [error](#id950-error)
+  * [Return Types](#id951-return-types)
+  * [Errors](#id952-errors)
+  * [See Also](#id953-see-also)
+  * [Description](#id954-description)
+  * [Parameters](#id955-parameters)
+    * [path](#id956-path)
+    * [error](#id957-error)
+  * [Return Types](#id958-return-types)
+  * [Errors](#id959-errors)
+  * [See Also](#id960-see-also)
+  * [Description](#id961-description)
+  * [Parameters](#id962-parameters)
+    * [path](#id963-path)
+    * [istest](#id964-istest)
+  * [Return Types](#id965-return-types)
+  * [Errors](#id966-errors)
+  * [See Also](#id967-see-also)
+  * [Description](#id968-description)
+  * [Parameters](#id969-parameters)
+    * [path](#id970-path)
+    * [what](#id971-what)
+  * [Examples](#id972-examples)
+  * [See Also](#id973-see-also)
+  * [Description](#id974-description)
+  * [Parameters](#id975-parameters)
+    * [path](#id976-path)
+  * [Errors](#id977-errors)
+  * [Description](#id978-description)
+  * [Parameters](#id979-parameters)
+    * [file](#id980-file)
+    * [from](#id981-from)
+    * [to](#id982-to)
+  * [Examples](#id983-examples)
+  * [See Also](#id984-see-also)
+  * [Description](#id985-description)
+  * [Parameters](#id986-parameters)
+    * [path](#id987-path)
+  * [Return Types](#id988-return-types)
+  * [Errors](#id989-errors)
+  * [See Also](#id990-see-also)
+  * [Description](#id991-description)
+  * [Description](#id992-description)
+  * [Parameters](#id993-parameters)
+    * [x](#id994-x)
+  * [Return Values](#id995-return-values)
+  * [Examples](#id996-examples)
+  * [See also](#id997-see-also)
+  * [Description](#id998-description)
+  * [Parameters](#id999-parameters)
+    * [server](#id1000-server)
+    * [user](#id1001-user)
+    * [pass](#id1002-pass)
+    * [remote\_file\_name](#id1003-remote_file_name)
+    * [local\_file\_name](#id1004-local_file_name)
+    * [is\_pasv](#id1005-is_pasv)
+  * [Return Types](#id1006-return-types)
+  * [Errors](#id1007-errors)
+  * [Examples](#id1008-examples)
+  * [See Also](#id1009-see-also)
+  * [Description](#id1010-description)
+  * [Parameters](#id1011-parameters)
+    * [server](#id1012-server)
+    * [user](#id1013-user)
+    * [pass](#id1014-pass)
+    * [remote\_dir\_name](#id1015-remote_dir_name)
+    * [is\_pasv](#id1016-is_pasv)
+  * [Return Types](#id1017-return-types)
+  * [Errors](#id1018-errors)
+  * [Examples](#id1019-examples)
+  * [See Also](#id1020-see-also)
+  * [Description](#id1021-description)
+  * [Parameters](#id1022-parameters)
+    * [server](#id1023-server)
+    * [user](#id1024-user)
+    * [pass](#id1025-pass)
+    * [local\_file\_name](#id1026-local_file_name)
+    * [remote\_file\_name](#id1027-remote_file_name)
+    * [is\_pasv](#id1028-is_pasv)
+  * [Return Types](#id1029-return-types)
+  * [Errors](#id1030-errors)
+  * [Examples](#id1031-examples)
+  * [See Also](#id1032-see-also)
+  * [Description](#id1033-description)
+  * [Parameters](#id1034-parameters)
+    * [path](#id1035-path)
+  * [Examples](#id1036-examples)
+  * [See Also](#id1037-see-also)
+  * [Description](#id1038-description)
+  * [Parameters](#id1039-parameters)
+    * [ses](#id1040-ses)
+    * [delim](#id1041-delim)
+    * [quote](#id1042-quote)
+  * [Return Types](#id1043-return-types)
+  * [Examples](#id1044-examples)
+  * [See Also](#id1045-see-also)
+  * [Description](#id1046-description)
+  * [Parameters](#id1047-parameters)
+    * [file\_name](#id1048-file_name)
+    * [from\_line](#id1049-from_line)
+    * [to\_line](#id1050-to_line)
+    * [table\_name](#id1051-table_name)
+    * [trx\_log\_mode](#id1052-trx_log_mode)
+    * [opts](#id1053-opts)
+  * [Errors](#id1054-errors)
+  * [Examples](#id1055-examples)
+  * [See Also](#id1056-see-also)
+  * [Description](#id1057-description)
+  * [Parameters](#id1058-parameters)
+    * [tb](#id1059-tb)
+    * [fname](#id1060-fname)
+    * [delimiter](#id1061-delimiter)
+    * [newline](#id1062-newline)
+    * [esc](#id1063-esc)
+    * [skip\_rows](#id1064-skip_rows)
+    * [pkey\_columns](#id1065-pkey_columns)
+  * [Errors](#id1066-errors)
+  * [Examples](#id1067-examples)
+  * [See Also](#id1068-see-also)
+  * [Description](#id1069-description)
+  * [Parameters](#id1070-parameters)
+    * [string\_session\_input](#id1071-string_session_input)
+    * [from\_line](#id1072-from_line)
+    * [to\_line](#id1073-to_line)
+    * [table\_name](#id1074-table_name)
+    * [trx\_log\_mode](#id1075-trx_log_mode)
+    * [opts](#id1076-opts)
+  * [Errors](#id1077-errors)
+  * [Examples](#id1078-examples)
+  * [See Also](#id1079-see-also)
+  * [Description](#id1080-description)
+  * [Parameters](#id1081-parameters)
+    * [string\_session\_input](#id1082-string_session_input)
+    * [callback\_sp\_name](#id1083-callback_sp_name)
+    * [callback\_user\_data](#id1084-callback_user_data)
+    * [from\_line](#id1085-from_line)
+    * [to\_line](#id1086-to_line)
+    * [opts](#id1087-opts)
+  * [Examples](#id1088-examples)
+  * [See Also](#id1089-see-also)
+  * [Description](#id1090-description)
+  * [Parameters](#id1091-parameters)
+    * [file\_name](#id1092-file_name)
+  * [Examples](#id1093-examples)
+  * [See Also](#id1094-see-also)
+  * [Description](#id1095-description)
+  * [Parameters](#id1096-parameters)
+    * [file\_name](#id1097-file_name)
+  * [Examples](#id1098-examples)
+  * [See Also](#id1099-see-also)
+  * [Description](#id1100-description)
+  * [Parameters](#id1101-parameters)
+    * [type](#id1102-type)
+    * [cert\_or\_key\_name](#id1103-cert_or_key_name)
+    * [in\_format](#id1104-in_format)
+    * [passwd](#id1105-passwd)
+    * [ext\_oid](#id1106-ext_oid)
+  * [Return Types](#id1107-return-types)
+  * [Examples](#id1108-examples)
+  * [Description](#id1109-description)
+  * [Parameters](#id1110-parameters)
+    * [keyword](#id1111-keyword)
+    * [searched\_array](#id1112-searched_array)
+    * [default](#id1113-default)
+    * [no\_copy](#id1114-no_copy)
+  * [Errors](#id1115-errors)
+  * [Return Values](#id1116-return-values)
+  * [Examples](#id1117-examples)
+  * [See Also](#id1118-see-also)
+  * [Description](#id1119-description)
+  * [See Also](#id1120-see-also)
+  * [Description](#id1121-description)
+  * [Description](#id1122-description)
+  * [See Also](#id1123-see-also)
+  * [Description](#id1124-description)
+  * [Parameters](#id1125-parameters)
+    * [data](#id1126-data)
+    * [elements\_in\_group](#id1127-elements_in_group)
+    * [key\_idx\_in\_group](#id1128-key_idx_in_group)
+    * [sort\_ascending](#id1129-sort_ascending)
+  * [Return Types](#id1130-return-types)
+  * [See Also](#id1131-see-also)
+  * [Description](#id1132-description)
+  * [Parameters](#id1133-parameters)
+    * [data](#id1134-data)
+    * [elements\_in\_group](#id1135-elements_in_group)
+    * [key\_idx\_in\_group](#id1136-key_idx_in_group)
+    * [sort\_ascending](#id1137-sort_ascending)
+  * [Return Types](#id1138-return-types)
+  * [See Also](#id1139-see-also)
+  * [Description](#id1140-description)
+  * [Parameters](#id1141-parameters)
+    * [str](#id1142-str)
+  * [Return Types](#id1143-return-types)
+  * [Examples](#id1144-examples)
+  * [See Also](#id1145-see-also)
+  * [Description](#id1146-description)
+  * [Parameters](#id1147-parameters)
+    * [str](#id1148-str)
+    * [str\_out](#id1149-str_out)
+  * [Return Types](#id1150-return-types)
+  * [Errors](#id1151-errors)
+  * [Examples](#id1152-examples)
+  * [See Also](#id1153-see-also)
+  * [Description](#id1154-description)
+  * [Parameters](#id1155-parameters)
+    * [XXa](#id1156-xxa)
+    * [XYb](#id1157-xyb)
+    * [YYe](#id1158-yye)
+    * [Xoff](#id1159-xoff)
+    * [Yoff](#id1160-yoff)
+  * [Return Types](#id1161-return-types)
+  * [Examples](#id1162-examples)
+  * [See Also](#id1163-see-also)
+  * [Description](#id1164-description)
+  * [Parameters](#id1165-parameters)
+    * [x](#id1166-x)
+    * [y](#id1167-y)
+  * [Return Types](#id1168-return-types)
+  * [Examples](#id1169-examples)
+  * [See Also](#id1170-see-also)
+  * [Description](#id1171-description)
+  * [Parameters](#id1172-parameters)
+    * [g](#id1173-g)
+  * [Return Types](#id1174-return-types)
+  * [Examples](#id1175-examples)
+  * [See Also](#id1176-see-also)
+  * [Description](#id1177-description)
+  * [Parameters](#id1178-parameters)
+    * [g](#id1179-g)
+  * [Return Types](#id1180-return-types)
+  * [Examples](#id1181-examples)
+  * [See Also](#id1182-see-also)
+  * [Description](#id1183-description)
+  * [Parameters](#id1184-parameters)
+    * [g1](#id1185-g1)
+    * [g2](#id1186-g2)
+  * [Return Types](#id1187-return-types)
+  * [Examples](#id1188-examples)
+  * [See Also](#id1189-see-also)
+  * [Description](#id1190-description)
+  * [Parameters](#id1191-parameters)
+    * [g](#id1192-g)
+  * [Return Types](#id1193-return-types)
+  * [Examples](#id1194-examples)
+  * [See Also](#id1195-see-also)
+  * [Description](#id1196-description)
+  * [Parameters](#id1197-parameters)
+    * [g](#id1198-g)
+    * [SRID](#id1199-srid)
+  * [Return Types](#id1200-return-types)
+  * [Examples](#id1201-examples)
+  * [See Also](#id1202-see-also)
+  * [Description](#id1203-description)
+  * [Parameters](#id1204-parameters)
+    * [g](#id1205-g)
+  * [Return Types](#id1206-return-types)
+  * [Examples](#id1207-examples)
+  * [See Also](#id1208-see-also)
+  * [Description](#id1209-description)
+  * [Parameters](#id1210-parameters)
+    * [string](#id1211-string)
+  * [Return Types](#id1212-return-types)
+  * [Examples](#id1213-examples)
+  * [See Also](#id1214-see-also)
+  * [Description](#id1215-description)
+  * [Parameters](#id1216-parameters)
+    * [g1](#id1217-g1)
+    * [g2](#id1218-g2)
+    * [prec](#id1219-prec)
+  * [Return Types](#id1220-return-types)
+  * [Examples](#id1221-examples)
+  * [See Also](#id1222-see-also)
+  * [Description](#id1223-description)
+  * [Parameters](#id1224-parameters)
+    * [g1](#id1225-g1)
+    * [g2](#id1226-g2)
+    * [prec](#id1227-prec)
+  * [Return Types](#id1228-return-types)
+  * [Examples](#id1229-examples)
+  * [See Also](#id1230-see-also)
+  * [Description](#id1231-description)
+  * [Parameters](#id1232-parameters)
+    * [g1](#id1233-g1)
+    * [g2](#id1234-g2)
+    * [prec](#id1235-prec)
+  * [Return Types](#id1236-return-types)
+  * [Examples](#id1237-examples)
+  * [See Also](#id1238-see-also)
+  * [Description](#id1239-description)
+  * [Parameters](#id1240-parameters)
+    * [x](#id1241-x)
+  * [Return Types](#id1242-return-types)
+  * [Examples](#id1243-examples)
+  * [See Also](#id1244-see-also)
+  * [Description](#id1245-description)
+  * [Parameters](#id1246-parameters)
+    * [tb](#id1247-tb)
+    * [geo](#id1248-geo)
+    * [id](#id1249-id)
+  * [Return Types](#id1250-return-types)
+  * [Examples](#id1251-examples)
+  * [See Also](#id1252-see-also)
+  * [Description](#id1253-description)
+  * [Parameters](#id1254-parameters)
+    * [tb](#id1255-tb)
+    * [geo](#id1256-geo)
+    * [id](#id1257-id)
+  * [Return Types](#id1258-return-types)
+  * [Examples](#id1259-examples)
+  * [See Also](#id1260-see-also)
+  * [Description](#id1261-description)
+  * [Parameters](#id1262-parameters)
+    * [dt](#id1263-dt)
+  * [Return Values](#id1264-return-values)
+  * [Examples](#id1265-examples)
+  * [See Also](#id1266-see-also)
+  * [Description](#id1267-description)
+  * [Parameters](#id1268-parameters)
+    * [val\_expr](#id1269-val_expr)
+    * [stream](#id1270-stream)
+  * [Errors](#id1271-errors)
+  * [Examples](#id1272-examples)
+  * [See Also](#id1273-see-also)
+  * [Description](#id1274-description)
+  * [Parameters](#id1275-parameters)
+    * [pwd](#id1276-pwd)
+  * [Examples](#id1277-examples)
+  * [See Also](#id1278-see-also)
+  * [Description](#id1279-description)
+  * [Parameters](#id1280-parameters)
+    * [pwd](#id1281-pwd)
+  * [Examples](#id1282-examples)
+  * [See Also](#id1283-see-also)
+  * [Description](#id1284-description)
+  * [Parameters](#id1285-parameters)
+    * [list\_name](#id1286-list_name)
+    * [order](#id1287-order)
+    * [client\_ip](#id1288-client_ip)
+    * [flag](#id1289-flag)
+    * [destination\_ip\_or\_host](#id1290-destination_ip_or_host)
+    * [object\_id](#id1291-object_id)
+    * [read\_write\_flag](#id1292-read_write_flag)
+    * [rate](#id1293-rate)
+  * [Return Types](#id1294-return-types)
+  * [See Also](#id1295-see-also)
+  * [Description](#id1296-description)
+  * [Parameters](#id1297-parameters)
+    * [list\_name](#id1298-list_name)
+    * [source\_ip](#id1299-source_ip)
+    * [destination\_ip\_or\_host](#id1300-destination_ip_or_host)
+    * [object\_id](#id1301-object_id)
+    * [read\_write\_flag](#id1302-read_write_flag)
+  * [Return Types](#id1303-return-types)
+  * [See Also](#id1304-see-also)
+  * [Description](#id1305-description)
+  * [Parameters](#id1306-parameters)
+    * [list\_name](#id1307-list_name)
+    * [order](#id1308-order)
+    * [client\_ip](#id1309-client_ip)
+    * [flag](#id1310-flag)
+  * [Return Types](#id1311-return-types)
+  * [See Also](#id1312-see-also)
+  * [Description](#id1313-description)
+  * [Example](#id1314-example)
+  * [Description](#id1315-description)
+  * [Parameters](#id1316-parameters)
+    * [url](#id1317-url)
+    * [uid](#id1318-uid)
+    * [pwd](#id1319-pwd)
+    * [http\_method](#id1320-http_method)
+    * [http\_headers](#id1321-http_headers)
+    * [body](#id1322-body)
+    * [cert\_file](#id1323-cert_file)
+    * [cert\_pwd](#id1324-cert_pwd)
+    * [timeout](#id1325-timeout)
+    * [proxy](#id1326-proxy)
+    * [ca\_certs](#id1327-ca_certs)
+    * [insecure](#id1328-insecure)
+    * [n\_redirects](#id1329-n_redirects)
+  * [Description](#id1330-description)
+  * [Parameters](#id1331-parameters)
+    * [url](#id1332-url)
+    * [uid](#id1333-uid)
+    * [pwd](#id1334-pwd)
+    * [http\_method](#id1335-http_method)
+    * [http\_headers](#id1336-http_headers)
+    * [body](#id1337-body)
+    * [cert\_file](#id1338-cert_file)
+    * [cert\_pwd](#id1339-cert_pwd)
+    * [headers](#id1340-headers)
+    * [timeout](#id1341-timeout)
+    * [proxy](#id1342-proxy)
+    * [ca\_certs](#id1343-ca_certs)
+    * [insecure](#id1344-insecure)
+    * [n\_redirects](#id1345-n_redirects)
+  * [Description](#id1346-description)
+  * [Parameters](#id1347-parameters)
+    * [what](#id1348-what)
+  * [Return Types](#id1349-return-types)
+  * [See Also](#id1350-see-also)
+  * [Examples](#id1351-examples)
+  * [Description](#id1352-description)
+  * [Parameters](#id1353-parameters)
+    * [dns\_serevr\_ip\_or\_null](#id1354-dns_serevr_ip_or_null)
+    * [dns\_entry](#id1355-dns_entry)
+  * [Examples](#id1356-examples)
+  * [See Also](#id1357-see-also)
+  * [Description](#id1358-description)
+  * [Errors](#id1359-errors)
+  * [Examples](#id1360-examples)
+  * [Description](#id1361-description)
+  * [Examples](#id1362-examples)
+  * [Description](#id1363-description)
+  * [Parameters](#id1364-parameters)
+    * [path](#id1365-path)
+  * [Examples](#id1366-examples)
+  * [Description](#id1367-description)
+  * [Parameters](#id1368-parameters)
+    * [try\_what](#id1369-try_what)
+  * [Examples](#id1370-examples)
+  * [See Also](#id1371-see-also)
+  * [Description](#id1372-description)
+  * [Parameters](#id1373-parameters)
+    * [full\_path](#id1374-full_path)
+    * [p\_full\_path](#id1375-p_full_path)
+    * [long\_url](#id1376-long_url)
+    * [keep\_lpath](#id1377-keep_lpath)
+  * [Examples](#id1378-examples)
+  * [See Also](#id1379-see-also)
+  * [Description](#id1380-description)
+  * [Parameters](#id1381-parameters)
+    * [target\_uri](#id1382-target_uri)
+    * [return\_header](#id1383-return_header)
+    * [http\_method](#id1384-http_method)
+    * [request\_header](#id1385-request_header)
+    * [request\_body](#id1386-request_body)
+    * [proxy](#id1387-proxy)
+  * [Errors](#id1388-errors)
+  * [Examples](#id1389-examples)
+  * [Description](#id1390-description)
+  * [Examples](#id1391-examples)
+  * [Description](#id1392-description)
+  * [Return Types](#id1393-return-types)
+  * [Examples](#id1394-examples)
+  * [Description](#id1395-description)
+  * [Parameters](#id1396-parameters)
+    * [client\_IP\_address](#id1397-client_ip_address)
+    * [URL](#id1398-url)
+    * [process\_request\_id](#id1399-process_request_id)
+  * [Errors](#id1400-errors)
+  * [Examples](#id1401-examples)
+  * [See Also](#id1402-see-also)
+  * [Description](#id1403-description)
+  * [Parameters](#id1404-parameters)
+    * [interface\_address](#id1405-interface_address)
+    * [action](#id1406-action)
+    * [options](#id1407-options)
+  * [Return Types](#id1408-return-types)
+  * [Examples](#id1409-examples)
+  * [Description](#id1410-description)
+  * [Parameters](#id1411-parameters)
+    * [logical\_path](#id1412-logical_path)
+    * [physical\_path](#id1413-physical_path)
+    * [vhost](#id1414-vhost)
+    * [listen\_host](#id1415-listen_host)
+    * [stored\_in\_dav](#id1416-stored_in_dav)
+    * [is\_browseable](#id1417-is_browseable)
+    * [default\_page](#id1418-default_page)
+    * [security\_restriction](#id1419-security_restriction)
+    * [authentication](#id1420-authentication)
+    * [auth\_function](#id1421-auth_function)
+    * [postprocess\_function](#id1422-postprocess_function)
+    * [execute\_vsp\_as](#id1423-execute_vsp_as)
+    * [execute\_soap\_as](#id1424-execute_soap_as)
+    * [have\_persistent\_session\_variables](#id1425-have_persistent_session_variables)
+    * [soap\_options](#id1426-soap_options)
+    * [auth\_options](#id1427-auth_options)
+  * [Examples](#id1428-examples)
+  * [See Also](#id1429-see-also)
+  * [Description](#id1430-description)
+  * [Parameters](#id1431-parameters)
+    * [element\_name](#id1432-element_name)
+  * [Return Types](#id1433-return-types)
+  * [Examples](#id1434-examples)
+  * [Description](#id1435-description)
+  * [Parameters](#id1436-parameters)
+    * [name](#id1437-name)
+  * [Return Types](#id1438-return-types)
+  * [See Also](#id1439-see-also)
+  * [Description](#id1440-description)
+  * [Examples](#id1441-examples)
+  * [Description](#id1442-description)
+  * [Return Types](#id1443-return-types)
+  * [Errors](#id1444-errors)
+  * [Examples](#id1445-examples)
+  * [See Also](#id1446-see-also)
+  * [Description](#id1447-description)
+  * [Examples](#id1448-examples)
+  * [Description](#id1449-description)
+  * [Parameters](#id1450-parameters)
+    * [host](#id1451-host)
+    * [header](#id1452-header)
+    * [content](#id1453-content)
+  * [Examples](#id1454-examples)
+  * [Description](#id1455-description)
+  * [Return Types](#id1456-return-types)
+  * [Examples](#id1457-examples)
+  * [Description](#id1458-description)
+  * [Return Types](#id1459-return-types)
+  * [Examples](#id1460-examples)
+  * [Description](#id1461-description)
+  * [Parameters](#id1462-parameters)
+    * [status\_line](#id1463-status_line)
+  * [Description](#id1464-description)
+  * [Parameters](#id1465-parameters)
+    * [variable\_name](#id1466-variable_name)
+  * [Description](#id1467-description)
+  * [Parameters](#id1468-parameters)
+    * [stream](#id1469-stream)
+  * [Using http\_rewrite()](#id1470-using-http_rewrite)
+  * [See Also](#id1471-see-also)
+  * [Description](#id1472-description)
+  * [Return Types](#id1473-return-types)
+  * [Examples](#id1474-examples)
+  * [See Also](#id1475-see-also)
+  * [Description](#id1476-description)
+  * [Parameters](#id1477-parameters)
+    * [val\_expr](#id1478-val_expr)
+    * [tag](#id1479-tag)
+    * [stream](#id1480-stream)
+  * [Return Values](#id1481-return-values)
+  * [Errors](#id1482-errors)
+  * [Using http\_value()](#id1483-using-http_value)
+  * [See Also](#id1484-see-also)
+  * [Description](#id1485-description)
+  * [Parameters](#id1486-parameters)
+    * [txt](#id1487-txt)
+  * [Return Types](#id1488-return-types)
+  * [Examples](#id1489-examples)
+  * [See Also](#id1490-see-also)
+  * [Description](#id1491-description)
+  * [Parameters](#id1492-parameters)
+    * [val\_expr](#id1493-val_expr)
+    * [tag](#id1494-tag)
+    * [stream](#id1495-stream)
+  * [Return Values](#id1496-return-values)
+  * [Errors](#id1497-errors)
+  * [Examples](#id1498-examples)
+  * [See Also](#id1499-see-also)
+  * [Description](#id1500-description)
+  * [Parameters](#id1501-parameters)
+    * [xslt\_uri](#id1502-xslt_uri)
+    * [params](#id1503-params)
+  * [Examples](#id1504-examples)
+  * [Description](#id1505-description)
+  * [Parameters](#id1506-parameters)
+    * [`rule_iri](#id1507-rule_iri)
+    * [`allow_update](#id1508-allow_update)
+    * [`nice_match](#id1509-nice_match)
+    * [`nice_params](#id1510-nice_params)
+    * [`nice_min_params](#id1511-nice_min_params)
+    * [`target_compose](#id1512-target_compose)
+    * [`target_params](#id1513-target_params)
+    * [`target_expn](#id1514-target_expn)
+    * [`accept_pattern](#id1515-accept_pattern)
+    * [`do_not_continue](#id1516-do_not_continue)
+    * [`http_redirect_code](#id1517-http_redirect_code)
+    * [`http_header_lines](#id1518-http_header_lines)
+  * [Return Types](#id1519-return-types)
+  * [Examples](#id1520-examples)
+  * [Description](#id1521-description)
+  * [Return Types](#id1522-return-types)
+  * [Description](#id1523-description)
+  * [Parameters](#id1524-parameters)
+    * [assemblies\_vector](#id1525-assemblies_vector)
+    * [classes\_vector](#id1526-classes_vector)
+    * [security\_mode](#id1527-security_mode)
+  * [Examples](#id1528-examples)
+  * [See Also](#id1529-see-also)
+  * [Description](#id1530-description)
+  * [Parameters](#id1531-parameters)
+    * [files](#id1532-files)
+    * [classes](#id1533-classes)
+    * [security\_mode](#id1534-security_mode)
+  * [Examples](#id1535-examples)
+  * [See Also](#id1536-see-also)
+  * [Description](#id1537-description)
+  * [Description](#id1538-description)
+  * [Description](#id1539-description)
+  * [Description](#id1540-description)
+  * [Description](#id1541-description)
+  * [Parameters](#id1542-parameters)
+    * [x](#id1543-x)
+  * [Return Values](#id1544-return-values)
+  * [Errors](#id1545-errors)
+  * [Description](#id1546-description)
+  * [Description](#id1547-description)
+  * [Parameters](#id1548-parameters)
+    * [arg](#id1549-arg)
+  * [Examples](#id1550-examples)
+  * [Description](#id1551-description)
+  * [Description](#id1552-description)
+  * [Description](#id1553-description)
+  * [Description](#id1554-description)
+  * [Description](#id1555-description)
+  * [Description](#id1556-description)
+  * [Description](#id1557-description)
+  * [Examples](#id1558-examples)
+  * [Description](#id1559-description)
+  * [Parameters](#id1560-parameters)
+    * [arg](#id1561-arg)
+  * [Examples](#id1562-examples)
+  * [Description](#id1563-description)
+  * [Description](#id1564-description)
+  * [Parameters](#id1565-parameters)
+    * [argI](#id1566-argi)
+  * [Examples](#id1567-examples)
+  * [See Also](#id1568-see-also)
+  * [Description](#id1569-description)
+  * [Parameters](#id1570-parameters)
+    * [argI](#id1571-argi)
+  * [Examples](#id1572-examples)
+  * [See Also](#id1573-see-also)
+  * [Description](#id1574-description)
+  * [Parameters](#id1575-parameters)
+    * [argI](#id1576-argi)
+  * [Examples](#id1577-examples)
+  * [See Also](#id1578-see-also)
+  * [Description](#id1579-description)
+  * [Parameters](#id1580-parameters)
+    * [argI](#id1581-argi)
+  * [Examples](#id1582-examples)
+  * [See Also](#id1583-see-also)
+  * [Description](#id1584-description)
+  * [Parameters](#id1585-parameters)
+    * [class\_name](#id1586-class_name)
+    * [instance\_obj](#id1587-instance_obj)
+    * [method\_name](#id1588-method_name)
+    * [metjod\_ret\_name](#id1589-metjod_ret_name)
+    * [arg1, ...](#id1590-arg1)
+  * [See Also](#id1591-see-also)
+  * [Description](#id1592-description)
+  * [Parameters](#id1593-parameters)
+    * [class\_name](#id1594-class_name)
+    * [instance\_obj](#id1595-instance_obj)
+    * [field\_name](#id1596-field_name)
+    * [field\_ret\_type\_sig](#id1597-field_ret_type_sig)
+    * [field\_new\_value](#id1598-field_new_value)
+  * [See Also](#id1599-see-also)
+  * [Description](#id1600-description)
+  * [Parameters](#id1601-parameters)
+    * [class\_name](#id1602-class_name)
+    * [instance\_obj](#id1603-instance_obj)
+    * [field\_name](#id1604-field_name)
+    * [field\_ret\_type\_sig](#id1605-field_ret_type_sig)
+  * [Examples](#id1606-examples)
+  * [See Also](#id1607-see-also)
+  * [Description](#id1608-description)
+  * [Parameters](#id1609-parameters)
+    * [java\_class\_name](#id1610-java_class_name)
+    * [java\_class\_bytecode](#id1611-java_class_bytecode)
+  * [Examples](#id1612-examples)
+  * [See Also](#id1613-see-also)
+  * [Description](#id1614-description)
+  * [Parameters](#id1615-parameters)
+    * [class\_name](#id1616-class_name)
+    * [arg1, ....](#id1617-arg1)
+  * [Return Types](#id1618-return-types)
+  * [Examples](#id1619-examples)
+  * [See Also](#id1620-see-also)
+  * [Description](#id1621-description)
+  * [Parameters](#id1622-parameters)
+    * [classpath](#id1623-classpath)
+    * [vm\_options](#id1624-vm_options)
+  * [Examples](#id1625-examples)
+  * [See Also](#id1626-see-also)
+  * [Description](#id1627-description)
+  * [See Also](#id1628-see-also)
+  * [Description](#id1629-description)
+  * [Parameters](#id1630-parameters)
+    * [files](#id1631-files)
+    * [classes](#id1632-classes)
+  * [Return Types](#id1633-return-types)
+  * [Examples](#id1634-examples)
+  * [See Also](#id1635-see-also)
+  * [Description](#id1636-description)
+  * [Description](#id1637-description)
+  * [Parameters](#id1638-parameters)
+    * [server\_url](#id1639-server_url)
+    * [try\_tls](#id1640-try_tls)
+    * [base](#id1641-base)
+    * [filter](#id1642-filter)
+    * [username](#id1643-username)
+    * [password](#id1644-password)
+  * [Return Types](#id1645-return-types)
+  * [Errors](#id1646-errors)
+  * [Examples](#id1647-examples)
+  * [See Also](#id1648-see-also)
+  * [Description](#id1649-description)
+  * [Parameters](#id1650-parameters)
+    * [server\_url](#id1651-server_url)
+    * [try\_tls](#id1652-try_tls)
+    * [entrydn](#id1653-entrydn)
+    * [username](#id1654-username)
+    * [password](#id1655-password)
+  * [Return Types](#id1656-return-types)
+  * [Errors](#id1657-errors)
+  * [Examples](#id1658-examples)
+  * [See Also](#id1659-see-also)
+  * [Description](#id1660-description)
+  * [Parameters](#id1661-parameters)
+    * [server\_url](#id1662-server_url)
+    * [try\_tls](#id1663-try_tls)
+    * [data](#id1664-data)
+    * [username](#id1665-username)
+    * [password](#id1666-password)
+  * [Return Types](#id1667-return-types)
+  * [Errors](#id1668-errors)
+  * [Examples](#id1669-examples)
+  * [See Also](#id1670-see-also)
+  * [Description](#id1671-description)
+  * [Parameters](#id1672-parameters)
+    * [server\_url](#id1673-server_url)
+    * [try\_tls](#id1674-try_tls)
+    * [data](#id1675-data)
+    * [username](#id1676-username)
+    * [password](#id1677-password)
+  * [Return Types](#id1678-return-types)
+  * [Errors](#id1679-errors)
+  * [Examples](#id1680-examples)
+  * [See Also](#id1681-see-also)
+  * [Description](#id1682-description)
+  * [Description](#id1683-description)
+  * [Parameters](#id1684-parameters)
+    * [arg](#id1685-arg)
+  * [Return Values](#id1686-return-values)
+  * [Errors](#id1687-errors)
+  * [Examples](#id1688-examples)
+  * [Description](#id1689-description)
+  * [Parameters](#id1690-parameters)
+    * [host](#id1691-host)
+    * [url](#id1692-url)
+    * [root](#id1693-root)
+    * [dst](#id1694-dst)
+  * [Return Types](#id1695-return-types)
+  * [Examples](#id1696-examples)
+  * [See Also](#id1697-see-also)
+  * [Description](#id1698-description)
+  * [Parameters](#id1699-parameters)
+    * [language\_name](#id1700-language_name)
+  * [Return Types](#id1701-return-types)
+  * [See Also](#id1702-see-also)
+  * [Description](#id1703-description)
+  * [Parameters](#id1704-parameters)
+    * [new\_handler](#id1705-new_handler)
+  * [See Also](#id1706-see-also)
+  * [Description](#id1707-description)
+  * [Description](#id1708-description)
+  * [Parameters](#id1709-parameters)
+    * [x](#id1710-x)
+  * [Return Values](#id1711-return-values)
+  * [Examples](#id1712-examples)
+  * [See Also](#id1713-see-also)
+  * [Description](#id1714-description)
+  * [Parameters](#id1715-parameters)
+    * [x](#id1716-x)
+  * [Return Values](#id1717-return-values)
+  * [Examples](#id1718-examples)
+  * [See Also](#id1719-see-also)
+  * [Description](#id1720-description)
+  * [See Also](#id1721-see-also)
+  * [Description](#id1722-description)
+  * [Parameters](#id1723-parameters)
+    * [str](#id1724-str)
+  * [Return Values](#id1725-return-values)
+  * [Examples](#id1726-examples)
+  * [See Also](#id1727-see-also)
+  * [Description](#id1728-description)
+  * [Parameters](#id1729-parameters)
+    * [text](#id1730-text)
+    * [arg1..arg8](#id1731-arg1arg8)
+  * [Examples](#id1732-examples)
+  * [See Also](#id1733-see-also)
+  * [Description](#id1734-description)
+  * [Parameters](#id1735-parameters)
+    * [file](#id1736-file)
+    * [pos](#id1737-pos)
+  * [Return Types](#id1738-return-types)
+  * [Examples](#id1739-examples)
+  * [See Also](#id1740-see-also)
+  * [Description](#id1741-description)
+  * [Description](#id1742-description)
+  * [Description](#id1743-description)
+  * [Parameters](#id1744-parameters)
+    * [flag\_name](#id1745-flag_name)
+    * [flag\_value](#id1746-flag_value)
+  * [Examples](#id1747-examples)
+  * [Description](#id1748-description)
+  * [Parameters](#id1749-parameters)
+    * [st\_name](#id1750-st_name)
+  * [Examples](#id1751-examples)
+  * [See Also](#id1752-see-also)
+  * [Description](#id1753-description)
+  * [Parameters](#id1754-parameters)
+  * [Examples](#id1755-examples)
+  * [See Also](#id1756-see-also)
+  * [Description](#id1757-description)
+  * [Parameters](#id1758-parameters)
+    * [length](#id1759-length)
+    * [content](#id1760-content)
+  * [Return Values](#id1761-return-values)
+  * [Errors](#id1762-errors)
+  * [Description](#id1763-description)
+  * [Parameters](#id1764-parameters)
+    * [count](#id1765-count)
+  * [Return Values](#id1766-return-values)
+  * [Examples](#id1767-examples)
+  * [See Also](#id1768-see-also)
+  * [Description](#id1769-description)
+  * [Parameters](#id1770-parameters)
+    * [str](#id1771-str)
+  * [Return Types](#id1772-return-types)
+  * [Errors](#id1773-errors)
+  * [Examples](#id1774-examples)
+  * [See Also](#id1775-see-also)
+  * [Description](#id1776-description)
+  * [See Also](#id1777-see-also)
+  * [Description](#id1778-description)
+  * [See Also](#id1779-see-also)
+  * [Description](#id1780-description)
+  * [Parameters](#id1781-parameters)
+    * [ctx](#id1782-ctx)
+  * [Return Types](#id1783-return-types)
+  * [See Also](#id1784-see-also)
+  * [Description](#id1785-description)
+  * [Parameters](#id1786-parameters)
+    * [mime\_parts](#id1787-mime_parts)
+  * [Return Types](#id1788-return-types)
+  * [Examples](#id1789-examples)
+  * [See Also](#id1790-see-also)
+  * [Description](#id1791-description)
+  * [Parameters](#id1792-parameters)
+    * [content\_type](#id1793-content_type)
+    * [content\_disposition](#id1794-content_disposition)
+    * [transfer\_encoding](#id1795-transfer_encoding)
+    * [data](#id1796-data)
+  * [Return Types](#id1797-return-types)
+  * [Examples](#id1798-examples)
+  * [See Also](#id1799-see-also)
+  * [Description](#id1800-description)
+  * [Examples](#id1801-examples)
+  * [Description](#id1802-description)
+  * [Parameters](#id1803-parameters)
+    * [dt](#id1804-dt)
+  * [Return Values](#id1805-return-values)
+  * [Examples](#id1806-examples)
+  * [See Also](#id1807-see-also)
+  * [Description](#id1808-description)
+  * [Description](#id1809-description)
+  * [Parameters](#id1810-parameters)
+    * [dt](#id1811-dt)
+  * [Return Values](#id1812-return-values)
+  * [Examples](#id1813-examples)
+  * [See Also](#id1814-see-also)
+  * [Description](#id1815-description)
+  * [Parameters](#id1816-parameters)
+    * [dt](#id1817-dt)
+  * [Return Values](#id1818-return-values)
+  * [Examples](#id1819-examples)
+  * [See Also](#id1820-see-also)
+  * [Description](#id1821-description)
+  * [Parameters](#id1822-parameters)
+    * [No parameters](#id1823-no-parameters)
+  * [Return Values](#id1824-return-values)
+  * [Examples](#id1825-examples)
+  * [See Also](#id1826-see-also)
+  * [Description](#id1827-description)
+  * [Description](#id1828-description)
+  * [Description](#id1829-description)
+  * [Description](#id1830-description)
+  * [Description](#id1831-description)
+  * [Parameters](#id1832-parameters)
+    * [`str](#id1833-str)
+  * [Return Values](#id1834-return-values)
+  * [Examples](#id1835-examples)
+  * [See Also](#id1836-see-also)
+  * [Description](#id1837-description)
+  * [Parameters](#id1838-parameters)
+    * [string](#id1839-string)
+    * [idx](#id1840-idx)
+    * [dstring](#id1841-dstring)
+  * [Return Types](#id1842-return-types)
+  * [Errors](#id1843-errors)
+  * [Examples](#id1844-examples)
+  * [Description](#id1845-description)
+  * [Parameters](#id1846-parameters)
+    * [server](#id1847-server)
+    * [user](#id1848-user)
+    * [password](#id1849-password)
+    * [command](#id1850-command)
+    * [group](#id1851-group)
+  * [Return Types](#id1852-return-types)
+  * [Errors](#id1853-errors)
+  * [Description](#id1854-description)
+  * [Parameters](#id1855-parameters)
+    * [server](#id1856-server)
+    * [user](#id1857-user)
+    * [password](#id1858-password)
+    * [body](#id1859-body)
+  * [Return Types](#id1860-return-types)
+  * [Errors](#id1861-errors)
+  * [Description](#id1862-description)
+  * [Parameters](#id1863-parameters)
+    * [server](#id1864-server)
+    * [command](#id1865-command)
+    * [group](#id1866-group)
+  * [Return Types](#id1867-return-types)
+  * [Errors](#id1868-errors)
+  * [Examples](#id1869-examples)
+  * [Description](#id1870-description)
+  * [Parameters](#id1871-parameters)
+    * [server](#id1872-server)
+    * [body](#id1873-body)
+  * [Return Types](#id1874-return-types)
+  * [Errors](#id1875-errors)
+  * [Examples](#id1876-examples)
+  * [Description](#id1877-description)
+  * [Examples](#id1878-examples)
+  * [Parameters](#id1879-parameters)
+  * [Return Types](#id1880-return-types)
+  * [Errors](#id1881-errors)
+  * [See Also](#id1882-see-also)
+  * [Description](#id1883-description)
+  * [Parameters](#id1884-parameters)
+    * [aws\_access\_key](#id1885-aws_access_key)
+    * [instance\_id](#id1886-instance_id)
+    * [secret\_key](#id1887-secret_key)
+    * [http\_proxy](#id1888-http_proxy)
+  * [Examples](#id1889-examples)
+  * [See Also](#id1890-see-also)
+  * [Description](#id1891-description)
+  * [Parameters](#id1892-parameters)
+    * [aws\_access\_key](#id1893-aws_access_key)
+    * [image\_id](#id1894-image_id)
+    * [secret\_key](#id1895-secret_key)
+    * [key\_name](#id1896-key_name)
+    * [MinCount](#id1897-mincount)
+    * [MaxCount](#id1898-maxcount)
+    * [http\_proxy](#id1899-http_proxy)
+  * [Examples](#id1900-examples)
+  * [See Also](#id1901-see-also)
+  * [Description](#id1902-description)
+  * [Parameters](#id1903-parameters)
+    * [aws\_access\_key](#id1904-aws_access_key)
+    * [instance\_id](#id1905-instance_id)
+    * [secret\_key](#id1906-secret_key)
+    * [http\_proxy](#id1907-http_proxy)
+  * [Examples](#id1908-examples)
+  * [See Also](#id1909-see-also)
+  * [Description](#id1910-description)
+  * [Parameters](#id1911-parameters)
+    * [aws\_access\_key](#id1912-aws_access_key)
+    * [instance\_id](#id1913-instance_id)
+    * [secret\_key](#id1914-secret_key)
+    * [http\_proxy](#id1915-http_proxy)
+  * [Examples](#id1916-examples)
+  * [See Also](#id1917-see-also)
+  * [Description](#id1918-description)
+  * [Parameters](#id1919-parameters)
+    * [aws\_access\_key](#id1920-aws_access_key)
+    * [availabilityZone](#id1921-availabilityzone)
+    * [secret\_key](#id1922-secret_key)
+    * [snapshotId](#id1923-snapshotid)
+    * [volume\_size](#id1924-volume_size)
+    * [http\_proxy](#id1925-http_proxy)
+  * [Examples](#id1926-examples)
+  * [See Also](#id1927-see-also)
+  * [Description](#id1928-description)
+  * [Parameters](#id1929-parameters)
+    * [aws\_access\_key](#id1930-aws_access_key)
+    * [image\_id](#id1931-image_id)
+    * [secret\_key](#id1932-secret_key)
+    * [http\_proxy](#id1933-http_proxy)
+  * [Examples](#id1934-examples)
+  * [See Also](#id1935-see-also)
+  * [Description](#id1936-description)
+  * [Parameters](#id1937-parameters)
+    * [aws\_access\_key](#id1938-aws_access_key)
+    * [instance\_id](#id1939-instance_id)
+    * [image\_name](#id1940-image_name)
+    * [secret\_key](#id1941-secret_key)
+    * [http\_proxy](#id1942-http_proxy)
+  * [Examples](#id1943-examples)
+  * [See Also](#id1944-see-also)
+  * [Description](#id1945-description)
+  * [Parameters](#id1946-parameters)
+    * [aws\_access\_key](#id1947-aws_access_key)
+    * [volumeId](#id1948-volumeid)
+    * [secret\_key](#id1949-secret_key)
+    * [description](#id1950-description)
+    * [http\_proxy](#id1951-http_proxy)
+  * [Examples](#id1952-examples)
+  * [See Also](#id1953-see-also)
+  * [Description](#id1954-description)
+  * [Parameters](#id1955-parameters)
+    * [aws\_access\_key](#id1956-aws_access_key)
+    * [snapshotId](#id1957-snapshotid)
+    * [secret\_key](#id1958-secret_key)
+    * [http\_proxy](#id1959-http_proxy)
+  * [Examples](#id1960-examples)
+  * [See Also](#id1961-see-also)
+  * [Description](#id1962-description)
+  * [Parameters](#id1963-parameters)
+    * [aws\_access\_key](#id1964-aws_access_key)
+    * [volumeId](#id1965-volumeid)
+    * [secret\_key](#id1966-secret_key)
+    * [http\_proxy](#id1967-http_proxy)
+  * [Examples](#id1968-examples)
+  * [See Also](#id1969-see-also)
+  * [Description](#id1970-description)
+  * [Parameters](#id1971-parameters)
+    * [aws\_access\_key](#id1972-aws_access_key)
+    * [secret\_key](#id1973-secret_key)
+    * [http\_proxy](#id1974-http_proxy)
+  * [Examples](#id1975-examples)
+  * [See Also](#id1976-see-also)
+  * [Description](#id1977-description)
+  * [Parameters](#id1978-parameters)
+    * [aws\_access\_key](#id1979-aws_access_key)
+    * [secret\_key](#id1980-secret_key)
+    * [http\_proxy](#id1981-http_proxy)
+  * [Examples](#id1982-examples)
+  * [See Also](#id1983-see-also)
+  * [Description](#id1984-description)
+  * [Parameters](#id1985-parameters)
+    * [aws\_access\_key](#id1986-aws_access_key)
+    * [key\_name](#id1987-key_name)
+    * [public\_key\_material](#id1988-public_key_material)
+    * [secret\_key](#id1989-secret_key)
+    * [http\_proxy](#id1990-http_proxy)
+  * [Examples](#id1991-examples)
+  * [See Also](#id1992-see-also)
+  * [Description](#id1993-description)
+  * [Parameters](#id1994-parameters)
+    * [path](#id1995-path)
+    * [new\_mod](#id1996-new_mod)
+  * [Examples](#id1997-examples)
+  * [See Also](#id1998-see-also)
+  * [Description](#id1999-description)
+  * [Parameters](#id2000-parameters)
+    * [path](#id2001-path)
+    * [username](#id2002-username)
+    * [groupname](#id2003-groupname)
+  * [Examples](#id2004-examples)
+  * [See Also](#id2005-see-also)
+  * [Description](#id2006-description)
+  * [Parameters](#id2007-parameters)
+    * [pem\_string](#id2008-pem_string)
+  * [Return Types](#id2009-return-types)
+  * [Errors](#id2010-errors)
+  * [See Also](#id2011-see-also)
+  * [Description](#id2012-description)
+  * [Parameters](#id2013-parameters)
+    * [name](#id2014-name)
+    * [outdir](#id2015-outdir)
+  * [Return Types](#id2016-return-types)
+  * [See Also](#id2017-see-also)
+  * [Description](#id2018-description)
+  * [Parameters](#id2019-parameters)
+    * [info](#id2020-info)
+  * [Return Types](#id2021-return-types)
+  * [See Also](#id2022-see-also)
+  * [Description](#id2023-description)
+  * [Parameters](#id2024-parameters)
+    * [host](#id2025-host)
+    * [user](#id2026-user)
+    * [password](#id2027-password)
+    * [buffer\_size](#id2028-buffer_size)
+    * [command](#id2029-command)
+    * [exclude\_uidl\_list](#id2030-exclude_uidl_list)
+  * [Return Types](#id2031-return-types)
+  * [Errors](#id2032-errors)
+  * [Examples](#id2033-examples)
+  * [See Also](#id2034-see-also)
+  * [Description](#id2035-description)
+  * [Parameters](#id2036-parameters)
+    * [host](#id2037-host)
+    * [user](#id2038-user)
+    * [password](#id2039-password)
+    * [command](#id2040-command)
+    * [folder\_id](#id2041-folder_id)
+    * [list](#id2042-list)
+    * [use\_ssl](#id2043-use_ssl)
+  * [Return Types](#id2044-return-types)
+  * [Errors](#id2045-errors)
+  * [See Also](#id2046-see-also)
+  * [Description](#id2047-description)
+  * [Parameters](#id2048-parameters)
+    * [`element](#id2049-element)
+    * [`array](#id2050-array)
+    * [`start_index](#id2051-start_index)
+    * [`step](#id2052-step)
+  * [Return Values](#id2053-return-values)
+  * [Errors](#id2054-errors)
+  * [Examples](#id2055-examples)
+  * [See Also](#id2056-see-also)
+  * [Description](#id2057-description)
+  * [Parameters](#id2058-parameters)
+    * [x](#id2059-x)
+    * [y](#id2060-y)
+  * [Return Values](#id2061-return-values)
+  * [Examples](#id2062-examples)
+  * [See Also](#id2063-see-also)
+  * [Description](#id2064-description)
+  * [Parameters](#id2065-parameters)
+    * [flag](#id2066-flag)
+  * [Return Types](#id2067-return-types)
+  * [Errors](#id2068-errors)
+  * [Examples](#id2069-examples)
+  * [See Also](#id2070-see-also)
+  * [Description](#id2071-description)
+  * [Parameters](#id2072-parameters)
+    * [desc](#id2073-desc)
+    * [time\_spent](#id2074-time_spent)
+    * [flag](#id2075-flag)
+  * [Return Types](#id2076-return-types)
+  * [See Also](#id2077-see-also)
+  * [Description](#id2078-description)
+  * [Parameters](#id2079-parameters)
+    * [dt](#id2080-dt)
+  * [Return Values](#id2081-return-values)
+  * [Examples](#id2082-examples)
+  * [See Also](#id2083-see-also)
+  * [Description](#id2084-description)
+  * [Parameters](#id2085-parameters)
+    * [dsn](#id2086-dsn)
+    * [identifier](#id2087-identifier)
+  * [Return Types](#id2088-return-types)
+  * [Errors](#id2089-errors)
+  * [Examples](#id2090-examples)
+  * [See Also](#id2091-see-also)
+  * [Description](#id2092-description)
+  * [Description](#id2093-description)
+  * [Parameters](#id2094-parameters)
+    * [cursor\_handle](#id2095-cursor_handle)
+  * [Description](#id2096-description)
+  * [Parameters](#id2097-parameters)
+    * [pattern](#id2098-pattern)
+    * [str](#id2099-str)
+    * [change\_the\_str](#id2100-change_the_str)
+  * [Returns](#id2101-returns)
+  * [Examples](#id2102-examples)
+  * [See Also](#id2103-see-also)
+  * [Description](#id2104-description)
+  * [See Also](#id2105-see-also)
+  * [Parameters](#id2106-parameters)
+    * [pattern](#id2107-pattern)
+    * [str](#id2108-str)
+    * [offset](#id2109-offset)
+  * [Description](#id2110-description)
+  * [Examples](#id2111-examples)
+  * [See Also](#id2112-see-also)
+  * [Description](#id2113-description)
+  * [Parameters](#id2114-parameters)
+    * [audit\_mode](#id2115-audit_mode)
+    * [str\_value](#id2116-str_value)
+    * [graph\_iri](#id2117-graph_iri)
+  * [Examples](#id2118-examples)
+  * [See Also](#id2119-see-also)
+  * [Description](#id2120-description)
+  * [Parameters](#id2121-parameters)
+    * [recovery](#id2122-recovery)
+  * [Examples](#id2123-examples)
+  * [See Also](#id2124-see-also)
+  * [Description](#id2125-description)
+  * [Parameters](#id2126-parameters)
+    * [uname](#id2127-uname)
+    * [perms](#id2128-perms)
+    * [set\_private](#id2129-set_private)
+  * [Examples](#id2130-examples)
+  * [See Also](#id2131-see-also)
+  * [Description](#id2132-description)
+  * [Parameters](#id2133-parameters)
+    * [uname](#id2134-uname)
+    * [set\_private](#id2135-set_private)
+  * [Examples](#id2136-examples)
+  * [See Also](#id2137-see-also)
+  * [Description](#id2138-description)
+  * [Parameters](#id2139-parameters)
+    * [save\_to\_file](#id2140-save_to_file)
+    * [backup\_name](#id2141-backup_name)
+  * [Return Types](#id2142-return-types)
+  * [See Also](#id2143-see-also)
+  * [Description](#id2144-description)
+  * [Parameters](#id2145-parameters)
+    * [graph](#id2146-graph)
+    * [to\_graph\_name](#id2147-to_graph_name)
+  * [Examples](#id2148-examples)
+  * [See Also](#id2149-see-also)
+  * [Description](#id2150-description)
+  * [Parameters](#id2151-parameters)
+  * [Examples](#id2152-examples)
+  * [See Also](#id2153-see-also)
+  * [Description](#id2154-description)
+  * [Parameters](#id2155-parameters)
+    * [max\_files](#id2156-max_files)
+    * [log\_enable](#id2157-log_enable)
+  * [Examples](#id2158-examples)
+  * [See Also](#id2159-see-also)
+  * [Description](#id2160-description)
+  * [Parameters](#id2161-parameters)
+    * [dir\_path](#id2162-dir_path)
+    * [file\_mask](#id2163-file_mask)
+    * [target\_graph](#id2164-target_graph)
+  * [Return Types](#id2165-return-types)
+  * [Examples](#id2166-examples)
+  * [See Also](#id2167-see-also)
+  * [Description](#id2168-description)
+  * [Parameters](#id2169-parameters)
+    * [read\_from\_file](#id2170-read_from_file)
+    * [backup\_name](#id2171-backup_name)
+  * [Return Types](#id2172-return-types)
+  * [See Also](#id2173-see-also)
+  * [Description](#id2174-description)
+  * [Parameters](#id2175-parameters)
+    * [strg](#id2176-strg)
+    * [base](#id2177-base)
+    * [graph](#id2178-graph)
+    * [log\_mode](#id2179-log_mode)
+    * [threads](#id2180-threads)
+    * [transactional](#id2181-transactional)
+  * [Return Types](#id2182-return-types)
+  * [Examples](#id2183-examples)
+  * [See Also](#id2184-see-also)
+  * [Description](#id2185-description)
+  * [Parameters](#id2186-parameters)
+    * [rdfxml\_text](#id2187-rdfxml_text)
+    * [omt\_top\_rdf](#id2188-omt_top_rdf)
+    * [graph\_uri](#id2189-graph_uri)
+  * [Return Types](#id2190-return-types)
+  * [Examples](#id2191-examples)
+  * [See Also](#id2192-see-also)
+  * [Description](#id2193-description)
+  * [Parameters](#id2194-parameters)
+    * [rdfa\_text](#id2195-rdfa_text)
+    * [omt\_top\_rdf](#id2196-omt_top_rdf)
+    * [graph\_uri](#id2197-graph_uri)
+  * [Return Types](#id2198-return-types)
+  * [Examples](#id2199-examples)
+  * [See Also](#id2200-see-also)
+  * [Description](#id2201-description)
+  * [Parameters](#id2202-parameters)
+    * [dir\_path](#id2203-dir_path)
+    * [file\_mask](#id2204-file_mask)
+    * [target\_graph](#id2205-target_graph)
+  * [Return Types](#id2206-return-types)
+  * [Examples](#id2207-examples)
+  * [See Also](#id2208-see-also)
+  * [Description](#id2209-description)
+  * [Parameters](#id2210-parameters)
+    * [strg](#id2211-strg)
+    * [base](#id2212-base)
+    * [graph](#id2213-graph)
+    * [flags](#id2214-flags)
+  * [Return Types](#id2215-return-types)
+  * [Examples](#id2216-examples)
+  * [See Also](#id2217-see-also)
+  * [Description](#id2218-description)
+  * [Parameters](#id2219-parameters)
+    * [strg](#id2220-strg)
+    * [base](#id2221-base)
+    * [graph](#id2222-graph)
+    * [flags](#id2223-flags)
+    * [log\_mode](#id2224-log_mode)
+    * [threads](#id2225-threads)
+    * [transactional](#id2226-transactional)
+  * [Return Types](#id2227-return-types)
+  * [Examples](#id2228-examples)
+  * [See Also](#id2229-see-also)
+  * [Description](#id2230-description)
+  * [Parameters](#id2231-parameters)
+    * [path](#id2232-path)
+    * [base](#id2233-base)
+    * [graph](#id2234-graph)
+    * [flags](#id2235-flags)
+    * [log\_mode](#id2236-log_mode)
+    * [threads](#id2237-threads)
+  * [Return Types](#id2238-return-types)
+  * [Examples](#id2239-examples)
+  * [See Also](#id2240-see-also)
+  * [Description](#id2241-description)
+  * [Parameters](#id2242-parameters)
+    * [arg](#id2243-arg)
+    * [type\_val](#id2244-type_val)
+  * [Return Types](#id2245-return-types)
+  * [Examples](#id2246-examples)
+  * [Description](#id2247-description)
+  * [Parameters](#id2248-parameters)
+    * [triples](#id2249-triples)
+    * [print\_top\_level](#id2250-print_top_level)
+    * [ses](#id2251-ses)
+  * [Examples](#id2252-examples)
+  * [See Also](#id2253-see-also)
+  * [Description](#id2254-description)
+  * [Parameters](#id2255-parameters)
+    * [triples](#id2256-triples)
+    * [ses](#id2257-ses)
+  * [Examples](#id2258-examples)
+  * [See Also](#id2259-see-also)
+  * [Description](#id2260-description)
+  * [Description](#id2261-description)
+  * [Parameters](#id2262-parameters)
+    * [vgraph](#id2263-vgraph)
+    * [load\_data](#id2264-load_data)
+    * [pgraph](#id2265-pgraph)
+    * [transaction\_mode](#id2266-transaction_mode)
+    * [atomicity](#id2267-atomicity)
+  * [Return Types](#id2268-return-types)
+  * [Examples](#id2269-examples)
+  * [See Also](#id2270-see-also)
+  * [Description](#id2271-description)
+  * [Parameters](#id2272-parameters)
+    * [strg](#id2273-strg)
+    * [base](#id2274-base)
+    * [ttl\_ses](#id2275-ttl_ses)
+  * [Return Types](#id2276-return-types)
+  * [Examples](#id2277-examples)
+  * [See Also](#id2278-see-also)
+  * [Description](#id2279-description)
+  * [Parameters](#id2280-parameters)
+    * [group\_name](#id2281-group_name)
+    * [is\_silent](#id2282-is_silent)
+  * [Return Types](#id2283-return-types)
+  * [Examples](#id2284-examples)
+  * [See Also](#id2285-see-also)
+  * [Description](#id2286-description)
+  * [Parameters](#id2287-parameters)
+    * [group\_name](#id2288-group_name)
+    * [graph\_uri](#id2289-graph_uri)
+  * [Return Types](#id2290-return-types)
+  * [Examples](#id2291-examples)
+  * [See Also](#id2292-see-also)
+  * [Description](#id2293-description)
+  * [Parameters](#id2294-parameters)
+    * [graph\_iri](#id2295-graph_iri)
+    * [uname](#id2296-uname)
+    * [perms](#id2297-perms)
+  * [Examples](#id2298-examples)
+  * [See Also](#id2299-see-also)
+  * [Description](#id2300-description)
+  * [Parameters](#id2301-parameters)
+    * [graph\_iri](#id2302-graph_iri)
+    * [uname](#id2303-uname)
+  * [Return Types](#id2304-return-types)
+  * [Examples](#id2305-examples)
+  * [See Also](#id2306-see-also)
+  * [Description](#id2307-description)
+  * [Parameters](#id2308-parameters)
+    * [graph\_iri](#id2309-graph_iri)
+    * [uname](#id2310-uname)
+  * [Examples](#id2311-examples)
+  * [See Also](#id2312-see-also)
+  * [Description](#id2313-description)
+  * [Parameters](#id2314-parameters)
+    * [uname](#id2315-uname)
+    * [uid](#id2316-uid)
+  * [Examples](#id2317-examples)
+  * [See Also](#id2318-see-also)
+  * [Description](#id2319-description)
+  * [Parameters](#id2320-parameters)
+    * [rule\_name](#id2321-rule_name)
+    * [graph\_iri](#id2322-graph_iri)
+    * [remove](#id2323-remove)
+  * [Examples](#id2324-examples)
+  * [See Also](#id2325-see-also)
+  * [Description](#id2326-description)
+  * [Parameters](#id2327-parameters)
+    * [n\_threads](#id2328-n_threads)
+  * [Examples](#id2329-examples)
+  * [See Also](#id2330-see-also)
+  * [Description](#id2331-description)
+  * [Parameters](#id2332-parameters)
+    * [g](#id2333-g)
+  * [Examples](#id2334-examples)
+  * [See Also](#id2335-see-also)
+  * [Description](#id2336-description)
+  * [Parameters](#id2337-parameters)
+    * [g\_iid\_list](#id2338-g_iid_list)
+    * [direct\_fp](#id2339-direct_fp)
+    * [fp\_list](#id2340-fp_list)
+  * [Return Types](#id2341-return-types)
+  * [See Also](#id2342-see-also)
+  * [Description](#id2343-description)
+  * [Parameters](#id2344-parameters)
+    * [gfrom](#id2345-gfrom)
+    * [gto](#id2346-gto)
+    * [only\_gfrom](#id2347-only_gfrom)
+    * [only\_gto](#id2348-only_gto)
+    * [accuracy](#id2349-accuracy)
+    * [fp\_list](#id2350-fp_list)
+    * [invfp\_list](#id2351-invfp_list)
+    * [fp\_list](#id2352-fp_list)
+    * [invfp\_list](#id2353-invfp_list)
+    * [gfrom\_rules](#id2354-gfrom_rules)
+    * [gto\_rules](#id2355-gto_rules)
+    * [equiv\_map](#id2356-equiv_map)
+    * [equiv\_rev](#id2357-equiv_rev)
+  * [Return Types](#id2358-return-types)
+  * [See Also](#id2359-see-also)
+  * [Description](#id2360-description)
+  * [Parameters](#id2361-parameters)
+    * [patch\_graph](#id2362-patch_graph)
+    * [default\_target\_graph](#id2363-default_target_graph)
+  * [Return Types](#id2364-return-types)
+  * [See Also](#id2365-see-also)
+  * [Description](#id2366-description)
+  * [Parameters](#id2367-parameters)
+    * [gfrom](#id2368-gfrom)
+    * [gto](#id2369-gto)
+    * [accuracy](#id2370-accuracy)
+    * [target\_graph](#id2371-target_graph)
+    * [fp\_list](#id2372-fp_list)
+    * [invfp\_list](#id2373-invfp_list)
+    * [fp\_list](#id2374-fp_list)
+    * [invfp\_list](#id2375-invfp_list)
+    * [gfrom\_rules](#id2376-gfrom_rules)
+    * [gto\_rules](#id2377-gto_rules)
+    * [equiv\_map](#id2378-equiv_map)
+    * [equiv\_rev](#id2379-equiv_rev)
+  * [See Also](#id2380-see-also)
+  * [Description](#id2381-description)
+  * [Parameters](#id2382-parameters)
+    * [table\_name](#id2383-table_name)
+    * [opcode](#id2384-opcode)
+  * [Return Types](#id2385-return-types)
+  * [See Also](#id2386-see-also)
+  * [Description](#id2387-description)
+  * [Parameters](#id2388-parameters)
+    * [mode](#id2389-mode)
+  * [Return Types](#id2390-return-types)
+  * [See Also](#id2391-see-also)
+  * [Description](#id2392-description)
+  * [Parameters](#id2393-parameters)
+  * [Return Types](#id2394-return-types)
+  * [Examples](#id2395-examples)
+  * [See Also](#id2396-see-also)
+  * [Description](#id2397-description)
+  * [Parameters](#id2398-parameters)
+    * [data](#id2399-data)
+    * [key\_idx\_in\_row](#id2400-key_idx_in_row)
+    * [sort\_ascending](#id2401-sort_ascending)
+  * [Return Types](#id2402-return-types)
+  * [See Also](#id2403-see-also)
+  * [Description](#id2404-description)
+  * [Parameters](#id2405-parameters)
+    * [iri](#id2406-iri)
+  * [Return Types](#id2407-return-types)
+  * [Examples](#id2408-examples)
+  * [See Also](#id2409-see-also)
+  * [Description](#id2410-description)
+  * [Parameters](#id2411-parameters)
+    * [strg](#id2412-strg)
+  * [Return Types](#id2413-return-types)
+  * [Examples](#id2414-examples)
+  * [See Also](#id2415-see-also)
+  * [Description](#id2416-description)
+  * [Parameters](#id2417-parameters)
+    * [token](#id2418-token)
+    * [delim](#id2419-delim)
+  * [Return Types](#id2420-return-types)
+  * [Examples](#id2421-examples)
+  * [See Also](#id2422-see-also)
+  * [Description](#id2423-description)
+  * [Parameters](#id2424-parameters)
+    * [token](#id2425-token)
+    * [delim](#id2426-delim)
+  * [Return Types](#id2427-return-types)
+  * [Examples](#id2428-examples)
+  * [See Also](#id2429-see-also)
+  * [Description](#id2430-description)
+  * [Parameters](#id2431-parameters)
+    * [token](#id2432-token)
+    * [delim](#id2433-delim)
+    * [maxlen](#id2434-maxlen)
+    * [mode](#id2435-mode)
+  * [Return Types](#id2436-return-types)
+  * [Examples](#id2437-examples)
+  * [See Also](#id2438-see-also)
+  * [Description](#id2439-description)
+  * [Parameters](#id2440-parameters)
+    * [env](#id2441-env)
+    * [arg1](#id2442-arg1)
+    * [arg2](#id2443-arg2)
+    * [arg3](#id2444-arg3)
+    * [ses](#id2445-ses)
+  * [Return Types](#id2446-return-types)
+  * [Examples](#id2447-examples)
+  * [See Also](#id2448-see-also)
+  * [Description](#id2449-description)
+  * [Parameters](#id2450-parameters)
+    * [env](#id2451-env)
+    * [arg1](#id2452-arg1)
+    * [arg2](#id2453-arg2)
+    * [arg3](#id2454-arg3)
+    * [ses](#id2455-ses)
+  * [Return Types](#id2456-return-types)
+  * [Examples](#id2457-examples)
+  * [See Also](#id2458-see-also)
+  * [Description](#id2459-description)
+  * [Parameters](#id2460-parameters)
+    * [\_name](#id2461-_name)
+    * [\_owner\_uid](#id2462-_owner_uid)
+    * [\_reader\_gid](#id2463-_reader_gid)
+    * [\_callback](#id2464-_callback)
+    * [\_app\_env](#id2465-_app_env)
+    * [mode](#id2466-mode)
+    * [auth\_uname](#id2467-auth_uname)
+    * [auth\_pwd](#id2468-auth_pwd)
+  * [Examples](#id2469-examples)
+  * [See Also](#id2470-see-also)
+  * [Description](#id2471-description)
+  * [Parameters](#id2472-parameters)
+    * [\_name](#id2473-_name)
+    * [auth\_uname](#id2474-auth_uname)
+    * [auth\_pwd](#id2475-auth_pwd)
+  * [Examples](#id2476-examples)
+  * [See Also](#id2477-see-also)
+  * [Description](#id2478-description)
+  * [Parameters](#id2479-parameters)
+    * [phrase\_set\_ids](#id2480-phrase_set_ids)
+    * [source\_UTF8\_text](#id2481-source_utf8_text)
+    * [lang\_name](#id2482-lang_name)
+    * [source\_text\_is\_html](#id2483-source_text_is_html)
+    * [report\_flags](#id2484-report_flags)
+  * [Examples](#id2485-examples)
+  * [See Also](#id2486-see-also)
+  * [Description](#id2487-description)
+  * [Parameters](#id2488-parameters)
+    * [phrase\_id](#id2489-phrase_id)
+    * [description\_phrases](#id2490-description_phrases)
+  * [Examples](#id2491-examples)
+  * [See Also](#id2492-see-also)
+  * [Description](#id2493-description)
+  * [Parameters](#id2494-parameters)
+    * [qname](#id2495-qname)
+    * [local](#id2496-local)
+  * [Description](#id2497-description)
+  * [Parameters](#id2498-parameters)
+    * [str](#id2499-str)
+    * [flags](#id2500-flags)
+  * [See Also](#id2501-see-also)
+  * [Description](#id2502-description)
+  * [Parameters](#id2503-parameters)
+    * [str](#id2504-str)
+    * [flags](#id2505-flags)
+  * [See Also](#id2506-see-also)
+  * [Description](#id2507-description)
+  * [Parameters](#id2508-parameters)
+    * [str1](#id2509-str1)
+    * [str2](#id2510-str2)
+  * [Examples](#id2511-examples)
+  * [See Also](#id2512-see-also)
+  * [Description](#id2513-description)
+  * [Parameters](#id2514-parameters)
+    * [str1](#id2515-str1)
+    * [str2](#id2516-str2)
+  * [Examples](#id2517-examples)
+  * [See Also](#id2518-see-also)
+  * [Description](#id2519-description)
+  * [Parameters](#id2520-parameters)
+    * [str](#id2521-str)
+  * [Examples](#id2522-examples)
+  * [See Also](#id2523-see-also)
+  * [Description](#id2524-description)
+  * [Parameters](#id2525-parameters)
+    * [query](#id2526-query)
+    * [dflt\_graph](#id2527-dflt_graph)
+    * [maxrows](#id2528-maxrows)
+  * [Return Types](#id2529-return-types)
+  * [Examples](#id2530-examples)
+  * [See Also](#id2531-see-also)
+  * [Description](#id2532-description)
+  * [Parameters](#id2533-parameters)
+    * [query](#id2534-query)
+    * [dflt\_graph](#id2535-dflt_graph)
+    * [maxrows](#id2536-maxrows)
+  * [Return Types](#id2537-return-types)
+  * [Examples](#id2538-examples)
+  * [See Also](#id2539-see-also)
+  * [Description](#id2540-description)
+  * [Parameters](#id2541-parameters)
+    * [service](#id2542-service)
+    * [query](#id2543-query)
+    * [dflt\_graph](#id2544-dflt_graph)
+    * [named\_graphs](#id2545-named_graphs)
+    * [req\_hdr](#id2546-req_hdr)
+    * [maxrows](#id2547-maxrows)
+    * [bnode\_dict](#id2548-bnode_dict)
+  * [Return Types](#id2549-return-types)
+  * [Examples](#id2550-examples)
+  * [See Also](#id2551-see-also)
+  * [Description](#id2552-description)
+  * [Parameters](#id2553-parameters)
+    * [service](#id2554-service)
+    * [query](#id2555-query)
+    * [dflt\_graph](#id2556-dflt_graph)
+    * [named\_graphs](#id2557-named_graphs)
+    * [req\_hdr](#id2558-req_hdr)
+    * [maxrows](#id2559-maxrows)
+    * [bnode\_dict](#id2560-bnode_dict)
+  * [Return Types](#id2561-return-types)
+  * [See Also](#id2562-see-also)
+  * [Description](#id2563-description)
+  * [Parameters](#id2564-parameters)
+    * [service](#id2565-service)
+    * [query](#id2566-query)
+    * [dflt\_graph](#id2567-dflt_graph)
+    * [named\_graphs](#id2568-named_graphs)
+    * [req\_hdr](#id2569-req_hdr)
+    * [maxrows](#id2570-maxrows)
+    * [bnode\_dict](#id2571-bnode_dict)
+    * [metadata](#id2572-metadata)
+    * [resultset](#id2573-resultset)
+  * [Return Types](#id2574-return-types)
+  * [See Also](#id2575-see-also)
+  * [Description](#id2576-description)
+  * [Parameters](#id2577-parameters)
+    * [s](#id2578-s)
+    * [p](#id2579-p)
+    * [coll](#id2580-coll)
+  * [Return Types](#id2581-return-types)
+  * [Examples](#id2582-examples)
+  * [See Also](#id2583-see-also)
+  * [Description](#id2584-description)
+  * [Parameters](#id2585-parameters)
+    * [r](#id2586-r)
+    * [t](#id2587-t)
+  * [Return Types](#id2588-return-types)
+  * [Examples](#id2589-examples)
+  * [See Also](#id2590-see-also)
+  * [Description](#id2591-description)
+  * [Parameters](#id2592-parameters)
+    * [strg](#id2593-strg)
+    * [base](#id2594-base)
+    * [graph](#id2595-graph)
+  * [Return Types](#id2596-return-types)
+  * [Examples](#id2597-examples)
+  * [See Also](#id2598-see-also)
+  * [Description](#id2599-description)
+  * [Parameters](#id2600-parameters)
+    * [g\_uri](#id2601-g_uri)
+    * [s\_uri](#id2602-s_uri)
+    * [p\_uri](#id2603-p_uri)
+    * [o\_uri](#id2604-o_uri)
+  * [Return Types](#id2605-return-types)
+  * [See Also](#id2606-see-also)
+  * [Description](#id2607-description)
+  * [Parameters](#id2608-parameters)
+    * [g\_uri](#id2609-g_uri)
+    * [s\_uri](#id2610-s_uri)
+    * [p\_uri](#id2611-p_uri)
+    * [o\_uri](#id2612-o_uri)
+  * [Return Types](#id2613-return-types)
+  * [Examples](#id2614-examples)
+  * [See Also](#id2615-see-also)
+  * [Description](#id2616-description)
+  * [Parameters](#id2617-parameters)
+    * [g\_uri](#id2618-g_uri)
+    * [s\_uri](#id2619-s_uri)
+    * [p\_uri](#id2620-p_uri)
+    * [o\_uri](#id2621-o_uri)
+    * [dt](#id2622-dt)
+    * [lang](#id2623-lang)
+  * [Return Types](#id2624-return-types)
+  * [Examples](#id2625-examples)
+  * [See Also](#id2626-see-also)
+  * [Description](#id2627-description)
+  * [Parameters](#id2628-parameters)
+    * [source\_string](#id2629-source_string)
+    * [pattern](#id2630-pattern)
+    * [replace\_string](#id2631-replace_string)
+    * [position](#id2632-position)
+    * [occurrence](#id2633-occurrence)
+    * [match\_parameter](#id2634-match_parameter)
+  * [Returns](#id2635-returns)
+  * [Examples](#id2636-examples)
+  * [See Also](#id2637-see-also)
+  * [Description](#id2638-description)
+  * [Parameters](#id2639-parameters)
+    * [source\_string](#id2640-source_string)
+    * [pattern](#id2641-pattern)
+    * [start\_position](#id2642-start_position)
+    * [occurrence](#id2643-occurrence)
+    * [return\_option](#id2644-return_option)
+    * [match\_parameter](#id2645-match_parameter)
+  * [Returns](#id2646-returns)
+  * [Examples](#id2647-examples)
+  * [See Also](#id2648-see-also)
+  * [Description](#id2649-description)
+  * [Parameters](#id2650-parameters)
+    * [source\_string](#id2651-source_string)
+    * [pattern](#id2652-pattern)
+    * [match\_parameter](#id2653-match_parameter)
+  * [Examples](#id2654-examples)
+  * [See Also](#id2655-see-also)
+  * [Description](#id2656-description)
+  * [Parameters](#id2657-parameters)
+    * [name](#id2658-name)
+  * [Return Values](#id2659-return-values)
+  * [Examples](#id2660-examples)
+  * [See Also](#id2661-see-also)
+  * [Description](#id2662-description)
+  * [Return Types](#id2663-return-types)
+  * [See Also](#id2664-see-also)
+  * [Description](#id2665-description)
+  * [Parameters](#id2666-parameters)
+    * [name](#id2667-name)
+  * [Return Types](#id2668-return-types)
+  * [Examples](#id2669-examples)
+  * [See Also](#id2670-see-also)
+  * [Description](#id2671-description)
+  * [Parameters](#id2672-parameters)
+    * [name](#id2673-name)
+    * [value](#id2674-value)
+    * [force](#id2675-force)
+  * [Return Values](#id2676-return-values)
+  * [Errors](#id2677-errors)
+  * [Examples](#id2678-examples)
+  * [See Also](#id2679-see-also)
+  * [Description](#id2680-description)
+  * [Parameters](#id2681-parameters)
+    * [name](#id2682-name)
+  * [Return Types](#id2683-return-types)
+  * [Errors](#id2684-errors)
+  * [Examples](#id2685-examples)
+  * [See Also](#id2686-see-also)
+  * [Description](#id2687-description)
+  * [Description](#id2688-description)
+  * [Description](#id2689-description)
+  * [Errors](#id2690-errors)
+  * [Parameters](#id2691-parameters)
+    * [log\_file](#id2692-log_file)
+  * [Return Values](#id2693-return-values)
+  * [Examples](#id2694-examples)
+  * [See Also](#id2695-see-also)
+  * [Description](#id2696-description)
+  * [Parameters](#id2697-parameters)
+    * [publisher](#id2698-publisher)
+  * [Example](#id2699-example)
+  * [See Also](#id2700-see-also)
+  * [Description](#id2701-description)
+  * [Parameters](#id2702-parameters)
+    * [publication](#id2703-publication)
+    * [grantee](#id2704-grantee)
+  * [Example](#id2705-example)
+  * [See Also](#id2706-see-also)
+  * [Description](#id2707-description)
+  * [Parameters](#id2708-parameters)
+    * [server\_name](#id2709-server_name)
+    * [account](#id2710-account)
+    * [errors\_mode](#id2711-errors_mode)
+  * [Example](#id2712-example)
+  * [See Also](#id2713-see-also)
+  * [Description](#id2714-description)
+  * [Parameters](#id2715-parameters)
+    * [publication](#id2716-publication)
+    * [file](#id2717-file)
+  * [Example](#id2718-example)
+  * [See Also](#id2719-see-also)
+  * [Description](#id2720-description)
+  * [Parameters](#id2721-parameters)
+    * [publication](#id2722-publication)
+    * [log\_path](#id2723-log_path)
+    * [is\_updateable](#id2724-is_updateable)
+    * [sync\_user](#id2725-sync_user)
+  * [Example](#id2726-example)
+  * [See Also](#id2727-see-also)
+  * [Description](#id2728-description)
+  * [Parameters](#id2729-parameters)
+    * [publication](#id2730-publication)
+    * [item](#id2731-item)
+    * [type](#id2732-type)
+    * [mode](#id2733-mode)
+    * [procedure\_replication\_options](#id2734-procedure_replication_options)
+  * [Example](#id2735-example)
+  * [See Also](#id2736-see-also)
+  * [Description](#id2737-description)
+  * [Parameters](#id2738-parameters)
+    * [publication](#id2739-publication)
+    * [image\_file\_path](#id2740-image_file_path)
+    * [bytes\_per\_file](#id2741-bytes_per_file)
+  * [Example](#id2742-example)
+  * [See Also](#id2743-see-also)
+  * [Description](#id2744-description)
+  * [Parameters](#id2745-parameters)
+    * [publication](#id2746-publication)
+    * [item](#id2747-item)
+    * [type](#id2748-type)
+    * [flag](#id2749-flag)
+  * [Example](#id2750-example)
+  * [See Also](#id2751-see-also)
+  * [Description](#id2752-description)
+  * [Parameters](#id2753-parameters)
+    * [publication](#id2754-publication)
+    * [grantee](#id2755-grantee)
+  * [Example](#id2756-example)
+  * [See Also](#id2757-see-also)
+  * [Description](#id2758-description)
+  * [Example](#id2759-example)
+  * [See Also](#id2760-see-also)
+  * [Description](#id2761-description)
+  * [Parameters](#id2762-parameters)
+    * [server\_name](#id2763-server_name)
+    * [dsn](#id2764-dsn)
+    * [replication\_address](#id2765-replication_address)
+  * [Example](#id2766-example)
+  * [See Also](#id2767-see-also)
+  * [Description](#id2768-description)
+  * [Parameters](#id2769-parameters)
+    * [old\_name](#id2770-old_name)
+    * [new\_name](#id2771-new_name)
+  * [Example](#id2772-example)
+  * [See Also](#id2773-see-also)
+  * [Description](#id2774-description)
+  * [Example](#id2775-example)
+  * [See Also](#id2776-see-also)
+  * [Description](#id2777-description)
+  * [Parameters](#id2778-parameters)
+    * [publisher](#id2779-publisher)
+    * [publication](#id2780-publication)
+    * [level](#id2781-level)
+    * [stat](#id2782-stat)
+  * [Example](#id2783-example)
+  * [See Also](#id2784-see-also)
+  * [Description](#id2785-description)
+  * [Parameters](#id2786-parameters)
+    * [server\_name](#id2787-server_name)
+    * [publication](#id2788-publication)
+    * [dav\_user](#id2789-dav_user)
+    * [dav\_group](#id2790-dav_group)
+    * [replication\_user](#id2791-replication_user)
+    * [replication\_password](#id2792-replication_password)
+    * [sync\_user](#id2793-sync_user)
+  * [Example](#id2794-example)
+  * [See Also](#id2795-see-also)
+  * [Description](#id2796-description)
+  * [Parameters](#id2797-parameters)
+    * [publisher](#id2798-publisher)
+    * [publication](#id2799-publication)
+    * [uid](#id2800-uid)
+    * [password](#id2801-password)
+  * [Example](#id2802-example)
+  * [See Also](#id2803-see-also)
+  * [Description](#id2804-description)
+  * [Example](#id2805-example)
+  * [See Also](#id2806-see-also)
+  * [Description](#id2807-description)
+  * [Parameters](#id2808-parameters)
+    * [publication](#id2809-publication)
+    * [sqltext](#id2810-sqltext)
+    * [a-1 ... a-n](#id2811-a-1-a-n)
+  * [Example](#id2812-example)
+  * [See Also](#id2813-see-also)
+  * [Description](#id2814-description)
+  * [Return Types](#id2815-return-types)
+  * [Example](#id2816-example)
+  * [See Also](#id2817-see-also)
+  * [Description](#id2818-description)
+  * [Parameters](#id2819-parameters)
+    * [publication](#id2820-publication)
+  * [Example](#id2821-example)
+  * [See Also](#id2822-see-also)
+  * [Description](#id2823-description)
+  * [Parameters](#id2824-parameters)
+    * [server\_name](#id2825-server_name)
+    * [publication](#id2826-publication)
+    * [item](#id2827-item)
+  * [Example](#id2828-example)
+  * [See Also](#id2829-see-also)
+  * [Description](#id2830-description)
+  * [Parameters](#id2831-parameters)
+    * [server](#id2832-server)
+    * [account](#id2833-account)
+  * [Example](#id2834-example)
+  * [See Also](#id2835-see-also)
+  * [Description](#id2836-description)
+  * [Parameters](#id2837-parameters)
+    * [item](#id2838-item)
+    * [type](#id2839-type)
+  * [Return Types](#id2840-return-types)
+  * [Examples](#id2841-examples)
+  * [See Also](#id2842-see-also)
+  * [Description](#id2843-description)
+  * [Parameters](#id2844-parameters)
+    * [server](#id2845-server)
+    * [item](#id2846-item)
+    * [type](#id2847-type)
+  * [Return Types](#id2848-return-types)
+  * [Examples](#id2849-examples)
+  * [See Also](#id2850-see-also)
+  * [Description](#id2851-description)
+  * [Parameters](#id2852-parameters)
+    * [server](#id2853-server)
+    * [item](#id2854-item)
+    * [type](#id2855-type)
+  * [Return Types](#id2856-return-types)
+  * [Examples](#id2857-examples)
+  * [See Also](#id2858-see-also)
+  * [Description](#id2859-description)
+  * [Parameters](#id2860-parameters)
+    * [item](#id2861-item)
+    * [type](#id2862-type)
+  * [Return Types](#id2863-return-types)
+  * [Examples](#id2864-examples)
+  * [See Also](#id2865-see-also)
+  * [Description](#id2866-description)
+  * [Parameters](#id2867-parameters)
+    * [server](#id2868-server)
+    * [item](#id2869-item)
+    * [type](#id2870-type)
+    * [how\_many](#id2871-how_many)
+  * [Return Types](#id2872-return-types)
+  * [Examples](#id2873-examples)
+  * [See Also](#id2874-see-also)
+  * [Description](#id2875-description)
+  * [Parameters](#id2876-parameters)
+    * [item](#id2877-item)
+    * [type](#id2878-type)
+  * [Return Types](#id2879-return-types)
+  * [Examples](#id2880-examples)
+  * [See Also](#id2881-see-also)
+  * [Description](#id2882-description)
+  * [Parameters](#id2883-parameters)
+    * [dsn](#id2884-dsn)
+    * [uid](#id2885-uid)
+    * [pwd](#id2886-pwd)
+  * [Return Types](#id2887-return-types)
+  * [Examples](#id2888-examples)
+  * [See Also](#id2889-see-also)
+  * [Description](#id2890-description)
+  * [Parameters](#id2891-parameters)
+    * [item](#id2892-item)
+  * [Return Types](#id2893-return-types)
+  * [Examples](#id2894-examples)
+  * [See Also](#id2895-see-also)
+  * [Description](#id2896-description)
+  * [Parameters](#id2897-parameters)
+    * [tbl](#id2898-tbl)
+    * [name\_suffix](#id2899-name_suffix)
+    * [type](#id2900-type)
+    * [order](#id2901-order)
+    * [class](#id2902-class)
+    * [col](#id2903-col)
+  * [Return Types](#id2904-return-types)
+  * [Examples](#id2905-examples)
+  * [Description](#id2906-description)
+  * [Parameters](#id2907-parameters)
+    * [col](#id2908-col)
+    * [name\_suffix](#id2909-name_suffix)
+    * [order](#id2910-order)
+    * [class](#id2911-class)
+  * [Return Types](#id2912-return-types)
+  * [Examples](#id2913-examples)
+  * [See Also](#id2914-see-also)
+  * [Description](#id2915-description)
+  * [Parameters](#id2916-parameters)
+    * [tbl](#id2917-tbl)
+    * [name\_suffix](#id2918-name_suffix)
+    * [type](#id2919-type)
+    * [order](#id2920-order)
+    * [class](#id2921-class)
+    * [col](#id2922-col)
+  * [Return Types](#id2923-return-types)
+  * [Examples](#id2924-examples)
+  * [See Also](#id2925-see-also)
+  * [Description](#id2926-description)
+  * [Example](#id2927-example)
+  * [See Also](#id2928-see-also)
+  * [Description](#id2929-description)
+  * [Parameters](#id2930-parameters)
+    * [quiet](#id2931-quiet)
+  * [Example](#id2932-example)
+  * [See Also](#id2933-see-also)
+  * [Description](#id2934-description)
+  * [Parameters](#id2935-parameters)
+    * [publisher](#id2936-publisher)
+    * [user](#id2937-user)
+    * [user\_pwd](#id2938-user_pwd)
+  * [Example](#id2939-example)
+  * [See Also](#id2940-see-also)
+  * [Description](#id2941-description)
+  * [Parameters](#id2942-parameters)
+    * [graph](#id2943-graph)
+  * [Example](#id2944-example)
+  * [See Also](#id2945-see-also)
+  * [Description](#id2946-description)
+  * [Parameters](#id2947-parameters)
+    * [graph](#id2948-graph)
+  * [Example](#id2949-example)
+  * [See Also](#id2950-see-also)
+  * [Description](#id2951-description)
+  * [Parameters](#id2952-parameters)
+    * [col\_1, ..., col\_n](#id2953-col_1-col_n)
+  * [Examples](#id2954-examples)
+  * [See Also](#id2955-see-also)
+  * [Description](#id2956-description)
+  * [Parameters](#id2957-parameters)
+    * [var\_1, ..., var\_n](#id2958-var_1-var_n)
+  * [See Also](#id2959-see-also)
+  * [Description](#id2960-description)
+  * [Parameters](#id2961-parameters)
+    * [dsn](#id2962-dsn)
+    * [sql\_stmt](#id2963-sql_stmt)
+    * [sql\_state](#id2964-sql_state)
+    * [error\_message](#id2965-error_message)
+    * [in\_params](#id2966-in_params)
+    * [num\_cols](#id2967-num_cols)
+    * [stmt\_meta](#id2968-stmt_meta)
+    * [result\_set](#id2969-result_set)
+    * [cursor\_handle](#id2970-cursor_handle)
+  * [Examples](#id2971-examples)
+  * [See Also](#id2972-see-also)
+  * [Description](#id2973-description)
+  * [Parameters](#id2974-parameters)
+    * [dsn](#id2975-dsn)
+    * [stmt](#id2976-stmt)
+    * [max\_rows](#id2977-max_rows)
+    * [in\_params](#id2978-in_params)
+  * [Return Values](#id2979-return-values)
+  * [See Also](#id2980-see-also)
+  * [Description](#id2981-description)
+  * [Examples](#id2982-examples)
+  * [Description](#id2983-description)
+  * [Parameters](#id2984-parameters)
+    * [cursor\_handle](#id2985-cursor_handle)
+    * [sql\_state](#id2986-sql_state)
+    * [sql\_error](#id2987-sql_error)
+    * [num\_cols](#id2988-num_cols)
+    * [stmt\_meta](#id2989-stmt_meta)
+  * [See Also](#id2990-see-also)
+  * [Description](#id2991-description)
+  * [Description](#id2992-description)
+  * [Parameters](#id2993-parameters)
+    * [cursor\_handle](#id2994-cursor_handle)
+    * [row\_array](#id2995-row_array)
+    * [sql\_state](#id2996-sql_state)
+    * [sql\_error](#id2997-sql_error)
+  * [Return Values](#id2998-return-values)
+  * [See Also](#id2999-see-also)
+  * [Description](#id3000-description)
+  * [Return Types](#id3001-return-types)
+  * [Description](#id3002-description)
+  * [Description](#id3003-description)
+  * [Parameters](#id3004-parameters)
+    * [hit\_words](#id3005-hit_words)
+    * [text](#id3006-text)
+    * [within\_first](#id3007-within_first)
+    * [max\_excerpt](#id3008-max_excerpt)
+    * [total](#id3009-total)
+    * [html\_hit\_tag](#id3010-html_hit_tag)
+  * [Return Types](#id3011-return-types)
+  * [Examples](#id3012-examples)
+  * [Description](#id3013-description)
+  * [Parameters](#id3014-parameters)
+    * [dt](#id3015-dt)
+  * [Return Values](#id3016-return-values)
+  * [Examples](#id3017-examples)
+  * [See Also](#id3018-see-also)
+  * [Description](#id3019-description)
+  * [Return Types](#id3020-return-types)
+  * [See Also](#id3021-see-also)
+  * [Description](#id3022-description)
+  * [Parameters](#id3023-parameters)
+    * [name](#id3024-name)
+    * [increment\_by](#id3025-increment_by)
+  * [Return Types](#id3026-return-types)
+  * [See Also](#id3027-see-also)
+  * [Description](#id3028-description)
+  * [Parameters](#id3029-parameters)
+    * [name](#id3030-name)
+  * [Return Types](#id3031-return-types)
+  * [Examples](#id3032-examples)
+  * [See Also](#id3033-see-also)
+  * [Description](#id3034-description)
+  * [Parameters](#id3035-parameters)
+    * [name](#id3036-name)
+    * [state](#id3037-state)
+    * [mode](#id3038-mode)
+  * [Return Types](#id3039-return-types)
+  * [Examples](#id3040-examples)
+  * [See Also](#id3041-see-also)
+  * [Description](#id3042-description)
+  * [Description](#id3043-description)
+  * [Parameters](#id3044-parameters)
+    * [value](#id3045-value)
+  * [Return Types](#id3046-return-types)
+  * [Examples](#id3047-examples)
+  * [See Also](#id3048-see-also)
+  * [Description](#id3049-description)
+  * [Parameters](#id3050-parameters)
+    * [target](#id3051-target)
+    * [WebDAV\_collection](#id3052-webdav_collection)
+    * [update](#id3053-update)
+    * [debug](#id3054-debug)
+    * [function\_hook.](#id3055-function_hook)
+    * [data](#id3056-data)
+  * [Examples](#id3057-examples)
+  * [Description](#id3058-description)
+  * [Parameters](#id3059-parameters)
+    * [host\_and\_port](#id3060-host_and_port)
+  * [Return Types](#id3061-return-types)
+  * [See Also](#id3062-see-also)
+  * [Description](#id3063-description)
+  * [Parameters](#id3064-parameters)
+    * [ses](#id3065-ses)
+  * [See Also](#id3066-see-also)
+  * [Description](#id3067-description)
+  * [Parameters](#id3068-parameters)
+    * [ses](#id3069-ses)
+    * [throw\_exception\_on\_eof](#id3070-throw_exception_on_eof)
+    * [binary\_mode](#id3071-binary_mode)
+  * [Return Types](#id3072-return-types)
+  * [Examples](#id3073-examples)
+  * [See Also](#id3074-see-also)
+  * [Description](#id3075-description)
+  * [Parameters](#id3076-parameters)
+    * [buffer](#id3077-buffer)
+    * [ses](#id3078-ses)
+  * [See Also](#id3079-see-also)
+  * [Description](#id3080-description)
+  * [Parameters](#id3081-parameters)
+    * [increment](#id3082-increment)
+    * [what](#id3083-what)
+  * [Return Types](#id3084-return-types)
+  * [Examples](#id3085-examples)
+  * [See Also](#id3086-see-also)
+  * [Description](#id3087-description)
+  * [Parameters](#id3088-parameters)
+    * [user\_name](#id3089-user_name)
+    * [mode](#id3090-mode)
+    * [password](#id3091-password)
+  * [Return Types](#id3092-return-types)
+  * [Description](#id3093-description)
+  * [Parameters](#id3094-parameters)
+    * [table\_name](#id3095-table_name)
+    * [column\_name](#id3096-column_name)
+    * [new\_value](#id3097-new_value)
+  * [Return Types](#id3098-return-types)
+  * [Description](#id3099-description)
+  * [Description](#id3100-description)
+  * [Description](#id3101-description)
+  * [Parameters](#id3102-parameters)
+    * [map\_name](#id3103-map_name)
+    * [part\_defs](#id3104-part_defs)
+    * [do\_drops](#id3105-do_drops)
+  * [See Also](#id3106-see-also)
+  * [Description](#id3107-description)
+  * [Parameters](#id3108-parameters)
+    * [\_SINVM\_NAME\_IN](#id3109-_sinvm_name_in)
+    * [\_SINV\_INVERSE](#id3110-_sinv_inverse)
+    * [\_SINVM\_FLAGS](#id3111-_sinvm_flags)
+  * [See Also](#id3112-see-also)
+  * [Description](#id3113-description)
+  * [Parameters](#id3114-parameters)
+    * [\_SINVM\_NAME\_IN](#id3115-_sinvm_name_in)
+  * [See Also](#id3116-see-also)
+  * [Description](#id3117-description)
+  * [Parameters](#id3118-parameters)
+    * [msg\_text](#id3119-msg_text)
+    * [signer\_cert](#id3120-signer_cert)
+    * [private\_key](#id3121-private_key)
+    * [private\_key\_pass](#id3122-private_key_pass)
+    * [signer\_CA\_certs](#id3123-signer_ca_certs)
+    * [flags](#id3124-flags)
+  * [Return Types](#id3125-return-types)
+  * [Examples](#id3126-examples)
+  * [See Also](#id3127-see-also)
+  * [Description](#id3128-description)
+  * [Parameters](#id3129-parameters)
+    * [msg\_text](#id3130-msg_text)
+    * [certs](#id3131-certs)
+    * [signer\_certs](#id3132-signer_certs)
+    * [flags](#id3133-flags)
+  * [Return Types](#id3134-return-types)
+  * [Examples](#id3135-examples)
+  * [See Also](#id3136-see-also)
+  * [Description](#id3137-description)
+  * [Parameters](#id3138-parameters)
+    * [mail\_message](#id3139-mail_message)
+    * [array\_of\_recipient\_certificates](#id3140-array_of_recipient_certificates)
+    * [cipher\_name](#id3141-cipher_name)
+  * [Return Types](#id3142-return-types)
+  * [Examples](#id3143-examples)
+  * [See Also](#id3144-see-also)
+  * [Description](#id3145-description)
+  * [Parameters](#id3146-parameters)
+    * [encrypted\_mail\_message](#id3147-encrypted_mail_message)
+    * [recipient\_certificate](#id3148-recipient_certificate)
+    * [recipient\_key](#id3149-recipient_key)
+    * [password\_for\_the\_key](#id3150-password_for_the_key)
+  * [Return Types](#id3151-return-types)
+  * [Examples](#id3152-examples)
+  * [See Also](#id3153-see-also)
+  * [Description](#id3154-description)
+  * [Description](#id3155-description)
+  * [Parameters](#id3156-parameters)
+    * [entity](#id3157-entity)
+    * [try\_typed\_as](#id3158-try_typed_as)
+    * [soap\_version](#id3159-soap_version)
+  * [Return Types](#id3160-return-types)
+  * [Description](#id3161-description)
+  * [Parameters](#id3162-parameters)
+    * [name](#id3163-name)
+    * [schema\_string](#id3164-schema_string)
+  * [Return Types](#id3165-return-types)
+  * [Errors](#id3166-errors)
+  * [Examples](#id3167-examples)
+  * [Description](#id3168-description)
+  * [Parameters](#id3169-parameters)
+    * [host](#id3170-host)
+    * [path](#id3171-path)
+    * [methodURI](#id3172-methoduri)
+    * [methodName](#id3173-methodname)
+    * [params](#id3174-params)
+    * [version](#id3175-version)
+    * [certificate](#id3176-certificate)
+    * [password](#id3177-password)
+    * [SOAPAction](#id3178-soapaction)
+  * [Examples](#id3179-examples)
+  * [Description](#id3180-description)
+  * [Parameters](#id3181-parameters)
+    * [url](#id3182-url)
+    * [operation](#id3183-operation)
+    * [target\_namespace](#id3184-target_namespace)
+    * [parameters](#id3185-parameters)
+    * [headers](#id3186-headers)
+    * [soap\_action](#id3187-soap_action)
+    * [attachments](#id3188-attachments)
+    * [ticket](#id3189-ticket)
+    * [passwd](#id3190-passwd)
+    * [user\_name](#id3191-user_name)
+    * [user\_password](#id3192-user_password)
+    * [auth\_type](#id3193-auth_type)
+    * [security\_type](#id3194-security_type)
+    * [debug](#id3195-debug)
+    * [template](#id3196-template)
+    * [style](#id3197-style)
+    * [version](#id3198-version)
+    * [direction](#id3199-direction)
+    * [http\_header](#id3200-http_header)
+    * [security\_schema](#id3201-security_schema)
+    * [time\_out](#id3202-time_out)
+  * [Return Types](#id3203-return-types)
+  * [Requirements for certificate files for HTTPS operation](#id3204-requirements-for-certificate-files-for-https-operation)
+  * [Example](#id3205-example)
+  * [See Also](#id3206-see-also)
+  * [Description](#id3207-description)
+  * [Parameters](#id3208-parameters)
+    * [soap\_code](#id3209-soap_code)
+    * [sql\_state](#id3210-sql_state)
+    * [error\_message](#id3211-error_message)
+    * [soap\_version](#id3212-soap_version)
+    * [do\_uddi](#id3213-do_uddi)
+  * [Return Types](#id3214-return-types)
+  * [Description](#id3215-description)
+  * [Parameters](#id3216-parameters)
+    * [value](#id3217-value)
+    * [enclosing\_tag](#id3218-enclosing_tag)
+    * [date\_encoding\_type](#id3219-date_encoding_type)
+    * [soap\_version](#id3220-soap_version)
+  * [Return Types](#id3221-return-types)
+  * [Description](#id3222-description)
+  * [Parameters](#id3223-parameters)
+    * [module](#id3224-module)
+    * [URL](#id3225-url)
+  * [Return Types](#id3226-return-types)
+  * [Description](#id3227-description)
+  * [Parameters](#id3228-parameters)
+    * [req\_xml](#id3229-req_xml)
+    * [soap\_method](#id3230-soap_method)
+    * [lines](#id3231-lines)
+    * [soap\_version](#id3232-soap_version)
+    * [procedure\_mappings](#id3233-procedure_mappings)
+  * [Return Types](#id3234-return-types)
+  * [Description](#id3235-description)
+  * [Parameters](#id3236-parameters)
+    * [module](#id3237-module)
+    * [URL](#id3238-url)
+  * [Return Types](#id3239-return-types)
+  * [Description](#id3240-description)
+  * [Parameters](#id3241-parameters)
+    * [target\_url](#id3242-target_url)
+  * [Return Types](#id3243-return-types)
+  * [Examples](#id3244-examples)
+  * [See Also](#id3245-see-also)
+  * [Description](#id3246-description)
+  * [Parameters](#id3247-parameters)
+    * [elem](#id3248-elem)
+    * [value](#id3249-value)
+  * [Return Types](#id3250-return-types)
+  * [Description](#id3251-description)
+  * [Return Types](#id3252-return-types)
+  * [Description](#id3253-description)
+  * [Description](#id3254-description)
+  * [Parameters](#id3255-parameters)
+    * [coded\_str](#id3256-coded_str)
+    * [case\_mode](#id3257-case_mode)
+    * [str](#id3258-str)
+  * [Examples](#id3259-examples)
+  * [Description](#id3260-description)
+  * [Description](#id3261-description)
+  * [Parameters](#id3262-parameters)
+    * [strg](#id3263-strg)
+    * [format](#id3264-format)
+    * [err](#id3265-err)
+  * [Examples](#id3266-examples)
+  * [Description](#id3267-description)
+  * [Examples](#id3268-examples)
+  * [Description](#id3269-description)
+  * [Examples](#id3270-examples)
+  * [Description](#id3271-description)
+  * [Examples](#id3272-examples)
+  * [Description](#id3273-description)
+  * [Parameters](#id3274-parameters)
+  * [Return Types](#id3275-return-types)
+  * [Examples](#id3276-examples)
+  * [See Also](#id3277-see-also)
+  * [Description](#id3278-description)
+  * [Parameters](#id3279-parameters)
+  * [Return Types](#id3280-return-types)
+  * [Examples](#id3281-examples)
+  * [See Also](#id3282-see-also)
+  * [Description](#id3283-description)
+  * [See Also](#id3284-see-also)
+  * [Description](#id3285-description)
+  * [Parameters](#id3286-parameters)
+    * [dsn](#id3287-dsn)
+    * [qualifier](#id3288-qualifier)
+    * [owner](#id3289-owner)
+    * [table\_name](#id3290-table_name)
+  * [Return Types](#id3291-return-types)
+  * [Examples](#id3292-examples)
+  * [See Also](#id3293-see-also)
+  * [Description](#id3294-description)
+  * [Parameters](#id3295-parameters)
+  * [Return Types](#id3296-return-types)
+  * [Examples](#id3297-examples)
+  * [See Also](#id3298-see-also)
+  * [Description](#id3299-description)
+  * [Parameters](#id3300-parameters)
+  * [Return Types](#id3301-return-types)
+  * [Examples](#id3302-examples)
+  * [See Also](#id3303-see-also)
+  * [Description](#id3304-description)
+  * [Parameters](#id3305-parameters)
+  * [Return Types](#id3306-return-types)
+  * [Examples](#id3307-examples)
+  * [See Also](#id3308-see-also)
+  * [Description](#id3309-description)
+  * [Parameters](#id3310-parameters)
+  * [Return Types](#id3311-return-types)
+  * [Examples](#id3312-examples)
+  * [See Also](#id3313-see-also)
+  * [Description](#id3314-description)
+  * [Parameters](#id3315-parameters)
+  * [Return Types](#id3316-return-types)
+  * [See Also](#id3317-see-also)
+  * [Description](#id3318-description)
+  * [Parameters](#id3319-parameters)
+    * [dsn](#id3320-dsn)
+    * [type](#id3321-type)
+  * [Return Types](#id3322-return-types)
+  * [See Also](#id3323-see-also)
+  * [Description](#id3324-description)
+  * [Parameters](#id3325-parameters)
+  * [Return Types](#id3326-return-types)
+  * [See Also](#id3327-see-also)
+  * [Description](#id3328-description)
+  * [Parameters](#id3329-parameters)
+  * [Return Types](#id3330-return-types)
+  * [Examples](#id3331-examples)
+  * [See Also](#id3332-see-also)
+  * [Description](#id3333-description)
+  * [Parameters](#id3334-parameters)
+  * [Return Types](#id3335-return-types)
+  * [See Also](#id3336-see-also)
+  * [Description](#id3337-description)
+  * [Parameters](#id3338-parameters)
+    * [dsn\_name](#id3339-dsn_name)
+    * [rollback](#id3340-rollback)
+  * [Return Types](#id3341-return-types)
+  * [Examples](#id3342-examples)
+  * [See Also](#id3343-see-also)
+  * [Description](#id3344-description)
+  * [Parameters](#id3345-parameters)
+  * [Return Types](#id3346-return-types)
+  * [See Also](#id3347-see-also)
+  * [Description](#id3348-description)
+  * [Parameters](#id3349-parameters)
+  * [Return Types](#id3350-return-types)
+  * [See Also](#id3351-see-also)
+  * [Description](#id3352-description)
+  * [Parameters](#id3353-parameters)
+    * [x](#id3354-x)
+  * [Return Values](#id3355-return-values)
+  * [Examples](#id3356-examples)
+  * [See Also](#id3357-see-also)
+  * [Description](#id3358-description)
+  * [Parameters](#id3359-parameters)
+    * [option](#id3360-option)
+  * [Return Types](#id3361-return-types)
+  * [Example](#id3362-example)
+  * [Description](#id3363-description)
+  * [Parameters](#id3364-parameters)
+    * [table\_name](#id3365-table_name)
+    * [index\_name](#id3366-index_name)
+    * [k1](#id3367-k1)
+  * [Return](#id3368-return)
+  * [Example](#id3369-example)
+  * [Description](#id3370-description)
+  * [Parameters](#id3371-parameters)
+    * [str](#id3372-str)
+    * [sub](#id3373-sub)
+  * [Return Types](#id3374-return-types)
+  * [Examples](#id3375-examples)
+  * [See Also](#id3376-see-also)
+  * [Description](#id3377-description)
+  * [Description](#id3378-description)
+  * [Parameters](#id3379-parameters)
+    * [str](#id3380-str)
+  * [Errors](#id3381-errors)
+  * [Examples](#id3382-examples)
+  * [See Also](#id3383-see-also)
+  * [Description](#id3384-description)
+  * [Description](#id3385-description)
+  * [Parameters](#id3386-parameters)
+    * [threshold](#id3387-threshold)
+  * [Examples](#id3388-examples)
+  * [See Also](#id3389-see-also)
+  * [Description](#id3390-description)
+  * [Parameters](#id3391-parameters)
+    * [stream](#id3392-stream)
+  * [Examples](#id3393-examples)
+  * [Description](#id3394-description)
+  * [Parameters](#id3395-parameters)
+    * [str\_out\_in](#id3396-str_out_in)
+    * [str\_out\_out](#id3397-str_out_out)
+  * [Return Types](#id3398-return-types)
+  * [Examples](#id3399-examples)
+  * [See Also](#id3400-see-also)
+  * [Description](#id3401-description)
+  * [Parameters](#id3402-parameters)
+    * [string\_out](#id3403-string_out)
+  * [Return Values](#id3404-return-values)
+  * [Examples](#id3405-examples)
+  * [See Also](#id3406-see-also)
+  * [Description](#id3407-description)
+  * [Parameters](#id3408-parameters)
+    * [path](#id3409-path)
+    * [string](#id3410-string)
+    * [mode](#id3411-mode)
+  * [Examples](#id3412-examples)
+  * [See Also](#id3413-see-also)
+  * [Description](#id3414-description)
+  * [Description](#id3415-description)
+  * [Parameters](#id3416-parameters)
+    * [str](#id3417-str)
+    * [sub](#id3418-sub)
+  * [Return Types](#id3419-return-types)
+  * [Examples](#id3420-examples)
+  * [See Also](#id3421-see-also)
+  * [Description](#id3422-description)
+  * [Description](#id3423-description)
+  * [Description](#id3424-description)
+  * [Parameters](#id3425-parameters)
+    * [server\_name](#id3426-server_name)
+    * [publication](#id3427-publication)
+    * [interval](#id3428-interval)
+  * [See Also](#id3429-see-also)
+  * [Description](#id3430-description)
+  * [Description](#id3431-description)
+  * [Examples](#id3432-examples)
+  * [See Also](#id3433-see-also)
+  * [Description](#id3434-description)
+  * [Parameters](#id3435-parameters)
+    * [pcnt](#id3436-pcnt)
+    * [ignore\_vdb](#id3437-ignore_vdb)
+  * [Return Types](#id3438-return-types)
+  * [See Also](#id3439-see-also)
+  * [Description](#id3440-description)
+  * [Parameters](#id3441-parameters)
+    * [lock\_action](#id3442-lock_action)
+    * [listeners](#id3443-listeners)
+  * [Return Types](#id3444-return-types)
+  * [Description](#id3445-description)
+  * [Parameters](#id3446-parameters)
+    * [stat\_name](#id3447-stat_name)
+  * [Return Types](#id3448-return-types)
+  * [Examples](#id3449-examples)
+  * [Description](#id3450-description)
+  * [Parameters](#id3451-parameters)
+    * [table\_name](#id3452-table_name)
+    * [pcnt](#id3453-pcnt)
+    * [ignore\_vdb](#id3454-ignore_vdb)
+  * [See Also](#id3455-see-also)
+  * [Description](#id3456-description)
+  * [Parameters](#id3457-parameters)
+    * [table\_name](#id3458-table_name)
+    * [column\_name](#id3459-column_name)
+    * [n\_buckets](#id3460-n_buckets)
+    * [prec](#id3461-prec)
+  * [See Also](#id3462-see-also)
+  * [Description](#id3463-description)
+  * [Parameters](#id3464-parameters)
+    * [tablename](#id3465-tablename)
+    * [policypl](#id3466-policypl)
+    * [policy\_scope](#id3467-policy_scope)
+  * [Return Types](#id3468-return-types)
+  * [See Also](#id3469-see-also)
+  * [Description](#id3470-description)
+  * [Parameters](#id3471-parameters)
+    * [\_tb](#id3472-_tb)
+    * [\_type](#id3473-_type)
+  * [Return Types](#id3474-return-types)
+  * [See Also](#id3475-see-also)
+  * [Description](#id3476-description)
+  * [Parameters](#id3477-parameters)
+    * [str](#id3478-str)
+    * [sub](#id3479-sub)
+  * [Return Types](#id3480-return-types)
+  * [Examples](#id3481-examples)
+  * [See Also](#id3482-see-also)
+  * [Description](#id3483-description)
+  * [Parameters](#id3484-parameters)
+    * [str](#id3485-str)
+    * [sub](#id3486-sub)
+  * [Return Types](#id3487-return-types)
+  * [Examples](#id3488-examples)
+  * [See Also](#id3489-see-also)
+  * [Description](#id3490-description)
+  * [Parameters](#id3491-parameters)
+    * [str](#id3492-str)
+    * [sub](#id3493-sub)
+  * [Return Types](#id3494-return-types)
+  * [Examples](#id3495-examples)
+  * [See Also](#id3496-see-also)
+  * [Description](#id3497-description)
+  * [Parameters](#id3498-parameters)
+    * [name](#id3499-name)
+  * [Return Types](#id3500-return-types)
+  * [Description](#id3501-description)
+  * [Parameters](#id3502-parameters)
+    * [address](#id3503-address)
+  * [Return Types](#id3504-return-types)
+  * [Description](#id3505-description)
+  * [Parameters](#id3506-parameters)
+    * [prefix](#id3507-prefix)
+    * [suffix](#id3508-suffix)
+  * [Errors](#id3509-errors)
+  * [Examples](#id3510-examples)
+  * [Description](#id3511-description)
+  * [Parameters](#id3512-parameters)
+    * [raw\_html](#id3513-raw_html)
+    * [tidy\_config](#id3514-tidy_config)
+  * [Return Types](#id3515-return-types)
+  * [Errors](#id3516-errors)
+  * [Examples](#id3517-examples)
+  * [See Also](#id3518-see-also)
+  * [Description](#id3519-description)
+  * [Parameters](#id3520-parameters)
+    * [raw\_html](#id3521-raw_html)
+    * [tidy\_config](#id3522-tidy_config)
+  * [Return Types](#id3523-return-types)
+  * [Errors](#id3524-errors)
+  * [See Also](#id3525-see-also)
+  * [Description](#id3526-description)
+  * [Parameters](#id3527-parameters)
+    * [dt](#id3528-dt)
+    * [ignore\_timezone](#id3529-ignore_timezone)
+  * [Examples](#id3530-examples)
+  * [See Also](#id3531-see-also)
+  * [Description](#id3532-description)
+  * [Return Types](#id3533-return-types)
+  * [Errors](#id3534-errors)
+  * [Examples](#id3535-examples)
+  * [See Also](#id3536-see-also)
+  * [Description](#id3537-description)
+  * [Parameters](#id3538-parameters)
+  * [Return Types](#id3539-return-types)
+  * [Errors](#id3540-errors)
+  * [Examples](#id3541-examples)
+  * [See Also](#id3542-see-also)
+  * [Description](#id3543-description)
+  * [Examples](#id3544-examples)
+  * [See Also](#id3545-see-also)
+  * [Description](#id3546-description)
+  * [Parameters](#id3547-parameters)
+    * [tree](#id3548-tree)
+  * [Return Values](#id3549-return-values)
+  * [Errors](#id3550-errors)
+  * [Description](#id3551-description)
+  * [Parameters](#id3552-parameters)
+    * [doi\_val](#id3553-doi_val)
+  * [Return Values](#id3554-return-values)
+  * [Examples](#id3555-examples)
+  * [Description](#id3556-description)
+  * [Description](#id3557-description)
+  * [Description](#id3558-description)
+  * [Description](#id3559-description)
+  * [Examples](#id3560-examples)
+  * [Description](#id3561-description)
+  * [Parameters](#id3562-parameters)
+    * [str](#id3563-str)
+  * [Syntax](#id3564-syntax)
+  * [Attributes & Children](#id3565-attributes-children)
+    * [authInfo](#id3566-authinfo)
+    * [bindingKey](#id3567-bindingkey)
+  * [Return Types](#id3568-return-types)
+  * [Errors](#id3569-errors)
+  * [Syntax](#id3570-syntax)
+  * [Attributes & Children](#id3571-attributes-children)
+    * [authInfo](#id3572-authinfo)
+    * [businessKey](#id3573-businesskey)
+  * [Return Types](#id3574-return-types)
+  * [Errors](#id3575-errors)
+  * [Syntax](#id3576-syntax)
+  * [Attributes & Children](#id3577-attributes-children)
+    * [authInfo](#id3578-authinfo)
+    * [serviceKey](#id3579-servicekey)
+  * [Return Types](#id3580-return-types)
+  * [Errors](#id3581-errors)
+  * [Syntax](#id3582-syntax)
+  * [Attributes & Children](#id3583-attributes-children)
+    * [authInfo](#id3584-authinfo)
+    * [tModelKey](#id3585-tmodelkey)
+  * [Return Types](#id3586-return-types)
+    * [Behavior](#id3587-behavior)
+  * [Errors](#id3588-errors)
+  * [Syntax](#id3589-syntax)
+  * [Description](#id3590-description)
+  * [Attributes & Children](#id3591-attributes-children)
+    * [authInfo](#id3592-authinfo)
+  * [Return Types](#id3593-return-types)
+  * [Errors](#id3594-errors)
+  * [Syntax](#id3595-syntax)
+  * [Description](#id3596-description)
+  * [Attributes & Children](#id3597-attributes-children)
+    * [maxRows](#id3598-maxrows)
+    * [serviceKey](#id3599-servicekey)
+    * [findQualifiers](#id3600-findqualifiers)
+    * [tModelBag](#id3601-tmodelbag)
+  * [Return Types](#id3602-return-types)
+  * [Errors](#id3603-errors)
+  * [Syntax](#id3604-syntax)
+  * [Attributes & Children](#id3605-attributes-children)
+    * [maxRows](#id3606-maxrows)
+    * [findQualifiers](#id3607-findqualifiers)
+    * [name](#id3608-name)
+    * [identifierBag](#id3609-identifierbag)
+    * [categoryBag](#id3610-categorybag)
+    * [tModelBag](#id3611-tmodelbag)
+    * [discoveryURLs](#id3612-discoveryurls)
+  * [Return Types](#id3613-return-types)
+  * [Errors](#id3614-errors)
+  * [Syntax](#id3615-syntax)
+  * [Attributes & Children](#id3616-attributes-children)
+    * [maxRows](#id3617-maxrows)
+    * [businessKey](#id3618-businesskey)
+    * [findQualifiers](#id3619-findqualifiers)
+    * [name](#id3620-name)
+    * [categoryBag](#id3621-categorybag)
+    * [tModelBag](#id3622-tmodelbag)
+  * [Return Types](#id3623-return-types)
+  * [Errors](#id3624-errors)
+  * [Syntax](#id3625-syntax)
+  * [Description](#id3626-description)
+  * [Attributes & Children](#id3627-attributes-children)
+    * [maxRows](#id3628-maxrows)
+    * [findQualifiers](#id3629-findqualifiers)
+    * [name](#id3630-name)
+    * [IdentifierBag](#id3631-identifierbag)
+    * [categoryBag](#id3632-categorybag)
+  * [Return Types](#id3633-return-types)
+  * [Errors](#id3634-errors)
+  * [Syntax](#id3635-syntax)
+  * [Description](#id3636-description)
+  * [Attributes & Children](#id3637-attributes-children)
+    * [userID](#id3638-userid)
+    * [cred](#id3639-cred)
+  * [Return Types](#id3640-return-types)
+  * [Errors](#id3641-errors)
+  * [Syntax](#id3642-syntax)
+  * [Description](#id3643-description)
+  * [Attributes & Children](#id3644-attributes-children)
+    * [bindingKey](#id3645-bindingkey)
+    * [Behavior](#id3646-behavior)
+  * [Return Types](#id3647-return-types)
+  * [Errors](#id3648-errors)
+  * [Syntax](#id3649-syntax)
+  * [Attributes & Children](#id3650-attributes-children)
+    * [businessKey](#id3651-businesskey)
+  * [Return Types](#id3652-return-types)
+  * [Errors](#id3653-errors)
+  * [Syntax](#id3654-syntax)
+  * [Description](#id3655-description)
+  * [Attributes & Children](#id3656-attributes-children)
+    * [businessKey](#id3657-businesskey)
+  * [Return Types](#id3658-return-types)
+  * [Errors](#id3659-errors)
+  * [Syntax](#id3660-syntax)
+  * [Description](#id3661-description)
+  * [Attributes & Children](#id3662-attributes-children)
+    * [authInfo](#id3663-authinfo)
+  * [Return Types](#id3664-return-types)
+  * [Errors](#id3665-errors)
+  * [Syntax](#id3666-syntax)
+  * [Attributes & Children](#id3667-attributes-children)
+    * [serviceKey](#id3668-servicekey)
+  * [Return Types](#id3669-return-types)
+  * [Errors](#id3670-errors)
+  * [Syntax](#id3671-syntax)
+  * [Attributes & Children](#id3672-attributes-children)
+    * [tModelKey](#id3673-tmodelkey)
+  * [Return Types](#id3674-return-types)
+  * [Errors](#id3675-errors)
+  * [Syntax](#id3676-syntax)
+  * [Description](#id3677-description)
+  * [Attributes & Children](#id3678-attributes-children)
+    * [authInfo](#id3679-authinfo)
+    * [bindingTemplate](#id3680-bindingtemplate)
+    * [Behavior](#id3681-behavior)
+  * [Return Types](#id3682-return-types)
+  * [Errors](#id3683-errors)
+  * [Syntax](#id3684-syntax)
+  * [Description](#id3685-description)
+  * [Attributes & Children](#id3686-attributes-children)
+    * [authInfo](#id3687-authinfo)
+    * [businessEntity](#id3688-businessentity)
+    * [uploadRegister](#id3689-uploadregister)
+    * [Behavior](#id3690-behavior)
+  * [Return Types](#id3691-return-types)
+  * [Errors](#id3692-errors)
+  * [Syntax](#id3693-syntax)
+  * [Attributes & Children](#id3694-attributes-children)
+    * [authInfo](#id3695-authinfo)
+    * [businessService](#id3696-businessservice)
+  * [Return Types](#id3697-return-types)
+  * [Errors](#id3698-errors)
+  * [Syntax](#id3699-syntax)
+  * [Attributes & Children](#id3700-attributes-children)
+    * [authInfo](#id3701-authinfo)
+    * [tModel](#id3702-tmodel)
+    * [uploadRegister](#id3703-uploadregister)
+  * [Return Types](#id3704-return-types)
+  * [Errors](#id3705-errors)
+  * [Description](#id3706-description)
+  * [Parameters](#id3707-parameters)
+    * [udt](#id3708-udt)
+    * [member\_name](#id3709-member_name)
+  * [Return Types](#id3710-return-types)
+  * [Examples](#id3711-examples)
+  * [See Also](#id3712-see-also)
+  * [Description](#id3713-description)
+  * [Parameters](#id3714-parameters)
+    * [udt\_inst](#id3715-udt_inst)
+    * [member\_name](#id3716-member_name)
+  * [Return Types](#id3717-return-types)
+  * [Examples](#id3718-examples)
+  * [See Also](#id3719-see-also)
+  * [Description](#id3720-description)
+  * [Parameters](#id3721-parameters)
+    * [udt](#id3722-udt)
+    * [method\_name](#id3723-method_name)
+  * [Return Types](#id3724-return-types)
+  * [Examples](#id3725-examples)
+  * [See Also](#id3726-see-also)
+  * [Description](#id3727-description)
+  * [Parameters](#id3728-parameters)
+    * [udt, udt1, udt2](#id3729-udt-udt1-udt2)
+  * [Return Types](#id3730-return-types)
+  * [Examples](#id3731-examples)
+  * [See Also](#id3732-see-also)
+  * [Description](#id3733-description)
+  * [Parameters](#id3734-parameters)
+    * [udt\_inst](#id3735-udt_inst)
+    * [member\_name](#id3736-member_name)
+    * [new\_value](#id3737-new_value)
+  * [Return Types](#id3738-return-types)
+  * [Examples](#id3739-examples)
+  * [See Also](#id3740-see-also)
+  * [Description](#id3741-description)
+  * [Parameters](#id3742-parameters)
+    * [assemblies\_vector](#id3743-assemblies_vector)
+    * [classes\_vector](#id3744-classes_vector)
+  * [Examples](#id3745-examples)
+  * [See Also](#id3746-see-also)
+  * [Description](#id3747-description)
+  * [Parameters](#id3748-parameters)
+    * [files](#id3749-files)
+    * [classes](#id3750-classes)
+  * [Examples](#id3751-examples)
+  * [See Also](#id3752-see-also)
+  * [Description](#id3753-description)
+  * [Description](#id3754-description)
+  * [Description](#id3755-description)
+  * [Parameters](#id3756-parameters)
+    * [name](#id3757-name)
+    * [old\_pwd](#id3758-old_pwd)
+    * [new\_pwd](#id3759-new_pwd)
+  * [Return Types](#id3760-return-types)
+  * [See Also](#id3761-see-also)
+  * [Description](#id3762-description)
+  * [Parameters](#id3763-parameters)
+    * [name](#id3764-name)
+    * [password](#id3765-password)
+    * [options](#id3766-options)
+  * [Return Types](#id3767-return-types)
+  * [See Also](#id3768-see-also)
+  * [Description](#id3769-description)
+  * [Parameters](#id3770-parameters)
+    * [name](#id3771-name)
+    * [cascade](#id3772-cascade)
+  * [Return Types](#id3773-return-types)
+  * [See Also](#id3774-see-also)
+  * [Description](#id3775-description)
+  * [Parameters](#id3776-parameters)
+    * [name](#id3777-name)
+    * [opt](#id3778-opt)
+  * [Return Types](#id3779-return-types)
+  * [See Also](#id3780-see-also)
+  * [Description](#id3781-description)
+  * [Parameters](#id3782-parameters)
+    * [name](#id3783-name)
+    * [role](#id3784-role)
+    * [grant\_option](#id3785-grant_option)
+  * [Return Types](#id3786-return-types)
+  * [See Also](#id3787-see-also)
+  * [Description](#id3788-description)
+  * [Parameters](#id3789-parameters)
+    * [name](#id3790-name)
+    * [role](#id3791-role)
+  * [Return Types](#id3792-return-types)
+  * [See Also](#id3793-see-also)
+  * [Description](#id3794-description)
+  * [Parameters](#id3795-parameters)
+    * [name](#id3796-name)
+  * [Return Types](#id3797-return-types)
+  * [See Also](#id3798-see-also)
+  * [Description](#id3799-description)
+  * [Parameters](#id3800-parameters)
+    * [name](#id3801-name)
+  * [Return Types](#id3802-return-types)
+  * [See Also](#id3803-see-also)
+  * [Description](#id3804-description)
+  * [Parameters](#id3805-parameters)
+    * [name](#id3806-name)
+    * [qual](#id3807-qual)
+  * [Return Types](#id3808-return-types)
+  * [See Also](#id3809-see-also)
+  * [Description](#id3810-description)
+  * [Parameters](#id3811-parameters)
+    * [name](#id3812-name)
+    * [opt](#id3813-opt)
+    * [value](#id3814-value)
+  * [Return Types](#id3815-return-types)
+  * [See Also](#id3816-see-also)
+  * [Description](#id3817-description)
+  * [Parameters](#id3818-parameters)
+    * [user\_name](#id3819-user_name)
+    * [new\_password](#id3820-new_password)
+  * [Errors](#id3821-errors)
+  * [Description](#id3822-description)
+  * [Parameters](#id3823-parameters)
+  * [Return Values](#id3824-return-values)
+  * [Examples](#id3825-examples)
+  * [Description](#id3826-description)
+  * [Parameters](#id3827-parameters)
+    * [input](#id3828-input)
+    * [mode](#id3829-mode)
+  * [Return Types](#id3830-return-types)
+  * [Errors](#id3831-errors)
+  * [Examples](#id3832-examples)
+  * [See Also](#id3833-see-also)
+  * [Description](#id3834-description)
+  * [Parameters](#id3835-parameters)
+    * [input](#id3836-input)
+    * [mode](#id3837-mode)
+    * [maxlines](#id3838-maxlines)
+  * [Return Types](#id3839-return-types)
+  * [Errors](#id3840-errors)
+  * [Examples](#id3841-examples)
+  * [See Also](#id3842-see-also)
+  * [Description](#id3843-description)
+  * [Parameters](#id3844-parameters)
+    * [input](#id3845-input)
+    * [mode](#id3846-mode)
+  * [Return Types](#id3847-return-types)
+  * [Errors](#id3848-errors)
+  * [Examples](#id3849-examples)
+  * [See Also](#id3850-see-also)
+  * [Description](#id3851-description)
+  * [Parameters](#id3852-parameters)
+    * [username](#id3853-username)
+    * [key\_name](#id3854-key_name)
+    * [key\_type](#id3855-key_type)
+    * [key\_format](#id3856-key_format)
+    * [key\_pwd](#id3857-key_pwd)
+    * [key\_value](#id3858-key_value)
+  * [Examples](#id3859-examples)
+  * [See Also](#id3860-see-also)
+  * [Description](#id3861-description)
+  * [Parameters](#id3862-parameters)
+    * [package\_name](#id3863-package_name)
+  * [Return Types](#id3864-return-types)
+  * [See Also](#id3865-see-also)
+  * [Description](#id3866-description)
+  * [Parameters](#id3867-parameters)
+    * [package\_uri](#id3868-package_uri)
+  * [See Also](#id3869-see-also)
+  * [Description](#id3870-description)
+  * [Parameters](#id3871-parameters)
+    * [package\_name](#id3872-package_name)
+  * [See Also](#id3873-see-also)
+  * [Description](#id3874-description)
+  * [Parameters](#id3875-parameters)
+    * [msg](#id3876-msg)
+  * [See Also](#id3877-see-also)
+  * [Description](#id3878-description)
+  * [Parameters](#id3879-parameters)
+    * [package\_uri](#id3880-package_uri)
+    * [source\_type](#id3881-source_type)
+  * [See Also](#id3882-see-also)
+  * [Description](#id3883-description)
+  * [Parameters](#id3884-parameters)
+    * [fname](#id3885-fname)
+  * [See Also](#id3886-see-also)
+  * [Description](#id3887-description)
+  * [Parameters](#id3888-parameters)
+    * [sql\_file\_name](#id3889-sql_file_name)
+    * [grouping](#id3890-grouping)
+    * [report\_errors](#id3891-report_errors)
+    * [is\_dav](#id3892-is_dav)
+  * [Examples](#id3893-examples)
+  * [See Also](#id3894-see-also)
+  * [Description](#id3895-description)
+  * [Parameters](#id3896-parameters)
+    * [sticker\_url](#id3897-sticker_url)
+    * [base\_uri\_of\_resources](#id3898-base_uri_of_resources)
+    * [package\_uri](#id3899-package_uri)
+  * [Return Types](#id3900-return-types)
+  * [See Also](#id3901-see-also)
+  * [Description](#id3902-description)
+  * [Parameters](#id3903-parameters)
+    * [expr](#id3904-expr)
+  * [See Also](#id3905-see-also)
+  * [Description](#id3906-description)
+  * [Parameters](#id3907-parameters)
+    * [package\_name](#id3908-package_name)
+  * [See Also](#id3909-see-also)
+  * [Description](#id3910-description)
+  * [Parameters](#id3911-parameters)
+    * [dsn](#id3912-dsn)
+    * [connstr](#id3913-connstr)
+    * [user](#id3914-user)
+    * [password](#id3915-password)
+  * [Return Types](#id3916-return-types)
+  * [Errors](#id3917-errors)
+  * [See Also](#id3918-see-also)
+  * [Description](#id3919-description)
+  * [Parameters](#id3920-parameters)
+    * [dsn](#id3921-dsn)
+    * [remote\_name](#id3922-remote_name)
+    * [local\_name](#id3923-local_name)
+    * [metadata](#id3924-metadata)
+    * [status\_code](#id3925-status_code)
+    * [error\_message](#id3926-error_message)
+    * [make\_resultset](#id3927-make_resultset)
+    * [description](#id3928-description)
+  * [Examples](#id3929-examples)
+  * [See Also](#id3930-see-also)
+  * [Description](#id3931-description)
+  * [Parameters](#id3932-parameters)
+    * [dsn](#id3933-dsn)
+    * [local\_name](#id3934-local_name)
+    * [remote\_name](#id3935-remote_name)
+  * [See Also](#id3936-see-also)
+  * [Description](#id3937-description)
+  * [Parameters](#id3938-parameters)
+    * [\_dsn](#id3939-_dsn)
+    * [vd\_table\_mask](#id3940-vd_table_mask)
+  * [See Also](#id3941-see-also)
+  * [Description](#id3942-description)
+  * [Parameters](#id3943-parameters)
+    * [dsn](#id3944-dsn)
+  * [See Also](#id3945-see-also)
+  * [Description](#id3946-description)
+  * [Parameters](#id3947-parameters)
+    * [\_dsn](#id3948-_dsn)
+  * [Return Types](#id3949-return-types)
+  * [See Also](#id3950-see-also)
+  * [Description](#id3951-description)
+  * [Parameters](#id3952-parameters)
+    * [`elem1..n](#id3953-elem1n)
+  * [Return Values](#id3954-return-values)
+  * [Examples](#id3955-examples)
+  * [See Also](#id3956-see-also)
+  * [Description](#id3957-description)
+  * [Parameters](#id3958-parameters)
+    * [`vec1..n](#id3959-vec1n)
+  * [Return Values](#id3960-return-values)
+  * [Examples](#id3961-examples)
+  * [See Also](#id3962-see-also)
+  * [Description](#id3963-description)
+  * [Parameters](#id3964-parameters)
+    * [`vhost](#id3965-vhost)
+    * [`lhost](#id3966-lhost)
+    * [`lpath](#id3967-lpath)
+    * [`ppath](#id3968-ppath)
+    * [`is_dav](#id3969-is_dav)
+    * [`is_brws](#id3970-is_brws)
+    * [`def_page](#id3971-def_page)
+    * [`auth_fn](#id3972-auth_fn)
+    * [`realm](#id3973-realm)
+    * [`ppr_fn](#id3974-ppr_fn)
+    * [`vsp_user](#id3975-vsp_user)
+    * [`soap_user](#id3976-soap_user)
+    * [`sec](#id3977-sec)
+    * [`ses_vars](#id3978-ses_vars)
+    * [`soap_opts](#id3979-soap_opts)
+    * [`auth_opts](#id3980-auth_opts)
+    * [`opts`](#id3981-opts)
+    * [`is_default_host`](#id3982-is_default_host)
+  * [Return Types](#id3983-return-types)
+  * [Examples](#id3984-examples)
+  * [See Also](#id3985-see-also)
+  * [Description](#id3986-description)
+  * [Parameters](#id3987-parameters)
+    * [`vhost](#id3988-vhost)
+    * [`lhost](#id3989-lhost)
+    * [`lpath](#id3990-lpath)
+    * [`del_vsps](#id3991-del_vsps)
+  * [Return Types](#id3992-return-types)
+  * [Examples](#id3993-examples)
+  * [See Also](#id3994-see-also)
+  * [Description](#id3995-description)
+  * [Examples](#id3996-examples)
+  * [See Also](#id3997-see-also)
+  * [Description](#id3998-description)
+  * [Examples](#id3999-examples)
+  * [See Also](#id4000-see-also)
+  * [Description](#id4001-description)
+  * [Parameters](#id4002-parameters)
+    * [username](#id4003-username)
+    * [password](#id4004-password)
+    * [credentials](#id4005-credentials)
+  * [Return Types](#id4006-return-types)
+  * [Examples](#id4007-examples)
+  * [See Also](#id4008-see-also)
+  * [Description](#id4009-description)
+  * [See Also](#id4010-see-also)
+  * [Description](#id4011-description)
+  * [Parameters](#id4012-parameters)
+    * [d\_id](#id4013-d_id)
+  * [Errors](#id4014-errors)
+  * [See Also](#id4015-see-also)
+  * [Description](#id4016-description)
+  * [Parameters](#id4017-parameters)
+    * [vt\_batch](#id4018-vt_batch)
+    * [text\_or\_xml](#id4019-text_or_xml)
+    * [is\_del](#id4020-is_del)
+    * [is\_xml](#id4021-is_xml)
+  * [Return Types](#id4022-return-types)
+  * [Examples](#id4023-examples)
+  * [See Also](#id4024-see-also)
+  * [Description](#id4025-description)
+  * [Parameters](#id4026-parameters)
+    * [vt\_batch](#id4027-vt_batch)
+    * [clustered\_values](#id4028-clustered_values)
+    * [is\_del](#id4029-is_del)
+  * [Return Types](#id4030-return-types)
+  * [Examples](#id4031-examples)
+  * [See Also](#id4032-see-also)
+  * [Description](#id4033-description)
+  * [Parameters](#id4034-parameters)
+    * [table](#id4035-table)
+    * [flag](#id4036-flag)
+    * [interval\_minutes](#id4037-interval_minutes)
+  * [Errors](#id4038-errors)
+  * [See Also](#id4039-see-also)
+  * [Description](#id4040-description)
+  * [Parameters](#id4041-parameters)
+    * [table](#id4042-table)
+    * [col](#id4043-col)
+    * [id\_col](#id4044-id_col)
+    * [is\_xml](#id4045-is_xml)
+    * [defer\_generation](#id4046-defer_generation)
+    * [clustered\_columns](#id4047-clustered_columns)
+    * [use\_hook\_function](#id4048-use_hook_function)
+    * [language\_name](#id4049-language_name)
+    * [encoding\_name](#id4050-encoding_name)
+    * [silent](#id4051-silent)
+  * [Examples](#id4052-examples)
+  * [Description](#id4053-description)
+  * [Parameters](#id4054-parameters)
+    * [DATA\_COLUMN](#id4055-data_column)
+    * [target\_table\_name](#id4056-target_table_name)
+  * [See Also](#id4057-see-also)
+  * [Description](#id4058-description)
+  * [Parameters](#id4059-parameters)
+    * [word](#id4060-word)
+    * [encoding](#id4061-encoding)
+    * [language](#id4062-language)
+  * [Return Values](#id4063-return-values)
+  * [Examples](#id4064-examples)
+  * [Description](#id4065-description)
+  * [Parameters](#id4066-parameters)
+    * [dt](#id4067-dt)
+  * [Return Values](#id4068-return-values)
+  * [Examples](#id4069-examples)
+  * [See Also](#id4070-see-also)
+  * [Description](#id4071-description)
+  * [Parameters](#id4072-parameters)
+    * [url](#id4073-url)
+    * [f](#id4074-f)
+    * [exec](#id4075-exec)
+  * [Return Types](#id4076-return-types)
+  * [Examples](#id4077-examples)
+  * [See Also](#id4078-see-also)
+  * [Description](#id4079-description)
+  * [Parameters](#id4080-parameters)
+    * [req](#id4081-req)
+    * [policy](#id4082-policy)
+  * [Return Types](#id4083-return-types)
+  * [See Also](#id4084-see-also)
+  * [Description](#id4085-description)
+  * [Parameters](#id4086-parameters)
+    * [key\_name](#id4087-key_name)
+    * [key\_value](#id4088-key_value)
+    * [key\_type](#id4089-key_type)
+    * [key\_format](#id4090-key_format)
+    * [key\_passwd](#id4091-key_passwd)
+    * [key\_pkey](#id4092-key_pkey)
+  * [Return Types](#id4093-return-types)
+  * [Example](#id4094-example)
+  * [Description](#id4095-description)
+  * [Parameters](#id4096-parameters)
+    * [xdoc](#id4097-xdoc)
+    * [tmpl](#id4098-tmpl)
+    * [wss\_ver](#id4099-wss_ver)
+    * [ns-n](#id4100-ns-n)
+    * [elm-n](#id4101-elm-n)
+  * [Return Types](#id4102-return-types)
+  * [Examples](#id4103-examples)
+  * [Description](#id4104-description)
+  * [Parameters](#id4105-parameters)
+    * [cert](#id4106-cert)
+    * [cacerts](#id4107-cacerts)
+    * [flags](#id4108-flags)
+  * [Return Types](#id4109-return-types)
+  * [Errors](#id4110-errors)
+  * [Examples](#id4111-examples)
+  * [See Also](#id4112-see-also)
+  * [Description](#id4113-description)
+  * [Parameters](#id4114-parameters)
+    * [name](#id4115-name)
+  * [Return Types](#id4116-return-types)
+  * [Examples](#id4117-examples)
+  * [Description](#id4118-description)
+  * [Parameters](#id4119-parameters)
+    * [xml\_text](#id4120-xml_text)
+    * [soap\_version](#id4121-soap_version)
+    * [validate\_flag](#id4122-validate_flag)
+    * [encoding](#id4123-encoding)
+    * [lang](#id4124-lang)
+    * [opts](#id4125-opts)
+    * [keys](#id4126-keys)
+  * [Return Types](#id4127-return-types)
+  * [Examples](#id4128-examples)
+  * [See Also](#id4129-see-also)
+  * [Description](#id4130-description)
+  * [Return Types](#id4131-return-types)
+  * [Examples](#id4132-examples)
+  * [See Also](#id4133-see-also)
+  * [Description](#id4134-description)
+  * [Parameters](#id4135-parameters)
+    * [message](#id4136-message)
+    * [soap\_ver](#id4137-soap_ver)
+    * [template](#id4138-template)
+    * [ns](#id4139-ns)
+    * [xp-n](#id4140-xp-n)
+    * [ki-n](#id4141-ki-n)
+    * [what-n](#id4142-what-n)
+  * [Return Types](#id4143-return-types)
+  * [Examples](#id4144-examples)
+  * [See Also](#id4145-see-also)
+  * [Description](#id4146-description)
+  * [Parameters](#id4147-parameters)
+    * [string\_session](#id4148-string_session)
+    * [key\_name](#id4149-key_name)
+  * [Return Types](#id4150-return-types)
+  * [Examples](#id4151-examples)
+  * [See Also](#id4152-see-also)
+  * [Description](#id4153-description)
+  * [Parameters](#id4154-parameters)
+    * [base64\_string\_session](#id4155-base64_string_session)
+    * [key\_name](#id4156-key_name)
+  * [Return Types](#id4157-return-types)
+  * [Examples](#id4158-examples)
+  * [See Also](#id4159-see-also)
+  * [Description](#id4160-description)
+  * [Parameters](#id4161-parameters)
+    * [start\_date](#id4162-start_date)
+    * [date](#id4163-date)
+    * [step](#id4164-step)
+    * [return\_digits](#id4165-return_digits)
+    * [key\_name](#id4166-key_name)
+    * [digest\_algo](#id4167-digest_algo)
+  * [Return Types](#id4168-return-types)
+  * [Examples](#id4169-examples)
+  * [See Also](#id4170-see-also)
+  * [Description](#id4171-description)
+  * [Parameters](#id4172-parameters)
+    * [key\_name](#id4173-key_name)
+  * [Return Types](#id4174-return-types)
+  * [Examples](#id4175-examples)
+  * [See Also](#id4176-see-also)
+  * [Description](#id4177-description)
+  * [Parameters](#id4178-parameters)
+    * [key\_name](#id4179-key_name)
+  * [Return Types](#id4180-return-types)
+  * [Examples](#id4181-examples)
+  * [See Also](#id4182-see-also)
+  * [Description](#id4183-description)
+  * [Parameters](#id4184-parameters)
+    * [name](#id4185-name)
+    * [key\_data](#id4186-key_data)
+  * [Return Types](#id4187-return-types)
+  * [Examples](#id4188-examples)
+  * [See Also](#id4189-see-also)
+  * [Description](#id4190-description)
+  * [Parameters](#id4191-parameters)
+    * [name](#id4192-name)
+    * [secret](#id4193-secret)
+  * [Return Types](#id4194-return-types)
+  * [Example](#id4195-example)
+  * [See Also](#id4196-see-also)
+  * [Description](#id4197-description)
+  * [Parameters](#id4198-parameters)
+    * [name](#id4199-name)
+  * [Return Types](#id4200-return-types)
+  * [Example](#id4201-example)
+  * [See Also](#id4202-see-also)
+  * [Description](#id4203-description)
+  * [Parameters](#id4204-parameters)
+    * [name](#id4205-name)
+    * [key\_data](#id4206-key_data)
+  * [Return Types](#id4207-return-types)
+  * [Examples](#id4208-examples)
+  * [See Also](#id4209-see-also)
+  * [Description](#id4210-description)
+  * [Parameters](#id4211-parameters)
+    * [name](#id4212-name)
+    * [key\_data](#id4213-key_data)
+  * [Return Types](#id4214-return-types)
+  * [Examples](#id4215-examples)
+  * [See Also](#id4216-see-also)
+  * [Description](#id4217-description)
+  * [Parameters](#id4218-parameters)
+    * [name](#id4219-name)
+    * [bits](#id4220-bits)
+    * [secret](#id4221-secret)
+  * [Return Types](#id4222-return-types)
+  * [Example](#id4223-example)
+  * [See Also](#id4224-see-also)
+  * [Description](#id4225-description)
+  * [Parameters](#id4226-parameters)
+    * [name](#id4227-name)
+    * [bits](#id4228-bits)
+  * [Return Types](#id4229-return-types)
+  * [Example](#id4230-example)
+  * [See Also](#id4231-see-also)
+  * [Description](#id4232-description)
+  * [Parameters](#id4233-parameters)
+    * [name](#id4234-name)
+    * [cert](#id4235-cert)
+    * [type](#id4236-type)
+    * [fmt](#id4237-fmt)
+    * [pkey](#id4238-pkey)
+    * [pass](#id4239-pass)
+  * [Examples](#id4240-examples)
+  * [See Also](#id4241-see-also)
+  * [Description](#id4242-description)
+  * [Parameters](#id4243-parameters)
+    * [name](#id4244-name)
+  * [Return Types](#id4245-return-types)
+  * [Example](#id4246-example)
+  * [See Also](#id4247-see-also)
+  * [Description](#id4248-description)
+  * [Parameters](#id4249-parameters)
+    * [name](#id4250-name)
+  * [Return Types](#id4251-return-types)
+  * [Examples](#id4252-examples)
+  * [See Also](#id4253-see-also)
+  * [Description](#id4254-description)
+  * [Parameters](#id4255-parameters)
+    * [name](#id4256-name)
+    * [super](#id4257-super)
+  * [Return Types](#id4258-return-types)
+  * [Examples](#id4259-examples)
+  * [See Also](#id4260-see-also)
+  * [Description](#id4261-description)
+  * [Parameters](#id4262-parameters)
+    * [key\_name](#id4263-key_name)
+  * [Example](#id4264-example)
+  * [See Also](#id4265-see-also)
+  * [Description](#id4266-description)
+  * [Parameters](#id4267-parameters)
+    * [name](#id4268-name)
+    * [public](#id4269-public)
+  * [Return Types](#id4270-return-types)
+  * [Examples](#id4271-examples)
+  * [Description](#id4272-description)
+  * [Parameters](#id4273-parameters)
+    * [name](#id4274-name)
+  * [Return Types](#id4275-return-types)
+  * [Examples](#id4276-examples)
+  * [See Also](#id4277-see-also)
+  * [Description](#id4278-description)
+  * [Parameters](#id4279-parameters)
+    * [key\_name](#id4280-key_name)
+    * [serial](#id4281-serial)
+    * [validity](#id4282-validity)
+    * [subject](#id4283-subject)
+    * [extensions](#id4284-extensions)
+  * [Examples](#id4285-examples)
+  * [See Also](#id4286-see-also)
+  * [Description](#id4287-description)
+  * [Parameters](#id4288-parameters)
+    * [ca\_key\_name](#id4289-ca_key_name)
+    * [public\_key\_name](#id4290-public_key_name)
+    * [serial](#id4291-serial)
+    * [validity](#id4292-validity)
+    * [subject](#id4293-subject)
+    * [extensions](#id4294-extensions)
+    * [hours](#id4295-hours)
+  * [Examples](#id4296-examples)
+  * [See Also](#id4297-see-also)
+  * [Description](#id4298-description)
+  * [Parameters](#id4299-parameters)
+    * [key\_name](#id4300-key_name)
+    * [name](#id4301-name)
+    * [pass](#id4302-pass)
+    * [export\_chain](#id4303-export_chain)
+    * [additional\_certs](#id4304-additional_certs)
+  * [Examples](#id4305-examples)
+  * [See Also](#id4306-see-also)
+  * [Description](#id4307-description)
+  * [Parameters](#id4308-parameters)
+    * [key\_name](#id4309-key_name)
+    * [pk\_flag](#id4310-pk_flag)
+  * [Examples](#id4311-examples)
+  * [See Also](#id4312-see-also)
+  * [Description](#id4313-description)
+  * [Parameters](#id4314-parameters)
+    * [key\_name](#id4315-key_name)
+    * [key\_data](#id4316-key_data)
+  * [Examples](#id4317-examples)
+  * [See Also](#id4318-see-also)
+  * [Description](#id4319-description)
+  * [Parameters](#id4320-parameters)
+    * [num](#id4321-num)
+  * [Description](#id4322-description)
+  * [Parameters](#id4323-parameters)
+    * [name](#id4324-name)
+    * [bits](#id4325-bits)
+  * [Return Types](#id4326-return-types)
+  * [Example](#id4327-example)
+  * [See Also](#id4328-see-also)
+  * [Description](#id4329-description)
+  * [Parameters](#id4330-parameters)
+    * [cli\_pk\_name](#id4331-cli_pk_name)
+    * [subject](#id4332-subject)
+    * [extensions](#id4333-extensions)
+  * [Return Types](#id4334-return-types)
+  * [Errors](#id4335-errors)
+  * [Examples](#id4336-examples)
+  * [See Also](#id4337-see-also)
+  * [Description](#id4338-description)
+  * [Parameters](#id4339-parameters)
+    * [ca\_key\_name](#id4340-ca_key_name)
+    * [cli\_key\_name](#id4341-cli_key_name)
+    * [csr\_str](#id4342-csr_str)
+    * [serial\_no](#id4343-serial_no)
+    * [days\_validity](#id4344-days_validity)
+    * [hours\_validity](#id4345-hours_validity)
+  * [Return Types](#id4346-return-types)
+  * [Errors](#id4347-errors)
+  * [Example](#id4348-example)
+  * [See Also](#id4349-see-also)
+  * [Description](#id4350-description)
+  * [Parameters](#id4351-parameters)
+    * [tagname](#id4352-tagname)
+    * [attrIname](#id4353-attriname)
+    * [attrIval](#id4354-attrival)
+  * [Errors](#id4355-errors)
+  * [Examples](#id4356-examples)
+  * [See Also](#id4357-see-also)
+  * [Description](#id4358-description)
+  * [Parameters](#id4359-parameters)
+    * [argI](#id4360-argi)
+  * [Errors](#id4361-errors)
+  * [Examples](#id4362-examples)
+  * [See Also](#id4363-see-also)
+  * [Description](#id4364-description)
+  * [Parameters](#id4365-parameters)
+    * [head](#id4366-head)
+    * [element](#id4367-element)
+  * [Errors](#id4368-errors)
+  * [Examples](#id4369-examples)
+  * [See Also](#id4370-see-also)
+  * [Description](#id4371-description)
+  * [Parameters](#id4372-parameters)
+    * [acc](#id4373-acc)
+    * [argI](#id4374-argi)
+  * [Errors](#id4375-errors)
+  * [Examples](#id4376-examples)
+  * [See Also](#id4377-see-also)
+  * [Description](#id4378-description)
+  * [Parameters](#id4379-parameters)
+    * [arg](#id4380-arg)
+    * [head](#id4381-head)
+  * [Errors](#id4382-errors)
+  * [Examples](#id4383-examples)
+  * [See Also](#id4384-see-also)
+  * [Description](#id4385-description)
+  * [Parameters](#id4386-parameters)
+    * [arg](#id4387-arg)
+  * [Errors](#id4388-errors)
+  * [Examples](#id4389-examples)
+  * [See Also](#id4390-see-also)
+  * [Description](#id4391-description)
+  * [Parameters](#id4392-parameters)
+    * [value\_expression](#id4393-value_expression)
+  * [Return Types](#id4394-return-types)
+  * [Examples](#id4395-examples)
+  * [See Also](#id4396-see-also)
+  * [Description](#id4397-description)
+  * [Parameters](#id4398-parameters)
+    * [String\_exprI \[AS aliasI\]](#id4399-string_expri-as-aliasi)
+  * [Examples](#id4400-examples)
+  * [See Also](#id4401-see-also)
+  * [Description](#id4402-description)
+  * [Parameters](#id4403-parameters)
+    * [source](#id4404-source)
+    * [mode](#id4405-mode)
+    * [attr\_name](#id4406-attr_name)
+    * [attr\_value](#id4407-attr_value)
+  * [Return Types](#id4408-return-types)
+  * [Examples](#id4409-examples)
+  * [See Also](#id4410-see-also)
+  * [Description](#id4411-description)
+  * [Parameters](#id4412-parameters)
+    * [source](#id4413-source)
+    * [parameterI](#id4414-parameteri)
+  * [Return Types](#id4415-return-types)
+  * [Examples](#id4416-examples)
+  * [See Also](#id4417-see-also)
+  * [Description](#id4418-description)
+  * [Parameters](#id4419-parameters)
+    * [value\_expr1](#id4420-value_expr1)
+  * [Errors](#id4421-errors)
+  * [Examples](#id4422-examples)
+  * [See Also](#id4423-see-also)
+  * [Description](#id4424-description)
+  * [Parameters](#id4425-parameters)
+    * [tag\_name](#id4426-tag_name)
+    * [list\_of\_attributes](#id4427-list_of_attributes)
+    * [child\_or\_attributeI](#id4428-child_or_attributei)
+  * [Errors](#id4429-errors)
+  * [Examples](#id4430-examples)
+  * [See Also](#id4431-see-also)
+  * [Description](#id4432-description)
+  * [Parameters](#id4433-parameters)
+    * [string\_exprI \[AS aliasI\]](#id4434-string_expri-as-aliasi)
+  * [Errors](#id4435-errors)
+  * [Examples](#id4436-examples)
+  * [See Also](#id4437-see-also)
+  * [Description](#id4438-description)
+  * [Parameters](#id4439-parameters)
+    * [source](#id4440-source)
+    * [parameterI](#id4441-parameteri)
+  * [Examples](#id4442-examples)
+  * [See Also](#id4443-see-also)
+  * [Description](#id4444-description)
+  * [Parameters](#id4445-parameters)
+    * [source](#id4446-source)
+    * [parameterI](#id4447-parameteri)
+  * [Return Types](#id4448-return-types)
+  * [Examples](#id4449-examples)
+  * [See Also](#id4450-see-also)
+  * [Description](#id4451-description)
+  * [Parameters](#id4452-parameters)
+    * [source](#id4453-source)
+    * [locationI](#id4454-locationi)
+    * [replacementI](#id4455-replacementi)
+  * [Return Types](#id4456-return-types)
+  * [Examples](#id4457-examples)
+  * [See Also](#id4458-see-also)
+  * [Description](#id4459-description)
+  * [Parameters](#id4460-parameters)
+    * [sql\_text](#id4461-sql_text)
+    * [params](#id4462-params)
+    * [string\_output](#id4463-string_output)
+  * [Return Types](#id4464-return-types)
+  * [Errors](#id4465-errors)
+  * [Examples](#id4466-examples)
+  * [See Also](#id4467-see-also)
+  * [Description](#id4468-description)
+  * [Parameters](#id4469-parameters)
+    * [query](#id4470-query)
+    * [root\_element](#id4471-root_element)
+  * [Return Types](#id4472-return-types)
+  * [Errors](#id4473-errors)
+  * [Examples](#id4474-examples)
+  * [See Also](#id4475-see-also)
+  * [Description](#id4476-description)
+  * [Parameters](#id4477-parameters)
+    * [query](#id4478-query)
+    * [root\_element](#id4479-root_element)
+  * [Return Types](#id4480-return-types)
+  * [Errors](#id4481-errors)
+  * [Examples](#id4482-examples)
+  * [See Also](#id4483-see-also)
+  * [Description](#id4484-description)
+  * [Parameters](#id4485-parameters)
+    * [base\_uri](#id4486-base_uri)
+    * [mapping\_schema\_file](#id4487-mapping_schema_file)
+    * [content\_encoding](#id4488-content_encoding)
+    * [content\_language](#id4489-content_language)
+  * [Return Types](#id4490-return-types)
+  * [](#id4491-)
+  * [See Also](#id4492-see-also)
+  * [Description](#id4493-description)
+  * [Parameters](#id4494-parameters)
+    * [source\_xper](#id4495-source_xper)
+  * [See Also](#id4496-see-also)
+  * [Description](#id4497-description)
+  * [Parameters](#id4498-parameters)
+    * [xml\_entity](#id4499-xml_entity)
+    * [option\_name](#id4500-option_name)
+    * [option\_value](#id4501-option_value)
+  * [Return Types](#id4502-return-types)
+  * [Errors](#id4503-errors)
+  * [Examples](#id4504-examples)
+  * [See Also](#id4505-see-also)
+  * [Description](#id4506-description)
+  * [Parameters](#id4507-parameters)
+    * [base\_uri](#id4508-base_uri)
+    * [content\_encoding](#id4509-content_encoding)
+    * [content\_language](#id4510-content_language)
+    * [dtd\_validator\_config](#id4511-dtd_validator_config)
+  * [Return Types](#id4512-return-types)
+  * [Validating XML Against a XML Schema](#id4513-validating-xml-against-a-xml-schema)
+  * [See Also](#id4514-see-also)
+  * [Description](#id4515-description)
+  * [Parameters](#id4516-parameters)
+    * [base\_uri](#id4517-base_uri)
+    * [mapping\_schema\_file](#id4518-mapping_schema_file)
+    * [content\_encoding](#id4519-content_encoding)
+    * [content\_language](#id4520-content_language)
+  * [](#id4521-)
+  * [See Also](#id4522-see-also)
+  * [Description](#id4523-description)
+  * [Parameters](#id4524-parameters)
+    * [ent](#id4525-ent)
+    * [use\_default\_ns](#id4526-use_default_ns)
+  * [Return Types](#id4527-return-types)
+  * [Examples](#id4528-examples)
+  * [See Also](#id4529-see-also)
+  * [Description](#id4530-description)
+  * [](#id4531-)
+  * [Description](#id4532-description)
+  * [Parameters](#id4533-parameters)
+    * [document](#id4534-document)
+    * [parser\_mode](#id4535-parser_mode)
+    * [base\_uri](#id4536-base_uri)
+    * [content\_encoding](#id4537-content_encoding)
+    * [content\_language](#id4538-content_language)
+    * [dtd\_validator\_config](#id4539-dtd_validator_config)
+  * [Return Types](#id4540-return-types)
+  * [Examples](#id4541-examples)
+  * [See Also](#id4542-see-also)
+  * [Description](#id4543-description)
+  * [Parameters](#id4544-parameters)
+    * [xml\_document\_entity](#id4545-xml_document_entity)
+    * [parameters](#id4546-parameters)
+    * [session](#id4547-session)
+  * [Return Types](#id4548-return-types)
+  * [Description](#id4549-description)
+  * [Parameters](#id4550-parameters)
+    * [document](#id4551-document)
+    * [parser\_mode](#id4552-parser_mode)
+    * [base\_uri](#id4553-base_uri)
+    * [content\_encoding](#id4554-content_encoding)
+    * [content\_language](#id4555-content_language)
+    * [dtd\_validator\_config](#id4556-dtd_validator_config)
+  * [Return Types](#id4557-return-types)
+  * [Examples](#id4558-examples)
+  * [See Also](#id4559-see-also)
+  * [Description](#id4560-description)
+  * [Parameters](#id4561-parameters)
+    * [tree](#id4562-tree)
+    * [base\_uri](#id4563-base_uri)
+  * [Return Types](#id4564-return-types)
+  * [Errors](#id4565-errors)
+  * [Examples](#id4566-examples)
+  * [See Also](#id4567-see-also)
+  * [Description](#id4568-description)
+  * [Parameters](#id4569-parameters)
+    * [xml\_entity](#id4570-xml_entity)
+  * [Return Types](#id4571-return-types)
+  * [Errors](#id4572-errors)
+  * [Examples](#id4573-examples)
+  * [See Also](#id4574-see-also)
+  * [Description](#id4575-description)
+  * [Parameters](#id4576-parameters)
+    * [base](#id4577-base)
+    * [ref](#id4578-ref)
+  * [Return Types](#id4579-return-types)
+  * [Errors](#id4580-errors)
+  * [Examples](#id4581-examples)
+  * [See Also](#id4582-see-also)
+  * [Description](#id4583-description)
+  * [Parameters](#id4584-parameters)
+    * [document](#id4585-document)
+    * [parser\_mode](#id4586-parser_mode)
+    * [base\_uri](#id4587-base_uri)
+    * [content\_encoding](#id4588-content_encoding)
+    * [content\_language](#id4589-content_language)
+    * [dtd\_validator\_config](#id4590-dtd_validator_config)
+  * [Return Types](#id4591-return-types)
+  * [Validating XML Against a DTD](#id4592-validating-xml-against-a-dtd)
+  * [See Also](#id4593-see-also)
+  * [Description](#id4594-description)
+  * [Parameters](#id4595-parameters)
+    * [document](#id4596-document)
+    * [parser\_mode](#id4597-parser_mode)
+    * [base\_uri](#id4598-base_uri)
+    * [content\_encoding](#id4599-content_encoding)
+    * [content\_language](#id4600-content_language)
+    * [dtd\_validator\_config](#id4601-dtd_validator_config)
+  * [Return Types](#id4602-return-types)
+  * [Validating XML Against a DTD](#id4603-validating-xml-against-a-dtd)
+  * [See Also](#id4604-see-also)
+  * [Description](#id4605-description)
+  * [Parameters](#id4606-parameters)
+    * [view\_name](#id4607-view_name)
+    * [root\_element](#id4608-root_element)
+  * [Return Types](#id4609-return-types)
+  * [See Also](#id4610-see-also)
+  * [Description](#id4611-description)
+  * [Parameters](#id4612-parameters)
+    * [prefix](#id4613-prefix)
+    * [iri](#id4614-iri)
+    * [bits](#id4615-bits)
+  * [Examples](#id4616-examples)
+  * [See Also](#id4617-see-also)
+  * [Description](#id4618-description)
+  * [Parameters](#id4619-parameters)
+    * [query](#id4620-query)
+    * [root\_element](#id4621-root_element)
+  * [Return Types](#id4622-return-types)
+  * [Errors](#id4623-errors)
+  * [Examples](#id4624-examples)
+  * [See Also](#id4625-see-also)
+  * [Description](#id4626-description)
+  * [Parameters](#id4627-parameters)
+    * [xml\_grams](#id4628-xml_grams)
+    * [input\_parameters](#id4629-input_parameters)
+    * [debug](#id4630-debug)
+  * [Return Values](#id4631-return-values)
+  * [Errors](#id4632-errors)
+  * [See Also](#id4633-see-also)
+  * [Description](#id4634-description)
+  * [Parameters](#id4635-parameters)
+    * [source](#id4636-source)
+    * [pathI](#id4637-pathi)
+    * [replacementI](#id4638-replacementi)
+  * [Return Types](#id4639-return-types)
+  * [Examples](#id4640-examples)
+  * [See Also](#id4641-see-also)
+  * [Description](#id4642-description)
+  * [Parameters](#id4643-parameters)
+    * [xpath\_expression](#id4644-xpath_expression)
+    * [xml\_tree](#id4645-xml_tree)
+    * [index](#id4646-index)
+    * [named\_params](#id4647-named_params)
+  * [Return Types](#id4648-return-types)
+  * [Errors](#id4649-errors)
+  * [Examples](#id4650-examples)
+  * [See Also](#id4651-see-also)
+  * [Description](#id4652-description)
+  * [Parameters](#id4653-parameters)
+    * [source\_xper](#id4654-source_xper)
+  * [See Also](#id4655-see-also)
+  * [Description](#id4656-description)
+  * [Parameters](#id4657-parameters)
+    * [document](#id4658-document)
+    * [parser\_mode](#id4659-parser_mode)
+    * [base\_uri](#id4660-base_uri)
+    * [content\_encoding](#id4661-content_encoding)
+    * [content\_language](#id4662-content_language)
+    * [dtd\_validator\_config](#id4663-dtd_validator_config)
+    * [index\_attrs](#id4664-index_attrs)
+  * [Return Types](#id4665-return-types)
+  * [Examples](#id4666-examples)
+  * [See Also](#id4667-see-also)
+  * [Description](#id4668-description)
+  * [Parameters](#id4669-parameters)
+    * [entity](#id4670-entity)
+    * [starting\_word](#id4671-starting_word)
+    * [ending\_word](#id4672-ending_word)
+  * [Description](#id4673-description)
+  * [Parameters](#id4674-parameters)
+    * [xper\_entity](#id4675-xper_entity)
+  * [See Also](#id4676-see-also)
+  * [Description](#id4677-description)
+  * [Parameters](#id4678-parameters)
+    * [fname](#id4679-fname)
+    * [procedure\_name](#id4680-procedure_name)
+  * [Return Types](#id4681-return-types)
+  * [Errors](#id4682-errors)
+  * [Examples](#id4683-examples)
+  * [See Also](#id4684-see-also)
+  * [Description](#id4685-description)
+  * [Parameters](#id4686-parameters)
+    * [fname](#id4687-fname)
+    * [procedure\_name](#id4688-procedure_name)
+  * [Return Types](#id4689-return-types)
+  * [Errors](#id4690-errors)
+  * [See Also](#id4691-see-also)
+  * [Description](#id4692-description)
+  * [Parameters](#id4693-parameters)
+    * [xquery\_expression](#id4694-xquery_expression)
+    * [xml\_tree](#id4695-xml_tree)
+    * [index](#id4696-index)
+    * [named\_params](#id4697-named_params)
+  * [Return Types](#id4698-return-types)
+  * [Examples](#id4699-examples)
+  * [See Also](#id4700-see-also)
+  * [Description](#id4701-description)
+  * [Parameters](#id4702-parameters)
+    * [sheet\_uri](#id4703-sheet_uri)
+    * [entity](#id4704-entity)
+    * [sheet\_params](#id4705-sheet_params)
+  * [Return Types](#id4706-return-types)
+  * [Examples](#id4707-examples)
+  * [See Also](#id4708-see-also)
+  * [Description](#id4709-description)
+  * [Parameters](#id4710-parameters)
+    * [`number](#id4711-number)
+    * [`format_string](#id4712-format_string)
+  * [Return Values](#id4713-return-values)
+  * [Examples](#id4714-examples)
+  * [See Also](#id4715-see-also)
+  * [Description](#id4716-description)
+  * [Parameters](#id4717-parameters)
+    * [uri](#id4718-uri)
+    * [entity](#id4719-entity)
+  * [Examples](#id4720-examples)
+  * [See Also](#id4721-see-also)
+  * [Description](#id4722-description)
+  * [Parameters](#id4723-parameters)
+    * [uri](#id4724-uri)
+  * [Errors](#id4725-errors)
+  * [Examples](#id4726-examples)
+  * [See Also](#id4727-see-also)
+  * [Description](#id4728-description)
+  * [Parameters](#id4729-parameters)
+    * [document](#id4730-document)
+    * [parser\_mode](#id4731-parser_mode)
+    * [base\_uri](#id4732-base_uri)
+    * [content\_encoding](#id4733-content_encoding)
+    * [content\_language](#id4734-content_language)
+    * [dtd\_validator\_config](#id4735-dtd_validator_config)
+  * [Return Types](#id4736-return-types)
+  * [Examples](#id4737-examples)
+  * [See Also](#id4738-see-also)
+  * [Description](#id4739-description)
+  * [Parameters](#id4740-parameters)
+    * [email](#id4741-email)
+    * [name](#id4742-name)
+    * [password](#id4743-password)
+    * [clientPort](#id4744-clientport)
+    * [userAgent](#id4745-useragent)
+    * [serialNumber](#id4746-serialnumber)
+  * [Return Types](#id4747-return-types)
+  * [Examples](#id4748-examples)
+  * [See Also](#id4749-see-also)
+  * [Description](#id4750-description)
+  * [Parameters](#id4751-parameters)
+    * [email](#id4752-email)
+  * [Return Types](#id4753-return-types)
+  * [Examples](#id4754-examples)
+  * [See Also](#id4755-see-also)
+  * [Description](#id4756-description)
+  * [Parameters](#id4757-parameters)
+    * [email](#id4758-email)
+    * [password](#id4759-password)
+  * [Return Types](#id4760-return-types)
+  * [Examples](#id4761-examples)
+  * [See Also](#id4762-see-also)
+  * [Description](#id4763-description)
+  * [Parameters](#id4764-parameters)
+    * [email](#id4765-email)
+    * [password](#id4766-password)
+    * [relativepathList](#id4767-relativepathlist)
+  * [Return Types](#id4768-return-types)
+  * [Examples](#id4769-examples)
+  * [See Also](#id4770-see-also)
+  * [Description](#id4771-description)
+  * [Parameters](#id4772-parameters)
+    * [email](#id4773-email)
+    * [password](#id4774-password)
+    * [relativepathList](#id4775-relativepathlist)
+    * [fileTextList](#id4776-filetextlist)
+  * [Return Types](#id4777-return-types)
+  * [Examples](#id4778-examples)
+  * [See Also](#id4779-see-also)
+  * [Description](#id4780-description)
+  * [Parameters](#id4781-parameters)
+    * [src](#id4782-src)
+    * [schema\_uri](#id4783-schema_uri)
+    * [validated](#id4784-validated)
+    * [wellformed](#id4785-wellformed)
+  * [Return Types](#id4786-return-types)
+  * [Examples](#id4787-examples)
+  * [See Also](#id4788-see-also)
+  * [Description](#id4789-description)
+  * [Return Types](#id4790-return-types)
+  * [Examples](#id4791-examples)
+  * [See Also](#id4792-see-also)
+  * [Description](#id4793-description)
+  * [Parameters](#id4794-parameters)
+    * [schema\_url](#id4795-schema_url)
+  * [Return Types](#id4796-return-types)
+  * [Examples](#id4797-examples)
+  * [See Also](#id4798-see-also)
+  * [Description](#id4799-description)
+  * [Parameters](#id4800-parameters)
+    * [src](#id4801-src)
+    * [schema\_uri](#id4802-schema_uri)
+    * [validated](#id4803-validated)
+    * [wellformed](#id4804-wellformed)
+  * [Return Types](#id4805-return-types)
+  * [Examples](#id4806-examples)
+  * [See Also](#id4807-see-also)
+  * [Description](#id4808-description)
+  * [Parameters](#id4809-parameters)
+    * [xpath\_expn](#id4810-xpath_expn)
+    * [namespace\_map](#id4811-namespace_map)
+  * [Return Types](#id4812-return-types)
+  * [Examples](#id4813-examples)
+  * [See Also](#id4814-see-also)
+  * [Description](#id4815-description)
+  * [Parameters](#id4816-parameters)
+    * [xpath\_expn](#id4817-xpath_expn)
+    * [namespace\_map](#id4818-namespace_map)
+  * [Return Types](#id4819-return-types)
+  * [Examples](#id4820-examples)
+  * [See Also](#id4821-see-also)
+  * [Description](#id4822-description)
+  * [Return Types](#id4823-return-types)
+  * [Examples](#id4824-examples)
+  * [See Also](#id4825-see-also)
+  * [Description](#id4826-description)
+  * [Return Types](#id4827-return-types)
+  * [Examples](#id4828-examples)
+  * [See Also](#id4829-see-also)
+  * [Description](#id4830-description)
+  * [Return Types](#id4831-return-types)
+  * [Examples](#id4832-examples)
+  * [See Also](#id4833-see-also)
+  * [Description](#id4834-description)
+  * [Return Types](#id4835-return-types)
+  * [Examples](#id4836-examples)
+  * [See Also](#id4837-see-also)
+  * [Description](#id4838-description)
+  * [Return Types](#id4839-return-types)
+  * [Examples](#id4840-examples)
+  * [See Also](#id4841-see-also)
+  * [Description](#id4842-description)
+  * [Return Types](#id4843-return-types)
+  * [Examples](#id4844-examples)
+  * [See Also](#id4845-see-also)
+  * [Description](#id4846-description)
+  * [Return Types](#id4847-return-types)
+  * [Examples](#id4848-examples)
+  * [See Also](#id4849-see-also)
+  * [Description](#id4850-description)
+  * [Return Types](#id4851-return-types)
+  * [Examples](#id4852-examples)
+  * [See Also](#id4853-see-also)
+  * [Description](#id4854-description)
+  * [Parameters](#id4855-parameters)
+    * [schema\_url](#id4856-schema_url)
+    * [top\_element\_name](#id4857-top_element_name)
+  * [Return Types](#id4858-return-types)
+  * [Examples](#id4859-examples)
+  * [See Also](#id4860-see-also)
+  * [Description](#id4861-description)
+  * [Return Types](#id4862-return-types)
+  * [Examples](#id4863-examples)
+  * [See Also](#id4864-see-also)
+  * [Description](#id4865-description)
+  * [Return Types](#id4866-return-types)
+  * [Examples](#id4867-examples)
+  * [See Also](#id4868-see-also)
+  * [Description](#id4869-description)
+  * [Parameters](#id4870-parameters)
+    * [flag](#id4871-flag)
+  * [Return Types](#id4872-return-types)
+  * [Examples](#id4873-examples)
+  * [See Also](#id4874-see-also)
+  * [Description](#id4875-description)
+  * [Description](#id4876-description)
+  * [See Also](#id4877-see-also)
+  * [Description](#id4878-description)
+  * [Parameters](#id4879-parameters)
+    * [column\_name](#id4880-column_name)
+  * [Return Types](#id4881-return-types)
+  * [Examples](#id4882-examples)
+  * [See Also](#id4883-see-also)
+  * [Description](#id4884-description)
+  * [Parameters](#id4885-parameters)
+    * [vali](#id4886-vali)
+  * [Return Types](#id4887-return-types)
+  * [Examples](#id4888-examples)
+  * [See Also](#id4889-see-also)
+  * [Description](#id4890-description)
+  * [Parameters](#id4891-parameters)
+    * [SeqI](#id4892-seqi)
+  * [Return Types](#id4893-return-types)
+  * [Examples](#id4894-examples)
+  * [See Also](#id4895-see-also)
+  * [Description](#id4896-description)
+  * [Parameters](#id4897-parameters)
+    * [var\_name](#id4898-var_name)
+    * [var\_value](#id4899-var_value)
+  * [Return Types](#id4900-return-types)
+  * [Examples](#id4901-examples)
+  * [See Also](#id4902-see-also)
+  * [Description](#id4903-description)
+  * [Parameters](#id4904-parameters)
+    * [argI](#id4905-argi)
+  * [Return Types](#id4906-return-types)
+  * [Examples](#id4907-examples)
+  * [See Also](#id4908-see-also)
+  * [Description](#id4909-description)
+  * [Parameters](#id4910-parameters)
+    * [obj](#id4911-obj)
+  * [Return Types](#id4912-return-types)
+  * [Examples](#id4913-examples)
+  * [See Also](#id4914-see-also)
+  * [Description](#id4915-description)
+  * [Parameters](#id4916-parameters)
+    * [num](#id4917-num)
+  * [Return Types](#id4918-return-types)
+  * [Examples](#id4919-examples)
+  * [See Also](#id4920-see-also)
+  * [Description](#id4921-description)
+    * [Local DAV collections](#id4922-local-dav-collections)
+    * [Table Collections](#id4923-table-collections)
+    * [Home path in local DAV collections](#id4924-home-path-in-local-dav-collections)
+    * [Remote DAV collections, WEB collections](#id4925-remote-dav-collections-web-collections)
+    * [](#id4926-)
+    * [](#id4927-)
+    * [Authentication](#id4928-authentication)
+  * [Parameters](#id4929-parameters)
+    * [uri](#id4930-uri)
+    * [base\_uri](#id4931-base_uri)
+    * [parser\_mode](#id4932-parser_mode)
+    * [encoding](#id4933-encoding)
+    * [language](#id4934-language)
+    * [dtd\_config](#id4935-dtd_config)
+  * [Return Types](#id4936-return-types)
+  * [Examples](#id4937-examples)
+  * [See Also](#id4938-see-also)
+  * [Description](#id4939-description)
+  * [Parameters](#id4940-parameters)
+    * [strgI](#id4941-strgi)
+  * [Return Types](#id4942-return-types)
+  * [Examples](#id4943-examples)
+  * [See Also](#id4944-see-also)
+  * [Description](#id4945-description)
+  * [Parameters](#id4946-parameters)
+    * [haystack](#id4947-haystack)
+    * [needle](#id4948-needle)
+  * [Return Types](#id4949-return-types)
+  * [Examples](#id4950-examples)
+  * [See Also](#id4951-see-also)
+  * [Description](#id4952-description)
+  * [Parameters](#id4953-parameters)
+    * [seq](#id4954-seq)
+  * [Return Types](#id4955-return-types)
+  * [Errors](#id4956-errors)
+  * [Examples](#id4957-examples)
+  * [See Also](#id4958-see-also)
+  * [Description](#id4959-description)
+  * [Parameters](#id4960-parameters)
+    * [attrname](#id4961-attrname)
+    * [attrvalue](#id4962-attrvalue)
+  * [Return Types](#id4963-return-types)
+  * [See Also](#id4964-see-also)
+  * [Description](#id4965-description)
+  * [Parameters](#id4966-parameters)
+    * [comment-text](#id4967-comment-text)
+  * [Return Types](#id4968-return-types)
+  * [See Also](#id4969-see-also)
+  * [Description](#id4970-description)
+  * [Parameters](#id4971-parameters)
+    * [head](#id4972-head)
+    * [childI](#id4973-childi)
+  * [Return Types](#id4974-return-types)
+  * [Errors](#id4975-errors)
+  * [Examples](#id4976-examples)
+  * [See Also](#id4977-see-also)
+  * [Description](#id4978-description)
+  * [Parameters](#id4979-parameters)
+    * [piname](#id4980-piname)
+    * [pivalue](#id4981-pivalue)
+  * [Return Types](#id4982-return-types)
+  * [See Also](#id4983-see-also)
+  * [Description](#id4984-description)
+  * [Return Types](#id4985-return-types)
+  * [Examples](#id4986-examples)
+  * [Description](#id4987-description)
+  * [Parameters](#id4988-parameters)
+    * [input](#id4989-input)
+  * [Return Types](#id4990-return-types)
+  * [Examples](#id4991-examples)
+  * [Description](#id4992-description)
+  * [Parameters](#id4993-parameters)
+    * [document\_uri](#id4994-document_uri)
+  * [Return Types](#id4995-return-types)
+  * [Errors](#id4996-errors)
+  * [Examples](#id4997-examples)
+  * [See Also](#id4998-see-also)
+  * [Description](#id4999-description)
+  * [Parameters](#id5000-parameters)
+    * [document\_uri](#id5001-document_uri)
+    * [base\_uri](#id5002-base_uri)
+    * [parser\_mode](#id5003-parser_mode)
+    * [content\_encoding](#id5004-content_encoding)
+    * [content\_language](#id5005-content_language)
+    * [dtd\_validator\_config](#id5006-dtd_validator_config)
+  * [Return Types](#id5007-return-types)
+  * [Errors](#id5008-errors)
+  * [Examples](#id5009-examples)
+  * [See Also](#id5010-see-also)
+  * [Description](#id5011-description)
+  * [Parameters](#id5012-parameters)
+    * [document\_text](#id5013-document_text)
+    * [cache\_uri](#id5014-cache_uri)
+    * [parser\_mode](#id5015-parser_mode)
+    * [content\_encoding](#id5016-content_encoding)
+    * [content\_language](#id5017-content_language)
+    * [dtd\_validator\_config](#id5018-dtd_validator_config)
+  * [Return Types](#id5019-return-types)
+  * [Errors](#id5020-errors)
+  * [Examples](#id5021-examples)
+  * [See Also](#id5022-see-also)
+  * [Description](#id5023-description)
+  * [Parameters](#id5024-parameters)
+    * [seq](#id5025-seq)
+  * [Return Types](#id5026-return-types)
+  * [Errors](#id5027-errors)
+  * [Examples](#id5028-examples)
+  * [See Also](#id5029-see-also)
+  * [Description](#id5030-description)
+  * [Parameters](#id5031-parameters)
+    * [strg](#id5032-strg)
+    * [prefix](#id5033-prefix)
+  * [Return Types](#id5034-return-types)
+  * [Examples](#id5035-examples)
+  * [See Also](#id5036-see-also)
+  * [Description](#id5037-description)
+  * [Parameters](#id5038-parameters)
+    * [varname](#id5039-varname)
+    * [test\_set](#id5040-test_set)
+    * [test\_expn](#id5041-test_expn)
+  * [Return Types](#id5042-return-types)
+  * [Examples](#id5043-examples)
+  * [See Also](#id5044-see-also)
+  * [Description](#id5045-description)
+  * [Parameters](#id5046-parameters)
+    * [set1](#id5047-set1)
+    * [set2](#id5048-set2)
+  * [Return Types](#id5049-return-types)
+  * [See Also](#id5050-see-also)
+  * [Description](#id5051-description)
+  * [Return Types](#id5052-return-types)
+  * [See Also](#id5053-see-also)
+  * [Description](#id5054-description)
+  * [Parameters](#id5055-parameters)
+    * [selection](#id5056-selection)
+  * [Return Types](#id5057-return-types)
+  * [Errors](#id5058-errors)
+  * [Examples](#id5059-examples)
+  * [See Also](#id5060-see-also)
+  * [Description](#id5061-description)
+  * [Parameters](#id5062-parameters)
+    * [num](#id5063-num)
+  * [Return Types](#id5064-return-types)
+  * [Examples](#id5065-examples)
+  * [See Also](#id5066-see-also)
+  * [Description](#id5067-description)
+  * [Parameters](#id5068-parameters)
+    * [varname](#id5069-varname)
+    * [source\_set](#id5070-source_set)
+    * [mapping\_expn](#id5071-mapping_expn)
+  * [Return Types](#id5072-return-types)
+  * [Examples](#id5073-examples)
+  * [See Also](#id5074-see-also)
+  * [Description](#id5075-description)
+  * [Parameters](#id5076-parameters)
+    * [num](#id5077-num)
+    * [format\_pattern](#id5078-format_pattern)
+    * [decimal\_format](#id5079-decimal_format)
+  * [Return Types](#id5080-return-types)
+  * [Errors](#id5081-errors)
+  * [Examples](#id5082-examples)
+  * [Description](#id5083-description)
+  * [Parameters](#id5084-parameters)
+    * [funname](#id5085-funname)
+  * [Return Types](#id5086-return-types)
+  * [Examples](#id5087-examples)
+  * [See Also](#id5088-see-also)
+  * [Description](#id5089-description)
+  * [Parameters](#id5090-parameters)
+    * [place](#id5091-place)
+  * [Return Types](#id5092-return-types)
+  * [Examples](#id5093-examples)
+  * [Description](#id5094-description)
+  * [Parameters](#id5095-parameters)
+    * [ids](#id5096-ids)
+  * [Return Types](#id5097-return-types)
+  * [Errors](#id5098-errors)
+  * [Examples](#id5099-examples)
+  * [See Also](#id5100-see-also)
+  * [Description](#id5101-description)
+  * [Parameters](#id5102-parameters)
+    * [test](#id5103-test)
+    * [then\_branch](#id5104-then_branch)
+    * [else\_branch](#id5105-else_branch)
+  * [Return Types](#id5106-return-types)
+  * [Examples](#id5107-examples)
+  * [See Also](#id5108-see-also)
+  * [Description](#id5109-description)
+  * [Parameters](#id5110-parameters)
+    * [set1, set2](#id5111-set1-set2)
+  * [Return Types](#id5112-return-types)
+  * [See Also](#id5113-see-also)
+  * [Description](#id5114-description)
+  * [Parameters](#id5115-parameters)
+    * [ent1](#id5116-ent1)
+    * [ent2](#id5117-ent2)
+  * [Return Types](#id5118-return-types)
+  * [Errors](#id5119-errors)
+  * [Examples](#id5120-examples)
+  * [See Also](#id5121-see-also)
+  * [Description](#id5122-description)
+  * [Parameters](#id5123-parameters)
+    * [ent1](#id5124-ent1)
+    * [ent2](#id5125-ent2)
+  * [Return Types](#id5126-return-types)
+  * [Errors](#id5127-errors)
+  * [Examples](#id5128-examples)
+  * [See Also](#id5129-see-also)
+  * [](#id5130-)
+  * [Description](#id5131-description)
+  * [Parameters](#id5132-parameters)
+    * [lang\_name](#id5133-lang_name)
+  * [Return Types](#id5134-return-types)
+  * [Examples](#id5135-examples)
+  * [See Also](#id5136-see-also)
+  * [Description](#id5137-description)
+  * [Return Types](#id5138-return-types)
+  * [Examples](#id5139-examples)
+  * [See Also](#id5140-see-also)
+  * [Description](#id5141-description)
+  * [Parameters](#id5142-parameters)
+    * [varIname](#id5143-variname)
+    * [varIvalue](#id5144-varivalue)
+    * [retval](#id5145-retval)
+  * [Return Types](#id5146-return-types)
+  * [Errors](#id5147-errors)
+  * [Examples](#id5148-examples)
+  * [See Also](#id5149-see-also)
+  * [Description](#id5150-description)
+  * [Parameters](#id5151-parameters)
+    * [SeqI](#id5152-seqi)
+  * [Return Types](#id5153-return-types)
+  * [Examples](#id5154-examples)
+  * [See Also](#id5155-see-also)
+  * [Description](#id5156-description)
+  * [Parameters](#id5157-parameters)
+    * [node\_obj](#id5158-node_obj)
+  * [Return Types](#id5159-return-types)
+  * [Examples](#id5160-examples)
+  * [See Also](#id5161-see-also)
+  * [Description](#id5162-description)
+  * [Parameters](#id5163-parameters)
+    * [argI](#id5164-argi)
+  * [Return Types](#id5165-return-types)
+  * [Examples](#id5166-examples)
+  * [See Also](#id5167-see-also)
+  * [Description](#id5168-description)
+  * [Parameters](#id5169-parameters)
+    * [argI](#id5170-argi)
+  * [Return Types](#id5171-return-types)
+  * [Examples](#id5172-examples)
+  * [See Also](#id5173-see-also)
+  * [Description](#id5174-description)
+  * [Parameters](#id5175-parameters)
+    * [node\_obj](#id5176-node_obj)
+  * [Return Types](#id5177-return-types)
+  * [Examples](#id5178-examples)
+  * [See Also](#id5179-see-also)
+  * [Description](#id5180-description)
+  * [Parameters](#id5181-parameters)
+    * [node\_obj](#id5182-node_obj)
+  * [Return Types](#id5183-return-types)
+  * [Examples](#id5184-examples)
+  * [See Also](#id5185-see-also)
+  * [Description](#id5186-description)
+  * [Parameters](#id5187-parameters)
+    * [strg](#id5188-strg)
+  * [Return Types](#id5189-return-types)
+  * [Examples](#id5190-examples)
+  * [See Also](#id5191-see-also)
+  * [Description](#id5192-description)
+  * [Parameters](#id5193-parameters)
+    * [obj](#id5194-obj)
+  * [Return Types](#id5195-return-types)
+  * [Examples](#id5196-examples)
+  * [See Also](#id5197-see-also)
+  * [Description](#id5198-description)
+  * [Parameters](#id5199-parameters)
+    * [obj](#id5200-obj)
+  * [Return Types](#id5201-return-types)
+  * [Examples](#id5202-examples)
+  * [See Also](#id5203-see-also)
+  * [Description](#id5204-description)
+  * [Parameters](#id5205-parameters)
+    * [valI](#id5206-vali)
+  * [Return Types](#id5207-return-types)
+  * [Examples](#id5208-examples)
+  * [See Also](#id5209-see-also)
+  * [Description](#id5210-description)
+  * [Return Types](#id5211-return-types)
+  * [Examples](#id5212-examples)
+  * [See Also](#id5213-see-also)
+  * [Description](#id5214-description)
+  * [Parameters](#id5215-parameters)
+    * [module\_uri](#id5216-module_uri)
+    * [index](#id5217-index)
+    * [context](#id5218-context)
+    * [paramI\_name](#id5219-parami_name)
+    * [paramI\_value](#id5220-parami_value)
+  * [Return Types](#id5221-return-types)
+  * [Examples](#id5222-examples)
+  * [See Also](#id5223-see-also)
+  * [Description](#id5224-description)
+  * [Parameters](#id5225-parameters)
+    * [stylesheet\_uri](#id5226-stylesheet_uri)
+    * [source](#id5227-source)
+    * [paramI\_name](#id5228-parami_name)
+    * [paramI\_value](#id5229-parami_value)
+  * [Return Types](#id5230-return-types)
+  * [Examples](#id5231-examples)
+  * [See Also](#id5232-see-also)
+  * [Description](#id5233-description)
+  * [Parameters](#id5234-parameters)
+    * [xsql\_page\_uri](#id5235-xsql_page_uri)
+  * [Return Types](#id5236-return-types)
+  * [Examples](#id5237-examples)
+  * [See Also](#id5238-see-also)
+  * [Description](#id5239-description)
+  * [Parameters](#id5240-parameters)
+    * [expn1, expn2, ... expnN](#id5241-expn1-expn2-expnn)
+  * [Return Types](#id5242-return-types)
+  * [Examples](#id5243-examples)
+  * [See Also](#id5244-see-also)
+  * [Description](#id5245-description)
+  * [Parameters](#id5246-parameters)
+    * [txt](#id5247-txt)
+    * [search\_strg](#id5248-search_strg)
+    * [replace\_strg](#id5249-replace_strg)
+  * [Return Types](#id5250-return-types)
+  * [Errors](#id5251-errors)
+  * [Examples](#id5252-examples)
+  * [See Also](#id5253-see-also)
+  * [Description](#id5254-description)
+  * [Parameters](#id5255-parameters)
+    * [num](#id5256-num)
+  * [Return Types](#id5257-return-types)
+  * [Examples](#id5258-examples)
+  * [See Also](#id5259-see-also)
+  * [Description](#id5260-description)
+  * [Parameters](#id5261-parameters)
+    * [obj](#id5262-obj)
+  * [Return Types](#id5263-return-types)
+  * [Errors](#id5264-errors)
+  * [Examples](#id5265-examples)
+  * [See Also](#id5266-see-also)
+  * [Description](#id5267-description)
+  * [Parameters](#id5268-parameters)
+    * [ent](#id5269-ent)
+  * [Return Types](#id5270-return-types)
+  * [Errors](#id5271-errors)
+  * [Examples](#id5272-examples)
+  * [See Also](#id5273-see-also)
+  * [Description](#id5274-description)
+  * [Parameters](#id5275-parameters)
+    * [varname](#id5276-varname)
+    * [test\_set](#id5277-test_set)
+    * [test\_expn](#id5278-test_expn)
+  * [Return Types](#id5279-return-types)
+  * [Examples](#id5280-examples)
+  * [See Also](#id5281-see-also)
+  * [Description](#id5282-description)
+  * [Parameters](#id5283-parameters)
+    * [strg](#id5284-strg)
+    * [prefix](#id5285-prefix)
+  * [Return Types](#id5286-return-types)
+  * [Examples](#id5287-examples)
+  * [See Also](#id5288-see-also)
+  * [Description](#id5289-description)
+  * [Parameters](#id5290-parameters)
+    * [obj](#id5291-obj)
+  * [Return Types](#id5292-return-types)
+  * [Examples](#id5293-examples)
+  * [See Also](#id5294-see-also)
+  * [Description](#id5295-description)
+  * [Parameters](#id5296-parameters)
+    * [strg](#id5297-strg)
+  * [Return Types](#id5298-return-types)
+  * [Examples](#id5299-examples)
+  * [See Also](#id5300-see-also)
+  * [Description](#id5301-description)
+  * [Parameters](#id5302-parameters)
+    * [strg](#id5303-strg)
+    * [start](#id5304-start)
+    * [length](#id5305-length)
+  * [Return Types](#id5306-return-types)
+  * [Examples](#id5307-examples)
+  * [See Also](#id5308-see-also)
+  * [Description](#id5309-description)
+  * [Parameters](#id5310-parameters)
+    * [source\_strg](#id5311-source_strg)
+    * [sub\_strg](#id5312-sub_strg)
+  * [Return Types](#id5313-return-types)
+  * [Examples](#id5314-examples)
+  * [See Also](#id5315-see-also)
+  * [Description](#id5316-description)
+  * [Parameters](#id5317-parameters)
+    * [source\_strg](#id5318-source_strg)
+    * [sub\_strg](#id5319-sub_strg)
+  * [Return Types](#id5320-return-types)
+  * [Examples](#id5321-examples)
+  * [See Also](#id5322-see-also)
+  * [Description](#id5323-description)
+  * [Parameters](#id5324-parameters)
+    * [argI](#id5325-argi)
+  * [Return Types](#id5326-return-types)
+  * [Examples](#id5327-examples)
+  * [See Also](#id5328-see-also)
+  * [Description](#id5329-description)
+  * [Parameters](#id5330-parameters)
+    * [property\_qname](#id5331-property_qname)
+  * [Return Types](#id5332-return-types)
+  * [Examples](#id5333-examples)
+  * [See Also](#id5334-see-also)
+  * [Description](#id5335-description)
+  * [Parameters](#id5336-parameters)
+    * [scope](#id5337-scope)
+    * [query](#id5338-query)
+  * [Return Types](#id5339-return-types)
+  * [Errors](#id5340-errors)
+  * [Examples](#id5341-examples)
+  * [See Also](#id5342-see-also)
+  * [Description](#id5343-description)
+  * [Parameters](#id5344-parameters)
+    * [strg](#id5345-strg)
+    * [search\_list](#id5346-search_list)
+    * [replace\_list](#id5347-replace_list)
+  * [Return Types](#id5348-return-types)
+  * [Errors](#id5349-errors)
+  * [Examples](#id5350-examples)
+  * [See Also](#id5351-see-also)
+  * [Description](#id5352-description)
+  * [Return Types](#id5353-return-types)
+  * [See Also](#id5354-see-also)
+  * [Description](#id5355-description)
+  * [Parameters](#id5356-parameters)
+    * [SeqI](#id5357-seqi)
+  * [Return Types](#id5358-return-types)
+  * [Examples](#id5359-examples)
+  * [See Also](#id5360-see-also)
+  * [Description](#id5361-description)
+  * [Parameters](#id5362-parameters)
+    * [setI](#id5363-seti)
+  * [Return Types](#id5364-return-types)
+  * [See Also](#id5365-see-also)
+  * [Description](#id5366-description)
+  * [Parameters](#id5367-parameters)
+    * [input](#id5368-input)
+  * [Return Types](#id5369-return-types)
+  * [Examples](#id5370-examples)
+  * [](#id5371-)
+  * [Description](#id5372-description)
+  * [Parameters](#id5373-parameters)
+    * [obj](#id5374-obj)
+  * [Return Types](#id5375-return-types)
+  * [See Also](#id5376-see-also)
+  * [Description](#id5377-description)
+  * [Parameters](#id5378-parameters)
+    * [view\_name](#id5379-view_name)
+  * [Errors](#id5380-errors)
+  * [Examples](#id5381-examples)
+  * [Parameters](#id5382-parameters)
+    * [scp\_id](#id5383-scp_id)
+    * [vdir](#id5384-vdir)
+    * [opts](#id5385-opts)
+    * [no\_check](#id5386-no_check)
+  * [Return Types](#id5387-return-types)
+  * [Description](#id5388-description)
+  * [Examples](#id5389-examples)
+  * [Parameters](#id5390-parameters)
+    * [scp\_id](#id5391-scp_id)
+  * [Return Types](#id5392-return-types)
+  * [Description](#id5393-description)
+  * [Examples](#id5394-examples)
+  * [Parameters](#id5395-parameters)
+    * [scp\_id](#id5396-scp_id)
+  * [Return Types](#id5397-return-types)
+  * [Description](#id5398-description)
+  * [Examples](#id5399-examples)
+  * [Parameters](#id5400-parameters)
+    * [id](#id5401-id)
+  * [Return Types](#id5402-return-types)
+  * [Description](#id5403-description)
+  * [Examples](#id5404-examples)
+  * [Parameters](#id5405-parameters)
+    * [completed\_before](#id5406-completed_before)
+    * [make\_archive](#id5407-make_archive)
+  * [Return Types](#id5408-return-types)
+  * [Description](#id5409-description)
+  * [Examples](#id5410-examples)
+  * [Parameters](#id5411-parameters)
+    * [script](#id5412-script)
+    * [delete\_instances](#id5413-delete_instances)
+  * [Return Types](#id5414-return-types)
+  * [Description](#id5415-description)
+  * [Examples](#id5416-examples)
+  * [Parameters](#id5417-parameters)
+    * [script](#id5418-script)
+  * [Return Types](#id5419-return-types)
+  * [Description](#id5420-description)
+  * [Examples](#id5421-examples)
+  * [Parameters](#id5422-parameters)
+    * [scp\_id](#id5423-scp_id)
+    * [url](#id5424-url)
+    * [content](#id5425-content)
+  * [Return Types](#id5426-return-types)
+  * [Description](#id5427-description)
+  * [Examples](#id5428-examples)
+  * [Parameters](#id5429-parameters)
+    * [name](#id5430-name)
+    * [url](#id5431-url)
+    * [content](#id5432-content)
+  * [Return Types](#id5433-return-types)
+  * [Description](#id5434-description)
+  * [Examples](#id5435-examples)
+  * [Parameters](#id5436-parameters)
+    * [scp\_id](#id5437-scp_id)
+    * [url](#id5438-url)
+    * [content](#id5439-content)
+    * [pl](#id5440-pl)
+  * [Return Types](#id5441-return-types)
+  * [Description](#id5442-description)
+  * [Examples](#id5443-examples)
+  * [Parameters](#id5444-parameters)
+    * [var\_name](#id5445-var_name)
+    * [part](#id5446-part)
+    * [query](#id5447-query)
+  * [Return Types](#id5448-return-types)
+  * [Description](#id5449-description)
+  * [Examples](#id5450-examples)
+  * [Parameters](#id5451-parameters)
+    * [var\_name](#id5452-var_name)
+    * [value](#id5453-value)
+    * [part](#id5454-part)
+    * [query](#id5455-query)
+  * [Return Types](#id5456-return-types)
+  * [Description](#id5457-description)
+  * [Examples](#id5458-examples)
+  * [Parameters](#id5459-parameters)
+    * [script](#id5460-script)
+    * [plink](#id5461-plink)
+    * [opt](#id5462-opt)
+  * [Return Types](#id5463-return-types)
+  * [Description](#id5464-description)
+  * [Examples](#id5465-examples)
+  * [Parameters](#id5466-parameters)
+    * [script](#id5467-script)
+    * [plink](#id5468-plink)
+    * [opt](#id5469-opt)
+    * [val](#id5470-val)
+  * [Return Types](#id5471-return-types)
+  * [Description](#id5472-description)
+  * [Examples](#id5473-examples)
+  * [Parameters](#id5474-parameters)
+    * [base\_uri](#id5475-base_uri)
+    * [base\_name](#id5476-base_name)
+    * [scp\_id](#id5477-scp_id)
+  * [Description](#id5478-description)
+  * [Examples](#id5479-examples)
+  * [Description](#id5480-description)
+  * [Parameters](#id5481-parameters)
+    * [shape](#id5482-shape)
+  * [Return Types](#id5483-return-types)
+  * [Examples](#id5484-examples)
+  * [See Also](#id5485-see-also)
+  * [Description](#id5486-description)
+  * [Parameters](#id5487-parameters)
+    * [shape](#id5488-shape)
+    * [attrs](#id5489-attrs)
+    * [sess](#id5490-sess)
+  * [Examples](#id5491-examples)
+  * [Description](#id5492-description)
+  * [Parameters](#id5493-parameters)
+    * [shape](#id5494-shape)
+    * [sess](#id5495-sess)
+  * [Return Types](#id5496-return-types)
+  * [Examples](#id5497-examples)
+  * [See Also](#id5498-see-also)
+  * [Description](#id5499-description)
+  * [Parameters](#id5500-parameters)
+    * [ewkt\_text](#id5501-ewkt_text)
+  * [Return Types](#id5502-return-types)
+  * [Examples](#id5503-examples)
+  * [See Also](#id5504-see-also)
+  * [Description](#id5505-description)
+  * [Return Types](#id5506-return-types)
+  * [Description](#id5507-description)
+  * [Parameters](#id5508-parameters)
+    * [Xpoint](#id5509-xpoint)
+    * [Ypoint](#id5510-ypoint)
+    * [Xsegment1](#id5511-xsegment1)
+    * [Ysegment1](#id5512-ysegment1)
+    * [Xsegment2](#id5513-xsegment2)
+    * [Ysegment2](#id5514-ysegment2)
+  * [Return Types](#id5515-return-types)
+  * [Examples](#id5516-examples)
+  * [See Also](#id5517-see-also)
+  * [Description](#id5518-description)
+  * [Return Types](#id5519-return-types)
+  * [Examples](#id5520-examples)
+  * [Description](#id5521-description)
+  * [Parameters](#id5522-parameters)
+    * [poligon](#id5523-poligon)
+  * [Return Types](#id5524-return-types)
+  * [Examples](#id5525-examples)
+  * [See Also](#id5526-see-also)
+  * [Description](#id5527-description)
+  * [Parameters](#id5528-parameters)
+    * [shape](#id5529-shape)
+    * [idx](#id5530-idx)
+  * [Return Types](#id5531-return-types)
+  * [Examples](#id5532-examples)
+  * [See Also](#id5533-see-also)
+  * [Description](#id5534-description)
+  * [Parameters](#id5535-parameters)
+    * [shape](#id5536-shape)
+  * [Return Types](#id5537-return-types)
+  * [Examples](#id5538-examples)
+  * [See Also](#id5539-see-also)
+  * [Description](#id5540-description)
+  * [Parameters](#id5541-parameters)
+    * [shape](#id5542-shape)
+    * [idx](#id5543-idx)
+  * [Return Types](#id5544-return-types)
+  * [Examples](#id5545-examples)
+  * [See Also](#id5546-see-also)
+  * [Description](#id5547-description)
+  * [Parameters](#id5548-parameters)
+    * [lat1](#id5549-lat1)
+    * [long1](#id5550-long1)
+    * [lat2](#id5551-lat2)
+    * [long2](#id5552-long2)
+  * [Return Types](#id5553-return-types)
+  * [Examples](#id5554-examples)
+  * [See Also](#id5555-see-also)
+  * [Description](#id5556-description)
+  * [Parameters](#id5557-parameters)
+    * [poligon](#id5558-poligon)
+    * [idx](#id5559-idx)
+  * [Return Types](#id5560-return-types)
+  * [Examples](#id5561-examples)
+  * [See Also](#id5562-see-also)
+  * [Description](#id5563-description)
+  * [Parameters](#id5564-parameters)
+    * [item1](#id5565-item1)
+    * [item2](#id5566-item2)
+    * [itemN](#id5567-itemn)
+  * [Return Types](#id5568-return-types)
+  * [Examples](#id5569-examples)
+  * [See Also](#id5570-see-also)
+  * [Description](#id5571-description)
+  * [Parameters](#id5572-parameters)
+    * [g](#id5573-g)
+  * [Return Types](#id5574-return-types)
+  * [Examples](#id5575-examples)
+  * [See Also](#id5576-see-also)
+  * [Description](#id5577-description)
+  * [Parameters](#id5578-parameters)
+    * [shape1](#id5579-shape1)
+    * [shape2](#id5580-shape2)
+    * [proximity](#id5581-proximity)
+  * [Return Types](#id5582-return-types)
+  * [Examples](#id5583-examples)
+  * [See Also](#id5584-see-also)
+  * [Description](#id5585-description)
+  * [Parameters](#id5586-parameters)
+    * [shape](#id5587-shape)
+  * [Return Types](#id5588-return-types)
+  * [Examples](#id5589-examples)
+  * [See Also](#id5590-see-also)
+  * [Description](#id5591-description)
+  * [Parameters](#id5592-parameters)
+    * [shape](#id5593-shape)
+  * [Return Types](#id5594-return-types)
+  * [Examples](#id5595-examples)
+  * [See Also](#id5596-see-also)
+  * [Description](#id5597-description)
+  * [Parameters](#id5598-parameters)
+    * [shape](#id5599-shape)
+  * [Return Types](#id5600-return-types)
+  * [Examples](#id5601-examples)
+  * [See Also](#id5602-see-also)
+  * [Description](#id5603-description)
+  * [Parameters](#id5604-parameters)
+    * [poligon](#id5605-poligon)
+  * [Return Types](#id5606-return-types)
+  * [Examples](#id5607-examples)
+  * [See Also](#id5608-see-also)
+  * [Description](#id5609-description)
+  * [Parameters](#id5610-parameters)
+    * [shape](#id5611-shape)
+    * [dest\_srid](#id5612-dest_srid)
+    * [origin\_proj4\_string](#id5613-origin_proj4_string)
+    * [dest\_proj4\_string](#id5614-dest_proj4_string)
+  * [Return Types](#id5615-return-types)
+  * [Examples](#id5616-examples)
+  * [See Also](#id5617-see-also)
+  * [Description](#id5618-description)
+  * [Parameters](#id5619-parameters)
+    * [shape](#id5620-shape)
+    * [algorithm\_id](#id5621-algorithm_id)
+  * [Return Types](#id5622-return-types)
+  * [Examples](#id5623-examples)
+  * [See Also](#id5624-see-also)
+  * [Description](#id5625-description)
+  * [Parameters](#id5626-parameters)
+    * [shape](#id5627-shape)
+    * [dX](#id5628-dx)
+    * [dY](#id5629-dy)
+    * [dZ](#id5630-dz)
+  * [Examples](#id5631-examples)
+  * [See Also](#id5632-see-also)
+  * [Description](#id5633-description)
+  * [Parameters](#id5634-parameters)
+    * [shape](#id5635-shape)
+    * [dX](#id5636-dx)
+    * [dY](#id5637-dy)
+    * [Xfactor](#id5638-xfactor)
+    * [Yfactor](#id5639-yfactor)
+  * [Return Types](#id5640-return-types)
+  * [Examples](#id5641-examples)
+  * [See Also](#id5642-see-also)
+  * [Description](#id5643-description)
+  * [Parameters](#id5644-parameters)
+    * [shape](#id5645-shape)
+  * [Return Types](#id5646-return-types)
+  * [Examples](#id5647-examples)
+  * [See Also](#id5648-see-also)
+  * [Description](#id5649-description)
+  * [Parameters](#id5650-parameters)
+    * [shape](#id5651-shape)
+  * [Return Types](#id5652-return-types)
+  * [Examples](#id5653-examples)
+  * [See Also](#id5654-see-also)
+  * [Description](#id5655-description)
+  * [Parameters](#id5656-parameters)
+    * [shape](#id5657-shape)
+  * [Return Types](#id5658-return-types)
+  * [Examples](#id5659-examples)
+  * [See Also](#id5660-see-also)
+  * [Description](#id5661-description)
+  * [Parameters](#id5662-parameters)
+    * [shape](#id5663-shape)
+  * [Return Types](#id5664-return-types)
+  * [Examples](#id5665-examples)
+  * [See Also](#id5666-see-also)
+  * [Description](#id5667-description)
+  * [Parameters](#id5668-parameters)
+    * [g](#id5669-g)
+  * [Return Types](#id5670-return-types)
+  * [Examples](#id5671-examples)
+  * [See Also](#id5672-see-also)
+  * [Description](#id5673-description)
+  * [Parameters](#id5674-parameters)
+    * [shape](#id5675-shape)
+  * [Return Types](#id5676-return-types)
+  * [Examples](#id5677-examples)
+  * [See Also](#id5678-see-also)
+  * [Description](#id5679-description)
+  * [Parameters](#id5680-parameters)
+    * [g](#id5681-g)
+  * [Return Types](#id5682-return-types)
+  * [Examples](#id5683-examples)
+  * [See Also](#id5684-see-also)
+  * [Description](#id5685-description)
+  * [Parameters](#id5686-parameters)
+    * [shape](#id5687-shape)
+  * [Return Types](#id5688-return-types)
+  * [Examples](#id5689-examples)
+  * [See Also](#id5690-see-also)
+
+<!--- TOC: End --->
+<a id="id1-description"></a>
 # Description
 
 VAR (VARIANCE) returns variance of expr. Virtuoso calculates the
 variance of expr as follows: 0 if the number of rows in expr = 1;
 VAR\_SAMP if the number of rows in expr \> 1
 
+<a id="id2-parameters"></a>
 # Parameters
 
+<a id="id3-expr"></a>
 ## expr
 
 Number expression.
 
+<a id="id4-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id5-see-also"></a>
 # See Also
 
 [`VAR()
@@ -109,6 +5810,7 @@ expr
 
 any
 
+<a id="id6-description"></a>
 # Description
 
 VAR\_SAMP returns the sample variance of a set of numbers after
@@ -122,17 +5824,21 @@ calculation:
 This function is similar to VAR, except that given an input set of one
 element, VAR returns 0 and VAR\_SAMP returns null.
 
+<a id="id7-parameters"></a>
 # Parameters
 
+<a id="id8-expr"></a>
 ## expr
 
 Number expression.
 
+<a id="id9-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id10-see-also"></a>
 # See Also
 
 [`VAR()
@@ -207,6 +5913,7 @@ expr
 
 any
 
+<a id="id11-description"></a>
 # Description
 
 VAR\_POP returns the population variance of a set of numbers after
@@ -217,17 +5924,21 @@ calculation:
 
     (SUM(expr2) - SUM(expr)2 / COUNT(expr)) / COUNT(expr)
 
+<a id="id12-parameters"></a>
 # Parameters
 
+<a id="id13-expr"></a>
 ## expr
 
 Number expression.
 
+<a id="id14-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id15-see-also"></a>
 # See Also
 
 [`VAR()
@@ -308,26 +6019,32 @@ expr2
 
 any
 
+<a id="id16-description"></a>
 # Description
 
 STDDEV returns standard deviation. It returns STDDEV\_SAMP if the number
 of pairs is more than one, or NULL.
 
+<a id="id17-parameters"></a>
 # Parameters
 
+<a id="id18-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id19-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id20-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id21-see-also"></a>
 # See Also
 
 [`VAR()
@@ -402,6 +6119,7 @@ expr
 
 any
 
+<a id="id22-description"></a>
 # Description
 
 STDDEV\_SAMP computes the cumulative sample standard deviation and
@@ -410,17 +6128,21 @@ expression, and the function returns a value of type NUMERIC. This
 function is same as the square root of the VAR\_SAMP function. When
 VAR\_SAMP returns null, this function returns null.
 
+<a id="id23-parameters"></a>
 # Parameters
 
+<a id="id24-expr"></a>
 ## expr
 
 Number expression.
 
+<a id="id25-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id26-see-also"></a>
 # See Also
 
 [`VAR()
@@ -495,6 +6217,7 @@ expr
 
 any
 
+<a id="id27-description"></a>
 # Description
 
 STDDEV\_POP computes the population standard deviation and returns the
@@ -502,17 +6225,21 @@ square root of the population variance. This function is the same as the
 square root of the VAR\_POP function. When VAR\_POP returns null,
 returns null.
 
+<a id="id28-parameters"></a>
 # Parameters
 
+<a id="id29-expr"></a>
 ## expr
 
 Number expression.
 
+<a id="id30-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id31-see-also"></a>
 # See Also
 
 [`VAR()
@@ -593,6 +6320,7 @@ expr2
 
 any
 
+<a id="id32-description"></a>
 # Description
 
 REGR\_SYY makes the following computation after eliminating NULL (expr1,
@@ -600,21 +6328,26 @@ expr2) pairs:
 
     REGR_COUNT(expr1, expr2) * VAR_POP(expr1)
 
+<a id="id33-parameters"></a>
 # Parameters
 
+<a id="id34-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id35-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id36-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id37-see-also"></a>
 # See Also
 
 [`VAR()
@@ -695,6 +6428,7 @@ expr2
 
 any
 
+<a id="id38-description"></a>
 # Description
 
 REGR\_SXX makes the following computation after eliminating NULL (expr1,
@@ -702,21 +6436,26 @@ expr2) pairs:
 
     REGR_COUNT(expr1, expr2) * VAR_POP(expr2)
 
+<a id="id39-parameters"></a>
 # Parameters
 
+<a id="id40-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id41-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id42-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id43-see-also"></a>
 # See Also
 
 [`VAR()
@@ -797,6 +6536,7 @@ expr2
 
 any
 
+<a id="id44-description"></a>
 # Description
 
 REGR\_SXY makes the following computation after eliminating NULL (expr1,
@@ -804,21 +6544,26 @@ expr2) pairs:
 
     REGR_COUNT(expr1, expr2) * COVAR_POP(expr1, expr2)
 
+<a id="id45-parameters"></a>
 # Parameters
 
+<a id="id46-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id47-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id48-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id49-see-also"></a>
 # See Also
 
 [`VAR()
@@ -900,6 +6645,7 @@ expr2
 
 any
 
+<a id="id50-description"></a>
 # Description
 
 REGR\_AVGX evaluates the average of the independent variable (expr2) of
@@ -908,21 +6654,26 @@ elimination of null (expr1, expr2) pairs:
 
     AVG(expr2)
 
+<a id="id51-parameters"></a>
 # Parameters
 
+<a id="id52-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id53-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id54-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id55-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1004,6 +6755,7 @@ expr2
 
 any
 
+<a id="id56-description"></a>
 # Description
 
 REGR\_AVGY evaluates the average of the independent variable (expr1) of
@@ -1012,21 +6764,26 @@ elimination of null (expr1, expr2) pairs:
 
     AVG(expr1)
 
+<a id="id57-parameters"></a>
 # Parameters
 
+<a id="id58-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id59-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id60-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id61-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1108,6 +6865,7 @@ expr2
 
 any
 
+<a id="id62-description"></a>
 # Description
 
 REGR\_R2 returns the coefficient of determination (also called
@@ -1122,21 +6880,26 @@ NULL if VAR\_POP(expr2) = 0
 (CORR(expr1,expr2) \* CORR(expt1, expr2)) if VAR\_POP(expr1) \> 0 and
 VAR\_POP(expr2) \!= 0
 
+<a id="id63-parameters"></a>
 # Parameters
 
+<a id="id64-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id65-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id66-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id67-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1217,25 +6980,31 @@ expr2
 
 any
 
+<a id="id68-description"></a>
 # Description
 
 REGR\_COUNT Returns the number of non-null numbers used to fit the
 regression line.
 
+<a id="id69-parameters"></a>
 # Parameters
 
+<a id="id70-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id71-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id72-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC.
 
+<a id="id73-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1316,6 +7085,7 @@ expr2
 
 any
 
+<a id="id74-description"></a>
 # Description
 
 REGR\_INTERCEPT returns the y-intercept of the regression line. After
@@ -1324,21 +7094,26 @@ computation:
 
     AVG(expr1) - REGR_SLOPE(expr1, expr2) * AVG(expr2)
 
+<a id="id75-parameters"></a>
 # Parameters
 
+<a id="id76-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id77-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id78-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id79-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1419,6 +7194,7 @@ expr2
 
 any
 
+<a id="id80-description"></a>
 # Description
 
 REGR\_SLOPE returns the slope of the line. After the elimination of null
@@ -1426,21 +7202,26 @@ REGR\_SLOPE returns the slope of the line. After the elimination of null
 
     COVAR_POP(expr1, expr2) / VAR_POP(expr2)
 
+<a id="id81-parameters"></a>
 # Parameters
 
+<a id="id82-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id83-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id84-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id85-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1521,6 +7302,7 @@ expr2
 
 any
 
+<a id="id86-description"></a>
 # Description
 
 COVAR\_SAMP returns the sample covariance of a set of number pairs. Both
@@ -1534,21 +7316,26 @@ computation:
 where n is the number of (expr1, expr2) pairs where neither expr1 nor
 expr2 is null.
 
+<a id="id87-parameters"></a>
 # Parameters
 
+<a id="id88-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id89-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id90-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id91-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1629,6 +7416,7 @@ expr2
 
 any
 
+<a id="id92-description"></a>
 # Description
 
 COVAR\_POP returns the population covariance of a set of number pairs.
@@ -1642,21 +7430,26 @@ following computation:
 where n is the number of (expr1, expr2) pairs where neither expr1 nor
 expr2 is null.
 
+<a id="id93-parameters"></a>
 # Parameters
 
+<a id="id94-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id95-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id96-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id97-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1737,6 +7530,7 @@ expr2
 
 any
 
+<a id="id98-description"></a>
 # Description
 
 CORR returns the coefficient of correlation of a set of number pairs.
@@ -1747,21 +7541,26 @@ computation:
 
     COVAR_POP(expr1, expr2) / (STDDEV_POP(expr1) * STDDEV_POP(expr2))
 
+<a id="id99-parameters"></a>
 # Parameters
 
+<a id="id100-expr1"></a>
 ## expr1
 
 Number expression.
 
+<a id="id101-expr2"></a>
 ## expr2
 
 Number expression.
 
+<a id="id102-return-types"></a>
 # Return Types
 
 The function returns a value of type NUMERIC. If the function is applied
 to an empty set, then it returns null.
 
+<a id="id103-see-also"></a>
 # See Also
 
 [`VAR()
@@ -1835,14 +7634,17 @@ value\_expression
 
 any
 
+<a id="id104-description"></a>
 # Description
 
 `DB.DBA.XQ_SEQUENCE_AGG
 ` creates an XQuery sequence object that consists of all values passed
 the aggregate.
 
+<a id="id105-parameters"></a>
 # Parameters
 
+<a id="id106-value_expression"></a>
 ## value\_expression
 
 Values are "flatten" before being added to the sequence. It means that
@@ -1866,10 +7668,12 @@ If an SQL vector contains a narrow or wide string then it is also
 converted to UTF-8. However if a narrow string is an item of an XQuery
 sequence then it is treated as UTF-8 and not subject to encoding.
 
+<a id="id107-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id108-see-also"></a>
 # See Also
 
 [`xquery_eval()
@@ -1933,22 +7737,27 @@ value\_expression
 
 any
 
+<a id="id109-description"></a>
 # Description
 
 `DB.DBA.VECTOR_AGG
 ` returns a vector of passed values. The order of items in the vector
 repeats the order of passing individual values to the aggregate.
 
+<a id="id110-parameters"></a>
 # Parameters
 
+<a id="id111-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id112-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id113-examples"></a>
 # Examples
 
 As the order of items in the vector repeats the order of passing
@@ -1966,6 +7775,7 @@ or
 
 and get vector of Y-s that are ordered by matching values of X-es.
 
+<a id="id114-see-also"></a>
 # See Also
 
 [`DB.DBA.XQ_SEQUENCE_AGG()
@@ -2026,6 +7836,7 @@ value\_expression
 
 any
 
+<a id="id115-description"></a>
 # Description
 
 `DB.DBA.VECTOR_OF_NONNULLS_AGG
@@ -2035,16 +7846,20 @@ any
 The order of items in the vector repeats the order of passing individual
 values to the aggregate.
 
+<a id="id116-parameters"></a>
 # Parameters
 
+<a id="id117-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id118-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id119-examples"></a>
 # Examples
 
 As the order of items in the vector repeats the order of passing
@@ -2062,6 +7877,7 @@ or
 
 and get vector of Y-s that are ordered by matching values of X-es.
 
+<a id="id120-see-also"></a>
 # See Also
 
 [`DB.DBA.VECTOR_AGG()
@@ -2119,6 +7935,7 @@ value\_expression
 
 any
 
+<a id="id121-description"></a>
 # Description
 
 `DB.DBA.VECTOR_OR_NULL_AGG
@@ -2129,17 +7946,21 @@ empty vector if no arguments were actually passed.
 The order of items in the vector repeats the order of passing individual
 values to the aggregate.
 
+<a id="id122-parameters"></a>
 # Parameters
 
+<a id="id123-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id124-return-types"></a>
 # Return Types
 
 Any. If no arguments were actually passed returns NULL instead of an
 empty vector.
 
+<a id="id125-examples"></a>
 # Examples
 
 As the order of items in the vector repeats the order of passing
@@ -2157,6 +7978,7 @@ or
 
 and get vector of Y-s that are ordered by matching values of X-es.
 
+<a id="id126-see-also"></a>
 # See Also
 
 [`DB.DBA.XQ_SEQUENCE_AGG()
@@ -2217,6 +8039,7 @@ value\_expression
 
 any
 
+<a id="id127-description"></a>
 # Description
 
 `DB.DBA.VECTOR_OF_NONNULLS_OR_NULL_AGG
@@ -2225,17 +8048,21 @@ any
 returns NULL instead of an empty vector if no arguments were passed or
 only NULLs were passed.
 
+<a id="id128-parameters"></a>
 # Parameters
 
+<a id="id129-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id130-return-types"></a>
 # Return Types
 
 Any. If no arguments were passed teturns NULL instead of an empty vector
 or only NULLs were passed.
 
+<a id="id131-examples"></a>
 # Examples
 
 As the order of items in the vector repeats the order of passing
@@ -2253,6 +8080,7 @@ or
 
 and get vector of Y-s that are ordered by matching values of X-es.
 
+<a id="id132-see-also"></a>
 # See Also
 
 [`DB.DBA.XQ_SEQUENCE_AGG()
@@ -2314,22 +8142,27 @@ DB.DBA.VECTOR\_CONCAT\_AGG
 
 any
 
+<a id="id133-description"></a>
 # Description
 
 `DB.DBA.VECTOR_CONCAT_AGG
 ` expects SQL vectors as arguments and the result is a concatenation of
 all passed vectors.
 
+<a id="id134-parameters"></a>
 # Parameters
 
+<a id="id135-_items"></a>
 ## \_items
 
 SQL vectors.
 
+<a id="id136-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id137-examples"></a>
 # Examples
 
 The most typical usage is the composing of get-keyword style vector, for
@@ -2349,6 +8182,7 @@ vector repeats the order of passing argument vectors to the aggregate.
 No. of rows in result: 1
 ```
 
+<a id="id138-see-also"></a>
 # See Also
 
 [`DB.DBA.XQ_SEQUENCE_AGG()
@@ -2409,6 +8243,7 @@ value\_expression
 
 any
 
+<a id="id139-description"></a>
 # Description
 
 `DB.DBA.BAG_AGG()
@@ -2423,21 +8258,26 @@ with [DB.DBA.VECTOR\_AGG()](#fn_vector_agg) because `DB.DBA.BAG_AGG()`
 gives more freedom to the SQL optimizer. If the order is not important
 for your application, consider using of `DB.DBA.BAG_AGG()` .
 
+<a id="id140-parameters"></a>
 # Parameters
 
+<a id="id141-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id142-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id143-examples"></a>
 # Examples
 
     SELECT DB.DBA.BAG_AGG (subquery.X)
     FROM (SELECT X FROM ... ORDER BY X) as subquery
 
+<a id="id144-see-also"></a>
 # See Also
 
 [DB.DBA.XQ\_SEQUENCE\_AGG()](#fn_xq_sequence_agg)
@@ -2484,6 +8324,7 @@ value\_expression
 
 any
 
+<a id="id145-description"></a>
 # Description
 
 `DB.DBA.BAG_OF_NONNULLS_AGG
@@ -2494,16 +8335,20 @@ ignores NULL arguments.
 The order of items in the vector is not predefined and may vary from run
 to run.
 
+<a id="id146-parameters"></a>
 # Parameters
 
+<a id="id147-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id148-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id149-examples"></a>
 # Examples
 
     SELECT DB.DBA.BAG_OF_NONNULLS_AGG (subquery.X)
@@ -2512,6 +8357,7 @@ Any
     SELECT DB.DBA.BAG_OF_NONNULLS_AGG (subquery.Y)
     FROM (SELECT Y FROM ... ORDER BY X) as subquery
 
+<a id="id150-see-also"></a>
 # See Also
 
 [DB.DBA.XQ\_SEQUENCE\_AGG()](#fn_xq_sequence_agg)
@@ -2558,6 +8404,7 @@ value\_expression
 
 any
 
+<a id="id151-description"></a>
 # Description
 
 `DB.DBA.BAG_OR_NULL_AGG
@@ -2568,22 +8415,27 @@ vector if no arguments were actually passed.
 The order of items in the vector is not predefined and may vary from run
 to run.
 
+<a id="id152-parameters"></a>
 # Parameters
 
+<a id="id153-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id154-return-types"></a>
 # Return Types
 
 Any. If no arguments were actually passed returns NULL instead of an
 empty vector.
 
+<a id="id155-examples"></a>
 # Examples
 
     SELECT DB.DBA.BAG_OR_NULL_AGG (subquery.X)
     FROM (SELECT X FROM ... ORDER BY X) as subquery
 
+<a id="id156-see-also"></a>
 # See Also
 
 [DB.DBA.XQ\_SEQUENCE\_AGG()](#fn_xq_sequence_agg)
@@ -2630,6 +8482,7 @@ value\_expression
 
 any
 
+<a id="id157-description"></a>
 # Description
 
 `DB.DBA.BAG_OF_NONNULLS_OR_NULL_AGG
@@ -2641,22 +8494,27 @@ NULLs were passed.
 The order of items in the vector is not predefined and may vary from run
 to run.
 
+<a id="id158-parameters"></a>
 # Parameters
 
+<a id="id159-value_expression"></a>
 ## value\_expression
 
 Value of item for aggregation.
 
+<a id="id160-return-types"></a>
 # Return Types
 
 Any. If no arguments were passed teturns NULL instead of an empty vector
 or only NULLs were passed.
 
+<a id="id161-examples"></a>
 # Examples
 
     SELECT DB.DBA.BAG_OF_NONNULLS_OR_NULL_AGG (subquery.X)
     FROM (SELECT X FROM ... ORDER BY X) as subquery
 
+<a id="id162-see-also"></a>
 # See Also
 
 [DB.DBA.XQ\_SEQUENCE\_AGG()](#fn_xq_sequence_agg)
@@ -2704,22 +8562,27 @@ DB.DBA.BAG\_CONCAT\_AGG
 
 any
 
+<a id="id163-description"></a>
 # Description
 
 `DB.DBA.BAG_CONCAT_AGG
 ` expects SQL vectors as arguments and the result is a concatenation of
 all passed vectors.
 
+<a id="id164-parameters"></a>
 # Parameters
 
+<a id="id165-_items"></a>
 ## \_items
 
 SQL vectors.
 
+<a id="id166-return-types"></a>
 # Return Types
 
 Any
 
+<a id="id167-examples"></a>
 # Examples
 
 The most typical usage is the composing of get-keyword style vector, for
@@ -2739,6 +8602,7 @@ vector repeats the order of passing argument vectors to the aggregate.
 No. of rows in result: 1
 ```
 
+<a id="id168-see-also"></a>
 # See Also
 
 [DB.DBA.XQ\_SEQUENCE\_AGG()](#fn_xq_sequence_agg)
@@ -2785,22 +8649,27 @@ num
 
 any
 
+<a id="id169-description"></a>
 # Description
 
 `abs
 ` returns the absolute value of its argument.
 
+<a id="id170-parameters"></a>
 # Parameters
 
+<a id="id171-num"></a>
 ## num
 
 `Numeric
 ` value whose absolute value is to be returned
 
+<a id="id172-return-types"></a>
 # Return Types
 
 Same as parameter type.
 
+<a id="id173-examples"></a>
 # Examples
 
 Get absolute values of several numeric values
@@ -2838,23 +8707,28 @@ tablename
 
 varchar
 
+<a id="id174-description"></a>
 # Description
 
 The `__any_grants()
 ` can be used to test whether there are any rights granted (for
 insert/update/delete) to a table for current SQL account.
 
+<a id="id175-parameters"></a>
 # Parameters
 
+<a id="id176-tablename"></a>
 ## tablename
 
 The table name to be tested.
 
+<a id="id177-return-types"></a>
 # Return Types
 
 An integer will be returned to indicate whether the table supplied has
 any privileges granted (1) or not granted (zero 0) for current SQL user.
 
+<a id="id178-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                                                     | Description |
@@ -2863,6 +8737,7 @@ any privileges granted (1) or not granted (zero 0) for current SQL user.
 
 Errors signalled by
 
+<a id="id179-examples"></a>
 # Examples
 
 This simple example shows testing a grant rights for a table, using the
@@ -2907,6 +8782,7 @@ nth
 
 integer
 
+<a id="id180-description"></a>
 # Description
 
 `aref
@@ -2917,8 +8793,10 @@ a zero-based index. If the first argument is a `string` or
 returned. If the first argument is an array of `any
 ` , then the corresponding element is returned.
 
+<a id="id181-parameters"></a>
 # Parameters
 
+<a id="id182-arg"></a>
 ## `arg
 `
 
@@ -2927,12 +8805,14 @@ returned. If the first argument is an array of `any
 ` or `string
 ` .
 
+<a id="id183-nth"></a>
 ## `nth
 `
 
 `integer
 ` zero-based index.
 
+<a id="id184-return-values"></a>
 # Return Values
 
 An `integer
@@ -2940,6 +8820,7 @@ An `integer
 ` element as whatever type the element is if `arg
 ` is an array or vector (heterogeneous array.)
 
+<a id="id185-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                                                          | Description |
@@ -2949,6 +8830,7 @@ An `integer
 
 Errors signalled by aref
 
+<a id="id186-examples"></a>
 # Examples
 
     SQL> select aref ('Abacus', 0);
@@ -2969,6 +8851,7 @@ Errors signalled by aref
     1 Rows. -- 4 msec.
     SQL>
 
+<a id="id187-see-also"></a>
 # See Also
 
 [`vector
@@ -2992,26 +8875,31 @@ arg
 
 any
 
+<a id="id188-description"></a>
 # Description
 
 `ascii
 ` returns the ASCII value of the first character of a string. If an
 empty string is given, then zero is returned.
 
+<a id="id189-parameters"></a>
 # Parameters
 
+<a id="id190-arg"></a>
 ## `arg
 `
 
 A `string
 `
 
+<a id="id191-return-values"></a>
 # Return Values
 
 The `integer
 ` ASCII value of the first character of the input string is returned. If
 the input string is empty, then zero is returned
 
+<a id="id192-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                                                      | Description |
@@ -3020,6 +8908,7 @@ the input string is empty, then zero is returned
 
 Errors signalled by ascii
 
+<a id="id193-examples"></a>
 # Examples
 
     SQL> select ascii('Zardoz');
@@ -3031,6 +8920,7 @@ Errors signalled by ascii
     
     1 Rows. -- 14 msec.
 
+<a id="id194-see-also"></a>
 # See Also
 
 [`aref
@@ -3064,6 +8954,7 @@ new\_elem
 
 any
 
+<a id="id195-description"></a>
 # Description
 
 aset sets the nth element of a string, array or vector where nth is a
@@ -3071,16 +8962,20 @@ zero-based index. If the first argument is a string, the nth character
 of string is replaced with the ASCII value given in the third argument
 elem.
 
+<a id="id196-parameters"></a>
 # Parameters
 
+<a id="id197-arg"></a>
 ## arg
 
 A string, array or vector.
 
+<a id="id198-nth"></a>
 ## nth
 
 Zero-based element index.
 
+<a id="id199-nelem"></a>
 ## nelem
 
 The new element. If `arg
@@ -3088,12 +8983,14 @@ The new element. If `arg
 in `new_elem
 ` .
 
+<a id="id200-return-values"></a>
 # Return Values
 
 `Aset
 ` returns `nelem
 ` . It modifies its first argument.
 
+<a id="id201-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                      | Description |
@@ -3102,6 +8999,7 @@ in `new_elem
 
 Errors signalled by aset
 
+<a id="id202-examples"></a>
 # Examples
 
 Make a string, fill with character sequence from A to Z.
@@ -3172,6 +9070,7 @@ Note that str is modified by aset.
     
     1 Rows. -- 11 msec.
 
+<a id="id203-see-also"></a>
 # See Also
 
 [`aref()
@@ -3194,23 +9093,28 @@ arg
 
 string
 
+<a id="id204-description"></a>
 # Description
 
 atof returns its argument as a single precision floating point. If the
 string cannot be parsed and converted to a valid float, a value 0.0 is
 returned.
 
+<a id="id205-parameters"></a>
 # Parameters
 
+<a id="id206-arg"></a>
 ## `arg
 `
 
 A string input parameter
 
+<a id="id207-return-types"></a>
 # Return Types
 
 Single precision floating point
 
+<a id="id208-examples"></a>
 # Examples
 
     SQL> select atof('1.23456789');
@@ -3240,6 +9144,7 @@ Single precision floating point
     
     1 Rows. -- 5 msec.
 
+<a id="id209-see-also"></a>
 # See Also
 
 ` 
@@ -3263,24 +9168,29 @@ arg
 
 string
 
+<a id="id210-description"></a>
 # Description
 
 atoi returns its argument as an integer. If the string cannot be parsed
 and converted to a valid integer, a value 0 is returned.
 
+<a id="id211-parameters"></a>
 # Parameters
 
+<a id="id212-arg"></a>
 ## `arg
 `
 
 A string input parameter
 
+<a id="id213-return-types"></a>
 # Return Types
 
 The string converted to an integer. If the string is a number then the
 absolute value of the literal will be returned as an integer. Otherwise
 0 is returned.
 
+<a id="id214-examples"></a>
 # Examples
 
     SQL> select atoi('1.23456789');
@@ -3301,6 +9211,7 @@ absolute value of the literal will be returned as an integer. Otherwise
     
     1 Rows. -- 4 msec.
 
+<a id="id215-see-also"></a>
 # See Also
 
 ` 
@@ -3332,6 +9243,7 @@ table
 
 varchar
 
+<a id="id216-description"></a>
 # Description
 
 The utility function, `att_local_name()
@@ -3342,20 +9254,25 @@ execution, owner will be replaced or added with name of supplied DSN
 name. All non-alphanumeric characters in the name will be replaced with
 underscore symbol.
 
+<a id="id217-parameters"></a>
 # Parameters
 
+<a id="id218-dsn"></a>
 ## dsn
 
 The name of remote data source.
 
+<a id="id219-table"></a>
 ## table
 
 The name of remote table.
 
+<a id="id220-return-types"></a>
 # Return Types
 
 A string will be returned containing the fully qualified table name.
 
+<a id="id221-examples"></a>
 # Examples
 
 This simple example shows retrieval of fully qualified table name. using
@@ -3414,6 +9331,7 @@ row
 
 any
 
+<a id="id222-description"></a>
 # Description
 
 > **Important**
@@ -3439,6 +9357,7 @@ any
 
 This function requires dba privileges.
 
+<a id="id223-full-backup"></a>
 ## Full backup
 
 The `backup
@@ -3449,6 +9368,7 @@ cannot be replayed on anything except an empty database. Logs made after
 the backup can be replayed over the database resulting from the backup
 file's replay. No schema operations are allowed between replays.
 
+<a id="id224-partial-backups"></a>
 ## Partial backups
 
 The `backup_prepare
@@ -3497,8 +9417,10 @@ now re-enabled. The transaction should be committed or rolled back after
 `backup_close
 ` .
 
+<a id="id225-parameters"></a>
 # Parameters
 
+<a id="id226-file"></a>
 ## `file
 `
 
@@ -3506,6 +9428,7 @@ now re-enabled. The transaction should be committed or rolled back after
 ``file
 ` filename for the generated log.
 
+<a id="id227-backup_row"></a>
 ## `backup_row
 `
 
@@ -3514,6 +9437,7 @@ now re-enabled. The transaction should be committed or rolled back after
 ` a value of the pseudo column `_ROW
 ` .
 
+<a id="id228-see-also"></a>
 # See Also
 
 [replay](#fn_replay)
@@ -3558,6 +9482,7 @@ dirs
 
 any
 
+<a id="id229-description"></a>
 # Description
 
 This procedure will backup all information from the checkpoint space to
@@ -3587,22 +9512,27 @@ other prior means. As an alternative, copying database files while the
 database is running will still work, as long as no checkpoint is made
 during the copy process.
 
+<a id="id230-parameters"></a>
 # Parameters
 
+<a id="id231-file_prefix"></a>
 ## file\_prefix
 
 A string to prefix to the filename of the backup files.
 
+<a id="id232-pages"></a>
 ## pages
 
 The pages argument indicates the maximum number of 8K pages that will be
 backed up into each file. This argument must be larger than 100. If
 pages \< 100 an error will be returned.
 
+<a id="id233-timeout"></a>
 ## timeout
 
 This parameter has no effect.
 
+<a id="id234-dirs"></a>
 ## dirs
 
 This optional parameter must be an array of directory names (array of
@@ -3612,15 +9542,18 @@ directory in the list. If there are no more directories then an error is
 signalled and all the files written by this call to backup\_online are
 deleted so as not to leave half made backups.
 
+<a id="id235-return-types"></a>
 # Return Types
 
 This function will return the number of 8k pages that were backed-up.
 
+<a id="id236-errors"></a>
 # Errors
 
 This function can generate the following errors:
 IB001IB002IB003IB004IB005IB006IB007IB008IB009IB010
 
+<a id="id237-examples"></a>
 # Examples
 
 If there are 2010 new pages in the checkpoint space and user invokes:
@@ -3648,6 +9581,7 @@ or:
 
     virtuoso-odbc-t.exe +restore-backup dump-20011010_#
 
+<a id="id238-see-also"></a>
 # See Also
 
 [`backup_context_clear();
@@ -3664,12 +9598,14 @@ ready for online backup
 
 backup\_context\_clear
 
+<a id="id239-description"></a>
 # Description
 
 This procedure must be called before a new backup series can be started,
 This procedure will clear the current backup context and mark all pages
 in the checkpoint space as ready for backup.
 
+<a id="id240-see-also"></a>
 # See Also
 
 [`backup_online();
@@ -3963,6 +9899,7 @@ char \*
 
 func
 
+<a id="id241-description"></a>
 # Description
 
 The bif\_....\_arg functions are used in the Virtuoso shared object.
@@ -3979,24 +9916,30 @@ VSE itself to distinguish.
 Virtuoso Server Extensions (VSEs) were formally referred to as Built-In
 Functions (BIFs).
 
+<a id="id242-parameters"></a>
 # Parameters
 
+<a id="id243-qst"></a>
 ## qst
 
 Query instance.
 
+<a id="id244-args"></a>
 ## args
 
 input arguments.
 
+<a id="id245-nth"></a>
 ## nth
 
 which argument to retrieve (zero indexed).
 
+<a id="id246-func"></a>
 ## func
 
 name of calling function. This will be printed in the SQL error message.
 
+<a id="id247-return-values"></a>
 # Return Values
 
 On success, return a valid pointer to the data retrieved, or NULL. A SQL
@@ -4024,6 +9967,7 @@ the bif is not authorized to modify or free them.
 
 Return types
 
+<a id="id248-examples"></a>
 # Examples
 
 A function called `my_length
@@ -4052,6 +9996,7 @@ n2
 
 integer
 
+<a id="id249-description"></a>
 # Description
 
 The function returns bitwise AND of two given integers.
@@ -4059,10 +10004,12 @@ The function returns bitwise AND of two given integers.
 On 64-bit platforms, both arguments are intentionally truncated to 32
 bits to maintain compatibility.
 
+<a id="id250-return-types"></a>
 # Return Types
 
 Integer.
 
+<a id="id251-examples"></a>
 # Examples
 
     select bit_and (18, 6);
@@ -4071,6 +10018,7 @@ Integer.
     select bit_and (-18, -6);
     -22
 
+<a id="id252-see-also"></a>
 # See Also
 
 [`bit_not()
@@ -4107,6 +10055,7 @@ n2
 
 integer
 
+<a id="id253-description"></a>
 # Description
 
 The function returns bitwise OR of two given integers.
@@ -4114,10 +10063,12 @@ The function returns bitwise OR of two given integers.
 On 64-bit platforms, both arguments are intentionally truncated to 32
 bits to maintain compatibility.
 
+<a id="id254-return-types"></a>
 # Return Types
 
 Integer.
 
+<a id="id255-examples"></a>
 # Examples
 
     select bit_or (18, 6);
@@ -4126,6 +10077,7 @@ Integer.
     select bit_or (-18, -6);
     -2
 
+<a id="id256-see-also"></a>
 # See Also
 
 [`bit_and()
@@ -4156,6 +10108,7 @@ n1
 
 integer
 
+<a id="id257-description"></a>
 # Description
 
 The function returns bitwise NOT of a given integer.
@@ -4163,10 +10116,12 @@ The function returns bitwise NOT of a given integer.
 On 64-bit platforms the argument is intentionally truncated to 32 bits
 to maintain compatibility.
 
+<a id="id258-return-types"></a>
 # Return Types
 
 Integer.
 
+<a id="id259-examples"></a>
 # Examples
 
     select bit_not (18);
@@ -4175,6 +10130,7 @@ Integer.
     select bit_not (-18);
     -17
 
+<a id="id260-see-also"></a>
 # See Also
 
 [`bit_and()
@@ -4211,6 +10167,7 @@ distance
 
 integer
 
+<a id="id261-description"></a>
 # Description
 
 The function returns bitwise shift of two given integers. Depending on
@@ -4220,12 +10177,15 @@ bits of the result are filled by the value of the 31-st bit.
 On 64-bit platforms, both arguments are intentionally truncated to 32
 bits and the shift is restricted to 32 bits to maintain compatibility.
 
+<a id="id262-parameters"></a>
 # Parameters
 
+<a id="id263-value"></a>
 ## value
 
 The value to be shifted.
 
+<a id="id264-distance"></a>
 ## distance
 
 The sign of the parameter specifies the direction of the shift: positive
@@ -4234,10 +10194,12 @@ right. The absolute value of the parameter specifies the number of bits
 to shift. The value of zero means that the result is equal to the value
 of the first argument.
 
+<a id="id265-return-types"></a>
 # Return Types
 
 Integer.
 
+<a id="id266-examples"></a>
 # Examples
 
     select bit_shift (18, 6);
@@ -4252,6 +10214,7 @@ Integer.
     select bit_shift (-1152, -6);
     -18
 
+<a id="id267-see-also"></a>
 # See Also
 
 [`bit_and
@@ -4288,6 +10251,7 @@ n2
 
 integer
 
+<a id="id268-description"></a>
 # Description
 
 The function returns bitwise XOR (exclusive "or") of two given integers.
@@ -4295,10 +10259,12 @@ The function returns bitwise XOR (exclusive "or") of two given integers.
 On 64-bit platforms, both arguments are intentionally truncated to 32
 bits, to provide compartibility.
 
+<a id="id269-return-types"></a>
 # Return Types
 
 Integer.
 
+<a id="id270-examples"></a>
 # Examples
 
     select bit_xor (18, 6);
@@ -4310,6 +10276,7 @@ Integer.
     select bit_xor (-18, 6);
     -24
 
+<a id="id271-see-also"></a>
 # See Also
 
 [`bit_and()
@@ -4342,6 +10309,7 @@ blob
 
 any
 
+<a id="id272-description"></a>
 # Description
 
 Although primarily used for converting `blobs
@@ -4361,8 +10329,10 @@ an error.
 > . Using `cast
 > ` is preferred.
 
+<a id="id273-parameters"></a>
 # Parameters
 
+<a id="id274-blob"></a>
 ## `blob
 `
 
@@ -4371,12 +10341,14 @@ an error.
 ` or `XPER
 ` (persistent XML)
 
+<a id="id275-return-types"></a>
 # Return Types
 
 `Varchar
 ` contents of `blob
 ` .
 
+<a id="id276-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Message                                                                                | Description |
@@ -4390,6 +10362,7 @@ an error.
 Errors signalled by `blob_to_string
 `
 
+<a id="id277-examples"></a>
 # Examples
 
     SQL> use Demo;
@@ -4412,6 +10385,7 @@ Errors signalled by `blob_to_string
     8 Rows. -- 37 msec.
     SQL>
 
+<a id="id278-see-also"></a>
 # See Also
 
 [Casting](#dtcasting) , [`string_output
@@ -4435,6 +10409,7 @@ blob
 
 any
 
+<a id="id279-description"></a>
 # Description
 
 Although primarily used for converting `blobs
@@ -4444,8 +10419,10 @@ may also be used to convert from `wide string` , `persistent XML (XPER)`
 and `string_output streams
 ` .
 
+<a id="id280-parameters"></a>
 # Parameters
 
+<a id="id281-blob"></a>
 ## `blob
 `
 
@@ -4454,12 +10431,14 @@ and `string_output streams
 ` or `XPER
 ` (persistent XML)
 
+<a id="id282-return-types"></a>
 # Return types
 
 `string output object
 ` contents of `blob
 ` .
 
+<a id="id283-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                                               | Description |
@@ -4470,6 +10449,7 @@ and `string_output streams
 
 Errors signalled by
 
+<a id="id284-examples"></a>
 # Examples
 
     SQL> use Demo;
@@ -4492,6 +10472,7 @@ Errors signalled by
     8 Rows. -- 37 msec.
     SQL>
 
+<a id="id285-see-also"></a>
 # See Also
 
 [`blob_to_string
@@ -4515,6 +10496,7 @@ cursor
 
 CURSOR
 
+<a id="id286-description"></a>
 # Description
 
 `bookmark
@@ -4523,21 +10505,26 @@ Given an invalid argument, i.e. no cursor, no current row or non-open
 cursor, it signals an error. The returned value can be used in
 subsequent FETCH .. BOOKMARK over the same cursor.
 
+<a id="id287-parameters"></a>
 # Parameters
 
+<a id="id288-bookmark"></a>
 ## bookmark
 
 Given Bookmark.
 
+<a id="id289-cursor"></a>
 ## cursor
 
 Open scrollable cursor.
 
+<a id="id290-return-types"></a>
 # Return Types
 
 `integer
 ` bookmark id.
 
+<a id="id291-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                            | Description |
@@ -4547,6 +10534,7 @@ Open scrollable cursor.
 
 Errors signalled by
 
+<a id="id292-see-also"></a>
 # See Also
 
 [Cursors](#openfetchetcintostmts) in Virtuoso/PL guide
@@ -4567,25 +10555,30 @@ x
 
 double precision
 
+<a id="id293-description"></a>
 # Description
 
 `ceiling
 ` calculates the smallest integer greater than or equal to `x
 ` .
 
+<a id="id294-parameters"></a>
 # Parameters
 
+<a id="id295-x"></a>
 ## x
 
 `double precision
 `
 
+<a id="id296-return-values"></a>
 # Return Values
 
 `ceiling
 ` returns a 32-bit `integer
 ` .
 
+<a id="id297-examples"></a>
 # Examples
 
     SQL> select ceiling (12.3456), ceiling (-12.3456), ceiling (0.513513);
@@ -4597,6 +10590,7 @@ double precision
     
     1 Rows. -- 4 msec.
 
+<a id="id298-see-also"></a>
 # See Also
 
 [`floor
@@ -4624,26 +10618,32 @@ section
 
 varchar
 
+<a id="id299-description"></a>
 # Description
 
 Return the number of items that exist in the specified section of the
 INI file.
 
+<a id="id300-parameters"></a>
 # Parameters
 
+<a id="id301-path"></a>
 ## path
 
 Name of the INI file.
 
+<a id="id302-section"></a>
 ## section
 
 Name of the section in the INI file.
 
+<a id="id303-return-values"></a>
 # Return Values
 
 An `integer
 ` containing the number of items that exist in the section.
 
+<a id="id304-examples"></a>
 # Examples
 
 Find number of items in the \[Parameters\] section of the current
@@ -4656,6 +10656,7 @@ virtuoso.ini file.
     
     19
 
+<a id="id305-see-also"></a>
 # See Also
 
 [`virtuoso_ini_path
@@ -4694,6 +10695,7 @@ item\_index
 
 integer
 
+<a id="id306-description"></a>
 # Description
 
 Returns the name of the item specified by item\_index (begins from
@@ -4701,20 +10703,25 @@ zero). If the index and section name do not point to a valid item, then
 zero is returned, otherwise on success the function returns the item
 name.
 
+<a id="id307-parameters"></a>
 # Parameters
 
+<a id="id308-path"></a>
 ## path
 
 Name of the INI file.
 
+<a id="id309-section"></a>
 ## section
 
 Name of the section in the INI file.
 
+<a id="id310-item_index"></a>
 ## item\_index
 
 Zero based index to the item within the section to be listed.
 
+<a id="id311-return-values"></a>
 # Return Values
 
 A `varchar
@@ -4722,6 +10729,7 @@ A `varchar
 ` and `item_index
 ` .
 
+<a id="id312-examples"></a>
 # Examples
 
 Display the first keyname in the \[Parameters\] section of the current
@@ -4734,6 +10742,7 @@ virtuoso.ini file.
     
     ServerPort
 
+<a id="id313-see-also"></a>
 # See Also
 
 [`virtuoso_ini_path
@@ -4772,31 +10781,38 @@ item\_name
 
 varchar
 
+<a id="id314-description"></a>
 # Description
 
 Return the value of an item identified by `item_name` and `section`
 parameters from the specified INI file.
 
+<a id="id315-parameters"></a>
 # Parameters
 
+<a id="id316-path"></a>
 ## path
 
 Name of the INI file.
 
+<a id="id317-section"></a>
 ## section
 
 Name of the section in the INI file.
 
+<a id="id318-item_name"></a>
 ## item\_name
 
 Name of the item in the section.
 
+<a id="id319-return-values"></a>
 # Return Values
 
 A `varchar
 ` containing the item value. Return zero if section or item\_name is
 invalid.
 
+<a id="id320-examples"></a>
 # Examples
 
 Read the value of the ServerPort item from the \[Parameters\] section of
@@ -4809,6 +10825,7 @@ the current virtuoso.ini file.
     
     1112
 
+<a id="id321-see-also"></a>
 # See Also
 
 [`virtuoso_ini_path
@@ -4835,21 +10852,26 @@ path
 
 varchar
 
+<a id="id322-description"></a>
 # Description
 
 Returns the number of sections in an INI file.
 
+<a id="id323-parameters"></a>
 # Parameters
 
+<a id="id324-path"></a>
 ## path
 
 Name of the INI file.
 
+<a id="id325-return-values"></a>
 # Return Values
 
 An `integer
 ` containing the number of sections in the INI file.
 
+<a id="id326-examples"></a>
 # Examples
 
 Find out how many sections are in the current virtuoso.ini file.
@@ -4861,6 +10883,7 @@ Find out how many sections are in the current virtuoso.ini file.
     
     7
 
+<a id="id327-see-also"></a>
 # See Also
 
 [`virtuoso_ini_path
@@ -4893,27 +10916,33 @@ index
 
 integer
 
+<a id="id328-description"></a>
 # Description
 
 Returns the name of section specified by the index (begins from zero).
 If the index can reference a section, the that section name is returned,
 otherwise returns zero on error.
 
+<a id="id329-parameters"></a>
 # Parameters
 
+<a id="id330-path"></a>
 ## path
 
 Name of the INI file.
 
+<a id="id331-index"></a>
 ## index
 
 Zero based index that references a section.
 
+<a id="id332-return-values"></a>
 # Return Values
 
 An `varchar
 ` containing the name of section.
 
+<a id="id333-examples"></a>
 # Examples
 
 Get the second section name from the current virtuoso.ini file.
@@ -4925,6 +10954,7 @@ Get the second section name from the current virtuoso.ini file.
     
     Parameters
 
+<a id="id334-see-also"></a>
 # See Also
 
 [`virtuoso_ini_path
@@ -4969,6 +10999,7 @@ item\_value
 
 varchar
 
+<a id="id335-description"></a>
 # Description
 
 This function requires dba privileges.
@@ -4976,24 +11007,30 @@ This function requires dba privileges.
 This function allows modification of existing entries, or update
 updating existing items in an INI file.
 
+<a id="id336-parameters"></a>
 # Parameters
 
+<a id="id337-path"></a>
 ## path
 
 Name of the INI file.
 
+<a id="id338-section"></a>
 ## section
 
 Name of the section in the INI file.
 
+<a id="id339-item_name"></a>
 ## item\_name
 
 Name of item that will be assigned the item\_value.
 
+<a id="id340-item_value"></a>
 ## item\_value
 
 Value to be assigned to the item\_name.
 
+<a id="id341-examples"></a>
 # Examples
 
 Write ServerPort=2222 under the \[Parameters\] section of the current
@@ -5009,6 +11046,7 @@ virtuoso.ini file.
     
     2222
 
+<a id="id342-see-also"></a>
 # See Also
 
 [`virtuoso_ini_path
@@ -5047,33 +11085,40 @@ aliases
 
 any
 
+<a id="id343-description"></a>
 # Description
 
 This function creates a new narrow language-specific character set, or
 redefines an existing one.
 
+<a id="id344-parameters"></a>
 # Parameters
 
+<a id="id345-name"></a>
 ## name
 
 The name of the character set to define. This becomes the "preferred"
 name of the character set.
 
+<a id="id346-charset_string"></a>
 ## charset\_string
 
 Wide string with the character codes for each given character from 1 to
 255. That is, a 255-byte long NCHAR defining the Unicode codes for
 narrow chars 1-255.
 
+<a id="id347-aliases"></a>
 ## aliases
 
 Vector of character set names that are to be aliases of the character
 set being defined. Use NULL if there are to be no aliases.
 
+<a id="id348-return-types"></a>
 # Return Types
 
 None
 
+<a id="id349-errors"></a>
 # Errors
 
 | sqlstate | error code | error text                                              |
@@ -5086,6 +11131,7 @@ None
 
 Errors signalled by
 
+<a id="id350-examples"></a>
 # Examples
 
 To setup the 4th character to be Unicode 0xffce, and give the character
@@ -5097,6 +11143,7 @@ set 2 aliases, you would make a call like this:
 The character string should contain 255 wide characters that are
 arbitrary unicode values.
 
+<a id="id351-see-also"></a>
 # See Also
 
 [`charsets_list()
@@ -5132,6 +11179,7 @@ dst\_charset
 
 varchar
 
+<a id="id352-description"></a>
 # Description
 
 This function translates a string from a given source charset to a
@@ -5159,8 +11207,10 @@ characters and `wide string
 ` ( `NVARCHAR
 ` ).
 
+<a id="id353-parameters"></a>
 # Parameters
 
+<a id="id354-src_string"></a>
 ## `src_string
 `
 
@@ -5168,17 +11218,20 @@ The input data to be converted. `String
 ` or `wide string.
 `
 
+<a id="id355-src_charset"></a>
 ## `src_charset
 `
 
 Input data character set, `string
 ` .
 
+<a id="id356-dst_charset"></a>
 ## dst\_charset
 
 The charset to convert to, `string
 ` .
 
+<a id="id357-examples"></a>
 # Examples
 
 ``` 
@@ -5193,6 +11246,7 @@ select charset_recode (N'\x410', '_WIDE_', 'ISO-8859-1')
         
 ```
 
+<a id="id358-see-also"></a>
 # See Also
 
 [elh\_get\_handler](#fn_elh_get_handler)
@@ -5221,6 +11275,7 @@ gen\_res\_set
 
 integer
 
+<a id="id359-description"></a>
 # Description
 
 This function produces a list of all character set names and aliases
@@ -5229,8 +11284,10 @@ character set name as each element. If the `gen_res_set` flag is 1, the
 function also produces a result set in which each row contains one
 varchar column with a name of a character set or alias.
 
+<a id="id360-parameters"></a>
 # Parameters
 
+<a id="id361-gen_res_set"></a>
 ## `gen_res_set
 `
 
@@ -5238,16 +11295,19 @@ varchar column with a name of a character set or alias.
 ` flag to determine whether to produce a result set: 0 means no, 1 means
 yes.
 
+<a id="id362-return-types"></a>
 # Return Types
 
 An `array
 ` of `string
 ` , optionally generates a result set of single varchar columns.
 
+<a id="id363-errors"></a>
 # Errors
 
 This function can generate the following errors: SR008SR001
 
+<a id="id364-examples"></a>
 # Examples
 
     SQL> charsets_list(1);
@@ -5277,6 +11337,7 @@ There are 132 predefined character sets in total that would be listed.
     y := aref (x, 1); -- will be '819'
     ....
 
+<a id="id365-see-also"></a>
 # See Also
 
 [`charset_define()
@@ -5300,6 +11361,7 @@ minutes
 
 integer
 
+<a id="id366-description"></a>
 # Description
 
 This function changes the database checkpointing interval to the given
@@ -5323,22 +11385,27 @@ in turn prolongs the time it takes for the database to perform a roll
 forward upon restart in case it was shut down without making a
 checkpoint.
 
+<a id="id367-parameters"></a>
 # Parameters
 
+<a id="id368-minutes"></a>
 ## minutes
 
 `integer
 ` number of minutes between checkpoints.
 
+<a id="id369-return-types"></a>
 # Return Types
 
 Previous value of CheckpointInterval in the configuration file as an
 integer.
 
+<a id="id370-errors"></a>
 # Errors
 
 [Parameter data type checking errors](#datatypeerror)
 
+<a id="id371-examples"></a>
 # Examples
 
 Disable checkpoints:
@@ -5358,6 +11425,7 @@ Re-enable checkpoints (every 2 hrs):
     
     Done. -- 4 msec.
 
+<a id="id372-see-also"></a>
 # See Also
 
 [`backup
@@ -5388,14 +11456,17 @@ chr\_code
 
 long
 
+<a id="id373-description"></a>
 # Description
 
 `chr
 ` returns a new one character long string containing the character with
 character code given as parameter.
 
+<a id="id374-parameters"></a>
 # Parameters
 
+<a id="id375-chr_code"></a>
 ## `chr_code
 `
 
@@ -5404,6 +11475,7 @@ The `LONG
 ` or `wide character
 ` to be produced.
 
+<a id="id376-return-values"></a>
 # Return Values
 
 If the `chr_code
@@ -5412,6 +11484,7 @@ be of type `VARCHAR
 ` . Otherwise the returned type is `NVARCHAR
 ` .
 
+<a id="id377-errors"></a>
 # Errors
 
 |  |  |
@@ -5420,6 +11493,7 @@ be of type `VARCHAR
 
 Errors signalled by chr
 
+<a id="id378-examples"></a>
 # Examples
 
     SQL> select chr (33);
@@ -5474,6 +11548,7 @@ given as argument.
     
     14 Rows. -- 7 msec.
 
+<a id="id379-see-also"></a>
 # See Also
 
 [`aref
@@ -5499,8 +11574,10 @@ attr
 
 varchar
 
+<a id="id380-parameters"></a>
 # Parameters
 
+<a id="id381-attr"></a>
 ## attr
 
 can by one of the following:
@@ -5543,6 +11620,7 @@ log\_enable ()
 
 ); 1 if on (default) .
 
+<a id="id382-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                  |
@@ -5582,22 +11660,27 @@ ADD\_TYPE
 
 integer
 
+<a id="id383-description"></a>
 # Description
 
 This function lets you define a new collation.
 
+<a id="id384-parameters"></a>
 # Parameters
 
+<a id="id385-collation_name"></a>
 ## COLLATION\_NAME
 
 The name to be assigned to the new collation.
 
+<a id="id386-file_path"></a>
 ## FILE\_PATH
 
 The path and file name of the collation definition file. The path must
 be specified in the format appropriate to the operating system hosting
 the Virtuoso server.
 
+<a id="id387-add_type"></a>
 ## ADD\_TYPE
 
 is the type of the new collation: 1 for 8-bit collation (256-byte blob);
@@ -5606,6 +11689,7 @@ instructs the function only to check the validity of the definition file
 and to return a resultset containing the codes of the valid exception
 definitions.
 
+<a id="id388-return-types"></a>
 # Return Types
 
 If 0 is supplied to the ADD\_TYPE parameter then a result set will be
@@ -5635,18 +11719,22 @@ mode
 
 integer
 
+<a id="id389-description"></a>
 # Description
 
 The `complete_table_name()
 ` can be used to make a fully qualified table name from non-qualified
 one, i.e. the qualifier and owner will be added if they are missing.
 
+<a id="id390-parameters"></a>
 # Parameters
 
+<a id="id391-tablename"></a>
 ## tablename
 
 The table name to be retrieved.
 
+<a id="id392-mode"></a>
 ## mode
 
 If this mode parameter is set to 1 this function will first look-up the
@@ -5657,10 +11745,12 @@ will continue as if the mode were set to 0.
 When the mode parameter is 0 the result will be generated using the
 current qualifier and current SQL user account names.
 
+<a id="id393-return-types"></a>
 # Return Types
 
 A string will be returned containing the fully qualified table name.
 
+<a id="id394-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                                                                 | Description |
@@ -5670,6 +11760,7 @@ A string will be returned containing the fully qualified table name.
 
 Errors signalled by
 
+<a id="id395-examples"></a>
 # Examples
 
 This simple example shows retrieval of a fully qualified table name
@@ -5718,6 +11809,7 @@ any
 
 ...
 
+<a id="id396-description"></a>
 # Description
 
 Create a composite object
@@ -5726,18 +11818,22 @@ Returns a composite object containing the serialization of each
 argument. The total serialized length of the arguments may not exceed
 255.
 
+<a id="id397-parameters"></a>
 # Parameters
 
+<a id="id398-x"></a>
 ## `x
 ` ...
 
 The function takes a variable number of parameters of any type.
 
+<a id="id399-return-values"></a>
 # Return Values
 
 A `composite
 ` object
 
+<a id="id400-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                          | Description                                      |
@@ -5746,6 +11842,7 @@ A `composite
 
 Errors signalled by composite
 
+<a id="id401-examples"></a>
 # Examples
 
 Get second component of a composite of two integers. See reference page
@@ -5760,6 +11857,7 @@ for [composite\_ref](#fn_composite_ref) .
     
     1 Rows. -- 6 msec.
 
+<a id="id402-see-also"></a>
 # See Also
 
 `composite_ref
@@ -5790,23 +11888,28 @@ nth
 
 integer
 
+<a id="id403-description"></a>
 # Description
 
 `composite_ref
 ` returns the `nth
 ` element of the composite. The index is 0 based.
 
+<a id="id404-parameters"></a>
 # Parameters
 
+<a id="id405-nth"></a>
 ## nth
 
 `integer
 `
 
+<a id="id406-return-types"></a>
 # Return types
 
 The type returned is the type of the composite member referred to.
 
+<a id="id407-errors"></a>
 # Errors
 
 |       |       |                                               |  |
@@ -5817,6 +11920,7 @@ The type returned is the type of the composite member referred to.
 Errors signalled by `composite_ref
 `
 
+<a id="id408-examples"></a>
 # Examples
 
 Get first member of a composite consisting of `VARCHAR
@@ -5831,6 +11935,7 @@ Get first member of a composite consisting of `VARCHAR
     
     1 Rows. -- 4 msec.
 
+<a id="id409-see-also"></a>
 # See Also
 
 The [Composite Data Type](#compositedatatype) for a definition of the
@@ -5862,6 +11967,7 @@ strn
 
 varchar
 
+<a id="id410-description"></a>
 # Description
 
 `concat
@@ -5878,11 +11984,13 @@ returns a copy of `str` .
 returns an empty `string
 ` .
 
+<a id="id411-parameters"></a>
 # Parameters
 
 Concat takes a variable number of `string
 ` arguments.
 
+<a id="id412-return-types"></a>
 # Return types
 
 The `concat
@@ -5890,6 +11998,7 @@ The `concat
 arguments, the string returned will also be `wide
 ` .
 
+<a id="id413-errors"></a>
 # Errors
 
 |          |            |                                                                                                               |
@@ -5899,6 +12008,7 @@ arguments, the string returned will also be `wide
 
 Errors signalled by concat()
 
+<a id="id414-examples"></a>
 # Examples
 
 Cross a mule with an ass.
@@ -5932,12 +12042,14 @@ any
 
 ...
 
+<a id="id415-description"></a>
 # Description
 
 `Concatenate
 ` is an alias of [`concat
 `](#fn_concat) .
 
+<a id="id416-see-also"></a>
 # See Also
 
 [`concat
@@ -5961,6 +12073,7 @@ name
 
 varchar
 
+<a id="id417-description"></a>
 # Description
 
 `connection_get
@@ -5968,18 +12081,22 @@ varchar
 context. See [`connection_set`](#fn_connection_set) for a more detailed
 discussion of connection variables.
 
+<a id="id418-parameters"></a>
 # Parameters
 
+<a id="id419-name"></a>
 ## name
 
 Name of the connection variable
 
+<a id="id420-return-values"></a>
 # Return Values
 
 A value associated to the connection by connection\_set in the datatype
 of the original value. If the variable does not exist, a NULL is
 returned.
 
+<a id="id421-examples"></a>
 # Examples
 
     SQL> select connection_get('var_demo');
@@ -6009,6 +12126,7 @@ In a VSP page...
   ?>
 ```
 
+<a id="id422-see-also"></a>
 # See Also
 
 [connection\_set](#fn_connection_set)
@@ -6023,6 +12141,7 @@ get connection identifier
 
 connection\_id
 
+<a id="id423-description"></a>
 # Description
 
 This function returns a string uniquely identifying the connection in
@@ -6035,11 +12154,13 @@ number and a serial number of the client.
 > (VSP or SOAP), since consecutive requests by the same client will
 > typically not be on the same connection the way the server sees it.
 
+<a id="id424-return-values"></a>
 # Return Values
 
 A `VARCHAR
 ` connection identifier.
 
+<a id="id425-examples"></a>
 # Examples
 
     SQL> select connection_id();
@@ -6061,6 +12182,7 @@ integer
 
 connection\_is\_dirty
 
+<a id="id426-description"></a>
 # Description
 
 This function is used to determine if the session variables have changed
@@ -6072,11 +12194,13 @@ calls to `connection_is_dirty` to return true.
 The function is useful in postprocessing functions for making
 conditional storage of session variables in a database table.
 
+<a id="id427-return-values"></a>
 # Return Values
 
 An `INTEGER
 ` indicating true (1) or false (0).
 
+<a id="id428-examples"></a>
 # Examples
 
 ``` 
@@ -6089,6 +12213,7 @@ An `INTEGER
   ?>
 ```
 
+<a id="id429-see-also"></a>
 # See Also
 
 [connection\_get](#fn_connection_get)
@@ -6121,6 +12246,7 @@ value
 
 any
 
+<a id="id430-description"></a>
 # Description
 
 This associates a value to the name in the context of present
@@ -6144,13 +12270,16 @@ function into an external session structure. In this sense this function
 itself has nothing to do with web session management although it can be
 used as a component for such.
 
+<a id="id431-parameters"></a>
 # Parameters
 
+<a id="id432-name"></a>
 ## name
 
 `VARCHAR
 ` name to associate the value with.
 
+<a id="id433-value"></a>
 ## value
 
 `value
@@ -6158,10 +12287,12 @@ used as a component for such.
 entity. If the value is an `array
 ` , it may not contain the restricted types.
 
+<a id="id434-return-values"></a>
 # Return Values
 
 None
 
+<a id="id435-errors"></a>
 # Errors
 
 | SQLState | Error Code | Error Text                                                                     | Description |
@@ -6170,6 +12301,7 @@ None
 
 Errors signalled by connection\_set
 
+<a id="id436-examples"></a>
 # Examples
 
 From SQL
@@ -6201,6 +12333,7 @@ From a VSP page
   ?>
 ```
 
+<a id="id437-see-also"></a>
 # See Also
 
 [connection\_get](#fn_connection_get)
@@ -6221,6 +12354,7 @@ any
 
 connection\_vars
 
+<a id="id438-description"></a>
 # Description
 
 This function returns all stored session variables in an array with
@@ -6230,10 +12364,12 @@ Connection variables do not persist across sessions, one may maintain
 persistence of variables by storing them in a database table: see the
 [Session Variables](#wssessman) Section.
 
+<a id="id439-return-types"></a>
 # Return Types
 
 Array of name-value pairs of all connection variables.
 
+<a id="id440-examples"></a>
 # Examples
 
 ``` 
@@ -6244,6 +12380,7 @@ Array of name-value pairs of all connection variables.
   ?>
 ```
 
+<a id="id441-see-also"></a>
 # See Also
 
 [connection\_get](#fn_connection_get)
@@ -6268,6 +12405,7 @@ var\_array
 
 any
 
+<a id="id442-description"></a>
 # Description
 
 This function clears all connection variables for current session and
@@ -6277,14 +12415,17 @@ Connection variables do not persist across sessions, one may maintain
 persistence of variables by storing them in a database table, as
 discussed in [Session Variables](#wssessman) -section.
 
+<a id="id443-parameters"></a>
 # Parameters
 
+<a id="id444-var_array"></a>
 ## var\_array
 
 An `array
 ` of even number of elements, containing name-value pairs. NULL, will
 cause all connection variables for current connection to be erased.
 
+<a id="id445-examples"></a>
 # Examples
 
 ``` 
@@ -6317,6 +12458,7 @@ cause all connection variables for current connection to be erased.
     
     1 Rows. -- 80 msec.
 
+<a id="id446-see-also"></a>
 # See Also
 
 [connection\_get](#fn_connection_get)
@@ -6349,6 +12491,7 @@ opt\_or\_value
 
 integer
 
+<a id="id447-description"></a>
 # Description
 
 This is a SQL predicate that specifies a condition on a column on which
@@ -6366,19 +12509,23 @@ A virtual column named 'SCORE' is available in queries involving a
 or used for sorting. Note that the name is in upper case and is case
 sensitive in all case modes.
 
+<a id="id448-parameters"></a>
 # Parameters
 
+<a id="id449-column"></a>
 ## `column
 `
 
 The table column whose contents are free text indexed
 
+<a id="id450-expression"></a>
 ## `expression
 `
 
 A `string
 ` matching the grammar of a text search expression.
 
+<a id="id451-opt_or_value"></a>
 ## `opt_or_value
 `
 
@@ -6416,10 +12563,12 @@ May be one or more of the following:
     column must have been declared as offband with the *CLUSTERED WITH*
     option of the *CREATE TEXT INDEX* statement.
 
+<a id="id452-return-types"></a>
 # Return Types
 
 The contains is a predicate, therefore returning a `boolean` .
 
+<a id="id453-examples"></a>
 # Examples
 
   - Return the number of documents with one or more occurrences of
@@ -6472,6 +12621,7 @@ The contains is a predicate, therefore returning a `boolean` .
 > Note that the NEAR connective may not be used between AND'ed or OR'ed
 > terms. It can be used to combine words or phrases.
 
+<a id="id454-see-also"></a>
 # See Also
 
 `xpath_contains()
@@ -6499,6 +12649,7 @@ fname
 
 varchar
 
+<a id="id455-description"></a>
 # Description
 
 This function accepts one argument with name of file containing test
@@ -6507,16 +12658,20 @@ coverage data. The expected format of the file is described in the
 with the data already collected by Virtuoso. More than one file can be
 loaded. The ultimate report will be the union of all files.
 
+<a id="id456-parameters"></a>
 # Parameters
 
+<a id="id457-fname"></a>
 ## fname
 
 Name of coverage file to load.
 
+<a id="id458-return-types"></a>
 # Return Types
 
 None.
 
+<a id="id459-see-also"></a>
 # See Also
 
 [`cov_store()
@@ -6553,6 +12708,7 @@ outdir
 
 varchar
 
+<a id="id460-description"></a>
 # Description
 
 This function is used to produce a coverage report in text format. The
@@ -6565,20 +12721,25 @@ execution times, once ranked by self time, once by time spent inside the
 function and functions called from there. Note that directory must
 exists before calling this function.
 
+<a id="id461-parameters"></a>
 # Parameters
 
+<a id="id462-fname"></a>
 ## fname
 
 Name of coverage report file.
 
+<a id="id463-outdir"></a>
 ## outdir
 
 Destination directory for storing .cov coverage files.
 
+<a id="id464-return-types"></a>
 # Return Types
 
 None.
 
+<a id="id465-see-also"></a>
 # See Also
 
 [`cov_load()
@@ -6615,6 +12776,7 @@ add\_comments
 
 integer
 
+<a id="id466-description"></a>
 # Description
 
 This function is used to produce a coverage file called `fname` . The
@@ -6623,21 +12785,26 @@ Coverage](#pldbgplcoverage) section. By default a normal concise
 coverage will be produced. If the `add_comment` parameter is set to 1
 then the coverage will include code excerpts contained in line entities.
 
+<a id="id467-parameters"></a>
 # Parameters
 
+<a id="id468-fname"></a>
 ## fname
 
 Name of coverage file to load.
 
+<a id="id469-add_comments"></a>
 ## add\_comments
 
 This flag controls whether to use coverage extensions. By default this
 is 0. If 1 is supplied then extensions are used.
 
+<a id="id470-return-types"></a>
 # Return Types
 
 None.
 
+<a id="id471-see-also"></a>
 # See Also
 
 [`cov_load()
@@ -6686,37 +12853,45 @@ wellformed
 
 any
 
+<a id="id472-description"></a>
 # Description
 
 This function creates an XMLType instance. It works absolutely
 identically to the [`XMLType()`](#fn_xmltype.xmltype) constructor and is
 provided solely for compatibility.
 
+<a id="id473-parameters"></a>
 # Parameters
 
+<a id="id474-src"></a>
 ## src
 
 An XML entity or a value that can be converted to an XML entity.
 
+<a id="id475-schema_uri"></a>
 ## schema\_uri
 
 An URI of the schema of the document. The default is NULL to make result
 non-schema based.
 
+<a id="id476-validated"></a>
 ## validated
 
 An integer flag that indicates if the document is already validated
 against the schema of the document (this is to avoid redundant
 validations). The default is 0.
 
+<a id="id477-wellformed"></a>
 ## wellformed
 
 This parameter is unused and is listed solely for compatibility.
 
+<a id="id478-return-types"></a>
 # Return Types
 
 The function returns a new instance of XMLType.
 
+<a id="id479-examples"></a>
 # Examples
 
     create table XMLTYPE_TEST (I integer primary key, XMLVAL long xml)
@@ -6742,6 +12917,7 @@ The function returns a new instance of XMLType.
     
     1 Rows. -- 00000 msec.
 
+<a id="id480-see-also"></a>
 # See Also
 
 [`XMLType()
@@ -6777,16 +12953,19 @@ time
 
 curtime
 
+<a id="id481-description"></a>
 # Description
 
 These functions return the current date or time as a date, time or
 datetime, respectively. Internally they all return the same value but
 data type reported to client differs.
 
+<a id="id482-parameters"></a>
 # Parameters
 
 None.
 
+<a id="id483-return-types"></a>
 # Return Types
 
 In a result set to client, the column types reported are as follows:
@@ -6798,10 +12977,12 @@ In a result set to client, the column types reported are as follows:
 ` for `curdatetime
 ` .
 
+<a id="id484-errors"></a>
 # Errors
 
 These functions do not signal errors.
 
+<a id="id485-examples"></a>
 # Examples
 
 Get current date in different datatypes
@@ -6813,6 +12994,7 @@ Get current date in different datatypes
     
     2001.10.12  11:21.51  2001-10-12 11:21:51
 
+<a id="id486-see-also"></a>
 # See Also
 
 [`now
@@ -6848,6 +13030,7 @@ ignore\_timezone
 
 integer
 
+<a id="id487-description"></a>
 # Description
 
 The function returns its first argument as a timezoned value. If the
@@ -6857,16 +13040,20 @@ the result is timezoneless value that "looks like" local time notation.
 If the first argument is timezoned and second argument is nonzero then
 the value is first made GMT and then it becomes timezoneless.
 
+<a id="id488-parameters"></a>
 # Parameters
 
+<a id="id489-dt"></a>
 ## dt
 
 Datetime value.
 
+<a id="id490-ignore_timezone"></a>
 ## ignore\_timezone
 
 Flag
 
+<a id="id491-examples"></a>
 # Examples
 
     SQL> select cast (forget_timezone (cast ('1999-12-31 11:59+02:00' as datetime)) as varchar);
@@ -6874,6 +13061,7 @@ Flag
     '1999-12-31 11:59:00'
     No. of rows in result: 1
 
+<a id="id492-see-also"></a>
 # See Also
 
 [`now
@@ -6930,16 +13118,20 @@ dt
 
 datetime
 
+<a id="id493-description"></a>
 # Description
 
 The function returns 1 for timezoneless arguments, zero for timezoned.
 
+<a id="id494-parameters"></a>
 # Parameters
 
+<a id="id495-dt"></a>
 ## dt
 
 Datetime value.
 
+<a id="id496-examples"></a>
 # Examples
 
     SQL> select is_timezoneless (cast ('1999-12-31 11:59' as datetime));
@@ -6947,6 +13139,7 @@ Datetime value.
      0
     No. of rows in result: 1
 
+<a id="id497-see-also"></a>
 # See Also
 
 [`now
@@ -7016,6 +13209,7 @@ ignore\_timezone
 
 integer
 
+<a id="id498-description"></a>
 # Description
 
 The function returns its first argument with unchanged GMT value but new
@@ -7025,20 +13219,25 @@ error 22023 is signaled. If the first argument is timezoneless and third
 argument is nonzero then no error is signaled and the argument is
 handled like it is a GMT value.
 
+<a id="id499-parameters"></a>
 # Parameters
 
+<a id="id500-dt"></a>
 ## dt
 
 Datetime value.
 
+<a id="id501-tz_offset"></a>
 ## tz\_offset
 
 Timezone offset.
 
+<a id="id502-ignore_timezone"></a>
 ## ignore\_timezone
 
 Flag.
 
+<a id="id503-examples"></a>
 # Examples
 
     SQL> SELECT adjust_timezone(cast('2014-12-31 15:00-12:00' as datetime),0,1) ;
@@ -7046,6 +13245,7 @@ Flag.
     2015-01-01 03:00:00
     No. of rows in result: 1
 
+<a id="id504-see-also"></a>
 # See Also
 
 [`now
@@ -7094,6 +13294,7 @@ returns the current transaction timestamp
 
 rdf\_now\_impl
 
+<a id="id505-description"></a>
 # Description
 
 This function returns the timestamp associated with current transaction
@@ -7106,6 +13307,7 @@ within the second. If `TimezonelessDatetimes=0` then the time has local
 timezone offset (as it was set at the time of last server start);
 otherwise it is timezoneless.
 
+<a id="id506-parameters"></a>
 # Parameters
 
 ## 

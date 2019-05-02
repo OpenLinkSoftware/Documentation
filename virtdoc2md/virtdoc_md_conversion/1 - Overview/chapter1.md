@@ -1,5 +1,111 @@
 # Overview
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [What is Virtuoso?](#id1-what-is-virtuoso)
+  * [Why Do I Need Virtuoso?](#id2-why-do-i-need-virtuoso)
+  * [Key Features of Virtuoso](#id3-key-features-of-virtuoso)
+    * [XML Document Storage & Creation](#id4-xml-document-storage-creation)
+    * [Web Page Hosting](#id5-web-page-hosting)
+    * [Web Services Creation & Hosting](#id6-web-services-creation-hosting)
+    * [WebDAV Compliant Web Store](#id7-webdav-compliant-web-store)
+    * [Content Replication & Synchronization](#id8-content-replication-synchronization)
+    * [Transparent Access To Heterogeneous Data](#id9-transparent-access-to-heterogeneous-data)
+    * [Mail Delivery & Retrieval Services](#id10-mail-delivery-retrieval-services)
+    * [NNTP Aggregation & Serving](#id11-nntp-aggregation-serving)
+  * [Virtuoso FAQ](#id12-virtuoso-faq)
+    * [What is the storage cost per triple?](#id13-what-is-the-storage-cost-per-triple)
+    * [What is the cost to insert a triple (for the insertion itself, as well as for updating any indices)?](#id14-what-is-the-cost-to-insert-a-triple-for-the-insertion-itself-as-well-as-for-updating-any-indices)
+    * [What is the cost to delete a triple (for the deletion itself, as well as for updating any indices)?](#id15-what-is-the-cost-to-delete-a-triple-for-the-deletion-itself-as-well-as-for-updating-any-indices)
+    * [What is the cost to search on a given property?](#id16-what-is-the-cost-to-search-on-a-given-property)
+    * [What data types are supported?](#id17-what-data-types-are-supported)
+    * [What inferencing is supported?](#id18-what-inferencing-is-supported)
+    * [Is the inferencing dynamic, or is an extra step required before inferencing can be used?](#id19-is-the-inferencing-dynamic-or-is-an-extra-step-required-before-inferencing-can-be-used)
+    * [Do you support full-text search?](#id20-do-you-support-full-text-search)
+    * [What programming interfaces are supported? Do you support standard SPARQL protocol?](#id21-what-programming-interfaces-are-supported-do-you-support-standard-sparql-protocol)
+    * [How can data be partitioned across multiple servers?](#id22-how-can-data-be-partitioned-across-multiple-servers)
+    * [How many triples can a single server handle?](#id23-how-many-triples-can-a-single-server-handle)
+    * [What is the performance impact of going from the billion to the trillion triples?](#id24-what-is-the-performance-impact-of-going-from-the-billion-to-the-trillion-triples)
+    * [Do you support additional metadata for triples, such as time-stamps, security tags etc?](#id25-do-you-support-additional-metadata-for-triples-such-as-time-stamps-security-tags-etc)
+    * [Should we use RDF for our large metadata store? What are the alternatives?](#id26-should-we-use-rdf-for-our-large-metadata-store-what-are-the-alternatives)
+    * [How multithreaded is Virtuoso?](#id27-how-multithreaded-is-virtuoso)
+    * [Can multiple servers run off a single shared disk database?](#id28-can-multiple-servers-run-off-a-single-shared-disk-database)
+    * [Can Virtuoso run on a SAN?](#id29-can-virtuoso-run-on-a-san)
+    * [How does Virtuoso join across partitions?](#id30-how-does-virtuoso-join-across-partitions)
+    * [Does Virtuoso support federated triple stores? If there are multiple SPARQL end points, can Virtuoso be used to do queries joining between these?](#id31-does-virtuoso-support-federated-triple-stores-if-there-are-multiple-sparql-end-points-can-virtuoso-be-used-to-do-queries-joining-between-these)
+    * [How many servers can a cluster contain?](#id32-how-many-servers-can-a-cluster-contain)
+    * [How do I reconfigure a cluster, adding and removing machines, etc?](#id33-how-do-i-reconfigure-a-cluster-adding-and-removing-machines-etc)
+    * [How will Virtuoso handle regional clusters?](#id34-how-will-virtuoso-handle-regional-clusters)
+    * [Is there a mechanism for terminating long running queries?](#id35-is-there-a-mechanism-for-terminating-long-running-queries)
+    * [Can the user be asynchronously notified when a long running query terminates?](#id36-can-the-user-be-asynchronously-notified-when-a-long-running-query-terminates)
+    * [How many concurrent queries can Virtuoso handle?](#id37-how-many-concurrent-queries-can-virtuoso-handle)
+    * [What is the relative performance of SPARQL queries vs native relational queries?](#id38-what-is-the-relative-performance-of-sparql-queries-vs-native-relational-queries)
+    * [Does Virtuoso Support Property Tables?](#id39-does-virtuoso-support-property-tables)
+    * [What performance metrics does Virtuoso offer?](#id40-what-performance-metrics-does-virtuoso-offer)
+    * [What support do you provide for concurrent/multithreaded operation? Is your interface thread-safe?](#id41-what-support-do-you-provide-for-concurrentmultithreaded-operation-is-your-interface-thread-safe)
+    * [What level of ACID properties is supported?](#id42-what-level-of-acid-properties-is-supported)
+    * [Do you provide the ability to atomically add a set of triples, where either all are added or none are added?](#id43-do-you-provide-the-ability-to-atomically-add-a-set-of-triples-where-either-all-are-added-or-none-are-added)
+    * [Do you provide the ability to add a set of triples, respecting the isolation property (so concurrent accessors either see none of the triple values, or all of them)?](#id44-do-you-provide-the-ability-to-add-a-set-of-triples-respecting-the-isolation-property-so-concurrent-accessors-either-see-none-of-the-triple-values-or-all-of-them)
+    * [What is the time to start a database, create/open a graph?](#id45-what-is-the-time-to-start-a-database-createopen-a-graph)
+    * [What sort of security features are built into Virtuoso?](#id46-what-sort-of-security-features-are-built-into-virtuoso)
+  * [Tips and Tricks](#id47-tips-and-tricks)
+    * [How Can I convert triples with geo properties to geometries to use spartial query?](#id48-how-can-i-convert-triples-with-geo-properties-to-geometries-to-use-spartial-query)
+    * [How Can I execute SPARQL queries containing '$' character using ISQL?](#id49-how-can-i-execute-sparql-queries-containing-character-using-isql)
+    * [How can I find on which table deadlocks occur?](#id50-how-can-i-find-on-which-table-deadlocks-occur)
+    * [How Can I configure parameters to avoid out of memory error?](#id51-how-can-i-configure-parameters-to-avoid-out-of-memory-error)
+    * [What are "Generate RDB2RDF triggers" and "Enable Data Syncs with Physical Quad Store" Linked Data Views options?](#id52-what-are-generate-rdb2rdf-triggers-and-enable-data-syncs-with-physical-quad-store-linked-data-views-options)
+    * [How to Manage Date Range SPARQL queries?](#id53-how-to-manage-date-range-sparql-queries)
+    * [How can I see which quad storages exist and in which quad storage a graph resides?](#id54-how-can-i-see-which-quad-storages-exist-and-in-which-quad-storage-a-graph-resides)
+    * [Can I drop and re-create the DefaultQuadStorage?](#id55-can-i-drop-and-re-create-the-defaultquadstorage)
+    * [How to display only some information from RDF graph?](#id56-how-to-display-only-some-information-from-rdf-graph)
+    * [Is it possible to have the SPARQL endpoint on a different port than the Conductor?](#id57-is-it-possible-to-have-the-sparql-endpoint-on-a-different-port-than-the-conductor)
+    * [How to enable the Virtuoso Entity Framework 3.5 ADO.Net Provider in Visual Studio 2010?](#id58-how-to-enable-the-virtuoso-entity-framework-35-adonet-provider-in-visual-studio-2010)
+    * [How Can I Control the normalization of UNICODE3 accented chars in free-text index?](#id59-how-can-i-control-the-normalization-of-unicode3-accented-chars-in-free-text-index)
+    * [How Can I define graph with virt:rdf\_sponger option set to "on"?](#id60-how-can-i-define-graph-with-virtrdf_sponger-option-set-to-on)
+    * [How can I handle checkpoint condition?](#id61-how-can-i-handle-checkpoint-condition)
+    * [How can I incorporate Content Negotiation into RDF bulk loaders?](#id62-how-can-i-incorporate-content-negotiation-into-rdf-bulk-loaders)
+    * [Virtuoso Linked Data Deployment In 3 Simple Steps?](#id63-virtuoso-linked-data-deployment-in-3-simple-steps)
+    * [What are the differences between create, drop, clear and delete Graph?](#id64-what-are-the-differences-between-create-drop-clear-and-delete-graph)
+    * [How can I perform search for predicate values?](#id65-how-can-i-perform-search-for-predicate-values)
+    * [How can I use INSERT via CONSTRUCT Statements?](#id66-how-can-i-use-insert-via-construct-statements)
+    * [How to clear graphs which are related to empty graphs?](#id67-how-to-clear-graphs-which-are-related-to-empty-graphs)
+    * [How can I use sub-queries to enable literal values based joins?](#id68-how-can-i-use-sub-queries-to-enable-literal-values-based-joins)
+    * [How can I execute query with labels preference order?](#id69-how-can-i-execute-query-with-labels-preference-order)
+    * [How can I get object datatype?](#id70-how-can-i-get-object-datatype)
+    * [How Can I Backup and Restore individual table(s) and individual index(s)?](#id71-how-can-i-backup-and-restore-individual-tables-and-individual-indexs)
+    * [What bif:contains free-text options can I use?](#id72-what-bifcontains-free-text-options-can-i-use)
+    * [What SPARQL Endpoint Protection Methods can I use?](#id73-what-sparql-endpoint-protection-methods-can-i-use)
+    * [How do I assign SPARQL role to SQL user?](#id74-how-do-i-assign-sparql-role-to-sql-user)
+    * [How Do I Gecode Data?](#id75-how-do-i-gecode-data)
+    * [How Can I Delete a Specific Triple Across Graphs?](#id76-how-can-i-delete-a-specific-triple-across-graphs)
+    * [How Do I Use NOT EXISTS in SPARQL Query?](#id77-how-do-i-use-not-exists-in-sparql-query)
+    * [How Do I Use MINUS in SPARQL Query?](#id78-how-do-i-use-minus-in-sparql-query)
+    * [How Do I Use Transitive SPARQL Query Options and Exploit Inference Rules?](#id79-how-do-i-use-transitive-sparql-query-options-and-exploit-inference-rules)
+    * [What is the difference between the functions SAMPLE, GROUP\_CONCAT and GROUP\_DIGEST?](#id80-what-is-the-difference-between-the-functions-sample-group_concat-and-group_digest)
+    * [How Do I use CONSTRUCT with objects which are value of aggregate function?](#id81-how-do-i-use-construct-with-objects-which-are-value-of-aggregate-function)
+    * [How Do I Clean Up Errant Data using SPARQL Update Language?](#id82-how-do-i-clean-up-errant-data-using-sparql-update-language)
+    * [How to Use SPARQL to add missing isDefinedBy relations to an Ontology?](#id83-how-to-use-sparql-to-add-missing-isdefinedby-relations-to-an-ontology)
+    * [How Can I execute load of sql dump from jdbc?](#id84-how-can-i-execute-load-of-sql-dump-from-jdbc)
+    * [How Can I Use MODIFY to update triples?](#id85-how-can-i-use-modify-to-update-triples)
+    * [How Can I execute INSERT/DELETE (SPARUL) statements against a WebID? protected SPARQL endpoint?](#id86-how-can-i-execute-insertdelete-sparul-statements-against-a-webid-protected-sparql-endpoint)
+    * [How can I make HTTP Logging and Recording in Virtuoso?](#id87-how-can-i-make-http-logging-and-recording-in-virtuoso)
+    * [Quad Store Data Loading via Virtuoso's In-built Content Crawler?](#id88-quad-store-data-loading-via-virtuosos-in-built-content-crawler)
+    * [What is the ShortenLongURIs Virtuoso configuration parameter?](#id89-what-is-the-shortenlonguris-virtuoso-configuration-parameter)
+    * [How Can I send SOAP requests to Virtuoso SPARQL Endpoint?](#id90-how-can-i-send-soap-requests-to-virtuoso-sparql-endpoint)
+    * [How Can I Delete Triples containing blank nodes?](#id91-how-can-i-delete-triples-containing-blank-nodes)
+    * [How Can I Get a full explain plan for a simple SPARQL query?](#id92-how-can-i-get-a-full-explain-plan-for-a-simple-sparql-query)
+    * [How Can I Use Expressions inside CONSTRUCT, INSERT and DELETE {...} Templates?](#id93-how-can-i-use-expressions-inside-construct-insert-and-delete-templates)
+    * [How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?](#id94-how-to-optimize-bifdateadd-in-sparql-query-using-selective-index-friendly-filter)
+    * [How can I Determine the data usage across a Virtuoso instance?](#id95-how-can-i-determine-the-data-usage-across-a-virtuoso-instance)
+    * [How to discover the capabilities of a SPARQL endpoint to enhancing SPARQL-FED usage from Virtuoso instances?](#id96-how-to-discover-the-capabilities-of-a-sparql-endpoint-to-enhancing-sparql-fed-usage-from-virtuoso-instances)
+    * [How to split a urlencoded ";-" separated list of urls in a SPARQL query?](#id97-how-to-split-a-urlencoded-separated-list-of-urls-in-a-sparql-query)
+    * [How to Update Large SPARQL Data avoiding due to database checkpoint abortion?](#id98-how-to-update-large-sparql-data-avoiding-due-to-database-checkpoint-abortion)
+    * [How to Manage SSL Protocols and Ciphers used with Virtuoso?](#id99-how-to-manage-ssl-protocols-and-ciphers-used-with-virtuoso)
+
+<!--- TOC: End --->
+<a id="id1-what-is-virtuoso"></a>
 # What is Virtuoso?
 
 OpenLink Virtuoso is the first CROSS PLATFORM Universal Server to
@@ -36,6 +142,7 @@ Further still, Virtuoso exposes all of its functionality to Web
 Services. This means that your existing infrastructure can be used
 support Web Services directly without any hint of replacement.
 
+<a id="id2-why-do-i-need-virtuoso"></a>
 # Why Do I Need Virtuoso?
 
 You need Virtuoso because Knowledge is power or competitive advantage
@@ -91,10 +198,12 @@ professional services expertise capable of handling the most demanding
 eBusiness application development, deployment, and integration
 challenges.
 
+<a id="id3-key-features-of-virtuoso"></a>
 # Key Features of Virtuoso
 
 ![OpenLink Virtuoso Product Architecture](./images/varch32.jpg)
 
+<a id="id4-xml-document-storage-creation"></a>
 ## XML Document Storage & Creation
 
 Virtuoso enables you to develop eBusiness solutions that use *XML* as a
@@ -109,6 +218,7 @@ language. The Virtuoso Server provides some basic support for the
 [*XQuery 1.0* XML Query Language](#xq) specification. There is *XML
 Schema* support for extending Virtuoso Data types used by SOAP Services.
 
+<a id="id5-web-page-hosting"></a>
 ## Web Page Hosting
 
 Virtuoso has an integrated HTTP web server, for static HTML pages, or
@@ -116,6 +226,7 @@ dynamic content using [Virtuoso Server Pages (*VSP* )](#vsp1) . Hosting
 and execution of *PHP4* scripts is supported via Virtuoso Server
 Extensions Interface (VSEI) for Zend.
 
+<a id="id6-web-services-creation-hosting"></a>
 ## Web Services Creation & Hosting
 
 Enables the creation of *SOAP* compliant Web Services from SQL Stored
@@ -126,6 +237,7 @@ Services. As a *UDDI* server (registry) all of your Web Services can be
 stored for access across the internet or within an intranet. It can also
 synchronize data with other UDDI servers.
 
+<a id="id7-webdav-compliant-web-store"></a>
 ## WebDAV Compliant Web Store
 
 *WebDAV* support enables Virtuoso to act as the Web Content Store for
@@ -134,12 +246,14 @@ files. WebDAV support also enables Virtuoso to play the familiar roles
 of a FILE & WEB SERVER, hosting entire Web sites within a single
 database file, or across multiple database files.
 
+<a id="id8-content-replication-synchronization"></a>
 ## Content Replication & Synchronization
 
 Virtuoso's sophisticated data replication and synchronization engine
 enables the automated distribution and updating of SQL and Web Content
 across distributed Virtuoso servers.
 
+<a id="id9-transparent-access-to-heterogeneous-data"></a>
 ## Transparent Access To Heterogeneous Data
 
 Virtuoso's Virtual Database Engine enables you to produce Dynamic Web
@@ -147,12 +261,14 @@ Content from any major database management system. This enables dynamic,
 real-time HTML and XML generation from any number of different database
 engines concurrently.
 
+<a id="id10-mail-delivery-retrieval-services"></a>
 ## Mail Delivery & Retrieval Services
 
 Virtuoso can act as an *SMTP* , *POP3* , and *IMAP4* proxy to any email
 client. This enables the development and deployment of sophisticated
 database driven email solutions.
 
+<a id="id11-nntp-aggregation-serving"></a>
 ## NNTP Aggregation & Serving
 
 Virtuoso supports the Network News Transfer Protocol used by Internet
@@ -166,6 +282,7 @@ also acts as an NNTP server, enabling creation of new Internet and
 Intranet News Forums to leverage the global knowledgebase into eBusiness
 Intelligence.
 
+<a id="id12-virtuoso-faq"></a>
 # Virtuoso FAQ
 
 We have received various inquiries on high-end metadata stores. We will
@@ -187,6 +304,7 @@ here go through some salient questions. The requested features include:
 
 *Questions:*
 
+<a id="id13-what-is-the-storage-cost-per-triple"></a>
 ## What is the storage cost per triple?
 
 This depends on the index scheme. If indexed 2 ways, assuming that the
@@ -212,6 +330,7 @@ gzip. Using such compression does not save in terms of RAM because
 cached pages must be kept uncompressed but will cut the disk usage to
 about half.
 
+<a id="id14-what-is-the-cost-to-insert-a-triple-for-the-insertion-itself-as-well-as-for-updating-any-indices"></a>
 ## What is the cost to insert a triple (for the insertion itself, as well as for updating any indices)?
 
 The more triples are inserted at a time, the faster this goes. Also, the
@@ -222,10 +341,12 @@ commodity servers can insert up to 100,000 triples per second.
 A single 4-core machine can load 1 billion triples of LUBM data at an
 average rate of 36K triples per second. This is limited by disk.
 
+<a id="id15-what-is-the-cost-to-delete-a-triple-for-the-deletion-itself-as-well-as-for-updating-any-indices"></a>
 ## What is the cost to delete a triple (for the deletion itself, as well as for updating any indices)?
 
 The delete cost is similar to insert cost.
 
+<a id="id16-what-is-the-cost-to-search-on-a-given-property"></a>
 ## What is the cost to search on a given property?
 
 If we are looking for equality matches, a single 2GHz core can do about
@@ -242,6 +363,7 @@ Lookups involving ranges of values, such as ranges of geographical
 coordinates or dates use an index, since quads are indexed in a manner
 that collates in the natural order of the data type.
 
+<a id="id17-what-data-types-are-supported"></a>
 ## What data types are supported?
 
 Virtuoso supports all RDF data types, including language-tagged and XML
@@ -249,6 +371,7 @@ schema typed strings as native data types. Thus there is no overhead
 converting between RDF data types and types supported by the underlying
 DBMS.
 
+<a id="id18-what-inferencing-is-supported"></a>
 ## What inferencing is supported?
 
 Subclass, subproperty, identity by inverse-functional properties, and
@@ -266,6 +389,7 @@ wide variety of graph algorithms. For example:
 
 would return all the people directly or indirectly known by \<alice\>.
 
+<a id="id19-is-the-inferencing-dynamic-or-is-an-extra-step-required-before-inferencing-can-be-used"></a>
 ## Is the inferencing dynamic, or is an extra step required before inferencing can be used?
 
 The mentioned types of inferencing are enabled by a switch in the query
@@ -304,6 +428,7 @@ very large and queries touch only small parts of it. In such cases,
 materializing implied triples can be very costly. See discussion at [E
 Pluribus Unum](#)
 
+<a id="id20-do-you-support-full-text-search"></a>
 ## Do you support full-text search?
 
 Virtuoso has an optional full-text index on RDF literals. Searching for
@@ -318,6 +443,7 @@ there is extra RDF-specific intelligence built into it. One can, for
 example, specify which properties are indexed, and within which graphs
 this applies.
 
+<a id="id21-what-programming-interfaces-are-supported-do-you-support-standard-sparql-protocol"></a>
 ## What programming interfaces are supported? Do you support standard SPARQL protocol?
 
 Virtuoso supports the standard SPARQL protocol.
@@ -336,6 +462,7 @@ with SPARQL queries embedded, just using the SQL tools. Prefixing a SQL
 query with the keyword "sparql" will invoke SPARQL instead of SQL,
 through any SQL client API.
 
+<a id="id22-how-can-data-be-partitioned-across-multiple-servers"></a>
 ## How can data be partitioned across multiple servers?
 
 Virtuoso Cluster partitions each index of all tables containing RDF data
@@ -354,6 +481,7 @@ With very large deployments, using a degree of application-specific data
 structures may be advisable. See "Does Virtuoso support property
 tables".
 
+<a id="id23-how-many-triples-can-a-single-server-handle"></a>
 ## How many triples can a single server handle?
 
 With free-form data and text indexing enabled, 500M triples per 16G RAM
@@ -378,6 +506,7 @@ graphs makes no difference. There are Virtuoso instances in regular
 online use with hundreds of millions of triples, such as DBpedia and the
 [Neurocommons](#) databases.
 
+<a id="id24-what-is-the-performance-impact-of-going-from-the-billion-to-the-trillion-triples"></a>
 ## What is the performance impact of going from the billion to the trillion triples?
 
 Performance dynamics change when going from a single server to a
@@ -397,6 +526,7 @@ concurrent requests.
 
 See [a sample of SPARQL scalability](#) .
 
+<a id="id25-do-you-support-additional-metadata-for-triples-such-as-time-stamps-security-tags-etc"></a>
 ## Do you support additional metadata for triples, such as time-stamps, security tags etc?
 
 Since quads (triple plus graph) are stored in a regular SQL table with
@@ -422,6 +552,7 @@ for specifics. We can provide consultancy on the best way to do this for
 each application. Altering the storage layout without some extra support
 from us is not recommended.
 
+<a id="id26-should-we-use-rdf-for-our-large-metadata-store-what-are-the-alternatives"></a>
 ## Should we use RDF for our large metadata store? What are the alternatives?
 
 If the application has high heterogeneity of schema and frequent need
@@ -442,6 +573,7 @@ If some customization to the quad (triple plus graph layout) is needed,
 we can provide consultancy on how to do this while staying within the
 general RDF framework and retaining all the interoperability benefits.
 
+<a id="id27-how-multithreaded-is-virtuoso"></a>
 ## How multithreaded is Virtuoso?
 
 All server and client components are multithreaded, using pthreads on
@@ -452,6 +584,7 @@ In the case of Virtuoso Cluster, in order to have the maximum number of
 threads on a single query, we recommend that each server on the cluster
 be running one Virtuoso process per 1.2 cores.
 
+<a id="id28-can-multiple-servers-run-off-a-single-shared-disk-database"></a>
 ## Can multiple servers run off a single shared disk database?
 
 This might be possible with some customization but this is not our
@@ -464,6 +597,7 @@ balancing. On the update side, the cluster will automatically do a
 distributed transaction with two phase commit to keep the duplicates in
 sync.
 
+<a id="id29-can-virtuoso-run-on-a-san"></a>
 ## Can Virtuoso run on a SAN?
 
 Yes. Unlike Oracle RAC, for example, Virtuoso Cluster does not require a
@@ -473,6 +607,7 @@ required. Running on a SAN may still be desirable for administration
 reasons. If using a SAN, the connection to the SAN should be high
 performance, such as Infiniband.
 
+<a id="id30-how-does-virtuoso-join-across-partitions"></a>
 ## How does Virtuoso join across partitions?
 
 Partitioning is entirely transparent to the application. Virtuoso has a
@@ -480,6 +615,7 @@ highly optimized message-flow between cluster nodes that combines
 operations into large batches and evaluates conditions close to the
 data. See a sample of RDF scaling.
 
+<a id="id31-does-virtuoso-support-federated-triple-stores-if-there-are-multiple-sparql-end-points-can-virtuoso-be-used-to-do-queries-joining-between-these"></a>
 ## Does Virtuoso support federated triple stores? If there are multiple SPARQL end points, can Virtuoso be used to do queries joining between these?
 
 This is a planned extension. The logic for optimizing message flow
@@ -493,11 +629,13 @@ End-point meta information, such as voiD descriptions of the graphs in
 the end-points, may be used to avoid sending queries to end points that
 are known not to have a certain type of data.
 
+<a id="id32-how-many-servers-can-a-cluster-contain"></a>
 ## How many servers can a cluster contain?
 
 There is no fixed limit. If you have a large cluster installed, you can
 try Virtuoso there. Having an even point-to-point latency is desirable.
 
+<a id="id33-how-do-i-reconfigure-a-cluster-adding-and-removing-machines-etc"></a>
 ## How do I reconfigure a cluster, adding and removing machines, etc?
 
 We are working on a system whereby servers can be added and removed from
@@ -508,6 +646,7 @@ cluster is set when creating the database. These processes with their
 database files can then be moved between machines but this requires
 stopping the cluster and updating configuration files.
 
+<a id="id34-how-will-virtuoso-handle-regional-clusters"></a>
 ## How will Virtuoso handle regional clusters?
 
 Performance of a cluster depends on the latency and bandwidth of the
@@ -530,6 +669,7 @@ is best to query them separately and merge the results in the
 application. All depends on the application level rules on where data
 resides.
 
+<a id="id35-is-there-a-mechanism-for-terminating-long-running-queries"></a>
 ## Is there a mechanism for terminating long running queries?
 
 Virtuoso SPARQL and SQL offer an "anytime" option that will return
@@ -564,6 +704,7 @@ The SQL client call-level interfaces (ODBC, JDBC, OLE-DB, ADO.NET, XMLA)
 each support a cancel call that can terminate a long running query from
 the application, without needing to disconnect.
 
+<a id="id36-can-the-user-be-asynchronously-notified-when-a-long-running-query-terminates"></a>
 ## Can the user be asynchronously notified when a long running query terminates?
 
 There is no off-the-shelf API for this but making an adaptation of the
@@ -573,6 +714,7 @@ Web services can be programmed directly in Virtuoso's stored procedure
 language, implementing and exposing this type of application logic is
 easy.
 
+<a id="id37-how-many-concurrent-queries-can-virtuoso-handle"></a>
 ## How many concurrent queries can Virtuoso handle?
 
 There is no set limit. As with any DBMS, response times get longer if
@@ -589,6 +731,7 @@ endpoints to divide the connections among the servers and to keep some
 cap on the number of concurrently running requests, enforcing a maximum
 request-rate per client IP address, etc.
 
+<a id="id38-what-is-the-relative-performance-of-sparql-queries-vs-native-relational-queries"></a>
 ## What is the relative performance of SPARQL queries vs native relational queries?
 
 This is application dependent. In Virtuoso, SPARQL and SQL share the
@@ -609,6 +752,7 @@ cost to SPARQL. With some queries there is additional overhead because
 the mapping does not produce a SQL query identical to that specified in
 the benchmark.
 
+<a id="id39-does-virtuoso-support-property-tables"></a>
 ## Does Virtuoso Support Property Tables?
 
 For large applications, we would recommend RDF whenever there is
@@ -626,6 +770,7 @@ columns represent single-valued properties is usually called a property
 table. These can be defined in a manner similar to defining RDF mappings
 of relational tables.
 
+<a id="id40-what-performance-metrics-does-virtuoso-offer"></a>
 ## What performance metrics does Virtuoso offer?
 
 There is an extensive array of performance metrics. This includes:
@@ -647,12 +792,14 @@ There is an extensive array of performance metrics. This includes:
   - Detailed query-execution plans are available through the
     [`explain`](#ch-overview) function
 
+<a id="id41-what-support-do-you-provide-for-concurrentmultithreaded-operation-is-your-interface-thread-safe"></a>
 ## What support do you provide for concurrent/multithreaded operation? Is your interface thread-safe?
 
 All client interfaces and server-side processes are multithreaded. As
 usual, each thread of an application should use a different connection
 to the database.
 
+<a id="id42-what-level-of-acid-properties-is-supported"></a>
 ## What level of ACID properties is supported?
 
 Virtuoso supports all 4 isolation levels from dirty read to
@@ -676,6 +823,7 @@ guarantees consistent results of multithreaded bulk loads.
 Setting this up requires some consultancy and custom development but is
 well worthwhile for large projects.
 
+<a id="id43-do-you-provide-the-ability-to-atomically-add-a-set-of-triples-where-either-all-are-added-or-none-are-added"></a>
 ## Do you provide the ability to atomically add a set of triples, where either all are added or none are added?
 
 Yes. Doing this with millions of triples per transaction may run out of
@@ -684,12 +832,14 @@ run at the same time. For good concurrency, the inserts should be of
 moderate size. As usual, deadlocks are resolved by aborting one of the
 conflicting transactions.
 
+<a id="id44-do-you-provide-the-ability-to-add-a-set-of-triples-respecting-the-isolation-property-so-concurrent-accessors-either-see-none-of-the-triple-values-or-all-of-them"></a>
 ## Do you provide the ability to add a set of triples, respecting the isolation property (so concurrent accessors either see none of the triple values, or all of them)?
 
 Yes. The reading client should specify serializable isolation and the
 inserting client should perform the insert as a transaction, no row
 autocommit mode.
 
+<a id="id45-what-is-the-time-to-start-a-database-createopen-a-graph"></a>
 ## What is the time to start a database, create/open a graph?
 
 Starting a Virtuoso server process takes a few seconds. Making a new
@@ -703,6 +853,7 @@ done a page at a time. To alleviate this, Virtuoso pre-reads 2MB-sized
 extents instead of single pages if there is repeated access to the same
 extent within a short time. Thus cache warm-up times are shortened.
 
+<a id="id46-what-sort-of-security-features-are-built-into-virtuoso"></a>
 ## What sort of security features are built into Virtuoso?
 
 For SQL, we have the standard role-based security and an Oracle-style
@@ -724,8 +875,10 @@ Further, due to the dual-nature of Virtuoso, sophisticated
 ontology-based security models are feasible. Such models are not
 currently used by default, but they are achievable with our consultancy.
 
+<a id="id47-tips-and-tricks"></a>
 # Tips and Tricks
 
+<a id="id48-how-can-i-convert-triples-with-geo-properties-to-geometries-to-use-spartial-query"></a>
 ## How Can I convert triples with geo properties to geometries to use spartial query?
 
 Assuming a Named Graph with the following triples:
@@ -787,6 +940,7 @@ does.
 >     
 >       - [Querying Time and Space Variant II](#)
 
+<a id="id49-how-can-i-execute-sparql-queries-containing-character-using-isql"></a>
 ## How Can I execute SPARQL queries containing '$' character using ISQL?
 
 Assuming a SPARQL query should filter on the length of labels:
@@ -831,6 +985,7 @@ To achieve fast results, *REGEX* should be replaced with the
 In this way the SPARQL query execution can work much faster if the
 interoperability is not required and *?label-s* are numerous.
 
+<a id="id50-how-can-i-find-on-which-table-deadlocks-occur"></a>
 ## How can I find on which table deadlocks occur?
 
 One possible way to find on which table deadlocks occur is to execute
@@ -840,6 +995,7 @@ the following statement:
     FROM SYS_L_STAT
     ORDER BY deadlocks DESC
 
+<a id="id51-how-can-i-configure-parameters-to-avoid-out-of-memory-error"></a>
 ## How Can I configure parameters to avoid out of memory error?
 
 In order to avoid out of memory error, you should make sure the values
@@ -861,6 +1017,7 @@ memory:
 Changing the value of the parameter *MaxCheckpointRemap* with let's say
 1/4 of the DB size will resolve the issue.
 
+<a id="id52-what-are-generate-rdb2rdf-triggers-and-enable-data-syncs-with-physical-quad-store-linked-data-views-options"></a>
 ## What are "Generate RDB2RDF triggers" and "Enable Data Syncs with Physical Quad Store" Linked Data Views options?
 
 These Linked Data Views options basically persist the triples in the
@@ -883,6 +1040,7 @@ to add them manually from isql:
 > 
 > [RDB2RDF Triggers](#rdb2rdftriggers)
 
+<a id="id53-how-to-manage-date-range-sparql-queries"></a>
 ## How to Manage Date Range SPARQL queries?
 
 The following examples demonstrate how to manage date range in a SPARQL
@@ -929,6 +1087,7 @@ for them and results aggregated via UNION.
 If dates mention timezones then the application can chose the beginning
 and the end of the year in some timezones other than the default.
 
+<a id="id54-how-can-i-see-which-quad-storages-exist-and-in-which-quad-storage-a-graph-resides"></a>
 ## How can I see which quad storages exist and in which quad storage a graph resides?
 
 Let's take for example a [created Linked Data View from relational data
@@ -1014,6 +1173,7 @@ endpoint without *define input:storage* :
     
     .
 
+<a id="id55-can-i-drop-and-re-create-the-defaultquadstorage"></a>
 ## Can I drop and re-create the DefaultQuadStorage?
 
 Currently system metadata consist of three "levels":
@@ -1052,6 +1212,7 @@ recommend to write a script that declares all your formats, Linked Data
 Views and storages, to be able to reproduce the configuration after any
 failures.
 
+<a id="id56-how-to-display-only-some-information-from-rdf-graph"></a>
 ## How to display only some information from RDF graph?
 
 Virtuoso supports graph-level security, as described
@@ -1065,6 +1226,7 @@ Note, how you can use [WebID to protect Virtuoso SPARQL endpoints](#) .
 > 
 > [RDF Graphs Security](#rdfgraphsecurity)
 
+<a id="id57-is-it-possible-to-have-the-sparql-endpoint-on-a-different-port-than-the-conductor"></a>
 ## Is it possible to have the SPARQL endpoint on a different port than the Conductor?
 
 Virtuoso Web Server has the capability to create extra listeners using
@@ -1115,6 +1277,7 @@ the [Conductor interface](#admui.internetdomains) .
 > 
 > [Internet Domains](#admui.internetdomains)
 
+<a id="id58-how-to-enable-the-virtuoso-entity-framework-35-adonet-provider-in-visual-studio-2010"></a>
 ## How to enable the Virtuoso Entity Framework 3.5 ADO.Net Provider in Visual Studio 2010?
 
 The Virtuoso Entity Framework 3.5 ADO.Net Provider is current only list
@@ -1231,6 +1394,7 @@ Studio 2010 as a result:
 The next Virtuoso releases, 6.3+ will support this new Visual Studio
 2010 release out of the box.
 
+<a id="id59-how-can-i-control-the-normalization-of-unicode3-accented-chars-in-free-text-index"></a>
 ## How Can I Control the normalization of UNICODE3 accented chars in free-text index?
 
 The normalization of UNICODE3 accented chars in free-text index can be
@@ -1341,6 +1505,7 @@ specific patch.
 > 
 > [Virtuoso Configuration File](#virtini)
 
+<a id="id60-how-can-i-define-graph-with-virtrdf_sponger-option-set-to-on"></a>
 ## How Can I define graph with virt:rdf\_sponger option set to "on"?
 
 Suppose we have the following scenario:
@@ -1379,6 +1544,7 @@ Suppose we have the following scenario:
 > 
 > [SPARQL-BI](#) [\#rdfsparul](#rdfsparul)
 
+<a id="id61-how-can-i-handle-checkpoint-condition"></a>
 ## How can I handle checkpoint condition?
 
 In general, to control checkpoint in order to bypass client timeouts
@@ -1408,6 +1574,7 @@ check of page maps: *PageMapCheck* , 1/0 default 0:
 Also customer can add *CheckpointSyncMode = 0* in order to disable sync
 during checkpoint to speed the operations.
 
+<a id="id62-how-can-i-incorporate-content-negotiation-into-rdf-bulk-loaders"></a>
 ## How can I incorporate Content Negotiation into RDF bulk loaders?
 
 The examples from below demonstrate how to incorporate Content
@@ -1423,6 +1590,7 @@ Negotiation into RDF bulk loaders:
     
         DB.DBA.TTLP (http_get ('http://purl.org/ontology/mo/', null, 'GET', 'Accept: text/n3', null, null, 3), 'http://purl.org/ontology/mo/', 'http://purl.org/ontology/mo/'), '...', '...');
 
+<a id="id63-virtuoso-linked-data-deployment-in-3-simple-steps"></a>
 ## Virtuoso Linked Data Deployment In 3 Simple Steps?
 
 Injecting Linked Data into the Web has been a major pain point for those
@@ -1530,6 +1698,7 @@ consume and exploit your newly deployed Linked Data --
 4.  Use the navigator controls to page up and down the data associated
     with the "in scope" resource descriptor.
 
+<a id="id64-what-are-the-differences-between-create-drop-clear-and-delete-graph"></a>
 ## What are the differences between create, drop, clear and delete Graph?
 
 In Virtuoso it does not matter whether *CREATE GRAPH* and *DROP GRAPH*
@@ -1559,6 +1728,7 @@ slightly more compact and the text search slightly faster. (Naturally,
 > 
 > [RDF Insert Methods in Virtuoso](#rdfinsertmethods)
 
+<a id="id65-how-can-i-perform-search-for-predicate-values"></a>
 ## How can I perform search for predicate values?
 
 *What?*
@@ -1793,6 +1963,7 @@ For typical "almost static" data, it is more practical to write a
 procedure that will store all found predicates in some dedicated
 "dictionary" graph and then use the graph as usual.
 
+<a id="id66-how-can-i-use-insert-via-construct-statements"></a>
 ## How can I use INSERT via CONSTRUCT Statements?
 
 You can write an ordinary CONSTRUCT statement, ensure that it generates
@@ -1830,6 +2001,7 @@ keyword with the INSERT INTO phrase.
             ?s <http://www.w3.org/2002/07/owl#equivalentClass> ?o
           } ;
 
+<a id="id67-how-to-clear-graphs-which-are-related-to-empty-graphs"></a>
 ## How to clear graphs which are related to empty graphs?
 
 The following example demonstrates how to remove graphs which are
@@ -1844,6 +2016,7 @@ related to empty graphs:
         FILTER ( !bif:exists((SELECT (1) WHERE { GRAPH ?g { ?s ?p ?o . } . })) ) .
       }
 
+<a id="id68-how-can-i-use-sub-queries-to-enable-literal-values-based-joins"></a>
 ## How can I use sub-queries to enable literal values based joins?
 
 ### What?
@@ -1904,6 +2077,7 @@ or even shorter:
        ?g nao:maintainedBy `(SELECT ?a WHERE { ?a nao:identifier "nepomukindexer" })` .
      }
 
+<a id="id69-how-can-i-execute-query-with-labels-preference-order"></a>
 ## How can I execute query with labels preference order?
 
 The way to prefer one label to the other can be done as follows:
@@ -1974,6 +2148,7 @@ The way to prefer one label to the other can be done as follows:
     ORDER BY 2
     ```
 
+<a id="id70-how-can-i-get-object-datatype"></a>
 ## How can I get object datatype?
 
 To get object datatype should be used the internal Virtuoso/PL function
@@ -2015,10 +2190,12 @@ Suppose the following scenario:
     2 Rows. -- 16 msec.
     SQL>
 
+<a id="id71-how-can-i-backup-and-restore-individual-tables-and-individual-indexs"></a>
 ## How Can I Backup and Restore individual table(s) and individual index(s)?
 
 See more details [here](#procindexrecov) .
 
+<a id="id72-what-bifcontains-free-text-options-can-i-use"></a>
 ## What bif:contains free-text options can I use?
 
 Virtuoso supports the following free-text options for bif:contains:
@@ -2092,6 +2269,7 @@ Virtuoso supports the following free-text options for bif:contains:
         
         7 Rows. -- 2 msec.
 
+<a id="id73-what-sparql-endpoint-protection-methods-can-i-use"></a>
 ## What SPARQL Endpoint Protection Methods can I use?
 
 Virtuoso supports the following SPARQL Endpoint protection methods:
@@ -2103,6 +2281,7 @@ Virtuoso supports the following SPARQL Endpoint protection methods:
 3.  [Secure SPARQL Endpoint Guide via SQL Accounts -- usage path digest
     authentication](#)
 
+<a id="id74-how-do-i-assign-sparql-role-to-sql-user"></a>
 ## How do I assign SPARQL role to SQL user?
 
 This section a sample scenario how to assign SPARQL ( for ex.
@@ -2130,6 +2309,7 @@ SPARQL\_SELECT ) role to Virtuoso SQL user:
 
 6.  Click "Save".
 
+<a id="id75-how-do-i-gecode-data"></a>
 ## How Do I Gecode Data?
 
 *What?*
@@ -2191,6 +2371,7 @@ API from Conductor or iSQL:
 > 
 >   - [OpenLink Billion Triple Demo queries](#)
 
+<a id="id76-how-can-i-delete-a-specific-triple-across-graphs"></a>
 ## How Can I Delete a Specific Triple Across Graphs?
 
 Suppose the following situation:
@@ -2219,6 +2400,7 @@ Using SQL you can execute the following:
       AND o = iri_to_id ('http://purl.org/ontology/bibo/Document')
       AND p = iri_to_id ('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
 
+<a id="id77-how-do-i-use-not-exists-in-sparql-query"></a>
 ## How Do I Use NOT EXISTS in SPARQL Query?
 
 Virtuoso supports "NOT EXISTS" SPARQL 1.1 feature. For example:
@@ -2248,6 +2430,7 @@ This query is equivalent to the following query:
      313
     No. of rows in result: 1
 
+<a id="id78-how-do-i-use-minus-in-sparql-query"></a>
 ## How Do I Use MINUS in SPARQL Query?
 
 Virtuoso supports "MINUS" SPARQL 1.1 feature. For example:
@@ -2280,6 +2463,7 @@ This query is equivalent to the following query:
     313
     No. of rows in result: 1
 
+<a id="id79-how-do-i-use-transitive-sparql-query-options-and-exploit-inference-rules"></a>
 ## How Do I Use Transitive SPARQL Query Options and Exploit Inference Rules?
 
 This section contains subClassOf oriented subsumption examples and
@@ -2309,6 +2493,7 @@ the hierarchy.
 
   - [Inference Rule using transitive properties from SKOS vocabulary](#)
 
+<a id="id80-what-is-the-difference-between-the-functions-sample-group_concat-and-group_digest"></a>
 ## What is the difference between the functions SAMPLE, GROUP\_CONCAT and GROUP\_DIGEST?
 
 This section demonstrates the differences between the functions
@@ -2369,6 +2554,7 @@ one value but "row too long" error happens, then the sql:[`GROUP_DIGEST
           <viewType> 'phyview' .
       }
 
+<a id="id81-how-do-i-use-construct-with-objects-which-are-value-of-aggregate-function"></a>
 ## How Do I use CONSTRUCT with objects which are value of aggregate function?
 
 The following section demonstrates usage example of CONSTRUCT Query with
@@ -2407,6 +2593,7 @@ object which is a value of the aggregate function COUNT:
       }
     ```
 
+<a id="id82-how-do-i-clean-up-errant-data-using-sparql-update-language"></a>
 ## How Do I Clean Up Errant Data using SPARQL Update Language?
 
 ### What?
@@ -2430,6 +2617,7 @@ showcases how to delete said triple using a built-in function:
          a <http://isbsg.org/ontology/data/Dataset>
       };
 
+<a id="id83-how-to-use-sparql-to-add-missing-isdefinedby-relations-to-an-ontology"></a>
 ## How to Use SPARQL to add missing isDefinedBy relations to an Ontology?
 
 ### What?
@@ -2500,6 +2688,7 @@ In this example we will use:
         ?s a ?o
       }
 
+<a id="id84-how-can-i-execute-load-of-sql-dump-from-jdbc"></a>
 ## How Can I execute load of sql dump from jdbc?
 
 LOAD" is not a Virtuoso SQL command, it's an ISQL one. The ISQL checks
@@ -2511,6 +2700,7 @@ There's no way to mimic ISQL's behavior right on the server, without
 ISQL. However some files can be loaded via the
 [`DB.DBA.VAD_LOAD_SQL_FILE`](#fn_vad_load_sql_file) function.
 
+<a id="id85-how-can-i-use-modify-to-update-triples"></a>
 ## How Can I Use MODIFY to update triples?
 
 The following queries are equivalent:
@@ -2560,10 +2750,12 @@ The following queries are equivalent:
       }
     }
 
+<a id="id86-how-can-i-execute-insertdelete-sparul-statements-against-a-webid-protected-sparql-endpoint"></a>
 ## How Can I execute INSERT/DELETE (SPARUL) statements against a WebID? protected SPARQL endpoint?
 
 View our [sample scenario](#rdfsparulexamples22) .
 
+<a id="id87-how-can-i-make-http-logging-and-recording-in-virtuoso"></a>
 ## How can I make HTTP Logging and Recording in Virtuoso?
 
 ### HTTP Logging
@@ -2688,6 +2880,7 @@ slowing down the whole system.
 
 3.  Finally restart Virtuoso.
 
+<a id="id88-quad-store-data-loading-via-virtuosos-in-built-content-crawler"></a>
 ## Quad Store Data Loading via Virtuoso's In-built Content Crawler?
 
 This section covers the use of Virtuoso's in-built content crawler as a
@@ -2729,6 +2922,7 @@ Jobs:
   - [Setting up a Content Crawler Job to Retrieve Content from SPARQL
     endpoint](#contentcrawlersparqlendp)
 
+<a id="id89-what-is-the-shortenlonguris-virtuoso-configuration-parameter"></a>
 ## What is the ShortenLongURIs Virtuoso configuration parameter?
 
 The ShortenLongURIs parameter is a Virtuoso configuration setting to
@@ -2764,6 +2958,7 @@ this feature is however available from the [Virtuso patches page on
 source forge](#) , which can be applied to a 6.1.4 archive from source
 forge and the Virtuoso server binary rebuilt.
 
+<a id="id90-how-can-i-send-soap-requests-to-virtuoso-sparql-endpoint"></a>
 ## How Can I send SOAP requests to Virtuoso SPARQL Endpoint?
 
 This section presents sample scenario how to execute SPARQL query in
@@ -2851,19 +3046,23 @@ SOAP request over Virtuoso SPARQL Endpoint.
           </soapenv:Body>
         </soapenv:Envelope>
 
+<a id="id91-how-can-i-delete-triples-containing-blank-nodes"></a>
 ## How Can I Delete Triples containing blank nodes?
 
 Please see details and sample scenario [here](#rdfsparulexamples24) .
 
+<a id="id92-how-can-i-get-a-full-explain-plan-for-a-simple-sparql-query"></a>
 ## How Can I Get a full explain plan for a simple SPARQL query?
 
 Please see details and sample scenario [here](#rdfperfcosttransanalyze)
 .
 
+<a id="id93-how-can-i-use-expressions-inside-construct-insert-and-delete-templates"></a>
 ## How Can I Use Expressions inside CONSTRUCT, INSERT and DELETE {...} Templates?
 
 Please examples [here](#rdfsparulexamples25) .
 
+<a id="id94-how-to-optimize-bifdateadd-in-sparql-query-using-selective-index-friendly-filter"></a>
 ## How to optimize bif:dateadd in SPARQL query using selective index-friendly filter?
 
 ### What?
@@ -2953,6 +3152,7 @@ your specific data.
 
 2.  [View the SPARQL Query Results via SPARQL Protocol URL](#)
 
+<a id="id95-how-can-i-determine-the-data-usage-across-a-virtuoso-instance"></a>
 ## How can I Determine the data usage across a Virtuoso instance?
 
 ### What?
@@ -2985,6 +3185,7 @@ ISS_KEY_TABLE ISS_KEY_NAME ISS_KEY_ID            ISS_NROWS       ISS_ROW_BYTES I
 ......
 ```
 
+<a id="id96-how-to-discover-the-capabilities-of-a-sparql-endpoint-to-enhancing-sparql-fed-usage-from-virtuoso-instances"></a>
 ## How to discover the capabilities of a SPARQL endpoint to enhancing SPARQL-FED usage from Virtuoso instances?
 
 ### What?
@@ -3033,6 +3234,7 @@ SPARQL endpoint:
         http://www.openlinksw.com/schemas/virtrdf#isEndpointOfService      http://lod.openlinksw.com/sparql-sd
         http://www.openlinksw.com/schemas/virtrdf#dialect                000037ff
 
+<a id="id97-how-to-split-a-urlencoded-separated-list-of-urls-in-a-sparql-query"></a>
 ## How to split a urlencoded ";-" separated list of urls in a SPARQL query?
 
 1.  Assume the following string:
@@ -3054,6 +3256,7 @@ SPARQL endpoint:
     
       - [View the SPARQL Query Results via SPARQL Protocol URL](#)
 
+<a id="id98-how-to-update-large-sparql-data-avoiding-due-to-database-checkpoint-abortion"></a>
 ## How to Update Large SPARQL Data avoiding due to database checkpoint abortion?
 
 Assume while performing large SPARQL update, for example of triples
@@ -3078,6 +3281,7 @@ CheckpointInterval in the INI file and possible increase its value:
 Note: The [RDF Bulk loader](#) can be used for loading large datasets,
 and it will handle the checkpoint matter automatically.
 
+<a id="id99-how-to-manage-ssl-protocols-and-ciphers-used-with-virtuoso"></a>
 ## How to Manage SSL Protocols and Ciphers used with Virtuoso?
 
 ### What?

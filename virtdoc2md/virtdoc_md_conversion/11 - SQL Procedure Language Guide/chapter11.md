@@ -1,5 +1,81 @@
 # SQL Procedure Language Guide
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [General Principles](#id1-general-principles)
+  * [Scope of Declarations](#id2-scope-of-declarations)
+  * [Data Types](#id3-data-types)
+  * [Handling Result Sets](#id4-handling-result-sets)
+  * [Result Sets and Array Parameters](#id5-result-sets-and-array-parameters)
+  * [Exception Semantics](#id6-exception-semantics)
+  * [Virtuoso/PL Syntax](#id7-virtuosopl-syntax)
+    * [Create Procedure Statement](#id8-create-procedure-statement)
+    * [Grant Execute Statement](#id9-grant-execute-statement)
+    * [Stored Procedures as Views & Derived Tables](#id10-stored-procedures-as-views-derived-tables)
+    * [Keyword and Optional Procedure Arguments](#id11-keyword-and-optional-procedure-arguments)
+    * [if, while, for, foreach statements](#id12-if-while-for-foreach-statements)
+    * [compound statement](#id13-compound-statement)
+    * [goto, return statements](#id14-goto-return-statements)
+    * [whenever statement](#id15-whenever-statement)
+    * [call, assignment statements](#id16-call-assignment-statements)
+    * [open, fetch, close, select ... into statements](#id17-open-fetch-close-select-into-statements)
+    * [FOR Select Statement](#id18-for-select-statement)
+    * [SET statement](#id19-set-statement)
+    * [SET Triggers](#id20-set-triggers)
+    * [Vectored Procedures](#id21-vectored-procedures)
+    * [FOR VECTORED Statement](#id22-for-vectored-statement)
+    * [Limitations on Vectored Code](#id23-limitations-on-vectored-code)
+    * [Data Types and Vectoring](#id24-data-types-and-vectoring)
+  * [Execute Stored Procedures via SELECT statement](#id25-execute-stored-procedures-via-select-statement)
+  * [Execute Stored Procedures In Background](#id26-execute-stored-procedures-in-background)
+  * [CREATE ASSEMBLY Syntax - External Libraries](#id27-create-assembly-syntax-external-libraries)
+  * [CREATE PROCEDURE Syntax - External hosted procedures](#id28-create-procedure-syntax-external-hosted-procedures)
+  * [Asynchronous Execution and Multithreading in Virtuoso/PL](#id29-asynchronous-execution-and-multithreading-in-virtuosopl)
+    * [Synchronization](#id30-synchronization)
+  * [Performance Tips](#id31-performance-tips)
+    * [Remember the following:](#id32-remember-the-following)
+  * [Procedures and Transactions](#id33-procedures-and-transactions)
+  * [Distributed Transaction & Two Phase Commit](#id34-distributed-transaction-two-phase-commit)
+    * [Initiating Distributed Transactions](#id35-initiating-distributed-transactions)
+    * [Responding to Distributed Transactions](#id36-responding-to-distributed-transactions)
+    * [2PC Log & Recovery](#id37-2pc-log-recovery)
+    * [Error Codes](#id38-error-codes)
+  * [Triggers](#id39-triggers)
+    * [The CREATE TRIGGER statement](#id40-the-create-trigger-statement)
+    * [Triggers on Views](#id41-triggers-on-views)
+    * [The DROP TRIGGER statement](#id42-the-drop-trigger-statement)
+    * [Triggers and Virtual Database](#id43-triggers-and-virtual-database)
+  * [Character Escaping](#id44-character-escaping)
+    * [Statement Level](#id45-statement-level)
+    * [Connection Level](#id46-connection-level)
+    * [Server Default](#id47-server-default)
+  * [Virtuoso/PL Scrollable Cursors](#id48-virtuosopl-scrollable-cursors)
+    * [Declaring a Scrollable Cursor](#id49-declaring-a-scrollable-cursor)
+    * [Opening a Scrollable Cursor](#id50-opening-a-scrollable-cursor)
+    * [Fetching Data From a Scrollable Cursor](#id51-fetching-data-from-a-scrollable-cursor)
+    * [Virtuoso/PL Scrollable Cursor Examples](#id52-virtuosopl-scrollable-cursor-examples)
+    * [FORWARD-ONLY (traditional cursor statement) Example](#id53-forward-only-traditional-cursor-statement-example)
+    * [DYNAMIC (traditional cursor statement) Example](#id54-dynamic-traditional-cursor-statement-example)
+    * [KEYSET (traditional cursor statement) Example](#id55-keyset-traditional-cursor-statement-example)
+  * [Virtuoso PL Modules](#id56-virtuoso-pl-modules)
+    * [Syntax](#id57-syntax)
+    * [Security](#id58-security)
+  * [Handling Conditions In Virtuoso/PL Procedures](#id59-handling-conditions-in-virtuosopl-procedures)
+    * [Declaring Condition Handlers](#id60-declaring-condition-handlers)
+    * [Stack Trace Reporting On Sql Error Generation](#id61-stack-trace-reporting-on-sql-error-generation)
+  * [Procedure Language Debugger](#id62-procedure-language-debugger)
+    * [Branch Coverage](#id63-branch-coverage)
+    * [Coverage Functions](#id64-coverage-functions)
+  * [Row Level Security](#id65-row-level-security)
+    * [Row Level Security Functions](#id66-row-level-security-functions)
+  * [Vectored Execution and Query Parallelization](#id67-vectored-execution-and-query-parallelization)
+    * [Automatic Query Parallelization](#id68-automatic-query-parallelization)
+    * [Configuration Parameters for Vectoring and Parallelization](#id69-configuration-parameters-for-vectoring-and-parallelization)
+
+<!--- TOC: End --->
+<a id="id1-general-principles"></a>
 # General Principles
 
 A stored procedure is a named piece of Virtuoso/PL code stored in the
@@ -77,12 +153,14 @@ The elements of the procedure are:
     Exceptions are error conditions produced by SQL statements (e.g.
     deadlock) or 'not found' situations.
 
+<a id="id2-scope-of-declarations"></a>
 # Scope of Declarations
 
 A declaration can appear anywhere inside a compound statement. It
 affects all statements in the compound statement following the
 declaration statement.
 
+<a id="id3-data-types"></a>
 # Data Types
 
 Virtuoso/PL supports the regular SQL scalar data types as well as
@@ -211,6 +289,7 @@ Which produces the following output:
 > 
 > [`vector_concat()`](#fn_vector_concat)
 
+<a id="id4-handling-result-sets"></a>
 # Handling Result Sets
 
 A single Virtuoso procedure may produce multiple result sets, each with
@@ -235,6 +314,7 @@ knows what columns and their types are to be returned.
 > [`result()`](#fn_result) , [`result_names()`](#fn_result_names) ,
 > [`end_result()`](#fn_end_result)
 
+<a id="id5-result-sets-and-array-parameters"></a>
 # Result Sets and Array Parameters
 
 A procedure may be called with array parameters, c.f. SQLParamOptions.
@@ -249,6 +329,7 @@ Each procedure return is marked with SQL\_SUCCESS\_WITH\_INFO with SQL
 state 'PMORE'. The next SQLFetch will retrieve the first row of the
 first result set of the next procedure invocation.
 
+<a id="id6-exception-semantics"></a>
 # Exception Semantics
 
 Exceptions are of two types: Not Found and SQLSTATE. A not found
@@ -281,8 +362,10 @@ error conditions. Applications may add other states.
 See the DECLARE HANDLER, whenever statement and signal function for an
 example of exception handling.
 
+<a id="id7-virtuosopl-syntax"></a>
 # Virtuoso/PL Syntax
 
+<a id="id8-create-procedure-statement"></a>
 ## Create Procedure Statement
 
     CREATE PROCEDURE NAME (parameter , parameter...) [RETURNS data_type]
@@ -327,6 +410,7 @@ procedures automatically replace their predecessor.
         RESULT (RES);
     }
 
+<a id="id9-grant-execute-statement"></a>
 ## Grant Execute Statement
 
     GRANT EXECUTE ON procedure_name TO "{USER | ROLE}" ;
@@ -370,6 +454,7 @@ Admin-\>User Accounts-\>Account-\>Edit-\>User Type:
     
     1 Rows. -- 0 msec.
 
+<a id="id10-stored-procedures-as-views-derived-tables"></a>
 ## Stored Procedures as Views & Derived Tables
 
 Virtuoso allows using a stored procedure result set in place of a table.
@@ -385,6 +470,7 @@ that point on as if the data came from a table.
 > For more information about Store Procedures as Views & Derived Tables
 > go to the [SQL Reference Chapter](#spasviewsandtables)
 
+<a id="id11-keyword-and-optional-procedure-arguments"></a>
 ## Keyword and Optional Procedure Arguments
 
 Normally arguments in a procedure call are bound to formal parameters
@@ -454,6 +540,7 @@ Arguments of procedures are always evaluated left to right.
     kwd2 (1,2,3);
     -- result 1, 2, 3
 
+<a id="id12-if-while-for-foreach-statements"></a>
 ## if, while, for, foreach statements
 
     if_statement
@@ -523,6 +610,7 @@ array and sets a variable to the corresponding element of that array.
         S := S + X;
     }
 
+<a id="id13-compound-statement"></a>
 ## compound statement
 
     compound_statement
@@ -576,6 +664,7 @@ a compound statement.
 > 
 > [Create Procedure statement](#createprocstmt)
 
+<a id="id14-goto-return-statements"></a>
 ## goto, return statements
 
     goto_statement
@@ -607,6 +696,7 @@ value (IN) parameters and any cursors that may be open.
 > 
 > [Create Procedure statement](#createprocstmt)
 
+<a id="id15-whenever-statement"></a>
 ## whenever statement
 
     condition
@@ -658,6 +748,7 @@ the same \<condition\>.
 > This is about the same as select count (\*) from CUSTOMER where
 > C\_NAME = ?;
 
+<a id="id16-call-assignment-statements"></a>
 ## call, assignment statements
 
     function_call
@@ -707,6 +798,7 @@ is set.
         R := CALL (CONCATENATE (FN, 'F')) (11);
     }
 
+<a id="id17-open-fetch-close-select-into-statements"></a>
 ## open, fetch, close, select ... into statements
 
     SELECT opt_all_distinct selection
@@ -794,6 +886,7 @@ selected rows to be locked with exclusive (write) locks.
 > 
 > the TPC C Bench Marking chapter for more examples.
 
+<a id="id18-for-select-statement"></a>
 ## FOR Select Statement
 
     <for statement> ::=
@@ -834,6 +927,7 @@ The equivalent code is
 The cursor and end label names are generated to be unique by the FOR
 expansion.
 
+<a id="id19-set-statement"></a>
 ## SET statement
 
     Set_statement:
@@ -863,6 +957,7 @@ may only be reversed by another SET.
 
 The option may be:
 
+<a id="id20-set-triggers"></a>
 ## SET Triggers
 
 A value of OFF or 0 causes triggers not to be invoked even if there may
@@ -876,6 +971,7 @@ are not.
 > 
 > [SET statement.](#setstmt)
 
+<a id="id21-vectored-procedures"></a>
 ## Vectored Procedures
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -959,6 +1055,7 @@ procedure with an OUT or INOUT parameter, the argument in the vectored
 caller must be declared to be of a boxed data type. (See the section on
 vectoring and data types below.)
 
+<a id="id22-for-vectored-statement"></a>
 ## FOR VECTORED Statement
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -1053,6 +1150,7 @@ magnitude, can be had from vectored execution with database operations
 exhibiting significant locality. Bulk loads and bulk lookups are a
 typical example.
 
+<a id="id23-limitations-on-vectored-code"></a>
 ## Limitations on Vectored Code
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -1069,6 +1167,7 @@ occur in the body of a vectored procedure. The handler, being itself not
 in vectored code, will not be able to see which specific value in a
 vectored section gave rise to the exception.
 
+<a id="id24-data-types-and-vectoring"></a>
 ## Data Types and Vectoring
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -1091,6 +1190,7 @@ be used instead of the customary ANY in all cases involving complex
 values in vectored code. If dealing with vectors of simple scalars like
 strings or numbers, the ANY type is generally more efficient.
 
+<a id="id25-execute-stored-procedures-via-select-statement"></a>
 # Execute Stored Procedures via SELECT statement
 
 Stored SQL Procedures can be executed via SELECT statement:
@@ -1114,6 +1214,7 @@ For ex.:
     
     1 Rows. -- 0 msec.
 
+<a id="id26-execute-stored-procedures-in-background"></a>
 # Execute Stored Procedures In Background
 
 You can start procedure in background using the \[name of the
@@ -1139,6 +1240,7 @@ See [Asynchronous Execution and Multithreading in
 Virtuoso/PL](#asyncexecmultithread) for background jobs execution
 details.
 
+<a id="id27-create-assembly-syntax-external-libraries"></a>
 # CREATE ASSEMBLY Syntax - External Libraries
 
 External CLR libraries can be hosted inside Virtuoso by creating an
@@ -1437,6 +1539,7 @@ Now we can try the same sample using PERMISSION\_SET = UNRESTRICTED.
 
 Unrestricted assemblies do not have any restrictions on usage.
 
+<a id="id28-create-procedure-syntax-external-hosted-procedures"></a>
 # CREATE PROCEDURE Syntax - External hosted procedures
 
 Virtuoso provides a syntax shortcut for calling static method from
@@ -1502,6 +1605,7 @@ Here's how that procedure is called:
     
     2156
 
+<a id="id29-asynchronous-execution-and-multithreading-in-virtuosopl"></a>
 # Asynchronous Execution and Multithreading in Virtuoso/PL
 
 Many application tasks benefit from parallel execution. This is
@@ -1583,6 +1687,7 @@ Consider the following code samples:
     -- This procedure makes a queue with a given number of worker threads, then makes a set of requests and waits for the result
     of the last one. Note that this is not necessarily the last to complete if there are multiple threads serving the queue.
 
+<a id="id30-synchronization"></a>
 ## Synchronization
 
 It is possible to add requests to a queue at all times. It is also
@@ -1640,8 +1745,10 @@ requesting thread before calling aq\_wait or aq\_wait\_all.
     
     -- This procedure is guaranteed to wait for all requests to be completed but will discard individual error states.
 
+<a id="id31-performance-tips"></a>
 # Performance Tips
 
+<a id="id32-remember-the-following"></a>
 ## Remember the following:
 
   - Reference parameters (inout and out) are faster then value
@@ -1658,6 +1765,7 @@ requesting thread before calling aq\_wait or aq\_wait\_all.
     condition. If you want to have descending order using an index,
     specify DESC on ALL key parts.
 
+<a id="id33-procedures-and-transactions"></a>
 # Procedures and Transactions
 
 A procedure call executed by a client is just like any other SQL
@@ -1678,6 +1786,7 @@ or a 'not found' condition.
 Procedures can commit or rollback transactions using commit work and
 rollback work statements.
 
+<a id="id34-distributed-transaction-two-phase-commit"></a>
 # Distributed Transaction & Two Phase Commit
 
 2PC is an acronym for 2 Phase Commit. This is a protocol by which data
@@ -1703,6 +1812,7 @@ There are two ways of using MTS-driven distributed transactions in
 Virtuoso. Virtuoso either initiates the transaction, or it responds to a
 transaction.
 
+<a id="id35-initiating-distributed-transactions"></a>
 ## Initiating Distributed Transactions
 
 In this case the transactions are initiated by Virtuoso itself. This
@@ -1748,6 +1858,7 @@ Deadlocks are detected for distributed transactions based on timeouts.
 Use [mts\_set\_timeout()](#fn_mts_set_timeout) for explicitly setting a
 timeout. See MS DTC for a definition of timeouts.
 
+<a id="id36-responding-to-distributed-transactions"></a>
 ## Responding to Distributed Transactions
 
 In this situation a distributed transaction is initiated by an ODBC
@@ -1795,6 +1906,7 @@ in the \[VDB\] section of virtuoso.ini file:
 > [mts\_set\_timeout](#fn_mts_set_timeout) ,
 > [mts\_get\_timeout](#fn_mts_get_timeout) .
 
+<a id="id37-2pc-log-recovery"></a>
 ## 2PC Log & Recovery
 
 If one branch of a distributed transaction crashes during the second
@@ -1806,6 +1918,7 @@ When Virtuoso connects to MS DTC, it creates a guid.bin file in the
 working directory. This file contains a unique ID of the server and is
 require for the recovery cycle.
 
+<a id="id38-error-codes"></a>
 ## Error Codes
 
 | Code  |
@@ -1815,6 +1928,7 @@ require for the recovery cycle.
 
 2PC & MS DTC error list
 
+<a id="id39-triggers"></a>
 # Triggers
 
 A trigger is a procedure body associated with a table and an event. A
@@ -1844,6 +1958,7 @@ cause the trigger code to be run. Update of non-sensitive columns will
 not invoke the trigger. If no column list is specified any update will
 invoke the trigger.
 
+<a id="id40-the-create-trigger-statement"></a>
 ## The CREATE TRIGGER statement
 
 Triggers can be defined to act upon a table or column and fire upon:
@@ -2011,6 +2126,7 @@ And to see what we have in the database, a quick select:
     
     1 Rows. -- 20 msec.
 
+<a id="id41-triggers-on-views"></a>
 ## Triggers on Views
 
 In virtuoso you can create a trigger on a view. To accomplish this there
@@ -2070,6 +2186,7 @@ data.
 You can see that the trigger inserted the data in the two tables
 according the value of from\_table.
 
+<a id="id42-the-drop-trigger-statement"></a>
 ## The DROP TRIGGER statement
 
     DROP TRIGGER qualified_name
@@ -2079,6 +2196,7 @@ qualifier and owner, in which case these should be the qualifier and
 owner of the subject table of the trigger. Identical trigger names may
 exist for identically named tables in different namespaces.
 
+<a id="id43-triggers-and-virtual-database"></a>
 ## Triggers and Virtual Database
 
 Triggers may be defined on tables residing on remote databases. The
@@ -2220,6 +2338,7 @@ These rules are maintained with the below set of triggers.
 > STATEMENT and related OLD TABLE AS phrases as well as the WHEN in the
 > trigger body. The implementation is otherwise complete.
 
+<a id="id44-character-escaping"></a>
 # Character Escaping
 
 The C style escape character can be used to include special characters
@@ -2229,6 +2348,7 @@ that are normally not typable in a string literal such as tab or crlf.
 Backslash support can be turned on or off at the statement level, the
 connection level or server default level.
 
+<a id="id45-statement-level"></a>
 ## Statement Level
 
 If you want to activate or deactivate the backslash support in a stored
@@ -2245,6 +2365,7 @@ turns the backslash escaping support off (insert into x values
 turns the backslash escaping support on. (same as above will insert
 'c:test' in the column.)
 
+<a id="id46-connection-level"></a>
 ## Connection Level
 
 The switch SET SQL\_NO\_CHAR\_C\_ESCAPE can be set to 'on' or 'off' to
@@ -2254,6 +2375,7 @@ There is an ODBC connection attribute that can be set for the same
 effect in an ODBC connection. SQLGetConnectAttr/SQLSetConnectAttr with
 option ID of 5002 takes values 0 or 1 to facilitate this
 
+<a id="id47-server-default"></a>
 ## Server Default
 
 SQL\_NO\_CHAR\_C\_ESCAPE=0/1 can be set in the "Client" section of the
@@ -2266,6 +2388,7 @@ behavior. The default value is 0.
 > procedure is stored in such a way that it will preserve the setting
 > for it's text no matter what the current default is.
 
+<a id="id48-virtuosopl-scrollable-cursors"></a>
 # Virtuoso/PL Scrollable Cursors
 
 Virtuoso/PL supports scrollable cursors, providing functionality similar
@@ -2282,6 +2405,7 @@ cursors always operate with a rowset size equal to 1. The keyset size
 > NEXT (if omitted) so this is how the syntax extensions to DECLARE
 > CURSOR & FETCH interoperate with the forward-only cursors syntax.
 
+<a id="id49-declaring-a-scrollable-cursor"></a>
 ## Declaring a Scrollable Cursor
 
 Virtuoso/PL cursor types are specified at declaration time. Unlike the
@@ -2299,12 +2423,14 @@ referenced similarly to the forward-only cursor.
 > For example SELECT DISTINCT will always result in a static cursor,
 > ignoring the cursor declared type.
 
+<a id="id50-opening-a-scrollable-cursor"></a>
 ## Opening a Scrollable Cursor
 
 The OPEN on a scrollable cursor opens the cursor and sets it's position
 right before the first resultset row. So before taking the bookmark
 value at least one FETCH should be issued.
 
+<a id="id51-fetching-data-from-a-scrollable-cursor"></a>
 ## Fetching Data From a Scrollable Cursor
 
 The FETCH on a scrollable cursor allows specification of a direction. If
@@ -2338,6 +2464,7 @@ each subsequent hit it will open again the same cursor, position on the
 bookmark persisted and return the next, previous, first or last so-many
 rows.
 
+<a id="id52-virtuosopl-scrollable-cursor-examples"></a>
 ## Virtuoso/PL Scrollable Cursor Examples
 
     create procedure READ_KEYS_NEXT_20 (in mask varchar, inout bm any) returns integer
@@ -2415,6 +2542,7 @@ rows.
     
     READ_KEYS ('%');
 
+<a id="id53-forward-only-traditional-cursor-statement-example"></a>
 ## FORWARD-ONLY (traditional cursor statement) Example
 
     create procedure TEST_FW()
@@ -2437,6 +2565,7 @@ rows.
     };
     TEST_FW();
 
+<a id="id54-dynamic-traditional-cursor-statement-example"></a>
 ## DYNAMIC (traditional cursor statement) Example
 
     create procedure TEST_DYNAMIC ()
@@ -2459,6 +2588,7 @@ rows.
     };
     TEST_DYNAMIC ();
 
+<a id="id55-keyset-traditional-cursor-statement-example"></a>
 ## KEYSET (traditional cursor statement) Example
 
     create procedure TEST_KEYSET ()
@@ -2481,6 +2611,7 @@ rows.
     };
     TEST_KEYSET ();
 
+<a id="id56-virtuoso-pl-modules"></a>
 # Virtuoso PL Modules
 
 Modules are packages of procedures which compile together. Procedure
@@ -2493,6 +2624,7 @@ Module procedures do not appear in SQLProcedures output. Module names
 are in the same domain as the procedure names, so it is not possible to
 have a procedure with the same name as an existing module.
 
+<a id="id57-syntax"></a>
 ## Syntax
 
     CREATE MODULE
@@ -2541,12 +2673,14 @@ will result in calling the DB.DBA.MOD.MOD1() only if a function
 DB.MOD.MOD1 does not exist. If it exists, it will be preferred over
 DB.DBA.MOD.MOD1 when using this notation.
 
+<a id="id58-security"></a>
 ## Security
 
 Module procedures can be granted to users. Modules can also be granted
 to users. Granting execute to a module is equivalent to granting execute
 for all of the module's procedures.
 
+<a id="id59-handling-conditions-in-virtuosopl-procedures"></a>
 # Handling Conditions In Virtuoso/PL Procedures
 
 Condition handlers determine the behavior of a Virtuoso/PL procedure
@@ -2568,6 +2702,7 @@ Handlers are active only for the duration of the enclosing compound
 statement. When an exception is thrown outside the handler's scope then
 this handler is never called.
 
+<a id="id60-declaring-condition-handlers"></a>
 ## Declaring Condition Handlers
 
 The general form of handler declaration is:
@@ -2732,6 +2867,7 @@ Their values are preserved until the next exception overwrites them.
 This statement resignals the current exception to the caller of the
 procedure.
 
+<a id="id61-stack-trace-reporting-on-sql-error-generation"></a>
 ## Stack Trace Reporting On Sql Error Generation
 
 When an exception occurs the Virtuoso server has the ability to provide
@@ -2768,6 +2904,7 @@ empty string instead of error message or displays a message like 'Error
 message is too long' then you may wish to decrease the value of the
 "CallstackOnException" option to keep messages shorter.
 
+<a id="id62-procedure-language-debugger"></a>
 # Procedure Language Debugger
 
 Virtuoso has step by step PL debugging capabilities and a call stack
@@ -3013,6 +3150,7 @@ continue the execution
     Execution resumed
     DEBUG>
 
+<a id="id63-branch-coverage"></a>
 ## Branch Coverage
 
 The Virtuoso ini file contains a parameter in \[Parameters\] section
@@ -3150,6 +3288,7 @@ An example of files generated by cov\_report ('ccc.xml', 'cov/') are:
           3689 : WS.WS.ISLOCKED
     ..... more sections follow .....
 
+<a id="id64-coverage-functions"></a>
 ## Coverage Functions
 
 [`cov_load()`](#fn_cov_load)
@@ -3162,6 +3301,7 @@ An example of files generated by cov\_report ('ccc.xml', 'cov/') are:
 
 [`pldbg_stats_load()`](#fn_pldbg_stats_load)
 
+<a id="id65-row-level-security"></a>
 # Row Level Security
 
 Organizations often need to compartmentalize access to data. This may be
@@ -3277,12 +3417,14 @@ concerned procedures, triggers and client statements.
 > applications can be made to use policy based access control at no
 > additional cost.
 
+<a id="id66-row-level-security-functions"></a>
 ## Row Level Security Functions
 
 [`table_set_policy()`](#fn_table_set_policy)
 
 [`table_drop_policy()`](#fn_table_drop_policy)
 
+<a id="id67-vectored-execution-and-query-parallelization"></a>
 # Vectored Execution and Query Parallelization
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -3322,6 +3464,7 @@ locality can be exploited when accessing nearby rows. The chance of
 hitting nearby rows also increases when the size of the intermediate
 result batch increases.
 
+<a id="id68-automatic-query-parallelization"></a>
 ## Automatic Query Parallelization
 
 If a query does not modify data, executes in *READ COMMITTED* isolation,
@@ -3332,6 +3475,7 @@ independently evaluated each on its own thread. The results are merged
 together when all are ready, and are combined in an aggregation or
 *ORDER BY* . This is entirely transparent to the user.
 
+<a id="id69-configuration-parameters-for-vectoring-and-parallelization"></a>
 ## Configuration Parameters for Vectoring and Parallelization
 
 The following virtuoso.ini \[Parameters\] section entries concern query

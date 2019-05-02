@@ -1,7 +1,35 @@
 # Administration
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Database Server Administration](#id1-database-server-administration)
+    * [Database](#id2-database)
+    * [Virtual Database](#id4-virtual-database)
+    * [Virtuoso User Model](#id5-virtuoso-user-model)
+    * [VAD - Virtuoso Application Distribution](#id6-vad-virtuoso-application-distribution)
+    * [Data Backup & Recovery](#id7-data-backup-recovery)
+    * [Performance diagnostics](#id8-performance-diagnostics)
+    * [Performance Tuning](#id9-performance-tuning)
+  * [HTML based Administration Console (Conductor) Guide](#id10-html-based-administration-console-conductor-guide)
+    * [Virtuoso Conductor Administration](#id11-virtuoso-conductor-administration)
+    * [Runtime Hosting](#id12-runtime-hosting)
+    * [Web Services](#id13-web-services)
+    * [WebDAV Administration](#id14-webdav-administration)
+    * [Internet Domains](#id15-internet-domains)
+    * [XML Services](#id16-xml-services)
+    * [Query Tools](#id17-query-tools)
+    * [Replication & Synchronization](#id18-replication-synchronization)
+    * [Database Administration](#id19-database-administration)
+    * [Conductor Linked Data Administration](#id20-conductor-linked-data-administration)
+    * [Conductor News Server Administration](#id21-conductor-news-server-administration)
+
+<!--- TOC: End --->
+<a id="id1-database-server-administration"></a>
 # Database Server Administration
 
+<a id="id2-database"></a>
 ## Database
 
 See details for [Installation Requirements](#srvadminstallreqt) ,
@@ -3047,6 +3075,7 @@ cfg\_write
 > the cfg\_write function has restrictions against changing file access
 > control lists in ini file
 
+<a id="id4-virtual-database"></a>
 ## Virtual Database
 
 ### Linking Remote Tables & Views
@@ -3662,6 +3691,7 @@ SQLStatistics() for further indicies or primary key information, as a
 last resort Virtuoso will use SQLColAttribute() to determine which
 columns are SQL\_DESC\_SEARCHABLE.
 
+<a id="id5-virtuoso-user-model"></a>
 ## Virtuoso User Model
 
 The Virtuoso User Model is designed to support:
@@ -3963,6 +3993,7 @@ clause. One cannot log in or perform any operations as a role. Roles are
 exclusively shorthand for specific sets of permissions which are changed
 together and are needed for multiple users.
 
+<a id="id6-vad-virtuoso-application-distribution"></a>
 ## VAD - Virtuoso Application Distribution
 
 VAD provides a package distribution framework for installation,
@@ -4805,6 +4836,7 @@ application, and small set of documentation files.
     
     </sticker>
 
+<a id="id7-data-backup-recovery"></a>
 ## Data Backup & Recovery
 
 Administering a database involves taking backups and having a readiness
@@ -5375,6 +5407,7 @@ then replay. Also the steps may be combined for multiple tables and keys
 in the backup procedure - just needs to be added the corresponding calls
 to the backup\_index() function.
 
+<a id="id8-performance-diagnostics"></a>
 ## Performance diagnostics
 
 This section provides a checklist for improving performance of a
@@ -5712,6 +5745,7 @@ circumstances:
     value of this parameter but will make for faster checkpoints. Set
     this to up to 25% of the database page count.
 
+<a id="id9-performance-tuning"></a>
 ## Performance Tuning
 
 ### I/O
@@ -7476,8 +7510,10 @@ If the thread calling db\_activity is a web server thread, the totals
 are automatically reset when beginning the processing of the current web
 request.
 
+<a id="id10-html-based-administration-console-conductor-guide"></a>
 # HTML based Administration Console (Conductor) Guide
 
+<a id="id11-virtuoso-conductor-administration"></a>
 ## Virtuoso Conductor Administration
 
 The Main Navigation Bar provides different tabs that allow you to
@@ -7532,6 +7568,7 @@ into Virtuoso and controlling access to these servers.
 
 ![NNTP Administration](./images/nntp.png)
 
+<a id="id12-runtime-hosting"></a>
 ## Runtime Hosting
 
 The runtime hosting interfaces require Mono/CLR and Java extension
@@ -7558,6 +7595,7 @@ grant value from the "Grant to" list and click the "Add" button.
 
 ![Modules Grants](./images/ui/rth003.png)
 
+<a id="id13-web-services"></a>
 ## Web Services
 
 ### Content Crawler
@@ -8075,6 +8113,7 @@ Any errors in the code will be highlighted if you try and execute it.
 If you wish to save the file the appropriate file system ACLs must be in
 place for the destination.
 
+<a id="id14-webdav-administration"></a>
 ## WebDAV Administration
 
 DAV, or WebDAV, is a protocol for Web-based Distributed Authoring and
@@ -8247,6 +8286,7 @@ To change the free-text index mode to batch mode check the check-box and
 provide a non-zero time interval (in minutes). Press the *Accept* button
 to save the changes into the server.
 
+<a id="id15-internet-domains"></a>
 ## Internet Domains
 
 ### HTTP Virtual Directories
@@ -8425,6 +8465,7 @@ FS folder to DAV:
     
     ![Mount FS to DAV](./images/ui/admvirtdir014.png)
 
+<a id="id16-xml-services"></a>
 ## XML Services
 
 ### SQL-XML Statements
@@ -8536,6 +8577,7 @@ saved file accessing the url: http://host:port/DAV/xmlsql/xquery.xml
 
 ![XPATH Query of DAV](./images/ui/dav_xpath_05.png)
 
+<a id="id17-query-tools"></a>
 ## Query Tools
 
 ### Relational Data using SQL
@@ -8623,6 +8665,7 @@ column.
 
 ![XQuery Test File Results](./images/ui/qry_sql_02a.png)
 
+<a id="id18-replication-synchronization"></a>
 ## Replication & Synchronization
 
 ### Snapshot Replication
@@ -8757,6 +8800,7 @@ such as split size, default copy mode of publication item, etc.
 
 ![Transaction Replication - Subscription](./images/ui/replt_trans_sub_02.png)
 
+<a id="id19-database-administration"></a>
 ## Database Administration
 
 ### Users & Group Accounts
@@ -9144,6 +9188,7 @@ your server.
 
 ![Monitor - Profiling](./images/ui/sts_profile_01.png)
 
+<a id="id20-conductor-linked-data-administration"></a>
 ## Conductor Linked Data Administration
 
 From Conductor the "Linked Data" tab allows you to execute/save/load
@@ -9336,6 +9381,7 @@ Security -\> Access Control -\> PSH-SLL
 > 
 > [Securing your SPARQL Endpoint via WebID.](#)
 
+<a id="id21-conductor-news-server-administration"></a>
 ## Conductor News Server Administration
 
 ### Conductor Newsgroups Administration

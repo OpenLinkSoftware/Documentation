@@ -1,7 +1,53 @@
 # Data Access Interfaces
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [ADO.Net Data Provider](#id1-adonet-data-provider)
+    * [Introduction](#id2-introduction)
+    * [Installation & Configuration](#id3-installation-configuration)
+    * [Programmers Guide](#id4-programmers-guide)
+    * [Using X509 Certificates With ODBC Connection](#id5-using-x509-certificates-with-odbc-connection)
+    * [Manually configuring a Virtuoso ODBC DSN on Unix](#id6-manually-configuring-a-virtuoso-odbc-dsn-on-unix)
+    * [ODBC Compliance](#id7-odbc-compliance)
+    * [Virtuoso Scrollable Cursor Engine](#id8-virtuoso-scrollable-cursor-engine)
+    * [Effect of Connection & Statement Options](#id9-effect-of-connection-statement-options)
+    * [Efficient Use of API](#id10-efficient-use-of-api)
+    * [Executing SQL from Python script](#id11-executing-sql-from-python-script)
+    * [Extensions](#id12-extensions)
+    * [Examples](#id13-examples)
+  * [Virtuoso Driver for JDBC](#id14-virtuoso-driver-for-jdbc)
+    * [Virtuoso Drivers for JDBC Packaging](#id15-virtuoso-drivers-for-jdbc-packaging)
+    * [Virtuoso Driver For JDBC URL Format](#id16-virtuoso-driver-for-jdbc-url-format)
+    * [Virtuoso Driver JDBC 3.0 features](#id17-virtuoso-driver-jdbc-30-features)
+    * [Virtuoso Driver JDBC 4.0 features](#id18-virtuoso-driver-jdbc-40-features)
+    * [Installation & Configuration Steps](#id19-installation-configuration-steps)
+    * [Virtuoso JDBC Driver Hibernate Support](#id20-virtuoso-jdbc-driver-hibernate-support)
+    * [Examples](#id21-examples)
+  * [OLE DB Provider for Virtuoso](#id22-ole-db-provider-for-virtuoso)
+    * [Using the OLE DB Provider for Virtuoso](#id23-using-the-ole-db-provider-for-virtuoso)
+    * [Known Limitations](#id24-known-limitations)
+    * [Data Types](#id25-data-types)
+    * [Metadata](#id26-metadata)
+    * [Supported Interfaces](#id27-supported-interfaces)
+    * [Data Source Objects](#id28-data-source-objects)
+    * [Sessions](#id29-sessions)
+    * [Rowsets](#id30-rowsets)
+  * [Virtuoso In-Process Client](#id31-virtuoso-in-process-client)
+  * [Unix Domain Socket Connections](#id32-unix-domain-socket-connections)
+  * [Virtuoso Data Access Clients Connection Fail over and Load Balancing Support](#id33-virtuoso-data-access-clients-connection-fail-over-and-load-balancing-support)
+    * [ODBC](#id34-odbc)
+    * [ADO.Net](#id35-adonet)
+    * [JDBC](#id36-jdbc)
+    * [OLE DB](#id37-ole-db)
+    * [Sesame](#id38-sesame)
+
+<!--- TOC: End --->
+<a id="id1-adonet-data-provider"></a>
 # ADO.Net Data Provider
 
+<a id="id2-introduction"></a>
 ## Introduction
 
 Virtuoso includes an ADO.NET 2.x & 3.x data providers compatible with
@@ -49,6 +95,7 @@ access to native and heterogeneous data sources.
 
   - Support for .Net RIA Services
 
+<a id="id3-installation-configuration"></a>
 ## Installation & Configuration
 
 There are two installation types to consider:
@@ -250,6 +297,7 @@ Server is complete.
     
     ![Uninstall](./images/ui/ado13.png)
 
+<a id="id4-programmers-guide"></a>
 ## Programmers Guide
 
 ### Sample Walk through Applications
@@ -401,6 +449,7 @@ Virtuoso database. This class cannot be inherited.
     satisfied with the configuration press the *Finish* button to save
     the DSN.
 
+<a id="id5-using-x509-certificates-with-odbc-connection"></a>
 ## Using X509 Certificates With ODBC Connection
 
 Virtuoso can be configured to authenticate ODBC logins with a single
@@ -694,6 +743,7 @@ and
 
     USER_CERT_UNREGISTER ('DBA', 'D9:6D:47:D7:67:47:D7:3C:2C:E0:89:91:F3:BC:E7:59');
 
+<a id="id6-manually-configuring-a-virtuoso-odbc-dsn-on-unix"></a>
 ## Manually configuring a Virtuoso ODBC DSN on Unix
 
 If you have [iODBC](#) installed, you can configure Virtuoso data
@@ -735,6 +785,7 @@ produce the files libsrc/JDBCDriverType4/virtjdbc3.jar and
 virtjdbc3ssl.jar. These can be placed on the Java class path. See
 [Virtuoso JDBC Documentation](#virtuosodriverjdbc) for URL formats etc.
 
+<a id="id7-odbc-compliance"></a>
 ## ODBC Compliance
 
 The Virtuoso Driver for ODBC conforms to both the ODBC 1.x,2.x,and 3.x
@@ -877,6 +928,7 @@ Virtuoso ODBC driver does not support the following ODBC API functions:
 
   - SQLCopyDesc
 
+<a id="id8-virtuoso-scrollable-cursor-engine"></a>
 ## Virtuoso Scrollable Cursor Engine
 
 Virtuoso implements server side scrollable cursors. ODBC 2.0, ODBC 3.5
@@ -1106,6 +1158,7 @@ counts and row numbers which are not known for dynamic cursors.
 
 Positioned operations are not affected by cursor type.
 
+<a id="id9-effect-of-connection-statement-options"></a>
 ## Effect of Connection & Statement Options
 
 ### Connection Options
@@ -1284,6 +1337,7 @@ that has an identity column. Note that if there are more than one
 identity columns or if triggers make inserts with identity columns the
 value will be undefined.
 
+<a id="id10-efficient-use-of-api"></a>
 ## Efficient Use of API
 
 DO NOT USE SQLExecDirect. If a statement is executed more than once it
@@ -1302,6 +1356,7 @@ Autocommit should be used when possible, i.e. make the last statement of
 a transaction autocommitting to avoid having to commit the transaction
 as a separate operation.
 
+<a id="id11-executing-sql-from-python-script"></a>
 ## Executing SQL from Python script
 
 In order to execute SQL from Python script, you need to add the
@@ -1319,6 +1374,7 @@ Then you should be able to connect with:
 
     c = pyodbc.connect('DSN=Local Virtuoso;UID=dba;PWD=dba')
 
+<a id="id12-extensions"></a>
 ## Extensions
 
 ### Virtuoso ODBC RDF Extensions for SPASQL
@@ -2050,12 +2106,14 @@ Here it is the source code:
 > 
 >   - RDF Data Access and Data Management
 
+<a id="id13-examples"></a>
 ## Examples
 
   - [C++ Demo](#)
 
   - [ODBC Bench Test 32](#)
 
+<a id="id14-virtuoso-driver-for-jdbc"></a>
 # Virtuoso Driver for JDBC
 
 The Virtuoso Drivers for JDBC are available in "jar" file formats for
@@ -2071,6 +2129,7 @@ number of different database types that have been linked into Virtuoso.
 The JDBC 2 and JDBC 3 drivers also incorporate SSL encryption to enable
 very secure connections to the Virtuoso database.
 
+<a id="id15-virtuoso-drivers-for-jdbc-packaging"></a>
 ## Virtuoso Drivers for JDBC Packaging
 
 These drivers are installed alongside the Virtuoso Server or as part of
@@ -2086,6 +2145,7 @@ follows:
 
 Features Comparison
 
+<a id="id16-virtuoso-driver-for-jdbc-url-format"></a>
 ## Virtuoso Driver For JDBC URL Format
 
 JDBC compliant applications and applets connect to JDBC Drivers using
@@ -2236,6 +2296,7 @@ integer attribute, PreparedStatement pool size (default is 25)
 > SSL has only been implemented for the JDBC 2.x, JDBC 3.x and JDBC 4.x
 > drivers for Virtuoso.
 
+<a id="id17-virtuoso-driver-jdbc-30-features"></a>
 ## Virtuoso Driver JDBC 3.0 features
 
 ### Virtuoso Driver For JDBC 3.0 javax.sql.DataSource
@@ -2426,6 +2487,7 @@ for RDF
         
 ```
 
+<a id="id18-virtuoso-driver-jdbc-40-features"></a>
 ## Virtuoso Driver JDBC 4.0 features
 
 ### Virtuoso Driver For JDBC 4.0 javax.sql.DataSource
@@ -2783,6 +2845,7 @@ for RDF
         
 ```
 
+<a id="id19-installation-configuration-steps"></a>
 ## Installation & Configuration Steps
 
 Perform the following steps in order to make use of your Virtuoso
@@ -2820,6 +2883,7 @@ Drivers for JDBC:
 > You can check the Virtuoso JDBC driver version from the command line
 > using: `java virtuoso.jdbc.Driver`
 
+<a id="id20-virtuoso-jdbc-driver-hibernate-support"></a>
 ## Virtuoso JDBC Driver Hibernate Support
 
 ### Introduction
@@ -2951,6 +3015,7 @@ The key attributes being
     
     \- Virtuoso Server password
 
+<a id="id21-examples"></a>
 ## Examples
 
 To assist you further during your utilization or evaluation of
@@ -3357,6 +3422,7 @@ execute SPARQL inserts:
     
     }
 
+<a id="id22-ole-db-provider-for-virtuoso"></a>
 # OLE DB Provider for Virtuoso
 
 OLE DB is an open data access technology developed and promoted by
@@ -3382,6 +3448,7 @@ and Microsoft OLE DB Provider for ODBC. However, VIRTOLEDB provides
 native OLE DB access which is more complete and more efficient.
 Therefore it is preferable for this purpose.
 
+<a id="id23-using-the-ole-db-provider-for-virtuoso"></a>
 ## Using the OLE DB Provider for Virtuoso
 
 Being a COM in-process server VIRTOLEDB has to be installed on the
@@ -3477,6 +3544,7 @@ VIRTOLEDB should follow examples provided in this section.
 
 </div>
 
+<a id="id24-known-limitations"></a>
 ## Known Limitations
 
   - Per-column properties are not supported.
@@ -3487,6 +3555,7 @@ VIRTOLEDB should follow examples provided in this section.
 
   - Asynchronous execution is not supported.
 
+<a id="id25-data-types"></a>
 ## Data Types
 
 ### Data Type Mappings in Rowsets and Parameters
@@ -3555,6 +3624,7 @@ of the ISequentialStream interface. VIRTOLEDB supports the
 ISequentialStream::Read method both when getting and setting data. The
 ISequentialStream::Write method is never supported.
 
+<a id="id26-metadata"></a>
 ## Metadata
 
 ### Schema Rowsets
@@ -3624,6 +3694,7 @@ VIRTOLEDB supports the following columns in the columns rowset.
 
   - DBCOLUMN\_KEYCOLUMN
 
+<a id="id27-supported-interfaces"></a>
 ## Supported Interfaces
 
 VIRTOLEDB supports the interfaces listed in the following table.
@@ -3677,6 +3748,7 @@ VIRTOLEDB supports the interfaces listed in the following table.
 
 Supported Interfaces
 
+<a id="id28-data-source-objects"></a>
 ## Data Source Objects
 
 ### Initialization and Authorization Properties
@@ -3810,6 +3882,7 @@ information property group.
 
 Supported Data Source Information Properties
 
+<a id="id29-sessions"></a>
 ## Sessions
 
 ### Session Properties
@@ -3823,6 +3896,7 @@ group.
 
 Supported Session Properties
 
+<a id="id30-rowsets"></a>
 ## Rowsets
 
 ### Properties
@@ -3917,6 +3991,7 @@ VIRTOLEDB supports the following rowset interfaces.
 
 Supported Rowset Interfaces
 
+<a id="id31-virtuoso-in-process-client"></a>
 # Virtuoso In-Process Client
 
 The in-process client is an efficient mechanism used by hosted
@@ -3986,6 +4061,7 @@ In-process connections also limit database transactions. The autocommit
 mode is never in effect for in-process connections. The setting of
 autocommit mode is silently ignored without reporting any errors.
 
+<a id="id32-unix-domain-socket-connections"></a>
 # Unix Domain Socket Connections
 
 Client connections to Virtuoso servers running on the same Unix or Linux
@@ -4021,6 +4097,7 @@ connection type. It will return
 
 for connections using UD sockets.
 
+<a id="id33-virtuoso-data-access-clients-connection-fail-over-and-load-balancing-support"></a>
 # Virtuoso Data Access Clients Connection Fail over and Load Balancing Support
 
 The Virtuoso Data Access Clients ODBC, JDBC, ADO.Net, OLE DB, Sesame,
@@ -4046,6 +4123,7 @@ makes use of the ODBC driver, would simply make use of a suitably
 configured JDBC or ODBC connect string to enable Failover or Round Robin
 connections to be made with them.
 
+<a id="id34-odbc"></a>
 ## ODBC
 
 ### Failover Connect String format
@@ -4061,6 +4139,7 @@ check box in the setup dialog.
 
 ![ODBC Round Robin Connect String format](./images/ui/adf1.png)
 
+<a id="id35-adonet"></a>
 ## ADO.Net
 
 ### Failover Connect String format
@@ -4071,6 +4150,7 @@ check box in the setup dialog.
 
     Server=server1:port1,server2:port2,server3;UserId=dba;Password=dba;Round Robin=true;Pooling=false;
 
+<a id="id36-jdbc"></a>
 ## JDBC
 
 ### Failover Connect String format
@@ -4081,6 +4161,7 @@ check box in the setup dialog.
 
     jdbc:virtuoso://server1:port1,server2:port2,server3:1111/UID=dba/PWD=dba/ROUNDROBIN=yes;
 
+<a id="id37-ole-db"></a>
 ## OLE DB
 
 ### Failover Connect String format
@@ -4094,6 +4175,7 @@ check box in the setup dialog.
 Password=dba;Initial Catalog=Demo;Prompt=NoPrompt;Round Robin=true
 ```
 
+<a id="id38-sesame"></a>
 ## Sesame
 
 ### Failover Connect String format

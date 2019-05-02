@@ -1,7 +1,58 @@
 # Quick Start & Tours
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Where to Start](#id1-where-to-start)
+    * [Default Passwords](#id2-default-passwords)
+    * [Post-Installation Sanity Check](#id3-post-installation-sanity-check)
+    * [Administering Your Virtuoso Installation](#id4-administering-your-virtuoso-installation)
+  * [Client Connections](#id5-client-connections)
+    * [ODBC](#id6-odbc)
+    * [JDBC](#id7-jdbc)
+    * [OLEDB](#id8-oledb)
+  * [Virtual Database Server](#id9-virtual-database-server)
+    * [Configuring Your ODBC Data Sources](#id10-configuring-your-odbc-data-sources)
+    * [Datasource Check](#id11-datasource-check)
+    * [Demo Datasource Query](#id12-demo-datasource-query)
+    * [Linking Remote Tables Into Virtuoso](#id13-linking-remote-tables-into-virtuoso)
+    * [Listing or Unlinking Tables](#id14-listing-or-unlinking-tables)
+    * [Querying Linked Tables](#id15-querying-linked-tables)
+  * [Web Server](#id16-web-server)
+    * [Virtual Directories](#id17-virtual-directories)
+    * [Multi Homing](#id18-multi-homing)
+  * [WebDAV](#id19-webdav)
+    * [Web Folders](#id20-web-folders)
+  * [Web Services](#id21-web-services)
+  * [Exposing Persistent Stored Modules as Web Services](#id22-exposing-persistent-stored-modules-as-web-services)
+    * [Publishing Stored Procedures as Web Services](#id23-publishing-stored-procedures-as-web-services)
+    * [XML Query Templates](#id24-xml-query-templates)
+    * [Publishing VSE's as Web Services](#id25-publishing-vses-as-web-services)
+  * [VSMX - Virtuoso Service Module for XML](#id26-vsmx-virtuoso-service-module-for-xml)
+  * [SQL to XML](#id27-sql-to-xml)
+    * [FOR XML Execution Modes](#id28-for-xml-execution-modes)
+    * [Tables With XML Columns](#id29-tables-with-xml-columns)
+  * [NNTP](#id30-nntp)
+    * [NNTP Server Setup](#id31-nntp-server-setup)
+    * [Local & Remote Groups](#id32-local-remote-groups)
+    * [NNTP Client Setup](#id33-nntp-client-setup)
+  * [Dynamic Web Pages](#id34-dynamic-web-pages)
+  * [VSP Examples](#id35-vsp-examples)
+    * [Simple HTML FORM usage](#id36-simple-html-form-usage)
+    * [Manipulating Database Data in VSP](#id37-manipulating-database-data-in-vsp)
+    * [Simple Tutorial](#id38-simple-tutorial)
+  * [Third-Party Runtime Typing, Hosting & User Defined Types](#id39-third-party-runtime-typing-hosting-user-defined-types)
+  * [Troubleshooting Tips](#id40-troubleshooting-tips)
+    * [General Tips](#id41-general-tips)
+    * [DBMS Server will not start](#id42-dbms-server-will-not-start)
+    * [Case Mode](#id43-case-mode)
+
+<!--- TOC: End --->
+<a id="id1-where-to-start"></a>
 # Where to Start
 
+<a id="id2-default-passwords"></a>
 ## Default Passwords
 
 When you start up Virtuoso for the first time, there are 3 user accounts
@@ -51,6 +102,7 @@ operations for all Virtuoso server instances installed. By default these
 are the Virtuoso with an empty database and Virtuoso \[demo\] with the
 demo database.
 
+<a id="id3-post-installation-sanity-check"></a>
 ## Post-Installation Sanity Check
 
 ### Verify by ISQL
@@ -108,6 +160,7 @@ You should see the SQL results, as shown below.
 
 ![Virtuoso Conductor - SQL Results](./images/ln-inst-isql2.png)
 
+<a id="id4-administering-your-virtuoso-installation"></a>
 ## Administering Your Virtuoso Installation
 
 Virtuoso has been designed for Web based Administration. With your
@@ -132,12 +185,14 @@ Interface. Information about Visual Server Administration Interface can
 be found in the Server Administration chapter , which describes all the
 Interfaces available for configuring your server.
 
+<a id="id5-client-connections"></a>
 # Client Connections
 
 Virtuoso supports a number of data access API's such as ODBC and JDBC.
 They both provide high performance native connectivity to the Virtuoso
 database system.
 
+<a id="id6-odbc"></a>
 ## ODBC
 
 The Virtuoso driver for ODBC is available for Windows and most Unix
@@ -150,6 +205,7 @@ project](#) . For more information and details about how to configure
 the Virtuoso driver for ODBC please go to the [Virtuoso Driver for
 ODBC](#virtdsnsetup) section.
 
+<a id="id7-jdbc"></a>
 ## JDBC
 
 The Virtuoso driver for JDBC is a type 4 native driver which is
@@ -166,6 +222,7 @@ supports SSL encrypted connections. This JDBC driver is an excellent
 companion to any web enabled applications especially when combined with
 Virtuoso's other features such as WSDL and SOAP.
 
+<a id="id8-oledb"></a>
 ## OLEDB
 
 Virtuoso gives application developers an opportunity to utilize OLE DB
@@ -179,6 +236,7 @@ This enables applications to access a Virtuoso server using OLE DB
 interfaces. VIRTOLEDB provides implementation for all required and many
 optional OLE DB interfaces.
 
+<a id="id9-virtual-database-server"></a>
 # Virtual Database Server
 
 Virtuoso's Virtual Database Engine enables you to produce Dynamic Web
@@ -198,6 +256,7 @@ Visit the [Visual Server Administration Interface](#remotetables)
 section to see how to link tables into Virtuoso, or follow the small
 example below to get you started:
 
+<a id="id10-configuring-your-odbc-data-sources"></a>
 ## Configuring Your ODBC Data Sources
 
 Before you can link a table into Virtuoso, you need to configure an ODBC
@@ -249,6 +308,7 @@ Data Sources" tab. Click the "Add System DSN", or "Add User DSN", or
 
 ![Creating a new DSN](./images/newdsn.png)
 
+<a id="id11-datasource-check"></a>
 ## Datasource Check
 
 Before trying to link a table into Virtuoso, you should verify that the
@@ -263,6 +323,7 @@ If there is a problem using a specific tool such as Microsoft Access
 with a specific driver, then that same problem will be manifested when
 the datasource is exposed via Virtuoso.
 
+<a id="id12-demo-datasource-query"></a>
 ## Demo Datasource Query
 
 To query the sample data in the Demo Database make sure the web browser
@@ -274,6 +335,7 @@ SQL". Enter a SQL statement and click the button "Execute". For example:
 
 ![Demo Database Query](./images/demoquery.png)
 
+<a id="id13-linking-remote-tables-into-virtuoso"></a>
 ## Linking Remote Tables Into Virtuoso
 
 A table on a remote datasource may be linked into the Virtuoso database
@@ -295,6 +357,7 @@ Pick the tables to be linked, and define the names to use.
 
 ![Define tables to link](./images/rmtadd.png)
 
+<a id="id14-listing-or-unlinking-tables"></a>
 ## Listing or Unlinking Tables
 
 To list the tables that have been linked into Virtuoso, from Conductor
@@ -303,6 +366,7 @@ table may be unlinked by pressing its "Unlink" icon.
 
 ![List of Connected Data Sources](./images/conndsn2.png)
 
+<a id="id15-querying-linked-tables"></a>
 ## Querying Linked Tables
 
 Once the tables have been linked into Virtuoso, they can be queried
@@ -315,8 +379,10 @@ Press the Execute button and review the results.
 
 ![Remote Table Query](./images/rmtdsnqry.png)
 
+<a id="id16-web-server"></a>
 # Web Server
 
+<a id="id17-virtual-directories"></a>
 ## Virtual Directories
 
 The term virtual directory applies to the mechanism to hide the physical
@@ -369,6 +435,7 @@ will point to the directory /departments/support/
     
     http://example.com:8890/departments/support/index.html
 
+<a id="id18-multi-homing"></a>
 ## Multi Homing
 
 The term Multi Homing refers to the practice of maintaining more than
@@ -427,6 +494,7 @@ http://www.ahelp.com/ to the server www.a.com and directory
     
     http://www.a.com/departments/support/index.html
 
+<a id="id19-webdav"></a>
 # WebDAV
 
 WebDAV support enables Virtuoso to act as the Web Content Store for all
@@ -450,6 +518,7 @@ development tools also support WebDAV directly.
 See the [WebDAV Administration](#webdavadmin) section, to setup the
 WebDAV in the Visual Server Administration Interface.
 
+<a id="id20-web-folders"></a>
 ## Web Folders
 
 Microsoft Windows has a notion of a Web Folder. This is how Windows
@@ -496,6 +565,7 @@ normal drag-and-drop methods.
 7.  You can find your new Web Folder again from My Network Places where
     the link will be saved.
 
+<a id="id21-web-services"></a>
 # Web Services
 
 SOAP is a lightweight, extensible, XML-based protocol for information
@@ -516,6 +586,7 @@ Development is very rapid and is directly incorporated within the
 database environment required for keeping B2B processes running
 accurately.
 
+<a id="id22-exposing-persistent-stored-modules-as-web-services"></a>
 # Exposing Persistent Stored Modules as Web Services
 
 Virtuoso SQL stored procedures and functions can be exposed as SOAP
@@ -558,6 +629,7 @@ functions, from C or other programming languages, that can be used from
 within Virtuoso PL. This also means that VSE's can also be published as
 a Web Service\!
 
+<a id="id23-publishing-stored-procedures-as-web-services"></a>
 ## Publishing Stored Procedures as Web Services
 
 ### Choosing Stored Procedures to Expose
@@ -697,6 +769,7 @@ improve your development time.
 > 
 > [VSMX](#vsmx) ; [SOAP](#soap) ; [WSDL](#wsdl) .
 
+<a id="id24-xml-query-templates"></a>
 ## XML Query Templates
 
 Virtuoso XML templates allow execution of SQL/XML queries over HTTP to
@@ -734,6 +807,7 @@ invoked from SOAP.
 > The Publishing Stored Procedures Section above for a further
 > description of publishing XML Templates.
 
+<a id="id25-publishing-vses-as-web-services"></a>
 ## Publishing VSE's as Web Services
 
 The Virtuoso distribution includes the sample VSE, bif\_sample.c. It is
@@ -763,6 +837,7 @@ the above section.
 > 
 > The [C Interface](#cinterface) Chapter
 
+<a id="id26-vsmx-virtuoso-service-module-for-xml"></a>
 # VSMX - Virtuoso Service Module for XML
 
 Every WSDL file generated by Virtuoso is automatically accompanied by a
@@ -787,6 +862,7 @@ demo database contains samples that can be found as:
 > 
 > The [VSMX section](#vsmx) for more details
 
+<a id="id27-sql-to-xml"></a>
 # SQL to XML
 
 Virtuoso enables you to develop eBusiness solutions that use XML as both
@@ -865,6 +941,7 @@ You can press *Edit* to edit them, or *Delete* to remove them or click
 on the XML FILE itself to see the results in your default browser, a
 sample of the output is shown above.
 
+<a id="id28-for-xml-execution-modes"></a>
 ## FOR XML Execution Modes
 
 Now we will consider the programmatical approach along side the visual
@@ -1075,6 +1152,7 @@ that will simply enable us to supply SQL and return XML using the
 For more details about 'FOR XML, refer to [Rendering SQL Queries as
 XML](#forxmlforsql) section of the XML Support chapter.
 
+<a id="id29-tables-with-xml-columns"></a>
 ## Tables With XML Columns
 
 XML is a new native Virtuoso datatype, based on an extension of LONG
@@ -1088,6 +1166,7 @@ data, and not which datatype to convert it to next.
 > 
 > [XML Column Type](#sqlrefxmldatatype)
 
+<a id="id30-nntp"></a>
 # NNTP
 
 Virtuoso supports the Network News Transfer Protocol used by Internet
@@ -1101,6 +1180,7 @@ also acts as an NNTP server, enabling creation of new Internet and
 Intranet News Forums to leverage the global knowledge base into
 eBusiness Intelligence.
 
+<a id="id31-nntp-server-setup"></a>
 ## NNTP Server Setup
 
 ### Enable Server
@@ -1129,6 +1209,7 @@ If no ACL is defined, then all groups are public readable and writable.
 For table details, refer to [NNTP Server Tables](#newssrvtables)
 section.
 
+<a id="id32-local-remote-groups"></a>
 ## Local & Remote Groups
 
 News groups may be Local such that they are the only instance, or a
@@ -1139,6 +1220,7 @@ See the [Conductor News Server and Newsgroups
 Administration](#newssrvadm) section, to setup the groups in the Visual
 Server Administration Interface.
 
+<a id="id33-nntp-client-setup"></a>
 ## NNTP Client Setup
 
 Virtuoso can make a client connection to an external news server to
@@ -1146,6 +1228,7 @@ receive newsgroup postings.
 
 For more details, refer to the [NNTP Client](#nntpclient) section.
 
+<a id="id34-dynamic-web-pages"></a>
 # Dynamic Web Pages
 
 Virtuoso provides an extensible array or dynamic methods for creating
@@ -1207,8 +1290,10 @@ the layout on the web page.
 > 
 > The Web Application Development Chapter.
 
+<a id="id35-vsp-examples"></a>
 # VSP Examples
 
+<a id="id36-simple-html-form-usage"></a>
 ## Simple HTML FORM usage
 
 We will start with a small example that shows a page that constitutes a
@@ -1373,6 +1458,7 @@ interleaved.
       </BODY>
     </HTML>
 
+<a id="id37-manipulating-database-data-in-vsp"></a>
 ## Manipulating Database Data in VSP
 
 The following example demonstrates a basic page that has form based flow
@@ -1468,6 +1554,7 @@ layout as above.
 The aspects of VSP are explained in more detail in the following
 sections.
 
+<a id="id38-simple-tutorial"></a>
 ## Simple Tutorial
 
 The following example prints the result from executing explain:
@@ -1493,6 +1580,7 @@ The vsp can be also written like this:
     
     ?>
 
+<a id="id39-third-party-runtime-typing-hosting-user-defined-types"></a>
 # Third-Party Runtime Typing, Hosting & User Defined Types
 
 All barriers are broken. If Virtuoso does not readily provide the data
@@ -1555,14 +1643,17 @@ the appropriate section of this documentation):
         
         [XML RPC](#xmlrpc)
 
+<a id="id40-troubleshooting-tips"></a>
 # Troubleshooting Tips
 
+<a id="id41-general-tips"></a>
 ## General Tips
 
 The following sections are some common faults and tips. For a complete
 list of troubleshooting tips, please visit sources that are listed in
 the [Product Support](#support) section of the Appendix .
 
+<a id="id42-dbms-server-will-not-start"></a>
 ## DBMS Server will not start
 
 If the Virtuoso DBMS server won't start, there could be 3 reasons.
@@ -1585,6 +1676,7 @@ Task Manager, and you can shut it down using the command "*virtuoso
 
 ![Command Prompt](./images/virttour32.gif)
 
+<a id="id43-case-mode"></a>
 ## Case Mode
 
 Whenever a database object is referenced, all names (schema, owner,

@@ -1,5 +1,24 @@
 # Virtuoso Cluster Programming
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Cluster SQL Execution Model](#id1-cluster-sql-execution-model)
+  * [Sequences, Identity and Registry](#id2-sequences-identity-and-registry)
+  * [SQL Options](#id3-sql-options)
+    * [Parallel INSERT Options](#id4-parallel-insert-options)
+    * [INSERT KEY Option](#id5-insert-key-option)
+  * [Calling Procedures in Cluster](#id6-calling-procedures-in-cluster)
+  * [Partition Functions](#id7-partition-functions)
+  * [Distributed Pipe](#id8-distributed-pipe)
+    * [SQL optimization and Dpipe](#id9-sql-optimization-and-dpipe)
+  * [Cluster and RDF](#id10-cluster-and-rdf)
+  * [Cluster, Virtual Database and Replication](#id11-cluster-virtual-database-and-replication)
+  * [Troubleshooting](#id12-troubleshooting)
+
+<!--- TOC: End --->
+<a id="id1-cluster-sql-execution-model"></a>
 # Cluster SQL Execution Model
 
 This section explains the basics of how SQL queries work on clustered
@@ -132,6 +151,7 @@ magnitude worse.
 The join type and join order switches work identically with cluster and
 single process databases.
 
+<a id="id2-sequences-identity-and-registry"></a>
 # Sequences, Identity and Registry
 
 Sequences and identity columns have a cluster-wide scope. Thus, an
@@ -179,6 +199,7 @@ The registry\_get and related functions operate on purely local content.
 As with single process databases, the registry is used for storing some
 schema information, sequence values and global application flags.
 
+<a id="id3-sql-options"></a>
 # SQL Options
 
 For purposes of debugging or writing stored procedures that are
@@ -207,6 +228,7 @@ cluster, this is indicated in the output.
 
 All other SQL options work as with single server databases.
 
+<a id="id4-parallel-insert-options"></a>
 ## Parallel INSERT Options
 
 Searched updates and deletes can be parallelized as they are written.
@@ -244,6 +266,7 @@ transaction uncommittable, preserving integrity.
      while (daq_next (daq));
     }
 
+<a id="id5-insert-key-option"></a>
 ## INSERT KEY Option
 
 When indices are partitioned on different columns, indices pertaining to
@@ -278,6 +301,7 @@ Such a procedure would be called on a particular partition using a DAQ
 In practice, the RDF store uses single key operations for atomically
 reserving ID's for IRI's, for example..
 
+<a id="id6-calling-procedures-in-cluster"></a>
 # Calling Procedures in Cluster
 
 Normally, all interprocess communication in the cluster is transparent.
@@ -412,6 +436,7 @@ executed on the calling thread.
 The clexec procedure will execute the given SQL string on all hosts of
 the cluster. It returns after all have completed.
 
+<a id="id7-partition-functions"></a>
 # Partition Functions
 
 Given a key and a set of values, the partition function can determine
@@ -436,6 +461,7 @@ entries in the cluster.ini file.
 
     select partition_list ('DB.DBA.CT', 'CT', vector (2), 1);
 
+<a id="id8-distributed-pipe"></a>
 # Distributed Pipe
 
 A distributed pipe is a single construct that can be used for map-reduce
@@ -489,6 +515,7 @@ also produce other functions to be called for their effects,
 dpipe\_reuse is called to make sure that all these functions are run
 until no more operations are left.
 
+<a id="id9-sql-optimization-and-dpipe"></a>
 ## SQL optimization and Dpipe
 
 Calls to SQL functions in queries can be translated to dpipe operations
@@ -540,6 +567,7 @@ they run.
 Further, because the results are summed into an aggregate, the results
 can be processed in the order they come, thus improving parallelism.
 
+<a id="id10-cluster-and-rdf"></a>
 # Cluster and RDF
 
 The RDF tables are partitioned by default on any fresh clustered
@@ -586,6 +614,7 @@ transactional, deadlocks are quite probable due to indeterminate locking
 order and large transaction size. As a general rule, do not mix
 transactions and RDF.
 
+<a id="id11-cluster-virtual-database-and-replication"></a>
 # Cluster, Virtual Database and Replication
 
 Clustering has no relation to any virtual database, transactional or
@@ -604,6 +633,7 @@ An external transaction monitor is not supported with cluster. A
 Virtuoso cluster could be seen as an XA resource manager but the XA
 logic is not connected to the cluster transaction logic.
 
+<a id="id12-troubleshooting"></a>
 # Troubleshooting
 
 If an operation seems to hang, see the output of status ().

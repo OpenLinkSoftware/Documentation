@@ -1,5 +1,38 @@
 # Runtime Hosting
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Runtime Environments](#id1-runtime-environments)
+  * [CLR, .Net & ASPX Host](#id2-clr-net-aspx-host)
+    * [Environment Setup](#id3-environment-setup)
+    * [Testing the Virtuoso .NET Runtime Environment](#id4-testing-the-virtuoso-net-runtime-environment)
+  * [CLR & Mono](#id5-clr-mono)
+    * [Environment Setup](#id6-environment-setup)
+    * [Testing the Virtuoso Mono Runtime Environment](#id7-testing-the-virtuoso-mono-runtime-environment)
+  * [Embedded Java VM API](#id8-embedded-java-vm-api)
+    * [Correspondence Between Virtuoso & Java VM Threads](#id9-correspondence-between-virtuoso-java-vm-threads)
+    * [Virtuoso/PL \<-\> Java VM Type Mapping Schema](#id10-virtuosopl-java-vm-type-mapping-schema)
+    * [References to Java VM Class Instances in Virtuoso/PL](#id11-references-to-java-vm-class-instances-in-virtuosopl)
+    * [Specifying the Correct Java Type When Passing Values from Virtuoso/PL](#id12-specifying-the-correct-java-type-when-passing-values-from-virtuosopl)
+    * [Virtuoso Java PL API VSEs](#id13-virtuoso-java-pl-api-vses)
+    * [Java Security](#id14-java-security)
+  * [Virtuoso Server Extension Interface (VSEI) (C Interface)](#id15-virtuoso-server-extension-interface-vsei-c-interface)
+    * [Virtuoso Server Extension Interface (VSEI)](#id16-virtuoso-server-extension-interface-vsei)
+    * [SQL Run Time Objects](#id17-sql-run-time-objects)
+    * [Memory Management Rules](#id18-memory-management-rules)
+    * [Server Main Function](#id19-server-main-function)
+    * [Compiling & Linking](#id20-compiling-linking)
+    * [Functions by Category](#id21-functions-by-category)
+    * [VSEI Definition](#id22-vsei-definition)
+    * [SQL Exceptions](#id23-sql-exceptions)
+    * [Executing SQL](#id24-executing-sql)
+    * [Adding New Languages And Encodings Into Virtuoso](#id25-adding-new-languages-and-encodings-into-virtuoso)
+  * [VSEI Plugins](#id26-vsei-plugins)
+
+<!--- TOC: End --->
+<a id="id1-runtime-environments"></a>
 # Runtime Environments
 
 The Virtuoso server in its standard build is a single executable. To
@@ -50,6 +83,7 @@ code for communication.
 > The [In-Process Client](#inprocess) keeps connections within Virtuoso
 > avoiding unnecessary RPCs.
 
+<a id="id2-clr-net-aspx-host"></a>
 # CLR, .Net & ASPX Host
 
 The Common Language Runtime (CLR) is the foundation upon which the
@@ -104,6 +138,7 @@ be run directly from Virtuoso either from the filesystem or WebDAV. Each
 of these capabilities releases you from the Microsoft platforms without
 compromising your development platform.
 
+<a id="id3-environment-setup"></a>
 ## Environment Setup
 
 Follow the steps below to configure the CLR runtime environment with
@@ -176,6 +211,7 @@ file adds a bin directory to the assembly search path:
 
 Configuration files are called: `<application name>.config` .
 
+<a id="id4-testing-the-virtuoso-net-runtime-environment"></a>
 ## Testing the Virtuoso .NET Runtime Environment
 
 To test that you have successfully started the Virtuoso server with .NET
@@ -241,6 +277,7 @@ classes.
 > 
 > The External Hosted [Create PROCEDURE](#createassembly) Syntax
 
+<a id="id5-clr-mono"></a>
 # CLR & Mono
 
 The Mono Project is an open development initiative sponsored by Ximian
@@ -281,6 +318,7 @@ subclass it in C++ and instantiate it in an Eiffel program.
 > 
 > The External Hosted [Create PROCEDURE](#createassembly) Syntax
 
+<a id="id6-environment-setup"></a>
 ## Environment Setup
 
 Ximian announced the launch of the Mono project, an effort to create an
@@ -299,6 +337,7 @@ Virtuoso:
     The mscorlib.dll is installed by Mono and needs to be symlinked from
     its default location to `/usr/local/lib` .
 
+<a id="id7-testing-the-virtuoso-mono-runtime-environment"></a>
 ## Testing the Virtuoso Mono Runtime Environment
 
 To test that you have successfully started the Virtuoso server with Mono
@@ -360,12 +399,14 @@ classes via Mono Runtime.
 > 
 > The External Hosted [Create PROCEDURE](#createassembly) Syntax
 
+<a id="id8-embedded-java-vm-api"></a>
 # Embedded Java VM API
 
 The Java VM is an embedded system within Virtuoso that allows the
 calling of class Java methods and getting class properties. It uses the
 JAVA JNI API to interact with the JAVA VM.
 
+<a id="id9-correspondence-between-virtuoso-java-vm-threads"></a>
 ## Correspondence Between Virtuoso & Java VM Threads
 
 At maximum one Java VM will be started on demand. If a function from the
@@ -397,6 +438,7 @@ Attaching and detaching Virtuoso worker threads is marked as a debug
 level message in the Virtuoso Event log, so that these messages can be
 used to debug the process.
 
+<a id="id10-virtuosopl-java-vm-type-mapping-schema"></a>
 ## Virtuoso/PL \<-\> Java VM Type Mapping Schema
 
 Since the Java language uses a different set of data types than Virtuoso
@@ -451,6 +493,7 @@ return value of the java\_new\_object VSE
 
 property values returned from java\_get\_property VSE
 
+<a id="id11-references-to-java-vm-class-instances-in-virtuosopl"></a>
 ## References to Java VM Class Instances in Virtuoso/PL
 
 Java Class instances are represented as a Virtuoso/PL variable values
@@ -462,6 +505,7 @@ local frame upon it's start, and frees it upon exit. This allows for
 fast deallocation of the local objects created by mapping Virtuoso/PL
 native values to Java objects.
 
+<a id="id12-specifying-the-correct-java-type-when-passing-values-from-virtuosopl"></a>
 ## Specifying the Correct Java Type When Passing Values from Virtuoso/PL
 
 Each method parameter in the `java_new_object()` /`java_call_method()`
@@ -472,6 +516,7 @@ java.lang.String - Ljava/lang/String. The signature is important because
 the Java VM JNI API needs it in order to find the appropriate
 constructor/method/property.
 
+<a id="id13-virtuoso-java-pl-api-vses"></a>
 ## Virtuoso Java PL API VSEs
 
 The API consists of the following VSEs:
@@ -490,6 +535,7 @@ java\_vm\_attach()
 
 java\_vm\_detach()
 
+<a id="id14-java-security"></a>
 ## Java Security
 
 Java classes are hosted in one of two modes:
@@ -612,8 +658,10 @@ as:
     import_jar (NULL, 'Write_file', 1) - will import java classes in unrestricted mode.
     import_jar (NULL, 'Write_file') - will import java classes in restricted mode.
 
+<a id="id15-virtuoso-server-extension-interface-vsei-c-interface"></a>
 # Virtuoso Server Extension Interface (VSEI) (C Interface)
 
+<a id="id16-virtuoso-server-extension-interface-vsei"></a>
 ## Virtuoso Server Extension Interface (VSEI)
 
 The Virtuoso Server Extension Interface allows Virtuoso functionality to
@@ -657,6 +705,7 @@ Stack consumption should not be excessive: threads normally have 100K of
 stack on 32 bit platforms. The stack size may however be increased by
 settings in the virtuoso.ini file.
 
+<a id="id17-sql-run-time-objects"></a>
 ## SQL Run Time Objects
 
 The Virtuoso Server Extension API introduces the following data types:
@@ -704,6 +753,7 @@ The Virtuoso Server Extension API introduces the following data types:
     forward-only cursor. This can be advanced, column values may be
     accessed and the cursor may be closed.
 
+<a id="id18-memory-management-rules"></a>
 ## Memory Management Rules
 
 All state slots in a query have distinct values. With the exception of a
@@ -715,6 +765,7 @@ inside the VSE and may not be a copy of or include any of the arguments
 as a substructure. All return values and arguments must be legitimate
 boxes and may not share a structure.
 
+<a id="id19-server-main-function"></a>
 ## Server Main Function
 
 The server main function for a customized Virtuoso server has the
@@ -792,6 +843,7 @@ call the `VirtuosoServerMain()` function to start the Virtuoso server.
 The `VirtuosoServerMain()` function will return control after the server
 has been shut down.
 
+<a id="id20-compiling-linking"></a>
 ## Compiling & Linking
 
 The files should be compiled for the multi-threaded environment
@@ -862,6 +914,7 @@ The Virtuoso distribution contains the following libraries/object files:
     support. Executables using that binary should call the
     `sqls_define_clr` function in their DDL init hook.
 
+<a id="id21-functions-by-category"></a>
 ## Functions by Category
 
 ### General Box Functions
@@ -1110,6 +1163,7 @@ Below is the code for box\_copy\_tree:
 > 
 > The VSEI Functions .
 
+<a id="id22-vsei-definition"></a>
 ## VSEI Definition
 
     typedef caddr_t (*bif_t) (caddr_t *qst, caddr_t *error_return, state_slot_t ** arguments);
@@ -1206,6 +1260,7 @@ Virtuoso/PL code or uses XPath/XSLT functions. Other functions of
 Virtuoso's C interface are deadlock-safe since they perform no database
 access.
 
+<a id="id23-sql-exceptions"></a>
 ## SQL Exceptions
 
     caddr_t srv_make_error (char *code, char *msg);
@@ -1249,6 +1304,7 @@ The macros:
 
 can be used to read an error returned by a statement.
 
+<a id="id24-executing-sql"></a>
 ## Executing SQL
 
     query_t * sql_compile (char *string2, client_connection_t * cli,
@@ -1349,6 +1405,7 @@ The bif\_my\_select function returns an array with one element for each
 row of the SYS\_KEYS table. The rows are themselves arrays containing
 the column values.
 
+<a id="id25-adding-new-languages-and-encodings-into-virtuoso"></a>
 ## Adding New Languages And Encodings Into Virtuoso
 
 There are too many languages to be able to support them all by default
@@ -1429,6 +1486,7 @@ encoding, thus you are not likely to gain in performance by writing your
 own C code, but some applications will know nothing about your encoding
 because they will check only the SYS\_CHARSETS system table.
 
+<a id="id26-vsei-plugins"></a>
 # VSEI Plugins
 
 Virtuoso functionality can be enhanced through external libraries by

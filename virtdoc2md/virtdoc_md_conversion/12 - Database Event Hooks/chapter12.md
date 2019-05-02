@@ -20,6 +20,25 @@ simplified database security system. The system will record all logins
 and logouts and will enforce custom security rules on reading a specific
 application table.
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Database Startup](#id1-database-startup)
+  * [Database Connections](#id2-database-connections)
+  * [Database Logins](#id3-database-logins)
+  * [Database Disconnections](#id4-database-disconnections)
+  * [Database Shutdown](#id5-database-shutdown)
+  * [SQL Statement Preparation](#id6-sql-statement-preparation)
+  * [SQL Parse Tree](#id7-sql-parse-tree)
+    * [Notes on Special Features of the Parse Tree](#id8-notes-on-special-features-of-the-parse-tree)
+    * [SQL Security and Parse Trees](#id9-sql-security-and-parse-trees)
+    * [Debugging with Parse Trees](#id10-debugging-with-parse-trees)
+  * [WebDAV Logins](#id11-webdav-logins)
+  * [Associating Auxiliary Data With A Connection](#id12-associating-auxiliary-data-with-a-connection)
+
+<!--- TOC: End --->
+<a id="id1-database-startup"></a>
 # Database Startup
 
 `DB.DBA.DBEV_STARTUP()`
@@ -41,6 +60,7 @@ procedure.
       dbg_obj_print (' server started ');
     }
 
+<a id="id2-database-connections"></a>
 # Database Connections
 
 `DB.DBA.DBEV_CONNECT()`
@@ -128,6 +148,7 @@ pwd
        dbg_obj_print (dsn, user_id, pwd);
     };
 
+<a id="id3-database-logins"></a>
 # Database Logins
 
 ` DB.DBA.DBEV_LOGIN
@@ -275,6 +296,7 @@ database. Or, this can be used to perform some pre-login actions. It is
 similar to the DBEV\_LOGIN, but it does not change any account
 validation rule, it is purely for pre-processing.
 
+<a id="id4-database-disconnections"></a>
 # Database Disconnections
 
 `DB.DBA.DBEV_DISCONNECT()`
@@ -308,6 +330,7 @@ hook.
 This function updates the row created by the connect hook to set the
 logout time.
 
+<a id="id5-database-shutdown"></a>
 # Database Shutdown
 
 `DB.DBA.DBEV_SHUTDOWN()`
@@ -352,6 +375,7 @@ logged but not otherwise processed.
 This just marks all open connections to be disconnected at the current
 time.
 
+<a id="id6-sql-statement-preparation"></a>
 # SQL Statement Preparation
 
 `DB.DBA.DBEV_PREPARE(inout tree any
@@ -435,6 +459,7 @@ reference as in a view expansion, where it's privileges are not those of
 the user but of the view owner, or in this case the procedure owner,
 which is always dba.
 
+<a id="id7-sql-parse-tree"></a>
 # SQL Parse Tree
 
 The SQL parse tree is composed of DV\_ARRAY\_OF\_POINTER boxes. Other
@@ -558,6 +583,7 @@ length in pointer-size units.
 Note that in this example the tree is spliced in place, only adding
 nodes. There is no need to free data or to modify the top node.
 
+<a id="id8-notes-on-special-features-of-the-parse-tree"></a>
 ## Notes on Special Features of the Parse Tree
 
 The parse tree structure has a 1 to 1 correspondence with the yacc
@@ -583,6 +609,7 @@ desired case sensitivity.
 When generating references to names the case should be correct as
 defined by the case mode.
 
+<a id="id9-sql-security-and-parse-trees"></a>
 ## SQL Security and Parse Trees
 
 When compiling table access the access rights granted on the table are
@@ -601,6 +628,7 @@ the reference to NEED\_TO\_KNOW to be 0, meaning dba.
 There are no other security related features in the parse tree.
 Procedure security is resolved exclusively at run time.
 
+<a id="id10-debugging-with-parse-trees"></a>
 ## Debugging with Parse Trees
 
 It is extremely easy to make errors when manipulating parse trees in
@@ -614,6 +642,7 @@ same. There is an assertion failure if this happens. Otherwise the tree
 is not checked. Hence a malformed tree will in all likelihood crash the
 server during the compilation.
 
+<a id="id11-webdav-logins"></a>
 # WebDAV Logins
 
 ` DB.DBA.DBEV_DAV_LOGIN
@@ -750,6 +779,7 @@ user name)
       return 0;
     };
 
+<a id="id12-associating-auxiliary-data-with-a-connection"></a>
 # Associating Auxiliary Data With A Connection
 
 The following functions allow you to set and retrieve connection

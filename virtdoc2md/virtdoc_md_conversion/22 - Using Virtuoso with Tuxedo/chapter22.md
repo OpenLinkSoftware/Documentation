@@ -1,5 +1,21 @@
 # Using Virtuoso with Tuxedo
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Building the Transaction Manager Server](#id1-building-the-transaction-manager-server)
+  * [Configuration](#id2-configuration)
+  * [Services](#id3-services)
+    * [Introduction](#id4-introduction)
+    * [VQL functions](#id5-vql-functions)
+    * [Services concept](#id6-services-concept)
+    * [OPENINFO](#id7-openinfo)
+  * [Clients](#id8-clients)
+  * [Service example](#id9-service-example)
+
+<!--- TOC: End --->
+<a id="id1-building-the-transaction-manager-server"></a>
 # Building the Transaction Manager Server
 
 First of all, the administrator needs to build Virtuoso Transaction
@@ -26,6 +42,7 @@ command builds the VirtTMS:
         
 ```
 
+<a id="id2-configuration"></a>
 # Configuration
 
 In order to use Virtuoso as resource manager the UBB config file (Tuxedo
@@ -70,8 +87,10 @@ virtuoso servers (resource managers) behind them.
     VRMTEST         PRIO=50
     VRMTEST2        PRIO=50
 
+<a id="id3-services"></a>
 # Services
 
+<a id="id4-introduction"></a>
 ## Introduction
 
 The services (in the Tuxedo's term) are special programs which implement
@@ -85,6 +104,7 @@ section in the sample config file). The OPENINFO has the following
 format: "Virtuoso:user:password@NODENAME:port". The user,password and
 port are optional.
 
+<a id="id5-vql-functions"></a>
 ## VQL functions
 
 VQL functions are used to receive access to hdbc for further work with
@@ -111,6 +131,7 @@ Header: vql\_client.h
 
 Library: libvirtxa.a
 
+<a id="id6-services-concept"></a>
 ## Services concept
 
 Each service has an entry point (some function), which is supposed to
@@ -146,6 +167,7 @@ where "virt\_service1.o" is the service object file which contains
 VService1 entry function. "-r Virtuoso" indicates that service must be
 assembled with Virtuoso XA support library.
 
+<a id="id7-openinfo"></a>
 ## OPENINFO
 
 OPENINFO is necessary for services to connect to the certain Virtuoso
@@ -156,11 +178,13 @@ server. Common format of connection string is
 \[USER\[:PASSWORD\]\]@SERVER\[:PORT\]. Only the SERVER name is required,
 the others are optional.
 
+<a id="id8-clients"></a>
 # Clients
 
 There are no special requirements for the clients of services which use
 Virtuoso as resource manager. See Tuxedo 8.x documentation
 
+<a id="id9-service-example"></a>
 # Service example
 
     #include <stdio.h>

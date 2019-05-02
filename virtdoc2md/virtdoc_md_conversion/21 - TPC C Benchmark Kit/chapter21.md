@@ -1,5 +1,27 @@
 # TPC C Benchmark Kit
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Building the Test Database](#id1-building-the-test-database)
+  * [Using the Test Program](#id2-using-the-test-program)
+  * [Tuning Parameters and Number of Users](#id3-tuning-parameters-and-number-of-users)
+  * [Omissions, Exceptions from the Definition](#id4-omissions-exceptions-from-the-definition)
+  * [Sample Configuration](#id5-sample-configuration)
+  * [Other Factors](#id6-other-factors)
+  * [TPC C Procedures](#id7-tpc-c-procedures)
+    * [Introduction](#id8-introduction)
+    * [New Order](#id9-new-order)
+    * [Payment](#id10-payment)
+    * [Delivery](#id11-delivery)
+    * [Order Status](#id12-order-status)
+    * [Stock Level](#id13-stock-level)
+  * [DDL Statements](#id14-ddl-statements)
+  * [Stored Procedures](#id15-stored-procedures)
+
+<!--- TOC: End --->
+<a id="id1-building-the-test-database"></a>
 # Building the Test Database
 
 To build a 1 warehouse test database (approximately 100 MB), go through
@@ -35,6 +57,7 @@ database state:
 
 The database is now ready for use.
 
+<a id="id2-using-the-test-program"></a>
 # Using the Test Program
 
 The tpcc program simulates one user making random transactions according
@@ -77,6 +100,7 @@ payments 10 deliveries, stock levels and order status queries.
 The throughput will increase during the first minutes of the run to
 level off at the attained rate.
 
+<a id="id3-tuning-parameters-and-number-of-users"></a>
 # Tuning Parameters and Number of Users
 
 You may run several instances of tpcc, each representing one user. You
@@ -95,6 +119,7 @@ own I/O queue. If there is a RAID, then striping is less beneficial.
 Also one should have multiple handles per files, see FDSPerFile in the
 configuration file.
 
+<a id="id4-omissions-exceptions-from-the-definition"></a>
 # Omissions, Exceptions from the Definition
 
 Running the benchmark by the book is a complex and costly process which
@@ -129,6 +154,7 @@ adding clients and a new warehouse every 10 clients.
 > The complete benchmark specification is available at [the TPC Web
 > Site](#) .
 
+<a id="id5-sample-configuration"></a>
 # Sample Configuration
 
 This section describes how to set up disks and I/O for a sample run. To
@@ -221,6 +247,7 @@ Thus we could have:
     MaxCheckpointRemap = 2000000
     UnremapQuota = 3000
 
+<a id="id6-other-factors"></a>
 # Other Factors
 
 Benchmarks are run with a transaction monitor, usually Tuxedo. This has
@@ -239,8 +266,10 @@ run.
 
 We may release more information on OS tuning in the future.
 
+<a id="id7-tpc-c-procedures"></a>
 # TPC C Procedures
 
+<a id="id8-introduction"></a>
 ## Introduction
 
 This document goes through the TPC C sample and explains how and why the
@@ -256,6 +285,7 @@ this commentary.
 > For a formal benchmark definition, see the documentation at [the TPC
 > Web Site](#) .
 
+<a id="id9-new-order"></a>
 ## New Order
 
   - Passing parameters
@@ -374,6 +404,7 @@ ORDER\_LINE. These are basically in ascending order for each district
 and have high locality. Note the call by reference (inout) for
 ol\_insert.
 
+<a id="id10-payment"></a>
 ## Payment
 
 The payment transaction reads and updates the customer. The customer may
@@ -384,6 +415,7 @@ cursor.
 
 The transaction profile does not offer possibilities of optimization.
 
+<a id="id11-delivery"></a>
 ## Delivery
 
 The delivery transaction reads and deletes a line from NEW\_ORDER and
@@ -400,6 +432,7 @@ here.
 
 Otherwise the transaction does not leave room for optimization.
 
+<a id="id12-order-status"></a>
 ## Order Status
 
 This transaction picks the last order of a given customer. It uses a
@@ -425,6 +458,7 @@ O\_ID for this transaction. The trade-off being 1500 serial reads
 against 10 random insert (10 new order per one order status) we choose
 to have the extra index.
 
+<a id="id13-stock-level"></a>
 ## Stock Level
 
 This is a complex read-only transaction. This finds all distinct items
@@ -450,6 +484,7 @@ is the fastest way of getting this. Note that the ORDER\_LINE is the
 driving table of join (leftmost in FROM). Also not the use of historical
 read in the client (SQL\_CONCURRENCY option).
 
+<a id="id14-ddl-statements"></a>
 # DDL Statements
 
     CREATE TABLE WAREHOUSE (
@@ -585,6 +620,7 @@ read in the client (SQL\_CONCURRENCY option).
         PRIMARY KEY (S_I_ID, S_W_ID)
     );
 
+<a id="id15-stored-procedures"></a>
 # Stored Procedures
 
     --

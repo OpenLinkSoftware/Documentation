@@ -1,5 +1,142 @@
 # RDF Data Access and Data Management
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Data Representation](#id1-data-representation)
+    * [IRI\_ID Type](#id2-iri_id-type)
+    * [RDF\_BOX Type](#id3-rdf_box-type)
+    * [RDF\_QUAD and other tables](#id4-rdf_quad-and-other-tables)
+    * [Short, Long and SQL Values](#id5-short-long-and-sql-values)
+    * [Programatically resolving DB.DBA.RDF\_QUAD.O to SQL](#id6-programatically-resolving-dbdbardf_quado-to-sql)
+    * [Special Cases and XML Schema Compatibility](#id7-special-cases-and-xml-schema-compatibility)
+    * [SQL Compiler Support - QUIETCAST option](#id8-sql-compiler-support-quietcast-option)
+    * [Dynamic Renaming of Local IRI's](#id9-dynamic-renaming-of-local-iris)
+  * [SPARQL](#id10-sparql)
+    * [SPARQL Implementation Details](#id11-sparql-implementation-details)
+    * [Query Constructs](#id12-query-constructs)
+    * [SPARQL Web Services & APIs](#id13-sparql-web-services-apis)
+    * [Troubleshooting SPARQL Queries](#id14-troubleshooting-sparql-queries)
+    * [SPARQL Inline in SQL](#id15-sparql-inline-in-sql)
+    * [API Functions](#id16-api-functions)
+    * [Useful Internal Functions](#id17-useful-internal-functions)
+    * [Default and Named Graphs](#id18-default-and-named-graphs)
+    * [Calling SQL from SPARQL](#id19-calling-sql-from-sparql)
+    * [SPARQL DESCRIBE](#id20-sparql-describe)
+    * [Transitivity in SPARQL](#id21-transitivity-in-sparql)
+    * [Supported SPARQL-BI "define" pragmas](#id22-supported-sparql-bi-define-pragmas)
+    * [Built-in bif functions](#id23-built-in-bif-functions)
+    * [Sending SOAP Requests to Virtuoso SPARQL Endpoint](#id24-sending-soap-requests-to-virtuoso-sparql-endpoint)
+    * [Use of Hash Join With RDF](#id25-use-of-hash-join-with-rdf)
+  * [Extensions](#id26-extensions)
+    * [Using Full Text Search in SPARQL](#id27-using-full-text-search-in-sparql)
+    * [SPARUL -- an Update Language For RDF Graphs](#id28-sparul-an-update-language-for-rdf-graphs)
+    * [Business Intelligence Extensions for SPARQL](#id29-business-intelligence-extensions-for-sparql)
+  * [RDF Graphs Security](#id30-rdf-graphs-security)
+    * [RDF Graph Groups](#id31-rdf-graph-groups)
+    * [NOT FROM and NOT FROM NAMED Clauses](#id32-not-from-and-not-from-named-clauses)
+    * [Graph-Level Security](#id33-graph-level-security)
+    * [Graph-Level Security and SQL](#id34-graph-level-security-and-sql)
+    * [Understanding Default Permissions](#id35-understanding-default-permissions)
+    * [Initial Configuration of SPARQL Security](#id36-initial-configuration-of-sparql-security)
+    * [Application Callbacks for Graph Level Security](#id37-application-callbacks-for-graph-level-security)
+    * [Graph-level security and sponging](#id38-graph-level-security-and-sponging)
+  * [Linked Data Views over RDBMS Data Source](#id39-linked-data-views-over-rdbms-data-source)
+    * [Introduction](#id40-introduction)
+    * [Rationale](#id41-rationale)
+    * [Quad Map Patterns, Values and IRI Classes](#id42-quad-map-patterns-values-and-iri-classes)
+    * [Configuring RDF Storages](#id43-configuring-rdf-storages)
+    * [Translation Of SPARQL Triple Patterns To Quad Map Patterns](#id44-translation-of-sparql-triple-patterns-to-quad-map-patterns)
+    * [Describing Source Relational Tables](#id45-describing-source-relational-tables)
+    * [Function-Based IRI Classes](#id46-function-based-iri-classes)
+    * [Connection Variables in IRI Classes](#id47-connection-variables-in-iri-classes)
+    * [Lookup Optimization -- BIJECTION and RETURNS Options](#id48-lookup-optimization-bijection-and-returns-options)
+    * [Join Optimization -- Declaring IRI Subclasses](#id49-join-optimization-declaring-iri-subclasses)
+    * [RDF Metadata Maintenance and Recovery](#id50-rdf-metadata-maintenance-and-recovery)
+    * [Split Linked Data View](#id51-split-linked-data-view)
+    * [Linked Data Views and recursive FK relationships](#id52-linked-data-views-and-recursive-fk-relationships)
+  * [Automated Generation of Linked Data Views over Relational Data Sources](#id53-automated-generation-of-linked-data-views-over-relational-data-sources)
+    * [Introduction](#id54-introduction)
+    * [One Click Linked Data Generation & Deployment](#id55-one-click-linked-data-generation-deployment)
+    * [Generate Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources Using Conductor](#id56-generate-transient-andor-persistent-linked-data-views-atop-remote-relational-data-sources-using-conductor)
+    * [Using Virtuoso Crawler](#id57-using-virtuoso-crawler)
+    * [Using SPARQL Query and Sponger (i.e. we Fetch the Network Resources in the FROM Clause or values for the graph-uri parameter in SPARQL protocol URLs)](#id58-using-sparql-query-and-sponger-ie-we-fetch-the-network-resources-in-the-from-clause-or-values-for-the-graph-uri-parameter-in-sparql-protocol-urls)
+    * [Using Virtuoso PL APIs](#id59-using-virtuoso-pl-apis)
+    * [Using SIMILE RDF Bank API](#id60-using-simile-rdf-bank-api)
+    * [Using RDF NET](#id61-using-rdf-net)
+    * [Using the RDF Proxy (Sponger) Service](#id62-using-the-rdf-proxy-sponger-service)
+  * [RDFizer Middleware (Sponger)](#id63-rdfizer-middleware-sponger)
+    * [What Is The Sponger?](#id64-what-is-the-sponger)
+    * [Consuming the Generated RDF Structured Data](#id65-consuming-the-generated-rdf-structured-data)
+    * [RDF Cartridges Use Cases](#id66-rdf-cartridges-use-cases)
+    * [Cartridge Architecture](#id67-cartridge-architecture)
+    * [Sponger Programmers Guide](#id68-sponger-programmers-guide)
+    * [Sponger and Nanotations](#id69-sponger-and-nanotations)
+    * [Sponger Usage Examples](#id70-sponger-usage-examples)
+  * [Virtuoso Faceted Browser Installation and configuration](#id71-virtuoso-faceted-browser-installation-and-configuration)
+    * [Prerequisites](#id72-prerequisites)
+    * [Pre Installation](#id73-pre-installation)
+    * [VAD Package Installation](#id74-vad-package-installation)
+    * [Post Installation](#id75-post-installation)
+    * [URI Labels](#id76-uri-labels)
+    * [Usage Statistics](#id77-usage-statistics)
+    * [Examples](#id78-examples)
+  * [Virtuoso Faceted Web Service](#id79-virtuoso-faceted-web-service)
+    * [Customizing](#id80-customizing)
+    * [Examples](#id81-examples)
+    * [WebService Interface](#id82-webservice-interface)
+  * [Linked Data](#id83-linked-data)
+    * [IRI Dereferencing For FROM Clauses, "define get:..." Pragmas](#id84-iri-dereferencing-for-from-clauses-define-get-pragmas)
+    * [IRI Dereferencing For Variables, "define input:grab-..." Pragmas](#id85-iri-dereferencing-for-variables-define-inputgrab-pragmas)
+    * [URL rewriting](#id86-url-rewriting)
+    * [Examples of other Protocol Resolvers](#id87-examples-of-other-protocol-resolvers)
+    * [Faceted Views over Large-Scale Linked Data](#id88-faceted-views-over-large-scale-linked-data)
+  * [Inference Rules & Reasoning](#id89-inference-rules-reasoning)
+    * [Introduction](#id90-introduction)
+    * [Making Rule Sets](#id91-making-rule-sets)
+    * [Changing Rule Sets](#id92-changing-rule-sets)
+    * [Subclasses and Subproperties](#id93-subclasses-and-subproperties)
+    * [OWL sameAs Support](#id94-owl-sameas-support)
+    * [Implementation](#id95-implementation)
+    * [Enabling Inferencing](#id96-enabling-inferencing)
+    * [Examples](#id97-examples)
+    * [Identity With Inverse Functional Properties](#id98-identity-with-inverse-functional-properties)
+    * [Inference Rules and SPARQL with Transitivity Option](#id99-inference-rules-and-sparql-with-transitivity-option)
+    * [Inference Rules, OWL Support and Relationship Ontology](#id100-inference-rules-owl-support-and-relationship-ontology)
+  * [RDF and Geometry](#id101-rdf-and-geometry)
+    * [Programmatic Manipulation of Geometries in RDF](#id102-programmatic-manipulation-of-geometries-in-rdf)
+    * [Creating Geometries From RDF Data](#id103-creating-geometries-from-rdf-data)
+    * [Using Geometries With Existing Databases](#id104-using-geometries-with-existing-databases)
+    * [GEO Spatial Examples](#id105-geo-spatial-examples)
+  * [RDF Replication](#id106-rdf-replication)
+  * [RDF Performance Tuning](#id107-rdf-performance-tuning)
+    * [General](#id108-general)
+    * [RDF Index Scheme](#id109-rdf-index-scheme)
+    * [Index Scheme Selection](#id110-index-scheme-selection)
+    * [Manage Public Web Service Endpoints](#id111-manage-public-web-service-endpoints)
+    * [Erroneous Cost Estimates and Explicit Join Order](#id112-erroneous-cost-estimates-and-explicit-join-order)
+    * [Using "swappiness" parameter ( Linux only )](#id113-using-swappiness-parameter-linux-only)
+    * [Get All Graphs](#id114-get-all-graphs)
+    * [Rename RDF Graph and RDF Graph Groups](#id115-rename-rdf-graph-and-rdf-graph-groups)
+    * [Dump and Reload Graphs](#id116-dump-and-reload-graphs)
+    * [RDF dumps from Virtuoso Quad store hosted data into NQuad dumps](#id117-rdf-dumps-from-virtuoso-quad-store-hosted-data-into-nquad-dumps)
+    * [Dump Linked Data View Graph to n3](#id118-dump-linked-data-view-graph-to-n3)
+    * [Loading RDF](#id119-loading-rdf)
+    * [Using SPARUL](#id120-using-sparul)
+    * [DBpedia Benchmark](#id121-dbpedia-benchmark)
+    * [RDF Store Benchmarks](#id122-rdf-store-benchmarks)
+    * [Fast Approximate RDF Graph Diff and Patch](#id123-fast-approximate-rdf-graph-diff-and-patch)
+    * [RDB2RDF Triggers](#id124-rdb2rdf-triggers)
+  * [RDF Data Access Providers (Drivers)](#id125-rdf-data-access-providers-drivers)
+    * [Virtuoso Jena Provider](#id126-virtuoso-jena-provider)
+    * [Virtuoso Sesame Provider](#id127-virtuoso-sesame-provider)
+  * [RDF Graph Replication](#id128-rdf-graph-replication)
+    * [Replication Scenarios](#id129-replication-scenarios)
+    * [Set up RDF Replication via procedure calls](#id130-set-up-rdf-replication-via-procedure-calls)
+
+<!--- TOC: End --->
+<a id="id1-data-representation"></a>
 # Data Representation
 
 This section covers how Virtuoso stores RDF triples. The IRI\_ID
@@ -8,6 +145,7 @@ structures used for triple persistency. These details are mostly hidden
 from users of RDF, thus this section is not necessary reading for
 typical use of Virtuoso with RDF.
 
+<a id="id2-iri_id-type"></a>
 ## IRI\_ID Type
 
 The central notion of RDF is the IRI, or URI, which serves as the
@@ -104,6 +242,7 @@ function parameter:
     
     22 Rows. -- 241 msec.
 
+<a id="id3-rdf_box-type"></a>
 ## RDF\_BOX Type
 
 While strings, numbers, dates and XML entities are "native" SQL
@@ -119,6 +258,7 @@ Usually applications do not need to access internals of an RDF boxes.
 This datatype is used in system tables but almost all SPARQL and RDF
 operations use standard SQL datatypes for arguments and return values.
 
+<a id="id4-rdf_quad-and-other-tables"></a>
 ## RDF\_QUAD and other tables
 
 The main tables of the default RDF storage system are:
@@ -203,6 +343,7 @@ A short integer value can be used in both RDF\_DATATYPE and
 RDF\_LANGUAGE tables for two different purposes. E.g. an integer 257 is
 for 'unspecified datatype' as well as for 'unspecified language'.
 
+<a id="id5-short-long-and-sql-values"></a>
 ## Short, Long and SQL Values
 
 When processing an O, the SPARQL implementation may have it in one of
@@ -246,6 +387,7 @@ be numbers which are stored as their binary selves in O, thus the O
 column unaltered and uncast will do as an argument of arithmetic or
 numeric comparison with, say, SQL literal constants.
 
+<a id="id6-programatically-resolving-dbdbardf_quado-to-sql"></a>
 ## Programatically resolving DB.DBA.RDF\_QUAD.O to SQL
 
 This section describes how to resolve programatically the internal
@@ -330,6 +472,7 @@ its content should be:
 OPTION (QUIETCAST)) AS "s-1-0_rbc"
 ```
 
+<a id="id7-special-cases-and-xml-schema-compatibility"></a>
 ## Special Cases and XML Schema Compatibility
 
 We note that since we store numbers as the equivalent SQL binary type,
@@ -338,6 +481,7 @@ become integer. If preserving such detail is for some reason important,
 then storage as a typed string is possible but is not done at present
 for reasons of compactness and performance.
 
+<a id="id8-sql-compiler-support-quietcast-option"></a>
 ## SQL Compiler Support - QUIETCAST option
 
 The type cast behaviors of SQL and SPARQL are different. SQL will
@@ -371,6 +515,7 @@ The syntax is as follows:
 This option is automatically added by the SPARQL to SQL translator. The
 scope is the enclosing procedure body.
 
+<a id="id9-dynamic-renaming-of-local-iris"></a>
 ## Dynamic Renaming of Local IRI's
 
 There are cases where it is desirable to have IRI's in RDF storage that
@@ -408,8 +553,10 @@ behavior, likewise when using web interactive SQL in Conductor. Also be
 careful when loading RDF files that may have URI's corresponding to the
 local host name.
 
+<a id="id10-sparql"></a>
 # SPARQL
 
+<a id="id11-sparql-implementation-details"></a>
 ## SPARQL Implementation Details
 
 Virtuoso's RDF support includes in-built support for the SPARQL query
@@ -800,6 +947,7 @@ are:
 (assuming that the query contains the declaration: 'PREFIX xsd:
 \<http://www.w3.org/2001/XMLSchema\#\>')
 
+<a id="id12-query-constructs"></a>
 ## Query Constructs
 
 Starting from Version 5.0, Virtuoso supports filtering RDF objects
@@ -885,6 +1033,7 @@ In order to execute the examples below please run these commands:
     
     1 Rows. -- 20 msec.
 
+<a id="id13-sparql-web-services-apis"></a>
 ## SPARQL Web Services & APIs
 
 ### Introduction
@@ -3092,6 +3241,7 @@ when parameter 'format' is 'json', then it will produce JSON/P output.
         { "x": { "type": "uri", "value": "http://www.wasab.dk/morten/2003/12/nearestAirport/#b-profile" }   , "z": { "type": "uri",
     aml.org/services/owl-s/1.1/Service.owl#ServiceProfile" }} ] } })
 
+<a id="id14-troubleshooting-sparql-queries"></a>
 ## Troubleshooting SPARQL Queries
 
 A short SPARQL query can be compiled into a long SQL statement,
@@ -3359,6 +3509,7 @@ of fields that were arguments of `sprintf_iri
         returns "http://^{URIQADefaultHost}^/sys/group?id=%d"
         union   "http://^{URIQADefaultHost}^/sys/user?id=%d" ) .
 
+<a id="id15-sparql-inline-in-sql"></a>
 ## SPARQL Inline in SQL
 
 Virtuoso extends the SQL 92 syntax with SPARQL queries and subqueries.
@@ -3733,6 +3884,7 @@ specified then the query makes a 'boolean result' document instead:
     
     1 Rows. -- 00000 msec.
 
+<a id="id16-api-functions"></a>
 ## API Functions
 
 SPARQL can be used inline wherever SQL can be used. The only API
@@ -4031,6 +4183,7 @@ If the query is a CONSTRUCT or DESCRIBE then the result set consists of
 a single row and column, the value inside is a dictionary of triples in
 'long valmode'.
 
+<a id="id17-useful-internal-functions"></a>
 ## Useful Internal Functions
 
 ### Conversion Functions for XMLSchema/RDF Data Serialization Syntax
@@ -4057,6 +4210,7 @@ Library.
       in r varchar, -- language identifies (string or NULL)
       in t varchar) -- language pattern (exact name, first two letters or '*')
 
+<a id="id18-default-and-named-graphs"></a>
 ## Default and Named Graphs
 
 Sometimes the default graph IRI is not known when the SPARQL query is
@@ -4136,6 +4290,7 @@ Example Usage:
     INSERT INTO DB.DBA.SYS_SPARQL_HOST (SH_HOST, SH_GRAPH_URI, SH_USER_URI, SH_BASE_URI, SH_DEFINES) VALUES
     ('example.com', 'urn:example:com', 'urn:example:user', NULL, 'define input:inference "http://mygraph.com"');
 
+<a id="id19-calling-sql-from-sparql"></a>
 ## Calling SQL from SPARQL
 
 A SPARQL expression can contain calls to Virtuoso/PL functions and
@@ -4258,6 +4413,7 @@ forces the use of RDF representation in the result set.
 >   - [Example for generating RDF information resource
 >     URI](#rdfsparulexamples8)
 
+<a id="id20-sparql-describe"></a>
 ## SPARQL DESCRIBE
 
 The SPARQL specification does not define the precise output of DESCRIBE,
@@ -4606,6 +4762,7 @@ Assume the following statements are executed:
     PREFIX xmp: <http://example.com/xmp/>
     DESCRIBE xmp:TheSubject FROM xmp:good1 FROM xmp:good2') as x long varchar;
 
+<a id="id21-transitivity-in-sparql"></a>
 ## Transitivity in SPARQL
 
 Virtuoso SPARQL allows access to Virtuoso's SQL transitivity extension.
@@ -5019,6 +5176,7 @@ concept scheme hierarchy:
     
     ![Transitive option](./images/ui/trs2.png)
 
+<a id="id22-supported-sparql-bi-define-pragmas"></a>
 ## Supported SPARQL-BI "define" pragmas
 
 SPARQL-BI compiler and run-time support are not isolated from
@@ -5334,6 +5492,7 @@ they are seen in the generated SQL code as arguments of procedures:
 
 so sometimes you may meet them in SQL debuggers output and the like.
 
+<a id="id23-built-in-bif-functions"></a>
 ## Built-in bif functions
 
   - *bif:\_\_rdf\_long\_from\_batch\_params(i\_nt integer, st\_value,
@@ -5368,6 +5527,7 @@ so sometimes you may meet them in SQL debuggers output and the like.
             `bif:__rdf_long_from_batch_params(3,value.stringValue(),NULL)` }
           }
 
+<a id="id24-sending-soap-requests-to-virtuoso-sparql-endpoint"></a>
 ## Sending SOAP Requests to Virtuoso SPARQL Endpoint
 
 This section presents a sample scenario on how to execute a SPARQL query
@@ -5455,6 +5615,7 @@ as a SOAP request to the Virtuoso SPARQL Endpoint.
           </soapenv:Body>
         </soapenv:Envelope>
 
+<a id="id25-use-of-hash-join-with-rdf"></a>
 ## Use of Hash Join With RDF
 
 For queries that touch large quantities of RDF data and have many
@@ -5790,8 +5951,10 @@ Sometimes a hash join may be used when an index lookupp would be better,
 thus in some cases it makes sense to turn off hash joins either per
 query or globally.
 
+<a id="id26-extensions"></a>
 # Extensions
 
+<a id="id27-using-full-text-search-in-sparql"></a>
 ## Using Full Text Search in SPARQL
 
 Virtuoso's triple store supports optional full text indexing of RDF
@@ -6174,6 +6337,7 @@ or, more succinctly,
     http://dbpedia.org/resource/New_York_College                             http://dbpedia.org/property/abstract            There are several colleges of New York t ...     72
     No. of rows in result: 10
 
+<a id="id28-sparul-an-update-language-for-rdf-graphs"></a>
 ## SPARUL -- an Update Language For RDF Graphs
 
 ### Introduction
@@ -8053,6 +8217,7 @@ See [live results](#) of the query.
     
     8 Rows. -- 16 msec.
 
+<a id="id29-business-intelligence-extensions-for-sparql"></a>
 ## Business Intelligence Extensions for SPARQL
 
 Virtuoso extends SPARQL with expressions in results, subqueries,
@@ -8673,8 +8838,10 @@ The result should be:
     
     1 Rows. -- 30 msec.
 
+<a id="id30-rdf-graphs-security"></a>
 # RDF Graphs Security
 
+<a id="id31-rdf-graph-groups"></a>
 ## RDF Graph Groups
 
 In some cases, the data-set of a SPARQL query is not known at compile
@@ -8764,6 +8931,7 @@ graph group can appear in the list of members of some group but it will
 be treated as plain graph IRI and will not cause recursive expansion of
 groups.
 
+<a id="id32-not-from-and-not-from-named-clauses"></a>
 ## NOT FROM and NOT FROM NAMED Clauses
 
 In addition to standard FROM and FROM NAMED clauses, Virtuoso extends
@@ -8792,6 +8960,7 @@ become equivalent to NOT FROM and NOT FROM NAMED clauses like
 *input:default-graph-uri* and *input:named-graph-uri* mimics FROM and
 FROM NAMED.
 
+<a id="id33-graph-level-security"></a>
 ## Graph-Level Security
 
 Virtuoso supports graph-level security for "physical" RDF storage. That
@@ -8822,6 +8991,7 @@ should become member of appropriate group (`SPARQL_SELECT` ,
 `SPARQL_SPONGE` or `SPARQL_UPDATE` ) in order to start using its
 graph-level privileges.
 
+<a id="id34-graph-level-security-and-sql"></a>
 ## Graph-Level Security and SQL
 
 SPARQL-level graph security is sufficient for SPARQL client operating
@@ -8860,6 +9030,7 @@ Virtuoso SQL user:
     SQL> GRANT SPARQL_SELECT_RAW to "John";
     Done. -- 0 msec.
 
+<a id="id35-understanding-default-permissions"></a>
 ## Understanding Default Permissions
 
 In relational database, default permissions are trivial. DBA is usually
@@ -8921,6 +9092,7 @@ If no one above mentioned permission is set then the access is
 For "nobody" user, steps 3 and 4 become exact copies of steps 1 and 2 so
 they are skipped.
 
+<a id="id36-initial-configuration-of-sparql-security"></a>
 ## Initial Configuration of SPARQL Security
 
 It is convenient to configure the RDF storage security by adding
@@ -9285,6 +9457,7 @@ resources with access policies.
     
     0 Rows. -- 16 msec.
 
+<a id="id37-application-callbacks-for-graph-level-security"></a>
 ## Application Callbacks for Graph Level Security
 
 In some cases, different applications should provide different security
@@ -9334,6 +9507,7 @@ graph groups and let the "moderator" user read everything.
     SELECT ?g ?s WHERE { ?s <p> ?o }
     ;
 
+<a id="id38-graph-level-security-and-sponging"></a>
 ## Graph-level security and sponging
 
 In some cases the sponged data contains private information for
@@ -10099,6 +10273,7 @@ get:private pragma works for database with private graphs.
         
         1 Rows. -- 15 msec.
 
+<a id="id39-linked-data-views-over-rdbms-data-source"></a>
 # Linked Data Views over RDBMS Data Source
 
 Linked Data Views map relational data into RDF and allow customizing RDF
@@ -10113,6 +10288,7 @@ of Web 1.0 or Web 2.0 solutions. Linked Data Views are also suitable for
 declaring custom representation for RDF triples, e.g. property tables,
 where one row holds many single-valued properties.
 
+<a id="id40-introduction"></a>
 ## Introduction
 
 The Virtuoso Linked Data Views meta schema is a built-in feature of
@@ -10150,6 +10326,7 @@ mainly in the following:
   - Coverage of the whole relational model. Multi-part keys etc. are
     supported in all places.
 
+<a id="id41-rationale"></a>
 ## Rationale
 
 Since most of the data that is of likely use for the emerging semantic
@@ -10173,6 +10350,7 @@ virtual/federated database, incorporating SPARQL to relational mapping
 is an evident extension of the product's mission as a multi-protocol,
 multi-platform connector between information systems.
 
+<a id="id42-quad-map-patterns-values-and-iri-classes"></a>
 ## Quad Map Patterns, Values and IRI Classes
 
 In the simplest sense, any relational schema can be rendered into RDF by
@@ -10419,6 +10597,7 @@ organize quad map patterns into a tree. Group may contain both quad map
 patterns and other groups. A group can be manipulated as a whole, e.g.
 *drop quad map virtrdf:SysUsers* will remove all three map patterns.
 
+<a id="id43-configuring-rdf-storages"></a>
 ## Configuring RDF Storages
 
 "*Quad Storage* " is a named set of quad map patterns. The declaration
@@ -10479,6 +10658,7 @@ removes the map from all storages. There exists garbage collection for
 quad map patterns, so any unused map is immediately deleted. A group is
 deleted with all its descendants.
 
+<a id="id44-translation-of-sparql-triple-patterns-to-quad-map-patterns"></a>
 ## Translation Of SPARQL Triple Patterns To Quad Map Patterns
 
 When a SPARQL query is compiled into SQL using a quad storage, every
@@ -10673,6 +10853,7 @@ only is performed:
     http://localhost:8990/Demo#    http://localhost:8990/schemas/Demo/categoryname       ...
     ...
 
+<a id="id45-describing-source-relational-tables"></a>
 ## Describing Source Relational Tables
 
 Quad map patterns of an application usually share a common set of source
@@ -10764,6 +10945,7 @@ pattern but neither in values or in *option (using alias-name)* . To
 detect more typos, an alias used in quad map values can not appear in
 *option (using alias-name)* clause.
 
+<a id="id46-function-based-iri-classes"></a>
 ## Function-Based IRI Classes
 
 Most of IRI classes can be declared by a sprintf format string, but
@@ -10842,6 +11024,7 @@ It is possible to specify only composing function without any of inverse
 functions. However *option (bijection)* can not be used in that case,
 obviously.
 
+<a id="id47-connection-variables-in-iri-classes"></a>
 ## Connection Variables in IRI Classes
 
 Writing function-based IRI class is overkill when the IRI can in
@@ -10915,6 +11098,7 @@ presence of port number in the value of *DefaultHost* parameter of
 > IRI class with empty argument list in order to get "almost constant"
 > IRIs calculated without writing special procedures.
 
+<a id="id48-lookup-optimization-bijection-and-returns-options"></a>
 ## Lookup Optimization -- BIJECTION and RETURNS Options
 
 There is one subtle problem with IRI class declarations. To get benefit
@@ -11057,6 +11241,7 @@ numbers:
 Sometimes interoperability restrictions will force you to violate these
 rules but please try to follow them as often as possible.
 
+<a id="id49-join-optimization-declaring-iri-subclasses"></a>
 ## Join Optimization -- Declaring IRI Subclasses
 
 Additional problem appears when the equality is between two IRIs of two
@@ -11084,6 +11269,7 @@ made by identity literal classes that are disjoint to each other even if
 values may be equal in SQL sense, such as *"2"* of type *xsd:integer*
 and *"2.0"* of type *xsd:double* .
 
+<a id="id50-rdf-metadata-maintenance-and-recovery"></a>
 ## RDF Metadata Maintenance and Recovery
 
 This section refers to checking and backing up Linked Data View and
@@ -11113,6 +11299,7 @@ Data Views.
 > testing. Always remember that these applications share RDF tables so
 > they may interfere.
 
+<a id="id51-split-linked-data-view"></a>
 ## Split Linked Data View
 
 Linked Data View can be created by two or more "sparql alter storage"
@@ -11429,6 +11616,7 @@ virtrdf:ecrmDemo1 and with quad map virtrdf:ecrmDemo2:
     } .
     ;
 
+<a id="id52-linked-data-views-and-recursive-fk-relationships"></a>
 ## Linked Data Views and recursive FK relationships
 
 Here is sample example of a script to include an additional table alias
@@ -11452,8 +11640,10 @@ This demonstrates the way to self-join the table VRef\_Call with itself.
 Like in SQL, are needed two different aliases for one table if you want
 to join it with itself.
 
+<a id="id53-automated-generation-of-linked-data-views-over-relational-data-sources"></a>
 # Automated Generation of Linked Data Views over Relational Data Sources
 
+<a id="id54-introduction"></a>
 ## Introduction
 
 Virtuoso offers from Conductor UI an HTML based Wizard interface for
@@ -11500,6 +11690,7 @@ These steps may be largely automated (the "One-Click" Deployment below),
 or performed manually ("Using the Conductor's HTML-based Wizard" further
 down).
 
+<a id="id55-one-click-linked-data-generation-deployment"></a>
 ## One Click Linked Data Generation & Deployment
 
 The following steps provide a one-click guide for publishing ODBC- or
@@ -11691,6 +11882,7 @@ JDBC-accessible RDBMS data in RDF Linked Data form, using the "Generate
     
     ![Conductor R2RML Import Wizard](./images/ui/VirtConductorR2RMLImport08.png)
 
+<a id="id56-generate-transient-andor-persistent-linked-data-views-atop-remote-relational-data-sources-using-conductor"></a>
 ## Generate Transient and/or Persistent Linked Data Views atop Remote Relational Data Sources Using Conductor
 
 This section describes how you can generate R2RML Scripts from Linked
@@ -11797,6 +11989,7 @@ As result should be shown:
     
     ![Quad Store Upload](./images/ui/uc3.png)
 
+<a id="id57-using-virtuoso-crawler"></a>
 ## Using Virtuoso Crawler
 
 Using Virtuoso Crawler (which includes the Sponger options so you crawl
@@ -11905,6 +12098,7 @@ insert soft SYS_SCHEDULED_EVENT (SE_SQL, SE_START, SE_INTERVAL, SE_NAME)
 > [Other Methods to Set Up the Content Crawler for RDF
 > gathering.](#contentcrawlerrdf)
 
+<a id="id58-using-sparql-query-and-sponger-ie-we-fetch-the-network-resources-in-the-from-clause-or-values-for-the-graph-uri-parameter-in-sparql-protocol-urls"></a>
 ## Using SPARQL Query and Sponger (i.e. we Fetch the Network Resources in the FROM Clause or values for the graph-uri parameter in SPARQL protocol URLs)
 
 *Example:*
@@ -11937,6 +12131,7 @@ As result will be shown the retrieved triples:
     
     10 Rows. -- 20 msec.
 
+<a id="id59-using-virtuoso-pl-apis"></a>
 ## Using Virtuoso PL APIs
 
 ### Basic Sponger Cartridge Example
@@ -12058,6 +12253,7 @@ doing this.
 >     content of a gzipped file and example for loading gzipped N3 and
 >     Turtle files.
 
+<a id="id60-using-simile-rdf-bank-api"></a>
 ## Using SIMILE RDF Bank API
 
 Virtuoso implements the HTTP-based Semantic Bank API that enables client
@@ -12116,6 +12312,7 @@ Click "Run Query".
 
 As results are shown the found results.
 
+<a id="id61-using-rdf-net"></a>
 ## Using RDF NET
 
 *Example:*
@@ -12145,13 +12342,16 @@ As result should be shown:
     
     1 Rows. -- 1982 msec.
 
+<a id="id62-using-the-rdf-proxy-sponger-service"></a>
 ## Using the RDF Proxy (Sponger) Service
 
 Triples can be inserted also using the Sponger Proxy URI Service. For
 more information and examples see [here](#rdfproxyservice) .
 
+<a id="id63-rdfizer-middleware-sponger"></a>
 # RDFizer Middleware (Sponger)
 
+<a id="id64-what-is-the-sponger"></a>
 ## What Is The Sponger?
 
 The Virtuoso Sponger is the Linked Data middleware component of Virtuoso
@@ -12196,6 +12396,7 @@ so by calling these hook routines directly. Full details of the hook
 function prototype and how to define your own cartridges are presented
 [here](#virtuosospongercreatecustcartran) .
 
+<a id="id65-consuming-the-generated-rdf-structured-data"></a>
 ## Consuming the Generated RDF Structured Data
 
 The generated RDF-based structured data (RDF) can be consumed in a
@@ -12214,6 +12415,7 @@ If not persisted, as is the case with the RDF Proxy Service, the data
 can be consumed by an RDF aware Web client, e.g. an RDF browser such as
 the OpenLink Data Explorer (ODE).
 
+<a id="id66-rdf-cartridges-use-cases"></a>
 ## RDF Cartridges Use Cases
 
 This section contains examples of Web resources which can be transformed
@@ -12357,6 +12559,7 @@ table use:
 
     SPARQL clear graph <A-Named-Graph>;
 
+<a id="id67-cartridge-architecture"></a>
 ## Cartridge Architecture
 
 ### What is a Cartridge?
@@ -12671,6 +12874,7 @@ quite some time to return.
 | Zemanta                      | @Lookup@=7\&refresh=0    | [cURL example](#) |
 | Zillow                       | @Lookup@=32\&refresh=0   | [cURL example](#) |
 
+<a id="id68-sponger-programmers-guide"></a>
 ## Sponger Programmers Guide
 
 The Sponger forms part of the extensible RDF framework built into
@@ -15619,6 +15823,7 @@ the Virtuoso Sponger.
     
         sparql define get:soft "soft" select * from <http://www.amazon.com/Apple-touch-Generation-NEWEST-MODEL/dp/B002M3SOBU/> { ?s ?p ?o };
 
+<a id="id69-sponger-and-nanotations"></a>
 ## Sponger and Nanotations
 
 ### Situation Analysis
@@ -15933,6 +16138,7 @@ quoted sentence.
 
 ### 
 
+<a id="id70-sponger-usage-examples"></a>
 ## Sponger Usage Examples
 
   - [SPARQL Processor Usage Example](#virtuosospongerusageprocessorex)
@@ -15958,12 +16164,15 @@ quoted sentence.
   - [MusicBrainz Metadatabase
     Example](#virtuosospongercreatecustcartrexmp)
 
+<a id="id71-virtuoso-faceted-browser-installation-and-configuration"></a>
 # Virtuoso Faceted Browser Installation and configuration
 
+<a id="id72-prerequisites"></a>
 ## Prerequisites
 
 Requires [Virtuoso 6.0 TP1](#) or higher for use.
 
+<a id="id73-pre-installation"></a>
 ## Pre Installation
 
 *Note* : This step is not required for Virtuoso Release 6.1 and above
@@ -16006,6 +16215,7 @@ steps:
 Note this step may take sometime depending on how many triples are
 already in your Quad Store.
 
+<a id="id74-vad-package-installation"></a>
 ## VAD Package Installation
 
 1.  Download and install the [Virtuoso Faceted Browser VAD](#) package
@@ -16036,6 +16246,7 @@ already in your Quad Store.
     >   - [Faceted Web Service and Linked
     >     Data](#rdfiridereferencingfacetws)
 
+<a id="id75-post-installation"></a>
 ## Post Installation
 
 1.  Build Full Text Indexes by running the following commands using the
@@ -16287,6 +16498,7 @@ already in your Quad Store.
     
         VT_INC_INDEX_DB_DBA_RDF_OBJ ()
 
+<a id="id76-uri-labels"></a>
 ## URI Labels
 
 1.  Go to http://cname/fct
@@ -16313,6 +16525,7 @@ already in your Quad Store.
     
     ![URI Labels](./images/ui/fb23.png)
 
+<a id="id77-usage-statistics"></a>
 ## Usage Statistics
 
 1.  Use the Faceted Browser Search and Find User Interface to search for
@@ -16442,6 +16655,7 @@ already in your Quad Store.
         
         ![Usage Statistics](./images/ui/fb38.png)
 
+<a id="id78-examples"></a>
 ## Examples
 
 *Faceted Browsing Sample using LOD Cloud Cache data space*
@@ -16606,6 +16820,7 @@ Faceted Browser hosted on LOD.
     
     ![Faceted Navigation Example](./images/ui/fb23.png)
 
+<a id="id79-virtuoso-faceted-web-service"></a>
 # Virtuoso Faceted Web Service
 
 The Virtuoso Faceted web service is a general purpose RDF query facility
@@ -16818,6 +17033,7 @@ The type can be:
     
         SPARQL describe ?s ... OFFSET 0 LIMIT l
 
+<a id="id80-customizing"></a>
 ## Customizing
 
 The following types of customization will be generally useful:
@@ -16839,6 +17055,7 @@ The source code is divided in two SQL files and a number of XSLT sheets.
 The file facet.sql has the code for the web service. The facet\_view.sql
 file contains the procedures for the sample HTML interface.
 
+<a id="id81-examples"></a>
 ## Examples
 
 Note: in all examples the default namespace
@@ -17045,6 +17262,7 @@ take the focus back to Mike.
       <view type="text"/>
     </query>
 
+<a id="id82-webservice-interface"></a>
 ## WebService Interface
 
 ### REST interface
@@ -17521,6 +17739,7 @@ Response message:
       </SOAP:Body>
     </SOAP:Envelope>
 
+<a id="id83-linked-data"></a>
 # Linked Data
 
 There are many cases when RDF data should be retrieved from remote
@@ -17547,6 +17766,7 @@ is identical to the result of the previous iteration, because there's no
 more data to retrieve. As the last step, SPARQL processor builds the
 final result set.
 
+<a id="id84-iri-dereferencing-for-from-clauses-define-get-pragmas"></a>
 ## IRI Dereferencing For FROM Clauses, "define get:..." Pragmas
 
 Virtuoso extends SPARQL syntax of *from* and *from named* clauses. It
@@ -17784,6 +18004,7 @@ parameters. Names of allowed parameters are listed below.
     36 Rows. -- 1693 msec.
     ```
 
+<a id="id85-iri-dereferencing-for-variables-define-inputgrab-pragmas"></a>
 ## IRI Dereferencing For Variables, "define input:grab-..." Pragmas
 
 Consider a set of personal data such that one resource can list many
@@ -18178,6 +18399,7 @@ to block the downloading of some unwanted resource.
       out dest_uri varchar,    -- the graph IRI where triples should be stored after download
       out get_method varchar ) -- the HTTP method to use, should be "GET" or "MGET".
 
+<a id="id86-url-rewriting"></a>
 ## URL rewriting
 
 URL rewriting is the act of modifying a source URL prior to the final
@@ -18883,6 +19105,7 @@ is unable to.
     </body>
     </html>
 
+<a id="id87-examples-of-other-protocol-resolvers"></a>
 ## Examples of other Protocol Resolvers
 
 Example of *LSIDs* : A scientific name from UBio
@@ -19048,6 +19271,7 @@ Other examples
      Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Daniel Krech     http://eikeon.com/
      Tim Berners Lee   http://www.w3.org/People/Berners-Lee/   Daniel Krech     http://eikeon.com/
 
+<a id="id88-faceted-views-over-large-scale-linked-data"></a>
 ## Faceted Views over Large-Scale Linked Data
 
 Faceted views over structured and semi structured data have been popular
@@ -19780,8 +20004,10 @@ The database is 2.2 billion triples with 356 million distinct URIs.
 >   - [Virtuoso Faceted Browser Installation and
 >     configuration](#virtuosospongerfacetinstall)
 
+<a id="id89-inference-rules-reasoning"></a>
 # Inference Rules & Reasoning
 
+<a id="id90-introduction"></a>
 ## Introduction
 
 Virtuoso SPARQL can use an inference context for inferring triples that
@@ -19804,6 +20030,7 @@ If two classes are equivalent, they share all instances, subclasses and
 superclasses directly or indirectly stated in the data for either class.
 Other RDF Schema or OWL information is not taken into account.
 
+<a id="id91-making-rule-sets"></a>
 ## Making Rule Sets
 
 Since RDF Schema and OWL schemas are RDF graphs, these can be loaded
@@ -19828,6 +20055,7 @@ instance, verify rdfs\_rule\_set() activity:
       PRIMARY KEY (RS_NAME, RS_URI))
     )
 
+<a id="id92-changing-rule-sets"></a>
 ## Changing Rule Sets
 
 Changing a rule set affects queries made after the change. Some queries
@@ -19840,6 +20068,7 @@ if triples are deleted from or added to the graphs comprising the rule
 set, calling *rdfs\_rule\_set* will refresh the rule set to correspond
 to the state of the stored graphs.
 
+<a id="id93-subclasses-and-subproperties"></a>
 ## Subclasses and Subproperties
 
 Virtuoso SPARQL supports RDF Schema subclasses and subproperties.
@@ -20254,6 +20483,7 @@ SPARQL Protocol URLs:
 
   - [View editor page](#)
 
+<a id="id94-owl-sameas-support"></a>
 ## OWL sameAs Support
 
 Virtuoso has limited support for the OWL sameAs predicate.
@@ -20359,6 +20589,7 @@ approach should be used, effectively asserting all the implied triples.
     http://example.com/dataspace/person/kidehen#this
     No. of rows in result: 10
 
+<a id="id95-implementation"></a>
 ## Implementation
 
 Triples entailed by subclass or subproperty statements in an inference
@@ -20376,6 +20607,7 @@ backward chaining, i.e. it does not materialize all implied triples but
 rather looks for the basic facts implying these triples at query
 evaluation time.
 
+<a id="id96-enabling-inferencing"></a>
 ## Enabling Inferencing
 
 In a SPARQL query, the define input:inference clause is used to instruct
@@ -20416,6 +20648,7 @@ This is about the same as:
     FROM <xx>
     WHERE {?s ?p ?o}
 
+<a id="id97-examples"></a>
 ## Examples
 
 ### Example for loading data space instance data Triples into a Named Graph for schema/ontology data
@@ -20941,6 +21174,7 @@ Now let's execute the following queries:
     http://localhost.localdomain/about/id/entity/http/twitter.com/programmingfeed    1
     No. of rows in result: 10
 
+<a id="id98-identity-with-inverse-functional-properties"></a>
 ## Identity With Inverse Functional Properties
 
 A graph used used with rdfs\_rule\_set may declare certain properties to
@@ -21044,6 +21278,7 @@ internal ID. This is variable and arbitrary at load time but once loaded
 this is permanent as long as the set of subjects with the name John does
 not change.
 
+<a id="id99-inference-rules-and-sparql-with-transitivity-option"></a>
 ## Inference Rules and SPARQL with Transitivity Option
 
   - See [example](#rdfsparqlimplementatiotransexamples7) with an
@@ -21055,6 +21290,7 @@ not change.
     Churches, no deeper than 3 levels within the concept scheme
     hierarchy, filtered by a specific subcategory.
 
+<a id="id100-inference-rules-owl-support-and-relationship-ontology"></a>
 ## Inference Rules, OWL Support and Relationship Ontology
 
 This section provides queries usage for inference rules, owl support and
@@ -21304,6 +21540,7 @@ Execute the following steps:
         OPTION  (T_DISTINCT).
       }
 
+<a id="id101-rdf-and-geometry"></a>
 # RDF and Geometry
 
 A geometry may occur as an object of an RDF quad. The SQL MM functions
@@ -21447,6 +21684,7 @@ can then be used for retrieving properties of these objects.
 > 
 > [`geo_delete`](#fn_geo_delete)
 
+<a id="id102-programmatic-manipulation-of-geometries-in-rdf"></a>
 ## Programmatic Manipulation of Geometries in RDF
 
 The [`ttlp`](#fn_ttlp) function is the preferred way of inserting
@@ -21483,6 +21721,7 @@ In a cluster situation one should use the dpipe mechanism for inserting
 into RDF quad so as to get large numbers of inserts into a single
 message. This is essential for performance.
 
+<a id="id103-creating-geometries-from-rdf-data"></a>
 ## Creating Geometries From RDF Data
 
 Many data sets use the geo:lat and geo:long properties for describing a
@@ -21517,6 +21756,7 @@ adding these to RDF subjects. It is easiest for the application to
 construct a text representation of the geometries in TTL and to use the
 [`ttlp`](#fn_ttlp) function for loading this.
 
+<a id="id104-using-geometries-with-existing-databases"></a>
 ## Using Geometries With Existing Databases
 
 The geometry feature is compatible with any Virtuoso 6 databases. Once
@@ -21524,6 +21764,7 @@ geometries are used, the database should not be opened with a server
 older than the one used for first inserting geometries, older servers
 will consider the storage format a physical corruption.
 
+<a id="id105-geo-spatial-examples"></a>
 ## GEO Spatial Examples
 
 ### Example 1
@@ -22362,6 +22603,7 @@ will consider the storage format a physical corruption.
       }
     ORDER BY ASC ( ?date )
 
+<a id="id106-rdf-replication"></a>
 # RDF Replication
 
 Tables of RDF storage, such as DB.DBA.RDF\_QUAD and DB.DBA.RDF\_OBJ, can
@@ -22427,6 +22669,7 @@ that the total effect of INSERT and DELETE operations is correct even if
 these operations were made in an order that differs from the original
 one.
 
+<a id="id107-rdf-performance-tuning"></a>
 # RDF Performance Tuning
 
 For RDF query performance, we have the following possible questions:
@@ -22441,6 +22684,7 @@ For RDF query performance, we have the following possible questions:
 
   - Is there a bad query plan because of cost model error?
 
+<a id="id108-general"></a>
 ## General
 
 When running with large data sets, one should configure the Virtuoso
@@ -22474,6 +22718,7 @@ Also, if running with a large database, setting
 [MaxCheckpointRemap](#virtini) to 1/4th of the database size is
 recommended. This is in pages, 8K per page.
 
+<a id="id109-rdf-index-scheme"></a>
 ## RDF Index Scheme
 
 Starting with version 6.00.3126, the default RDF index scheme consists
@@ -22580,6 +22825,7 @@ these situations, this scheme offers significant space savings,
 resulting in better working set. Typically, this layout takes 60-70% of
 the space of a layout with 4 full indices.
 
+<a id="id110-index-scheme-selection"></a>
 ## Index Scheme Selection
 
 The indexes in place on the `RDF_QUAD table` can greatly affect the
@@ -22655,6 +22901,7 @@ since the distribution of `S` is generally less skewed than that of `O`
 "thing"). This will increase space consumption by maybe 25% compared to
 the default scheme.
 
+<a id="id111-manage-public-web-service-endpoints"></a>
 ## Manage Public Web Service Endpoints
 
 Public web service endpoints have proven to be sources of especially bad
@@ -22693,6 +22940,7 @@ declare a separate storage that consists of only RDF Views made by that
 application and `define input:storage` in the appropriate row of
 `DB.DBA.SYS_SPARQL_HOST` .
 
+<a id="id112-erroneous-cost-estimates-and-explicit-join-order"></a>
 ## Erroneous Cost Estimates and Explicit Join Order
 
 The selectivity of triple patterns is determined at query compile time
@@ -22937,6 +23185,7 @@ explain plan for a simple SPARQL query:
         
         SQL> SET EXPLAIN OFF;
 
+<a id="id113-using-swappiness-parameter-linux-only"></a>
 ## Using "swappiness" parameter ( Linux only )
 
 *For Linux users only* , there is a kernel tuning parameter called
@@ -22959,12 +23208,14 @@ tidbits regarding swappiness include:
   - Adding `vm.swappiness = 10` to the file `/etc/sysctl.conf` will
     force the value to be set at machine boot time.
 
+<a id="id114-get-all-graphs"></a>
 ## Get All Graphs
 
 In order to get all graphs URIs, one might use the Virtuoso
 [`DB.DBA.SPARQL_SELECT_KNOWN_GRAPHS()`](#fn_sparql_select_known_graphs)
 built-in function.
 
+<a id="id115-rename-rdf-graph-and-rdf-graph-groups"></a>
 ## Rename RDF Graph and RDF Graph Groups
 
 A RDF Graph in the Virtuoso Quad Store can be renamed without copying
@@ -22990,6 +23241,7 @@ and
        SET RGG_IID = iri_to_id ('new') , RGG_IRI = 'new'
      WHERE RGG_IRI = 'old'
 
+<a id="id116-dump-and-reload-graphs"></a>
 ## Dump and Reload Graphs
 
 ### What?
@@ -23293,6 +23545,7 @@ The procedure *load\_graphs* has the following source:
     Done. -- 2392 msec.
     SQL>
 
+<a id="id117-rdf-dumps-from-virtuoso-quad-store-hosted-data-into-nquad-dumps"></a>
 ## RDF dumps from Virtuoso Quad store hosted data into NQuad dumps
 
 ### What?
@@ -23402,6 +23655,7 @@ length 10Mb (./dumps/output000001.nq.gz) :
 
     SQL> dump_nquads ('dumps', 1, 10000000, 1);
 
+<a id="id118-dump-linked-data-view-graph-to-n3"></a>
 ## Dump Linked Data View Graph to n3
 
 The RDF\_QM\_TREE\_DUMP procedure and its associated procedures below
@@ -23661,6 +23915,7 @@ store.
     --test DB.DBA.RDF_QM_TREE_DUMP ('dump/demo', null, null, null);
     --test DB.DBA.RDF_QM_TREE_DUMP ('dump/tpch', 'http://localhost:8600/tpch', null, null);
 
+<a id="id119-loading-rdf"></a>
 ## Loading RDF
 
 There are many functions for loading RDF text, in RDF/XML and Turtle.
@@ -24199,6 +24454,7 @@ original file.
        inx=`expr $inx + 1`
     done
 
+<a id="id120-using-sparul"></a>
 ## Using SPARUL
 
 Since SPARUL updates are generally not meant to be transactional, it is
@@ -24219,6 +24475,7 @@ independent with respect to their input and output, they can run in
 parallel and row by row autocommit will ensure they do not end up
 waiting for each others' locks.
 
+<a id="id121-dbpedia-benchmark"></a>
 ## DBpedia Benchmark
 
 We ran the DBpedia benchmark queries again with different configurations
@@ -24465,6 +24722,7 @@ query's text.
     
     13 Rows. -- 2183 msec.
 
+<a id="id122-rdf-store-benchmarks"></a>
 ## RDF Store Benchmarks
 
 ### Introduction
@@ -24508,6 +24766,7 @@ but cannot be:
 
     create bitmap index RDF_QUAD_PSGO on DB.DBA.RDF_QUAD (P, S, G, O);
 
+<a id="id123-fast-approximate-rdf-graph-diff-and-patch"></a>
 ## Fast Approximate RDF Graph Diff and Patch
 
 Two algorithms described below resemble "unified diff" and "patch by
@@ -24751,6 +25010,7 @@ these rules can be used to produce a "reversed diff". Next, these rules
 can be used to validate the result of the patch - if the patch can not
 be reverted then the result is "suspicious".
 
+<a id="id124-rdb2rdf-triggers"></a>
 ## RDB2RDF Triggers
 
 Linked Data Views have many advantages, if compared to static dumps of
@@ -24923,8 +25183,10 @@ loading by a SPARUL statements like:
           { ?s ?p ?o }
      };
 
+<a id="id125-rdf-data-access-providers-drivers"></a>
 # RDF Data Access Providers (Drivers)
 
+<a id="id126-virtuoso-jena-provider"></a>
 ## Virtuoso Jena Provider
 
 ### What is Jena
@@ -25755,6 +26017,7 @@ implemented by the provider:
 
   - [Javadoc API Documentation for the Jena 2.10+ Provider](#)
 
+<a id="id127-virtuoso-sesame-provider"></a>
 ## Virtuoso Sesame Provider
 
 ### What is Sesame
@@ -26902,6 +27165,7 @@ Examples:
 
   - [RedLand Storage Modules](#)
 
+<a id="id128-rdf-graph-replication"></a>
 # RDF Graph Replication
 
 The following section demonstrates how to replicate graphs from one
@@ -26939,6 +27203,7 @@ The basic outline:
   - Finally, see how a change in the publisher's graph will appear in
     the subscriber's graph.
 
+<a id="id129-replication-scenarios"></a>
 ## Replication Scenarios
 
 
@@ -28117,6 +28382,7 @@ package.
     
     ![Bi-directional Replication Topology](./images/ui/bd41.png)
 
+<a id="id130-set-up-rdf-replication-via-procedure-calls"></a>
 ## Set up RDF Replication via procedure calls
 
 ### Example

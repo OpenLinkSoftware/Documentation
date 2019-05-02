@@ -1,7 +1,27 @@
 # Conceptual Overview
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Core Database Engine](#id1-core-database-engine)
+    * [Logical Data Model](#id2-logical-data-model)
+    * [Data Types](#id3-data-types)
+    * [Virtuoso Column Store](#id4-virtuoso-column-store)
+    * [Explicit Vectoring of Procedural Code](#id5-explicit-vectoring-of-procedural-code)
+    * [Locking](#id6-locking)
+    * [Internationalization & Unicode](#id7-internationalization-unicode)
+    * [Creating A Collation](#id8-creating-a-collation)
+  * [Virtual Database (VDB) Engine](#id9-virtual-database-vdb-engine)
+  * [Web & Internet Protocol Support](#id10-web-internet-protocol-support)
+  * [Web Services Protocol Support](#id11-web-services-protocol-support)
+  * [Architecture](#id12-architecture)
+
+<!--- TOC: End --->
+<a id="id1-core-database-engine"></a>
 # Core Database Engine
 
+<a id="id2-logical-data-model"></a>
 ## Logical Data Model
 
 Virtuoso provides an extended Object Relational model which offers all
@@ -113,6 +133,7 @@ will change the nokey table to be as if defined by
 Having a primary key other than \_IDN is always better than the default
 primary key. Declaring a primary key is therefore always advisable.
 
+<a id="id3-data-types"></a>
 ## Data Types
 
 Virtuoso supports most SQL 92 data types.
@@ -898,6 +919,7 @@ protocol.
 > 
 > The XML Support chapter.
 
+<a id="id4-virtuoso-column-store"></a>
 ## Virtuoso Column Store
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -1169,6 +1191,7 @@ The lines below give information per-compression-type. The values of
     values like dates, or for relatively sparse ascending sequences,
     e.g., ascending sequences with a step of 1000 or more.
 
+<a id="id5-explicit-vectoring-of-procedural-code"></a>
 ## Explicit Vectoring of Procedural Code
 
 Note: This feature only applies to Virtuoso 7.0 and later.
@@ -1186,6 +1209,7 @@ detailed description, respectively for:
 
   - [Data Types and Vectoring](#datatypesandvectoring)
 
+<a id="id6-locking"></a>
 ## Locking
 
 Virtuoso offers a dynamic locking strategy that combines the high
@@ -1354,6 +1378,7 @@ changed rows (insert, update, delete). BKLOBs manipulated by a
 transaction do not contribute to memory consumption, because they are
 always disk-based.
 
+<a id="id7-internationalization-unicode"></a>
 ## Internationalization & Unicode
 
 National strings are best represented as Unicode (NCHAR/LONG NVARCHAR)
@@ -1577,6 +1602,7 @@ translation rules given above.
 XPath expressions that return string values are returned as NCHAR values
 to the clients, which then convert them to narrow character if needed.
 
+<a id="id8-creating-a-collation"></a>
 ## Creating A Collation
 
 Virtuoso supports collation orders for CHAR and VARCHAR fields that are
@@ -1694,6 +1720,7 @@ a Virtuoso server restart. As with all collations, legal values are
 those contained in the DB.DBA.SYS\_COLLATIONS table. The list can be
 retrieved using [`charsets_list(1)`](#fn_charsets_list)
 
+<a id="id9-virtual-database-vdb-engine"></a>
 # Virtual Database (VDB) Engine
 
   - [The Need for VDB Engines](#consneed4vdb)
@@ -1704,6 +1731,7 @@ retrieved using [`charsets_list(1)`](#fn_charsets_list)
 
   - [VDB Engine Components](#vdbcomponents)
 
+<a id="id10-web-internet-protocol-support"></a>
 # Web & Internet Protocol Support
 
 Virtuoso provides direct access to a number of Internet protocols
@@ -1718,6 +1746,7 @@ every week automatically using the scheduler, or on request from a VSP
 page served by the HTTP server. The possibilities are endless and all
 these abilities are contained within a single server.
 
+<a id="id11-web-services-protocol-support"></a>
 # Web Services Protocol Support
 
 The Internet is reaching a stage where automatic processes want to rely
@@ -1742,6 +1771,7 @@ consumable over the Internet as a Web Service.
 
 ![Towards Web Services...](./images/virtpyramid.jpg)
 
+<a id="id12-architecture"></a>
 # Architecture
 
 The base of Virtuoso is the Virtuoso Data Management. This handles the

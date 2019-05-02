@@ -1,5 +1,41 @@
 # Appendix A
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [YACC SQL Grammar Reference](#id1-yacc-sql-grammar-reference)
+  * [Error Codes Reference](#id2-error-codes-reference)
+    * [Virtuoso Error Codes](#id3-virtuoso-error-codes)
+    * [Data Type Errors](#id4-data-type-errors)
+  * [Signals and Exit codes](#id5-signals-and-exit-codes)
+    * [Exit codes](#id6-exit-codes)
+    * [Signals](#id7-signals)
+  * [Release Notes](#id8-release-notes)
+    * [New Features](#id9-new-features)
+    * [Bugs Fixed](#id10-bugs-fixed)
+  * [Product Support](#id11-product-support)
+    * [OpenLink Discussion Forums](#id12-openlink-discussion-forums)
+  * [Virtuoso System Tables](#id13-virtuoso-system-tables)
+    * [Core System Tables](#id14-core-system-tables)
+    * [System Tables](#id15-system-tables)
+    * [Row Level Security Table](#id16-row-level-security-table)
+    * [SYS\_CHARSETS](#id17-sys_charsets)
+    * [Collations System Table](#id18-collations-system-table)
+    * [UDDI Schema](#id19-uddi-schema)
+    * [Web Robot System Tables](#id20-web-robot-system-tables)
+    * [Web Server & DAV System Tables](#id21-web-server-dav-system-tables)
+    * [Mail Table Description](#id22-mail-table-description)
+    * [NNTP Server Tables](#id23-nntp-server-tables)
+    * [WS Reliable Messaging](#id24-ws-reliable-messaging)
+    * [WS Trust](#id25-ws-trust)
+    * [SyncML Schema Objects](#id26-syncml-schema-objects)
+    * [INFORMATION\_SCHEMA views](#id27-information_schema-views)
+  * [Basic Syntax of Regular Expressions](#id28-basic-syntax-of-regular-expressions)
+  * [Server & client versions compatibility](#id29-server-client-versions-compatibility)
+
+<!--- TOC: End --->
+<a id="id1-yacc-sql-grammar-reference"></a>
 # YACC SQL Grammar Reference
 
     /*
@@ -2636,8 +2672,10 @@
     drop_assembly (675)
         on left: 1116, on right: 12
 
+<a id="id2-error-codes-reference"></a>
 # Error Codes Reference
 
+<a id="id3-virtuoso-error-codes"></a>
 ## Virtuoso Error Codes
 
 | Virtuoso Sub-Code | Description                    |
@@ -5329,17 +5367,20 @@ KB011 42000 while getting remove credential cache (ccache)
 
 HO001 22023 Invalid params type \<tag\> (\<name\>)
 
+<a id="id4-data-type-errors"></a>
 ## Data Type Errors
 
 Each function that accepts parameters will check that each parameter is
 of the correct data type. A function will generate a SQL 22023 error
 value if a supplied parameter is not of the type expected.
 
+<a id="id5-signals-and-exit-codes"></a>
 # Signals and Exit codes
 
 This section presents the most important exit codes and signals for
 Virtuoso on Unix/Linux.
 
+<a id="id6-exit-codes"></a>
 ## Exit codes
 
 | Exit Code |
@@ -5352,6 +5393,7 @@ Virtuoso on Unix/Linux.
 
 Exit codes
 
+<a id="id7-signals"></a>
 ## Signals
 
 | Signal |
@@ -5412,8 +5454,10 @@ user or the uid of the person who started Virtuoso. Anyone else that
 wants to shutdown the Virtuoso instance should use the isql program to
 connect to Virtuoso and run the 'shutdown' command.
 
+<a id="id8-release-notes"></a>
 # Release Notes
 
+<a id="id9-new-features"></a>
 ## New Features
 
   - *SOAP 1.1 Implementation* - this new release includes a wide range
@@ -5539,6 +5583,7 @@ connect to Virtuoso and run the 'shutdown' command.
     still supported but you have a choice of which level to write your
     code.
 
+<a id="id10-bugs-fixed"></a>
 ## Bugs Fixed
 
   - *Bug 3889* Change label of tab "XML Services/Queues".
@@ -5723,8 +5768,10 @@ connect to Virtuoso and run the 'shutdown' command.
 
   - *Bug 4245* .NET client can't work properly with ODBC driver.
 
+<a id="id11-product-support"></a>
 # Product Support
 
+<a id="id12-openlink-discussion-forums"></a>
 ## OpenLink Discussion Forums
 
 If your browser does not parse the Network News Transport Protocol
@@ -5781,8 +5828,10 @@ Access Drivers that depend on
 
 OpenLink Data Access Newsgroups
 
+<a id="id13-virtuoso-system-tables"></a>
 # Virtuoso System Tables
 
+<a id="id14-core-system-tables"></a>
 ## Core System Tables
 
 ``` 
@@ -5888,6 +5937,7 @@ of columns and the set of indices and their parts.
     }
 ```
 
+<a id="id15-system-tables"></a>
 ## System Tables
 
 DB objects related to the User and Role objects are created as follows.
@@ -5973,6 +6023,7 @@ Security information is cached in RAM during the execution of a Virtuoso
 process and these statements ensure that the cache stays consistent with
 the tables.
 
+<a id="id16-row-level-security-table"></a>
 ## Row Level Security Table
 
     create table SYS_RLS_POLICY (
@@ -5983,6 +6034,7 @@ the tables.
 
 That system table is used for persisting the definitions
 
+<a id="id17-sys_charsets"></a>
 ## SYS\_CHARSETS
 
     CREATE TABLE SYS_CHARSETS (
@@ -5991,6 +6043,7 @@ That system table is used for persisting the definitions
         CS_ALIASES long varchar     -- serialized vector of aliases
     );
 
+<a id="id18-collations-system-table"></a>
 ## Collations System Table
 
 The SYS\_COLLATIONS system table holds the data for all the defined
@@ -6017,6 +6070,7 @@ Collation can be deleted by deleting its row from SYS\_COLLATIONS.
 > The collation will still be available until the server is restarted,
 > as it's definition is cached into memory.
 
+<a id="id19-uddi-schema"></a>
 ## UDDI Schema
 
     ---=====================
@@ -6204,6 +6258,7 @@ Collation can be deleted by deleting its row from SYS\_COLLATIONS.
     create index IN_IDPARENT on INSTANCE_DETAIL (ID_BINDING_KEY, ID_TMODEL_KEY)
     ;
 
+<a id="id20-web-robot-system-tables"></a>
 ## Web Robot System Tables
 
 **Target sites table.**
@@ -6256,6 +6311,7 @@ Collation can be deleted by deleting its row from SYS\_COLLATIONS.
     )
     ;
 
+<a id="id21-web-server-dav-system-tables"></a>
 ## Web Server & DAV System Tables
 
 All Web Server and DAV related tables and procedures are held in the WS
@@ -6383,6 +6439,7 @@ catalogue. This reference section illustrates their structure.
     PRIMARY KEY (HA_LIST, HA_ORDER, HA_CLIENT_IP, HA_FLAG)
     );
 
+<a id="id22-mail-table-description"></a>
 ## Mail Table Description
 
     - - Message queue
@@ -6444,6 +6501,7 @@ catalogue. This reference section illustrates their structure.
         primary key (MR_ALLOWED))
     ;
 
+<a id="id23-nntp-server-tables"></a>
 ## NNTP Server Tables
 
 The server uses the following tables:
@@ -6498,6 +6556,7 @@ The server uses the following tables:
                                   or posting action is allowed/disallowed)
       PRIMARY KEY (NA_GROUP, NA_IP, NA_A_D, NA_RW));
 
+<a id="id24-ws-reliable-messaging"></a>
 ## WS Reliable Messaging
 
 ### Receiver-Side Schema Objects
@@ -6565,6 +6624,7 @@ sequences. It's used to persist their state.
     )
     ;
 
+<a id="id25-ws-trust"></a>
 ## WS Trust
 
     create table WST_SERVER_ISSUER_TOKENS
@@ -6580,6 +6640,7 @@ sequences. It's used to persist their state.
     )
     ;
 
+<a id="id26-syncml-schema-objects"></a>
 ## SyncML Schema Objects
 
 ### SyncML Devices
@@ -6657,6 +6718,7 @@ sequences. It's used to persist their state.
         )
     ;
 
+<a id="id27-information_schema-views"></a>
 ## INFORMATION\_SCHEMA views
 
 The INFORMATION\_SCHEMA views are described in the SQL200n standard.
@@ -6975,6 +7037,7 @@ that qualifier.
         
 ```
 
+<a id="id28-basic-syntax-of-regular-expressions"></a>
 # Basic Syntax of Regular Expressions
 
 The two special symbols: `'^'` and `'$'` indicate the *start* and the
@@ -7190,6 +7253,7 @@ list, make it the first character (following a possible '^'). To include
 a literal '-', make it the first or last character, or the second
 endpoint of a range.
 
+<a id="id29-server-client-versions-compatibility"></a>
 # Server & client versions compatibility
 
 The RPC protocol has changed between 2.7 and 3.0 versions. Thus, not all

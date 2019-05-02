@@ -1,7 +1,95 @@
 # Virtual Database Engine
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Virtual Database (VDB) Engine](#id1-virtual-database-vdb-engine)
+    * [The Need for VDB Engines](#id2-the-need-for-vdb-engines)
+    * [First Generation Virtual Database Products](#id3-first-generation-virtual-database-products)
+    * [VDB Implementation Issues](#id4-vdb-implementation-issues)
+    * [VDB Engine Components](#id5-vdb-engine-components)
+  * [Using Microsoft Entity Frameworks to Access Oracle Schema Objects with Virtuoso](#id6-using-microsoft-entity-frameworks-to-access-oracle-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for Oracle](#id7-install-and-configure-openlink-odbc-driver-for-oracle)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id8-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Oracle tables into OpenLink Virtuoso](#id9-linking-oracle-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id10-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id11-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access Progress Schema Objects with Virtuoso](#id12-using-microsoft-entity-frameworks-to-access-progress-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for Progress (SQL-92)](#id13-install-and-configure-openlink-odbc-driver-for-progress-sql-92)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id14-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Progress tables into Virtuoso](#id15-linking-progress-tables-into-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id16-creating-edm-in-visual-studio-2008)
+    * [Manually creating EDM Associations (FKs) for the Progress isports database](#id17-manually-creating-edm-associations-fks-for-the-progress-isports-database)
+    * [Using EDM to create Entity Framework based applications](#id18-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access Ingres Schema Objects with Virtuoso](#id19-using-microsoft-entity-frameworks-to-access-ingres-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for Ingres](#id20-install-and-configure-openlink-odbc-driver-for-ingres)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id21-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Ingres tables into OpenLink Virtuoso](#id22-linking-ingres-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id23-creating-edm-in-visual-studio-2008)
+    * [Manually creating EDM Associations (FKs) for the Ingres Tutorial database](#id24-manually-creating-edm-associations-fks-for-the-ingres-tutorial-database)
+    * [Using EDM to create Entity Framework based applications](#id25-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access Informix Schema Objects with Virtuoso](#id26-using-microsoft-entity-frameworks-to-access-informix-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for Informix](#id27-install-and-configure-openlink-odbc-driver-for-informix)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id28-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Informix tables into OpenLink Virtuoso](#id29-linking-informix-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id30-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id31-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access DB2 Schema Objects with Virtuoso](#id32-using-microsoft-entity-frameworks-to-access-db2-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for DB2](#id33-install-and-configure-openlink-odbc-driver-for-db2)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id34-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking DB2 tables into OpenLink Virtuoso](#id35-linking-db2-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id36-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id37-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access Sybase Schema Objects with Virtuoso](#id38-using-microsoft-entity-frameworks-to-access-sybase-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for Sybase](#id39-install-and-configure-openlink-odbc-driver-for-sybase)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id40-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Sybase tables into OpenLink Virtuoso](#id41-linking-sybase-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id42-creating-edm-in-visual-studio-2008)
+    * [Manually creating EDM Associations (FKs) for the Sybase pubs2 database](#id43-manually-creating-edm-associations-fks-for-the-sybase-pubs2-database)
+    * [Using EDM to create Entity Framework based applications](#id44-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access MySQL Schema Objects with Virtuoso](#id45-using-microsoft-entity-frameworks-to-access-mysql-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for MySQL](#id46-install-and-configure-openlink-odbc-driver-for-mysql)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id47-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking MySQL tables into OpenLink Virtuoso](#id48-linking-mysql-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id49-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id50-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access PostgreSQL Schema Objects with Virtuoso](#id51-using-microsoft-entity-frameworks-to-access-postgresql-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for PostgreSQL](#id52-install-and-configure-openlink-odbc-driver-for-postgresql)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id53-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking PostgreSQL tables into OpenLink Virtuoso](#id54-linking-postgresql-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id55-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id56-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access ODBC to JDBC Bridge Schema Objects with Virtuoso](#id57-using-microsoft-entity-frameworks-to-access-odbc-to-jdbc-bridge-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for ODBC to JDBC Bridge](#id58-install-and-configure-openlink-odbc-driver-for-odbc-to-jdbc-bridge)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id59-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking ODBC to JDBC Bridge tables into OpenLink Virtuoso](#id60-linking-odbc-to-jdbc-bridge-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id61-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id62-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access ODBC to ODBC Bridge Schema Objects with Virtuoso](#id63-using-microsoft-entity-frameworks-to-access-odbc-to-odbc-bridge-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for ODBC to ODBC Bridge](#id64-install-and-configure-openlink-odbc-driver-for-odbc-to-odbc-bridge)
+    * [Linking ODBC to ODBC Bridge tables into OpenLink Virtuoso](#id65-linking-odbc-to-odbc-bridge-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id66-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id67-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access Firebird Schema Objects with Virtuoso](#id68-using-microsoft-entity-frameworks-to-access-firebird-schema-objects-with-virtuoso)
+    * [Install and configure the Firebird ODBC Driver](#id69-install-and-configure-the-firebird-odbc-driver)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id70-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Firebird tables into OpenLink Virtuoso](#id71-linking-firebird-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id72-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id73-using-edm-to-create-entity-framework-based-applications)
+  * [Using Microsoft Entity Frameworks to Access Microsoft SQL Server Schema Objects with Virtuoso](#id74-using-microsoft-entity-frameworks-to-access-microsoft-sql-server-schema-objects-with-virtuoso)
+    * [Install and configure OpenLink ODBC Driver for Microsoft SQL Server](#id75-install-and-configure-openlink-odbc-driver-for-microsoft-sql-server)
+    * [Install and configure OpenLink Virtuoso Universal Server](#id76-install-and-configure-openlink-virtuoso-universal-server)
+    * [Linking Microsoft SQL Server tables into OpenLink Virtuoso](#id77-linking-microsoft-sql-server-tables-into-openlink-virtuoso)
+    * [Creating EDM in Visual Studio 2008](#id78-creating-edm-in-visual-studio-2008)
+    * [Using EDM to create Entity Framework based applications](#id79-using-edm-to-create-entity-framework-based-applications)
+  * [Parallel Operations and Bulk Data Transfer with Remote Tables](#id80-parallel-operations-and-bulk-data-transfer-with-remote-tables)
+
+<!--- TOC: End --->
+<a id="id1-virtual-database-vdb-engine"></a>
 # Virtual Database (VDB) Engine
 
+<a id="id2-the-need-for-vdb-engines"></a>
 ## The Need for VDB Engines
 
 ### Situation Analysis
@@ -60,6 +148,7 @@ developers and end-users alike. Applications no longer need to be
 inextricably linked to specific database names or specific database
 engines.
 
+<a id="id3-first-generation-virtual-database-products"></a>
 ## First Generation Virtual Database Products
 
 Although the strict VDB definition may be new, there are a number of
@@ -101,6 +190,7 @@ sources via IBM DB/2 Client Application Enablers. It does support ODBC
 and JDBC as client interfaces and makes use of Native or ODBC based data
 access for external Data I/O.
 
+<a id="id4-vdb-implementation-issues"></a>
 ## VDB Implementation Issues
 
 The essential components that affect the implementation of VDB Engines
@@ -258,6 +348,7 @@ combination of database and operating system privileges, roles and roles
 hierarchies. It also includes the ability of a database engine to
 protect data transmitted to its clients using data encryption.
 
+<a id="id5-vdb-engine-components"></a>
 ## VDB Engine Components
 
 The prior section outlined the critical implementation issues that
@@ -483,6 +574,7 @@ complete set of traditional database engine components.
 
 ![Type 10 VDB Architecture](./images/wpImage29.gif)
 
+<a id="id6-using-microsoft-entity-frameworks-to-access-oracle-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Oracle Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -554,6 +646,7 @@ Oracle database schema before attempting to generate an EDM. In the case
 of the Oracle Human Resources database all tables are not nullable, thus
 this should not be an issue in this case.
 
+<a id="id7-install-and-configure-openlink-odbc-driver-for-oracle"></a>
 ## Install and configure OpenLink ODBC Driver for Oracle
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -568,11 +661,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id8-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id9-linking-oracle-tables-into-openlink-virtuoso"></a>
 ## Linking Oracle tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -642,6 +737,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id10-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -872,6 +968,7 @@ the Oracle Human Resources database:
 Creation for the Entity Data Model for the Oracle Human Resources
 database is now complete.
 
+<a id="id11-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the Oracle
@@ -1295,6 +1392,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id12-using-microsoft-entity-frameworks-to-access-progress-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Progress Schema Objects with Virtuoso
 
 **Prerequisites**
@@ -1376,6 +1474,7 @@ ensure Progress PKs are not nullable:
 
   - Ensuring Progress PKs are not nullable
 
+<a id="id13-install-and-configure-openlink-odbc-driver-for-progress-sql-92"></a>
 ## Install and configure OpenLink ODBC Driver for Progress (SQL-92)
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -1390,11 +1489,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id14-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id15-linking-progress-tables-into-virtuoso"></a>
 ## Linking Progress tables into Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -1462,6 +1563,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id16-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -1688,6 +1790,7 @@ the Progress isports database:
 Creation for the Entity Data Model for the Progress isports database is
 now complete.
 
+<a id="id17-manually-creating-edm-associations-fks-for-the-progress-isports-database"></a>
 ## Manually creating EDM Associations (FKs) for the Progress isports database
 
 The following steps will detail what is required to manually create
@@ -1810,6 +1913,7 @@ a completed Entity Data Model.
 
 ![Entity Data Model](./images/ui/mpro19.png)
 
+<a id="id18-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the Progress
@@ -2283,6 +2387,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id19-using-microsoft-entity-frameworks-to-access-ingres-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Ingres Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -2354,6 +2459,7 @@ Ingres database schema before attempting to generate an EDM. In the case
 of the Ingres database all tables are not nullable, thus this should not
 be an issue in this case.
 
+<a id="id20-install-and-configure-openlink-odbc-driver-for-ingres"></a>
 ## Install and configure OpenLink ODBC Driver for Ingres
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -2368,11 +2474,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id21-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id22-linking-ingres-tables-into-openlink-virtuoso"></a>
 ## Linking Ingres tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -2440,6 +2548,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id23-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -2670,6 +2779,7 @@ the Ingres Tutorial database:
 Creation for the Entity Data Model for the Ingres Tutorial database is
 now complete.
 
+<a id="id24-manually-creating-edm-associations-fks-for-the-ingres-tutorial-database"></a>
 ## Manually creating EDM Associations (FKs) for the Ingres Tutorial database
 
 The following steps will detail what is required to manually create
@@ -2778,6 +2888,7 @@ a completed Entity Data Model.
 
 ![Entity Data Model](./images/ui/ming15.png)
 
+<a id="id25-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the Ingres
@@ -3194,6 +3305,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id26-using-microsoft-entity-frameworks-to-access-informix-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Informix Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -3278,6 +3390,7 @@ particularly with the following
 In both of the cases above the primary key and foreign key constraints
 that are removed will have to be manually recreated.
 
+<a id="id27-install-and-configure-openlink-odbc-driver-for-informix"></a>
 ## Install and configure OpenLink ODBC Driver for Informix
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -3292,11 +3405,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id28-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id29-linking-informix-tables-into-openlink-virtuoso"></a>
 ## Linking Informix tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -3365,6 +3480,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id30-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -3591,6 +3707,7 @@ the Informix stores\_demo database:
 Creation for the Entity Data Model for the Informix stores\_demo
 database is now complete.
 
+<a id="id31-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the Informix
@@ -4051,6 +4168,7 @@ control for displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id32-using-microsoft-entity-frameworks-to-access-db2-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access DB2 Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -4120,6 +4238,7 @@ database schema before attempting to generate an EDM. In the case of the
 DB2 sample database all tables are not nullable, thus this should not be
 an issue in this case.
 
+<a id="id33-install-and-configure-openlink-odbc-driver-for-db2"></a>
 ## Install and configure OpenLink ODBC Driver for DB2
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -4134,11 +4253,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id34-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id35-linking-db2-tables-into-openlink-virtuoso"></a>
 ## Linking DB2 tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -4207,6 +4328,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id36-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -4426,6 +4548,7 @@ the DB2 Samples database:
 Creation for the Entity Data Model for the DB2 Samples database is now
 complete.
 
+<a id="id37-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the DB2
@@ -4845,6 +4968,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id38-using-microsoft-entity-frameworks-to-access-sybase-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Sybase Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -4916,6 +5040,7 @@ Sybase database schema before attempting to generate an EDM. In the case
 of the Sybase pubs2 database all tables are not nullable, thus this
 should not be an issue in this case.
 
+<a id="id39-install-and-configure-openlink-odbc-driver-for-sybase"></a>
 ## Install and configure OpenLink ODBC Driver for Sybase
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -4930,11 +5055,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id40-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id41-linking-sybase-tables-into-openlink-virtuoso"></a>
 ## Linking Sybase tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -4990,6 +5117,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id42-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -5216,6 +5344,7 @@ the Sybase pubs2 database:
 Creation for the Entity Data Model for the Sybase pubs2 database is now
 complete.
 
+<a id="id43-manually-creating-edm-associations-fks-for-the-sybase-pubs2-database"></a>
 ## Manually creating EDM Associations (FKs) for the Sybase pubs2 database
 
 The following steps will detail what is required to manually create
@@ -5333,6 +5462,7 @@ a completed Entity Data Model.
 
 ![Entity Data Model](./images/ui/spro17.png)
 
+<a id="id44-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the Sybase
@@ -5752,6 +5882,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id45-using-microsoft-entity-frameworks-to-access-mysql-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access MySQL Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -5823,6 +5954,7 @@ MySQL database schema before attempting to generate an EDM. In the case
 of the Northwind database all tables are not nullable, thus this should
 not be an issue in this case.
 
+<a id="id46-install-and-configure-openlink-odbc-driver-for-mysql"></a>
 ## Install and configure OpenLink ODBC Driver for MySQL
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -5837,11 +5969,13 @@ available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id47-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id48-linking-mysql-tables-into-openlink-virtuoso"></a>
 ## Linking MySQL tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -5909,6 +6043,7 @@ available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id49-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -6139,6 +6274,7 @@ the MySQL Northwind database:
 Creation for the Entity Data Model for the MySQL Northwind database is
 now complete.
 
+<a id="id50-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the
@@ -6411,6 +6547,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id51-using-microsoft-entity-frameworks-to-access-postgresql-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access PostgreSQL Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -6482,6 +6619,7 @@ PostgreSQL database schema before attempting to generate an EDM. In the
 case of the PostgreSQL database all tables are not nullable, thus this
 should not be an issue in this case.
 
+<a id="id52-install-and-configure-openlink-odbc-driver-for-postgresql"></a>
 ## Install and configure OpenLink ODBC Driver for PostgreSQL
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -6496,11 +6634,13 @@ are available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id53-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id54-linking-postgresql-tables-into-openlink-virtuoso"></a>
 ## Linking PostgreSQL tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -6569,6 +6709,7 @@ are available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id55-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -6795,6 +6936,7 @@ the PostgreSQL Northwind database:
 Creation for the Entity Data Model for the PostgreSQL Northwind database
 is now complete.
 
+<a id="id56-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the
@@ -7055,6 +7197,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id57-using-microsoft-entity-frameworks-to-access-odbc-to-jdbc-bridge-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access ODBC to JDBC Bridge Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -7130,6 +7273,7 @@ EDM. In the case of the ODBC to JDBC Bridge Virtuoso Northwind Demo
 database all tables are not nullable, thus this should not be an issue
 in this case.
 
+<a id="id58-install-and-configure-openlink-odbc-driver-for-odbc-to-jdbc-bridge"></a>
 ## Install and configure OpenLink ODBC Driver for ODBC to JDBC Bridge
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -7144,11 +7288,13 @@ Bridge are available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id59-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id60-linking-odbc-to-jdbc-bridge-tables-into-openlink-virtuoso"></a>
 ## Linking ODBC to JDBC Bridge tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -7219,6 +7365,7 @@ Bridge are available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id61-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -7449,6 +7596,7 @@ the ODBC to JDBC Bridge Northwind database:
 Creation for the Entity Data Model for the ODBC to JDBC Bridge Northwind
 database is now complete.
 
+<a id="id62-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the
@@ -7865,6 +8013,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id63-using-microsoft-entity-frameworks-to-access-odbc-to-odbc-bridge-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access ODBC to ODBC Bridge Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -7940,6 +8089,7 @@ EDM. In the case of the ODBC to ODBC Bridge Virtuoso Northwind Demo
 database all tables are not nullable, thus this should not be an issue
 in this case.
 
+<a id="id64-install-and-configure-openlink-odbc-driver-for-odbc-to-odbc-bridge"></a>
 ## Install and configure OpenLink ODBC Driver for ODBC to ODBC Bridge
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -7958,6 +8108,7 @@ Bridge are available from: [Product Installation & Basic Configuration
 1.  [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id65-linking-odbc-to-odbc-bridge-tables-into-openlink-virtuoso"></a>
 ## Linking ODBC to ODBC Bridge tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -8025,6 +8176,7 @@ Bridge are available from: [Product Installation & Basic Configuration
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id66-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -8251,6 +8403,7 @@ the Microsoft Access Northwind database:
 Creation for the Entity Data Model for the Microsoft Access Northwind
 database is now complete.
 
+<a id="id67-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the
@@ -8511,6 +8664,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id68-using-microsoft-entity-frameworks-to-access-firebird-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Firebird Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -8582,6 +8736,7 @@ Firebird database schema before attempting to generate an EDM. In the
 case of the Firebird employee database all tables are not nullable, thus
 this should not be an issue in this case.
 
+<a id="id69-install-and-configure-the-firebird-odbc-driver"></a>
 ## Install and configure the Firebird ODBC Driver
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -8589,11 +8744,13 @@ mechanism for linking remote database objects into its local schema.
 Thus a Firebird ODBC Driver must be available with a suitably configured
 DSN for connecting to the target database.
 
+<a id="id70-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id71-linking-firebird-tables-into-openlink-virtuoso"></a>
 ## Linking Firebird tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -8661,6 +8818,7 @@ DSN for connecting to the target database.
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id72-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -8887,6 +9045,7 @@ the Firebird employee database:
 Creation for the Entity Data Model for the Firebird employee database is
 now complete.
 
+<a id="id73-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the Firebird
@@ -9329,6 +9488,7 @@ displaying data in selected tables from the target database.
 
 The task is now complete.
 
+<a id="id74-using-microsoft-entity-frameworks-to-access-microsoft-sql-server-schema-objects-with-virtuoso"></a>
 # Using Microsoft Entity Frameworks to Access Microsoft SQL Server Schema Objects with Virtuoso
 
 **Prerequisites.**
@@ -9400,6 +9560,7 @@ Microsoft SQL Server database schema before attempting to generate an
 EDM. In the case of the Microsoft SQL Server Northwind database all
 tables are not nullable, thus this should not be an issue in this case.
 
+<a id="id75-install-and-configure-openlink-odbc-driver-for-microsoft-sql-server"></a>
 ## Install and configure OpenLink ODBC Driver for Microsoft SQL Server
 
 The Virtuoso Virtual Database engine uses ODBC as the connectivity
@@ -9415,11 +9576,13 @@ Server are available from:
 
   - [Product Installation & Basic Configuration (ODBC)](#)
 
+<a id="id76-install-and-configure-openlink-virtuoso-universal-server"></a>
 ## Install and configure OpenLink Virtuoso Universal Server
 
   - [Install and configure OpenLink Virtuoso Universal
     Server](#virtclientrefinstallandconfigvirt)
 
+<a id="id77-linking-microsoft-sql-server-tables-into-openlink-virtuoso"></a>
 ## Linking Microsoft SQL Server tables into OpenLink Virtuoso
 
 1.  Start the Virtuoso Web User Interface
@@ -9487,6 +9650,7 @@ Server are available from:
     The Link process is now complete enabling the tables to be queried
     as if part of the Virtuoso Schema.
 
+<a id="id78-creating-edm-in-visual-studio-2008"></a>
 ## Creating EDM in Visual Studio 2008
 
 The following steps can be used to create an Entity Data Model (EDM) for
@@ -9706,6 +9870,7 @@ the Microsoft SQL Server Northwind database:
 Creation for the Entity Data Model for the Microsoft SQL Server
 Northwind database is now complete.
 
+<a id="id79-using-edm-to-create-entity-framework-based-applications"></a>
 ## Using EDM to create Entity Framework based applications
 
 Now that a Microsoft Entity Data Model has been created for the
@@ -9867,6 +10032,7 @@ Visual Studio 2008 section](#vdbenginemsqlscrvs) .
         
         }
 
+<a id="id80-parallel-operations-and-bulk-data-transfer-with-remote-tables"></a>
 # Parallel Operations and Bulk Data Transfer with Remote Tables
 
 Especially when bulk copying data from a remote database into Virtuoso,

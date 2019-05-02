@@ -62,8 +62,31 @@ Virtuoso installer. The current list of sample applications include:
     J2EE application which shows the use of XA distributed transactions
     as defined in JDBC 3.0 and JTA 1.0 specifications.
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Binary & Source File Locations](#id1-binary-source-file-locations)
+    * [ODBC Demonstration Applications](#id2-odbc-demonstration-applications)
+    * [JDBC Demonstration Applications](#id3-jdbc-demonstration-applications)
+  * [Sample ODBC Applications](#id4-sample-odbc-applications)
+    * [Mac OS X](#id5-mac-os-x)
+    * [Windows 95/98/NT/2000](#id6-windows-9598nt2000)
+    * [Linux & UNIX](#id7-linux-unix)
+    * [MS DTC ODBC Sample Application](#id8-ms-dtc-odbc-sample-application)
+    * [MS DTC OLE DB Sample Application](#id9-ms-dtc-ole-db-sample-application)
+  * [Sample JDBC Applications & Applets](#id10-sample-jdbc-applications-applets)
+    * [JDBCDemo Java Application](#id11-jdbcdemo-java-application)
+    * [ScrollDemo2 Java Application](#id12-scrolldemo2-java-application)
+    * [ScrollDemo2 Java Applet](#id13-scrolldemo2-java-applet)
+    * [JBench Application](#id14-jbench-application)
+    * [JTA Demo Application](#id15-jta-demo-application)
+
+<!--- TOC: End --->
+<a id="id1-binary-source-file-locations"></a>
 # Binary & Source File Locations
 
+<a id="id2-odbc-demonstration-applications"></a>
 ## ODBC Demonstration Applications
 
 Windows 95/98/NT/2000, Linux & UNIX:
@@ -78,6 +101,7 @@ reside under the following directory structure, for example:
 
     <VIRTUOSO_INSTALLATION_DIRECTORY>\samples\odbc\cppdemo
 
+<a id="id3-jdbc-demonstration-applications"></a>
 ## JDBC Demonstration Applications
 
 Windows 95/98/NT/2000, Linux & UNIX:
@@ -87,8 +111,10 @@ applications reside under the following directory structure:
 
     <VIRTUOSO_INSTALLATION_DIRECTORY>\samples\jdbc\<JDK_Version>\<Demo_name>
 
+<a id="id4-sample-odbc-applications"></a>
 # Sample ODBC Applications
 
+<a id="id5-mac-os-x"></a>
 ## Mac OS X
 
 ### ODBCTEST:
@@ -138,6 +164,7 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
         Have a nice day.
         [localhost:~] openlink%
 
+<a id="id6-windows-9598nt2000"></a>
 ## Windows 95/98/NT/2000
 
 ### C++ Demo
@@ -290,6 +317,7 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
     ODBC DSN that you provide thereby offering even more flexibility and
     accessibility to benchmark data.
 
+<a id="id7-linux-unix"></a>
 ## Linux & UNIX
 
 ### ODBCTEST:
@@ -342,6 +370,7 @@ This is a simple 'C' based and ODBC compliant Interactive SQL processor.
         Have a nice day.
         [localhost:~] openlink%
 
+<a id="id8-ms-dtc-odbc-sample-application"></a>
 ## MS DTC ODBC Sample Application
 
 The MS DTC demo is located in the
@@ -455,6 +484,7 @@ transaction->lpVtbl->Commit (tran, 0, 0, 0);
              
 ```
 
+<a id="id9-ms-dtc-ole-db-sample-application"></a>
 ## MS DTC OLE DB Sample Application
 
 The MS DTC OLE DB demo is located in the
@@ -529,8 +559,10 @@ sqlc.ExecuteNonQuery();
              
 ```
 
+<a id="id10-sample-jdbc-applications-applets"></a>
 # Sample JDBC Applications & Applets
 
+<a id="id11-jdbcdemo-java-application"></a>
 ## JDBCDemo Java Application
 
 1.  Go to the Virtuoso "Start Menu" program group and then follow the
@@ -554,6 +586,7 @@ sqlc.ExecuteNonQuery();
     
     ![JDBC Demo](./images/vjdemo3.gif)
 
+<a id="id12-scrolldemo2-java-application"></a>
 ## ScrollDemo2 Java Application
 
 1.  Go to the Virtuoso Lite "Start Menu" program group and then follow
@@ -583,6 +616,7 @@ sqlc.ExecuteNonQuery();
     full implementation of the JDBC 2.0 Scrollable Cursors
     specifications.
 
+<a id="id13-scrolldemo2-java-applet"></a>
 ## ScrollDemo2 Java Applet
 
 1.  Start the Virtuoso Admin Assistant and then follow the Sample
@@ -597,6 +631,7 @@ sqlc.ExecuteNonQuery();
     which uses your operating systems Java Virtual Machine (JVM) instead
     of a JVM inherently linked to a Web Browser.
 
+<a id="id14-jbench-application"></a>
 ## JBench Application
 
 1.  Go to the Virtuoso "Start Menu" program group and then follow the
@@ -704,6 +739,7 @@ sqlc.ExecuteNonQuery();
     create the benchmark tables & stored procedures, load the benchmark
     data and then run the TPC-C benchmark.
 
+<a id="id15-jta-demo-application"></a>
 ## JTA Demo Application
 
 The JTA demo is located in the

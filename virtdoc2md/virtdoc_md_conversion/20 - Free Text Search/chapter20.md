@@ -1,5 +1,49 @@
 # Free Text Search
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Basic Concepts](#id1-basic-concepts)
+  * [Creating Free Text Indexes](#id2-creating-free-text-indexes)
+    * [The CREATE TEXT INDEX statement](#id3-the-create-text-index-statement)
+    * [Choosing An Application Specific Document ID](#id4-choosing-an-application-specific-document-id)
+    * [The composite Data Type](#id5-the-composite-data-type)
+    * [Free Text Index Examples](#id6-free-text-index-examples)
+    * [Pre-processing and Extending the Content Being Indexed](#id7-pre-processing-and-extending-the-content-being-indexed)
+    * [Hit Scores](#id8-hit-scores)
+    * [Word Ranges](#id9-word-ranges)
+    * [Using Offband Data for Faster Filtering](#id10-using-offband-data-for-faster-filtering)
+    * [Order of Hits](#id11-order-of-hits)
+    * [Noise Words](#id12-noise-words)
+  * [Querying Free Text Indexes](#id13-querying-free-text-indexes)
+    * [CONTAINS predicate](#id14-contains-predicate)
+    * [Comments](#id15-comments)
+    * [Text Expression Syntax](#id16-text-expression-syntax)
+  * [Text Triggers](#id17-text-triggers)
+    * [Creating Text Triggers](#id18-creating-text-triggers)
+    * [Created Database Objects](#id19-created-database-objects)
+  * [Generated Tables and Internals](#id20-generated-tables-and-internals)
+    * [Generated Tables and Procedures](#id21-generated-tables-and-procedures)
+    * [The procedures are:](#id22-the-procedures-are)
+    * [Tables and Procedures Created By Text Triggers](#id23-tables-and-procedures-created-by-text-triggers)
+  * [Removing A Text Index](#id24-removing-a-text-index)
+  * [Removing A Text Trigger](#id25-removing-a-text-trigger)
+    * [vt\_drop\_ftt\_dedup](#id26-vt_drop_ftt_dedup)
+  * [Internationalization & Unicode](#id27-internationalization-unicode)
+  * [Performance](#id28-performance)
+    * [Restrictions](#id29-restrictions)
+  * [Free Text Functions](#id30-free-text-functions)
+    * [vt\_batch\_dedup](#id31-vt_batch_dedup)
+    * [vt\_batch\_d\_id\_dedup](#id32-vt_batch_d_id_dedup)
+    * [vt\_batch\_feed\_dedup](#id33-vt_batch_feed_dedup)
+    * [vt\_batch\_feed\_offband\_dedup](#id34-vt_batch_feed_offband_dedup)
+    * [vt\_batch\_update\_dedup](#id35-vt_batch_update_dedup)
+    * [vt\_is\_noise\_dedup](#id36-vt_is_noise_dedup)
+  * [](#id37-)
+
+<!--- TOC: End --->
+<a id="id1-basic-concepts"></a>
 # Basic Concepts
 
 A text index is created with the [CREATE TEXT INDEX](#createtxtidxstmt)
@@ -35,8 +79,10 @@ is OK but
 
 is not.
 
+<a id="id2-creating-free-text-indexes"></a>
 # Creating Free Text Indexes
 
+<a id="id3-the-create-text-index-statement"></a>
 ## The CREATE TEXT INDEX statement
 
 Define and optionally initialize a text index on a column.
@@ -136,6 +182,7 @@ mode](#ftperformance) is far more efficient.
 > [vt\_create\_text\_index](#fn_vt_create_text_index) function can also
 > be used
 
+<a id="id4-choosing-an-application-specific-document-id"></a>
 ## Choosing An Application Specific Document ID
 
 The free text index conceptually works by making an index entry for each
@@ -196,6 +243,7 @@ composite. Thus, if an application specific document ID is not an
 integer, it must be a composite totaling less than 30 bytes of content
 divided among its members.
 
+<a id="id5-the-composite-data-type"></a>
 ## The composite Data Type
 
 A composite is like a heterogeneous array, except that it is limited in
@@ -238,6 +286,7 @@ used in a free text index it is limited to 30 characters.
 > See the [Data Types](#datatypes) section for the storage requirement
 > of each data type.
 
+<a id="id6-free-text-index-examples"></a>
 ## Free Text Index Examples
 
     composite (1, 2) = composite (1, 2)  is true
@@ -348,6 +397,7 @@ and pub_date < {dt '2001-1-5'};
 > The reference section for [contains](#containspredicate) for a
 > definition of these options.
 
+<a id="id7-pre-processing-and-extending-the-content-being-indexed"></a>
 ## Pre-processing and Extending the Content Being Indexed
 
 Let us consider the news application. Assume now a many to many
@@ -522,6 +572,7 @@ not be 0 or negative.
 > [vt\_batch\_feed\_offband](#fn_vt_batch_feed_offband) ,
 > [vt\_batch\_d\_id](#fn_vt_batch_d_id) .
 
+<a id="id8-hit-scores"></a>
 ## Hit Scores
 
 When a document satisfies a text search expression a score is computed
@@ -577,6 +628,7 @@ The XCONTAINS predicate can also return scores. These scores are
 somewhat similar to scores made by CONTAINS but rules for them are too
 complicated to be explained here.
 
+<a id="id9-word-ranges"></a>
 ## Word Ranges
 
 This feature allows returning the positions of matches of a query inside
@@ -607,6 +659,7 @@ This feature can be used to show specific portions of matching documents
 in applications. This is internally used as part of the xcontains
 predicate for XML text. Also see the function search\_excerpt ().
 
+<a id="id10-using-offband-data-for-faster-filtering"></a>
 ## Using Offband Data for Faster Filtering
 
 When evaluating a select where there is a contains predicate and
@@ -697,6 +750,7 @@ the text hits, not only the top 10. This can easily make a 3x speed
 difference when running in memory and much greater when I/O is involved,
 not to mention the adverse impact of more I/O on the working set.
 
+<a id="id11-order-of-hits"></a>
 ## Order of Hits
 
 Rows from a select where there is a contains predicate and no exact
@@ -733,6 +787,7 @@ or
     select * from article where contains (description, 'sample')
       order by id + 0;
 
+<a id="id12-noise-words"></a>
 ## Noise Words
 
 Noise words are often occurring words which can be skipped to save space
@@ -793,8 +848,10 @@ positions may become out of sync with positions in free text index, so
 it is best not to change noise.txt if the database contains any free
 text indexes on persistent XMLs.
 
+<a id="id13-querying-free-text-indexes"></a>
 # Querying Free Text Indexes
 
+<a id="id14-contains-predicate"></a>
 ## CONTAINS predicate
 
 Returns TRUE if a free text indexed column matches a text expression.
@@ -845,6 +902,7 @@ of the [CREATE TEXT INDEX](#createtxtidxstmt) statement.
 > 
 > The [XCONTAINS Predicate](#xcontainspredicate) .
 
+<a id="id15-comments"></a>
 ## Comments
 
 *Order* - If the select statement containing the contains predicate does
@@ -875,6 +933,7 @@ The contains predicate must be a part of the top level AND of the WHERE
 clause of the containing select. It may not for example be a term of an
 OR predicate in the select but can be AND'ed with an OR expression.
 
+<a id="id16-text-expression-syntax"></a>
 ## Text Expression Syntax
 
     expr ::= proximity_expr
@@ -938,6 +997,7 @@ matches documents with SQL followed by a word beginning with 'interfac'.
 matches documents with words beginning with 'dragon' and not containing
 the phrase 'once upon a time'.
 
+<a id="id17-text-triggers"></a>
 # Text Triggers
 
 The text trigger mechanism allows implementing a broad range of content
@@ -958,6 +1018,7 @@ performance and scalability than repeatedly running a batch of queries
 over updated data and thus makes possible personalized information
 filtering applications that would be impractical with other approaches.
 
+<a id="id18-creating-text-triggers"></a>
 ## Creating Text Triggers
 
 The `CREATE TEXT TRIGGER` statement creates a set of tables and
@@ -1014,6 +1075,7 @@ Meaning that row from 'ftt' with id equal to 1 matches query with TT\_ID
 equal to 1 defined for user with ID equal to 1. Also the hit is
 registered on '2001-01-17 12:35:30'.
 
+<a id="id19-created-database-objects"></a>
 ## Created Database Objects
 
 Text trigger hits table. Text trigger stores hits on documents matching
@@ -1079,8 +1141,10 @@ called by the server event scheduler.
 
     TT_NOTIFY_<table_name> ();
 
+<a id="id20-generated-tables-and-internals"></a>
 # Generated Tables and Internals
 
+<a id="id21-generated-tables-and-procedures"></a>
 ## Generated Tables and Procedures
 
 vt\_create\_text\_index makes a separate table for storing the text
@@ -1098,6 +1162,7 @@ The text index is stored in a table named \<table\>\_\<column\>\_WORDS.
 The generated tables are made under the qualifier that is current at the
 time of their creation. The owner is the creating user.
 
+<a id="id22-the-procedures-are"></a>
 ## The procedures are:
 
     VT_INDEX_<qualifier>_<owner>_<table>  (in flag integer)
@@ -1110,6 +1175,7 @@ deletes data found in the table from the index.
 This function refreshes the index using the change tracking information
 in the VTLOG\_ table.
 
+<a id="id23-tables-and-procedures-created-by-text-triggers"></a>
 ## Tables and Procedures Created By Text Triggers
 
 ``` 
@@ -1241,6 +1307,7 @@ for hits removal after document delete occurred
     2000-10-24 18:25:53  xyz qwe abc
     2000-10-24 18:25:53  xyz qwe abc
 
+<a id="id24-removing-a-text-index"></a>
 # Removing A Text Index
 
 A text index is dropped by dropping the words table with DROP TABLE.
@@ -1252,6 +1319,7 @@ table is in the qualifier and owner of the indexed table and is named
 
 \-- drops the text index created in the vt\_create\_text\_index example
 
+<a id="id25-removing-a-text-trigger"></a>
 # Removing A Text Trigger
 
 Used to drop text trigger definition on text indexed table. The
@@ -1267,12 +1335,14 @@ will drop the text trigger definition from table ftt.
 
 Or using the stored procedure:
 
+<a id="id26-vt_drop_ftt_dedup"></a>
 ## vt\_drop\_ftt\_dedup
 
 For detailed description and example use of the function, see
 [vt\_drop\_ftt](#fn_vt_drop_ftt) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id27-internationalization-unicode"></a>
 # Internationalization & Unicode
 
 The text being indexed and the text query expression may both be wide
@@ -1293,6 +1363,7 @@ words table as is.
 > 
 > The LANGUAGE option in [CREATE TEXT INDEX](#createtxtidxstmt) .
 
+<a id="id28-performance"></a>
 # Performance
 
 For indexing large volumes it is critical to run the indexing process
@@ -1322,43 +1393,51 @@ between index refreshes. The table name must be fully qualified and is
 case sensitive. The correct case is seen in the administration interface
 tables list of the isql tables command etc.
 
+<a id="id29-restrictions"></a>
 ## Restrictions
 
 If the free text document ID is an integer, which is encouraged for
 compactness, the values 0 and negative are reserved.
 
+<a id="id30-free-text-functions"></a>
 # Free Text Functions
 
+<a id="id31-vt_batch_dedup"></a>
 ## vt\_batch\_dedup
 
 For detailed description and example use of the function, see
 [vt\_batch](#fn_vt_batch) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id32-vt_batch_d_id_dedup"></a>
 ## vt\_batch\_d\_id\_dedup
 
 For detailed description and example use of the function, see
 [vt\_batch\_d\_id](#fn_vt_batch_d_id) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id33-vt_batch_feed_dedup"></a>
 ## vt\_batch\_feed\_dedup
 
 For detailed description and example use of the function, see
 [vt\_batch\_feed](#fn_vt_batch_feed) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id34-vt_batch_feed_offband_dedup"></a>
 ## vt\_batch\_feed\_offband\_dedup
 
 For detailed description and example use of the function, see
 [vt\_batch\_feed\_offband](#fn_vt_batch_feed_offband) in the [Functions
 Reference Guide](#ch-functions).
 
+<a id="id35-vt_batch_update_dedup"></a>
 ## vt\_batch\_update\_dedup
 
 For detailed description and example use of the function, see
 [vt\_batch\_update](#fn_vt_batch_update) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id36-vt_is_noise_dedup"></a>
 ## vt\_is\_noise\_dedup
 
 For detailed description and example use of the function, see

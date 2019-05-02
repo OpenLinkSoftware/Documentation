@@ -1,5 +1,47 @@
 # XML Support
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Rendering SQL Queries as XML (FOR XML Clause)](#id1-rendering-sql-queries-as-xml-for-xml-clause)
+    * [FOR XML EXPLICIT Mode](#id2-for-xml-explicit-mode)
+    * [Examples of FOR XML](#id3-examples-of-for-xml)
+    * [Functions](#id4-functions)
+    * [FOR XML Syntax](#id5-for-xml-syntax)
+  * [XML Composing Functions in SQL Statements (SQLX)](#id6-xml-composing-functions-in-sql-statements-sqlx)
+  * [Virtuoso XML Services](#id7-virtuoso-xml-services)
+    * [XPATH Implementation and SQL](#id8-xpath-implementation-and-sql)
+    * [XPATH Query Options](#id9-xpath-query-options)
+    * [XML Views - Representing SQL Data as Dynamic and Persistent XML](#id10-xml-views-representing-sql-data-as-dynamic-and-persistent-xml)
+    * [External Entity References in Stored XML](#id11-external-entity-references-in-stored-xml)
+    * [Using XPATH in SQL Queries and Procedures](#id12-using-xpath-in-sql-queries-and-procedures)
+    * [XQUERY and XML view](#id13-xquery-and-xml-view)
+    * [Mapping Schemas as XML Views](#id14-mapping-schemas-as-xml-views)
+    * [Differences Between SQLX, FOR XML and XML Views](#id15-differences-between-sqlx-for-xml-and-xml-views)
+  * [Querying Stored XML Data](#id16-querying-stored-xml-data)
+    * [XPATH\_CONTAINS SQL Predicate](#id17-xpath_contains-sql-predicate)
+    * [Using xpath\_eval()](#id18-using-xpath_eval)
+    * [External Entity References in Stored XML](#id19-external-entity-references-in-stored-xml)
+    * [XML Schema & DTD Functions](#id20-xml-schema-dtd-functions)
+    * [Using XML and Free Text](#id21-using-xml-and-free-text)
+    * [XCONTAINS predicate](#id22-xcontains-predicate)
+    * [text-contains XPath Predicate](#id23-text-contains-xpath-predicate)
+    * [XML Free Text Indexing Rules](#id24-xml-free-text-indexing-rules)
+    * [XML Processing & Free Text Encoding Issues](#id25-xml-processing-free-text-encoding-issues)
+  * [Using UpdateGrams to Modify Data](#id26-using-updategrams-to-modify-data)
+    * [Updategrams Basics](#id27-updategrams-basics)
+    * [Elements Description](#id28-elements-description)
+    * [Determining Actions](#id29-determining-actions)
+    * [Using Input Parameters](#id30-using-input-parameters)
+    * [Examples](#id31-examples)
+  * [XML Templates](#id32-xml-templates)
+    * [Syntax](#id33-syntax)
+    * [Saving SQL Queries to XML Template](#id34-saving-sql-queries-to-xml-template)
+    * [Saving XPATH Queries to XML Template](#id35-saving-xpath-queries-to-xml-template)
+
+<!--- TOC: End --->
+<a id="id1-rendering-sql-queries-as-xml-for-xml-clause"></a>
 # Rendering SQL Queries as XML (FOR XML Clause)
 
 Virtuoso extends SQL-92 with the FOR XML clause that allows any SQL
@@ -58,6 +100,7 @@ is executed through the [`xml_auto()`](#fn_xml_auto) function.
 > of supplying an SQL statement to Virtuoso and saving the view as a
 > resource accessible from the WebDAV store.
 
+<a id="id2-for-xml-explicit-mode"></a>
 ## FOR XML EXPLICIT Mode
 
 This mode gives the developer the most control over the generated result
@@ -109,6 +152,7 @@ set.
 > child row's key values, the parent gets sorted first because NULL
 > collates first.
 
+<a id="id3-examples-of-for-xml"></a>
 ## Examples of FOR XML
 
 This section gives one example of each mode of FOR XML combined with the
@@ -236,10 +280,12 @@ programmers know what the resulting XML should look like but do not know
 how to get exactly what they want. FOR XML EXPLICIT can be very useful
 in these cases.
 
+<a id="id4-functions"></a>
 ## Functions
 
 [`xml_auto()`](#fn_xml_auto)
 
+<a id="id5-for-xml-syntax"></a>
 ## FOR XML Syntax
 
     for__xml ::= FOR XML <mode> [ ELEMENT ]
@@ -267,6 +313,7 @@ The text of \<option\> part of the \<explicit column\> is ignored but if
 it is present then the value is placed into a sub-element of the element
 for the row, not into an attribute.
 
+<a id="id6-xml-composing-functions-in-sql-statements-sqlx"></a>
 # XML Composing Functions in SQL Statements (SQLX)
 
 The preferred means of constructing XML data from SQL is to use the
@@ -483,8 +530,10 @@ single node that is a concatenation of these string. Similarly, if an
 empty string appears in the list of values of a forest or in the list of
 children of an new element then it is removed from the list.
 
+<a id="id7-virtuoso-xml-services"></a>
 # Virtuoso XML Services
 
+<a id="id8-xpath-implementation-and-sql"></a>
 ## XPATH Implementation and SQL
 
 Virtuoso offers XPATH as a query language for XML views. The statement
@@ -509,6 +558,7 @@ This basic behaviour can be modified by XPATH options enclosed in
 brackets after the XPATH keyword. These options allow specifying the
 output columns of the generated select statement.
 
+<a id="id9-xpath-query-options"></a>
 ## XPATH Query Options
 
     <xp option> ::=
@@ -600,6 +650,7 @@ provides to the XML parser when the processor should read a document.
 Section ["Configuration Options of the DTD Validator"](#dtd_config)
 lists all supported options.
 
+<a id="id10-xml-views-representing-sql-data-as-dynamic-and-persistent-xml"></a>
 ## XML Views - Representing SQL Data as Dynamic and Persistent XML
 
 The XML view mechanism allows generating XML content from relational
@@ -974,6 +1025,7 @@ The reverse operation of xml\_view\_publish is deleting the DAV
 resource. xml\_view\_publish may be called several times to alter the
 owner or refresh interval.
 
+<a id="id11-external-entity-references-in-stored-xml"></a>
 ## External Entity References in Stored XML
 
 When an XML document is stored as either text, long xml, xmltype or in
@@ -1032,6 +1084,7 @@ without a path just replaces the last part of the path in the base URI.
 > 
 > [xml\_uri\_get and xml\_uri\_merge](#fn_xml_uri_get) for more details.
 
+<a id="id12-using-xpath-in-sql-queries-and-procedures"></a>
 ## Using XPATH in SQL Queries and Procedures
 
 An XPATH expression can appear as a SQL query expression, that is, as a
@@ -1100,6 +1153,7 @@ in the ord XML view.
 > character in XPATH and that XPATH is case sensitive without any
 > implicit identifier case conversion.
 
+<a id="id13-xquery-and-xml-view"></a>
 ## XQUERY and XML view
 
 Similarly to XPATH, XQUERY may also be used as a query language for XML
@@ -1443,6 +1497,7 @@ following query
 may return an error, because the field "Description" has LONG VARCHAR
 type in the table "demo"."Categories".
 
+<a id="id14-mapping-schemas-as-xml-views"></a>
 ## Mapping Schemas as XML Views
 
 Virtuoso supports creating XML views by using annotated XSD schemas
@@ -1632,6 +1687,7 @@ Recursive relationships is not supported.
 > SQLXML 3.0 documentation: [Creating XML Views by Using Annotated XSD
 > Schemas.](#)
 
+<a id="id15-differences-between-sqlx-for-xml-and-xml-views"></a>
 ## Differences Between SQLX, FOR XML and XML Views
 
 A SQLX or FOR XML query has no effect on the database schema. It is a
@@ -1651,8 +1707,10 @@ simple cases SQLX or FOR XML is the more convenient of the two. SQLX or
 FOR XML does not restrict the SQL being used and will allow free use of
 subqueries, expressions, derived tables, qualified joins etc.
 
+<a id="id16-querying-stored-xml-data"></a>
 # Querying Stored XML Data
 
+<a id="id17-xpath_contains-sql-predicate"></a>
 ## XPATH\_CONTAINS SQL Predicate
 
 XPath expressions can be used in SQL statements to decompose and match
@@ -1714,6 +1772,7 @@ source documents in xt\_text contain external generic entities.
     select xt_file, t from xml_text
       where xpath_contains (xt_text, '[__quiet BuildStandalone=ENABLE]//chapter/title[position () = 1]', t);
 
+<a id="id18-using-xpath_eval"></a>
 ## Using xpath\_eval()
 
 The `xpath_eval()` function is used to filter out parts of an XML
@@ -1769,6 +1828,7 @@ parameter to `xpath_eval()` :
 > 
 > [`xmlupdate()`](#fn_xmlupdate)
 
+<a id="id19-external-entity-references-in-stored-xml"></a>
 ## External Entity References in Stored XML
 
 When an XML document is stored as either text or in persistent XML
@@ -1823,6 +1883,7 @@ a path just replaces the last part of the path in the base URI.
 > [`xml_uri_get()` and `xml_uri_merge()`](#fn_xml_uri_get) for more
 > details.
 
+<a id="id20-xml-schema-dtd-functions"></a>
 ## XML Schema & DTD Functions
 
 The following functions can be used to generate XML Schema or DTD
@@ -1882,6 +1943,7 @@ and `xml_auto_dtd()` .
     
     1 Rows. -- 411 msec.
 
+<a id="id21-using-xml-and-free-text"></a>
 ## Using XML and Free Text
 
 Virtuoso integrates classic free text retrieval and XML semi-structured
@@ -1903,6 +1965,7 @@ relies on the underlying free text index.
 > `xpath_contains()` does not require the existence of a free text index
 > and can thus apply to any well-formed XML content.
 
+<a id="id22-xcontains-predicate"></a>
 ## XCONTAINS predicate
 
 This predicate is used in a SQL statement, it returns "true" if a free
@@ -2026,6 +2089,7 @@ Declaration - Column Aliasing."
 > 
 > The [CONTAINS](#containspredicate) Predicate.
 
+<a id="id23-text-contains-xpath-predicate"></a>
 ## text-contains XPath Predicate
 
     text-contains (node-set, text-expression)
@@ -2058,6 +2122,7 @@ document order for all documents which contains the phrase, starting
 with the document node and following downward including all paths to the
 innermost element(s) whose text contains the phrase.
 
+<a id="id24-xml-free-text-indexing-rules"></a>
 ## XML Free Text Indexing Rules
 
 XML documents are inserted into the free text index as follows:
@@ -2121,6 +2186,7 @@ A free text condition will only be true of an element if all the words
 needed to satisfy the condition are part of the element's string value.
 This string value includes text children of descendants.
 
+<a id="id25-xml-processing-free-text-encoding-issues"></a>
 ## XML Processing & Free Text Encoding Issues
 
 XML document may be written in a variety of encodings, and it may cause
@@ -2383,6 +2449,7 @@ codes of ASCII symbols such as '/' or '\['.
 > beginning of the free-text expression constant, because words of the
 > text expression will thus be converted twice.
 
+<a id="id26-using-updategrams-to-modify-data"></a>
 # Using UpdateGrams to Modify Data
 
 Updategrams allow database updates to be defined as XML. This is
@@ -2407,6 +2474,7 @@ The `xmlsql_update()` function supports XML-based insert, update, and
 delete operations performed on an existing table in the database.
 [`xmlsql_update()`](#fn_xmlsql_update)
 
+<a id="id27-updategrams-basics"></a>
 ## Updategrams Basics
 
 The general format of an updategram is:
@@ -2442,6 +2510,7 @@ or
             </sql:after>
     </sql:sync>
 
+<a id="id28-elements-description"></a>
 ## Elements Description
 
 The `<sync>` tag of the updategram signifies the beginning of an
@@ -2465,6 +2534,7 @@ Each `<TABLENAME.../>` refers to a single table. Multiple
 nesting is not allowed. The `<before>` and `<after>` tags are optional.
 A missing tag is the same as having a tag with no content.
 
+<a id="id29-determining-actions"></a>
 ## Determining Actions
 
 If only the `<after>` block is specified, the rows specified in the
@@ -2488,6 +2558,7 @@ the table(s). If both the `<before>` and `<after>` blocks are specified,
 the rows for which there are no corresponding rows in the `<after>`
 block are deleted from the table(s).
 
+<a id="id30-using-input-parameters"></a>
 ## Using Input Parameters
 
 Parameters declarations should be described in the \<header\> section of
@@ -2506,6 +2577,7 @@ optional default of parameter Parameters in updategram should have
 `$PARAM_NAME` with the corresponding value from the `<input_parameters>`
 given to the function `xmlsql_update()` .
 
+<a id="id31-examples"></a>
 ## Examples
 
 Given the following tables:
@@ -2629,6 +2701,7 @@ This will add one record to the Shippers table with the data in the
 array. Note that the slash/dollar sign pair '\\$' transforms to dollar
 sign '$' only
 
+<a id="id32-xml-templates"></a>
 # XML Templates
 
 Virtuoso XML templates allow execution of queries over HTTP in order to
@@ -2713,6 +2786,7 @@ subsequent queries and updategrams will still be executed.
 > 
 > [`xml_template()`](#fn_xml_template)
 
+<a id="id33-syntax"></a>
 ## Syntax
 
 The format of an XML template is shown below, illustrating how SQL
@@ -2811,6 +2885,7 @@ instruct the Virtuoso HTTP server to return the HTML output.
 > 
 > The [FOR XML clause](#forxmlforsql) .
 
+<a id="id34-saving-sql-queries-to-xml-template"></a>
 ## Saving SQL Queries to XML Template
 
 Using the Conductor Administration Interface, we are going to make and
@@ -2869,6 +2944,7 @@ ensure that the name of the file is `/DAV/xmlt/xquery-template.xml` :
 > 
 > Exposing XML Templates as Web Services .
 
+<a id="id35-saving-xpath-queries-to-xml-template"></a>
 ## Saving XPATH Queries to XML Template
 
 Using the Conductor Administration Interface, we are going to make and

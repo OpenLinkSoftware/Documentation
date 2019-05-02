@@ -23,6 +23,261 @@ resources such as specific file system or WebDAV locations, other HTTP
 Servers acting as a proxy or to alter specific processing or
 authentication rules for a directory.
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [The HTTP Server](#id1-the-http-server)
+    * [HTTP Server Base Configuration](#id2-http-server-base-configuration)
+    * [Virtual Directories](#id3-virtual-directories)
+    * [Authentication](#id4-authentication)
+    * [Session Management](#id5-session-management)
+    * [Writing Your Own Authentication and Session Handling](#id6-writing-your-own-authentication-and-session-handling)
+    * [Cancellation of Web Requests](#id7-cancellation-of-web-requests)
+    * [Virtuoso WebRobot API](#id8-virtuoso-webrobot-api)
+    * [HTTP Server Extensions](#id9-http-server-extensions)
+    * [Chunked Transfer Encoding](#id10-chunked-transfer-encoding)
+    * [Using Virtuoso Server capabilities via Apache Web Server](#id11-using-virtuoso-server-capabilities-via-apache-web-server)
+    * [Setting Up the Virtuoso HTTPS Listener](#id12-setting-up-the-virtuoso-https-listener)
+  * [Web Services ACL (Access Control List)](#id13-web-services-acl-access-control-list)
+    * [General purpose ACLs](#id14-general-purpose-acls)
+    * [ACL Definition/Removal](#id15-acl-definitionremoval)
+    * [Using ACL's Within Application Logic](#id16-using-acls-within-application-logic)
+    * [Predefined ACLs](#id17-predefined-acls)
+  * [Virtuoso Server Pages (VSP)](#id18-virtuoso-server-pages-vsp)
+    * [VSP Markup & Basic Functions](#id19-vsp-markup-basic-functions)
+    * [Access Request Information](#id20-access-request-information)
+    * [Errors in Page Procedures](#id21-errors-in-page-procedures)
+    * [/INLINEFILE HTTP Server Pseudo-Directory](#id22-inlinefile-http-server-pseudo-directory)
+    * [Beyond Basics](#id23-beyond-basics)
+    * [Long HTTP Transactions](#id24-long-http-transactions)
+    * [Using chunked encoding in HTTP 1.1](#id25-using-chunked-encoding-in-http-11)
+    * [Making Simple Dynamic Web Pages](#id26-making-simple-dynamic-web-pages)
+    * [Generation of non-HTML output](#id27-generation-of-non-html-output)
+    * [Post VSP XSLT Transformation Mode](#id28-post-vsp-xslt-transformation-mode)
+    * [XML & XSLT Generated VSP Pages](#id29-xml-xslt-generated-vsp-pages)
+  * [Virtuoso Server Pages for XML (VSPX)](#id30-virtuoso-server-pages-for-xml-vspx)
+    * [Processing Model](#id31-processing-model)
+    * [Object Model](#id32-object-model)
+    * [Keeping Page and Session State](#id33-keeping-page-and-session-state)
+    * [Application Code](#id34-application-code)
+    * [A Simple Example](#id35-a-simple-example)
+    * [VSPX Event Handler Parameters](#id36-vspx-event-handler-parameters)
+    * [Registering a VSPX Event Callbacks](#id37-registering-a-vspx-event-callbacks)
+    * [Commonly Used Types of Attributes of VSPX Controls](#id38-commonly-used-types-of-attributes-of-vspx-controls)
+  * [Description](#id39-description)
+  * [Description](#id40-description)
+  * [Description](#id41-description)
+  * [Description](#id42-description)
+    * [VSPX Controls](#id43-vspx-controls)
+  * [Description](#id44-description)
+  * [Description](#id45-description)
+  * [Description](#id46-description)
+  * [Description](#id47-description)
+  * [Description](#id48-description)
+  * [Description](#id49-description)
+  * [Description](#id50-description)
+  * [Attributes](#id51-attributes)
+  * [Declaration of type vspx\_button](#id52-declaration-of-type-vspx_button)
+  * [Examples](#id53-examples)
+  * [Description](#id54-description)
+  * [Attributes](#id55-attributes)
+  * [Declaration of type vspx\_calendar](#id56-declaration-of-type-vspx_calendar)
+  * [Examples](#id57-examples)
+  * [Description](#id58-description)
+  * [Attributes](#id59-attributes)
+  * [Declaration of type vspx\_check\_box](#id60-declaration-of-type-vspx_check_box)
+  * [Examples](#id61-examples)
+  * [Description](#id62-description)
+  * [Attributes](#id63-attributes)
+  * [Examples](#id64-examples)
+  * [Description](#id65-description)
+  * [Attributes](#id66-attributes)
+  * [Description](#id67-description)
+  * [Attributes](#id68-attributes)
+  * [Declaration of type vspx\_data\_grid](#id69-declaration-of-type-vspx_data_grid)
+  * [Examples](#id70-examples)
+  * [Description](#id71-description)
+  * [Attributes](#id72-attributes)
+  * [Declaration of type vspx\_data\_list](#id73-declaration-of-type-vspx_data_list)
+  * [Examples](#id74-examples)
+  * [Description](#id75-description)
+  * [Attributes](#id76-attributes)
+  * [Declaration of type vspx\_data\_set](#id77-declaration-of-type-vspx_data_set)
+  * [Examples](#id78-examples)
+  * [Description](#id79-description)
+  * [Attributes](#id80-attributes)
+  * [Declaration of type vspx\_data\_source](#id81-declaration-of-type-vspx_data_source)
+  * [Examples](#id82-examples)
+  * [Description](#id83-description)
+  * [Attributes](#id84-attributes)
+  * [Examples](#id85-examples)
+  * [Description](#id86-description)
+  * [Attributes](#id87-attributes)
+  * [Description](#id88-description)
+  * [Attributes](#id89-attributes)
+  * [Description](#id90-description)
+  * [Attributes](#id91-attributes)
+  * [Declaration of type vspx\_form](#id92-declaration-of-type-vspx_form)
+  * [Examples](#id93-examples)
+  * [Description](#id94-description)
+  * [Attributes](#id95-attributes)
+  * [Description](#id96-description)
+  * [Attributes](#id97-attributes)
+  * [Declaration of type vspx\_horizontal\_template](#id98-declaration-of-type-vspx_horizontal_template)
+  * [Description](#id99-description)
+  * [Attributes](#id100-attributes)
+  * [Examples](#id101-examples)
+  * [Description](#id102-description)
+  * [Attributes](#id103-attributes)
+  * [Declaration of type vspx\_isql](#id104-declaration-of-type-vspx_isql)
+  * [Description](#id105-description)
+  * [Attributes](#id106-attributes)
+  * [Description](#id107-description)
+  * [Attributes](#id108-attributes)
+  * [Description](#id109-description)
+  * [Attributes](#id110-attributes)
+  * [Declaration of type vspx\_label](#id111-declaration-of-type-vspx_label)
+  * [Examples](#id112-examples)
+  * [Description](#id113-description)
+  * [Attributes](#id114-attributes)
+  * [Declaration of type vspx\_leaf\_template](#id115-declaration-of-type-vspx_leaf_template)
+  * [Description](#id116-description)
+  * [Attributes](#id117-attributes)
+  * [Description](#id118-description)
+  * [Attributes](#id119-attributes)
+  * [Declaration of type vspx\_login](#id120-declaration-of-type-vspx_login)
+  * [Examples](#id121-examples)
+  * [Description](#id122-description)
+  * [Attributes](#id123-attributes)
+  * [Declaration of type vspx\_login\_form](#id124-declaration-of-type-vspx_login_form)
+  * [Examples](#id125-examples)
+  * [Description](#id126-description)
+  * [Attributes](#id127-attributes)
+  * [Description](#id128-description)
+  * [Attributes](#id129-attributes)
+  * [Description](#id130-description)
+  * [Attributes](#id131-attributes)
+  * [Declaration of type vspx\_node\_template](#id132-declaration-of-type-vspx_node_template)
+  * [Description](#id133-description)
+  * [Description](#id134-description)
+  * [Description](#id135-description)
+  * [Description](#id136-description)
+  * [Description](#id137-description)
+  * [Attributes](#id138-attributes)
+  * [Declaration of type vspx\_page](#id139-declaration-of-type-vspx_page)
+  * [Examples](#id140-examples)
+  * [Description](#id141-description)
+  * [Attributes](#id142-attributes)
+  * [Description](#id143-description)
+  * [Attributes](#id144-attributes)
+  * [Description](#id145-description)
+  * [Attributes](#id146-attributes)
+  * [Declaration of type vspx\_radio\_button](#id147-declaration-of-type-vspx_radio_button)
+  * [Examples](#id148-examples)
+  * [Description](#id149-description)
+  * [Attributes](#id150-attributes)
+  * [Declaration of type vspx\_radio\_group](#id151-declaration-of-type-vspx_radio_group)
+  * [Examples](#id152-examples)
+  * [Description](#id153-description)
+  * [Attributes](#id154-attributes)
+  * [Description](#id155-description)
+  * [Attributes](#id156-attributes)
+  * [Declaration of type vspx\_select\_list](#id157-declaration-of-type-vspx_select_list)
+  * [Examples](#id158-examples)
+  * [Description](#id159-description)
+  * [Attributes](#id160-attributes)
+  * [Description](#id161-description)
+  * [Attributes](#id162-attributes)
+  * [Declaration of type vspx\_tab](#id163-declaration-of-type-vspx_tab)
+  * [Examples](#id164-examples)
+  * [Description](#id165-description)
+  * [Attributes](#id166-attributes)
+  * [Declaration of type vspx\_template](#id167-declaration-of-type-vspx_template)
+  * [Description](#id168-description)
+  * [Attributes](#id169-attributes)
+  * [Declaration of type vspx\_text](#id170-declaration-of-type-vspx_text)
+  * [Examples](#id171-examples)
+  * [Description](#id172-description)
+  * [Attributes](#id173-attributes)
+  * [Declaration of type vspx\_textarea](#id174-declaration-of-type-vspx_textarea)
+  * [Description](#id175-description)
+  * [Attributes](#id176-attributes)
+  * [Declaration of type vspx\_tree](#id177-declaration-of-type-vspx_tree)
+  * [Examples](#id178-examples)
+  * [Description](#id179-description)
+  * [Attributes](#id180-attributes)
+  * [Declaration of type vspx\_url](#id181-declaration-of-type-vspx_url)
+  * [Examples](#id182-examples)
+  * [Description](#id183-description)
+  * [Attributes](#id184-attributes)
+  * [Declaration of type vspx\_validator](#id185-declaration-of-type-vspx_validator)
+  * [Examples](#id186-examples)
+  * [Description](#id187-description)
+  * [Attributes](#id188-attributes)
+  * [Examples](#id189-examples)
+  * [Description](#id190-description)
+  * [Attributes](#id191-attributes)
+  * [Declaration of type vspx\_vscx](#id192-declaration-of-type-vspx_vscx)
+  * [Examples](#id193-examples)
+  * [Description](#id194-description)
+  * [Attributes](#id195-attributes)
+  * [Declaration of type vspx\_xsd\_stub](#id196-declaration-of-type-vspx_xsd_stub)
+  * [Description](#id197-description)
+  * [Attributes](#id198-attributes)
+  * [Declaration of type vspx\_xsd\_stub\_script](#id199-declaration-of-type-vspx_xsd_stub_script)
+  * [Description](#id200-description)
+  * [Attributes](#id201-attributes)
+  * [Declaration of type vspx\_xsd\_stub\_top](#id202-declaration-of-type-vspx_xsd_stub_top)
+    * [XForms rendering](#id203-xforms-rendering)
+    * [XMLSchema for VSPX page](#id204-xmlschema-for-vspx-page)
+  * [Deploying ASP.Net Web Applications](#id205-deploying-aspnet-web-applications)
+    * [Programming Concepts](#id206-programming-concepts)
+    * [ASP.Net Deployment & Configuration](#id207-aspnet-deployment-configuration)
+    * [The Mono Project](#id208-the-mono-project)
+    * [Migrating ASP.Net Applications to Virtuoso](#id209-migrating-aspnet-applications-to-virtuoso)
+  * [ASMX Web Service Hosting](#id210-asmx-web-service-hosting)
+  * [Blogging & Weblogs](#id211-blogging-weblogs)
+    * [The Virtuoso Blogging Application](#id212-the-virtuoso-blogging-application)
+    * [Blogger Clients Compatibility](#id213-blogger-clients-compatibility)
+    * [Blogs Management User Interface](#id214-blogs-management-user-interface)
+    * [Community Blog Site](#id215-community-blog-site)
+    * [Blogger API](#id216-blogger-api)
+    * [MetaWeblog API](#id217-metaweblog-api)
+    * [Movable Type API](#id218-movable-type-api)
+    * [Atom API](#id219-atom-api)
+    * [XML-RPC Endpoint Configuration](#id220-xml-rpc-endpoint-configuration)
+    * [Blog Hooks - Customizing the Blog Server](#id221-blog-hooks-customizing-the-blog-server)
+    * [Blogger Client API](#id222-blogger-client-api)
+    * [xmlStorageSystem API](#id223-xmlstoragesystem-api)
+    * [User's Blog quota](#id224-users-blog-quota)
+    * [Posting a message in to the Blog](#id225-posting-a-message-in-to-the-blog)
+    * [Multi-author blogging](#id226-multi-author-blogging)
+    * [Posting a comments](#id227-posting-a-comments)
+    * [Blog Post Upstreaming (bridging)](#id228-blog-post-upstreaming-bridging)
+    * [Weblogs API](#id229-weblogs-api)
+    * [Subscriptions](#id230-subscriptions)
+    * [Trackback API](#id231-trackback-api)
+    * [Pingback API](#id232-pingback-api)
+    * [E-mail Notifications](#id233-e-mail-notifications)
+    * [Comments tracking options](#id234-comments-tracking-options)
+    * [Subscription Harmonizer API](#id235-subscription-harmonizer-api)
+    * [Mobile Blogging (Moblog)](#id236-mobile-blogging-moblog)
+    * [Posting a dynamic content](#id237-posting-a-dynamic-content)
+    * [Notification Services](#id238-notification-services)
+    * [Rendering the RSS feed in WML format](#id239-rendering-the-rss-feed-in-wml-format)
+  * [Deploying PHP Applications](#id240-deploying-php-applications)
+    * [Building the Virtuoso Server With PHP Extension](#id241-building-the-virtuoso-server-with-php-extension)
+    * [PHP Extension Functions](#id242-php-extension-functions)
+    * [PHP Examples](#id243-php-examples)
+  * [Deploying JSP Applications](#id244-deploying-jsp-applications)
+    * [Environment Setup & Verification](#id245-environment-setup-verification)
+  * [Perl Hosting](#id246-perl-hosting)
+  * [Python Hosting](#id247-python-hosting)
+  * [Ruby Hosting](#id248-ruby-hosting)
+
+<!--- TOC: End --->
+<a id="id1-the-http-server"></a>
 # The HTTP Server
 
 When a request comes in to one of the network interfaces where Virtuoso
@@ -114,6 +369,7 @@ Latency on subsequent requests is reduced.
 > 
 > [RFC2616](#) for more details
 
+<a id="id2-http-server-base-configuration"></a>
 ## HTTP Server Base Configuration
 
 The `[HTTPServer]` section of the Virtuoso INI file contains parameters
@@ -181,6 +437,7 @@ reference for the most frequently used parameters:
 > Virtuoso INI file parameters. In particular, the [\[HTTPServer\]
 > section](#ini_httpserver) .
 
+<a id="id3-virtual-directories"></a>
 ## Virtual Directories
 
 A Virtuoso virtual directory maps logical paths to physical resource
@@ -592,6 +849,7 @@ header rewriting and save the time/cpu power to rewrite the content:
 > 
 > [Apache Online Documentation](#)
 
+<a id="id4-authentication"></a>
 ## Authentication
 
 If a Virtuoso/PL procedure is specified to perform authentication for
@@ -602,6 +860,7 @@ the procedure returns 0 this causes the processing to terminate and
 whatever output the hook generated to be sent to the client. Typically
 this will be an authentication challenge.
 
+<a id="id5-session-management"></a>
 ## Session Management
 
 The Virtuoso HTTP session management consists of functions for session
@@ -625,6 +884,7 @@ page.
 > 
 > [VSP Session Management and Session Variables](#sesmanvars)
 
+<a id="id6-writing-your-own-authentication-and-session-handling"></a>
 ## Writing Your Own Authentication and Session Handling
 
 We will explain the following precompiled procedures in Virtuoso used to
@@ -997,6 +1257,7 @@ The user can freely define their own procedures based on this logic to
 use for special authentication (different users information table etc.)
 and session management.
 
+<a id="id7-cancellation-of-web-requests"></a>
 ## Cancellation of Web Requests
 
 If there are many long-running tasks processing on Virtuoso it is
@@ -1011,6 +1272,7 @@ this information to isolated and eliminate a process.
 > 
 > [Long HTTP Transactions](#longhttptrans)
 
+<a id="id8-virtuoso-webrobot-api"></a>
 ## Virtuoso WebRobot API
 
 The Virtuoso WebRobot (WebCopy) is useful for retrieving Internet web
@@ -1118,6 +1380,7 @@ function integrated in to the Virtuoso server.
 > 
 > [Web Robot System tables](#robotsystables)
 
+<a id="id9-http-server-extensions"></a>
 ## HTTP Server Extensions
 
 The Virtuoso shared object library enables you to create your own custom
@@ -1181,6 +1444,7 @@ any
 > 
 > [Virtuoso Server Extensions Interface](#cinterface)
 
+<a id="id10-chunked-transfer-encoding"></a>
 ## Chunked Transfer Encoding
 
 Virtuoso supports HTTP 1.1 Chunking Encoding which allows Virtuoso to
@@ -1207,6 +1471,7 @@ Chunked mode is not supported for static content.
 > 
 > [RFC-2616](#)
 
+<a id="id11-using-virtuoso-server-capabilities-via-apache-web-server"></a>
 ## Using Virtuoso Server capabilities via Apache Web Server
 
 In some situations Virtuoso services like WebDAV, JSP, PHP etc. may need
@@ -1241,6 +1506,7 @@ requests to Virtuoso HTTP server.
     
 ```
 
+<a id="id12-setting-up-the-virtuoso-https-listener"></a>
 ## Setting Up the Virtuoso HTTPS Listener
 
 The Setting up of the Virtuoso HTTPS Listener can be done by using the
@@ -1386,6 +1652,7 @@ for either setup.
         
         ![HTTPS Listener](./images/ui/htps10.png)
 
+<a id="id13-web-services-acl-access-control-list"></a>
 # Web Services ACL (Access Control List)
 
 Virtuoso provides a generic access control list for HTTP and other
@@ -1418,6 +1685,7 @@ News Server ACL
 
 \- controls access to the Internet news groups (reading or posting)
 
+<a id="id14-general-purpose-acls"></a>
 ## General purpose ACLs
 
 The system table `DB.DBA.HTTP_ACL` is used to persist ACL definitions,
@@ -1538,6 +1806,7 @@ For search engine optimization statistics, for example can be set rate
 limit 10 (or even 100 so to start to collect statistics), and then to
 check with http\_acl\_stats () what values are returned.
 
+<a id="id15-acl-definitionremoval"></a>
 ## ACL Definition/Removal
 
 ACL's can be managed from the administration web interface using the
@@ -1588,6 +1857,7 @@ To remove existing rule:
     DELETE from HTTP_ACL where HA_LIST = 'list_name' and HA_ORDER = <order number>
     and HA_FLAG = [1/0] and HA_CLIENT_IP = '*pattern*';
 
+<a id="id16-using-acls-within-application-logic"></a>
 ## Using ACL's Within Application Logic
 
 The [`http_acl_get()`](#fn_http_acl_get) function can be used to test an
@@ -1612,6 +1882,7 @@ service one could use the following:
       return (a + b);
     }
 
+<a id="id17-predefined-acls"></a>
 ## Predefined ACLs
 
 The following ACLs are predefined and have special treatment in Web
@@ -1676,6 +1947,7 @@ To deny web access from some domain (bad.domain/333.333.333.0)
     insert into http_acl (ha_list, ha_order, ha_flag, ha_client_ip) values ('HTTP', 1, 0, '*');
     insert into http_acl (ha_list, ha_order, ha_flag, ha_client_ip) values ('HTTP', 2, 1, '333.333.333.*');
 
+<a id="id18-virtuoso-server-pages-vsp"></a>
 # Virtuoso Server Pages (VSP)
 
 The Virtuoso Server Pages subsystem is an integral part of the Virtuoso
@@ -1781,6 +2053,7 @@ ASP.Net.
 > 
 > [Virtuoso as a Proxy](#virtproxy)
 
+<a id="id19-vsp-markup-basic-functions"></a>
 ## VSP Markup & Basic Functions
 
 All VSP specific markup is represented as a processing instruction (\<?
@@ -1917,6 +2190,7 @@ Now the same code but including shorthands:
           </table>
     </html>
 
+<a id="id20-access-request-information"></a>
 ## Access Request Information
 
 Request information, resulting from an HTTP POST, is available via the
@@ -2002,6 +2276,7 @@ Consider retrieving the following page by means of the URL:
 > `get_keyword()/get_keyword_ucase()` should be set to 1 or they should
 > be accessed through `aref_set_0()` .
 
+<a id="id21-errors-in-page-procedures"></a>
 ## Errors in Page Procedures
 
 VSP pages can declare handlers for errors using the normal handler
@@ -2020,6 +2295,7 @@ function will clear all output buffered so far and signaling VSPRT will
 make sure that whatever output is generated after http\_rewrite goes
 unmodified to the user agent.
 
+<a id="id22-inlinefile-http-server-pseudo-directory"></a>
 ## /INLINEFILE HTTP Server Pseudo-Directory
 
 This pseudo directory provides a way for a VSP page to have full control
@@ -2095,6 +2371,7 @@ hyper-links. Clicking on them will fetch the content and display using
 > 
 > [`http_path()`](#fn_http_path)
 
+<a id="id23-beyond-basics"></a>
 ## Beyond Basics
 
 All output from VSP page procedures is buffered into a local string
@@ -2230,6 +2507,7 @@ page.
 > 
 > [`connection_is_dirty()`](#fn_connection_is_dirty)
 
+<a id="id24-long-http-transactions"></a>
 ## Long HTTP Transactions
 
 Long running tasks may be invoked by web clients. In such a case, the
@@ -2252,6 +2530,7 @@ and eliminate a process.
 
 [http\_kill()](#fn_http_kill) can be used to kill them.
 
+<a id="id25-using-chunked-encoding-in-http-11"></a>
 ## Using chunked encoding in HTTP 1.1
 
 It is sometimes desirable to use the HTTP 1.1 chunked encoding to send
@@ -2275,6 +2554,7 @@ either when the internal 4k buffer is filled up or when the client calls
 `http_flush()` again to flush the buffer and send it as a chunk. The
 client disconnection is handled as usual .
 
+<a id="id26-making-simple-dynamic-web-pages"></a>
 ## Making Simple Dynamic Web Pages
 
 The directory where the pages reside must be marked as executable. Use
@@ -2624,6 +2904,7 @@ the standard distribution). We can make a simple page for editing it.
     We can, however, add PL code to handle errors and display a
     different page.
 
+<a id="id27-generation-of-non-html-output"></a>
 ## Generation of non-HTML output
 
 VSP pages are not restricted to generating only HTML markup. In order to
@@ -2676,6 +2957,7 @@ page
 > 
 > [WML Tutorials](#)
 
+<a id="id28-post-vsp-xslt-transformation-mode"></a>
 ## Post VSP XSLT Transformation Mode
 
 The Virtuoso server can perform server-side XSLT transformations on the
@@ -2747,6 +3029,7 @@ Where shippers.xsl will have the following content:
     </xsl:template>
     </xsl:stylesheet>
 
+<a id="id29-xml-xslt-generated-vsp-pages"></a>
 ## XML & XSLT Generated VSP Pages
 
 The Virtuoso HTTP server provides a special case for producing VSP
@@ -2826,6 +3109,7 @@ The result of retrieving portfolio.vxml
     </BODY>
     </HTML>
 
+<a id="id30-virtuoso-server-pages-for-xml-vspx"></a>
 # Virtuoso Server Pages for XML (VSPX)
 
 VSPX is an XML vocabulary for server generated HTML and XHTML pages that
@@ -2875,6 +3159,7 @@ The VSPX development cycle consists of editing .vspx resources in the
 file system or Virtuoso DAV. The editing can take place using a regular
 text editor or a supporting HTML editor.
 
+<a id="id31-processing-model"></a>
 ## Processing Model
 
 A VSPX page describes a web page in terms of static XHTML plus XML
@@ -2966,6 +3251,7 @@ by VSPX controls, the style-sheet should have these as a general rule to
 leave these unchanged. The http\_xslt () is more useful with VSP pages
 producing XML than with VSPX pages.
 
+<a id="id32-object-model"></a>
 ## Object Model
 
 VSPX controls are SQL user defined type instances, or objects. The SQL
@@ -3017,6 +3303,7 @@ page-wide unique name, generated to be different for each possible
 repetition of the control. The `find_control` method of `vspx_control`
 can be used to look for a child with a specific `vc_name` .
 
+<a id="id33-keeping-page-and-session-state"></a>
 ## Keeping Page and Session State
 
 VSPX does not require any particular session management to be in effect
@@ -3032,6 +3319,7 @@ across page reloads.
 To keep real sessions and session variables, a `v:login` control is
 offered.
 
+<a id="id34-application-code"></a>
 ## Application Code
 
 Most VSPX controls will support XML children specifying SQL code to run
@@ -3089,6 +3377,7 @@ tag. The other pi's \<?V and \<?U expect a SQL expression.
 > no special effect, hence the convention about the leading `"--"` and
 > the `XHTML` namespace for HTML attributes with a computed value.
 
+<a id="id35-a-simple-example"></a>
 ## A Simple Example
 
 The fragment below shows us a VSPX page with a few labels. A label is a
@@ -3116,6 +3405,7 @@ could just as well have been an HTML literal.
       </body>
     </html>
 
+<a id="id36-vspx-event-handler-parameters"></a>
 ## VSPX Event Handler Parameters
 
 The user-defined event handlers always accept a 'control' parameter
@@ -3144,6 +3434,7 @@ HTTP request, etc.
        )  temporary self as ref
     ;
 
+<a id="id37-registering-a-vspx-event-callbacks"></a>
 ## Registering a VSPX Event Callbacks
 
 The event handlers mechanism can be extended with callbacks. This means
@@ -3178,6 +3469,7 @@ event.
      
 ```
 
+<a id="id38-commonly-used-types-of-attributes-of-vspx-controls"></a>
 ## Commonly Used Types of Attributes of VSPX Controls
 
 CalculateableValue
@@ -3189,6 +3481,7 @@ CalculateableValue
 The type of attribute that contains an expression to be calculated at
 run time.
 
+<a id="id39-description"></a>
 # Description
 
 The type of a string constant or an expression. If the value of this
@@ -3213,6 +3506,7 @@ ForcedCalculateableValue
 The type of attribute that contains an expression to be calculated at
 run time.
 
+<a id="id40-description"></a>
 # Description
 
 The type of an expression. The value of this type must be started with
@@ -3234,6 +3528,7 @@ SqlCode
 
 The type of a string value that is a Text of a Virtuoso/PL procedure.
 
+<a id="id41-description"></a>
 # Description
 
 Text of an event handler or other Virtuoso/PL procedure. This is
@@ -3257,6 +3552,7 @@ SqlName
 The type of attribute that contains a name of the Virtuoso/PL UDT
 instance that should be created for the control.
 
+<a id="id42-description"></a>
 # Description
 
 The type for a Virtuoso/PL name that should be used during code
@@ -3271,6 +3567,7 @@ like 'the value of attribute X of a control Y does not match pattern ...
 for type SqlName'. If you see this then you should check the syntax of
 the value of the specified attribute.
 
+<a id="id43-vspx-controls"></a>
 ## VSPX Controls
 
 after-data-bind
@@ -3291,6 +3588,7 @@ after-data-bind
 
 \>
 
+<a id="id44-description"></a>
 # Description
 
 The code contained in this element is executed after the default data
@@ -3317,6 +3615,7 @@ after-data-bind-container
 
 \>
 
+<a id="id45-description"></a>
 # Description
 
 before-data-bind
@@ -3337,6 +3636,7 @@ before-data-bind
 
 \>
 
+<a id="id46-description"></a>
 # Description
 
 The code contained in this element is executed before the default data
@@ -3364,6 +3664,7 @@ before-data-bind-container
 
 \>
 
+<a id="id47-description"></a>
 # Description
 
 before-render
@@ -3384,6 +3685,7 @@ before-render
 
 \>
 
+<a id="id48-description"></a>
 # Description
 
 The code contained in this element is executed on the descending edge of
@@ -3409,6 +3711,7 @@ before-render-container
 
 \>
 
+<a id="id49-description"></a>
 # Description
 
 button
@@ -3537,6 +3840,7 @@ debug-log
 
 (optional)
 
+<a id="id50-description"></a>
 # Description
 
 Scriptable version of Submit Button of the HTML form. Depending of
@@ -3545,6 +3849,7 @@ button will not have a submit function, as in select and browse buttons.
 In these cases the button will use client JavaScript to pop up new
 windows or for setting values in other windows.
 
+<a id="id51-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -3708,6 +4013,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id52-declaration-of-type-vspx_button"></a>
 # Declaration of type vspx\_button
 
 Button class, encapsulate all controls originating a event
@@ -3728,6 +4034,7 @@ Button class, encapsulate all controls originating a event
     overriding method vc_set_model () returns any,
     constructor method vspx_button (name varchar, parent vspx_control)
 
+<a id="id53-examples"></a>
 # Examples
 
 The button of the form will be shown as a picture plus.gif. Attributes
@@ -3902,10 +4209,12 @@ debug-log
 
 (optional)
 
+<a id="id54-description"></a>
 # Description
 
 This is the generic calendar control.
 
+<a id="id55-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -3979,6 +4288,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id56-declaration-of-type-vspx_calendar"></a>
 # Declaration of type vspx\_calendar
 
     create type vspx_calendar under vspx_control as
@@ -3993,6 +4303,7 @@ This defines what sort of data are saved to the debugging log.
     overriding method vc_set_view_state (e vspx_event) returns any,
     constructor method vspx_calendar (name varchar, parent vspx_control)
 
+<a id="id57-examples"></a>
 # Examples
 
 This demo will show a calendar allowing to list dates by months:
@@ -4188,10 +4499,12 @@ debug-log
 
 (optional)
 
+<a id="id58-description"></a>
 # Description
 
 is a represantation of HTML check box. Scriptable, databindable.
 
+<a id="id59-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -4441,6 +4754,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id60-declaration-of-type-vspx_check_box"></a>
 # Declaration of type vspx\_check\_box
 
     create type vspx_check_box under vspx_field
@@ -4452,6 +4766,7 @@ This defines what sort of data are saved to the debugging log.
     overriding method vc_set_view_state (e vspx_event) returns any,
     overriding method vc_set_model () returns any
 
+<a id="id61-examples"></a>
 # Examples
 
 Depending on the state of the checkbox, the submitted value is either
@@ -4505,6 +4820,7 @@ debug-log
 
 (optional)
 
+<a id="id62-description"></a>
 # Description
 
 This element is used to load an external SQL script after page class
@@ -4513,6 +4829,7 @@ subclass or custom control definitions. In this way SQL code can be
 separated from VSPX markup, or in other words to separate page design
 from application logic.
 
+<a id="id63-attributes"></a>
 # Attributes
 
 **url.**
@@ -4533,6 +4850,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id64-examples"></a>
 # Examples
 
 The script of a button's post event is in separate SQL file.
@@ -4630,6 +4948,7 @@ debug-log
 
 (optional)
 
+<a id="id65-description"></a>
 # Description
 
 A column marker for use in v:data-set, v:data-grid and v:data-source.
@@ -4641,6 +4960,7 @@ data-grid, the columns will be extracted from compilation of the SQL
 statement. However, this will always be required for calls of stored
 procedures that return resultsets and for the data-source control.
 
+<a id="id66-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -4778,6 +5098,7 @@ debug-log
 
 (optional)
 
+<a id="id67-description"></a>
 # Description
 
 This is the generic multi-row database view control. It is used to show
@@ -4796,6 +5117,7 @@ to find child controls with specific names. for scrolling buttons -
 \[data-grid name\]'\_prev' and \[data-grid name\]'\_next'; for editing
 buttons - \[data-grid name\]'\_edit' and \[data-grid name\]'\_delete'.
 
+<a id="id68-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -4923,6 +5245,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id69-declaration-of-type-vspx_data_grid"></a>
 # Declaration of type vspx\_data\_grid
 
 Scrollable, Multi-Row data grid Class
@@ -4945,6 +5268,7 @@ Scrollable, Multi-Row data grid Class
       overriding method vc_set_view_state (e vspx_event) returns any,
       overriding method vc_view_state (stream any, n int) returns any
 
+<a id="id70-examples"></a>
 # Examples
 
 This example will show a list of customers from the Northwind demo
@@ -5172,12 +5496,14 @@ debug-log
 
 (optional)
 
+<a id="id71-description"></a>
 # Description
 
 This control is used to make a select list, based on a SQL expression.
 Also instead of SQL expression only table name could be given, so then
 control will compose apropriate select statement.
 
+<a id="id72-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -5443,11 +5769,13 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id73-declaration-of-type-vspx_data_list"></a>
 # Declaration of type vspx\_data\_list
 
     create type vspx_data_list under vspx_select_list temporary self as ref
     constructor method vspx_data_list (name varchar, parent vspx_control)
 
+<a id="id74-examples"></a>
 # Examples
 
 This example will render in a form a select list containing the
@@ -5576,6 +5904,7 @@ debug-log
 
 (optional)
 
+<a id="id75-description"></a>
 # Description
 
 A container for displaying and/or editing the content of a resultset.
@@ -5600,6 +5929,7 @@ convention for names of controls must be followed: for scrolling buttons
 name\]'\_first' and \[data-set name\]'\_last'; for editing buttons -
 \[data-set name\]'\_edit' and \[data-set name\]'\_delete'.
 
+<a id="id76-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -5732,6 +6062,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id77-declaration-of-type-vspx_data_set"></a>
 # Declaration of type vspx\_data\_set
 
     create type vspx_data_set under vspx_form
@@ -5762,6 +6093,7 @@ This defines what sort of data are saved to the debugging log.
       overriding method vc_set_view_state (e vspx_event) returns any,
       overriding method vc_view_state (stream any, n int) returns any
 
+<a id="id78-examples"></a>
 # Examples
 
 This example will show a list of customers from the Northwind demo
@@ -5959,6 +6291,7 @@ debug-log
 
 (optional)
 
+<a id="id79-description"></a>
 # Description
 
 Invisible multi-row data source. This control is an invisible
@@ -5970,6 +6303,7 @@ statements to bind the data into the resultset (when source is a table
 or SQL statement), hence this should be taken into account when using
 it.
 
+<a id="id80-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -6088,6 +6422,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id81-declaration-of-type-vspx_data_source"></a>
 # Declaration of type vspx\_data\_source
 
     create type vspx_data_source under vspx_control
@@ -6162,6 +6497,7 @@ This defines what sort of data are saved to the debugging log.
     method get_current_row () returns any,
     constructor method vspx_data_source (name varchar, parent vspx_control)
 
+<a id="id82-examples"></a>
 # Examples
 
 This example will show a cell of the customers table from the Northwind
@@ -6229,6 +6565,7 @@ debug-log
 
 (optional)
 
+<a id="id83-description"></a>
 # Description
 
 Placeholder for form error messages. This is used on a form to mark
@@ -6243,6 +6580,7 @@ be shown at the place marked by this control if attribute 'match' is not
 specified. Otherwise the vc\_error\_message of controls whose validation
 failed and 'name' matches the pattern specified will be shown.
 
+<a id="id84-attributes"></a>
 # Attributes
 
 **match.**
@@ -6265,6 +6603,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id85-examples"></a>
 # Examples
 
 The form contains two v:textarea controls with v:validator elements
@@ -6350,11 +6689,13 @@ debug-log
 
 (optional)
 
+<a id="id86-description"></a>
 # Description
 
 A container for SQL statement generating a rowset or table name (see
 data-source).
 
+<a id="id87-attributes"></a>
 # Attributes
 
 **language = [SqlName](#vc_type_sqlname).**
@@ -6440,12 +6781,14 @@ debug-log
 
 (optional)
 
+<a id="id88-description"></a>
 # Description
 
 This element may occur under browse-button or select button, it
 enumerates the names of inputs to be sent between pop-up and parent
 window.
 
+<a id="id89-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -6617,6 +6960,7 @@ debug-log
 
 (optional)
 
+<a id="id90-description"></a>
 # Description
 
 This is a grouping element for controls that handle post data and
@@ -6627,6 +6971,7 @@ fields enclosed. If responding to a post for a submit inside this form,
 the form updates/inserts the data and shows the resulting state at the
 render pass.
 
+<a id="id91-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -6767,6 +7112,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id92-declaration-of-type-vspx_form"></a>
 # Declaration of type vspx\_form
 
     create type vspx_form under vspx_control
@@ -6785,6 +7131,7 @@ This defines what sort of data are saved to the debugging log.
        method epilogue_render () returns any,
        overriding method vc_set_model () returns any
 
+<a id="id93-examples"></a>
 # Examples
 
 The OK button of the form submits data from the form back to the same
@@ -6884,12 +7231,14 @@ debug-log
 
 (optional)
 
+<a id="id94-description"></a>
 # Description
 
 This control does not affect the resulting HTML and Virtuoso/PL code. It
 is used by some WYSIWYG editors in order to temporarily hide details of
 the page fragment from the editor's drawing area.
 
+<a id="id95-attributes"></a>
 # Attributes
 
 **xsd-stub-xhtml.**
@@ -6981,8 +7330,10 @@ debug-log
 
 (optional)
 
+<a id="id96-description"></a>
 # Description
 
+<a id="id97-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -7051,6 +7402,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id98-declaration-of-type-vspx_horizontal_template"></a>
 # Declaration of type vspx\_horizontal\_template
 
     create type vspx_horizontal_template under vspx_control
@@ -7094,6 +7446,7 @@ debug-log
 
 (optional)
 
+<a id="id99-description"></a>
 # Description
 
 The VSPX compiler replaces this control with the content of another
@@ -7110,6 +7463,7 @@ file this will be skipped in the resulting page. Also names of controls
 in the included file MUST NOT conflict with names of controls in the top
 level page or other included content.
 
+<a id="id100-attributes"></a>
 # Attributes
 
 **url.**
@@ -7143,6 +7497,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id101-examples"></a>
 # Examples
 
 If the file footer.xml is placed in the same directory where this sample
@@ -7245,8 +7600,10 @@ debug-log
 
 (optional)
 
+<a id="id102-description"></a>
 # Description
 
+<a id="id103-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -7345,6 +7702,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id104-declaration-of-type-vspx_isql"></a>
 # Declaration of type vspx\_isql
 
 A isql control
@@ -7424,10 +7782,12 @@ debug-log
 
 (optional)
 
+<a id="id105-description"></a>
 # Description
 
 Item representing a selection inside a select list.
 
+<a id="id106-attributes"></a>
 # Attributes
 
 **name = [SqlCode](#vc_type_sqlcode).**
@@ -7522,6 +7882,7 @@ debug-log
 
 (optional)
 
+<a id="id107-description"></a>
 # Description
 
 This control defines a key value of the vspx:form of type 'update'. All
@@ -7529,6 +7890,7 @@ the vspx:key children together should select one or zero rows from the
 table. Controls inside the form will process fields of this selected
 row.
 
+<a id="id108-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -7689,12 +8051,14 @@ debug-log
 
 (optional)
 
+<a id="id109-description"></a>
 # Description
 
 This is for displaying a value as plain text. The underlying class is
 derived from VSPX\_FIELD so the value to be displayed is accessible as a
 value of any VSPX field.
 
+<a id="id110-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -7891,6 +8255,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id111-declaration-of-type-vspx_label"></a>
 # Declaration of type vspx\_label
 
     create type vspx_label under vspx_field
@@ -7901,6 +8266,7 @@ This defines what sort of data are saved to the debugging log.
     constructor method vspx_label (name varchar, parent vspx_control),
     overriding method vc_render () returns any
 
+<a id="id112-examples"></a>
 # Examples
 
 This page demonstrates output of data values of various types.
@@ -7976,8 +8342,10 @@ debug-log
 
 (optional)
 
+<a id="id113-description"></a>
 # Description
 
+<a id="id114-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -8046,6 +8414,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id115-declaration-of-type-vspx_leaf_template"></a>
 # Declaration of type vspx\_leaf\_template
 
     create type vspx_leaf_template under vspx_control
@@ -8149,6 +8518,7 @@ debug-log
 
 (optional)
 
+<a id="id116-description"></a>
 # Description
 
 This tag declares a control that can store a temporary value that can be
@@ -8160,6 +8530,7 @@ local-variable control that is the first child control of a form. The
 rest of child controls may access the value from the first child to
 calculate their values.
 
+<a id="id117-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -8419,6 +8790,7 @@ debug-log
 
 (optional)
 
+<a id="id118-description"></a>
 # Description
 
 The login control controls authentication for its page. Depending on
@@ -8454,6 +8826,7 @@ maintain persistent page variables. Note also that persistent page
 variables can be used between different pages, in that case all of those
 pages need to have login control (in most cases it is invisible).
 
+<a id="id119-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -8597,6 +8970,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id120-declaration-of-type-vspx_login"></a>
 # Declaration of type vspx\_login
 
     create type vspx_login under vspx_form
@@ -8616,6 +8990,7 @@ This defines what sort of data are saved to the debugging log.
     overriding method vc_set_view_state (e vspx_event) returns any,
     constructor method vspx_login (name varchar, parent vspx_control)
 
+<a id="id121-examples"></a>
 # Examples
 
 This example will show simltaniously 'not-autneticated' message and a
@@ -8729,6 +9104,7 @@ debug-log
 
 (optional)
 
+<a id="id122-description"></a>
 # Description
 
 login-form is the control for getting login information. This may only
@@ -8748,6 +9124,7 @@ If the redirect attribute of template\[@type=if-no-login\] is not
 specified, the contents of this child are instantiated and shown in the
 place of the login control. This can be arbitrary content.
 
+<a id="id123-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -8838,6 +9215,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id124-declaration-of-type-vspx_login_form"></a>
 # Declaration of type vspx\_login\_form
 
     create type vspx_login_form under vspx_form
@@ -8853,6 +9231,7 @@ This defines what sort of data are saved to the debugging log.
     constructor method vspx_login_form (name varchar, title varchar, user_title varchar, password_title varchar, submit_tile varchar, login vspx_login),
     overriding method vc_render () returns any
 
+<a id="id125-examples"></a>
 # Examples
 
 This example will render just a login form:
@@ -8899,10 +9278,12 @@ arglist
 
 (optional)
 
+<a id="id126-description"></a>
 # Description
 
 This creates a custom method of the page class.
 
+<a id="id127-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -8948,10 +9329,12 @@ debug-log
 
 (optional)
 
+<a id="id128-description"></a>
 # Description
 
 This control indicates the place of a subtree inside a node template.
 
+<a id="id129-attributes"></a>
 # Attributes
 
 **void.**
@@ -9030,8 +9413,10 @@ debug-log
 
 (optional)
 
+<a id="id130-description"></a>
 # Description
 
+<a id="id131-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -9100,6 +9485,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id132-declaration-of-type-vspx_node_template"></a>
 # Declaration of type vspx\_node\_template
 
     create type vspx_node_template under vspx_control
@@ -9124,6 +9510,7 @@ on-init
 
 \>
 
+<a id="id133-description"></a>
 # Description
 
 The code contained in this element is executed at the end of the
@@ -9148,6 +9535,7 @@ on-init-container
 
 \>
 
+<a id="id134-description"></a>
 # Description
 
 on-post
@@ -9168,6 +9556,7 @@ on-post
 
 \>
 
+<a id="id135-description"></a>
 # Description
 
 The code contained in this element is executed when the element gets a
@@ -9208,6 +9597,7 @@ on-post-container
 
 \>
 
+<a id="id136-description"></a>
 # Description
 
 page
@@ -9288,6 +9678,7 @@ debug-log
 
 (optional)
 
+<a id="id137-description"></a>
 # Description
 
 The container for the rest of the vspx code. The page or a subclass of
@@ -9308,6 +9699,7 @@ names of variables introduced by macro expansion or inclusion must not
 conflict with cnames of variables or controls in the top level page or
 any included or macro content.
 
+<a id="id138-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -9396,6 +9788,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id139-declaration-of-type-vspx_page"></a>
 # Declaration of type vspx\_page
 
 VSPX Page Class , from it must be derived all VSPX pages, no subcalsses
@@ -9417,6 +9810,7 @@ for others
       method vc_state_deserialize (stream any, n int) returns any,
       method vc_get_debug_log (title varchar) returns any
 
+<a id="id140-examples"></a>
 # Examples
 
     <v:page name="page__0" xmlns:v="http://http://example.com/vspx/">
@@ -9481,12 +9875,14 @@ debug-log
 
 (optional)
 
+<a id="id141-description"></a>
 # Description
 
 Named parameter for execution of the cursor select statement. This must
 be the name of a parameter for SQL statement specified, but without
 leading colon.
 
+<a id="id142-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -9552,11 +9948,13 @@ debug-log
 
 (optional)
 
+<a id="id143-description"></a>
 # Description
 
 This marks the place in the decoration page where the content of the
 original page should be placed.
 
+<a id="id144-attributes"></a>
 # Attributes
 
 **debug-srcfile.**
@@ -9693,10 +10091,12 @@ debug-log
 
 (optional)
 
+<a id="id145-description"></a>
 # Description
 
 is a scriptable version of HTML radio button.
 
+<a id="id146-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -9910,6 +10310,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id147-declaration-of-type-vspx_radio_button"></a>
 # Declaration of type vspx\_radio\_button
 
     create type vspx_radio_button under vspx_field
@@ -9921,6 +10322,7 @@ This defines what sort of data are saved to the debugging log.
     overriding method vc_xrender () returns any,
     overriding method vc_set_model () returns any
 
+<a id="id148-examples"></a>
 # Examples
 
 The form contains two groups of radio buttons, three button in each
@@ -10034,6 +10436,7 @@ debug-log
 
 (optional)
 
+<a id="id149-description"></a>
 # Description
 
 This control is used to group containing radio-buttons in a group. This
@@ -10041,6 +10444,7 @@ ensures that only one button is selected at a time. Note: This control
 is not mandatory for making such group of buttons, another option is to
 use 'group-name' attribute of the radio-button control.
 
+<a id="id150-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -10124,6 +10528,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id151-declaration-of-type-vspx_radio_group"></a>
 # Declaration of type vspx\_radio\_group
 
     create type vspx_radio_group under vspx_field
@@ -10133,6 +10538,7 @@ This defines what sort of data are saved to the debugging log.
     overriding method vc_xrender () returns any,
     overriding method vc_set_model () returns any
 
+<a id="id152-examples"></a>
 # Examples
 
 The form contains a groups of radio buttons, grouped with radio-group
@@ -10187,6 +10593,7 @@ debug-log
 
 (optional)
 
+<a id="id153-description"></a>
 # Description
 
 This control can appear only inside event handling controls and it
@@ -10196,6 +10603,7 @@ control or not. Some WYSIWYG tools can display the enclosed SQL code to
 the application developer according to custom attributes of this control
 but it does not affect the generated Virtuoso/PL code of the page.
 
+<a id="id154-attributes"></a>
 # Attributes
 
 **language = [SqlName](#vc_type_sqlname).**
@@ -10333,12 +10741,14 @@ debug-log
 
 (optional)
 
+<a id="id155-description"></a>
 # Description
 
 This is a scriptable version of HTML select control. It shows a static
 list of items (see item element). Databind and on-post scripts are
 allowed.
 
+<a id="id156-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -10546,6 +10956,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id157-declaration-of-type-vspx_select_list"></a>
 # Declaration of type vspx\_select\_list
 
     create type vspx_select_list under vspx_field
@@ -10569,6 +10980,7 @@ This defines what sort of data are saved to the debugging log.
      method vs_set_selected () returns any,
     constructor method vspx_select_list (name varchar, parent vspx_control)
 
+<a id="id158-examples"></a>
 # Examples
 
 The form of the sample page contains a list of three items.
@@ -10625,12 +11037,14 @@ debug-log
 
 (optional)
 
+<a id="id159-description"></a>
 # Description
 
 This control marks the enclosed content for special processing in the
 'macro stylesheet' whose name is specified by 'style' attribute of
 v:page element.
 
+<a id="id160-attributes"></a>
 # Attributes
 
 **name.**
@@ -10728,6 +11142,7 @@ debug-log
 
 (optional)
 
+<a id="id161-description"></a>
 # Description
 
 A container that contains some number of pages and displays them one by
@@ -10735,6 +11150,7 @@ one. This can be used for multi-page forms or Windows style tabbed decks
 or making multi-part forms, alternative visualizations of the same data
 etc.
 
+<a id="id162-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -10833,6 +11249,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id163-declaration-of-type-vspx_tab"></a>
 # Declaration of type vspx\_tab
 
 Tab Deck
@@ -10850,6 +11267,7 @@ Tab Deck
        overriding method vc_set_view_state (e vspx_event) returns any,
        overriding method vc_view_state (stream any, n int) returns any
 
+<a id="id164-examples"></a>
 # Examples
 
 The sample page contains three templates; only one of three is shown and
@@ -10958,12 +11376,14 @@ debug-log
 
 (optional)
 
+<a id="id165-description"></a>
 # Description
 
 The container for any optional, repeatable or otherwise grouped controls
 or code. The type modifier is used to specify special kind of templates
 (i.e. repeatable content or tree node representation)
 
+<a id="id166-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -11139,6 +11559,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id167-declaration-of-type-vspx_template"></a>
 # Declaration of type vspx\_template
 
     create type vspx_template under vspx_control
@@ -11279,11 +11700,13 @@ debug-log
 
 (optional)
 
+<a id="id168-description"></a>
 # Description
 
 Text input, with scripts and validation options but no implied database
 binding. String input of the HTML form.
 
+<a id="id169-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -11511,6 +11934,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id170-declaration-of-type-vspx_text"></a>
 # Declaration of type vspx\_text
 
     create type vspx_text under vspx_field
@@ -11527,6 +11951,7 @@ This defines what sort of data are saved to the debugging log.
       overriding method vc_xrender () returns any,
       constructor method vspx_text (name varchar, parent vspx_control)
 
+<a id="id171-examples"></a>
 # Examples
 
 The form contains text input control with 'Hello' string inside. User
@@ -11672,10 +12097,12 @@ debug-log
 
 (optional)
 
+<a id="id172-description"></a>
 # Description
 
 Scriptable, databindable HTML text area.
 
+<a id="id173-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -11897,6 +12324,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id174-declaration-of-type-vspx_textarea"></a>
 # Declaration of type vspx\_textarea
 
     create type vspx_textarea under vspx_text  temporary self as ref
@@ -11998,6 +12426,7 @@ debug-log
 
 (optional)
 
+<a id="id175-description"></a>
 # Description
 
 This can be used for hierarchical tables of contents, directory
@@ -12014,6 +12443,7 @@ corresponding tree branch, which is used to retrieve children of the
 node. These also hold a flag (tn\_open member) indicating if the node is
 open or not.
 
+<a id="id176-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -12160,6 +12590,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id177-declaration-of-type-vspx_tree"></a>
 # Declaration of type vspx\_tree
 
     create type vspx_tree under vspx_control
@@ -12176,6 +12607,7 @@ This defines what sort of data are saved to the debugging log.
     method vc_open_at (path varchar) returns any,
     constructor method vspx_tree (name varchar, parent vspx_control)
 
+<a id="id178-examples"></a>
 # Examples
 
     <v:page name="demo_tree" xmlns:v="http://http://example.com/vspx/">
@@ -12326,10 +12758,12 @@ debug-log
 
 (optional)
 
+<a id="id179-description"></a>
 # Description
 
 Dynamic data bindable hypertext link.
 
+<a id="id180-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -12535,6 +12969,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id181-declaration-of-type-vspx_url"></a>
 # Declaration of type vspx\_url
 
     create type vspx_url under vspx_field
@@ -12549,6 +12984,7 @@ This defines what sort of data are saved to the debugging log.
     overriding method vc_render () returns any,
     constructor method vspx_url (name varchar, parent vspx_control)
 
+<a id="id182-examples"></a>
 # Examples
 
 This draws an anchor in browser screen.
@@ -12656,6 +13092,7 @@ debug-log
 
 (optional)
 
+<a id="id183-description"></a>
 # Description
 
 The validator objects are invoked when the element's control gets
@@ -12667,6 +13104,7 @@ page class instance will be reset to false (0) to stop further
 processing. see also error-summary element and error-glyph attribute of
 field element.
 
+<a id="id184-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -12774,11 +13212,13 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id185-declaration-of-type-vspx_validator"></a>
 # Declaration of type vspx\_validator
 
 ``` 
 ```
 
+<a id="id186-examples"></a>
 # Examples
 
 The form contains a v:textarea control with v:validator assigned. When
@@ -12866,6 +13306,7 @@ debug-log
 
 (optional)
 
+<a id="id187-description"></a>
 # Description
 
 This element declares a data member for the page subclass corresponding
@@ -12884,6 +13325,7 @@ every non-repeating control of the page will be represented as a page
 variable and thus be acessible as 'self.\<name\_of\_control\>' anywhere
 in the VSPX page after page initialization.
 
+<a id="id188-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -12947,6 +13389,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id189-examples"></a>
 # Examples
 
 The v:variable element defines a new member of page class and hance we
@@ -13031,6 +13474,7 @@ debug-log
 
 (optional)
 
+<a id="id190-description"></a>
 # Description
 
 Custom control encapsulated in a separate VSPX page. This is a wrapper
@@ -13041,6 +13485,7 @@ inclusion. The target page variables can be initialized as attributes in
 this control, where name of attribute is a name of variable of target
 page and value is an expression to be assigned.
 
+<a id="id191-attributes"></a>
 # Attributes
 
 **name = [SqlName](#vc_type_sqlname).**
@@ -13113,6 +13558,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id192-declaration-of-type-vspx_vscx"></a>
 # Declaration of type vspx\_vscx
 
     create type vspx_vscx under vspx_form
@@ -13120,6 +13566,7 @@ This defines what sort of data are saved to the debugging log.
     constructor method vspx_vscx (name varchar, parent vspx_control, uri varchar),
     overriding method vc_pre_render (stream any, n int) returns any
 
+<a id="id193-examples"></a>
 # Examples
 
 This page will embed another page twice, but not as simple inclusion.
@@ -13203,12 +13650,14 @@ debug-log
 
 (optional)
 
+<a id="id194-description"></a>
 # Description
 
 This control should never appear in the VSPX source. It is for internal
 use only. Before applying XML schema validation to the page, Virtuoso
 replaces non-VSPX tags with this one when they reside inside v:page.
 
+<a id="id195-attributes"></a>
 # Attributes
 
 **debug-srcfile.**
@@ -13223,6 +13672,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id196-declaration-of-type-vspx_xsd_stub"></a>
 # Declaration of type vspx\_xsd\_stub
 
     create type vspx_xsd_stub under vspx_control
@@ -13254,6 +13704,7 @@ debug-log
 
 (optional)
 
+<a id="id197-description"></a>
 # Description
 
 This control should never appear in the VSPX source. It is for internal
@@ -13261,6 +13712,7 @@ use only. Before applying XML schema validation to the page, Virtuoso
 replaces non-VSPX tags with this one when they reside inside event
 script tag such as v:on-init.
 
+<a id="id198-attributes"></a>
 # Attributes
 
 **debug-srcfile.**
@@ -13275,6 +13727,7 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id199-declaration-of-type-vspx_xsd_stub_script"></a>
 # Declaration of type vspx\_xsd\_stub\_script
 
     create type vspx_xsd_stub_script under vspx_control
@@ -13306,12 +13759,14 @@ debug-log
 
 (optional)
 
+<a id="id200-description"></a>
 # Description
 
 This control should never appear in the VSPX source. It is for internal
 use only. Before applying XML schema validation to the page, Virtuoso
 replaces non-VSPX tags with this one when they reside outside v:page.
 
+<a id="id201-attributes"></a>
 # Attributes
 
 **debug-srcfile.**
@@ -13326,11 +13781,13 @@ Line number in the source document where the tag comes from.
 
 This defines what sort of data are saved to the debugging log.
 
+<a id="id202-declaration-of-type-vspx_xsd_stub_top"></a>
 # Declaration of type vspx\_xsd\_stub\_top
 
     create type vspx_xsd_stub_top under vspx_control
     as ( vc_stub any ) temporary self as ref
 
+<a id="id203-xforms-rendering"></a>
 ## XForms rendering
 
 The VSPX form controls such as form, button, select-list, text etc. can
@@ -13360,6 +13817,7 @@ them properly.
     </v:page>
 ```
 
+<a id="id204-xmlschema-for-vspx-page"></a>
 ## XMLSchema for VSPX page
 
 ``` 
@@ -14030,6 +14488,7 @@ them properly.
  
 ```
 
+<a id="id205-deploying-aspnet-web-applications"></a>
 # Deploying ASP.Net Web Applications
 
 Virtuoso is a CLR host. It is responsible for initializing the runtime,
@@ -14062,6 +14521,7 @@ The Virtuoso CLR hosting is implemented using the VSEI.
 > 
 > [In-Process Data Access Client](#inprocess)
 
+<a id="id206-programming-concepts"></a>
 ## Programming Concepts
 
 ASP.Net Web Forms are divided into two sections: the user interface and
@@ -14181,6 +14641,7 @@ located on the server then an error will be signalled indicating that a
 required resource cannot be found, because the CodeBehind class is
 compiled on demand.
 
+<a id="id207-aspnet-deployment-configuration"></a>
 ## ASP.Net Deployment & Configuration
 
 ASP.Net allows multiple Web applications to run on the same machine
@@ -14250,6 +14711,7 @@ applications in the root of the new directory and DLLs in a bin
 subdirectory. A virtual directory must be configured with execute
 permissions enabled. The application can be tested with a Web browser.
 
+<a id="id208-the-mono-project"></a>
 ## The Mono Project
 
 The Mono Project is an open source version of the Microsoft.NET
@@ -14301,6 +14763,7 @@ applications should have their own self containable Application Domain -
 the ./bin directory. Mono does not support this as of yet. The work
 around is to place all assemblies into the Mono domain.
 
+<a id="id209-migrating-aspnet-applications-to-virtuoso"></a>
 ## Migrating ASP.Net Applications to Virtuoso
 
 ### Creating a Simple Data Bound Application
@@ -14642,6 +15105,7 @@ application deployment.
 >          "Path"="C:\WINDOWS\Microsoft.NET\Framework\v1.0.3705"
 >          "DllFullPath"="C:\WINDOWS\Microsoft.NET\Framework\v1.0.3705\aspnet_isapi.dll"
 
+<a id="id210-asmx-web-service-hosting"></a>
 # ASMX Web Service Hosting
 
 Microsoft ASMX Web Services can be hosted in exactly the same way as
@@ -14656,6 +15120,7 @@ permissions are set for any .asmx files.
 > 
 > [ASP.Net Web Application Hosting](#rthwritaspxapps)
 
+<a id="id211-blogging-weblogs"></a>
 # Blogging & Weblogs
 
 Weblogs, or Blog, are web pages or sites organized by date. The content
@@ -14726,6 +15191,7 @@ Subscription Harmonizer
 > 
 > [MetaWeblog API](#)
 
+<a id="id212-the-virtuoso-blogging-application"></a>
 ## The Virtuoso Blogging Application
 
 Blogs provide their authors with a location on the Internet or Intranet
@@ -15842,6 +16308,7 @@ The XML Schema for RSS v2.0 file (rss.xml)
       <xs:element name="width" type="xs:int"/>
     </xs:schema>
 
+<a id="id213-blogger-clients-compatibility"></a>
 ## Blogger Clients Compatibility
 
 The Virtuoso Blog server implementation has been tested against the
@@ -15899,6 +16366,7 @@ The "Zempt" application will report an error upon startup saying that
 "mt.supportedTextFilters" are not supported, however it it will continue
 to work with the Virtuoso's blogging server.
 
+<a id="id214-blogs-management-user-interface"></a>
 ## Blogs Management User Interface
 
 The Server Administration Interface provides a way to manage existing
@@ -15908,6 +16376,7 @@ allow you to erase, edit existing, or make new blog sites.
 
 Blog channels and categories are also configurable from this interface.
 
+<a id="id215-community-blog-site"></a>
 ## Community Blog Site
 
 The community blog site feature pools all blog efforts into one page
@@ -15919,6 +16388,7 @@ on the DAV administrator account "dav". This can be achieved at two
 places, on the Users Administration interface or the Web Services \>\>
 Weblogs interface in the Server Administration Interface menu.
 
+<a id="id216-blogger-api"></a>
 ## Blogger API
 
 The Virtuoso server supports the following methods available via XML-RPC
@@ -15946,6 +16416,7 @@ for Weblog management and operation:
 > character, and last name is the "username" after the first space
 > character.
 
+<a id="id217-metaweblog-api"></a>
 ## MetaWeblog API
 
 `metaWeblog.newPost()`
@@ -15956,6 +16427,7 @@ for Weblog management and operation:
 
 `metaWeblog.getRecentPosts()`
 
+<a id="id218-movable-type-api"></a>
 ## Movable Type API
 
 `mt.getRecentPostTitles()`
@@ -15977,6 +16449,7 @@ for Weblog management and operation:
 > the value of "appkey" is ignored by Movable Type in all of the Blogger
 > XML-RPC methods.
 
+<a id="id219-atom-api"></a>
 ## Atom API
 
 The Atom API is a protocol for publishing and editing a blog entries
@@ -16292,6 +16765,7 @@ delete it:
 > 
 > [RFC 5023: The Atom Publishing Protocol](#)
 
+<a id="id220-xml-rpc-endpoint-configuration"></a>
 ## XML-RPC Endpoint Configuration
 
 The Virtuoso blog server can be contacted directly by SOAP XML-RPC. A
@@ -16383,6 +16857,7 @@ ways:
     > always better to have a separate user for SOAP execution with
     > limited rights.
 
+<a id="id221-blog-hooks-customizing-the-blog-server"></a>
 ## Blog Hooks - Customizing the Blog Server
 
 Virtuoso provides the default system for blogging using one of the
@@ -16577,6 +17052,7 @@ blogRequest is a UDT defined as follows:
     }
     ;
 
+<a id="id222-blogger-client-api"></a>
 ## Blogger Client API
 
 varchar `blogger.new_Post` in `uri` varchar, in `req` "blogRequest", in
@@ -16664,6 +17140,7 @@ element of blogPost UDT.
 
 There are more examples on using the API in the tutorials.
 
+<a id="id223-xmlstoragesystem-api"></a>
 ## xmlStorageSystem API
 
 xmlStorageSystem is an Web storage system for documents that are
@@ -16744,6 +17221,7 @@ These are set upon initial registration to 1Mb/40Mb respectively and can
 be changed via the Visual Server Administration Interface -\> WebDAV -\>
 WebDAV users -\> Options link.
 
+<a id="id224-users-blog-quota"></a>
 ## User's Blog quota
 
 In reality blog users are going to consume data space via weblog posts.
@@ -16755,6 +17233,7 @@ threshold that is based on a cumulative size of posts. These are
 settable to a user which may do a blog posts via WebDAV - User accounts
 UI.
 
+<a id="id225-posting-a-message-in-to-the-blog"></a>
 ## Posting a message in to the Blog
 
 To post a message to the blog usually is used various tools implementing
@@ -16767,6 +17246,7 @@ when supply valid credentials will be authenticated and thus possible to
 make posts/edit existing etc. For authenticated user in that case is
 also possible to change details, settings channel subscriptions.
 
+<a id="id226-multi-author-blogging"></a>
 ## Multi-author blogging
 
 In many cases many people needs authoring in common blog. For that case
@@ -16780,6 +17260,7 @@ have own and post to many "group" blogs. Granting access to a "group"
 blog can be done via WebDAV users UI, or with GRANT statement via ISQL
 tool.
 
+<a id="id227-posting-a-comments"></a>
 ## Posting a comments
 
 The blog is a something that one person or group of persons (authors)
@@ -16791,6 +17272,7 @@ comment the author's details can be recorded and re-used based on
 cookie; comment poster may control that option. Once comment is posted
 it can be read in same place (permaLink) as in discussion group.
 
+<a id="id228-blog-post-upstreaming-bridging"></a>
 ## Blog Post Upstreaming (bridging)
 
 The blog upstreaming allows bloggers to keep in sync their blogs on
@@ -16864,6 +17346,7 @@ command:
 
 The same can be done via Weblog UI - Notification setup
 
+<a id="id229-weblogs-api"></a>
 ## Weblogs API
 
 This API consists of "weblogUpdates.ping" XML-RPC call and server-side
@@ -16909,6 +17392,7 @@ The weblogs.xml file follows the XMLSchema below:
       </xs:element>
     </xs:schema>
 
+<a id="id230-subscriptions"></a>
 ## Subscriptions
 
 Every blogger read and link to it's blog a many other sources, which are
@@ -16926,6 +17410,7 @@ may do "BlogThis\!" when browsing the local copy of the channel. This
 function is available via Admin UI - Weblog UI, or via "Channels" on
 blog home page when owner is authenticated.
 
+<a id="id231-trackback-api"></a>
 ## Trackback API
 
 The TrackBack provides a method of notification between websites: it is
@@ -16979,6 +17464,7 @@ A sample request and response follows:
     </rss>
     </response>
 
+<a id="id232-pingback-api"></a>
 ## Pingback API
 
 The Pingback is another form of trackback, just protocol and parameters
@@ -17001,6 +17487,7 @@ XML-RPC error code.
 > 
 > [Pingback 1.0](#)
 
+<a id="id233-e-mail-notifications"></a>
 ## E-mail Notifications
 
 The blog implementation offers a two kind of notifications: notify via
@@ -17025,6 +17512,7 @@ Once such routing job is defined for given blog, users can subscribe and
 therefore receive e-mails for posts which blogger assign to a category
 for notification.
 
+<a id="id234-comments-tracking-options"></a>
 ## Comments tracking options
 
 When a blogger enable E-mail Notification for comments on his/her blog,
@@ -17043,6 +17531,7 @@ encoding.
 
 combined : combines all of the above as attachments.
 
+<a id="id235-subscription-harmonizer-api"></a>
 ## Subscription Harmonizer API
 
 Considering situation where blogger have many subscribed channels and
@@ -17082,6 +17571,7 @@ subscriptions which are currently registered. In that case blog
 application uses the array of URLs returned to set it's local list of
 channels.
 
+<a id="id236-mobile-blogging-moblog"></a>
 ## Mobile Blogging (Moblog)
 
 The Mobile blogging (moblog) is synonym of messages containing images
@@ -17164,6 +17654,7 @@ message body. Further mail-gateway processing will detect such rule and
 will expose the message in the Moblog UI, or automatic post will be
 performed.
 
+<a id="id237-posting-a-dynamic-content"></a>
 ## Posting a dynamic content
 
 The Virtuoso blogging system allows to insert into a post a result from
@@ -17210,6 +17701,7 @@ using XQuery.
         </div>
 ```
 
+<a id="id238-notification-services"></a>
 ## Notification Services
 
 This UI is used to define a mail routing job. So it is used for
@@ -17220,6 +17712,7 @@ subscribed, on every new post an email will be sent to he/she. If the
 mail is deleted, the mailing list for blog update notification will be
 canceled.
 
+<a id="id239-rendering-the-rss-feed-in-wml-format"></a>
 ## Rendering the RSS feed in WML format
 
 The user's blog RSS file could be rendered in WML format for accessing
@@ -17339,6 +17832,7 @@ The rss2wml.xsl style sheet:
       <xsl:template match="text()"/>
     </xsl:stylesheet>
 
+<a id="id240-deploying-php-applications"></a>
 # Deploying PHP Applications
 
 The PHP server extension allows Virtuoso to execute PHP (v4) pages
@@ -17382,6 +17876,7 @@ mode".
 > 
 > [In-Process Data Access Client](#inprocess)
 
+<a id="id241-building-the-virtuoso-server-with-php-extension"></a>
 ## Building the Virtuoso Server With PHP Extension
 
 1.  Firstly you need to have the PHP4 library installed with Zend and
@@ -17434,6 +17929,7 @@ following:
 > vulnerability fix, without which the Virtuoso server will fail to
 > start for security reasons.
 
+<a id="id242-php-extension-functions"></a>
 ## PHP Extension Functions
 
 The following functions have been added to the Virtuoso server in order
@@ -17499,6 +17995,7 @@ performing PHP transformations in PL or VSP code.
     encoding. In case of an aref of strings it must contain the name and
     value for parameters. (Like the params argument in the VSPs).
 
+<a id="id243-php-examples"></a>
 ## PHP Examples
 
 Unless the examples are shown as executed in the ISQL tool, this can be
@@ -17568,6 +18065,7 @@ user-agent to the index.html page in HTTP server root.
       header ("Location: /index.html");
     ?>
 
+<a id="id244-deploying-jsp-applications"></a>
 # Deploying JSP Applications
 
 The Virtuoso server with Java hosting support can be used to execute JSP
@@ -17578,6 +18076,7 @@ Tomcat JSP implementation.
 
 ![The HTTP JSP handler using Jakarta Tomcat](./images/http_handler_jsp.jpg)
 
+<a id="id245-environment-setup-verification"></a>
 ## Environment Setup & Verification
 
 The following components are required:
@@ -17638,6 +18137,7 @@ distribution to verify that they are executed without errors.
 > 
 > [In-Process Data Access Client](#inprocess)
 
+<a id="id246-perl-hosting"></a>
 # Perl Hosting
 
 Virtuoso functionality can be enhanced through external libraries by
@@ -17715,6 +18215,7 @@ working directory):
 > "tie" up the STDIN, STDOUT, STDERR, exit() and %ENV perl objects.
 > Untying any of these may lead to unpredictable results.
 
+<a id="id247-python-hosting"></a>
 # Python Hosting
 
 Virtuoso functionality can be enhanced through external libraries by
@@ -17798,6 +18299,7 @@ working directory):
 
     returns : hello world file
 
+<a id="id248-ruby-hosting"></a>
 # Ruby Hosting
 
 Virtuoso functionality can be enhanced through external libraries by

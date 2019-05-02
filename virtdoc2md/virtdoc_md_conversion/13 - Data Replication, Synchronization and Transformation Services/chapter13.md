@@ -1,9 +1,50 @@
 # Data Replication, Synchronization and Transformation Services
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Introduction](#id1-introduction)
+    * [Snapshot replication](#id2-snapshot-replication)
+    * [Transactional replication](#id3-transactional-replication)
+  * [Snapshot Replication](#id4-snapshot-replication)
+    * [Non incremental snapshot replication](#id5-non-incremental-snapshot-replication)
+    * [Incremental snapshot replication](#id6-incremental-snapshot-replication)
+    * [Command reference](#id7-command-reference)
+    * [Bi-Directional Snapshot Replication](#id8-bi-directional-snapshot-replication)
+    * [Registry variables](#id9-registry-variables)
+    * [Heterogeneous snapshot replication](#id10-heterogeneous-snapshot-replication)
+    * [Data type mappings](#id11-data-type-mappings)
+    * [Objects created by incremental snapshot replication](#id12-objects-created-by-incremental-snapshot-replication)
+    * [Objects created by bi-directional snapshot replication](#id13-objects-created-by-bi-directional-snapshot-replication)
+    * [Replication system tables](#id14-replication-system-tables)
+    * [Table snapshot logs](#id15-table-snapshot-logs)
+  * [Transactional Replication](#id16-transactional-replication)
+    * [Publishable Items](#id17-publishable-items)
+    * [Errors in Replication](#id18-errors-in-replication)
+    * [Publisher Transactional Replication Functions](#id19-publisher-transactional-replication-functions)
+    * [Subscriber Functions](#id20-subscriber-functions)
+    * [Common Status Functions](#id21-common-status-functions)
+    * [Bi-Directional Transactional Replication](#id22-bi-directional-transactional-replication)
+    * [Purging replication logs](#id23-purging-replication-logs)
+    * [Objects created by transactional replication](#id24-objects-created-by-transactional-replication)
+  * [Virtuoso scheduler](#id25-virtuoso-scheduler)
+    * [SYS\_SCHEDULED\_EVENT](#id26-sys_scheduled_event)
+  * [Transactional Replication Example](#id27-transactional-replication-example)
+    * [Transactional Replication Objects Example](#id28-transactional-replication-objects-example)
+  * [Replication Logger Sample](#id29-replication-logger-sample)
+    * [Configuration of the Sample](#id30-configuration-of-the-sample)
+    * [Synchronization](#id31-synchronization)
+    * [Running the Sample](#id32-running-the-sample)
+    * [Notes on the Sample's Dynamics](#id33-notes-on-the-samples-dynamics)
+
+<!--- TOC: End --->
+<a id="id1-introduction"></a>
 # Introduction
 
 Virtuoso provides several replication methods:
 
+<a id="id2-snapshot-replication"></a>
 ## Snapshot replication
 
 Virtuoso provides the following flavors of snapshot replication:
@@ -25,6 +66,7 @@ useful read-write access to the replicas is needed.
 > Snapshot replication can be used in heterogeneous environments to set
 > up replication between non-Virtuoso databases.
 
+<a id="id3-transactional-replication"></a>
 ## Transactional replication
 
 Transactional replication allows subscribers to receive data in
@@ -38,8 +80,10 @@ read-only data access., Bi-directional transactional replication
 Bi-directional transactional replication is useful when there is a
 requirement to allow data updates on multiple servers.
 
+<a id="id4-snapshot-replication"></a>
 # Snapshot Replication
 
+<a id="id5-non-incremental-snapshot-replication"></a>
 ## Non incremental snapshot replication
 
 The Virtuoso Server periodically evaluates a query and inserts the
@@ -58,6 +102,7 @@ commit.
 The prerequisite of this mode of replication is that all tables exist.
 The schema is never replicated.
 
+<a id="id6-incremental-snapshot-replication"></a>
 ## Incremental snapshot replication
 
 A table can be replicated from a generic, possibly non-Virtuoso source
@@ -84,6 +129,7 @@ already exists, then it is updated. If the record to update does not
 exist in the destination table, then it is inserted. This contributes
 for conflict resolving.
 
+<a id="id7-command-reference"></a>
 ## Command reference
 
 ### CREATE SNAPSHOT LOG FOR source\_table
@@ -229,6 +275,7 @@ Examples (based on Virtuoso demo database):
 
     DROP SNAPSHOT sub_orders WITH DELETE
 
+<a id="id8-bi-directional-snapshot-replication"></a>
 ## Bi-Directional Snapshot Replication
 
 Bi-directional snapshot replication allows you to set up snapshot
@@ -578,6 +625,7 @@ possible to change the notification e-mail address by setting the
 The default behaviour for generated procedures is 'pub\_wins', making a
 backup and notifying the owner by e-mail.
 
+<a id="id9-registry-variables"></a>
 ## Registry variables
 
 1.  *snp\_repl\_tolerance\_offset* (default 15) In incremental and
@@ -615,6 +663,7 @@ backup and notifying the owner by e-mail.
     "snp\_repl\_purge\_offset" registry variable. Normally, purge offset
     should be greater than tolerance offset.
 
+<a id="id10-heterogeneous-snapshot-replication"></a>
 ## Heterogeneous snapshot replication
 
 Virtuoso allows incremental and bi-directional snapshot replication
@@ -707,6 +756,7 @@ DBMS-specific notes:
     will cause transactions to be replayed out of order when timezone
     change occurs.
 
+<a id="id11-data-type-mappings"></a>
 ## Data type mappings
 
 Heterogeneous replication requires data type mapping to be performed
@@ -736,6 +786,7 @@ when Virtuoso table is created on replica.
 
 Data type mappings
 
+<a id="id12-objects-created-by-incremental-snapshot-replication"></a>
 ## Objects created by incremental snapshot replication
 
 Table "DB.DBA.RPLOG\_\<name\>" (replay log) is created in Virtuoso
@@ -773,6 +824,7 @@ Triggers "\<name\>\_I\_log", "\<name\>\_U\_log" and "\<name\>\_D\_log"
 on replicated table. Sequence opl\_seq\_rowguid. Stored procedures
 "\<name\>\_R\_proc" and "\<name\>\_U\_proc".
 
+<a id="id13-objects-created-by-bi-directional-snapshot-replication"></a>
 ## Objects created by bi-directional snapshot replication
 
 Table "DB"."DBA"."RPLOG\_\<name\>" (replay log) is created in Virtuoso
@@ -808,6 +860,7 @@ DB2
 Triggers "\<name\>\_I", "\<name\>\_U", "\<name\>\_UD" and "\<name\>\_D"
 on replicated table. Sequence opl\_seq\_rowguid.
 
+<a id="id14-replication-system-tables"></a>
 ## Replication system tables
 
 ### SYS\_SNAPSHOT
@@ -846,6 +899,7 @@ SNL\_SOURCE is the base table for which a snapshot log is defined.
 SNL\_RLOG is the name of the RLOG snapshot log auxiliary table.
 SNL\_RPLOG is the name of the RPLOG snapshot log auxiliary table.
 
+<a id="id15-table-snapshot-logs"></a>
 ## Table snapshot logs
 
 In order to be able to create incremental snapshots on a table there
@@ -928,6 +982,7 @@ Table snapshot logs and triggers are created automatically for Virtuoso
 and databases listed in [Heterogeneous Snapshot Replication](#snpheter)
 section.
 
+<a id="id16-transactional-replication"></a>
 # Transactional Replication
 
 The unit of replication is a publication. A publication is an ordered
@@ -1051,6 +1106,7 @@ request from subscriber. If subscriber is found to be invalid all
 further sync requests from it are ignored. Such subscriber need to be
 reinitialized manually and marked as valid using Admin UI.
 
+<a id="id17-publishable-items"></a>
 ## Publishable Items
 
 Tables, stored procedures and DAV collections may be added to a
@@ -1101,6 +1157,7 @@ means of keeping software installations in sync. Many schema elements
 such as triggers are not covered and a software upgrade is more complex
 than can be represented by replication alone.
 
+<a id="id18-errors-in-replication"></a>
 ## Errors in Replication
 
 A statement received for replication from a publisher may encounter an
@@ -1114,6 +1171,7 @@ transactions but not all. Note that in such situations gaps may be
 formed into the received transaction sequence. In such cases, it is best
 to drop the subscription, drop the tables and remake the subscription.
 
+<a id="id19-publisher-transactional-replication-functions"></a>
 ## Publisher Transactional Replication Functions
 
 The most generic form of the replication element is a stored procedure
@@ -1142,6 +1200,7 @@ These functions are available to the publishing Virtuoso server:
 
   - [`repl_revoke()`](#fn_repl_revoke)
 
+<a id="id20-subscriber-functions"></a>
 ## Subscriber Functions
 
 These are the functions that are available to the subscribing Virtuoso
@@ -1169,6 +1228,7 @@ server:
 
   - [`repl_purge()`](#fn_repl_purge)
 
+<a id="id21-common-status-functions"></a>
 ## Common Status Functions
 
   - [`repl_stat()`](#fn_repl_stat)
@@ -1178,6 +1238,7 @@ server:
 The status () function shows a replication status summary. The same data
 can be obtained with the repl\_stat and repl\_status procedures.
 
+<a id="id22-bi-directional-transactional-replication"></a>
 ## Bi-Directional Transactional Replication
 
 Virtuoso supports bi-directional transactional replication via a
@@ -1478,6 +1539,7 @@ The format of the log replication data is the same as in simple
 transactional replication with addition of \<ALLOLDCOLS\> and ncols for
 logging UPDATE and DELETE statements.
 
+<a id="id23-purging-replication-logs"></a>
 ## Purging replication logs
 
 Every replication account has an associated sequence which holds
@@ -1518,6 +1580,7 @@ SYS\_SCHEDULED\_EVENT after each modification of purger settings for an
 account (from Admin UI) or after each successful run of repl\_purge()
 for this account.
 
+<a id="id24-objects-created-by-transactional-replication"></a>
 ## Objects created by transactional replication
 
 Virtuoso creates triggers "\<name\>\_I", "\<name\>\_U" and "\<name\>\_D"
@@ -1534,6 +1597,7 @@ published table. These procedures are used for conflict resolution.,
 Triggers "\<name\>\_I", "\<name\>\_U" and "\<name\>\_D" for every
 subscribed table.
 
+<a id="id25-virtuoso-scheduler"></a>
 # Virtuoso scheduler
 
 Virtuoso scheduler allows an arbitrary SQL command to be run at certain
@@ -1547,6 +1611,7 @@ There is a virtuoso.ini parameter "SchedulerInterval" under
 [Parameters](#ini_parameters) section which defines the scheduler
 wake-up interval. Set this to 0 (the default) to disable the scheduler.
 
+<a id="id26-sys_scheduled_event"></a>
 ## SYS\_SCHEDULED\_EVENT
 
     CREATE TABLE SYS_SCHEDULED_EVENT(
@@ -1570,6 +1635,7 @@ SYS\_SCHEDULED\_EVENT with an insert statement like this:
     INSERT INTO SYS_SCHEDULED_EVENT (SE_NAME, SE_SQL, SE_START, SE_INTERVAL)
             VALUES (.....)
 
+<a id="id27-transactional-replication-example"></a>
 # Transactional Replication Example
 
     -- ================================
@@ -1775,6 +1841,7 @@ SYS\_SCHEDULED\_EVENT with an insert statement like this:
     -- check  local data (should return 128, old 5 + 123 new records)
     select count(*) from p_test;
 
+<a id="id28-transactional-replication-objects-example"></a>
 ## Transactional Replication Objects Example
 
 Preconditions
@@ -1863,6 +1930,7 @@ This may signal an SQL error if a precondition is not met.
 
 Add row in SYS\_TP\_ITEM and row in SYS\_REPL\_ACCOUNTS
 
+<a id="id29-replication-logger-sample"></a>
 # Replication Logger Sample
 
 The logger directory in the samples in the distribution contains a
@@ -1906,6 +1974,7 @@ all other servers. The wl\_hit\_repl function does the actual work. The
 top level function calls this plus logs the call with its arguments on
 the local server's hits publication for distribution to other servers.
 
+<a id="id30-configuration-of-the-sample"></a>
 ## Configuration of the Sample
 
 The following sequence of calls can be used to define a network of four
@@ -1933,6 +2002,7 @@ In this way all servers share one configuration. Each server knows which
 of the servers it is based on the DBName setting in its virtuoso.ini
 file.
 
+<a id="id31-synchronization"></a>
 ## Synchronization
 
     create procedure log_sync ()
@@ -1959,6 +2029,7 @@ every minute as a background job. if all replication servers are on line
 and in sync or syncing the function will return without delay or effect.
 Otherwise it will keep trying until it gets a connection.
 
+<a id="id32-running-the-sample"></a>
 ## Running the Sample
 
 The logger directory contains various scripts for starting and stopping
@@ -1985,6 +2056,7 @@ collects statistics on call times. If calls complete at a rate faster
 than the requested rate this periodically sleeps to keep the rate close
 to the requested rate. It prints statistics every 1000 hits.
 
+<a id="id33-notes-on-the-samples-dynamics"></a>
 ## Notes on the Sample's Dynamics
 
 When the network initially starts all the publications are at level 0

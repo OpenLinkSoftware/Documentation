@@ -1,5 +1,111 @@
 # Web Services
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [SOAP](#id1-soap)
+    * [Virtuoso SOAP Support Overview](#id2-virtuoso-soap-support-overview)
+    * [Handling of SOAP HTTP Requests](#id3-handling-of-soap-http-requests)
+    * [Extending Datatypes for SOAP Objects](#id4-extending-datatypes-for-soap-objects)
+    * [Inheritance of Datatypes for SOAP Objects](#id5-inheritance-of-datatypes-for-soap-objects)
+    * [Complex Types in PL Procedure and UDT Method Definition](#id6-complex-types-in-pl-procedure-and-udt-method-definition)
+    * [Complex Types in Procedure Definition using a pre-defined XML Schema datatypes](#id7-complex-types-in-procedure-definition-using-a-pre-defined-xml-schema-datatypes)
+    * [Default SOAP-SQL Datatype Mappings](#id8-default-soap-sql-datatype-mappings)
+    * [Exposing Stored Procedures as SOAP Objects](#id9-exposing-stored-procedures-as-soap-objects)
+    * [Creation of SOAP proxy based on User Defined Types](#id10-creation-of-soap-proxy-based-on-user-defined-types)
+    * [Exposing User Defined Type Methods as SOAP Objects](#id11-exposing-user-defined-type-methods-as-soap-objects)
+    * [Exposing Remote Third Party SQL Stored Procedures as SOAP Services](#id12-exposing-remote-third-party-sql-stored-procedures-as-soap-services)
+    * [Virtuoso/PL SOAP Client](#id13-virtuosopl-soap-client)
+    * [Execution Privileges](#id14-execution-privileges)
+    * [Custom Soap Server Support](#id15-custom-soap-server-support)
+    * [PL Procedures and UDT Methods Syntax Affecting WSDL & SOAP Processing](#id16-pl-procedures-and-udt-methods-syntax-affecting-wsdl-soap-processing)
+    * [Exposing & Processing SOAP Header Messages](#id17-exposing-processing-soap-header-messages)
+    * [Exposing & Processing SOAP Fault Messages](#id18-exposing-processing-soap-fault-messages)
+    * [Document Literal Encoding](#id19-document-literal-encoding)
+    * [DIME encapsulation of SOAP messages](#id20-dime-encapsulation-of-soap-messages)
+    * [SOAP Endpoint Options](#id21-soap-endpoint-options)
+  * [WSDL](#id22-wsdl)
+    * [Exposing Stored Procedures as WSDL Services](#id23-exposing-stored-procedures-as-wsdl-services)
+    * [Exposing SQL Stored Procedures containing complex datatype definitions](#id24-exposing-sql-stored-procedures-containing-complex-datatype-definitions)
+    * [Exposing Third Party SQL Stored Procedures as WSDL-Compliant Web Services](#id25-exposing-third-party-sql-stored-procedures-as-wsdl-compliant-web-services)
+    * [WSDL Descriptions of SOAP Header Messages](#id26-wsdl-descriptions-of-soap-header-messages)
+    * [Importing A WSDL File & SOAP/WSDL Proxying](#id27-importing-a-wsdl-file-soapwsdl-proxying)
+    * [SOAP/WSDL Interoperability](#id28-soapwsdl-interoperability)
+  * [WebID Protocol Support](#id29-webid-protocol-support)
+    * [x.509 certificate](#id30-x509-certificate)
+    * [Setting up Virtuoso HTTPS](#id31-setting-up-virtuoso-https)
+    * [Setting Up Firefox](#id32-setting-up-firefox)
+    * [Configuring ODS Account to use WebID Protocol](#id33-configuring-ods-account-to-use-webid-protocol)
+    * [Testing the setup](#id34-testing-the-setup)
+    * [WebID Protocol ACLs](#id35-webid-protocol-acls)
+    * [SPARQL-WebID based Endpoint](#id36-sparql-webid-based-endpoint)
+    * [CA Keys Import using Conductor](#id37-ca-keys-import-using-conductor)
+    * [Set Up X.509 certificate issuer, HTTPS listener and generate ODS user's certificates](#id38-set-up-x509-certificate-issuer-https-listener-and-generate-ods-users-certificates)
+    * [WebID Protocol ODBC Login](#id39-webid-protocol-odbc-login)
+  * [OAuth Support](#id40-oauth-support)
+    * [OAuth Access Tokens](#id41-oauth-access-tokens)
+    * [Virtuoso OAuth server](#id42-virtuoso-oauth-server)
+    * [OAuth Implementation in OpenLink Data Spaces](#id43-oauth-implementation-in-openlink-data-spaces)
+    * [OAuth Generate Keys for ODS Controllers (Web Services)](#id44-oauth-generate-keys-for-ods-controllers-web-services)
+    * [ODS Ubiquity Commands](#id45-ods-ubiquity-commands)
+    * [OAuth Test Tool for ODS Controllers](#id46-oauth-test-tool-for-ods-controllers)
+    * [OAuth QA](#id47-oauth-qa)
+  * [WS-Security (WSS) Support in Virtuoso SOAP Server](#id48-ws-security-wss-support-in-virtuoso-soap-server)
+    * [Client and Server side Certificates & Keys](#id49-client-and-server-side-certificates-keys)
+    * [SOAP Server WS-Security Endpoint](#id50-soap-server-ws-security-endpoint)
+    * [Virtual Directory SOAP WSS Options](#id51-virtual-directory-soap-wss-options)
+    * [Accounting & Accounting Hook](#id52-accounting-accounting-hook)
+    * [Signature Templates](#id53-signature-templates)
+    * [SOAP Client](#id54-soap-client)
+  * [Web Services Routing Protocol (WS-Routing)](#id55-web-services-routing-protocol-ws-routing)
+    * [Configuration](#id56-configuration)
+    * [Traversing Message Paths](#id57-traversing-message-paths)
+  * [Web Services Reliable Messaging Protocol (WS-ReliableMessaging)](#id58-web-services-reliable-messaging-protocol-ws-reliablemessaging)
+    * [SOAP CLIENT API Extensions](#id59-soap-client-api-extensions)
+    * [WS-RM Sender API](#id60-ws-rm-sender-api)
+    * [WSRM Receiver API](#id61-wsrm-receiver-api)
+    * [WS-RM Protocol Endpoint Configuration](#id62-ws-rm-protocol-endpoint-configuration)
+    * [Message Examples](#id63-message-examples)
+    * [WS-RM Schema](#id64-ws-rm-schema)
+  * [Web Services Trust Protocol (WS-Trust)](#id65-web-services-trust-protocol-ws-trust)
+  * [XML for Analysis Provider](#id66-xml-for-analysis-provider)
+  * [XML-RPC support](#id67-xml-rpc-support)
+  * [SyncML](#id68-syncml)
+  * [UDDI](#id69-uddi)
+    * [Concepts](#id70-concepts)
+    * [Dealing with SOAP](#id71-dealing-with-soap)
+    * [Supported API Calls](#id72-supported-api-calls)
+    * [Authorization Mechanism](#id73-authorization-mechanism)
+    * [UDDI API Calls](#id74-uddi-api-calls)
+    * [Examples](#id75-examples)
+  * [Exposing Persistent Stored Modules as Web Services](#id76-exposing-persistent-stored-modules-as-web-services)
+    * [Publishing Stored Procedures as Web Services](#id77-publishing-stored-procedures-as-web-services)
+    * [XML Query Templates](#id78-xml-query-templates)
+    * [Publishing VSE's as Web Services](#id79-publishing-vses-as-web-services)
+  * [Testing Web Published Web Services](#id80-testing-web-published-web-services)
+  * [BPEL Reference](#id81-bpel-reference)
+    * [Activities](#id82-activities)
+    * [Protocol Support](#id83-protocol-support)
+    * [Process lifecycle](#id84-process-lifecycle)
+    * [Using virtual directories](#id85-using-virtual-directories)
+    * [Process archiving](#id86-process-archiving)
+    * [Configuration parameters](#id87-configuration-parameters)
+    * [Process Statistics](#id88-process-statistics)
+    * [Deployment file suitcase format](#id89-deployment-file-suitcase-format)
+    * [SQL API](#id90-sql-api)
+    * [BPEL XPath Functions](#id91-bpel-xpath-functions)
+    * [Tables](#id92-tables)
+    * [Errors](#id93-errors)
+    * [Samples](#id94-samples)
+    * [References](#id95-references)
+    * [BPEL4WS VAD Package installation](#id96-bpel4ws-vad-package-installation)
+  * [XSQL](#id97-xsql)
+    * [XSQL Syntax](#id98-xsql-syntax)
+    * [XSQL Directives](#id99-xsql-directives)
+
+<!--- TOC: End --->
+<a id="id1-soap"></a>
 # SOAP
 
 The Simple Object Access Protocol (SOAP) is a lightweight, extensible,
@@ -22,6 +128,7 @@ datatypes
 
 a convention for representing remote procedure calls and responses.
 
+<a id="id2-virtuoso-soap-support-overview"></a>
 ## Virtuoso SOAP Support Overview
 
 Virtuoso provides a framework for both consuming SOAP services (acting
@@ -44,6 +151,7 @@ adding complex data types declared with XML schema as parameter values
 for stored procedures. The Virtuoso SOAP server provides automatic
 validation of the parameters in requests, based on schema declarations.
 
+<a id="id3-handling-of-soap-http-requests"></a>
 ## Handling of SOAP HTTP Requests
 
 The Virtuoso web server recognizes SOAP HTTP requests and their version
@@ -91,6 +199,7 @@ returned by [`xml_tree()`](#fn_xml_tree) . `ws_http_headers` should hold
 a one-dimensional array of attribute/value pairs representing the HTTP
 header fields in the request.
 
+<a id="id4-extending-datatypes-for-soap-objects"></a>
 ## Extending Datatypes for SOAP Objects
 
 Complex datatypes can be defined using XMLSchema and represented by
@@ -198,6 +307,7 @@ included with Virtuoso and should not be typed)
 > `ArrayOf
 > ` .
 
+<a id="id5-inheritance-of-datatypes-for-soap-objects"></a>
 ## Inheritance of Datatypes for SOAP Objects
 
 The Virtuoso SOAP server implements handling of inherited XSD types. The
@@ -376,6 +486,7 @@ xmlns:ns0="http://soapinterop.org/types" xmlns:wsdl="services.wsdl">
 > better readability, these must be present when declaring (see the
 > Extending Datatypes for SOAP Objects section, discussed earlier)
 
+<a id="id6-complex-types-in-pl-procedure-and-udt-method-definition"></a>
 ## Complex Types in PL Procedure and UDT Method Definition
 
 Virtuoso/PL allows parameters to be declared as complex objects
@@ -507,6 +618,7 @@ See also the WSDL file generation section for details how such PL
 procedures with parameters of complex datatypes are exposed via SOAP
 enabled virtual HTTP directories.
 
+<a id="id7-complex-types-in-procedure-definition-using-a-pre-defined-xml-schema-datatypes"></a>
 ## Complex Types in Procedure Definition using a pre-defined XML Schema datatypes
 
 Declaration of a complex datatype as a parameter is done by adding a
@@ -536,6 +648,7 @@ is reported to the client.
           return inArray;
         };
 
+<a id="id8-default-soap-sql-datatype-mappings"></a>
 ## Default SOAP-SQL Datatype Mappings
 
 When no alternative datatype is assigned, the WSDL generator and SOAP
@@ -583,6 +696,7 @@ will cause the SOAP server to omit the procedure return value when
 responding to a SOAP request. Also, the return message will be discarded
 from the WSDL description file.
 
+<a id="id9-exposing-stored-procedures-as-soap-objects"></a>
 ## Exposing Stored Procedures as SOAP Objects
 
 The special physical path `/SOAP/` in the Virtuoso Web server is
@@ -737,6 +851,7 @@ preferably tested by pointing a web browser at
 > 
 > [Testing Web Services using VSMX](#vsmx)
 
+<a id="id10-creation-of-soap-proxy-based-on-user-defined-types"></a>
 ## Creation of SOAP proxy based on User Defined Types
 
 It is possible to automatically generate PL procedures or UDT classes
@@ -771,6 +886,7 @@ next chapter how to expose UDT as service).
 > can be found in the [Virtuoso Server Administration
 > Interface](#admiui.wsdl) Chapter.
 
+<a id="id11-exposing-user-defined-type-methods-as-soap-objects"></a>
 ## Exposing User Defined Type Methods as SOAP Objects
 
 SQL User Defined Types may define methods. In context of Virtuoso SOAP
@@ -851,6 +967,7 @@ directory and navigate to the SOAP options section, click on the
 the qualifier containing target UDT, then select it from the User
 Defined Types list and follow the wizard.
 
+<a id="id12-exposing-remote-third-party-sql-stored-procedures-as-soap-services"></a>
 ## Exposing Remote Third Party SQL Stored Procedures as SOAP Services
 
 Virtuoso can expose any of its available PL resources to the SOAP world.
@@ -922,6 +1039,7 @@ The remote procedure `ms_remote()` can now be accessed via SOAP.
 > The [Virtual Database](#thevdb) chapter for information regarding use
 > of remote datasources and their tables.
 
+<a id="id13-virtuosopl-soap-client"></a>
 ## Virtuoso/PL SOAP Client
 
 Virtuoso has generic SOAP client functionality. This was demonstrated in
@@ -933,6 +1051,7 @@ procedure as a SOAP object. The entry point to the SOAP client is
 > 
 > [Importing A WSDL File](#importwsdl)
 
+<a id="id14-execution-privileges"></a>
 ## Execution Privileges
 
 [Virtual directory](#virtandmultihosting) mappings allow you to define a
@@ -943,6 +1062,7 @@ call execution. If we map a logical HTTP path to `/SOAP` and specify the
 user 'demo' as the SOAP user then stored procedures or UDT methods will
 be executed with demo's privileges.
 
+<a id="id15-custom-soap-server-support"></a>
 ## Custom Soap Server Support
 
 Virtuoso allows any VSP page to act as a SOAP endpoint. This permits
@@ -1106,6 +1226,7 @@ The following built-in functions are relevant in this context:
           }
     ?>
 
+<a id="id16-pl-procedures-and-udt-methods-syntax-affecting-wsdl-soap-processing"></a>
 ## PL Procedures and UDT Methods Syntax Affecting WSDL & SOAP Processing
 
 Special PL syntax can be applied to any of the parameters (including the
@@ -1271,6 +1392,7 @@ of the SOAP operation is defined (it's empty).
     }
     ;
 
+<a id="id17-exposing-processing-soap-header-messages"></a>
 ## Exposing & Processing SOAP Header Messages
 
 The Virtuoso SOAP server can be used to process the SOAP Header messages
@@ -1358,6 +1480,7 @@ process the above SOAP message.
 > always, but in this particular example it will be echoed only if the
 > appropriate header is sent.
 
+<a id="id18-exposing-processing-soap-fault-messages"></a>
 ## Exposing & Processing SOAP Fault Messages
 
 The SOAP:Fault message is used to indicate which part of SOAP request
@@ -1446,6 +1569,7 @@ And SOAP Fault response
 Please note that in wire dumps there is no namespace declarations for
 brevity (places are denoted with '...').
 
+<a id="id19-document-literal-encoding"></a>
 ## Document Literal Encoding
 
 The Virtuoso SOAP server and client support Document Literal encoding
@@ -1819,6 +1943,7 @@ each group of tests):
         document/literal mode Version has one operation echoString with
         2 headers defined.
 
+<a id="id20-dime-encapsulation-of-soap-messages"></a>
 ## DIME encapsulation of SOAP messages
 
 The Direct Message Encapsulation (DiME) format is a message format that
@@ -1972,6 +2097,7 @@ This is a little-bit tricky, but this is how to indicate the type of the
 content and how to resolve the references to the attachments as per the
 WSDL Extension for SOAP in DIME' proposal.
 
+<a id="id21-soap-endpoint-options"></a>
 ## SOAP Endpoint Options
 
 The virtual directory mechanism provides a special SOAP options for SOAP
@@ -2097,6 +2223,7 @@ wsrp-from
 'some@user.network'. This will be included in 'form' element in WS
 Routing header.
 
+<a id="id22-wsdl"></a>
 # WSDL
 
 The Web Services Description Language (WSDL) is a standard, structured
@@ -2126,6 +2253,7 @@ results back to the client requester as a SOAP response.
 > The specification of WSDL and its file structures can be found on [the
 > W3C site](#) .
 
+<a id="id23-exposing-stored-procedures-as-wsdl-services"></a>
 ## Exposing Stored Procedures as WSDL Services
 
 Virtuoso can be both a provider and a client of WSDL. In this section we
@@ -2276,6 +2404,7 @@ available under different locations. We will now demonstrate this:
     > your SOAP services, simply by replacing services.wsdl with
     > services.vsmx in the URL.
 
+<a id="id24-exposing-sql-stored-procedures-containing-complex-datatype-definitions"></a>
 ## Exposing SQL Stored Procedures containing complex datatype definitions
 
 When parameters of a PL procedure or UDT (User Defined Type) methods
@@ -2394,6 +2523,7 @@ http://\[host:port\]/soap-lit/services.wsdl URL.
         
 ```
 
+<a id="id25-exposing-third-party-sql-stored-procedures-as-wsdl-compliant-web-services"></a>
 ## Exposing Third Party SQL Stored Procedures as WSDL-Compliant Web Services
 
 Virtuoso can expose any of its available PL resource to the SOAP world,
@@ -2469,6 +2599,7 @@ Now, as before, we grant execute rights to the SOAP user:
 The third-party procedures can now be accessed via SOAP and are listed
 in the WSDL file.
 
+<a id="id26-wsdl-descriptions-of-soap-header-messages"></a>
 ## WSDL Descriptions of SOAP Header Messages
 
 The Virtuoso web server automatically generates WSDL descriptions for
@@ -2518,6 +2649,7 @@ like:
  
 ```
 
+<a id="id27-importing-a-wsdl-file-soapwsdl-proxying"></a>
 ## Importing A WSDL File & SOAP/WSDL Proxying
 
 Virtuoso can import WSDL files from other locations using the function:
@@ -2533,6 +2665,7 @@ normal way from the Virtuoso SOAP server, and of course fully described
 by an automatically generated WSDL file for them, thus creating a proxy
 service for original messages.
 
+<a id="id28-soapwsdl-interoperability"></a>
 ## SOAP/WSDL Interoperability
 
 A key feature of the Web services promise is that Web services published
@@ -2569,6 +2702,7 @@ be updated as new interoperability tests are devised.
 
 The SOAP implementation passes all known interoperability tests.
 
+<a id="id29-webid-protocol-support"></a>
 # WebID Protocol Support
 
 WebID Protocol is an authentication and authorization protocol that
@@ -2612,6 +2746,7 @@ visitor), and if they matched up (in other words, the visitor could not
 get in simply by claiming a family relationship; the relationship must
 be confirmed by the owner's FOAF data), the pictures would be shown.
 
+<a id="id30-x509-certificate"></a>
 ## x.509 certificate
 
 The WebID Protocol consumer needs an x509 certificate with v3 extension
@@ -2649,6 +2784,7 @@ setup a self-signed CA; read OpenSSL documents on how to do this.
 6.  Rename newcert.pem and newkey.pem, to mycert.pem and mykey.pem for
     example. The PEM format of the certificate will be needed below.
 
+<a id="id31-setting-up-virtuoso-https"></a>
 ## Setting up Virtuoso HTTPS
 
 To enable the HTTPS listener, you will need another certificate.
@@ -2691,6 +2827,7 @@ want to generate one as in the previous section.
         HTTPS Using X509 Client CA ....
         HTTPS/X509 server online at 4443
 
+<a id="id32-setting-up-firefox"></a>
 ## Setting Up Firefox
 
 1.  ![Setting Up Firefox](ui/foafssl1.png)
@@ -2705,6 +2842,7 @@ want to generate one as in the previous section.
 
 4.  Click to the "Your Certificates" tab, and import mycert.p12.
 
+<a id="id33-configuring-ods-account-to-use-webid-protocol"></a>
 ## Configuring ODS Account to use WebID Protocol
 
 1.  Log in to your ODS account, and edit your profile.
@@ -2717,6 +2855,7 @@ want to generate one as in the previous section.
 
 4.  Press "Save Certificate" button, and you are set.
 
+<a id="id34-testing-the-setup"></a>
 ## Testing the setup
 
 To test, we recommend [Firefox](#) v3 with the [Tabulator extension](#)
@@ -2740,16 +2879,19 @@ documentation](#) .
     
     ![Testing the setup](./images/ui/foafssl5.png)
 
+<a id="id35-webid-protocol-acls"></a>
 ## WebID Protocol ACLs
 
 You can [set WebID Protocol ACLs](#sparqloauthendpointfoafssl) from the
 Virtuoso Authentication Server UI.
 
+<a id="id36-sparql-webid-based-endpoint"></a>
 ## SPARQL-WebID based Endpoint
 
 See details how to [create and use a SPARQL-WebID based
 Endpoint](#sparqloauthendpointfoafssl) .
 
+<a id="id37-ca-keys-import-using-conductor"></a>
 ## CA Keys Import using Conductor
 
 The Virtuoso Conductor allows easy import of user-level CA (Certificate
@@ -2782,6 +2924,7 @@ self-signed key using the [Virtuoso Conductor](#) .
 Details and more information how to generate the key see in the next
 section.
 
+<a id="id38-set-up-x509-certificate-issuer-https-listener-and-generate-ods-users-certificates"></a>
 ## Set Up X.509 certificate issuer, HTTPS listener and generate ODS user's certificates
 
 The following Step-by-Step guide walks you through set up of an X.509
@@ -2885,10 +3028,12 @@ certificates.
     
     ![Setting-Up issuer CA](./images/ui/foafssl26.png)
 
+<a id="id39-webid-protocol-odbc-login"></a>
 ## WebID Protocol ODBC Login
 
 See details and examples [here](#secureodbcx509foafsll) .
 
+<a id="id40-oauth-support"></a>
 # OAuth Support
 
 The OAuth protocol enables websites or applications (Consumers) to
@@ -2947,6 +3092,7 @@ protocol:
 
 More details can be found [here](#) .
 
+<a id="id41-oauth-access-tokens"></a>
 ## OAuth Access Tokens
 
 Credentials bearing tokens enable a user to provide their credentials in
@@ -2983,6 +3129,7 @@ Token specified by OAuth. Once authenticated using the above process,
 the Consumer will sign all subsequent requests for the User's Protected
 Resources using the returned Token Secret.
 
+<a id="id42-virtuoso-oauth-server"></a>
 ## Virtuoso OAuth server
 
 Virtuoso implements the OAuth Core 1.0 specification, and exposes the
@@ -3157,6 +3304,7 @@ A sample service (oauth.vsp):
     </body>
     </html>
 
+<a id="id43-oauth-implementation-in-openlink-data-spaces"></a>
 ## OAuth Implementation in OpenLink Data Spaces
 
 OAuth tokens must be generated for each user account, for each ODS
@@ -3335,6 +3483,7 @@ client.
     <CR/LF>
     <result><code>1&lt/code></result>
 
+<a id="id44-oauth-generate-keys-for-ods-controllers-web-services"></a>
 ## OAuth Generate Keys for ODS Controllers (Web Services)
 
 The following steps describe how to Setup Application OAuth keys in ODS:
@@ -3353,6 +3502,7 @@ The following steps describe how to Setup Application OAuth keys in ODS:
     
     ![OAuth Generate Keys](./images/ui/keys2.png)
 
+<a id="id45-ods-ubiquity-commands"></a>
 ## ODS Ubiquity Commands
 
 ODS provides Ubiquity commands to manipulate user accounts as well as
@@ -3499,6 +3649,7 @@ server. More information and simple scenario how to be done you can find
 > the full list of [ODS Ubiquity Commands](#) and the full list of
 > [OpenLink Data Spaces (ODS) Ubiquity Commands Tutorials](#)
 
+<a id="id46-oauth-test-tool-for-ods-controllers"></a>
 ## OAuth Test Tool for ODS Controllers
 
 The ODS OAuth Test Tool creates examples to show users the correct
@@ -3593,6 +3744,7 @@ Test Tool.
         
         ![Weblog OAuth](./images/ui/keys15.png)
 
+<a id="id47-oauth-qa"></a>
 ## OAuth QA
 
 ### MySpace Tools
@@ -3754,6 +3906,7 @@ Let's try the playground tool:
     
     ![Google OAuth](./images/ui/keys25.png)
 
+<a id="id48-ws-security-wss-support-in-virtuoso-soap-server"></a>
 # WS-Security (WSS) Support in Virtuoso SOAP Server
 
 The following terms are used in this section in the following meanings:
@@ -3869,6 +4022,7 @@ keys. Furthermore if a user account is removed all associated keys will
 also be removed if they were stored in the database. If the keys were on
 the file-system only the in-memory cache will be deleted.
 
+<a id="id49-client-and-server-side-certificates-keys"></a>
 ## Client and Server side Certificates & Keys
 
 Since XML encoding routines are executed on server-side, we cannot
@@ -3943,6 +4097,7 @@ used:
 [`xenc_key_remove()
 `](#fn_xenc_key_remove)
 
+<a id="id50-soap-server-ws-security-endpoint"></a>
 ## SOAP Server WS-Security Endpoint
 
 The WS-Security processing is performed by filtering incoming and
@@ -4003,6 +4158,7 @@ point.
     controlled by a few options defined in the virtual directory. See
     below: "WSS-KEY", "WSS-Template", and "WSS-Type" options.
 
+<a id="id51-virtual-directory-soap-wss-options"></a>
 ## Virtual Directory SOAP WSS Options
 
 The following SOAP options are available for configuring a virtual
@@ -4098,6 +4254,7 @@ This endpoint will expect signed and encrypted incoming messages and
 will sign and encrypt outgoing messages too. This is a two-way
 encryption example, for client to server and reverse.
 
+<a id="id52-accounting-accounting-hook"></a>
 ## Accounting & Accounting Hook
 
 If an X.509 certificate is used to sign an incoming message, the
@@ -4150,6 +4307,7 @@ server, To get similar functionality for each SOAP method, the developer
 will need to include account checking within the PL procedures that are
 exposed as SOAP methods.
 
+<a id="id53-signature-templates"></a>
 ## Signature Templates
 
 Signature templates are used to define how signatures are generated for
@@ -4267,6 +4425,7 @@ Now, an example of a user defined template:
         </KeyInfo>
     </Signature>
 
+<a id="id54-soap-client"></a>
 ## SOAP Client
 
 The `soap_client()
@@ -4281,6 +4440,7 @@ parameters are optional, not all are required and they can be named.
 > [`soap_client()
 > `](#fn_soap_client)
 
+<a id="id55-web-services-routing-protocol-ws-routing"></a>
 # Web Services Routing Protocol (WS-Routing)
 
 The SOAP Routing Protocol (WS-Routing) is a SOAP-based, stateless
@@ -4297,6 +4457,7 @@ on the rules in message path.
 This implementation supports HTTP only. Message Id's generated are
 UUIDs.
 
+<a id="id56-configuration"></a>
 ## Configuration
 
 Setting-up the WS-Routing for a SOAP service requires you to:
@@ -4310,6 +4471,7 @@ Setting-up the WS-Routing for a SOAP service requires you to:
     
     wsrp-from=\[identification for endpoint\];
 
+<a id="id57-traversing-message-paths"></a>
 ## Traversing Message Paths
 
 The initial WS-Routing sender generates a WS-Routing "path" header that
@@ -4527,6 +4689,7 @@ Response from intermediary B to client
     </n0:Body>
     </n0:Envelope>
 
+<a id="id58-web-services-reliable-messaging-protocol-ws-reliablemessaging"></a>
 # Web Services Reliable Messaging Protocol (WS-ReliableMessaging)
 
 The WS-ReliableMessaging protocol is a SOAP-based RPC protocol for
@@ -4579,6 +4742,7 @@ omissions.
 > 
 > [WS-RM System Table Definitions](#systabswsrm) in the Appendix section
 
+<a id="id59-soap-client-api-extensions"></a>
 ## SOAP CLIENT API Extensions
 
 The SOAP Client API is used for handling, building and accessing complex
@@ -4800,6 +4964,7 @@ echoDocument invocation
 > [`SOAP_CLIENT()
 > `](#fn_soap_client)
 
+<a id="id60-ws-rm-sender-api"></a>
 ## WS-RM Sender API
 
 The WS-RM API allows for:
@@ -5066,6 +5231,7 @@ asynchronous Acknowledgment. This is used to accept a
 SequenceAcknowledgment response from a remote party so it will process
 the response and will set the state of messages that are acknowledged.
 
+<a id="id61-wsrm-receiver-api"></a>
 ## WSRM Receiver API
 
 On the receiver side we have PL wrappers that take as arguments all
@@ -5114,6 +5280,7 @@ These PL procedures are built-in to the server, and have to be granted
 to the user that is assigned as the SOAP execution account for a given
 virtual directory designated as a WS-RM receiver endpoint.
 
+<a id="id62-ws-rm-protocol-endpoint-configuration"></a>
 ## WS-RM Protocol Endpoint Configuration
 
 The setup is a virtual directory definition and grant of rights to the
@@ -5184,6 +5351,7 @@ This is an example client used to perform the interoperability test
       }
     ;
 
+<a id="id63-message-examples"></a>
 ## Message Examples
 
     <SOAP:Envelope>
@@ -5264,6 +5432,7 @@ initial sender accepts and returns
     HTTP/1.1 202 Accepted
     Content-Length: 0
 
+<a id="id64-ws-rm-schema"></a>
 ## WS-RM Schema
 
     <xsd:schema
@@ -5396,6 +5565,7 @@ initial sender accepts and returns
     
     </xsd:schema>
 
+<a id="id65-web-services-trust-protocol-ws-trust"></a>
 # Web Services Trust Protocol (WS-Trust)
 
 In order to secure communication between two parties, the two parties
@@ -5963,6 +6133,7 @@ Upload the client certificate
     checkpoint
     ;
 
+<a id="id66-xml-for-analysis-provider"></a>
 # XML for Analysis Provider
 
 XML for Analysis (XMLA) is a SOAP based XML API for data access
@@ -6448,6 +6619,7 @@ whit Virtuoso extension. Sources and response from server.
   </Envelope>
 ```
 
+<a id="id67-xml-rpc-support"></a>
 # XML-RPC support
 
 The XML-RPC is a remote procedure calling system via HTTP using XML as
@@ -6552,6 +6724,7 @@ directory with physical location pointing to /SOAP/ and specify the
 > XML-RPC calls. If you need to make SOAP requests, then another virtual
 > directory will be required.
 
+<a id="id68-syncml"></a>
 # SyncML
 
 SyncML is a protocol for synchronization of data collections between two
@@ -7243,8 +7416,10 @@ Final message from SyncML server; no more commands issued.
 > 
 > [References : www.syncml.org](#)
 
+<a id="id69-uddi"></a>
 # UDDI
 
+<a id="id70-concepts"></a>
 ## Concepts
 
 Universal Description, Discovery and Integration (UDDI) is the name of a
@@ -7277,6 +7452,7 @@ registering references to information about specifications that describe
 how a particular software package or technical interface functions.
 These references are called '`tModels` ' in the documentation.
 
+<a id="id71-dealing-with-soap"></a>
 ## Dealing with SOAP
 
 UDDI API functions are exposed as SOAP v1.1 messages over the HTTP
@@ -7302,6 +7478,7 @@ HTTP response document.
 > For more information about Virtuoso's SOAP Implementation see the
 > [SOAP Services](#soap) section.
 
+<a id="id72-supported-api-calls"></a>
 ## Supported API Calls
 
 The UDDI APIs always return a SOAP entity body which contains messages
@@ -7388,6 +7565,7 @@ as described in UDDI v1 XML Schema (uddi\_1.xsd).
       - *save\_tModel:* Used to register or update complete information
         about a `tModel`.
 
+<a id="id73-authorization-mechanism"></a>
 ## Authorization Mechanism
 
 The Publishers API describes the messages that are used to control the
@@ -7461,6 +7639,7 @@ messages. If certificate-based authentication or similar security is
 employed the use of the `get_authToken` and `discard_authToken` messages
 is optional.
 
+<a id="id74-uddi-api-calls"></a>
 ## UDDI API Calls
 
 This section describes the Virtuoso UDDI-related messages. These
@@ -7677,6 +7856,7 @@ For detailed description and example use of the function, see
 [me\_uddi\_delete\_tmodel](#me_uddi_delete_tmodel) in the [Functions
 Reference Guide](#ch-functions).
 
+<a id="id75-examples"></a>
 ## Examples
 
 Finds all registry entries for names beginning with 'M':
@@ -7833,6 +8013,7 @@ ascending:
 > 
 > [UDDI System Tables](#uddischema)
 
+<a id="id76-exposing-persistent-stored-modules-as-web-services"></a>
 # Exposing Persistent Stored Modules as Web Services
 
 Virtuoso SQL stored procedures and functions can be exposed as SOAP
@@ -7875,6 +8056,7 @@ functions, from C or other programming languages, that can be used from
 within Virtuoso PL. This also means that VSE's can also be published as
 a Web Service\!
 
+<a id="id77-publishing-stored-procedures-as-web-services"></a>
 ## Publishing Stored Procedures as Web Services
 
 ### Choosing Stored Procedures to Expose
@@ -8014,6 +8196,7 @@ improve your development time.
 > 
 > [VSMX](#vsmx) ; [SOAP](#soap) ; [WSDL](#wsdl) .
 
+<a id="id78-xml-query-templates"></a>
 ## XML Query Templates
 
 Virtuoso XML templates allow execution of SQL/XML queries over HTTP to
@@ -8051,6 +8234,7 @@ invoked from SOAP.
 > The Publishing Stored Procedures Section above for a further
 > description of publishing XML Templates.
 
+<a id="id79-publishing-vses-as-web-services"></a>
 ## Publishing VSE's as Web Services
 
 The Virtuoso distribution includes the sample VSE, bif\_sample.c. It is
@@ -8080,6 +8264,7 @@ the above section.
 > 
 > The [C Interface](#cinterface) Chapter
 
+<a id="id80-testing-web-published-web-services"></a>
 # Testing Web Published Web Services
 
 Virtuoso provides a mechanism for testing SOAP messages instantly. This
@@ -8154,6 +8339,7 @@ The first comment line of a stored procedure in the format:
 will be included in the WSDL description of the SOAP message for that
 procedure when generating the WSDL file.
 
+<a id="id81-bpel-reference"></a>
 # BPEL Reference
 
 **Introduction.**
@@ -8214,6 +8400,7 @@ running business task.
     how abstract messages will be used as concrete messages using the
     SOAP protocol and which encoding will be used.
 
+<a id="id82-activities"></a>
 ## Activities
 
 ### Common attributes and elements
@@ -9274,6 +9461,7 @@ section](#) for details.
       
 ```
 
+<a id="id83-protocol-support"></a>
 ## Protocol Support
 
 The Virtuoso BPEL implementation supports WS Security and WS Reliable
@@ -9520,6 +9708,7 @@ To manipulate the partner link options and endpoint URL we can also use
 variables declared as element EndpointReference from WS-Addressing
 schema.
 
+<a id="id84-process-lifecycle"></a>
 ## Process lifecycle
 
 A BPEL process may have more than one version during development or
@@ -9559,6 +9748,7 @@ case where the same messages are used with logically different meaning.
 So when a new process version involves significant change to messages
 then the new process should have a new endpoint and WSDL description.
 
+<a id="id85-using-virtual-directories"></a>
 ## Using virtual directories
 
 To allow a process to make new instances or to receive messages from
@@ -9581,6 +9771,7 @@ process and clients need to be re-linked against new WSDL. So when
 changes are small there will be no need of a new virtual directory. (See
 section 'Process life-cycle' above for process versions).
 
+<a id="id86-process-archiving"></a>
 ## Process archiving
 
 When an instance of a BPEL process is completed it will be archived and
@@ -9621,6 +9812,7 @@ xml:id="[activity id]" type="[activity type]"/>
       
 ```
 
+<a id="id87-configuration-parameters"></a>
 ## Configuration parameters
 
 The BPEL engine has global configuration parameters settable via the
@@ -9651,6 +9843,7 @@ and are kept in the BPEL..configuration table as name/value pairs.
     collection is disabled. When this is 1 the engine will start
     collecting statistics for new process instances .
 
+<a id="id88-process-statistics"></a>
 ## Process Statistics
 
 The BPEL process can be set to collect statistics, this can be enabled
@@ -9676,6 +9869,7 @@ statistics flag is on the following data is available:
 
   - count of instances that could not terminate successfully
 
+<a id="id89-deployment-file-suitcase-format"></a>
 ## Deployment file suitcase format
 
 The relation between a BPEL process and different partner links can be
@@ -9701,6 +9895,7 @@ xml:id="[process id]" src="[URI of the file containing BPEL script]">
     </BPELSuitcase>
 ```
 
+<a id="id90-sql-api"></a>
 ## SQL API
 
 The following API functions are available:
@@ -9783,6 +9978,7 @@ For detailed description and example use of the function, see
 [bpel\_import\_script](#fn_bpel_import_script) in the [Functions
 Reference Guide](#ch-functions).
 
+<a id="id91-bpel-xpath-functions"></a>
 ## BPEL XPath Functions
 
 ### bpel\_get\_var\_dedup
@@ -9815,6 +10011,7 @@ For detailed description and example use of the function, see
 [xpf\_processxsql](#xpf_processxsql) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id92-tables"></a>
 ## Tables
 
 BPEL Engine Tables
@@ -10192,6 +10389,7 @@ create table BPEL.BPEL.hosted_classes
     
 ```
 
+<a id="id93-errors"></a>
 ## Errors
 
 During the BPEL process execution we may consider following types of
@@ -10350,6 +10548,7 @@ message.
 The time to wait before retry and the maximum number of retries can be
 configured on the configuration page of the administration UI.
 
+<a id="id94-samples"></a>
 ## Samples
 
 Simple echo script
@@ -10468,6 +10667,7 @@ count
 > 
 > [BPELDemo](#)
 
+<a id="id95-references"></a>
 ## References
 
 [BPEL4WS specification](#)
@@ -10480,6 +10680,7 @@ count
 
 [XPath specification](#)
 
+<a id="id96-bpel4ws-vad-package-installation"></a>
 ## BPEL4WS VAD Package installation
 
 ### Using Conductor
@@ -10521,6 +10722,7 @@ count
        
 ```
 
+<a id="id97-xsql"></a>
 # XSQL
 
 XSQL is an XML-based format for describing simple stored procedures that
@@ -10571,6 +10773,7 @@ file system or Virtuoso DAV. The editing can take place using a regular
 text editor or a supporting XML editor or some specialized third-party
 XSQL tool.
 
+<a id="id98-xsql-syntax"></a>
 ## XSQL Syntax
 
 Properties of each XSQL directives are specified by XML attributes.
@@ -10628,6 +10831,7 @@ characters or commas delimit column names. The list should be
 space-delimited like 'COL1 COL2 COL3' or comma-delimited like 'COL1,
 COL2, COL3' but not a mix of them like 'COL1, COL2 COL3'.
 
+<a id="id99-xsql-directives"></a>
 ## XSQL Directives
 
 ### xsql:delete-request

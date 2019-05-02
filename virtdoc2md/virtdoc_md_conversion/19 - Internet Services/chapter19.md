@@ -1,5 +1,49 @@
 # Internet Services
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [WebDAV Server](#id1-webdav-server)
+    * [DAV User Accounts](#id2-dav-user-accounts)
+    * [WebDAV Authentication](#id3-webdav-authentication)
+    * [WebDAV Symbolic Links](#id4-webdav-symbolic-links)
+    * [Access Right Permissions of Web Resources](#id5-access-right-permissions-of-web-resources)
+    * [DAV and RDF Metadata](#id6-dav-and-rdf-metadata)
+    * [Special Attributes of Web Resources](#id7-special-attributes-of-web-resources)
+  * [URIQA Semantic Web Enabler](#id8-uriqa-semantic-web-enabler)
+    * [URIQA HTTP Methods](#id9-uriqa-http-methods)
+    * [URIQA Web Service](#id10-uriqa-web-service)
+    * [URIQA Section in Virtuoso Configuration File](#id11-uriqa-section-in-virtuoso-configuration-file)
+    * [URI Matching Rules](#id12-uri-matching-rules)
+  * [Mail Delivery & Storage](#id13-mail-delivery-storage)
+    * [The SMTP Client](#id14-the-smtp-client)
+    * [POP3 Server](#id15-pop3-server)
+    * [Storing Email in Virtuoso](#id16-storing-email-in-virtuoso)
+    * [The Virtuoso Mail Sink](#id17-the-virtuoso-mail-sink)
+  * [NNTP Newsgroups](#id18-nntp-newsgroups)
+    * [NNTP Client](#id19-nntp-client)
+    * [Commands and Examples](#id20-commands-and-examples)
+  * [NNTP Server](#id21-nntp-server)
+    * [Enabling the NNTP Server](#id22-enabling-the-nntp-server)
+    * [NNTP Server Commands](#id23-nntp-server-commands)
+    * [Add Groups to NNTP Server](#id24-add-groups-to-nntp-server)
+  * [MIME & Internet Messages](#id25-mime-internet-messages)
+    * [About Simple Internet (RFC 822) Messages](#id26-about-simple-internet-rfc-822-messages)
+    * [MIME Messages - Extension to Simple Internet Messages](#id27-mime-messages-extension-to-simple-internet-messages)
+    * [S/MIME Support](#id28-smime-support)
+  * [FTP Services](#id29-ftp-services)
+    * [FTP Client](#id30-ftp-client)
+    * [FTP Server](#id31-ftp-server)
+  * [VSP Guide](#id32-vsp-guide)
+    * [Introduction](#id33-introduction)
+    * [Simple HTML FORM usage](#id34-simple-html-form-usage)
+    * [Interacting with the Database](#id35-interacting-with-the-database)
+    * [The Forums Application](#id36-the-forums-application)
+    * [Setting up server-side Cross-Origin Resource Sharing (CORS) with Virtuoso](#id37-setting-up-server-side-cross-origin-resource-sharing-cors-with-virtuoso)
+
+<!--- TOC: End --->
+<a id="id1-webdav-server"></a>
 # WebDAV Server
 
 Virtuoso supports the WebDAV protocol, which is an extension of HTTP for
@@ -101,6 +145,7 @@ Features List - Virtuoso Web DAV HTTP Method Support
 > 
 > [IETF RFC 2518 regarding WebDAV Specification](#)
 
+<a id="id2-dav-user-accounts"></a>
 ## DAV User Accounts
 
 Any non-disabled SQL account with the U\_DAV\_ENABLE column set to
@@ -197,6 +242,7 @@ DAV access permissions can be revoked permanently:
 > 
 > [WS & DAV System Tables](#davsystables)
 
+<a id="id3-webdav-authentication"></a>
 ## WebDAV Authentication
 
 Virtuoso WebDAV offers two types of authentication dependent on the
@@ -270,6 +316,7 @@ authentication:
 4.  If Virtuoso approves the credentials then the resource or connection
     is granted to the client, and the data is returned.
 
+<a id="id4-webdav-symbolic-links"></a>
 ## WebDAV Symbolic Links
 
 Virtuoso supports a special type of WebDAV resources, a redirect
@@ -328,6 +375,7 @@ link. Delete operation on link will remove only the redirect reference
 resource, not the referenced target itself. Content upload requests will
 change the content of the referenced target.
 
+<a id="id5-access-right-permissions-of-web-resources"></a>
 ## Access Right Permissions of Web Resources
 
 The WebDAV resources have two sorts of access right permissions.
@@ -445,6 +493,7 @@ applied to all members and collections underneath recursively. New
 resources and collections acquire this setting from its parent
 collection.
 
+<a id="id6-dav-and-rdf-metadata"></a>
 ## DAV and RDF Metadata
 
 When a Virtuoso server has a URIQA default host setting, it will make
@@ -554,6 +603,7 @@ RDF Schema by MIME-type
 Additional predicates may exist as a result of resource type specific
 metadata extraction.
 
+<a id="id7-special-attributes-of-web-resources"></a>
 ## Special Attributes of Web Resources
 
 The Virtuoso WebDAV implementation provides a set of special attributes
@@ -614,6 +664,7 @@ The following special properties are supported:
     have the xper property set, but manipulation of this property must
     not be used to revert the storage.
 
+<a id="id8-uriqa-semantic-web-enabler"></a>
 # URIQA Semantic Web Enabler
 
 Virtuoso supports the URIQA (URI Query Agent) extension of HTTP WebDAV
@@ -666,6 +717,7 @@ Any other URI results in an error.
 > 
 > [The Nokia URI Query Agent Model](#)
 
+<a id="id9-uriqa-http-methods"></a>
 ## URIQA HTTP Methods
 
 All three methods have a set of HTTP header parameters to specify the
@@ -796,6 +848,7 @@ For Virtuoso DAV resources, MPUT will need both read and write
 permissions on the subject resource, because 'http://local.virt/DAV-RDF'
 property of the resource is first retrieved and then updated.
 
+<a id="id10-uriqa-web-service"></a>
 ## URIQA Web Service
 
 Virtuoso provides the '/uriqa/' web service for clients that do not
@@ -817,6 +870,7 @@ The URIQA web service does not need complicated rules for URI passing
 because the request can not be significantly changed by any proxy. The
 value of the 'uri' parameter should be an absolute URI.
 
+<a id="id11-uriqa-section-in-virtuoso-configuration-file"></a>
 ## URIQA Section in Virtuoso Configuration File
 
 By default,the Virtuoso server acts only as URIQA proxy, i.e. it
@@ -896,6 +950,7 @@ in the registry. If database dump is replayed on a server whose
 configuration file contains other values then values from dump will stay
 in the registry till server restart.
 
+<a id="id12-uri-matching-rules"></a>
 ## URI Matching Rules
 
 A simple installation does not require any special configuration of
@@ -1009,8 +1064,10 @@ should be "like" to one of members of UH\_MATCH\_ENV vector of strings;
 "default" -- Any URI will match so any request is passed to the handler
 if not handled before.
 
+<a id="id13-mail-delivery-storage"></a>
 # Mail Delivery & Storage
 
+<a id="id14-the-smtp-client"></a>
 ## The SMTP Client
 
 ### smtp\_send\_dedup
@@ -1019,6 +1076,7 @@ For detailed description and example use of the function, see
 [smtp\_send](#fn_smtp_send) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id15-pop3-server"></a>
 ## POP3 Server
 
 The Virtuoso POP3 Server implementation supports the following commands
@@ -1060,6 +1118,7 @@ from the users section of the Virtuoso Administration User Interface.
 
 The system table DB.DBA.MAIL\_MESSAGE is used to stored the messages.
 
+<a id="id16-storing-email-in-virtuoso"></a>
 ## Storing Email in Virtuoso
 
 A generic mail delivery driver enables SMTP servers to deliver email to
@@ -1333,6 +1392,7 @@ POP3 port 110, user name 'user\_1', password 'pass\_1'
     Pop3_get ('openlinksw.com:110', 'user_1', 'pass_1', 100000, 'UIDL');
 ```
 
+<a id="id17-the-virtuoso-mail-sink"></a>
 ## The Virtuoso Mail Sink
 
 The Virtuoso Sink is used to store messages received by Windows 2000 IIS
@@ -1392,8 +1452,10 @@ connection to the database, the service would try once to re-establish
 it and re-execute the stored procedure call. Errors and successful
 message routings are entered into the Windows 2000 Application Log.
 
+<a id="id18-nntp-newsgroups"></a>
 # NNTP Newsgroups
 
+<a id="id19-nntp-client"></a>
 ## NNTP Client
 
 ### nntp\_get\_dedup
@@ -1402,6 +1464,7 @@ For detailed description and example use of the function, see
 [nntp\_get](#fn_nntp_get) in the [Functions Reference
 Guide](#ch-functions).
 
+<a id="id20-commands-and-examples"></a>
 ## Commands and Examples
 
 If the requested messages don't exist, `nttp_get()` returns NULL.
@@ -1451,8 +1514,10 @@ To get the status of the 'openlink.public.virtuoso' group:
 This call returns an array of the form Array (\<number of messages\>
 integer, \<first message\> integer, \<last message\> integer)
 
+<a id="id21-nntp-server"></a>
 # NNTP Server
 
+<a id="id22-enabling-the-nntp-server"></a>
 ## Enabling the NNTP Server
 
 The Virtuoso News Server listening port is configured in the HTTP
@@ -1464,6 +1529,7 @@ section of the virtuoso.ini file.
 If the port is not defined Virtuoso will disable the News Server
 subsystem.
 
+<a id="id23-nntp-server-commands"></a>
 ## NNTP Server Commands
 
 The server supports the following commands:
@@ -1498,6 +1564,7 @@ stat \[MessageID|Number\]
 > 
 > [News System Tables](#newssrvtables)
 
+<a id="id24-add-groups-to-nntp-server"></a>
 ## Add Groups to NNTP Server
 
 To add a new newsgroup you must insert a row into the table
@@ -1534,8 +1601,10 @@ to
 See also the [Newsgroups Administration](#newsgrpsadm) section of the
 Visual Server Administration Interface.
 
+<a id="id25-mime-internet-messages"></a>
 # MIME & Internet Messages
 
+<a id="id26-about-simple-internet-rfc-822-messages"></a>
 ## About Simple Internet (RFC 822) Messages
 
 RFC 822 messages have two major parts:
@@ -1593,6 +1662,7 @@ few lines make up the message body.
 > 
 > [RFC 822 at www.rfc-editor.org](#)
 
+<a id="id27-mime-messages-extension-to-simple-internet-messages"></a>
 ## MIME Messages - Extension to Simple Internet Messages
 
 MIME (Multipurpose Internet Mail Extensions) grew out of a need to
@@ -1852,6 +1922,7 @@ This allows for vsp's to handle uniformly "x-www-form/url-encoded" and
 "multipart/form-data" PUTS and to have full access to the MIME headers
 if needed.
 
+<a id="id28-smime-support"></a>
 ## S/MIME Support
 
 S/MIME is a specification for secure electronic mail. S/MIME stands for
@@ -1882,6 +1953,7 @@ A useful utility function for S/MIME support is:
 
 [`pem_certificates_to_array()`](#fn_pem_certificates_to_array)
 
+<a id="id29-ftp-services"></a>
 # FTP Services
 
 Virtuoso provides both FTP client and server functionality. The Virtuoso
@@ -1891,6 +1963,7 @@ Virtuoso FTP server provides FTP access to the Virtuoso WebDAV
 repository using the same authentication and permissions system as
 WebDAV, and an configurable anonymous user access.
 
+<a id="id30-ftp-client"></a>
 ## FTP Client
 
 Virtuoso provides three functions that mimic their FTP command
@@ -1913,6 +1986,7 @@ active mode connections. This is configurable using the parameters:
 `FTPServerMinFreePort` and `FTPServerMaxFreePort` in the `HTTPServer`
 section of the Virtuoso INI file.
 
+<a id="id31-ftp-server"></a>
 ## FTP Server
 
 Virtuoso can provide FTP access to its WebDAV repository. This FTP
@@ -2015,8 +2089,10 @@ DAV user.
 > 
 > [RFC-2389](#)
 
+<a id="id32-vsp-guide"></a>
 # VSP Guide
 
+<a id="id33-introduction"></a>
 ## Introduction
 
 Virtuoso Server Pages are the equivalent of a stored procedure in a Web
@@ -2040,6 +2116,7 @@ Page flow control can be managed using FORMs. The state of the page is
 defined in form fields such as INPUT boxes and TEXTAREA boxes and then
 passed to the next form or page using POST.
 
+<a id="id34-simple-html-form-usage"></a>
 ## Simple HTML FORM usage
 
 We start with a small example that shows the source of a page including
@@ -2278,6 +2355,7 @@ not have to press the submit button to send the form to the server:
   </FORM>
 ```
 
+<a id="id35-interacting-with-the-database"></a>
 ## Interacting with the Database
 
 This section describes manipulating data within Virtuoso from VSP.
@@ -2493,6 +2571,7 @@ the primary key.
       </BODY>
     </HTML>
 
+<a id="id36-the-forums-application"></a>
 ## The Forums Application
 
 The "Forums" Application is a World Wide Web Application for posting,
@@ -2890,6 +2969,7 @@ samples directory.
 > For more information about VSP in general go the [VSP Section](#vsp1)
 > .
 
+<a id="id37-setting-up-server-side-cross-origin-resource-sharing-cors-with-virtuoso"></a>
 ## Setting up server-side Cross-Origin Resource Sharing (CORS) with Virtuoso
 
 User agents (e.g., Web browsers) have traditionally restricted scripts

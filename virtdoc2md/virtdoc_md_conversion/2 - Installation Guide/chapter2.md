@@ -1,7 +1,89 @@
 # Installation Guide
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Virtuoso on All platforms Commmon Specifics](#id1-virtuoso-on-all-platforms-commmon-specifics)
+    * [Installation Requirements](#id2-installation-requirements)
+    * [Operational Requirements](#id3-operational-requirements)
+    * [Operating System Support](#id4-operating-system-support)
+    * [Limits](#id5-limits)
+  * [Virtuoso for Windows](#id6-virtuoso-for-windows)
+    * [Before You Start](#id7-before-you-start)
+    * [Getting To Know Your Virtuoso Components](#id8-getting-to-know-your-virtuoso-components)
+    * [Installation Steps](#id9-installation-steps)
+    * [Creating and Deleting Virtuoso Services](#id10-creating-and-deleting-virtuoso-services)
+    * [Configuring Virtuoso Client Components](#id11-configuring-virtuoso-client-components)
+    * [Default passwords](#id12-default-passwords)
+  * [Installing the Virtuoso Universal Server on Unix-like OS (AIX, HP-UX, Linux, Solaris, etc.)](#id13-installing-the-virtuoso-universal-server-on-unix-like-os-aix-hp-ux-linux-solaris-etc)
+    * [Installation](#id14-installation)
+    * [Configuration](#id15-configuration)
+    * [Demo Database](#id16-demo-database)
+  * [Virtuoso for Mac OS X](#id17-virtuoso-for-mac-os-x)
+    * [Before You Install](#id18-before-you-install)
+    * [Virtuoso Drag and Drop Installer for Mac OS X](#id19-virtuoso-drag-and-drop-installer-for-mac-os-x)
+    * [Installing Virtuoso 6 or earlier](#id20-installing-virtuoso-6-or-earlier)
+    * [Configuration](#id21-configuration)
+    * [Post Installation](#id22-post-installation)
+    * [Configuring an ODBC Data Source](#id23-configuring-an-odbc-data-source)
+    * [Testing an ODBC Data Source](#id24-testing-an-odbc-data-source)
+    * [Default passwords](#id25-default-passwords)
+    * [Demo Database](#id26-demo-database)
+  * [OpenLink License Management](#id27-openlink-license-management)
+    * [License Files](#id28-license-files)
+    * [License Manager](#id29-license-manager)
+    * [Debugging License Problems](#id30-debugging-license-problems)
+  * [Virtuoso ADO.Net Data Grid Form Application](#id31-virtuoso-adonet-data-grid-form-application)
+  * [Using Visual Studio 2008 to Build an Entity Frameworks based Windows Form Application](#id32-using-visual-studio-2008-to-build-an-entity-frameworks-based-windows-form-application)
+    * [Pre-requisites](#id33-pre-requisites)
+    * [Create the School database and schema](#id34-create-the-school-database-and-schema)
+    * [Generating the School Entity Data Mode](#id35-generating-the-school-entity-data-mode)
+    * [Querying Entities and Associations](#id36-querying-entities-and-associations)
+    * [Inserting and Updating Data](#id37-inserting-and-updating-data)
+  * [Using Visual Studio 2008 to Build an ADO.NET Data Services based Application](#id38-using-visual-studio-2008-to-build-an-adonet-data-services-based-application)
+    * [Introduction](#id39-introduction)
+    * [Getting Started: Creating Data Services](#id40-getting-started-creating-data-services)
+    * [Creating a Data Service using the ADO.NET Entity Framework](#id41-creating-a-data-service-using-the-adonet-entity-framework)
+  * [Windows Form Application for accessing Virtuoso RDF data via SPASQL using the Virtuoso ADO.Net Provider](#id42-windows-form-application-for-accessing-virtuoso-rdf-data-via-spasql-using-the-virtuoso-adonet-provider)
+    * [Pre-requisites](#id43-pre-requisites)
+    * [Creating the Application](#id44-creating-the-application)
+    * [Extending RDFDemo to Allow Dereferencing of External IRIs](#id45-extending-rdfdemo-to-allow-dereferencing-of-external-iris)
+    * [Extending RDFDemo to Display More Compact Labels](#id46-extending-rdfdemo-to-display-more-compact-labels)
+    * [Modifying the Northwind Ontology to Add Labels](#id47-modifying-the-northwind-ontology-to-add-labels)
+    * [Extending RDFDemo to Display Images and Longer Text Fields.](#id48-extending-rdfdemo-to-display-images-and-longer-text-fields)
+    * [Extending RDFDemo To Make The Property Labels Clickable](#id49-extending-rdfdemo-to-make-the-property-labels-clickable)
+  * [Creating a Web Browser Application to Access RDF Data Using The Virtuoso ADO.Net Provider](#id50-creating-a-web-browser-application-to-access-rdf-data-using-the-virtuoso-adonet-provider)
+    * [Pre-requisites](#id51-pre-requisites)
+    * [Creating the Web Service](#id52-creating-the-web-service)
+    * [Creating the Browser Application](#id53-creating-the-browser-application)
+    * [Deploy With IIS](#id54-deploy-with-iis)
+  * [Creating a Silverlight Application to consume the service](#id55-creating-a-silverlight-application-to-consume-the-service)
+    * [Pre-requisites](#id56-pre-requisites)
+    * [Creating the Application for Silverlight.](#id57-creating-the-application-for-silverlight)
+  * [Creating A Simple .NET RIA Services Application To Display Data From Virtuoso](#id58-creating-a-simple-net-ria-services-application-to-display-data-from-virtuoso)
+    * [Pre-requisites](#id59-pre-requisites)
+    * [Creating the Application](#id60-creating-the-application)
+    * [Displaying RDF Data](#id61-displaying-rdf-data)
+    * [Next Steps](#id62-next-steps)
+  * [Creating a .Net RIA Services Application That Will Update Virtuoso Data](#id63-creating-a-net-ria-services-application-that-will-update-virtuoso-data)
+    * [Pre-requisites](#id64-pre-requisites)
+    * [Creating the Application](#id65-creating-the-application)
+    * [Propagate Updates to Virtuoso](#id66-propagate-updates-to-virtuoso)
+  * [Cluster Installation and Configuration](#id67-cluster-installation-and-configuration)
+    * [Virtuoso Elastic Cluster Installation & Configuration -- Version 7.x](#id68-virtuoso-elastic-cluster-installation-configuration-version-7x)
+    * [Virtuoso default Cluster Installation and Configuration](#id69-virtuoso-default-cluster-installation-and-configuration)
+    * [Backup and Restore](#id70-backup-and-restore)
+    * [Cluster Configuration](#id71-cluster-configuration)
+    * [HTTP Service Configuration on Subordinate Nodes of a Virtuoso Cluster](#id72-http-service-configuration-on-subordinate-nodes-of-a-virtuoso-cluster)
+    * [Troubleshooting Tips](#id73-troubleshooting-tips)
+    * [See Also:](#id74-see-also)
+
+<!--- TOC: End --->
+<a id="id1-virtuoso-on-all-platforms-commmon-specifics"></a>
 # Virtuoso on All platforms Commmon Specifics
 
+<a id="id2-installation-requirements"></a>
 ## Installation Requirements
 
 A typical installation will require a minimum of 400Mb of hard disk
@@ -12,6 +94,7 @@ and reports, web pages, etc.
 The size of the database .db file will not reduce when data is removed.
 The spare space will however be reclaimed for later use.
 
+<a id="id3-operational-requirements"></a>
 ## Operational Requirements
 
 The Virtuoso database requires a minimum of 64Mb of system memory for
@@ -33,6 +116,7 @@ NumberOfBuffers
 
 See the following Parameter section for more details.
 
+<a id="id4-operating-system-support"></a>
 ## Operating System Support
 
 Virtuoso runs on the following operating systems:
@@ -45,6 +129,7 @@ Unix: AIX, HP-UX, Solaris, etc.
 
 Mac OS X
 
+<a id="id5-limits"></a>
 ## Limits
 
 The below table lists the most important parameters and limits for a
@@ -78,8 +163,10 @@ individual data types, see [Space Consumption](#spaceconsump) .
 
 Limits
 
+<a id="id6-virtuoso-for-windows"></a>
 # Virtuoso for Windows
 
+<a id="id7-before-you-start"></a>
 ## Before You Start
 
 To ensure a smooth installation, please review the following checklist
@@ -184,6 +271,7 @@ application we provide - C++ Demo32, and that it is sufficiently robust
 to operate with Virtuoso. Virtuoso is ODBC Driver Independent and
 certified to work with any drivers that are ODBC level 1 or higher.
 
+<a id="id8-getting-to-know-your-virtuoso-components"></a>
 ## Getting To Know Your Virtuoso Components
 
 Virtuoso is made up of several components, these components fall into
@@ -219,6 +307,7 @@ Virtuoso HTTP Server.
 Virtuoso System Manager to configure the database through the HTTP
 interface.
 
+<a id="id9-installation-steps"></a>
 ## Installation Steps
 
 ### Prepare to Install
@@ -318,6 +407,7 @@ commands at the DOS command line prompt:
 > Virtuoso installation's "bin" sub-directory is not part of your PATH
 > environment variable.
 
+<a id="id10-creating-and-deleting-virtuoso-services"></a>
 ## Creating and Deleting Virtuoso Services
 
 At sometime you may need to have multiple Virtuoso server processes
@@ -344,6 +434,7 @@ list
 > Ensure that the services applet from the control panel is closed while
 > issuing the above commands to prevent locking.
 
+<a id="id11-configuring-virtuoso-client-components"></a>
 ## Configuring Virtuoso Client Components
 
 The Virtuoso client components set consists of the following:
@@ -459,13 +550,16 @@ perform the following steps:
 
 5.  You can also use this utility from within the Virtuoso Conductor
 
+<a id="id12-default-passwords"></a>
 ## Default passwords
 
 See the following Quick Start chapter for very important information
 about [changing the default passwords](#defpasschange) .
 
+<a id="id13-installing-the-virtuoso-universal-server-on-unix-like-os-aix-hp-ux-linux-solaris-etc"></a>
 # Installing the Virtuoso Universal Server on Unix-like OS (AIX, HP-UX, Linux, Solaris, etc.)
 
+<a id="id14-installation"></a>
 ## Installation
 
 Once the required tar file has been downloaded from the web or ftp site
@@ -529,6 +623,7 @@ process is ready to commence.
 
   - Proceed to the Configuration section below.
 
+<a id="id15-configuration"></a>
 ## Configuration
 
   - Once the URL above has been loaded into a browser, you can select a
@@ -550,17 +645,21 @@ process is ready to commence.
 
   - The installation is now ready for use.
 
+<a id="id16-demo-database"></a>
 ## Demo Database
 
 [Installation steps](#demodbinstallsteps) .
 
+<a id="id17-virtuoso-for-mac-os-x"></a>
 # Virtuoso for Mac OS X
 
+<a id="id18-before-you-install"></a>
 ## Before You Install
 
 Before installing the Virtuoso software for Mac OS X you must ensure
 that you have the correct package from the [OpenLink](#) Web Site.
 
+<a id="id19-virtuoso-drag-and-drop-installer-for-mac-os-x"></a>
 ## Virtuoso Drag and Drop Installer for Mac OS X
 
 *Note* : Virtuoso 7 and its Drag-and-Drop Installer for Mac OS X require
@@ -762,6 +861,7 @@ If the process is listed, there are many possible causes, including
 firewall or other networking issues. Please [allow our Support Team](#)
 to assist you in diagnosis and resolution.
 
+<a id="id20-installing-virtuoso-6-or-earlier"></a>
 ## Installing Virtuoso 6 or earlier
 
 Open the Virtuoso Personal Edition Disk Image file ntvpz2zz.dmg by
@@ -846,6 +946,7 @@ The Installation is now complete.
 
 ![Installation complete](./images/mac/v50pe14.png)
 
+<a id="id21-configuration"></a>
 ## Configuration
 
 Click on the "Conductor" link in the left frame of the Welcome page to
@@ -866,6 +967,7 @@ of the machine.
 
 ![Location of apple scripts](./images/mac/v50pe17.png)
 
+<a id="id22-post-installation"></a>
 ## Post Installation
 
 ### Post-Installation Sanity Check
@@ -912,6 +1014,7 @@ commands:
 > 
 > [OpenLink License Management](#oplmgr)
 
+<a id="id23-configuring-an-odbc-data-source"></a>
 ## Configuring an ODBC Data Source
 
 Launch the iODBC Administrator, assuming that you have the iODBC
@@ -955,6 +1058,7 @@ In this case enter the hostname (or IP) and port number.
 
 Press the *Finish* button to save the Data Source information.
 
+<a id="id24-testing-an-odbc-data-source"></a>
 ## Testing an ODBC Data Source
 
 Select the Data Source from the DSN list, and press the *Test* button.
@@ -985,17 +1089,21 @@ The result of the test is shown in a popup window.
 
 ![Test Result](./images/mac/osximage33.gif)
 
+<a id="id25-default-passwords"></a>
 ## Default passwords
 
 See the following Quick Start chapter for very important information
 about [changing the default passwords](#defpasschange) .
 
+<a id="id26-demo-database"></a>
 ## Demo Database
 
 [Installation steps](#demodbinstallsteps) .
 
+<a id="id27-openlink-license-management"></a>
 # OpenLink License Management
 
+<a id="id28-license-files"></a>
 ## License Files
 
 ### License Activation
@@ -1279,6 +1387,7 @@ altogether to ensure the uptake of a new license file.
         bash-2.03$ ls /usr/virtuoso/bin/virtuoso.lic
         bash-2.03$
 
+<a id="id29-license-manager"></a>
 ## License Manager
 
 ### Monitor License Consumption
@@ -1503,6 +1612,7 @@ its "usage" output (produced by any unrecognized argument) --
       +pidfile   pid file to use for server operation
 ```
 
+<a id="id30-debugging-license-problems"></a>
 ## Debugging License Problems
 
 Virtuoso license problems are easy to debug. The following information
@@ -1579,6 +1689,7 @@ Technical Services with your findings:
     processes have been restarted as detailed in OpenLink's licensing
     guidelines.
 
+<a id="id31-virtuoso-adonet-data-grid-form-application"></a>
 # Virtuoso ADO.Net Data Grid Form Application
 
 This section details the steps required to create a simple Visual Studio
@@ -1695,6 +1806,7 @@ displaying data in selected tables from a Virtuoso database.
 
 The task is now complete.
 
+<a id="id32-using-visual-studio-2008-to-build-an-entity-frameworks-based-windows-form-application"></a>
 # Using Visual Studio 2008 to Build an Entity Frameworks based Windows Form Application
 
 **Virtuoso Entity Framework School DB Windows Form Application.**
@@ -1707,6 +1819,7 @@ the School model, bind the query results to display controls to show the
 results of the queries, and then make updates to objects and persist the
 changes to the database.
 
+<a id="id33-pre-requisites"></a>
 ## Pre-requisites
 
 In order to create an Entity Framework Application in your own
@@ -1717,6 +1830,7 @@ environment you will need:
 
 2.  A running Virtuoso Universal Server instance.
 
+<a id="id34-create-the-school-database-and-schema"></a>
 ## Create the School database and schema
 
 1.  Download the [Schools Database](#) VAD (schools\_db\_dav.vad)
@@ -1862,6 +1976,7 @@ environment you will need:
         // Close the form.
         this.Close();
 
+<a id="id35-generating-the-school-entity-data-mode"></a>
 ## Generating the School Entity Data Mode
 
 *Add the ADO.NET Entity Data Model item template*
@@ -2063,6 +2178,7 @@ environment you will need:
     
     ![View menu](./images/ui/uado21.png)
 
+<a id="id36-querying-entities-and-associations"></a>
 ## Querying Entities and Associations
 
 This section creates strongly-typed queries against the CLR objects that
@@ -2259,6 +2375,7 @@ display controls to the object collections returned from these queries.
             MessageBox.Show(ex.Message);
         }
 
+<a id="id37-inserting-and-updating-data"></a>
 ## Inserting and Updating Data
 
 In this section the changes made to Course objects bound are saved to
@@ -2400,10 +2517,12 @@ Course Manager application.
 
 The process is now complete
 
+<a id="id38-using-visual-studio-2008-to-build-an-adonet-data-services-based-application"></a>
 # Using Visual Studio 2008 to Build an ADO.NET Data Services based Application
 
 **Using Microsoft ADO.Net Data Services with Virtuoso**
 
+<a id="id39-introduction"></a>
 ## Introduction
 
 The goal of Microsoft ADO.NET Data Services is to enable applications to
@@ -2419,6 +2538,7 @@ a data back-end for AJAX-style applications, Rich Interactive
 Applications and other applications that need to operate against data
 that is stored across the web.
 
+<a id="id40-getting-started-creating-data-services"></a>
 ## Getting Started: Creating Data Services
 
 *Pre-requisites*
@@ -2455,6 +2575,7 @@ Entity Framework conceptual model see "Creating a Data Service using the
 ADO.NET Entity Framework". To create a data service which exposes
 another data source see "Creating a Data Service from any Data Source".
 
+<a id="id41-creating-a-data-service-using-the-adonet-entity-framework"></a>
 ## Creating a Data Service using the ADO.NET Entity Framework
 
 ADO.NET Data Services are a specialized form of Windows Communication
@@ -2857,6 +2978,7 @@ database:
         
         }
 
+<a id="id42-windows-form-application-for-accessing-virtuoso-rdf-data-via-spasql-using-the-virtuoso-adonet-provider"></a>
 # Windows Form Application for accessing Virtuoso RDF data via SPASQL using the Virtuoso ADO.Net Provider
 
 This section will guide you through creating a simple application that
@@ -2864,6 +2986,7 @@ allows you to access RDF data in a Virtuoso database as an Entity
 DataSet and explore that RDF data in an intuitive way by clicking on
 dereferenceable [IRIs](#rdfiriidtype) .
 
+<a id="id43-pre-requisites"></a>
 ## Pre-requisites
 
 1.  Microsoft Visual Studio 2008
@@ -2886,6 +3009,7 @@ dereferenceable [IRIs](#rdfiriidtype) .
     Virtuoso configuration parameter is set to when the demo database
     VAD package is installed.
 
+<a id="id44-creating-the-application"></a>
 ## Creating the Application
 
 *Step 1 - Create a view of the RDF data.*
@@ -3319,6 +3443,7 @@ http://dbpedia.org/resource/Berlin, results in a empty window and an
 error message. The next step is to extend this application so that it
 can handle dereferencing external IRIs.
 
+<a id="id45-extending-rdfdemo-to-allow-dereferencing-of-external-iris"></a>
 ## Extending RDFDemo to Allow Dereferencing of External IRIs
 
 This section will guide you through extending the application created in
@@ -3490,6 +3615,7 @@ for our purposes it would be clearer to label the property just
 population. In the next step will be to modify the application so that
 it displays more readable labels.
 
+<a id="id46-extending-rdfdemo-to-display-more-compact-labels"></a>
 ## Extending RDFDemo to Display More Compact Labels
 
 This section will guide you through extending the application created in
@@ -3591,6 +3717,7 @@ need to update our Northwind ontology so that
 http://www.w3.org/2000/01/rdf-schema\#label is defined for each
 resource. The next step will be to modify our Northwind ontology.
 
+<a id="id47-modifying-the-northwind-ontology-to-add-labels"></a>
 ## Modifying the Northwind Ontology to Add Labels
 
 This section will guide you through modifying the Northwind Ontology
@@ -3785,6 +3912,7 @@ Northwind dataset.
 In the next step we will extend the application so the images and web
 pages can be viewed and long text fields are displayed in full.
 
+<a id="id48-extending-rdfdemo-to-display-images-and-longer-text-fields"></a>
 ## Extending RDFDemo to Display Images and Longer Text Fields.
 
 This section will guide you through extending RDFDemo so that longer
@@ -3980,6 +4108,7 @@ dereferenceable IRIs. We used this feature to find a short name to
 display rather that the complete IRI. The next step is to make the
 labels clickable so the ontology itself can also be explored.
 
+<a id="id49-extending-rdfdemo-to-make-the-property-labels-clickable"></a>
 ## Extending RDFDemo To Make The Property Labels Clickable
 
 This section will guide you through extending RDFDemo to make the
@@ -4314,6 +4443,7 @@ Details*
     
     ![Northwind dataset](./images/ui/sparqlwinf24.png)
 
+<a id="id50-creating-a-web-browser-application-to-access-rdf-data-using-the-virtuoso-adonet-provider"></a>
 # Creating a Web Browser Application to Access RDF Data Using The Virtuoso ADO.Net Provider
 
 This section will guide you through creating first a Web Service that
@@ -4321,6 +4451,7 @@ exposes RDF data from Virtuoso and then a simple web browser application
 that consumes the Web Service and allowing you to access and explore the
 RDF data by clicking on dereferenceable [IRIs](#rdfiriidtype) .
 
+<a id="id51-pre-requisites"></a>
 ## Pre-requisites
 
 1.  The example assumes that you have a local Virtuoso server with the
@@ -4345,6 +4476,7 @@ RDF data by clicking on dereferenceable [IRIs](#rdfiriidtype) .
 
 4.  The Virtuoso [Cartridges VAD package](#) .
 
+<a id="id52-creating-the-web-service"></a>
 ## Creating the Web Service
 
 *Step 1 - Create a view of the RDF data*
@@ -4496,6 +4628,7 @@ to know this when creating the app to consume the service. Look in the
 Address Bar of the browser. It will be something like:
 http://example.com/WebDataService1.svc/
 
+<a id="id53-creating-the-browser-application"></a>
 ## Creating the Browser Application
 
 *Step 1 - Create the Visual Studio Project.*
@@ -4579,6 +4712,7 @@ resource. The description page is created using [description.vsp](#) .
 
 ![Description page](./images/ui/sparqlwinf30.png)
 
+<a id="id54-deploy-with-iis"></a>
 ## Deploy With IIS
 
 To create and test this simple Web Service we have used the Visual
@@ -4694,6 +4828,7 @@ that exposes RDF data in Virtuoso and how to create a basic Web
 application to consume that service. The next step is to [create a
 Silverlight Application to consume the same service](#installsilver) .
 
+<a id="id55-creating-a-silverlight-application-to-consume-the-service"></a>
 # Creating a Silverlight Application to consume the service
 
 This section will guide you through creating an application for
@@ -4701,6 +4836,7 @@ Silverlight that will consume the ADO.Net Data Service created in
 [Creating a Web Browser Application to Access RDF Data Using The
 Virtuoso ADO.Net Provider.](#installcrweb)
 
+<a id="id56-pre-requisites"></a>
 ## Pre-requisites
 
 1.  The [Microsoft Silverlight 2 Tools for Visual Studio 2008 SP1](#)
@@ -4711,6 +4847,7 @@ Virtuoso ADO.Net Provider.](#installcrweb)
 
 3.  The Visual Studio project used to create the ADO.Net Data Service.
 
+<a id="id57-creating-the-application-for-silverlight"></a>
 ## Creating the Application for Silverlight.
 
 1.  Open the ADO.Net Data Service project in
@@ -4873,6 +5010,7 @@ Clicking on one of the IRIs will open the page using description.vsp.
 
 ![using description.vsp](./images/ui/sparqlwinf35.png)
 
+<a id="id58-creating-a-simple-net-ria-services-application-to-display-data-from-virtuoso"></a>
 # Creating A Simple .NET RIA Services Application To Display Data From Virtuoso
 
 .NET RIA Services is a new framework from Microsoft that simplifies the
@@ -4887,6 +5025,7 @@ The second example shows how to display IRIs from the Linked Data Views
 of the demo data. The IRIs are used to create hyperlinks that are the
 starting point for exploring the linked data.
 
+<a id="id59-pre-requisites"></a>
 ## Pre-requisites
 
 1.  The example assumes that you have a local Virtuoso server with the
@@ -4914,6 +5053,7 @@ starting point for exploring the linked data.
 
 6.  [Microsoft .NET RIA Services July 2009 Preview](#) .
 
+<a id="id60-creating-the-application"></a>
 ## Creating the Application
 
 *Step 1 - Create the Visual Studio Projects.*
@@ -5111,6 +5251,7 @@ project. At this point you need to build the solution again.
 
 ![.NET RIA Services Application](./images/ui/ria4.png)
 
+<a id="id61-displaying-rdf-data"></a>
 ## Displaying RDF Data
 
 One advantage of using Virtuoso as the data store is the seamless way in
@@ -5248,12 +5389,14 @@ exploring this data by clicking on these IRIs.
     
     ![.NET RIA Services Application](./images/ui/ria10.png)
 
+<a id="id62-next-steps"></a>
 ## Next Steps
 
 The examples in this document show you how to simply display data in a
 browser using Silverlight 3 and .NET RIA Services. See an
 [example](#installnetriavd) of a more complicated application.
 
+<a id="id63-creating-a-net-ria-services-application-that-will-update-virtuoso-data"></a>
 # Creating a .Net RIA Services Application That Will Update Virtuoso Data
 
 This example demonstrates how data in Virtuoso can be updated from a
@@ -5261,12 +5404,14 @@ Microsoft .NET RIA Services application. The example is a continuation
 of the first example in [Creating a Simple .Net RIA Services Application
 to Display Data From Virtuoso](#installnetriadd) .
 
+<a id="id64-pre-requisites"></a>
 ## Pre-requisites
 
 1.  A working copy of the application created in [Creating a Simple .Net
     RIA Services Application to Display Data From
     Virtuoso](#installnetriadd) .
 
+<a id="id65-creating-the-application"></a>
 ## Creating the Application
 
 *Step 1 - Add A New Domain Service Class*
@@ -5433,6 +5578,7 @@ We now need to add a DataForm to display the details.
 By clicking on the pencil symbol in the top right hand corner the data
 in the form can be edited but it is not propagated back to the database.
 
+<a id="id66-propagate-updates-to-virtuoso"></a>
 ## Propagate Updates to Virtuoso
 
 1.  Add a 'Submit' button just after the DataForm in MainPage.xaml by
@@ -5455,8 +5601,10 @@ in the form can be edited but it is not propagated back to the database.
     
     ![.NET RIA Services Application](./images/ui/riad4.png)
 
+<a id="id67-cluster-installation-and-configuration"></a>
 # Cluster Installation and Configuration
 
+<a id="id68-virtuoso-elastic-cluster-installation-configuration-version-7x"></a>
 ## Virtuoso Elastic Cluster Installation & Configuration -- Version 7.x
 
 These sections apply to Virtuoso as of version 7.x .
@@ -6062,6 +6210,7 @@ configuration of a Virtuoso Elastic Cluster on Unix:
         cl_exec ('shutdown')
         $
 
+<a id="id69-virtuoso-default-cluster-installation-and-configuration"></a>
 ## Virtuoso default Cluster Installation and Configuration
 
 These sections apply to Virtuoso as of version 6.x and higher.
@@ -6401,6 +6550,7 @@ These sections apply to Virtuoso as of version 6.x and higher.
         Stopping Virtuoso instance in [cluster_04]
         $
 
+<a id="id70-backup-and-restore"></a>
 ## Backup and Restore
 
 *Backup*
@@ -6430,6 +6580,7 @@ restore, execute from the ..\\bin folder the virtuoso-restore.sh:
 
 where the second parameter is the restore prefix.
 
+<a id="id71-cluster-configuration"></a>
 ## Cluster Configuration
 
 1.  Set "FAST\_START=1" in the viruoso-start.sh file and then run:
@@ -6459,6 +6610,7 @@ where the second parameter is the restore prefix.
         
         1 Rows. -- 4 msec.
 
+<a id="id72-http-service-configuration-on-subordinate-nodes-of-a-virtuoso-cluster"></a>
 ## HTTP Service Configuration on Subordinate Nodes of a Virtuoso Cluster
 
 This section applies to Virtuoso as of version 6.x and higher.
@@ -6625,6 +6777,7 @@ cluster, to provide the desired load balancing.
     node was configured to provide HTTP services and a SPARQL endpoint,
     and the query load was spread over the entire cluster.
 
+<a id="id73-troubleshooting-tips"></a>
 ## Troubleshooting Tips
 
 If an operation seems to hang, see the output of:
@@ -6671,6 +6824,7 @@ Check for the presence of the following conditions:
     If this returns, the databases are OK. If one is found to be corrupt
     the corresponding server exits.
 
+<a id="id74-see-also"></a>
 ## See Also:
 
 > **Tip**

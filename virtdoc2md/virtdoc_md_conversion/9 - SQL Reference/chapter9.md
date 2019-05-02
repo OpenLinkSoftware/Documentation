@@ -1,5 +1,140 @@
 # SQL Reference
 
+<!--- TOC: Start --->
+
+#### Contents
+
+  * [Datatypes](#id1-datatypes)
+    * [Date Literals](#id2-date-literals)
+    * [Casting](#id3-casting)
+    * [Time & Date Manipulation](#id4-time-date-manipulation)
+    * [Declaring Collations of Expressions](#id5-declaring-collations-of-expressions)
+  * [User Defined Types](#id6-user-defined-types)
+    * [CREATE TYPE Statement](#id7-create-type-statement)
+    * [ALTER TYPE Statement](#id8-alter-type-statement)
+    * [DROP TYPE Statement](#id9-drop-type-statement)
+    * [CREATE METHOD Statement](#id10-create-method-statement)
+    * [Type Instances](#id11-type-instances)
+    * [Instance References](#id12-instance-references)
+    * [NEW Operator](#id13-new-operator)
+    * [Finding Methods - Method Signatures Generation & Comparison](#id14-finding-methods-method-signatures-generation-comparison)
+    * [Getting & Setting Member Values of Type Instances (member observers & mutators)](#id15-getting-setting-member-values-of-type-instances-member-observers-mutators)
+    * [Calling Static Methods](#id16-calling-static-methods)
+    * [Calling Instance Methods](#id17-calling-instance-methods)
+    * [Serializing & Deserializing Type Instances](#id18-serializing-deserializing-type-instances)
+    * [User Defined Types Utility Functions](#id19-user-defined-types-utility-functions)
+    * [Hosted Foreign Objects in Virtuoso](#id20-hosted-foreign-objects-in-virtuoso)
+    * [Using User Defined Types to Represent SOAP Structures](#id21-using-user-defined-types-to-represent-soap-structures)
+    * [Consuming Third-Party SOAP Services via User Defined Types](#id22-consuming-third-party-soap-services-via-user-defined-types)
+    * [UDT Security](#id23-udt-security)
+  * [XML Column Type](#id24-xml-column-type)
+  * [Identifier Case & Quoting](#id25-identifier-case-quoting)
+  * [Wide Character Identifiers](#id26-wide-character-identifiers)
+    * [UTF-8 Implementation Notes For ODBC](#id27-utf-8-implementation-notes-for-odbc)
+    * [UTF-8 Implementation Notes In JDBC](#id28-utf-8-implementation-notes-in-jdbc)
+  * [Qualified Names](#id29-qualified-names)
+    * [Qualifiers and Owners](#id30-qualifiers-and-owners)
+    * [Default Qualifiers](#id31-default-qualifiers)
+    * [USE Statement, USE identifier](#id32-use-statement-use-identifier)
+  * [Literals, Brace Escapes](#id33-literals-brace-escapes)
+    * [Strings](#id34-strings)
+    * [Numbers](#id35-numbers)
+    * [ODBC Brace Escapes](#id36-odbc-brace-escapes)
+    * [Hexadecimal Literals](#id37-hexadecimal-literals)
+    * [Binary Literals](#id38-binary-literals)
+  * [CREATE TABLE Statement](#id39-create-table-statement)
+    * [Syntax](#id40-syntax)
+    * [NOT NULL](#id41-not-null)
+    * [IDENTITY (Auto Increment)](#id42-identity-auto-increment)
+    * [DEFAULT](#id43-default)
+    * [PRIMARY KEY Constraint](#id44-primary-key-constraint)
+    * [UNDER](#id45-under)
+    * [FOREIGN KEY Constraint](#id46-foreign-key-constraint)
+    * [The CHECK Constraint](#id47-the-check-constraint)
+    * [The WITH SCHEMA Constraint](#id48-the-with-schema-constraint)
+  * [DROP TABLE Statement](#id49-drop-table-statement)
+  * [CREATE INDEX Statement](#id50-create-index-statement)
+  * [DROP INDEX Statement](#id51-drop-index-statement)
+  * [ALTER TABLE Statement](#id52-alter-table-statement)
+    * [Adding a CHECK Constraint](#id53-adding-a-check-constraint)
+  * [CREATE VIEW Statement](#id54-create-view-statement)
+  * [CREATE XML SCHEMA Statement](#id55-create-xml-schema-statement)
+  * [DROP XML SCHEMA Statement](#id56-drop-xml-schema-statement)
+  * [Sequence Objects](#id57-sequence-objects)
+  * [INSERT Statement](#id58-insert-statement)
+    * [INSERT SOFT](#id59-insert-soft)
+    * [INSERT REPLACING](#id60-insert-replacing)
+  * [UPDATE Statement](#id61-update-statement)
+  * [SELECT Statement](#id62-select-statement)
+    * [Syntax](#id63-syntax)
+    * [Description](#id64-description)
+    * [Column Aliasing - AS Declaration](#id65-column-aliasing-as-declaration)
+    * [Join examples](#id66-join-examples)
+    * [Ordering and Grouping](#id67-ordering-and-grouping)
+    * [Grouping Sets](#id68-grouping-sets)
+    * [Derived Tables](#id69-derived-tables)
+    * [Query Expressions](#id70-query-expressions)
+    * [LIKE Predicate & Search Patterns](#id71-like-predicate-search-patterns)
+    * [The TOP SELECT Option](#id72-the-top-select-option)
+    * [CASE, NULLIF, COALESCE, CAST Value Expressions](#id73-case-nullif-coalesce-cast-value-expressions)
+    * [SELECT BREAKUP](#id74-select-breakup)
+  * [COMMIT WORK, ROLLBACK WORK Statement](#id75-commit-work-rollback-work-statement)
+  * [CHECKPOINT, SHUTDOWN Statement](#id76-checkpoint-shutdown-statement)
+    * [Checkpoint & Page Remapping](#id77-checkpoint-page-remapping)
+  * [Stored Procedures as Views & Derived Tables](#id78-stored-procedures-as-views-derived-tables)
+    * [Procedure Table Parameters](#id79-procedure-table-parameters)
+    * [Procedure Table Result Sets](#id80-procedure-table-result-sets)
+    * [Procedure Tables & Security](#id81-procedure-tables-security)
+    * [Procedure Table Cost and Join Order](#id82-procedure-table-cost-and-join-order)
+    * [Limitations](#id83-limitations)
+    * [Procedure Table Examples](#id84-procedure-table-examples)
+  * [GRANT, REVOKE Statement](#id85-grant-revoke-statement)
+  * [SET Statement](#id86-set-statement)
+    * [ISOLATION](#id87-isolation)
+    * [LOCK\_ESCALATION\_PCT](#id88-lock_escalation_pct)
+    * [transaction\_timeout](#id89-transaction_timeout)
+    * [PARAM\_BATCH](#id90-param_batch)
+  * [Anytime Queries](#id91-anytime-queries)
+  * [Best Effort Union](#id92-best-effort-union)
+  * [Standard and User-Defined Aggregate Functions](#id93-standard-and-user-defined-aggregate-functions)
+    * [Create Aggregate Statement](#id94-create-aggregate-statement)
+    * [Drop Aggregate Statement](#id95-drop-aggregate-statement)
+    * [Examples of User-Defined Aggregates](#id96-examples-of-user-defined-aggregates)
+  * [Virtuoso SQL Optimization](#id97-virtuoso-sql-optimization)
+    * [Optimization Techniques](#id98-optimization-techniques)
+    * [Query Options](#id99-query-options)
+    * [Query Optimization Diagnostics](#id100-query-optimization-diagnostics)
+    * [ANY ORDER](#id101-any-order)
+    * [VDB Statistics for the SQL Compiler Collection](#id102-vdb-statistics-for-the-sql-compiler-collection)
+  * [SQL Inverse Functions](#id103-sql-inverse-functions)
+    * [Updating through Inverses](#id104-updating-through-inverses)
+  * [SQL Grammar](#id105-sql-grammar)
+  * [Bitmap Indices](#id106-bitmap-indices)
+    * [Bitmap Indices and Transactions](#id107-bitmap-indices-and-transactions)
+    * [Performance Implications](#id108-performance-implications)
+    * [Physical Structure and Overheads](#id109-physical-structure-and-overheads)
+  * [Transitivity in SQL](#id110-transitivity-in-sql)
+  * [Fast Phrase Match Processor](#id111-fast-phrase-match-processor)
+    * [Phrases, Phrase Sets and Phrase Classes](#id112-phrases-phrase-sets-and-phrase-classes)
+    * [Phrase Set Configuration API](#id113-phrase-set-configuration-api)
+    * [Advertisers and Advertisement Rules](#id114-advertisers-and-advertisement-rules)
+    * [Example](#id115-example)
+  * [Geometry Data Types and Spatial Index Support](#id116-geometry-data-types-and-spatial-index-support)
+    * [Spatial References](#id117-spatial-references)
+    * [Geometric Objects](#id118-geometric-objects)
+    * [Precision of Geometries](#id119-precision-of-geometries)
+    * [Predicates](#id120-predicates)
+    * [Querying Geometric Relations](#id121-querying-geometric-relations)
+    * [Defining a Geometry Index](#id122-defining-a-geometry-index)
+    * [Insert and Delete](#id123-insert-and-delete)
+    * [Using Geometries in Client Applications and SQL Procedures](#id124-using-geometries-in-client-applications-and-sql-procedures)
+    * [Virtuoso 7.1+ Geo Spatial Data type and function enhancements](#id125-virtuoso-71-geo-spatial-data-type-and-function-enhancements)
+  * [SQL Bulk Load, ELT, File Tables and Zero Load Operations](#id126-sql-bulk-load-elt-file-tables-and-zero-load-operations)
+    * [File Tables](#id127-file-tables)
+    * [Parallel Insert With File Tables and Transactions](#id128-parallel-insert-with-file-tables-and-transactions)
+
+<!--- TOC: End --->
+<a id="id1-datatypes"></a>
 # Datatypes
 
   - CHARACTER  
@@ -80,6 +215,7 @@
 > Any User Defined Type can be used to define a column in a CREATE TABLE
 > statement.
 
+<a id="id2-date-literals"></a>
 ## Date Literals
 
 Virtuoso does not support date literals or the DATE reserved keyword.
@@ -92,6 +228,7 @@ Literal dates should be enclosed in a conversion function such as
 Alternatively type casts can be used to explicitly instruct Virtuoso to
 assume a string as a date, see below.
 
+<a id="id3-casting"></a>
 ## Casting
 
 Blob types can be cast to varchars. This will produce a string of up to
@@ -127,6 +264,7 @@ types.
     select cast (cast ('2000-1-3' as date) as varchar);
         = 2000-01-03 00-00-00 000000
 
+<a id="id4-time-date-manipulation"></a>
 ## Time & Date Manipulation
 
 The SQL92 standard functions for time and date queries are available.
@@ -170,6 +308,7 @@ Time & date syntax
 
 now() is cast for explicit compatibility although not required.
 
+<a id="id5-declaring-collations-of-expressions"></a>
 ## Declaring Collations of Expressions
 
 A collation can be declared with CAST for string expressions. Suppose
@@ -186,6 +325,7 @@ instance when comparing results of expressions or constants. This can
 also alter the default collation implied by the collation declaration in
 column options in CREATE TABLE.
 
+<a id="id6-user-defined-types"></a>
 # User Defined Types
 
 A user-defined type is a schema object, identified by a user-defined
@@ -355,6 +495,7 @@ supertype of every type in `S` .
 A user-defined type is declared by a user-defined type [CREATE TYPE
 statement](#udtcreatetypestmt) .
 
+<a id="id7-create-type-statement"></a>
 ## CREATE TYPE Statement
 
     CREATE TYPE type_name
@@ -559,6 +700,7 @@ testsuite\_base.java).
         static method non_existant_static_var (a integer external type 'I')
         returns integer external type 'I' external variable name 'non_existant_static_var';
 
+<a id="id8-alter-type-statement"></a>
 ## ALTER TYPE Statement
 
     ALTER TYPE type_name
@@ -630,6 +772,7 @@ And drop the M1 method :
 
     alter type UDT_ALTER_TYPE drop method M1 (ID integer) returns integer;
 
+<a id="id9-drop-type-statement"></a>
 ## DROP TYPE Statement
 
     DROP TYPE type_name
@@ -645,6 +788,7 @@ Dropping the subtype from the previous section.
 
     drop type UDT_TEST_SUB;
 
+<a id="id10-create-method-statement"></a>
 ## CREATE METHOD Statement
 
     CREATE [ INSTANCE | STATIC | CONSTRUCTOR ] METHOD identifier
@@ -697,6 +841,7 @@ it does not use SELF - it would be a syntax error to do so.
       return a1 + a2;
     };
 
+<a id="id11-type-instances"></a>
 ## Type Instances
 
 Every user defined type can have zero or more instances. Every instance
@@ -721,6 +866,7 @@ server when copying the SQL values.
 As with the other SQL values, an instance gets destroyed when it is no
 longer referenced.
 
+<a id="id12-instance-references"></a>
 ## Instance References
 
 Because the SQL types instances cannot be referenced by more than one
@@ -745,6 +891,7 @@ statement invoked by a client or the completion of processing an HTTP
 request. The cache will thus survive multiple transactions if these are
 transacted within a single client initiated operation.
 
+<a id="id13-new-operator"></a>
 ## NEW Operator
 
     [ NEW ] type_name ( [ parameter_value, .... ] )
@@ -760,6 +907,7 @@ it will have the `SELF` set-up to the result of calling the implicit
 constructor. The NEW operator is a scalar expression and can be used
 wherever the SQL syntax allows scalar expressions.
 
+<a id="id14-finding-methods-method-signatures-generation-comparison"></a>
 ## Finding Methods - Method Signatures Generation & Comparison
 
 A method of a user defined type is identified uniquely by the
@@ -849,6 +997,7 @@ expression is to enclose it in a CAST statement, as follows:
 
 This will compile and execute correctly.
 
+<a id="id15-getting-setting-member-values-of-type-instances-member-observers-mutators"></a>
 ## Getting & Setting Member Values of Type Instances (member observers & mutators)
 
 Let `T` be a user defined type that has a member `A` of type `AT` . Let
@@ -912,6 +1061,7 @@ instance stored in member `UDT_M` of `UDT_FR_BASE` .
 
     select new UDT_FR_BASE (1, 2).UDT_M.B;
 
+<a id="id16-calling-static-methods"></a>
 ## Calling Static Methods
 
 Let `T` be a user defined type that has a static method `SM` .
@@ -923,6 +1073,7 @@ the static method returns.
 
     select UDT_TEST::_ADD (1, 2);
 
+<a id="id17-calling-instance-methods"></a>
 ## Calling Instance Methods
 
 Let `T` be a user defined type that has an instance method `IM` . Let
@@ -981,6 +1132,7 @@ This will return:
 
 This is done so the overloaded methods can call the base type methods.
 
+<a id="id18-serializing-deserializing-type-instances"></a>
 ## Serializing & Deserializing Type Instances
 
 Virtuoso allows serializing and deserializing of non TEMPORARY type
@@ -1061,6 +1213,7 @@ correctly the Java classes must implement the java.io.Serializable
 interface and the CLR classes should have the \[Serializable\] attribute
 set. For details refer to the respective API documentation.
 
+<a id="id19-user-defined-types-utility-functions"></a>
 ## User Defined Types Utility Functions
 
 Virtuoso implements the following user defined types utility functions:
@@ -1075,6 +1228,7 @@ udt\_get()
 
 udt\_set()
 
+<a id="id20-hosted-foreign-objects-in-virtuoso"></a>
 ## Hosted Foreign Objects in Virtuoso
 
 ### Java VM Hosted Objects
@@ -1372,6 +1526,7 @@ Similarly, if an instance of the `g2_sib` is to be returned in
 Virtuoso/PL and `sql_g1` to `sql_g3` are defined, Virtuoso will wrap the
 `g2_sib` Java instance into an `sql_g1` SQL instance.
 
+<a id="id21-using-user-defined-types-to-represent-soap-structures"></a>
 ## Using User Defined Types to Represent SOAP Structures
 
 The Virtuoso SOAP server is capable of using user defined types (both
@@ -1498,6 +1653,7 @@ definition are optional and default to the SQL member's name for names
 and employ a straight mapping of the PL types to the SOAP types for data
 types.
 
+<a id="id22-consuming-third-party-soap-services-via-user-defined-types"></a>
 ## Consuming Third-Party SOAP Services via User Defined Types
 
 Virtuoso provides function for acting as a SOAP client called
@@ -1585,6 +1741,7 @@ encapsulation:
 > can be found in the [Visual Server Administration
 > Interface](#admiui.wsdl) Chapter.
 
+<a id="id23-udt-security"></a>
 ## UDT Security
 
 Security of UDTs is maintained through normal SQL GRANT and REVOKE
@@ -1615,6 +1772,7 @@ UNDER
 > to GRANT/REVOKE in the same namespace, therefore care must be taken
 > avoid inadvertently granting to multiple objects at the same time.
 
+<a id="id24-xml-column-type"></a>
 # XML Column Type
 
 Virtuoso allows for native XML storage in a database table column using
@@ -1651,6 +1809,7 @@ as a LONG VARCHAR when selected from ODBC based clients.
 > The [`xml_tree_doc()`](#fn_xml_tree_doc) also returns an XML entity
 > and describes other functions that work with it.
 
+<a id="id25-identifier-case-quoting"></a>
 # Identifier Case & Quoting
 
 Virtuoso can operate with different identifier case conventions. The
@@ -1686,6 +1845,7 @@ Although CaseMode can be changed at any time it should only be set at
 database creation. Changing the CaseMode may result in view or procedure
 code becoming invalid if it relies on specific case conventions.
 
+<a id="id26-wide-character-identifiers"></a>
 # Wide Character Identifiers
 
 All Virtuoso schema columns are confined to 8-bit character fields. This
@@ -1757,6 +1917,7 @@ character may be represented with up to 6 bytes in UTF-8. An exception
 to that is when using single character pattern to match an ASCII
 character.
 
+<a id="id27-utf-8-implementation-notes-for-odbc"></a>
 ## UTF-8 Implementation Notes For ODBC
 
 All wide functions which do return an identifier, like SQLDescribeColW
@@ -1775,6 +1936,7 @@ get identifiers not representable in the current narrow character set,
 because all they will get is the "untranslatable char" mark (currently a
 question mark).
 
+<a id="id28-utf-8-implementation-notes-in-jdbc"></a>
 ## UTF-8 Implementation Notes In JDBC
 
 Since JAVA is all unicode there are no unavoidable deviations from the
@@ -1786,8 +1948,10 @@ Resultset.getString() the Virtuoso JDBC driver will return the raw wide
 string instead of trying to make it VARCHAR before returning it to the
 application.
 
+<a id="id29-qualified-names"></a>
 # Qualified Names
 
+<a id="id30-qualifiers-and-owners"></a>
 ## Qualifiers and Owners
 
 Virtuoso supports multiple namespaces for tables and procedures. A table
@@ -1810,6 +1974,7 @@ db.dba.user\_set\_qualifier.
 
     user_set_qualifier  (in user varchar, in qualifier varchar)
 
+<a id="id31-default-qualifiers"></a>
 ## Default Qualifiers
 
 The default qualifier of the user is set to be the qualifier. The names
@@ -1819,6 +1984,7 @@ Example:
 
     db..user_set_qualifier ('U1', 'U1DATA');
 
+<a id="id32-use-statement-use-identifier"></a>
 ## USE Statement, USE identifier
 
 This sets the default qualifier for the connection in question. The
@@ -1833,8 +1999,10 @@ A quoted identifier will always pass in the case it is entered. An
 unquoted identifier will be converted to upper case if CaseMode so
 specifies.
 
+<a id="id33-literals-brace-escapes"></a>
 # Literals, Brace Escapes
 
+<a id="id34-strings"></a>
 ## Strings
 
 String literals are delimited with single quotes. A double single quote
@@ -1851,6 +2019,7 @@ configuration file or as an ODBC connection option.
     '\t\r\n\\'      tab, carriage return, newline, backslash
     '\012'          Character 012 octal, i.e. newline
 
+<a id="id35-numbers"></a>
 ## Numbers
 
 An integer constant consist of an optional minus sign followed by
@@ -1869,6 +2038,7 @@ less precise than the DECIMAL SQL type.
 
 Integer literals outside of the 32-bit range are interpreted as DECIMAL.
 
+<a id="id36-odbc-brace-escapes"></a>
 ## ODBC Brace Escapes
 
 The Virtuoso SQL parser supports the following ODBC brace escape
@@ -1885,6 +2055,7 @@ notations:
     
     {oj  }      -- outer join
 
+<a id="id37-hexadecimal-literals"></a>
 ## Hexadecimal Literals
 
 Hexadecimal values can be specified literally in two ways, prefixing the
@@ -1902,6 +2073,7 @@ some examples:
 
 `X'<value>'` is equivalent to `0x<value>`
 
+<a id="id38-binary-literals"></a>
 ## Binary Literals
 
 Binary strings can be specified as literals prefixed with 'B' and
@@ -1915,8 +2087,10 @@ beginning forming bytes on each 8-th bit:
     B'100000001'  = 0x0101
     B'', X'' and 0x return binary literals.
 
+<a id="id39-create-table-statement"></a>
 # CREATE TABLE Statement
 
+<a id="id40-syntax"></a>
 ## Syntax
 
 ``` 
@@ -2031,12 +2205,14 @@ query\_exp. If WITH DATA is specified then the resultset returned by the
 query\_exp is fed into the new table. Otherwise (if WITHOUT DATA or not
 specified) only the table is created.
 
+<a id="id41-not-null"></a>
 ## NOT NULL
 
 Optionally a column can be declared NOT NULL. Any attempts to insert
 NULL into column declared NOT NULL will result in an error and the
 insert rejected.
 
+<a id="id42-identity-auto-increment"></a>
 ## IDENTITY (Auto Increment)
 
 The IDENTITY keyword causes the columns to be automatically incremental,
@@ -2093,6 +2269,7 @@ value will be 100 and will auto-increment from there upwards.
 > 
 > [Sequence Objects](#sequenceobjects)
 
+<a id="id43-default"></a>
 ## DEFAULT
 
 This option specifies a constant default value given to the column by an
@@ -2100,6 +2277,7 @@ INSERT that does not specify a value for the column. The constant must
 be compatible with the column's data type. An IDENTITY or TIMESTAMP
 column cannot have a default value.
 
+<a id="id44-primary-key-constraint"></a>
 ## PRIMARY KEY Constraint
 
 This declares a column combination that will uniquely identify each row
@@ -2198,6 +2376,7 @@ key.
 > 
 > [CREATE INDEX](#createindex) for the index options.
 
+<a id="id45-under"></a>
 ## UNDER
 
 This allows the user to create a table as a sub-table of an existing
@@ -2245,6 +2424,7 @@ super-table.
     
     0 Rows. -- 10 msec.
 
+<a id="id46-foreign-key-constraint"></a>
 ## FOREIGN KEY Constraint
 
 A FOREIGN KEY is a column of combination of columns used to retrieve a
@@ -2361,6 +2541,7 @@ in the primary key table:
       )
     ;
 
+<a id="id47-the-check-constraint"></a>
 ## The CHECK Constraint
 
 The CHECK constraint allows you specify and wide range of rules that
@@ -2400,6 +2581,7 @@ will demonstrate the effectiveness of the check constraints.
 > 
 > [`regexp_like()`](#fn_regexp_like)
 
+<a id="id48-the-with-schema-constraint"></a>
 ## The WITH SCHEMA Constraint
 
 The WITH SCHEMA constraint allows you force values of an XML column to
@@ -2512,6 +2694,7 @@ constraint but you can drop triggers without re-creating the table.
 > 
 > [`xml_validate_schema()`](#fn_xml_validate_schema)
 
+<a id="id49-drop-table-statement"></a>
 # DROP TABLE Statement
 
     drop_table
@@ -2522,6 +2705,7 @@ This statement drops a table. This requires dba privileges or ownership
 of the table. Any subtables are automatically dropped. Supertables are
 not affected.
 
+<a id="id50-create-index-statement"></a>
 # CREATE INDEX Statement
 
     index_column_commalist
@@ -2567,6 +2751,7 @@ entries of other CLUSTERED indices with adjacent values of key parts.
 > 
 > See the [Free Text](#freetext) section on creating free text indices.
 
+<a id="id51-drop-index-statement"></a>
 # DROP INDEX Statement
 
     drop_index
@@ -2585,6 +2770,7 @@ dropped.
 Optionally, a table name can be given if the index name is not unique.
 The table name may be qualified.
 
+<a id="id52-alter-table-statement"></a>
 # ALTER TABLE Statement
 
     add_column:
@@ -2688,6 +2874,7 @@ ALTER TABLE cannot be applied to an attached table.
     
     ALTER TABLE idt DROP FOREIGN KEY (d) REFERENCES idt (d);
 
+<a id="id53-adding-a-check-constraint"></a>
 ## Adding a CHECK Constraint
 
 A CHECK constraint can be added to a table after it has been created and
@@ -2706,6 +2893,7 @@ constraint.
 > 
 > [The CHECK constraint](#sqlrefcreattablecheck)
 
+<a id="id54-create-view-statement"></a>
 # CREATE VIEW Statement
 
     <view definition> ::=
@@ -2713,6 +2901,7 @@ constraint.
                                       <right paren> ]
           AS <query expression>
 
+<a id="id55-create-xml-schema-statement"></a>
 # CREATE XML SCHEMA Statement
 
     <xml schema definition> ::=
@@ -2820,6 +3009,7 @@ inspect elements of these two target namespaces.
 > WITH SCHEMA constraint. Double-check any schema before using it,
 > because it may be hard to fix the error later.
 
+<a id="id56-drop-xml-schema-statement"></a>
 # DROP XML SCHEMA Statement
 
     <xml schema removal> ::=
@@ -2834,6 +3024,7 @@ previously declared XML schema.
 The statement signals an error if the XMLSchema to be dropped is used in
 some WITH SCHEMA constraint.
 
+<a id="id57-sequence-objects"></a>
 # Sequence Objects
 
 Virtuoso supports sequence objects. These can be used to generate
@@ -2883,6 +3074,7 @@ See the section on identity columns under create table and the function
 identity\_value and the related ODBC statement option SQL\_GETLASTSERIAL
 for more.
 
+<a id="id58-insert-statement"></a>
 # INSERT Statement
 
 ``` 
@@ -2942,6 +3134,7 @@ value will be used for that column. If no default value has been
 specified either by a CREATE or MODIFY TABLE statement then NULL will be
 used.
 
+<a id="id59-insert-soft"></a>
 ## INSERT SOFT
 
 *INSERT SOFT* can be used in place of *INSERT INTO* if you are unsure
@@ -2971,6 +3164,7 @@ the new row is not inserted.
     
     1 Rows. -- 60 msec.
 
+<a id="id60-insert-replacing"></a>
 ## INSERT REPLACING
 
 *INSERT REPLACING* can be used in place of *INSERT INTO* if you are
@@ -3000,6 +3194,7 @@ exists, then the new row will be inserted replacing the old values.
     
     1 Rows. -- 0 msec.
 
+<a id="id61-update-statement"></a>
 # UPDATE Statement
 
 Existing rows (or records) are changed in the database using the UPDATE
@@ -3027,8 +3222,10 @@ Ensure that the selection is properly conditioned to update.
         set username = (select U_NAME from DB.DBA.SYS_USERS u where u.U_EMAIL = e.email_address)
         ;
 
+<a id="id62-select-statement"></a>
 # SELECT Statement
 
+<a id="id63-syntax"></a>
 ## Syntax
 
     < select statement: single row > ::= SELECT [ < set quantifier > ] < select list >
@@ -3155,6 +3352,7 @@ Ensure that the selection is properly conditioned to update.
     
         < column reference > [ < collate clause > ]
 
+<a id="id64-description"></a>
 ## Description
 
 The SELECT statement is the principal means of information retrieval in
@@ -3236,6 +3434,7 @@ query expression, e.g. is joined with itself.
 The CROSS join has no join condition. This means that for each row in
 the left table all rows in the right table are included in the result.
 
+<a id="id65-column-aliasing-as-declaration"></a>
 ## Column Aliasing - AS Declaration
 
 Virtuoso supports the AS operator in the selection list of a SELECT
@@ -3262,6 +3461,7 @@ effect is the selection list of a SELECT statement.
 If a data type is given and contains a precision, that precision is
 returned to the client as the precision of the column in question.
 
+<a id="id66-join-examples"></a>
 ## Join examples
 
 The following three statements produce an identical result.
@@ -3291,6 +3491,7 @@ ProductID from the non-existent Order\_Details.
 A right outer join is like a left outer join with the left and right
 tables reversed.
 
+<a id="id67-ordering-and-grouping"></a>
 ## Ordering and Grouping
 
 The result rows of a query can be ordered based on their column values.
@@ -3416,6 +3617,7 @@ GROUP BY s;
     FROM MyDemo;
 ```
 
+<a id="id68-grouping-sets"></a>
 ## Grouping Sets
 
 The grouping sets variant of group by allows specifying exactly which
@@ -3456,6 +3658,7 @@ place of a grouping set one can write:
 In this way a single query can produce a set of ordered result rows and
 different grouped aggregates on the columns in the result set.
 
+<a id="id69-derived-tables"></a>
 ## Derived Tables
 
 A SELECT expression may be used in the place of a table in a FROM
@@ -3483,6 +3686,7 @@ the second example.
 Note that a correlation name is required for derived tables since the
 derived table is as such anonymous.
 
+<a id="id70-query-expressions"></a>
 ## Query Expressions
 
     < non-join query expression > ::=
@@ -3514,6 +3718,7 @@ is equivalent to: select OrderID from Orders a where not exists (select
 Note that the queries, although to a similar effect are executed quite
 differently. There may be significant differences in performance.
 
+<a id="id71-like-predicate-search-patterns"></a>
 ## LIKE Predicate & Search Patterns
 
 The *LIKE* predicate expects a pattern to be applied to a varchar or
@@ -3642,6 +3847,7 @@ Chinese where one character is coded with two bytes) neither fuzzy
 matching function nor nc\_strstr function presented here should be used,
 as they would often match on entirely spurious cases.
 
+<a id="id72-the-top-select-option"></a>
 ## The TOP SELECT Option
 
     query_term :  SELECT opt_top selection ....
@@ -3668,6 +3874,7 @@ SKIPINTNUM number of rows. If you have a ten-row table and `select top 2
 from this_table` you get the first two rows, `select top 2, 2 from
 this_table` will return the third and fourth rows only, instead.
 
+<a id="id73-case-nullif-coalesce-cast-value-expressions"></a>
 ## CASE, NULLIF, COALESCE, CAST Value Expressions
 
 ### The CASE Expression
@@ -3790,6 +3997,7 @@ cast as follows:
 > 
 > The [CASTING](#dtcasting) section for more information.
 
+<a id="id74-select-breakup"></a>
 ## SELECT BREAKUP
 
 Virtuoso extends the select statement with a breakup option. This option
@@ -3841,6 +4049,7 @@ This produces 2 rows for each result of the join, except if fi3 is null,
 in which case only the first term of the breakup is returned in the
 result set.
 
+<a id="id75-commit-work-rollback-work-statement"></a>
 # COMMIT WORK, ROLLBACK WORK Statement
 
 These statements reset the current transaction. COMMIT WORK leaves all
@@ -3894,6 +4103,7 @@ the application.
 > [txn\_error](#fn_txn_error) , [txn\_killall](#fn_txn_killall) ,
 > [signal](#fn_signal)
 
+<a id="id76-checkpoint-shutdown-statement"></a>
 # CHECKPOINT, SHUTDOWN Statement
 
     admin_statement
@@ -3960,6 +4170,7 @@ statement of the previous example.
       log_enable (1);
     };
 
+<a id="id77-checkpoint-page-remapping"></a>
 ## Checkpoint & Page Remapping
 
 In concept, making a checkpoint consists of writing the last committed
@@ -4018,6 +4229,7 @@ sequence and freeing disk space.
 > The TPC C Benchmark chapter for examples of checkpoint remapping in
 > use on test environments.
 
+<a id="id78-stored-procedures-as-views-derived-tables"></a>
 # Stored Procedures as Views & Derived Tables
 
 Virtuoso allows using a stored procedure result set in place of a table.
@@ -4067,6 +4279,7 @@ The meta-data returned by ODBC catalog calls for a procedure view will
 show the columns as they were declared, just like a regular view.
 Procedure views are never updatable.
 
+<a id="id79-procedure-table-parameters"></a>
 ## Procedure Table Parameters
 
 If there is a condition that is in the top level set of AND'ed
@@ -4095,6 +4308,7 @@ supported.
 If a parameter is specified but no applicable predicate is found, a NULL
 value is passed.
 
+<a id="id80-procedure-table-result-sets"></a>
 ## Procedure Table Result Sets
 
 The result set is declared in the derived table or view. This should
@@ -4102,11 +4316,13 @@ match the result\_names in the procedure but the former will take
 precedence on the latter. If an actual result row is shorter than the
 declared set, the missing columns will default to NULL.
 
+<a id="id81-procedure-tables-security"></a>
 ## Procedure Tables & Security
 
 Accessing a procedure as a table requires execute privileges on the
 procedure. Privileges declared on the view are not checked.
 
+<a id="id82-procedure-table-cost-and-join-order"></a>
 ## Procedure Table Cost and Join Order
 
 The \_\_cost declaration in a procedure definition can associate a cost
@@ -4135,6 +4351,7 @@ selecting a single row from a table of 1000 on an exact match of an
 integer key is 3 units. The costs are shown by the explain function with
 a second argument of -5.
 
+<a id="id83-limitations"></a>
 ## Limitations
 
 There is no limitation to the number of rows in a procedure result set.
@@ -4144,6 +4361,7 @@ in a real table. Total row size limit for tables and ORDER BY
 intermediate results applies. Blobs are allowed and do not count towards
 the row length limit.
 
+<a id="id84-procedure-table-examples"></a>
 ## Procedure Table Examples
 
     create procedure n_range (in first integer, in  last integer)
@@ -4179,6 +4397,7 @@ a table.
 
 This is the previous join but now using the view.
 
+<a id="id85-grant-revoke-statement"></a>
 # GRANT, REVOKE Statement
 
     privilege_def
@@ -4348,8 +4567,10 @@ UNDER
 > 
 > [Virtual Database Procedures & Functions](#vdbstoredprocs)
 
+<a id="id86-set-statement"></a>
 # SET Statement
 
+<a id="id87-isolation"></a>
 ## ISOLATION
 
 This allows setting a transaction isolation in a stored procedure or
@@ -4376,6 +4597,7 @@ The initial isolation comes from the SQL\_TXN\_ISOLATION statement
 option in the ODBC API (SQLSetConnectOption). The default isolation is
 repeatable read.
 
+<a id="id88-lock_escalation_pct"></a>
 ## LOCK\_ESCALATION\_PCT
 
 This controls the escalation from row locking to page locking. A set of
@@ -4392,6 +4614,7 @@ causes lock escalation to be turned off. The effect of this setting is
 global and persists until the server is restarted. This setting does not
 affect the semantic of locking.
 
+<a id="id89-transaction_timeout"></a>
 ## transaction\_timeout
 
 This allows setting a timeout for the current transaction. The value
@@ -4413,6 +4636,7 @@ will take effect also if the transaction holds no locks. This setting
 corresponds to the Virtuoso ODBC extension SQL\_TXN\_TIMEOUT statement
 option.o
 
+<a id="id90-param_batch"></a>
 ## PARAM\_BATCH
 
 This sets the batch size used by the virtual database array parameter
@@ -4430,6 +4654,7 @@ The effect of this setting is global and persists until the server is
 restarted. The default value comes from the ArrayParameters
 configuration parameter.
 
+<a id="id91-anytime-queries"></a>
 # Anytime Queries
 
 Starting with version 6, Virtuoso offers a partial query evaluation
@@ -4507,6 +4732,7 @@ HTTP header contains four additional rows, *X-SQL-State:* ,
 the returned document is formatted according to the requested MIME type
 as if the result is complete.
 
+<a id="id92-best-effort-union"></a>
 # Best Effort Union
 
 Virtuoso offers a SQL extension for an error tolerant UNION operation.
@@ -4570,6 +4796,7 @@ To see the errors one can write:
 The BEST keyword does not affect the ALL or CORRESPONDING BY options of
 UNION.
 
+<a id="id93-standard-and-user-defined-aggregate-functions"></a>
 # Standard and User-Defined Aggregate Functions
 
 In addition to whole set of standard SQL aggregate functions, Virtuoso
@@ -4601,6 +4828,7 @@ instead of many. SQL optimizer may use sophisticated heuristics to find
 the fastest way of doing a complex query with aggregates but it cannot
 optimize the code of a stored procedure.
 
+<a id="id94-create-aggregate-statement"></a>
 ## Create Aggregate Statement
 
     CREATE AGGREGATE aggregate_name (parameter, parameter ...) [ RETURNS data_type ]
@@ -4661,6 +4889,7 @@ statement is successful the text is stored into the SYS\_PROCEDURES
 table. This table is read at startup so user-defined aggregates are thus
 always available for use and need be defined only once.
 
+<a id="id95-drop-aggregate-statement"></a>
 ## Drop Aggregate Statement
 
     DROP AGGREGATE aggregate_name
@@ -4676,6 +4905,7 @@ compiled as plain function call and causes run-time errors. In order to
 prevent such confusion, keyword AGGREGATE may be placed right before the
 name of aggregate function.
 
+<a id="id96-examples-of-user-defined-aggregates"></a>
 ## Examples of User-Defined Aggregates
 
 ### Aggregate for Composing URIs
@@ -4925,6 +5155,7 @@ underlying XML document consists of the given XML tree.
     </AttrStatistics>
     1 Rows. -- 0 msec.
 
+<a id="id97-virtuoso-sql-optimization"></a>
 # Virtuoso SQL Optimization
 
 Virtuoso provides a cost based SQL optimizer which performs the
@@ -5032,6 +5263,7 @@ That yields:
     DB.DBA.DTTEST     id                5                 6
     DB.DBA.DTTEST     id                10                0
 
+<a id="id98-optimization-techniques"></a>
 ## Optimization Techniques
 
 ### Join Order
@@ -5251,6 +5483,7 @@ The selected join type can be seen in the explain output. The WITH
 keyword can be used to explicitly specify a join type for a table, see
 query options below.
 
+<a id="id99-query-options"></a>
 ## Query Options
 
 These are effective from Virtuoso 3.0 onwards.
@@ -5318,6 +5551,7 @@ exists) can be either in the subquery or in the enclosing query.
 The same logic applies to IN predicates in searched update or delete
 statements.
 
+<a id="id100-query-optimization-diagnostics"></a>
 ## Query Optimization Diagnostics
 
 Queries involving a large number of possible plans may run out of memory
@@ -5352,6 +5586,7 @@ When exporting statistics as part of bug reporting, make sure to first
 run the queries exhibiting the problem then only export the stats. The
 queries drive statistics gathering.
 
+<a id="id101-any-order"></a>
 ## ANY ORDER
 
 When applied to a select with no aggregation or order by, this causes
@@ -5370,6 +5605,7 @@ example:
 
     select a.row_no from t1 a, t1 b wherea.row_no = 1 + b.row_no option (any order);
 
+<a id="id102-vdb-statistics-for-the-sql-compiler-collection"></a>
 ## VDB Statistics for the SQL Compiler Collection
 
 In order to correctly estimate the cost of the VDB operations overhead
@@ -5585,6 +5821,7 @@ returning data for the tables the user has access to.
 USER\_COL\_HIST - subset of SYS\_COL\_HIST (same row layout) but returns
 rows only for the user-owned tables
 
+<a id="id103-sql-inverse-functions"></a>
 # SQL Inverse Functions
 
 Many virtual database application scenarios require performing various
@@ -5878,6 +6115,7 @@ functions defined with
 returned by the mapping function in a transaction that was successfully
 committed is valid and will retrieve the data intended.
 
+<a id="id104-updating-through-inverses"></a>
 ## Updating through Inverses
 
 A view that selects calls to functions, which have inverses, is
@@ -5913,6 +6151,7 @@ For example:
 > however in no way limited to virtual database applications. All the
 > examples will work equally well with local tables.
 
+<a id="id105-sql-grammar"></a>
 # SQL Grammar
 
 ``` 
@@ -6843,6 +7082,7 @@ For example:
         ;
 ```
 
+<a id="id106-bitmap-indices"></a>
 # Bitmap Indices
 
 A bitmap index is a special type of index that is tailored for being
@@ -6906,6 +7146,7 @@ another key in the order PGOS which can be implemented as a bitmap index
 because S is an IRI ID, hence integer-like for purposes of bitmap
 indices.
 
+<a id="id107-bitmap-indices-and-transactions"></a>
 ## Bitmap Indices and Transactions
 
 The minimum locking unit is the row. In the case of a bitmap index, one
@@ -6918,6 +7159,7 @@ maximally 8192 other rows, most often however the count is much less.
 In all other respects, locking and transactional behavior are identical
 with other indices.
 
+<a id="id108-performance-implications"></a>
 ## Performance Implications
 
 The main advantage of a bitmap index is more compact size, reflected in
@@ -6927,6 +7169,7 @@ values. Sequential access is usually faster. Space savings and thereby
 improved working set behavior can produce dramatic gains for large
 tables.
 
+<a id="id109-physical-structure-and-overheads"></a>
 ## Physical Structure and Overheads
 
 Bitmap indices divide the range of signed 64 bit integer values into
@@ -6947,6 +7190,7 @@ Virtuoso supports bitmap indices since version 4.5.2919.
 
 Bitmap Indices
 
+<a id="id110-transitivity-in-sql"></a>
 # Transitivity in SQL
 
 Virtuoso SQL supports tree and graph data structures represented with
@@ -7206,6 +7450,7 @@ Now we may look more formally at the meaning of the transitive options:
 > [Collection of Transitivity Option Demo Queries for
 > SPARQL.](#rdfsparqlimplementatiotransexamples)
 
+<a id="id111-fast-phrase-match-processor"></a>
 # Fast Phrase Match Processor
 
 An "annotation phrase" is a keyword or key phrase associated with some
@@ -7220,6 +7465,7 @@ appropriate tags and keywords. Virtuoso has built-in phrase match
 processor that is fast enough to deal with long documents and big phrase
 sets in interactive applications.
 
+<a id="id112-phrases-phrase-sets-and-phrase-classes"></a>
 ## Phrases, Phrase Sets and Phrase Classes
 
 An annotation phrase is a pair of a key (a string that is supposed to be
@@ -7345,6 +7591,7 @@ more than once, and associated data differ then any version of data can
 be stored for future use; it is the roll of dice because the vector is
 reordered for faster processing.
 
+<a id="id113-phrase-set-configuration-api"></a>
 ## Phrase Set Configuration API
 
   - [`DB.DBA.ANN_PHRASE_CLASS_ADD`](#fn_ann_phrase_class_add)
@@ -7458,6 +7705,7 @@ reordered for faster processing.
         report. If bit 2 is set then only words in found phrase are
         placed to the report, the rest of phrases is excluded.
 
+<a id="id114-advertisers-and-advertisement-rules"></a>
 ## Advertisers and Advertisement Rules
 
 Phrase sets are sufficient for many purposes but advertisement-specific
@@ -7586,6 +7834,7 @@ current version). The function ap\_build\_match\_list() works fine with
 mix of phrase sets managed by both methods because it is not sensitive
 to the format of data in phrases.
 
+<a id="id115-example"></a>
 ## Example
 
 The following example demonstrates managing phrases sets and data
@@ -7971,6 +8220,7 @@ associated with them:
     
     1 Rows. -- 0 msec.
 
+<a id="id116-geometry-data-types-and-spatial-index-support"></a>
 # Geometry Data Types and Spatial Index Support
 
 Virtuoso includes a spatial database capability from version 6.01.3126
@@ -7985,6 +8235,7 @@ dimensions, with a choice of WGS 84 (or similar) latitude and longitude
 coordinates with haversine distances or a flat 2 dimensional plane for
 spatial reference system.
 
+<a id="id117-spatial-references"></a>
 ## Spatial References
 
 The default reference system is WGS-84 with coordinates in degrees of
@@ -8000,6 +8251,7 @@ systems are in kilometers, as approximately calculated with the
 haversine formula. For other systems they are in the same unit as the
 coordinates.
 
+<a id="id118-geometric-objects"></a>
 ## Geometric Objects
 
 Virtuoso supports a wide variety of spatial features that can be
@@ -8058,6 +8310,7 @@ degrees. As a result, ESRI circles that consist of two arcs 180+180 are
 supported whereas ST\_Intersects on "ill" circles like 270+90 may return
 wrong answers.
 
+<a id="id119-precision-of-geometries"></a>
 ## Precision of Geometries
 
 The internal precision of geometry operations is 64 bit IEEE floating
@@ -8079,6 +8332,7 @@ equal to the specified tolerance. That is useful for dealing with
 inaccurate data such as amateur GPS/GLONASS tracks, coordinates rounded
 to minutes when published in Dbpedia and the like.
 
+<a id="id120-predicates"></a>
 ## Predicates
 
     isgeometry (in x any)
@@ -8089,6 +8343,7 @@ Returns 1 if the argument is a geometry.
 > 
 > [`isgeometry`](#fn_isgeometry)
 
+<a id="id121-querying-geometric-relations"></a>
 ## Querying Geometric Relations
 
 The SQL MM predicates [`st_intersects`](#fn_st_intersects) ,
@@ -8111,6 +8366,7 @@ These do not require the presence of a geometry index but will use one
 if one is present and one of the geometry arguments is a column on which
 there is such an index.
 
+<a id="id122-defining-a-geometry-index"></a>
 ## Defining a Geometry Index
 
 The below sequence defines a table called geo and a geometry index on
@@ -8163,6 +8419,7 @@ columns will not generally work since the collation is not linear as in
 a regular index. Inserts by means other than geo\_insert are not
 allowed.
 
+<a id="id123-insert-and-delete"></a>
 ## Insert and Delete
 
     geo_insert (in tb any, in geo any, in id int);
@@ -8181,6 +8438,7 @@ record of the action.
 > 
 > [`geo_delete`](#fn_geo_delete)
 
+<a id="id124-using-geometries-in-client-applications-and-sql-procedures"></a>
 ## Using Geometries in Client Applications and SQL Procedures
 
 In SQL procedures, a geometry is a member of the ANY data type. The
@@ -8200,6 +8458,7 @@ RDF frameworks.
 > 
 > [RDF and Geometry](#rdfsparqlgeospat)
 
+<a id="id125-virtuoso-71-geo-spatial-data-type-and-function-enhancements"></a>
 ## Virtuoso 7.1+ Geo Spatial Data type and function enhancements
 
 As of Virtuoso 7.1+ (open source and commercial) a number of major
@@ -8809,8 +9068,10 @@ Virtuoso:
     1 Rows. -- 1 msec.
     SQL>
 
+<a id="id126-sql-bulk-load-elt-file-tables-and-zero-load-operations"></a>
 # SQL Bulk Load, ELT, File Tables and Zero Load Operations
 
+<a id="id127-file-tables"></a>
 ## File Tables
 
 Virtuoso supports mapping files of comma separated values as tables from
@@ -8951,6 +9212,7 @@ join. Nested loop joins are not applied to file tables. File tables
 cannot be updated and no transaction control applies to them. Select
 permissions can be granted as for any other table.
 
+<a id="id128-parallel-insert-with-file-tables-and-transactions"></a>
 ## Parallel Insert With File Tables and Transactions
 
 A file table is copied into a database resident table with an INSERT...
