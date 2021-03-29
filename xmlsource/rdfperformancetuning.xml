@@ -617,7 +617,7 @@ SQL&gt; SET EXPLAIN OFF;
    ()</link>
                    is much more
          difficult to use since you cannot just cut and past a query as all quotes need to be
-         doubled inside the 
+         doubled inside the
                   <code>explain (' ... ')</code>
                   :
 </para>
@@ -668,7 +668,7 @@ SQL&gt; SET SPARQL_TRANSLATE OFF;
 </programlisting>
             </listitem>
             <listitem>
-              <para>Use mouse to select the above query output and paste it after the 
+              <para>Use mouse to select the above query output and paste it after the
               <code>SET EXPLAIN ON;</code>
 
       	command. After pasting in the command, followed by the ENTER key:
@@ -722,24 +722,24 @@ SQL&gt; SET EXPLAIN OFF;
   </para>
         <itemizedlist mark="bullet">
           <listitem>
-            <para>The swappiness setting is found in the file 
+            <para>The swappiness setting is found in the file
             <code>/proc/sys/vm/swappiness</code>
             .</para>
           </listitem>
           <listitem>
-            <para>The command 
+            <para>The command
             <code>/sbin/sysctl vm.swappiness</code>
              can be used to view its setting.</para>
           </listitem>
           <listitem>
-            <para>The command 
+            <para>The command
             <code>/sbin/sysctl -w vm.swappiness=10</code>
              can be used to change its value.</para>
           </listitem>
           <listitem>
-            <para>Adding 
+            <para>Adding
             <code>vm.swappiness = 10</code>
-             to the file 
+             to the file
             <code>/etc/sysctl.conf</code>
              will force the
     value to be set at machine boot time.</para>
@@ -786,107 +786,87 @@ UPDATE DB.DBA.RDF_GRAPH_GROUP
           <title>What?</title>
           <para>How to export RDF model data from Virtuoso's Quad Store.</para>
         </section>
-        <section xml:id="rdfperfdumpandreloadgraphswhy">
-          <title>Why?</title>
-          <para>Every DBMS needs to offer a mechanism for bulk export and import of data.</para>
-          <para>Virtuoso supports dumping and reloading graph model data (e.g., RDF), as well as
-    	relational data (e.g., SQL) (discussed elsewhere).</para>
-        </section>
-        <section xml:id="rdfperfdumpandreloadgraphshow">
-          <title>How?</title>
-          <para>We have created stored procedures for the task. The dump procedures leverage SPARQL to
-    	facilitate selective data dump(s) from one or more Named Graphs, each denoted by an IRI.
-    </para>
-          <section xml:id="rdfperfdumpandreloadgraphdumponegraph">
+          <section xml:id="rdfperfdumpandreloadgraphswhy">
+            <title>Why?</title>
+            <para>Every DBMS needs to offer a mechanism for bulk export and import of data.
+              </para>
+            <para>Virtuoso supports dumping and reloading graph model data (e.g., RDF), as well as relational data (e.g., SQL) (discussed elsewhere).</para>
+          </section>
+          <section xml:id="rdfperfdumpandreloadgraphshow">
+            <title>How?</title>
+
+            <para>We have created stored procedures for the task. The dump procedures leverage SPARQL to facilitate selective data dump(s) from one or more Named Graphs, each denoted by an IRI.</para>
+        <section xml:id="rdfperfdumpandreloadgraphsproc">
             <title>Dump One Graph</title>
-            <section xml:id="rdfperfdumpandreloadgraphdumponegraphparams">
+
+            <para>The procedure dump_one_graph can be used to dump any single Named Graph. </para>
+            <section xml:id="rdfperfdumpandreloadgraphsprocparams">
               <title>Parameters</title>
-              <para>The procedure dump_one_graph has the following parameters:</para>
               <itemizedlist mark="bullet">
-                <listitem>
-                  <para>IN </para>
-                  <para>
-                    <emphasis>srcgraph</emphasis>
-                  </para>
-                  <para> VARCHAR -- source graph</para>
-                </listitem>
-                <listitem>
-                  <para>IN </para>
-                  <para>
-                    <emphasis>out_file</emphasis>
-                  </para>
-                  <para> VARCHAR -- output file </para>
-                </listitem>
-                <listitem>
-                  <para>IN </para>
-                  <para>
-                    <emphasis>file_length_limit</emphasis>
-                  </para>
-                  <para> INTEGER -- maximum length of dump files</para>
-                </listitem>
+                  <listitem><para>IN</para> <para><emphasis>srcgraph</emphasis></para> <para>VARCHAR -- source graph</para></listitem>
+                  <listitem><para>IN</para> <para><emphasis>out_file</emphasis></para> <para>VARCHAR -- output file</para></listitem>
+                  <listitem><para>IN</para> <para><emphasis>file_length_limit</emphasis></para> <para>INTEGER -- maximum length of dump files</para></listitem>
               </itemizedlist>
             </section>
-            <section xml:id="rdfperfdumpandreloadgraphdumponegraphsource">
-              <title>Source</title>
-              <para>The procedure <emphasis>dump_one_graph</emphasis>
-
-   has the following source:</para>
+            <section xml:id="rdfperfdumpandreloadgraphsprocsrc">
+              <title>Procedure source</title>
               <programlisting>
 CREATE PROCEDURE dump_one_graph
-  ( IN  srcgraph           VARCHAR  ,
-    IN  out_file           VARCHAR  ,
-    IN  file_length_limit  INTEGER  := 1000000000
+  ( IN  srcgraph           VARCHAR
+  , IN  out_file           VARCHAR
+  , IN  file_length_limit  INTEGER  := 1000000000
   )
   {
     DECLARE  file_name     VARCHAR;
-    DECLARE  env,
-             ses           ANY;
-    DECLARE  ses_len,
-             max_ses_len,
-             file_len,
-             file_idx      INTEGER;
-    SET ISOLATION = 'uncommitted';
-    max_ses_len  := 10000000;
-    file_len     := 0;
-    file_idx     := 1;
-    file_name    := sprintf ('%s%06d.ttl', out_file, file_idx);
-    string_to_file ( file_name || '.graph',
+    DECLARE  env,  ses           ANY;
+    DECLARE  ses_len
+          ,  max_ses_len
+          ,  file_len
+          ,  file_idx      INTEGER;
+   SET ISOLATION = 'uncommitted';
+   max_ses_len  := 10000000;
+   file_len     := 0;
+   file_idx     := 1;
+   file_name    := sprintf ('%s%06d.ttl', out_file, file_idx);
+   string_to_file ( file_name || '.graph',
                      srcgraph,
                      -2
                    );
     string_to_file ( file_name,
-                     sprintf ( '# Dump of graph &lt;%s&gt;, as of %s\n',
+                     sprintf ( '# Dump of graph &lt;%s>, as of %s\n@base &lt;> .\n',
                                srcgraph,
                                CAST (NOW() AS VARCHAR)
                              ),
                      -2
                    );
-    env := vector (dict_new (16000), 0, '', '', '', 0, 0, 0, 0);
-    ses := string_output ();
-    FOR (SELECT * FROM ( SPARQL DEFINE input:storage ""
+   env := vector (dict_new (16000), 0, '', '', '', 0, 0, 0, 0, 0);
+   ses := string_output ();
+   FOR (SELECT * FROM ( SPARQL DEFINE input:storage ""
                          SELECT ?s ?p ?o { GRAPH `iri(?:srcgraph)` { ?s ?p ?o } }
                        ) AS sub OPTION (LOOP)) DO
       {
         http_ttl_triple (env, "s", "p", "o", ses);
         ses_len := length (ses);
-        IF (ses_len &gt; max_ses_len)
+        IF (ses_len > max_ses_len)
           {
             file_len := file_len + ses_len;
-            IF (file_len &gt; file_length_limit)
+            IF (file_len > file_length_limit)
               {
                 http (' .\n', ses);
                 string_to_file (file_name, ses, -1);
+                gz_compress_file (file_name, file_name||'.gz');
+                file_delete (file_name);
                 file_len := 0;
                 file_idx := file_idx + 1;
                 file_name := sprintf ('%s%06d.ttl', out_file, file_idx);
                 string_to_file ( file_name,
-                                 sprintf ( '# Dump of graph &lt;%s&gt;, as of %s (part %d)\n',
+                                 sprintf ( '# Dump of graph &lt;%s>, as of %s (part %d)\n@base &lt;> .\n',
                                            srcgraph,
                                            CAST (NOW() AS VARCHAR),
                                            file_idx),
                                  -2
                                );
-                 env := VECTOR (dict_new (16000), 0, '', '', '', 0, 0, 0, 0);
+                 env := VECTOR (dict_new (16000), 0, '', '', '', 0, 0, 0, 0, 0);
               }
             ELSE
               string_to_file (file_name, ses, -1);
@@ -897,53 +877,50 @@ CREATE PROCEDURE dump_one_graph
       {
         http (' .\n', ses);
         string_to_file (file_name, ses, -1);
+        gz_compress_file (file_name, file_name||'.gz');
+        file_delete (file_name);
       }
   }
 ;
-</programlisting>
-            </section>
-            <section xml:id="rdfperfdumpandreloadgraphdumponegraphex">
-              <title>Example</title>
-              <orderedlist>
-                <listitem>
-                  <para>Call the </para>
-                  <para>
-                    <emphasis>dump_one_graph</emphasis>
-                  </para>
-                  <para> procedure with appropriate arguments:
-</para>
-                  <programlisting>
+          </programlisting>
+            <para>To load the procedure into Virtuoso, it can simply be copied and pasted into the Virtuoso <code>isql</code> command line tool or Interactive SQL UI of the Conductor and executed.</para>
 
-$ pwd
-/Applications/OpenLink Virtuoso/Virtuoso 6.1/database
-
-$ grep DirsAllowed virtuoso.ini
-DirsAllowed              = ., ../vad, ./dumps
-
-$ /opt/virtuoso/bin/isql 1111
-Connected to OpenLink Virtuoso
-Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
-OpenLink Interactive SQL (Virtuoso), version 0.9849b.
-Type HELP; for help and EXIT; to exit.
-SQL&gt; dump_one_graph ('http://daas.openlinksw.com/data#', './data_', 1000000000);
-Done. -- 1438 msec.
-</programlisting>
-                </listitem>
-                <listitem>
-                  <para>As a result, a dump of the graph will be found in the files data_XX (located in your Virtuoso db folder):
-</para>
-                  <programlisting>
-&lt;verbatim&gt;
-$ ls dumps
-data_000001.ttl
-data_000002.ttl
-....
-data_000001.ttl.graph
-</programlisting>
-                </listitem>
-              </orderedlist>
-            </section>
           </section>
+          <section xml:id="rdfperfdumpandreloadgraphsprocexample">
+            <title>Example</title>
+
+              <para>Call the <code>dump_one_graph</code> procedure with appropriate arguments:</para>
+
+
+              <programlisting>
+  $ pwd
+  /Applications/OpenLink Virtuoso/Virtuoso 6.1/database
+
+  $ grep DirsAllowed virtuoso.ini
+  DirsAllowed              = ., ../vad,
+
+  $ /opt/virtuoso/bin/isql 1111
+  Connected to OpenLink Virtuoso
+  Driver: 06.01.3127 OpenLink Virtuoso ODBC Driver
+  OpenLink Interactive SQL (Virtuoso), version 0.9849b.
+  Type HELP; for help and EXIT; to exit.
+  SQL> dump_one_graph ('http://daas.openlinksw.com/data#', './data_', 1000000000);
+  Done. -- 1438 msec.
+
+  $
+  As a result, a dump of the graph &lt;http://daas.openlinksw.com/data#&gt; will be found in the files data_XX (located in your Virtuoso db folder):
+
+
+  $ ls
+  data_000001.ttl
+  data_000002.ttl
+  ....
+  data_000001.ttl.graph
+              </programlisting>
+
+            </section>
+
+        </section>
           <section xml:id="rdfperfdumpandreloadgraphdumpmlpgraph">
             <title>Dump Multiple Graphs</title>
             <para>The <emphasis>dump_graphs</emphasis>
@@ -1371,7 +1348,7 @@ CREATE PROCEDURE DB.DBA.RDF_QM_TREE_DUMP
      http ('  dbg_obj_princ (' || WS.WS.STR_SQL_APOS (cmt) || ', '', file '', file_ctr);\n', proc_text);
      http ('  ses := string_output ();\n', proc_text);
      http ('  http (' || WS.WS.STR_SQL_APOS ('#' || cmt || '\n') || ', ses);\n', proc_text);
-     http ('  env := VECTOR (dict_new (16000), 0, '''', '''', '''', 0, 0, 0, 0);\n', proc_text);
+     http ('  env := VECTOR (dict_new (16000), 0, '''', '''', '''', 0, 0, 0, 0, 0);\n', proc_text);
      http ('  cmt_len := LENGTH (ses);\n', proc_text);
      http ('  FOR (SPARQL DEFINE input:storage &lt;' || storage || '&gt;\n', proc_text);
      http ('    SELECT ?s1, ?p1, ?o1\n', proc_text);
@@ -1396,7 +1373,7 @@ CREATE PROCEDURE DB.DBA.RDF_QM_TREE_DUMP
      http ('          dbg_obj_princ (' || WS.WS.STR_SQL_APOS (cmt) || ', '', file '', file_ctr);\n', proc_text);
      http ('          ses := string_output ();\n', proc_text);
      http ('          http (' || WS.WS.STR_SQL_APOS ('#' || cmt || '\n') || ', ses);\n', proc_text);
-     http ('          env := VECTOR (dict_new (16000), 0, '''', '''', '''', 0, 0, 0, 0);\n', proc_text);
+     http ('          env := VECTOR (dict_new (16000), 0, '''', '''', '''', 0, 0, 0, 0, 0);\n', proc_text);
      http ('        }\n', proc_text);
      http ('    }\n', proc_text);
      http ('  IF (LENGTH (ses) &gt; cmt_len)\n', proc_text);
@@ -1835,7 +1812,7 @@ DefaultIsolation = 2
 </programlisting>
           <tip>
             <title>See Also:</title>
-            <para> 
+            <para>
   </para>
             <para>
               <link xlink:href="http://www.openlinksw.com/dataspace/dav/wiki/Main/VirtConfigScale#Configuration%20Options">Virtuoso Configuration Options</link>
@@ -2373,7 +2350,7 @@ SQL&gt; create bitmap index RDF_QUAD_PSOG on DB.DBA.RDF_QUAD (P,S,O,G);
 </programlisting>
             </listitem>
             <listitem>
-              <para>For users using Virtuoso 6 or higher, see the new layout 
+              <para>For users using Virtuoso 6 or higher, see the new layout
               <link linkend="rdfperfrdfscheme">here</link>
               .</para>
             </listitem>
@@ -2489,11 +2466,11 @@ is closed list with matched heads.
               <link linkend="fn_rdf_graph_diff">DB.DBA.RDF_GRAPH_DIFF</link> </para>
             </listitem>
             <listitem>
-              <para>Using 
+              <para>Using
               <link linkend="fn_rdf_suo_diff_ttl">DB.DBA.RDF_SUO_DIFF_TTL</link></para>
             </listitem>
             <listitem>
-              <para>Using 
+              <para>Using
               <link linkend="fn_rdf_suo_apply_patch">DB.DBA.RDF_SUO_APPLY_PATCH</link></para>
             </listitem>
           </itemizedlist>
