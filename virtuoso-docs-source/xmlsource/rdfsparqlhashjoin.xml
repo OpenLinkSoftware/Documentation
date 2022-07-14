@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <section xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" xml:id="rdfsparqlhashjoin">
         <title>Use of Hash Join With RDF</title>
-        <para>For queries that touch large quantities of RDF data and have many selection conditions use of hash join is
-often desirable. For short lookup queries hash join is usually not desirable.</para>
-        <para>Depending on the version, the query optimizer may of may not do hash joins with RDF. This is controlled
+        <para>For queries that touch large quantities of RDF data and have many selection conditions, use of HASH JOIN is
+often desirable. For short lookup queries, HASH JOIN is usually not desirable.</para>
+        <para>Depending on the version, the query optimizer may or may not do HASH JOINs with RDF. This is controlled
   by the <emphasis>hash_join_enable</emphasis>
 
    flag.</para>
-        <para>To check the flag do:</para>
+        <para>To check the flag, do:</para>
         <programlisting>
 sys_stat ('hash_join_enable');
 </programlisting>
         <itemizedlist mark="bullet">
           <listitem>
-            <para>0 -- means that hash joins are never made</para>
+            <para>0 &mdash; means that hash joins are never made</para>
           </listitem>
           <listitem>
-            <para>1 -- means that these are for SQL only</para>
+            <para>1 &mdash; means that these are for SQL only</para>
           </listitem>
           <listitem>
-            <para>2 -- means that these can also be used with RDF</para>
+            <para>2 &mdash; means that these can also be used with RDF</para>
           </listitem>
         </itemizedlist>
         <para>The flag is set in the ini file in the [Flags] section:</para>
@@ -31,7 +31,7 @@ hash_join_enable = 2
         <programlisting>
 __dbf_set ('hash_join_enable', 2);
 </programlisting>
-        <para>To check the effectiveness of hash joins and whether the optimizer introduces these in the first place,
+        <para>To check the effectiveness of HASH JOINs and whether the optimizer introduces these in the first place,
    it is most convenient to use the <emphasis>profile</emphasis>
 
    function.</para>
@@ -57,14 +57,14 @@ GROUP BY ?d_year ?p_brand1
 ORDER BY ?d_year ?p_brand1
 ;
 </programlisting>
-        <para>The query aggregates rows from a large fact table and selects based on a date range, a brand and
+        <para>The query aggregates rows from a large fact table and selects based on a date range, a brand, and
   the location of the supplier. To run this, it is best to put the query in a file and have profile
-  ('sparql... ') wrapped around the text. Then in isql:</para>
+  ('sparql... ') wrapped around the text. Then, in isql:</para>
         <programlisting>
 SET SET BLOBS ON;
 LOAD q4.sql;
 </programlisting>
-        <para>Without hash join the profile is:</para>
+        <para>Without HASH JOIN, the profile is:</para>
         <programlisting>
 {
 time   1.9e-06% fanout         1 input         1 rows
@@ -269,10 +269,10 @@ Select (lo_revenue, d_year, p_brand1)
 Compilation: 23 msec 0 reads         0% read 0 messages         0% clw
 </programlisting>
         <para>These are runs on warm cache on a dataset of scale factor 30, about 3 billion triples.</para>
-        <para>We notice that the hash based plan completes faster and has a lower CPU percentage. This is to be
-   expected since hash joins are specially useful for joins between a large table and a smaller one.</para>
-        <para>The index based plan does 21M random index lookups whereas the hash based one only 11M. We also note
-   that the index access pattern is more local with the hash plan, with 99% of lookups hitting the same segment
+        <para>We notice that the HASH-based plan completes faster and has a lower CPU percentage. This is to be
+   expected since HASH JOINs are especially useful for JOINs between a large table and a smaller one.</para>
+        <para>The INDEX-based plan does 21M random INDEX lookups whereas the HASH-based one does only 11M. We also note
+   that the INDEX access pattern is more local with the HASH plan, with 99% of lookups hitting the same segment
    as the previous, against only 85%.</para>
         <para>These numbers are in the summary at the bottom of each profile:</para>
         <itemizedlist mark="bullet">
@@ -280,32 +280,32 @@ Compilation: 23 msec 0 reads         0% read 0 messages         0% clw
             <para>rnd -- means index access</para>
           </listitem>
           <listitem>
-            <para>seq -- means rows retrieved in sequential scan, same seg is the percentage of index accesses that hit the same segment as the previous access. </para>
+            <para>seq -- means rows retrieved in sequential scan; same seg is the percentage of index accesses that hit the same segment as the previous access. </para>
           </listitem>
         </itemizedlist>
-        <para>The index based plan starts with the smallest selection, in this case the days parts with the given
-   brand. From this it joins to the lineorder and gets the supplier. It fetches the region of the supplier and
+        <para>The INDEX-based plan starts with the smallest selection; in this case, the days parts with the given
+   brand. From this, it joins to the lineorder and gets the supplier. It fetches the region of the supplier and
    leaves out the ones not in America. </para>
-        <para>The hash based plan makes a hash table of all the parts with the brand, all the suppliers in America and
-   all the days in the time dimension. It then scans lineorder and first drops the rows whose part is not in the
-   hash, then the rows where the supplier is not in the hash, then gets the year of each date. This last operation
-   does not drop any rows but is still done by hash because there are relatively few days and the day to year
+        <para>The HASH-based plan makes a hash table of all the parts with the brand, all the suppliers in America, and
+   all the days in the time dimension. It then scans lineorder, and first drops the rows whose part is not in the
+   hash, then drops the rows where the supplier is not in the hash, and then gets the year of each date. This last operation
+   does not drop any rows, but is still done by hash, because there are relatively few days and the day-to-year
    translation is done a very large number of times.</para>
         <para>The number of rows in and out of each operator is given after the time percent, above the operator.
    Fanout is the number of rows of output per one row of input. </para>
-        <para>Given the long-running queries of any workload, you can perform this same comparison to determine if hash
-   join is useful in the case at hand. Looking at the real time and CPU% is usually enough.</para>
+        <para>Given the long-running queries of any workload, you can perform this same comparison to determine if HASH
+   JOIN is useful in the case at hand. Looking at the real time and CPU% is usually enough.</para>
         <itemizedlist mark="bullet">
           <listitem>
-            <para>Using the sql:select-option pragma: One can specify the hash join is not to be used:
+            <para>Using the sql:select-option pragma: One can specify the HASH JOIN is not to be used.
 </para>
             <programlisting>
 define sql:select-option "loop"
 </programlisting>
-            <para>which will exclude use of hash join in the specific query.</para>
+            <para>will exclude use of HASH JOIN in the specific query.</para>
           </listitem>
           <listitem>
-            <para>Using the table_option construct: Can be used for selecting the join type for any triple pattern:
+            <para>The table_option construct can be used to select the JOIN type for any triple pattern.
 </para>
             <programlisting>
 {
@@ -316,9 +316,9 @@ define sql:select-option "loop"
             <para>would have the effect of building a hash from the suppliers in America. </para>
           </listitem>
         </itemizedlist>
-        <para>You may experiment with these options and look at the profile output for each.</para>
-        <para>For some analytics workloads enabling hash join may give a factor of 2 or 3 more performance.
-   For lookup workloads there may be no gain.</para>
-        <para>Sometimes a hash join may be used when an index lookup would be better, thus in some cases it makes
-  sense to turn off hash joins either per query or globally.</para>
+        <para>You may wish to experiment with these options and look at the profile output for each.</para>
+        <para>For some analytics workloads, enabling HASH JOIN may give a factor of 2 or 3 better performance.
+   For lookup workloads, there may be no gain.</para>
+        <para>Sometimes a HASH JOIN may be used when an INDEX lookup would be better, thus in some cases it makes
+  sense to turn off HASH JOINs either per query or globally.</para>
       </section>
