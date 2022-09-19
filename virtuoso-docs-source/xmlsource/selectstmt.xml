@@ -520,8 +520,8 @@ such anonymous.
         &lt; corresponding column list &gt; &lt; right parent &gt; ]
 </programlisting>
         <para>
-Queries can be combined by set operators UNION, INTERSECTION and EXCEPT (set difference).
-The ALL keyword will allow duplicate rows in the result set. The CORRESPONDING BY clause
+Queries can be combined by set operators <code>UNION</code>, <code>INTERSECTION</code>, and <code>EXCEPT</code> (set difference).
+The <code>ALL</code> keyword will allow duplicate rows in the result set. The <code>CORRESPONDING BY</code> clause
 allows specifying which columns will be used to determine the equality of rows from the
 left and right operands.
 </para>
@@ -530,64 +530,73 @@ left and right operands.
     corresponding by (OrderID) select OrderID from Order_Details
 </programlisting>
         <para>
-will produce the OrderID's of orders that have no Order_Details. This is equivalent to:
-select OrderID from Orders a where not exists (select 1 from Order_Details b where a.OrderID = b.OrderID)
+will produce the <code>OrderID</code> of orders that have no <code>Order_Details</code>. This is equivalent to:
+</para>
+	<programlisting>
+select OrderID from Orders a 
+    where not exists (select 1 from Order_Details b 
+                      where a.OrderID = b.OrderID)
 </para>
         <para>
-Note that the queries, although to a similar effect are executed quite differently.
-There may be significant differences in performance.
+Note that the queries are executed quite differently, although to a similar effect.
+There may be significant difference in performance.
 </para>
       </section>
       <section xml:id="likepredicate">
         <title>LIKE Predicate &amp; Search Patterns</title>
         <para>
-The <emphasis>LIKE</emphasis>
+The <emphasis><code>LIKE</code></emphasis>
 
    predicate expects a pattern to be applied to
-a varchar or nvarchar column to qualify the results to be returned from a query.
+a <code>varchar</code> or <code>nvarchar</code> column to qualify the results to be returned from a query.
 </para>
         <para>
-If the pattern does not begin with an at-sign (@) or with two
-asterisks (**), then we test the equality of the string and pattern
+If the pattern does not begin with an at-sign (<code>@</code>) or with two
+asterisks (<code>**</code>), then we test the equality of the string and pattern
 with ordinary wildcard matching, which behaves
-approximately like the filename pattern matching in the Unix shell.
-(But not like the regular expression matching in utilities like grep
-and sed).
+approximately like the filename pattern matching in the Unix shell
+(but not like the regular expression matching in utilities like <code>grep</code>
+and <code>sed</code>).
 </para>
         <para>
 The following characters have special significance in the pattern:
 </para>
         <simplelist type="vert">
-          <member>?    Matches any single character.</member>
-          <member>*    Matches zero or more of any characters.</member>
+          <member><code>?</code> &mdash; Matches any single character.</member>
+          <member><code>*</code> &mdash; Matches zero or more of any characters.</member>
+          <member><code>[ ]</code> &mdash; (Called a group-expression here; detailed below.</member>
         </simplelist>
         <para>
-[ ]  (Called a group-expression here)
-Matches any one of the enclosed characters, unless the
-first character following the opening [ is ^, then matches
+The group expression <code>[ ]</code> matches any one of the enclosed characters, unless the
+first character following the opening <code>[</code> is <code>^</code>, then matches
 only if the character (in the datum string) is not any one of
-those specified after the ^. (i.e. the ^ negates the meaning
+those specified after the <code>^</code> (i.e., the <code>^</code> negates the meaning
 of this expression.)
 </para>
         <para>
-You can use character ranges like 0-9 (shorthand for 0123456789)
+You can use character ranges like <code>0-9</code> (shorthand for <code>0123456789</code>)
 inside the brackets, in which case the character in the datum
 string must be lexically within the inclusive range of that
-pair (of course the character at the left side of hyphen must
-be lexically (that is, its ASCII value) less than the
-character at the right side).
+pair. (Of course, the lexical (ASCII) value of the character at the left side of hyphen must
+be less than the lexical (ASCII) value of the
+character at the right side.)
 </para>
         <para>
-The hyphen can be included in the character set by putting it
-as the first or last character.  The right bracket (]) can
+The hyphen (<code>-</code>) can be included in the character set by putting it
+as the first or last character.  The right bracket (<code>]</code>) can
 be included by putting it as the first character in the expression,
-i.e. immediately after the opening bracket ([) or the caret (^)
-following it.
+i.e., immediately after the opening bracket (<code>[</code>) or the caret (<code>^</code>)
+immediately following the opening bracket.
+</para>
+        <para>
+That is, the hyphen indicates a range between characters, unless
+it is the first or the last character in the group expression,
+in which case it matches just to itself.
 </para>
         <example>
           <title>Examples:</title>
           <programlisting>
-[abc]          Matches any of the letters a, b and c.
+[abc]          Matches any of the letters a, b, or c.
 [^0123456789]  Matches anything, except digits. (same as [^0-9])
 [[]            Matches [
 []]            Matches ]
@@ -600,109 +609,104 @@ following it.
 [-[] or [[-]   Matches to - or [
 </programlisting>
         </example>
-        <para>
-That is, the hyphen indicates a range between characters, unless
-it is the first or the last character in the group expression,
-in which case it matches just to itself.
-</para>
-        <para><emphasis>@</emphasis>
+        <para><emphasis><code>@</code></emphasis> &mdash;
 
-     Matches the character last matched to ? or group-expression.
-For example ?*@ matches to all strings which begin with the same
-character they end.  However, if there is neither ? nor [] expression
-at the left side of @ in the pattern, then @ matches just to
-itself. (e.g. *@* should match to all e-mail addresses).
+     Matches the character last matched to <code>?</code> or group-expression.
+For example, <code>?*@</code> matches to all strings which begin with the same
+character as they end with.  However, if there is neither <code>?</code> nor <code>[]</code> expression
+at the left side of <code>@</code> in the pattern, then <code>@</code> matches just to
+itself (e.g., <code>*@*</code> should match to all e-mail addresses).
 </para>
         <para>
 Any other characters match ONLY to themselves, that is, not even to
-the upper- or lowercase variants of the same letter. Use expression
-like [Wo][Oo][Rr][Dd] if you want to find any mixed-case variant of
+the upper- or lower-case variants of the same letter. Use expressions
+like <code>[Wo][Oo][Rr][Dd]</code> if you want to find any mixed-case variant of
 the word "word", or use the substring search explained below.
 </para>
         <para>
-However, if the pattern begins with an at-sign (@) then we compare
+However, if the pattern begins with an at-sign (<code>@</code>) then we compare
 the rest of pattern to string with the fuzzy matching,
 allowing differences of few characters in quality and
-quantity (length).  If there is more than one @ in the beginning of
-pattern they are all skipped, and so many
-additional liberties are given for the match function.  The more
-@-signs there are in the beginning, the more fuzzy (liberal) is the
-search.  For example: pattern "@Johnson" will match to string
-"Jonsson" and pattern "@@Johnson" will match also to "Jansson".
+quantity (length).  If there is more than one <code>@</code> at the beginning of
+pattern, they are all skipped, and many
+additional liberties are allowed to the match function.  The more
+<code>@</code> signs there are at the beginning, the more fuzzy (liberal) is the
+search.  For example: pattern "<code>@Johnson</code>" will match to string
+"<code>Jonsson</code>" and pattern "<code>@@Johnson</code>" will match also to "<code>Jansson</code>".
 </para>
         <para>
-If the pattern begins with two asterisks, then we do diacritic- and
-case insensitive substring search,
+If the pattern begins with two asterisks (<code>**</code>), then we do diacritic- and
+case-insensitive substring search,
 trying to find the string given in the rest of pattern from the
 datum string.
 </para>
         <example>
           <title>Example:</title>
-          <para>"**escort" will match to "Ford Escort vm. 1975".</para>
+          <para>"<code>**escort</code>" will match to "<code>Ford Escort vm. 1975</code>".</para>
         </example>
         <para>
-If there are any ISO8859.1 diacritic letters (e.g. vowels with
-accents or umlaut-signs, or letters like the Spanish n with ~ (tilde))
+If there are any ISO8859.1 diacritic letters (e.g., vowels with
+accents or umlauts, or letters like the Spanish n with ~ (tilde))
 present in the datum string, then the plain unaccented (7-bit ASCII)
 variant of the same letter in the pattern string will match to it.
-But if there are any diacritic letter specified in the pattern string,
-then it will match only to the upper- or lowercase variant of exactly
+However, if there is any diacritic letter specified in the pattern string,
+then it will match only to the upper- or lower-case variant of exactly
 the same diacritic letter.
 </para>
         <para>
 The rationale behind this is that the people entering the information
-to database can use the exact spelling for the word, for example
+to the database can use the exact spelling for the word &mdash ;for example,
 writing the word "Citroen" with the umlaut-e (e with two dots above it),
-as it is actually written in French, and the people who search for
-the Citroens can still find it without need to remember the exact
-orthography of the French, by just giving a word "citroen".
-And this allows also the people who have just plain 7-bit ASCII
-keyboards to search for the words like Ra"a"kkyla" (place in Finland,
-a" means umlaut-a, i.e. a with two dots above it), just by entering
-the word raakkyla.
+as it is actually written in French &mdash; and the people who search for
+the Citro&#235;ns can still find them without having to remember the exact
+orthography of the French, by just giving the word "<code>citroen</code>".
+This also allows people who have just plain 7-bit ASCII
+keyboards to search for words like <code>Ra"a"kkyla"</code> (a place in Finland,
+<code>a"</code> means umlaut-a, i.e., <code>a</code> with two dots above it), just by entering
+the word <code>raakkyla</code>.
 </para>
         <para>
-So the following holds with the substring searches:
+So the following hold for substring searches:
 </para>
         <simplelist type="vert">
           <member>
 1) Any non-alphabetic character in the pattern matches just to itself
-in the datum string (e.g. ? to ? and 3 to 3).
+in the datum string (e.g., <code>?</code> to <code>?</code> and <code>3</code> to <code>3</code>).
 </member>
           <member>
-2) Any 7-bit ASCII letter (A-Z and a-z without any diacritic signs)
+2) Any 7-bit ASCII letter (<code>A-Z</code> and <code>a-z</code> without any diacritic signs)
 in the pattern matches to any diacritic variant of the same letter
-(as well as to same 7-bit ASCII letter) in the datum string, either
-in the upper- or lowercase.
+(as well as to the same 7-bit ASCII letter) in the datum string, either
+in upper- or lower-case.
 </member>
           <member>
 3) Any diacritic letter (8-bit ISO8859.1 letter) in the pattern matches
-only to the same letter (in the upper- or lowercase) in the datum
+only to the same letter (in upper- or lower-case) in the datum
 string.
 </member>
         </simplelist>
         <note>
           <title>Note:</title>
-          <para>because the internal matching functions use macros
-which consider also the characters like:
-@, [, \, ], and ^ to be letters, they will match against characters
-`, {, |, }, and ~ respectively, which is just all right, because
-in some older implementations of European character sets those
+          <para>Because the internal matching functions use macros
+which consider also characters like
+<code>@</code>, <code>[</code>, <code>\</code>, <code>]</code>, and <code>^</code> to be letters, they will match against characters
+<code>`</code>, <code>{</code>, <code>|</code>, <code>}</code>, and <code>~</code> respectively, because
+in some older implementations of European character sets, those
 characters mark the uppercase and lowercase variants of certain
 diacritic letters.
 </para>
         </note>
         <para>
 It is generally better to match
-too liberally and so maybe sometimes give something entirely off
+too liberally, and so maybe sometimes give something entirely off
 the wall to the user, than to miss something important because of
 too strict criteria.
 </para>
         <para>
 Of course, when searching from the data which contains text in
 some wide-character format (like certain coding systems for
-Japanese and Chinese where one character is coded with two bytes)
-neither fuzzy matching function nor nc_strstr function presented here
+Japanese and Chinese where one character is coded with two bytes),
+neither fuzzy matching function nor <code>nc_strstr</code> function presented here
 should be used, as they would often match on entirely spurious cases.
 </para>
       </section>
