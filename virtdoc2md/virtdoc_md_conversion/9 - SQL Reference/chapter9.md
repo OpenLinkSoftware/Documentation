@@ -886,7 +886,7 @@ a reference is serialized, as in when storing into a column of a table,
 the server will serialize the instance data, not the reference itself.
 
 The connection's instance cache is cleared after the completion of the
-current server operation, i.e. completion of the top level state,
+current server operation, i.e., completion of the top level state,
 statement invoked by a client or the completion of processing an HTTP
 request. The cache will thus survive multiple transactions if these are
 transacted within a single client initiated operation.
@@ -931,8 +931,8 @@ different from the current practice in calling stored procedures,
 because the compile types are not used to find the procedure.
 
 The majority of the system functions are known at compile time to return
-values of a certain SQL type (e.g.: LEFT is known to return VARCHAR,
-ATOI returns INTEGER etc). But there are some (e.g.: AREF) that may
+values of a certain SQL type (e.g., LEFT is known to return VARCHAR,
+ATOI returns INTEGER, etc.). But there are some (e.g., AREF) that may
 return values of more than one type. The Virtuoso server does type
 arithmetic for scalar expressions at compile time already (to be able to
 supply columns types of a result set to ODBC clients for example), but
@@ -1516,7 +1516,7 @@ For example if in the above example a Java function returns an instance
 of `g3` and there is a `sql_g3` defined inside virtuoso the `g3` Java
 instance will be wrapped into an `sql_g3` Virtuoso/PL instance. Note
 that that will not depend on the presence or absence of `sql_g1` and
-`sql_g2` definitions - i.e. Virtuoso will favor the exact match.
+`sql_g2` definitions - i.e., Virtuoso will favor the exact match.
 
 If, however `sql_g3` is not defined, but `sql_g2` and `sql_g1` are, then
 the `g3` instance will be wrapped up in an `sql_g2` instance when
@@ -1821,7 +1821,7 @@ is a case insensitive mode that preserves the declaration case of
 identifiers.
 
 A CaseMode of 1 specifies the upper case mode, which is most commonly
-used in SQL databases, e.g. Oracle. In the upper case mode, all unquoted
+used in SQL databases, e.g., Oracle. In the upper case mode, all unquoted
 identifiers are converted to upper case by the SQL parser. If
 identifiers are not quoted, the case in which they are entered is
 irrelevant.
@@ -1835,10 +1835,10 @@ SQL reserved words are case insensitive in all case modes.
 If CaseMode is 0 or absent, identifiers will be treated as case
 sensitive in all situations, whether quoted or not.
 
-If an identifier's name is equal to a SQL reserved word, e.g. TABLE, it
+If an identifier's name is equal to a SQL reserved word, e.g., TABLE, it
 must be quoted ("TABLE") in order to be used as an identifier.
 
-If an identifier contains non-alphanumeric characters, e.g. space, '-'
+If an identifier contains non-alphanumeric characters, e.g., space, '-'
 etc. it must be quoted regardless of CaseMode.
 
 Although CaseMode can be changed at any time it should only be set at
@@ -1961,7 +1961,7 @@ qualifier, owner and name separated by dots.
 Each connection has a current qualifier which is used as the default
 qualifier for if a name does not specify a qualifier. The owner can be
 omitted from a name if the qualifier and name uniquely identify the
-object, e.g. DB..SYS\_KEYS.
+object, e.g., DB..SYS\_KEYS.
 
 Initially, all system objects have the qualifier DB and owner DBA.
 
@@ -2017,7 +2017,7 @@ configuration file or as an ODBC connection option.
     ''''            '
     ''''''          ''
     '\t\r\n\\'      tab, carriage return, newline, backslash
-    '\012'          Character 012 octal, i.e. newline
+    '\012'          Character 012 octal, i.e., newline
 
 <a id="id35-numbers"></a>
 ## Numbers
@@ -2032,7 +2032,7 @@ Following are examples of decimal literals:
     123.456
     -16.0
 
-Numeric literals which specify an exponent, e.g. 1.2e11 or 2e-3 are read
+Numeric literals which specify an exponent, e.g., 1.2e11 or 2e-3 are read
 as C doubles, (64 bit IEEE binary floating point). This is potentially
 less precise than the DECIMAL SQL type.
 
@@ -2602,7 +2602,7 @@ Depending on document size and the complexity of the schema, schema
 validation may be a time- and memory- consuming operation. An
 application can win a lot if every stored value is validated only once
 and avoid repeating validations on every read of the stored data, but it
-also may loose if the validation is actually redundant (e.g. if the data
+also may loose if the validation is actually redundant (e.g., if the data
 always comes from sources which produce valid content).
 
 The parameter "optional-dtd-configuration" lets an application to
@@ -2650,7 +2650,7 @@ the check constraints.
     </p:Part>')
     
     *** Error 42000: [Virtuoso Driver][Virtuoso Server]XML parser detected an error:
-        ERROR  : Only 0 out of 1 required attributes are defined for element <p:Part>, e.g. the element has no attribute 'ID'
+        ERROR  : Only 0 out of 1 required attributes are defined for element <p:Part>, e.g., the element has no attribute 'ID'
     at line 3 column 25 of '(value to be placed in column DB.DBA.SPARE_PARTS of CONTENT)'
       <p:Part Count="101"/>
     -----------------------^
@@ -2910,10 +2910,10 @@ constraint.
 Virtuoso supports registering XML Schemas for use in [WITH
 SCHEMA](#sqlrefcreattablewithschema) constraint for column values. The
 statement contains the whole text of the schema as a string constant,
-i.e. enclosed in single quotes. This is not the best possible syntax,
+i.e., enclosed in single quotes. This is not the best possible syntax,
 because single quotes inside the text of schema should be carefully
 quoted, but this is de-facto standard. If the schema contains number of
-single quotes (e.g. attributes are in single quotes instead of typically
+single quotes (e.g., attributes are in single quotes instead of typically
 used double quotes), try a system stored procedure
 
     DB.DBA.SYS_CREATE_XML_SCHEMA (text_of_schema);
@@ -2987,7 +2987,7 @@ inspect elements of these two target namespaces.
     </j:Job>')
     
     *** Error 42000: [Virtuoso Driver][Virtuoso Server]XML parser detected an error:
-        ERROR  : Only 0 out of 1 required attributes are defined for element <p:Part>, e.g. the element has no attribute 'ID'
+        ERROR  : Only 0 out of 1 required attributes are defined for element <p:Part>, e.g., the element has no attribute 'ID'
     at line 4 column 27 of '(value to be placed in column DB.DBA.JOBS of CONTENT)'
         <p:Part Count="101"/>
     -------------------------^
@@ -3064,7 +3064,7 @@ greater then the previous state. Calling sequence\_set ('sequence'' , 0,
 
 Each autoincrement column corresponds to an internal sequence object.
 The name of the sequence object is'DB.DBA.' plus the concatenation of
-the table's qualifier, owner, table name and column name, e.g.
+the table's qualifier, owner, table name and column name, e.g.,
 'DB.DBA.db.dba.my\_table.ai\_column'. The user does not normally need to
 know about the sequence associated with an autoincrement column unless
 he or she wishes to change the sequence values using the
@@ -3373,7 +3373,7 @@ The SELECT syntax consists of the following parts:
         FOR UPDATE
 
 All parts are optional. If one or more of the clauses appear they must
-appear in the above order. All parts do not need to be specified, e.g.
+appear in the above order. All parts do not need to be specified, e.g.,
 SELECT A FROM T FOR UPDATE is valid but SELECT A FROM T ORDER BY a WHERE
 \< \< 10 is not.
 
@@ -3429,7 +3429,7 @@ NULL's.
 
 The \< correlation name \> is an identifier that is used to identify the
 table in a column reference if the same table appears many times in the
-query expression, e.g. is joined with itself.
+query expression, e.g., is joined with itself.
 
 The CROSS join has no join condition. This means that for each row in
 the left table all rows in the right table are included in the result.
@@ -3719,42 +3719,44 @@ Note that the queries, although to a similar effect are executed quite
 differently. There may be significant differences in performance.
 
 <a id="id71-like-predicate-search-patterns"></a>
-## LIKE Predicate & Search Patterns
+## `LIKE` Predicate & Search Patterns
 
-The *LIKE* predicate expects a pattern to be applied to a varchar or
-nvarchar column to qualify the results to be returned from a query.
+The *`LIKE`* predicate expects a pattern to be applied to a `varchar` or
+`nvarchar` column to qualify the results to be returned from a query.
 
-If the pattern does not begin with an at-sign (@) or with two asterisks
-(\*\*), then we test the equality of the string and pattern with
+If the pattern does not begin with an at-sign (`@`) nor with two asterisks
+(`**`), then we test the equality of the string and pattern with
 ordinary wildcard matching, which behaves approximately like the
 filename pattern matching in the Unix shell. (But not like the regular
 expression matching in utilities like grep and sed).
 
 The following characters have special significance in the pattern:
 
-? Matches any single character.
+`?` — Matches any single character.
 
-\* Matches zero or more of any characters.
+`*` — Matches zero or more of any characters.
 
-\[ \] (Called a group-expression here) Matches any one of the enclosed
-characters, unless the first character following the opening \[ is ^,
+`[ ]` — (Called a group-expression here) Matches any one of the enclosed
+characters, unless the first character following the opening `[` is `^`,
 then matches only if the character (in the datum string) is not any one
-of those specified after the ^. (i.e. the ^ negates the meaning of this
+of those specified after the `^` (i.e., the `^` negates the meaning of this
 expression.)
 
-You can use character ranges like 0-9 (shorthand for 0123456789) inside
+You can use character ranges like `0-9` (shorthand for `0123456789`) inside
 the brackets, in which case the character in the datum string must be
-lexically within the inclusive range of that pair (of course the
-character at the left side of hyphen must be lexically (that is, its
-ASCII value) less than the character at the right side).
+lexically within the inclusive range of that pair. In other words, the 
+lexical (ASCII) value of the character at the left side of hyphen must
+be less than the lexical (ASCII) value of the
+character at the right side.
 
-The hyphen can be included in the character set by putting it as the
-first or last character. The right bracket (\]) can be included by
-putting it as the first character in the expression, i.e. immediately
-after the opening bracket (\[) or the caret (^) following it.
+The hyphen (`-`) can be included in the character set by putting it as the
+first or last character. The right bracket (`]`) can be included by
+putting it as the first character in the expression, i.e., immediately
+after the opening bracket (`[`) or the caret (`^`) immediately following 
+the opening bracket.
 
-    [abc]          Matches any of the letters a, b and c.
-    [^0123456789]  Matches anything, except digits. (same as [^0-9])
+    [abc]          Matches any of the letters a, b, or c.
+    [^0123456789]  Matches anything, except digits. (Same as [^0-9].)
     [[]            Matches [
     []]            Matches ]
     [][]           Matches ] and [
@@ -3769,82 +3771,82 @@ That is, the hyphen indicates a range between characters, unless it is
 the first or the last character in the group expression, in which case
 it matches just to itself.
 
-*@* Matches the character last matched to ? or group-expression. For
-example ?\*@ matches to all strings which begin with the same character
-they end. However, if there is neither ? nor \[\] expression at the left
-side of @ in the pattern, then @ matches just to itself. (e.g. \*@\*
+*`@`* Matches the character last matched to `?` or group-expression. For
+example `?*@` matches to all strings which begin with the same character
+as they end with. However, if there is neither `?` nor `[]` expression at the left
+side of `@` in the pattern, then `@` matches just to itself. (e.g., `*@*`
 should match to all e-mail addresses).
 
 Any other characters match ONLY to themselves, that is, not even to the
-upper- or lowercase variants of the same letter. Use expression like
-\[Wo\]\[Oo\]\[Rr\]\[Dd\] if you want to find any mixed-case variant of
-the word "word", or use the substring search explained below.
+upper- or lower-case variants of the same letter. Use expressions like
+`[Wo][Oo][Rr][Dd]` if you want to find any mixed-case variant of
+the word "`word`", or use the substring search explained below.
 
-However, if the pattern begins with an at-sign (@) then we compare the
+However, if the pattern begins with an at-sign (`@`), then we compare the
 rest of pattern to string with the fuzzy matching, allowing differences
 of few characters in quality and quantity (length). If there is more
-than one @ in the beginning of pattern they are all skipped, and so many
-additional liberties are given for the match function. The more @-signs
-there are in the beginning, the more fuzzy (liberal) is the search. For
-example: pattern "@Johnson" will match to string "Jonsson" and pattern
-"@@Johnson" will match also to "Jansson".
+than one `@` in the beginning of pattern, they are all skipped, and many
+additional liberties are taken for the match function. The more `@` signs
+there are at the beginning, the more fuzzy (liberal) is the search. For
+example, pattern "`@Johnson`" will match string "`Jonsson`", and pattern
+"`@@Johnson`" will also match to "`Jansson`".
 
-If the pattern begins with two asterisks, then we do diacritic- and case
-insensitive substring search, trying to find the string given in the
+If the pattern begins with two asterisks (`**`), then we do diacritic- and 
+case-insensitive substring search, trying to find the string given in the
 rest of pattern from the datum string.
 
-"\*\*escort" will match to "Ford Escort vm. 1975".
+"`**escort`" will match to "`Ford Escort vm. 1975`".
 
-If there are any ISO8859.1 diacritic letters (e.g. vowels with accents
-or umlaut-signs, or letters like the Spanish n with \~ (tilde)) present
+If there are any ISO8859.1 diacritic letters (e.g., vowels with accents
+or umlauts, or letters like the Spanish `n` with `~` (tilde)) present
 in the datum string, then the plain unaccented (7-bit ASCII) variant of
-the same letter in the pattern string will match to it. But if there are
+the same letter in the pattern string will match to it. However, if there is
 any diacritic letter specified in the pattern string, then it will match
-only to the upper- or lowercase variant of exactly the same diacritic
+only to the upper- or lower-case variant of exactly the same diacritic
 letter.
 
 The rationale behind this is that the people entering the information to
-database can use the exact spelling for the word, for example writing
-the word "Citroen" with the umlaut-e (e with two dots above it), as it
-is actually written in French, and the people who search for the
-Citroens can still find it without need to remember the exact
-orthography of the French, by just giving a word "citroen". And this
-allows also the people who have just plain 7-bit ASCII keyboards to
-search for the words like Ra"a"kkyla" (place in Finland, a" means
-umlaut-a, i.e. a with two dots above it), just by entering the word
-raakkyla.
+the database can use the exact spelling for the word &mdash; for example, writing
+the word "Citroen" with the umlaut-e (e with two dots above it, <code>&#235;</code>), as it
+is actually written in French &mdash; and the people who search for
+"Citro&#235;n" can still find it without having to remember the exact
+orthography of the French, by just giving the word "`citroen`". This
+also allows people who have just plain 7-bit ASCII keyboards to
+search for words like `Ra"a"kkyla"` (a place in Finland, `a"` means
+umlaut-a, i.e., a with two dots above it, <code>&#228;</code>), just by entering the word
+`raakkyla`.
 
-So the following holds with the substring searches:
+So the following hold for substring searches:
 
-1\) Any non-alphabetic character in the pattern matches just to itself
-in the datum string (e.g. ? to ? and 3 to 3).
+1. Any non-alphabetic character in the pattern matches just to itself
+in the datum string (e.g., `?` to `?` and `3` to `3`).
 
-2\) Any 7-bit ASCII letter (A-Z and a-z without any diacritic signs) in
+2. Any 7-bit ASCII letter (`A-Z` and `a-z` without any diacritic signs) in
 the pattern matches to any diacritic variant of the same letter (as well
-as to same 7-bit ASCII letter) in the datum string, either in the upper-
-or lowercase.
+as to the same 7-bit ASCII letter) in the datum string, either in upper-
+or lower-case.
 
-3\) Any diacritic letter (8-bit ISO8859.1 letter) in the pattern matches
-only to the same letter (in the upper- or lowercase) in the datum
+3. Any diacritic letter (8-bit ISO8859.1 letter) in the pattern matches
+only to the same letter (in upper- or lower-case) in the datum
 string.
 
 > **Note**
 > 
-> because the internal matching functions use macros which consider also
-> the characters like: @, \[, \\, \], and ^ to be letters, they will
-> match against characters \`, {, |, }, and \~ respectively, which is
-> just all right, because in some older implementations of European
-> character sets those characters mark the uppercase and lowercase
+> Because the internal matching functions use macros which also consider
+> characters like: `@`, `[`, `\`, `]`, and `^` to be letters, they will
+> match against characters ``` ` ```, `{`, `|`, `}`, and `~`, respectively, 
+> because in some older implementations of European
+> character sets, those characters mark the uppercase and lowercase
 > variants of certain diacritic letters.
 
-It is generally better to match too liberally and so maybe sometimes
+It is generally better to match too liberally, and so maybe sometimes
 give something entirely off the wall to the user, than to miss something
-important because of too strict criteria.
+important because of too-strict criteria.
 
 Of course, when searching from the data which contains text in some
 wide-character format (like certain coding systems for Japanese and
-Chinese where one character is coded with two bytes) neither fuzzy
-matching function nor nc\_strstr function presented here should be used,
+Chinese, where one character is coded with two bytes), neither fuzzy
+matching function nor `nc_strstr` function presented here should be used,
 as they would often match on entirely spurious cases.
 
 <a id="id72-the-top-select-option"></a>
@@ -4017,12 +4019,12 @@ The syntax is:
 
 Each breakup term is a list of comma separated expressions with an
 optional search condition at the end. Each list is treated as a select
-list in a union, i.e. they must be of equal length and the leftmost list
+list in a union, i.e., they must be of equal length and the leftmost list
 must provide a name for each column. This means that an AS declaration
 is needed if the expression is not a column.
 
 If a breakup tern has the optional WHERE clause, the condition is
-evaluated in the scope of the select, i.e. all that is defined by the
+evaluated in the scope of the select, i.e., all that is defined by the
 FROM. If the condition is true, the row represented by the breakup term
 is added to the result set of the breakup select, otherwise it is
 ignored.
@@ -4061,7 +4063,7 @@ and no changes that could be rolled back. The rollback operation always
 succeeds, as any change is always reversible until committed. COMMIT
 WORK may fail if the transaction had been marked to be canceled before
 the COMMIT WORK operation started. A failed commit has the effect of a
-rollback but it will signal a SQL STATE descriptive of the error, e.g.
+rollback but it will signal a SQL STATE descriptive of the error, e.g.,
 40001 (deadlock).
 
 These operations are typically not needed, since the SQLTransact ODBC
@@ -4182,7 +4184,7 @@ checkpoints largely exceeds the amount of RAM, the checkpoint will be a
 disk-to-disk copy process which takes a time proportional to the number
 of modified pages. This can take a long time. Virtuoso offers a
 mechanism called checkpoint remap. This allows making a committed state
-persistent, i.e. safe, without copying all the delta collected since the
+persistent, i.e., safe, without copying all the delta collected since the
 last checkpoint over the pre-checkpoint state.
 
 The checkpoint remap mechanism means that a page, say number 12 get
@@ -4494,7 +4496,7 @@ is synonymous with setting the user's group to 'dba'.
 
 The effective privileges inside a trigger are those of the owner of the
 table whose trigger is executing. The privilege of executing a trigger
-is derived from the privilege of performing the trigger action, e.g.
+is derived from the privilege of performing the trigger action, e.g.,
 update of a specific column.
 
 The effective privilege inside a stored procedure is that of the owner
@@ -4810,7 +4812,7 @@ intermediate values ("accumulators") inside the loop. When the fetch
 operation signals that there are no more data, a final result is
 calculated from values of "accumulators"
 
-E.g. to find an average of all values in a table's column COL, one may
+E.g., to find an average of all values in a table's column COL, one may
 open a cursor to fetch values from the COL, then set two "accumulators"
 TOTAL and CNT to zero, then fetch row after row adding 1 to CNT and
 adding current value of COL to TOTAL. At the end of loop, an error
@@ -5076,7 +5078,7 @@ than writing to a string session:
 Virtuoso offers variety of ways to place relational data into XML
 documents, and two best of them are select statements with FOR XML
 clause and XML views. But in some rare cases you may prefer to compose
-XML as an output of plain select statement, e.g. to get a few percent
+XML as an output of plain select statement, e.g., to get a few percent
 faster code.
 
 Among other things, the CREATE XML VIEW statement creates set of
@@ -5184,7 +5186,7 @@ cost model and determines the best fit, from which it generates a query
 graph. This query graph can be returned as a result set by the
 [`explain()`](#fn_explain) SQL function. The cost model is based on
 table row counts, defined indices and uniqueness constraints, and column
-cardinalities, i.e. counts of distinct values in columns. Additionally,
+cardinalities, i.e., counts of distinct values in columns. Additionally,
 histograms can be made for value distribution of individual columns.
 
 Virtuoso automatically maintains statistics about tables in the local
@@ -5300,7 +5302,7 @@ removal of the invariant.
 ### Opening Derived Tables & Views
 
 Views are initially opened into equivalent derived tables. If a derived
-table in a FROM clause is sufficiently simple, i.e. has no distinct,
+table in a FROM clause is sufficiently simple, i.e., has no distinct,
 top, group by, and is not a multiple query expression such as a union,
 it can be in-lined.
 
@@ -5323,7 +5325,7 @@ tables joined in the view will not have to be laid out contiguously.
 ### Migrating Enclosing Predicates
 
 When there is a derived table or view expansion which cannot be
-in-lined, i.e. it has a group by or is a union or such, predicates of
+in-lined, i.e., it has a group by or is a union or such, predicates of
 the enclosing WHERE phrase are migrated into the derived table itself.
 The set of predicates that may be thus migrated will be a function of
 the join order, thus different combinations will be tried.
@@ -7086,7 +7088,7 @@ For example:
 # Bitmap Indices
 
 A bitmap index is a special type of index that is tailored for being
-efficient for key columns with relatively few distinct values, i.e. low
+efficient for key columns with relatively few distinct values, i.e., low
 cardinality key columns. A bitmap index is created with the normal
 create index statement by putting the bitmap keyword in front of index,
 as follows:
@@ -7120,7 +7122,7 @@ rows would have to be retrieved from the table itself.
 
 Virtuoso's implementation of bitmap indices is designed to work
 efficiently even when the leading key parts have relatively high
-cardinality, i.e. many distinct values, causing there to be a large
+cardinality, i.e., many distinct values, causing there to be a large
 number of mostly empty bitmaps. Of course, if each bitmap has only one
 bit set, for example if every customer is in a different state, there is
 no benefit to bitmap indices. On the other hand, there is also almost no
@@ -7282,7 +7284,7 @@ columns and is ordered. In our example, a path is p1=1, p1=2, p1=4. This
 is the path connecting persons 1 and 4. If there are columns in the
 select that are neither input or output, they too are recorded for each
 step of the path. The result set may include just the ends of a path,
-i.e. one row where the input columns have the beginning and the output
+i.e., one row where the input columns have the beginning and the output
 columns the end of the path. This means there is one row per distinct
 path. The result set may also include a row for each step on each path.
 
@@ -7309,7 +7311,7 @@ may be many paths joining persons 1 and 4.
 In this situation, the result set has one row per step, including a row
 for the initial and final steps. While the evaluation order may vary
 internally, the result set is presented as if the query were evaluated
-from input to output, i.e. looking for people known by 1, finding 2 and
+from input to output, i.e., looking for people known by 1, finding 2 and
 3, then looking for people they know, finding that 2 knows 4, which is a
 solution, since p2 = 4 was specified in the outer select. If the outere
 query had p1 = 4 and p2 = 1, there would be an empty result set since
@@ -7329,7 +7331,7 @@ The result set of a transitive subquery will either have one row for
 each state reached, or it may have one row for each step on the path to
 each state reached.
 
-The first example returns only the ends of the paths, i.e. directly and
+The first example returns only the ends of the paths, i.e., directly and
 indirectly known person id's. It does not return for each returned id
 how this person is known, through which set of connections. The second
 example returns a row for each step on each path. Steps will be returned
@@ -7402,12 +7404,12 @@ Now we may look more formally at the meaning of the transitive options:
 
   - T\_MIN (INTNUM) - This means that paths shorter than the number are
     not returned. In the examples above, we had min at 0, so that a path
-    of zero length was also returned, i.e. where the first output equals
+    of zero length was also returned, i.e., where the first output equals
     the outer conditions for the inputs.
 
   - T\_MAX (INTNUM) - This gives a maximum length of path. Paths longer
     than this many steps are not returned. A value of 1 means that the
-    subquery is evaluated once, i.e. the outputs of the first
+    subquery is evaluated once, i.e., the outputs of the first
     evalyuation are not fed back into the inputs. Specifying a minimum
     of 0 and a maximum of one means an optional join. Specifying min and
     max both to 1 means an ordinary derived table.
@@ -7418,11 +7420,11 @@ Now we may look more formally at the meaning of the transitive options:
 
   - T\_EXISTS - Only one path is generated and returned.
 
-  - T\_NO\_CYCLES - If a path is found that loops over itself, i.e. a
+  - T\_NO\_CYCLES - If a path is found that loops over itself, i.e., a
     next step has the input values equal to the input values of a
     previous step on the path, the binding is ignored.
 
-  - T\_CYCLES\_ONLY - Only paths that have a cycle, i.e. input values of
+  - T\_CYCLES\_ONLY - Only paths that have a cycle, i.e., input values of
     a subsequent step equal the input values of a previous step on the
     same path, are returned.
 
@@ -7555,7 +7557,7 @@ APS\_LOAD\_AT\_BOOT to zero for them.
 
 Note that if phrase set is edited intensively during server run then the
 number of inserted phrases is important, an effect of phrase removal is
-visible only after server restart. E.g. if a phrase set is frequently
+visible only after server restart. E.g., if a phrase set is frequently
 cleaned and refilled with new phrases then it is much better to delete
 an obsolete set and create a new one.
 
@@ -8279,7 +8281,7 @@ intentional restrictions, that will probably persist for long time.
 
 \--- No support for circumpolar shapes. A ring with a pole inside it or
 on the border of it may be treated as an error or result in wrong
-calculations of spatial relations. E.g. the st\_intersects of two
+calculations of spatial relations. E.g., the st\_intersects of two
 triangles POLYGON((0 89, 120 89, 240 89, 0 89)) and POLYGON((0 88, 120
 88, 240 88, 0 88)) may return FALSE. st\_intersects of two triangles
 POLYGON((0 89, 60 90, 120 89, 0 89)) and POLYGON((120 88, 180 90, 240
@@ -9013,7 +9015,7 @@ and writable for DBA only). When the table is edited, call function
 "`Proj4 cache_reset()` " to prevent SQL runtime from using previously
 prepared projections that might become obsolete after changes in the
 table. Note that proj4 projections are for normalized data in radians
-whereas Virtuoso stores shapes using numbers that come from WKT, i.e.
+whereas Virtuoso stores shapes using numbers that come from WKT, i.e.,
 they're latitudes and longitudes in degrees for almost all cases.
 
 The v7proj4 plugin automatically applies `RAD_TO_DEG` multiplier before
@@ -9085,7 +9087,7 @@ inserting into a database table. This includes the whole range of SQL
 functionality, including intermediate aggregations and the like.
 
 This feature deprecates the CSV load functions in previous versions,
-e.g. csv\_load.
+e.g., csv\_load.
 
 Queries can freely mix file tables and regular tables. Joins with file
 tables make hash join plans where the smaller file is copied into a
@@ -9140,7 +9142,7 @@ newline or escape character following the escape character is added to
 the parsed input without its special interpretation.
 
 Each column in the CSV file is expected to end with the delimiter
-character. A field of zero length is considered a SQL NULL value, i.e.
+character. A field of zero length is considered a SQL NULL value, i.e.,
 if two delimiters are adjacent or if a line begins with the delimiter,
 the field is considered NULL. The text in the field is parsed according
 to the data type declared for the column whose position in the create
@@ -9217,7 +9219,7 @@ permissions can be granted as for any other table.
 
 A file table is copied into a database resident table with an INSERT...
 SELECT statement. Such a statement executes in parallel if the session
-is in auto commit mode, i.e. log\_enable (2) or log\_enable (3) has been
+is in auto commit mode, i.e., log\_enable (2) or log\_enable (3) has been
 previously executed on the session.
 
 A file can be loaded inside a transaction if the connection is not in
