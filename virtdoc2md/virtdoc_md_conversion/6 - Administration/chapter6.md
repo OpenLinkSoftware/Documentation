@@ -1669,7 +1669,7 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
     2: Any combined char is converted to its (smallest known) base, so,
     "é" will lose its accent and become plain old ASCII "e".
     
-    3: This is equal to 1|2, and when set, both conversions are performed.
+    3: This is equal to 1+2, and when set, both conversions are performed.
     As a result, any pair of base char and combinig char loses its second
     char, and any chars with accents will lose accents.
     
