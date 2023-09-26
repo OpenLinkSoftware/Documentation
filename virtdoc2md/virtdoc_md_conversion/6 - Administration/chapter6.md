@@ -1670,11 +1670,11 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
     "é" will lose its accent and become plain old ASCII "e".
     
     3: This is equal to 1+2, and when set, both conversions are performed.
-    As a result, any pair of base char and combinig char loses its second
+    As a result, any pair of base char and combining char loses its second
     char, and any chars with accents will lose accents.
     
-    If the parameter is required at all, the needed value is probably 3.
-    So the fragment of virtuoso.ini should be:
+    If the parameter is required at all, the needed value is probably 3,
+    so the fragment of virtuoso.ini should be:
 
         [I18N]
         XAnyNormalization=3
