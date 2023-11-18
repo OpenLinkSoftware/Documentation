@@ -536,24 +536,25 @@ section will be ignored.
     
     \<path\> := \<absolute\_path\> or \<relative\_path\> comma-delimited
     list of OS directories allowed for file operations such as
-    `file_to_string()` . The server base directory (the directory
-    containing this INI file) must appear on this list in order to
-    enable File DSNs to work. On Windows use in the path "\\".
-    
-        SQL> select server_root (), virtuoso_ini_path ();
-    
-        SQL> select cfg_item_value (virtuoso_ini_path (), 'Parameters',
-        'DirsAllowed');
-    
+    `file_to_string()`. The server base directory (the directory
+    containing this INI file) must appear on this list to
+    enable File DSNs to work. On Windows, use "`\`" as the path separator; 
+    on Unix-like OS including Linux and macOS 10.x and later, use "`:`".
+        
     The Virtuoso ISQL utility can be used to check the Server
-    DirsAllowed params as follows:
+    `DirsAllowed` params as described below.
     
-    The above should show in the result the server working directory and
-    INI file name.
-    
-    Also you can check the relevant INI setting by running following
-    statement via ISQL command line utility:
-
+    The following should show the server's working directory and INI
+    file name in the result.
+    ```
+    SQL> select server_root (), virtuoso_ini_path ();
+    ```    
+    You can also check the relevant INI setting by running the following
+    statement:
+    ```
+    SQL> select cfg_item_value (virtuoso_ini_path (), 'Parameters',
+    'DirsAllowed');
+    ```
   - **DirsDenied=\<path\> \[, \<path\>\].**
     
     \<path\> := \<absolute\_path\> or \<relative\_path\> OS directories
