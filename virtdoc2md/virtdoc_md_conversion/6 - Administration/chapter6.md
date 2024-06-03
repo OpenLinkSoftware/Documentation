@@ -1651,35 +1651,35 @@ The SPARQL INI can be get as RDF via http://cname/sparql?ini service.
 
 ##### \[I18N\]
 
-  - **WideFileNames = 1/2/3/0.**
+  - **XAnyNormalization = 1/2/3/0.**
     
-    0: default value. It means not to normalize anything, so for ex.
+    0: default value. It means not to normalize anything, so, for example,
     "José" and "Jose" are two distinct words.
-    
-        [I18N]
-        XAnyNormalization=3
     
     > **Tip**
     > 
     > [How Can I Control the normalization of UNICODE3 accented chars in
     > free-text index?](#virtuosotipsandtrickscontrolunicode3)
     
-    1: Any pair of base char and combinig char (NSM, non-spacing
+    1: Any pair of base char and combining char (NSM, non-spacing
     modifier) is replaced with a single combined char, so if character
     "é" is written as a sequence of "base" character "e" and a unicode
-    char U +301 ("combining acute accent") then the pair will be
-    replaced with single U+00E9 ("latin small letter e acute").
+    char U+0301 ("combining acute accent") then the pair will be
+    replaced with a single U+00E9 ("latin small letter e acute").
     
-    2: Any combined char is converted to its (smallest known) base. So
+    2: Any combined char is converted to its (smallest known) base, so,
     "é" will lose its accent and become plain old ASCII "e".
     
-    3: This is equl to 1|2 and when set then performs both conversions.
-    As a result, pair of base char and combinig char loses its second
-    char and chars with accents will lose accents.
+    3: This is equal to 1+2, and when set, both conversions are performed.
+    As a result, any pair of base char and combining char loses its second
+    char, and any chars with accents will lose accents.
     
-    If the parameter is required at all, the needed value is probably 3.
-    So the fragment of virtuoso.ini should be:
+    If the parameter is required at all, the needed value is probably 3,
+    so the fragment of virtuoso.ini should be:
 
+        [I18N]
+        XAnyNormalization=3
+    
   - **WideFileNames = 1/0.**
     
     Default is 0. When 1 then file access and directory listing
