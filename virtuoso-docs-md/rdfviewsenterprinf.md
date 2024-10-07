@@ -1,0 +1,704 @@
+<div id="rdfviewsenterprinf" class="section">
+
+<div class="titlepage">
+
+<div>
+
+<div>
+
+### 16.8.14. Informix using demonstration 'Stores' database
+
+</div>
+
+</div>
+
+</div>
+
+``` programlisting
+DB..vd_remote_data_source ('inf10_stores_demo_rdf', '', '<uid>','<pwd>');
+
+ATTACH TABLE  "informix"."call_type"  PRIMARY KEY ("call_code")                  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."call_type"  FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."catalog"    PRIMARY KEY ("catalog_num")                AS "stores_demo_rdf"."inf10_stores_demo_rdf"."catalog"    FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."cust_calls" PRIMARY KEY ("customer_num", "call_dtime") AS "stores_demo_rdf"."inf10_stores_demo_rdf"."cust_calls" FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."customer"   PRIMARY KEY ("customer_num")               AS "stores_demo_rdf"."inf10_stores_demo_rdf"."customer"   FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."items"      PRIMARY KEY ("item_num", "order_num")      AS "stores_demo_rdf"."inf10_stores_demo_rdf"."items"      FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."manufact"   PRIMARY KEY ("manu_code")                  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."manufact"   FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."msgs"       PRIMARY KEY ("lang", "number", "message")  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."msgs"       FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."orders"     PRIMARY KEY ("order_num")                  AS "stores_demo_rdf"."inf10_stores_demo_rdf"."orders"     FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."state"      PRIMARY KEY ("code", "sname")              AS "stores_demo_rdf"."inf10_stores_demo_rdf"."state"      FROM 'inf10_stores_demo_rdf';
+ATTACH TABLE  "informix"."stock"      PRIMARY KEY ("stock_num", "manu_code")     AS "stores_demo_rdf"."inf10_stores_demo_rdf"."stock"      FROM 'inf10_stores_demo_rdf';
+
+COMMIT WORK;
+
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.items      TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.catalog    TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.msgs       TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.state      TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.orders     TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.stock      TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.customer   TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.call_type  TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.manufact   TO "SPARQL", "SPARQL_UPDATE";
+GRANT SELECT ON stores_demo_rdf.inf10_stores_demo_rdf.cust_calls TO "SPARQL", "SPARQL_UPDATE";
+GRANT SPARQL_UPDATE to "SPARQL";
+
+create function DB.DBA.CUST_CALLS_IRI (in customer_num integer, in call_dtime datetime) returns varchar
+{
+    declare _call_dtime any;
+    _call_dtime := cast(call_dtime as varchar);
+    return sprintf('http://example.com/informix/stores_demo/cust_calls/%d_%U#this', customer_num, _call_dtime);
+};
+
+create function DB.DBA.CUST_CALLS_IRI_INV_1 (in cust_calls_iri varchar) returns integer
+{
+    declare parts any;
+    parts := sprintf_inverse(cust_calls_iri, 'http://example.com/informix/stores_demo/cust_calls/%d_%U#this', 1);
+    if(parts is not null)
+    {
+        return parts[0];
+    }
+    return NULL;
+};
+
+create function DB.DBA.CUST_CALLS_IRI_INV_2 (in cust_calls_iri varchar) returns datetime
+{
+    declare parts any;
+    parts := sprintf_inverse(cust_calls_iri, 'http://example.com/informix/stores_demo/cust_calls/%d_%U#this', 1);
+    if(parts is not null)
+    {
+        return parts[1];
+    }
+    return NULL;
+};
+
+grant execute on DB.DBA.CUST_CALLS_IRI to "SPARQL", "SPARQL_UPDATE";
+grant execute on DB.DBA.CUST_CALLS_IRI_INV_1 to "SPARQL", "SPARQL_UPDATE";
+grant execute on DB.DBA.CUST_CALLS_IRI_INV_2 to "SPARQL", "SPARQL_UPDATE";
+
+-------- Create rdfs:Class definitions ----------------------------
+
+ttlp (
+'
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix items:   <http://example.com/schemas/informix/stores_demo/items/> .
+@prefix catalog: <http://example.com/schemas/informix/stores_demo/catalog/> .
+@prefix stock:   <http://example.com/schemas/informix/stores_demo/stock/> .
+@prefix msgs:    <http://example.com/schemas/informix/stores_demo/msgs/> .
+@prefix state:   <http://example.com/schemas/informix/stores_demo/state/> .
+@prefix orders:  <http://example.com/schemas/informix/stores_demo/orders/> .
+@prefix manuf:   <http://example.com/schemas/informix/stores_demo/manufact/> .
+@prefix cust:    <http://example.com/schemas/informix/stores_demo/customer/> .
+@prefix callt:   <http://example.com/schemas/informix/stores_demo/call_type/> .
+@prefix custc:   <http://example.com/schemas/informix/stores_demo/cust_calls/> .
+
+items:Items a rdfs:Class ;
+    rdfs:label "Items" ;
+    rdfs:comment "Informix SD items table" .
+
+items:item_num a rdf:Property ;
+    rdfs:domain items:Items ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ITEM NUMBER" .
+
+items:quantity a rdf:Property ;
+    rdfs:domain items:Items ;
+    rdfs:range xsd:integer ;
+    rdfs:label "QUANTITY" .
+
+items:total_price a rdf:Property ;
+    rdfs:domain items:Items ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "TOTAL PRICE" .
+
+items:order_num_fk a rdf:Property ;
+    rdfs:domain items:Items ;
+    rdfs:range orders:Orders ;
+    rdfs:label "ORDER NUMBER" .
+
+items:stock_num_fk a rdf:Property ;
+    rdfs:domain items:Items ;
+    rdfs:range stock:Stock ;
+    rdfs:label "STOCK NUMBER" .
+
+items:manu_code_fk a rdf:Property ;
+    rdfs:domain items:Items ;
+    rdfs:range stock:Stock ;
+    rdfs:label "MANUAL CODE" .
+
+catalog:Catalog a rdfs:Class ;
+    rdfs:label "Catalog" ;
+    rdfs:comment "Informix SD catalog table" .
+
+catalog:manu_code a rdf:Property ;
+    rdfs:domain catalog:Catalog ;
+    rdfs:range xsd:integer ;
+    rdfs:label "MANUAL CODE" .
+
+catalog:cat_descr a rdf:Property ;
+    rdfs:domain catalog:Catalog ;
+    rdfs:range xsd:string ;
+    rdfs:label "CATALOG DESCRIPTION" .
+
+catalog:cat_picture a rdf:Property ;
+    rdfs:domain catalog:Catalog ;
+    rdfs:range xsd:byte ;
+    rdfs:label "CATALOG PICTURE" .
+
+catalog:cat_advert a rdf:Property ;
+    rdfs:domain catalog:Catalog ;
+    rdfs:range xsd:string ;
+    rdfs:label "CATALOG ADVERT" .
+
+catalog:catalog_num_fk a rdf:Property ;
+    rdfs:domain catalog:Catalog ;
+    rdfs:range stock:Stock ;
+    rdfs:label "CATALOG NUMBER" .
+
+catalog:stock_num_fk a rdf:Property ;
+    rdfs:domain catalog:Catalog ;
+    rdfs:range stock:Stock ;
+    rdfs:label "STOCK NUMBER" .
+
+msgs:Msgs a rdfs:Class ;
+    rdfs:label "Msgs" ;
+    rdfs:comment "Informix SD msgs table" .
+
+msgs:lang a rdf:Property ;
+    rdfs:domain msgs:Msgs ;
+    rdfs:range xsd:string ;
+    rdfs:label "LANGUAGE" .
+
+msgs:number a rdf:Property ;
+    rdfs:domain msgs:Msgs ;
+    rdfs:range xsd:integer ;
+    rdfs:label "NUMBER" .
+
+msgs:message a rdf:Property ;
+    rdfs:domain msgs:Msgs ;
+    rdfs:range xsd:string ;
+    rdfs:label "MESSAGE" .
+
+state:State a rdfs:Class ;
+    rdfs:label "State" ;
+    rdfs:comment "Informix SD state table" .
+
+state:code a rdf:Property ;
+    rdfs:domain state:State ;
+    rdfs:range xsd:string ;
+    rdfs:label "STATE CODE" .
+
+state:sname a rdf:Property ;
+    rdfs:domain state:State ;
+    rdfs:range xsd:string ;
+    rdfs:label "STATE NAME" .
+
+orders:Orders a rdfs:Class ;
+    rdfs:label "Orders" ;
+    rdfs:comment "Informix SD orders table" .
+
+orders:order_num a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ORDER NUMBER" .
+
+orders:order_date a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:date ;
+    rdfs:label "ORDER DATE" .
+
+orders:ship_instruct a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:string ;
+    rdfs:label "SHIPPING INSTRUCTION" .
+
+orders:backlog a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:string ;
+    rdfs:label "BACKLOG" .
+
+orders:po_num a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:string ;
+    rdfs:label "PURCHASE ORDER NUMBER" .
+
+orders:ship_date a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:date ;
+    rdfs:label "SHIPPING DATE" .
+
+orders:ship_weight a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "SHIPPING WEIGHT" .
+
+orders:ship_charge a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "SHIPPING CHARGE" .
+
+orders:paid_date a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range xsd:date ;
+    rdfs:label "PAID DATE" .
+
+orders:customer_num_fk a rdf:Property ;
+    rdfs:domain orders:Orders ;
+    rdfs:range cust:Customer ;
+    rdfs:label "CUSTOMER NUMBER" .
+
+stock:Stock a rdfs:Class ;
+    rdfs:label "Stock" ;
+    rdfs:comment "Informix SD stock table" .
+
+stock:stock_num a rdf:Property ;
+    rdfs:domain stock:Stock ;
+    rdfs:range xsd:integer ;
+    rdfs:label "STOCK NUMBER" .
+
+stock:description a rdf:Property ;
+    rdfs:domain stock:Stock ;
+    rdfs:range xsd:string ;
+    rdfs:label "DESCRIPTION" .
+
+stock:unit_price a rdf:Property ;
+    rdfs:domain stock:Stock ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "UNIT PRICE" .
+
+stock:unit a rdf:Property ;
+    rdfs:domain stock:Stock ;
+    rdfs:range xsd:string ;
+    rdfs:label "UNIT" .
+
+stock:unit_descr a rdf:Property ;
+    rdfs:domain stock:Stock ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "UNIT DESCRIPTION" .
+
+stock:manu_code_fk a rdf:Property ;
+    rdfs:domain stock:Stock ;
+    rdfs:range manuf:Manufact ;
+    rdfs:label "MANUAL CODE" .
+
+cust:Customer a rdfs:Class ;
+    rdfs:label "Customer" ;
+    rdfs:comment "Informix SD customer table" .
+
+cust:customer_num a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CUSTOMER NUMBER" .
+
+cust:fname a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "FIRST NAME" .
+
+cust:lname a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "LAST NAME" .
+
+cust:company a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "COMPANY" .
+
+cust:address1 a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "ADDRESS1" .
+
+cust:address2 a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "ADDRESS2" .
+
+cust:city a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "CITY" .
+
+cust:state a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "STATE" .
+
+cust:zipcode a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "ZIP CODE" .
+
+cust:phone a rdf:Property ;
+    rdfs:domain cust:Customer ;
+    rdfs:range xsd:string ;
+    rdfs:label "PHONE NUMBER" .
+
+callt:Call_type a rdfs:Class ;
+    rdfs:label "Call_type" ;
+    rdfs:comment "Informix SD call_type table" .
+
+callt:call_code a rdf:Property ;
+    rdfs:domain callt:Call_type ;
+    rdfs:range xsd:string ;
+    rdfs:label "CALL CODE" .
+
+callt:code_descr a rdf:Property ;
+    rdfs:domain callt:Call_type ;
+    rdfs:range xsd:string ;
+    rdfs:label "CODE DESCRIPTION" .
+
+manuf:Manufact a rdfs:Class ;
+    rdfs:label "Manufact" ;
+    rdfs:comment "Informix SD manufact table" .
+
+manuf:manu_code a rdf:Property ;
+    rdfs:domain manuf:Manufact ;
+    rdfs:range xsd:string ;
+    rdfs:label "MANUFACTURE CODE" .
+
+manuf:manu_name a rdf:Property ;
+    rdfs:domain manuf:Manufact ;
+    rdfs:range xsd:string ;
+    rdfs:label "MANUFACTURE NAME" .
+
+manuf:lead_time a rdf:Property ;
+    rdfs:domain manuf:Manufact ;
+    rdfs:range xsd:integer ;
+    rdfs:label "LEAD TIME" .
+
+custc:Cust_calls a rdfs:Class ;
+    rdfs:label "Cust_calls" ;
+    rdfs:comment "Informix SD cust_calls table" .
+
+custc:call_dtime a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range xsd:datetime ;
+    rdfs:label "CALL TIME" .
+
+custc:user_id a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range xsd:string ;
+    rdfs:label "USER ID" .
+
+custc:call_descr a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range xsd:string ;
+    rdfs:label "CALL DESCRIPTION" .
+
+custc:res_dtime a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range xsd:datetime ;
+    rdfs:label "RES TIME" .
+
+custc:res_descr a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range xsd:string ;
+    rdfs:label "RES DESCRIPTION" .
+
+custc:customer_num_fk a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range cust:Customer ;
+    rdfs:label "CUSTOMER NUM" .
+
+custc:call_code_fk a rdf:Property ;
+    rdfs:domain manuf:Cust_calls ;
+    rdfs:range callt:Call_type ;
+    rdfs:label "CALL CODE" .
+
+', '', 'http://example.com/schemas/informix/stores_demo', 0);
+
+----------- Create IRI Classes -------------
+
+SPARQL
+
+prefix items:   <http://example.com/schemas/informix/stores_demo/items/>
+prefix catalog: <http://example.com/schemas/informix/stores_demo/catalog/>
+prefix stock:   <http://example.com/schemas/informix/stores_demo/stock/>
+prefix msgs:    <http://example.com/schemas/informix/stores_demo/msgs/>
+prefix state:   <http://example.com/schemas/informix/stores_demo/state/>
+prefix orders:  <http://example.com/schemas/informix/stores_demo/orders/>
+prefix manuf:   <http://example.com/schemas/informix/stores_demo/manufact/>
+prefix cust:    <http://example.com/schemas/informix/stores_demo/customer/>
+prefix callt:   <http://example.com/schemas/informix/stores_demo/call_type/>
+prefix custc:   <http://example.com/schemas/informix/stores_demo/cust_calls/>
+
+create iri class items:items_iri
+    "http://example.com/informix/stores_demo/items/%d_%d#this"
+    (in item_num integer not null, in order_num integer not null) .
+
+create iri class catalog:catalog_iri
+    "http://example.com/informix/stores_demo/catalog/%d#this"
+        (in catalog_num integer not null) .
+
+create iri class msgs:msgs_iri
+    "http://example.com/informix/stores_demo/msgs/%U_%d_%U#this"
+        (in _lang varchar not null, in number integer not null, in message varchar not null) .
+
+create iri class state:state_iri
+    "http://example.com/informix/stores_demo/state/%U#this"
+        (in code varchar not null) .
+
+create iri class orders:orders_iri
+    "http://example.com/informix/stores_demo/orders/%d#this"
+        (in order_num integer not null) .
+
+create iri class stock:stock_iri
+    "http://example.com/informix/stores_demo/stock/%d_%U#this"
+        (in stock_num integer not null, in manu_code varchar not null) .
+
+create iri class cust:customer_iri
+    "http://example.com/informix/stores_demo/customer/%d#this"
+        (in customer_num integer not null) .
+
+create iri class callt:call_type_iri
+    "http://example.com/informix/stores_demo/call_type/%U#this"
+        (in call_code varchar not null) .
+
+create iri class manuf:manufact_iri
+    "http://example.com/informix/stores_demo/manufact/%U#this"
+        (in manu_code varchar not null) .
+
+create iri class custc:cust_calls_iri using
+    function DB.DBA.CUST_CALLS_IRI (in customer_num integer, in call_dtime datetime) returns varchar,
+    function DB.DBA.CUST_CALLS_IRI_INV_1 (in cust_calls_iri varchar) returns integer,
+        function DB.DBA.CUST_CALLS_IRI_INV_2 (in cust_calls_iri varchar) returns datetime .
+;
+
+------------- Create Quad Store ------------------------------------
+
+SPARQL
+
+prefix items:   <http://example.com/schemas/informix/stores_demo/items/>
+prefix catalog: <http://example.com/schemas/informix/stores_demo/catalog/>
+prefix stock:   <http://example.com/schemas/informix/stores_demo/stock/>
+prefix msgs:    <http://example.com/schemas/informix/stores_demo/msgs/>
+prefix state:   <http://example.com/schemas/informix/stores_demo/state/>
+prefix orders:  <http://example.com/schemas/informix/stores_demo/orders/>
+prefix manuf:   <http://example.com/schemas/informix/stores_demo/manufact/>
+prefix cust:    <http://example.com/schemas/informix/stores_demo/customer/>
+prefix callt:   <http://example.com/schemas/informix/stores_demo/call_type/>
+prefix custc:   <http://example.com/schemas/informix/stores_demo/cust_calls/>
+
+alter quad storage virtrdf:DefaultQuadStorage
+  from stores_demo_rdf.inf10_stores_demo_rdf.items      as items_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.catalog    as catalog_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.msgs       as msgs_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.state      as state_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.orders     as orders_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.stock      as stock_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.customer   as customer_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.call_type  as call_type_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.manufact   as manufact_tbl
+  from stores_demo_rdf.inf10_stores_demo_rdf.cust_calls as cust_calls_tbl
+{
+  create virtrdf:informix_stores_demo as graph <http://example.com/informix/stores_demo>
+  {
+    items:items_iri (items_tbl.item_num, items_tbl.order_num) a items:Items as virtrdf:items_pk ;
+    items:item_num    items_tbl.item_num       as virtrdf:items_item_num ;
+    items:order_num   items_tbl.order_num      as virtrdf:items_order_num ;
+    items:stock_num   items_tbl.stock_num      as virtrdf:items_stock_num ;
+    items:manu_code   items_tbl.manu_code      as virtrdf:items_manu_code ;
+    items:quantity    items_tbl.quantity       as virtrdf:items_quantity ;
+    items:total_price items_tbl.total_price    as virtrdf:items_total_price ;
+    items:from_order  orders:orders_iri (orders_tbl.order_num) where (^{items_tbl.}^.order_num = ^{orders_tbl.}^.order_num) as virtrdf:Items-from_order ;
+    items:has_stock   stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) where (^{items_tbl.}^.stock_num = ^{stock_tbl.}^.stock_num and ^{items_tbl.}^.manu_code = ^{stock_tbl.}^.manu_code)  as virtrdf:Item-has_stock .
+
+    catalog:catalog_iri (catalog_tbl.catalog_num) a catalog:Catalog as virtrdf:catalog_num;
+    catalog:stock_num   catalog_tbl.stock_num    as virtrdf:catalog_stock_num ;
+    catalog:manu_code   catalog_tbl.manu_code    as virtrdf:catalog_manu_code ;
+    catalog:cat_descr   catalog_tbl.cat_descr    as virtrdf:catalog_cat_descr ;
+    catalog:cat_picture catalog_tbl.cat_picture  as virtrdf:catalog_cat_picture ;
+    catalog:cat_advert  catalog_tbl.cat_advert   as virtrdf:catalog_cat_advert ;
+    catalog:has_stock   stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) where (^{catalog_tbl.}^.stock_num = ^{stock_tbl.}^.stock_num and ^{catalog_tbl.}^.manu_code = ^{stock_tbl.}^.manu_code)  as virtrdf:Catalog-has_stock .
+
+    msgs:msgs_iri (msgs_tbl.lang, msgs_tbl.number, msgs_tbl.message) a msgs:Msgs as virtrdf:msgs_pk ;
+    msgs:lang     msgs_tbl.lang    as virtrdf:msgs_lang ;
+    msgs:number   msgs_tbl.number  as virtrdf:msgs_number ;
+    msgs:message  msgs_tbl.message as virtrdf:msgs_message .
+
+    state:state_iri (state_tbl.code) a state:State as virtrdf:code ;
+    state:code   state_tbl.code   as virtrdf:state_code ;
+    state:sname  state_tbl.sname  as virtrdf:state_sname .
+
+    orders:orders_iri (orders_tbl.order_num) a orders:Orders as virtrdf:order_num ;
+    orders:order_num     orders_tbl.order_num     as virtrdf:orders_order_num ;
+    orders:order_date    orders_tbl.order_date    as virtrdf:orders_order_date ;
+    orders:customer_num  orders_tbl.customer_num  as virtrdf:orders_customer_num ;
+    orders:ship_instruct orders_tbl.ship_instruct as virtrdf:orders_ship_instruct ;
+    orders:backlog       orders_tbl.backlog       as virtrdf:orders_backlog ;
+    orders:po_num        orders_tbl.po_num        as virtrdf:orders_po_num ;
+    orders:ship_date     orders_tbl.ship_date     as virtrdf:orders_ship_date ;
+    orders:ship_weight   orders_tbl.ship_weight   as virtrdf:orders_ship_weight ;
+    orders:ship_charge   orders_tbl.ship_charge   as virtrdf:orders_ship_charge ;
+    orders:paid_date     orders_tbl.paid_date     as virtrdf:orders_paid_date ;
+    orders:has_customer cust:customer_iri (customer_tbl.customer_num) where (^{orders_tbl.}^.customer_num = ^{customer_tbl.}^.customer_num) as virtrdf:Orders-has_customer ;
+    orders:has_item     items:items_iri (items_tbl.item_num, items_tbl.order_num) where (^{orders_tbl.}^.order_num = ^{items_tbl.}^.order_num) as virtrdf:Orders-has_item .
+
+    stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) a stock:Stock as virtrdf:stock_pk ;
+    stock:stock_num    stock_tbl.stock_num    as virtrdf:stock_stock_num ;
+    stock:manu_code    stock_tbl.manu_code    as virtrdf:stock_manu_code ;
+    stock:description  stock_tbl.description  as virtrdf:stock_description ;
+    stock:unit_price   stock_tbl.unit_price   as virtrdf:stock_unit_price ;
+    stock:unit         stock_tbl.unit         as virtrdf:stock_unit ;
+    stock:unit_descr   stock_tbl.unit_descr   as virtrdf:stock_unit_descr ;
+    stock:manufactured_by manuf:manufact_iri (manufact_tbl.manu_code) where (^{stock_tbl.}^.manu_code = ^{manufact_tbl.}^.manu_code) as virtrdf:Stock-manufactured_by ;
+    stock:in_catalog  catalog:catalog_iri (catalog_tbl.catalog_num) where (^{stock_tbl.}^.stock_num = ^{catalog_tbl.}^.stock_num and ^{stock_tbl.}^.manu_code = ^{catalog_tbl.}^.manu_code) as virtrdf:Stock-in_catalog ;
+    stock:in_item     items:items_iri (items_tbl.item_num, items_tbl.order_num) where (^{stock_tbl.}^.stock_num = ^{items_tbl.}^.stock_num and ^{stock_tbl.}^.manu_code = ^{items_tbl.}^.manu_code) as virtrdf:Stock-in_items .
+
+    cust:customer_iri (customer_tbl.customer_num) a cust:Customer as virtrdf:customer_num ;
+    cust:customer_num  customer_tbl.customer_num  as virtrdf:customer_customer_num ;
+    cust:fname         customer_tbl.fname         as virtrdf:customer_fname ;
+    cust:lname         customer_tbl.lname         as virtrdf:customer_lname ;
+    cust:company       customer_tbl.company       as virtrdf:customer_company ;
+    cust:address1      customer_tbl.address1      as virtrdf:customer_address1 ;
+    cust:address2      customer_tbl.address2      as virtrdf:customer_address2 ;
+    cust:city          customer_tbl.city          as virtrdf:customer_city ;
+    cust:state         customer_tbl.state         as virtrdf:customer_state ;
+    cust:zipcode       customer_tbl.zipcode       as virtrdf:customer_zipcode ;
+    cust:phone         customer_tbl.phone         as virtrdf:customer_phone ;
+    cust:placed_order orders:orders_iri (orders_tbl.order_num) where (^{customer_tbl.}^.customer_num = ^{orders_tbl.}^.customer_num) as virtrdf:Customer-placed_order ;
+    cust:made_call    custc:cust_calls_iri (cust_calls_tbl.customer_num, cust_calls_tbl.call_dtime ) where (^{customer_tbl.}^.customer_num = ^{cust_calls_tbl.}^.customer_num) as virtrdf:Cust_calls-made_call .
+
+    callt:call_type_iri (call_type_tbl.call_code) a callt:Call_type as virtrdf:call_code ;
+    callt:call_code   call_type_tbl.call_code as virtrdf:call_type_call_code ;
+    callt:code_descr  call_type_tbl.code_descr as virtrdf:call_type_code_descr ;
+    callt:call_is_type  custc:cust_calls_iri (cust_calls_tbl.customer_num, cust_calls_tbl.call_dtime) where (^{call_type_tbl.}^.call_code = ^{cust_calls_tbl.}^.call_code) as virtrdf:Call_type-call_is_type .
+
+    manuf:manufact_iri (manufact_tbl.manu_code) a manuf:Manufact as virtrdf:manu_code ;
+    manuf:manu_code     manufact_tbl.manu_code   as virtrdf:manufact_tbl_manu_code ;
+    manuf:manu_name     manufact_tbl.manu_name   as virtrdf:manufact_tbl_manu_name ;
+    manuf:lead_time     manufact_tbl.lead_time   as virtrdf:manufact_tbl_lead_time ;
+    manuf:manufactures stock:stock_iri (stock_tbl.stock_num, stock_tbl.manu_code) where (^{manufact_tbl.}^.manu_code = ^{stock_tbl.}^.manu_code) as virtrdf:Manufact-manufactures .
+
+    custc:cust_calls_iri  (cust_calls_tbl.customer_num, cust_calls_tbl.call_dtime) a custc:Cust_calls as virtrdf:cust_calls_pk ;
+    custc:user_id    cust_calls_tbl.user_id      as virtrdf:cust_calls_user_id ;
+    custc:call_code  cust_calls_tbl.call_code    as virtrdf:cust_calls_call_code ;
+    custc:call_descr cust_calls_tbl.call_descr   as virtrdf:cust_calls_call_descr ;
+    custc:res_dtime  cust_calls_tbl.res_dtime    as virtrdf:cust_calls_res_dtime ;
+    custc:res_descr  cust_calls_tbl.res_descr    as virtrdf:cust_calls_res_descr ;
+    custc:made_by_customer cust:customer_iri   (customer_tbl.customer_num) where (^{cust_calls_tbl.}^.customer_num = ^{customer_tbl.}^.customer_num) as virtrdf:Cust_calls-made_by_customer ;
+    custc:is_call_type     callt:call_type_iri (call_type_tbl.call_code)   where (^{cust_calls_tbl.}^.call_code    = ^{call_type_tbl.}^.call_code)   as virtrdf:Cust_calls-is_call_type .
+
+  } .
+} .
+;
+
+delete from db.dba.url_rewrite_rule_list where urrl_list like 'informix_sd_rule%';
+delete from db.dba.url_rewrite_rule where urr_rule like 'informix_sd_rule%';
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'informix_sd_rule1',
+    1,
+    '(/[^#]*)',
+    vector('path'),
+    1,
+    '/about/html/http/^{URIQADefaultHost}^%s',
+    vector('path'),
+    null,
+    '(text/html)|(\\*/\\*)',
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'informix_sd_rule2',
+    1,
+    '(/[^#]*)',
+    vector('path'),
+    1,
+    '/sparql?query=DESCRIBE+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+%%3Chttp%%3A//localhost%%3A8890%U%%23this%%3E+FROM+%%3Chttp%%3A//localhost%%3A8890/informix/stores_demo%%3E&format=%U',
+    vector('path', 'path', '*accept*'),
+    null,
+    '(text/rdf.n3)|(application/rdf.xml)',
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    'informix_sd_rule_list1',
+    1,
+    vector (
+        'informix_sd_rule1',
+        'informix_sd_rule2'
+      ));
+
+-- ensure a VD for the IRIs which begins with /
+VHOST_REMOVE (lpath=>'/informix/stores_demo');
+
+VHOST_DEFINE (
+    lpath=>'/informix/stores_demo',
+    ppath=>'/DAV/informix/stores_demo/',
+        is_dav=>1,
+    vsp_user=>'dba',
+    is_brws=>0,
+    opts=>vector ('url_rewrite', 'informix_sd_rule_list1')
+    );
+
+delete from db.dba.url_rewrite_rule_list where urrl_list like 'informix_sd_schemas_rule%';
+delete from db.dba.url_rewrite_rule where urr_rule like 'informix_sd_schemas_rule%';
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'informix_sd_schemas_rule1',
+    1,
+    '(/[^#]*)',
+    vector('path'),
+    1,
+    '/about/html/http/^{URIQADefaultHost}^%s',
+    vector('path'),
+    null,
+    '(text/html)|(\\*/\\*)',
+    0,
+    303
+    );
+
+DB.DBA.URLREWRITE_CREATE_REGEX_RULE (
+    'informix_sd_schemas_rule2',
+    1,
+    '(/[^#]*)',
+    vector('path'),
+    1,
+    '/sparql?query=CONSTRUCT+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}%%0D%%0AFROM+%%3Chttp%%3A//localhost%%3A8890/schemas/informix/stores_demo%%3E+%%0D%%0AWHERE+{+%%3Chttp%%3A//localhost%%3A8890%U%%3E+%%3Fp+%%3Fo+}&format=%U',
+    vector('path','path','*accept*'),
+    null,
+    '(text/rdf.n3)|(application/rdf.xml)',
+    0,
+    null
+    );
+
+DB.DBA.URLREWRITE_CREATE_RULELIST (
+    'informix_sd_schemas_rule_list1',
+    1,
+    vector (
+        'informix_sd_schemas_rule1',
+        'informix_sd_schemas_rule2'
+      ));
+
+-- ensure a VD for the IRIs which begins with /
+VHOST_REMOVE (lpath=>'/schemas/informix/stores_demo');
+
+VHOST_DEFINE (
+    lpath=>'/schemas/informix/stores_demo',
+    ppath=>'/DAV/schemas/informix/stores_demo/',
+        is_dav=>1,
+    vsp_user=>'dba',
+    is_brws=>0,
+    opts=>vector ('url_rewrite', 'informix_sd_schemas_rule_list1')
+    );
+
+DB.DBA.XML_SET_NS_DECL ('items',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/items/', 2);
+DB.DBA.XML_SET_NS_DECL ('catalog', 'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/catalog/', 2);
+DB.DBA.XML_SET_NS_DECL ('stock',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/stock/', 2);
+DB.DBA.XML_SET_NS_DECL ('msgs',    'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/msgs/', 2);
+DB.DBA.XML_SET_NS_DECL ('state',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/state/', 2);
+DB.DBA.XML_SET_NS_DECL ('orders',  'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/orders/', 2);
+DB.DBA.XML_SET_NS_DECL ('manuf',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/manufact/', 2);
+DB.DBA.XML_SET_NS_DECL ('cust',    'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/customer/', 2);
+DB.DBA.XML_SET_NS_DECL ('callt',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/call_type/', 2);
+DB.DBA.XML_SET_NS_DECL ('custc',   'http://^{URIQADefaultHost}^/schemas/informix/stores_demo/cust_calls/', 2);
+```
+
+</div>

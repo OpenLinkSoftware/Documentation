@@ -1,0 +1,85 @@
+<div id="vc_param" class="refentry">
+
+<div class="titlepage">
+
+</div>
+
+<div class="refnamediv">
+
+## Name
+
+param — Named parameter for the cursor.
+
+</div>
+
+<div class="refsynopsisdiv">
+
+## Synopsis
+
+<div id="vc_syn_param" class="funcsynopsis">
+
+|                       |                               |
+|-----------------------|-------------------------------|
+| ` <`**`param`**` />(` | `name` (required) ,           |
+|                       | `value` (required) ,          |
+|                       | `xsd-stub-xhtml` (optional) , |
+|                       | `width` (optional) ,          |
+|                       | `height` (optional) ,         |
+|                       | `debug-srcfile` (optional) ,  |
+|                       | `debug-srcline` (optional) ,  |
+|                       | `debug-log` (optional) `)`;   |
+
+<div class="funcprototype-spacer">
+
+ 
+
+</div>
+
+</div>
+
+</div>
+
+<div id="vc_desc_param" class="refsect1">
+
+## Description
+
+Named parameter for execution of the cursor select statement. This must
+be the name of a parameter for SQL statement specified, but without
+leading colon.
+
+</div>
+
+<div id="vc_attrs_param" class="refsect1">
+
+## Attributes
+
+**name =
+<a href="vc_type_sqlname.html" class="link" title="SqlName">SqlName</a>
+. ** Name of the parameter.
+
+**value = <a href="vc_type_calculateablevalue.html" class="link"
+title="CalculateableValue">CalculateableValue</a> . ** Data bound value
+of the parameter.
+
+**xsd-stub-xhtml. ** This attribute is for internal use only. It has no
+effect if added to the source VSPX file.
+
+**width. ** Visible width of the control when it is displayed in WYSIWYG
+tools when the source VSPX text is edited. The value of this attribute
+will not be used when the resulting HTML is rendered.
+
+**height. ** Visible width of the control when it is displayed in
+WYSIWYG tools when the source VSPX text is edited. The value of this
+attribute will not be used when the resulting HTML is rendered.
+
+**debug-srcfile. ** URI of the source document where the tag comes from.
+
+**debug-srcline. ** Line number in the source document where the tag
+comes from.
+
+**debug-log. ** This defines what sort of data are saved to the
+debugging log.
+
+</div>
+
+</div>
