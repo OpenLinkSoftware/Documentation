@@ -1,0 +1,152 @@
+<div id="ddlstmt" class="section">
+
+<div class="titlepage">
+
+<div>
+
+<div>
+
+## 21.8. DDL Statements
+
+</div>
+
+</div>
+
+</div>
+
+``` programlisting
+CREATE TABLE WAREHOUSE (
+    W_ID        INTEGER,
+    W_NAME      CHARACTER (10),
+    W_STREET_1      CHARACTER (20),
+    W_STREET_2      CHARACTER (20),
+    W_CITY      CHARACTER (20),
+    W_STATE     CHARACTER (2),
+    W_ZIP       CHARACTER (9),
+    W_TAX       NUMERIC,
+    W_YTD       NUMERIC,
+    PRIMARY KEY (W_ID)
+);
+
+CREATE TABLE DISTRICT (
+    D_ID        INTEGER,
+    D_W_ID      INTEGER,
+    D_NAME      CHARACTER (10),
+    D_STREET_1      CHARACTER (20),
+    D_STREET_2      CHARACTER (20),
+    D_CITY      CHARACTER (20),
+    D_STATE     CHARACTER (2),
+    D_ZIP       CHARACTER (9),
+    D_TAX       NUMERIC,
+    D_YTD       NUMERIC,
+    D_NEXT_O_ID     INTEGER,
+    PRIMARY KEY (D_W_ID, D_ID)
+);
+
+CREATE TABLE CUSTOMER (
+    C_ID        INTEGER,
+    C_D_ID      INTEGER,
+    C_W_ID      INTEGER,
+    C_FIRST     CHARACTER (16),
+    C_MIDDLE        CHARACTER (2),
+    C_LAST      VARCHAR,
+    C_STREET_1      CHARACTER (20),
+    C_STREET_2      CHARACTER (20),
+    C_CITY      CHARACTER (20),
+    C_STATE     CHARACTER (2),
+    C_ZIP       CHARACTER (9),
+    C_PHONE     CHARACTER (16),
+    C_SINCE     VARCHAR,
+    C_CREDIT        CHARACTER (2),
+    C_CREDIT_LIM    NUMERIC,
+    C_DISCOUNT      NUMERIC,
+    C_BALANCE       NUMERIC,
+    C_YTD_PAYMENT   NUMERIC,
+    C_CNT_PAYMENT   NUMERIC,
+    C_CNT_DELIVERY  NUMERIC,
+    C_DATA_1        CHARACTER (250),
+    C_DATA_2        CHARACTER (250),
+    PRIMARY KEY (C_W_ID, C_D_ID, C_ID)
+);
+
+CREATE INDEX C_BY_LAST ON CUSTOMER (C_W_ID, C_D_ID, C_LAST, C_FIRST);
+
+CREATE TABLE HISTORY (
+    H_C_ID      INTEGER,
+    H_C_D_ID        INTEGER,
+    H_C_W_ID        INTEGER,
+    H_D_ID      INTEGER,
+    H_W_ID      INTEGER,
+    H_DATE      DATE,
+    H_AMOUNT        NUMERIC,
+    H_DATA      CHARACTER (24),
+    PRIMARY KEY (H_DATE, H_C_ID)
+);
+
+CREATE TABLE NEW_ORDER (
+    NO_O_ID     INTEGER,
+    NO_D_ID     INTEGER,
+    NO_W_ID     INTEGER,
+    PRIMARY KEY (NO_W_ID, NO_D_ID, NO_O_ID)
+);
+
+CREATE TABLE ORDERS (
+    O_ID        INTEGER,
+    O_D_ID      INTEGER,
+    O_W_ID      INTEGER,
+    O_C_ID      INTEGER,
+    O_ENTRY_D       DATE,
+    O_CARRIER_ID    INTEGER,
+    O_OL_CNT        INTEGER,
+    O_ALL_LOCAL     NUMERIC,
+    PRIMARY KEY (O_W_ID, O_D_ID, O_ID)
+);
+
+CREATE INDEX O_BY_C_ID ON ORDERS (O_W_ID, O_D_ID, O_C_ID, O_ID)
+
+CREATE TABLE ORDER_LINE (
+    OL_O_ID     INTEGER,
+    OL_D_ID     INTEGER,
+    OL_W_ID     INTEGER,
+    OL_NUMBER       INTEGER,
+    OL_I_ID     INTEGER,
+    OL_SUPPLY_W_ID  INTEGER,
+    OL_DELIVERY_D   DATE,
+    OL_QUANTITY     NUMERIC,
+    OL_AMOUNT       NUMERIC,
+    OL_DIST_INFO    CHARACTER (24),
+    PRIMARY KEY (OL_W_ID, OL_D_ID, OL_O_ID, OL_NUMBER)
+);
+
+CREATE TABLE ITEM (
+    I_ID        INTEGER,
+    I_IM_ID     INTEGER,
+    I_NAME      CHARACTER (24),
+    I_PRICE     NUMERIC,
+    I_DATA      CHARACTER (50),
+    PRIMARY KEY (I_ID)
+);
+
+CREATE TABLE STOCK (
+    S_I_ID      INTEGER,
+    S_W_ID      INTEGER,
+    S_QUANTITY      NUMERIC,
+    S_DIST_01       CHARACTER (24),
+    S_DIST_02       CHARACTER (24),
+    S_DIST_03       CHARACTER (24),
+    S_DIST_04       CHARACTER (24),
+    S_DIST_05       CHARACTER (24),
+    S_DIST_06       CHARACTER (24),
+    S_DIST_07       CHARACTER (24),
+    S_DIST_08       CHARACTER (24),
+    S_DIST_09       CHARACTER (24),
+    S_DIST_10       CHARACTER (24),
+    S_YTD       NUMERIC,
+    S_CNT_ORDER     NUMERIC,
+    S_CNT_REMOTE    NUMERIC,
+    S_DATA      CHARACTER (50),
+    PRIMARY KEY (S_I_ID, S_W_ID)
+);
+```
+
+</div>
