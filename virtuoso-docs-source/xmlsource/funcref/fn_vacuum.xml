@@ -10,7 +10,7 @@
   <refnamediv>
     <refname>DB.DBA.VACUUM
     </refname>
-    <refpurpose>Compact the database
+    <refpurpose>Compact index structures in the database (deprecated since v6)
     </refpurpose>
   </refnamediv>
   <refsynopsisdiv>
@@ -36,20 +36,33 @@
     </funcsynopsis>
   </refsynopsisdiv>
   <refsect1 xml:id="desc_vacuum">
+    <note>
+      <title>Deprecated!</title>
+      <para>This functionality happens automatically in Virtuoso versions 6 and greater.</para>
+    </note>
+    <note>
+      <title>Note:</title>
+      <para>This is not the same as compacting the database and may actually make the db file
+        larger when run. The preferred way to shrink the database file itself is to perform a
+        <link linkend="vdbrecovery">backup-dump/restore-crash-dump</link> cycle.
+      </para>
+    </note>
     <title>Description
     </title>
-    <para>This function reads through the specified tables and indices and finds groups of adjacent pages
-holding data that will fit on fewer pages than it currently occupies. If such a compression can be made,
+    <para>This function reads through the specified tables and indices and finds groups of adjacent index
+pages holding data that will fit on fewer pages than it currently occupies. If such an operation can be made,
 the pages are thus compacted.</para>
-    <para>The pages become part of the committed state and will be written to the checkpoint space on
-the next checkpoint.</para>
+    <para>The compacted pages become part of the committed state and will be written to the checkpoint
+space on the next checkpoint.</para>
     <para>The vacuum operation is non-locking and can be run on a busy database. It will simply skip pages
 with ongoing activity such as pending cursors or locks. The vacuum procedure returns only after it has read
-through the indices it affects but it will not prevent other activity on the indices. The vacuum operation
-may run out of disk space even if it makes net gains because the modified pages will not be final until
-the next checkpoint and the originals will not be free until this same checkpoint. Thus manually running
-a checkpoint after vacuum runs out of space will free the space and vacuum may be rerun.
+    through the indices it affects but it will not prevent other activity on the indices.</para>
+    <para>The vacuum operation may run out of disk space even if it makes net gains because the modified
+pages will not be final until the next checkpoint and the originals will not be free until this same
+checkpoint. Thus manually running a checkpoint after vacuum runs out of space will free the space and
+vacuum may be rerun.
     </para>
+
   </refsect1>
   <refsect1 xml:id="params_vacuum">
     <title>Parameters
@@ -64,7 +77,7 @@ sensitive and must have all the three parts given, e.g. APP.USER.DATA
     <refsect2>
       <title>index_name
       </title>
-      <para>This allows specifying an individual index to compress. The specified table(s) must have
+      <para>This allows specifying an individual index to compact. The specified table(s) must have
 this index. The index name is a LIKE pattern and if given should match the case and spelling of index
 names as returned by the ODBC call SQLStatistics or equivalent, which is also the KEY_NAME column of
 SYS_KEYS.
@@ -77,7 +90,7 @@ SYS_KEYS.
     <example xml:id="ex_vacuum">
       <title>Simple example
       </title>
-      <para>Compact the entire database:
+      <para>Vacuum the entire database:
       </para>
       <screen>
         SQL&gt; DB.DBA.vacuum ();
