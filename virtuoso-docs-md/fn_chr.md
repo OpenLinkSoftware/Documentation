@@ -46,7 +46,7 @@ with character code given as parameter.
 
 ## Parameters
 
-<div id="id82257" class="refsect2">
+<div id="id82261" class="refsect2">
 
 ### *`chr_code `*
 
@@ -65,28 +65,6 @@ character </span> to be produced.
 If the *`chr_code `* is smaller than or equal to 255, the returned 1
 character string will be of type <span class="type">VARCHAR </span> .
 Otherwise the returned type is <span class="type">NVARCHAR </span> .
-
-</div>
-
-<div id="errors_chr" class="refsect1">
-
-## Errors
-
-<div id="id82272" class="table">
-
-**Table 24.10. Errors signalled by chr**
-
-<div class="table-contents">
-
-|                                 |                                 |
-|---------------------------------|---------------------------------|
-| <span class="errorcode"></span> | <span class="errortext"></span> |
-
-</div>
-
-</div>
-
-  
 
 </div>
 

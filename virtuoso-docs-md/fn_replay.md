@@ -58,15 +58,14 @@ are not affected.
 <a href="datatypeerror.html" class="link"
 title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
-<div id="id104952" class="table">
+<div id="id104959" class="table">
 
-**Table 24.76. Errors signalled by**
+**Table 24.75. Errors signalled by**
 
 <div class="table-contents">
 
-|                                       |                                       |                                                                                                    |
-|---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------|
 | sqlstate                              | error code                            | error text                                                                                         |
+|---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------------|
 | <span class="errorcode">25000 </span> | <span class="errorcode">SR074 </span> | <span class="errortext">replay must be run in a fresh transaction. </span>                         |
 | <span class="errorcode">42000 </span> | <span class="errorcode">FA002 </span> | <span class="errortext">Can't open file \<fname\>, error \<OS errno\> (\<OS description\>) </span> |
 
@@ -82,7 +81,7 @@ title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
 ## Parameters
 
-<div id="id104976" class="refsect2">
+<div id="id104984" class="refsect2">
 
 ### log_file
 

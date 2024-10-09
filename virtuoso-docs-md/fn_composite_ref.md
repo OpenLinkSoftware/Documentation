@@ -46,7 +46,7 @@ index is 0 based.
 
 ## Parameters
 
-<div id="id82552" class="refsect2">
+<div id="id82545" class="refsect2">
 
 ### nth
 
@@ -68,9 +68,9 @@ The type returned is the type of the composite member referred to.
 
 ## Errors
 
-<div id="id82561" class="table">
+<div id="id82554" class="table">
 
-**Table 24.14. Errors signalled by `composite_ref `**
+**Table 24.13. Errors signalled by `composite_ref `**
 
 <div class="table-contents">
 

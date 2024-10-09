@@ -80,15 +80,14 @@ the string returned will also be <span class="type">wide </span> .
 
 ## Errors
 
-<div id="id82640" class="table">
+<div id="id82637" class="table">
 
-**Table 24.15. Errors signalled by concat()**
+**Table 24.14. Errors signalled by concat()**
 
 <div class="table-contents">
 
-|                                       |                                       |                                                                                                                                               |
-|---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | sqlstate                              | error code                            | error text                                                                                                                                    |
+|---------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | <span class="errorcode">22023 </span> | <span class="errorcode">SR007 </span> | <span class="errortext">Function concat needs a string or NULL as argument \<argument number\>, not an arg of type \<offending type\> </span> |
 
 </div>

@@ -46,7 +46,7 @@ The initial content of the array is undefined.
 
 ## Parameters
 
-<div id="id96267" class="refsect2">
+<div id="id96273" class="refsect2">
 
 ### length
 
@@ -54,7 +54,7 @@ Number of elements to be allocated in the resultant array.
 
 </div>
 
-<div id="id96270" class="refsect2">
+<div id="id96276" class="refsect2">
 
 ### content
 
@@ -84,15 +84,14 @@ An array of specified length and data type
 <a href="datatypeerror.html" class="link"
 title="23.2.2. Data Type Errors">Parameter data type checking errors</a>
 
-<div id="id96280" class="table">
+<div id="id96286" class="table">
 
-**Table 24.54. Errors signalled by make_array()**
+**Table 24.53. Errors signalled by make_array()**
 
 <div class="table-contents">
 
-|                                       |                                       |                                                                                        |
-|---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------|
 | sqlstate                              | error code                            | error text                                                                             |
+|---------------------------------------|---------------------------------------|----------------------------------------------------------------------------------------|
 | <span class="errorcode">22003 </span> | <span class="errorcode">SR021 </span> | <span class="errortext">make_array called with an invalid count \<num\> </span>        |
 | <span class="errorcode">22023 </span> | <span class="errorcode">SR022 </span> | <span class="errortext">Type for make_array must be float, double, long or any </span> |
 

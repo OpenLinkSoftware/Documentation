@@ -58,7 +58,7 @@ is preferred over this function.
 
 ## Parameters
 
-<div id="id112242" class="refsect2">
+<div id="id112250" class="refsect2">
 
 ### str
 
@@ -73,15 +73,14 @@ format.
 
 ## Errors
 
-<div id="id112248" class="table">
+<div id="id112256" class="table">
 
-**Table 24.81. Errors signalled by `datestring ` and `stringdate `**
+**Table 24.80. Errors signalled by `datestring ` and `stringdate `**
 
 <div class="table-contents">
 
-|                                       |                                       |                                                                                 |             |
-|---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------|-------------|
 | SQLState                              | Error Code                            | Error Text                                                                      | Description |
+|---------------------------------------|---------------------------------------|---------------------------------------------------------------------------------|-------------|
 | <span class="errorcode">22007 </span> | <span class="errorcode">DT006 </span> | <span class="errortext">Cannot convert \<offending string\> to datetime </span> |             |
 | <span class="errorcode">22002 </span> | <span class="errorcode">DT007 </span> | <span class="errortext">Nulls not allowed as parameters to stringdate </span>   |             |
 
